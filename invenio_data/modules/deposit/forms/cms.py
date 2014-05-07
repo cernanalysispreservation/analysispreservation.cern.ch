@@ -674,8 +674,7 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     """ Form Configuration variables """
     _title = _('Submit an Analysis for CMS')
-    _subtitle = "DO NOT SUBMIT YET " \
-                "Acess to all submitted data will be restricted to the "\
+    _subtitle = "Acess to all submitted data will be restricted to the "\
                 "CMS collaboration only."
     _drafting = True   # enable and disable drafting
 

@@ -654,8 +654,7 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     """ Form Configuration variables """
     _title = _('Submit an Analysis for ALICE')
-    _subtitle = "DO NOT SUBMIT YET " \
-                "Acess to all submitted data will be restricted to the "\
+    _subtitle = "Acess to all submitted data will be restricted to the "\
                 "ALICE collaboration only."
     _drafting = True   # enable and disable drafting
 

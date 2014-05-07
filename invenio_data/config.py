@@ -20,7 +20,7 @@
 PACKAGES = [
     "invenio_data.base",
     "invenio_data.modules.*",
-    "invenio.modules.*",
+    "invenio_data.modules.*",
 ]
 
 DEPOSIT_TYPES = [

@@ -91,6 +91,11 @@
 
     {% block form_title scoped %}
         <h1>{{ form._title }}</h1>
+        <div class="progress progress-striped" style="height: inherit;">
+            <div class="progress-bar progress-bar-danger" style="width: 100%;">
+                <h4>DO NOT SUBMIT. THIS IS JUST A DEMO. DATA IS <em>NOT</em> STORED</h4>
+            </div>
+        </div>
         {% if form._subtitle %}
             <p class="text-muted" style="color:red;">{{ form._subtitle|safe }}</p>
         {% endif %}

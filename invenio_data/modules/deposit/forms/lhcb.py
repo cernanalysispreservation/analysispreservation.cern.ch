@@ -585,8 +585,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     """ Form Configuration variables """
     _title = _('Submit an Analysis for LHCb')
-    _subtitle = "DO NOT SUBMIT YET " \
-                "Acess to all submitted data will be restricted to the "\
+    _subtitle = "Acess to all submitted data will be restricted to the "\
                 "LHCb collaboration only."
     _drafting = True   # enable and disable drafting
 
