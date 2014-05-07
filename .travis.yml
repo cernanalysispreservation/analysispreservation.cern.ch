@@ -1,0 +1,67 @@
+# -*- coding: utf-8 -*-
+##
+## This file is part of Invenio.
+## Copyright (C) 2013 CERN.
+##
+## Invenio is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License as
+## published by the Free Software Foundation; either version 2 of the
+## License, or (at your option) any later version.
+##
+## Invenio is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Invenio; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+
+notifications:
+  email: false
+
+services:
+  - mysql
+  - rabbitmq
+  - redis
+
+language: python
+
+python:
+  - "2.6"
+  - "2.7"
+
+install:
+  - "sudo apt-get update"
+  - "sudo apt-get install apache2 libapache2-mod-wsgi ssl-cert poppler-utils --fix-missing"
+  - "sudo a2enmod actions"
+  - "sudo a2enmod version"
+  - "sudo a2enmod rewrite"
+  - "sudo a2enmod ssl || echo ':('"  # enable SSL module
+  - "sudo a2enmod xsendfile || echo ':('"
+  - "sudo mkdir -p /etc/apache2/ssl"
+  - "mkdir -p $VIRTUAL_ENV/var/tmp/"
+  - "sudo /usr/sbin/make-ssl-cert /usr/share/ssl-cert/ssleay.cnf /etc/apache2/ssl/apache.pem"
+  - "travis_retry pip install nose"
+  - "travis_retry pip install . --quiet --process-dependency-links --allow-all-external"
+  - "inveniomanage config create secret-key"
+  - "inveniomanage config set CFG_SITE_URL http://localhost"
+  - "inveniomanage config set CFG_SITE_SECURE_URL https://localhost"
+  - "inveniomanage config set CFG_EMAIL_BACKEND flask.ext.email.backends.console.Mail"
+  - "inveniomanage config set CFG_BIBSCHED_PROCESS_USER `whoami`"
+
+before_script:
+  - "inveniomanage collect"
+  - "inveniomanage apache create-config"
+  - "sudo /usr/sbin/a2dissite default || echo ':('"
+  - "sudo mv $VIRTUAL_ENV/var/invenio.base-instance/apache/invenio-apache-vhost.conf /etc/apache2/sites-enabled/invenio"
+  - "sudo mv $VIRTUAL_ENV/var/invenio.base-instance/apache/invenio-apache-vhost-ssl.conf /etc/apache2/sites-enabled/invenio-ssl"
+  - "inveniomanage database init --yes-i-know"
+  - "inveniomanage database create"
+  - "sudo apachectl configtest && sudo service apache2 restart || echo 'Apache failed ...'"
+  - "inveniomanage demosite create"
+  - "inveniomanage demosite populate"
+
+script:
+  - "nosetests invenio_demosite/testsuite/regression/test_*.py"
+#  - "python setup.py test"
