@@ -63,5 +63,4 @@ before_script:
   - "inveniomanage demosite populate"
 
 script:
-  - "nosetests invenio_demosite/testsuite/regression/test_*.py"
-#  - "python setup.py test"
+  - "python setup.py test"

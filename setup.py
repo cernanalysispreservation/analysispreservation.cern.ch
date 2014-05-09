@@ -16,10 +16,10 @@
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 """
-Invenio Demosite
-----------------
+Invenio Data
+------------
 
-Example demosite repository.
+Data repository.
 """
 from __future__ import print_function
 
@@ -69,16 +69,15 @@ extras_require = dict(map(
 packages = find_packages(exclude=['docs'])
 
 setup(
-    name='Invenio Demosite',
-    version='1.9999-dev',
-    url='https://github.com/inveniosoftware/invenio-demosite',
+    name='Invenio Data',
+    version='0.1',
+    url='https://github.com/inveniosoftware/invenio-data',
     license='GPLv2',
     author='CERN',
     author_email='info@invenio-software.org',
     description='Digital library software',
     long_description=__doc__,
     packages=packages,
-    package_dir={'invenio_docs': 'docs'},
     include_package_data=True,
     zip_safe=False,
     platforms='any',
@@ -96,8 +95,8 @@ setup(
     ],
     entry_points={
         'invenio.config': [
-            "demosite = invenio_demosite.config"
+            "data = invenio_data.config"
         ]
     },
-    test_suite='invenio_demosite.testsuite.suite'
+    test_suite='invenio_data.testsuite.suite'
 )
