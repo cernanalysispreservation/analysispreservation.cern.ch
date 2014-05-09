@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##
 ## This file is part of Invenio.
-## Copyright (C) 2012, 2013 CERN.
+## Copyright (C) 2012, 2013, 2014 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -29,7 +29,8 @@ from invenio.modules.deposit.tasks import render_form, \
     upload_record_sip, \
     prefill_draft,\
     process_sip_metadata
-from invenio.modules.deposit import forms
+from ..forms.alice import AliceDataAnalysisForm
+
 
 __all__ = ['AliceDataAnalysis']
 
@@ -59,7 +60,7 @@ class AliceDataAnalysis(DepositionType):
     group = "Data Analysis"
     enabled = True
     draft_definitions = {
-        'default': forms.AliceDataAnalysisForm,
+        'default': AliceDataAnalysisForm,
     }
 
     @classmethod

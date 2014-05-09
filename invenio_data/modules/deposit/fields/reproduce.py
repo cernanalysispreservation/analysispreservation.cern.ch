@@ -20,7 +20,7 @@
 from wtforms import SelectField
 from wtforms.widgets import Select
 from invenio.modules.deposit.field_base import WebDepositField
-from ..field_widgets import ColumnInput
+from invenio.modules.deposit.field_widgets import ColumnInput
 
 __all__ = ['ReproduceField']
 

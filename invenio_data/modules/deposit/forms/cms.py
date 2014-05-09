@@ -21,12 +21,14 @@ from wtforms.validators import Required
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
-from ..field_widgets import plupload_widget, \
+from invenio.modules.deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
 from invenio.modules.deposit import fields
 from invenio.modules.deposit.validation_utils import required_if
 
-__all__ = ['CMSDataAnalysisForm']
+from .. import fields as data_fields
+
+__all__ = ('CMSDataAnalysisForm', )
 
 
 def keywords_autocomplete(form, field, term, limit=50):
@@ -141,7 +143,7 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # Basic Info
 
-    analysisnum = fields.AnalysisNumberField(
+    analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
         description='E.g. CMS-ANA-2012-049',
         placeholder='Please enter Analysis Number',
@@ -185,7 +187,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         hidden=True
     )
 
-    accelerator = fields.AcceleratorField(
+    accelerator = data_fields.AcceleratorField(
         label=_('Accelerator'),
         placeholder='CERN LHC',
         export_key='cms.accelerator',
@@ -196,7 +198,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     experiments = [("CMS", _("CMS")),
                    ("ALICE", _("ALICE")),
                    ("LHCb", _("LHCb"))]
-    experiment = fields.ExperimentField(
+    experiment = data_fields.ExperimentField(
         label=_('Experiment'),
         choices=experiments,
         export_key='cms.experiment',
@@ -248,14 +250,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.triggerselection',
     )
 
-    physics_objects = fields.PhysicsObjectsField(
+    physics_objects = data_fields.PhysicsObjectsField(
         label=_("Physics Objects"),
         placeholder='Standard physics objects?',
         export_key='cms.physicsobjects',
         icon='fa fa-filter fa-fw'
     )
 
-    callibration = fields.CallibrationField(
+    callibration = data_fields.CallibrationField(
         label=_("Callibration"),
         placeholder='If not, what callibration?',
         export_key='cms.callibration',
@@ -276,7 +278,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.keywords',
     )
 
-    comments = fields.CommentsField(
+    comments = data_fields.CommentsField(
         label=_("Comments"),
         export_key='cms.comments',
         icon='fa fa-align-justify fa-fw'
@@ -287,7 +289,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     os_options = [("slc5", _("SLC 5.x")),
                   ("slc6", _("SLC 6.x")),
                   ("ubuntu", _("Ubuntu"))]
-    pre_os = fields.OSField(
+    pre_os = data_fields.OSField(
         label=_('OS'),
         choices=os_options,
         export_key='cms.pre_os',
@@ -318,7 +320,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-link fa-fw'
     )
 
-    pre_input_data_files = fields.InputDataFilesField(
+    pre_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='cms.pre_indatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -339,7 +341,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.pre_outdatafiles',
     )
 
-    pre_reproduce = fields.ReproduceField(
+    pre_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
@@ -371,7 +373,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.pre_keywords',
     )
 
-    pre_comments = fields.CommentsField(
+    pre_comments = data_fields.CommentsField(
         label=_("Comments"),
         export_key='cms.pre_comments',
         icon='fa fa-align-justify fa-fw'
@@ -379,7 +381,7 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # Custom Analysis Step (mini-AOD)
 
-    custom_os = fields.OSField(
+    custom_os = data_fields.OSField(
         label=_('OS'),
         choices=os_options,
         export_key='cms.custom_os_option',
@@ -410,7 +412,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.custom_usercode',
     )
 
-    custom_input_data_files = fields.InputDataFilesField(
+    custom_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='cms.custom_indputdatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -431,7 +433,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.custom_outdatafiles',
     )
 
-    custom_reproduce = fields.ReproduceField(
+    custom_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
@@ -463,7 +465,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.custom_keywords',
     )
 
-    custom_comments = fields.CommentsField(
+    custom_comments = data_fields.CommentsField(
         label=_("Comments"),
         export_key='cms.custom_comments',
         icon='fa fa-align-justify fa-fw'
@@ -471,7 +473,7 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # End-user analysis
 
-    enduser_os = fields.OSField(
+    enduser_os = data_fields.OSField(
         label=_('OS'),
         choices=os_options,
         export_key='cms.enduser_os_option',
@@ -502,7 +504,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.enduser_usercode'
     )
 
-    enduser_input_data_files = fields.InputDataFilesField(
+    enduser_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='cms.enduser_inputdatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -523,7 +525,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.enduser_outdatafiles',
     )
 
-    enduser_reproduce = fields.ReproduceField(
+    enduser_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
@@ -555,7 +557,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.enduser_keywords',
     )
 
-    enduser_comments = fields.CommentsField(
+    enduser_comments = data_fields.CommentsField(
         label=_("Comments"),
         export_key='cms.enduser_comments',
         icon='fa fa-align-justify fa-fw'
@@ -592,7 +594,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.internaldocs_keywords',
     )
 
-    internaldocs_comments = fields.CommentsField(
+    internaldocs_comments = data_fields.CommentsField(
         label=_("Comments"),
         export_key='cms.internaldocs_comments',
         icon='fa fa-align-justify fa-fw'
@@ -643,14 +645,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw'
     )
 
-    journal_year = fields.JournalYearField(
+    journal_year = data_fields.JournalYearField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
         export_key='cms.journalyear',
         icon='fa fa-calendar fa-fw'
     )
 
-    journal_volume = fields.JournalVolumeField(
+    journal_volume = data_fields.JournalVolumeField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
         export_key='cms.journalvolume',
@@ -665,7 +667,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw'
     )
 
-    arXiv_id = fields.ArXivIDField(
+    arXiv_id = data_fields.ArXivIDField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
         export_key='cms.arxivid',

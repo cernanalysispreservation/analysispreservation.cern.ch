@@ -21,9 +21,9 @@ from wtforms.validators import Required
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
-from ..field_widgets import plupload_widget, \
+from invenio.modules.deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
-from invenio.modules.deposit import fields
+from .. import fields
 from invenio.modules.deposit.validation_utils import required_if
 
 __all__ = ['AliceDataAnalysisForm']

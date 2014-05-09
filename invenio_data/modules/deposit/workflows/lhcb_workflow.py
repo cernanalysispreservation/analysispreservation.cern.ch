@@ -29,7 +29,8 @@ from invenio.modules.deposit.tasks import render_form, \
     upload_record_sip, \
     prefill_draft,\
     process_sip_metadata
-from invenio.modules.deposit import forms
+
+from .. import forms
 
 __all__ = ['LHCbDataAnalysis']
 

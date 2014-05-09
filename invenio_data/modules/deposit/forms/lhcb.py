@@ -21,10 +21,12 @@ from wtforms.validators import Required
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
-from ..field_widgets import plupload_widget, \
+from invenio.modules.deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
 from invenio.modules.deposit import fields
 from invenio.modules.deposit.validation_utils import required_if
+
+from .. import fields as data_fields
 
 __all__ = ['LHCbDataAnalysisForm']
 
@@ -149,7 +151,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Basic Info
 
-    analysisnum = fields.AnalysisNumberField(
+    analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
         description='E.g. LHCb-ANA-2012-049',
         placeholder='Please enter Analysis Number',
@@ -158,7 +160,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         validators=[Required()]
     )
 
-    analysisname = fields.AnalysisNameField(
+    analysisname = data_fields.AnalysisNameField(
         label=_('Analysis name'),
         description='E.g. Bs2JpsiKS',
         placeholder='Please enter Analysis Name',
@@ -201,7 +203,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         hidden=True
     )
 
-    accelerator = fields.AcceleratorField(
+    accelerator = data_fields.AcceleratorField(
         label=_('Accelerator'),
         placeholder='CERN LHC',
         export_key='lhcb.accelerator',
@@ -212,7 +214,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     experiments = [("LHCb", _("LHCb")),
                    ("ALICE", _("ALICE")),
                    ("CMS", _("CMS"))]
-    experiment = fields.ExperimentField(
+    experiment = data_fields.ExperimentField(
         label=_('Experiment'),
         choices=experiments,
         export_key='lhcb.experiment',
@@ -223,7 +225,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Event Samples - Data
 
-    dstbkpath = fields.DSTBKPathField(
+    dstbkpath = data_fields.DSTBKPathField(
         label=_("DST BK Path"),
         description="e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDo\
         wn/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
@@ -232,7 +234,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='Please enter path to DST BK'
     )
 
-    data_year = fields.DataYearField(
+    data_year = data_fields.DataYearField(
         label=_("Data"),
         export_key='lhcb.data',
         icon='fa fa-calendar fa-fw'
@@ -250,13 +252,13 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-repeat fa-fw'
     )
 
-    trigger = fields.TriggerField(
+    trigger = data_fields.TriggerField(
         label=_("Trigger"),
         export_key='lhcb.trigger',
         icon='fa fa-certificate fa-fw'
     )
 
-    trigger_details = fields.TriggerDetailsField(
+    trigger_details = data_fields.TriggerDetailsField(
         label=_("Trigger Details"),
         export_key='lhcb.triggerdetails',
         icon='fa fa-align-justify fa-fw',
@@ -275,7 +277,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-tint fa-fw'
     )
 
-    stripping_line = fields.StrippingLineField(
+    stripping_line = data_fields.StrippingLineField(
         label=_("Stripping Line"),
         export_key='lhcb.strippingline',
         icon='fa fa-flash fa-fw',
@@ -296,20 +298,20 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Event Samples MC
 
-    mc_monte_carlo = fields.MonteCarloField(
+    mc_monte_carlo = data_fields.MonteCarloField(
         label=_("Monte Carlo"),
         export_key='lhcb.montecarlo',
         icon='fa fa-globe fa-fw'
     )
 
-    mc_monte_carlo_samples = fields.MonteCarloSamplesField(
+    mc_monte_carlo_samples = data_fields.MonteCarloSamplesField(
         label=_("Monte Carlo Samples"),
         export_key='lhcb.montecarlosamples',
         icon='fa fa-align-justify fa-fw',
         placeholder='???'
     )
 
-    mc_bk_path = fields.MCBKPathField(
+    mc_bk_path = data_fields.MCBKPathField(
         label=_("MC BK Path"),
         placeholder='Please enter full path to data',
         widget_classes='form-control',
@@ -321,7 +323,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-link fa-fw'
     )
 
-    mc_data_year = fields.DataYearField(
+    mc_data_year = data_fields.DataYearField(
         label=_("Data"),
         export_key='lhcb.mc_data',
         icon='fa fa-calendar fa-fw'
@@ -339,13 +341,13 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-repeat fa-fw'
     )
 
-    mc_trigger = fields.TriggerField(
+    mc_trigger = data_fields.TriggerField(
         label=_("Trigger"),
         export_key='lhcb.mc_trigger',
         icon='fa fa-certificate fa-fw'
     )
 
-    mc_trigger_details = fields.TriggerDetailsField(
+    mc_trigger_details = data_fields.TriggerDetailsField(
         label=_("Trigger Details"),
         export_key='lhcb.mc_triggerdetails',
         icon='fa fa-align-justify fa-fw',
@@ -364,7 +366,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-tint fa-fw'
     )
 
-    mc_stripping_line = fields.StrippingLineField(
+    mc_stripping_line = data_fields.StrippingLineField(
         label=_("Stripping Line"),
         export_key='lhcb.mc_strippingline',
         icon='fa fa-flash fa-fw',
@@ -385,7 +387,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # User Code
 
-    platform = fields.PlatformField(
+    platform = data_fields.PlatformField(
         label=_("Platform"),
         placeholder="Please state platform  E.g. x86_64-slc5-gcc46-opt",
         widget_classes='form-control',
@@ -406,7 +408,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         export_key='lhcb.usercode',
     )
 
-    code_type = fields.CodeTypeField(
+    code_type = data_fields.CodeTypeField(
         label=_("Code Type"),
         choices=[('strip', 'To select stripping line'),
                  ('fit', 'To make fit'),
@@ -415,14 +417,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-cog fa-fw'
     )
 
-    code_comment = fields.CodeCommentsField(
+    code_comment = data_fields.CodeCommentsField(
         label=_("Code Comment"),
         export_key='lhcb.codecomment',
         icon='fa fa-align-justify fa-fw',
         placeholder='Please enter any relevent code comments'
     )
 
-    reproduce = fields.ReproduceField(
+    reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-user fa-fw',
         widget_classes='form-control',
@@ -464,7 +466,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         http://john.doe.example.org/myfile.root<br>""",
     )
 
-    description = fields.DataFilesDescriptionField(
+    description = data_fields.DataFilesDescriptionField(
         label='Description',
         description='E.g. data, MC...',
         widget_classes='form-control',
@@ -474,7 +476,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='???'
     )
 
-    data_files_harvest = fields.HarvestField(
+    data_files_harvest = data_fields.HarvestField(
         label='Harvest Code',
     )
 
@@ -554,14 +556,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw'
     )
 
-    journal_year = fields.JournalYearField(
+    journal_year = data_fields.JournalYearField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
         export_key='lhcb.journalyear',
         icon='fa fa-calendar fa-fw'
     )
 
-    journal_volume = fields.JournalVolumeField(
+    journal_volume = data_fields.JournalVolumeField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
         export_key='lhcb.journalvolume',
@@ -576,7 +578,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw'
     )
 
-    arXiv_id = fields.ArXivIDField(
+    arXiv_id = data_fields.ArXivIDField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
         export_key='lhcb.arxivid',

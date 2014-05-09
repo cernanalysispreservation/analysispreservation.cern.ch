@@ -34,7 +34,7 @@ import itertools
 from werkzeug import MultiDict
 import wtforms
 from wtforms.fields.core import _unset_value
-from ..field_base import WebDepositField
+from invenio.modules.deposit.field_base import WebDepositField
 
 
 __all__ = ['FormField', 'FieldList', 'DynamicFieldList']
@@ -302,7 +302,7 @@ class DynamicFieldList(FieldList):
     fields.
     """
     def __init__(self, *args, **kwargs):
-        from ..field_widgets import DynamicListWidget
+        from invenio.modules.deposit.field_widgets import DynamicListWidget
         self.widget = kwargs.pop('widget', DynamicListWidget())
         self.empty_index = kwargs.pop('empty_index', '__index__')
         self.add_label = kwargs.pop('add_label', None)

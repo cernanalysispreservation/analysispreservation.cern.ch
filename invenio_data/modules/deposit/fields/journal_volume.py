@@ -19,8 +19,8 @@
 
 from wtforms import TextField
 from invenio.modules.deposit.field_base import WebDepositField
-from ..autocomplete_utils import sherpa_romeo_journals
-from ..processor_utils import sherpa_romeo_journal_process
+from invenio.modules.deposit.autocomplete_utils import sherpa_romeo_journals
+from invenio.modules.deposit.processor_utils import sherpa_romeo_journal_process
 
 __all__ = ['JournalVolumeField']
 

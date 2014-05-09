@@ -19,7 +19,7 @@
 
 from wtforms import TextField
 from invenio.modules.deposit.field_base import WebDepositField
-#from ..validation_utils import number_validate
+#from invenio.modules.deposit.validation_utils import number_validate
 
 __all__ = ['PagesNumberField']
 
