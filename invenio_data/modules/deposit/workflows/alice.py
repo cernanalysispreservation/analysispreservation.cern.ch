@@ -32,10 +32,10 @@ from invenio.modules.deposit.tasks import render_form, \
 from ..forms.alice import AliceDataAnalysisForm
 
 
-__all__ = ['AliceDataAnalysis']
+__all__ = ['alice']
 
 
-class AliceDataAnalysis(DepositionType):
+class alice(DepositionType):
     workflow = [
         # Pre-fill draft with values passed in from request
         prefill_draft(draft_id='default'),

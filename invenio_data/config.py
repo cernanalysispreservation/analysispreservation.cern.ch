@@ -30,7 +30,7 @@ EXTENSIONS = _EXTENSIONS + ['invenio.ext.sso']
 
 
 DEPOSIT_TYPES = [
-    'invenio_data.modules.deposit.workflows.alice_workflow.AliceDataAnalysis',
-    'invenio_data.modules.deposit.workflows.cms_workflow.CMSDataAnalysis',
-    'invenio_data.modules.deposit.workflows.lhcb_workflow.LHCbDataAnalysis',
+    'invenio_data.modules.deposit.workflows.alice.alice',
+    'invenio_data.modules.deposit.workflows.cms.cms',
+    'invenio_data.modules.deposit.workflows.lhcb.lhcb',
 ]

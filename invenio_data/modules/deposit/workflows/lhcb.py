@@ -32,10 +32,10 @@ from invenio.modules.deposit.tasks import render_form, \
 
 from .. import forms
 
-__all__ = ['CMSDataAnalysis']
+__all__ = ['lhcb']
 
 
-class CMSDataAnalysis(DepositionType):
+class lhcb(DepositionType):
     workflow = [
         # Pre-fill draft with values passed in from request
         prefill_draft(draft_id='default'),
@@ -55,12 +55,12 @@ class CMSDataAnalysis(DepositionType):
         # Seal the SIP and write MARCXML file and call bibupload on it
         upload_record_sip(),
     ]
-    name = "CMS Data Analysis"
-    name_plural = "CMS Data Analysis"
+    name = "LHCb Data Analysis"
+    name_plural = "LHCb Data Analysis"
     group = "Data Analysis"
     enabled = True
     draft_definitions = {
-        'default': forms.CMSDataAnalysisForm,
+        'default': forms.LHCbDataAnalysisForm,
     }
 
     @classmethod
