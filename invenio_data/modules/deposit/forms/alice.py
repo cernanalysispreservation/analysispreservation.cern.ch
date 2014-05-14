@@ -21,10 +21,12 @@ from wtforms.validators import Required
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
+from invenio.modules.deposit import fields
 from invenio.modules.deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
-from .. import fields
 from invenio.modules.deposit.validation_utils import required_if
+
+from .. import fields as data_fields
 
 __all__ = ['AliceDataAnalysisForm']
 
@@ -36,12 +38,12 @@ def keywords_autocomplete(form, field, term, limit=50):
 
 
 class SoftwareForm(WebDepositForm):
-    sw = fields.TextField(
+    sw = data_fields.TextField(
         placeholder="ALIROOT",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-10"),
     )
-    version = fields.TextField(
+    version = data_fields.TextField(
         placeholder="5_3_x",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-2"),
@@ -49,12 +51,12 @@ class SoftwareForm(WebDepositForm):
 
 
 class UserCodeForm(WebDepositForm):
-    url = fields.TextField(
+    url = data_fields.TextField(
         placeholder="URL   E.g. git@github.com:johndoe/myrepo.git",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-7"),
     )
-    tag = fields.TextField(
+    tag = data_fields.TextField(
         placeholder="Tag",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-3 col-pad-0"),
@@ -70,7 +72,7 @@ class UserCodeForm(WebDepositForm):
 
 
 class OutputDataFilesForm(WebDepositForm):
-    output_data_files = fields.TextField(
+    output_data_files = data_fields.TextField(
         label=_('Output Data Files'),
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -88,7 +90,7 @@ class OutputDataFilesForm(WebDepositForm):
 
 
 class InternalDocsForm(WebDepositForm):
-    docs = fields.TextField(
+    docs = data_fields.TextField(
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -104,7 +106,7 @@ class InternalDocsForm(WebDepositForm):
 
 
 class InternalDiscussionForm(WebDepositForm):
-    discussion = fields.TextField(
+    discussion = data_fields.TextField(
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-6"),
@@ -120,7 +122,7 @@ class InternalDiscussionForm(WebDepositForm):
 
 
 class TalksForm(WebDepositForm):
-    discussion = fields.TextField(
+    discussion = data_fields.TextField(
         placeholder='Please enter Indicio URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -136,13 +138,12 @@ class TalksForm(WebDepositForm):
 
 
 class AliceDataAnalysisForm(WebDepositForm):
-    """
-    Deposition Form
-    """
+
+    """Deposition Form."""
 
     # Basic Info
 
-    analysisnum = fields.AnalysisNumberField(
+    analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
         description='E.g. ALICE-ANA-2012-049',
         placeholder='Please enter Analysis Number',
@@ -150,7 +151,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-barcode fa-fw'
     )
 
-    title = fields.TextField(
+    title = data_fields.TextField(
         label=_('Title'),
         icon='fa fa-book fa-fw',
         widget_classes='form-control',
@@ -160,7 +161,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     authors = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             placeholder="Auto-completed via Analysis Number",
             widget_classes='form-control field-list-element',
             widget=ColumnInput(class_="col-xs-10")
@@ -182,8 +183,9 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-align-justify fa-fw'
     )
 
-    accelerator = fields.AcceleratorField(
+    accelerator = data_fields.TextField(
         label=_('Accelerator'),
+        widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
         description='E.g. CERN LHC',
         export_key='alice.accelerator',
@@ -193,7 +195,8 @@ class AliceDataAnalysisForm(WebDepositForm):
     experiments = [("ALICE", _("ALICE")),
                    ("CMS", _("CMS")),
                    ("LHCb", _("LHCb"))]
-    experiment = fields.ExperimentField(
+    experiment = fields.SelectField(
+        widget_classes='form-control',
         label=_('Experiment'),
         choices=experiments,
         export_key='alice.experiment',
@@ -204,7 +207,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     # Physics Info
 
     pridataset = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder="Please enter path to ESD Primary data set"
@@ -217,7 +220,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     mcdataset = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Please enter path to MC Primary data set'
@@ -230,7 +233,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -243,7 +246,8 @@ class AliceDataAnalysisForm(WebDepositForm):
         export_key='alice.keywords',
     )
 
-    comments = fields.CommentsField(
+    comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='alice.comments',
         icon='fa fa-align-justify fa-fw'
@@ -254,7 +258,8 @@ class AliceDataAnalysisForm(WebDepositForm):
     os_options = [("slc5", _("SLC 5.x")),
                   ("slc6", _("SLC 6.x")),
                   ("ubuntu", _("Ubuntu"))]
-    aod_os = fields.OSField(
+    aod_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='alice.aod_os',
@@ -284,7 +289,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-link fa-fw'
     )
 
-    aod_input_data_files = fields.InputDataFilesField(
+    aod_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='alice.aod_indatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -305,14 +310,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw'
     )
 
-    aod_reproduce = fields.ReproduceField(
+    aod_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
         export_key='alice.aod_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
-    aod_reproduce_upload = fields.FileField(
+    aod_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=False,
@@ -324,7 +329,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     aod_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -337,7 +342,8 @@ class AliceDataAnalysisForm(WebDepositForm):
         export_key='alice.aod_keywords',
     )
 
-    aod_comments = fields.CommentsField(
+    aod_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='alice.aod_comments',
         icon='fa fa-align-justify fa-fw'
@@ -345,7 +351,8 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     # Custom Analysis Step (mini-AOD)
 
-    custom_os = fields.OSField(
+    custom_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='alice.custom_os',
@@ -375,7 +382,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-link fa-fw'
     )
 
-    custom_input_data_files = fields.InputDataFilesField(
+    custom_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='alice.custom_indatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -396,14 +403,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw'
     )
 
-    custom_reproduce = fields.ReproduceField(
+    custom_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
         export_key='alice.custom_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
-    custom_reproduce_upload = fields.FileUploadField(
+    custom_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=False,
@@ -415,7 +422,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     custom_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -428,7 +435,8 @@ class AliceDataAnalysisForm(WebDepositForm):
         export_key='alice.custom_keywords'
     )
 
-    custom_comments = fields.CommentsField(
+    custom_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='alice.custom_comments',
         icon='fa fa-align-justify fa-fw'
@@ -436,7 +444,8 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     # End-user analysis
 
-    end_os = fields.OSField(
+    end_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='alice.end_os',
@@ -466,7 +475,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-link fa-fw'
     )
 
-    end_input_data_files = fields.InputDataFilesField(
+    end_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
         export_key='alice.end_indatafiles',
         icon='fa fa-arrow-right fa-fw'
@@ -487,14 +496,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw'
     )
 
-    end_reproduce = fields.ReproduceField(
+    end_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
         export_key='alice.end_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
-    end_reproduce_upload = fields.FileUploadField(
+    end_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=False,
@@ -506,7 +515,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     end_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -519,7 +528,8 @@ class AliceDataAnalysisForm(WebDepositForm):
         export_key='alice.end_keywords',
     )
 
-    end_comments = fields.CommentsField(
+    end_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='alice.end_comments',
         icon='fa fa-align-justify fa-fw'
@@ -543,7 +553,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     )
 
     internaldocs_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -556,7 +566,8 @@ class AliceDataAnalysisForm(WebDepositForm):
         export_key='alice.internaldocs_keywords',
     )
 
-    internaldocs_comments = fields.CommentsField(
+    internaldocs_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='alice.internaldocs_comments',
         icon='fa fa-align-justify fa-fw'
@@ -613,7 +624,7 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     # Published already?
 
-    journal_title = fields.TextField(
+    journal_title = data_fields.TextField(
         label=_('Journal Title'),
         placeholder='Please enter the journal title',
         export_key='alice.journaltitle',
@@ -621,14 +632,15 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw'
     )
 
-    journal_year = fields.JournalYearField(
+    journal_year = data_fields.TextField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
         export_key='alice.journalyear',
+        widget_classes='form-control',
         icon='fa fa-calendar fa-fw'
     )
 
-    journal_volume = fields.JournalVolumeField(
+    journal_volume = data_fields.TextField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
         export_key='alice.journalvolume',
@@ -636,7 +648,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tasks fa-fw'
     )
 
-    journal_page = fields.TextField(
+    journal_page = data_fields.TextField(
         label=_('Journal Page'),
         placeholder='Please enter the journal page number',
         export_key='alice.journalpage',
@@ -644,7 +656,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw'
     )
 
-    arXiv_id = fields.ArXivIDField(
+    arXiv_id = data_fields.TextField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
         export_key='alice.arxivid',

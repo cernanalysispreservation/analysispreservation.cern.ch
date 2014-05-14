@@ -21,9 +21,9 @@ from wtforms.validators import Required
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
+from invenio.modules.deposit import fields
 from invenio.modules.deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
-from invenio.modules.deposit import fields
 from invenio.modules.deposit.validation_utils import required_if
 
 from .. import fields as data_fields
@@ -38,12 +38,12 @@ def keywords_autocomplete(form, field, term, limit=50):
 
 
 class SoftwareForm(WebDepositForm):
-    sw = fields.TextField(
+    sw = data_fields.TextField(
         placeholder="CMSSW",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
     )
-    version = fields.TextField(
+    version = data_fields.TextField(
         placeholder="5_3_x",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
@@ -51,12 +51,12 @@ class SoftwareForm(WebDepositForm):
 
 
 class UserCodeForm(WebDepositForm):
-    url = fields.TextField(
+    url = data_fields.TextField(
         placeholder="URL   E.g. git@github.com:johndoe/myrepo.git",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-7"),
     )
-    tag = fields.TextField(
+    tag = data_fields.TextField(
         placeholder="Tag    E.g. v2.1",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-3 col-pad-0"),
@@ -72,7 +72,7 @@ class UserCodeForm(WebDepositForm):
 
 
 class OutputDataFilesForm(WebDepositForm):
-    output_data_files = fields.TextField(
+    output_data_files = data_fields.TextField(
         label=_('Output Data Files'),
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -90,7 +90,7 @@ class OutputDataFilesForm(WebDepositForm):
 
 
 class InternalDocsForm(WebDepositForm):
-    docs = fields.TextField(
+    docs = data_fields.TextField(
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -106,7 +106,7 @@ class InternalDocsForm(WebDepositForm):
 
 
 class InternalDiscussionForm(WebDepositForm):
-    discussion = fields.TextField(
+    discussion = data_fields.TextField(
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -122,7 +122,7 @@ class InternalDiscussionForm(WebDepositForm):
 
 
 class TalksForm(WebDepositForm):
-    discussion = fields.TextField(
+    discussion = data_fields.TextField(
         placeholder='Please enter Indicio URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -141,6 +141,8 @@ class TalksForm(WebDepositForm):
 
 class CMSDataAnalysisForm(WebDepositForm):
 
+    """Deposition Form"""
+
     # Basic Info
 
     analysisnum = data_fields.AnalysisNumberField(
@@ -152,24 +154,24 @@ class CMSDataAnalysisForm(WebDepositForm):
         validators=[Required()]
     )
 
-    title = fields.TextField(
+    title = data_fields.TextField(
         label=_('Title'),
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
         export_key='cms.title',
-        validators=[Required()],
+        # validators=[Required()],
         icon='fa fa-book fa-fw',
         hidden=True
     )
 
     authors = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             placeholder="Auto-completed via Analysis Number",
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
         ),
         label='Authors',
-        validators=[Required()],
+        # validators=[Required()],
         add_label='Add another author',
         icon='fa fa-user fa-fw',
         widget_classes='',
@@ -187,7 +189,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         hidden=True
     )
 
-    accelerator = data_fields.AcceleratorField(
+    accelerator = data_fields.TextField(
         label=_('Accelerator'),
         placeholder='CERN LHC',
         export_key='cms.accelerator',
@@ -198,7 +200,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     experiments = [("CMS", _("CMS")),
                    ("ALICE", _("ALICE")),
                    ("LHCb", _("LHCb"))]
-    experiment = data_fields.ExperimentField(
+    experiment = fields.SelectField(
         label=_('Experiment'),
         choices=experiments,
         export_key='cms.experiment',
@@ -210,7 +212,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     # Physics Info
 
     pridataset = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder=_("Please enter path to primary data set"),
@@ -223,7 +225,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     mcdataset = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder=_("Please enter path to MC data set"),
@@ -236,7 +238,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     triggerselection = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             label='Trigger Selection',
             widget=ColumnInput(class_="col-xs-10"),
@@ -250,14 +252,16 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.triggerselection',
     )
 
-    physics_objects = data_fields.PhysicsObjectsField(
+    physics_objects = data_fields.TextField(
+        widget_classes='form-control',
         label=_("Physics Objects"),
         placeholder='Standard physics objects?',
         export_key='cms.physicsobjects',
         icon='fa fa-filter fa-fw'
     )
 
-    callibration = data_fields.CallibrationField(
+    callibration = data_fields.TextField(
+        widget_classes='form-control',
         label=_("Callibration"),
         placeholder='If not, what callibration?',
         export_key='cms.callibration',
@@ -265,7 +269,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -278,7 +282,8 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.keywords',
     )
 
-    comments = data_fields.CommentsField(
+    comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='cms.comments',
         icon='fa fa-align-justify fa-fw'
@@ -289,7 +294,8 @@ class CMSDataAnalysisForm(WebDepositForm):
     os_options = [("slc5", _("SLC 5.x")),
                   ("slc6", _("SLC 6.x")),
                   ("ubuntu", _("Ubuntu"))]
-    pre_os = data_fields.OSField(
+    pre_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='cms.pre_os',
@@ -348,7 +354,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.pre_reproduce',
     )
 
-    pre_reproduce_upload = fields.FileField(
+    pre_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=True,
@@ -360,7 +366,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     pre_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -373,7 +379,8 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.pre_keywords',
     )
 
-    pre_comments = data_fields.CommentsField(
+    pre_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='cms.pre_comments',
         icon='fa fa-align-justify fa-fw'
@@ -381,7 +388,8 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # Custom Analysis Step (mini-AOD)
 
-    custom_os = data_fields.OSField(
+    custom_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='cms.custom_os_option',
@@ -440,7 +448,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.custom_reproduce',
     )
 
-    custom_reproduce_upload = fields.FileUploadField(
+    custom_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=True,
@@ -452,7 +460,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     custom_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -465,7 +473,8 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.custom_keywords',
     )
 
-    custom_comments = data_fields.CommentsField(
+    custom_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='cms.custom_comments',
         icon='fa fa-align-justify fa-fw'
@@ -473,7 +482,8 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # End-user analysis
 
-    enduser_os = data_fields.OSField(
+    enduser_os = fields.SelectField(
+        widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
         export_key='cms.enduser_os_option',
@@ -532,7 +542,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.enduser_reproduce',
     )
 
-    enduser_reproduce_upload = fields.FileUploadField(
+    enduser_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=True,
@@ -544,7 +554,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     enduser_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -557,7 +567,8 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.enduser_keywords',
     )
 
-    enduser_comments = data_fields.CommentsField(
+    enduser_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='cms.enduser_comments',
         icon='fa fa-align-justify fa-fw'
@@ -581,7 +592,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     internaldocs_keywords = fields.DynamicFieldList(
-        fields.TextField(
+        data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
             placeholder='Optional keywords',
@@ -594,7 +605,8 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.internaldocs_keywords',
     )
 
-    internaldocs_comments = data_fields.CommentsField(
+    internaldocs_comments = fields.TextAreaField(
+        widget_classes='form-control',
         label=_("Comments"),
         export_key='cms.internaldocs_comments',
         icon='fa fa-align-justify fa-fw'
@@ -637,7 +649,7 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # Published already?
 
-    journal_title = fields.TextField(
+    journal_title = data_fields.TextField(
         label=_('Journal Title'),
         placeholder='Please enter the journal title',
         export_key='cms.journaltitle',
@@ -645,21 +657,23 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw'
     )
 
-    journal_year = data_fields.JournalYearField(
+    journal_year = data_fields.TextField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
         export_key='cms.journalyear',
+        widget_classes='form-control',
         icon='fa fa-calendar fa-fw'
     )
 
-    journal_volume = data_fields.JournalVolumeField(
+    journal_volume = data_fields.TextField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
         export_key='cms.journalvolume',
+        widget_classes='form-control',
         icon='fa fa-tasks fa-fw'
     )
 
-    journal_page = fields.TextField(
+    journal_page = data_fields.TextField(
         label=_('Journal Page'),
         placeholder='Please enter the journal page number',
         export_key='cms.journalpage',
@@ -667,10 +681,11 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw'
     )
 
-    arXiv_id = data_fields.ArXivIDField(
+    arXiv_id = data_fields.TextField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
         export_key='cms.arxivid',
+        widget_classes='form-control',
         icon='fa fa-bookmark fa-fw'
     )
 

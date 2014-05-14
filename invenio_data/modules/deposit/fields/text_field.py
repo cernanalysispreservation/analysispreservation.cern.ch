@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##
 ## This file is part of Invenio.
-## Copyright (C) 2012, 2013 CERN.
+## Copyright (C) 2014 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -19,17 +19,14 @@
 
 from wtforms import TextField
 from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.autocomplete_utils import sherpa_romeo_journals
-from invenio.modules.deposit.processor_utils import sherpa_romeo_journal_process
 
-__all__ = ['JournalYearField']
+__all__ = ['TextField']
 
 
-class JournalYearField(WebDepositField, TextField):
+class TextField(WebDepositField, TextField):
     def __init__(self, **kwargs):
         defaults = dict(
-            icon='book',
-            widget_classes="form-control",
+            widget_classes="form-control"
         )
         defaults.update(kwargs)
-        super(JournalYearField, self).__init__(**defaults)
+        super(TextField, self).__init__(**defaults)

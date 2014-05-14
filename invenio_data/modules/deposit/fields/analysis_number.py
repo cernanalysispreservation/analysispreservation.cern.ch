@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ##
 ## This file is part of Invenio.
-## Copyright (C) 2012, 2013 CERN.
+## Copyright (C) 2013, 2014 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -38,7 +38,7 @@ def get_xml_and_jsonify(rep_no):
     """
     xml = get("""http://cds.cern.ch/search?p=reportnumber%%3A"%s"&of=xm"""
               % rep_no).content
-    if xml[83] == '1':
+    if xml[83] == '1' and xml[84] == ' ':
         return Record.create(xml, 'marc', model='data_analysis_cds_extract')
     return None
 
