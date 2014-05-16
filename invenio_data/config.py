@@ -34,3 +34,41 @@ DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.cms.cms',
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
 ]
+
+CFG_DATABASE_NAME = 'datademo'
+CFG_DATABASE_USER = 'datademo'
+
+CFG_SITE_URL = 'http://data-demo.cern.ch'
+CFG_SITE_SECURE_URL = 'https://data-demo.cern.ch'
+
+CFG_SITE_NAME = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL = {}
+CFG_SITE_NAME_INTL['en'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['fr'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['de'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['es'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ca'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['pt'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['it'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ru'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['sk'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['cs'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['no'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['sv'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['el'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['uk'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ja'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['pl'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['bg'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['hr'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['zh_CN'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['zh_TW'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['hu'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['af'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['gl'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ro'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['rw'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ka'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['lt'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['ar'] = 'Data Analysis Preservation Platform Demo'
+CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
