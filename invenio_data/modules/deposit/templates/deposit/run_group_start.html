@@ -1,0 +1,11 @@
+<div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" href="#collapse-{{ idx }}"> <p> {{ group.name }} </p>
+                <span class="pull-right show-on-collapsed"><i class="icon-chevron-right"></i></span> <span class="pull-right hide-on-collapsed"><i class="icon-chevron-down"></i></span>
+            {% if group.meta.indication %}
+                <span class="text-muted pull-right" style="padding-right: 10px;">{{ group.meta.indication }}</span>
+            {% endif %}
+            </a>
+        </div>
+    <div id="collapse-{{ idx }}" class="panel-collapse collapse 'in'">
+    <div class="panel-body">
