@@ -36,16 +36,17 @@
         <div class="progress-bar progress-bar-danger" style="width: 100%;">
             <h4>THIS IS JUST A DEMO. Data is not stored</h4>
         </div>
-    </div>
-    
-    <hr />
-    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hd')|safe}}
-    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hdinfo')|safe}}
 
-    <span class="pull-left">
+        <span class="pull-left">
         <p><strong>This is the data that you gave:</strong></p>
         <p>{{ sip.metadata }}</p>
-    </span>
+        </span>
+    </div>
+
+    <hr />
+
+    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hd')|safe}}
+    {{format_record(recID=sip.metadata['recid'], xml_record=sip.package, of='hdinfo')|safe}}
 
     </div>
     <div class="col-md-4">
