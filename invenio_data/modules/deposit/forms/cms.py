@@ -143,6 +143,8 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     """Deposition Form"""
 
+    _name = 'cms'
+
     # Basic Info
 
     analysisnum = data_fields.AnalysisNumberField(

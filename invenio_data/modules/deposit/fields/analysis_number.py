@@ -50,48 +50,69 @@ def autofill(form, field, submit=False, fields=None):
 
     rec = get_xml_and_jsonify(field.data)
 
-    if rec.get('primary_report_number') == field.data:
-        # Authors
-        # FIXME: Requires a refresh to display the added authors
-        if len(rec.get('authors')) > 0:
-            form.authors.pop_entry()
-            form.authors.pop_entry()
-            for author in rec.get('authors'):
-                form.authors.append_entry(author.get('full_name'))
+    try:
+        if rec.get('primary_report_number') == field.data:
 
-        # Abstract
-        if rec.get('abstract'):
-            form.abstract.data = rec.get("abstract").get("summary")
+            # Authors
+            if len(rec.get('authors')) > 0:
+                form.authors.pop_entry()
+                form.authors.pop_entry()
+                for author in rec.get('authors'):
+                    form.authors.append_entry(author.get('full_name'))
 
-        # Title
-        if rec.get('title'):
-            form.title.data = rec.get("title").get('title')
+            # Abstract
+            if rec.get('abstract').get("summary"):
+                form.abstract.data = rec.get("abstract").get("summary")
 
-        # Accelerator;Experiment
-        if rec.get('accelerator_experiment'):
-            # Accelerator
-            if rec.get('accelerator_experiment').get('accelerator'):
-                form.accelerator.data = \
-                    rec.get('accelerator_experiment').get('accelerator')
+            # Title
+            if rec.get('title').get('title'):
+                form.title.data = rec.get("title").get('title')
 
-            # Experiment
-            if rec.get('accelerator_experiment').get('experiment'):
-                form.experiment.data = \
-                    rec.get("accelerator_experiment").get('experiment')
+            # Accelerator;Experiment
+            if rec.get('accelerator_experiment'):
+                # Accelerator
+                if rec.get('accelerator_experiment').get('accelerator'):
+                    form.accelerator.data = \
+                        rec.get('accelerator_experiment').get('accelerator')
 
-        # if form.__class__.__name__ == "AliceDataAnalysisForm":
-        #     if rec.get('title') is not None:
-        #         form.abstract.flags.hidden = True
-        #         form.title.flags.hidden = True
-        #         # form.authors.flags.hidden = True
-        #         form.accelerator.flags.hidden = True
-        #         form.experiment.flags.hidden = True
-        #     else:
-        #         form.abstract.flags.hidden = False
-        #         form.title.flags.hidden = False
-        #         # form.authors.flags.hidden = False
-        #         form.accelerator.flags.hidden = False
-        #         form.experiment.flags.hidden = False
+                # Experiment
+                if rec.get('accelerator_experiment').get('experiment'):
+                    form.experiment.data = \
+                        rec.get("accelerator_experiment").get('experiment')
+
+        # Hide autofilled fields for ALICE
+        if form._name == 'alice':
+
+            if rec.get('abstract').get('summary') is not None:
+                form.abstract.flags.hidden = True
+            if rec.get('title').get('title') is not None:
+                form.title.flags.hidden = True
+            if rec.get('authors') is not None:
+                form.authors.flags.hidden = True
+            if rec.get(
+                    'accelerator_experiment').get('accelerator') is not None:
+                form.accelerator.flags.hidden = True
+            if rec.get("accelerator_experiment").get('experiment') is not None:
+                form.experiment.flags.hidden = True
+
+    except AttributeError:
+        if form._name == 'alice':
+            # Unhide fields
+            form.abstract.flags.hidden = False
+            form.title.flags.hidden = False
+            form.authors.flags.hidden = False
+            form.accelerator.flags.hidden = False
+            form.experiment.flags.hidden = False
+
+            # Empty field data
+            form.title.data = None
+            form.abstract.data = None
+            form.accelerator.data = None
+            form.experiment.data = 'ALICE'
+
+        else:
+            pass
+
 
 class AnalysisNumberField(WebDepositField, TextField):
     def __init__(self, **kwargs):

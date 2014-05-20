@@ -141,6 +141,8 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     """Deposition Form."""
 
+    _name = 'alice'
+
     # Basic Info
 
     analysisnum = data_fields.AnalysisNumberField(

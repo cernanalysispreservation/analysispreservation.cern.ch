@@ -151,6 +151,8 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     """Deposition Form"""
 
+    _name = 'lhcb'
+
     # Basic Info
 
     analysisname = data_fields.TextField(
