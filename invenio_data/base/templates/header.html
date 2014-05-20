@@ -1,6 +1,6 @@
 {#
 ## This file is part of Invenio.
-## Copyright (C) 2012 CERN.
+## Copyright (C) 2012, 2014 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -61,7 +61,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li class="dropdown">
           {% if current_user.is_guest %}
-            <a href="{{ url_for(config.SSO_LOGIN_ENDPOINT) }}" style="display: inline-block; padding-right: 5px;">
+            <a href="{{ url_for('webaccount.login') }}" style="display: inline-block; padding-right: 5px;">
               <i class="glyphicon glyphicon-user"></i> {{ _("guest") }}
             </a>
           {% else %}
@@ -77,7 +77,7 @@
               {% endfor %}
               <li class="divider"></li>
               {% if current_user.is_guest %}
-              <li><a href="{{ url_for(config.SSO_LOGIN_ENDPOINT) }}">
+              <li><a href="{{ url_for('webaccount.login') }}">
                 <i class="glyphicon glyphicon-lock"></i> {{ _("Login") }}
               </a></li>
               {% else %}
@@ -91,4 +91,3 @@
       </div>
     </div>
   </nav>
-
