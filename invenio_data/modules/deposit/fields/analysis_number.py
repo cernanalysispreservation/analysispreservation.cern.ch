@@ -43,12 +43,30 @@ def get_xml_and_jsonify(rep_no):
     return None
 
 
+def get_restricted_xml_and_jsonify(rep_no):
+    """
+    As above, but with the ability to read restricted files from
+    LHCb's analysis collection on CDS
+    """
+    # This link will change to include and API key to allow access
+    # to restricted LHCb Analysis records
+    xml = get("""http://cds.cern.ch/search?p=reportnumber%%3A"%s"&of=xm"""
+              % rep_no).content
+    if xml[83] == '1' and xml[84] == ' ':
+        return Record.create(xml, 'marc',
+                             model='data_analysis_cds_extract')
+    return None
+
+
 def autofill(form, field, submit=False, fields=None):
     """
     Uses Jsonififed record to autofill authors
     """
-
-    rec = get_xml_and_jsonify(field.data)
+    
+    if form._name == 'lhcb':
+        rec = get_restricted_xml_and_jsonify(field.data)
+    else:
+        rec = get_xml_and_jsonify(field.data)
 
     try:
         if rec.get('primary_report_number') == field.data:
