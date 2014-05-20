@@ -45,7 +45,7 @@
     </div>
   {% else %}
     <h1>{{ collection.name_ln }}</h1>
-    <p>&nbsp;&nbsp;&nbsp;(submit <a href="/deposit/{{ collection.name|lower }}">new analysis</a>)</p>
+    <p>&nbsp;&nbsp;&nbsp;(submit <a href="/deposit/{{ collection.name|lower }}">new {{ collection.name }} analysis</a>)</p>
   {% endif %}
 
   {%- block search_form -%}
