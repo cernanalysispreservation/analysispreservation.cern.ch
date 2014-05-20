@@ -57,7 +57,7 @@ class cms(DepositionType):
     ]
     name = "CMS Data Analysis"
     name_plural = "CMS Data Analysis"
-    group = "Data Analysis"
+    group = "CMS Data Analysis"
     enabled = True
     draft_definitions = {
         'default': forms.CMSDataAnalysisForm,

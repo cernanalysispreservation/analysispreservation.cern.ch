@@ -1,0 +1,47 @@
+{#
+## This file is part of Invenio.
+## Copyright (C) 2013, 2014 CERN.
+##
+## Invenio is free software; you can redistribute it and/or
+## modify it under the terms of the GNU General Public License as
+## published by the Free Software Foundation; either version 2 of the
+## License, or (at your option) any later version.
+##
+## Invenio is distributed in the hope that it will be useful, but
+## WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with Invenio; if not, write to the Free Software Foundation, Inc.,
+## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+#}
+
+{% extends "page.html" %}
+{% block body %}
+
+<div class="page-header">
+  <h3>{{ _('Select a Document Type') }}</h3>
+</div>
+
+<div class="row">
+  <div id="webdeposit_types_accordion" class="col-md-offset-3 col-md-6 panel-group">
+    {% for deptype_group in deposition_types.values()|groupby('group') %}
+      {% for deptype in deptype_group.list|sort(attribute='name') %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>
+              <a href="{{ url_for('.deposition_type_index', deposition_type=deptype.get_identifier()) }}">
+                <i class="glyphicon glyphicon-chevron-right pull-right"></i>
+                {{ deptype.name }}
+            </a>
+            </h4>
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}

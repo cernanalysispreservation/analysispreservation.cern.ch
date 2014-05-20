@@ -57,7 +57,7 @@ class lhcb(DepositionType):
     ]
     name = "LHCb Data Analysis"
     name_plural = "LHCb Data Analysis"
-    group = "Data Analysis"
+    group = "LHCb Data Analysis"
     enabled = True
     draft_definitions = {
         'default': forms.LHCbDataAnalysisForm,

@@ -55,9 +55,9 @@ class alice(DepositionType):
         # Seal the SIP and write MARCXML file and call bibupload on it
         upload_record_sip(),
     ]
-    name = "Alice Data Analysis"
-    name_plural = "Alice Data Analysis"
-    group = "Data Analysis"
+    name = "ALICE Data Analysis"
+    name_plural = "ALICE Data Analysis"
+    group = "ALICE Data Analysis"
     enabled = True
     draft_definitions = {
         'default': AliceDataAnalysisForm,
