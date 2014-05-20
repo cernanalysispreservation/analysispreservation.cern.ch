@@ -51,12 +51,12 @@ class ReconstructionSWForm(WebDepositForm):
 
 
 class StrippingSWForm(WebDepositForm):
-    x = data_fields.TextField(
+    sw = data_fields.TextField(
         placeholder="DaVinciStripping",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
     )
-    y = data_fields.TextField(
+    version = data_fields.TextField(
         placeholder="17",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
@@ -64,12 +64,12 @@ class StrippingSWForm(WebDepositForm):
 
 
 class AnalysisSWForm(WebDepositForm):
-    x = data_fields.TextField(
+    sw = data_fields.TextField(
         placeholder="DaVinci",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
     )
-    y = data_fields.TextField(
+    version = data_fields.TextField(
         placeholder="Version",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
@@ -258,13 +258,12 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Event Samples - Data
 
-    dstbkpath = data_fields.TextField(
+    dstbkpath = data_fields.DstBkPathField(
         widget_classes='form-control',
         label=_("DST BK Path"),
         description="e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDo\
         wn/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
         export_key='lhcb.dstbkpath',
-        icon='fa fa-link fa-fw',
         placeholder='Please enter path to DST BK'
     )
 
@@ -348,7 +347,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='???'
     )
 
-    mc_bk_path = data_fields.TextField(
+    mc_bk_path = data_fields.McBkPathField(
         label=_("MC BK Path"),
         placeholder='Please enter full path to data',
         widget_classes='form-control',
@@ -629,7 +628,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
             ['dstbkpath', 'data_year', 'reconstruction_sw', 'trigger',
                 'trigger_details', 'stripping_sw', 'stripping_line',
                 'analysis_software']),
-        ('Event Samples MC',
+        ('Event Samples - MC',
             ['mc_monte_carlo', 'mc_monte_carlo_samples', 'mc_bk_path',
                 'mc_data_year', 'mc_reconstruction_sw', 'mc_trigger',
                 'mc_trigger_details', 'mc_stripping_sw', 'mc_stripping_line',
