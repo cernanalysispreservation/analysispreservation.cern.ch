@@ -153,6 +153,16 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Basic Info
 
+    analysisname = data_fields.TextField(
+        widget_classes='form-control',
+        label=_('Analysis Name'),
+        description='E.g. Bs2JpsiKS',
+        placeholder='Please enter Analysis Name',
+        export_key='lhcb.analysisname',
+        icon='fa fa-credit-card fa-fw',
+        validators=[Required()]
+    )
+
     analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
         description='E.g. LHCb-ANA-2012-049',
@@ -162,20 +172,10 @@ class LHCbDataAnalysisForm(WebDepositForm):
         validators=[Required()]
     )
 
-    analysisname = data_fields.TextField(
-        widget_classes='form-control',
-        label=_('Analysis name'),
-        description='E.g. Bs2JpsiKS',
-        placeholder='Please enter Analysis Name',
-        export_key='lhcb.analysisname',
-        icon='fa fa-credit-card fa-fw'
-    )
-
     title = data_fields.TextField(
         label=_('Title'),
         placeholder='Auto-completed via Analysis Number',
         export_key='lhcb.title',
-        # validators=[Required()],
         widget_classes='form-control',
         icon='fa fa-book fa-fw',
         hidden=True
@@ -188,7 +188,6 @@ class LHCbDataAnalysisForm(WebDepositForm):
             widget=ColumnInput(class_="col-xs-10"),
         ),
         label='Authors',
-        # validators=[Required()],
         add_label='Add another author',
         icon='fa fa-user fa-fw',
         widget_classes='',
@@ -211,6 +210,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='CERN LHC',
         export_key='lhcb.accelerator',
         icon='fa fa-forward fa-fw',
+        widget_classes='form-control',
         hidden=True
     )
 
@@ -223,6 +223,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         export_key='lhcb.experiment',
         icon='fa fa-magnet fa-fw',
         default='LHCb',
+        widget_classes='form-control',
         hidden=True
     )
 
@@ -609,7 +610,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     groups = [
         ('Basic Information',
-            ['analysisnum', 'analysisname', 'title', 'authors',
+            ['analysisname', 'analysisnum', 'title', 'authors',
                 'abstract', 'accelerator', 'experiment']),
         ('Event Samples - Data',
             ['dstbkpath', 'data_year', 'reconstruction_sw', 'trigger',

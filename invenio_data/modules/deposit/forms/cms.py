@@ -159,7 +159,6 @@ class CMSDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
         export_key='cms.title',
-        # validators=[Required()],
         icon='fa fa-book fa-fw',
         hidden=True
     )
@@ -171,7 +170,6 @@ class CMSDataAnalysisForm(WebDepositForm):
             widget=ColumnInput(class_="col-xs-10"),
         ),
         label='Authors',
-        # validators=[Required()],
         add_label='Add another author',
         icon='fa fa-user fa-fw',
         widget_classes='',
@@ -194,6 +192,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         placeholder='CERN LHC',
         export_key='cms.accelerator',
         icon='fa fa-forward fa-fw',
+        widget_classes='form-control',
         hidden=True
     )
 
@@ -206,6 +205,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         export_key='cms.experiment',
         icon='fa fa-magnet fa-fw',
         default='CMS',
+        widget_classes='form-control',
         hidden=True
     )
 

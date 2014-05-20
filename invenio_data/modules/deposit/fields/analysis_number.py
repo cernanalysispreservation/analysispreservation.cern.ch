@@ -53,9 +53,11 @@ def autofill(form, field, submit=False, fields=None):
     if rec.get('primary_report_number') == field.data:
         # Authors
         # FIXME: Requires a refresh to display the added authors
-        # if len(rec.get('authors')) > 0:
-        #     for author in rec.get('authors'):
-        #         form.authors.append_entry(author.get('full_name'))
+        if len(rec.get('authors')) > 0:
+            form.authors.pop_entry()
+            form.authors.pop_entry()
+            for author in rec.get('authors'):
+                form.authors.append_entry(author.get('full_name'))
 
         # Abstract
         if rec.get('abstract'):
