@@ -149,7 +149,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         label=_('Analysis Number'),
         description='E.g. ALICE-ANA-2012-049',
         placeholder='Please enter Analysis Number',
-        export_key='alice.analysisnumber',
+        export_key='analysis_number',
         icon='fa fa-barcode fa-fw'
     )
 
@@ -158,7 +158,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw',
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='alice.title',
+        export_key='title',
         validators=[Required()]
     )
 
@@ -174,14 +174,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.authors',
+        export_key='authors',
     )
 
     abstract = fields.TextAreaField(
         label=_('Abstract'),
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='alice.abstract',
+        export_key='abstract',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -190,7 +190,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
         description='E.g. CERN LHC',
-        export_key='alice.accelerator',
+        export_key='accelerator',
         icon='fa fa-forward fa-fw'
     )
 
@@ -201,7 +201,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('Experiment'),
         choices=experiments,
-        export_key='alice.experiment',
+        export_key='experiment',
         default='ALICE',
         icon='fa fa-magnet fa-fw'
     )
@@ -218,7 +218,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-road fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.esdprimarydataset'
+        export_key='esd_primary_data_set'
     )
 
     mcdataset = fields.DynamicFieldList(
@@ -231,7 +231,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-road fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.mcdatasetpath'
+        export_key='mc_data_set_path'
     )
 
     keywords = fields.DynamicFieldList(
@@ -245,13 +245,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.keywords',
+        export_key='mc_keywords',
     )
 
     comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='alice.comments',
+        export_key='mc_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -264,7 +264,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='alice.aod_os',
+        export_key='aod_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -275,7 +275,7 @@ class AliceDataAnalysisForm(WebDepositForm):
             html_tag='div'
         ),
         label=_("Analysis Software"),
-        export_key='alice.software',
+        export_key='aod_software',
         icon='fa fa-flag fa-fw'
     )
 
@@ -287,13 +287,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         ),
         label='User Code',
         widget_classes='',
-        export_key='alice.aod_usercode',
+        export_key='aod_user_code',
         icon='fa fa-link fa-fw'
     )
 
     aod_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='alice.aod_indatafiles',
+        export_key='aod_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -308,14 +308,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         label=_("Output Data Files"),
         widget_classes='',
         min_entries=1,
-        export_key='alice.aod_outdatafiles',
+        export_key='aod_output_data_files',
         icon='fa fa-arrow-left fa-fw'
     )
 
     aod_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
-        export_key='alice.aod_reproduce',
+        export_key='aod_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
@@ -341,13 +341,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.aod_keywords',
+        export_key='aod_keywords',
     )
 
     aod_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='alice.aod_comments',
+        export_key='aod_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -357,7 +357,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='alice.custom_os',
+        export_key='custom_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -368,7 +368,7 @@ class AliceDataAnalysisForm(WebDepositForm):
             html_tag='div'
         ),
         label=_("Analysis Software"),
-        export_key='alice.custom_software',
+        export_key='custom_software',
         icon='fa fa-flag fa-fw'
     )
 
@@ -380,13 +380,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         ),
         label='User Code',
         widget_classes='',
-        export_key='alice.custom_usercode',
+        export_key='custom_user_code',
         icon='fa fa-link fa-fw'
     )
 
     custom_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='alice.custom_indatafiles',
+        export_key='custom_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -401,14 +401,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         label='Output Data Files',
         widget_classes='',
         min_entries=1,
-        export_key='alice.custom_outdatafiles',
+        export_key='custom_outdatafiles',
         icon='fa fa-arrow-left fa-fw'
     )
 
     custom_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
-        export_key='alice.custom_reproduce',
+        export_key='custom_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
@@ -434,13 +434,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.custom_keywords'
+        export_key='custom_keywords'
     )
 
     custom_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='alice.custom_comments',
+        export_key='custom_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -450,7 +450,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='alice.end_os',
+        export_key='end_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -461,7 +461,7 @@ class AliceDataAnalysisForm(WebDepositForm):
             html_tag='div'
         ),
         label=_("Analysis Software"),
-        export_key='alice.end_software',
+        export_key='end_software',
         icon='fa fa-flag fa-fw'
     )
 
@@ -473,13 +473,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         ),
         label='User Code',
         widget_classes='',
-        export_key='alice.end_usercode',
+        export_key='end_user_code',
         icon='fa fa-link fa-fw'
     )
 
     end_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='alice.end_indatafiles',
+        export_key='end_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -494,14 +494,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         label='Output Data Files',
         widget_classes='',
         min_entries=1,
-        export_key='alice.end_outdatafiles',
+        export_key='end_output_data_files',
         icon='fa fa-arrow-left fa-fw'
     )
 
     end_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         widget_classes='form-control',
-        export_key='alice.end_reproduce',
+        export_key='end_reproduce',
         icon='fa fa-repeat fa-fw'
     )
 
@@ -527,13 +527,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.end_keywords',
+        export_key='end_keywords',
     )
 
     end_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='alice.end_comments',
+        export_key='end_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -551,7 +551,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.internaldocs'
+        export_key='internal_docs'
     )
 
     internaldocs_keywords = fields.DynamicFieldList(
@@ -565,13 +565,13 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.internaldocs_keywords',
+        export_key='internal_docs_keywords',
     )
 
     internaldocs_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='alice.internaldocs_comments',
+        export_key='internal_docs_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -589,7 +589,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.egroup',
+        export_key='egroup',
     )
 
     # Presented already ?
@@ -606,7 +606,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.internaltalks',
+        export_key='internal_talks',
     )
 
     public_talks = fields.DynamicFieldList(
@@ -621,7 +621,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='alice.publictalks',
+        export_key='public_talks',
     )
 
     # Published already?
@@ -629,7 +629,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     journal_title = data_fields.TextField(
         label=_('Journal Title'),
         placeholder='Please enter the journal title',
-        export_key='alice.journaltitle',
+        export_key='journal_title',
         widget_classes='form-control',
         icon='fa fa-book fa-fw'
     )
@@ -637,7 +637,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     journal_year = data_fields.TextField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
-        export_key='alice.journalyear',
+        export_key='journal_year',
         widget_classes='form-control',
         icon='fa fa-calendar fa-fw'
     )
@@ -645,7 +645,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     journal_volume = data_fields.TextField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
-        export_key='alice.journalvolume',
+        export_key='journal_volume',
         widget_classes='form-control',
         icon='fa fa-tasks fa-fw'
     )
@@ -653,7 +653,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     journal_page = data_fields.TextField(
         label=_('Journal Page'),
         placeholder='Please enter the journal page number',
-        export_key='alice.journalpage',
+        export_key='journal_page',
         widget_classes='form-control',
         icon='fa fa-file fa-fw'
     )
@@ -661,7 +661,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     arXiv_id = data_fields.TextField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
-        export_key='alice.arxivid',
+        export_key='arxiv_id',
         widget_classes='form-control',
         icon='fa fa-bookmark fa-fw'
     )

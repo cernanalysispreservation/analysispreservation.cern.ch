@@ -96,22 +96,13 @@ def autofill(form, field, submit=False, fields=None):
                 form.experiment.flags.hidden = True
 
     except AttributeError:
-        if form._name == 'alice':
+        if form._name == 'alice' and field.data == '':
             # Unhide fields
             form.abstract.flags.hidden = False
             form.title.flags.hidden = False
             form.authors.flags.hidden = False
             form.accelerator.flags.hidden = False
             form.experiment.flags.hidden = False
-
-            # Empty field data
-            form.title.data = None
-            form.abstract.data = None
-            form.accelerator.data = None
-            form.experiment.data = 'ALICE'
-
-        else:
-            pass
 
 
 class AnalysisNumberField(WebDepositField, TextField):

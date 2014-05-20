@@ -151,7 +151,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label=_('Analysis Number'),
         description='E.g. CMS-ANA-2012-049',
         placeholder='Please enter Analysis Number',
-        export_key='cms.analysisnumber',
+        export_key='analysis_number',
         icon='fa fa-barcode fa-fw',
         validators=[Required()]
     )
@@ -160,7 +160,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label=_('Title'),
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='cms.title',
+        export_key='title',
         icon='fa fa-book fa-fw',
         hidden=True
     )
@@ -176,14 +176,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.authors',
+        export_key='authors',
         hidden=True
     )
 
     abstract = fields.TextAreaField(
         label=_('Abstract'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='cms.abstract',
+        export_key='abstract',
         widget_classes='form-control',
         icon='fa fa-align-justify fa-fw',
         hidden=True
@@ -192,7 +192,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     accelerator = data_fields.TextField(
         label=_('Accelerator'),
         placeholder='CERN LHC',
-        export_key='cms.accelerator',
+        export_key='accelerator',
         icon='fa fa-forward fa-fw',
         widget_classes='form-control',
         hidden=True
@@ -204,7 +204,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     experiment = fields.SelectField(
         label=_('Experiment'),
         choices=experiments,
-        export_key='cms.experiment',
+        export_key='experiment',
         icon='fa fa-magnet fa-fw',
         default='CMS',
         widget_classes='form-control',
@@ -223,7 +223,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-road fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.esdprimarydataset'
+        export_key='primary_data_set_path'
     )
 
     mcdataset = fields.DynamicFieldList(
@@ -236,7 +236,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-road fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.mcdatasetpath'
+        export_key='mc_data_set_path'
     )
 
     triggerselection = fields.DynamicFieldList(
@@ -251,14 +251,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-certificate fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.triggerselection',
+        export_key='trigger_selection',
     )
 
     physics_objects = data_fields.TextField(
         widget_classes='form-control',
         label=_("Physics Objects"),
         placeholder='Standard physics objects?',
-        export_key='cms.physicsobjects',
+        export_key='physics_objects',
         icon='fa fa-filter fa-fw'
     )
 
@@ -266,7 +266,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_("Callibration"),
         placeholder='If not, what callibration?',
-        export_key='cms.callibration',
+        export_key='callibration',
         icon='fa fa-wrench fa-fw'
     )
 
@@ -281,13 +281,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.keywords',
+        export_key='keywords',
     )
 
     comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='cms.comments',
+        export_key='comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -300,7 +300,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='cms.pre_os',
+        export_key='pre_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -313,7 +313,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='Analysis Software',
         icon='fa fa-flag fa-fw',
         widget_classes='',
-        export_key='cms.pre_software'
+        export_key='pre_software'
     )
 
     pre_code = fields.FormField(
@@ -324,13 +324,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         ),
         label='User Code',
         widget_classes='',
-        export_key='cms.pre_usercode',
+        export_key='pre_user_code',
         icon='fa fa-link fa-fw'
     )
 
     pre_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='cms.pre_indatafiles',
+        export_key='pre_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -346,14 +346,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.pre_outdatafiles',
+        export_key='pre_output_data_files',
     )
 
     pre_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
-        export_key='cms.pre_reproduce',
+        export_key='pre_reproduce',
     )
 
     pre_reproduce_upload = data_fields.FileUploadField(
@@ -378,13 +378,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.pre_keywords',
+        export_key='pre_keywords',
     )
 
     pre_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='cms.pre_comments',
+        export_key='pre_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -394,7 +394,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='cms.custom_os_option',
+        export_key='custom_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -407,7 +407,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='Analysis Software',
         icon='fa fa-flag fa-fw',
         widget_classes='',
-        export_key='cms.custom_software',
+        export_key='custom_software',
     )
 
     custom_code = fields.FormField(
@@ -419,12 +419,12 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='User Code',
         icon='fa fa-link fa-fw',
         widget_classes='',
-        export_key='cms.custom_usercode',
+        export_key='custom_user_code',
     )
 
     custom_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='cms.custom_indputdatafiles',
+        export_key='custom_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -440,14 +440,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.custom_outdatafiles',
+        export_key='custom_output_data_files',
     )
 
     custom_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
-        export_key='cms.custom_reproduce',
+        export_key='custom_reproduce',
     )
 
     custom_reproduce_upload = data_fields.FileUploadField(
@@ -472,13 +472,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.custom_keywords',
+        export_key='custom_keywords',
     )
 
     custom_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='cms.custom_comments',
+        export_key='custom_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -488,7 +488,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='cms.enduser_os_option',
+        export_key='enduser_os',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -501,7 +501,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='Analysis Software',
         icon='fa fa-flag fa-fw',
         widget_classes='',
-        export_key='cms.enduser_software',
+        export_key='enduser_software',
     )
 
     enduser_code = fields.FormField(
@@ -513,12 +513,12 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='User Code',
         icon='fa fa-link fa-fw',
         widget_classes='',
-        export_key='cms.enduser_usercode'
+        export_key='enduser_user_code'
     )
 
     enduser_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='cms.enduser_inputdatafiles',
+        export_key='enduser_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
@@ -534,14 +534,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.enduser_outdatafiles',
+        export_key='enduser_output_data_files',
     )
 
     enduser_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
-        export_key='cms.enduser_reproduce',
+        export_key='enduser_reproduce',
     )
 
     enduser_reproduce_upload = data_fields.FileUploadField(
@@ -566,13 +566,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.enduser_keywords',
+        export_key='enduser_keywords',
     )
 
     enduser_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='cms.enduser_comments',
+        export_key='enduser_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -590,7 +590,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.internaldocs',
+        export_key='internal_docs',
     )
 
     internaldocs_keywords = fields.DynamicFieldList(
@@ -604,13 +604,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.internaldocs_keywords',
+        export_key='internal_docs_keywords',
     )
 
     internaldocs_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='cms.internaldocs_comments',
+        export_key='internal_docs_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -629,7 +629,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.internaldiscussion',
+        export_key='egroup',
     )
 
     # Presented already ?
@@ -646,7 +646,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='cms.publictalks',
+        export_key='public_talks',
     )
 
     # Published already?
@@ -654,7 +654,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     journal_title = data_fields.TextField(
         label=_('Journal Title'),
         placeholder='Please enter the journal title',
-        export_key='cms.journaltitle',
+        export_key='journal_title',
         widget_classes='form-control',
         icon='fa fa-book fa-fw'
     )
@@ -662,7 +662,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     journal_year = data_fields.TextField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
-        export_key='cms.journalyear',
+        export_key='journal_year',
         widget_classes='form-control',
         icon='fa fa-calendar fa-fw'
     )
@@ -670,7 +670,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     journal_volume = data_fields.TextField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
-        export_key='cms.journalvolume',
+        export_key='journal_volume',
         widget_classes='form-control',
         icon='fa fa-tasks fa-fw'
     )
@@ -678,7 +678,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     journal_page = data_fields.TextField(
         label=_('Journal Page'),
         placeholder='Please enter the journal page number',
-        export_key='cms.journalpage',
+        export_key='journal_page',
         widget_classes='form-control',
         icon='fa fa-file fa-fw'
     )
@@ -686,7 +686,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     arXiv_id = data_fields.TextField(
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
-        export_key='cms.arxivid',
+        export_key='arxiv_id',
         widget_classes='form-control',
         icon='fa fa-bookmark fa-fw'
     )

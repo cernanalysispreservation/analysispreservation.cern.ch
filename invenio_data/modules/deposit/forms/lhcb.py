@@ -42,37 +42,43 @@ class ReconstructionSWForm(WebDepositForm):
         placeholder="Brunel",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
+        export_key='sw'
     )
     version = data_fields.TextField(
         placeholder="Reco13",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
+        export_key='version'
     )
 
 
 class StrippingSWForm(WebDepositForm):
-    x = data_fields.TextField(
+    sw = data_fields.TextField(
         placeholder="DaVinciStripping",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
+        export_key='sw'
     )
-    y = data_fields.TextField(
+    version = data_fields.TextField(
         placeholder="17",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
+        export_key='version'
     )
 
 
 class AnalysisSWForm(WebDepositForm):
-    x = data_fields.TextField(
+    sw = data_fields.TextField(
         placeholder="DaVinci",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8"),
+        export_key='sw'
     )
-    y = data_fields.TextField(
+    version = data_fields.TextField(
         placeholder="Version",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-4 col-pad-0"),
+        export_key='version'
     )
 
 
@@ -81,11 +87,13 @@ class UserCodeForm(WebDepositForm):
         placeholder="URL   E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-7"),
+        export_key='url'
     )
     tag = data_fields.TextField(
         placeholder="Tag    E.g. v2.1",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-3 col-pad-0"),
+        export_key='tag'
     )
     harvest = fields.RadioField(
         default='no',
@@ -94,15 +102,17 @@ class UserCodeForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('yes', _('Harvest')),
                  ('no', _('Link only'))],
+        export_key='harvest'
     )
 
 
 class FinalNTuplesForm(WebDepositForm):
-    data_files = data_fields.TextField(
-            widget_classes='form-control',
-            widget=ColumnInput(class_="col-xs-10 col-pad-0"),
-            placeholder="URL   E.g. root://eospublic.cern.ch//eos/"
-                        "lhcb/.../myfile.root"
+    data_file = data_fields.TextField(
+        widget_classes='form-control',
+        widget=ColumnInput(class_="col-xs-10 col-pad-0"),
+        placeholder="URL   E.g. root://eospublic.cern.ch//eos/"
+                    "lhcb/.../myfile.root",
+        export_key='data_file'
     )
 
     data_files_harvest = fields.RadioField(
@@ -112,13 +122,14 @@ class FinalNTuplesForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('yes', _('Harvest')),
                  ('no', _('Link only'))],
+        export_key='harvest'
     )
 
     description = data_fields.TextField(
         description='E.g. data, MC...',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-10 col-pad-0"),
-        export_key='lhcb.datafiledescription',
+        export_key='description',
         icon='fa fa-align-justify fa-fw',
         placeholder='Description'
     )
@@ -129,6 +140,7 @@ class InternalDocsForm(WebDepositForm):
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
+        export_key='doc'
     )
     harvest = fields.RadioField(
         default='no',
@@ -137,6 +149,7 @@ class InternalDocsForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('yes', _('Harvest')),
                  ('no', _('Link only'))],
+        export_key='harvest'
     )
 
 
@@ -145,6 +158,7 @@ class InternalDiscussionForm(WebDepositForm):
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
+        export_key='discussion'
     )
     harvest = fields.RadioField(
         default='no',
@@ -153,6 +167,7 @@ class InternalDiscussionForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('yes', _('Harvest')),
                  ('no', _('Link only'))],
+        export_key='harvest'
     )
 
 
@@ -161,6 +176,7 @@ class TalksForm(WebDepositForm):
         placeholder='Please enter Indico URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
+        export_key='talks'
     )
     harvest = fields.RadioField(
         default='no',
@@ -169,6 +185,7 @@ class TalksForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('yes', _('Harvest')),
                  ('no', _('Link only'))],
+        export_key='harvest'
     )
 
 # Deposition Form
@@ -187,7 +204,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         label=_('Analysis Name'),
         description='E.g. Bs2JpsiKS',
         placeholder='Please enter Analysis Name',
-        export_key='lhcb.analysisname',
+        export_key='analysis_name',
         icon='fa fa-credit-card fa-fw',
         validators=[Required()]
     )
@@ -196,7 +213,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         label=_('Analysis Number'),
         description='E.g. LHCb-ANA-2012-049',
         placeholder='Please enter Analysis Number',
-        export_key='lhcb.analysisnumber',
+        export_key='analysis_number',
         icon='fa fa-barcode fa-fw',
         validators=[Required()]
     )
@@ -204,7 +221,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     title = data_fields.TextField(
         label=_('Title'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='lhcb.title',
+        export_key='title',
         widget_classes='form-control',
         icon='fa fa-book fa-fw',
         hidden=True
@@ -221,14 +238,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.authors',
+        export_key='authors',
         hidden=True
     )
 
     abstract = data_fields.TextField(
         label=_('Abstract'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='lhcb.abstract',
+        export_key='abstract',
         widget_classes='form-control',
         icon='fa fa-align-justify fa-fw',
         hidden=True
@@ -237,7 +254,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     accelerator = data_fields.TextField(
         label=_('Accelerator'),
         placeholder='CERN LHC',
-        export_key='lhcb.accelerator',
+        export_key='accelerator',
         icon='fa fa-forward fa-fw',
         widget_classes='form-control',
         hidden=True
@@ -249,7 +266,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     experiment = fields.SelectField(
         label=_('Experiment'),
         choices=experiments,
-        export_key='lhcb.experiment',
+        export_key='experiment',
         icon='fa fa-magnet fa-fw',
         default='LHCb',
         widget_classes='form-control',
@@ -258,19 +275,19 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Event Samples - Data
 
-    dstbkpath = data_fields.TextField(
+    dst_bk_path = data_fields.TextField(
         widget_classes='form-control',
         label=_("DST BK Path"),
         description="e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDo\
         wn/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
-        export_key='lhcb.dstbkpath',
+        export_key='dst_bk_path',
         icon='fa fa-link fa-fw',
         placeholder='Please enter path to DST BK'
     )
 
     data_year = data_fields.DataYearField(
         label=_("Data"),
-        export_key='lhcb.data',
+        export_key='data_year',
         icon='fa fa-calendar fa-fw'
     )
 
@@ -282,20 +299,20 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Reconstruction Software',
         widget_classes='',
-        export_key='lhcb.reconstructionsw',
+        export_key='reconstruction_sw',
         icon='fa fa-repeat fa-fw'
     )
 
     trigger = data_fields.TriggerField(
         label=_("Trigger"),
-        export_key='lhcb.trigger',
+        export_key='trigger',
         icon='fa fa-certificate fa-fw'
     )
 
     trigger_details = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Trigger Details"),
-        export_key='lhcb.triggerdetails',
+        export_key='trigger_details',
         icon='fa fa-align-justify fa-fw',
         placeholder='Please enter any necessary trigger details'
     )
@@ -308,14 +325,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Stripping Software',
         widget_classes='',
-        export_key='lhcb.stripping_sw',
+        export_key='stripping_sw',
         icon='fa fa-tint fa-fw'
     )
 
     stripping_line = data_fields.TextField(
         widget_classes='form-control',
         label=_("Stripping Line"),
-        export_key='lhcb.strippingline',
+        export_key='stripping_line',
         icon='fa fa-flash fa-fw',
         placeholder='???'
     )
@@ -328,7 +345,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Analysis Software',
         widget_classes='',
-        export_key='lhcb.analysissoftware',
+        export_key='analysis_software',
         icon='fa fa-tint fa-fw'
     )
 
@@ -336,14 +353,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     mc_monte_carlo = data_fields.MonteCarloField(
         label=_("Monte Carlo"),
-        export_key='lhcb.montecarlo',
+        export_key='mc_monte_carlo',
         icon='fa fa-globe fa-fw'
     )
 
     mc_monte_carlo_samples = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Monte Carlo Samples"),
-        export_key='lhcb.montecarlosamples',
+        export_key='mc_monte_carlo_samples',
         icon='fa fa-align-justify fa-fw',
         placeholder='???'
     )
@@ -353,7 +370,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='Please enter full path to data',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-12 col-pad-0"),
-        export_key='lhcb.mcbkpath',
+        export_key='mc_bk_path',
         description="""Example: sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-5\
         0ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPresca\
         lingFlagged/42""",
@@ -362,7 +379,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     mc_data_year = data_fields.DataYearField(
         label=_("Data"),
-        export_key='lhcb.mc_data',
+        export_key='mc_data_year',
         icon='fa fa-calendar fa-fw'
     )
 
@@ -374,20 +391,20 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Reconstruction Software',
         widget_classes='',
-        export_key='lhcb.mc_reconstructionsw',
+        export_key='mc_reconstruction_sw',
         icon='fa fa-repeat fa-fw'
     )
 
     mc_trigger = data_fields.TriggerField(
         label=_("Trigger"),
-        export_key='lhcb.mc_trigger',
+        export_key='mc_trigger',
         icon='fa fa-certificate fa-fw'
     )
 
     mc_trigger_details = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Trigger Details"),
-        export_key='lhcb.mc_triggerdetails',
+        export_key='mc_trigger_details',
         icon='fa fa-align-justify fa-fw',
         placeholder='Please enter any necessary trigger details'
     )
@@ -400,14 +417,14 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Stripping Software',
         widget_classes='',
-        export_key='lhcb.mc_strippingsw',
+        export_key='mc_stripping_sw',
         icon='fa fa-tint fa-fw'
     )
 
     mc_stripping_line = data_fields.TextField(
         widget_classes='form-control',
         label=_("Stripping Line"),
-        export_key='lhcb.mc_strippingline',
+        export_key='mc_stripping_line',
         icon='fa fa-flash fa-fw',
         placeholder='???'
     )
@@ -420,7 +437,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         ),
         label='Analysis Software',
         widget_classes='',
-        export_key='lhcb.mc_analysissoftware',
+        export_key='mc_analysis_software',
         icon='fa fa-tint fa-fw'
     )
 
@@ -431,7 +448,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder="Please state platform  E.g. x86_64-slc5-gcc46-opt",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-12 col-pad-0"),
-        export_key='lhcb.platform',
+        export_key='platform',
         icon='fa fa-leaf fa-fw'
     )
 
@@ -444,19 +461,19 @@ class LHCbDataAnalysisForm(WebDepositForm):
         label='User Code',
         icon='fa fa-link fa-fw',
         widget_classes='',
-        export_key='lhcb.usercode',
+        export_key='user_code',
     )
 
     code_type = data_fields.CodeTypeField(
         widget_classes='form-control',
-        export_key='lhcb.codetype',
+        export_key='code_type',
         icon='fa fa-cog fa-fw'
     )
 
     code_type_other = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Other"),
-        export_key='lhcb.codetypeother',
+        export_key='code_type_other',
         icon='fa fa-align-justify fa-fw',
         placeholder="Please specify the code type",
         hidden=True
@@ -465,7 +482,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     code_comment = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Code Comment"),
-        export_key='lhcb.codecomment',
+        export_key='code_comment',
         icon='fa fa-align-justify fa-fw',
         placeholder='Please enter any relevent code comments'
     )
@@ -474,7 +491,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         label='How to reproduce',
         icon='fa fa-user fa-fw',
         widget_classes='form-control',
-        export_key='lhcb.reproduce',
+        export_key='reproduce',
     )
 
     reproduce_upload = data_fields.FileUploadField(
@@ -502,7 +519,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.finalntuples',
+        export_key='final_n_tuples',
     )
 
     # Internal Documentation
@@ -519,7 +536,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-file fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.internaldocs',
+        export_key='internal_docs',
     )
 
     # Internal Discussion
@@ -536,7 +553,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.egroup',
+        export_key='egroup',
     )
 
     # Presented already ?
@@ -553,7 +570,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.internaltalks',
+        export_key='internal_talks',
     )
 
     public_talks = fields.DynamicFieldList(
@@ -568,7 +585,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.publictalks',
+        export_key='public_talks',
     )
 
     # Published already?
@@ -576,7 +593,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     journal_title = data_fields.TextField(
         label=_('Journal Title'),
         placeholder='Please enter the journal title',
-        export_key='lhcb.journaltitle',
+        export_key='journal_title',
         widget_classes='form-control',
         icon='fa fa-book fa-fw'
     )
@@ -584,7 +601,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     journal_year = data_fields.TextField(
         label=_('Journal Year'),
         placeholder='Please enter the journal year',
-        export_key='lhcb.journalyear',
+        export_key='journal_year',
         widget_classes='form-control',
         icon='fa fa-calendar fa-fw'
     )
@@ -592,7 +609,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     journal_volume = data_fields.TextField(
         label=_('Journal Volume'),
         placeholder='Please enter the journal volume',
-        export_key='lhcb.journalvolume',
+        export_key='journal_volume',
         widget_classes='form-control',
         icon='fa fa-tasks fa-fw'
     )
@@ -600,7 +617,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     journal_page = data_fields.TextField(
         label=_('Journal Page'),
         placeholder='Please enter the journal page number',
-        export_key='lhcb.journalpage',
+        export_key='journal_page',
         widget_classes='form-control',
         icon='fa fa-file fa-fw'
     )
@@ -609,7 +626,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         label=_("arXiv ID"),
         placeholder='arXiv:1413.9999',
-        export_key='lhcb.arxivid',
+        export_key='arxiv_id',
         icon='fa fa-bookmark fa-fw'
     )
 
@@ -626,7 +643,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
             ['analysisname', 'analysisnum', 'title', 'authors',
                 'abstract', 'accelerator', 'experiment']),
         ('Event Samples - Data',
-            ['dstbkpath', 'data_year', 'reconstruction_sw', 'trigger',
+            ['dst_bk_path', 'data_year', 'reconstruction_sw', 'trigger',
                 'trigger_details', 'stripping_sw', 'stripping_line',
                 'analysis_software']),
         ('Event Samples MC',
@@ -635,8 +652,8 @@ class LHCbDataAnalysisForm(WebDepositForm):
                 'mc_trigger_details', 'mc_stripping_sw', 'mc_stripping_line',
                 'mc_analysis_software']),
         ('User Code',
-            ['platform', 'user_code', 'code_type', 'code_type_other', 'code_comment',
-                'reproduce', 'reproduce_upload']),
+            ['platform', 'user_code', 'code_type', 'code_type_other',
+             'code_comment', 'reproduce', 'reproduce_upload']),
         ('Final N Tuples',
             ['final_n_tuples']),
         ('Internal Documentation',

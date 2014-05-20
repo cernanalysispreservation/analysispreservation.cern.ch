@@ -86,7 +86,9 @@ class lhcb(DepositionType):
     @classmethod
     def process_sip_metadata(cls, deposition, metadata):
         """
-        Implement this method in your subclass to process metadata prior to
-        MARC generation.
+        Process exported metada
         """
-        pass
+
+        if 'authors' in metadata and metadata['authors']:
+            metadata['_first_author'] = metadata['authors'][0]
+            metadata['_additional_authors'] = metadata['authors'][1:]
