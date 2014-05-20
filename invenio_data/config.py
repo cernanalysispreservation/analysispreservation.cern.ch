@@ -72,3 +72,5 @@ CFG_SITE_NAME_INTL['ka'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['lt'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['ar'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
+
+CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
