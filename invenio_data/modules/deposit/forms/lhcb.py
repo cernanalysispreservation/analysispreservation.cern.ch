@@ -131,7 +131,7 @@ class InternalDiscussionForm(WebDepositForm):
 
 class TalksForm(WebDepositForm):
     discussion = data_fields.TextField(
-        placeholder='Please enter Indicio URL',
+        placeholder='Please enter Indico URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
     )
