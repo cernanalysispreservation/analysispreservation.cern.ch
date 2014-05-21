@@ -491,7 +491,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
     )
 
     data_files_harvest = data_fields.HarvestField(
-        label='Harvest Code',
+        label='Harvest Data',
     )
 
     # Internal Documentation
