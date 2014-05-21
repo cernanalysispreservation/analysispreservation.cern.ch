@@ -97,6 +97,33 @@ class UserCodeForm(WebDepositForm):
     )
 
 
+class FinalNTuplesForm(WebDepositForm):
+    data_files = data_fields.TextField(
+            widget_classes='form-control',
+            widget=ColumnInput(class_="col-xs-10 col-pad-0"),
+            placeholder="URL   E.g. root://eospublic.cern.ch//eos/"
+                        "lhcb/.../myfile.root"
+    )
+
+    data_files_harvest = fields.RadioField(
+        default='no',
+        widget_classes='form-group list-unstyled',
+        widget=ColumnInput(class_="col-xs-2 col-pad-0",
+                           widget=widgets.ListWidget(prefix_label=False)),
+        choices=[('yes', _('Harvest')),
+                 ('no', _('Link only'))],
+    )
+
+    description = data_fields.TextField(
+        description='E.g. data, MC...',
+        widget_classes='form-control',
+        widget=ColumnInput(class_="col-xs-10 col-pad-0"),
+        export_key='lhcb.datafiledescription',
+        icon='fa fa-align-justify fa-fw',
+        placeholder='Description'
+    )
+
+
 class InternalDocsForm(WebDepositForm):
     docs = data_fields.TextField(
         placeholder="Please enter document url",
@@ -463,40 +490,19 @@ class LHCbDataAnalysisForm(WebDepositForm):
 
     # Final N Tuples
 
-    data_files = fields.DynamicFieldList(
-        data_fields.TextField(
-            label=_('Output Data Files'),
-            widget_classes='form-control',
-            widget=ColumnInput(class_="col-xs-10 col-pad-0"),
-            placeholder="URL   E.g. root://eospublic.cern.ch//eos/"
-                        "lhcb/.../myfile.root"
+    final_n_tuples = fields.DynamicFieldList(
+        fields.FormField(
+            FinalNTuplesForm,
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
         ),
-        label=_("Data Files"),
+        label=_("Output Data Files"),
         icon='fa fa-file fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='lhcb.datafiles',
-        description="""
-        Example of supported protocols:<br>
-        xroot://castorpublic.cern.ch//castor/cern.ch/user/j/johndoe/mydir/myf\
-        ile.root<br>
-        root://eospublic.cern.ch//eos/lhcb/.../myfile.root<br>
-        file:///tmp/myfile.root<br>
-        http://john.doe.example.org/myfile.root<br>""",
-    )
-
-    description = data_fields.TextField(
-        label='Description',
-        description='E.g. data, MC...',
-        widget_classes='form-control',
-        widget=ColumnInput(class_="col-xs-12 col-pad-0"),
-        export_key='lhcb.datafiledescription',
-        icon='fa fa-align-justify fa-fw',
-        placeholder='???'
-    )
-
-    data_files_harvest = data_fields.HarvestField(
-        label='Harvest Data',
+        export_key='lhcb.finalntuples',
     )
 
     # Internal Documentation
@@ -632,7 +638,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
             ['platform', 'user_code', 'code_type', 'code_type_other', 'code_comment',
                 'reproduce', 'reproduce_upload']),
         ('Final N Tuples',
-            ['data_files', 'description', 'data_files_harvest']),
+            ['final_n_tuples']),
         ('Internal Documentation',
             ['internal_docs']),
         ('Internal Discussion',
