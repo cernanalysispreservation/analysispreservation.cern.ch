@@ -19,6 +19,7 @@
 from __future__ import absolute_import
 
 from .analysis_number import *
+from .code_type import *
 from .data_year import *
 from .file_upload import *
 from .harvest import *

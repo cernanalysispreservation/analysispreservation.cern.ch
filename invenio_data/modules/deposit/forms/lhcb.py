@@ -420,15 +420,20 @@ class LHCbDataAnalysisForm(WebDepositForm):
         export_key='lhcb.usercode',
     )
 
-    code_type = fields.SelectField(
+    code_type = data_fields.CodeTypeField(
         widget_classes='form-control',
-        label=_("Code Type"),
-        choices=[('strip', 'To select stripping line'),
-                 ('fit', 'To make fit'),
-                 ('other', 'Other (please specify)')],
         export_key='lhcb.codetype',
         icon='fa fa-cog fa-fw'
     )
+
+    code_type_other = fields.TextAreaField(
+        widget_classes='form-control',
+        label=_("Other"),
+        export_key='lhcb.codetypeother',
+        icon='fa fa-align-justify fa-fw',
+        placeholder="Please specify the code type",
+        hidden=True
+        )
 
     code_comment = fields.TextAreaField(
         widget_classes='form-control',
@@ -624,7 +629,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
                 'mc_trigger_details', 'mc_stripping_sw', 'mc_stripping_line',
                 'mc_analysis_software']),
         ('User Code',
-            ['platform', 'user_code', 'code_type', 'code_comment',
+            ['platform', 'user_code', 'code_type', 'code_type_other', 'code_comment',
                 'reproduce', 'reproduce_upload']),
         ('Final N Tuples',
             ['data_files', 'description', 'data_files_harvest']),
