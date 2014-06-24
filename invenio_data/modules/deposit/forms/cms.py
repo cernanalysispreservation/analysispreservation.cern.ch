@@ -484,15 +484,15 @@ class CMSDataAnalysisForm(WebDepositForm):
 
     # End-user analysis
 
-    enduser_os = fields.SelectField(
+    end_os = fields.SelectField(
         widget_classes='form-control',
         label=_('OS'),
         choices=os_options,
-        export_key='enduser_os',
+        export_key='end_os',
         icon='fa fa-leaf fa-fw'
     )
 
-    enduser_software = fields.FormField(
+    end_software = fields.FormField(
         SoftwareForm,
         widget=ExtendedListWidget(
             item_widget=ItemWidget(),
@@ -501,10 +501,10 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='Analysis Software',
         icon='fa fa-flag fa-fw',
         widget_classes='',
-        export_key='enduser_software',
+        export_key='end_software',
     )
 
-    enduser_code = fields.FormField(
+    end_code = fields.FormField(
         UserCodeForm,
         widget=ExtendedListWidget(
             item_widget=ItemWidget(),
@@ -513,16 +513,16 @@ class CMSDataAnalysisForm(WebDepositForm):
         label='User Code',
         icon='fa fa-link fa-fw',
         widget_classes='',
-        export_key='enduser_user_code'
+        export_key='end_user_code'
     )
 
-    enduser_input_data_files = data_fields.InputDataFilesField(
+    end_input_data_files = data_fields.InputDataFilesField(
         label=_('Input data files'),
-        export_key='enduser_input_data_files',
+        export_key='end_input_data_files',
         icon='fa fa-arrow-right fa-fw'
     )
 
-    enduser_output_data_files = fields.DynamicFieldList(
+    end_output_data_files = fields.DynamicFieldList(
         fields.FormField(
             OutputDataFilesForm,
             widget=ExtendedListWidget(
@@ -534,28 +534,28 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-arrow-left fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='enduser_output_data_files',
+        export_key='end_output_data_files',
     )
 
-    enduser_reproduce = data_fields.ReproduceField(
+    end_reproduce = data_fields.ReproduceField(
         label='How to reproduce',
         icon='fa fa-repeat fa-fw',
         widget_classes='form-control',
-        export_key='enduser_reproduce',
+        export_key='end_reproduce',
     )
 
-    enduser_reproduce_upload = data_fields.FileUploadField(
+    end_reproduce_upload = data_fields.FileUploadField(
         label='',
         hidden=True,
         disabled=True,
         widget=plupload_widget,
         export_key=False,
         validators=[
-            required_if('enduser_reproduce', ['other'])
+            required_if('end_reproduce', ['other'])
         ],
     )
 
-    enduser_keywords = fields.DynamicFieldList(
+    end_keywords = fields.DynamicFieldList(
         data_fields.TextField(
             widget_classes='form-control',
             widget=ColumnInput(class_="col-xs-10"),
@@ -566,13 +566,13 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-tags fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='enduser_keywords',
+        export_key='end_keywords',
     )
 
-    enduser_comments = fields.TextAreaField(
+    end_comments = fields.TextAreaField(
         widget_classes='form-control',
         label=_("Comments"),
-        export_key='enduser_comments',
+        export_key='end_comments',
         icon='fa fa-align-justify fa-fw'
     )
 
@@ -716,10 +716,10 @@ class CMSDataAnalysisForm(WebDepositForm):
                 'custom_reproduce', 'custom_reproduce_upload',
                 'custom_keywords', 'custom_comments']),
         ('Final Selection Step',
-            ['enduser_os', 'enduser_software', 'enduser_code',
-                'enduser_input_data_files', 'enduser_output_data_files',
-                'enduser_reproduce', 'enduser_reproduce_upload',
-                'enduser_keywords', 'enduser_comments']),
+            ['end_os', 'end_software', 'end_code',
+                'end_input_data_files', 'end_output_data_files',
+                'end_reproduce', 'end_reproduce_upload',
+                'end_keywords', 'end_comments']),
         ('Internal Documentation',
             ['internal_docs', 'internaldocs_keywords',
                 'internaldocs_comments']),
