@@ -37,6 +37,12 @@ def keywords_autocomplete(form, field, term, limit=50):
 # Subforms
 
 
+class CollectionsField(WebDepositForm):
+    primary = data_fields.TextField(
+        default='ALICE',
+    )
+
+
 class SoftwareForm(WebDepositForm):
     sw = data_fields.TextField(
         placeholder="ALIROOT",
@@ -144,6 +150,16 @@ class AliceDataAnalysisForm(WebDepositForm):
     _name = 'alice'
 
     # Basic Info
+
+    collections = fields.FormField(
+        CollectionsField,
+        widget=ExtendedListWidget(
+            item_widget=ItemWidget(),
+            html_tag='div'
+        ),
+        export_key='collections',
+        hidden=True,
+    )
 
     analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
@@ -677,7 +693,7 @@ class AliceDataAnalysisForm(WebDepositForm):
     groups = [
         ('Basic Information',
             ['analysisnum', 'title', 'authors', 'abstract', 'accelerator',
-                'experiment'],
+                'experiment', 'collections'],
             {'description': "*** This whole section is autofilled by the \
                 analysis number ***"}),
         ('Physics Information',

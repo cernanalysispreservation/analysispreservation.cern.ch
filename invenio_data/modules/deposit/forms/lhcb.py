@@ -37,6 +37,12 @@ def keywords_autocomplete(form, field, term, limit=50):
 # Subforms
 
 
+class CollectionsField(WebDepositForm):
+    primary = data_fields.TextField(
+        default='LHCb',
+    )
+
+
 class ReconstructionSWForm(WebDepositForm):
     sw = data_fields.TextField(
         placeholder="Brunel",
@@ -198,6 +204,16 @@ class LHCbDataAnalysisForm(WebDepositForm):
     _name = 'lhcb'
 
     # Basic Info
+
+    collections = fields.FormField(
+        CollectionsField,
+        widget=ExtendedListWidget(
+            item_widget=ItemWidget(),
+            html_tag='div'
+        ),
+        export_key='collections',
+        hidden=True,
+    )
 
     analysisname = data_fields.TextField(
         widget_classes='form-control',

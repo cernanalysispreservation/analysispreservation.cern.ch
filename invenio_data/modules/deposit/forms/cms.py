@@ -37,6 +37,12 @@ def keywords_autocomplete(form, field, term, limit=50):
 # Subforms
 
 
+class CollectionsField(WebDepositForm):
+    primary = data_fields.TextField(
+        default='CMS',
+    )
+
+
 class SoftwareForm(WebDepositForm):
     sw = data_fields.TextField(
         placeholder="CMSSW",
@@ -146,6 +152,16 @@ class CMSDataAnalysisForm(WebDepositForm):
     _name = 'cms'
 
     # Basic Info
+
+    collections = fields.FormField(
+        CollectionsField,
+        widget=ExtendedListWidget(
+            item_widget=ItemWidget(),
+            html_tag='div'
+        ),
+        export_key='collections',
+        hidden=True,
+    )
 
     analysisnum = data_fields.AnalysisNumberField(
         label=_('Analysis Number'),
