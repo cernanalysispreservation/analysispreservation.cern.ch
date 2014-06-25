@@ -62,12 +62,12 @@ class UserCodeForm(WebDepositForm):
         widget=ColumnInput(class_="col-xs-3 col-pad-0"),
     )
     harvest = fields.RadioField(
-        default='no',
+        default='link',
         widget_classes='form-group list-unstyled',
         widget=ColumnInput(class_="col-xs-2 col-pad-0",
                            widget=widgets.ListWidget(prefix_label=False)),
-        choices=[('yes', _('Harvest')),
-                 ('no', _('Link only'))],
+        choices=[('harvest', _('Harvest')),
+                 ('link', _('Link only'))],
     )
 
 
@@ -80,12 +80,12 @@ class OutputDataFilesForm(WebDepositForm):
                     "myfile.root",
     )
     harvest = fields.RadioField(
-        default='no',
+        default='link',
         widget_classes='form-group list-unstyled',
         widget=ColumnInput(class_="col-xs-2 col-pad-0",
                            widget=widgets.ListWidget(prefix_label=False)),
-        choices=[('yes', _('Harvest')),
-                 ('no', _('Link only'))],
+        choices=[('harvest', _('Harvest')),
+                 ('link', _('Link only'))],
     )
 
 
@@ -96,12 +96,12 @@ class InternalDocsForm(WebDepositForm):
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
     )
     harvest = fields.RadioField(
-        default='no',
+        default='link',
         widget_classes='form-group list-unstyled',
         widget=ColumnInput(class_="col-xs-2 col-pad-0",
                            widget=widgets.ListWidget(prefix_label=False)),
-        choices=[('yes', _('Harvest')),
-                 ('no', _('Link only'))],
+        choices=[('harvest', _('Harvest')),
+                 ('link', _('Link only'))],
     )
 
 
@@ -112,12 +112,12 @@ class InternalDiscussionForm(WebDepositForm):
         widget=ColumnInput(class_="col-xs-6"),
     )
     harvest = fields.RadioField(
-        default='no',
+        default='link',
         widget_classes='form-group list-unstyled',
         widget=ColumnInput(class_="col-xs-2 col-pad-0",
                            widget=widgets.ListWidget(prefix_label=False)),
-        choices=[('yes', _('Harvest')),
-                 ('no', _('Link only'))],
+        choices=[('harvest', _('Harvest')),
+                 ('link', _('Link only'))],
     )
 
 
@@ -128,12 +128,12 @@ class TalksForm(WebDepositForm):
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
     )
     harvest = fields.RadioField(
-        default='no',
+        default='link',
         widget_classes='form-group list-unstyled',
         widget=ColumnInput(class_="col-xs-2 col-pad-0",
                            widget=widgets.ListWidget(prefix_label=False)),
-        choices=[('yes', _('Harvest')),
-                 ('no', _('Link only'))],
+        choices=[('harvest', _('Harvest')),
+                 ('link', _('Link only'))],
     )
 
 
@@ -158,7 +158,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-book fa-fw',
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='title',
+        export_key='data_title',
         validators=[Required()]
     )
 
@@ -174,14 +174,14 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='authors',
+        export_key='data_authors',
     )
 
     abstract = fields.TextAreaField(
         label=_('Abstract'),
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='abstract',
+        export_key='data_abstract',
         icon='fa fa-align-justify fa-fw'
     )
 
