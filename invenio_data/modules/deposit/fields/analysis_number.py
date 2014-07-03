@@ -52,7 +52,6 @@ def autofill(form, field, submit=False, fields=None):
 
     try:
         if rec.get('primary_report_number') == field.data:
-
             # Authors
             if len(rec.get('authors')) > 0:
                 form.authors.pop_entry()
@@ -103,12 +102,6 @@ def autofill(form, field, submit=False, fields=None):
             form.authors.flags.hidden = False
             form.accelerator.flags.hidden = False
             form.experiment.flags.hidden = False
-
-            # Empty field data
-            form.title.data = None
-            form.abstract.data = None
-            form.accelerator.data = None
-            form.experiment.data = 'ALICE'
 
         else:
             pass

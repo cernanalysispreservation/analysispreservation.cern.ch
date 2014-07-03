@@ -78,7 +78,7 @@ class UserCodeForm(WebDepositForm):
 
 
 class OutputDataFilesForm(WebDepositForm):
-    output_data_files = data_fields.TextField(
+    url = data_fields.TextField(
         label=_('Output Data Files'),
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -96,7 +96,7 @@ class OutputDataFilesForm(WebDepositForm):
 
 
 class InternalDocsForm(WebDepositForm):
-    docs = data_fields.TextField(
+    doc = data_fields.TextField(
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -112,7 +112,7 @@ class InternalDocsForm(WebDepositForm):
 
 
 class InternalDiscussionForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    egroup = data_fields.TextField(
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -128,7 +128,7 @@ class InternalDiscussionForm(WebDepositForm):
 
 
 class TalksForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    talk = data_fields.TextField(
         placeholder='Please enter Indico URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -176,7 +176,7 @@ class CMSDataAnalysisForm(WebDepositForm):
         label=_('Title'),
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
-        export_key='title',
+        export_key='data_title',
         icon='fa fa-book fa-fw',
         hidden=True
     )
@@ -192,14 +192,14 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='authors',
+        export_key='data_authors',
         hidden=True
     )
 
     abstract = fields.TextAreaField(
         label=_('Abstract'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='abstract',
+        export_key='data_abstract',
         widget_classes='form-control',
         icon='fa fa-align-justify fa-fw',
         hidden=True

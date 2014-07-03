@@ -78,12 +78,13 @@ class UserCodeForm(WebDepositForm):
 
 
 class OutputDataFilesForm(WebDepositForm):
-    output_data_files = data_fields.TextField(
+    url = data_fields.TextField(
         label=_('Output Data Files'),
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
         placeholder="URL   E.g. root://eospublic.cern.ch//eos/lhcb/.../"
                     "myfile.root",
+        export_key='url',
     )
     harvest = fields.RadioField(
         default='link',
@@ -92,11 +93,12 @@ class OutputDataFilesForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('harvest', _('Harvest')),
                  ('link', _('Link only'))],
+        export_key='harvest',
     )
 
 
 class InternalDocsForm(WebDepositForm):
-    docs = data_fields.TextField(
+    doc = data_fields.TextField(
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
@@ -112,7 +114,7 @@ class InternalDocsForm(WebDepositForm):
 
 
 class InternalDiscussionForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    egroup = data_fields.TextField(
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-6"),
@@ -128,7 +130,7 @@ class InternalDiscussionForm(WebDepositForm):
 
 
 class TalksForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    talk = data_fields.TextField(
         placeholder='Please enter Indico URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),

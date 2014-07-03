@@ -142,11 +142,11 @@ class FinalNTuplesForm(WebDepositForm):
 
 
 class InternalDocsForm(WebDepositForm):
-    docs = data_fields.TextField(
+    doc = data_fields.TextField(
         placeholder="Please enter document url",
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
-        export_key='doc'
+        export_key='doc',
     )
     harvest = fields.RadioField(
         default='link',
@@ -155,16 +155,16 @@ class InternalDocsForm(WebDepositForm):
                            widget=widgets.ListWidget(prefix_label=False)),
         choices=[('harvest', _('Harvest')),
                  ('link', _('Link only'))],
-        export_key='harvest'
+        export_key='harvest',
     )
 
 
 class InternalDiscussionForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    egroup = data_fields.TextField(
         placeholder='Please enter E-Group',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
-        export_key='discussion'
+        export_key='egroup'
     )
     harvest = fields.RadioField(
         default='link',
@@ -178,11 +178,11 @@ class InternalDiscussionForm(WebDepositForm):
 
 
 class TalksForm(WebDepositForm):
-    discussion = data_fields.TextField(
+    talk = data_fields.TextField(
         placeholder='Please enter Indico URL',
         widget_classes='form-control',
         widget=ColumnInput(class_="col-xs-8 col-pad-0"),
-        export_key='talks'
+        export_key='talk'
     )
     harvest = fields.RadioField(
         default='link',
@@ -237,10 +237,10 @@ class LHCbDataAnalysisForm(WebDepositForm):
     title = data_fields.TextField(
         label=_('Title'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='title',
+        export_key='data_title',
         widget_classes='form-control',
         icon='fa fa-book fa-fw',
-        hidden=True
+        hidden=True,
     )
 
     authors = fields.DynamicFieldList(
@@ -254,17 +254,17 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-user fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='authors',
-        hidden=True
+        export_key='data_authors',
+        hidden=True,
     )
 
     abstract = data_fields.TextField(
         label=_('Abstract'),
         placeholder='Auto-completed via Analysis Number',
-        export_key='abstract',
+        export_key='data_abstract',
         widget_classes='form-control',
         icon='fa fa-align-justify fa-fw',
-        hidden=True
+        hidden=True,
     )
 
     accelerator = data_fields.TextField(
@@ -273,7 +273,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         export_key='accelerator',
         icon='fa fa-forward fa-fw',
         widget_classes='form-control',
-        hidden=True
+        hidden=True,
     )
 
     experiments = [("LHCb", _("LHCb")),
@@ -286,7 +286,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         icon='fa fa-magnet fa-fw',
         default='LHCb',
         widget_classes='form-control',
-        hidden=True
+        hidden=True,
     )
 
     # Event Samples - Data
@@ -492,7 +492,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         export_key='code_type_other',
         icon='fa fa-align-justify fa-fw',
         placeholder="Please specify the code type",
-        hidden=True
+        hidden=True,
         )
 
     code_comment = fields.TextAreaField(
