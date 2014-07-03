@@ -18,29 +18,28 @@
 ## 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 from wtforms import SelectField
-from wtforms.widgets import Select
 from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.field_widgets import ColumnInput
 
 __all__ = ['ReproduceField']
 
+
 def upload_processor(form, field, submit=False, fields=None):
     # ALICE
-    if field.export_key == 'alice.aod_reproduce':
+    if field.export_key == 'aod_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.aod_reproduce_upload.flags.hidden = True
             form.aod_reproduce_upload.flags.disabled = True
         elif field.data == 'other':
             form.aod_reproduce_upload.flags.hidden = False
             form.aod_reproduce_upload.flags.disabled = False
-    elif field.export_key == 'alice.custom_reproduce':
+    elif field.export_key == 'custom_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.custom_reproduce_upload.flags.hidden = True
             form.custom_reproduce_upload.flags.disabled = True
         elif field.data == 'other':
             form.custom_reproduce_upload.flags.hidden = False
             form.custom_reproduce_upload.flags.disabled = False
-    elif field.export_key == 'alice.end_reproduce':
+    elif field.export_key == 'end_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.end_reproduce_upload.flags.hidden = True
             form.end_reproduce_upload.flags.disabled = True
@@ -48,21 +47,21 @@ def upload_processor(form, field, submit=False, fields=None):
             form.end_reproduce_upload.flags.hidden = False
             form.end_reproduce_upload.flags.disabled = False
     # CMS
-    elif field.export_key == 'cms.pre_reproduce':
+    elif field.export_key == 'pre_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.pre_reproduce_upload.flags.hidden = True
             form.pre_reproduce_upload.flags.disabled = True
         elif field.data == 'other':
             form.pre_reproduce_upload.flags.hidden = False
             form.pre_reproduce_upload.flags.disabled = False
-    elif field.export_key == 'cms.custom_reproduce':
+    elif field.export_key == 'custom_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.custom_reproduce_upload.flags.hidden = True
             form.custom_reproduce_upload.flags.disabled = True
         elif field.data == 'other':
             form.custom_reproduce_upload.flags.hidden = False
             form.custom_reproduce_upload.flags.disabled = False
-    elif field.export_key == 'cms.enduser_reproduce':
+    elif field.export_key == 'end_reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.enduser_reproduce_upload.flags.hidden = True
             form.enduser_reproduce_upload.flags.disabled = True
@@ -70,14 +69,14 @@ def upload_processor(form, field, submit=False, fields=None):
             form.enduser_reproduce_upload.flags.hidden = False
             form.enduser_reproduce_upload.flags.disabled = False
     # LHCb
-    elif field.export_key == 'lhcb.reproduce':
+    elif field.export_key == 'reproduce':
         if field.data == 'readme' or field.data == 'makefile':
             form.reproduce_upload.flags.hidden = True
             form.reproduce_upload.flags.disabled = True
         elif field.data == 'other':
             form.reproduce_upload.flags.hidden = False
             form.reproduce_upload.flags.disabled = False
-        
+
 
 
 class ReproduceField(WebDepositField, SelectField):
