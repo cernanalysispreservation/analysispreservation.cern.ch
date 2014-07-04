@@ -184,7 +184,7 @@ class CMSDataAnalysisForm(WebDepositForm):
     authors = fields.DynamicFieldList(
         data_fields.TextField(
             placeholder="Auto-completed via Analysis Number",
-            widget_classes='form-control',
+            widget_classes='form-control field-list-element',
             widget=ColumnInput(class_="col-xs-10"),
         ),
         label='Authors',
