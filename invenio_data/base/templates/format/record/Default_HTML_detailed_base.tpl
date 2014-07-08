@@ -33,6 +33,13 @@
     {% block abstract %}
     {% endblock %}
   </div>
+
+  <div>
+    {% block data %}
+    {% endblock %}
+  </div>
+
+
 </div>
 
 {% block footer %}

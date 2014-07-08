@@ -19,6 +19,7 @@
 
 {% extends "format/record/Default_HTML_detailed_base.tpl" %}
 
+
 {% block header %}
 
     <h3> {{ record.get('data_title') }} </h3>
@@ -45,5 +46,17 @@
     {{ record.get('data_abstract')}}
     </small>
     <br />
+
+{% endblock %}
+
+{% block data %}
+        <br />
+        {% if record.get('collections.primary')[0] == 'LHCb' %}
+            {% include "format/record/lhcb_record.tpl" %}
+        {% elif record.get('collections.primary')[0] == 'CMS' %}
+            {% include "format/record/cms_record.tpl" %}
+        {% elif record.get('collections.primary')[0] == 'ALICE' %}
+            {% include "format/record/alice_record.tpl" %}
+        {% endif %}
 
 {% endblock %}
