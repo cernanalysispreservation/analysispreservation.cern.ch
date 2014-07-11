@@ -236,7 +236,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         icon='fa fa-road fa-fw',
         widget_classes='',
         min_entries=1,
-        export_key='esd_primary_data_set'
+        export_key='esd_primary_data_set_path'
     )
 
     mcdataset = fields.DynamicFieldList(
@@ -419,7 +419,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         label='Output Data Files',
         widget_classes='',
         min_entries=1,
-        export_key='custom_outdatafiles',
+        export_key='custom_output_data_files',
         icon='fa fa-arrow-left fa-fw'
     )
 
