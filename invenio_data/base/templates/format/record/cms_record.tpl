@@ -310,34 +310,3 @@
                         <td> <br /> </td>
                     </tr>
 <!--####################################################-->
-                    <tr style="padding: 7px;">
-                        <td><h4> Publication </h4></td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Journal Title </td>
-                        <td style="padding: 7px;"> {{ record.get('journal_title') }} </td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Journal Year </td>
-                        <td style="padding: 7px;"> {{ record.get('journal_year') }} </td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Journal Volume </td>
-                        <td style="padding: 7px;"> {{ record.get('journal_volume') }} </td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Journal Page </td>
-                        <td style="padding: 7px;"> {{ record.get('journal_page') }} </td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> arXiv ID </td>
-                        <td style="padding: 7px;"> {{ record.get('arxiv_id') }} </td>
-                    </tr>
-
-                </table>
-</div>
