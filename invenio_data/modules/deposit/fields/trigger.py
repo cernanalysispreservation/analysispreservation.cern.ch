@@ -27,10 +27,10 @@ from invenio.modules.deposit.field_base import WebDepositField
 __all__ = ['TriggerField']
 
 
-ACCESS_RIGHTS_CHOICES = [
-    ('l0', 'L0'),
-    ('htl1', 'HTL1'),
-    ('htl2', 'HTL2')
+TRIGGERS = [
+    ('L0', 'L0'),
+    ('HTL1', 'HTL1'),
+    ('HTL2', 'HTL2')
 ]
 
 
@@ -90,7 +90,7 @@ class TriggerField(WebDepositField, RadioField):
 
     def __init__(self, **kwargs):
         defaults = dict(
-            choices=ACCESS_RIGHTS_CHOICES,
+            choices=TRIGGERS,
 
         )
         defaults.update(kwargs)

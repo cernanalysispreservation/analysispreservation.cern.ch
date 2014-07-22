@@ -275,9 +275,9 @@ class AliceDataAnalysisForm(WebDepositForm):
 
     #  AOD Production Step
 
-    os_options = [("slc5", _("SLC 5.x")),
-                  ("slc6", _("SLC 6.x")),
-                  ("ubuntu", _("Ubuntu"))]
+    os_options = [("SLC 5.x", _("SLC 5.x")),
+                  ("SLC 6.x", _("SLC 6.x")),
+                  ("Ubuntu", _("Ubuntu"))]
     aod_os = fields.SelectField(
         widget_classes='form-control',
         label=_('OS'),

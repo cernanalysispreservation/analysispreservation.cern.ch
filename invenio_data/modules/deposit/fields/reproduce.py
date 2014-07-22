@@ -26,54 +26,54 @@ __all__ = ['ReproduceField']
 def upload_processor(form, field, submit=False, fields=None):
     # ALICE
     if field.export_key == 'aod_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.aod_reproduce_upload.flags.hidden = True
             form.aod_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.aod_reproduce_upload.flags.hidden = False
             form.aod_reproduce_upload.flags.disabled = False
     elif field.export_key == 'custom_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.custom_reproduce_upload.flags.hidden = True
             form.custom_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.custom_reproduce_upload.flags.hidden = False
             form.custom_reproduce_upload.flags.disabled = False
     elif field.export_key == 'end_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.end_reproduce_upload.flags.hidden = True
             form.end_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.end_reproduce_upload.flags.hidden = False
             form.end_reproduce_upload.flags.disabled = False
     # CMS
     elif field.export_key == 'pre_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.pre_reproduce_upload.flags.hidden = True
             form.pre_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.pre_reproduce_upload.flags.hidden = False
             form.pre_reproduce_upload.flags.disabled = False
     elif field.export_key == 'custom_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.custom_reproduce_upload.flags.hidden = True
             form.custom_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.custom_reproduce_upload.flags.hidden = False
             form.custom_reproduce_upload.flags.disabled = False
     elif field.export_key == 'end_reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.enduser_reproduce_upload.flags.hidden = True
             form.enduser_reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.enduser_reproduce_upload.flags.hidden = False
             form.enduser_reproduce_upload.flags.disabled = False
     # LHCb
     elif field.export_key == 'reproduce':
-        if field.data == 'readme' or field.data == 'makefile':
+        if field.data == 'See README' or field.data == 'See Makefile':
             form.reproduce_upload.flags.hidden = True
             form.reproduce_upload.flags.disabled = True
-        elif field.data == 'other':
+        elif field.data == 'Other (please upload)':
             form.reproduce_upload.flags.hidden = False
             form.reproduce_upload.flags.disabled = False
 
@@ -83,10 +83,10 @@ class ReproduceField(WebDepositField, SelectField):
     def __init__(self, **kwargs):
         defaults = dict(icon='flag',
             widget_classes="form-control",
-            choices = [('readme', ("See README")),
-                   ('makefile', ("See Makefile")),
-                   ('other', ("Other (please upload)"))],
-            default='readme',
+            choices = [('See README', ("See README")),
+                   ('See Makefile', ("See Makefile")),
+                   ('Other (please upload)', ("Other (please upload)"))],
+            default='See README',
             processors=[
                 upload_processor,
             ]

@@ -156,7 +156,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> To Reproduce </td>
-                        <td style="padding: 7px;"> See '{{ record.get('reproduce') }}' </td>
+                        <td style="padding: 7px;"> {{ record.get('reproduce') }} </td>
                     </tr>
 
                     <tr style="padding: 7px;">

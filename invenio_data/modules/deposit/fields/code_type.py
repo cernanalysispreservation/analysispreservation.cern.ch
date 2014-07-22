@@ -26,10 +26,10 @@ __all__ = ['CodeTypeField']
 
 
 def other_processor(form, field, submit=False, fields=None):
-    if field.data == 'strip' or field.data == 'fit':
+    if field.data == 'To select stripping line' or field.data == 'To make fit':
         form.code_type_other.flags.hidden = True
         form.code_type_other.flags.disabled = True
-    elif field.data == 'other':
+    elif field.data == 'Other':
         form.code_type_other.flags.hidden = False
         form.code_type_other.flags.disabled = False
 
@@ -38,11 +38,11 @@ class CodeTypeField(WebDepositField, SelectField):
     def __init__(self, **kwargs):
         defaults = dict(icon='flag',
                         widget_classes="form-control",
-                        choices=[('strip', 'To select stripping line'),
-                                 ('fit', 'To make fit'),
-                                 ('other', 'Other (please specify)')],
+                        choices=[('To select stripping line', 'To select stripping line'),
+                                 ('To make fit', 'To make fit'),
+                                 ('Other', 'Other (please specify)')],
                         label="Code Type",
-                        default='strip',
+                        default='To select stripping line',
                         processors=[other_processor, ]
                         )
         defaults.update(kwargs)

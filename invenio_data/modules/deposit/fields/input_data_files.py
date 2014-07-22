@@ -28,8 +28,8 @@ __all__ = ['InputDataFilesField']
 
 
 CHOICES = [
-    ('aod', 'AOD Primary Data Sets'),
-    ('taken', 'Taken from output of previous analysis step'),
+    ('AOD Primary Data Sets', 'AOD Primary Data Sets'),
+    ('Taken from output of previous analysis step', 'Taken from output of previous analysis step'),
 ]
 
 
@@ -91,7 +91,7 @@ class InputDataFilesField(WebDepositField, RadioField):
         defaults = dict(
             label='Input Data Files',
             choices=CHOICES,
-            default='taken',
+            default='Taken from output of previous analysis step',
         )
         defaults.update(kwargs)
         super(InputDataFilesField, self).__init__(**defaults)
