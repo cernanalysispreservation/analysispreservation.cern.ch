@@ -65,11 +65,6 @@
                     </tr>
 
                     <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Callibration </td>
-                        <td style="padding: 7px;"> {{ record.get('callibration') }}</td>
-                    </tr>
-
-                    <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
                         <td style="padding: 7px;"> {{ record.get('data_keywords')|join(', ') }}</td>
                     </tr>

@@ -298,14 +298,6 @@ class CMSDataAnalysisForm(WebDepositForm):
         icon='fa fa-filter fa-fw'
     )
 
-    callibration = data_fields.TextField(
-        widget_classes='form-control',
-        label=_("Callibration"),
-        placeholder='If not, what callibration?',
-        export_key='callibration',
-        icon='fa fa-wrench fa-fw'
-    )
-
     keywords = fields.DynamicFieldList(
         data_fields.TextField(
             widget_classes='form-control',
@@ -741,7 +733,7 @@ class CMSDataAnalysisForm(WebDepositForm):
                 'experiment']),
         ('Physics Information',
             ['pridataset', 'mcdataset', 'triggerselection', 'physics_objects',
-                'callibration', 'keywords', 'comments']),
+                'keywords', 'comments']),
         ('Pre-selection Step',
             ['pre_os', 'pre_software', 'pre_code', 'pre_input_data_files',
                 'pre_output_data_files', 'pre_reproduce',
