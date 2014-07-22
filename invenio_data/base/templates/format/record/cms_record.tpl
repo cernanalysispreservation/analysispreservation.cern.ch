@@ -49,7 +49,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Trigger Selection </td>
                         <td style="padding: 7px;">
                             {% for val in record.get('trigger_selection') %}
-                                {{ val }}
+                                {% if val.trigger == '' %}
+                                    {{ val.other }}
+                                {% else %}
+                                    {{ val.trigger }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>

@@ -27,6 +27,7 @@ from invenio.modules.deposit.field_widgets import plupload_widget, \
 from invenio.modules.deposit.validation_utils import required_if
 
 from .. import fields as data_fields
+from ..fields.triggers import triggers
 
 __all__ = ('CMSDataAnalysisForm', )
 
@@ -35,6 +36,25 @@ def keywords_autocomplete(form, field, term, limit=50):
     return [{'value': "Keyword 1"}, {'value': "Keyword 2"}]
 
 # Subforms
+
+
+class TriggerSelectionForm(WebDepositForm):
+
+    trigger = fields.SelectField(
+        widget_classes='form-control',
+        widget=ColumnInput(
+            class_="col-xs-12 col-pad-0",
+            widget=widgets.Select()),
+        label=_('Trigger'),
+        choices=triggers,
+        export_key='trigger',
+        icon='fa fa-leaf fa-fw'
+    )
+    other = data_fields.TextField(
+        placeholder="Other",
+        widget_classes='form-control',
+        widget=ColumnInput(class_="col-xs-10 col-pad-0"),
+    )
 
 
 class CollectionsField(WebDepositForm):
@@ -256,14 +276,14 @@ class CMSDataAnalysisForm(WebDepositForm):
     )
 
     triggerselection = fields.DynamicFieldList(
-        data_fields.TextField(
-            widget_classes='form-control',
-            label='Trigger Selection',
-            widget=ColumnInput(class_="col-xs-10"),
-            placeholder=_("???"),
+        fields.FormField(
+            TriggerSelectionForm,
+            widget=ExtendedListWidget(
+                item_widget=ItemWidget(),
+                html_tag='div'
+            ),
         ),
         label='Trigger Selection',
-        add_label='Add another trigger',
         icon='fa fa-certificate fa-fw',
         widget_classes='',
         min_entries=1,
