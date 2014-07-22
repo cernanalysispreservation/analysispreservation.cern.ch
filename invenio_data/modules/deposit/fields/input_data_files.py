@@ -28,7 +28,7 @@ __all__ = ['InputDataFilesField']
 
 
 CHOICES = [
-    ('esd', 'ESD Primary Data Sets'),
+    ('aod', 'AOD Primary Data Sets'),
     ('taken', 'Taken from output of previous analysis step'),
 ]
 
