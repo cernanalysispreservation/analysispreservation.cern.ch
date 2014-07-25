@@ -167,11 +167,23 @@
                         <td><h4> Final N Tuples </h4></td>
                     </tr>
 
-                    {% for val in record.get('final_n_tuples') %}
+                    {% for val in record.get('final_n_tuples', [None]) %}
 
                         <tr style="padding: 7px;">
-                            <td style="padding: 7px; text-align: right; font-weight:bold;"> {{ val.data_file }} </td>
-                            <td style="padding: 7px;"> {{val.description}} </td>
+                            <td style="padding: 7px; text-align: right; font-weight:bold;">
+                                {% if val.data_file %}
+                                    {{ val.data_file }}
+                                {% else %}
+                                    None
+                                {% endif %}
+                            </td>
+                            <td style="padding: 7px;">
+                                {% if val.description %}
+                                    {{ val.description }}
+                                {% else %}
+                                    None
+                                {% endif %}
+                            </td>
                         </tr>
 
                     {% endfor %}
@@ -183,18 +195,17 @@
                     <tr style="padding: 7px;">
                         <td><h4> Internal Documentation </h4></td>
                     </tr>
-
-                    {% if record.get('internal_docs') %}
-                        {% for val in record.get('internal_docs') %}
-                            <tr style="padding: 7px;">
-                                <td style="padding: 7px;"> {{ val.doc }} </td>
-                            <tr style="padding: 7px;">
-                        {% endfor %}
-                    {% else %}
+                    {% for val in record.get('internal_docs') %}
                         <tr style="padding: 7px;">
-                                <td style="padding: 7px;"> None </td>
-                            <tr style="padding: 7px;">
-                    {% endif %}
+                            <td style="padding: 7px;">
+                            {% if val.doc %}
+                                {{ val.doc }}
+                            {% else %}
+                                None
+                            {% endif %}
+                            </td>
+                        <tr style="padding: 7px;">
+                    {% endfor %}
 
                     <tr style="padding: 7px;">
                         <td> <br /> </td>
@@ -203,18 +214,17 @@
                     <tr style="padding: 7px;">
                         <td><h4> Internal Discussion </h4></td>
                     </tr>
-
-                    {% if record.get('egroup') %}
-                        {% for val in record.get('egroup') %}
-                            <tr style="padding: 7px;">
-                                <td style="padding: 7px;"> {{ val.egroup }} </td>
-                            <tr style="padding: 7px;">
-                        {% endfor %}
-                    {% else %}
+                    {% for val in record.get('egroup') %}
                         <tr style="padding: 7px;">
-                                <td style="padding: 7px;"> None </td>
-                            <tr style="padding: 7px;">
-                    {% endif %}
+                            <td style="padding: 7px;">
+                            {% if val.egroup %}
+                                {{ val.egroup }}
+                            {% else %}
+                                None
+                            {% endif %}
+                            </td>
+                        <tr style="padding: 7px;">
+                    {% endfor %}
 
                     <tr style="padding: 7px;">
                         <td> <br /> </td>
@@ -230,15 +240,17 @@
                         <td>
                             <table>
                                 <tr style="padding: 7px;">
-                                    {% if record.get('internal_talks') %}
-                                        {% for val in record.get('internal_talks') %}
-                                            <tr style="padding: 7px;">
-                                                <td style="padding: 7px;"> {{ val.talk }} </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                            <td style="padding: 7px;"> None </td>
-                                    {% endif %}
+                                    {% for val in record.get('internal_talks') %}
+                                        <tr style="padding: 7px;">
+                                            <td style="padding: 7px;">
+                                                {% if val.talk %}
+                                                    {{ val.talk }}
+                                                {% else %}
+                                                    None
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </tr>
                             </table>
                         </td>
@@ -250,15 +262,15 @@
                         <td>
                             <table>
                                 <tr style="padding: 7px;">
-                                    {% if record.get('public_talks') %}
-                                        {% for val in record.get('public_talks') %}
-                                            <tr style="padding: 7px;">
-                                                <td style="padding: 7px;"> {{ val.talk }} </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% else %}
-                                            <td style="padding: 7px;"> None </td>
-                                    {% endif %}
+                                    {% for val in record.get('public_talks') %}
+                                        <tr style="padding: 7px;">
+                                            {% if val.talk %}
+                                                {{ val.talk }}
+                                            {% else %}
+                                                None
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
                                 </tr>
                             </table>
                         </td>

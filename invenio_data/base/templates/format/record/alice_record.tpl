@@ -28,7 +28,7 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> ESD Primary Data Set </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('esd_primary_data_set_path') %}
+                            {% for val in record.get('esd_primary_data_set_path', [None]) %}
                                 {{ val }}
                                 <br />
                             {% endfor %}
@@ -38,7 +38,7 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> MC Data Set </td>
                         <td style="padding: 7px;">
-	                        {% for val in record.get('mc_data_set_path') %}
+	                        {% for val in record.get('mc_data_set_path', [None]) %}
 	                        	{{ val }}
 	                        	<br />
 	                        {% endfor %}
@@ -47,7 +47,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('mc_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('mc_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -90,10 +90,14 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
-	                        {% for val in record.get('aod_output_data_files') %}
-	                        	{{ val.url }}
-	                        	<br />
-	                        {% endfor %}
+                            {% for val in record.get('aod_output_data_files') %}
+                                {% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
+                                <br />
+                            {% endfor %}
 	                    </td>
                     </tr>
 
@@ -101,10 +105,9 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> How to reproduce </td>
                         <td style="padding: 7px;"> {{ record.get('aod_reproduce') }} </td>
                     </tr>
-
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('aod_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('aod_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -143,7 +146,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('custom_output_data_files') %}
-	                        	{{ val.url }}
+	                        	{% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>
@@ -156,7 +163,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('custom_keywords')|join(', ') }} </td>
+                        <td style="padding: 7px;"> {{ record.get('custom_keywords', [None])|join(', ') }} </td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -195,7 +202,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('end_output_data_files') %}
-	                        	{{ val.url }}
+	                        	{% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>
@@ -208,7 +219,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('end_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('end_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -223,7 +234,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Internal Documents </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('internal_docs') %}
-	                        	{{ val.doc }}
+	                        	{% if not val.doc %}
+                                    None
+                                {% else %}
+                                    {{ val.doc }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>
@@ -231,7 +246,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('internal_docs_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('internal_docs_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -251,7 +266,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Internal Documents </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('egroup') %}
-	                        	{{ val.egroup }}
+	                        	{% if not val.egroup %}
+                                    None
+                                {% else %}
+                                    {{ val.egroup }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>
@@ -269,7 +288,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Internal Talks </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('internal_talks') %}
-	                        	{{ val.talk }}
+	                        	{% if not val.talk %}
+                                    None
+                                {% else %}
+                                    {{ val.talk }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>
@@ -279,7 +302,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Public Talks </td>
                         <td style="padding: 7px;">
 	                        {% for val in record.get('public_talks') %}
-	                        	{{ val.talk }}
+	                        	{% if not val.talk %}
+                                    None
+                                {% else %}
+                                    {{ val.talk }}
+                                {% endif %}
 	                        	<br />
 	                        {% endfor %}
 	                    </td>

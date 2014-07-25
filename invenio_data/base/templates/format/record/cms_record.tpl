@@ -28,7 +28,7 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Primary Data Set </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('primary_data_set_path') %}
+                            {% for val in record.get('primary_data_set_path', [None]) %}
                                 {{ val }}
                                 <br />
                             {% endfor %}
@@ -38,7 +38,7 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> MC Data Set </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('mc_data_set_path') %}
+                            {% for val in record.get('mc_data_set_path', [None]) %}
                                 {{ val }}
                                 <br />
                             {% endfor %}
@@ -48,8 +48,10 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Trigger Selection </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('trigger_selection') %}
-                                {% if val.trigger == '' %}
+                            {% for val in record.get('trigger_selection', [None]) %}
+                                {% if not val %}
+                                    {{ val }}
+                                {% elif val.trigger == '' %}
                                     {{ val.other }}
                                 {% else %}
                                     {{ val.trigger }}
@@ -66,7 +68,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('data_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('data_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -105,8 +107,12 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('pre_output_data_files') %}
-                                {{ val.url }}
+                            {% for val in record.get('end_output_data_files') %}
+                                {% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
@@ -114,16 +120,16 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> How to reproduce </td>
-                        <td style="padding: 7px;"> {{ record.get('pre_reproduce') }} </td>
+                        <td style="padding: 7px;"> {{ record.get('pre_reproduce', None) }} </td>
                     </tr>
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('pre_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('pre_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> How to reproduce </td>
+                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Comments </td>
                         <td style="padding: 7px;"> {{ record.get('pre_comments') }} </td>
                     </tr>
 
@@ -162,8 +168,12 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('custom_output_data_files') %}
-                                {{ val.url }}
+                            {% for val in record.get('end_output_data_files') %}
+                                {% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
@@ -176,11 +186,11 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('custom_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('custom_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
-                        <td style="padding: 7px; text-align: right; font-weight:bold;"> How to reproduce </td>
+                        <td style="padding: 7px; text-align: right; font-weight:bold;"> Comments </td>
                         <td style="padding: 7px;"> {{ record.get('custom_comments') }} </td>
                     </tr>
 
@@ -220,7 +230,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Output Data Files </td>
                         <td style="padding: 7px;">
                             {% for val in record.get('end_output_data_files') %}
-                                {{ val.url }}
+                                {% if not val.url %}
+                                    None
+                                {% else %}
+                                    {{ val.url }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
@@ -233,7 +247,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('end_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('end_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -252,8 +266,12 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Internal Documents </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('internal_docs') %}
-                                {{ val.doc }}
+                            {% for val in record.get('internal_docs', [None]) %}
+                                {% if not val.doc %}
+                                    None
+                                {% else %}
+                                    {{ val.doc }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
@@ -261,7 +279,7 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('internal_docs_keywords')|join(', ') }}</td>
+                        <td style="padding: 7px;"> {{ record.get('internal_docs_keywords', [None])|join(', ') }}</td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -281,7 +299,11 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Internal Documents </td>
                         <td style="padding: 7px;">
                             {% for val in record.get('egroup') %}
-                                {{ val.egroup }}
+                                {% if not val.egroup %}
+                                    None
+                                {% else %}
+                                    {{ val.egroup }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
@@ -299,13 +321,18 @@
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Public Talks </td>
                         <td style="padding: 7px;">
                             {% for val in record.get('public_talks') %}
-                                {{ val.talk }}
+                                {% if not val.talk %}
+                                    None
+                                {% else %}
+                                    {{ val.talk }}
+                                {% endif %}
                                 <br />
                             {% endfor %}
                         </td>
                     </tr>
-
+{#
                     <tr style="padding: 7px;">
                         <td> <br /> </td>
                     </tr>
 <!--####################################################-->
+#}
