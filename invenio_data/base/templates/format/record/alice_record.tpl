@@ -28,26 +28,40 @@
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> ESD Primary Data Set </td>
                         <td style="padding: 7px;">
-                            {% for val in record.get('esd_primary_data_set_path', [None]) %}
-                                {{ val }}
-                                <br />
-                            {% endfor %}
+                            {% if record.get('esd_primary_data_set_path', None) is string %}
+                                {{ record.get('esd_primary_data_set_path', None) }}
+                            {% else %}
+                                {% for val in record.get('esd_primary_data_set_path', [None]) %}
+                                    {{ val }}
+                                    <br />
+                                {% endfor %}
+                            {% endif %}
                         </td>
                     </tr>
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> MC Data Set </td>
                         <td style="padding: 7px;">
-	                        {% for val in record.get('mc_data_set_path', [None]) %}
-	                        	{{ val }}
-	                        	<br />
-	                        {% endfor %}
+                            {% if record.get('mc_data_set_path', None) is string %}
+                                {{ record.get('mc_data_set_path', None) }}
+                            {% else %}
+    	                        {% for val in record.get('mc_data_set_path', [None]) %}
+    	                        	{{ val }}
+    	                        	<br />
+    	                        {% endfor %}
+                            {% endif %}
 	                    </td>
                     </tr>
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('mc_keywords', [None])|join(', ') }}</td>
+                        <td style="padding: 7px;">
+                        {% if record.get('mc_keywords', None) is string %}
+                                {{ record.get('mc_keywords', None) }}
+                        {% else %}
+                            {{ record.get('mc_keywords', [None])|join(', ') }}
+                        {% endif %}
+                        </td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -107,7 +121,13 @@
                     </tr>
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('aod_keywords', [None])|join(', ') }}</td>
+                        <td style="padding: 7px;">
+                        {% if record.get('aod_keywords', None) is string %}
+                                {{ record.get('aod_keywords', None) }}
+                        {% else %}
+                            {{ record.get('aod_keywords', [None])|join(', ') }}
+                        {% endif %}
+                        </td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -163,7 +183,13 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('custom_keywords', [None])|join(', ') }} </td>
+                        <td style="padding: 7px;">
+                        {% if record.get('custom_keywords', None) is string %}
+                                {{ record.get('custom_keywords', None) }}
+                        {% else %}
+                            {{ record.get('custom_keywords', [None])|join(', ') }}
+                        {% endif %}
+                        </td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -219,7 +245,13 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('end_keywords', [None])|join(', ') }}</td>
+                        <td style="padding: 7px;">
+                        {% if record.get('end_keywords', None) is string %}
+                                {{ record.get('end_keywords', None) }}
+                        {% else %}
+                            {{ record.get('end_keywords', [None])|join(', ') }}
+                        {% endif %}
+                        </td>
                     </tr>
 
                     <tr style="padding: 7px;">
@@ -246,7 +278,13 @@
 
                     <tr style="padding: 7px;">
                         <td style="padding: 7px; text-align: right; font-weight:bold;"> Keywords </td>
-                        <td style="padding: 7px;"> {{ record.get('internal_docs_keywords', [None])|join(', ') }}</td>
+                        <td style="padding: 7px;">
+                        {% if record.get('internal_docs_keywords', None) is string %}
+                                {{ record.get('internal_docs_keywords', None) }}
+                        {% else %}
+                            {{ record.get('internal_docs_keywords', [None])|join(', ') }}
+                        {% endif %}
+                        </td>
                     </tr>
 
                     <tr style="padding: 7px;">
