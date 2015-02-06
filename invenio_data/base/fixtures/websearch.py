@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 ## This file is part of Invenio.
-## Copyright (C) 2012, 2013, 2014 CERN.
+## Copyright (C) 2012, 2013 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -19,17 +19,12 @@
 
 from invenio.config import CFG_SITE_NAME
 from fixture import DataSet
-
+from invenio.modules.search.fixtures import CollectionData
+from invenio.modules.search import fixtures as default
 
 class CollectionData(DataSet):
 
-    class siteCollection:
-        id = 1
-        name = CFG_SITE_NAME
-        dbquery = None
-
-
-    class CMS(siteCollection):
+    class CMS(default.CollectionData.siteCollection):
         id = 2
         name = 'CMS'
         dbquery = '980:"CMS"'
@@ -37,7 +32,7 @@ class CollectionData(DataSet):
                  ('fr', 'ln'): u'CMS Data Analyses'}
 
 
-    class LHCb(siteCollection):
+    class LHCb(default.CollectionData.siteCollection):
         id = 3
         name = 'LHCb'
         dbquery = '980:"LHCB"'
@@ -45,7 +40,7 @@ class CollectionData(DataSet):
                  ('fr', 'ln'): u'LHCb Data Analyses'}
 
 
-    class ALICE(siteCollection):
+    class ALICE(default.CollectionData.siteCollection):
         id = 4
         name = 'ALICE'
         dbquery = '980:"ALICE"'

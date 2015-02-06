@@ -23,8 +23,6 @@
                            + config.CFG_OAUTH1_PROVIDERS * config.CFG_OAUTH1_AUTHENTICATION
                            + config.CFG_OAUTH2_PROVIDERS * config.CFG_OAUTH2_AUTHENTICATION %}
 
-{%- css url_for('webaccount.static', filename='css/accounts/login.css'), '10-login' -%}
-
 {%- macro external_login_button(provider, referer='', icon_size=48,
                                classes="", label="%(provider)s username") %}
 {%- block external_login_button scoped -%}
@@ -272,13 +270,14 @@
 {% block javascript %}
 {{ super() }}
 <script type="text/javascript">
+require(["jquery", "bootstrap"], function($) {
+
   function show_username_form(element) {
     $('#form_field').html($(element).html())
     return false
   }
 
   (function($) {
-    $('[rel=tooltip]').tooltip();
     $('#nickname').popover({
       title: '<strong>{{ _('Note') }}</strong>',
       content: '{{ _('You can use your nickname or your email address to login.') }}',
@@ -289,5 +288,6 @@
 
     });
   })(jQuery);
+});
 </script>
 {% endblock %}

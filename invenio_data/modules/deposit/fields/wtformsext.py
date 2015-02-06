@@ -33,7 +33,7 @@ an example)::
 import itertools
 from werkzeug import MultiDict
 import wtforms
-from wtforms.fields.core import _unset_value
+from wtforms.utils import unset_value as _unset_value
 from invenio.modules.deposit.field_base import WebDepositField
 
 
