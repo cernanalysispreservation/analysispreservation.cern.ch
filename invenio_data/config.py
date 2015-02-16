@@ -26,9 +26,6 @@ PACKAGES = [
 
 from invenio.base.config import EXTENSIONS as _EXTENSIONS
 
-EXTENSIONS = _EXTENSIONS + ['invenio.ext.sso',]
-
-
 DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.cms.cms',
     'invenio_data.modules.deposit.workflows.alice.alice',
@@ -74,4 +71,3 @@ CFG_SITE_NAME_INTL['ar'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
 
 CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
-CFG_EXTERNAL_AUTH_USING_SSO = True

@@ -79,6 +79,9 @@
               <li><a href="{{ url_for('webaccount.login') }}">
                 <i class="glyphicon glyphicon-lock"></i> {{ _("Login") }}
               </a></li>
+              <li><a href="{{url_for("oauthclient.login", remote_app="cern")}}">
+                  <i class="glyphicon glyphicon-lock"></i> {{ _("Sign in with CERN") }}
+              </a></li>
               {% else %}
               <li><a href="{{ url_for('webaccount.logout') }}">
                 <i class="glyphicon glyphicon-off"></i> {{ _("Logout") }}
