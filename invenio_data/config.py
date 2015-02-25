@@ -71,3 +71,13 @@ CFG_SITE_NAME_INTL['ar'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
 
 CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
+
+from invenio.modules.oauthclient.contrib import cern
+OAUTHCLIENT_REMOTE_APPS = dict(
+        cern=cern.REMOTE_APP,
+)
+
+CERN_APP_CREDENTIALS = dict(
+        consumer_key="changeme",
+        consumer_secret= "changeme",
+)
