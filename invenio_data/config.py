@@ -17,21 +17,18 @@
 ## along with Invenio; if not, write to the Free Software Foundation, Inc.,
 ## 59 Temple Place, Suite 330, Boston, MA 02D111-1307, USA.
 
+from invenio.base.config import PACKAGES as _PACKAGES
+
 PACKAGES = [
     "invenio_data.base",
     "invenio_data.modules.*",
-    "invenio.base",
-    "invenio.modules.*",
-]
+] + _PACKAGES
 
 from invenio.base.config import EXTENSIONS as _EXTENSIONS
 
-EXTENSIONS = _EXTENSIONS + ['invenio.ext.sso']
-
-
 DEPOSIT_TYPES = [
-    'invenio_data.modules.deposit.workflows.alice.alice',
     'invenio_data.modules.deposit.workflows.cms.cms',
+    'invenio_data.modules.deposit.workflows.alice.alice',
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
 ]
 
@@ -74,3 +71,13 @@ CFG_SITE_NAME_INTL['ar'] = 'Data Analysis Preservation Platform Demo'
 CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
 
 CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
+
+from invenio.modules.oauthclient.contrib import cern
+OAUTHCLIENT_REMOTE_APPS = dict(
+        cern=cern.REMOTE_APP,
+)
+
+CERN_APP_CREDENTIALS = dict(
+        consumer_key="changeme",
+        consumer_secret= "changeme",
+)

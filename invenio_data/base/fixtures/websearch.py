@@ -19,37 +19,33 @@
 
 from invenio.config import CFG_SITE_NAME
 from fixture import DataSet
-
+from invenio.modules.search.fixtures import CollectionData
+from invenio.modules.search import fixtures as default
 
 class CollectionData(DataSet):
 
-    class siteCollection:
-        id = 1
-        name = CFG_SITE_NAME
-        dbquery = None
-
-    class CMS(siteCollection):
+    class CMS(default.CollectionData.siteCollection):
         id = 2
         name = 'CMS'
         dbquery = '980:"CMS"'
         names = {('en', 'ln'): u'CMS Data Analyses',
                  ('fr', 'ln'): u'CMS Data Analyses'}
 
-    class LHCb(siteCollection):
+    class LHCb(default.CollectionData.siteCollection):
         id = 3
         name = 'LHCb'
         dbquery = '980:"LHCB"'
         names = {('en', 'ln'): u'LHCb Data Analyses',
                  ('fr', 'ln'): u'LHCb Data Analyses'}
 
-    class ALICE(siteCollection):
+    class ALICE(default.CollectionData.siteCollection):
         id = 4
         name = 'ALICE'
         dbquery = '980:"ALICE"'
         names = {('en', 'ln'): u'ALICE Data Analyses',
                  ('fr', 'ln'): u'ALICE Data Analyses'}
 
-    class ATLAS(siteCollection):
+    class ATLAS(default.CollectionData.siteCollection):
         id = 5
         name = 'ATLAS'
         dbquery = '980:"ATLAS"'
