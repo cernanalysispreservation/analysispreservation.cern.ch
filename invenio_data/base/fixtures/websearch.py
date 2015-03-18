@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 ## This file is part of Invenio.
-## Copyright (C) 2012, 2013, 2014 CERN.
+## Copyright (C) 2012, 2013, 2014, 2015 CERN.
 ##
 ## Invenio is free software; you can redistribute it and/or
 ## modify it under the terms of the GNU General Public License as
@@ -28,14 +28,12 @@ class CollectionData(DataSet):
         name = CFG_SITE_NAME
         dbquery = None
 
-
     class CMS(siteCollection):
         id = 2
         name = 'CMS'
         dbquery = '980:"CMS"'
         names = {('en', 'ln'): u'CMS Data Analyses',
                  ('fr', 'ln'): u'CMS Data Analyses'}
-
 
     class LHCb(siteCollection):
         id = 3
@@ -44,10 +42,16 @@ class CollectionData(DataSet):
         names = {('en', 'ln'): u'LHCb Data Analyses',
                  ('fr', 'ln'): u'LHCb Data Analyses'}
 
-
     class ALICE(siteCollection):
         id = 4
         name = 'ALICE'
         dbquery = '980:"ALICE"'
         names = {('en', 'ln'): u'ALICE Data Analyses',
                  ('fr', 'ln'): u'ALICE Data Analyses'}
+
+    class ATLAS(siteCollection):
+        id = 5
+        name = 'ATLAS'
+        dbquery = '980:"ATLAS"'
+        names = {('en', 'ln'): u'ATLAS Data Analyses',
+                 ('fr', 'ln'): u'ATLAS Data Analyses'}
