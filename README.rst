@@ -1,14 +1,22 @@
-=================
-Invenio Data Demo site
-=================
+About
+-----
 
-This is the Invenio Data Demo source code overlay.  It installs on top of
-Invenio digital library platform source code.
+This is source code behind `https://analysis-preservation.cern.ch/
+<https://analysis-preservation.cern.ch>`_.  This source code overlay
+installs on top of `Invenio
+<https://github.com/inveniosoftware/invenio>`_ digital library
+platform.
 
-**DEMO ONLY**
+Installation
+------------
 
-| Invenio Development Team
-|   Email: info@invenio-software.org
-|   IRC: #invenio on irc.freenode.net
-|   Twitter: @inveniosoftware
-|   URL: http://invenio-software.org
+If you'd like to install a demo site locally for your personal
+developments, please see `developing guide <DEVELOPING.rst>`_ for more
+information.
+
+Contributing
+------------
+
+Bug reports, feature requests, and code contributions are encouraged
+and welcome!  Please see `contributing guide <CONTRIBUTING.rst>`_ for
+more information.
