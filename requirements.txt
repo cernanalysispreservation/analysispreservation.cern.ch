@@ -1,12 +1,3 @@
 # START
 
-# from invenio/requirements.txt
-#
--e git+git://github.com/mrjoes/flask-admin.git#egg=Flask-Admin-1.0.9.dev0
--e git+git://github.com/inveniosoftware/workflow.git@e41299579501704b1486c72cc2509a9f82e63ea6#egg=workflow
-git+git://github.com/inveniosoftware/flask-sso.git
-# END
-
--e git+https://github.com/inveniosoftware/invenio@pu#egg=Invenio-dev
-
 -e .
