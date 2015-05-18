@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-#
+{#
 # This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2014, 2015 CERN.
 #
@@ -15,20 +14,17 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02D111-1307, USA.
-
-"""Data-demo bundles."""
-
-from invenio.ext.assets import Bundle
-
-from invenio.base.bundles import styles as _styles
-
-css = Bundle(
-  "css/style.css",
-  output="datademo.css",
-  weight=1,
-  bower = {
-    "open-sans-fontface": "latest",
-  }
-)
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+# USA.
+#}
+{%- extends "accounts/login_base.html" %}
+{%- block form_body scoped -%}
+<div class="row">
+  {%- block form_auth_internal scoped -%}
+    {{ super() }}
+  {%- endblock form_auth_internal -%}
+  {%- block form_auth_external scoped -%}
+<a href="{{url_for("oauthclient.login", remote_app="cern")}}">{{ _('Sign in with CERN') }}</a>
+  {%- endblock form_auth_external -%}
+</div>
+{%- endblock form_body -%}
