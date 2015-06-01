@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA
 
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
@@ -223,7 +223,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='Please enter Analysis Name',
         export_key='analysis_name',
         icon='fa fa-credit-card fa-fw',
-        validators=[Required()]
+        validators=[DataRequired()]
     )
 
     analysisnum = data_fields.AnalysisNumberField(
@@ -232,7 +232,7 @@ class LHCbDataAnalysisForm(WebDepositForm):
         placeholder='Please enter Analysis Number',
         export_key='analysis_number',
         icon='fa fa-barcode fa-fw',
-        validators=[Required()]
+        validators=[DataRequired()]
     )
 
     title = data_fields.TextField(

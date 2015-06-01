@@ -1,0 +1,33 @@
+{#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2014, 2015 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can
+# redistribute it and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that
+# it will be useful, but WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this software; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+# USA.
+#}
+
+{%- extends "deposit/form_base.html" -%}
+
+{% block form_title scoped %}
+    <h1 id="deposit-top">{{ form._title }}</h1>
+    <div class="progress progress-striped" style="height: inherit;">
+        <div class="progress-bar progress-bar-danger" style="width: 100%;">
+            <h4>THIS IS JUST A DEMO. DATA IS <em>NOT</em> STORED</h4>
+        </div>
+    </div>
+    {% if form._subtitle %}
+        <p class="text-muted"><small>{{ form._subtitle|safe }}</small></p>
+    {% endif %}
+{% endblock form_title %}

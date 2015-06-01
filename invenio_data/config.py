@@ -33,9 +33,6 @@ DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
 ]
 
-CFG_DATABASE_NAME = 'datademo'
-CFG_DATABASE_USER = 'datademo'
-
 CFG_SITE_URL = 'http://data-demo.cern.ch'
 CFG_SITE_SECURE_URL = 'https://data-demo.cern.ch'
 
