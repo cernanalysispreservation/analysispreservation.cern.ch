@@ -20,7 +20,7 @@
 
 from wtforms import TextField
 from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.records.api import Record
+from invenio_records.api import Record
 from requests import get
 
 __all__ = ['AnalysisNumberField']

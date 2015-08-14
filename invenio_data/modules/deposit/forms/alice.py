@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA
 
-from wtforms.validators import Required
+from wtforms.validators import DataRequired
 from wtforms import widgets
 from invenio.base.i18n import _
 from invenio.modules.deposit.form import WebDepositForm
@@ -178,7 +178,7 @@ class AliceDataAnalysisForm(WebDepositForm):
         widget_classes='form-control',
         placeholder='Auto-completed via Analysis Number',
         export_key='data_title',
-        validators=[Required()]
+        validators=[DataRequired()]
     )
 
     authors = fields.DynamicFieldList(
@@ -188,7 +188,7 @@ class AliceDataAnalysisForm(WebDepositForm):
             widget=ColumnInput(class_="col-xs-10")
         ),
         label='Authors',
-        validators=[Required()],
+        validators=[DataRequired()],
         add_label='Add another author',
         icon='fa fa-user fa-fw',
         widget_classes='',

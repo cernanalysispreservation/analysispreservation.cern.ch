@@ -18,44 +18,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
-from flask.ext.login import current_user
-from flask import render_template
-
-from invenio.modules.deposit.models import DepositionType, Deposition
-from invenio.modules.formatter import format_record
-from invenio.modules.deposit.tasks import render_form, \
-    create_recid, \
-    prepare_sip, \
-    finalize_record_sip, \
-    upload_record_sip, \
-    prefill_draft,\
-    process_sip_metadata
+from invenio.modules.deposit.types import SimpleRecordDeposition
 
 from .. import forms
 
 __all__ = ['lhcb']
 
 
-class lhcb(DepositionType):
-    workflow = [
-        # Pre-fill draft with values passed in from request
-        prefill_draft(draft_id='default'),
-        # Render form and wait for user to submit
-        render_form(draft_id='default'),
-        # Create the submission information package by merging form data
-        # from all drafts (in this case only one draft exists).
-        prepare_sip(),
-        # Process metadata to match your JSONAlchemy record model. This will
-        # call process_sip_metadata() on your subclass.
-        process_sip_metadata(),
-        # Reserve a new record id, so that we can provide proper feedback to
-        # user before the record has been uploaded.
-        create_recid(),
-        # Generate MARC based on metadata dictionary.
-        finalize_record_sip(is_dump=False),
-        # Seal the SIP and write MARCXML file and call bibupload on it
-        upload_record_sip(),
-    ]
+class lhcb(SimpleRecordDeposition):
     name = "LHCb Data Analysis"
     name_plural = "LHCb Data Analysis"
     group = "LHCb Data Analysis"
@@ -63,33 +33,3 @@ class lhcb(DepositionType):
     draft_definitions = {
         'default': forms.LHCbDataAnalysisForm,
     }
-
-    @classmethod
-    def render_completed(cls, d):
-        """
-        Page to render when deposition was successfully completed.
-        """
-        ctx = dict(
-            deposition=d,
-            deposition_type=(
-                None if d.type.is_default() else d.type.get_identifier()
-            ),
-            uuid=d.id,
-            my_depositions=Deposition.get_depositions(
-                current_user, type=d.type
-            ),
-            sip=d.get_latest_sip(),
-            format_record=format_record,
-        )
-
-        return render_template('deposit/completed.html', **ctx)
-
-    @classmethod
-    def process_sip_metadata(cls, deposition, metadata):
-        """
-        Process exported metada
-        """
-
-        if 'authors' in metadata and metadata['authors']:
-            metadata['_first_author'] = metadata['authors'][0]
-            metadata['_additional_authors'] = metadata['authors'][1:]

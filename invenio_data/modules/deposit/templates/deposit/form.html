@@ -18,31 +18,16 @@
 # USA.
 #}
 
-{% extends "page.html" %}
-{% block body %}
+{%- extends "deposit/form_base.html" -%}
 
-<div class="page-header">
-  <h3>{{ _('Select a Document Type') }}</h3>
-</div>
-
-<div class="row">
-  <div id="webdeposit_types_accordion" class="col-md-offset-3 col-md-6 panel-group">
-    {% for deptype_group in deposition_types.values()|groupby('group') %}
-      {% for deptype in deptype_group.list|sort(attribute='name') %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4>
-              <a href="{{ url_for('.deposition_type_index', deposition_type=deptype.get_identifier()) }}">
-                <i class="glyphicon glyphicon-chevron-right pull-right"></i>
-                {{ deptype.name }}
-            </a>
-            </h4>
-          </div>
+{% block form_title scoped %}
+    <h1 id="deposit-top">{{ form._title }}</h1>
+    <div class="progress progress-striped" style="height: inherit;">
+        <div class="progress-bar progress-bar-danger" style="width: 100%;">
+            <h4>THIS IS JUST A DEMO. DATA IS <em>NOT</em> STORED</h4>
         </div>
-      {% endfor %}
-    {% endfor %}
-
-  </div>
-</div>
-
-{% endblock %}
+    </div>
+    {% if form._subtitle %}
+        <p class="text-muted"><small>{{ form._subtitle|safe }}</small></p>
+    {% endif %}
+{% endblock form_title %}

@@ -18,23 +18,24 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02D111-1307, USA.
 
-from invenio.base.config import PACKAGES as _PACKAGES
+from invenio.base.config import PACKAGES as _PACKAGES, PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
+from invenio.modules.oauthclient.contrib import cern
 
 PACKAGES = [
     "invenio_data.base",
     "invenio_data.modules.*",
 ] + _PACKAGES
 
-from invenio.base.config import EXTENSIONS as _EXTENSIONS
+PACKAGES_EXCLUDE = [
+    "invenio_annotations",
+    "invenio_comments",
+] + _PACKAGES_EXCLUDE
 
 DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.cms.cms',
     'invenio_data.modules.deposit.workflows.alice.alice',
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
 ]
-
-CFG_DATABASE_NAME = 'datademo'
-CFG_DATABASE_USER = 'datademo'
 
 CFG_SITE_URL = 'http://data-demo.cern.ch'
 CFG_SITE_SECURE_URL = 'https://data-demo.cern.ch'
@@ -73,12 +74,11 @@ CFG_SITE_NAME_INTL['fa'] = 'Data Analysis Preservation Platform Demo'
 
 CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
 
-from invenio.modules.oauthclient.contrib import cern
 OAUTHCLIENT_REMOTE_APPS = dict(
-        cern=cern.REMOTE_APP,
+    cern=cern.REMOTE_APP,
 )
 
 CERN_APP_CREDENTIALS = dict(
-        consumer_key="changeme",
-        consumer_secret= "changeme",
+    consumer_key="changeme",
+    consumer_secret="changeme",
 )

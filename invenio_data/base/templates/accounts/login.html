@@ -17,31 +17,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 #}
-
-<div class="record-detailed">
-
-  <div class="record-header">
-    {% block header%}
-    {% endblock %}
-  </div>
-
-  <div class="record-details">
-    {% block details %}
-    {% endblock %}
-  </div>
-
-  <div class="record-abstract">
-    {% block abstract %}
-    {% endblock %}
-  </div>
-
-  <div>
-    {% block data %}
-    {% endblock %}
-  </div>
-
-
+{%- extends "accounts/login_base.html" %}
+{%- block form_body scoped -%}
+<div class="row">
+  {%- block form_auth_internal scoped -%}
+    {{ super() }}
+  {%- endblock form_auth_internal -%}
+  {%- block form_auth_external scoped -%}
+<a href="{{url_for("oauthclient.login", remote_app="cern")}}?next=/">{{ _('Sign in with CERN') }}</a>
+  {%- endblock form_auth_external -%}
 </div>
-
-{% block footer %}
-{% endblock %}
+{%- endblock form_body -%}
