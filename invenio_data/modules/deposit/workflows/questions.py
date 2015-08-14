@@ -11,16 +11,25 @@
 # CERN Analysis Preservation Framework is distributed in the hope that
 # it will be useful, but WITHOUT ANY WARRANTY; without even the
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
+# PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
-# USA
+# USA.
 
-from __future__ import absolute_import
+from invenio.modules.deposit.types import SimpleRecordDeposition
 
-from .alice import *
-from .cms import *
-from .cmsquestions import *
-from .lhcb import *
+from .. import forms
+
+__all__ = ['questions']
+
+
+class questions(SimpleRecordDeposition):
+    name = "CMS Statistics Questionnaire (old)"
+    name_plural = "CMS Statistics Questionnaire (old)"
+    group = "CMS Statistics Questionnaire"
+    enabled = True
+    draft_definitions = {
+        'default': forms.CMSStatisticsQuestionnaire,
+    }

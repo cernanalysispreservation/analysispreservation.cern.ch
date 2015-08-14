@@ -36,6 +36,7 @@ DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.cms.cms',
     'invenio_data.modules.deposit.workflows.alice.alice',
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
+    'invenio_data.modules.deposit.workflows.questions.questions',
 ]
 
 CFG_SITE_URL = 'http://data-demo.cern.ch'
