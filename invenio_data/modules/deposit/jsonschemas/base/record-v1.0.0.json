@@ -1,0 +1,16 @@
+{
+    "type": "object",
+    "title": "record",
+    "properties": {
+        "creation_date": {
+            "type": "string"
+        },
+        "modification_date": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "creation_date",
+        "modification_date"
+    ]
+}

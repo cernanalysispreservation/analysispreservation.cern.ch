@@ -18,10 +18,29 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA
 
-from __future__ import absolute_import
+"""Test form for jsondeposit."""
 
-from .alice import *
-from .cms import *
-from .cmsquestions import *
-from .cmsquestions2 import *
-from .lhcb import *
+from invenio.base.i18n import _
+
+from invenio.modules.deposit.form import JsonForm, WebDepositForm
+
+from invenio_jsonschemas.api import internal_schema_url
+
+from speaklater import make_lazy_string
+
+
+__all__ = ('CMSStatisticsQuestionnaire2', )
+
+
+class CMSStatisticsQuestionnaire2(WebDepositForm):
+    __metaclass__ = JsonForm
+
+    """Deposition Form."""
+
+    """ Form Configuration variables """
+    _name = 'test'
+    _title = _('CMS Statistics Questionnaire')
+    _subtitle = "Access to all submitted data will be restricted to the "\
+                "CMS collaboration only."
+    _drafting = True   # enable and disable drafting
+    _schema = make_lazy_string(lambda: internal_schema_url('forms', 'cms_questionnaire-v0.1.0.json'))

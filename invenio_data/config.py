@@ -37,6 +37,7 @@ DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.alice.alice',
     'invenio_data.modules.deposit.workflows.lhcb.lhcb',
     'invenio_data.modules.deposit.workflows.questions.questions',
+    'invenio_data.modules.deposit.workflows.questions2.questions2',
 ]
 
 CFG_SITE_URL = 'http://data-demo.cern.ch'
@@ -64,3 +65,5 @@ CERN_APP_CREDENTIALS = dict(
     consumer_key="changeme",
     consumer_secret="changeme",
 )
+
+JSONSCHEMAS_BASE_SCHEMA = 'base/record-v1.0.0.json'
