@@ -15,20 +15,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this software; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02D111-1307, USA.
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+# USA.
 
 """Data-demo bundles."""
 
-from invenio.ext.assets import Bundle
-
 from invenio.base.bundles import styles as _styles
 
-css = Bundle(
-  "css/style.css",
-  output="datademo.css",
-  weight=1,
-  bower = {
-    "open-sans-fontface": "latest",
-  }
-)
+_styles.contents.remove("less/base.less")
+_styles.contents += ("less/cds.less",)
+_styles.contents += ("less/experiments.less",)

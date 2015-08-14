@@ -18,12 +18,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
-from invenio.config import CFG_SITE_NAME
 from fixture import DataSet
-from invenio.modules.search.fixtures import CollectionData
+
 from invenio.modules.search import fixtures as default
 
+
 class CollectionData(DataSet):
+
+    siteCollection = default.CollectionData.siteCollection
 
     class CMS(default.CollectionData.siteCollection):
         id = 2
@@ -52,3 +54,25 @@ class CollectionData(DataSet):
         dbquery = '980:"ATLAS"'
         names = {('en', 'ln'): u'ATLAS Data Analyses',
                  ('fr', 'ln'): u'ATLAS Data Analyses'}
+
+    class JSONTest(default.CollectionData.siteCollection):
+        id = 6
+        name = 'JSONTest'
+        dbquery = '980:"JSONTest"'
+        names = {('en', 'ln'): u'JSON Test Record',
+                 ('fr', 'ln'): u'JSON Test Record'}
+
+
+class CollectionCollectionData(DataSet):
+
+    class siteCollection_JSONTest:
+        dad = CollectionData.siteCollection
+        son = CollectionData.JSONTest
+        score = 10
+        type = 'p'
+
+
+__all__ = (
+    'CollectionData',
+    'CollectionCollectionData',
+)

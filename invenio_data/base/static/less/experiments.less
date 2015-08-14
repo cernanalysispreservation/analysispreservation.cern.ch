@@ -1,0 +1,25 @@
+@experiments-list-margin: 40px 0;
+@experiments-logo-margin: 20px;
+@experiments-logo-size: 80px;
+
+.experiments-list {
+    margin: @experiments-list-margin;
+    text-align: center;
+
+    > li {
+        display: inline-block;
+
+        a {
+            display: inline-block;
+            height: @experiments-logo-size;
+            width: @experiments-logo-size;
+            margin: @experiments-logo-margin;
+
+            img {
+                max-height: @experiments-logo-size;
+                max-width: @experiments-logo-size;
+            }
+        }
+
+    }
+}

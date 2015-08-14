@@ -18,37 +18,24 @@
 # USA.
 #}
 
-{% from "search/helpers.html" import collection_tree, portalbox_sidebar, search_also, search_form, search_form_javascript, record_brief_links with context %}
 {%- extends "search/searchbar_frame_base.html" -%}
 
-{% block body %}
+{%- block page_body_before -%}
+<div id="search-form">
+  <div class="container">
+    {% include "search/form/index.html" -%}
+  </div>
+</div>
+{%- endblock -%}
 
+{%- block body -%}
   {% if collection.id == 1 %}
-    <div style="text-align:center; margin-top:80px; margin-bottom:80px;font-style: bold; font-size: 400%;">
-      Data Analysis Preservation Demo
-    </div>
-  {% else %}
-    <h1>{{ collection.name_ln }}</h1>
-    <p>&nbsp;&nbsp;&nbsp;(submit <a href="/deposit/{{ collection.name|lower }}">new {{ collection.name }} analysis</a>)</p>
+    <ul class="experiments-list">
+        <li><a href="/collection/ALICE"><img src="/img/logo-alice.gif"></a></li>
+        <li><a href="/collection/ATLAS"><img src="/img/logo-atlas.gif"></a></li>
+        <li><a href="/collection/CMS"><img src="/img/cms-logo.gif"></a></li>
+        <li><a href="/collection/LHCb"><img src="/img/lhcb-logo.jpg"></a></list>
+    </ul>
   {% endif %}
-
-  {%- block search_form -%}
-    {{ search_form(collection, easy_search_form) }}
-  {%- endblock  %}
-
-  {% if collection.id == 1 %}
-    <div style="margin-top: 80px; text-align: center">
-      <a href="/collection/ALICE"><img src="/img/logo-alice.gif" width="80" border="0"></a>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a href="/collection/ATLAS"><img src="/img/logo-atlas.gif" width="80" border="0"></a>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a href="/collection/CMS"><img src="/img/cms-logo.gif" width="80" border="0"></a>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a href="/collection/LHCb"><img src="/img/lhcb-logo.jpg" width="100" border="0"></a>
-    </div>
-  {% endif %}
-
-  {% block inner_content %}
-  {% endblock %}
-
-{% endblock %}
+  {%- block inner_content -%}{{ super() }}{%- endblock -%}
+{%- endblock -%}
