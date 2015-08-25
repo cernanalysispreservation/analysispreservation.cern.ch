@@ -21,7 +21,8 @@ USER root
 ADD . /code-overlay
 WORKDIR /code-overlay
 RUN sed -i '/inveniosoftware\/invenio@/d' requirements.txt && \
-    pip install -r requirements.txt --exists-action i
+    pip install -r requirements.txt --exists-action i && \
+    pip install uwsgi
 
 # step back
 # in general code should not be writeable, especially because we are using
@@ -38,3 +39,4 @@ RUN mkdir -p /code-overlay/src && \
 VOLUME /code-overlay
 
 USER invenio
+EXPOSE 28080

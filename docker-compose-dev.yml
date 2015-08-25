@@ -19,7 +19,7 @@
 
 web:
   build: .
-  command: inveniomanage runserver -h 0.0.0.0 -p 28080 -d -r
+  command: uwsgi --ini /code-overlay/uwsgi/uwsgi.ini --http :28080
   ports:
     - "127.0.0.1:28080:28080"
   environment:
@@ -29,10 +29,11 @@ web:
     - CELERY_RESULT_BACKEND=redis://cache:6379/1
     - CFG_DATABASE_HOST=db
     - "CFG_REDIS_HOSTS={'default': [{'db': 0, 'host': 'cache', 'port': 6379}]}"
+    - COLLECT_STORAGE=flask_collect.storage.file
     - DEBUG=True
     - DEBUG_TB_INTERCEPT_REDIRECTS=False
     - ES_HOSTS=['es']
-    - INVENIO_APP_CONFIG_ENVS=ASSETS_DEBUG,BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST,CFG_REDIS_HOSTS,DEBUG,DEBUG_TB_INTERCEPT_REDIRECTS,ES_HOSTS
+    - INVENIO_APP_CONFIG_ENVS=ASSETS_DEBUG,BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST,CFG_REDIS_HOSTS,COLLECT_STORAGE,DEBUG,DEBUG_TB_INTERCEPT_REDIRECTS,ES_HOSTS
   volumes:
     - ../invenio/invenio:/code/invenio:ro
     - ../invenio/docs:/code/docs:rw
@@ -55,10 +56,11 @@ worker:
     - CELERY_RESULT_BACKEND=redis://cache:6379/1
     - CFG_DATABASE_HOST=db
     - "CFG_REDIS_HOSTS={'default': [{'db': 0, 'host': 'cache', 'port': 6379}]}"
+    - COLLECT_STORAGE=flask_collect.storage.file
     - DEBUG=True
     - DEBUG_TB_INTERCEPT_REDIRECTS=False
     - ES_HOSTS=['es']
-    - INVENIO_APP_CONFIG_ENVS=ASSETS_DEBUG,BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST,CFG_REDIS_HOSTS,DEBUG,DEBUG_TB_INTERCEPT_REDIRECTS,ES_HOSTS
+    - INVENIO_APP_CONFIG_ENVS=ASSETS_DEBUG,BROKER_URL,CELERY_RESULT_BACKEND,CACHE_REDIS_HOST,CFG_DATABASE_HOST,CFG_REDIS_HOSTS,COLLECT_STORAGE,DEBUG,DEBUG_TB_INTERCEPT_REDIRECTS,ES_HOSTS
   volumes_from:
     - web
   read_only: true
