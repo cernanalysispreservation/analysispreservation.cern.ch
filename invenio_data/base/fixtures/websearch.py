@@ -20,7 +20,7 @@
 
 from fixture import DataSet
 
-from invenio.modules.search import fixtures as default
+from invenio_search import fixtures as default
 
 
 class CollectionData(DataSet):

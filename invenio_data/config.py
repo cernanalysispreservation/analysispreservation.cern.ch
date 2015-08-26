@@ -19,7 +19,7 @@
 # 02D111-1307, USA.
 
 from invenio.base.config import PACKAGES as _PACKAGES, PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
-from invenio.modules.oauthclient.contrib import cern
+from invenio_oauthclient.contrib import cern
 
 PACKAGES = [
     "invenio_data.base",

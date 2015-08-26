@@ -22,11 +22,11 @@
 
 from flask import current_app
 
-from invenio.modules.deposit.types import JsonRecordDeposition
+from invenio_deposit.types import JsonRecordDeposition
+
+from invenio_deposit.json_utils import json2blob
 
 from .. import forms
-
-from invenio.modules.deposit.json_utils import json2blob
 
 __all__ = ['questions2']
 

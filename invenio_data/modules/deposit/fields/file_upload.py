@@ -19,7 +19,7 @@
 # USA.
 
 from wtforms import FileField
-from invenio.modules.deposit.field_base import WebDepositField
+from invenio_deposit.field_base import WebDepositField
 
 __all__ = ['FileUploadField']
 

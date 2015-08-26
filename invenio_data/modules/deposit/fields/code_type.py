@@ -20,8 +20,8 @@
 
 from wtforms import SelectField
 from wtforms.widgets import Select
-from invenio.modules.deposit.field_base import WebDepositField
-from invenio.modules.deposit.field_widgets import ColumnInput
+from invenio_deposit.field_base import WebDepositField
+from invenio_deposit.field_widgets import ColumnInput
 
 __all__ = ['CodeTypeField']
 

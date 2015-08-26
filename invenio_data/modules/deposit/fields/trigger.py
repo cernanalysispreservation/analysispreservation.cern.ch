@@ -20,7 +20,7 @@
 
 from wtforms import RadioField
 from wtforms.widgets import RadioInput, HTMLString
-from invenio.modules.deposit.field_base import WebDepositField
+from invenio_deposit.field_base import WebDepositField
 
 __all__ = ['TriggerField']
 

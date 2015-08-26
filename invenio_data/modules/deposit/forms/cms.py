@@ -21,11 +21,11 @@
 from wtforms.validators import DataRequired
 from wtforms import widgets
 from invenio.base.i18n import _
-from invenio.modules.deposit.form import WebDepositForm
-from invenio.modules.deposit import fields
-from invenio.modules.deposit.field_widgets import plupload_widget, \
+from invenio_deposit.form import WebDepositForm
+from invenio_deposit import fields
+from invenio_deposit.field_widgets import plupload_widget, \
     ExtendedListWidget, ColumnInput, ItemWidget
-from invenio.modules.deposit.validation_utils import required_if
+from invenio_deposit.validation_utils import required_if
 
 from .. import fields as data_fields
 from ..fields.triggers import triggers

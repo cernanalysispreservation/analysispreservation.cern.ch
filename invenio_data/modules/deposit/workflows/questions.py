@@ -18,7 +18,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
-from invenio.modules.deposit.types import SimpleRecordDeposition
+from invenio_deposit.types import SimpleRecordDeposition
 
 from .. import forms
 

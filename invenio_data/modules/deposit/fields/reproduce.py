@@ -19,7 +19,7 @@
 # USA.
 
 from wtforms import SelectField
-from invenio.modules.deposit.field_base import WebDepositField
+from invenio_deposit.field_base import WebDepositField
 
 __all__ = ['ReproduceField']
 

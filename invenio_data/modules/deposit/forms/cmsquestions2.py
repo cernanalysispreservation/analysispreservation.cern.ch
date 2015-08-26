@@ -22,7 +22,7 @@
 
 from invenio.base.i18n import _
 
-from invenio.modules.deposit.form import JsonForm, WebDepositForm
+from invenio_deposit.form import JsonForm, WebDepositForm
 
 from invenio_jsonschemas.api import internal_schema_url
 
