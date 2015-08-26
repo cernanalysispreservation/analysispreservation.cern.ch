@@ -1,0 +1,36 @@
+{% extends "page.html" %}
+
+{% block global_bundles %}
+  {{ super() }}
+  {% bundles "jsoneditor.js", "jsoneditor.css" %}
+{% endblock %}
+
+{% block title %}
+    <h2>{{ _('JSON Editor') }}</h2>
+{% endblock %}
+
+{% macro button_bar() %}
+    <div class="well">
+        <span class="pull-right">
+            <button class="btn btn-default jsoneditor-submit" data-toggle="tooltip" title="{{_('Press "Save" to save your edit.')}}" type="button"><i class="fa fa-file-o"></i> {{ _('Save') }}</button>
+        </span>
+        <span class="clearfix"></span>
+    </div>
+{% endmacro %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <form class="jsoneditor" method="post">
+                {{ button_bar() }}
+
+                <div class="jsoneditor-loading well well-lg"><i class="fa fa-spinner fa-spin"></i> {{ _('Loading') }}</div>
+                <textarea name="json" class="jsoneditor-blob">{{ json }}</textarea>
+                <textarea name="patch" class="jsoneditor-patch"></textarea>
+                <div class="jsoneditor-rendered"></div>
+
+                {{ button_bar() }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
