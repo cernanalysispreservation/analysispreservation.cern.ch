@@ -1,0 +1,119 @@
+/**
+ * This file is part of CERN Analysis Preservation Framework.
+ * Copyright (C) 2015 CERN.
+ *
+ * CERN Analysis Preservation Framework is free software; you can
+ * redistribute it and/or modify it under the terms of the GNU General
+ * Public License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * CERN Analysis Preservation Framework is distributed in the hope that
+ * it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this software; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+ * USA.
+ */
+
+.jsonrecord {
+    text-align: initial;
+
+    .row {
+        margin: 0;
+    }
+
+    .form-control[disabled] {
+        background-color: #FFF;
+        cursor: initial;
+    }
+
+    .select2-container {
+        display: block;
+    }
+
+    .select2-container.select2-container-disabled .select2-choice {
+        background-color: #FFF;
+        border: none;
+        cursor: text;
+
+        -webkit-user-select: all;
+        -moz-user-select: all;
+        -ms-user-select: all;
+        user-select: all;
+
+        .select2-arrow {
+            display: none;
+        }
+    }
+}
+
+.jsonrecord-blob {
+    display: none;
+}
+
+.jsonrecord-brief {
+    height: 200px;
+    overflow: hidden;
+
+    .jsonrecord-rendered {
+        filter: contrast(120%);
+        font-family: monospace;
+        transform: scale(0.5);
+        transform-origin: 0 0;
+        width: 200%;
+
+        *:not(i) {
+            font-weight: 700 !important;
+            letter-spacing: 2px !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        > div > h3:first-child {
+            margin-top: 0;
+        }
+    }
+}
+
+.jsonrecord-briefarea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
+
+
+    cursor: pointer;
+}
+
+.jsonrecord-brieflink {
+    color: inherit;
+    display: inline-block;
+    position: relative;
+}
+
+.jsonrecord-brieflink:focus, .jsonrecord-brieflink:hover {
+    color: inherit;
+    filter: brightness(105%);
+    text-decoration: none;
+}
+
+.jsonrecord-loading {
+    font-weight: 700;
+    text-align: center;
+}
+
+.jsonrecord-metadata {
+    text-align: initial;
+
+    .col-md-2 {
+        font-weight: 700;
+        text-align: right;
+    }
+}
