@@ -18,13 +18,17 @@
 # USA.
 #}
 {%- extends "accounts/login_base.html" %}
-{%- block form_body scoped -%}
+{%- block body -%}
 <div class="row">
-  {%- block form_auth_internal scoped -%}
-    {{ super() }}
-  {%- endblock form_auth_internal -%}
-  {%- block form_auth_external scoped -%}
-<a href="{{url_for("oauthclient.login", remote_app="cern")}}?next=/">{{ _('Sign in with CERN') }}</a>
-  {%- endblock form_auth_external -%}
+    <div class="col-md-offset-4 col-md-4">
+        <a class="btn btn-info btn-block" href="{{url_for("oauthclient.login", remote_app="cern")}}?next=/">{{ _('Sign in with CERN') }}</a>
+    </div>
 </div>
-{%- endblock form_body -%}
+{%- endblock body -%}
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript">
+window.location.replace("{{url_for("oauthclient.login", remote_app="cern")}}?next=/");
+</script>
+{% endblock %}
