@@ -75,3 +75,6 @@ CERN_APP_CREDENTIALS = dict(
 )
 
 JSONSCHEMAS_BASE_SCHEMA = 'base/record-v1.0.0.json'
+
+CFG_SITE_ADMIN_EMAIL = 'analysis-preservation-support@cern.ch'
+CFG_SITE_SUPPORT_EMAIL = 'analysis-preservation-support@cern.ch'
