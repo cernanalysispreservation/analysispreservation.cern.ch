@@ -18,7 +18,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02D111-1307, USA.
 
+import copy
+
 from invenio.base.config import PACKAGES as _PACKAGES, PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
+
 from invenio_oauthclient.contrib import cern
 
 PACKAGES = [
@@ -57,8 +60,13 @@ CFG_SITE_MISSION_INTL = {
 
 CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
 
+CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
+CERN_REMOTE_APP["params"].update(dict(request_token_params={
+   "resource": "analysis-preservation.cern.ch",
+   "scope": "Name Email Bio Groups",
+}))
 OAUTHCLIENT_REMOTE_APPS = dict(
-    cern=cern.REMOTE_APP,
+    cern=CERN_REMOTE_APP,
 )
 
 CERN_APP_CREDENTIALS = dict(
