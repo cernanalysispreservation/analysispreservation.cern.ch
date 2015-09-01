@@ -76,5 +76,51 @@ CERN_APP_CREDENTIALS = dict(
 
 JSONSCHEMAS_BASE_SCHEMA = 'base/record-v1.0.0.json'
 
+DEF_DEMO_USER_ROLES = (
+    ('maneuman', 'superadmin'),
+    ('pfokiano', 'superadmin'),
+    ('simko', 'superadmin'),
+)
+
+DEF_DEMO_ROLES = (
+    ('superadmin', 'superuser with all rights', 'deny any'),
+    ('webaccessadmin', 'WebAccess administrator', 'deny any'),
+    ('anyuser', 'Any user', 'allow any'),
+    ('loanusers', 'Users who can use loans', 'allow any'),
+    ('groupusers', 'Users who can use groups', 'allow any'),
+    ('messageusers', 'Users who can use messages', 'allow any'),
+    ('holdingsusers', 'Users who can view holdings', 'allow any'),
+    ('statisticsusers', 'Users who can view statistics', 'allow any'),
+    ('claimpaperusers', 'Users who can perform changes to their own paper attributions without the need for an operator\'s approval', 'allow any'),
+    ('claimpaperoperators', 'Users who can perform changes to _all_ paper attributions without the need for an operator\'s approval', 'deny any'),
+    ('paperclaimviewers', 'Users who can view "claim my paper" facilities.', 'allow all'),
+    ('paperattributionviewers', 'Users who can view "attribute this paper" facilities', 'allow all'),
+    ('paperattributionlinkviewers', 'Users who can see attribution links in the search', 'allow all'),
+    ('holdingpenusers', 'Users who can view Holding Pen', 'deny all'),
+    ('depositusers', 'Users who can use a deposit type', "allow groups 'DAPF-development'\ndeny any"),
+    ('deposituserscms', 'Users who can use a CMS deposit type', "allow groups 'cms-members'\ndeny any"),
+)
+
+DEF_DEMO_AUTHS = (
+    ('loanusers', 'useloans', {}),
+    ('groupusers', 'usegroups', {}),
+    ('messageusers', 'usemessages', {}),
+    ('holdingsusers', 'viewholdings', {}),
+    ('statisticsusers', 'viewstatistics', {}),
+    ('claimpaperusers', 'claimpaper_view_pid_universe', {}),
+    ('claimpaperoperators', 'claimpaper_view_pid_universe', {}),
+    ('claimpaperusers', 'claimpaper_claim_own_papers', {}),
+    ('claimpaperoperators', 'claimpaper_claim_own_papers', {}),
+    ('claimpaperoperators', 'claimpaper_claim_others_papers', {}),
+    ('claimpaperusers', 'claimpaper_change_own_data', {}),
+    ('claimpaperoperators', 'claimpaper_change_own_data', {}),
+    ('claimpaperoperators', 'claimpaper_change_others_data', {}),
+    ('holdingpenusers', 'viewholdingpen', {}),
+    ('depositusers', 'usedeposit', {}),
+    ('deposituserscms', 'usedeposit', {'type': 'cms'}),
+    ('deposituserscms', 'usedeposit', {'type': 'questions'}),
+    ('deposituserscms', 'usedeposit', {'type': 'questions2'}),
+)
+
 CFG_SITE_ADMIN_EMAIL = 'analysis-preservation-support@cern.ch'
 CFG_SITE_SUPPORT_EMAIL = 'analysis-preservation-support@cern.ch'
