@@ -1,3 +1,12 @@
 # START
 
+# direct requirements
+-e git+git://github.com/inveniosoftware/invenio-jsonschemas.git#egg=invenio-jsonschemas
+
+# requirements to unbreak current DEV situation
+-e git+git://github.com/inveniosoftware/invenio-oauth2server.git#egg=invenio-oauth2server
+-e git+git://github.com/inveniosoftware/invenio-previewer.git#egg=invenio-previewer
+-e git+git://github.com/inveniosoftware/invenio-webhooks.git#egg=invenio-webhooks
+
+# the overlay
 -e .

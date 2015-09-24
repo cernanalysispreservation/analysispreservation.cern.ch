@@ -49,7 +49,8 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'Invenio>=1.9999.4',
+        'Invenio>=2.1',
+        'invenio-jsonschemas>=0.1.0',
     ],
     extras_require={
         'development': [

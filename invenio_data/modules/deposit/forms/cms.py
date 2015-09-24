@@ -20,7 +20,7 @@
 
 from wtforms.validators import DataRequired
 from wtforms import widgets
-from invenio.base.i18n import _
+from invenio_base.i18n import _
 from invenio_deposit.form import WebDepositForm
 from invenio_deposit import fields
 from invenio_deposit.field_widgets import plupload_widget, \

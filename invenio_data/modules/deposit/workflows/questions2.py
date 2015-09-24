@@ -22,16 +22,14 @@
 
 from flask import current_app
 
-from invenio_deposit.types import JsonRecordDeposition
-
-from invenio_deposit.json_utils import json2blob
+from invenio_deposit.types import JSONRecordDeposition
 
 from .. import forms
 
 __all__ = ['questions2']
 
 
-class questions2(JsonRecordDeposition):
+class questions2(JSONRecordDeposition):
 
     """Submit CMS Statistics Questionnaire."""
 

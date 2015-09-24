@@ -34,13 +34,13 @@ from flask_breadcrumbs import default_breadcrumb_root, register_breadcrumb
 
 from flask_login import login_required
 
-from invenio.ext.principal import permission_required
+from invenio_ext.principal import permission_required
 
 from invenio_records.api import get_record, Record
 
 from invenio_jsonschemas.api import InsecureSchemaLocation, validate_json
 
-from invenio.ext.sqlalchemy import db
+from invenio_ext.sqlalchemy import db
 
 from werkzeug.exceptions import BadRequest, Conflict
 

@@ -39,7 +39,7 @@ web:
     - ../invenio/docs:/code/docs:rw
     - ../invenio/scripts:/code/scripts:ro
     - ./invenio_data:/code-overlay/invenio_data:ro
-    - /code/invenio/base/translations
+#    - /code/invenio/base/translations
   read_only: true
   links:
     - elasticsearch:es

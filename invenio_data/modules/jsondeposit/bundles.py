@@ -22,14 +22,14 @@
 
 from __future__ import unicode_literals
 
-from invenio.base.bundles import invenio as _invenio_js, \
+from invenio_base.bundles import invenio as _invenio_js, \
     jquery as _j, \
     styles as _invenio_css
-from invenio.ext.assets import Bundle, RequireJSFilter
+from invenio_ext.assets import Bundle, RequireJSFilter
 from invenio_deposit.bundles import js as _deposit_js, \
     styles as _deposit_css
 
-from invenio_deposit.filter import CSSUrlFixer
+from invenio_ext.assets.filter import CSSUrlFixer
 
 _invenio_js.contents.extend([
     "vendors/json-editor/dist/jsoneditor.js",

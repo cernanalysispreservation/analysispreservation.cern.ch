@@ -20,9 +20,9 @@
 
 """Test form for jsondeposit."""
 
-from invenio.base.i18n import _
+from invenio_base.i18n import _
 
-from invenio_deposit.form import JsonForm, WebDepositForm
+from invenio_deposit.form import JSONForm, WebDepositForm
 
 from invenio_jsonschemas.api import internal_schema_url
 
@@ -33,7 +33,7 @@ __all__ = ('CMSStatisticsQuestionnaire2', )
 
 
 class CMSStatisticsQuestionnaire2(WebDepositForm):
-    __metaclass__ = JsonForm
+    __metaclass__ = JSONForm
 
     """Deposition Form."""
 

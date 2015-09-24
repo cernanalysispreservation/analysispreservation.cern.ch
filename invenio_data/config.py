@@ -20,14 +20,23 @@
 
 import copy
 
-from invenio.base.config import PACKAGES as _PACKAGES, PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
+from invenio_base.config import EXTENSIONS as _EXTENSIONS, \
+    PACKAGES as _PACKAGES, \
+    PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
 
 from invenio_oauthclient.contrib import cern
+
+EXTENSIONS = _EXTENSIONS + [
+    "invenio_deposit.url_converters",
+    "invenio_ext.es",
+]
 
 PACKAGES = [
     "invenio_data.base",
     "invenio_data.modules.*",
-] + _PACKAGES
+] + _PACKAGES + [
+    "invenio_jsonschemas",
+]
 
 PACKAGES_EXCLUDE = [
     "invenio_annotations",
