@@ -20,9 +20,26 @@
 
 """Data-demo bundles."""
 
+
 from invenio_base.bundles import styles as _styles
+from invenio_ext.assets import Bundle
+
 
 _styles.contents.remove("less/base.less")
 _styles.contents += ("less/cds.less",)
 _styles.contents += ("less/experiments.less",)
 _styles.contents += ("less/font.less",)
+
+base_js = Bundle(
+    filters="requirejs",
+    bower={
+        'base-64': 'latest',
+        'bootstrap-select': 'latest',
+        'fuse': 'latest',
+        'tv4': 'latest',
+        'jquery': 'latest',
+        'jquery-ui': 'latest',
+        'typeahead.js': 'latest',
+        'utf8': 'latest'
+    }
+)

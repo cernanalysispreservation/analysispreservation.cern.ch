@@ -18,18 +18,23 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
+"""Questions workflow for JSON-schema based deposits."""
+
 from invenio_deposit.types import SimpleRecordDeposition
 
-from .. import forms
+from ..forms.lhcb import LHCbDataAnalysisForm
 
 __all__ = ['lhcb']
 
 
 class lhcb(SimpleRecordDeposition):
+
+    """Submit LHCb Statistics Questionnaire."""
+
     name = "LHCb Data Analysis"
     name_plural = "LHCb Data Analysis"
     group = "LHCb Data Analysis"
     enabled = True
     draft_definitions = {
-        'default': forms.LHCbDataAnalysisForm,
+        'default': LHCbDataAnalysisForm,
     }

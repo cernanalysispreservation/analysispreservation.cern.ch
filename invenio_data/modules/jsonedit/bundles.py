@@ -35,7 +35,7 @@ jsonedit_js = Bundle(
         'fast-json-patch': 'latest',
         'fuse.js': 'latest',
         'tv4': 'latest',
-        'Sortable': 'latest',
+        'Sortable': '1.3.0',
     },
     output='jsoneditor.js'
 )

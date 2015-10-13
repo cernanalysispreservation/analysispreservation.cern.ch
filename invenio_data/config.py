@@ -17,32 +17,66 @@
 # along with this software; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02D111-1307, USA.
+"""Config file."""
+
 
 import copy
 
-from invenio_base.config import EXTENSIONS as _EXTENSIONS, \
-    PACKAGES as _PACKAGES, \
-    PACKAGES_EXCLUDE as _PACKAGES_EXCLUDE
-
 from invenio_oauthclient.contrib import cern
 
-EXTENSIONS = _EXTENSIONS + [
+EXTENSIONS = [
+    'invenio_ext.confighacks',
+    'invenio_ext.passlib:Passlib',
+    'invenio_ext.debug_toolbar',
+    'invenio_ext.babel',
+    'invenio_ext.sqlalchemy',
+    'invenio_ext.sslify',
+    'invenio_ext.cache',
+    'invenio_ext.session',
+    'invenio_ext.login',
+    'invenio_ext.principal',
+    'invenio_ext.email',
+    'invenio_ext.fixtures',  # before legacy
+    'invenio_ext.legacy',
+    'invenio_ext.assets',
+    'invenio_ext.template',
+    'invenio_ext.admin',
+    'invenio_ext.logging',
+    'invenio_ext.logging.backends.fs',
+    'invenio_ext.logging.backends.legacy',
+    'invenio_ext.logging.backends.sentry',
+    'invenio_ext.gravatar',
+    'invenio_ext.collect',
+    'invenio_ext.menu',
+    'invenio_ext.jasmine',  # after assets
+    'flask_breadcrumbs:Breadcrumbs',
     "invenio_deposit.url_converters",
-    "invenio_ext.es",
+    "invenio_ext.es"
 ]
 
 PACKAGES = [
     "invenio_data.base",
-    "invenio_data.modules.*",
-] + _PACKAGES + [
+    "invenio_data.modules.deposit",
+    "invenio_data.modules.jsondeposit",
+    "invenio_data.modules.jsonedit",
+    "invenio_deposit",
+    "invenio_collections",
+    "invenio_access",
+    "invenio_accounts",
+    "invenio_groups",
+    "invenio_oauthclient",
+    "invenio_search",
     "invenio_jsonschemas",
+    "invenio_formatter",
+    "invenio_ext",
+    "invenio_base"
 ]
 
 PACKAGES_EXCLUDE = [
     "invenio_annotations",
     "invenio_comments",
-    "invenio.modules.documentation",
-] + _PACKAGES_EXCLUDE
+    "invenio.modules.documentation"
+]
 
 DEPOSIT_TYPES = [
     'invenio_data.modules.deposit.workflows.cms.cms',
@@ -71,9 +105,10 @@ CFG_WEBSEARCH_DISPLAY_NEAREST_TERMS = 0
 
 CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
 CERN_REMOTE_APP["params"].update(dict(request_token_params={
-   "resource": "analysis-preservation.cern.ch",
-   "scope": "Name Email Bio Groups",
-}))
+    "resource": "analysis-preservation.cern.ch",
+    "scope": "Name Email Bio Groups",
+    }))
+
 OAUTHCLIENT_REMOTE_APPS = dict(
     cern=CERN_REMOTE_APP,
 )

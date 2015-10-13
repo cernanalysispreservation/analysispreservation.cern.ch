@@ -18,18 +18,23 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
+"""Simple test workflow for JSON-schema based deposits."""
+
 from invenio_deposit.types import SimpleRecordDeposition
 
-from .. import forms
+from ..forms.cmsquestions import CMSStatisticsQuestionnaire
 
 __all__ = ['questions']
 
 
 class questions(SimpleRecordDeposition):
+
+    """Submit CMS Statistics Questionnaire."""
+
     name = "CMS Statistics Questionnaire (old)"
     name_plural = "CMS Statistics Questionnaire (old)"
     group = "CMS Statistics Questionnaire"
     enabled = True
     draft_definitions = {
-        'default': forms.CMSStatisticsQuestionnaire,
+        'default': CMSStatisticsQuestionnaire,
     }

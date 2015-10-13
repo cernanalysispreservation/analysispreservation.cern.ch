@@ -20,11 +20,9 @@
 
 """Simple test workflow for JSON-schema based deposits."""
 
-from flask import current_app
-
 from invenio_deposit.types import JSONRecordDeposition
 
-from .. import forms
+from ..forms.cmsquestions2 import CMSStatisticsQuestionnaire2
 
 __all__ = ['questions2']
 
@@ -38,7 +36,7 @@ class questions2(JSONRecordDeposition):
     group = "CMS Statistics Questionnaire"
     enabled = True
     draft_definitions = {
-        'default': forms.CMSStatisticsQuestionnaire2,
+        'default': CMSStatisticsQuestionnaire2,
     }
 
     @classmethod

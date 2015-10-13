@@ -25,14 +25,14 @@ from __future__ import unicode_literals
 from invenio_base.bundles import invenio as _invenio_js, \
     jquery as _j, \
     styles as _invenio_css
-from invenio_ext.assets import Bundle, RequireJSFilter
 from invenio_deposit.bundles import js as _deposit_js, \
     styles as _deposit_css
+from invenio_ext.assets import Bundle
 
 from invenio_ext.assets.filter import CSSUrlFixer
 
 _invenio_js.contents.extend([
-    "vendors/json-editor/dist/jsoneditor.js",
+    "gen/jsoneditor.js",
     "js/jsondeposit/record.js",
     "js/jsondeposit/fingerprint.js",
 ])
@@ -40,7 +40,7 @@ _invenio_js.contents.extend([
 _invenio_js.bower.update({
     'fuse.js': 'latest',
     'tv4': 'latest',
-    'Sortable': 'latest',
+    'Sortable': '1.3.0',
 })
 
 _invenio_css.contents.append(Bundle(

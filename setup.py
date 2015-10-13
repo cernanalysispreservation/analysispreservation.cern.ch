@@ -17,7 +17,8 @@
 # USA.
 
 """
-Invenio Data
+Invenio Data.
+
 ------------
 
 Data repository.
@@ -49,8 +50,16 @@ setup(
     zip_safe=False,
     platforms='any',
     install_requires=[
-        'Invenio>=2.1',
-        'invenio-jsonschemas>=0.1.0',
+        'invenio-collections==0.2.0',
+        'invenio-access==0.2.0',
+        'invenio-accounts==0.2.0',
+        'invenio-groups==0.1.3',
+        'invenio-oauthclient==0.1.1',
+        'invenio-search==0.1.5',
+        'invenio-jsonschemas==0.1.0',
+        'invenio-formatter==0.2.2.post1',
+        'invenio-ext==0.3.2',
+        'invenio-base==0.3.1',
     ],
     extras_require={
         'development': [

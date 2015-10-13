@@ -18,11 +18,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
 # USA.
 
+"""Accounts fixture."""
+
 from fixture import DataSet
 
 from flask import current_app
-
-from invenio_accounts import fixtures as default
 
 from invenio_groups.models import PrivacyPolicy, SubscriptionPolicy
 
@@ -34,33 +34,35 @@ class UserData(DataSet):
     class admin:
         id = 1
         email = current_app.config.get('CFG_SITE_ADMIN_EMAIL')
-        password = None
+        password = ''
         note = '1'
         nickname = 'admin'
 
     class marco:
         id = 2
-        email = 'marco@crepererum.net'
-        password = None
+        email = 'javier.delgado.fernandez@cern.ch'
+        password = ''
         note = '1'
-        nickname = 'maneuman'
+        nickname = 'jadelgad'
 
     class pamfilos:
         id = 3
         email = 'pamfilos.fokianos@cern.ch'
-        password = None
+        password = ''
         note = '1'
         nickname = 'pfokiano'
 
     class tibor:
         id = 4
         email = 'tibor.simko@cern.ch'
-        password = None
+        password = ''
         note = '1'
         nickname = 'simko'
 
 
 class GroupData(DataSet):
+
+    """Group dataset class."""
 
     class support:
         id = 1
