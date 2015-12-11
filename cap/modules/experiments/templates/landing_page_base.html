@@ -1,0 +1,66 @@
+{%- extends "cap_theme/page.html" %}
+
+{% block css %}
+    {{ super() }}
+    {% assets "cap_experiments_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{% endblock css %}
+
+{# <meta tags> #}
+
+{%- block page_body %}
+<div class="container">
+    <div id="experiment-land" >
+        {% block experiment_header %}{% endblock %}
+        <div class="row">
+            <div class="col-sm-12">
+                {% block experiment_body %}{% endblock %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="cap-box">
+                    <header>Want to create a {{g.experiment}} record</header>
+                    {%- for name, info in config['CAP_JSON_FORMS'].get(g.experiment, dict()).iteritems() %}
+                        <div class="record-deposit-type">
+                        <a href="{{url_for('cap_front.record_create', collection=g.experiment, subcollection=name)}}">Create {{info.get('name', '')}}</a>
+                        </div>
+                    {% else %}
+                        No collections created for {{g.experiment}}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-6">
+                {%- raw %}
+                    <div id="cap-experiments" class="cap-box" ng-init="init('{%- endraw %}{{g.experiment}}{%- raw %}');get_experiment_records();" ng-controller="experimentsController">
+                        <header>
+                            {%- endraw %}{{g.experiment}}{%- raw %} Records
+                            <a ng-click="get_experiment_records()" class="btn pull-right btn-primary">Show records</a>
+                        </header>
+                        <ul ng-repeat="r in experiments.data.records" ng-init="record = r._source">
+                          <li>
+                            <a ng-if="record.pid_value" href="/records/{{record.pid_value}}">
+                                {{ record.title ? record.title : "Untitled"}}
+                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
+                            </a>
+                            <div ng-if="!record.pid_value" >
+                                {{ record.title ? record.title : "Untitled"}}
+                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
+                          </li>
+                        </ul>
+                        <div ng-hide="experiments.data.records.length">
+                         No records to display for {%- endraw %} {{g.experiment}}{%- raw %}
+                        </div>
+                    </div>
+                {%- endraw %}
+            </div>
+        </div>
+    </div>
+</div>
+{%- endblock %}
+
+
+{% block javascript %}
+    {{ super() }}
+    {% assets "cap_experiments_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{% endblock %}
+

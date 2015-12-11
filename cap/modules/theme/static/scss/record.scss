@@ -1,0 +1,51 @@
+#record-display {
+    background-color: #fff;
+    padding: 0;
+    margin-top: 80px;
+}
+
+#record-menu.navbar {
+    text-align: center;
+    height:50px;
+    margin-bottom: 0;
+
+     .navbar-nav {
+        display: inline-block;
+        float: none;
+    }
+
+    li {
+        >a {
+            color: #A2ADBC;
+            font-weight: 400;
+            max-height: 50px;
+        }
+        >a.active {
+            border-bottom: 2px solid #54BBF9;
+            color: #7E8185;
+        }
+
+        >a:hover,
+        >a:focus {
+            background-color: transparent;
+            border-bottom: 2px solid #ccc;
+            color: #7E8185;
+        }
+    }
+}
+
+#record-data {
+    background-color: #ccc;
+    height: 300px;
+}
+
+#record-form {
+    background-color: #F8FAFC;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    min-height: 300px
+}
+
+.record-rendered {
+    padding: 20px 10px;
+}

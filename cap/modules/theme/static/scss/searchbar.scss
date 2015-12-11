@@ -1,0 +1,94 @@
+$cap_searchbar_height: 60px;
+
+#cap-home-search {
+    height: $cap_searchbar_height;
+    margin-top: 50px;
+
+    > div, > span {
+        height: $cap_searchbar_height;
+        line-height: $cap_searchbar_height;
+    }
+
+    input, select {
+        width: 100%;
+        height: $cap_searchbar_height;
+        background-color: transparent;
+        box-shadow: none;
+        border: 0;
+        border-bottom: 1px solid #d4d4d4;
+        border-radius: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-radius: 0px;
+        -webkit-border-radius: 0px;
+        outline: 0;
+        font-size: 18px;
+        font-weight: 400;
+        color: $cap_color;
+    }
+
+    .search-input-main {
+        //width: 75%;
+        float: left;
+
+        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+            color: #BDC2C7;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+           color:    #BDC2C7;
+           opacity:  1;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+           color:    #BDC2C7;
+           opacity:  1;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10-11 */
+           color:    #BDC2C7;
+        }
+
+        i.fa {
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin-left: 15px;
+            line-height: $cap_searchbar_height;
+            line-height: 100%;
+            color: #8A949E;
+            font-size: 2em;
+            padding: 11px;
+        }
+
+        input {
+            padding-left: $cap_searchbar_height;
+        }
+    }
+
+    .search-input-sep {
+        display: inline-block;
+        height: 60px;
+        line-height: 60px;
+        float: left;
+        font-size: 18px;
+        text-align: center;
+        font-weight: 400;
+        color: #BDC2C7;
+    }
+
+    .search-input-collection {
+        //width: 20%;
+        float: left;
+
+        i.fa {
+            position: absolute;
+            right: 20px;
+            font-size: 20px;
+            color: $cap_color;
+            padding-top: 20px;
+        }
+        select {
+            width: 100%;
+            text-indent: 15px;
+        }
+    }
+}

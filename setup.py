@@ -1,89 +1,165 @@
-# This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2014, 2015 CERN.
-#
-# CERN Analysis Preservation Framework is free software; you can
-# redistribute it and/or modify it under the terms of the GNU General
-# Public License as published by the Free Software Foundation; either
-# version 2 of the License, or (at your option) any later version.
-#
-# CERN Analysis Preservation Framework is distributed in the hope that
-# it will be useful, but WITHOUT ANY WARRANTY; without even the
-# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
-# PURPOSE.  See the GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this software; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
-# USA.
-
-"""
-Invenio Data.
-
-------------
-
-Data repository.
-"""
-
 import os
+import sys
 
 from setuptools import find_packages, setup
+from setuptools.command.test import test as TestCommand
+
+# readme = open('README.rst').read()
+readme = ""
+# history = open('CHANGES.rst').read()
+history = ""
+# tests_require = [
+#     'check-manifest>=0.25',
+#     'coverage>=4.0',
+#     'isort>=4.2.2',
+#     'pep257>=0.7.0',
+#     'pytest-cache>=1.0',
+#     'pytest-cov>=1.8.0',
+#     'pytest-pep8>=1.0.6',
+#     'pytest>=2.8.0',
+# ]
+
+extras_require = {
+    'docs': [
+        'Sphinx>=1.3',
+    ]
+    # 'tests': tests_require,
+}
+
+extras_require['all'] = []
+for reqs in extras_require.values():
+    extras_require['all'].extend(reqs)
+
+setup_requires = [
+    'Babel>=1.3',
+]
+
+install_requires = [
+    'Flask>=0.10.1',
+    'Flask-BabelEx>=0.9.2',
+    'click',
+    'psycopg2',
+    'invenio[minimal]>=3.0.0a1,<3.1.0',
+    'invenio-pidstore>=1.0.0a2',
+    'invenio-assets>=1.0.0a3',
+    'invenio-records>=1.0.0a3',
+    'invenio-access==1.0.0a1',
+    'invenio-records-ui>=1.0.0a2',
+    'invenio-records-rest>=1.0.0a3',
+    'invenio-theme>=1.0.0a5',
+    # 'invenio-search==1.0.0a1',
+]
 
 
-# Load __version__, should not be done using import.
-# http://python-packaging-user-guide.readthedocs.org/en/latest/development.html#single-sourcing-the-version
+packages = find_packages()
+
+
+# class PyTest(TestCommand):
+#     """PyTest Test."""
+
+#     user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+#     def initialize_options(self):
+#         """Init pytest."""
+#         TestCommand.initialize_options(self)
+#         self.pytest_args = []
+#         try:
+#             from ConfigParser import ConfigParser
+#         except ImportError:
+#             from configparser import ConfigParser
+#         config = ConfigParser()
+#         config.read('pytest.ini')
+#         self.pytest_args = config.get('pytest', 'addopts').split(' ')
+
+#     def finalize_options(self):
+#         """Finalize pytest."""
+#         TestCommand.finalize_options(self)
+#         self.test_args = []
+#         self.test_suite = True
+
+#     def run_tests(self):
+#         """Run tests."""
+#         # import here, cause outside the eggs aren't loaded
+#         import pytest
+#         errno = pytest.main(self.pytest_args)
+#         sys.exit(errno)
+
+# Get the version string. Cannot be done with import!
 g = {}
-with open(os.path.join('invenio_data', 'version.py'), 'rt') as fp:
+with open(os.path.join('cap', 'version.py'), 'rt') as fp:
     exec(fp.read(), g)
-version = g['__version__']
+    version = g['__version__']
 
 setup(
-    name='Invenio-Data',
+    name='cap',
     version=version,
-    url='https://github.com/inveniosoftware/invenio',
+    description=__doc__,
+    long_description=readme + '\n\n' + history,
+    keywords='cap cern analysis preservation',
     license='GPLv2',
     author='CERN',
     author_email='info@invenio-software.org',
-    description=__doc__,
-    long_description=open('README.rst', 'rt').read(),
-    packages=find_packages(),
-    include_package_data=True,
+    url='https://github.com/analysispreservationcernch',
+    packages=packages,
     zip_safe=False,
+    include_package_data=True,
     platforms='any',
-    install_requires=[
-        'invenio-collections==0.2.0',
-        'invenio-access==0.2.0',
-        'invenio-accounts==0.2.0',
-        'invenio-groups==0.1.3',
-        'invenio-oauthclient==0.1.1',
-        'invenio-search==0.1.5',
-        'invenio-jsonschemas==0.1.0',
-        'invenio-formatter==0.2.2.post1',
-        'invenio-ext==0.3.2',
-        'invenio-base==0.3.1',
-    ],
-    extras_require={
-        'development': [
-            'Flask-DebugToolbar>=0.9',
-            'setuptools-bower>=0.2'
+    entry_points={
+        # 'console_scripts': [
+        #     'cap = cap.cli:cli',
+        # ],
+        'invenio_base.blueprints': [
+            'cap_front = cap.modules.front.views:blueprint',
+            'cap_theme = cap.modules.theme.views:blueprint',
+            'cap_csm = cap.modules.experiments.views.cms:cms_bp',
+            'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
+            'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
+            'cap_alice = cap.modules.experiments.views.alice:alice_bp',
+            'cap_alpaca = cap.modules.alpaca.views:blueprint',
+        ],
+        # 'invenio_i18n.translations': [
+        #     'messages = cap',
+        # ],
+        'invenio_base.apps': [
+            'invenio_search = invenio_search:InvenioSearch',
+        ],
+        'invenio_assets.bundles': [
+            'cap_theme_css = cap.modules.theme.bundles:css',
+            'cap_theme_js = cap.modules.theme.bundles:js',
+            'cap_theme_front_css = cap.modules.theme.bundles:front_css',
+            'cap_theme_front_js = cap.modules.theme.bundles:front_js',
+            'cap_theme_records_js = cap.modules.theme.bundles:records',
+            'cap_cms_js = cap.modules.experiments.bundles:cms_js',
+            'cap_lhcb_js = cap.modules.experiments.bundles:lhcb_js',
+            'cap_atlas_js = cap.modules.experiments.bundles:atlas_js',
+            'cap_alice_js = cap.modules.experiments.bundles:alice_js',
+            'cap_alpaca_display_css = cap.modules.alpaca.bundles:display_css',
+            'cap_alpaca_display_js = cap.modules.alpaca.bundles:display_js',
+            'cap_alpaca_edit_js = cap.modules.alpaca.bundles:edit_js',
+            'cap_alpaca_edit_css = cap.modules.alpaca.bundles:edit_css',
+            'cap_experiments_js = cap.modules.experiments.bundles:experiments_js',
+            'cap_experiments_css = cap.modules.experiments.bundles:experiments_css',
         ],
     },
+    extras_require=extras_require,
+    install_requires=install_requires,
+    setup_requires=setup_requires,
+    # tests_require=tests_require,
     classifiers=[
-        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GPLv2 License',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Development Status :: 1 - Planning',
     ],
-    entry_points={
-        'invenio.config': [
-            'invenio_data = invenio_data.config'
-        ]
-    },
-    test_suite='nose.collector',
-    tests_require=[
-        'nose',
-        'Flask-Testing'
-    ]
+    cmdclass={},
 )

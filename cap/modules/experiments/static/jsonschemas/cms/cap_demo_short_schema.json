@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "CMS Analysis Example (JSON Schema)",
+  "description": "Schema example for records Schema example for records Schema example for records Schema example for recordsSchema example for recordsSchema example for records",
+  "properties": {
+    "basic_info": {
+      "title": "Basic Information",
+      "propertyOrder": 10,
+      "type": "object",
+      "id": "basic_info",
+      "properties": {
+        "analysis_number": {
+          "description": "Analysis Description",
+          "title": "Analysis Number",
+          "type": "string"
+        }
+      }
+    },
+    "aod_processing": {
+      "title": "AOD Processing",
+      "description": "Provide AOD Processing information",
+      "type": "object",
+      "id": "aod_processing",
+      "properties": {
+        "primary_datasets": {
+          "title": "Primary Datasets",
+          "description": "Add CMS primary datasets",
+          "type": "array",
+          "id": "primary-datasets",
+          "default": [{}],
+          "minItems": 1,
+          "items": {
+            "$ref": "/static/jsonschemas/definitions/PrimaryDataset-vtest01.json#",
+            "properties": {
+              "copypaste": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "mc_dataset": {
+          "title": "Monte Carlo Datasets",
+          "description": "Add Monte Carlo datasets",
+          "type": "array",
+          "id": "mc-datasets",
+          "default": [{}],
+          "minItems": 1,
+          "items": {
+            "$ref": "/static/jsonschemas/definitions/MonteCarloDataset-vtest01.json#",
+            "defaultProperties": [
+              "title"
+            ]
+          }
+        },
+        "triggers": {
+          "title": "Selection Triggers",
+          "description": "Add triggers here",
+          "type": "array",
+          "items": {
+            "title": "Trigger",
+            "type": "object",
+            "id": "trigger",
+            "properties": {
+              "trigger": {
+                "title": "Trigger",
+                "type": "string"
+              },
+              "other": {
+                "title": "Other",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "run_period": {
+                "title": "Run Period",
+                "type": "object",
+                "properties": {
+                  "start_date": {
+                    "title": "Start Date",
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "end_date": {
+                    "title": "End Date",
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "efficiency": {
+                "title": "Efficiency",
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      }
+    },
+    "physics_information": {
+      "title": "Physics Information",
+      "description": "Provide information about datasets, triggers, physics objects, etc",
+      "type": "array",
+      "id": "physics-information",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/DetectorState-vtest01.json#"
+      }
+    },
+    "post_aod_processing": {
+      "title": "Post-AOD Processing",
+      "type": "array",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/PostAODProcessing-vtest01.json#"
+      }
+    },
+    "documentations": {
+      "title": "Documentations",
+      "description": "Provide documentation and other things",
+      "type": "array",
+      "id": "documentations",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/Documentation-vtest01.json#"
+      }
+    },
+    "internal_discussions": {
+      "title": "Internal Discussions",
+      "description": "Add Internal Discussions",
+      "type": "array",
+      "id": "internal-discussions",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/InternalDiscussion-vtest01.json#"
+      }
+    },
+    "presentations": {
+      "title": "Presentations",
+      "description": "Add Presentations",
+      "type": "array",
+      "id": "presentations",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/Presentation-vtest01.json#"
+      }
+    },
+    "publications": {
+      "title": "Publications",
+      "description": "Add publications or Import from CADI",
+      "type": "array",
+      "id": "publications",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/Publication-vtest01.json#"
+      }
+    },
+    "keywords": {
+      "title": "Keywords",
+      "description": "Add keywords here",
+      "type": "string",
+      "id": "keywords"
+    }
+  },
+  "required": [
+    "creator"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,81 @@
+{%- extends "cap_theme/page.html" %}
+
+{%- block header %}
+    {% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  {{ super() }}
+
+  {% block css %}
+    {{ super() }}
+    {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+  {% endblock css %}
+{% endblock header %}
+
+{% block page_body %}
+<div class="cap-home">
+    <div class="container">
+         <div class="row">
+             <div class="col-md-12" ng-controller="searchController">
+                <div class="row">
+                    {%- include "cap_theme/searchbar.html" %}
+                </div>
+             </div>
+         </div>
+         <div class="row">
+            <div id="cap-experiments">
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">CMS</a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">LHCb</a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">ALICE</a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">ATLAS</a>
+                </div>
+            </div>
+         </div>
+         <div class="row">
+            <div class="col-sm-12">
+                {%- raw %}
+                <div id="cap-front" class="row">
+                    <div class="col-sm-12">
+                      <div id="cap-hello" class="cap-box" ng-controller="homeController">
+                          <header>{{hello}}<a ng-click="updateTime()" class="btn pull-right btn-primary">Update time</a></header>
+                          <p class="lead">Hello from angular {{time | date:'HH:mm:ss yyyy-MM-dd'}}.</p>
+                      </div>
+                    </div>
+                </div>
+                <div id="cap-data" class="row">
+                    <div class="col-sm-6">
+                      <div id="cap-records" class="cap-box" ng-controller="recordsController" ng-init="get_records()">
+                          <header>{{hello}}<a ng-click="get_records()" class="btn pull-right btn-primary">Update records</a></header>
+                          <h2>{{title}}</h2>
+                          <ul ng-repeat="r in records.data.records" ng-init="record = r[0]">
+                              <li>
+                                {{ record.title ? record.title : "Untitled"}}
+                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
+                              </li>
+                          </ul>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div id="cap-news" class="cap-box" ng-controller="">
+                        <header>Latest News</header>
+                      </div>
+                    </div>
+                </div>
+                {% endraw %}
+            </div>
+         </div>
+     </div>
+</div>
+{% endblock %}
+
+
+{%- block javascript %}
+  {{ super() }}
+    {% assets "cap_theme_front_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {% assets "cap_theme_records_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{% endblock javascript %}

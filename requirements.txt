@@ -1,5 +1,0 @@
-# START
--e git+git://github.com/inveniosoftware/invenio-deposit.git#egg=invenio-deposit
-
-# the overlay
--e .

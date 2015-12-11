@@ -1,0 +1,301 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "LHCb Analysis Example (JSON Schema)",
+  "description": "Schema example for records Schema example for records Schema example for records Schema example for recordsSchema example for recordsSchema example for records",
+  "type": "object",
+  "properties": {
+    "basic_info": {
+      "title": "Basic Information",
+      "type": "object",
+      "id": "basic_info",
+      "properties": {
+        "analysis_name": {
+          "description": "Analysis Name",
+          "title": "Analysis Name",
+          "type": "string"
+        },
+        "analysis_number": {
+          "description": "Analysis Description",
+          "title": "Analysis Number",
+          "type": "string"
+        }
+      }
+    },
+    "dst_selection": {
+      "title": "DST selection",
+      "description": "Select a stripping line",
+      "type": "object",
+      "properties": {
+        "stripping_line": {
+          "title": "Stripping Line",
+          "type": "string"
+        },
+        "trigger": {
+          "title": "Trigger",
+          "type": "string"
+        },
+        "input_data": {
+          "title": "Input Data",
+          "type": "object",
+          "properties": {
+            "data": {
+              "title": "Data",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "year": {
+                    "title": "Year",
+                    "type": "string"
+                  },
+                  "reconstruction_software": {
+                    "title": "Reconstruction software",
+                    "type": "string"
+                  },
+                  "stripping_software": {
+                    "title": "Stripping software",
+                    "type": "string"
+                  },
+                  "location": {
+                    "title": "Location",
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "mc_data": {
+              "title": "MC Data",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "mc_production": {
+                    "title": "MC Production",
+                    "type": "string"
+                  },
+                  "generator": {
+                    "title": "Generator",
+                    "type": "string"
+                  },
+                  "reconstruction_software": {
+                    "title": "Reconstruction software",
+                    "type": "string"
+                  },
+                  "stripping_software": {
+                    "title": "Stripping software",
+                    "type": "string"
+                  },
+                  "location": {
+                    "title": "Location",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "code": {
+          "title": "Code",
+          "type": "object",
+          "properties": {
+            "platform": {
+              "title": "Platform",
+              "type": "string"
+            },
+            "lhcb_code": {
+              "title": "LHCb code",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "user_code": {
+              "title": "User code",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "title": "Description",
+                    "type": "string"
+                  },
+                  "link": {
+                    "title": "URL",
+                    "type": "string"
+                  },
+                  "instructions": {
+                    "title": "Instructions",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "output_data": {
+          "title": "Output Data",
+          "type": "object",
+          "properties": {
+            "data": {
+              "title": "Data",
+              "type": "string"
+            },
+            "mc_data": {
+              "title": "MC Data",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "analysis_steps": {
+      "title": "Analysis Steps",
+      "description": "",
+      "type": "array",
+      "default": [{}],
+      "items": {
+        "title": "Analysis Step",
+        "type": "object",
+        "properties": {
+          "input_data": {
+            "title": "Input Data",
+            "type": "object",
+            "properties": {
+              "data": {
+                "title": "Data",
+                "type": "array",
+                "items": {
+                  "title": "Location",
+                  "type": "string"
+                }
+              },
+              "mc_data": {
+                "title": "MC Data",
+                "type": "array",
+                "items": {
+                  "title": "Location",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "code": {
+            "title": "Code",
+            "type": "object",
+            "properties": {
+              "platform": {
+                "title": "Platform",
+                "type": "string"
+              },
+              "lhcb_code": {
+                "title": "LCHb code",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "user_code": {
+                "title": "User code",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    "link": {
+                      "title": "URL",
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "title": "Instructions",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "output_data": {
+            "title": "Output Data",
+            "type": "object",
+            "properties": {
+              "data": {
+                "title": "Data",
+                "type": "string"
+              },
+              "mc_data": {
+                "title": "MC Data",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "documentations": {
+      "title": "Documentations",
+      "description": "Provide documentation and other things",
+      "type": "array",
+      "id": "documentations",
+      "default": [{}],
+      "items": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Documentation",
+        "description": "Add documentation",
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "keyword": {
+            "title": "Keyword",
+            "type": "string"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "internal_discussions": {
+      "title": "Internal Discussions",
+      "description": "Add Internal Discussions",
+      "type": "array",
+      "id": "internal-discussions",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/InternalDiscussion-vtest01.json#"
+      }
+    },
+    "presentations": {
+      "title": "Presentations",
+      "description": "Add Presentations",
+      "type": "array",
+      "id": "presentations",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/Presentation-vtest01.json#"
+      }
+    },
+    "publications": {
+      "title": "Publications",
+      "description": "",
+      "type": "array",
+      "id": "publications",
+      "default": [{}],
+      "items": {
+        "$ref": "/static/jsonschemas/definitions/Publication-vtest01.json#"
+      }
+    },
+    "keywords": {
+      "title": "Keywords",
+      "description": "Add keywords here",
+      "type": "string",
+      "id": "keywords"
+    }
+  }
+}
