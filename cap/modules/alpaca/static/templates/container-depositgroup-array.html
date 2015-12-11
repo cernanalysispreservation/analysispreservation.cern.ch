@@ -1,0 +1,31 @@
+<script type="text/x-handlebars-template">
+
+  <div class="depositgroup-array panel panel-default">
+
+    <div class="panel-heading">
+    {{#if options.label}}
+      <a class="panel-toggle {{#if options.labelClass}}{{options.labelClass}}{{/if}} alpaca-container-label">
+      {{{options.label}}}
+      </a>
+    {{/if}}
+
+    
+    {{#if options.helpers}}
+      {{#each options.helpers}}
+        <p class="alpaca-helper {{#if options.helperClass}}{{options.helperClass}}{{/if}}">
+          <i class="alpaca-icon-helper"></i>
+            {{{.}}}
+        </p>
+      {{/each}}
+    {{/if}}
+    </div>
+
+    {{#arrayToolbar}}{{/arrayToolbar}}
+    {{#each items}}
+
+        {{#item}}{{/item}}
+
+    {{/each}}
+  </div>
+
+</script>

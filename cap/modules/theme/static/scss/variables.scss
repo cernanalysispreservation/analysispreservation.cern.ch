@@ -1,0 +1,19 @@
+$btn-font-weight: 100;
+
+$brand-font-family: "Futura";
+$brand-font-weight: 400;
+$brand-font-size: 40px;
+
+$color1: #0047A8;
+$color1-gradient: #2BBCFF; //lighten($color1, 15%);
+$color2: #90C5A9;
+$color3: #7A9A95;
+$color4: #EF6D3B;
+$color5: #FA8B60;
+
+$navbar-brand-padding-vertical: 15px;
+
+$brand-primary: lighten($color1, 15%);
+$brand-info: lighten($brand-primary, 10%);
+$text-white: #fff;
+$text-dark: #8A949E;

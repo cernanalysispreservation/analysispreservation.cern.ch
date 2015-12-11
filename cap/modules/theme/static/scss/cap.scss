@@ -1,0 +1,49 @@
+// Setting the path to fonts files. test
+$icon-font-path: "/static/node_modules/bootstrap/fonts/";
+$fa-font-path: "/static/node_modules/font-awesome/fonts";
+
+@import "../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap";
+@import "../node_modules/font-awesome/scss/font-awesome";
+$cap_color: #8A949E;
+
+$cap_box_bg: #fff;
+$cap_box_color: $cap_color;
+
+@import "variables";
+@import "type";
+@import "body";
+@import "navbar";
+@import "record";
+@import "footer";
+@import "searchbar";
+
+header {
+    .navbar.navbar-inverse {
+      background-color: transparent;
+      }
+}
+
+.cap-box {
+    background-color: #fff;
+    color: #8A949E;
+    box-shadow: 0px 0px 118px rgba(194, 196, 208, 0.54);
+    padding: 20px;
+    border-radius: 3px;
+
+    header {
+        color: #8A949E;
+        font-weight: 400;
+        font-family: 'Futura';
+        font-size: 20px;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+        text-indent: 0.1px;
+        border-bottom: 1px solid #eee;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+}

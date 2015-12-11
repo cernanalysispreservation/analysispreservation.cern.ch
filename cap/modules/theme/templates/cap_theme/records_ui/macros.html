@@ -1,0 +1,26 @@
+{#
+TODO:
+- map uploadtypes to text.
+- access right
+- embargo - display tooltip with date, and display green afterwards.
+#}
+
+{%- macro type_label(record) %}
+{%- if record.upload_type.subtype %}
+<span class="label label-info">{{ _(record.upload_type.subtype) }}</span>
+{%- elif record.upload_type.type %}
+<span class="label label-info">{{ _(record.upload_type.type) }}</span>
+{%- endif %}
+{%- endmacro %}
+
+{%- macro accessright_label(value) %}
+{%- if value == "open" %}
+<span class="label label-success">{{ _("Open access") }}</span>
+{%- elif value == "embargoed" %}
+<span class="label label-warning">{{ _("Embargoed access") }}</span>
+{%- elif value == "restricted" %}
+<span class="label label-danger">{{ _("Restricted access") }}</span>
+{%- elif value == "restricted" %}
+<span class="label label-danger">{{ _("Closed access") }}</span>
+{%- endif %}
+{%- endmacro %}

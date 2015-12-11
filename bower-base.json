@@ -1,7 +1,0 @@
-{
-    "name": "invenio-data",
-    "resolutions": {
-		"jquery": "~1.11",
-		"bootstrap": "~3.3"
-    }
-}

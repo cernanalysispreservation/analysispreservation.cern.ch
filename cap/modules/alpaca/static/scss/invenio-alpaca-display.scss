@@ -1,0 +1,397 @@
+$input_height: 30px;
+$input_radius: 3px;
+
+.alpaca-label {
+  width: 25%;
+}
+
+.autocomplete-import {
+  position: relative;
+  border-radius: $input_radius;
+  border:  1px solid #ccc;
+  margin: 10px;
+
+  > span.twitter-typeahead {
+    margin-right: 180px;
+    width: auto;
+    height: $input_height;
+    border-radius: $input_radius;
+  }
+
+  input {
+    border: 0;
+    height: $input_height;
+    border-top-left-radius: $input_radius;
+    border-bottom-left-radius: $input_radius;
+  }
+
+  .inner-input-field-btns {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+
+    .alpaca-array-actionbar {
+      position: relative;
+      display: inline-block!important;
+
+      button:last-child {
+        border-top-right-radius: $input_radius;
+        border-bottom-right-radius: $input_radius;
+      }
+
+      button {
+        border: 0;
+        margin: 0;
+        float: left;
+        height: $input_height;
+        width: $input_height;
+        padding: 0;
+      }
+    }
+
+    button {
+      border: 0;
+      margin: 0;
+      float: left;
+      height: $input_height;
+      width: $input_height;
+      padding: 0;
+    }
+  }
+
+  .modal-dialog {
+    .modal-body {
+      display: inline-block;
+    }
+    input {
+      border: 1px solid #ccc;
+    }
+  }
+}
+
+.depositgroup-object {
+    margin-bottom: 15px;
+    width: 100%;
+    display: inline-block;
+    padding: 10px;
+
+    > .newarray {
+      background-color: #f5f5f5;
+      margin-bottom: 10px;
+    }
+
+    .alpaca-container-label {
+      width: 25%;
+      float: left;
+      text-align: right;
+      font-weight: bold;
+      padding-right: 5px;
+    }
+
+    .alpaca-container-item {
+      width: 75%;
+      display: inline-block;
+      float: right;
+    }
+    .alpaca-field {
+      width: 100%;
+      display: inline-block;
+
+      .alpaca-container-item {
+        width: 100%;
+      }
+    }
+
+
+    .autocomplete-input-field {
+      width: 100%;
+    }
+}
+
+.depositgroup-array {
+  > .newarray {
+    margin: 10px;
+    background-color: #f5f5f5;
+
+    .depositgroup-object > .newarray {
+      background-color: #D8D8D8;
+    }
+  }
+
+
+}
+
+.newarray {
+  .alpaca-array-actionbar {
+    float: right;
+
+    button {
+      border: 0px none;
+      padding: 0px;
+      width: 25px;
+      height: 25px;
+      background-color: rgb(255, 255, 255);
+      float: left;
+    }
+  }
+
+  .alpaca-field-object {
+    padding: 10px;
+  }
+}
+
+.alpaca-field {
+  width: 100%;
+  display: inline-block;
+
+  input {
+    height: $input_height;
+  }
+  .alpaca-container-item {
+  }
+}
+
+.alpaca-control-label {
+  width: 25%;
+  text-align: right;
+  float: left;
+  padding-right: 5px;
+}
+.alpaca-field-select2 {
+  .select2-container,
+  select.alpaca-control {
+    border: 0;
+  }
+}
+
+textarea.alpaca-control {
+  max-width: 100% ; 
+  height: auto;
+}
+
+.alpaca-control { 
+  width: 75%;
+  height: $input_height;
+  background-color: #eee;
+  padding: 3px 10px;
+  border-radius: $input_radius;
+  float: right;
+
+  .select2-choice {
+    height: $input_height;
+  }
+}
+.droplist-container {
+  width: 75%;
+  float: left;
+  margin-bottom: 10px;
+}
+
+.droplist {
+  border: 2px dashed #ccc;
+  border-bottom: 0;
+  border-radius: 4px;
+  color: #A5A5A5;
+  padding: 5px;
+  width: 100%;
+  height: 50px;
+  max-width: 100%;
+  min-width: 100%;
+}
+.droplist-btn {
+  width: 100%;
+  margin-top: -2px;
+  border: 2px dashed #ccc;
+  border-top: 0;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background-color: #ccc;
+  color: #f5f5f5;
+}
+
+.depositgroup-desc {
+  margin-bottom: 10px;
+}
+
+.alpaca-field-mlt-choice-radio,
+.alpaca-field-mlt-choice-cb {
+  .mlt-question {
+    display: inline-block;
+    height: auto;
+    font-weight: bold;
+  }
+  label {
+    font-weight: normal;
+  }
+
+  .alpaca-control {
+    float: right;
+    border: 0;
+    height: auto;
+  }
+  input {
+    height: auto;
+    vertical-align: middle;
+  }
+}
+
+.depositgroup-object-fields {
+  width: 75%;
+  float: left;
+  display: inline-block;
+  padding: 10px;
+  background-color: rgb(245, 245, 245);
+  border-radius: 3px;
+
+  .alpaca-container-item {
+    width: 100%;
+  }
+}
+
+.alpaca-field-depositgroup-object {
+  .depositgroup-object {
+    padding: 0;
+  }
+}
+
+.depositgroup-object {
+  .depositgroup-object-fields {
+    .alpaca-field-mlt-choice-radio,
+    .alpaca-field-mlt-choice-cb {
+      .alpaca-control {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+#jsondeposit-json-rendered {
+  .alpaca-field-depositgroup,
+  .alpaca-field-depositgroup-array {
+    .alpaca-field-depositgroup-object,
+    .alpaca-field-depositgroup-object-array {
+      .alpaca-field-depositgroup-object,
+      .alpaca-field-depositgroup-object-array {
+        width: 100%;
+        
+        .newarray {
+          background-color: #ccc;
+          border-radius: 3px;
+          width: 75%;
+
+          .alpaca-field {
+            padding: 10px;
+            float: left;
+          }
+
+          input {
+            width: 100%;
+          }
+          label + input {
+            width: 75%;
+          }
+        }
+      }       
+    }  
+  }
+}
+
+// CMS JSON Analysis Styling
+
+.depositgroup-array > .newarray {
+
+  [data-alpaca-field-name$="_output_data"],
+  [data-alpaca-field-name$="_software"],
+  [data-alpaca-field-name$="_os"] {
+    .depositgroup-object > .newarray {
+
+      .alpaca-container-item-first {
+        width: 65%;
+        float: left;
+      }
+
+      .alpaca-container-item-last {
+        float: left;
+        width: 35%;
+      }
+
+      .alpaca-control { 
+        width: 100%;
+      }
+      .alpaca-control-label {
+        display: none;
+      }
+    }
+  }
+
+  [data-alpaca-field-name$="_final_state_particles"]{
+    .depositgroup-object > .newarray {
+
+      .alpaca-container-item:first-child {
+        width: 40%;
+        float: left;
+      }
+
+      .alpaca-container-item:nth-child(2) {
+        float: left;
+        width: 20%;
+      }
+
+      .alpaca-container-item:nth-child(3) {
+        float: left;
+        width: 20%;
+      }
+
+      .alpaca-container-item:nth-child(4) {
+        float: left;
+        width: 20%;
+      }
+
+      .alpaca-control { 
+        width: 100%;
+      }
+      .alpaca-control-label {
+        display: none;
+      }
+    }
+  }
+
+
+  [data-alpaca-field-name$="_user_code"],
+  [data-alpaca-field-name$="_software"]{
+    .depositgroup-object > .newarray {
+      input {
+        width: 100%;
+      }
+      
+      .alpaca-container-item:first-child {
+        width: 70%;
+        float: left;
+      }
+
+      .alpaca-container-item:nth-child(2) {
+        float: left;
+        width: 15%;
+      }
+
+      .alpaca-container-item:nth-child(3) {
+        float: left;
+        width: 15%;
+      }
+
+      .alpaca-control { 
+        width: 100%;
+      }
+      .alpaca-control-label {
+        display: none;
+      }
+    }
+  }
+}
+
+
+
+// LHCb JSON Analysis Styling
+

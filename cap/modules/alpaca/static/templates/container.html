@@ -1,0 +1,17 @@
+<script type="text/x-handlebars-template">
+
+<div>
+
+{{#if options.helpers}}
+  {{#each options.helpers}}
+    <p class="alpaca-helper {{#if options.helperClass}}{{options.helperClass}}{{/if}}">
+      <i class="alpaca-icon-helper"></i>
+        {{{.}}}
+    </p>
+  {{/each}}
+{{/if}}
+{{#container}}{{/container}}
+
+</div>
+
+</script>

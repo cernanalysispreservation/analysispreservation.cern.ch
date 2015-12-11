@@ -1,0 +1,11 @@
+{%- if not current_user.is_authenticated() %}
+<form class="navbar-form navbar-right">
+  <a href=" {{url_for_security('login')}}" class="btn">{{_('LOGIN')}}</a>
+  {% if security.registerable %}<a href=" {{url_for_security('register')}}" type="submit" class="btn ">{{_('SIGN UP')}}</a>{% endif %}
+</form>
+{%- else %}
+<div class="navbar-form navbar-right">
+    <a href="#" class="btn"><i class="fa fa-user"></i>{{ _('MY ACCOUNT') }}</a>
+    <a href=" {{url_for_security('logout')}}" class="btn"> {{_('LOG OUT')}}</a>
+</div>
+{%- endif %}

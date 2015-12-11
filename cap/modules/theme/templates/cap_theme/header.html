@@ -1,0 +1,9 @@
+{%- extends "invenio_theme/header.html" %}
+
+{% block brand %}<a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px"/></a>{% endblock %}
+
+{%- block navbar_right %}
+{%- include "cap_theme/header_login.html" %}
+{%- endblock navbar_right %}
+
+{%- block breadcrumbs %}{%- endblock %}

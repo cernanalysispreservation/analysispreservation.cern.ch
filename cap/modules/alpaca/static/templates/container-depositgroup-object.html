@@ -1,0 +1,16 @@
+<script type="text/x-handlebars-template">
+
+<div class="depositgroup-object">
+  <div class="{{#if options.labelClass}}{{options.labelClass}}{{/if}} alpaca-container-label">
+	{{#if options.label}}
+    	{{{options.label}}}
+	{{/if}}
+  </div>
+  <div class="depositgroup-object-fields">
+	{{#each items}}
+		{{#item}}{{/item}}
+	{{/each}}
+	</div>
+</div>
+
+</script>
