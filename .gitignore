@@ -59,3 +59,11 @@ target/
 
 #Redis
 *.rdb
+
+#Python shelve, pickle files
+*.shelve
+*.pickle
+
+#Certificates
+*.crt
+*.key

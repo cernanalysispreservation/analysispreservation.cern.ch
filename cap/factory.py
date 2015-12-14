@@ -33,18 +33,18 @@ set ``<sys.prefix>/var/<app_name>-instance/static``.
 
 create_api = create_app_factory(
     'cap',
-    conf_loader=conf_loader,
-    bp_entry_points=['invenio_base.api_blueprints'],
-    ext_entry_points=['invenio_base.api_apps'],
+    config_loader=conf_loader,
+    blueprint_entry_points=['invenio_base.api_blueprints'],
+    extension_entry_points=['invenio_base.api_apps'],
     instance_path=instance_path,
 )
 
 
 create_app = create_app_factory(
     'cap',
-    conf_loader=conf_loader,
-    bp_entry_points=['invenio_base.blueprints'],
-    ext_entry_points=['invenio_base.apps'],
+    config_loader=conf_loader,
+    blueprint_entry_points=['invenio_base.blueprints'],
+    extension_entry_points=['invenio_base.apps'],
     wsgi_factory=create_wsgi_factory({'/api': create_api}),
     instance_path=instance_path,
     static_folder=static_folder,

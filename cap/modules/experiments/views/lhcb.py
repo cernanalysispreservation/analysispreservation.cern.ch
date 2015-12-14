@@ -2,12 +2,16 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, jsonify, render_template, request, g
-from flask_login import login_required
-from invenio_records.models import RecordMetadata
-from cap.modules.front.views import collection_records
 import json
+
 import pkg_resources
+from flask import Blueprint, g, jsonify, render_template, request
+from flask_principal import RoleNeed
+from flask_security import login_required
+from invenio_access import DynamicPermission
+
+from cap.modules.front.views import collection_records
+
 
 lhcb_bp = Blueprint(
     'cap_lhcb',
@@ -25,19 +29,26 @@ def restrict_bp_to_lhcb_members():
     print('Checking to see if user is a LHCb member')
 
 
+lhcb_group_need = RoleNeed('collaboration_alice')
+lhcb_permission = DynamicPermission(lhcb_group_need)
+
+
 @lhcb_bp.route('/')
+@lhcb_permission.require()
 def lhcb_landing():
     """Basic LHCb landing view."""
     return render_template('lhcb/landing_page.html')
 
 
 @lhcb_bp.route('/records')
+@lhcb_permission.require()
 def lhcb_records():
     """Basic LHCb records view."""
     return collection_records(collection=g.experiment)
 
 
 @lhcb_bp.route('/analyses/short', methods=['GET', 'POST'])
+@lhcb_permission.require()
 def lhcb_analyses_short():
     title = request.args.get('title', '')
 
@@ -59,6 +70,7 @@ def lhcb_analyses_short():
 
 
 @lhcb_bp.route('/analyses', methods=['GET', 'POST'])
+@lhcb_permission.require()
 def lhcb_analyses():
     title = request.args.get('title', '')
 

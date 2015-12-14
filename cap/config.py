@@ -3,7 +3,9 @@
 """cap base Invenio configuration."""
 
 from __future__ import absolute_import, print_function
-
+import os
+import copy
+from invenio_oauthclient.contrib import cern
 
 # Identity function for string extraction
 def _(x):
@@ -74,5 +76,19 @@ CAP_JSON_FORMS = dict(
     ),
 )
 
-DEBUG=True
-ASSET_DEBUG=True
+DEBUG = True
+ASSET_DEBUG = True
+
+# OAuth configuration
+CERN_APP_CREDENTIALS = {
+    'consumer_key': os.environ.get('CERN_APP_CREDENTIALS_KEY'),
+    'consumer_secret': os.environ.get('CERN_APP_CREDENTIALS_SECRET'),
+}
+
+CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
+CERN_REMOTE_APP["params"].update({
+    'request_token_params': {
+        "scope": "Email Groups",
+     }
+})
+OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}

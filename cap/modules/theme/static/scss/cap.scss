@@ -18,6 +18,9 @@ $cap_box_color: $cap_color;
 @import "searchbar";
 
 header {
+    nav.navbar-default {
+        background-color: transparent;
+    }
     .navbar.navbar-inverse {
       background-color: transparent;
       }

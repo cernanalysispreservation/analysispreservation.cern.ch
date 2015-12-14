@@ -2,15 +2,19 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, jsonify, render_template, request, g
-from flask_login import login_required
-from invenio_records.models import RecordMetadata
-from cap.modules.front.views import collection_records
-from ..scripts.cms import das
 import json
+import ssl
 import urllib
 import urllib2
-import ssl
+
+from flask import Blueprint, g, jsonify, render_template, request
+from flask_principal import RoleNeed
+from flask_security import login_required
+from invenio_access import DynamicPermission
+
+from cap.modules.front.views import collection_records
+
+from ..scripts.cms import das
 
 
 cms_bp = Blueprint(
@@ -34,19 +38,26 @@ def restrict_bp_to_cms_members():
     print('Checking to see if user is a CMS member')
 
 
+cms_group_need = RoleNeed('collaboration_alice')
+cms_permission = DynamicPermission(cms_group_need)
+
+
 @cms_bp.route('/')
+@cms_permission.require()
 def cms_landing():
     """Basic CMS landing view."""
     return render_template('cms/landing_page.html')
 
 
 @cms_bp.route('/records')
+@cms_permission.require()
 def cms_records():
     """Basic CMS records view."""
     return collection_records(collection=g.experiment)
 
 
 @cms_bp.route('/das', methods=['GET'])
+@cms_permission.require()
 def das_client():
     host = request.args.get('host', 'https://cmsweb.cern.ch')
     query = request.args.get('query', '')
@@ -70,6 +81,7 @@ def das_client():
 
 
 @cms_bp.route('/das/autocomplete', methods=['GET'])
+@cms_permission.require()
 def das_autocomplete():
     dbs_instance = request.args.get('dbs_instance', 'prod/global')
     query = request.args.get('query', None)
