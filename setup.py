@@ -40,14 +40,16 @@ install_requires = [
     'click',
     'psycopg2',
     'invenio[minimal]>=3.0.0a1,<3.1.0',
-    'invenio-pidstore>=1.0.0a2',
-    'invenio-assets>=1.0.0a3',
-    'invenio-records>=1.0.0a3',
+    'invenio-base==1.0.0a4',
     'invenio-access==1.0.0a1',
-    'invenio-records-ui>=1.0.0a2',
+    'invenio-assets>=1.0.0a3',
+    # 'invenio-oauthclient>=1.0.0a1',
+    'invenio-pidstore>=1.0.0a2',
+    'invenio-records>=1.0.0a3',
     'invenio-records-rest>=1.0.0a3',
-    'invenio-theme>=1.0.0a5',
-    # 'invenio-search==1.0.0a1',
+    'invenio-records-ui>=1.0.0a2',
+    'invenio-theme>=1.0.0a6',
+    'invenio-search==1.0.0a2',
 ]
 
 
@@ -116,12 +118,20 @@ setup(
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
             'cap_alice = cap.modules.experiments.views.alice:alice_bp',
             'cap_alpaca = cap.modules.alpaca.views:blueprint',
+            'cap_access = cap.modules.access.views:access_blueprint',
         ],
         # 'invenio_i18n.translations': [
         #     'messages = cap',
         # ],
         'invenio_base.apps': [
             'invenio_search = invenio_search:InvenioSearch',
+            'cap_accesss = cap.modules.access.ext:Access',
+        ],
+        'invenio_access.actions': [
+            'cap_alice_access = cap.modules.experiments.views.alice:alice_group_need',
+            'cap_atlas_access = cap.modules.experiments.views.atlas:atlas_group_need',
+            'cap_cms_access = cap.modules.experiments.views.cms:cms_group_need',
+            'cap_lhcb_access = cap.modules.experiments.views.lhcb:lhcb_group_need',
         ],
         'invenio_assets.bundles': [
             'cap_theme_css = cap.modules.theme.bundles:css',

@@ -1,4 +1,5 @@
-{%- if not current_user.is_authenticated() %}
+
+{%- if not current_user.is_authenticated %}
 <form class="navbar-form navbar-right">
   <a href=" {{url_for_security('login')}}" class="btn">{{_('LOGIN')}}</a>
   {% if security.registerable %}<a href=" {{url_for_security('register')}}" type="submit" class="btn ">{{_('SIGN UP')}}</a>{% endif %}

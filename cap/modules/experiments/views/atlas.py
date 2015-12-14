@@ -2,9 +2,11 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, jsonify, render_template, g
-from flask_login import login_required
-from invenio_records.models import RecordMetadata
+from flask import Blueprint, g, jsonify, render_template
+from flask_principal import RoleNeed
+from flask_security import login_required
+from invenio_access import DynamicPermission
+
 from cap.modules.front.views import collection_records
 
 
@@ -24,13 +26,19 @@ def restrict_bp_to_atlas_members():
     print('Checking to see if user is a ATLAS member')
 
 
+atlas_group_need = RoleNeed('collaboration_atlas')
+atlas_permission = DynamicPermission(atlas_group_need)
+
+
 @atlas_bp.route('/')
+@atlas_permission.require()
 def atlas_landing():
     """Basic ATLAS landing view."""
     return render_template('atlas/landing_page.html')
 
 
 @atlas_bp.route('/records')
+@atlas_permission.require()
 def atlas_records():
     """Basic ATLAS records view."""
     return collection_records(collection=g.experiment)
