@@ -4,8 +4,8 @@ define([], function() {
       '$scope',
       'capLocalClient',
        function($scope, capLocalClient) {
-        $scope.hello = 'CAP experiments';
-        $scope.notification = 'Welcome to CAP experiments';
+        $scope.hello = 'CERN Analysis Preservation experiments';
+        $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
         $scope.init = function(exp){
           $scope.exp = exp;
         };

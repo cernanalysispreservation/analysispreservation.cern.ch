@@ -22,7 +22,8 @@ display_js = NpmBundle(
         "handlebars": "~3.0.3",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
-        "alpaca": "~1.5.11",
+        "alpaca": "1.5.11",
+        "gulp": "3.9.0",
     }
 )
 
@@ -32,6 +33,7 @@ edit_js = NpmBundle(
     ),
     Bundle(
         'js/jsonwidget.js',
+        'js/records/main.js',
         filters="requirejs",
     ),
     output="gen/invenio.alpaca.edit.%(version)s.js",
@@ -43,7 +45,8 @@ edit_js = NpmBundle(
         "handlebars": "~3.0.3",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
-        "alpaca": "~1.5.11",
+        "alpaca": "1.5.11",
+        "gulp": "3.9.0",
         "fast-json-patch": "~0.5.4",
     }
 )
@@ -59,8 +62,11 @@ display_css = NpmBundle(
     }
 )
 edit_css = NpmBundle(
-    'scss/invenio-alpaca-edit.scss',
-    filters="scss, cleancss",
+    Bundle(
+        'node_modules/select2/dist/css/select2.css',
+        'scss/invenio-alpaca-edit.scss',
+        filters="scss, cleancss",
+    ),
     output="gen/invenio.alpaca.edit.%(version)s.css",
     npm={
         "almond": "~0.3.1",

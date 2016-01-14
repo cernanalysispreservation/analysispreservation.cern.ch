@@ -338,15 +338,13 @@ def print_summary(rec):
         maxlen = max([len(k) for k in keys])
         for key, val in row.items():
             pkey = '%s%s' % (key, ' '*(maxlen-len(key)))
-            print('%s: %s' % (pkey, val))
-        print()
 
 def print_from_cache(cache, query):
     "print the list of files reading it from cache"
     data = open(cache).read()
     jsondict = json.loads(data)
     if query in jsondict:
-      print("\n".join(jsondict[query]))
+      # print("\n".join(jsondict[query]))
       exit(0)
     exit(1)
 
@@ -379,13 +377,8 @@ def keys_attrs(lkey, oformat, host, ckey, cert, debug=0):
             pass
         elif lkey != key:
             continue
-        print()
-        print("DAS key:", key)
         for attr, examples in vdict.items():
             prefix = '    '
-            print('%s%s' % (prefix, attr))
-            for item in examples:
-                print('%s%s%s' % (prefix, prefix, item))
 
 def main():
     """Main function"""
@@ -404,7 +397,7 @@ def main():
         keys_attrs(opts.keys_attrs, opts.format, host, ckey, cert, debug)
         return
     if  not query:
-        print('Input query is missing')
+        # print('Input query is missing')
         sys.exit(EX_USAGE)
     if  opts.format == 'plain':
         jsondict = get_data(host, query, idx, limit, debug, thr, ckey, cert)
@@ -503,7 +496,7 @@ def main():
     else:
         jsondict = get_data(\
                 host, query, idx, limit, debug, thr, ckey, cert)
-        print(json.dumps(jsondict))
+        # print(json.dumps(jsondict))
 
 #
 # main

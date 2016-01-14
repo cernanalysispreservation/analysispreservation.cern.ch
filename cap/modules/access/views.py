@@ -4,9 +4,9 @@ from __future__ import absolute_import, print_function
 
 from collections import deque
 
-from flask import Blueprint, g, redirect, session, url_for
+from flask import Blueprint, g, redirect, session, url_for, current_app
 from flask_login import current_user
-from flask_principal import AnonymousIdentity, Identity, RoleNeed
+from flask_principal import AnonymousIdentity, Principal, Identity, RoleNeed
 from invenio_oauthclient.signals import account_setup_received
 
 
@@ -14,6 +14,7 @@ access_blueprint = Blueprint('access', __name__,
                              url_prefix='/access',
                              template_folder='templates')
 
+# principal = Principal(current_app)
 
 @access_blueprint.route('/login/')
 def login():
@@ -33,21 +34,21 @@ def init(state):
 
 
 def identity_loader_session():
-    """Loads the identity session."""
-    if 'identity.id' in session:
-        result = Identity(session['identity.id'])
-        result.auth_type = session.get('identity.auth_type')
-        result.provides = set(session.get('identity.provides')) or set()
-    else:
-        result = AnonymousIdentity()
-    return result
+    """Load the identity from the session."""
+    try:
+        identity = Identity(
+            session['identity.id'], session['identity.auth_type'])
+        identity.provides = session['identity.provides']
+        return identity
+    except KeyError:
+        return None
 
 
 def identity_saver_session(identity):
-    """Store the identity session."""
+    """Save identity to the session."""
     session['identity.id'] = identity.id
     session['identity.auth_type'] = identity.auth_type
-    session['identity.provides'] = list(identity.provides)
+    session['identity.provides'] = identity.provides
 
 
 @account_setup_received.connect

@@ -34,8 +34,10 @@ RECORDS_UI_BASE_TEMPLATE = 'cap_theme/records_ui/detail.html'
 RECORDS_UI_TOMBSTONE_TEMPLATE = 'cap_theme/records_ui/detail.html'
 
 # Records configuration
+RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:read_permission_factory"
+
 RECORDS_UI_ENDPOINTS = dict(
-    record=dict(
+    recid=dict(
         pid_type='recid',
         route='/records/<pid_value>',
         template='cap_theme/records_ui/detail.html',
@@ -52,7 +54,7 @@ SEARCH_ELASTIC_HOSTS = "localhost:9200"
 # Mail
 MAIL_SUPPRESS_SEND = True
 
-CAP_COLLECTIONS = ['CMS', 'LHCb', 'ATLAS', 'ALICE']
+CAP_COLLECTIONS = ['ALICE', 'ATLAS', 'CMS', 'LHCb']
 
 CAP_JSON_FORMS = dict(
     CMS=dict(
@@ -92,3 +94,31 @@ CERN_REMOTE_APP["params"].update({
      }
 })
 OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
+SECURITY_SEND_REGISTER_EMAIL=False
+
+THEME_SITENAME = _("CERN Analysis Preservation")
+THEME_LOGO =  "img/cap_logo_lrg.svg"
+# REQUIREJS_CONFIG = 'js/build.js'
+THEME_GOOGLE_SITE_VERIFICATION =  []
+BASE_TEMPLATE = "cap_theme/page.html"
+SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
+# config.setdefault(
+#     'COVER_TEMPLATE', 'invenio_theme/page_cover.html')
+# config.setdefault(
+#     'SETTINGS_TEMPLATE', 'invenio_theme/page_settings.html')
+# config.setdefault(
+#     'THEME_BASE_TEMPLATE', config['BASE_TEMPLATE'])
+# config.setdefault(
+#     'THEME_COVER_TEMPLATE', config['COVER_TEMPLATE'])
+# config.setdefault(
+#     'THEME_SETTINGS_TEMPLATE', config['SETTINGS_TEMPLATE'])
+# config.setdefault(
+#     'THEME_ERROR_TEMPLATE', 'invenio_theme/error.html')
+# config.setdefault(
+#     'THEME_401_TEMPLATE', 'invenio_theme/401.html')
+# config.setdefault(
+#     'THEME_403_TEMPLATE', 'invenio_theme/403.html')
+# config.setdefault(
+#     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
+# config.setdefault(
+#     'THEME_500_TEMPLATE', 'invenio_theme/500.html')

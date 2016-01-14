@@ -23,16 +23,16 @@
          <div class="row">
             <div id="cap-experiments">
                 <div class="col-sm-3">
-                    <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">CMS</a>
-                </div>
-                <div class="col-sm-3">
-                    <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">LHCb</a>
-                </div>
-                <div class="col-sm-3">
                     <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">ALICE</a>
                 </div>
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">ATLAS</a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">CMS</a>
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">LHCb</a>
                 </div>
             </div>
          </div>
@@ -42,27 +42,20 @@
                 <div id="cap-front" class="row">
                     <div class="col-sm-12">
                       <div id="cap-hello" class="cap-box" ng-controller="homeController">
-                          <header>{{hello}}<a ng-click="updateTime()" class="btn pull-right btn-primary">Update time</a></header>
-                          <p class="lead">Hello from angular {{time | date:'HH:mm:ss yyyy-MM-dd'}}.</p>
-                      </div>
-                    </div>
-                </div>
-                <div id="cap-data" class="row">
-                    <div class="col-sm-6">
-                      <div id="cap-records" class="cap-box" ng-controller="recordsController" ng-init="get_records()">
-                          <header>{{hello}}<a ng-click="get_records()" class="btn pull-right btn-primary">Update records</a></header>
-                          <h2>{{title}}</h2>
-                          <ul ng-repeat="r in records.data.records" ng-init="record = r[0]">
-                              <li>
-                                {{ record.title ? record.title : "Untitled"}}
-                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
-                              </li>
-                          </ul>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div id="cap-news" class="cap-box" ng-controller="">
-                        <header>Latest News</header>
+                          <header>{{hello}}</header>{% endraw %}
+                          <div class="row">
+                          {%- for experiment in config['CAP_JSON_FORMS'] %}
+                              <div class="col-sm-3">
+                                <h5>{{experiment}}</h5>
+                                {%- for name, info in config['CAP_JSON_FORMS'].get(experiment, dict()).iteritems() %}
+                                  <div class="record-deposit-type">
+                                  <a href="{{url_for('cap_front.record_create', collection=experiment, subcollection=name)}}">Create {{info.get('name', '')}}</a>
+                                  </div>
+                                {% endfor %}
+                              </div>
+                          {% endfor %}
+                          </div>
+                          {%- raw %}
                       </div>
                     </div>
                 </div>

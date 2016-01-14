@@ -39,12 +39,9 @@
                         <ul ng-repeat="r in experiments.data.records" ng-init="record = r._source">
                           <li>
                             <a ng-if="record.pid_value" href="/records/{{record.pid_value}}">
-                                {{ record.title ? record.title : "Untitled"}}
+                                {{ record.title ? record.title : "Untitled "}}{{ record.pid_value ? record.pid_value : "WRONG"}}
                                 {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
                             </a>
-                            <div ng-if="!record.pid_value" >
-                                {{ record.title ? record.title : "Untitled"}}
-                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
                           </li>
                         </ul>
                         <div ng-hide="experiments.data.records.length">

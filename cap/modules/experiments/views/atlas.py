@@ -23,7 +23,6 @@ atlas_bp = Blueprint(
 @login_required
 def restrict_bp_to_atlas_members():
     g.experiment = 'ATLAS'
-    print('Checking to see if user is a ATLAS member')
 
 
 atlas_group_need = RoleNeed('collaboration_atlas')
@@ -31,14 +30,14 @@ atlas_permission = DynamicPermission(atlas_group_need)
 
 
 @atlas_bp.route('/')
-@atlas_permission.require()
+@atlas_permission.require(403)
 def atlas_landing():
     """Basic ATLAS landing view."""
     return render_template('atlas/landing_page.html')
 
 
 @atlas_bp.route('/records')
-@atlas_permission.require()
+@atlas_permission.require(403)
 def atlas_records():
     """Basic ATLAS records view."""
     return collection_records(collection=g.experiment)

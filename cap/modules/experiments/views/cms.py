@@ -35,29 +35,28 @@ ctx.verify_mode = ssl.CERT_NONE
 @login_required
 def restrict_bp_to_cms_members():
     g.experiment = 'CMS'
-    print('Checking to see if user is a CMS member')
 
 
-cms_group_need = RoleNeed('collaboration_alice')
+cms_group_need = RoleNeed('collaboration_cms')
 cms_permission = DynamicPermission(cms_group_need)
 
 
 @cms_bp.route('/')
-@cms_permission.require()
+@cms_permission.require(403)
 def cms_landing():
     """Basic CMS landing view."""
     return render_template('cms/landing_page.html')
 
 
 @cms_bp.route('/records')
-@cms_permission.require()
+@cms_permission.require(403)
 def cms_records():
     """Basic CMS records view."""
     return collection_records(collection=g.experiment)
 
 
 @cms_bp.route('/das', methods=['GET'])
-@cms_permission.require()
+@cms_permission.require(403)
 def das_client():
     host = request.args.get('host', 'https://cmsweb.cern.ch')
     query = request.args.get('query', '')
@@ -71,7 +70,7 @@ def das_client():
 
     newdict = {}
     if (jsondict["nresults"] == 1):
-        print(json.dumps(jsondict, indent=4))
+        # print(json.dumps(jsondict, indent=4))
 
         for v in jsondict["data"][0]["dataset"]:
             newdict = dict(newdict.items() + v.items())
@@ -81,7 +80,7 @@ def das_client():
 
 
 @cms_bp.route('/das/autocomplete', methods=['GET'])
-@cms_permission.require()
+@cms_permission.require(403)
 def das_autocomplete():
     dbs_instance = request.args.get('dbs_instance', 'prod/global')
     query = request.args.get('query', None)

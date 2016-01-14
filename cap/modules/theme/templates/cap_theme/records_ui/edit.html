@@ -18,26 +18,36 @@
             <div class="col-sm-12">
                 <div id="record-display" class="cap-box">
                     <nav id="record-menu" class="navbar">
-                        <ul class="rec_nav nav navbar-nav">
-                            <li><a class="active" href="#">Basic Info</a></li>
-                            <li><a href="#">Metadata</a></li>
-                            <li><a href="#">Connections</a></li>
-                            <li><a href="#">Settings</a></li>
+                        <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
+                            <li role="presentation"><a href="#json" role="tab" data-toggle="tab">JSON</a></li>
+                            <li role="presentation"><a href="#permissions" role="tab" data-toggle="tab">Permissions</a></li>
                         </ul>
                     </nav>
-                    <div id="record-form" data-schema="{{schema}}" data-options="{{options}}">
-                        <div class="record-loading">
-                            <img src="{{url_for('static', filename='img/loader.gif')}}">
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="info">
+                            <div id="record-form" data-schema="{{schema}}" data-options="{{options}}">
+                                <div class="record-loading">
+                                    <img src="{{url_for('static', filename='img/loader.gif')}}">
+                                </div>
+                                <div class="record-rendered"></div>
+                            </div>
                         </div>
-                        <div class="record-rendered"></div>
+                        <div role="tabpanel" class="tab-pane" id="json">
+                            <div id="record-data">
+                                <div id="record-editor">
+                                    {{record}}
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="permissions">
+                            {% include "cap_theme/permissions.html" %}
+                        </div>
                     </div>
-                    <div id="record-data">
-                        {{record}}
-                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {%- endblock %}
 
 {%- block javascript %}

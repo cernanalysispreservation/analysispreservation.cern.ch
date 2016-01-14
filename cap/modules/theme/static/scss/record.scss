@@ -14,15 +14,22 @@
         float: none;
     }
 
-    li {
-        >a {
+    .nav-tabs>li.active>a,
+    .nav-tabs>li.active>a:focus,
+    .nav-tabs>li.active>a:hover {
+        border-bottom: 2px solid #54BBF9;
+        color: #7E8185;
+    }
+
+    .nav-tabs>li {
+
+        > a {
+            background-color: transparent;
+            border: 0;
+            border-bottom-color: transparent;
             color: #A2ADBC;
             font-weight: 400;
             max-height: 50px;
-        }
-        >a.active {
-            border-bottom: 2px solid #54BBF9;
-            color: #7E8185;
         }
 
         >a:hover,
@@ -32,6 +39,22 @@
             color: #7E8185;
         }
     }
+
+    .edit-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        a:hover,
+        a:visited,
+        a:focus,a {
+            background-color: #169776;
+            color: #f5f5f5;
+            margin: 10px;
+            padding: 5px 20px;
+            font-size: 12px;
+        }
+    }
 }
 
 #record-data {
@@ -39,6 +62,8 @@
     height: 300px;
 }
 
+#record-fields,
+#record-permissions,    
 #record-form {
     background-color: #F8FAFC;
     border-bottom: 1px solid #eee;
@@ -46,6 +71,134 @@
     min-height: 300px
 }
 
+#record-collections {
+    padding: 10px;
+    border-bottom: 1px solid #EEE;
+    font-size: 12px;
+
+    .btn {
+        padding: 5px;
+        background-color: #54BBF9;
+        color: #fff;
+        font-weight: lighter;
+        font-size: 12px;
+    }
+}
+
 .record-rendered {
     padding: 20px 10px;
+}
+
+.record-loading {
+    padding: 80px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#record-permissions {
+    display: inline-block;
+    width: 100%;
+
+    header.permissions-header {
+        padding: 10px 0;
+        border-bottom: 1px solid #EEE;
+        font-size: 14px;
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+
+    .centered {
+        text-align:  center;
+    }
+
+    #permissions-query {
+
+    }
+    #record-permissions-fltr {
+        padding: 10px;
+        border-bottom: 1px solid #EEE;
+        font-size: 12px;
+        display: inline-block;
+        width: 100%;
+        float: left;
+
+        .permissions-query-container {
+            position: relative;
+            float: left;
+            display: inline-block;
+            width: 100%;
+
+            input#permissions-query {
+                width: 40%;
+                padding: 5px;
+                border: 1px solid #EEE;
+                float: left;
+                height: 30px;
+            }
+
+            .permissions-add {
+                background: #2C3E50;
+                padding: 0;
+                float: left;
+                border-radius: 0;
+                margin-left: -1px;
+                height: 30px;
+                padding: 5px;
+                border-bottom-right-radius: 3px;
+                border-top-right-radius: 3px;
+                color: #fff;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .permissions-list-changes {
+        background-color: rgb(228, 235, 241);
+
+        .permissions-header {
+            background-color: transparent;
+            border-bottom: 1px solid #F8FAFC;
+            font-size: 14px;
+            padding: 10px 0;
+            color: inherit;
+        }
+
+        > header {
+            padding: 10px;
+            font-size: 13px;
+            border-bottom: 1px solid #F8FAFC;
+            color: #8A949E;
+
+            a,
+            a:hover,
+            a:focus {
+                padding: 5px 10px;
+                margin-top: -5px;
+                margin-right: -5px;
+                background-color: #2C3E50;
+                color: #fff;
+                border-radius: 2px;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .permissions-list-item-changes,
+    .permissions-list-item {
+        display: inline-block;
+        width: 100%;
+        padding: 6px 0;
+
+        .fa-check {
+            color: #ccc;
+            border-radius: 50%;
+            padding: 5px;
+            border: 2px solid;
+        }
+
+        .fa-check.can {
+           color: green;
+        }
+    }
 }

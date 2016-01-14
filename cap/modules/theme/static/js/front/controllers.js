@@ -2,7 +2,7 @@ define(['angular'], function(angular) {
   var controllers = angular.module('cap.front.controllers', [])
     .controller('homeController', [
       '$scope', function($scope) {
-          $scope.hello = 'Welcome to CAP';
+          $scope.hello = 'Welcome to CERN Analysis Preservation portal';
           $scope.time = new Date();
           $scope.updateTime = function() {
             $scope.time = new Date();

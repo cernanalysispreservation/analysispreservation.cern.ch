@@ -21,7 +21,7 @@ require.config({
   baseUrl: "/static/",
   paths: {
     angular: "node_modules/angular/angular",
-    'jquery': "node_modules/jquery/dist/jquery",
+    jquery: "node_modules/jquery/dist/jquery",
     bootstrap: "node_modules/bootstrap/dist/js/bootstrap",
     select2: "node_modules/select2/dist/js/select2.min",
     underscore: "node_modules/underscore/underscore-min",
@@ -34,6 +34,7 @@ require.config({
     "module-getter": "js/module-getter",
     "ref-parser": "node_modules/json-schema-ref-parser/dist/ref-parser",
     "json-patch": "node_modules/fast-json-patch/dist/json-patch-duplex.min",
+    "angular-filter": "node_modules/angular-filter/dist/angular-filter",
   },
   shim: {
     'jquery': {

@@ -64,5 +64,6 @@ records = NpmBundle(
     npm={
         "almond": "~0.3.1",
         "angular": "~1.4.7",
+        "angular-filter": "~0.5.1",
     }
 )

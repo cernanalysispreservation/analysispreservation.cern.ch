@@ -65,7 +65,9 @@ Install CAP package:
 
    cdvirtualenv
    mkdir src && cd src
-   pip install .
+   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
+   cd cap
+   pip install -r requirements.txt
 
 Add the following lines in your "elasticsearch.yml":
 
@@ -85,9 +87,10 @@ depend on:
 
    cd cap
    python manage.py npm
-   cdvirtualenv var/cap/static
+   cdvirtualenv var/cap-instance/static
    npm install
    cd node_modules/alpaca
+   npm install
    npm start
    cdvirtualenv src/cap
    python manage.py collect -v

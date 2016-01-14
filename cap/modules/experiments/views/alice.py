@@ -23,7 +23,6 @@ alice_bp = Blueprint(
 @login_required
 def restrict_bp_to_alice_members():
     g.experiment = 'ALICE'
-    print('Checking to see if user is a ALICE member')
 
 
 alice_group_need = RoleNeed('collaboration_alice')
@@ -31,14 +30,14 @@ alice_permission = DynamicPermission(alice_group_need)
 
 
 @alice_bp.route('/')
-@alice_permission.require()
+@alice_permission.require(403)
 def alice_landing():
     """Basic ALICE landing view."""
     return render_template('alice/landing_page.html')
 
 
 @alice_bp.route('/records')
-@alice_permission.require()
+@alice_permission.require(403)
 def alice_records():
     """Basic ALICE records view."""
     return collection_records(collection=g.experiment)

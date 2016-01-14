@@ -26,29 +26,28 @@ lhcb_bp = Blueprint(
 @login_required
 def restrict_bp_to_lhcb_members():
     g.experiment = 'LHCb'
-    print('Checking to see if user is a LHCb member')
 
 
-lhcb_group_need = RoleNeed('collaboration_alice')
+lhcb_group_need = RoleNeed('collaboration_lhcb')
 lhcb_permission = DynamicPermission(lhcb_group_need)
 
 
 @lhcb_bp.route('/')
-@lhcb_permission.require()
+@lhcb_permission.require(403)
 def lhcb_landing():
     """Basic LHCb landing view."""
     return render_template('lhcb/landing_page.html')
 
 
 @lhcb_bp.route('/records')
-@lhcb_permission.require()
+@lhcb_permission.require(403)
 def lhcb_records():
     """Basic LHCb records view."""
     return collection_records(collection=g.experiment)
 
 
 @lhcb_bp.route('/analyses/short', methods=['GET', 'POST'])
-@lhcb_permission.require()
+@lhcb_permission.require(403)
 def lhcb_analyses_short():
     title = request.args.get('title', '')
 
@@ -59,7 +58,7 @@ def lhcb_analyses_short():
     # print(data)
 
     analyses = data
-    print(json.dumps(data, indent=4, sort_keys=True))
+    # print(json.dumps(data, indent=4, sort_keys=True))
 
     try:
         a = analyses[title]
@@ -70,7 +69,7 @@ def lhcb_analyses_short():
 
 
 @lhcb_bp.route('/analyses', methods=['GET', 'POST'])
-@lhcb_permission.require()
+@lhcb_permission.require(403)
 def lhcb_analyses():
     title = request.args.get('title', '')
 
@@ -83,7 +82,7 @@ def lhcb_analyses():
     # print(data)
 
     analyses = data
-    print(json.dumps(data, indent=4, sort_keys=True))
+    # print(json.dumps(data, indent=4, sort_keys=True))
 
     try:
         a = analyses[title]

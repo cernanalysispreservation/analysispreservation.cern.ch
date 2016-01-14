@@ -1,0 +1,77 @@
+{%- raw %}
+<div id="record-permissions" class="" ng-controller="recordsController" ng-init="get_record_permissions('{%- endraw %}{{record.pid_value}}{%- raw %}')">
+  <div id="record-permissions-fltr">
+    <div class="permissions-query-container">
+      <input id="permissions-query" ng-model="query" placeholder="Type email to FILTER or ADD access rights">
+      {{fltPermissions = (permissions | filter: query); " "}}
+      <div class="btn permissions-add" ng-click="add_permission(query);" ng-hide="fltPermissions.length">Add rights</div>
+      <div class="cap-checkbox">
+        {%endraw%} {%- if record.id|is_public %} {%raw%}
+          <input type="checkbox" id="make-public" class="btn" value="None" ng-click="changePrivacy('{%- endraw %}{{record.pid_value}}{%- raw %}');" checked="true">
+          <label for="make-public"></label>
+        {%endraw%} {%- else %} {%raw%}
+          <input type="checkbox" id="make-public" class="btn" value="None" ng-click="changePrivacy('{%- endraw %}{{record.pid_value}}{%- raw %}');" ng-checked="false">
+          <label for="make-public"></label>
+        {%endraw%} {%- endif %} {%raw%}
+      </div>
+    </div>
+  </div>
+  {{ changes = (fltPermissions | pick: 'op;' | groupBy: 'user.email');""}}
+  {{ allPermissions = (fltPermissions | groupBy: 'user.email');""}}
+  <ul class="col-sm-12 permissions-list-changes" ng-show="!isEmptyObject(changes);">
+    <header>Current Changes<a ng-click="add_permissions('{%- endraw %}{{record.pid_value}}{%- raw %}', changes);get_record_permissions('{%- endraw %}{{record.pid_value}}{%- raw %}');" class="pull-right" href="#">Update rights</a></header>
+    <header class="permissions-header centered">
+      <div class="col-sm-3">User</div>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-4">Index</div>
+          <div class="col-sm-4">Read</div>
+          <div class="col-sm-4">Write</div>
+        </div>
+      </div>
+    </header>
+    <li class="permissions-list-item-changes centered" ng-repeat="(key, value) in changes">
+        <div class="col-sm-3">{{ key }}</div>
+        <div class="col-sm-9">
+          <div class="row">
+            {{ flag1 = (allPermissions[key] | some: "action === 'records-index' && ( op !== 'remove')");""}}
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-index')" ng-class="{'can': flag1}"></span></div>
+            {{ flag2 = (allPermissions[key] | some: "action === 'records-read' && ( op !== 'remove')");""}}
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-read')" ng-class="{'can': flag2}"></span></div>
+            {{ flag3 = (allPermissions[key] | some: "action === 'records-update' && ( op !== 'remove')");""}}
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-update')" ng-class="{'can': flag3}"></span></div>
+          </div>
+        </div>
+    </li>
+  </ul>
+  <header class="permissions-header centered">
+    <div class="col-sm-3">User</div>
+    <div class="col-sm-9">
+      <div class="row">
+        <div class="col-sm-4">Index</div>
+        <div class="col-sm-4">Read</div>
+        <div class="col-sm-4">Write</div>
+      </div>
+    </div>
+  </header>
+  <ul class="col-sm-12 permissions-list centered">
+    <li class="permissions-list-item" ng-repeat="(key, value) in allPermissions">
+        <div class="col-sm-3">{{ key }}</div>
+        {{ flag1 = (value | some: "action === 'records-index' && ( op == undefinded || op == 'add')");""}}
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-index')" ng-class="{'can': flag1}"></span></div>
+            {{ flag2 = (value | some: "action === 'records-read' && ( op == undefinded || op == 'add')");""}}
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-read')" ng-class="{'can': flag2}"></span></div>
+            {{ flag3 = (value | some: "action === 'records-update' && ( op == undefinded || op == 'add')");""}}
+            <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(key, 'records-update')" ng-class="{'can': flag3}"></span></div>
+          </div>
+        </div>
+    </li>
+    <li ng-show="isEmptyObject(allPermissions);">
+      <h5 class="centered">No permissions found</h5>
+      <h6 class="centered" ng-show="query">Give rights to user/role "{{query}}"</h6>
+    </li>
+  </ul>
+</div>
+{%- endraw %}

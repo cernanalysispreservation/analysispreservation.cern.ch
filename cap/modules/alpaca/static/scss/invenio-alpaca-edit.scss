@@ -5,6 +5,64 @@ $input_radius: 3px;
   width: 25%;
 }
 
+.alpaca-array-toolbar-action {
+    background-color: #169776;
+    color: #f5f5f5;
+    padding: 5px 20px;
+    font-size: 12px;
+    border: 0;
+}
+
+.alpaca-field-depositgroup > .alpaca-container,
+.alpaca-field-depositgroup-array > .alpaca-container {
+  .alpaca-container:not(.depositgroup-object) {
+    width: 75%;
+
+    .newarray {
+      .alpaca-control {
+        width: 100%;
+      }
+    }
+  }
+
+  .depositgroup-object {
+    .newarray {
+      background-color: #e4e4e4;
+      border-radius: 2px;
+      color: #5C6269;
+    }
+  }
+
+  .newarray {
+    width: 75%;
+
+    .alpaca-container:not(.depositgroup-object) {
+      width: 100%;
+    }
+    > .alpaca-field > .alpaca-control {
+      width: 100%;
+    }
+  }
+}
+
+.alpaca-field-depositgroup-array > .alpaca-container.depositgroup-array {
+  > .newarray {
+    width: 100%;
+  }
+
+  .depositgroup-object-fields {
+    background-color: #fff;
+  }
+}
+
+.modal-body > .alpaca-container-item {
+  width: 100%!important;
+}
+
+.alpaca-field > .twitter-typeahead {
+  display: inline!important;
+}
+
 .autocomplete-import {
   position: relative;
   border-radius: $input_radius;
@@ -99,7 +157,7 @@ $input_radius: 3px;
       display: inline-block;
 
       .alpaca-container-item {
-        width: 100%;
+        // width: 100%;
       }
     }
 
@@ -111,7 +169,7 @@ $input_radius: 3px;
 
 .depositgroup-array {
   > .newarray {
-    margin: 10px;
+    border: 10px solid #fff;
     background-color: #f5f5f5;
 
     .depositgroup-object > .newarray {
@@ -162,6 +220,10 @@ $input_radius: 3px;
   .select2-container,
   select.alpaca-control {
     border: 0;
+  }
+
+  span.select2 {
+    width: 75%!important;
   }
 }
 
@@ -242,6 +304,10 @@ textarea.alpaca-control {
   padding: 10px;
   background-color: rgb(245, 245, 245);
   border-radius: 3px;
+
+  :parent(.depositgroup-array) {
+    background-color: #fff;
+  }
 
   .alpaca-container-item {
     width: 100%;

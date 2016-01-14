@@ -30,7 +30,7 @@ def resolveObj(s, f, k):
                     newp[l] = s[p][l]
                 except:
                     newk[p] = s[f][k][p]
-                    print("Warning", l)
+                    # print("Warning", l)
                     break
             newk[p] = newp
         else:

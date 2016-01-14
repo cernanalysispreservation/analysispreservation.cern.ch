@@ -6,7 +6,7 @@
 </form>
 {%- else %}
 <div class="navbar-form navbar-right">
-    <a href="#" class="btn"><i class="fa fa-user"></i>{{ _('MY ACCOUNT') }}</a>
+    <a href="#" class="btn"><i class="fa fa-user"></i>{{current_user.email}}</a>
     <a href=" {{url_for_security('logout')}}" class="btn"> {{_('LOG OUT')}}</a>
 </div>
 {%- endif %}

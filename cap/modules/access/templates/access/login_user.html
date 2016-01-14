@@ -34,8 +34,6 @@
       <h3 class="text-center panel-free-title">{{_('Log in to account') }}</h3>
       {%- endblock form_header %}
       {%- block form_outer %}
-      <a href="{{url_for('access.login')}}" class="btn btn-default btn-lg btn-block">Sign in with CERN OAuth</a>
-      <h3 align="center">&mdash; OR &mdash;</h3>
       {%- with form = login_user_form %}
       <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
       {{form.hidden_tag()}}

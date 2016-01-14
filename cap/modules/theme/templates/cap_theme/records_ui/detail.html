@@ -16,13 +16,27 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
+                <div id="record-head"></div>
                 <div id="record-display" class="cap-box">
                     <nav id="record-menu" class="navbar">
-                        <ul class="rec_nav nav navbar-nav">
-                            <li><a class="active" href="#">Basic Info</a></li>
+                        <ul class="rec_nav nav navbar-nav nav-tabs">
+                            <li class="active"><a href="#">Basic Info</a></li>
                         </ul>
+                        {%- if record.id|can_edit %}
+                            <div class="edit-btn">
+                                <a href="{{ url_for('cap_front.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
+                            </div>
+                        {% endif %}
                     </nav>
                     <div id="record-fields" data-schema="{{schema}}" data-options="{{options}}">
+                        {%- if record.collections %}
+                            <div id="record-collections">
+                                <span>Collections:</span>
+                                {% for r in record.collections %}
+                                <a href="#">{{record.collections[r]}}</a> / 
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <div class="record-loading">
                             <img src="{{url_for('static', filename='img/loader.gif')}}">
                         </div>
