@@ -2,6 +2,7 @@ window.schemaOptions = {
     "fields": {
       "content": {
         "type": "depositgroup",
+        "order": 1,
         "fields": {
           "name": {
             "order": 1
@@ -34,61 +35,21 @@ window.schemaOptions = {
               },
               "comments": {
                 "order": 2,
-                "type": "textarea" 
+                "type": "textarea"
               }
             }
           },
           "cadi": {
-            "order": 4 
+            "order": 4
           },
           "opt_title": {
             "order": 5
-          },
-          "preapproval_date": {
-            "order": 6 ,
-            "type": "depositgroup-object",
-            "fields": {
-              "choice": {
-                "order": 1,
-                "type": "select2",
-                "select2": true,
-                "optionLabels": [
-                  "Scheduled for (please specify)",
-                  "Approximate date range (please specify)",
-                  "Completely undecided",
-                  "Not seeking approval"
-                ]
-              },
-              "date": {
-                "order": 2
-              }
-            }
-          },
-          "abstract": {
-            "order": 7,
-            "type": "textarea"
-          },
-          "cadi_refs": {
-            "order": 8,
-            "type": "depositgroup-object-array",
-            "fields": {
-              "item": {
-                "fields": {
-                  "number": {
-                    "order": 1
-                  },
-                  "comment": {
-                    "order": 2,
-                    "type": "textarea"
-                  }
-                }
-              }
-            }
           }
         }
       },
       "general": {
         "type": "depositgroup",
+        "order": 2,
         "fields": {
           "faq_awareness": {
             "order": 1,
@@ -124,19 +85,23 @@ window.schemaOptions = {
       },
       "multivariate": {
         "type": "depositgroup",
+        "order": 3,
         "fields": {
           "twiki_read": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": ["Yes", "No"]
           },
           "multi_usage": {
             "type": "mlt-choice-radio",
+            "order": 2,
             "removeDefaultNone": true,
             "optionLabels": ["Yes", "No"]
           },
           "software": {
             "type": "depositgroup-object",
+            "order": 3,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -153,6 +118,7 @@ window.schemaOptions = {
           },
           "type": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -162,7 +128,7 @@ window.schemaOptions = {
                   "Fisher Discriminant",
                   "Product of projected likelihoods",
                   "Artificial Neural Network",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -175,6 +141,7 @@ window.schemaOptions = {
           },
           "mva_output_usage": {
             "type": "depositgroup-object",
+            "order": 5,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -182,7 +149,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "We cut on the output to improve S/B",
                   "We fit the output distribution to get the signal fraction.",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -195,13 +162,15 @@ window.schemaOptions = {
           },
           "input_checks": {
             "type": "depositgroup-object",
+            "order": 6,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "We study all 1D distributions.",
-                  "We study all 2D distributions."
+                  "We study all 2D distributions.",
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -214,6 +183,7 @@ window.schemaOptions = {
           },
           "correlation_studies": {
             "type": "depositgroup-object",
+            "order": 7,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -221,7 +191,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "We study the correlation matrix between input variables.",
                   "We also study dependencies beyond linear correlation (please specify in \"Additional comments\").",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional type\")"
                 ]
               },
               "comments": {
@@ -234,6 +204,7 @@ window.schemaOptions = {
           },
           "input_selection": {
             "type": "depositgroup-object",
+            "order": 8,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -254,6 +225,7 @@ window.schemaOptions = {
           },
           "null_pdf": {
             "type": "depositgroup-object",
+            "order": 9,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -263,7 +235,7 @@ window.schemaOptions = {
                   "Yes, but this does not apply to my analysis.",
                   "Yes, I make training samples large enough and I checked that this does not occur.",
                   "Yes, and I need to check whether this applies to my analysis.",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -276,6 +248,7 @@ window.schemaOptions = {
           },
           "background_mix": {
             "type": "depositgroup-object",
+            "order": 10,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -284,7 +257,7 @@ window.schemaOptions = {
                   "We do not study that.",
                   "Yes, but this does not apply to my analysis.",
                   "Yes, and I need to check whether this applies to my analysis.",
-                  "no (please specify in \"Additional comments\")"
+                  "No (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -297,6 +270,7 @@ window.schemaOptions = {
           },
           "overtraining_checks": {
             "type": "depositgroup-object",
+            "order": 11,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -317,6 +291,7 @@ window.schemaOptions = {
           },
           "robustness_checks": {
             "type": "depositgroup-object",
+            "order": 12,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -324,7 +299,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "We do not perform any checks.",
                   "Yes",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -339,9 +314,11 @@ window.schemaOptions = {
       },
       "data_fitting": {
         "type": "depositgroup",
+        "order": 4,
         "fields": {
           "usage": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": [
               "Undecided",
@@ -351,6 +328,7 @@ window.schemaOptions = {
           },
           "functional_form": {
             "type": "depositgroup-object",
+            "order": 2,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -358,7 +336,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "Histograms/Templates",
                   "Parametric curves/pdfs",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -371,6 +349,7 @@ window.schemaOptions = {
           },
           "fitting_model_choice": {
             "type": "depositgroup-object",
+            "order": 3,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -381,7 +360,7 @@ window.schemaOptions = {
                   "Theory curve(s)",
                   "Theory-inspired curve(s)",
                   "Ad-hoc curve(s)",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -394,15 +373,16 @@ window.schemaOptions = {
           },
           "test_stats": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
-                  "chi-square",
-                  "binned likelihood",
-                  "unbinned likelihood",
-                  "other (please specify in \"Additional comments\")"
+                  "Chi-square",
+                  "Binned likelihood",
+                  "Unbinned likelihood",
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "reason": {
@@ -418,6 +398,7 @@ window.schemaOptions = {
           },
           "goodness_test": {
             "type": "depositgroup-object",
+            "order": 5,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -454,6 +435,7 @@ window.schemaOptions = {
           },
           "toy_exp": {
             "type": "depositgroup-object",
+            "order": 6,
             "fields": {
               "name": {
                 "type": "mlt-choice-cb",
@@ -463,7 +445,7 @@ window.schemaOptions = {
                   "No, but we do not use the uncertainty returned by the fit anyway.",
                   "Yes, and the result is that the method is unbiased.",
                   "Yes, and there are some deviations we account for (please specify in \"Additional comments\").",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -476,6 +458,7 @@ window.schemaOptions = {
           },
           "cov_matrix": {
             "type": "depositgroup-object",
+            "order": 7,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -493,6 +476,7 @@ window.schemaOptions = {
           },
           "bcgrnd_shape": {
             "type": "depositgroup-object",
+            "order": 8,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -501,7 +485,7 @@ window.schemaOptions = {
                   "Does not apply: We do not perform this kind of fitting.",
                   "We perform robustness checks to show that we are insensitive to the choice of the functional form.",
                   "We tried different options and assign a systematic uncertainty from the difference.",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -514,6 +498,7 @@ window.schemaOptions = {
           },
           "fit_func_params": {
             "type": "depositgroup-object",
+            "order": 9,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -524,7 +509,7 @@ window.schemaOptions = {
                   "We perform robustness checks to show that we are insensitive to this choice.",
                   "We tried different options and chose the most conservative one.",
                   "We applied a formal decision procedure (such as Fisher F-Test, LR test, please specify in \"Additional comments\")",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -537,6 +522,7 @@ window.schemaOptions = {
           },
           "param_bounds": {
             "type": "depositgroup-object",
+            "order": 10,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -558,8 +544,10 @@ window.schemaOptions = {
       },
       "confidence": {
         "type": "depositgroup",
+        "order": 5,
         "fields": {
           "usage": {
+            "order": 1,
             "type": "mlt-choice-radio",
             "removeDefaultNone": true,
             "optionLabels": [
@@ -570,6 +558,7 @@ window.schemaOptions = {
           },
           "citation": {
             "type": "depositgroup-object",
+            "order": 2,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -590,6 +579,7 @@ window.schemaOptions = {
           },
           "atlas_cms_agreement": {
             "type": "mlt-choice-radio",
+            "order": 3,
             "removeDefaultNone": true,
             "optionLabels": [
               "Does not apply: we do not perform limit computation",
@@ -599,6 +589,7 @@ window.schemaOptions = {
           },
           "support_awareness": {
             "type": "mlt-choice-radio",
+            "order": 4,
             "removeDefaultNone": true,
             "optionLabels": [
               "Does not apply: we do not perform limit computation",
@@ -608,6 +599,7 @@ window.schemaOptions = {
           },
           "recommendation_awareness": {
             "type": "mlt-choice-radio",
+            "order": 5,
             "removeDefaultNone": true,
             "optionLabels": [
               "Does not apply: we do not use Bayesian methods",
@@ -617,9 +609,10 @@ window.schemaOptions = {
           },
           "approaches": {
             "type": "depositgroup-object",
+            "order": 6,
             "fields": {
               "name": {
-                "type": "mlt-choice-radio",
+                "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "Frequentist limits",
@@ -630,7 +623,7 @@ window.schemaOptions = {
                   "Unified Approach (Feldman-Cousins)",
                   "Bayesian limits/intervals, with a flat prior for the parameter of interest",
                   "Bayesian limits/intervals, with a reference prior for the parameter of interest",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -643,6 +636,7 @@ window.schemaOptions = {
           },
           "software": {
             "type": "depositgroup-object",
+            "order": 7,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -651,8 +645,8 @@ window.schemaOptions = {
                   "The \"combine\" tool from the Higgs group",
                   "LandS",
                   "RooStas",
-                  "theta",
-                  "other (please specify in \"Additional comments\")"
+                  "Theta",
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -665,6 +659,7 @@ window.schemaOptions = {
           },
           "test_stats": {
             "type": "depositgroup-object",
+            "order": 8,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -691,6 +686,7 @@ window.schemaOptions = {
           },
           "toy_data": {
             "type": "depositgroup-object",
+            "order": 10,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -700,7 +696,7 @@ window.schemaOptions = {
                   "Nuisance parameters are sampled from their priors.",
                   "A fit to data is performed and the fitted nuisance parameter values are used for toy data generation (this is sometimes called \"bootstrapping\").",
                   "Nuisance parameters are not varied.",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -713,6 +709,7 @@ window.schemaOptions = {
           },
           "theory_error": {
             "type": "depositgroup-object",
+            "order": 9,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -723,7 +720,7 @@ window.schemaOptions = {
                   "We vary the theory prediction by one sigma up/down and cite the most conservative limit.",
                   "We introduce an additional nuisance parameter in the statistical model which modifies the cross section within the theory uncertainty.",
                   "We perform a Bayesian integration over the theory prediction and cite the prior-averaged limit.",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -738,9 +735,11 @@ window.schemaOptions = {
       },
       "discovery": {
         "type": "depositgroup",
+        "order": 6,
         "fields": {
           "twiki_read": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -749,6 +748,7 @@ window.schemaOptions = {
           },
           "usage": {
             "type": "mlt-choice-radio",
+            "order": 2,
             "removeDefaultNone": true,
             "optionLabels": [
               "Undecided",
@@ -758,6 +758,7 @@ window.schemaOptions = {
           },
           "test_statistics": {
             "type": "depositgroup-object",
+            "order": 3,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -765,7 +766,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "Likelihood ratio in which all nuisance parameters and parameter of interest are fixed to a nominal value",
                   "Profile likelihood ratio in which nuisance parameters and parameter of interest are varied in the maximisation",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -775,6 +776,7 @@ window.schemaOptions = {
           },
           "lookelsewhere_effect": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -786,7 +788,10 @@ window.schemaOptions = {
                 ]
               },
               "comments": {
-                "type": "textarea"
+                "type": "textarea",
+                "dependencies": {
+                  "name": ["yes"]
+                }
               }
             }
           }
@@ -794,9 +799,11 @@ window.schemaOptions = {
       },
       "unfolding": {
         "type": "depositgroup",
+        "order": 7,
         "fields": {
           "note_read": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -805,6 +812,7 @@ window.schemaOptions = {
           },
           "usage": {
             "type": "mlt-choice-radio",
+            "order": 2,
             "removeDefaultNone": true,
             "optionLabels": [
               "Undecided",
@@ -814,6 +822,7 @@ window.schemaOptions = {
           },
           "bbb_discouragement_awareness": {
             "type": "mlt-choice-radio",
+            "order": 3,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -822,6 +831,7 @@ window.schemaOptions = {
           },
           "technique": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -831,7 +841,7 @@ window.schemaOptions = {
                   "Matrix inversion",
                   "Generalized Matrix inversion with Tikhonov regularization (=SVD by HC6cker and Kartvelishvili / TUnfold)",
                   "D'Agostini iterative",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -844,6 +854,7 @@ window.schemaOptions = {
           },
           "software": {
             "type": "depositgroup-object",
+            "order": 5,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -851,7 +862,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "RooUnfold",
                   "TUnfold (without the RooUnfold interface)",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -863,10 +874,12 @@ window.schemaOptions = {
             }
           },
           "validation": {
-            "type": "textarea"
+            "type": "textarea",
+            "order": 6
           },
           "event_weight_application": {
             "type": "depositgroup-object",
+            "order": 7,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -889,9 +902,11 @@ window.schemaOptions = {
       },
       "uncertainties": {
         "type": "depositgroup",
+        "order": 8,
         "fields": {
           "twiki_read": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -900,6 +915,7 @@ window.schemaOptions = {
           },
           "consideration": {
             "type": "mlt-choice-radio",
+            "order": 2,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -908,6 +924,7 @@ window.schemaOptions = {
           },
           "recommendations_awareness": {
             "type": "mlt-choice-radio",
+            "order": 3,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -916,6 +933,7 @@ window.schemaOptions = {
           },
           "crosschecks": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -949,6 +967,7 @@ window.schemaOptions = {
           },
           "template_morphing": {
             "type": "depositgroup-object",
+            "order": 5,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -970,9 +989,11 @@ window.schemaOptions = {
       },
       "other": {
         "type": "depositgroup",
+        "order": 9,
         "fields": {
           "faq_read": {
             "type": "mlt-choice-radio",
+            "order": 1,
             "removeDefaultNone": true,
             "optionLabels": [
               "Yes",
@@ -981,6 +1002,7 @@ window.schemaOptions = {
           },
           "blind_analysis": {
             "type": "depositgroup-object",
+            "order": 2,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -1001,6 +1023,7 @@ window.schemaOptions = {
           },
           "combined_measurements": {
             "type": "depositgroup-object",
+            "order": 3,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -1009,7 +1032,7 @@ window.schemaOptions = {
                   "Does not apply: we do not perform a combination",
                   "BLUE",
                   "Combined likelihood function",
-                  "other (please specify in \"Additional comments\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -1022,6 +1045,7 @@ window.schemaOptions = {
           },
           "correlation_treatment": {
             "type": "depositgroup-object",
+            "order": 4,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -1043,9 +1067,11 @@ window.schemaOptions = {
       },
       "feedback": {
         "type": "depositgroup",
+        "order": 10,
         "fields": {
           "subject_to_change": {
             "type": "depositgroup-object",
+            "order": 1,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -1063,10 +1089,12 @@ window.schemaOptions = {
             }
           },
           "additional_comments": {
-            "type": "textarea"
+            "type": "textarea",
+            "order": 2
           },
           "feedback": {
-            "type": "textarea"
+            "type": "textarea",
+            "order": 3
           }
         }
       }

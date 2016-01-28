@@ -50,72 +50,17 @@
                     "title": "If no CADI entry is available, please provide the title and applicable references",
                     "description": "analysis note numbers, etc.",
                     "type": "string"
-                },
-                "preapproval_date": {
-                    "title": "Preapproval date",
-                    "type": "object",
-                    "properties": {
-                        "choice": {
-                            "title": "Choice",
-                            "type": "string",
-                            "enum": [
-                                "exactdate",
-                                "approxdate",
-                                "undecided",
-                                "notforapproval"
-                            ],
-                            "default": "",
-                            "options": {
-                                "enum_titles": [
-                                    "Scheduled for (please specify)",
-                                    "Approximate date range (please specify)",
-                                    "Completely undecided",
-                                    "Not seeking approval"
-                                ]
-                            }
-                        },
-                        "date": {
-                            "title": "date",
-                            "type": "string"
-                        }
-                    }
-                },
-                "abstract": {
-                    "title": "Abstract",
-                    "description": "Please provide a three-line summary of the analysis: what is being measured or sought for, what dataset, and how.",
-                    "type": "string"
-                },
-                "cadi_refs": {
-                    "title": "CADI entry numbers of analyses with same/similar statistical treatment",
-                    "description": "including earlier version of this analysis, if applicable.",
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "number": {
-                                "type": "string",
-                                "title": "CADI entry number"
-                            },
-                            "comment": {
-                                "type": "string",
-                                "title": "Comment",
-                                "description": "Please point out all relevant similarities / differences."                            }
-                        }
-                    }
                 }
             },
             "required": [
                 "name",
                 "email",
-                "group",
-                "preapproval_date",
-                "abstract",
-                "cadi_refs"
+                "group"
             ]
         },
         "general": {
             "title": "General Information",
-            "description": "Please get familiar with the <a href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>Statistics Committee TWiki Page</a>, which for example links <a href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>, and a <a href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>Page of Statistics-related References</a> you can cite. You might also want to take a quick look at the <a href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews Forum</a> and add the Committee's mailing list cms-statistics-committee@cern.ch to your contacts.",
+            "description": "Please get familiar with the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>Statistics Committee TWiki Page</a>, which for example links <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>, and a <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>Page of Statistics-related References</a> you can cite. You might also want to take a quick look at the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews Forum</a> and add the Committee's mailing list cms-statistics-committee@cern.ch to your contacts.",
             "type": "object",
             "properties": {
                 "faq_awareness": {
@@ -152,7 +97,7 @@
         },
         "multivariate": {
             "title": "Multivariate Discriminants",
-            "description": "Take a second and read the <a href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki Page on MVA Recommendations</a>.",
+            "description": "Take a second and read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki Page on MVA Recommendations</a>.",
             "type": "object",
             "properties": {
                 "twiki_read": {
@@ -245,7 +190,7 @@
                     }
                 },
                 "correlation_studies": {
-                    "title": "Study of correlalations/dependencies ",
+                    "title": "Study of correlations/dependencies ",
                     "type": "object",
                     "properties": {
                         "name": {
@@ -448,7 +393,7 @@
                             ]
                         },
                         "reason": {
-                            "title": "Reason",
+                            "title": "What drove you to this particular choice?",
                             "description": "What drove you to this particular choice?",
                             "type": "string"
                         },
@@ -467,7 +412,7 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "Do you perform a goodness-of-fit test for the fit(s)? If i\"Yes\" or \"Undecided\", provide additional information and the resultung p-values(s).",
+                            "description": "Do you perform a goodness-of-fit test for the fit(s)? If the answer is \"Yes\" or \"Undecided\", please provide additional information and the resultung p-values(s).",
                             "type": "string",
                             "enum": [
                                 "undecided",
@@ -627,7 +572,7 @@
             "properties": {
                 "usage": {
                     "title": "Usage of confidence intervals and limits",
-                    "description": "Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? If the answer is \"No\", please proceed with the next section.",
+                    "description": "Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? (If the answer is \"No\", please proceed with the next section.)",
                     "type": "string",
                     "enum": [
                         "undecided",
@@ -750,7 +695,7 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "In the case of frequentist/CLs confidence interval construction: which test statistic do you use? If you chose \"other\", please specify the test statistic used. As an example of the detail you should provide: \"the HCG choice is qmu = -2 Ln[L(mu, theta_mu_* )/L(mu* ,theta* )], with 0 < mu* < mu at the denominator, and the numerator has nuisances set at conditional ML estimate for data at given mu, theta_mu_*\"",
+                            "description": "In the case of frequentist/CLs confidence interval construction: which test statistic do you use? As an example of the detail you should provide: \"the HCG choice is qmu = -2 Ln[L(mu, theta_mu_* )/L(mu* ,theta* )], with 0 < mu* < mu at the denominator, and the numerator has nuisances set at conditional ML estimate for data at given mu, theta_mu_*\"(If you chose \"other\", please specify the test statistic used)",
                             "type": "string",
                             "enum": [
                                 "not_relevant",
@@ -778,7 +723,7 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "In the case toy data is generated as part of the procedureb determine the test statistic distribution or to compute the expected limit / expected limit bandsb the nuisance parameter are chosen for the toys.",
+                            "description": "In the case toy data are generated as part of the procedureb determine the test statistic distribution or to compute the expected limit / expected limit bandsb the nuisance parameter are chosen for the toys.",
                             "type": "string",
                             "enum": [
                                 "not_relevant",
@@ -828,7 +773,7 @@
         },
         "discovery": {
             "title": "Discovery",
-            "description": "Take a second a read the <a href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>TWiki Pages on Search Procedures</a>, <a href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, and <a href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a> (if applicable)?",
+            "description": "Take a second a read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>TWiki Pages on Search Procedures</a>, <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, and <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a> (if applicable)?",
             "type": "object",
             "properties": {
                 "twiki_read": {
@@ -897,7 +842,7 @@
         },
         "unfolding": {
             "title": "Unfolding",
-            "description": "Take a second and read the <a href='http://cousins.web.cern.ch/cousins/unfolding_15sep10.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>",
+            "description": "Take a second and read the <a target='_blank' href='http://cousins.web.cern.ch/cousins/unfolding_15sep10.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>",
             "type": "object",
             "properties": {
                 "note_read": {
@@ -911,7 +856,7 @@
                 },
                 "usage": {
                     "title": "Usage",
-                    "description": "Is unfolding used in parts of the analysis? If the answer is \"No\", please proceed with the next section.",
+                    "description": "Is unfolding used in parts of the analysis? (If the answer is \"No\", please proceed with the next section)",
                     "type": "string",
                     "enum": [
                         "undecided",
@@ -1031,7 +976,7 @@
                 },
                 "recommendations_awareness": {
                     "title": "Awareness of SC recommendations",
-                    "description": "If including a systematic effect as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?",
+                    "description": "If a systematic effect is included as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?",
                     "type": "string",
                     "enum": [
                         "yes",
@@ -1078,7 +1023,7 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "Do you use \"template morphing\" in you analysis, e.g. to model a systematic uncertainty in the statistical model?",
+                            "description": "Do you use \"template morphing\" in your analysis, e.g. to model a systematic uncertainty in the statistical model?",
                             "type": "string",
                             "enum": [
                                 "no",
@@ -1099,7 +1044,7 @@
         },
         "other": {
             "title": "Other Statistics Related Items",
-            "description": "Take a second read the <a href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>",
+            "description": "Take a second read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>",
             "type": "object",
             "properties": {
                 "faq_read": {
@@ -1184,7 +1129,7 @@
         },
         "feedback": {
             "title": "Comments and Feedback",
-            "description": "You're almost there. Just some final questions that may help us to improve our service.",
+            "description": "You're almost there! Just some final questions that may help us to improve our service.",
             "type": "object",
             "properties": {
                 "subject_to_change": {

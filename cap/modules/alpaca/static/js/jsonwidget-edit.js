@@ -98,6 +98,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       $RefParser.bundle(schemaName, function(e, schema){
         // Print schema in console
         // console.log(JSON.stringify(schema, null, 4));
+        schemaOptions["hideInitValidationError"] = true;
         $(target).alpaca({
           "data": recordData,
           "schema": schema,
