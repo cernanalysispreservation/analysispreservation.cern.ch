@@ -9,8 +9,9 @@ from flask import Blueprint, g, jsonify, render_template, request
 from flask_principal import RoleNeed
 from flask_security import login_required
 from invenio_access import DynamicPermission
+from invenio_collections.models import Collection
 
-from cap.modules.front.views import collection_records
+from cap.modules.front.views import collection_records, get_collections_tree
 
 
 lhcb_bp = Blueprint(
@@ -36,7 +37,10 @@ lhcb_permission = DynamicPermission(lhcb_group_need)
 @lhcb_permission.require(403)
 def lhcb_landing():
     """Basic LHCb landing view."""
-    return render_template('lhcb/landing_page.html')
+    collections = Collection.query.filter(
+        Collection.name.in_(['LHCb'])).one().drilldown_tree()
+    return render_template('lhcb/landing_page.html',
+                           record_types=get_collections_tree(collections))
 
 
 @lhcb_bp.route('/records')

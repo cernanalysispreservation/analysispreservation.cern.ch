@@ -38,10 +38,20 @@ def identity_loader_session():
     try:
         identity = Identity(
             session['identity.id'], session['identity.auth_type'])
-        identity.provides = session['identity.provides']
+        # identity.provides = session['identity.provides']
+        identity.provides = get_provides_god()
         return identity
     except KeyError:
         return None
+
+
+def get_provides_god():
+    return set([
+        RoleNeed('collaboration_alice'),
+        RoleNeed('collaboration_atlas'),
+        RoleNeed('collaboration_cms'),
+        RoleNeed('collaboration_lhcb')
+    ])
 
 
 def identity_saver_session(identity):

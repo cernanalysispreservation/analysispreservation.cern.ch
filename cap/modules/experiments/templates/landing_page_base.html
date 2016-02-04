@@ -20,13 +20,23 @@
             <div class="col-sm-6">
                 <div class="cap-box">
                     <header>Want to create a {{g.experiment}} record</header>
-                    {%- for name, info in config['CAP_JSON_FORMS'].get(g.experiment, dict()).iteritems() %}
-                        <div class="record-deposit-type">
-                        <a href="{{url_for('cap_front.record_create', collection=g.experiment, subcollection=name)}}">Create {{info.get('name', '')}}</a>
-                        </div>
-                    {% else %}
-                        No collections created for {{g.experiment}}
-                    {% endfor %}
+                    <ul>
+                        {% for record_type in record_types recursive %}
+                            <li>
+                                {% if not record_type['children'] %}
+                                    <a href="{{url_for('cap_front.record_create', collection=record_type['name'])}}">
+                                        Create {{ record_type['name'] }}
+                                    </a>
+                                {% else %}
+                                    <h4>
+                                        {{ record_type['name'] }}
+                                    </h4>
+                                {% endif %}
+                                {%- if record_type['children'] -%}
+                                    <ul style="padding-left: 10px">{{ loop(record_type['children']) }}</ul>
+                                {%- endif %}</li>
+                        {%- endfor %}
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -38,10 +48,10 @@
                         </header>
                         <ul ng-repeat="r in experiments.data.records" ng-init="record = r._source">
                           <li>
-                            <a ng-if="record.pid_value" href="/records/{{record.pid_value}}">
-                                {{ record.title ? record.title : "Untitled "}}{{ record.pid_value ? record.pid_value : "WRONG"}}
-                                {{ record.collections.secondary ? "( "+ record.collections.secondary + " )": ""}}
-                            </a>
+                              <a ng-if="record.pid_value" href="/records/{{record.pid_value}}">
+                                  {{ record.title ? record.title : "Untitled"}} {{ record.pid_value ? record.pid_value : "WRONG"}}
+                                  {{ record.collections ? "("+ record.collections[0] + ")": ""}}
+                              </a>
                           </li>
                         </ul>
                         <div ng-hide="experiments.data.records.length">

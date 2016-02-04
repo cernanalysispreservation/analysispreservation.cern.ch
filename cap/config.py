@@ -44,6 +44,9 @@ RECORDS_UI_ENDPOINTS = dict(
     ),
 )
 
+# SearchUI API endpoint.
+SEARCH_UI_SEARCH_API = '/api/records/'
+
 # Database
 # SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 
@@ -53,30 +56,6 @@ SEARCH_ELASTIC_HOSTS = "localhost:9200"
 
 # Mail
 MAIL_SUPPRESS_SEND = True
-
-CAP_COLLECTIONS = ['ALICE', 'ATLAS', 'CMS', 'LHCb']
-
-CAP_JSON_FORMS = dict(
-    CMS=dict(
-        questionnaire=dict(
-            name="CMS Questionnaire",
-            schema="/cms/cms_questionnaire_schema.json",
-            options="/static/jsonschemas/cms/cms_questionnaire_options.js"
-        ),
-        analysis=dict(
-            name="CMS Analysis",
-            schema="/cms/cap_demo_short_schema.json",
-            options="/static/jsonschemas/cms/cap_analysis.js"
-        ),
-    ),
-    LHCb=dict(
-        analysis=dict(
-            name="LHCb Analysis",
-            schema="/lhcb/lhcb_analysis_schema.json",
-            options="/static/jsonschemas/lhcb/lhcb_analysis_options.js"
-        ),
-    ),
-)
 
 DEBUG = True
 ASSET_DEBUG = True
