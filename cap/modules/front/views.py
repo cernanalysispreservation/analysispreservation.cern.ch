@@ -17,6 +17,7 @@ from uuid import uuid4
 import json
 from jsonpatch import JsonPatchException, JsonPointerException
 from invenio_accounts.models import User
+from invenio_collections.models import Collection
 
 blueprint = Blueprint(
     'cap_front',
@@ -148,32 +149,25 @@ def recordsAll():
                                     .id.in_(indexable_records)).all()])
 
 
-@blueprint.route('/records/<collection>/<subcollection>/create')
+@blueprint.route('/records/<collection>/create')
 @login_required
-def record_create(collection=None, subcollection=None):
+def record_create(collection=None):
     """Basic test view."""
-
-    if not collection in current_app.config['CAP_COLLECTIONS']:
-        abort(404)
 
     # Creating a uuid4
     recid = uuid4()
-
-    data = {}
-    data['collections'] = {}
-    if collection and subcollection:
-        data['collections']['primary'] = collection
-        data['collections']['secondary'] = subcollection
-    else:
-        abort(404)
 
     # Creating a PID for the record
     provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
     pid = provider.pid.pid_value
 
-    # Creating record with new recid
-    data['pid_value'] = pid
-    record = Record.create(data, id_=recid)
+    data = {
+        'pid_value': pid,
+        'collections': [collection],
+        'control_number': pid
+    }
+
+    Record.create(data, id_=recid)
 
     # Creating permission needs for the record
     action_edit_record = RecordUpdateActionNeed(str(recid))
@@ -189,15 +183,42 @@ def record_create(collection=None, subcollection=None):
     return redirect(url_for('.edit_record', pid_value=pid))
 
 
+def get_collections_tree(collections):
+    result = []
+
+    for current_collection in collections:
+        result.append({
+            'name': current_collection['node'].name,
+            'children': get_collections_tree(
+                    current_collection['children'])
+                    if 'children' in current_collection else []
+        })
+    return result
+
+
+def get_collections_queries(collections):
+    """Return an array with all the dbqueries in collections."""
+    result = []
+    for current_collection in collections:
+        if current_collection['node'].dbquery:
+            result.append(current_collection['node'].dbquery)
+        elif 'children' in current_collection:
+            result += get_collections_queries(current_collection['children'])
+        else:
+            result += ['collections:' + current_collection['node'].name]
+    return result
+
+
 @blueprint.route('/records/collection/<string:collection>')
 def collection_records(collection=None):
-    page = request.values.get('page', 1, type=int)
-    size = request.values.get('size', 1, type=int)
-    # query = Query(request.values.get('q', ''))[(page-1)*size:page*size]
+    collections = Collection.query.filter(
+            Collection.name.in_([collection])).one().drilldown_tree()
+    query_array = get_collections_queries(collections)
+    query_string = ' or '.join(query_array)
+    query = Query(query_string)
     response = current_search_client.search(
-        index='records',
-        # doc_type=request.values.get('type', 'example'),
-        q='collections.primary:'+collection,
+        index=request.values.get('records'),
+        body=query.body,
     )
 
     recs = response.get('hits', []).get('hits', [])
