@@ -64,7 +64,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       var target = $('.record-rendered', element)[0];
       var loading = $('.record-loading', element)[0];
       // if (!(schemaOptions)) schemaOptions = {};
-      $RefParser.bundle("/static/jsonschemas"+schemaName, function(e, schema){
+      $RefParser.bundle(schemaName, function(e, schema){
         // Print schema in console
         // console.log(JSON.stringify(schema, null, 4));
         $(target).alpaca({

@@ -11,8 +11,9 @@ from flask import Blueprint, g, jsonify, render_template, request
 from flask_principal import RoleNeed
 from flask_security import login_required
 from invenio_access import DynamicPermission
+from invenio_collections.models import Collection
 
-from cap.modules.front.views import collection_records
+from cap.modules.front.views import collection_records, get_collections_tree
 
 from ..scripts.cms import das
 
@@ -45,7 +46,10 @@ cms_permission = DynamicPermission(cms_group_need)
 @cms_permission.require(403)
 def cms_landing():
     """Basic CMS landing view."""
-    return render_template('cms/landing_page.html')
+    collections = Collection.query.filter(
+        Collection.name.in_(['CMS'])).one().drilldown_tree()
+    return render_template('cms/landing_page.html',
+                           record_types=get_collections_tree(collections))
 
 
 @cms_bp.route('/records')

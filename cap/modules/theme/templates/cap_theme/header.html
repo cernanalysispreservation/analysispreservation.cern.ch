@@ -1,5 +1,7 @@
 {%- extends "invenio_theme/header.html" %}
 
+{% block navbar_nav %}{% endblock %}
+
 {% block brand %}<a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px"/></a>
 <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;width:200px;">
 {% endblock %}
