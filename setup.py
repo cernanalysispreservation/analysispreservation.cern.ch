@@ -43,17 +43,19 @@ install_requires = [
     'flask-kvsession',
     'pysqlite',
     'invenio[minimal]>=3.0.0a1,<3.1.0',
-    'invenio-base==1.0.0a4',
     'invenio-access==1.0.0a3',
     'invenio-assets==1.0.0a4',
+    'invenio-base==1.0.0a4',
+    'invenio-collections==1.0.0a2',
     'invenio-db>=1.0.0a9',
     # 'invenio-oauthclient>=1.0.0a1',
     'invenio-pidstore==1.0.0a3',
     'invenio-records==1.0.0a8',
-    'invenio-records-rest==1.0.0a3',
+    'invenio-records-rest==1.0.0a4',
     'invenio-records-ui==1.0.0a4',
-    'invenio-theme==1.0.0a6',
-    'invenio-search==1.0.0a2',
+    'invenio-search>=1.0.0a3',
+    'invenio-search-ui>=1.0.0a1',
+    'invenio-theme>=1.0.0a7',
 ]
 
 
@@ -129,7 +131,12 @@ setup(
         # ],
         'invenio_base.apps': [
             'invenio_search = invenio_search:InvenioSearch',
+            'invenio_records = invenio_records:InvenioRecords',
             'cap_accesss = cap.modules.access.ext:Access',
+        ],
+        'invenio_base.api_apps': [
+            'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
+            'invenio_search = invenio_search:InvenioSearch',
         ],
         'invenio_access.actions': [
             'cap_alice_access = cap.modules.experiments.views.alice:alice_group_need',

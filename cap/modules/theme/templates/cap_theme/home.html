@@ -1,25 +1,19 @@
 {%- extends "cap_theme/page.html" %}
 
 {%- block header %}
-    {% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
   {{ super() }}
 
   {% block css %}
     {{ super() }}
     {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {% assets "invenio_search_ui_search_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
   {% endblock css %}
 {% endblock header %}
 
 {% block page_body %}
 <div class="cap-home">
     <div class="container">
-         <div class="row">
-             <div class="col-md-12" ng-controller="searchController">
-                <div class="row">
-                    {%- include "cap_theme/searchbar.html" %}
-                </div>
-             </div>
-         </div>
+         {%- include "cap_theme/searchbar.html" %}
          <div class="row">
             <div id="cap-experiments">
                 <div class="col-sm-3">
@@ -36,39 +30,16 @@
                 </div>
             </div>
          </div>
-         <div class="row">
-            <div class="col-sm-12">
-                {%- raw %}
-                <div id="cap-front" class="row">
-                    <div class="col-sm-12">
-                      <div id="cap-hello" class="cap-box" ng-controller="homeController">
-                          <header>{{hello}}</header>{% endraw %}
-                          <div class="row">
-                          {%- for experiment in config['CAP_JSON_FORMS'] %}
-                              <div class="col-sm-3">
-                                <h5>{{experiment}}</h5>
-                                {%- for name, info in config['CAP_JSON_FORMS'].get(experiment, dict()).iteritems() %}
-                                  <div class="record-deposit-type">
-                                  <a href="{{url_for('cap_front.record_create', collection=experiment, subcollection=name)}}">Create {{info.get('name', '')}}</a>
-                                  </div>
-                                {% endfor %}
-                              </div>
-                          {% endfor %}
-                          </div>
-                          {%- raw %}
-                      </div>
-                    </div>
-                </div>
-                {% endraw %}
-            </div>
-         </div>
      </div>
 </div>
 {% endblock %}
 
 
 {%- block javascript %}
-  {{ super() }}
+    {{ super() }}
     {% assets "cap_theme_front_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "cap_theme_records_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {% assets "invenio_search_ui_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    <script src="{{ url_for('static', filename='node_modules/almond/almond.js') }}"></script>
 {% endblock javascript %}

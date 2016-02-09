@@ -1,0 +1,6 @@
+<ul ng-show="vm.userQuery">
+  <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index">
+    <h5>{{ record.metadata.collections[0] }}</h5>
+    <code>{{ record.metadata }}</code>
+  </li>
+</ul>
