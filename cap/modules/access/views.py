@@ -4,11 +4,11 @@ from __future__ import absolute_import, print_function
 
 from collections import deque
 
-from flask import Blueprint, g, redirect, session, url_for, current_app
+from flask import Blueprint, current_app, g, redirect, session, url_for
 from flask_login import current_user
-from flask_principal import AnonymousIdentity, Principal, Identity, RoleNeed
-from invenio_oauthclient.signals import account_setup_received
+from flask_principal import AnonymousIdentity, Identity, Principal, RoleNeed
 
+from invenio_oauthclient.signals import account_setup_received
 
 access_blueprint = Blueprint('access', __name__,
                              url_prefix='/access',

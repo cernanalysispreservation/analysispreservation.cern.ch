@@ -91,6 +91,8 @@ depend on:
    npm install bower
    npm install
    cd node_modules/alpaca
+   npm install gulp gulp-clean
+
    npm install
    npm start
    cdvirtualenv src/cap
@@ -129,6 +131,12 @@ Start Elasticsearch in the background:
 .. code-block:: shell
 
    elasticsearch &
+
+Create the index in ElasticSearch using the mappings:
+
+.. code-block:: shell
+
+   python manage.py index init
 
 Start the web application (in debugging mode):
 

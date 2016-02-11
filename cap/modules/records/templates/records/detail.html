@@ -17,13 +17,13 @@
                         </ul>
                         {%- if record.id|can_edit %}
                             <div class="edit-btn">
-                                <a href="{{ url_for('cap_front.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
+                                <a href="{{ url_for('records.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
                             </div>
                         {% endif %}
                     </nav>
                     <div id="record-fields"
-                         data-schema="{{url_for('cap_cms.static', filename='jsonschemas/' + record.collections[0] + '_schema.json')}}"
-                         data-options="{{url_for('cap_cms.static', filename='jsonschemas/' + record.collections[0] + '_options.js')}}">
+                         data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                         data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
                         {%- if record.collections %}
                             <div id="record-collections">
                                 <span>Collections:</span>

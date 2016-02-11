@@ -1,4 +1,5 @@
 {
+  "id": "https://analysis-preservation.cern.ch/records/jsonschemas/options/LHCbAnalysis/",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "LHCb Analysis Example (JSON Schema)",
   "description": "Schema example for records Schema example for records Schema example for records Schema example for recordsSchema example for recordsSchema example for records",

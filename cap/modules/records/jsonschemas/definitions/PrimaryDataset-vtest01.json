@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Monte Carlo Dataset",
-  "description": "Information concerning the Monte Carlo Dataset used",
+  "title": "Primary Dataset",
+  "description": "Information concerning the CMS Primary Dataset used",
   "type": "object",
   "properties": {
     "@type": {
@@ -14,13 +14,13 @@
       "title": "Title",
       "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
       "autocomplete": true,
-      "propertyOrder": 301
+      "propertyOrder": 201
     },
     "description": {
       "type": "string",
       "title": "Description",
       "format": "textarea",
-      "description": "Provide a description for the MC dataset"
+      "description": "Provide a description for the primary dataset"
     },
     "licence": {
       "type": "string",
@@ -32,14 +32,14 @@
       "description": "",
       "type": "array",
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Identifiers-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-vtest01.json"
       }
     },
     "issued": {
       "title": "Issued",
       "type": "string",
       "format": "datetime",
-      "description": "Provide date/time the dataset was issued"
+      "description": "Provide date/time the primary dataset was issued"
     },
     "modified": {
       "title": "Modified",
@@ -50,7 +50,7 @@
     "available": {
       "title": "Year Availble",
       "type": "number",
-      "description": "Provide the year the MC dataset will be available in public. e.g. 2014"
+      "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
     },
     "run_number": {
       "title": "Run #",
@@ -65,7 +65,7 @@
     "type": {
       "title": "Type",
       "type": "string",
-      "description": "Provide type of item e.g. 'mc'"
+      "description": "Provide type of item e.g. 'data'"
     },
     "numbers": {
       "title": "Numbers",

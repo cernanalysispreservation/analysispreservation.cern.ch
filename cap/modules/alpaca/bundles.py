@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function
 from flask_assets import Bundle
 from invenio_assets import NpmBundle
 
-
 display_js = NpmBundle(
     Bundle(
         filters="uglifyjs",
@@ -27,12 +26,36 @@ display_js = NpmBundle(
     }
 )
 
+create_js = NpmBundle(
+    Bundle(
+        filters="uglifyjs",
+    ),
+    Bundle(
+        'js/jsonwidget-create.js',
+        'js/records/main.js',
+        filters="requirejs",
+    ),
+    output="gen/invenio.alpaca.edit.%(version)s.js",
+    npm={
+        "jquery": "~2.1.4",
+        "select2": "~4.0.1",
+        "underscore": "~1.8.3",
+        "typeahead.js": "~0.10.5",
+        "handlebars": "~3.0.3",
+        "moment": "~2.10.6",
+        "json-schema-ref-parser": "~1.4.0",
+        "alpaca": "1.5.11",
+        "gulp": "3.9.0",
+        "fast-json-patch": "~0.5.4",
+    }
+)
+
 edit_js = NpmBundle(
     Bundle(
         filters="uglifyjs",
     ),
     Bundle(
-        'js/jsonwidget.js',
+        'js/jsonwidget-edit.js',
         'js/records/main.js',
         filters="requirejs",
     ),
