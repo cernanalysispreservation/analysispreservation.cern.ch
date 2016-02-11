@@ -30,8 +30,8 @@ THEME_SITENAME = _("cap")
 
 REQUIREJS_CONFIG = 'js/cap-build.js'
 
-RECORDS_UI_BASE_TEMPLATE = 'cap_theme/records_ui/detail.html'
-RECORDS_UI_TOMBSTONE_TEMPLATE = 'cap_theme/records_ui/detail.html'
+RECORDS_UI_BASE_TEMPLATE = 'records/detail.html'
+RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 
 # Records configuration
 RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:read_permission_factory"
@@ -40,7 +40,29 @@ RECORDS_UI_ENDPOINTS = dict(
     recid=dict(
         pid_type='recid',
         route='/records/<pid_value>',
-        template='cap_theme/records_ui/detail.html',
+        template='records/detail.html',
+    ),
+)
+
+RECORDS_REST_ENDPOINTS = dict(
+    recid=dict(
+        pid_type='recid',
+        pid_minter='recid_minter',
+        pid_fetcher='recid_fetcher',
+        search_index='_all',
+        search_type=None,
+        record_serializers={
+            'application/json': ('invenio_records_rest.serializers'
+                                 ':record_to_json_serializer'),
+        },
+        search_serializers={
+            'application/json': ('invenio_records_rest.serializers'
+                                 ':search_to_json_serializer'),
+        },
+        list_route='/records/',
+        item_route='/records/<pid_value>',
+        default_media_type='application/json',
+        max_result_window=10000,
     ),
 )
 

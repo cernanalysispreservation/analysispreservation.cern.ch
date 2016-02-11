@@ -35,6 +35,17 @@ js = NpmBundle(
     }
 )
 
+search_js = NpmBundle(
+    'node_modules/invenio-search-js/src/invenio-search-js/invenioSearch.module.js',
+    'js/search.js',
+
+    npm={
+        "almond": "~0.3.1",
+        "angular": "~1.4.9",
+    },
+    output="gen/cap_search.%(version)s.js"
+)
+
 front_css = NpmBundle(
     'scss/frontpage.scss',
     filters='scss, cleancss',

@@ -13,10 +13,9 @@ from flask_security import login_required
 from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
 
-from cap.modules.front.views import collection_records, get_collections_tree
+from cap.modules.records.views import collection_records, get_collections_tree
 
 from ..scripts.cms import das
-
 
 cms_bp = Blueprint(
     'cap_cms',
