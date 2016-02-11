@@ -45,17 +45,18 @@ install_requires = [
     'invenio[minimal]>=3.0.0a1,<3.1.0',
     'invenio-access==1.0.0a3',
     'invenio-assets==1.0.0a4',
-    'invenio-base==1.0.0a4',
+    'invenio-base==1.0.0a5',
     'invenio-collections==1.0.0a2',
     'invenio-db>=1.0.0a9',
+    'invenio-indexer>=1.0.0a1',
     # 'invenio-oauthclient>=1.0.0a1',
-    'invenio-pidstore==1.0.0a3',
-    'invenio-records==1.0.0a8',
-    'invenio-records-rest==1.0.0a4',
+    'invenio-pidstore==1.0.0a4',
+    'invenio-records==1.0.0a9',
+    'invenio-records-rest==1.0.0a6',
     'invenio-records-ui==1.0.0a4',
-    'invenio-search>=1.0.0a3',
+    'invenio-search>=1.0.0a5',
     'invenio-search-ui>=1.0.0a1',
-    'invenio-theme>=1.0.0a7',
+    'invenio-theme>=1.0.0a9',
 ]
 
 
@@ -117,7 +118,6 @@ setup(
         #     'cap = cap.cli:cli',
         # ],
         'invenio_base.blueprints': [
-            'cap_front = cap.modules.front.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
@@ -133,6 +133,7 @@ setup(
             'invenio_search = invenio_search:InvenioSearch',
             'invenio_records = invenio_records:InvenioRecords',
             'cap_accesss = cap.modules.access.ext:Access',
+            'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
             'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
@@ -156,10 +157,17 @@ setup(
             'cap_alice_js = cap.modules.experiments.bundles:alice_js',
             'cap_alpaca_display_css = cap.modules.alpaca.bundles:display_css',
             'cap_alpaca_display_js = cap.modules.alpaca.bundles:display_js',
+            'cap_alpaca_create_js = cap.modules.alpaca.bundles:create_js',
             'cap_alpaca_edit_js = cap.modules.alpaca.bundles:edit_js',
             'cap_alpaca_edit_css = cap.modules.alpaca.bundles:edit_css',
             'cap_experiments_js = cap.modules.experiments.bundles:experiments_js',
             'cap_experiments_css = cap.modules.experiments.bundles:experiments_css',
+        ],
+        'invenio_records.jsonresolver': [
+            'jsonresolver = cap.modules.records.resolvers.jsonschemas',
+        ],
+        'invenio_search.mappings': [
+            'mappings = cap.modules.records',
         ],
     },
     extras_require=extras_require,

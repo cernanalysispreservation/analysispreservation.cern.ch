@@ -78,7 +78,7 @@
       }
     },
     "adr": {
-      "$ref": "/static/jsonschemas/definitions/Address-vtest01.json"
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Address-vtest01.json"
     },
     "photo": {
       "title": "Photo",
@@ -123,7 +123,7 @@
       "title": "Identifiers",
       "type": "array",
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Identifiers-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-vtest01.json"
       }
     }
   }

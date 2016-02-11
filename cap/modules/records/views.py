@@ -1,58 +1,69 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+"""Blueprint for Records."""
+
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, render_template, jsonify, request, \
-    redirect, url_for, abort, current_app, g
-# from flask_menu import register_menu
-# from invenio_search import Query, current_search_client
-from invenio_records import Record
-from invenio_records.models import RecordMetadata
-from sqlalchemy.orm.exc import NoResultFound
-from invenio_pidstore.providers.recordid import RecordIdProvider
-from invenio_pidstore.resolver import Resolver
-# from invenio_pidstore.models import PersistentIdentifier, PIDStatus
-from invenio_records_ui.views import record_view
-from invenio_db import db
-from invenio_search import InvenioSearch, Query, current_search_client
-from uuid import uuid4
 import json
-from jsonpatch import JsonPatchException, JsonPointerException
+import os
+from functools import partial
+from uuid import uuid4
+
+from flask import (Blueprint, Response, abort, current_app, jsonify,
+                   render_template, request, url_for)
+from flask.ext.login import current_user, login_required
+from flask_security import login_required
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_access.permissions import (DynamicPermission,
+                                        ParameterizedActionNeed)
 from invenio_accounts.models import User
 from invenio_collections.models import Collection
+from invenio_db import db
+from invenio_indexer.utils import RecordIndexer
+from invenio_pidstore.providers.recordid import RecordIdProvider
+from invenio_pidstore.resolver import Resolver
+from invenio_records import Record
+from invenio_records.models import RecordMetadata
+from invenio_records.permissions import (RecordReadActionNeed,
+                                         RecordUpdateActionNeed,
+                                         read_permission_factory,
+                                         update_permission_factory)
+from invenio_records_ui.views import record_view
+from invenio_search import Query, current_search_client
+from jsonpatch import JsonPatchException, JsonPointerException
+from jsonref import JsonRef
+from jsonresolver import JSONResolver
 
 blueprint = Blueprint(
-    'cap_front',
+    'records',
     __name__,
-    url_prefix='',
     template_folder='templates',
-    static_folder='static',
+    url_prefix='/records',
+    static_folder='static'
 )
 
-
-@blueprint.route('/')
-# @register_menu(blueprint, 'main.index', 'Search')
-def index():
-    """Frontpage blueprint."""
-
-    return render_template('cap_theme/home.html')
-
-# Record methods and permissions
-
-from flask.ext.login import current_user, login_required
-from functools import partial
-
-from flask_security import login_required
-from invenio_access.permissions import DynamicPermission, \
-    ParameterizedActionNeed
-from invenio_access.proxies import current_access
-from invenio_access.models import ActionUsers, ActionRoles
-from invenio_records.permissions import read_permission_factory, \
-    update_permission_factory, delete_permission_factory, \
-    RecordUpdateActionNeed, RecordDeleteActionNeed, \
-    RecordReadActionNeed, records_read_all
-
-
-from invenio_access.permissions import DynamicPermission, \
-    ParameterizedActionNeed
 
 RecordIndexActionNeed = partial(ParameterizedActionNeed, 'records-index')
 """Action need for indexing a record."""
@@ -132,13 +143,12 @@ def get_readable_records_by_user(user_id, roles):
     return zip(*r_list)[0] if r_list else []
 
 
-@blueprint.route('/records')
+@blueprint.route('/')
 def recordsAll():
     """Basic test view."""
 
     # List of indexable records
-    indexable_records = \
-        get_indexable_records_by_user(
+    indexable_records = get_indexable_records_by_user(
             current_user.id if current_user.is_authenticated else None,
             current_user.roles)
 
@@ -149,9 +159,15 @@ def recordsAll():
                                     .id.in_(indexable_records)).all()])
 
 
-@blueprint.route('/records/<collection>/create')
+@blueprint.route('/<path:collection>/create')
 @login_required
-def record_create(collection=None):
+def create_record_view(collection):
+    return render_template('records/create.html', collection=collection)
+
+
+@blueprint.route('/<path:collection>/create', methods=['POST'])
+@login_required
+def create_record(collection):
     """Basic test view."""
 
     # Creating a uuid4
@@ -161,13 +177,24 @@ def record_create(collection=None):
     provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
     pid = provider.pid.pid_value
 
-    data = {
-        'pid_value': pid,
-        'collections': [collection],
-        'control_number': pid
-    }
+    data = json.loads(request.get_data())
 
-    Record.create(data, id_=recid)
+    data['$schema'] = current_app.config.get(
+            'JSONSCHEMAS_HOST') + url_for(
+            "records.jsonschema", collection=collection)
+    data['pid_value'] = pid
+    data['control_number'] = pid
+    data['collections'] = [collection]
+
+    record = Record.create(data, id_=recid)
+
+    # Invenio-Indexer is delegating the document inferring to
+    # Invenio-Search which is analysing the string splitting by `/` and
+    # using `.json` to be sure that it cans understand the mapping.
+    record['$schema'] = 'mappings/{0}.json'.format(collection.lower())
+
+    indexer = RecordIndexer()
+    indexer.index(record)
 
     # Creating permission needs for the record
     action_edit_record = RecordUpdateActionNeed(str(recid))
@@ -178,9 +205,10 @@ def record_create(collection=None):
     db.session.add(ActionUsers.allow(action_edit_record, user=current_user))
     db.session.add(ActionUsers.allow(action_read_record, user=current_user))
     db.session.add(ActionUsers.allow(action_index_record, user=current_user))
+
     db.session.commit()
 
-    return redirect(url_for('.edit_record', pid_value=pid))
+    return '200'
 
 
 def get_collections_tree(collections):
@@ -209,7 +237,7 @@ def get_collections_queries(collections):
     return result
 
 
-@blueprint.route('/records/collection/<string:collection>')
+@blueprint.route('/collection/<string:collection>')
 def collection_records(collection=None):
     collections = Collection.query.filter(
             Collection.name.in_([collection])).one().drilldown_tree()
@@ -217,7 +245,6 @@ def collection_records(collection=None):
     query_string = ' or '.join(query_array)
     query = Query(query_string)
     response = current_search_client.search(
-        index=request.values.get('records'),
         body=query.body,
     )
 
@@ -230,7 +257,7 @@ def collection_records(collection=None):
     return jsonify(**records)
 
 
-@blueprint.route('/records/<pid_value>/edit')
+@blueprint.route('/<pid_value>/edit')
 @login_required
 def edit_record(pid_value=None):
     resolver = Resolver(
@@ -246,12 +273,12 @@ def edit_record(pid_value=None):
     permission_edit_record = update_permission_factory(record)
     if permission_edit_record.can():
         return record_view(pid_value, resolver,
-                           'cap_theme/records_ui/edit.html')
+                           'records/edit.html')
 
     abort(403)
 
 
-@blueprint.route('/records/<pid_value>', methods=["GET", "POST"], defaults={})
+@blueprint.route('/<pid_value>', methods=["GET", "POST"], defaults={})
 @login_required
 def recid(pid_value=None):
     resolver = Resolver(
@@ -271,15 +298,15 @@ def recid(pid_value=None):
     permission_edit_record = update_permission_factory(record)
     permission_read_record = read_permission_factory(record)
 
-    if (is_public or permission_read_record.can()):
+    if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           'cap_theme/records_ui/detail.html')
+                           'records/detail.html')
 
     abort(403)
 
 
-@blueprint.route('/records/<pid_value>/update', methods=['POST'])
+@blueprint.route('/<pid_value>/update', methods=['POST'])
 def update_record(pid_value=None):
     resolver = Resolver(
         pid_type='recid',
@@ -305,29 +332,7 @@ def update_record(pid_value=None):
     return '200'
 
 
-@blueprint.route('/search')
-def search():
-    """CAP Search page."""
-    return render_template('cap_theme/search.html')
-
-
-@blueprint.route('/elastic', methods=['GET', 'POST'])
-@blueprint.route('/elastic/<index_name>', methods=['GET', 'POST'])
-@blueprint.route('/elastic/<index_name>/_search', methods=['GET', 'POST'])
-def elastic(index_name='cap'):
-    """CAP Home page."""
-    page = request.values.get('page', 1, type=int)
-    size = request.values.get('size', 1, type=int)
-    query = Query(request.values.get('q', ''))[(page-1)*size:page*size]
-    response = current_search_client.search(
-        index=index_name,
-        doc_type=request.values.get('type', 'example'),
-        body=query.body,
-    )
-    return jsonify(**response)
-
-
-@blueprint.route('/records/<pid_value>/permissions', methods=['GET', 'POST'])
+@blueprint.route('/<pid_value>/permissions', methods=['GET', 'POST'])
 def record_permissions(pid_value=None):
     resolver = Resolver(
         pid_type='recid',
@@ -378,7 +383,7 @@ def get_record_permissions(recid=None):
     return result
 
 
-@blueprint.route('/records/<pid_value>/permissions/privacy/change', methods=['POST'])
+@blueprint.route('/<pid_value>/permissions/privacy/change', methods=['POST'])
 def change_record_privacy(pid_value=None):
     resolver = Resolver(
         pid_type='recid',
@@ -415,7 +420,7 @@ def change_record_privacy(pid_value=None):
     return '200'
 
 
-@blueprint.route('/records/<pid_value>/permissions/update', methods=['POST'])
+@blueprint.route('/<pid_value>/permissions/update', methods=['POST'])
 def update_record_permissions(pid_value=None):
     resolver = Resolver(
         pid_type='recid',
@@ -426,9 +431,6 @@ def update_record_permissions(pid_value=None):
 
     users = User.query.filter(User.email.in_(request.get_json())).all()
 
-    action_edit_record = RecordUpdateActionNeed(str(record.id))
-    action_read_record = RecordReadActionNeed(str(record.id))
-    action_index_record = RecordIndexActionNeed(str(record.id))
     action_edit_record = RecordUpdateActionNeed(str(record.id))
     action_read_record = RecordReadActionNeed(str(record.id))
     action_index_record = RecordIndexActionNeed(str(record.id))
@@ -575,3 +577,53 @@ def to_dict(self, show=None, hide=None, path=None, show_all=None):
                 pass
 
     return ret_data
+
+
+def stream_file(uri):
+    with open(uri, 'rb') as f:
+        while True:
+            chunk = f.read(1024)
+            if chunk:
+                yield chunk
+            else:
+                return
+
+
+@blueprint.route('/jsonschemas/<collection>/')
+def jsonschema(collection):
+    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
+                                   'records', '{0}.json'.format(collection))
+    with open(jsonschema_path) as file:
+        jsonschema_content = json.loads(file.read())
+    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
+    result = JsonRef.replace_refs(jsonschema_content, loader=json_resolver.resolve)
+    return jsonify(result)
+
+
+@blueprint.route('/jsonschemas/options/<collection>/')
+def jsonschema_options(collection):
+    jsonschema_options_path = os.path.join(os.path.dirname(__file__),
+                                           'jsonschemas', 'options',
+                                           '{0}.js'.format(collection))
+    return Response(stream_file(jsonschema_options_path),
+                    mimetype='application/javascript')
+
+
+@blueprint.route('/jsonschemas/definitions/<definition>')
+def jsonschema_definitions(definition):
+    jsonschema_definition_path = os.path.join(os.path.dirname(__file__),
+                                              'jsonschemas', 'definitions',
+                                              definition)
+    response = Response(stream_file(jsonschema_definition_path),
+                        mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+@blueprint.route('/jsonschemas/fields/<field>')
+def jsonschema_fields(field):
+    jsonschema_fields_path = os.path.join(os.path.dirname(__file__),
+                                          'jsonschemas', 'fields',
+                                          field)
+    return Response(stream_file(jsonschema_fields_path),
+                    mimetype='application/json')

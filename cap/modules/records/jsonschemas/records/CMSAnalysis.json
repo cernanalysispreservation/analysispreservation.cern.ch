@@ -30,7 +30,7 @@
           "default": [{}],
           "minItems": 1,
           "items": {
-            "$ref": "/static/jsonschemas/definitions/PrimaryDataset-vtest01.json#",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
             "properties": {
               "copypaste": {
                 "type": "string"
@@ -46,7 +46,7 @@
           "default": [{}],
           "minItems": 1,
           "items": {
-            "$ref": "/static/jsonschemas/definitions/MonteCarloDataset-vtest01.json#",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
             "defaultProperties": [
               "title"
             ]
@@ -106,7 +106,7 @@
       "id": "physics-information",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/DetectorState-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-vtest01.json"
       }
     },
     "post_aod_processing": {
@@ -114,7 +114,7 @@
       "type": "array",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/PostAODProcessing-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-vtest01.json"
       }
     },
     "documentations": {
@@ -124,7 +124,7 @@
       "id": "documentations",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Documentation-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-vtest01.json"
       }
     },
     "internal_discussions": {
@@ -134,7 +134,7 @@
       "id": "internal-discussions",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/InternalDiscussion-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-vtest01.json"
       }
     },
     "presentations": {
@@ -144,7 +144,7 @@
       "id": "presentations",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Presentation-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-vtest01.json"
       }
     },
     "publications": {
@@ -154,7 +154,7 @@
       "id": "publications",
       "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Publication-vtest01.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Publication-vtest01.json"
       }
     },
     "keywords": {

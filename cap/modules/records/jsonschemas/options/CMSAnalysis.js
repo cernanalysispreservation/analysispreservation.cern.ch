@@ -206,7 +206,7 @@ window.schemaOptions = {
                     "order": 1,
                     "type": "select2",
                     "select2": true,
-                    "dataSource": "/static/jsonschemas/fields/triggerSelection.json"
+                    "dataSource": "/records/jsonschemas/fields/triggerSelection.json"
                   },
                   "otherr": {
                     "order": 2

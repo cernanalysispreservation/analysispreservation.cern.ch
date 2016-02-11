@@ -24,7 +24,7 @@
                         {% for record_type in record_types recursive %}
                             <li>
                                 {% if not record_type['children'] %}
-                                    <a href="{{url_for('cap_front.record_create', collection=record_type['name'])}}">
+                                    <a href="{{url_for('records.create_record_view', collection=record_type['name'])}}">
                                         Create {{ record_type['name'] }}
                                     </a>
                                 {% else %}

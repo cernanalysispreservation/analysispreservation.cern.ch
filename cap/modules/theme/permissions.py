@@ -1,6 +1,7 @@
+from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import DynamicPermission
 from invenio_records.permissions import RecordReadActionNeed
-from invenio_access.models import ActionUsers, ActionRoles
+
 
 def read_permission_factory(record):
     """Factory for creating read permissions for records."""

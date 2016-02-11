@@ -111,8 +111,7 @@
                 "preapproval_date",
                 "abstract",
                 "cadi_refs"
-            ],
-            "additionalProperties": false
+            ]
         },
         "general": {
             "title": "General Information",
@@ -149,8 +148,7 @@
                     "type": "string",
                     "enum": ["yes", "no"]
                 }
-            },
-            "additionalProperties": false
+            }
         },
         "multivariate": {
             "title": "Multivariate Discriminants",
@@ -1221,17 +1219,5 @@
                 }
             }
         }
-    },
-    "required": [
-        "content",
-        "general",
-        "multivariate",
-        "data_fitting",
-        "confidence",
-        "discovery",
-        "unfolding",
-        "uncertainties",
-        "other",
-        "feedback"
-    ]
+    }
 }
