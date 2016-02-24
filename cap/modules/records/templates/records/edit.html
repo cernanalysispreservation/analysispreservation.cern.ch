@@ -1,0 +1,53 @@
+{%- extends "cap_theme/page.html" %}
+
+{% block css %}
+    {{ super() }}
+    {% assets "cap_alpaca_edit_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{% endblock css %}
+
+{%- block page_body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="record-display" class="cap-box">
+                    <nav id="record-menu" class="navbar">
+                        <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
+                            <li role="presentation"><a href="#json" role="tab" data-toggle="tab">JSON</a></li>
+                            <li role="presentation"><a href="#permissions" role="tab" data-toggle="tab">Permissions</a></li>
+                        </ul>
+                    </nav>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="info">
+                            <div id="record-form"
+                                 data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                                 data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
+
+                                <div class="record-loading">
+                                    <img src="{{url_for('static', filename='img/loader.gif')}}">
+                                </div>
+                                <div class="record-rendered"></div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="json">
+                            <div id="record-data">
+                                <div id="record-editor">
+                                    {{record}}
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="permissions">
+                            {% include "cap_theme/permissions.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%- endblock %}
+
+{%- block javascript %}
+    {{ super() }}
+    <script>var recordData = {{record |tojson|safe}};</script>
+    {% assets "cap_alpaca_edit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript %}

@@ -21,7 +21,7 @@
  */
 
 
-require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter' ,'bloodhound', 'typeahead'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
+require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
 
   function loadScript(url, callback){
 
@@ -48,7 +48,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
 
   var optionsName = {};
   var schemaName = {};
-  var element = document.getElementById("record-fields");
+  var element = document.getElementById("record-form");
   if (element && element.dataset.schema){
     schemaName = element.dataset.schema;
     optionsName = element.dataset.options;
@@ -56,8 +56,33 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
 
   loadScript(optionsName, function(){
     var schemaOptions = window.schemaOptions;
+    schemaOptions["form"] = {};
+    schemaOptions["form"]["buttons"] = {};
+    schemaOptions["form"]["buttons"] = {
+      // "submit": {
+      //   "title": "Submit",
+      //   "click": function(){
+      //     alert("Submiting record - record_version will be saved");
+      //   }
+      // },
+      "save": {
+        "title": "Save",
+        "click": function(){
+          var recordData =  JSON.stringify(this.getValue());
+          var url = location.pathname.replace('edit','create');
+          $.post(url, recordData, function(){}, 'json');
+        }
+      },
+      "serialize": {
+        "title": "Serialize",
+        "click": function(){
+          var value = this.getValue();
+          $('#record-data').html(JSON.stringify(value, null, "  "));
+        }
+      }
+    };
 
-    $('#record-fields').each(function() {
+    $('#record-form').each(function(){
       var element = this;
       // var schemaName = "/static/jsonschemas/"+$(element).data("schema");
       // var optionsName = schemaName.replace("schema.json", "options.js");
@@ -69,12 +94,12 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
         // console.log(JSON.stringify(schema, null, 4));
         $(target).alpaca({
           "schema": schema,
-          "view":"invenio-display",
-          // "options": schemaOptions,
-          "data": recordData,
+          "view":"invenio-view",
+          "options": schemaOptions,
           // "options": optionsName,
           "postRender": function(){
             $(loading).remove();
+            updateScrollspy();
           }
         });
       });
@@ -83,7 +108,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
 
 
   // Update scrollpspy with populated schema form
-  // *******************************************
+  // ********************************************
   var updateScrollspy = function(){
     var scrollspy = $(".scrollspy-target > ul > li:first-child");
     var list_item = "";

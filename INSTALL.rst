@@ -88,8 +88,11 @@ depend on:
    cd cap
    python manage.py npm
    cdvirtualenv var/cap-instance/static
+   npm install bower
    npm install
    cd node_modules/alpaca
+   npm install gulp gulp-clean
+
    npm install
    npm start
    cdvirtualenv src/cap
@@ -107,13 +110,33 @@ Create a user account:
 
 .. code-block:: shell
 
-   python manage.py users create -e info@inveniosoftware.org -a
+   python manage.py users create info@inveniosoftware.org -a
+
+Create some basic collections:
+
+.. code-block:: shell
+
+   python manage.py collections create CERNAnalysisPreservation
+   python manage.py collections create CMS -p CERNAnalysisPreservation
+   python manage.py collections create CMSQuestionnaire -p CMS
+   python manage.py collections create CMSAnalysis -p CMS
+   python manage.py collections create LHCb -p CERNAnalysisPreservation
+   python manage.py collections create LHCbAnalysis -p LHCb
+   python manage.py collections create ATLAS -p CERNAnalysisPreservation
+   python manage.py collections create ATLASWorkflows -p ATLAS
+   python manage.py collections create ALICE -p CERNAnalysisPreservation
 
 Start Elasticsearch in the background:
 
 .. code-block:: shell
 
    elasticsearch &
+
+Create the index in ElasticSearch using the mappings:
+
+.. code-block:: shell
+
+   python manage.py index init
 
 Start the web application (in debugging mode):
 

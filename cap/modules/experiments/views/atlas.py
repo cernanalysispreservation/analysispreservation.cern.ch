@@ -6,9 +6,9 @@ from flask import Blueprint, g, jsonify, render_template
 from flask_principal import RoleNeed
 from flask_security import login_required
 from invenio_access import DynamicPermission
+from invenio_collections.models import Collection
 
-from cap.modules.front.views import collection_records
-
+from cap.modules.records.views import collection_records, get_collections_tree
 
 atlas_bp = Blueprint(
     'cap_atlas',
@@ -33,7 +33,10 @@ atlas_permission = DynamicPermission(atlas_group_need)
 @atlas_permission.require(403)
 def atlas_landing():
     """Basic ATLAS landing view."""
-    return render_template('atlas/landing_page.html')
+    collections = Collection.query.filter(
+        Collection.name.in_(['ATLAS'])).one().drilldown_tree()
+    return render_template('atlas/landing_page.html',
+                           record_types=get_collections_tree(collections))
 
 
 @atlas_bp.route('/records')

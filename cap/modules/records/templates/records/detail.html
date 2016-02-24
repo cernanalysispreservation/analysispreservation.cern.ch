@@ -1,12 +1,5 @@
 {%- extends "cap_theme/page.html" %}
 
-{%- if record.collections.primary and record.collections.secondary %}
-    {% set schema = config['CAP_JSON_FORMS'][record.collections.primary][record.collections.secondary]['name'] %}
-    {% set schema = config['CAP_JSON_FORMS'][record.collections.primary][record.collections.secondary]['schema'] %}
-    {% set options = config['CAP_JSON_FORMS'][record.collections.primary][record.collections.secondary]['options'] %}
-{%- endif %}
-{# <meta tags> #}
-
 {% block css %}
     {{ super() }}
     {% assets "cap_alpaca_display_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
@@ -24,11 +17,13 @@
                         </ul>
                         {%- if record.id|can_edit %}
                             <div class="edit-btn">
-                                <a href="{{ url_for('cap_front.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
+                                <a href="{{ url_for('records.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
                             </div>
                         {% endif %}
                     </nav>
-                    <div id="record-fields" data-schema="{{schema}}" data-options="{{options}}">
+                    <div id="record-fields"
+                         data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                         data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
                         {%- if record.collections %}
                             <div id="record-collections">
                                 <span>Collections:</span>

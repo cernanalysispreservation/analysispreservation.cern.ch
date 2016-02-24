@@ -6,9 +6,9 @@ from flask import Blueprint, g, jsonify, render_template
 from flask_principal import RoleNeed
 from flask_security import login_required
 from invenio_access import DynamicPermission
+from invenio_collections.models import Collection
 
-from cap.modules.front.views import collection_records
-
+from cap.modules.records.views import collection_records, get_collections_tree
 
 alice_bp = Blueprint(
     'cap_alice',
@@ -33,7 +33,10 @@ alice_permission = DynamicPermission(alice_group_need)
 @alice_permission.require(403)
 def alice_landing():
     """Basic ALICE landing view."""
-    return render_template('alice/landing_page.html')
+    collections = Collection.query.filter(
+        Collection.name.in_(['ALICE'])).one().drilldown_tree()
+    return render_template('alice/landing_page.html',
+                           record_types=get_collections_tree(collections))
 
 
 @alice_bp.route('/records')

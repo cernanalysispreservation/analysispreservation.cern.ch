@@ -1,5 +1,5 @@
-#-e git+https://github.com/inveniosoftware/invenio-oauthclient.git@c394d64c58458acc33a019a6878ccfb45d5e9e2c#egg=invenio-oauthclient
-
 -e git+git://github.com/egabancho/invenio-oauthclient.git@0ae2a4a5c89374dd9c1b7a2c22155b77e4b02325#egg=invenio-oauthclient
+
+-e git+git://github.com/inveniosoftware/invenio-search-ui#egg=invenio-search-ui
 
 -e .
