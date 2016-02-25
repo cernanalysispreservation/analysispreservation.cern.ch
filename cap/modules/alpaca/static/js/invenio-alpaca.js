@@ -158,7 +158,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
   $.alpaca.Fields.DepositGroupArrayField = $.alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
       var self = this;
-      console.log("########3", self);
       return "depositgroup-array";
     }
   });
@@ -388,7 +387,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
           }
 
           ac_input.change();
-          console.log("CHANGEDTO::", datum.value);
         });
 
         // custom events
@@ -464,9 +462,271 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
 
   Alpaca.registerFieldClass("select2", Alpaca.Fields.Select2Field);
 
+  $.alpaca.Fields.TextField2 = $.alpaca.Fields.TextField.extend({
+    applyTypeAhead: function() {
+      var self = this;
+      if (self.options.typeahead && !Alpaca.isEmpty(self.options.typeahead))
+      {
+        var tConfig = self.options.typeahead.config;
+        if (!tConfig) {
+          tConfig = {};
+        }
+
+        var tDatasets = self.options.typeahead.datasets;
+        if (!tDatasets) {
+          tDatasets = {};
+        }
+
+        if (!tDatasets.name) {
+          tDatasets.name = self.getId();
+        }
+
+        var tEvents = self.options.typeahead.events;
+        if (!tEvents) {
+          tEvents = {};
+        }
+
+        // support for each datasets (local, remote, prefetch)
+        if (tDatasets.type === "local" || tDatasets.type === "remote" || tDatasets.type === "prefetch")
+        {
+          var bloodHoundConfig = {
+            datumTokenizer: function(d) {
+              var tokens = "";
+              for (var k in d) {
+                if (d.hasOwnProperty(k) || d[k]) {
+                  tokens += " " + d[k];
+                }
+              }
+              return Bloodhound.tokenizers.whitespace(tokens);
+            },
+            queryTokenizer: Bloodhound.tokenizers.whitespace
+          };
+
+          if (tDatasets.type === "local" )
+          {
+            var local = [];
+
+            if (typeof(tDatasets.source) === "function")
+            {
+              bloodHoundConfig.local = tDatasets.source;
+            }
+            else
+            {
+              // array
+              for (var i = 0; i < tDatasets.source.length; i++)
+              {
+                var localElement = tDatasets.source[i];
+                if (typeof(localElement) === "string")
+                {
+                  localElement = {
+                    "value": localElement
+                  };
+                }
+
+                local.push(localElement);
+              }
+
+              bloodHoundConfig.local = local;
+            }
+
+            if (tDatasets.local)
+            {
+              bloodHoundConfig.local = tDatasets.local;
+            }
+          }
+
+          if (tDatasets.type === "prefetch")
+          {
+            bloodHoundConfig.prefetch = {
+              url: tDatasets.source
+            };
+
+            if (tDatasets.filter)
+            {
+              bloodHoundConfig.prefetch.filter = tDatasets.filter;
+            }
+          }
+
+          if (tDatasets.type === "remote")
+          {
+            bloodHoundConfig.remote = {
+              url: tDatasets.source
+            };
+
+            if (tDatasets.filter)
+            {
+              bloodHoundConfig.remote.filter = tDatasets.filter;
+            }
+
+            if (tDatasets.replace)
+            {
+              bloodHoundConfig.remote.replace = tDatasets.replace;
+            }
+          }
+
+          var engine = new Bloodhound(bloodHoundConfig);
+          engine.initialize();
+          tDatasets.source = engine.ttAdapter();
+        }
+
+        // compile templates
+        if (tDatasets.templates)
+        {
+          for (var k in tDatasets.templates)
+          {
+            var template = tDatasets.templates[k];
+            if (typeof(template) === "string")
+            {
+              tDatasets.templates[k] = Handlebars.compile(template);
+            }
+          }
+        }
+
+        // process typeahead
+        var ac_input = self.field;
+        window.acac = ac_input;
+        ac_input = $(ac_input).find("input.alpaca-control");
+        ac_input.typeahead(tConfig, tDatasets);
+        //$(self.control).typeahead(tConfig, tDatasets);
+        // listen for "autocompleted" event and set the value of the field
+        ac_input.on("typeahead:autocompleted", function(event, datum) {
+          self.setValue(datum.value);
+          ac_input.change();
+        });
+
+        // listen for "selected" event and set the value of the field
+        ac_input.on("typeahead:selected", function(event, datum) {
+          self.setValue(datum.value);
+          ac_input.change();
+
+          if(self.options.typeahead.importSource) {
+            var importSource = self.options.typeahead.importSource;
+
+            if(importSource.type == "origin"){
+              var url = window.location.origin+importSource.source;
+            }
+            else if (importSource.type == "remote"){
+              var url = importSource.source;
+            }
+            if(url) {
+              var importSourceData = importSource.data;
+              var params = {};
+
+              params[importSourceData] = datum.value;
+              var _topField;
+              var _importRootPathData;
+              $.getJSON(url, params, function( data ){
+                var fillInData = {};
+                if(self.options.typeahead.correlation){
+                  var importRootPathData;
+                  if (self.options.typeahead.correlation["#"]){
+                    importRootPathData = recreateImportData(self.options.typeahead.correlation["#"], data);
+                  }
+                  else {
+                    var importData = recreateImportData(_.omit(self.options.typeahead.correlation), data);
+                    self.setValue(importData);
+                  }
+
+                  var topField = self;
+                  var fieldChain = [topField];
+                  while (topField.parent)
+                  {
+                      topField = topField.parent;
+                      fieldChain.push(topField);
+                  }
+
+                  var tmp_json = topField.getValue();
+                  window.ac_top = topField;
+                  console.log("RootPath DATa::", importRootPathData);
+
+                  function deepFind(obj, path) {
+                    var paths = path.split('/')
+                      , current = obj
+                      , i;
+
+                    for (i = 0; i < paths.length; ++i) {
+                      if (current[paths[i]] == undefined) {
+                        return undefined;
+                      } else {
+                        current = current[paths[i]];
+                      }
+                    }
+                    return current;
+                  }
+
+                  var setImportedValues = function(object, data, pwd){
+                    var tmp_data = {};
+                    var tmp_pwd = pwd;
+                    _.each(object, function(value, key){
+                      if (Alpaca.isString(value)) {
+                        var path;
+                        if(pwd.length > 0)
+                          path = pwd.join("/").concat("/"+key);
+                        else
+                          path = key;
+
+                        var field = topField.getControlByPath(path);
+                        console.log("setva::", deepFind(importRootPathData, path));
+                        field.setValue(deepFind(importRootPathData, path));
+
+                        return;
+                      }
+                      else if (Alpaca.isObject(value)){
+                        setImportedValues(value, data, pwd.concat([key]));
+                      }
+                    });
+
+                    return;
+                  };
+
+                  setImportedValues(self.options.typeahead.correlation["#"], importRootPathData, []);
+                }
+              });
+            }
+          }
+        });
+
+        // custom events
+        if (tEvents)
+        {
+          if (tEvents.autocompleted) {
+            $(self.control).on("typeahead:autocompleted", function(event, datum) {
+              tEvents.autocompleted(event, datum);
+            });
+          }
+          if (tEvents.selected) {
+            $(self.control).on("typeahead:selected", function(event, datum) {
+              tEvents.selected(event, datum);
+            });
+          }
+        }
+
+        // when the input value changes, change the query in typeahead this is
+        // to keep the typeahead control sync'd with the actual dom value only
+        // do this if the query doesn't already match
+        var fi = ac_input;
+        ac_input.change(function() {
+          var value = $(this).val();
+
+          var newValue = $(fi).typeahead('val');
+          if (newValue !== value) {
+            $(fi).typeahead('val', newValue);
+          }
+
+        });
+
+        // some UI cleanup (we don't want typeahead/ to restyle)
+        $(self.field).find("span.twitter-typeahead").first().css("display", "block"); // SPAN to behave more like DIV, next line
+        $(self.field).find("span.twitter-typeahead input.tt-input").first().css("background-color", "");
+      }
+    }
+  });
+
+  Alpaca.registerFieldClass("text", Alpaca.Fields.TextField2);
+
+
   var recreateImportData = function(object, data){
     var tmp_data = {};
-    console.log("RECREATING::", data);
     _.each(object, function(value, key){
       if (Alpaca.isString(value)) {
         tmp_data[key] = data[value];
@@ -474,10 +734,10 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
       else if (Alpaca.isObject(value)){
         tmp_data[key] = recreateImportData(value, data);
       }
-      console.log("TMPDATA::",tmp_data);
     });
 
     return tmp_data;
   };
-  return {}
+
+  return {};
 });

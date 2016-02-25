@@ -52,7 +52,7 @@
 {%- endblock %}
 
 {%- block javascript %}
-{{ super() }}
+    {{ super() }}
     <script>var recordData = {{record |tojson|safe}};</script>
     {% assets "cap_alpaca_display_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {%- endblock javascript %}
