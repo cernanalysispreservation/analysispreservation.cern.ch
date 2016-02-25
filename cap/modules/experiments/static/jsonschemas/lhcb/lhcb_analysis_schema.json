@@ -165,7 +165,6 @@
                 "title": "Data",
                 "type": "array",
                 "items": {
-                  "title": "Location",
                   "type": "string"
                 }
               },
@@ -173,7 +172,6 @@
                 "title": "MC Data",
                 "type": "array",
                 "items": {
-                  "title": "Location",
                   "type": "string"
                 }
               }
@@ -191,7 +189,8 @@
                 "title": "LCHb code",
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "URL/Location"
                 }
               },
               "user_code": {
@@ -239,7 +238,6 @@
       "description": "Provide documentation and other things",
       "type": "array",
       "id": "documentations",
-      "default": [{}],
       "items": {
         "$schema": "http://json-schema.org/draft-04/schema#",
         "title": "Documentation",
@@ -266,9 +264,23 @@
       "description": "Add Internal Discussions",
       "type": "array",
       "id": "internal-discussions",
-      "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/InternalDiscussion-vtest01.json#"
+        "type": "object",
+        "title": "Reports",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "meeting": {
+            "title": "Meeting (GROUP?)",
+            "type": "string"
+          }
+        }
       }
     },
     "presentations": {
@@ -276,9 +288,23 @@
       "description": "Add Presentations",
       "type": "array",
       "id": "presentations",
-      "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Presentation-vtest01.json#"
+        "type": "object",
+        "title": "Presentation",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "meeting": {
+            "title": "Meeting (GROUP?)",
+            "type": "string"
+          }
+        }
       }
     },
     "publications": {
@@ -286,16 +312,57 @@
       "description": "",
       "type": "array",
       "id": "publications",
-      "default": [{}],
       "items": {
-        "$ref": "/static/jsonschemas/definitions/Publication-vtest01.json#"
+        "type": "object",
+        "title": "Publications",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "reviewegroup": {
+            "title": "Review Group",
+            "type": "string"
+          },
+          "roles": {
+            "title": "Roles",
+            "type": "string"
+          }
+        }
       }
     },
-    "keywords": {
-      "title": "Keywords",
-      "description": "Add keywords here",
-      "type": "string",
-      "id": "keywords"
+    "extra_info": {
+      "title": "Extra Information",
+      "type": "object",
+      "id": "extra_info",
+      "properties": {
+        "twiki": {
+          "description": "tWiki page",
+          "title": "tWiki page",
+          "type": "string"
+        },
+        "status": {
+          "description": "Status",
+          "title": "Status",
+          "type": "string"
+        },
+        "egroup": {
+          "description": "Analysis eGroup",
+          "title": "eGroup",
+          "type": "string"
+        },
+        "arxiv": {
+          "description": "arxiv ID",
+          "title": "arXiv ID",
+          "type": "string"
+        },
+        "keywords": {
+          "title": "Keywords",
+          "description": "Add keywords here",
+          "type": "string",
+          "id": "keywords"
+        }
+      }
     }
   }
 }

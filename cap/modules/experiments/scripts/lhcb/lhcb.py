@@ -38,12 +38,11 @@ def resolveObj(s, f, k):
     return newk
 
 
-# for k in s.get(base_field):
+for k in s.get(base_field):
+    base[k] = resolveObj(s,base_field, k)
 
-#     base[k] = resolveObj(s,base_field, k)
-
-# with open('analyses_short.json', 'w') as fp:
-#     json.dump(s[base_field], fp)
+with open('analyses_short.json', 'w') as fp:
+    json.dump(s[base_field], fp)
 
 with open('../../scripts/analyses.json', 'w') as fp:
     json.dump(base, fp)
