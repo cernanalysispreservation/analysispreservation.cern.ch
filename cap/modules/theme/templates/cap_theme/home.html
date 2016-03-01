@@ -17,16 +17,36 @@
          <div class="row">
             <div id="cap-experiments">
                 <div class="col-sm-3">
-                    <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">ALICE</a>
+                    <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
+                      <div class="exp-img">
+                        <img src="{{ url_for('static', filename='img/ALICE.svg') }}" alt="">
+                      </div>
+                      <div class="exp-name">ALICE</div>
+                    </a>
                 </div>
                 <div class="col-sm-3">
-                    <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">ATLAS</a>
+                    <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
+                      <div class="exp-img">
+                        <img src="{{ url_for('static', filename='img/ATLAS.svg') }}" alt="">
+                      </div>
+                      <div class="exp-name">ATLAS</div>
+                    </a>
                 </div>
                 <div class="col-sm-3">
-                    <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">CMS</a>
+                    <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
+                      <div class="exp-img">
+                        <img src="{{ url_for('static', filename='img/CMS.svg') }}" alt="">
+                      </div>
+                      <div class="exp-name">CMS</div>
+                    </a>
                 </div>
                 <div class="col-sm-3">
-                    <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">LHCb</a>
+                    <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
+                      <div class="exp-img">
+                        <img src="{{ url_for('static', filename='img/LHCb.svg') }}" alt="">
+                      </div>
+                      <div class="exp-name">LHCb</div>
+                    </a>
                 </div>
             </div>
          </div>

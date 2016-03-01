@@ -2,6 +2,25 @@
     margin-top: 100px;
 }
 
+#cap-experiments {
+  .exp-img, .exp-name {
+    float: left;
+  }
+  .exp-img {
+    border-right: 1px solid #ccc;
+    margin-right: 15px;
+
+    img {
+      max-height: 35px;
+      margin-right: 15px;
+    }
+  }
+  .exp-name {
+    font-size: 15px;
+    line-height: 35px;
+  }
+}
+
 
 /* MARKETING CONTENT
 -------------------------------------------------- */
@@ -48,7 +67,8 @@
   margin-top: 70px;
 
   a.cap-box {
-    display: block;
+    display: inline-block;
+    width: 100%;
   }
 }
 
