@@ -69,17 +69,17 @@ def oauth_response(remote, token=None, response=None, account_setup=None):
 def get_egroups_roles_relations():
     # Dictionary linking e-group with concrete roles
     result = {
-        'alice_TODO': [RoleNeed('collaboration_alice')],
-        'atlas_TODO': [RoleNeed('collaboration_atlas')],
-        'cms-users': [RoleNeed('collaboration_cms')],
-        'lhcb_TODO': [RoleNeed('collaboration_lhcb')],
+        'alice-member': [RoleNeed('collaboration_alice')],
+        'atlas-active-members-all': [RoleNeed('collaboration_atlas')],
+        'cms-members': [RoleNeed('collaboration_cms')],
+        'lhcb-online-users': [RoleNeed('collaboration_lhcb')],
     }
 
     # In the case of CAP developer, they have all the possible roles.
     all_roles = []
     for item in result.values():
         all_roles += item
-    result['DAPF-development'] = all_roles
+    result['analysis-preservation-support'] = all_roles
     result['data-preservation-admins'] = all_roles
 
     return result
