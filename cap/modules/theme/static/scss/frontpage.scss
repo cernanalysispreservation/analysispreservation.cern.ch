@@ -6,6 +6,13 @@
   .exp-img, .exp-name {
     float: left;
   }
+
+  @media (max-width: 1000px) {
+    .exp-img {
+      display: none;
+    }
+  }
+
   .exp-img {
     border-right: 1px solid #ccc;
     margin-right: 15px;
@@ -15,6 +22,7 @@
       margin-right: 15px;
     }
   }
+
   .exp-name {
     font-size: 15px;
     line-height: 35px;
