@@ -24,21 +24,20 @@
                     <div id="record-fields"
                          data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
                          data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
-                        {%- if record.collections %}
+                        {%- if record.get("collections", None) %}
                             <div id="record-collections">
                                 <span>Collections:</span>
-                                {% for r in record.collections %}
-                                <a href="#">{{record.collections[r]}}</a> / 
+                                {% for r in record.get("collections", []) %}
+                                    <a href="#">{{r}}</a> /
                                 {% endfor %}
                             </div>
                         {% endif %}
+                        <div class="record-rendered"></div>
                         <div class="record-loading">
                             <img src="{{url_for('static', filename='img/loader.gif')}}">
                         </div>
-                        <div class="record-rendered"></div>
                     </div>
                     <div id="record-data">
-                        {{record}}
                     </div>
                 </div>
             </div>

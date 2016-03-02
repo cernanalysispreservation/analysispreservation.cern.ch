@@ -1098,7 +1098,6 @@ window.schemaOptions = {
           }
         }
       }
-    },
-    "view": "invenio-view"
+    }
   };
 

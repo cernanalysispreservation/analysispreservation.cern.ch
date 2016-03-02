@@ -21,7 +21,7 @@
  */
 
 
-require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
+require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'jsoneditor', 'bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, JSONEditor, Bloodhound) {
 
   function loadScript(url, callback){
 
@@ -54,6 +54,9 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
     optionsName = element.dataset.options;
   }
 
+  var editor_container = document.getElementById("record-editor");
+  var editor = new JSONEditor(editor_container, {});
+
   loadScript(optionsName, function(){
     var schemaOptions = window.schemaOptions;
     schemaOptions["form"] = {};
@@ -70,14 +73,30 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
         "click": function(){
           var recordData =  JSON.stringify(this.getValue());
           var url = location.pathname.replace('edit','create');
-          $.post(url, recordData, function(){}, 'json');
+          var recordPost = $.post(
+            url,
+            recordData,
+            function(){
+              $(".record-rendered-loading").show();
+            },
+            'json'
+          );
+
+          recordPost.success(function(response){
+            $(".record-rendered-loading").hide();
+            $("#record-modal .modal-body").html("Record was created!!!</br>You will get redirected to the record page..");
+            $("#record-modal").modal('show');
+            $("#record-modal button[data-dismiss='modal']").click(function(){
+              window.location = "/records/"+response.pid;
+            });
+          });
         }
       },
       "serialize": {
-        "title": "Serialize",
+        "title": "Update JSON tab",
         "click": function(){
           var value = this.getValue();
-          $('#record-data').html(JSON.stringify(value, null, "  "));
+          editor.set(value);
         }
       }
     };

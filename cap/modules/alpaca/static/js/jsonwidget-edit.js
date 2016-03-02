@@ -21,7 +21,7 @@
  */
 
 
-require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
+require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'jsoneditor','bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, JSONEditor, Bloodhound) {
 
   function loadScript(url, callback){
 
@@ -54,6 +54,10 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
     optionsName = element.dataset.options;
   }
 
+  var editor_container = document.getElementById("record-editor");
+  var editor = new JSONEditor(editor_container, {});
+  editor.set(recordData);
+
   loadScript(optionsName, function(){
     var schemaOptions = window.schemaOptions;
     schemaOptions["form"] = {};
@@ -69,21 +73,39 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
         "title": "Save",
         "click": function(){
           var newData = this.getValue();
-          console.log("recordData::",recordData);
           newData["collections"] = recordData.collections;
           newData["pid_value"] = recordData.pid_value;
           newData["control_number"] = recordData.control_number;
           var patch = jsonpatch.compare(recordData, newData);
           patch = JSON.stringify(patch);
           var url = location.pathname.replace('edit','update');
-          $.post(url, patch, function(){}, 'json');
+          var recordPost = $.post(
+            url,
+            patch,
+            function(){
+              $(".record-rendered-loading").show();
+            },
+            'json'
+          );
+
+          recordPost.success(function(){
+            $("#record-modal .modal-body").html("Saved record!!!");
+            $("#record-modal").modal('show');
+          });
+
+          recordPost.error(function(){
+            $("#record-modal .modal-body").html("There was an error in your form.</br>Please check again..");
+            $(".record-rendered-loading").show();
+            $("#record-modal").modal('show');
+            $('#record-menu a[href="#json"]').tab("show");
+          });
         }
       },
       "serialize": {
-        "title": "Serialize",
+        "title": "Update JSON tab",
         "click": function(){
           var value = this.getValue();
-          $('#record-data').html(JSON.stringify(value, null, "  "));
+          editor.set(value);
         }
       }
     };

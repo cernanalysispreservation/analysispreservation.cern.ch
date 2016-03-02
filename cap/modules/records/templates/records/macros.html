@@ -24,3 +24,17 @@ TODO:
 <span class="label label-danger">{{ _("Closed access") }}</span>
 {%- endif %}
 {%- endmacro %}
+
+{%- macro pretty_print_record(record) %}
+    {% for key in record recursive %}
+        <li>{{ key }}- {{record[key]}}
+        {% if record[key] %}
+            {% if record[key] is not string %}
+                <ul>{{ loop(record[key]) }}</ul>
+            {% else %}
+                - {{record[key]}}
+            {% endif %}
+        {% endif %}
+        </li>
+    {% endfor %}
+{%- endmacro %}

@@ -39,8 +39,7 @@ window.schemaOptions = {
               }
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "dst_selection": {
         "type": "depositgroup",
@@ -137,8 +136,7 @@ window.schemaOptions = {
           "output_data": {
             "type": "depositgroup-object"
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "analysis_steps": {
         "type": "depositgroup-array",

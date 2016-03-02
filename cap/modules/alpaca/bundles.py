@@ -47,6 +47,7 @@ create_js = NpmBundle(
         "alpaca": "1.5.11",
         "gulp": "3.9.0",
         "fast-json-patch": "~0.5.4",
+        "jsoneditor": "~5.1.5",
     }
 )
 

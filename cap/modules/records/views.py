@@ -208,7 +208,7 @@ def create_record(collection):
 
     db.session.commit()
 
-    return '200'
+    return jsonify(**{'pid': pid})
 
 
 def get_collections_tree(collections):
@@ -301,7 +301,8 @@ def recid(pid_value=None):
     if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           'records/detail.html')
+                           ['records/collections/'+record.get("collections", [""])[0]+
+                            '.html','records/detail.html'])
 
     abort(403)
 

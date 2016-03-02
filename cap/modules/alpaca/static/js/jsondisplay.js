@@ -63,16 +63,13 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       // var optionsName = schemaName.replace("schema.json", "options.js");
       var target = $('.record-rendered', element)[0];
       var loading = $('.record-loading', element)[0];
-      // if (!(schemaOptions)) schemaOptions = {};
+      if (!(schemaOptions)) schemaOptions = {};
       $RefParser.bundle(schemaName, function(e, schema){
-        // Print schema in console
-        // console.log(JSON.stringify(schema, null, 4));
         $(target).alpaca({
           "schema": schema,
-          "view":"invenio-display",
-          // "options": schemaOptions,
+          "view":"bootstrap-display",
+          "options": schemaOptions,
           "data": recordData,
-          // "options": optionsName,
           "postRender": function(){
             $(loading).remove();
           }

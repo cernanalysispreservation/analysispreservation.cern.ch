@@ -8,8 +8,7 @@ window.schemaOptions = {
           "analysis_number": {
             "placeholder": "Please provide CADI analysis number to connect"
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "aod_processing": {
         "type": "depositgroup",
@@ -224,8 +223,7 @@ window.schemaOptions = {
               }
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "physics_information": {
         "order": 4,
@@ -305,8 +303,7 @@ window.schemaOptions = {
               }
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "post_aod_processing": {
         "order": 5,
@@ -431,8 +428,7 @@ window.schemaOptions = {
               }
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "documentations": {
         "order": 6,
@@ -453,22 +449,19 @@ window.schemaOptions = {
               "order": 4
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "internal_discussions": {
         "type": "depositgroup-array",
         "order": 7,
         "fields": {
-        },
-        "view": "invenio-view"
+        }
       },
       "presentations": {
         "type": "depositgroup-array",
         "order": 8,
         "fields": {
-        },
-        "view": "invenio-view"
+        }
       },
       "publications": {
         "order": 9,
@@ -497,8 +490,7 @@ window.schemaOptions = {
               }
             }
           }
-        },
-        "view": "invenio-view"
+        }
       },
       "keywords": {
         "format": "textarea",
