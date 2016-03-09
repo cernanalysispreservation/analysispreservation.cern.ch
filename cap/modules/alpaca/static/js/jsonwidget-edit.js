@@ -119,7 +119,6 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       // if (!(schemaOptions)) schemaOptions = {};
       $RefParser.bundle(schemaName, function(e, schema){
         // Print schema in console
-        // console.log(JSON.stringify(schema, null, 4));
         schemaOptions["hideInitValidationError"] = true;
         $(target).alpaca({
           "data": recordData,
@@ -127,9 +126,11 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
           "view":"invenio-view",
           "options": schemaOptions,
           // "options": optionsName,
-          "postRender": function(){
+          "postRender": function(control){
             $(loading).remove();
             updateScrollspy();
+            if (typeof schemaPostRender == 'function')
+              schemaPostRender(control);
           }
         });
       });

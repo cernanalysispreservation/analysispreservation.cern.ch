@@ -1,5 +1,8 @@
 <script type="text/x-handlebars-template">
 
+{{#if options.label}}
+<label class="{{#if options.labelClass}}{{options.labelClass}}{{/if}} alpaca-control-label" for="{{id}}">{{{options.label}}}</label>
+{{/if}}
 <div class="autocomplete-import">
   <input type="text" class="autocomplete-input-field" name="{{{this.name}}}_ac_input" value="{{#if options.ac_input_value}}{{{options.ac_input_value}}}{{/if}}"/>
   <div class="inner-input-field-btns">

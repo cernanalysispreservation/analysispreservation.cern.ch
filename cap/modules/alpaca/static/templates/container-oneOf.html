@@ -1,0 +1,28 @@
+<script type="text/x-handlebars-template">
+
+    <div class="oneOf-container">
+        {{#if options.label}}
+        <div class="{{#if options.labelClass}}{{options.labelClass}}{{/if}} alpaca-container-label">
+            {{{options.label}}}
+        </div>
+        {{/if}}
+        <div class="oneOf-container-inner">
+            <div class="oneOf-select-container">
+                {{#if schema.oneOf }}
+                <select class="oneof-select">
+                    <option value="-">Choose a sub-schema</option>
+                    {{#each schema.oneOf}}
+                        <option value="{{id}}">{{title}}</option>
+                    {{/each}}
+                </select>
+                {{/if}}
+            </div>
+            {{#each items}}
+
+                {{#item}}{{/item}}
+
+            {{/each}}
+        </div>
+    </div>
+
+</script>

@@ -116,9 +116,11 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
           "view":"invenio-view",
           "options": schemaOptions,
           // "options": optionsName,
-          "postRender": function(){
+          "postRender": function(control){
             $(loading).remove();
             updateScrollspy();
+            if (typeof schemaPostRender == 'function')
+              schemaPostRender(control);
           }
         });
       });

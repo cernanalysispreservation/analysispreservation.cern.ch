@@ -21,13 +21,14 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
       "container-object-autocomplete-import": "/static/templates/container-object-autocomplete-import.html",
       "container-array-item": "/static/templates/container-array-item.html",
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
-      "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html"
+      "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
+      "container-oneOf": "/static/templates/container-oneOf.html"
     }
   });
 
   Alpaca.registerView({
     "id": "invenio-display",
-    "parent": "web-display",
+    "parent": "bootstrap-display",
     "horizontal": false,
     "type": "display",
     "styles": {
@@ -46,9 +47,47 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
       "container-object-autocomplete-import": "/static/templates/container-object-autocomplete-import.html",
       "container-array-item": "/static/templates/container-array-item.html",
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
-      "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html"
+      "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
+      "container-oneOf": "/static/templates/container-oneOf.html"
     }
   });
+
+  Alpaca.Extend(Alpaca, {
+    guessOptionsType: function(schema)
+    {
+        var type = null;
+
+        if (schema && typeof(schema["enum"]) !== "undefined")
+        {
+            if (schema["enum"].length > 3)
+            {
+                type = "select";
+            }
+            else
+            {
+                type = "radio";
+            }
+        }
+        else if (schema && typeof(schema["oneOf"]) !== "undefined")
+        {
+          type = "oneOf";
+        }
+        else
+        {
+            type = Alpaca.defaultSchemaFieldMapping[schema.type];
+        }
+
+        // check if it has format defined
+        if (schema.format && Alpaca.defaultFormatFieldMapping[schema.format])
+        {
+            type = Alpaca.defaultFormatFieldMapping[schema.format];
+        }
+
+        return type;
+    }
+  });
+
+
 
   $.alpaca.Fields.DepositGroupField = $.alpaca.Fields.ObjectField.extend({
     getFieldType: function() {
@@ -124,13 +163,10 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
             var insertionPoint = self.children.length;
             var selfList = [];
             _.each(self.children, function(li){
-              if(li["options"]["ac_input_value"]) 
+              if(li["options"]["ac_input_value"])
                 selfList.push(li["options"]["ac_input_value"]);
             });
             var newList = _.difference(list, selfList);
-
-            console.log("SELF_LIST::", selfList);
-            console.log("NEW_LIST::", newList);
 
             _.each(newList, function(listing){
               var extraOptions = {
@@ -143,9 +179,8 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
               });
               insertionPoint++;
             });
-            console.log("childrenAfter::", self.children);
 
-            return; 
+            return;
           });
         });
         callback();
@@ -157,7 +192,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
 
   $.alpaca.Fields.DepositGroupArrayField = $.alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
-      var self = this;
       return "depositgroup-array";
     }
   });
@@ -170,13 +204,9 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
     },
     postRender: function(callback) {
       var self = this;
-      console.log(self.field[0]);
       this.base(function() {
-        console.log("postRender is starting::",self);
         var ac_input_field = "[name='"+self.name+"_ac_input']";
-        console.log("AC_INPUT1::",ac_input_field);
         ac_input_field = $(ac_input_field);
-        console.log("AC_INPUT::",ac_input_field.first());
         self.applyTypeAhead();
         if (ac_input_field.length == 1)
         {
@@ -189,7 +219,7 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
 
           // update max length indicator
           //self.updateMaxLengthIndicator();
-        } 
+        }
 
         if (self.options && self.options.ac_input_value){
           if(self.options.typeahead.importSource) {
@@ -208,11 +238,9 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
               params[importSourceData] = self.options.ac_input_value;
               //});
               $.getJSON(url, params, function( data ){
-                console.log("DATA:::",data);
                 var fillInData = {};
                 if(self.options.typeahead.correlation){
                   var importData = recreateImportData(self.options.typeahead.correlation, data);
-                  console.log("IMPORT:::",importData);
                   self.setValue(importData);
                 }
               });
@@ -224,7 +252,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
     },
     applyTypeAhead: function() {
       var self = this;
-      console.log("APPLY TYPEAHEAD::",self);
       if (self.options.typeahead && !Alpaca.isEmpty(self.options.typeahead))
       {
         var tConfig = self.options.typeahead.config;
@@ -349,7 +376,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         //$(self.control).typeahead(tConfig, tDatasets);
         // listen for "autocompleted" event and set the value of the field
         ac_input.on("typeahead:autocompleted", function(event, datum) {
-          console.log("CHANGEDTO::", datum.value);
           self.setValue(datum.value);
           ac_input.change();
         });
@@ -357,7 +383,6 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         // listen for "selected" event and set the value of the field
         ac_input.on("typeahead:selected", function(event, datum) {
           //self.setValue(datum.value);
-          console.log("CHANGEDTO::", datum.value);
           if(self.options.typeahead.importSource) {
             var importSource = self.options.typeahead.importSource;
 
@@ -374,14 +399,11 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
               params[importSourceData] = datum.value;
               //});
               $.getJSON(url, params, function( data ){
-                console.log("DATA:::",data);
                 var fillInData = {};
                 if(self.options.typeahead.correlation){
                   var importData = recreateImportData(self.options.typeahead.correlation, data);
-                  console.log("IMPORT:::",importData);
                   self.setValue(importData);
                 }
-
               });
             }
           }
@@ -409,13 +431,11 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         // do this if the query doesn't already match
         var fi = ac_input;
         ac_input.change(function() {
-          console.log("CHAN---TO::", $(this).val());
 
           var value = $(this).val();
 
           var newValue = $(fi).typeahead('val');
           if (newValue !== value) {
-            console.log("hereeee");
             $(fi).typeahead('val', newValue);
           }
 
@@ -426,9 +446,7 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         $(self.field).find("span.twitter-typeahead input.tt-input").first().css("background-color", "");
       }
     },
-
-    prepareControlModel: function(callback)
-    {
+    prepareControlModel: function(callback) {
       var self = this;
 
       this.base(function(model) {
@@ -437,8 +455,7 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
 
         callback(model);
       });
-    },
-
+    }
   });
 
   Alpaca.registerFieldClass("object-autocomplete-import", Alpaca.Fields.ObjectAutocompleteImportField);
@@ -738,6 +755,217 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
 
     return tmp_data;
   };
+
+  $.alpaca.Fields.oneOfField = $.alpaca.Fields.ObjectField.extend({
+    getFieldType: function() {
+      return "oneOf";
+    },
+    afterRenderContainer: function(model, callback) {
+      var self = this;
+
+      self.oneOfSelectOnChange();
+
+      this.base(model, function() {
+
+          // Generates wizard if requested
+          if (self.isTopLevel())
+          {
+              if (self.view)
+              {
+                  self.wizardConfigs = self.view.getWizard();
+                  if (typeof(self.wizardConfigs) != "undefined")
+                  {
+                      if (!self.wizardConfigs || self.wizardConfigs === true)
+                      {
+                          self.wizardConfigs = {};
+                      }
+                  }
+
+                  var layoutTemplateDescriptor = self.view.getLayout().templateDescriptor;
+                  if (self.wizardConfigs && Alpaca.isObject(self.wizardConfigs))
+                  {
+                      if (!layoutTemplateDescriptor || self.wizardConfigs.bindings)
+                      {
+                          // run the automatic wizard
+                          self.autoWizard();
+                      }
+                      else
+                      {
+                          // manual wizard based on layout
+                          self.wizard();
+                      }
+                  }
+              }
+          }
+
+          callback();
+      });
+    },
+    oneOfSelectOnChange: function() {
+      var self = this;
+
+      if(this.view.type === "display") {
+        return;
+      }
+
+      if(this.schema.readonly) {
+        return;
+      }
+
+      var selectEl = $(self.domEl[0]).find(".oneof-select")[0];
+      $(selectEl).change(function() {
+        var selectedId = $(selectEl).val();
+        var selectedTitle = $("option:selected", selectEl).text();
+        self.selectedId = selectedId;
+        self.refresh();
+      });
+    },
+    prepareContainerModel: function(callback){
+      var self = this;
+
+      var itemSchema = {};
+      var tmpSchema = self.schema;
+      if (self.schema && self.schema.oneOf){
+        if (Alpaca.isArray(self.schema.oneOf)) {
+          itemSchema = _.findWhere(self.schema.oneOf, {"id": self.selectedId});
+          if (Alpaca.isEmpty(itemSchema)) {
+            tmpSchema = self.schema;
+          }
+          else {
+            // self["schema"]["oneOf"] = self.schema.oneOf;
+            // delete self.schema.oneOf;
+            tmpSchema = _.extend(self.schema,itemSchema);
+          }
+        }
+      }
+
+      var model = {
+          "id": this.getId(),
+          "name": this.name,
+          "schema": tmpSchema,
+          "options": this.options,
+          "view": this.view
+      };
+
+      // load items into array and store on model for future use
+      self.createItems(function(items) {
+        if (!items)
+        {
+            items = [];
+        }
+
+        // legacy support: assume containerItemEl = fieldEl
+        for (var i = 0; i < items.length; i++)
+        {
+            if (!items[i].containerItemEl) {
+                items[i].containerItemEl = items[i].getFieldEl();
+            }
+        }
+
+        model.items = items;
+
+        callback(model);
+      });
+    },
+    applyCreatedItems: function(model, callback) {
+        var self = this;
+
+        var layoutBindings = null;
+        if (self.isTopLevel() && self.view.getLayout())
+        {
+            layoutBindings = self.view.getLayout().bindings;
+
+            // if layout and bindings not provided, assume a default strategy
+            if (!layoutBindings && self.view.getLayout().templateDescriptor && model.items.length > 0)
+            {
+                layoutBindings = {};
+
+                for (var i = 0; i < model.items.length; i++)
+                {
+                    var name = model.items[i].name;
+
+                    layoutBindings[name] = "[data-alpaca-layout-binding='" + name + "']";
+                }
+            }
+
+        }
+
+        if (model.items.length > 0) {
+            $(self.container).addClass("alpaca-container-has-items");
+            $(self.container).attr("data-alpaca-container-item-count", model.items.length);
+        }
+        else {
+            $(self.container).removeClass("alpaca-container-has-items");
+            $(self.container).removeAttr("data-alpaca-container-item-count");
+        }
+
+        for (var i = 0; i < model.items.length; i++) {
+            var item = model.items[i];
+
+            // find the insertion point
+            var insertionPoint = $(self.container).find("." + Alpaca.MARKER_CLASS_CONTAINER_FIELD_ITEM + "[" + Alpaca.MARKER_DATA_CONTAINER_FIELD_ITEM_KEY + "='" + item.name + "']");
+            if (!layoutBindings) {
+                var holder = $(insertionPoint).parent();
+
+                $(insertionPoint).replaceWith(item.containerItemEl);
+
+                // reset domEl to allow for refresh
+                item.domEl = holder;
+            }
+            else {
+                // use a layout
+                var bindingId = layoutBindings[item.name];
+                if (bindingId) {
+                    var holder = $(bindingId, self.field);
+                    if (holder.length == 0) {
+                        // legacy support, fallback to ID based
+                        try {
+                            holder = $('#' + bindingId, self.field);
+                        } catch (e) { }
+                    }
+                    if (holder.length > 0) {
+                        // create a wrapper (which will serve as the domEl)
+                        item.domEl = $("<div></div>");
+                        $(item.domEl).addClass("alpaca-layout-binding-holder");
+                        $(item.domEl).attr("alpaca-layout-binding-field-name", item.name);
+                        holder.append(item.domEl);
+                        item.domEl.append(item.containerItemEl);
+                    }
+                }
+
+                // remove insertion point
+                $(insertionPoint).remove();
+            }
+
+            $(item.containerItemEl).addClass("alpaca-container-item");
+
+            if (i === 0) {
+                $(item.containerItemEl).addClass("alpaca-container-item-first");
+            }
+
+            if (i + 1 === model.items.length) {
+                $(item.containerItemEl).addClass("alpaca-container-item-last");
+            }
+
+            $(item.containerItemEl).attr("data-alpaca-container-item-index", i);
+            $(item.containerItemEl).attr("data-alpaca-container-item-name", item.name);
+            $(item.containerItemEl).attr("data-alpaca-container-item-parent-field-id", self.getId());
+
+            // register the child
+            self.registerChild(item, i);
+        }
+
+        if (self.options.collapsible) {
+            // CALLBACK: "collapsible"
+            self.fireCallback("collapsible");
+        }
+
+        self.triggerUpdate();
+        callback();
+    }
+  });
+
+  Alpaca.registerFieldClass("oneOf", Alpaca.Fields.oneOfField);
 
   return {};
 });
