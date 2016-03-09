@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "stage",
+  "title": "Stage",
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "dependencies": {
+      "type": "array",
+      "title": "Dependencies",
+      "items": {
+          "type": "string"
+      },
+      "default":[]
+    },
+    "parameters": {
+      "type": "object",
+      "title": "Parameters",
+      "properties": {}
+    },
+    "scheduler": {
+      "type": "object",
+      "title": "Scheduler",
+      "oneOf": [
+        { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/nodemap-scheduler-schema.json#" }
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "scheduler"
+  ]
+}

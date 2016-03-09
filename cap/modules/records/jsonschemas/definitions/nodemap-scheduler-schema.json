@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "steps",
+  "title": "Steps",
+  "properties": {
+    "steps": {
+      "type": "object",
+      "oneOf": [
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/step-schema.json#"}
+      ]
+    }
+  },
+  "required": [
+    "steps"
+  ]
+}

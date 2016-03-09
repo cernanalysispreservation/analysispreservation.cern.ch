@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "step",
+    "title": "Step",
+    "additionalProperties": false,
+    "properties": {
+        "process": {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/stringinterp-schema.json#"},
+        "publisher": {
+            "type": "object",
+            "id": "publishers",
+            "title": "Publishers",
+            "oneOf":[
+              {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/fromattr-pub-schema.json#"},
+              {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/fromyaml-pub-schema.json#"}
+            ]
+        },
+        "environment": {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/docker-enc-schema.json#"}
+    },
+    "required":[
+      "process",
+      "publisher",
+      "environment"
+    ]
+}

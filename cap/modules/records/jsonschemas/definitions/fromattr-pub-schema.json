@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "process-attr-pub",
+  "title": "Attr Pub",
+  "additionalProperties": false,
+  "properties": {
+    "publisher-type": {
+      "type": "string",
+      "enum": ["process-attr-pub"],
+      "default": "process-attr-pub"
+    },
+    "outputmap": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "publisher-type"
+  ]
+}

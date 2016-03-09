@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "environment-type": {
+      "type": "string",
+      "enum":["docker-encapsulated"],
+      "default":"docker-encapsulated"
+    },
+    "image": {
+      "type": "string",
+      "title": "Image"
+    },
+    "imagetag": {
+      "type": "string",
+      "title": "Tag",
+      "default":"latest"
+   },
+    "resources": {
+      "type": "array",
+      "title": "Resources",
+      "default":[]
+    },
+    "envscript": {
+      "type": "string",
+      "title": "Env Script",
+      "default":""
+    },
+    "envvars": {
+      "type": "object",
+      "title": "Env Vars",
+      "default":{}
+    }
+  },
+  "required": [
+    "environment-type",
+    "image"
+  ]
+}

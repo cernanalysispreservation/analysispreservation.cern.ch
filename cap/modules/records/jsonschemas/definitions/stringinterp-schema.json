@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "string_interpolated",
+  "title": "String Interpolated",
+  "additionalProperties": false,
+  "properties": {
+    "process-type": {
+      "type": "string",
+      "title": "Process Type",
+      "enum": ["string-interpolated-cmd"],
+      "default":"string-interpolated-cmd"
+    },
+    "cmd": {
+      "type": "string",
+      "title": "Command"
+    }
+  },
+  "required": [
+    "process-type",
+    "cmd"
+  ]
+}

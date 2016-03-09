@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Workflow",
+  "properties": {
+    "context": {
+      "type": "object",
+      "title": "Context"
+    },
+    "stages": {
+      "type": "array",
+      "title": "Stages",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/stage-schema.json"
+      }
+    }
+  },
+  "required":[
+    "stages"
+  ]
+}
