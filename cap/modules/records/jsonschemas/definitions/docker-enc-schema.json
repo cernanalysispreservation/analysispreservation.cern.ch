@@ -30,6 +30,7 @@
     "envvars": {
       "type": "object",
       "title": "Env Vars",
+      "properties": {},
       "default":{}
     }
   },

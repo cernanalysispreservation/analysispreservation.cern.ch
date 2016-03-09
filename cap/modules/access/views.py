@@ -72,7 +72,7 @@ def get_egroups_roles_relations():
         'alice-member': [RoleNeed('collaboration_alice')],
         'atlas-active-members-all': [RoleNeed('collaboration_atlas')],
         'cms-members': [RoleNeed('collaboration_cms')],
-        'lhcb-online-users': [RoleNeed('collaboration_lhcb')],
+        'lhcb-general': [RoleNeed('collaboration_lhcb')],
     }
 
     # In the case of CAP developer, they have all the possible roles.
