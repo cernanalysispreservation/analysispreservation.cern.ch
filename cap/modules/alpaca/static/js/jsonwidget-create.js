@@ -90,6 +90,13 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
               window.location = "/records/"+response.pid;
             });
           });
+
+          recordPost.error(function(){
+            $("#record-modal .modal-body").html("There was an error in your form.</br>Please check again..");
+            $(".record-rendered-loading").show();
+            $("#record-modal").modal('show');
+            $('#record-menu a[href="#json"]').tab("show");
+          });
         }
       },
       "serialize": {
