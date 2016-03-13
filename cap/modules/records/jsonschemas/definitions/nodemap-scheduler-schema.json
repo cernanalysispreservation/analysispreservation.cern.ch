@@ -1,9 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "steps",
-  "title": "Steps",
+  "id": "nodemap-scheduler",
+  "title": "Nodemap Scheduler",
   "properties": {
+    "schema_type": {
+      "type": "string",
+      "enum": ["nodemap-scheduler"],
+      "default": "nodemap-scheduler"
+    },
     "steps": {
       "type": "object",
       "oneOf": [
@@ -12,6 +17,7 @@
     }
   },
   "required": [
+    "schema_type",
     "steps"
   ]
 }

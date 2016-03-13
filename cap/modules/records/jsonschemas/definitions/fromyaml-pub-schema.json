@@ -5,7 +5,7 @@
   "title": "YAML Pub",
   "additionalProperties": false,
   "properties": {
-    "publisher-type": {
+    "publisher_type": {
       "type": "string",
       "enum": ["fromyaml-pub"],
       "default": "fromyaml-pub"

@@ -1,21 +1,26 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "atlas_analyis",
+  "title": "ATLAS Analysis",
   "type": "object",
-  "title": "Workflow",
   "properties": {
-    "context": {
+    "basic_info": {
       "type": "object",
-      "title": "Context"
-    },
-    "stages": {
-      "type": "array",
-      "title": "Stages",
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/stage-schema.json"
+      "title": "Basic Info",
+      "properties": {
+        "title": {
+          "title": "Analysis Title",
+          "type": "string"
+        }
       }
+    },
+    "workflows": {
+      "type": "array",
+      "title": "Workflows",
+      "items": {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow-schema.json#"}
     }
   },
-  "required":[
-    "stages"
+  "required": [
+    "workflows"
   ]
 }
