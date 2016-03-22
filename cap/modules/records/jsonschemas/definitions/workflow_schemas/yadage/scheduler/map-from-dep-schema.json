@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Map from Dependents' Output",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": [
+        "map-from-dep"
+      ]
+    },
+    "step": {
+      "type":"object",
+      "oneOf":[{"$ref":"../../packtivity/packtivity-schema.json#"}]
+    },
+    "outputs": {
+      "type":"string"
+    },
+    "from_stages":{
+      "type":"array",
+      "items":{
+        "type":"string"
+      }
+    },
+    "to_input": {
+      "type":"string"
+    }
+  },
+  "required": [
+    "scheduler_type",
+    "step"
+  ]
+}

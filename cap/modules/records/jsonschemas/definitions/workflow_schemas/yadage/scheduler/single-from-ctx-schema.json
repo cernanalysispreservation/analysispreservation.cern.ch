@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Single Step From Context",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": [
+        "single-from-ctx"
+      ]
+    },
+    "step": {
+      "type":"object",
+      "oneOf":[{"$ref":"../../packtivity/packtivity-schema.json#"}]
+    }
+  },
+  "required": [
+    "scheduler_type",
+    "step"
+  ]
+}

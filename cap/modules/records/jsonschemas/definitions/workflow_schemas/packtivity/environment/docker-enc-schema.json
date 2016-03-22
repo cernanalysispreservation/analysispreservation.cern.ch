@@ -1,6 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
+  "Title": "Docker Encapsulated Environment",
   "additionalProperties": false,
   "properties": {
     "environment_type": {
@@ -27,7 +28,7 @@
       "title": "Env Script",
       "default":""
     },
-    "envvars": {
+    "env": {
       "type": "object",
       "title": "Env Vars",
       "properties": {},
@@ -35,7 +36,7 @@
     }
   },
   "required": [
-    "environment-type",
+    "environment_type",
     "image"
   ]
 }
