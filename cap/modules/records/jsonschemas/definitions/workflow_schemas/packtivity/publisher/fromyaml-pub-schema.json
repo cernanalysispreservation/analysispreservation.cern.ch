@@ -1,20 +1,21 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "process-attr-pub",
-  "title": "Attr Pub",
+  "title": "YAML Publisher",
   "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
-      "enum": ["process-attr-pub"],
-      "default": "process-attr-pub"
+      "enum": ["fromyaml-pub"],
+      "default": "fromyaml-pub"
     },
-    "outputmap": {
-      "type": "object"
+    "yamlfile": {
+      "title": "YAML file",
+      "type": "string"
     }
   },
   "required": [
-    "publisher_type"
+    "publisher_type",
+    "yamlfile"
   ]
 }

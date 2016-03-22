@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Parameter Publisher",
+  "additionalProperties": false,
+  "properties": {
+    "publisher_type": {
+      "type": "string",
+      "enum": [
+        "frompar-pub"
+      ]
+    },
+    "outputmap": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "publisher_type",
+    "outputmap"
+  ]
+}

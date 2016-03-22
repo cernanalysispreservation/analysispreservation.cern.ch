@@ -1,21 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "fromyaml-pub",
-  "title": "YAML Pub",
+  "title": "Glob Publisher",
   "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
-      "enum": ["fromyaml-pub"],
-      "default": "fromyaml-pub"
+      "enum": [
+        "fromglob-pub"
+      ]
     },
-    "yamlfile": {
-      "title": "YAML file",
+    "globexpression": {
+      "type": "string"
+    },
+    "outputkey":{
       "type": "string"
     }
   },
   "required": [
-    "publisher-type"
+    "publisher_type",
+    "globexpression",
+    "outputkey"
   ]
 }

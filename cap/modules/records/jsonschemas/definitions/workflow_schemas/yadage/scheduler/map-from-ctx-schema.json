@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Map from Global Context",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": [
+        "map-from-ctx"
+      ]
+    },
+    "step": {
+      "type":"object",
+      "oneOf":[{"$ref":"../../packtivity/packtivity-schema.json#"}]
+    },
+    "map_parameter":{
+      "type":"string"
+    },
+    "to_input": {
+      "type":"string"
+    }
+  },
+  "required": [
+    "scheduler_type",
+    "step"
+  ]
+}

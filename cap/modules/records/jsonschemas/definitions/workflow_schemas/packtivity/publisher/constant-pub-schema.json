@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Constant Publisher",
+  "additionalProperties": false,
+  "properties": {
+    "publisher_type": {
+      "type": "string",
+      "enum": [
+        "constant-pub"
+      ]
+    },
+    "publish": {
+      "type": "object",
+      "oneOf":[
+        {"$ref": "../../utils/shallow-primitive-schema.json#"}
+      ]
+    }
+  },
+  "required": [
+    "publisher_type",
+    "publish"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Shallow JSON object",
+  "additionalProperties": false,
+  "patternProperties": {
+    "[a-z]": {
+      "oneOf":[
+        {"type":"boolean"},
+        {"type":"number"},
+        {"type":"null"},
+        {"type":"string"},
+        {
+          "type":"array",
+          "items":{
+            "oneOf":[
+              {"type":"boolean"},
+              {"type":"number"},
+              {"type":"null"},
+              {"type":"string"}
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+
+

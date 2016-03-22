@@ -1,11 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "id": "string_interpolated",
-  "title": "String Interpolated",
+  "title": "String Interpolated Command",
   "additionalProperties": false,
   "properties": {
-    "process-type": {
+    "process_type": {
       "type": "string",
       "title": "Process Type",
       "enum": ["string-interpolated-cmd"],
@@ -17,7 +16,7 @@
     }
   },
   "required": [
-    "process-type",
+    "process_type",
     "cmd"
   ]
 }
