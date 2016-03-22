@@ -1,3 +1,6 @@
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :target: https://gitter.im/cernanalysispreservation/analysis-preservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+
 About
 -----
 
