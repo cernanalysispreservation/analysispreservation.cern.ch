@@ -127,3 +127,6 @@ SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
 SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
+
+JSONSCHEMAS_HOST = 'http://localhost:5000'
+

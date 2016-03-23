@@ -2,29 +2,31 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Yadage Stage",
-  "additionalProperties": false,
   "properties": {
     "name": {
       "type": "string"
     },
     "dependencies": {
       "type": "array",
+      "items": {
+        "type": "string"
+      },
       "default":[]
     },
     "parameters": {
       "type": "object",
       "oneOf":[
-        {"$ref":"../utils/shallow-primitive-schema.json#"}
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema.json#"}
       ]
     },
     "scheduler": {
       "type": "object",
       "oneOf":[
-        {"$ref":"scheduler/map-from-ctx-schema.json#"},
-        {"$ref":"scheduler/single-from-ctx-schema.json#"},
-        {"$ref":"scheduler/map-from-dep-schema.json#"},
-        {"$ref":"scheduler/reduce-from-dep-schema.json#"},
-        {"$ref":"scheduler/zip-from-dep-schema.json#"}
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/map-from-ctx-schema.json#"},
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/single-from-ctx-schema.json#"},
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/map-from-dep-schema.json#"},
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/reduce-from-dep-schema.json#"},
+        {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/zip-from-dep-schema.json#"}
       ]
     }
   },

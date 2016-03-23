@@ -2,27 +2,26 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Packtivity Meta Description",
-  "additionalProperties": false,
   "properties": {
       "process": {
           "type": "object",
           "oneOf":[
-            {"$ref": "process/stringinterp-schema.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/process/stringinterp-schema.json#"}
           ]
       },
       "publisher": {
           "type": "object",
           "oneOf":[
-            {"$ref": "publisher/constant-pub-schema.json#"},
-            {"$ref": "publisher/frompar-pub-schema.json#"},
-            {"$ref": "publisher/fromyaml-pub-schema.json#"},
-            {"$ref": "publisher/fromglob-pub-schema.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema.json#"}
           ]
       },
       "environment": {
           "type": "object",
           "oneOf":[
-            {"$ref": "environment/docker-enc-schema.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/docker-enc-schema.json#"}
           ]
       }
   },
