@@ -32,7 +32,8 @@ import os
 import jsonresolver
 
 
-@jsonresolver.route('/records/jsonschemas/definitions/<jsonschema>', host='analysis-preservation.cern.ch')
+@jsonresolver.route('/records/jsonschemas/definitions/<path:jsonschema>',
+                    host='analysis-preservation.cern.ch')
 def resolve_definitions(jsonschema):
     """Resolve the JSON definition schema."""
     jsonschema_definition_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),

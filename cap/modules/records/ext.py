@@ -26,6 +26,8 @@
 
 from __future__ import absolute_import, print_function
 
+from cap.config import JSONSCHEMAS_HOST
+
 from .views import blueprint
 
 
@@ -40,5 +42,5 @@ class Records(object):
     def init_app(self, app):
         """Flask application initialization."""
         app.register_blueprint(blueprint)
-        app.config.setdefault('JSONSCHEMAS_HOST', 'https://localhost:5000')
+        app.config.setdefault('JSONSCHEMAS_HOST', JSONSCHEMAS_HOST)
         app.extensions['records'] = self

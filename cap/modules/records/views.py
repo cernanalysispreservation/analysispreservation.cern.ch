@@ -56,6 +56,12 @@ from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
 
+
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
+
 blueprint = Blueprint(
     'records',
     __name__,
@@ -179,9 +185,9 @@ def create_record(collection):
 
     data = json.loads(request.get_data())
 
-    data['$schema'] = current_app.config.get(
-            'JSONSCHEMAS_HOST') + url_for(
-            "records.jsonschema", collection=collection)
+    data['$schema'] = urljoin(
+            current_app.config.get('JSONSCHEMAS_HOST'),
+            url_for('records.jsonschema', collection=collection))
     data['pid_value'] = pid
     data['control_number'] = pid
     data['collections'] = [collection]
@@ -301,8 +307,9 @@ def recid(pid_value=None):
     if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           ['records/collections/'+record.get("collections", [""])[0]+
-                            '.html','records/detail.html'])
+                           ['records/collections/' +
+                            record.get("collections", [""])[0] +
+                            '.html', 'records/detail.html'])
 
     abort(403)
 
