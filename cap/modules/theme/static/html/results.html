@@ -1,6 +1,22 @@
-<ul ng-show="vm.userQuery">
-  <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index">
-    <h5>{{ record.metadata.collections[0] }}</h5>
-    <code>{{ record.metadata }}</code>
-  </li>
+<ul ng-show="vm.userQuery" class="list-unstyled">
+    <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index" class="result-item">
+        <div class="cap-box">
+            <header>
+                {{ record.metadata.collections.join('::') }}
+            </header>
+            <table class="table table-summary">
+                <tr ng-repeat="(key, value) in record.metadata.basic_info">
+                    <td>{{ key | propertyFormatter }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+            </table>
+            <button class="btn btn-default show-more" type="button" data-toggle="collapse"
+                    data-target="#result-{{ record.id }}" aria-expanded="false" aria-controls="collapseExample">
+                    ...
+            </button>
+            <div id="result-{{ record.id }}" class="collapse">
+                <result-item content="record.metadata"></result-item>
+            </div>
+        </div>
+    </li>
 </ul>

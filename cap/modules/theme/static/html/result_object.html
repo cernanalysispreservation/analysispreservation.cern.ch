@@ -1,0 +1,10 @@
+<ul class="list-unstyled">
+    <blockquote>
+        <li ng-repeat="(key, value) in content">
+            <dl class="dl-horizontal dl-object">
+                <dt>{{ key | propertyFormatter }}:</dt>
+                <dd><result-item content="value"></result-item></dd>
+            </dl>
+        </li>
+    </blockquote>
+</ul>

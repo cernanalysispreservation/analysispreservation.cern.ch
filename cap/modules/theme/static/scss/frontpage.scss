@@ -82,3 +82,21 @@
 
 #cap-records {
 }
+
+.table-summary > tbody > tr:first-child > td {
+    border: none;
+}
+
+.btn.btn-default.show-more {
+    width: 5em;
+    margin-left: calc(50% - 2.5em);
+}
+
+li.result-item {
+    padding-bottom: 20px;
+}
+
+.dl-object {
+    margin-top: 0;
+    margin-bottom: 0;
+}

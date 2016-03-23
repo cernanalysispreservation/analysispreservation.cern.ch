@@ -1,5 +1,5 @@
 <div class="row" id="invenio-search">
-    <div class="col-md-12" ng-app="invenioSearch">
+    <div class="col-md-12">
         <invenio-search search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}">
             <div id="invenio-search-bar" class="row">
                 <invenio-search-bar
@@ -8,20 +8,20 @@
                 </invenio-search-bar>
                  <!-- ERROR -->
                 <invenio-search-error
-                        template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/error.html') }}"
+                        template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/error.html') }}"
                         message="{{ _('Error') }}">
                 </invenio-search-error>
                  <!-- LOADING -->
                 <div class="invenio-search-loading text-center">
                     <invenio-search-loading
-                            template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/loading.html') }}"
+                            template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/loading.html') }}"
                             message="{{ _('Loading') }}">
                     </invenio-search-loading>
                 </div>
                  <!-- COUNT -->
                 <div class="invenio-search-count text-center">
                     <invenio-search-count
-                            template="{{ url_for('static', filename='node_modules/invenio-search-js/dist/templates/count.html') }}">
+                            template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/count.html') }}">
                     </invenio-search-count>
                 </div>
                  <!-- RESULTS -->

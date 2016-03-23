@@ -47,15 +47,15 @@ install_requires = [
     'invenio-assets==1.0.0a4',
     'invenio-base==1.0.0a5',
     'invenio-collections==1.0.0a2',
-    'invenio-db>=1.0.0a9',
-    'invenio-indexer>=1.0.0a1',
+    'invenio-db==1.0.0a9',
+    'invenio-indexer==1.0.0a1',
     # 'invenio-oauthclient>=1.0.0a1',
     'invenio-pidstore==1.0.0a4',
     'invenio-records==1.0.0a9',
     'invenio-records-rest==1.0.0a6',
     'invenio-records-ui==1.0.0a4',
-    'invenio-search>=1.0.0a5',
-    'invenio-search-ui>=1.0.0a1',
+    'invenio-search==1.0.0a5',
+    'invenio-search-ui==1.0.0a2',
     'invenio-theme>=1.0.0a9',
 ]
 
@@ -162,6 +162,7 @@ setup(
             'cap_alpaca_edit_css = cap.modules.alpaca.bundles:edit_css',
             'cap_experiments_js = cap.modules.experiments.bundles:experiments_js',
             'cap_experiments_css = cap.modules.experiments.bundles:experiments_css',
+            'cap_search_js = cap.modules.theme.bundles:search_js',
         ],
         'invenio_records.jsonresolver': [
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',

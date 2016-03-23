@@ -60,6 +60,5 @@
     {% assets "cap_theme_front_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "cap_theme_records_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-    <script src="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/invenioSearch.module.js') }}"></script>
-    <script src="{{ url_for('static', filename='node_modules/almond/almond.js') }}"></script>
+    {% assets "cap_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {% endblock javascript %}

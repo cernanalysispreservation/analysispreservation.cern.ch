@@ -36,12 +36,12 @@ js = NpmBundle(
 )
 
 search_js = NpmBundle(
-    'node_modules/invenio-search-js/src/invenio-search-js/invenioSearch.module.js',
     'js/search.js',
-
+    filters='requirejs',
     npm={
         "almond": "~0.3.1",
         "angular": "~1.4.9",
+        "bootstrap": "~3.3.5",
     },
     output="gen/cap_search.%(version)s.js"
 )
