@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Constant Publisher",
-  "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
@@ -13,7 +12,7 @@
     "publish": {
       "type": "object",
       "oneOf":[
-        {"$ref": "../../utils/shallow-primitive-schema.json#"}
+        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema.json#"}
       ]
     }
   },

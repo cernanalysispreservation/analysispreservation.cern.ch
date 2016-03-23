@@ -123,3 +123,5 @@ SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
 #     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
 # config.setdefault(
 #     'THEME_500_TEMPLATE', 'invenio_theme/500.html')
+
+JSONSCHEMAS_HOST = 'http://localhost:5000'

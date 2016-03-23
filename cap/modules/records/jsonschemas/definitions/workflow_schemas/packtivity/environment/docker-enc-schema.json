@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "Title": "Docker Encapsulated Environment",
-  "additionalProperties": false,
   "properties": {
     "environment_type": {
       "type": "string",
@@ -21,6 +20,9 @@
     "resources": {
       "type": "array",
       "title": "Resources",
+      "items": {
+        "type": "string"
+      },
       "default":[]
     },
     "envscript": {
