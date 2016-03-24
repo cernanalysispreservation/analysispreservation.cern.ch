@@ -138,6 +138,7 @@ setup(
         'invenio_base.api_apps': [
             'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
             'invenio_search = invenio_search:InvenioSearch',
+            'cap_access = cap.modules.access.ext:Access',
         ],
         'invenio_access.actions': [
             'cap_alice_access = cap.modules.experiments.views.alice:alice_group_need',

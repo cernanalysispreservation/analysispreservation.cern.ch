@@ -100,7 +100,7 @@ SECURITY_SEND_REGISTER_EMAIL=False
 THEME_SITENAME = _("CERN Analysis Preservation")
 THEME_LOGO =  "img/cap_logo_lrg.svg"
 # REQUIREJS_CONFIG = 'js/build.js'
-THEME_GOOGLE_SITE_VERIFICATION =  []
+THEME_GOOGLE_SITE_VERIFICATION = []
 BASE_TEMPLATE = "cap_theme/page.html"
 SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
 # config.setdefault(
@@ -123,3 +123,7 @@ SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
 #     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
 # config.setdefault(
 #     'THEME_500_TEMPLATE', 'invenio_theme/500.html')
+
+SEARCH_QUERY_ENHANCERS = [
+    'cap.modules.access.ext:authenticated_query'
+]
