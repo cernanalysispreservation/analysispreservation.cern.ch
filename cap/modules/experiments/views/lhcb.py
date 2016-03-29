@@ -10,6 +10,7 @@ from flask_principal import RoleNeed
 from flask_security import login_required
 from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
+import codecs
 
 from cap.modules.records.views import collection_records, get_collections_tree
 
@@ -86,12 +87,11 @@ def lhcb_publications():
 
     return jsonify(get_lhcb_publications_by_ananote(title))
 
-
 def get_lhcb_WG_analysis_by_title(title):
     filepath = pkg_resources.resource_filename(
         'cap.modules.experiments.scripts', '/lhcb/analyses.json')
 
-    with open(filepath, 'r') as fp:
+    with codecs.open(filepath, 'r', encoding='utf8', errors='ignore') as fp:
         analyses = json.load(fp)
 
     try:
@@ -101,14 +101,13 @@ def get_lhcb_WG_analysis_by_title(title):
 
     return a
 
-
 def get_lhcb_publications_by_ananote(ananote):
     # LHCb Publications DB JSON file "LHCb_publications.json" must be placed
     # in the following path
     filepath = pkg_resources.resource_filename(
         'cap.modules.experiments.scripts', '/lhcb/LHCb_publications.json')
 
-    with open(filepath, 'r') as fp:
+    with codecs.open(filepath, 'r', encoding='utf8', errors='ignore') as fp:
         analyses = json.load(fp)
 
     try:
