@@ -47,22 +47,21 @@ RECORDS_UI_ENDPOINTS = dict(
 RECORDS_REST_ENDPOINTS = dict(
     recid=dict(
         pid_type='recid',
-        pid_minter='recid_minter',
-        pid_fetcher='recid_fetcher',
+        pid_minter='cap_record_minter',
+        pid_fetcher='cap_record_fetcher',
         search_index='_all',
         search_type=None,
         record_serializers={
-            'application/json': ('invenio_records_rest.serializers'
-                                 ':record_to_json_serializer'),
+            'application/json': ('invenio_records_rest.serializers.'
+                                 'json_v1_response'),
         },
         search_serializers={
-            'application/json': ('invenio_records_rest.serializers'
-                                 ':search_to_json_serializer'),
+            'application/json': ('invenio_records_rest.serializers.'
+                                 'json_v1_search'),
         },
         list_route='/records/',
         item_route='/records/<pid_value>',
         default_media_type='application/json',
-        max_result_window=10000,
     ),
 )
 

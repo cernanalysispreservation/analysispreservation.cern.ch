@@ -42,21 +42,21 @@ install_requires = [
     'psycopg2',
     'flask-kvsession',
     'pysqlite',
-    'invenio[minimal]>=3.0.0a1,<3.1.0',
-    'invenio-access==1.0.0a3',
+    'invenio-access==1.0.0a4',
     'invenio-assets==1.0.0a4',
-    'invenio-base==1.0.0a5',
+    'invenio-base==1.0.0a6',
     'invenio-collections==1.0.0a2',
     'invenio-db==1.0.0a9',
-    'invenio-indexer==1.0.0a1',
+    'invenio-indexer==1.0.0a2',
     # 'invenio-oauthclient>=1.0.0a1',
-    'invenio-pidstore==1.0.0a4',
-    'invenio-records==1.0.0a9',
-    'invenio-records-rest==1.0.0a6',
-    'invenio-records-ui==1.0.0a4',
+    'invenio-pidstore==1.0.0a7',
+    'invenio-records==1.0.0a12',
+    'invenio-records-rest>=1.0.0a7',
+    'invenio-records-ui==1.0.0a5',
     'invenio-search==1.0.0a5',
-    'invenio-search-ui==1.0.0a2',
-    'invenio-theme>=1.0.0a9',
+    'invenio-search-ui>=1.0.0a2',
+    'invenio-theme==1.0.0a10',
+    'invenio[minimal]>=3.0.0a2,<3.1.0',
 ]
 
 
@@ -129,6 +129,13 @@ setup(
         # 'invenio_i18n.translations': [
         #     'messages = cap',
         # ],
+        'invenio_pidstore.minters': [
+            'cap_record_minter = cap.modules.records.minters:cap_record_minter',
+        ],
+        'invenio_pidstore.fetchers': [
+            'cap_record_fetcher = '
+            'cap.modules.records.fetchers:cap_record_fetcher',
+        ],
         'invenio_base.apps': [
             'invenio_search = invenio_search:InvenioSearch',
             'invenio_records = invenio_records:InvenioRecords',
@@ -141,10 +148,17 @@ setup(
             'cap_access = cap.modules.access.ext:Access',
         ],
         'invenio_access.actions': [
-            'cap_alice_access = cap.modules.experiments.views.alice:alice_group_need',
-            'cap_atlas_access = cap.modules.experiments.views.atlas:atlas_group_need',
-            'cap_cms_access = cap.modules.experiments.views.cms:cms_group_need',
-            'cap_lhcb_access = cap.modules.experiments.views.lhcb:lhcb_group_need',
+            'cap_alice_access = '
+            'cap.modules.experiments.views.alice:alice_group_need',
+
+            'cap_atlas_access = '
+            'cap.modules.experiments.views.atlas:atlas_group_need',
+
+            'cap_cms_access = '
+            'cap.modules.experiments.views.cms:cms_group_need',
+
+            'cap_lhcb_access = '
+            'cap.modules.experiments.views.lhcb:lhcb_group_need',
         ],
         'invenio_assets.bundles': [
             'cap_theme_css = cap.modules.theme.bundles:css',
@@ -161,9 +175,11 @@ setup(
             'cap_alpaca_create_js = cap.modules.alpaca.bundles:create_js',
             'cap_alpaca_edit_js = cap.modules.alpaca.bundles:edit_js',
             'cap_alpaca_edit_css = cap.modules.alpaca.bundles:edit_css',
-            'cap_experiments_js = cap.modules.experiments.bundles:experiments_js',
-            'cap_experiments_css = cap.modules.experiments.bundles:experiments_css',
             'cap_search_js = cap.modules.theme.bundles:search_js',
+            'cap_experiments_js = '
+            'cap.modules.experiments.bundles:experiments_js',
+            'cap_experiments_css = '
+            'cap.modules.experiments.bundles:experiments_css',
         ],
         'invenio_records.jsonresolver': [
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',
