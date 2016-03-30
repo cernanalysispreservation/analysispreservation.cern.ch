@@ -2,4 +2,6 @@
 
 -e git+git://github.com/inveniosoftware/invenio-search-ui#egg=invenio-search-ui
 
+-e git+git://github.com/inveniosoftware/invenio-records-rest#egg=invenio-records-rest
+
 -e .
