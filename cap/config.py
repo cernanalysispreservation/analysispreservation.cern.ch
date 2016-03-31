@@ -128,5 +128,4 @@ SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
 
-JSONSCHEMAS_HOST = 'http://localhost:5000'
-
+JSONSCHEMAS_HOST = 'https://localhost:5000'

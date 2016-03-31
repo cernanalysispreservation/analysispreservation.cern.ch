@@ -813,7 +813,10 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
       $(selectEl).change(function() {
         var selectedId = $(selectEl).val();
         var selectedTitle = $("option:selected", selectEl).text();
-        self.selectedId = selectedId;
+        if (self.selectedId !== selectedId) {
+          self.selectedId = selectedId;
+        }
+
         self.refresh();
       });
     },
@@ -1021,6 +1024,107 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         // anything left in newDataByPropertyId is new stuff that we need to add
         // the object field doesn't support this since it runs against a schema
         // so we drop this off
+    },
+    refresh: function(callback) {
+      var self = this;
+
+      // store back data
+      var _data = self.data = self.getValue();
+
+      // remember this stuff
+      var oldDomEl = self.domEl;
+      var oldField = self.field;
+      //var oldControl = self.control;
+      //var oldContainer = self.container;
+      //var oldForm = self.form;
+
+      // insert marker element before current field to mark where we'll render
+      var markerEl = $("<div></div>");
+      $(oldField).before(markerEl);
+
+      // temp domEl
+      self.domEl = $("<div style='display: none'></div>");
+      // clear this stuff out
+      self.field = undefined;
+      self.control = undefined;
+      self.container = undefined;
+      self.form = undefined;
+
+      // disable all buttons on our current field
+      // we do this because repeated clicks could cause trouble while the field is in some half-state
+      // during refresh
+      $(oldField).find("button").prop("disabled", true);
+
+      // mark that we are initializing
+      this.initializing = true;
+
+      // re-setup the field
+      self.setup();
+
+      // render
+      self._render(function() {
+
+          // move ahead of marker
+          $(markerEl).before(self.field);
+
+          // reset the domEl
+          self.domEl = oldDomEl;
+
+          // copy classes from oldField onto field
+          var oldClasses = $(oldField).attr("class");
+          if (oldClasses) {
+              $.each(oldClasses.split(" "), function(i, v) {
+                  if (v && !v.indexOf("alpaca-") === 0) {
+                      $(self.field).addClass(v);
+                  }
+              });
+          }
+
+          // hide the old field
+          $(oldField).hide();
+
+          // remove marker
+          $(markerEl).remove();
+
+          // mark that we're refreshed
+          self.refreshed = true;
+
+          // this is apparently needed for objects and arrays
+          if (typeof(_data) !== "undefined")
+          {
+              if (Alpaca.isObject(_data) || Alpaca.isArray(_data))
+              {
+                  self.setValue(_data);
+              }
+          }
+
+          // fire the "ready" event
+          Alpaca.fireReady(self);
+
+          if (callback)
+          {
+              callback();
+          }
+
+          // afterwards...
+
+          // now clean up old field elements
+          // the trick here is that we want to make sure we don't trigger the bound "destroyed" event handler
+          // for the old dom el.
+          //
+          // the reason is that we have oldForm -> Field (with oldDomEl)
+          //                        and form -> Field (with domEl)
+          //
+          // cleaning up "oldDomEl" causes "Field" to cleanup which causes "oldForm" to cleanup
+          // which causes "Field" to cleanup which causes "domEl" to clean up (and also "form")
+          //
+          // here we just want to remove the dom elements for "oldDomEl" and "oldForm" without triggering
+          // the special destroyer event
+          //
+          // appears that we can do this with a second argument...?
+          //
+          $(oldField).remove();
+      });
     },
   });
 
