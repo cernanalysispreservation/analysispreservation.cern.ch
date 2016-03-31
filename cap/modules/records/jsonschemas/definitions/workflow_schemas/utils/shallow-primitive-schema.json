@@ -2,9 +2,11 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Shallow JSON object",
+  "id": "shallow_object",
   "properties": {
     "value": {
-      "type": "string"
+        "title": "Shalow Attribute",
+        "type": "string"
     }
   }
 }

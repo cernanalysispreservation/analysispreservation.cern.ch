@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Zip Parameters with Dependent's Output",
+  "id": "zip-from-dep",
   "properties": {
     "scheduler_type": {
       "type": "string",
       "enum": [
         "zip-from-dep"
-      ]
+      ],
+      "default": "zip-from-dep"
     },
     "step": {
       "type":"object",
@@ -39,7 +41,6 @@
           "outputs",
           "from_stages"
         ]
-        
       }
     }
   },

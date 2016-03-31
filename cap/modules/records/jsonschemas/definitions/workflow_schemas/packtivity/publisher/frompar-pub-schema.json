@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Parameter Publisher",
+  "id": "parameter_publisher",
   "properties": {
     "publisher_type": {
       "type": "string",
       "enum": [
         "frompar-pub"
-      ]
+      ],
+      "default": "frompar-pub"
     },
     "outputmap": {
       "type": "string"

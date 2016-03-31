@@ -2,12 +2,15 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Yadage Stage",
+  "id": "yadage_stage",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "title": "Name"
     },
     "dependencies": {
       "type": "array",
+      "title": "Dependencies",
       "items": {
         "type": "string"
       },
@@ -15,12 +18,14 @@
     },
     "parameters": {
       "type": "object",
+      "title": "Parameters",
       "oneOf":[
         {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema.json#"}
       ]
     },
     "scheduler": {
       "type": "object",
+      "title": "Scheduler",
       "oneOf":[
         {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/map-from-ctx-schema.json#"},
         {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/single-from-ctx-schema.json#"},

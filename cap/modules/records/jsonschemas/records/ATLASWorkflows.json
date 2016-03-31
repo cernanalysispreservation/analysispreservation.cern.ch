@@ -21,10 +21,12 @@
 				"type": "object",
 				"properties": {
 					"name": {
+						"title": "Name",
 						"type": "string"
 					},
 					"workflow": {
 						"type": "object",
+						"title": "Workflow",
 						"oneOf":[{
 							"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema.json"
 						}]

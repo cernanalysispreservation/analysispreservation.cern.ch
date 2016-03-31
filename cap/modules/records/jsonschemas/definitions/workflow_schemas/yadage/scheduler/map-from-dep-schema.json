@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Map from Dependents' Output",
+  "id": "map-from-dep",
   "properties": {
     "scheduler_type": {
       "type": "string",
       "enum": [
         "map-from-dep"
-      ]
+      ],
+      "default": "map-from-dep"
     },
     "step": {
       "type":"object",

@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Glob Publisher",
+  "id": "glob_publisher",
   "properties": {
     "publisher_type": {
       "type": "string",
       "enum": [
         "fromglob-pub"
-      ]
+      ],
+      "default": "fromglob-pub"
     },
     "globexpression": {
       "type": "string"

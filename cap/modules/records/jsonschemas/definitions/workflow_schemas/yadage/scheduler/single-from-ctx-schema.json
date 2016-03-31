@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Single Step From Context",
+  "id": "single-from-ctx",
   "properties": {
     "scheduler_type": {
       "type": "string",
       "enum": [
         "single-from-ctx"
-      ]
+      ],
+      "default": "single-from-ctx"
     },
     "step": {
       "type":"object",

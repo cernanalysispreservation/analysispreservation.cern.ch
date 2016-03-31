@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Reduce from Dependents' Output",
+  "id": "reduce-from-dep",
   "properties": {
     "scheduler_type": {
       "type": "string",
       "enum": [
         "reduce-from-dep"
-      ]
+      ],
+      "default": "reduce-from-dep"
     },
     "step": {
       "type":"object",

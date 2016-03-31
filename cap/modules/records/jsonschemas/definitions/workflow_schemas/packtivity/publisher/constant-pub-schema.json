@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Constant Publisher",
+  "id": "constant_publisher",
   "properties": {
     "publisher_type": {
       "type": "string",
       "enum": [
         "constant-pub"
-      ]
+      ],
+      "default": "constant-pub"
     },
     "publish": {
       "type": "object",

@@ -1,16 +1,19 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
+  "id": "yadage_workflow",
   "title": "Yadage Workflow",
   "properties": {
     "context": {
       "type":"object",
+      "title": "Context",
       "oneOf":[
         {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema.json#"}
       ]
     },
     "stages": {
       "type": "array",
+      "title": "Stages",
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/stage-schema.json#"
       }

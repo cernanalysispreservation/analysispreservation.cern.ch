@@ -2,12 +2,14 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Map from Global Context",
+  "id": "map-from-ctx",
   "properties": {
     "scheduler_type": {
       "type": "string",
       "enum": [
         "map-from-ctx"
-      ]
+      ],
+      "default": "map-from-ctx"
     },
     "step": {
       "type":"object",

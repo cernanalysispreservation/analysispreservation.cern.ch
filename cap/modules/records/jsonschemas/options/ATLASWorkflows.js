@@ -12,83 +12,93 @@ window.schemaOptions = {
       "fields": {
         "item": {
           "fields": {
-            "context": {
-              "type": "depositgroup-object"
+            "name": {
+              "order": 1
             },
-            "stages": {
-              "type": "depositgroup-object-array",
+            "workflow": {
+              "order": 2,
+              // "type": "depositgroup-object",
               "fields": {
-                "item": {
+                "context": {
+                  // "type": "depositgroup-object"
+                },
+                "stages": {
+                  "type": "depositgroup-object-array",
                   "fields": {
-                    "name": {
-                      "order": 1
-                    },
-                    "dependencies": {
-                      "type": "depositgroup-object-array",
-                      "order": 4,
+                    "item": {
                       "fields": {
-                        "items": {
+                        "name": {
+                          "order": 1
+                        },
+                        "dependencies": {
+                          "type": "depositgroup-object-array",
+                          "order": 4,
                           "fields": {
-                            "placeholder": "Add dependency",
-                            "type": "select",
-                            "multiple": true,
-                            "dataSource": function(callback){
-                              callback(_.values(dependencies));
+                            "items": {
+                              "fields": {
+                                "placeholder": "Add dependency",
+                                "type": "select",
+                                "multiple": true,
+                                "dataSource": function(callback){
+                                  callback(_.values(dependencies));
+                                }
+                              }
                             }
                           }
-                        }
-                      }
-                    },
-                    "parameters": {
-                      "type": "depositgroup-object",
-                      "order": 3
-                    },
-                    "scheduler": {
-                      "order": 2,
-                      "fields": {
-                        "schema_type": {
-                          "hidden": "true"
                         },
-                        "steps": {
+                        "parameters": {
+                          "type": "depositgroup-object",
+                          "order": 3
+                        },
+                        "scheduler": {
+                          "order": 2,
+                          "schemaTypeField": "scheduler_type",
                           "fields": {
-                            "schema_type": {
+                            "scheduler_type": {
                               "hidden": "true"
                             },
-                            "process": {
+                            "step": {
                               "fields": {
-                                "process-type": {
-                                  "hidden": "true"
-                                }
-                              }
-                            },
-                            "publisher": {
-                              "schemaTypeField": "publisher_type",
-                              "fields": {
-                                "publisher_type": {
-                                  "hidden": "true"
-                                }
-                              }
-                            },
-                            "environment": {
-                              "fields": {
-                                "environment_type": {
+                                "schema_type": {
                                   "hidden": "true"
                                 },
-                                "image": {
-                                  "order" : 1
+                                "process": {
+                                  "fields": {
+                                    "process-type": {
+                                      "hidden": "true"
+                                    }
+                                  }
                                 },
-                                "imagetag": {
-                                  "order" : 2
+                                "publisher": {
+                                  "schemaTypeField": "publisher_type",
+                                  "fields": {
+                                    "publisher_type": {
+                                      "hidden": "true"
+                                    }
+                                  }
                                 },
-                                "resources": {
-                                  "order" : 3,
-                                  "type": "depositgroup-object-array"
-                                },
-                                "envscript": {
-                                  "order" : 4
-                                },
-                                "envvars": {
-                                  "order" : 5
+                                "environment": {
+                                  "fields": {
+                                    "environment_type": {
+                                      "hidden": "true"
+                                    },
+                                    "image": {
+                                      "order" : 1
+                                    },
+                                    "imagetag": {
+                                      "order" : 2
+                                    },
+                                    "resources": {
+                                      "order" : 3,
+                                      "type": "depositgroup-object-array"
+                                    },
+                                    "envscript": {
+                                      "order" : 4
+                                    },
+                                    "envvars": {
+                                      "order" : 5
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -97,16 +107,16 @@ window.schemaOptions = {
                       }
                     }
                   }
+                },
+                "processes": {
+                },
+                "environments": {
+                  "type": "depositgroup-array",
+                },
+                "publishers": {
+                  "type": "depositgroup-array",
                 }
               }
-            },
-            "processes": {
-            },
-            "environments": {
-              "type": "depositgroup-array",
-            },
-            "publishers": {
-              "type": "depositgroup-array",
             }
           }
         }
