@@ -145,18 +145,24 @@ def lhcb_analysis():
         if ("collabreport" in wg) and not (isinstance(wg["collabreport"], basestring)):
             for k,r in wg["collabreport"].iteritems():
                 tmp_report = {}
-                tmp_report['url'] = r["link"]
-                tmp_report['title'] = r["title"]
-                tmp_report['meeting'] = r["meeting"]
+                if "link" in r:
+                    tmp_report['url'] = r["link"]
+                if "title" in r:
+                    tmp_report['title'] = r["title"]
+                if "meeting" in r:
+                    tmp_report['meeting'] = r["meeting"]
                 internal_reports.append(tmp_report)
 
             results['internal_discussions'] = internal_reports
         if ("report" in wg) and not (isinstance(wg["report"], basestring)):
             for k,r in wg["report"].iteritems():
                 tmp_report = {}
-                tmp_report['url'] = r["link"]
-                tmp_report['title'] = r["title"]
-                tmp_report['meeting'] = r["meeting"]
+                if "link" in r:
+                    tmp_report['url'] = r["link"]
+                if "title" in r:
+                    tmp_report['title'] = r["title"]
+                if "meeting" in r:
+                    tmp_report['meeting'] = r["meeting"]
                 internal_reports.append(tmp_report)
 
             results['internal_discussions'] = internal_reports
@@ -165,9 +171,12 @@ def lhcb_analysis():
             presentations = []
             for k,r in wg["presentation"].iteritems():
                 tmp_presentation = {}
-                tmp_presentation['url'] = r["link"]
-                tmp_presentation['title'] = r["title"]
-                tmp_presentation['meeting'] = r["meeting"]
+                if "link" in r:
+                    tmp_presentation['url'] = r["link"]
+                if "title" in r:
+                    tmp_presentation['title'] = r["title"]
+                if "meeting" in r:
+                    tmp_presentation['meeting'] = r["meeting"]
                 presentations.append(tmp_presentation)
 
             results['presentations'] = presentations
