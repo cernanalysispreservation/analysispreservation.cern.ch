@@ -20,7 +20,19 @@ window.schemaOptions = {
             "order": 1,
             "droplist": "true",
             "actionbar": false,
-            "toolbarSticky": "true",
+            "toolbarSticky": false,
+            "typeahead": {
+              "config": {
+                "autoselect": true,
+                "highlight": true,
+                "hint": true,
+                "minLength": 1
+              },
+              "datasets": {
+                "type": "remote",
+                "source": "/CMS/das/autocomplete?query=%QUERY"
+              }
+            },
             "fields": {
               "item": {
                 "type": "object-autocomplete-import",
@@ -76,7 +88,6 @@ window.schemaOptions = {
                     "order": 9
                   },
                   "persistent_identifiers": {
-                    "type": "depositgroup-object",
                     "order": 11
                   },
                   "issued": {
@@ -105,11 +116,24 @@ window.schemaOptions = {
             }
           },
           "mc_dataset": {
-            "type": "depositgroup-object-array",
+            "type": "depositgroup-object-quickfill",
             "description": "Add Monte Carlo datasets",
             "order": 2,
+            "droplist": "true",
             "actionbar": false,
-            "toolbarSticky": "true",
+            "toolbarSticky": false,
+            "typeahead": {
+              "config": {
+                "autoselect": true,
+                "highlight": true,
+                "hint": true,
+                "minLength": 1
+              },
+              "datasets": {
+                "type": "remote",
+                "source": "/CMS/das/autocomplete?query=%QUERY"
+              }
+            },
             "fields": {
               "item": {
                 "type": "object-autocomplete-import",

@@ -27,8 +27,6 @@
           "description": "Add CMS primary datasets",
           "type": "array",
           "id": "primary-datasets",
-          "default": [{}],
-          "minItems": 1,
           "items": {
             "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
             "properties": {
@@ -43,8 +41,6 @@
           "description": "Add Monte Carlo datasets",
           "type": "array",
           "id": "mc-datasets",
-          "default": [{}],
-          "minItems": 1,
           "items": {
             "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
             "defaultProperties": [
@@ -164,8 +160,5 @@
       "id": "keywords"
     }
   },
-  "required": [
-    "creator"
-  ],
   "type": "object"
 }
