@@ -105,3 +105,10 @@ header {
     transform: rotate(90deg);
     transform-origin: left top 0;
 }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}

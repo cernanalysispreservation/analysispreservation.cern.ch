@@ -1,4 +1,4 @@
-define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
+define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], function($, alpaca, _){
 
   Alpaca.registerView({
     "id": "invenio-view",
@@ -143,13 +143,15 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
         var droplist = self.field;
         droplist_btn = $(droplist).find(".droplist-btn");
         droplist = $(droplist).find(".droplist");
+        fieldApplyTypeAhead(self, ".droplist");
+
         droplist_btn.click(function(){
 
-          var list = droplist.val().trim();
+          var list = droplist.tagsinput('items');
           if (list.length < 1){
             return false;
           }
-          list = droplist.val().split('\n');
+          list = droplist.tagsinput('items');
 
           self.resolveItemSchemaOptions(function(itemSchema, itemOptions, circular) {
             // we only allow addition if the resolved schema isn't circularly referenced
@@ -751,6 +753,143 @@ define(["jquery", "alpaca","underscore", 'typeahead'], function($, alpaca, _){
     });
 
     return tmp_data;
+  };
+
+  var fieldApplyTypeAhead = function(selfItem, inputField = "droplist") {
+    var self = selfItem;
+    if (self.options.typeahead && !Alpaca.isEmpty(self.options.typeahead)){
+      var tConfig = self.options.typeahead.config;
+      if (!tConfig) {
+        tConfig = {};
+      }
+
+      var tDatasets = self.options.typeahead.datasets;
+      if (!tDatasets) {
+        tDatasets = {};
+      }
+
+      if (!tDatasets.name) {
+        tDatasets.name = self.getId();
+      }
+
+      var tEvents = self.options.typeahead.events;
+      if (!tEvents) {
+        tEvents = {};
+      }
+
+      // support for each datasets (local, remote, prefetch)
+      if (tDatasets.type === "local" || tDatasets.type === "remote" || tDatasets.type === "prefetch"){
+
+        var bloodHoundConfig = {
+          datumTokenizer: function(d) {
+            var tokens = "";
+            for (var k in d) {
+              if (d.hasOwnProperty(k) || d[k]) {
+                tokens += " " + d[k];
+              }
+            }
+            return Bloodhound.tokenizers.whitespace(tokens);
+          },
+          queryTokenizer: Bloodhound.tokenizers.whitespace
+        };
+
+        if (tDatasets.type === "local" ){
+          var local = [];
+
+          if (typeof(tDatasets.source) === "function") {
+            bloodHoundConfig.local = tDatasets.source;
+          }
+          else {
+            // array
+            for (var i = 0; i < tDatasets.source.length; i++) {
+              var localElement = tDatasets.source[i];
+              if (typeof(localElement) === "string") {
+                localElement = {
+                  "value": localElement
+                };
+              }
+
+              local.push(localElement);
+            }
+
+            bloodHoundConfig.local = local;
+          }
+
+          if (tDatasets.local) {
+            bloodHoundConfig.local = tDatasets.local;
+          }
+        }
+
+        if (tDatasets.type === "prefetch") {
+          bloodHoundConfig.prefetch = {
+            url: tDatasets.source
+          };
+
+          if (tDatasets.filter) {
+            bloodHoundConfig.prefetch.filter = tDatasets.filter;
+          }
+        }
+
+        if (tDatasets.type === "remote") {
+          bloodHoundConfig.remote = {
+            url: tDatasets.source
+          };
+
+          if (tDatasets.filter) {
+            bloodHoundConfig.remote.filter = tDatasets.filter;
+          }
+
+          if (tDatasets.replace) {
+            bloodHoundConfig.remote.replace = tDatasets.replace;
+          }
+        }
+
+        var engine = new Bloodhound(bloodHoundConfig);
+        engine.initialize();
+        tDatasets.source = engine.ttAdapter();
+      }
+
+      // compile templates
+      if (tDatasets.templates) {
+        for (var k in tDatasets.templates) {
+          var template = tDatasets.templates[k];
+          if (typeof(template) === "string") {
+            tDatasets.templates[k] = Handlebars.compile(template);
+          }
+        }
+      }
+
+      // process typeahead
+      var ac_input = self.field;
+      ac_input = $(ac_input).find(inputField);
+      ac_input.tagsinput({
+        "typeaheadjs": [
+          tConfig,
+          tDatasets
+        ]
+      });
+      //$(self.control).typeahead(tConfig, tDatasets);
+      // listen for "autocompleted" event and set the value of the field
+
+      // custom events
+      if (tEvents)
+      {
+        if (tEvents.autocompleted) {
+          $(self.control).on("typeahead:autocompleted", function(event, datum) {
+            tEvents.autocompleted(event, datum);
+          });
+        }
+        if (tEvents.selected) {
+          $(self.control).on("typeahead:selected", function(event, datum) {
+            tEvents.selected(event, datum);
+          });
+        }
+      }
+
+      // some UI cleanup (we don't want typeahead/ to restyle)
+      $(self.field).find("span.twitter-typeahead").first().css("display", "block"); // SPAN to behave more like DIV, next line
+      $(self.field).find("span.twitter-typeahead input.tt-input").first().css("background-color", "");
+    }
   };
 
   $.alpaca.Fields.oneOfField = $.alpaca.Fields.ObjectField.extend({

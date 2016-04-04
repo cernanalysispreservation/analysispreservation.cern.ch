@@ -109,7 +109,12 @@ $input_radius: 3px;
     }
   }
 
-  .alpaca-container-label + .alpaca-array-toolbar + .newarray {
+  .alpaca-container-label + .alpaca-array-toolbar + .newarray,
+  .alpaca-container-label + .alpaca-array-toolbar + .newarray ~ .newarray,
+  .alpaca-container-label + .droplist-container + .newarray,
+  .alpaca-container-label + .droplist-container + .newarray ~ .newarray,
+  .alpaca-container-label + .alpaca-array-toolbar + .droplist-container + .newarray,
+  .alpaca-container-label + .alpaca-array-toolbar + .droplist-container + .newarray ~ .newarray{
     width: 75%;
   }
 }
@@ -187,35 +192,79 @@ $input_radius: 3px;
   }
 }
 
+
+.alpaca-field-object-autocomplete-import {
+  float: left;
+}
+
 .autocomplete-import {
   position: relative;
   border-radius: $input_radius;
   border:  1px solid #ccc;
-  margin: 10px;
+  padding: 10px;
+  float: left;
+  display: inline-block;
 
-  > span.twitter-typeahead {
-    margin-right: 180px;
-    width: auto;
-    height: $input_height;
+
+  .autocomplete-import-container {
+    width: 80%;
+    display: inline-block;
+    position: relative;
+    float: left;
+    background-color: #fff;
     border-radius: $input_radius;
-  }
 
-  input {
-    border: 0;
-    height: $input_height;
-    border-top-left-radius: $input_radius;
-    border-bottom-left-radius: $input_radius;
+    $autocomplete-btn-gap: 2px;
+    .autocomplete-import-btns {
+
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: $input_height;
+
+      button {
+        height: $input_height - 2*$autocomplete-btn-gap;
+        width: $input_height - 2*$autocomplete-btn-gap;
+        margin: $autocomplete-btn-gap;
+        padding: 0;
+      }
+    }
+
+    > span.twitter-typeahead {
+      height: $input_height;
+      border-radius: $input_radius;
+      display: inline-block;
+      width: 100%;
+      padding-right: 2*$input_height + 2*$autocomplete-btn-gap;
+      float: left
+    }
+
+    input {
+      border: 0;
+      height: $input_height;
+      border-top-left-radius: $input_radius;
+      border-bottom-left-radius: $input_radius;
+    }
   }
 
   .inner-input-field-btns {
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 1000;
+    // position: absolute;
+    // right: 0;
+    // top: 0;
+    // z-index: 1000;
+    display: inline-block;
+    width: 20%;
+    float: left;
 
     .alpaca-array-actionbar {
       position: relative;
       display: inline-block!important;
+
+      button:first-child {
+        border-top-left-radius: $input_radius;
+        border-bottom-left-radius: $input_radius;
+      }
 
       button:last-child {
         border-top-right-radius: $input_radius;
@@ -352,11 +401,11 @@ $input_radius: 3px;
 }
 
 textarea.alpaca-control {
-  max-width: 100% ; 
+  max-width: 100% ;
   height: auto;
 }
 
-.alpaca-control { 
+.alpaca-control {
   width: 75%;
   height: $input_height;
   border: 1px solid #ccc;
@@ -367,10 +416,50 @@ textarea.alpaca-control {
     height: $input_height;
   }
 }
+
+.alpaca-field-depositgroup-object-quickfill {
+  > .depositgroup-object {
+    .newarray {
+      .alpaca-array-actionbar,
+      > .alpaca-field > label {
+        display: none;
+      }
+    }
+  }
+}
 .droplist-container {
   width: 75%;
   float: left;
   margin-bottom: 10px;
+  border-radius: 4px;
+  border: 2px dashed #ccc;
+
+  .bootstrap-tagsinput {
+    // overflow-x: scroll;
+    padding: 5px;
+
+    .tt-dropdown-menu {
+      // overflow: visible;
+      z-index: 100000;
+      background-color: #f5f5f5;
+
+    }
+
+    .tt-input {
+      border: none;
+      margin: 5px 0;
+      width: 100%;
+    }
+
+    .label {
+      margin-bottom: 4px;
+      display: inline-block!important;
+      width: 100%;
+      overflow: hidden;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
+  }
 }
 
 .droplist {

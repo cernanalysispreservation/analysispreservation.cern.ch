@@ -9,10 +9,11 @@
   </div>
 	{{#if options.droplist}}
     <div class="droplist-container" id="{{this.name}}_droplist_container">
-    	<textarea rows="5" id="{{this.name}}_droplist" class="droplist" placeholder="Drag n drop OR copy paste list here"></textarea>
-      <input type="button" value="Quickfill" class="droplist-btn" />    
+    	<textarea rows="5" id="{{this.name}}_droplist" class="droplist" placeholder="Start typing for autocomplete OR copy & paste list here" data-role="tagsinput"></textarea>
+      <input type="button" value="Quickfill" class="droplist-btn" />
     </div>
 	{{/if}}
+
 
 {{#each items}}
   {{#item}}{{/item}}

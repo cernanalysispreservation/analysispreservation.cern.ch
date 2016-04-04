@@ -41,6 +41,7 @@ create_js = NpmBundle(
         "select2": "~4.0.1",
         "underscore": "~1.8.3",
         "typeahead.js": "~0.10.5",
+        "bootstrap-tagsinput": "~0.7.1",
         "handlebars": "~3.0.3",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
@@ -66,6 +67,7 @@ edit_js = NpmBundle(
         "select2": "~4.0.1",
         "underscore": "~1.8.3",
         "typeahead.js": "~0.10.5",
+        "bootstrap-tagsinput": "~0.7.1",
         "handlebars": "~3.0.3",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
@@ -88,6 +90,7 @@ display_css = NpmBundle(
 edit_css = NpmBundle(
     Bundle(
         'node_modules/select2/dist/css/select2.css',
+        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput-typeahead.css',
         'scss/invenio-alpaca-edit.scss',
         filters="scss, cleancss",
     ),

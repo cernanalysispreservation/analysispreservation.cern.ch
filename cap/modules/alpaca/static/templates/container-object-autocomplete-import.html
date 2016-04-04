@@ -4,12 +4,16 @@
 <label class="{{#if options.labelClass}}{{options.labelClass}}{{/if}} alpaca-control-label" for="{{id}}">{{{options.label}}}</label>
 {{/if}}
 <div class="autocomplete-import">
-  <input type="text" class="autocomplete-input-field" name="{{{this.name}}}_ac_input" value="{{#if options.ac_input_value}}{{{options.ac_input_value}}}{{/if}}"/>
+  <div class="autocomplete-import-container">
+    <input type="text" class="autocomplete-input-field" name="{{{this.name}}}_ac_input" value="{{#if options.ac_input_value}}{{{options.ac_input_value}}}{{/if}}"/>
+      <div class="autocomplete-import-btns">
+        <button class="btn" type="button"><i class="fa fa-download"></i></button>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#{{{this.name}}}-modal">
+          <i class="fa fa-eye" ></i> 
+        </button>
+      </div>
+  </div>
   <div class="inner-input-field-btns">
-    <button class="btn" type="button"><i class="fa fa-download"></i></button>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#{{{this.name}}}-modal">
-      <i class="fa fa-eye" ></i> 
-    </button>
     {{#arrayActionbar}}{{/arrayActionbar}}
   </div>
 
