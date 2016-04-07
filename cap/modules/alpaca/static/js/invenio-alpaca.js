@@ -755,8 +755,12 @@ define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], f
     return tmp_data;
   };
 
-  var fieldApplyTypeAhead = function(selfItem, inputField = "droplist") {
+  var fieldApplyTypeAhead = function(selfItem, inputField) {
     var self = selfItem;
+
+    if (typeof inputField == 'undefined'){
+      return false;
+    }
     if (self.options.typeahead && !Alpaca.isEmpty(self.options.typeahead)){
       var tConfig = self.options.typeahead.config;
       if (!tConfig) {
