@@ -50,7 +50,7 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
-from invenio_records_ui.views import record_view
+from invenio_records_ui.views import record_view, default_view_method
 from invenio_search import Query, current_search_client
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
@@ -279,7 +279,10 @@ def edit_record(pid_value=None):
     permission_edit_record = update_permission_factory(record)
     if permission_edit_record.can():
         return record_view(pid_value, resolver,
-                           'records/edit.html')
+                           'records/edit.html',
+                           None,
+                           default_view_method
+                           )
 
     abort(403)
 
@@ -307,9 +310,10 @@ def recid(pid_value=None):
     if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           ['records/collections/' +
-                            record.get("collections", [""])[0] +
-                            '.html', 'records/detail.html'])
+                           ['records/detail.html'],
+                           None,
+                           default_view_method
+                           )
 
     abort(403)
 
