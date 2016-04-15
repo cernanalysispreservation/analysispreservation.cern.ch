@@ -52,12 +52,12 @@ RECORDS_REST_ENDPOINTS = dict(
         search_index='_all',
         search_type=None,
         record_serializers={
-            'application/json': ('invenio_records_rest.serializers.'
-                                 'json_v1_response'),
+            'application/json': ('cap.modules.records.serializers'
+                                 ':json_v1_response'),
         },
         search_serializers={
-            'application/json': ('invenio_records_rest.serializers.'
-                                 'json_v1_search'),
+            'application/json': ('cap.modules.records.serializers'
+                                 ':json_v1_search'),
         },
         list_route='/records/',
         item_route='/records/<pid_value>',

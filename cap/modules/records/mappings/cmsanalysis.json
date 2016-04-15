@@ -2,342 +2,87 @@
   "mappings": {
     "cmsanalysis": {
       "properties": {
-        "physics_information": {
-          "type": "object",
+        "_metadata": {
           "properties": {
-            "cuts": {
+            "physics_information": {
               "type": "object",
               "properties": {
-                "pT": {
-                  "type": "string"
-                },
-                "eta": {
-                  "type": "string"
-                }
-              }
-            },
-            "final_state_particles": {
-              "type": "object",
-              "properties": {
-                "number": {
-                  "type": "integer"
-                },
-                "particle": {
-                  "type": "string"
-                },
-                "pt_cut": {
-                  "type": "string"
-                },
-                "era_cut": {
-                  "type": "string"
-                }
-              }
-            },
-            "veto": {
-              "type": "object",
-              "properties": {
-                "number": {
-                  "type": "integer"
-                },
-                "particle": {
-                  "type": "string"
-                },
-                "pt_cut": {
-                  "type": "string"
-                },
-                "era_cut": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "basic_info": {
-          "type": "object",
-          "properties": {
-            "analysis_number": {
-              "type": "string"
-            }
-          }
-        },
-        "documentations": {
-          "type": "object",
-          "properties": {
-            "url": {
-              "type": "string"
-            },
-            "keyword": {
-              "type": "string"
-            },
-            "CADI_ID": {
-              "type": "string"
-            },
-            "comment": {
-              "type": "string"
-            }
-          }
-        },
-        "presentations": {
-          "type": "object",
-          "properties": {
-            "url": {
-              "type": "string"
-            }
-          }
-        },
-        "keywords": {
-          "type": "string"
-        },
-        "internal_discussions": {
-          "type": "object",
-          "properties": {
-            "url": {
-              "type": "string"
-            }
-          }
-        },
-        "aod_processing": {
-          "type": "object",
-          "properties": {
-            "triggers": {
-              "type": "object",
-              "properties": {
-                "efficiency": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "trigger": {
-                  "type": "string"
-                },
-                "other": {
-                  "type": "string"
-                },
-                "run_period": {
+                "cuts": {
                   "type": "object",
                   "properties": {
-                    "end_date": {
+                    "pT": {
                       "type": "string"
                     },
-                    "start_date": {
+                    "eta": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "final_state_particles": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer"
+                    },
+                    "particle": {
+                      "type": "string"
+                    },
+                    "pt_cut": {
+                      "type": "string"
+                    },
+                    "era_cut": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "veto": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "integer"
+                    },
+                    "particle": {
+                      "type": "string"
+                    },
+                    "pt_cut": {
+                      "type": "string"
+                    },
+                    "era_cut": {
                       "type": "string"
                     }
                   }
                 }
               }
             },
-            "mc_dataset": {
+            "basic_info": {
               "type": "object",
               "properties": {
-                "persistent_identifiers": {
-                  "type": "object",
-                  "properties": {
-                    "scheme": {
-                      "type": "string"
-                    },
-                    "identifier": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "licence": {
-                  "type": "string"
-                },
-                "dataset_id": {
-                  "type": "double"
-                },
-                "modified": {
-                  "type": "string"
-                },
-                "run_number": {
-                  "type": "double"
-                },
-                "available": {
-                  "type": "double"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "@type": {
-                  "type": "string"
-                },
-                "issued": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "numbers": {
-                  "type": "object",
-                  "properties": {
-                    "extend": {
-                      "type": "double"
-                    },
-                    "nblocks": {
-                      "type": "double"
-                    },
-                    "nevents": {
-                      "type": "double"
-                    },
-                    "nlumis": {
-                      "type": "double"
-                    },
-                    "nfiles": {
-                      "type": "double"
-                    }
-                  }
-                },
-                "description": {
+                "analysis_number": {
                   "type": "string"
                 }
               }
             },
-            "primary_datasets": {
-              "type": "object",
-              "properties": {
-                "persistent_identifiers": {
-                  "type": "object",
-                  "properties": {
-                    "scheme": {
-                      "type": "string"
-                    },
-                    "identifier": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "licence": {
-                  "type": "string"
-                },
-                "dataset_id": {
-                  "type": "double"
-                },
-                "modified": {
-                  "type": "string"
-                },
-                "run_number": {
-                  "type": "double"
-                },
-                "available": {
-                  "type": "double"
-                },
-                "title": {
-                  "type": "string"
-                },
-                "@type": {
-                  "type": "string"
-                },
-                "issued": {
-                  "type": "string"
-                },
-                "type": {
-                  "type": "string"
-                },
-                "numbers": {
-                  "type": "object",
-                  "properties": {
-                    "extend": {
-                      "type": "double"
-                    },
-                    "nblocks": {
-                      "type": "double"
-                    },
-                    "nevents": {
-                      "type": "double"
-                    },
-                    "nlumis": {
-                      "type": "double"
-                    },
-                    "nfiles": {
-                      "type": "double"
-                    }
-                  }
-                },
-                "description": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "publications": {
-          "type": "object",
-          "properties": {
-            "persistent_identifiers": {
-              "type": "object",
-              "properties": {
-                "scheme": {
-                  "type": "string"
-                },
-                "identifier": {
-                  "type": "string"
-                }
-              }
-            },
-            "journal_title": {
-              "type": "string"
-            },
-            "journal_volume": {
-              "type": "integer"
-            },
-            "journal_page": {
-              "type": "integer"
-            },
-            "journal_issue": {
-              "type": "integer"
-            },
-            "journal_year": {
-              "type": "integer"
-            }
-          }
-        },
-        "post_aod_processing": {
-          "type": "object",
-          "properties": {
-            "os": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "version": {
-                  "type": "string"
-                }
-              }
-            },
-            "user_code": {
+            "documentations": {
               "type": "object",
               "properties": {
                 "url": {
                   "type": "string"
                 },
-                "tag": {
+                "keyword": {
                   "type": "string"
                 },
-                "harvest": {
-                  "type": "boolean"
-                }
-              }
-            },
-            "run_instructions": {
-              "type": "object",
-              "properties": {
-                "type": {
+                "CADI_ID": {
+                  "type": "string"
+                },
+                "comment": {
                   "type": "string"
                 }
               }
             },
-            "software": {
+            "presentations": {
               "type": "object",
               "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "version": {
-                  "type": "string"
-                },
-                "global_tag": {
+                "url": {
                   "type": "string"
                 }
               }
@@ -345,32 +90,308 @@
             "keywords": {
               "type": "string"
             },
-            "output_data": {
+            "internal_discussions": {
               "type": "object",
               "properties": {
-                "url": {
-                  "type": "string"
-                },
-                "harvest": {
-                  "type": "boolean"
-                }
-              }
-            },
-            "input_data": {
-              "type": "object",
-              "properties": {
-                "filename": {
-                  "type": "string"
-                },
                 "url": {
                   "type": "string"
                 }
               }
             },
-            "comments": {
-              "type": "string"
+            "aod_processing": {
+              "type": "object",
+              "properties": {
+                "triggers": {
+                  "type": "object",
+                  "properties": {
+                    "efficiency": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "trigger": {
+                      "type": "string"
+                    },
+                    "other": {
+                      "type": "string"
+                    },
+                    "run_period": {
+                      "type": "object",
+                      "properties": {
+                        "end_date": {
+                          "type": "string"
+                        },
+                        "start_date": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "mc_dataset": {
+                  "type": "object",
+                  "properties": {
+                    "persistent_identifiers": {
+                      "type": "object",
+                      "properties": {
+                        "scheme": {
+                          "type": "string"
+                        },
+                        "identifier": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "licence": {
+                      "type": "string"
+                    },
+                    "dataset_id": {
+                      "type": "double"
+                    },
+                    "modified": {
+                      "type": "string"
+                    },
+                    "run_number": {
+                      "type": "double"
+                    },
+                    "available": {
+                      "type": "double"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "@type": {
+                      "type": "string"
+                    },
+                    "issued": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "numbers": {
+                      "type": "object",
+                      "properties": {
+                        "extend": {
+                          "type": "double"
+                        },
+                        "nblocks": {
+                          "type": "double"
+                        },
+                        "nevents": {
+                          "type": "double"
+                        },
+                        "nlumis": {
+                          "type": "double"
+                        },
+                        "nfiles": {
+                          "type": "double"
+                        }
+                      }
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "primary_datasets": {
+                  "type": "object",
+                  "properties": {
+                    "persistent_identifiers": {
+                      "type": "object",
+                      "properties": {
+                        "scheme": {
+                          "type": "string"
+                        },
+                        "identifier": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "licence": {
+                      "type": "string"
+                    },
+                    "dataset_id": {
+                      "type": "double"
+                    },
+                    "modified": {
+                      "type": "string"
+                    },
+                    "run_number": {
+                      "type": "double"
+                    },
+                    "available": {
+                      "type": "double"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "@type": {
+                      "type": "string"
+                    },
+                    "issued": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "numbers": {
+                      "type": "object",
+                      "properties": {
+                        "extend": {
+                          "type": "double"
+                        },
+                        "nblocks": {
+                          "type": "double"
+                        },
+                        "nevents": {
+                          "type": "double"
+                        },
+                        "nlumis": {
+                          "type": "double"
+                        },
+                        "nfiles": {
+                          "type": "double"
+                        }
+                      }
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "publications": {
+              "type": "object",
+              "properties": {
+                "persistent_identifiers": {
+                  "type": "object",
+                  "properties": {
+                    "scheme": {
+                      "type": "string"
+                    },
+                    "identifier": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "journal_title": {
+                  "type": "string"
+                },
+                "journal_volume": {
+                  "type": "integer"
+                },
+                "journal_page": {
+                  "type": "integer"
+                },
+                "journal_issue": {
+                  "type": "integer"
+                },
+                "journal_year": {
+                  "type": "integer"
+                }
+              }
+            },
+            "post_aod_processing": {
+              "type": "object",
+              "properties": {
+                "os": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "user_code": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "tag": {
+                      "type": "string"
+                    },
+                    "harvest": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "run_instructions": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "software": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "global_tag": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "keywords": {
+                  "type": "string"
+                },
+                "output_data": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": "string"
+                    },
+                    "harvest": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "input_data": {
+                  "type": "object",
+                  "properties": {
+                    "filename": {
+                      "type": "string"
+                    },
+                    "url": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "comments": {
+                  "type": "string"
+                }
+              }
             }
           }
+        },
+        "creator": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "date"
+        },
+        "updated": {
+          "type": "date"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
         }
       }
     }

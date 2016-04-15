@@ -26,8 +26,11 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_indexer.signals import before_record_index
+
 from cap.config import JSONSCHEMAS_HOST
 
+from .indexer import indexer_receiver
 from .views import blueprint
 
 
@@ -42,5 +45,6 @@ class Records(object):
     def init_app(self, app):
         """Flask application initialization."""
         app.register_blueprint(blueprint)
+        before_record_index.connect(indexer_receiver, sender=app)
         app.config.setdefault('JSONSCHEMAS_HOST', JSONSCHEMAS_HOST)
         app.extensions['records'] = self

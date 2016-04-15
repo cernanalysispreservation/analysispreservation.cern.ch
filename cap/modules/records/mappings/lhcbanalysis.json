@@ -2,158 +2,63 @@
   "mappings": {
     "lhcbanalysis": {
       "properties": {
-        "basic_info": {
+        "_metadata": {
           "properties": {
-            "analysis_name": {
-              "type": "string"
-            },
-            "analysis_number": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "analysis_steps": {
-          "properties": {
-            "output_data": {
+            "basic_info": {
               "properties": {
-                "mc_data": {
+                "analysis_name": {
                   "type": "string"
                 },
-                "data": {
+                "analysis_number": {
                   "type": "string"
                 }
               },
               "type": "object"
             },
-            "input_data": {
+            "analysis_steps": {
               "properties": {
-                "mc_data": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "code": {
-              "properties": {
-                "platform": {
-                  "type": "string"
-                },
-                "user_code": {
+                "output_data": {
                   "properties": {
-                    "link": {
+                    "mc_data": {
                       "type": "string"
                     },
-                    "description": {
-                      "type": "string"
-                    },
-                    "instructions": {
+                    "data": {
                       "type": "string"
                     }
                   },
                   "type": "object"
                 },
-                "lhcb_code": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "keywords": {
-          "type": "string"
-        },
-        "presentations": {
-          "properties": {
-            "url": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "dst_selection": {
-          "properties": {
-            "stripping_line": {
-              "type": "string"
-            },
-            "output_data": {
-              "properties": {
-                "mc_data": {
-                  "type": "string"
-                },
-                "data": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "trigger": {
-              "type": "string"
-            },
-            "code": {
-              "properties": {
-                "platform": {
-                  "type": "string"
-                },
-                "user_code": {
+                "input_data": {
                   "properties": {
-                    "link": {
+                    "mc_data": {
                       "type": "string"
                     },
-                    "description": {
-                      "type": "string"
-                    },
-                    "instructions": {
+                    "data": {
                       "type": "string"
                     }
                   },
                   "type": "object"
                 },
-                "lhcb_code": {
-                  "type": "string"
-                }
-              },
-              "type": "object"
-            },
-            "input_data": {
-              "properties": {
-                "mc_data": {
+                "code": {
                   "properties": {
-                    "stripping_software": {
+                    "platform": {
                       "type": "string"
                     },
-                    "generator": {
-                      "type": "string"
+                    "user_code": {
+                      "properties": {
+                        "link": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "instructions": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
                     },
-                    "reconstruction_software": {
-                      "type": "string"
-                    },
-                    "mc_production": {
-                      "type": "string"
-                    },
-                    "location": {
-                      "type": "string"
-                    }
-                  },
-                  "type": "object"
-                },
-                "data": {
-                  "properties": {
-                    "year": {
-                      "type": "string"
-                    },
-                    "reconstruction_software": {
-                      "type": "string"
-                    },
-                    "stripping_software": {
-                      "type": "string"
-                    },
-                    "location": {
+                    "lhcb_code": {
                       "type": "string"
                     }
                   },
@@ -161,62 +66,178 @@
                 }
               },
               "type": "object"
-            }
-          },
-          "type": "object"
-        },
-        "publications": {
-          "properties": {
-            "journal_issue": {
-              "type": "integer"
             },
-            "journal_title": {
+            "keywords": {
               "type": "string"
             },
-            "persistent_identifiers": {
+            "presentations": {
               "properties": {
-                "identifier": {
-                  "type": "string"
-                },
-                "scheme": {
+                "url": {
                   "type": "string"
                 }
               },
               "type": "object"
             },
-            "journal_volume": {
-              "type": "integer"
+            "dst_selection": {
+              "properties": {
+                "stripping_line": {
+                  "type": "string"
+                },
+                "output_data": {
+                  "properties": {
+                    "mc_data": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "trigger": {
+                  "type": "string"
+                },
+                "code": {
+                  "properties": {
+                    "platform": {
+                      "type": "string"
+                    },
+                    "user_code": {
+                      "properties": {
+                        "link": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "instructions": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "lhcb_code": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "input_data": {
+                  "properties": {
+                    "mc_data": {
+                      "properties": {
+                        "stripping_software": {
+                          "type": "string"
+                        },
+                        "generator": {
+                          "type": "string"
+                        },
+                        "reconstruction_software": {
+                          "type": "string"
+                        },
+                        "mc_production": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "data": {
+                      "properties": {
+                        "year": {
+                          "type": "string"
+                        },
+                        "reconstruction_software": {
+                          "type": "string"
+                        },
+                        "stripping_software": {
+                          "type": "string"
+                        },
+                        "location": {
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
             },
-            "journal_year": {
-              "type": "integer"
+            "publications": {
+              "properties": {
+                "journal_issue": {
+                  "type": "integer"
+                },
+                "journal_title": {
+                  "type": "string"
+                },
+                "persistent_identifiers": {
+                  "properties": {
+                    "identifier": {
+                      "type": "string"
+                    },
+                    "scheme": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "journal_volume": {
+                  "type": "integer"
+                },
+                "journal_year": {
+                  "type": "integer"
+                },
+                "journal_page": {
+                  "type": "integer"
+                }
+              },
+              "type": "object"
             },
-            "journal_page": {
-              "type": "integer"
+            "internal_discussions": {
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "documentations": {
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "keyword": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
             }
-          },
-          "type": "object"
+          }
         },
-        "internal_discussions": {
-          "properties": {
-            "url": {
-              "type": "string"
-            }
-          },
-          "type": "object"
+        "creator": {
+          "type": "integer"
         },
-        "documentations": {
-          "properties": {
-            "url": {
-              "type": "string"
-            },
-            "comment": {
-              "type": "string"
-            },
-            "keyword": {
-              "type": "string"
-            }
-          },
-          "type": "object"
+        "created": {
+          "type": "date"
+        },
+        "updated": {
+          "type": "date"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
         }
       }
     }

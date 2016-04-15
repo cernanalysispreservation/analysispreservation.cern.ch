@@ -2,586 +2,607 @@
   "mappings": {
     "cmsquestionnaire": {
       "properties": {
-        "uncertainties": {
-          "type": "object",
+        "_metadata": {
           "properties": {
-            "consideration": {
-              "type": "string"
-            },
-            "twiki_read": {
-              "type": "string"
-            },
-            "template_morphing": {
+            "uncertainties": {
               "type": "object",
               "properties": {
-                "comments": {
+                "consideration": {
                   "type": "string"
                 },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "crosschecks": {
-              "type": "object",
-              "properties": {
-                "failure_procedure": {
+                "twiki_read": {
                   "type": "string"
                 },
-                "deriving": {
-                  "type": "string"
+                "template_morphing": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
                 },
-                "comments": {
-                  "type": "string"
+                "crosschecks": {
+                  "type": "object",
+                  "properties": {
+                    "failure_procedure": {
+                      "type": "string"
+                    },
+                    "deriving": {
+                      "type": "string"
+                    },
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
                 },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "recommendations_awareness": {
-              "type": "string"
-            }
-          }
-        },
-        "feedback": {
-          "type": "object",
-          "properties": {
-            "subject_to_change": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
+                "recommendations_awareness": {
                   "type": "string"
                 }
               }
             },
             "feedback": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "subject_to_change": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "feedback": {
+                  "type": "string"
+                },
+                "additional_comments": {
+                  "type": "string"
+                }
+              }
             },
-            "additional_comments": {
-              "type": "string"
+            "general": {
+              "type": "object",
+              "properties": {
+                "forum_subscription": {
+                  "type": "string"
+                },
+                "meetings_awareness": {
+                  "type": "string"
+                },
+                "forum_awareness": {
+                  "type": "string"
+                },
+                "past_interaction": {
+                  "type": "string"
+                },
+                "faq_awareness": {
+                  "type": "string"
+                }
+              }
+            },
+            "data_fitting": {
+              "type": "object",
+              "properties": {
+                "toy_exp": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "functional_form": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "usage": {
+                  "type": "string"
+                },
+                "param_bounds": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "bcgrnd_shape": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "fitting_model_choice": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "test_stats": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "goodness_test": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "p-value": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "fit_func_params": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cov_matrix": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "discovery": {
+              "type": "object",
+              "properties": {
+                "lookelsewhere_effect": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "twiki_read": {
+                  "type": "string"
+                },
+                "test_statistics": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "usage": {
+                  "type": "string"
+                }
+              }
+            },
+            "confidence": {
+              "type": "object",
+              "properties": {
+                "theory_error": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "support_awareness": {
+                  "type": "string"
+                },
+                "usage": {
+                  "type": "string"
+                },
+                "software": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "citation": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "test_stats": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "details": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "atlas_cms_agreement": {
+                  "type": "string"
+                },
+                "recommendation_awareness": {
+                  "type": "string"
+                },
+                "approaches": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "toy_data": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "unfolding": {
+              "type": "object",
+              "properties": {
+                "bbb_discouragement_awareness": {
+                  "type": "string"
+                },
+                "event_weight_application": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "note_read": {
+                  "type": "string"
+                },
+                "usage": {
+                  "type": "string"
+                },
+                "software": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "validation": {
+                  "type": "string"
+                },
+                "technique": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "other": {
+              "type": "object",
+              "properties": {
+                "blind_analysis": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "combined_measurements": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "correlation_treatment": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "faq_read": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "type": "object",
+              "properties": {
+                "cadi": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "preapproval_date": {
+                  "type": "object",
+                  "properties": {
+                    "choice": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "abstract": {
+                  "type": "string"
+                },
+                "group": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "name": {
+                  "type": "string"
+                },
+                "cadi_refs": {
+                  "type": "object",
+                  "properties": {
+                    "number": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "opt_title": {
+                  "type": "string"
+                }
+              }
+            },
+            "multivariate": {
+              "type": "object",
+              "properties": {
+                "overtraining_checks": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "input_selection": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "mva_output_usage": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "robustness_checks": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "null_pdf": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "correlation_studies": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "twiki_read": {
+                  "type": "string"
+                },
+                "input_checks": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "software": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "type": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "multi_usage": {
+                  "type": "string"
+                },
+                "background_mix": {
+                  "type": "object",
+                  "properties": {
+                    "comments": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
             }
           }
         },
-        "general": {
-          "type": "object",
-          "properties": {
-            "forum_subscription": {
-              "type": "string"
-            },
-            "meetings_awareness": {
-              "type": "string"
-            },
-            "forum_awareness": {
-              "type": "string"
-            },
-            "past_interaction": {
-              "type": "string"
-            },
-            "faq_awareness": {
-              "type": "string"
-            }
-          }
+        "creator": {
+          "type": "integer"
         },
-        "data_fitting": {
-          "type": "object",
-          "properties": {
-            "toy_exp": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "functional_form": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "usage": {
-              "type": "string"
-            },
-            "param_bounds": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "bcgrnd_shape": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "fitting_model_choice": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "test_stats": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "reason": {
-                  "type": "string"
-                }
-              }
-            },
-            "goodness_test": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "p-value": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "fit_func_params": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "cov_matrix": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          }
+        "created": {
+          "type": "date"
         },
-        "discovery": {
-          "type": "object",
-          "properties": {
-            "lookelsewhere_effect": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "twiki_read": {
-              "type": "string"
-            },
-            "test_statistics": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "usage": {
-              "type": "string"
-            }
-          }
+        "updated": {
+          "type": "date"
         },
-        "confidence": {
-          "type": "object",
-          "properties": {
-            "theory_error": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "support_awareness": {
-              "type": "string"
-            },
-            "usage": {
-              "type": "string"
-            },
-            "software": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "citation": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "test_stats": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "details": {
-                  "type": "string"
-                }
-              }
-            },
-            "atlas_cms_agreement": {
-              "type": "string"
-            },
-            "recommendation_awareness": {
-              "type": "string"
-            },
-            "approaches": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "toy_data": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          }
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
         },
-        "unfolding": {
-          "type": "object",
-          "properties": {
-            "bbb_discouragement_awareness": {
-              "type": "string"
-            },
-            "event_weight_application": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "note_read": {
-              "type": "string"
-            },
-            "usage": {
-              "type": "string"
-            },
-            "software": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "validation": {
-              "type": "string"
-            },
-            "technique": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "other": {
-          "type": "object",
-          "properties": {
-            "blind_analysis": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "combined_measurements": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "correlation_treatment": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "faq_read": {
-              "type": "string"
-            }
-          }
-        },
-        "content": {
-          "type": "object",
-          "properties": {
-            "cadi": {
-              "type": "string"
-            },
-            "email": {
-              "type": "string"
-            },
-            "preapproval_date": {
-              "type": "object",
-              "properties": {
-                "choice": {
-                  "type": "string"
-                },
-                "date": {
-                  "type": "string"
-                }
-              }
-            },
-            "abstract": {
-              "type": "string"
-            },
-            "group": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "name": {
-              "type": "string"
-            },
-            "cadi_refs": {
-              "type": "object",
-              "properties": {
-                "number": {
-                  "type": "string"
-                },
-                "comment": {
-                  "type": "string"
-                }
-              }
-            },
-            "opt_title": {
-              "type": "string"
-            }
-          }
-        },
-        "multivariate": {
-          "type": "object",
-          "properties": {
-            "overtraining_checks": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "input_selection": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "mva_output_usage": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "robustness_checks": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "null_pdf": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "correlation_studies": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "twiki_read": {
-              "type": "string"
-            },
-            "input_checks": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "software": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "type": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            },
-            "multi_usage": {
-              "type": "string"
-            },
-            "background_mix": {
-              "type": "object",
-              "properties": {
-                "comments": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          }
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
         }
       }
     }
