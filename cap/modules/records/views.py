@@ -55,7 +55,7 @@ from invenio_search import Query, current_search_client
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
-
+from cap.config import JSON_METADATA_PATH
 
 try:
     from urlparse import urljoin
@@ -183,7 +183,8 @@ def create_record(collection):
     provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
     pid = provider.pid.pid_value
 
-    data = json.loads(request.get_data())
+    data = dict()
+    _metadata = json.loads(request.get_data())
 
     data['$schema'] = urljoin(
             current_app.config.get('JSONSCHEMAS_HOST'),
@@ -191,6 +192,8 @@ def create_record(collection):
     data['pid_value'] = pid
     data['control_number'] = pid
     data['collections'] = [collection]
+    data['creator'] = current_user.id
+    data['_metadata'] = _metadata
 
     record = Record.create(data, id_=recid)
 
@@ -335,7 +338,10 @@ def update_record(pid_value=None):
         abort(404)
 
     try:
-        record = record.patch(request.get_data())
+        _metadata_patch = request.get_data()
+        for m in _metadata_patch:
+            m["path"] = JSON_METADATA_PATH + m.get("path", "")
+        record.patch(_metadata_patch)
     except (JsonPatchException, JsonPointerException):
         abort(400)
 

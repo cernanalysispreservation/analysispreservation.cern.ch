@@ -72,8 +72,10 @@ SEARCH_UI_SEARCH_API = '/api/records/'
 # SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 
 # ElasticSearch
-ELASTICSEARCH_HOST = "localhost:9200"
-SEARCH_ELASTIC_HOSTS = "localhost:9200"
+SEARCH_ELASTIC_HOSTS = ["localhost:9200"]
+
+# Path to where JSON metadata exist
+JSON_METADATA_PATH = "/_metadata"
 
 # Mail
 MAIL_SUPPRESS_SEND = True

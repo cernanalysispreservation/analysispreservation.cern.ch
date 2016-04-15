@@ -70,6 +70,6 @@
 
 {%- block javascript %}
     {{ super() }}
-    <script>var recordData = {{record |tojson|safe}};</script>
+    <script>var recordData = {{record.get("_metadata", {})|tojson|safe}};</script>
     {% assets "cap_alpaca_edit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {%- endblock javascript %}

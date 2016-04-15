@@ -73,9 +73,6 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
         "title": "Save",
         "click": function(){
           var newData = this.getValue();
-          newData["collections"] = recordData.collections;
-          newData["pid_value"] = recordData.pid_value;
-          newData["control_number"] = recordData.control_number;
           var patch = jsonpatch.compare(recordData, newData);
           patch = JSON.stringify(patch);
           var url = location.pathname.replace('edit','update');
