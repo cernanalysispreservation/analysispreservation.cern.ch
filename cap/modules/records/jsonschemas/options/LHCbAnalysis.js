@@ -6,7 +6,7 @@ window.schemaOptions = {
         "fields": {
           "analysis_name": {
             "label": "Analysis Name",
-            "placeholder": "Start typing and select an Analysis Name to import metadata",
+            "placeholder": "Start typing and select an Analysis Name to import metadata. E.g. CPV in D0 -> KS KS",
             "typeahead": {
               "config": {
                 "minLength": 1
@@ -38,6 +38,9 @@ window.schemaOptions = {
                 }
               }
             }
+          },
+          "analysis_number": {
+            "placeholder": "E.g. ANA-2015-014"
           }
         }
       },
@@ -62,11 +65,12 @@ window.schemaOptions = {
 
                       },
                       "stripping_software": {
-                        "order": 3
-
+                        "order": 3,
+                        "placeholder": ""
                       },
                       "location": {
-                        "order": 1
+                        "order": 1,
+                        "placeholder": "e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
                       }
                     }
                   }
@@ -91,7 +95,8 @@ window.schemaOptions = {
                         "order": 5
                       },
                       "location": {
-                        "order": 1
+                        "order": 1,
+                        "placeholder": "e.g: sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
                       }
                     }
                   }
@@ -105,6 +110,7 @@ window.schemaOptions = {
               "lhcb_code": {
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
+                "order": 2,
                 "fields": {
                   "item": {
                     "placeholder": " e.g DaVinci v33r6"
@@ -114,27 +120,43 @@ window.schemaOptions = {
               "user_code": {
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
+                "order": 3,
                 "fields": {
                   "item": {
                     "fields": {
                       "link": {
-                        "order": 1
+                        "order": 1,
+                        "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
                       },
                       "description": {
-                        "order": 2
+                        "order": 2,
+                        "placeholder": "Please enter the user code description, location, etc"
                       },
                       "instructions": {
                         "type": "textarea",
-                        "order": 3
+                        "order": 3,
+                        "placeholder": "Please enter the instructions for using the code, e.g Open 'README' file"
                       }
                     }
                   }
                 }
+              },
+              "platform": {
+                "order": 1,
+                "placeholder": "Please enter the platfrom name"
               }
             }
           },
           "output_data": {
-            "type": "depositgroup-object"
+            "type": "depositgroup-object",
+            "fields": {
+              "data": {
+                "placeholder": "Please enter the final N Tuples files"
+              },
+              "mc_data": {
+                "placeholder": "Please enter the final N Tuples files"
+              }
+            }
           }
         }
       },
@@ -152,14 +174,52 @@ window.schemaOptions = {
                     "type": "depositgroup-object-array",
                     "toolbarSticky": "true",
                     "fields": {
-                      "items": {
-                        "placeholder": "URL/Location"
+                      "item": {
+                        "fields": {
+                          "year": {
+                            "order": 4
+                          },
+                          "reconstruction_software": {
+                            "order": 2
+
+                          },
+                          "stripping_software": {
+                            "order": 3,
+                            "placeholder": ""
+                          },
+                          "location": {
+                            "order": 1,
+                            "placeholder": "e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
+                          }
+                        }
                       }
                     }
                   },
                   "mc_data": {
                     "type": "depositgroup-object-array",
-                    "toolbarSticky": "true"
+                    "toolbarSticky": "true",
+                    "fields": {
+                      "item": {
+                        "fields": {
+                          "mc_production": {
+                            "order": 2
+                          },
+                          "generator": {
+                            "order": 3
+                          },
+                          "reconstruction_software": {
+                            "order": 4
+                          },
+                          "stripping_software": {
+                            "order": 5
+                          },
+                          "location": {
+                            "order": 1,
+                            "placeholder": "e.g: sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               },
@@ -169,6 +229,7 @@ window.schemaOptions = {
                   "lhcb_code": {
                     "type": "depositgroup-object-array",
                     "toolbarSticky": "true",
+                    "order": 2,
                     "fields": {
                       "item": {
                         "placeholder": " e.g DaVinci v33r6"
@@ -178,20 +239,43 @@ window.schemaOptions = {
                   "user_code": {
                     "type": "depositgroup-object-array",
                     "toolbarSticky": "true",
+                    "order": 3,
                     "fields": {
                       "item": {
                         "fields": {
+                          "link": {
+                            "order": 1,
+                            "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
+                          },
+                          "description": {
+                            "order": 2,
+                            "placeholder": "Please enter the user code description, location, etc"
+                          },
                           "instructions": {
-                            "type": "textarea"
+                            "type": "textarea",
+                            "order": 3,
+                            "placeholder": "Please enter the instructions for using the code, e.g Open 'README' file"
                           }
                         }
                       }
                     }
+                  },
+                  "platform": {
+                    "order": 1,
+                    "placeholder": "Please enter the platfrom name"
                   }
                 }
               },
               "output_data": {
-                "type": "depositgroup-object"
+                "type": "depositgroup-object",
+                "fields": {
+                  "data": {
+                    "placeholder": "Please enter the final N Tuples files"
+                  },
+                  "mc_data": {
+                    "placeholder": "Please enter the final N Tuples files"
+                  }
+                }
               }
             }
           }
@@ -221,6 +305,19 @@ window.schemaOptions = {
         "type": "depositgroup-array",
         "order": 5,
         "fields": {
+          "item": {
+            "fields": {
+              "meeting": {
+                "placeholder": "e.g: lhcb-general"
+              },
+              "url": {
+                "placeholder": "Please enter the report URL"
+              },
+              "title": {
+                "placeholder": "Please enter the title"
+              }
+            }
+          }
         }
       },
       "presentations": {
@@ -260,7 +357,24 @@ window.schemaOptions = {
       },
       "extra_info": {
         "type": "depositgroup",
-        "order": 2
+        "order": 2,
+        "fields": {
+          "arxiv": {
+            "placeholder": "e.g: 1508.06087"
+          },
+          "keywords": {
+            "placeholder": "Please enter keywords here"
+          },
+          "egroup": {
+            "placeholder": "e.g: lhcb-review-Charm-D0toKsKs"
+          },
+          "status": {
+            "placeholder": "e.g: 9 - PAPER published"
+          },
+          "twiki": {
+            "placeholder": "e.g: https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
+          }
+        }
       }
     }
   };

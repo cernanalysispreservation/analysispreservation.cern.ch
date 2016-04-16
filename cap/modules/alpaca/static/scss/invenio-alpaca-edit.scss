@@ -370,6 +370,11 @@ $input_radius: 3px;
   .alpaca-field-object {
     padding: 10px;
   }
+
+  > .alpaca-field-text,
+  > .alpaca-field-textarea {
+    padding: 10px;
+  }
 }
 
 .alpaca-field {
@@ -382,6 +387,7 @@ $input_radius: 3px;
   .alpaca-container-item {
   }
 }
+
 
 .alpaca-control-label {
   width: 25%;
