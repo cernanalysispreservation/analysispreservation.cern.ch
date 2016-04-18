@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 
 import json
 import os
+import re
 from functools import partial
 from uuid import uuid4
 
@@ -38,7 +39,7 @@ from flask_security import login_required
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
-from invenio_accounts.models import User
+from invenio_accounts.models import User, Role
 from invenio_collections.models import Collection
 from invenio_db import db
 from invenio_indexer.utils import RecordIndexer
@@ -56,6 +57,11 @@ from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
 from cap.config import JSON_METADATA_PATH
+
+
+from werkzeug.local import LocalProxy
+
+_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 try:
     from urlparse import urljoin
@@ -364,15 +370,13 @@ def record_permissions(pid_value=None):
     result = dict()
     result['permissions'] = []
     for p in permissions:
-        if p.user:
+        if isinstance(p, ActionUsers) and p.user:
             result['permissions'].append(
-                to_dict(
-                    p,
-                    show=[
-                        'action',
-                        'user',
-                        'access_actionsusers.user.email']
-                )
+                {"action": p.action, "user": {"email": p.user.email}}
+            )
+        elif isinstance(p, ActionRoles) and p.role:
+            result['permissions'].append(
+                {"action": p.action, "user": {"email": p.role.name}}
             )
 
     return jsonify(**result)
@@ -414,7 +418,6 @@ def change_record_privacy(pid_value=None):
     if not permission_update_record.can():
         abort(403)
 
-    db.session.begin(nested=True)
     index_instance = ActionUsers.query.filter(
         ActionUsers.action == "records-index",
         ActionUsers.argument == str(record.id),
@@ -425,14 +428,16 @@ def change_record_privacy(pid_value=None):
         ActionUsers.argument == str(record.id),
         ActionUsers.user_id.is_(None)).first()
 
-    if index_instance:
-        db.session.delete(index_instance)
-        db.session.delete(read_instance)
-    else:
-        action_read_record = RecordReadActionNeed(str(record.id))
-        action_index_record = RecordIndexActionNeed(str(record.id))
-        db.session.add(ActionUsers.allow(action_read_record))
-        db.session.add(ActionUsers.allow(action_index_record))
+    with db.session.begin_nested():
+        if index_instance:
+            db.session.delete(index_instance)
+            db.session.delete(read_instance)
+        else:
+            action_read_record = RecordReadActionNeed(str(record.id))
+            action_index_record = RecordIndexActionNeed(str(record.id))
+            db.session.add(ActionUsers.allow(action_read_record))
+            db.session.add(ActionUsers.allow(action_index_record))
+
     db.session.commit()
 
     return '200'
@@ -447,33 +452,80 @@ def update_record_permissions(pid_value=None):
 
     pid, record = resolver.resolve(pid_value)
 
-    users = User.query.filter(User.email.in_(request.get_json())).all()
+
+    emails = []
+    roles = []
+    userrole_list = request.get_json().keys()
+
+    if not (current_app.config.get('EMAIL_REGEX', None)):
+        return '500'
+
+    email_regex = re.compile(current_app.config.get('EMAIL_REGEX'), )
+
+    for userrole in userrole_list:
+        if email_regex.match(userrole):
+            emails.append(userrole)
+        else:
+            #: [TOBEFIXED] Needs to check if E-Group exists
+            try:
+                tmp_role = _datastore.create_role(name=userrole)
+            except:
+                print("Soemthing happened when trying to create '"+userrole+"' role")
+            # Role.add(tmp_role)
+            roles.append(userrole)
+
+
+    users = User.query.filter(User.email.in_(emails)).all()
+    roles = Role.query.filter(Role.name.in_(roles)).all()
 
     action_edit_record = RecordUpdateActionNeed(str(record.id))
     action_read_record = RecordReadActionNeed(str(record.id))
     action_index_record = RecordIndexActionNeed(str(record.id))
 
-    db.session.begin(nested=True)
-    for user in users:
-        for action in request.get_json().get(user.email, None):
-            if (action.get("action", None) == "records-read" and action.get("op", None) == "add"):
-                db.session.add(ActionUsers.allow(action_read_record, user=user))
-            elif (action.get("action", None) == "records-index" and action.get("op", None) == "add"):
-                db.session.add(ActionUsers.allow(action_index_record, user=user))
-            elif (action.get("action", None) == "records-update" and action.get("op", None) == "add"):
-                db.session.add(ActionUsers.allow(action_edit_record, user=user))
-            elif (action.get("action", None) == "records-read" and action.get("op", None) == "remove"):
-                au = ActionUsers.query.filter(ActionUsers.action == "records-read", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
-                if (au):
-                    db.session.delete(au)
-            elif (action.get("action", None) == "records-index" and action.get("op", None) == "remove"):
-                au = ActionUsers.query.filter(ActionUsers.action == "records-index", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
-                if (au):
-                    db.session.delete(au)
-            elif (action.get("action", None) == "records-update" and action.get("op", None) == "remove"):
-                au = ActionUsers.query.filter(ActionUsers.action == "records-update", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
-                if (au):
-                    db.session.delete(au)
+    with db.session.begin_nested():
+        for user in users:
+            for action in request.get_json().get(user.email, None):
+                if (action.get("action", None) == "records-read" and action.get("op", None) == "add"):
+                    db.session.add(ActionUsers.allow(action_read_record, user=user))
+                elif (action.get("action", None) == "records-index" and action.get("op", None) == "add"):
+                    db.session.add(ActionUsers.allow(action_index_record, user=user))
+                elif (action.get("action", None) == "records-update" and action.get("op", None) == "add"):
+                    db.session.add(ActionUsers.allow(action_edit_record, user=user))
+                elif (action.get("action", None) == "records-read" and action.get("op", None) == "remove"):
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-read", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    if (au):
+                        db.session.delete(au)
+                elif (action.get("action", None) == "records-index" and action.get("op", None) == "remove"):
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-index", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    if (au):
+                        db.session.delete(au)
+                elif (action.get("action", None) == "records-update" and action.get("op", None) == "remove"):
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-update", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    if (au):
+                        db.session.delete(au)
+
+        # db.session.begin(nested=True)
+        for role in roles:
+            for action in request.get_json().get(role.name, None):
+                if (action.get("action", None) == "records-read" and action.get("op", None) == "add"):
+                    db.session.add(ActionRoles.allow(action_read_record, role=role))
+                elif (action.get("action", None) == "records-index" and action.get("op", None) == "add"):
+                    db.session.add(ActionRoles.allow(action_index_record, role=role))
+                elif (action.get("action", None) == "records-update" and action.get("op", None) == "add"):
+                    db.session.add(ActionRoles.allow(action_edit_record, role=role))
+                elif (action.get("action", None) == "records-read" and action.get("op", None) == "remove"):
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-read", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    if (au):
+                        db.session.delete(au)
+                elif (action.get("action", None) == "records-index" and action.get("op", None) == "remove"):
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-index", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    if (au):
+                        db.session.delete(au)
+                elif (action.get("action", None) == "records-update" and action.get("op", None) == "remove"):
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-update", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    if (au):
+                        db.session.delete(au)
+
     db.session.commit()
 
     return '200'

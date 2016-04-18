@@ -44,6 +44,8 @@ RECORDS_UI_ENDPOINTS = dict(
     ),
 )
 
+EMAIL_REGEX = '[^@]+@[^@]+\.[^@]+'
+
 RECORDS_REST_ENDPOINTS = dict(
     recid=dict(
         pid_type='recid',

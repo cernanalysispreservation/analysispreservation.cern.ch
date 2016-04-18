@@ -10,6 +10,9 @@ define(['underscore'], function(_) {
         $scope.isEmptyObject = function(obj) {
           return angular.equals({}, obj);
         };
+        $scope.mergeObjects = function(obj1, obj2) {
+          return angular.extend(obj1, obj2);
+        };
         $scope.get_records = function(limit) {
           capLocalClient.get_records()
           .then(function(response) {
@@ -63,10 +66,10 @@ define(['underscore'], function(_) {
           });
         };
         $scope.add_permission = function(email){
-          if (!validateEmail(email)){
-            alert("Input provided must be a valid email or user role");
-            return false;
-          }
+          // if (!validateEmail(email)){
+          //   alert("Input provided must be a valid email or user role");
+          //   return false;
+          // }
 
           var add =
           [
@@ -143,7 +146,7 @@ define(['underscore'], function(_) {
         var validateEmail = function(email) {
           var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return re.test(email);
-        }
+        };
       }]);
   return controllers;
 });
