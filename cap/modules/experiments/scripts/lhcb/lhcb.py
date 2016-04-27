@@ -10,6 +10,7 @@ filenames = [
     "dbases/qee.shelve",
     "dbases/sl.shelve",
     "dbases/b2oc.shelve",
+    "dbases/bnoc.shelve",
     "dbases/hlt.shelve",
     "dbases/rd.shelve"
 ]
