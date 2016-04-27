@@ -52,12 +52,16 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
 from invenio_records_ui.views import record_view, default_view_method
-from invenio_search import Query, current_search_client
+from invenio_search import current_search_client, RecordsSearch
+from invenio_search.api import DefaultFilter
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
 from cap.config import JSON_METADATA_PATH
 
+from elasticsearch_dsl.query import QueryString
+from cap.modules.records.serializers import json_v1
+from .fetchers import cap_record_fetcher
 
 from werkzeug.local import LocalProxy
 
@@ -154,21 +158,21 @@ def get_readable_records_by_user(user_id, roles):
     r_list = u_private+r_private+list(set(public)-set(u_private))
     return zip(*r_list)[0] if r_list else []
 
+# [TOBEFIXED] Leaivng here for thoughs/examplle/etc
+# @blueprint.route('/')
+# def recordsAll():
+#     """Basic test view."""
 
-@blueprint.route('/')
-def recordsAll():
-    """Basic test view."""
+#     # List of indexable records
+#     indexable_records = get_indexable_records_by_user(
+#             current_user.id if current_user.is_authenticated else None,
+#             current_user.roles)
 
-    # List of indexable records
-    indexable_records = get_indexable_records_by_user(
-            current_user.id if current_user.is_authenticated else None,
-            current_user.roles)
-
-    return jsonify(records=[(r.json, r.id)for r in
-                            RecordMetadata
-                            .query
-                            .filter(RecordMetadata
-                                    .id.in_(indexable_records)).all()])
+#     return jsonify(records=[(r.json, r.id)for r in
+#                             RecordMetadata
+#                             .query
+#                             .filter(RecordMetadata
+#                                     .id.in_(indexable_records)).all()])
 
 
 @blueprint.route('/<path:collection>/create')
@@ -253,23 +257,23 @@ def get_collections_queries(collections):
 
 
 @blueprint.route('/collection/<string:collection>')
+@login_required
 def collection_records(collection=None):
     collections = Collection.query.filter(
             Collection.name.in_([collection])).one().drilldown_tree()
+
     query_array = get_collections_queries(collections)
     query_string = ' or '.join(query_array)
-    query = Query(query_string)
-    response = current_search_client.search(
-        body=query.body,
-    )
 
-    recs = response.get('hits', []).get('hits', [])
+    search = RecordsSearch().query(QueryString(query=query_string))
+    response = search.execute().to_dict()
+    recs = json_v1.serialize_search(cap_record_fetcher, response)
 
     records = {
         'records': recs
     }
 
-    return jsonify(**records)
+    return recs
 
 
 @blueprint.route('/<pid_value>/edit')

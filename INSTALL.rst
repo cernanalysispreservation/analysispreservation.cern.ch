@@ -118,12 +118,12 @@ Create some basic collections:
 
    python manage.py collections create CERNAnalysisPreservation
    python manage.py collections create CMS -p CERNAnalysisPreservation
-   python manage.py collections create CMSQuestionnaire -p CMS
-   python manage.py collections create CMSAnalysis -p CMS
+   python manage.py collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
+   python manage.py collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
    python manage.py collections create LHCb -p CERNAnalysisPreservation
-   python manage.py collections create LHCbAnalysis -p LHCb
+   python manage.py collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
    python manage.py collections create ATLAS -p CERNAnalysisPreservation
-   python manage.py collections create ATLASWorkflows -p ATLAS
+   python manage.py collections create ATLASWorkflows -p ATLAS '_type:atlasworkflows'
    python manage.py collections create ALICE -p CERNAnalysisPreservation
 
 Start Elasticsearch in the background:
