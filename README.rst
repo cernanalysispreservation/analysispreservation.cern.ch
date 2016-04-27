@@ -14,7 +14,7 @@ Installation
 ------------
 
 If you'd like to install a demo site locally for your personal
-developments, please see `developing guide <DEVELOPING.rst>`_ for more
+developments, please see `developing guide <INSTALL.rst>`_ for more
 information.
 
 Contributing

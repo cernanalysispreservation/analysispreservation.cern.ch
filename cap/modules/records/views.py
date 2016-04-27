@@ -349,14 +349,14 @@ def update_record(pid_value=None):
 
     try:
         _metadata_patch = request.get_data()
-        for m in _metadata_patch:
+        prepare_patch = json.loads(_metadata_patch)
+        for m in prepare_patch:
             m["path"] = JSON_METADATA_PATH + m.get("path", "")
-        record.patch(_metadata_patch)
+        record.patch(prepare_patch)
     except (JsonPatchException, JsonPointerException):
         abort(400)
 
     record.commit()
-    db.session.commit()
     return '200'
 
 
