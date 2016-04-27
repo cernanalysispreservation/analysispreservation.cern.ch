@@ -67,7 +67,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       $RefParser.bundle(schemaName, function(e, schema){
         $(target).alpaca({
           "schema": schema,
-          "view":"bootstrap-display",
+          "view":"invenio-display",
           "options": schemaOptions,
           "data": recordData,
           "postRender": function(){
