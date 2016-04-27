@@ -1,7 +1,7 @@
 <div class="row" id="invenio-search">
     <div class="col-md-12">
         <invenio-search search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}">
-            <div id="invenio-search-bar" class="row">
+            <div id="invenio-search-bar">
                 <invenio-search-bar
                         template="{{ url_for('static', filename='html/searchbar.html') }}"
                         placeholder="{{ _('Start typing') }}">

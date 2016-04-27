@@ -112,3 +112,9 @@ textarea:focus,
 button:focus {
     outline: none;
 }
+
+.cap-pill {
+  border-radius: $brand-pill-radius;
+  padding: 5px;
+  background-color: #f4f4f4;
+}

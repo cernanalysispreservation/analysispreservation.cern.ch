@@ -30,7 +30,7 @@ js = NpmBundle(
     output="gen/cap.%(version)s.js",
     npm={
         "almond": "~0.3.1",
-        "angular": "~1.4.7",
+        "angular": "~1.4.10",
         "bootstrap": "~3.3.5",
     }
 )
@@ -64,7 +64,7 @@ front_js = NpmBundle(
     output="gen/cap.front.%(version)s.js",
     npm={
         "almond": "~0.3.1",
-        "angular": "~1.4.7",
+        "angular": "~1.4.10",
     }
 )
 
@@ -74,7 +74,7 @@ records = NpmBundle(
     output="gen/cap.records.%(version)s.js",
     npm={
         "almond": "~0.3.1",
-        "angular": "~1.4.7",
+        "angular": "~1.4.10",
         "angular-filter": "~0.5.1",
     }
 )

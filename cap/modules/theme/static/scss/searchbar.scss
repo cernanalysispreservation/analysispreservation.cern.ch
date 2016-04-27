@@ -92,3 +92,19 @@ $cap_searchbar_height: 60px;
         }
     }
 }
+
+
+.result-item {
+    header {
+        display: inline-block;
+        width:  100%;
+
+        .title {
+            float: left;
+        }
+
+        .collection {
+            float: right;
+        }
+    }
+}

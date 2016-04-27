@@ -2,21 +2,30 @@
     <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index" class="result-item">
         <div class="cap-box">
             <header>
-                {{ record.metadata.collections.join('::') }}
+                <div class="title">
+                    <a href="/records/{{record.id}}">
+                        {{ record.metadata.general_title }}
+                    </a>
+                </div>
+                <div class="collection">
+                    <div class="primary-collection label label-info">
+                        {{ record.metadata.collections.join('::') }}
+                    </div>
+                </div>
             </header>
             <table class="table table-summary">
-                <tr ng-repeat="(key, value) in record.metadata.basic_info">
+                <tr ng-repeat="(key, value) in record.metadata._metadata.basic_info">
                     <td>{{ key | propertyFormatter }}</td>
                     <td>{{ value }}</td>
                 </tr>
             </table>
-            <button class="btn btn-default show-more" type="button" data-toggle="collapse"
+<!--             <button class="btn btn-default show-more" type="button" data-toggle="collapse"
                     data-target="#result-{{ record.id }}" aria-expanded="false" aria-controls="collapseExample">
                     ...
             </button>
             <div id="result-{{ record.id }}" class="collapse">
                 <result-item content="record.metadata"></result-item>
-            </div>
+            </div> -->
         </div>
     </li>
 </ul>
