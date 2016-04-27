@@ -2,12 +2,16 @@
   "mappings": {
     "lhcbanalysis": {
       "properties": {
+        "general_title": {
+          "type": "string"
+        },
         "_metadata": {
           "properties": {
             "basic_info": {
               "properties": {
                 "analysis_name": {
-                  "type": "string"
+                  "type": "string",
+                  "copy_to": "general_title"
                 },
                 "analysis_number": {
                   "type": "string"

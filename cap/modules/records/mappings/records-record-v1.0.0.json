@@ -1,0 +1,28 @@
+{
+  "mappings": {
+    "record-v1.0.0": {
+      "properties": {
+        "_metadata": {
+          "type": "object"
+        },
+        "creator": {
+          "type": "integer"
+        },
+        "created": {
+          "type": "date"
+        },
+        "updated": {
+          "type": "date"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        }
+      }
+    }
+  }
+}
