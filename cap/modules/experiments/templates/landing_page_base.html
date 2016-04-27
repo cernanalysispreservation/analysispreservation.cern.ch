@@ -33,7 +33,7 @@
                                     </h4>
                                 {% endif %}
                                 {%- if record_type['children'] -%}
-                                    <ul style="padding-left: 10px">{{ loop(record_type['children']) }}</ul>
+                                    <ul>{{ loop(record_type['children']) }}</ul>
                                 {%- endif %}</li>
                         {%- endfor %}
                     </ul>
@@ -46,15 +46,15 @@
                             {%- endraw %}{{g.experiment}}{%- raw %} Records
                             <a ng-click="get_experiment_records()" class="btn pull-right btn-primary">Show records</a>
                         </header>
-                        <ul ng-repeat="r in experiments.data.records" ng-init="record = r._source">
+                        <ul ng-repeat="r in experiments.data.hits.hits" ng-init="record = r.metadata">
                           <li>
-                              <a ng-if="record.pid_value" href="/records/{{record.pid_value}}">
-                                  {{ record.title ? record.title : "Untitled"}} {{ record.pid_value ? record.pid_value : "WRONG"}}
+                              <a ng-if="r.id" href="/records/{{r.id}}">
+                                  {{ record.general_title ? record.general_title : "Untitled"}} {{ r.id ? r.id : "WRONG"}}
                                   {{ record.collections ? "("+ record.collections[0] + ")": ""}}
                               </a>
                           </li>
                         </ul>
-                        <div ng-hide="experiments.data.records.length">
+                        <div ng-hide="experiments.data.hits.hits.length">
                          No records to display for {%- endraw %} {{g.experiment}}{%- raw %}
                         </div>
                     </div>
