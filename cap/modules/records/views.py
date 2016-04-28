@@ -265,7 +265,7 @@ def collection_records(collection=None):
     query_array = get_collections_queries(collections)
     query_string = ' or '.join(query_array)
 
-    search = RecordsSearch().query(QueryString(query=query_string))
+    search = RecordsSearch().params(version=True).query(QueryString(query=query_string))
     response = search.execute().to_dict()
     recs = json_v1.serialize_search(cap_record_fetcher, response)
 
@@ -352,11 +352,13 @@ def update_record(pid_value=None):
         prepare_patch = json.loads(_metadata_patch)
         for m in prepare_patch:
             m["path"] = JSON_METADATA_PATH + m.get("path", "")
-        record.patch(prepare_patch)
+        record = record.patch(patch=prepare_patch)
     except (JsonPatchException, JsonPointerException):
         abort(400)
 
     record.commit()
+
+    db.session.commit()
     return '200'
 
 

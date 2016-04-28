@@ -19,6 +19,26 @@
               },
               "type": "object"
             },
+            "extra_info": {
+              "properties": {
+                     "status": {
+                      "type": "string"
+                     },
+                     "keywords": {
+                      "type": "string"
+                     },
+                     "arxiv": {
+                      "type": "string"
+                     },
+                     "egroup": {
+                      "type": "string"
+                     },
+                     "twiki": {
+                      "type": "string"
+                     }
+                },
+              "type" :"object"
+            },
             "analysis_steps": {
               "properties": {
                 "output_data": {
