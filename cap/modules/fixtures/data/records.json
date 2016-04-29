@@ -1,0 +1,784 @@
+[
+{
+  "schema": "mappings/atlasworkflows.json",
+  "collection": "ATLASWorkflows",
+  "metadata": {
+    "basic_info": {
+      "title": "This is a comlpex ATLAS Workflow example"
+    },
+    "workflows": [
+      {
+        "stages": [
+          {
+            "dependencies": [],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "ntuple": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "single-from-ctx"
+            },
+            "name": "preparedata",
+            "parameters": {
+              "input": "{dataset_data}",
+              "inputtype": "data",
+              "output": "{dataset_data}.ntup.root"
+            }
+          },
+          {
+            "dependencies": [],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "ntuple": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "single-from-ctx"
+            },
+            "name": "mcback1",
+            "parameters": {
+              "input": "{dataset_mcback_one}",
+              "inputtype": "mc",
+              "output": "/workdir/{dataset_mcback_one}.ntup.root"
+            }
+          },
+          {
+            "dependencies": [],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "ntuple": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "single-from-ctx"
+            },
+            "name": "mcback2",
+            "parameters": {
+              "input": "{dataset_mcback_one}",
+              "inputtype": "mc",
+              "output": "/workdir/{dataset_mcback_one}.ntup.root"
+            }
+          },
+          {
+            "dependencies": [],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./getsignal.sh {par_one} {par_two} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "signal_sample": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "single-from-ctx"
+            },
+            "name": "acquire_signal",
+            "parameters": {
+              "output": "/workdir/signal.input.root",
+              "par_two": "{signal_par_two}",
+              "par_one": "{signal_par_one}"
+            }
+          },
+          {
+            "dependencies": [
+              "acquire_signal"
+            ],
+            "scheduler": {
+              "outputs": "signal_sample",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "ntuple": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "acquire_signal"
+              ]
+            },
+            "name": "mcsignal",
+            "parameters": {
+              "output": "/workdir/signal.ntup.root",
+              "inputtype": "mc"
+            }
+          },
+          {
+            "dependencies": [
+              "mcsignal"
+            ],
+            "scheduler": {
+              "outputs": "ntuple",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./makehistos_mc.sh {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "mchistos": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "mcsignal"
+              ]
+            },
+            "name": "hist_mcsignal",
+            "parameters": {
+              "output": "/workdir/signal.histos.root"
+            }
+          },
+          {
+            "dependencies": [
+              "mcback1"
+            ],
+            "scheduler": {
+              "outputs": "ntuple",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./makehistos_mc.sh {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "mchistos": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "mcback1"
+              ]
+            },
+            "name": "hist_mc1",
+            "parameters": {
+              "output": "/workdir/back1.histos.root"
+            }
+          },
+          {
+            "dependencies": [
+              "mcback2"
+            ],
+            "scheduler": {
+              "outputs": "ntuple",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./makehistos_mc.sh {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "mchistos": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "mcback2"
+              ]
+            },
+            "name": "hist_mc2",
+            "parameters": {
+              "output": "/workdir/back2.histos.root"
+            }
+          },
+          {
+            "dependencies": [
+              "preparedata"
+            ],
+            "scheduler": {
+              "outputs": "ntuple",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./makehistos_data.sh {input} {output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "datahistos": "output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "preparedata"
+              ]
+            },
+            "name": "hist_data",
+            "parameters": {
+              "output": "/workdir/data.histos.root"
+            }
+          },
+          {
+            "dependencies": [
+              "preparedata"
+            ],
+            "scheduler": {
+              "outputs": "ntuple",
+              "to_input": "input",
+              "scheduler_type": "reduce-from-dep",
+              "step": {
+                "process": {
+                  "cmd": "./makehistos_datadriven.sh {tight_cut} {input} {output_loose} {output_tight}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "tight": "output_tight",
+                    "loose": "output_loose"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "from_stages": [
+                "preparedata"
+              ]
+            },
+            "name": "data_driven_back_hists",
+            "parameters": {
+              "tight_cut": "{data_driven_cut}",
+              "output_tight": "/workdir/data.histos.root:/tight_hist",
+              "output_loose": "/workdir/data.histos.root:/hist_loose"
+            }
+          },
+          {
+            "dependencies": [
+              "data_driven_back_hists"
+            ],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./estimate.sh {tighthisto} {loosehisto} {estimate_output}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "estimate": "estimate_output"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "zip-from-dep",
+              "zip": [
+                {
+                  "zip_with": [
+                    "tighthisto"
+                  ],
+                  "outputs": "tight",
+                  "from_stages": [
+                    "data_driven_back_hists"
+                  ]
+                },
+                {
+                  "zip_with": [
+                    "loosehisto"
+                  ],
+                  "outputs": "loose",
+                  "from_stages": [
+                    "data_driven_back_hists"
+                  ]
+                }
+              ]
+            },
+            "name": "hist_estimate",
+            "parameters": {
+              "estimate_output": "/workdir/estimate.hist.root"
+            }
+          },
+          {
+            "dependencies": [
+              "hist_estimate",
+              "hist_data",
+              "hist_mc1",
+              "hist_mc2",
+              "hist_mcsignal"
+            ],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./runfit.sh {data} {signal} {back1} {back2} {back3} {fitresults} {workspace}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "results": "fitresults",
+                    "workspace": "workspace"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "zip-from-dep",
+              "zip": [
+                {
+                  "zip_with": [
+                    "back1",
+                    "back2",
+                    "back3"
+                  ],
+                  "outputs": "estimate|mchistos",
+                  "from_stages": [
+                    "hist_mc1",
+                    "hist_mc2",
+                    "hist_estimate"
+                  ]
+                },
+                {
+                  "zip_with": [
+                    "signal"
+                  ],
+                  "outputs": "mchistos",
+                  "from_stages": [
+                    "hist_mcsignal"
+                  ]
+                },
+                {
+                  "zip_with": [
+                    "data"
+                  ],
+                  "outputs": "datahistos",
+                  "from_stages": [
+                    "hist_data"
+                  ]
+                }
+              ]
+            },
+            "name": "fit",
+            "parameters": {
+              "workspace": "/workdir/fit.workspace.root",
+              "fitresults": "/workdir/fitresults.yaml"
+            }
+          },
+          {
+            "dependencies": [
+              "hist_estimate",
+              "hist_data",
+              "hist_mc1",
+              "hist_mc2",
+              "hist_mcsignal"
+            ],
+            "scheduler": {
+              "step": {
+                "process": {
+                  "cmd": "./runplots.sh {data} {signal} {back1} {back2} {back3} {plotdir}",
+                  "process_type": "string-interpolated-cmd"
+                },
+                "publisher": {
+                  "publisher_type": "frompar-pub",
+                  "outputmap": {
+                    "plots": "plotdir"
+                  }
+                },
+                "environment": {
+                  "imagetag": "latest",
+                  "image": "lukasheinrich/workflow-dummy",
+                  "envscript": "",
+                  "environment_type": "docker-encapsulated",
+                  "env": {},
+                  "resources": []
+                }
+              },
+              "scheduler_type": "zip-from-dep",
+              "zip": [
+                {
+                  "zip_with": [
+                    "back1",
+                    "back2",
+                    "back3"
+                  ],
+                  "outputs": "estimate|mchistos",
+                  "from_stages": [
+                    "hist_mc1",
+                    "hist_mc2",
+                    "hist_estimate"
+                  ]
+                },
+                {
+                  "zip_with": [
+                    "signal"
+                  ],
+                  "outputs": "mchistos",
+                  "from_stages": [
+                    "hist_mcsignal"
+                  ]
+                },
+                {
+                  "zip_with": [
+                    "data"
+                  ],
+                  "outputs": "datahistos",
+                  "from_stages": [
+                    "hist_data"
+                  ]
+                }
+              ]
+            },
+            "name": "plots",
+            "parameters": {
+              "plotdir": "/workdir/plots"
+            }
+          }
+        ],
+        "context": {
+          "signal_par_two": null,
+          "dataset_data": null,
+          "data_driven_cut": null,
+          "dataset_mcback_one": null,
+          "dataset_mcback_two": null,
+          "signal_par_one": null
+        }
+      }
+    ]
+  }
+},
+{
+  "schema": "mappings/atlasworkflows.json",
+  "collection": "ATLASWorkflows",
+  "metadata": {
+      "basic_info": {
+        "title": "This is a simple ATLAS Workflow example"
+      },
+      "workflows": [
+        {
+          "stages": [
+            {
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "/resources/download.py {dataset} {outDir} {outList}",
+                    "process-type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "outputmap": {
+                      "output": "outList"
+                    },
+                    "publisher-type": "process-attr-pub"
+                  },
+                  "environment": {
+                    "envscript": "/resources/downloadenv.sh",
+                    "image": "lukasheinrich/dilepton_download",
+                    "environment-type": "docker-encapsulated",
+                    "resources": [
+                      "CVMFS",
+                      "GRIDProxy"
+                    ]
+                  }
+                },
+                "scheduler-type": "singlestep-from-context"
+              },
+              "name": "download",
+              "parameters": {
+                "outList": "/workdir/files.list",
+                "outDir": "/workdir/grid_download",
+                "dataset": "{dataset}"
+              }
+            },
+            {
+              "dependencies": [
+                "download"
+              ],
+              "scheduler": {
+                "outputs": "output",
+                "to_input": "filelist",
+                "step": {
+                  "process": {
+                    "cmd": "./DileptonAnalysis {blinded} {include_truth} {filter} {input_type} -maxsyst {maxsyst} -m {minintup} -f {filelist}",
+                    "process-type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "outputmap": {
+                      "output": "minintup"
+                    },
+                    "publisher-type": "process-attr-pub"
+                  },
+                  "environment": {
+                    "envscript": "/resources/ntuplingenv.sh",
+                    "image": "lukasheinrich/dilepton_ntupling",
+                    "environment-type": "docker-encapsulated",
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "from_stages": [
+                  "download"
+                ],
+                "scheduler-type": "reduce-from-dep-output"
+              },
+              "name": "ntupling",
+              "parameters": {
+                "include_truth": "-truth",
+                "maxsyst": 1,
+                "input_type": "-mc",
+                "filter": "-nomllalpgenfilter",
+                "minintup": "/workdir/mini.root",
+                "blinded": "-unblind"
+              }
+            },
+            {
+              "dependencies": [
+                "ntupling"
+              ],
+              "scheduler": {
+                "outputs": "output",
+                "to_input": "miniroot",
+                "step": {
+                  "process": {
+                    "cmd": "python preparehistfit.py {miniroot} {efficiency_file} {xsections_file} {modelName} {histfittree_file} {yield_file}",
+                    "process-type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "outputmap": {
+                      "output_tree": "histfittree_file",
+                      "output_yield": "yield_file"
+                    },
+                    "publisher-type": "process-attr-pub"
+                  },
+                  "environment": {
+                    "envscript": "/resources/prepareenv.sh",
+                    "image": "lukasheinrich/dilepton_histfitprep",
+                    "environment-type": "docker-encapsulated",
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "from_stages": [
+                  "ntupling"
+                ],
+                "scheduler-type": "reduce-from-dep-output"
+              },
+              "name": "histfitprepare",
+              "parameters": {
+                "histfittree_file": "/workdir/out.root",
+                "efficiency_file": "{efficiency_file}",
+                "xsections_file": "{xsections_file}",
+                "modelName": "{modelName}",
+                "yield_file": "/workdir/out.yield"
+              }
+            },
+            {
+              "dependencies": [
+                "histfitprepare"
+              ],
+              "scheduler": {
+                "outputs": "output_tree",
+                "to_input": "histfitroot",
+                "step": {
+                  "process": {
+                    "cmd": "./luke_run_limit.sh {histfitroot} {fitresults}",
+                    "process-type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "outputmap": {
+                      "output": "fitresults"
+                    },
+                    "publisher-type": "process-attr-pub"
+                  },
+                  "environment": {
+                    "envscript": "/resources/fitenv.sh",
+                    "image": "lukasheinrich/dilepton_fit",
+                    "environment-type": "docker-encapsulated",
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "from_stages": [
+                  "histfitprepare"
+                ],
+                "scheduler-type": "reduce-from-dep-output"
+              },
+              "name": "fit",
+              "parameters": {
+                "fitresults": "/workdir/fit.tgz"
+              }
+            },
+            {
+              "dependencies": [
+                "fit"
+              ],
+              "scheduler": {
+                "outputs": "output",
+                "to_input": "fitresultsarchive",
+                "step": {
+                  "process": {
+                    "cmd": "/resources/pMSSM-TwoLep-Fit/post_fit.sh {fitresultsarchive} {workdir} {modelName} {resultsyaml}",
+                    "process-type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "outputmap": {
+                      "output": "resultsyaml"
+                    },
+                    "publisher-type": "process-attr-pub"
+                  },
+                  "environment": {
+                    "envscript": "/resources/fitenv.sh",
+                    "image": "lukasheinrich/dilepton_fit",
+                    "environment-type": "docker-encapsulated",
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "from_stages": [
+                  "fit"
+                ],
+                "scheduler-type": "reduce-from-dep-output"
+              },
+              "name": "postproc",
+              "parameters": {
+                "workdir": "/workdir/postproc",
+                "resultsyaml": "/workdir/results.yaml",
+                "modelName": "{modelName}"
+              }
+            }
+          ],
+          "context": {
+            "efficiency_file": null,
+            "xsections_file": null,
+            "modelName": null,
+            "dataset": null
+          }
+        }
+      ]
+    }
+  }
+]

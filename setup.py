@@ -114,9 +114,9 @@ setup(
     include_package_data=True,
     platforms='any',
     entry_points={
-        # 'console_scripts': [
-        #     'cap = cap.cli:cli',
-        # ],
+        'console_scripts': [
+            'cap = cap.cli:cli',
+        ],
         'invenio_base.blueprints': [
             'cap_theme = cap.modules.theme.views:blueprint',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
@@ -139,6 +139,7 @@ setup(
         'invenio_base.apps': [
             'invenio_search = invenio_search:InvenioSearch',
             'invenio_records = invenio_records:InvenioRecords',
+            'cap_fixtures = cap.modules.fixtures:CAPFixtures',
             'cap_accesss = cap.modules.access.ext:Access',
             'cap_records = cap.modules.records.ext:Records',
         ],
