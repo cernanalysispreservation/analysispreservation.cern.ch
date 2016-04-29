@@ -46,7 +46,7 @@ and do a system install for the Sass preprocessor by following `Sass web guide <
 
 .. code-block:: shell
 
-  sudo npm -g sass
+  sudo npm -g sass node-sass clean-css uglify-js requirejs
 
 
 Installation
@@ -58,6 +58,12 @@ v3.0 instance:
 .. code-block:: shell
 
    mkvirtualenv cap
+
+Start redis server in the background:
+
+.. code-block:: shell
+
+   redis-server &
 
 Install CAP package:
 
@@ -91,6 +97,7 @@ depend on:
    npm install bower
    npm install
    cd node_modules/alpaca
+   npm install gulp gulp-clean jshint gulp-jshint
    npm install
    npm start
 
@@ -147,3 +154,44 @@ Start the web application (in debugging mode):
 Now we can create our first record by going to ``http://localhost:5000/records/<collection_name>/create/``
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
+
+
+General Recommendations
+------------
+
+You can specify the python version for the virtual environment by running (e.g. to use python 2.7):
+
+.. code-block:: shell
+
+   mkvirtualenv -p /usr/bin/python2.7 cap
+
+
+Troubleshooting
+------------
+
+Missing Requirements
+~~~~~~~~~~~~~
+If you have trouble with the setup check if you are missing one of the following requirements:
+
+.. code-block:: shell
+
+   nodejs npm ruby gcc python2 python2-pysqlite python-virtualenvwrapper python2-lxml python2-pip
+
+The version of python2 given by ``python2 --version`` should be greater than 2.7.10.
+
+Database Indexing Problems
+~~~~~~~~~~~~~
+If you have trouble indexing the database try
+
+.. code-block:: shell
+
+   python manage.py db destroy
+   python manage.py db init
+
+and if that does not work try
+
+.. code-block:: shell
+
+   curl -XDELETE 'http://localhost:9200/rec*'
+   curl -XDELETE 'http://localhost:9200/map*'
+   python manage.py db init
