@@ -11,7 +11,9 @@ CAP_RECORD_MAPPINGS = dict(
         general_title='_metadata.basic_info.analysis_number'
     ),
     CMSQuestionnaire=dict(),
-    ATLASWorkflows=dict(),
+    ATLASWorkflows=dict(
+        general_title='_metadata.basic_info.title'
+    ),
 )
 
 

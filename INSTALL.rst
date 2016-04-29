@@ -91,10 +91,9 @@ depend on:
    npm install bower
    npm install
    cd node_modules/alpaca
-   npm install gulp gulp-clean
-
    npm install
    npm start
+
    cdvirtualenv src/cap
    python manage.py collect -v
    python manage.py assets build
@@ -123,7 +122,7 @@ Create some basic collections:
    python manage.py collections create LHCb -p CERNAnalysisPreservation
    python manage.py collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
    python manage.py collections create ATLAS -p CERNAnalysisPreservation
-   python manage.py collections create ATLASWorkflows -p ATLAS '_type:atlasworkflows'
+   python manage.py collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
    python manage.py collections create ALICE -p CERNAnalysisPreservation
 
 Start Elasticsearch in the background:
