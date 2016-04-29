@@ -97,7 +97,6 @@ depend on:
    npm install bower
    npm install
    cd node_modules/alpaca
-   npm install gulp gulp-clean jshint gulp-jshint
    npm install
    npm start
 
@@ -155,6 +154,13 @@ Now we can create our first record by going to ``http://localhost:5000/records/<
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
+Populating The Database With Example Records
+~~~~~~~~~~~~~
+If you want to populate the database with example records you can run:
+
+.. code-block:: shell
+
+   python manage.py fixtures records
 
 General Recommendations
 ------------
@@ -179,16 +185,26 @@ If you have trouble with the setup check if you are missing one of the following
 
 The version of python2 given by ``python2 --version`` should be greater than 2.7.10.
 
+Errors with npm start and Alpaca
+~~~~~~~~~~~~~
+If ``npm start`` fails for alpaca, you can try:
+
+.. code-block:: shell
+
+   npm install gulp gulp-clean jshint gulp-jshint
+   npm install
+   npm start   
+
 Database Indexing Problems
 ~~~~~~~~~~~~~
-If you have trouble indexing the database try
+If you have trouble indexing the database try:
 
 .. code-block:: shell
 
    python manage.py db destroy
    python manage.py db init
 
-and if that does not work try
+and if that does not work try:
 
 .. code-block:: shell
 
