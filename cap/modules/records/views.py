@@ -317,13 +317,15 @@ def recid(pid_value=None):
         ActionUsers.action == 'records-read',
         ActionUsers.user_id.is_(None)).first()
 
+
+    print(record)
     permission_edit_record = update_permission_factory(record)
     permission_read_record = read_permission_factory(record)
 
     if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           ['records/detail.html'],
+                           ['records/detail-'+record.get("collections", [""])[0]+'.html', 'records/detail.html'],
                            None,
                            default_view_method
                            )

@@ -12,8 +12,12 @@
                 <div id="record-head"></div>
                 <div id="record-display" class="cap-box">
                     <nav id="record-menu" class="navbar">
-                        <ul class="rec_nav nav navbar-nav nav-tabs">
-                            <li class="active"><a href="#">Basic Info</a></li>
+                        <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
+                            {% block record_tabs_menu_before %}{% endblock %}
+                            {% block record_tabs_menu_default %}
+                                <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
+                            {% endblock %}
+                            {% block record_tabs_menu_after %}{% endblock %}
                         </ul>
                         {%- if record.id|can_edit %}
                             <div class="edit-btn">
@@ -21,23 +25,31 @@
                             </div>
                         {% endif %}
                     </nav>
-                    <div id="record-fields"
-                         data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
-                         data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
-                        {%- if record.get("collections", None) %}
-                            <div id="record-collections">
-                                <span>Collections:</span>
-                                {% for r in record.get("collections", []) %}
-                                    <a href="#">{{r}}</a> /
-                                {% endfor %}
+                    <div class="tab-content">
+                        {% block record_tabs_content_before %}{% endblock %}
+                        {% block record_tabs_content_default %}
+                            <div role="tabpanel" class="tab-pane active" id="info">
+                                <div id="record-fields"
+                                     data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                                     data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
+                                    {%- if record.get("collections", None) %}
+                                        <div id="record-collections">
+                                            <span>Collections:</span>
+                                            {% for r in record.get("collections", []) %}
+                                                <a href="#">{{r}}</a> /
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    <div class="record-rendered"></div>
+                                    <div class="record-loading">
+                                        <img src="{{url_for('static', filename='img/loader.gif')}}">
+                                    </div>
+                                </div>
+                                <div id="record-data">
+                                </div>
                             </div>
-                        {% endif %}
-                        <div class="record-rendered"></div>
-                        <div class="record-loading">
-                            <img src="{{url_for('static', filename='img/loader.gif')}}">
-                        </div>
-                    </div>
-                    <div id="record-data">
+                        {% endblock %}
+                        {% block record_tabs_content_after %}{% endblock %}
                     </div>
                 </div>
             </div>
