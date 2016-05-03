@@ -1,3 +1,5 @@
+.. image:: https://travis-ci.org/cernanalysispreservation/analysis-preservation.cern.ch.png
+   :target: https://travis-ci.org/cernanalysispreservation/analysis-preservation.cern.ch
 .. image:: https://badges.gitter.im/Join%20Chat.svg
    :target: https://gitter.im/cernanalysispreservation/analysis-preservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 

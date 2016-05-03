@@ -1,0 +1,20 @@
+components:
+- ALICE
+- ATLAS
+- CMS
+- LHCb
+- UI
+- access
+- base
+- docker
+- docs
+- fixtures
+- global
+- glossary
+- installation
+- kwalitee
+- records
+- search
+- templates
+- tests
+- travis

@@ -1,0 +1,48 @@
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can
+# redistribute it and/or modify it under the terms of the GNU General
+# Public License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that
+# it will be useful, but WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+# PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this software; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
+# USA.
+
+notifications:
+  email: false
+
+sudo: false
+
+language: python
+
+python:
+  - "2.7"
+
+before_install:
+  - travis_retry pip install kwalitee --pre
+  - echo ${TRAVIS_COMMIT_RANGE}
+  - |
+       # inspiration from https://github.com/trevp/tlslite/blob/master/.travis.yml
+       # workaround for https://github.com/travis-ci/travis-ci/issues/2666
+       if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+         URL="https://github.com/${TRAVIS_REPO_SLUG}/pull/${TRAVIS_PULL_REQUEST}.patch"
+         PR_FIRST=$(curl --silent --show-error --location $URL | head -1 | grep -o -E '\b[0-9a-f]{40}\b' | tr -d '\n')
+         TRAVIS_COMMIT_RANGE=$PR_FIRST^..$TRAVIS_COMMIT
+       fi
+  - echo ${TRAVIS_COMMIT_RANGE}
+
+install: true
+
+before_script:
+  - travis_retry pip install kwalitee GitPython --pre
+  - kwalitee check message -s ${TRAVIS_COMMIT_RANGE}
+
+script: true
