@@ -6,7 +6,7 @@ window.schemaOptions = {
         "fields": {
           "analysis_name": {
             "label": "Analysis Name",
-            "placeholder": "Start typing and select an Analysis Name to import metadata. E.g. CPV in D0 -> KS KS",
+            "placeholder": "Start typing and select an Analysis Name to import metadata, e.g. CPV in D0 -> KS KS",
             "typeahead": {
               "config": {
                 "minLength": 1
@@ -58,19 +58,20 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "year": {
-                        "order": 4
+                        "order": 4,
+						"placeholder": "E.g. 2015"
                       },
                       "reconstruction_software": {
-                        "order": 2
-
+                        "order": 2,
+						"placeholder": "E.g. Brunel Reco 13"
                       },
                       "stripping_software": {
                         "order": 3,
-                        "placeholder": ""
+                        "placeholder": "E.g. DaVinciStripping 17"
                       },
                       "location": {
                         "order": 1,
-                        "placeholder": "e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
+                        "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
                       }
                     }
                   }
@@ -83,20 +84,24 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "mc_production": {
-                        "order": 2
+                        "order": 2,
+                        "placeholder": "E.g. MC Prod"
                       },
                       "generator": {
-                        "order": 3
+                        "order": 3,
+                        "placeholder": "E.g. MC Gen"
                       },
                       "reconstruction_software": {
-                        "order": 4
+                        "order": 4,
+                        "placeholder": "E.g. MC Reco 11"
                       },
                       "stripping_software": {
-                        "order": 5
+                        "order": 5,
+                        "placeholder": "E.g. MC Strip 16"
                       },
                       "location": {
                         "order": 1,
-                        "placeholder": "e.g: sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
+                        "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
                       }
                     }
                   }
@@ -113,7 +118,7 @@ window.schemaOptions = {
                 "order": 2,
                 "fields": {
                   "item": {
-                    "placeholder": " e.g DaVinci v33r6"
+                    "placeholder": "E.g. DaVinci v33r6"
                   }
                 }
               },
@@ -135,7 +140,7 @@ window.schemaOptions = {
                       "instructions": {
                         "type": "textarea",
                         "order": 3,
-                        "placeholder": "Please enter the instructions for using the code, e.g Open 'README' file"
+                        "placeholder": "Please enter the instructions for using the code, e.g. Open 'README' file"
                       }
                     }
                   }
@@ -143,7 +148,7 @@ window.schemaOptions = {
               },
               "platform": {
                 "order": 1,
-                "placeholder": "Please enter the platfrom name"
+                "placeholder": "E.g. x86_64-slc5-gcc46-opt"
               }
             }
           },
@@ -151,10 +156,10 @@ window.schemaOptions = {
             "type": "depositgroup-object",
             "fields": {
               "data": {
-                "placeholder": "Please enter the final N Tuples files"
+                "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
               },
               "mc_data": {
-                "placeholder": "Please enter the final N Tuples files"
+                "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
               }
             }
           }
@@ -175,23 +180,7 @@ window.schemaOptions = {
                     "toolbarSticky": "true",
                     "fields": {
                       "item": {
-                        "fields": {
-                          "year": {
-                            "order": 4
-                          },
-                          "reconstruction_software": {
-                            "order": 2
-
-                          },
-                          "stripping_software": {
-                            "order": 3,
-                            "placeholder": ""
-                          },
-                          "location": {
-                            "order": 1,
-                            "placeholder": "e.g: sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
-                          }
-                        }
+                        "placeholder": "Please enter full path to the data, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                       }
                     }
                   },
@@ -200,24 +189,7 @@ window.schemaOptions = {
                     "toolbarSticky": "true",
                     "fields": {
                       "item": {
-                        "fields": {
-                          "mc_production": {
-                            "order": 2
-                          },
-                          "generator": {
-                            "order": 3
-                          },
-                          "reconstruction_software": {
-                            "order": 4
-                          },
-                          "stripping_software": {
-                            "order": 5
-                          },
-                          "location": {
-                            "order": 1,
-                            "placeholder": "e.g: sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
-                          }
-                        }
+                        "placeholder": "Please enter full path to the data, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
                       }
                     }
                   }
@@ -232,7 +204,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "item": {
-                        "placeholder": " e.g DaVinci v33r6"
+                        "placeholder": " E.g. DaVinci v33r6"
                       }
                     }
                   },
@@ -254,7 +226,7 @@ window.schemaOptions = {
                           "instructions": {
                             "type": "textarea",
                             "order": 3,
-                            "placeholder": "Please enter the instructions for using the code, e.g Open 'README' file"
+                            "placeholder": "Please enter the instructions for using the code, e.g. Open 'README' file"
                           }
                         }
                       }
@@ -262,7 +234,7 @@ window.schemaOptions = {
                   },
                   "platform": {
                     "order": 1,
-                    "placeholder": "Please enter the platfrom name"
+                    "placeholder": "E.g. x86_64-slc5-gcc46-opt"
                   }
                 }
               },
@@ -270,10 +242,10 @@ window.schemaOptions = {
                 "type": "depositgroup-object",
                 "fields": {
                   "data": {
-                    "placeholder": "Please enter the final N Tuples files"
+                    "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                   },
                   "mc_data": {
-                    "placeholder": "Please enter the final N Tuples files"
+                    "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
                   }
                 }
               }
@@ -289,13 +261,16 @@ window.schemaOptions = {
           "item": {
             "fields": {
               "url": {
-                "order": 1
+                "order": 1,
+                "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
               },
               "keyword": {
-                "order": 2
+                "order": 2,
+                "placeholder": "E.g. keyword1"
               },
               "comment": {
-                "order": 3
+                "order": 3,
+                "placeholder": "E.g. Shows more detail concerning this analysis"
               }
             }
           }
@@ -308,13 +283,13 @@ window.schemaOptions = {
           "item": {
             "fields": {
               "meeting": {
-                "placeholder": "e.g: lhcb-general"
+                "placeholder": "E.g. lhcb-general"
               },
               "url": {
-                "placeholder": "Please enter the report URL"
+                "placeholder": "E.g. https://indico.cern.ch/event/.../contribution/.../material/slides/discussion-slides.pdf"
               },
               "title": {
-                "placeholder": "Please enter the title"
+                "placeholder": "E.g. Update on D0->KS KS"
               }
             }
           }
@@ -324,6 +299,19 @@ window.schemaOptions = {
         "type": "depositgroup-array",
         "order": 6,
         "fields": {
+		  "item": {
+            "fields": {
+			  "url": {
+				"placeholder": "E.g. https://indico.cern.ch/event/473187/"
+			  },
+			  "title": {
+				"placeholder": "E.g. CP violation searches in the charm sector at LHCb"
+			  },
+			  "meeting": {
+				"placeholder": "E.g. CERN-LHC Seminar"
+			  }
+			}
+		  }
         }
       },
       "publications": {
@@ -332,6 +320,17 @@ window.schemaOptions = {
         "fields": {
           "item": {
             "fields": {
+			  "url": {
+				"placeholder": "E.g. https://cds.cern.ch/record/2030613"
+			  },
+			  "reviewegroup": {
+				"placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+			  },
+			  "roles": {
+				"placeholder": ""
+			  }
+			  // currently not included in json
+              /*
               "journal_title": {
                 "order": 1
               },
@@ -350,7 +349,7 @@ window.schemaOptions = {
               "persistent_identifiers": {
                 "type": "depositgroup-object-array",
                 "order": 6
-              }
+              }*/
             }
           }
         }
@@ -360,20 +359,20 @@ window.schemaOptions = {
         "order": 2,
         "fields": {
           "arxiv": {
-            "placeholder": "e.g: 1508.06087"
+            "placeholder": "E.g. 1508.06087"
           },
           "keywords": {
             "type": "tags",
-            "placeholder": "Please enter keywords here"
+            "placeholder": "E.g. keyword1, keyword2"
           },
           "egroup": {
-            "placeholder": "e.g: lhcb-review-Charm-D0toKsKs"
+            "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
           },
           "status": {
-            "placeholder": "e.g: 9 - PAPER published"
+            "placeholder": "E.g. 9 - PAPER published"
           },
           "twiki": {
-            "placeholder": "e.g: https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
+            "placeholder": "E.g. https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
           }
         }
       }

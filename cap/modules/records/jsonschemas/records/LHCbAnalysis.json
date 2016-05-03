@@ -101,7 +101,7 @@
           "type": "object",
           "properties": {
             "platform": {
-              "title": "Platform",
+              "title": "Platform Name",
               "type": "string"
             },
             "lhcb_code": {
@@ -184,7 +184,7 @@
             "type": "object",
             "properties": {
               "platform": {
-                "title": "Platform",
+                "title": "Platform Name",
                 "type": "string"
               },
               "lhcb_code": {
