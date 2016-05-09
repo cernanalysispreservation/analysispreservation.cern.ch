@@ -6,7 +6,7 @@ window.schemaOptions = {
         "type": "depositgroup",
         "fields": {
           "analysis_number": {
-            "placeholder": "Please provide CADI analysis number to connect"
+            "placeholder": "Please provide CADI analysis number to connect, e.g. CMS-ANA-2012-049"
           }
         }
       },
@@ -231,8 +231,9 @@ window.schemaOptions = {
                     "select2": true,
                     "dataSource": "/records/jsonschemas/fields/triggerSelection.json"
                   },
-                  "otherr": {
-                    "order": 2
+                  "other": {
+                    "order": 2,
+                    "placeholder": "E.g. HLT_IsoMu17_eta2p1_v"
                   },
                   "run_period": {
                     "hidden": true
@@ -255,7 +256,7 @@ window.schemaOptions = {
         "type": "depositgroup-array",
         "fields": {
           "item": {
-            "fields":{
+            "fields": {
               "final_state_particles": {
                 "order": 1,
                 "minItems": 1,
@@ -271,29 +272,43 @@ window.schemaOptions = {
                         "order": 1
                       },
                       "number": {
-                        "placeholder": "Number",
+                        "placeholder": "Number, e.g. 1",
                         "order": 2
                       },
                       "pt_cut": {
-                        "placeholder": "PT Cut",
+                        "placeholder": "PT Cut, e.g. > 20 Gev",
                         "order": 3
                       },
                       "era_cut": {
-                        "placeholder": "ETA Cut",
+                        "placeholder": "ETA Cut, e.g. < 2.1",
                         "order": 4
                       }
                     }
                   }
                 }
               },
+              // currently not included in json
+              /*
               "physics_object": {
                 "order": 2,
                 "type": "depositgroup-object-array"
-              },
+              },*/
               "cuts": {
                 "order": 3,
                 "type": "depositgroup-object-array",
-                "minItems": 1
+                "minItems": 1,
+                "fields": {
+                  "item": {
+                    "fields": {
+					  "eta": {
+						"placeholder": "E.g. ECAL"
+					  },
+					  "pT": {
+						"placeholder": "E.g. > 20 Gev"
+					  }
+					}
+				  }
+				}
               },
               "veto": {
                 "order": 4,
@@ -310,15 +325,15 @@ window.schemaOptions = {
                         "order": 1
                       },
                       "number": {
-                        "placeholder": "Number",
+                        "placeholder": "Number, e.g. 1",
                         "order": 2
                       },
                       "pt_cut": {
-                        "placeholder": "PT Cut",
+                        "placeholder": "PT Cut, e.g. > 20 Gev",
                         "order": 3
                       },
                       "era_cut": {
-                        "placeholder": "ETA Cut",
+                        "placeholder": "ETA Cut, e.g. < 2.1",
                         "order": 4
                       }
                     }
@@ -343,9 +358,11 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "filename": {
+                        "placeholder": "E.g. myfile-data.root"
                       },
                       "url": {
-                        "type": "url"
+                        "type": "url",
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../"
                       }
                     }
                   }
@@ -359,7 +376,8 @@ window.schemaOptions = {
                     "fields": {
                       "url": {
                         "type": "url-harvest",
-                        "order": 1
+                        "order": 1,
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                       }
                     }
                   }
@@ -372,10 +390,10 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "name": {
-                        "placeholder": "Name"
+                        "placeholder": "Name, e.g. SLC"
                       },
                       "version": {
-                        "placeholder": "Version"
+                        "placeholder": "Version, e.g. 6"
                       }
                     }
                   }
@@ -388,10 +406,10 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "name": {
-                        "placeholder": "Software Used"
+                        "placeholder": "Name, e.g. CMSSW"
                       },
                       "version": {
-                        "placeholder": "Version"
+                        "placeholder": "Version, e.g. 5_3_x"
                       },
                       "global_tag": {
                         "placeholder": "Tag"
@@ -408,11 +426,11 @@ window.schemaOptions = {
                     "fields": {
                       "url": {
                         "type": "url-harvest",
-                        "placeholder": "URL",
+                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
                         "order": 1
                       },
                       "tag": {
-                        "placeholder": "Tag",
+                        "placeholder": "E.g. v2.1",
                         "order": 2
                       }
                     }
@@ -435,12 +453,14 @@ window.schemaOptions = {
               },
               "keywords": {
                 "type": "tags",
-                "order": 7
+                "order": 7,
+                "placeholder": "E.g. keyword1, keyword2"
               },
               "comments": {
                 "order": 8,
                 "type": "textarea",
-                "rows": 10
+                "rows": 10,
+                "placeholder": ""
               }
             }
           }
@@ -452,18 +472,23 @@ window.schemaOptions = {
         "toolbarSticky": "true",
         "fields": {
           "item": {
-            "CADI_ID": {
-              "order": 1
-            },
-            "url": {
-              "order": 2
-            },
-            "keyword": {
-              "type": "tags",
-              "order": 3
-            },
-            "comment": {
-              "order": 4
+            "fields": {
+              "CADI_ID": {
+                "order": 1,
+                "placeholder": "E.g. CMS-ANA-2012-049"
+              },
+                "url": {
+                "order": 2,
+                "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
+              },
+              "keyword": {
+                "order": 3,
+                "placeholder": "E.g. keyword1"
+              },
+              "comment": {
+                "order": 4,
+                "placeholder": "E.g. Shows more detail concerning this analysis"
+              }
             }
           }
         }
@@ -472,12 +497,26 @@ window.schemaOptions = {
         "type": "depositgroup-array",
         "order": 7,
         "fields": {
+          "item": {
+			"fields": {
+			  "url": {
+				"placeholder": "E.g. https://indico.cern.ch/event/.../discussion-slides.pdf"
+			  }
+			}
+		  }
         }
       },
       "presentations": {
         "type": "depositgroup-array",
         "order": 8,
         "fields": {
+          "item": {
+		    "fields": {
+			  "url": {
+				"placeholder": "E.g. https://indico.cern.ch/event/524974/"
+			  }
+			}
+		  }
         }
       },
       "publications": {
@@ -487,23 +526,40 @@ window.schemaOptions = {
           "item": {
             "fields": {
               "journal_title": {
-                "order": 1
+                "order": 1,
+                "placeholder": "Please enter the journal title"
               },
               "journal_year": {
-                "order": 2
+                "order": 2,
+                "placeholder": "Please enter the journal year"
               },
               "journal_volume": {
-                "order": 3
+                "order": 3,
+                "placeholder": "Please enter the journal volume"
               },
               "journal_issue": {
-                "order": 4
+                "order": 4,
+                "placeholder": "Please enter the journal issue"
               },
               "journal_page": {
-                "order": 5
+                "order": 5,
+                "placeholder": "Please enter the journal page number"
               },
               "persistent_identifiers": {
                 "type": "depositgroup-object-array",
-                "order": 6
+                "order": 6,
+                "fields": {
+				  "item": {
+					"fields": {
+					  "identifier": {
+						"placeholder": "Please enter an issued identifier, e.g. a DUNS number"
+					  },
+						"scheme": {
+						"placeholder": "Please enter an identifier scheme, e.g. DUNS"
+					  }
+					}
+				  }
+				}
               }
             }
           }
@@ -512,7 +568,8 @@ window.schemaOptions = {
       "keywords": {
         "type": "tags",
         "format": "textarea",
-        "order": 10
+        "order": 10,
+        "placeholder": "E.g. keyword1, keyword2"
       }
     }
   };

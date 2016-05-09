@@ -83,7 +83,7 @@ $input_radius: 3px;
 
     .newarray {
       .alpaca-control {
-        width: 100%;
+        width: 75%;
       }
       label+ .alpaca-control {
         width: 75%;
@@ -423,6 +423,10 @@ textarea.alpaca-control {
   }
 }
 
+.radio {
+  float: right;
+}
+
 .alpaca-field-depositgroup-object-quickfill {
   > .depositgroup-object {
     .newarray {
@@ -614,6 +618,8 @@ textarea.alpaca-control {
 
 // CMS JSON Analysis Styling
 
+// destroys the view
+/*
 .depositgroup-array > .newarray {
 
   [data-alpaca-field-name$="_software"],
@@ -703,5 +709,6 @@ textarea.alpaca-control {
     }
   }
 }
+*/
 
 // LHCb JSON Analysis Styling
