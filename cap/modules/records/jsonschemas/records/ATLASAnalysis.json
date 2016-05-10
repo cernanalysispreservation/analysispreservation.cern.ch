@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ATLAS Analysis (JSON schema)",
+  "description": "Schema describing properties of an ATLAS analysis",
+  "properties": {
+    "basic_info": {
+      "title": "Basic Information",
+      "propertyOrder": 10,
+      "type": "object",
+      "id": "basic_info",
+      "properties": {
+        "analysis_number": {
+          "description": "Analysis Description",
+          "title": "Analysis Number",
+          "type": "string"
+        }
+      }
+    },
+    "aod_processing": {
+      "title": "AOD Processing",
+      "description": "Provide AOD Processing information",
+      "type": "object",
+      "id": "aod_processing",
+      "properties": {
+        "primary_datasets": {
+          "title": "Primary Datasets",
+          "description": "Add primary datasets",
+          "type": "array",
+          "id": "primary-datasets",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPrimaryDataset.json",
+            "properties": {
+              "copypaste": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "mc_dataset": {
+          "title": "Monte Carlo Datasets",
+          "description": "Add Monte Carlo datasets",
+          "type": "array",
+          "id": "mc-datasets",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASMonteCarloDataset.json",
+            "defaultProperties": [
+              "title"
+            ]
+          }
+        },
+        "triggers": {
+          "title": "Selection Triggers",
+          "description": "Add triggers here",
+          "type": "array",
+          "items": {
+            "title": "Trigger",
+            "type": "object",
+            "id": "trigger",
+            "properties": {
+              "trigger": {
+                "title": "Trigger",
+                "type": "string"
+              },
+              "other": {
+                "title": "Other",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "run_period": {
+                "title": "Run Period",
+                "type": "object",
+                "properties": {
+                  "start_date": {
+                    "title": "Start Date",
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "end_date": {
+                    "title": "End Date",
+                    "type": "string",
+                    "format": "date"
+                  }
+                }
+              },
+              "efficiency": {
+                "title": "Efficiency",
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      }
+    },
+    "physics_information": {
+      "title": "Physics Information",
+      "description": "Provide information about datasets, triggers, physics objects, etc",
+      "type": "array",
+      "id": "physics-information",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASDetectorState.json"
+      }
+    },
+    "post_aod_processing": {
+      "title": "Post-AOD Processing",
+      "type": "array",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPostAODProcessing.json"
+      }
+    },
+    "documentations": {
+      "title": "Documentations",
+      "description": "Provide documentation and other things",
+      "type": "array",
+      "id": "documentations",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASDocumentation.json"
+      }
+    },
+    "internal_discussions": {
+      "title": "Internal Discussions",
+      "description": "Add Internal Discussions",
+      "type": "array",
+      "id": "internal-discussions",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASInternalDiscussion.json"
+      }
+    },
+    "presentations": {
+      "title": "Presentations",
+      "description": "Add Presentations",
+      "type": "array",
+      "id": "presentations",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPresentation.json"
+      }
+    },
+    "publications": {
+      "title": "Publications",
+      "description": "Add publications or Import from CADI",
+      "type": "array",
+      "id": "publications",
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPublication.json"
+      }
+    },
+    "keywords": {
+      "title": "Keywords",
+      "description": "Add keywords here",
+      "type": "string",
+      "id": "keywords"
+    }
+  },
+  "type": "object"
+}
