@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Primary Dataset",
+  "description": "Information concerning the ATLAS primary dataset used",
+  "type": "object",
+  "properties": {
+    "@type": {
+      "type": "string",
+      "title": "@type",
+      "description": "e.g. dcat:Dataset"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
+      "autocomplete": true,
+      "propertyOrder": 201
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "format": "textarea",
+      "description": "Provide a description for the primary dataset"
+    },
+    "licence": {
+      "type": "string",
+      "title": "Licence",
+      "description": "e.g. CC0 waiver"
+    },
+    "persistent_identifiers": {
+      "title": "Persistent Identifiers",
+      "description": "",
+      "type": "array",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-vtest01.json"
+      }
+    },
+    "software_version": {
+      "title": "Software Version",
+      "type": "string",
+      "description": "Provide the software version that produced the data"
+    },
+    "produced": {
+      "title": "Date Produced",
+      "type": "string",
+      "format": "datetime",
+      "description": "Provide date/time the primary dataset was produced"
+    },
+    "modified": {
+      "title": "Modified",
+      "type": "string",
+      "format": "datetime",
+      "hidden": "true"
+    },
+    "available": {
+      "title": "Year Availble",
+      "type": "number",
+      "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
+    },
+    "run_number": {
+      "title": "Run #",
+      "type": "number",
+      "description": "e.g. 146242"
+    },
+    "dataset_id": {
+      "title": "Dataset ID",
+      "type": "number",
+      "description": "Provide dataset ID e.g. 1853590"
+    },
+    "type": {
+      "title": "Type",
+      "type": "string",
+      "description": "Provide type of item e.g. 'data'"
+    },
+    "numbers": {
+      "title": "Numbers",
+      "description": "Numbers concerning various stuff",
+      "type": "object",
+      "properties": {
+        "nevents": {
+          "title": "Numbers of events",
+          "type": "number"
+        },
+        "integrated_luminosity": {
+          "title": "Integrated Luminosity",
+          "type": "number"
+        },
+        "nfiles": {
+          "title": "Number of files",
+          "type": "number"
+        },
+        "nblocks": {
+          "title": "Number of blocks",
+          "type": "number"
+        },
+        "extend": {
+          "title": "Extend",
+          "type": "number"
+        }
+      }
+    }
+  }
+}
