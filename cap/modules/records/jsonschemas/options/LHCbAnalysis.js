@@ -156,10 +156,10 @@ window.schemaOptions = {
             "type": "depositgroup-object",
             "fields": {
               "data": {
-                "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
               },
               "mc_data": {
-                "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
               }
             }
           }
@@ -180,7 +180,7 @@ window.schemaOptions = {
                     "toolbarSticky": "true",
                     "fields": {
                       "item": {
-                        "placeholder": "Please enter full path to the data, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                       }
                     }
                   },
@@ -189,7 +189,7 @@ window.schemaOptions = {
                     "toolbarSticky": "true",
                     "fields": {
                       "item": {
-                        "placeholder": "Please enter full path to the data, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
                       }
                     }
                   }
@@ -242,10 +242,10 @@ window.schemaOptions = {
                 "type": "depositgroup-object",
                 "fields": {
                   "data": {
-                    "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                   },
                   "mc_data": {
-                    "placeholder": "Please enter the final N Tuples files, e.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
                   }
                 }
               }
