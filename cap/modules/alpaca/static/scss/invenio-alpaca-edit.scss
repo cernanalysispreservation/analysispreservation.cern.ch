@@ -590,6 +590,24 @@ textarea.alpaca-control {
   border-top-right-radius: 3px;
   padding: 5px;
   height: $input_height +5;
+}
+
+.alpaca-field-url-harvest {
+  .url-harvest-container {
+    position: relative;
+
+    input {
+      width: 100%;
+    }
+
+    > .btn {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: $input_height - 6;
+      margin: 3px;
+    }
   }
 }
 
@@ -598,7 +616,6 @@ textarea.alpaca-control {
 
 .depositgroup-array > .newarray {
 
-  [data-alpaca-field-name$="_output_data"],
   [data-alpaca-field-name$="_software"],
   [data-alpaca-field-name$="_os"] {
     .depositgroup-object > .newarray {

@@ -358,13 +358,8 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "url": {
-                        "type": "url",
+                        "type": "url-harvest",
                         "order": 1
-                      },
-                      "harvest": {
-                        "type": "radio",
-                        "optionLabels": ["YES", "NO"],
-                        "order": 2
                       }
                     }
                   }
@@ -412,17 +407,13 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "url": {
+                        "type": "url-harvest",
                         "placeholder": "URL",
                         "order": 1
                       },
                       "tag": {
                         "placeholder": "Tag",
                         "order": 2
-                      },
-                      "harvest": {
-                        "type": "radio",
-                        "optionLabels": ["YES", "NO"],
-                        "order": 3
                       }
                     }
                   }

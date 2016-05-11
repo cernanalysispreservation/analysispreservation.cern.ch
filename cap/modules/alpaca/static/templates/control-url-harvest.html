@@ -1,0 +1,26 @@
+<script type="text/x-handlebars-template">
+    <div class="url-harvest-container">
+        <input type="text" id="{{id}}" {{#if options.placeholder}}placeholder="{{options.placeholder}}"{{/if}} {{#if options.size}}size="{{options.size}}"{{/if}} {{#if options.readonly}}readonly="readonly"{{/if}} {{#if name}}name="{{name}}"{{/if}} {{#each options.data}}data-{{@key}}="{{this}}"{{/each}}/>
+
+
+        <button class="btn fa fa-upload" data-toggle="modal" data-target="#{{{this.name}}}-modal"></button>
+  <!-- Modal -->
+  <div class="modal fade" id="{{{this.name}}}-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+            <h3>Do you want us to try and upload the linked file?</h3>
+            <p>By clicking on "Yes, please harvest" the file linked will be stored in our servers..</p>
+            <strong>Please note this is a DEMO, so files ARE NOT SAVED at the moment</strong>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Yes, please harvest</button>
+        </div>
+       </div>
+    </div>
+  </div>
+    </div>
+
+
+</script>

@@ -23,6 +23,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
       "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
       "container-oneOf": "/static/templates/container-oneOf.html",
+      "control-url-harvest": "/static/templates/control-url-harvest.html",
       "control-tags": "/static/templates/control-tags.html"
     }
   });
@@ -50,6 +51,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
       "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
       "container-oneOf": "/static/templates/container-oneOf.html",
+      "control-url-harvest": "/static/templates/control-url-harvest-display.html",
       "control-tags": "/static/templates/control-tags-display.html"
     }
   });
@@ -137,6 +139,13 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup-object-array", Alpaca.Fields.DepositGroupObjectArrayField);
 
+  $.alpaca.Fields.URLHarvestField = $.alpaca.Fields.URLField.extend({
+    getFieldType: function() {
+      return "url-harvest";
+    }
+  });
+
+  Alpaca.registerFieldClass("url-harvest", Alpaca.Fields.URLHarvestField);
 
   $.alpaca.Fields.TagsField = $.alpaca.Fields.TextField.extend({
     getFieldType: function() {
