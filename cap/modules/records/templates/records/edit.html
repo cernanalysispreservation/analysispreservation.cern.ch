@@ -14,6 +14,7 @@
                     <nav id="record-menu" class="navbar">
                         <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
+                            <li role="presentation"><a href="#files" role="tab" data-toggle="tab">Files</a></li>
                             <li role="presentation"><a href="#json" role="tab" data-toggle="tab">JSON</a></li>
                             <li role="presentation"><a href="#permissions" role="tab" data-toggle="tab">Permissions</a></li>
                         </ul>
@@ -52,6 +53,9 @@
                                   </div>
                                 </div>
                             </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="files">
+                            {% include "cap_theme/files.html" %}
                         </div>
                         <div role="tabpanel" class="tab-pane" id="json">
                             <div id="record-data">

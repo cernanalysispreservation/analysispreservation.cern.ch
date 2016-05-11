@@ -1,0 +1,18 @@
+<div id="record-files" ng-controller="recordsController">
+    {% raw %}
+    {{pid_value = '{%- endraw %}{% if record %}{{record.pid_value}}{% else %}0{% endif %}{%- raw %}';" "}}
+    {{get_record_files();" "}}
+    <ul class="file-list">
+        <header class="files-header centered">
+          <div class="col-sm-6">Filename</div>
+          <div class="col-sm-3">Info</div>
+          <div class="col-sm-3">Status</div>
+        </header>
+        <li class="file-row centered" ng-repeat="file in files">
+          <div class="col-sm-6">{{file.filename}}</div>
+          <div class="col-sm-3"><span class="fa fa-info-circle"></span></div>
+          <div class="col-sm-3"><span class="fa fa-circle {{file.status}}"></span></div>
+        </li>
+    </ul>
+    {% endraw %}
+</div>

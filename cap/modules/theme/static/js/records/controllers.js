@@ -23,6 +23,83 @@ define(['underscore'], function(_) {
             $scope.notification = $scope.notification + '<br />' + update;
           });
         };
+        $scope.get_record_files = function() {
+          // capLocalClient.get_record_permissions(recid )
+          // .then(function(response) {
+          //   $scope.permissions =
+          //   $scope.upd_permissions = response.data.permissions;
+          // }, function(error) {
+          //   $scope.hello = "ERROR";
+          // }, function(update){
+          //   $scope.notification = $scope.notification + '<br />' + update;
+          // });
+
+          var demo_files = {
+            "*": [
+              {
+                "filename": "data1.raw",
+                "status": "success",
+                "field": ""
+              },
+              {
+                "filename": "data2.raw",
+                "status": "warning",
+                "field": ""
+              },
+              {
+                "filename": "data3.raw",
+                "status": "error",
+                "field": ""
+              }
+            ],
+            "1": [
+              {
+                "filename": "file1.file",
+                "status": "success",
+                "field": ""
+              },
+              {
+                "filename": "file2.file",
+                "status": "success",
+                "field": ""
+              }
+            ],
+            "2": [
+              {
+                "filename": "file1222.file",
+                "status": "success",
+                "field": ""
+              },
+              {
+                "filename": "file2.file",
+                "status": "success",
+                "field": ""
+              },
+              {
+                "filename": "file3.file",
+                "status": "success",
+                "field": ""
+              },
+              {
+                "filename": "document.pdf",
+                "status": "error",
+                "field": ""
+              },
+              {
+                "filename": "large_file.raw",
+                "status": "warning",
+                "field": ""
+              },
+            ]
+          };
+
+          if ( $scope.pid_value && demo_files[$scope.pid_value]) {
+            $scope.files = demo_files[$scope.pid_value];
+          }
+          else {
+            $scope.files = demo_files["*"];
+          }
+        };
         $scope.get_record_permissions = function(recid) {
           capLocalClient.get_record_permissions(recid )
           .then(function(response) {

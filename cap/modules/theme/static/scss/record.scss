@@ -63,7 +63,8 @@
 }
 
 #record-fields,
-#record-permissions,    
+#record-permissions,
+#record-files,
 #record-form {
     background-color: #F8FAFC;
     border-bottom: 1px solid #eee;
@@ -104,6 +105,37 @@
     padding: 80px;
     margin: 0 auto;
     text-align: center;
+}
+
+#record-files {
+    header.files-header {
+        padding: 10px 0;
+        border-bottom: 1px solid #EEE;
+        font-size: 14px;
+        display: inline-block;
+        width: 100%;
+        float: left;
+    }
+
+    .centered {
+        text-align:  center;
+    }
+
+    .file-row {
+        display: inline-block;
+        width: 100%;
+        padding: 6px 0;
+
+        .fa-circle.success {
+           color: green;
+        }
+        .fa-circle.warning {
+           color: orange;
+        }
+        .fa-circle.error {
+           color: red;
+        }
+    }
 }
 
 #record-permissions {
