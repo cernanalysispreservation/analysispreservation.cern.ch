@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Multiple Step Scheduler",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": [
+        "multistep-stage"
+      ]
+    },
+    "parameters": {"$ref":"parameterselection.json"},
+    "step": {"$ref":"../../packtivity/packtivity-schema.json"},
+    "workflow": {"$ref":"../workflow-schema.json#"},
+    "scatter": {
+      "type":"object",
+      "additionalProperties": false,
+      "properties":{
+        "parameters":{"type":"array","items":{"type":"string"}},
+        "method":{"type":"string"}
+      }
+    }
+  }
+}
