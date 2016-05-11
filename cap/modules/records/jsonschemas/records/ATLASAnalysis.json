@@ -28,7 +28,7 @@
           "type": "array",
           "id": "primary-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPrimaryDataset.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPrimaryDataset.json",
             "properties": {
               "copypaste": {
                 "type": "string"
@@ -42,7 +42,7 @@
           "type": "array",
           "id": "mc-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASMonteCarloDataset.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASMonteCarloDataset.json",
             "defaultProperties": [
               "title"
             ]
@@ -102,7 +102,7 @@
       "id": "physics-information",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASDetectorState.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-vtest01.json"
       }
     },
     "post_aod_processing": {
@@ -110,7 +110,7 @@
       "type": "array",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPostAODProcessing.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-vtest01.json"
       }
     },
     "documentations": {
@@ -120,7 +120,7 @@
       "id": "documentations",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASDocumentation.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-vtest01.json"
       }
     },
     "internal_discussions": {
@@ -130,7 +130,7 @@
       "id": "internal-discussions",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASInternalDiscussion.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-vtest01.json"
       }
     },
     "presentations": {
@@ -140,7 +140,7 @@
       "id": "presentations",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPresentation.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-vtest01.json"
       }
     },
     "publications": {
@@ -150,7 +150,7 @@
       "id": "publications",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLAS/ATLASPublication.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPublication.json"
       }
     },
     "keywords": {
