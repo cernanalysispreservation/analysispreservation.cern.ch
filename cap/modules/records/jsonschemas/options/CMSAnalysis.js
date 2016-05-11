@@ -443,6 +443,7 @@ window.schemaOptions = {
                 }
               },
               "keywords": {
+                "type": "tags",
                 "order": 7
               },
               "comments": {
@@ -467,6 +468,7 @@ window.schemaOptions = {
               "order": 2
             },
             "keyword": {
+              "type": "tags",
               "order": 3
             },
             "comment": {
@@ -517,6 +519,7 @@ window.schemaOptions = {
         }
       },
       "keywords": {
+        "type": "tags",
         "format": "textarea",
         "order": 10
       }

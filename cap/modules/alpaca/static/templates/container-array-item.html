@@ -1,7 +1,10 @@
 <script type="text/x-handlebars-template">
 
     <div class="newarray">
-        {{#arrayActionbar}}{{/arrayActionbar}}
+        <div class="array-item-header">
+            Item #{{{getIndex}}}
+            {{#arrayActionbar}}{{/arrayActionbar}}
+        </div>
         {{#itemField}}{{/itemField}}
     </div>
 

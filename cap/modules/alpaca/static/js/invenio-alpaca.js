@@ -1,4 +1,4 @@
-define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], function($, alpaca, _){
+define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-tagsinput',], function($, alpaca, _, Handlebars){
 
   Alpaca.registerView({
     "id": "invenio-view",
@@ -22,7 +22,8 @@ define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], f
       "container-array-item": "/static/templates/container-array-item.html",
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
       "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
-      "container-oneOf": "/static/templates/container-oneOf.html"
+      "container-oneOf": "/static/templates/container-oneOf.html",
+      "control-tags": "/static/templates/control-tags.html"
     }
   });
 
@@ -45,11 +46,18 @@ define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], f
       "container-depositgroup-object-quickfill": "/static/templates/container-depositgroup-object-quickfill-display.html",
       "container-depositgroup-array": "/static/templates/container-depositgroup-array.html",
       "container-object-autocomplete-import": "/static/templates/container-object-autocomplete-import-display.html",
-      "container-array-item": "/static/templates/container-array-item.html",
+      "container-array-item": "/static/templates/container-array-item-display.html",
       "control-mlt-choice-cb": "/static/templates/control-mlt-choice-cb.html",
       "control-mlt-choice-radio": "/static/templates/control-mlt-choice-radio.html",
-      "container-oneOf": "/static/templates/container-oneOf.html"
+      "container-oneOf": "/static/templates/container-oneOf.html",
+      "control-tags": "/static/templates/control-tags-display.html"
     }
+  });
+
+  Handlebars.registerHelper("getIndex", function(){
+    var index = this.name.split("_");
+    index = parseInt(index[index.length-1]) + 1;
+    return index;
   });
 
   Alpaca.Extend(Alpaca, {
@@ -128,6 +136,27 @@ define(["jquery", "alpaca","underscore", 'typeahead', 'bootstrap-tagsinput',], f
   });
 
   Alpaca.registerFieldClass("depositgroup-object-array", Alpaca.Fields.DepositGroupObjectArrayField);
+
+
+  $.alpaca.Fields.TagsField = $.alpaca.Fields.TextField.extend({
+    getFieldType: function() {
+      return "tags";
+    },
+    postRender: function(callback) {
+
+        var self = this;
+        window.ppppp = self;
+        this.base(function() {
+            if ((self.view.type !== "display") && self.control) {
+                $(self.control).tagsinput();
+            }
+
+            callback();
+        });
+    }
+  });
+
+  Alpaca.registerFieldClass("tags", Alpaca.Fields.TagsField);
 
   $.alpaca.Fields.DepositGroupObjectQuickfillField = $.alpaca.Fields.ArrayField.extend({
     getFieldType: function() {

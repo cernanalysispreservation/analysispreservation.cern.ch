@@ -360,8 +360,8 @@ $input_radius: 3px;
     button {
       border: 0px none;
       padding: 0px;
-      width: 25px;
-      height: 25px;
+      width: $input_height - 5;
+      height: $input_height - 5;
       background-color: rgb(255, 255, 255);
       float: left;
     }
@@ -464,6 +464,7 @@ textarea.alpaca-control {
       overflow: hidden;
       text-align: left;
       text-overflow: ellipsis;
+      font-size: inherit;
     }
   }
 }
@@ -577,10 +578,21 @@ textarea.alpaca-control {
             width: 75%;
           }
         }
-      }       
-    }  
+      }
+    }
   }
 }
+
+.array-item-header {
+  background-color: #ccc;
+  text-align: center;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  padding: 5px;
+  height: $input_height +5;
+  }
+}
+
 
 // CMS JSON Analysis Styling
 
@@ -601,8 +613,8 @@ textarea.alpaca-control {
         width: 35%;
       }
 
-      .alpaca-control { 
-        width: 100%;
+      .alpaca-control {
+        width: 100%!important;
       }
       .alpaca-control-label {
         display: none;
@@ -634,7 +646,7 @@ textarea.alpaca-control {
       }
 
       .alpaca-control { 
-        width: 100%;
+        width: 100%!important;
       }
       .alpaca-control-label {
         display: none;
@@ -666,7 +678,7 @@ textarea.alpaca-control {
       }
 
       .alpaca-control {
-        width: 100%;
+        width: 100%!important;
       }
       .alpaca-control-label {
         display: none;

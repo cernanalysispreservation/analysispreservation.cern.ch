@@ -363,6 +363,7 @@ window.schemaOptions = {
             "placeholder": "e.g: 1508.06087"
           },
           "keywords": {
+            "type": "tags",
             "placeholder": "Please enter keywords here"
           },
           "egroup": {
