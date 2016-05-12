@@ -120,7 +120,7 @@
       "id": "documentations",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDocumentation.json"
       }
     },
     "internal_discussions": {
@@ -145,7 +145,7 @@
     },
     "publications": {
       "title": "Publications",
-      "description": "Add publications or Import from CADI",
+      "description": "Add publications",
       "type": "array",
       "id": "publications",
       "default": [{}],
