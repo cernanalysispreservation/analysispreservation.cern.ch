@@ -631,10 +631,10 @@ textarea.alpaca-control {
       float: left;
 
       &:after {
-        content: 'Yes';
+        content: 'No';
       }
       &:before {
-        content: 'No';
+        content: 'Yes';
       }
 
       label {
