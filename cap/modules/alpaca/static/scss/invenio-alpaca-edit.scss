@@ -564,7 +564,7 @@ textarea.alpaca-control {
       .alpaca-field-depositgroup-object,
       .alpaca-field-depositgroup-object-array {
         width: 100%;
-        
+
         .newarray {
           background-color: #ccc;
           border-radius: 3px;
@@ -599,6 +599,8 @@ textarea.alpaca-control {
 .alpaca-field-url-harvest {
   .url-harvest-container {
     position: relative;
+    height: 2*$input_height +5;
+    background-color: #ccc;
 
     input {
       width: 100%;
@@ -611,6 +613,40 @@ textarea.alpaca-control {
       right: 0;
       height: $input_height - 6;
       margin: 3px;
+    }
+
+    .url-harvest-checkbox {
+      height: $input_height;
+      margin-top: 5px;
+
+      label {
+        float: left;
+        margin-right: 10px;
+        line-height: $input_height - 5;
+      }
+    }
+
+    .cap-checkbox {
+      width: 90px;
+      float: left;
+
+      &:after {
+        content: 'Yes';
+      }
+      &:before {
+        content: 'No';
+      }
+
+      label {
+        width: 46px
+      }
+
+      input[type=checkbox] {
+
+        &:checked + label {
+          left: 40px;
+        }
+      }
     }
   }
 }

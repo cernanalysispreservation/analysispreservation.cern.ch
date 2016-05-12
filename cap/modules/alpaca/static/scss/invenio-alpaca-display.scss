@@ -304,98 +304,131 @@ textarea.alpaca-control {
   }
 }
 
-// CMS JSON Analysis Styling
 
-.depositgroup-array > .newarray {
+.alpaca-field-url-harvest {
+  .url-harvest-container {
+    position: relative;
+    height: $input_height;
+    background-color: #ccc;
 
-  [data-alpaca-field-name$="_output_data"],
-  [data-alpaca-field-name$="_software"],
-  [data-alpaca-field-name$="_os"] {
-    .depositgroup-object > .newarray {
-
-      .alpaca-container-item-first {
-        width: 65%;
-        float: left;
-      }
-
-      .alpaca-container-item-last {
-        float: left;
-        width: 35%;
-      }
-
-      .alpaca-control { 
-        width: 100%;
-      }
-      .alpaca-control-label {
-        display: none;
-      }
+    input {
+      width: 100%;
     }
-  }
 
-  [data-alpaca-field-name$="_final_state_particles"]{
-    .depositgroup-object > .newarray {
-
-      .alpaca-container-item:first-child {
-        width: 40%;
-        float: left;
-      }
-
-      .alpaca-container-item:nth-child(2) {
-        float: left;
-        width: 20%;
-      }
-
-      .alpaca-container-item:nth-child(3) {
-        float: left;
-        width: 20%;
-      }
-
-      .alpaca-container-item:nth-child(4) {
-        float: left;
-        width: 20%;
-      }
-
-      .alpaca-control { 
-        width: 100%;
-      }
-      .alpaca-control-label {
-        display: none;
-      }
+    > span {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: $input_height - 10;
+      line-height: $input_height - 10;
+      margin: 5px;
     }
-  }
 
-
-  [data-alpaca-field-name$="_user_code"],
-  [data-alpaca-field-name$="_software"]{
-    .depositgroup-object > .newarray {
-      input {
-        width: 100%;
-      }
-      
-      .alpaca-container-item:first-child {
-        width: 70%;
-        float: left;
-      }
-
-      .alpaca-container-item:nth-child(2) {
-        float: left;
-        width: 15%;
-      }
-
-      .alpaca-container-item:nth-child(3) {
-        float: left;
-        width: 15%;
-      }
-
-      .alpaca-control { 
-        width: 100%;
-      }
-      .alpaca-control-label {
-        display: none;
-      }
+    .fa-circle.success {
+       color: green;
+    }
+    .fa-circle.warning {
+       color: orange;
+    }
+    .fa-circle.error {
+       color: red;
     }
   }
 }
+
+// CMS JSON Analysis Styling
+
+// .depositgroup-array > .newarray {
+
+//   [data-alpaca-field-name$="_output_data"],
+//   [data-alpaca-field-name$="_software"],
+//   [data-alpaca-field-name$="_os"] {
+//     .depositgroup-object > .newarray {
+
+//       .alpaca-container-item-first {
+//         width: 65%;
+//         float: left;
+//       }
+
+//       .alpaca-container-item-last {
+//         float: left;
+//         width: 35%;
+//       }
+
+//       .alpaca-control { 
+//         width: 100%;
+//       }
+//       .alpaca-control-label {
+//         display: none;
+//       }
+//     }
+//   }
+
+//   [data-alpaca-field-name$="_final_state_particles"]{
+//     .depositgroup-object > .newarray {
+
+//       .alpaca-container-item:first-child {
+//         width: 40%;
+//         float: left;
+//       }
+
+//       .alpaca-container-item:nth-child(2) {
+//         float: left;
+//         width: 20%;
+//       }
+
+//       .alpaca-container-item:nth-child(3) {
+//         float: left;
+//         width: 20%;
+//       }
+
+//       .alpaca-container-item:nth-child(4) {
+//         float: left;
+//         width: 20%;
+//       }
+
+//       .alpaca-control { 
+//         width: 100%;
+//       }
+//       .alpaca-control-label {
+//         display: none;
+//       }
+//     }
+//   }
+
+
+//   [data-alpaca-field-name$="_user_code"],
+//   [data-alpaca-field-name$="_software"]{
+//     .depositgroup-object > .newarray {
+//       input {
+//         width: 100%;
+//       }
+      
+//       .alpaca-container-item:first-child {
+//         width: 70%;
+//         float: left;
+//       }
+
+//       .alpaca-container-item:nth-child(2) {
+//         float: left;
+//         width: 15%;
+//       }
+
+//       .alpaca-container-item:nth-child(3) {
+//         float: left;
+//         width: 15%;
+//       }
+
+//       .alpaca-control { 
+//         width: 100%;
+//       }
+//       .alpaca-control-label {
+//         display: none;
+//       }
+//     }
+//   }
+// }
 
 
 

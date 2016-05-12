@@ -1,6 +1,9 @@
 <script type="text/x-handlebars-template">
     <div class="url-harvest-container">
-        <input type="text" id="{{id}}" {{#if options.placeholder}}placeholder="{{options.placeholder}}"{{/if}} {{#if options.size}}size="{{options.size}}"{{/if}} {{#if options.readonly}}readonly="readonly"{{/if}} {{#if name}}name="{{name}}"{{/if}} {{#each options.data}}data-{{@key}}="{{this}}"{{/each}}/>
+        <div class="alpaca-control-url-anchor-wrapper">
+            <div>{{{data}}}</div>
+        </div>
 
+        <span class="fa fa-circle warning"></span>
     </div>
 </script>

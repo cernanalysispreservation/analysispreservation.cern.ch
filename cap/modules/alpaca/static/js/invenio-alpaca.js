@@ -142,6 +142,24 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
   $.alpaca.Fields.URLHarvestField = $.alpaca.Fields.URLField.extend({
     getFieldType: function() {
       return "url-harvest";
+    },
+    getControlValue: function() {
+        var self = this;
+
+        var value = self.control.find("input[type='text']").val();
+
+        // if (self.control.mask && self.options.maskString)
+        // {
+        //     // get unmasked value
+        //     var fn = $(this.control).data($.mask.dataName);
+        //     if (fn)
+        //     {
+        //         value = fn();
+        //         value = self.ensureProperType(value);
+        //     }
+        // }
+
+        return value;
     }
   });
 
