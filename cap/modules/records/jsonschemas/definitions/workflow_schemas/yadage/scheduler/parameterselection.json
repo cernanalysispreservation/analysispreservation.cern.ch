@@ -6,6 +6,7 @@
     "^[A-Za-z0-9_]*$":{
       "oneOf":[
         {"type":"string"},
+        {"type":"array"},
         {"type":"number"},
         {
           "type":"object",
