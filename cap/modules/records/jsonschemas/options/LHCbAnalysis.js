@@ -62,12 +62,28 @@ window.schemaOptions = {
 						"placeholder": "E.g. 2015"
                       },
                       "reconstruction_software": {
-                        "order": 2,
-						"placeholder": "E.g. Brunel Reco 13"
+						"order": 2,
+						"type": "depositgroup-object",
+						"fields": {
+						  "reconstruction_software_name": {
+                            "placeholder": "E.g. Brunel Reco"
+						  },
+						   "reconstruction_software_version": {
+                            "placeholder": "E.g. 13"
+						  }
+                        }
                       },
                       "stripping_software": {
-                        "order": 3,
-                        "placeholder": "E.g. DaVinciStripping 17"
+						"order": 3,
+						"type": "depositgroup-object",
+						"fields": {
+						  "stripping_software_name": {
+                            "placeholder": "E.g. DaVinciStripping"
+						  },
+						   "stripping_software_version": {
+                            "placeholder": "E.g. 17"
+						  }
+                        }
                       },
                       "location": {
                         "order": 1,
@@ -92,12 +108,28 @@ window.schemaOptions = {
                         "placeholder": "E.g. MC Gen"
                       },
                       "reconstruction_software": {
-                        "order": 4,
-                        "placeholder": "E.g. MC Reco 11"
+						"order": 4,
+						"type": "depositgroup-object",
+						"fields": {
+						  "reconstruction_software_name": {
+                            "placeholder": "E.g. MC Reco"
+						  },
+						   "reconstruction_software_version": {
+                            "placeholder": "E.g. 11"
+						  }
+                        }
                       },
                       "stripping_software": {
-                        "order": 5,
-                        "placeholder": "E.g. MC Strip 16"
+						"order": 5,
+						"type": "depositgroup-object",
+						"fields": {
+						  "stripping_software_name": {
+                            "placeholder": "E.g. MC Strip"
+						  },
+						   "stripping_software_version": {
+                            "placeholder": "E.g. 16"
+						  }
+                        }
                       },
                       "location": {
                         "order": 1,
