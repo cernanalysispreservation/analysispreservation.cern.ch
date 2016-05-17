@@ -51,12 +51,32 @@
                     "type": "string"
                   },
                   "reconstruction_software": {
-                    "title": "Reconstruction software",
-                    "type": "string"
+					"title": "Reconstruction software",
+					"type": "object",
+					"properties": {
+					  "reconstruction_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "reconstruction_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
                   },
                   "stripping_software": {
-                    "title": "Stripping software",
-                    "type": "string"
+					"title": "Stripping software",
+					"type": "object",
+					"properties": {
+					  "stripping_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "stripping_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
                   },
                   "location": {
                     "title": "Location",
@@ -80,12 +100,32 @@
                     "type": "string"
                   },
                   "reconstruction_software": {
-                    "title": "Reconstruction software",
-                    "type": "string"
+					"title": "Reconstruction software",
+					"type": "object",
+					"properties": {
+					  "reconstruction_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "reconstruction_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
                   },
                   "stripping_software": {
-                    "title": "Stripping software",
-                    "type": "string"
+					"title": "Stripping software",
+					"type": "object",
+					"properties": {
+					  "stripping_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "stripping_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
                   },
                   "location": {
                     "title": "Location",
