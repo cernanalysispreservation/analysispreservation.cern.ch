@@ -1,3 +1,12 @@
+var cms_triggers = {};
+var datasource_triggerRunPeriod = function(callback){
+  $.get("/static/jsonschemas/fields/cms_triggers.json", function(data){
+    cms_triggers = data;
+    var result = Object.keys(data);
+    callback(result);
+  });
+};
+
 window.schemaOptions = {
     "fields": {
       "basic_info": {
@@ -226,24 +235,39 @@ window.schemaOptions = {
               "item": {
                 "fields": {
                   "trigger": {
-                    "order": 1,
+                    "order": 3,
+                    "noneLabel": "Trigger",
                     "type": "select2",
-                    "select2": true,
-                    "dataSource": "/records/jsonschemas/fields/triggerSelection.json"
+                    "select2": true
                   },
-                  "other": {
+                  "element": {
                     "order": 2,
-                    "placeholder": "E.g. HLT_IsoMu17_eta2p1_v"
+                    "noneLabel": "Element",
+                    "type": "select2",
+                    "select2": true
                   },
                   "run_period": {
-                    "hidden": true
-                  },
-                  "efficiency": {
-                    "hidden": true
-                  },
-                  "name": {
-                    "hidden": true
+                    "order": 1,
+                    "type": "select2",
+                    "noneLabel": "Year",
+                    "select2": true,
+                    "dataSource": datasource_triggerRunPeriod
                   }
+                },
+                "postRender": function(callback){
+                  var triggerYear = this.childrenByPropertyId["run_period"];
+                  var triggerElement = this.childrenByPropertyId["element"];
+                  var triggerTrigger = this.childrenByPropertyId["trigger"];
+                  triggerTrigger.subscribe(triggerElement, function(element){
+                    var year = triggerYear.getValue();
+                    this.schema.enum = this.options.optionLabels = cms_triggers[year][element];
+                    this.refresh();
+                  });
+                  triggerElement.subscribe(triggerYear, function(year){
+                    this.schema.enum = this.options.optionLabels = Object.keys(cms_triggers[year]);
+                    this.refresh();
+                  });
+                  callback();
                 }
               }
             }
@@ -300,15 +324,15 @@ window.schemaOptions = {
                 "fields": {
                   "item": {
                     "fields": {
-					  "eta": {
-						"placeholder": "E.g. ECAL"
-					  },
-					  "pT": {
-						"placeholder": "E.g. > 20 Gev"
-					  }
-					}
-				  }
-				}
+                      "eta": {
+                        "placeholder": "E.g. ECAL"
+                      },
+                      "pT": {
+                        "placeholder": "E.g. > 20 Gev"
+                      }
+                    }
+				          }
+				        }
               },
               "veto": {
                 "order": 4,
@@ -573,3 +597,9 @@ window.schemaOptions = {
       }
     }
   };
+
+// window.schemaPostRender = function(control) {
+//   var triggerYear = control.childrenByPropertyId["run_period"];
+//   var triggerElement = control.childrenByPropertyId["run_period"];
+//   window.bb = control;
+// };

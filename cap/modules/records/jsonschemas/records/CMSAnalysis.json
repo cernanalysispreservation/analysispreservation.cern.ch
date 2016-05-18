@@ -59,36 +59,25 @@
             "properties": {
               "trigger": {
                 "title": "Trigger",
-                "type": "string"
-              },
-              "other": {
-                "title": "Other",
-                "type": "string"
-              },
-              "name": {
-                "title": "Name",
-                "type": "string"
+                "type": "string",
+                "enum": [],
+                "dependencies": [
+                  "run_period",
+                  "element"
+                ]
               },
               "run_period": {
                 "title": "Run Period",
-                "type": "object",
-                "properties": {
-                  "start_date": {
-                    "title": "Start Date",
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "end_date": {
-                    "title": "End Date",
-                    "type": "string",
-                    "format": "date"
-                  }
-                }
-              },
-              "efficiency": {
-                "title": "Efficiency",
                 "type": "string",
-                "format": "uri"
+                "enum": []
+              },
+              "element": {
+                "title": "Element",
+                "type": "string",
+                "enum": [],
+                "dependencies": [
+                  "run_period"
+                ]
               }
             }
           }

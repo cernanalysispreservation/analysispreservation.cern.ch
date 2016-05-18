@@ -747,4 +747,23 @@ textarea.alpaca-control {
 }
 */
 
+[data-alpaca-field-name$="aod_processing_triggers"]{
+  .depositgroup-object > .newarray {
+
+    .alpaca-container-item {
+      width: 33.3333%;
+      float: left;
+    }
+
+    .alpaca-field-select2 span.select2 {
+      width: 100%!important;
+    }
+
+    .alpaca-control-label {
+      display: none;
+    }
+  }
+}
+
+
 // LHCb JSON Analysis Styling

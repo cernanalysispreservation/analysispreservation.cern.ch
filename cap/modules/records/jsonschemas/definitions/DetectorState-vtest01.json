@@ -7,7 +7,6 @@
     "final_state_particles": {
       "title": "Final State Particles",
       "type": "array",
-      "default": [{}],
       "items": {
         "type": "object",
         "properties": {
@@ -26,10 +25,9 @@
           },
           "era_cut": {
             "title": "ETA",
-            "type": "string"            
+            "type": "string"
           }
-        }  
-      }
+        }      }
     },
     "cuts": {
       "title": "Cuts",
@@ -54,7 +52,6 @@
       "title": "Vetos",
       "description": "Provide vetos",
       "type": "array",
-      "default": [{}],
       "items": {
         "type": "object",
         "properties": {
@@ -73,9 +70,9 @@
           },
           "era_cut": {
             "title": "ETA",
-            "type": "string"            
+            "type": "string"
           }
-        }  
+        }
       }
     }
   }
