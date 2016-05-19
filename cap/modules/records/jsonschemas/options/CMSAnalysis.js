@@ -437,24 +437,33 @@ window.schemaOptions = {
                 "fields": {
                   "item": {
                     "fields": {
-                      "particle": {
-                        "placeholder": "Particle",
-                        "noneLabel": "Select Particle",
+                      "object": {
+                        "placeholder": "Object",
+                        "noneLabel": "Select Object",
                         "type": "select2",
                         "select2": true,
                         "order": 1
                       },
+                      "jet_type": {
+                        "noneLabel": "Select Jet",
+                        "type": "select2",
+                        "select2": true,
+                        "order": 2,
+                        "dependencies": {
+                          "object": "jet"
+                        }
+                      },
                       "number": {
                         "placeholder": "Number, e.g. 1",
-                        "order": 2
+                        "order": 3
                       },
                       "pt_cut": {
                         "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "order": 3
+                        "order": 4
                       },
                       "era_cut": {
                         "placeholder": "ETA Cut, e.g. < 2.1",
-                        "order": 4
+                        "order": 5
                       }
                     }
                   }

@@ -10,10 +10,28 @@
       "items": {
         "type": "object",
         "properties": {
-          "particle": {
-            "title": "Particle",
+          "object": {
+            "title": "Object",
             "type": "string",
-            "enum": ["electron", "muon", "bjet"]
+            "enum": [
+              "electron",
+              "muon",
+              "tau",
+              "jet",
+              "bjet",
+              "photon"
+            ]
+          },
+          "jet_type": {
+            "type": "string",
+            "title": "Jet type",
+            "enum": [
+              "AK4",
+              "AK8"
+            ],
+            "dependencies": [
+              "object"
+            ]
           },
           "number": {
             "title": "Number",
