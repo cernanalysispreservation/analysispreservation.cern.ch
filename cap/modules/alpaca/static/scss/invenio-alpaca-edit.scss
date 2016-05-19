@@ -747,6 +747,16 @@ textarea.alpaca-control {
 }
 */
 
+[data-alpaca-field-name$="sel_criteria"]{
+  .alpaca-control {
+    float: left;
+    width: auto!important;
+    margin: 0;
+    margin-right: 20px;
+    border: 0;
+    line-height: $input_height+5;
+  }
+}
 [data-alpaca-field-name$="aod_processing_triggers"]{
   .depositgroup-object > .newarray {
 

@@ -33,6 +33,11 @@
               "object"
             ]
           },
+          "sel_criteria": {
+            "type": "string",
+            "title": "Selection Criteria",
+            "enum": ["tight", "loose"]
+          },
           "number": {
             "title": "Number",
             "type": "integer"
@@ -45,7 +50,8 @@
             "title": "ETA",
             "type": "string"
           }
-        }      }
+        }
+      }
     },
     "cuts": {
       "title": "Cuts",

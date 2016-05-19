@@ -453,6 +453,16 @@ window.schemaOptions = {
                           "object": "jet"
                         }
                       },
+                      "sel_criteria": {
+                        "placeholder": "Selection Criteria",
+                        "type": "radio",
+                        "removeDefaultNone": true,
+                        "optionLabels": [
+                          "Tight",
+                          "Loose"
+                        ],
+                        "order": 6
+                      },
                       "number": {
                         "placeholder": "Number, e.g. 1",
                         "order": 3
