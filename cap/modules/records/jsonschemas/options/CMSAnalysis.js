@@ -15,7 +15,14 @@ window.schemaOptions = {
         "type": "depositgroup",
         "fields": {
           "analysis_number": {
+            "order": 1,
             "placeholder": "Please provide CADI analysis number to connect, e.g. CMS-ANA-2012-049"
+          },
+          "abstract": {
+            "order": 2,
+            "type": "textarea",
+            "rows": 5,
+            "placeholder": "Please provide a short abstract/conclusion for the analysis."
           }
         }
       },
@@ -271,7 +278,149 @@ window.schemaOptions = {
                 }
               }
             }
-          }
+          },
+          "event_selection": {
+			"order": 4,
+			"type": "depositgroup-object",
+			"fields": {
+			  "event_filter": {
+                "placeholder": "Event Filter",
+                "noneLabel": "Select Event Filter",
+                "type": "select2",
+                "select2": true,
+                "order": 1
+			  },
+			  "reference": {
+				"order": 2,
+			    "placeholder": ""
+			  }
+			}
+		  },
+		  "mc_signal_selection": {
+			"order": 5,
+			"type": "depositgroup-object",
+			"fields": {
+			  "signal": {
+                "order": 1,
+			    "placeholder": ""
+			  },
+			  "bin": {
+                "order": 2,
+				"type": "depositgroup-object",
+				"fields": {
+				  "pt_hat": {
+					"order": 1,
+					"placeholder": ""
+				  },
+				  "num_events": {
+					"order": 2,
+					"placeholder": ""
+				  }
+				}
+			  },
+			  "generator_tune": {
+				"order": 3,
+				"type": "depositgroup-object",
+				"fields": {
+				  "generator": {
+					"order": 1,
+					"placeholder": "Generator",
+					"noneLabel": "Select Generator",
+					"type": "select2",
+					"select2": true
+				  },
+				  "tune": {
+					"order": 2,
+					"placeholder": "Tune",
+					"noneLabel": "Select Tune",
+					"type": "select2",
+					"select2": true
+				  }
+				}
+			  },
+			  "pT": {
+                "order": 4,
+			    "placeholder": ""
+			  },
+			  "rapidity": {
+                "order": 5,
+				"type": "radio",
+				"vertical": "false",
+				"removeDefaultNone": "true"
+			  },
+			  "decay_channel": {
+                "order": 6,
+			    "placeholder": ""
+			  },
+			  "decay_engine": {
+                "order": 7,
+                "placeholder": "Decay Engine",
+                "noneLabel": "Select Decay Engine",
+                "type": "select2",
+                "select2": true
+			  },
+			  "additional_info": {
+                "order": 8,
+			    "placeholder": ""
+			  }
+			}
+		  },
+		  "background": {
+            "order": 6,
+	        "title": "Background",
+	        "type": "depositgroup-object",
+	        "fields": {
+			  "generator_tune": {
+				"order": 1,
+				"type": "depositgroup-object",
+				"fields": {
+				  "generator": {
+					"order": 1,
+					"placeholder": "Generator",
+					"noneLabel": "Select Generator",
+					"type": "select2",
+					"select2": true
+				  },
+				  "tune": {
+					"order": 2,
+					"placeholder": "Tune",
+					"noneLabel": "Select Tune",
+					"type": "select2",
+					"select2": true
+				  }
+				}
+			  },
+			  "collision_species": {
+                "order": 2,
+                "placeholder": "Collision Species",
+                "noneLabel": "Select Collision Species",
+                "type": "select2",
+                "select2": true
+			  },
+			  "collision_energy": {
+                "order": 3,
+			    "placeholder": ""
+			  },
+			  "bin": {
+                "order": 4,
+				"type": "depositgroup-object",
+				"fields": {
+				  "pt_hat": {
+					"order": 1,
+					"placeholder": ""
+				  },
+				  "num_events": {
+					"order": 2,
+					"placeholder": ""
+				  }
+				}
+			  },
+			  "additional_info": {
+                "order": 5,
+			    "placeholder": ""
+			  }
+		    }
+		  }
         }
       },
       "physics_information": {
