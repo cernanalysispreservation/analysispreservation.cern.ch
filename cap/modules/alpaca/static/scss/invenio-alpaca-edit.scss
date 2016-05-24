@@ -104,6 +104,13 @@ $input_radius: 3px;
     .alpaca-container:not(.depositgroup-object) {
       width: 100%;
     }
+
+    .alpaca-field-object-autocomplete-import label {
+      width: 25%!important;
+    }
+    .alpaca-container.autocomplete-import {
+      width: 75%;
+    }
     > .alpaca-field > .alpaca-control {
       width: 100%;
     }
@@ -195,6 +202,17 @@ $input_radius: 3px;
 
 .alpaca-field-object-autocomplete-import {
   float: left;
+}
+
+label + .autocomplete-import {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+
+  .autocomplete-import-container {
+    width: 100%;
+    padding: 0 5px;
+  }
 }
 
 .autocomplete-import {
@@ -535,6 +553,12 @@ textarea.alpaca-control {
 
   .alpaca-container-item {
     width: 100%;
+  }
+
+  .depositgroup-object-fields {
+    background-color: #ccc;
+
+    
   }
 }
 

@@ -305,6 +305,37 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
             }
           }
         }
+
+        var ac_input = self.field;
+        ac_input = $(ac_input).find(".autocomplete-input-field");
+        if(self.parent && self.parent.options && self.parent.options.ac_input_value) {
+
+          if(self.options.typeahead.importSource) {
+            var importSource = self.options.typeahead.importSource;
+
+            if(importSource.type == "origin"){
+              var url = window.location.origin+importSource.source;
+            }
+            else if (importSource.type == "remote"){
+              var url = importSource.source;
+            }
+            if(url) {
+              var importSourceData = importSource.data;
+              var params = {};
+              //_.each(importSourceData, function(param){
+              params[importSourceData] = self.parent.options.ac_input_value;
+              //});
+              $.getJSON(url, params, function( data ){
+                var fillInData = {};
+                if(self.options.typeahead.correlation){
+                  var importData = recreateImportData(self.options.typeahead.correlation, data);
+                  self.setValue(importData);
+                }
+              });
+            }
+          }
+          ac_input.val(self.parent.options.ac_input_value);
+        }
         callback();
       });
     },
