@@ -28,7 +28,7 @@ window.schemaOptions = {
       },
       "aod_processing": {
         "type": "depositgroup",
-        "order": 2,
+        "order": 3,
         "label": false,
         "fields": {
           "primary_datasets": {
@@ -338,153 +338,11 @@ window.schemaOptions = {
                 }
               }
             }
-          },
-          "event_selection": {
-            "order": 4,
-            "type": "depositgroup-object",
-            "fields": {
-              "event_filter": {
-                "placeholder": "Event Filter",
-                "noneLabel": "Select Event Filter",
-                "type": "select2",
-                "select2": true,
-                "order": 1
-              },
-              "reference": {
-                "order": 2,
-                "placeholder": ""
-              }
-            }
-          },
-          "mc_signal_selection": {
-            "order": 5,
-            "type": "depositgroup-object",
-            "fields": {
-              "signal": {
-                "order": 1,
-                "placeholder": ""
-              },
-              "bin": {
-                "order": 2,
-                "type": "depositgroup-object",
-                "fields": {
-                  "pt_hat": {
-                    "order": 1,
-                    "placeholder": ""
-                  },
-                  "num_events": {
-                    "order": 2,
-                    "placeholder": ""
-                  }
-                }
-              },
-              "generator_tune": {
-                "order": 3,
-                "type": "depositgroup-object",
-                "fields": {
-                  "generator": {
-                    "order": 1,
-                    "placeholder": "Generator",
-                    "noneLabel": "Select Generator",
-                    "type": "select2",
-                    "select2": true
-                  },
-                  "tune": {
-                    "order": 2,
-                    "placeholder": "Tune",
-                    "noneLabel": "Select Tune",
-                    "type": "select2",
-                    "select2": true
-                  }
-                }
-              },
-              "pT": {
-                "order": 4,
-                "placeholder": ""
-              },
-              "rapidity": {
-                "order": 5,
-                "type": "radio",
-                "vertical": "false",
-                "removeDefaultNone": "true"
-              },
-              "decay_channel": {
-                "order": 6,
-                "placeholder": ""
-              },
-              "decay_engine": {
-                "order": 7,
-                "placeholder": "Decay Engine",
-                "noneLabel": "Select Decay Engine",
-                "type": "select2",
-                "select2": true
-              },
-              "additional_info": {
-                "order": 8,
-                "placeholder": ""
-              }
-            }
-          },
-          "background": {
-            "order": 6,
-            "title": "Background",
-            "type": "depositgroup-object",
-            "fields": {
-              "generator_tune": {
-                "order": 1,
-                "type": "depositgroup-object",
-                "fields": {
-                  "generator": {
-                    "order": 1,
-                    "placeholder": "Generator",
-                    "noneLabel": "Select Generator",
-                    "type": "select2",
-                    "select2": true
-                  },
-                  "tune": {
-                    "order": 2,
-                    "placeholder": "Tune",
-                    "noneLabel": "Select Tune",
-                    "type": "select2",
-                    "select2": true
-                  }
-                }
-              },
-              "collision_species": {
-                "order": 2,
-                "placeholder": "Collision Species",
-                "noneLabel": "Select Collision Species",
-                "type": "select2",
-                "select2": true
-              },
-              "collision_energy": {
-                "order": 3,
-                "placeholder": ""
-              },
-              "bin": {
-                "order": 4,
-                "type": "depositgroup-object",
-                "fields": {
-                  "pt_hat": {
-                    "order": 1,
-                    "placeholder": ""
-                  },
-                  "num_events": {
-                    "order": 2,
-                    "placeholder": ""
-                  }
-                }
-              },
-              "additional_info": {
-                "order": 5,
-                "placeholder": ""
-              }
-            }
           }
         }
       },
       "physics_information": {
-        "order": 4,
+        "order": 2,
         "toolbarSticky": "true",
         "type": "depositgroup-array",
         "fields": {
@@ -521,46 +379,64 @@ window.schemaOptions = {
                           "Tight",
                           "Loose"
                         ],
-                        "order": 6
+                        "order": 4
                       },
                       "number": {
                         "placeholder": "Number, e.g. 1",
-                        "order": 3
+                        "order": 3,
+                        "type": "depositgroup-object",
+                        "fields": {
+                          "sign": {
+                            "order": 1,
+                            "type": "select2",
+                            "removeDefaultNone": "true"
+                          },
+                          "number": {
+                            "order": 2
+                          }
+                        }
                       },
                       "pt_cut": {
                         "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "order": 4
+                        "type": "depositgroup-object-array",
+                        "order": 5,
+                        "fields": {
+                          "item": {
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 2
+                              }
+                            }
+                          }
+                        }
                       },
                       "era_cut": {
                         "placeholder": "ETA Cut, e.g. < 2.1",
-                        "order": 5
+                        "type": "depositgroup-object-array",
+                        "order": 6,
+                        "fields": {
+                          "item": {
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 2
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
                 }
-              },
-              // currently not included in json
-              /*
-              "physics_object": {
-                "order": 2,
-                "type": "depositgroup-object-array"
-              },*/
-              "cuts": {
-                "order": 3,
-                "type": "depositgroup-object-array",
-                "minItems": 1,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "eta": {
-                        "placeholder": "E.g. ECAL"
-                      },
-                      "pT": {
-                        "placeholder": "E.g. > 20 Gev"
-                      }
-                    }
-				          }
-				        }
               },
               "veto": {
                 "order": 4,
@@ -589,6 +465,148 @@ window.schemaOptions = {
                         "order": 4
                       }
                     }
+                  }
+                }
+              },
+              "event_selection": {
+                "order": 5,
+                "type": "depositgroup-object",
+                "fields": {
+                  "event_filter": {
+                    "placeholder": "Event Filter",
+                    "noneLabel": "Select Event Filter",
+                    "type": "select2",
+                    "select2": true,
+                    "order": 1
+                  },
+                  "reference": {
+                    "order": 2,
+                    "placeholder": ""
+                  }
+                }
+              },
+              "mc_signal_selection": {
+                "order": 6,
+                "type": "depositgroup-object",
+                "fields": {
+                  "signal": {
+                    "order": 1,
+                    "placeholder": ""
+                  },
+                  "bin": {
+                    "order": 2,
+                    "type": "depositgroup-object",
+                    "fields": {
+                      "pt_hat": {
+                        "order": 1,
+                        "placeholder": ""
+                      },
+                      "num_events": {
+                        "order": 2,
+                        "placeholder": ""
+                      }
+                    }
+                  },
+                  "generator_tune": {
+                    "order": 3,
+                    "type": "depositgroup-object",
+                    "fields": {
+                      "generator": {
+                        "order": 1,
+                        "placeholder": "Generator",
+                        "noneLabel": "Select Generator",
+                        "type": "select2",
+                        "select2": true
+                      },
+                      "tune": {
+                        "order": 2,
+                        "placeholder": "Tune",
+                        "noneLabel": "Select Tune",
+                        "type": "select2",
+                        "select2": true
+                      }
+                    }
+                  },
+                  "pT": {
+                    "order": 4,
+                    "placeholder": ""
+                  },
+                  "rapidity": {
+                    "order": 5,
+                    "type": "radio",
+                    "vertical": "false",
+                    "removeDefaultNone": "true"
+                  },
+                  "decay_channel": {
+                    "order": 6,
+                    "placeholder": ""
+                  },
+                  "decay_engine": {
+                    "order": 7,
+                    "placeholder": "Decay Engine",
+                    "noneLabel": "Select Decay Engine",
+                    "type": "select2",
+                    "select2": true
+                  },
+                  "additional_info": {
+                    "order": 8,
+                    "placeholder": ""
+                  }
+                }
+              },
+              "background": {
+                "order": 7,
+                "title": "Background",
+                "type": "depositgroup-object",
+                "fields": {
+                  "generator_tune": {
+                    "order": 1,
+                    "type": "depositgroup-object",
+                    "fields": {
+                      "generator": {
+                        "order": 1,
+                        "placeholder": "Generator",
+                        "noneLabel": "Select Generator",
+                        "type": "select2",
+                        "select2": true
+                      },
+                      "tune": {
+                        "order": 2,
+                        "placeholder": "Tune",
+                        "noneLabel": "Select Tune",
+                        "type": "select2",
+                        "select2": true
+                      }
+                    }
+                  },
+                  "collision_species": {
+                    "order": 2,
+                    "placeholder": "Collision Species",
+                    "noneLabel": "Select Collision Species",
+                    "type": "select2",
+                    "select2": true
+                  },
+                  "collision_energy": {
+                    "order": 3,
+                    "placeholder": ""
+                  },
+                  "bin": {
+                    "order": 4,
+                    "type": "depositgroup-object",
+                    "fields": {
+                      "pt_hat": {
+                        "order": 1,
+                        "placeholder": ""
+                      },
+                      "num_events": {
+                        "order": 2,
+                        "placeholder": ""
+                      }
+                    }
+                  },
+                  "additional_info": {
+                    "order": 5,
+                    "placeholder": ""
                   }
                 }
               }
@@ -750,12 +768,12 @@ window.schemaOptions = {
         "order": 7,
         "fields": {
           "item": {
-			"fields": {
-			  "url": {
-				"placeholder": "E.g. https://indico.cern.ch/event/.../discussion-slides.pdf"
-			  }
-			}
-		  }
+      			"fields": {
+      			  "url": {
+      				"placeholder": "E.g. https://indico.cern.ch/event/.../discussion-slides.pdf"
+      			  }
+      			}
+		      }
         }
       },
       "presentations": {
