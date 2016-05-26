@@ -46,6 +46,29 @@ RECORDS_UI_ENDPOINTS = dict(
 
 EMAIL_REGEX = '[^@]+@[^@]+\.[^@]+'
 
+CAP_COLLAB_EGROUPS = dict(
+    CMS=dict(
+        collaboration_cms=[
+            "cms-members"
+        ]
+    ),
+    ALICE=dict(
+        collaboration_alice=[
+            "alice-member"
+        ]
+    ),
+    ATLAS=dict(
+        collaboration_atlas=[
+            "atlas-active-members-all"
+        ]
+    ),
+    LHCb=dict(
+        collaboration_lhcb=[
+            "lhcb-general"
+        ]
+    )
+)
+
 RECORDS_REST_ENDPOINTS = dict(
     recid=dict(
         pid_type='recid',

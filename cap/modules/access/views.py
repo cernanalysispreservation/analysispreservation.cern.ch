@@ -68,12 +68,13 @@ def oauth_response(remote, token=None, response=None, account_setup=None):
 
 def get_egroups_roles_relations():
     # Dictionary linking e-group with concrete roles
-    result = {
-        'alice-member': [RoleNeed('collaboration_alice')],
-        'atlas-active-members-all': [RoleNeed('collaboration_atlas')],
-        'cms-members': [RoleNeed('collaboration_cms')],
-        'lhcb-general': [RoleNeed('collaboration_lhcb')],
-    }
+    collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS')
+
+    result = {}
+    for collab, collab_roles in collab_egroups.iteritems():
+        for collab_role, egroups in collab_roles.iteritems():
+            for egroup in egroups:
+                result[egroup] = [RoleNeed(collab_role)]
 
     # In the case of CAP developer, they have all the possible roles.
     all_roles = []
