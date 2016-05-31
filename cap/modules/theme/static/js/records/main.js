@@ -4,8 +4,7 @@ require([
       // Initialize the app
       angular.element(document).ready(function() {
         angular.bootstrap(document.getElementById("cap-records"), ['cap.records']);
-        angular.bootstrap(document.getElementById("record-permissions"), ['cap.records']);
-        angular.bootstrap(document.getElementById("record-files"), ['cap.records']);
+        angular.bootstrap(document.getElementById("record-display"), ['cap.records']);
       });
 
       // Emit info

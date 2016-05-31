@@ -7,6 +7,13 @@ define(['underscore'], function(_) {
         $scope.hello = 'Public Records';
         $scope.notification = 'Records';
         $scope.new = [];
+
+        $scope.initRecord = function(pid_value, experiment) {
+          $scope.pid_value = pid_value;
+          $scope.experiment = experiment;
+          get_record_files();
+          get_record_permissions();
+        };
         $scope.isEmptyObject = function(obj) {
           return angular.equals({}, obj);
         };
@@ -23,7 +30,7 @@ define(['underscore'], function(_) {
             $scope.notification = $scope.notification + '<br />' + update;
           });
         };
-        $scope.get_record_files = function() {
+        var get_record_files = function() {
           // capLocalClient.get_record_permissions(recid )
           // .then(function(response) {
           //   $scope.permissions =
@@ -100,11 +107,12 @@ define(['underscore'], function(_) {
             $scope.files = demo_files["*"];
           }
         };
-        $scope.get_record_permissions = function(recid) {
-          capLocalClient.get_record_permissions(recid )
+        var get_record_permissions = function() {
+          capLocalClient.get_record_permissions($scope.pid_value)
           .then(function(response) {
             $scope.permissions =
             $scope.upd_permissions = response.data.permissions;
+            $scope.collab_egroup = response.data.collab_egroup;
           }, function(error) {
             $scope.hello = "ERROR";
           }, function(update){

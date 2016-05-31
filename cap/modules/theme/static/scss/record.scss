@@ -232,6 +232,7 @@
         display: inline-block;
         width: 100%;
         padding: 6px 0;
+        line-height: 28px;
 
         .fa-check {
             color: #ccc;
@@ -243,5 +244,7 @@
         .fa-check.can {
            color: green;
         }
+    }.collaboration-item {
+        background-color: rgba(84, 187, 249, 0.1);
     }
 }

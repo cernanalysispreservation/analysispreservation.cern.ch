@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <div id="record-display" class="cap-box">
+                <div id="record-display" class="cap-box"  ng-controller="recordsController" ng-init="initRecord({% if record %}{{record.pid_value}}, '{{record.experiment}}'{% endif %});">
                     <nav id="record-menu" class="navbar">
                         <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>

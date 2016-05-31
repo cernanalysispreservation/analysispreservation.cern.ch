@@ -62,7 +62,7 @@ from cap.config import JSON_METADATA_PATH
 from elasticsearch_dsl.query import QueryString
 from cap.modules.records.serializers import json_v1
 from .fetchers import cap_record_fetcher
-
+import six
 from werkzeug.local import LocalProxy
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -178,13 +178,20 @@ def get_readable_records_by_user(user_id, roles):
 @blueprint.route('/<path:collection>/create')
 @login_required
 def create_record_view(collection):
-    return render_template('records/create.html', collection=collection)
+
+    collection = Collection.query.filter(
+            Collection.name == collection ).first_or_404()
+
+    return render_template('records/create.html', collection=collection.name)
 
 
 @blueprint.route('/<path:collection>/create', methods=['POST'])
 @login_required
 def create_record(collection):
     """Basic test view."""
+
+    collection = Collection.query.filter(
+            Collection.name == collection ).first_or_404()
 
     # Creating a uuid4
     recid = uuid4()
@@ -198,11 +205,14 @@ def create_record(collection):
 
     data['$schema'] = urljoin(
             current_app.config.get('JSONSCHEMAS_HOST'),
-            url_for('records.jsonschema', collection=collection))
+            url_for('records.jsonschema', collection=collection.name))
     data['pid_value'] = pid
     data['control_number'] = pid
-    data['collections'] = [collection]
+    if collection.parent and collection.parent.parent.name == 'CERNAnalysisPreservation':
+        data['experiment'] = collection.parent.name
+    data['collections'] = [collection.name]
     data['creator'] = current_user.id
+
     data['_metadata'] = _metadata
 
     record = Record.create(data, id_=recid)
@@ -210,7 +220,7 @@ def create_record(collection):
     # Invenio-Indexer is delegating the document inferring to
     # Invenio-Search which is analysing the string splitting by `/` and
     # using `.json` to be sure that it cans understand the mapping.
-    record['$schema'] = 'mappings/{0}.json'.format(collection.lower())
+    record['$schema'] = 'mappings/{0}.json'.format(collection.name.lower())
 
     indexer = RecordIndexer()
     indexer.index(record)
@@ -377,6 +387,14 @@ def record_permissions(pid_value=None):
 
     result = dict()
     result['permissions'] = []
+
+    collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS')
+
+    if record.get('experiment', None):
+        result['collab_egroup'] = six.next(
+            six.itervalues(collab_egroups.get(record['experiment']))
+            )[0]
+
     for p in permissions:
         if isinstance(p, ActionUsers) and p.user:
             result['permissions'].append(

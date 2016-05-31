@@ -59,6 +59,9 @@
               "properties": {
                 "analysis_number": {
                   "type": "string"
+                },
+                "abstract": {
+                  "type": "string"
                 }
               }
             },
