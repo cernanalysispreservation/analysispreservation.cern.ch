@@ -1,0 +1,304 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Detector State",
+  "description": "Information concerning the state of the detector",
+  "type": "object",
+  "properties": {
+  "aod_processing": {
+      "title": "Measurement Specific AOD Processing",
+      "type": "object",
+      "id": "aod_processing",
+      "properties": {
+        "primary_datasets": {
+          "title": "Primary Datasets",
+          "description": "Add CMS primary datasets",
+          "type": "array",
+          "id": "primary-datasets",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
+            "properties": {
+              "copypaste": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "mc_dataset": {
+          "title": "Monte Carlo Datasets",
+          "description": "Add Monte Carlo datasets",
+          "type": "array",
+          "id": "mc-datasets",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
+            "defaultProperties": [
+              "title"
+            ]
+          }
+        }
+      }
+    },
+    "post_aod_processing": {
+      "title": "n-tuple Production",
+      "type": "array",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-vtest01.json"
+      }
+    },
+    "final_state_particles": {
+      "title": "Final State Particles",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "title": "Object",
+            "type": "string",
+            "enum": [
+              "electron",
+              "muon",
+              "tau",
+              "jet",
+              "bjet",
+              "photon"
+            ]
+          },
+          "jet_type": {
+            "type": "string",
+            "title": "Jet type",
+            "enum": [
+              "AK4",
+              "AK8"
+            ],
+            "dependencies": [
+              "object"
+            ]
+          },
+          "sel_criteria": {
+            "type": "string",
+            "title": "Selection Criteria",
+            "enum": ["tight", "loose"],
+            "dependencies": [
+              "object"
+            ]
+          },
+          "number": {
+            "title": "Number",
+            "type": "object",
+            "properties": {
+              "sign": {
+                "type": "string",
+                "title": "<, >, =, <=, >=",
+                "enum": [
+                  "<",
+                  ">",
+                  "=",
+                  "<=",
+                  ">="
+                ],
+                "default": "="
+              },
+              "number": {
+                "type": "number",
+                "title": "Number"
+              }
+            }
+          },
+          "pt_cut": {
+            "title": "pT Cuts",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "title": "<, >, =",
+                  "enum": [
+                    ">",
+                    "=",
+                    "<"
+                  ],
+                  "default": ">"
+                },
+                "number": {
+                  "type": "number",
+                  "title": "GeV"
+                }
+              }
+            }
+          },
+          "era_cut": {
+            "title": "|η| Cuts",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "sign": {
+                  "type": "string",
+                  "title": "<, >, =",
+                  "enum": [
+                    ">",
+                    "=",
+                    "<"
+                  ],
+                  "default": ">"
+                },
+                "number": {
+                  "type": "number",
+                  "title": "GeV"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "veto": {
+      "title": "Vetos",
+      "description": "Provide vetos",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "particle": {
+            "title": "Particle",
+            "type": "string",
+            "enum": ["electron", "muon", "bjet"]
+          },
+          "number": {
+            "title": "Number",
+            "type": "integer"
+          },
+          "pt_cut": {
+            "title": "PT",
+            "type": "string"
+          },
+          "era_cut": {
+            "title": "ETA",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "event_selection": {
+      "title": "Event Filter",
+      "type": "object",
+      "properties": {
+        "event_filter": {
+          "title": "Event Filter",
+          "type": "string",
+          "enum": ["HCAL noise cleaning filter", "ECAL spike removal"]
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        }
+      }
+    },
+    "mc_signal_selection": {
+      "title": "MC Signal Selection",
+      "type": "object",
+      "properties": {
+        "signal": {
+          "title": "Signal",
+          "type": "string"
+        },
+        "bin": {
+          "title": "Bin",
+          "type": "object",
+          "properties": {
+            "pt_hat": {
+              "title": "pt_hat",
+              "type": "string"
+            },
+            "num_events": {
+              "title": "Number of Events",
+              "type": "string"
+            }
+          }
+        },
+        "generator_tune": {
+          "title": "Generator and Tune",
+          "type": "object",
+          "properties": {
+            "generator": {
+              "type": "string",
+              "enum": ["need", "more", "information"]
+            },
+            "tune": {
+              "type": "string",
+              "enum": ["need", "more", "information"]
+            }
+          }
+        },
+        "pT": {
+          "title": "PT",
+          "type": "string"
+        },
+        "rapidity": {
+          "title": "Rapidity",
+          "enum": ["Rapidity", "Pseudorapidity"]
+        },
+        "decay_channel": {
+          "title": "Decay Channel",
+          "type": "string"
+        },
+        "decay_engine": {
+          "title": "Decay Engine",
+          "type": "string",
+          "enum": ["need", "more", "information"]
+        },
+        "additional_info": {
+          "title": "Additional Information",
+          "type": "string"
+        }
+      }
+    },
+    "background": {
+      "title": "Background",
+      "type": "object",
+      "properties": {
+        "generator_tune": {
+          "title": "Generator and Tune",
+          "type": "object",
+          "properties": {
+            "generator": {
+              "type": "string",
+              "enum": ["need", "more", "information"]
+            },
+            "tune": {
+              "type": "string",
+              "enum": ["need", "more", "information"]
+            }
+          }
+        },
+        "collision_species": {
+          "title": "Collision Species",
+          "type": "string",
+          "enum": ["pp", "PbPb", "pPb"]
+        },
+        "collision_energy": {
+          "title": "Collision Energy",
+          "type": "string"
+        },
+        "bin": {
+          "title": "Bin",
+          "type": "object",
+          "properties": {
+            "pt_hat": {
+              "title": "pt_hat",
+              "type": "string"
+            },
+            "num_events": {
+              "title": "Number of Events",
+              "type": "string"
+            }
+          }
+        },
+        "additional_info": {
+          "title": "Additional Information",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

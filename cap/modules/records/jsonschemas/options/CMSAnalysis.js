@@ -768,12 +768,12 @@ window.schemaOptions = {
         "order": 7,
         "fields": {
           "item": {
-      			"fields": {
-      			  "url": {
-      				"placeholder": "E.g. https://indico.cern.ch/event/.../discussion-slides.pdf"
-      			  }
-      			}
-		      }
+            "fields": {
+              "url": {
+              "placeholder": "E.g. https://indico.cern.ch/event/.../discussion-slides.pdf"
+              }
+            }
+          }
         }
       },
       "presentations": {
@@ -781,12 +781,12 @@ window.schemaOptions = {
         "order": 8,
         "fields": {
           "item": {
-		    "fields": {
-			  "url": {
-				"placeholder": "E.g. https://indico.cern.ch/event/524974/"
-			  }
-			}
-		  }
+            "fields": {
+              "url": {
+                "placeholder": "E.g. https://indico.cern.ch/event/524974/"
+              }
+            }
+          }
         }
       },
       "publications": {
@@ -819,17 +819,17 @@ window.schemaOptions = {
                 "type": "depositgroup-object-array",
                 "order": 6,
                 "fields": {
-				  "item": {
-					"fields": {
-					  "identifier": {
-						"placeholder": "Please enter an issued identifier, e.g. a DUNS number"
-					  },
-						"scheme": {
-						"placeholder": "Please enter an identifier scheme, e.g. DUNS"
-					  }
-					}
-				  }
-				}
+                  "item": {
+                    "fields": {
+                      "identifier": {
+                        "placeholder": "Please enter an issued identifier, e.g. a DUNS number"
+                      },
+                      "scheme": {
+                        "placeholder": "Please enter an identifier scheme, e.g. DUNS"
+                      }
+                    }
+                  }
+                }
               }
             }
           }
