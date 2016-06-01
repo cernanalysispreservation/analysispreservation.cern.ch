@@ -287,54 +287,6 @@ window.schemaOptions = {
                         "order": 4
                       }
                     }
-                  },
-                  "triggers": {
-                    "order": 11,
-                    "actionbarStyle": "bottom",
-                    "toolbarSticky": "true",
-                    "type": "depositgroup-object-array",
-                    "fields": {
-                      "item": {
-                        "fields": {
-                          "trigger": {
-                            "order": 3,
-                            "noneLabel": "Trigger",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "element": {
-                            "order": 2,
-                            "noneLabel": "Element",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "run_period": {
-                            "order": 1,
-                            "type": "select2",
-                            "noneLabel": "Year",
-                            "select2": true,
-                            "dataSource": datasource_triggerRunPeriod
-                          }
-                        },
-                        "postRender": function(callback){
-                          var triggerYear = this.childrenByPropertyId["run_period"];
-                          var triggerElement = this.childrenByPropertyId["element"];
-                          var triggerTrigger = this.childrenByPropertyId["trigger"];
-                          triggerTrigger.subscribe(triggerElement, function(element){
-                            var year = triggerYear.getValue();
-                            this.schema.enum = this.options.optionLabels = cms_triggers[year][element];
-                            this.refresh();
-                          });
-                          triggerElement.subscribe(triggerYear, function(year){
-                            if (cms_triggers && cms_triggers[year]) {
-                              this.schema.enum = this.options.optionLabels = Object.keys(cms_triggers[year]);
-                            }
-                            this.refresh();
-                          });
-                          callback();
-                        }
-                      }
-                    }
                   }
                 }
               }
@@ -741,54 +693,6 @@ window.schemaOptions = {
                               },
                               "numbers": {
                                 "order": 4
-                              }
-                            }
-                          },
-                          "triggers": {
-                            "order": 11,
-                            "actionbarStyle": "bottom",
-                            "toolbarSticky": "true",
-                            "type": "depositgroup-object-array",
-                            "fields": {
-                              "item": {
-                                "fields": {
-                                  "trigger": {
-                                    "order": 3,
-                                    "noneLabel": "Trigger",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "element": {
-                                    "order": 2,
-                                    "noneLabel": "Element",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "run_period": {
-                                    "order": 1,
-                                    "type": "select2",
-                                    "noneLabel": "Year",
-                                    "select2": true,
-                                    "dataSource": datasource_triggerRunPeriod
-                                  }
-                                },
-                                "postRender": function(callback){
-                                  var triggerYear = this.childrenByPropertyId["run_period"];
-                                  var triggerElement = this.childrenByPropertyId["element"];
-                                  var triggerTrigger = this.childrenByPropertyId["trigger"];
-                                  triggerTrigger.subscribe(triggerElement, function(element){
-                                    var year = triggerYear.getValue();
-                                    this.schema.enum = this.options.optionLabels = cms_triggers[year][element];
-                                    this.refresh();
-                                  });
-                                  triggerElement.subscribe(triggerYear, function(year){
-                                    if (cms_triggers && cms_triggers[year]) {
-                                      this.schema.enum = this.options.optionLabels = Object.keys(cms_triggers[year]);
-                                    }
-                                    this.refresh();
-                                  });
-                                  callback();
-                                }
                               }
                             }
                           }
@@ -1330,54 +1234,6 @@ window.schemaOptions = {
                               },
                               "numbers": {
                                 "order": 4
-                              }
-                            }
-                          },
-                          "triggers": {
-                            "order": 11,
-                            "actionbarStyle": "bottom",
-                            "toolbarSticky": "true",
-                            "type": "depositgroup-object-array",
-                            "fields": {
-                              "item": {
-                                "fields": {
-                                  "trigger": {
-                                    "order": 3,
-                                    "noneLabel": "Trigger",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "element": {
-                                    "order": 2,
-                                    "noneLabel": "Element",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "run_period": {
-                                    "order": 1,
-                                    "type": "select2",
-                                    "noneLabel": "Year",
-                                    "select2": true,
-                                    "dataSource": datasource_triggerRunPeriod
-                                  }
-                                },
-                                "postRender": function(callback){
-                                  var triggerYear = this.childrenByPropertyId["run_period"];
-                                  var triggerElement = this.childrenByPropertyId["element"];
-                                  var triggerTrigger = this.childrenByPropertyId["trigger"];
-                                  triggerTrigger.subscribe(triggerElement, function(element){
-                                    var year = triggerYear.getValue();
-                                    this.schema.enum = this.options.optionLabels = cms_triggers[year][element];
-                                    this.refresh();
-                                  });
-                                  triggerElement.subscribe(triggerYear, function(year){
-                                    if (cms_triggers && cms_triggers[year]) {
-                                      this.schema.enum = this.options.optionLabels = Object.keys(cms_triggers[year]);
-                                    }
-                                    this.refresh();
-                                  });
-                                  callback();
-                                }
                               }
                             }
                           }
