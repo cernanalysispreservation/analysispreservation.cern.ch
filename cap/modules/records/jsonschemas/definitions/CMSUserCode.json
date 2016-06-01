@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "Code",
+	"type": "array",
+	"items": {
+		"title": "Code",
+		"type": "object",
+		"properties": {
+			"os": {
+				"title": "OS",
+				"description": "Provide OS",
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"title": "Name",
+							"type": "string"
+						},
+						"version": {
+							"title": "Version",
+							"type": "string"
+						}
+					}
+				}
+			},
+			"software": {
+				"title": "Analysis Software",
+				"descritpion": "Provide software descritpion",
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"name": {
+							"title": "Name",
+							"type": "string"
+						},
+						"version": {
+							"title": "Version",
+							"type": "string"
+						},
+						"global_tag": {
+							"title": "Global Tag",
+							"type": "string"
+						}
+					}
+				}
+			},
+			"user_code": {
+				"title": "User Code",
+				"description": "Provide user code",
+				"type": "array",
+				"items": {
+					"type": "object",
+					"properties": {
+						"url": {
+							"title": "URL",
+							"type": "string"
+						},
+						"tag": {
+							"title": "Tag",
+							"type": "string"
+						}
+					}
+				}
+			},
+			"run_instructions": {
+				"title": "How to Reproduce",
+				"description": "Provide run instructions",
+				"type": "array",
+				"id": "run_instructions",
+				"items": {
+					"type": "object",
+					"properties": {
+						"type": {
+							"title": "Type",
+							"type": "string",
+							"enum": ["readme", "makefile", "upload"]
+						}
+					}
+				}
+			},
+			"comments": {
+				"title": "Comments",
+				"type": "string"
+			}
+		}
+	}
+}
