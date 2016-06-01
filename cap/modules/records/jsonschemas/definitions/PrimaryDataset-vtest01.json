@@ -129,6 +129,10 @@
             "dependencies": [
               "run_period"
             ]
+          },
+          "trigger_efficiency": {
+            "title": "Trigger Efficiency",
+            "type": "string"
           }
         }
       }

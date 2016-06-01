@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Post-AOD Processing",
+  "title": "n-tuple Production",
   "description": "Information about the AOD Processing",
   "type": "object",
   "properties": {

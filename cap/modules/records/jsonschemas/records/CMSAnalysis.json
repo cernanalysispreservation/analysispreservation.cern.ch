@@ -51,21 +51,142 @@
               "title"
             ]
           }
+        },
+        "mc_signal_selection": {
+          "title": "MC Signal Selection",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "signal": {
+                "title": "Signal",
+                "type": "string"
+              },
+              "bin": {
+                "title": "Bin",
+                "type": "object",
+                "properties": {
+                  "pt_hat": {
+                    "title": "pt_hat",
+                    "type": "string"
+                  },
+                  "num_events": {
+                    "title": "Number of Events",
+                    "type": "string"
+                  }
+                }
+              },
+              "generator_tune": {
+                "title": "Generator and Tune",
+                "type": "object",
+                "properties": {
+                  "generator": {
+                    "type": "string",
+                    "enum": ["need", "more", "information"]
+                  },
+                  "tune": {
+                    "type": "string",
+                    "enum": ["need", "more", "information"]
+                  }
+                }
+              },
+              "pT": {
+                "title": "PT",
+                "type": "string"
+              },
+              "rapidity": {
+                "title": "Rapidity",
+                "enum": ["Rapidity", "Pseudorapidity"]
+              },
+              "decay_channel": {
+                "title": "Decay Channel",
+                "type": "string"
+              },
+              "decay_engine": {
+                "title": "Decay Engine",
+                "type": "string",
+                "enum": ["need", "more", "information"]
+              },
+              "additional_info": {
+                "title": "Additional Information",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "background": {
+          "title": "MC Background",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "generator_tune": {
+                "title": "Generator and Tune",
+                "type": "object",
+                "properties": {
+                  "generator": {
+                    "type": "string",
+                    "enum": ["need", "more", "information"]
+                  },
+                  "tune": {
+                    "type": "string",
+                    "enum": ["need", "more", "information"]
+                  }
+                }
+              },
+              "collision_species": {
+                "title": "Collision Species",
+                "type": "string",
+                "enum": ["pp", "PbPb", "pPb"]
+              },
+              "collision_energy": {
+                "title": "Collision Energy",
+                "type": "string"
+              },
+              "bin": {
+                "title": "Bin",
+                "type": "object",
+                "properties": {
+                  "pt_hat": {
+                    "title": "pt_hat",
+                    "type": "string"
+                  },
+                  "num_events": {
+                    "title": "Number of Events",
+                    "type": "string"
+                  }
+                }
+              },
+              "additional_info": {
+                "title": "Additional Information",
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
-    "physics_information": {
-      "title": "Physics Information",
+    "main_measurements": {
+      "title": "Main Measurements",
       "description": "Provide information about datasets, triggers, physics objects, etc",
       "type": "array",
-      "id": "physics-information",
+      "id": "main-measurements",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
+      }
+    },
+    "auxiliary_measurements": {
+      "title": "Auxiliary Measurements",
+      "description": "Provide information about datasets, triggers, physics objects, etc",
+      "type": "array",
+      "id": "auxiliary-measurements",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
       }
     },
     "post_aod_processing": {
-      "title": "Post-AOD Processing",
+      "title": "n-tuple Production",
       "type": "array",
       "default": [{}],
       "items": {
