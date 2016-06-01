@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Single Step Scheduler",
+  "id": "singlestep-stage",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": ["singlestep-stage"],
+      "default": "singlestep-stage"
+    },
+    "parameters": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/parameterselection.json#" },
+    "step": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/packtivity-schema.json#" },
+    "workflow": {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema.json#"}
+  },
+  "required": [
+    "scheduler_type"
+  ]
+}

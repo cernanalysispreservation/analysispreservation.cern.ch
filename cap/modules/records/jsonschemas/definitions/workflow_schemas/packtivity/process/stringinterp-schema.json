@@ -1,8 +1,9 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "title": "String Interpol",
+  "title": "String Interpolated Command",
   "id": "string_interpolated",
+  "additionalProperties": false,
   "properties": {
     "process_type": {
       "type": "string",

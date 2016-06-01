@@ -3,6 +3,7 @@
   "type": "object",
   "title": "Constant Publisher",
   "id": "constant_publisher",
+  "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",

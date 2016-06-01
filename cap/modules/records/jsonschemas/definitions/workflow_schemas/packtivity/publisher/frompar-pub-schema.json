@@ -3,6 +3,7 @@
   "type": "object",
   "title": "Parameter Publisher",
   "id": "parameter_publisher",
+  "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
@@ -12,7 +13,7 @@
       "default": "frompar-pub"
     },
     "outputmap": {
-      "type": "string"
+      "type": "object"
     }
   },
   "required": [

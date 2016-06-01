@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Local Process Environment for Testing",
+  "id": "localproc",
+  "properties": {
+    "environment_type": {
+      "type": "string",
+      "enum":["localproc-env"],
+      "default":"localproc-env"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "environment_type"
+  ]
+}

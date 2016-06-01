@@ -3,6 +3,7 @@
   "type": "object",
   "title": "Packtivity Meta Description",
   "id": "packtivity_meta",
+  "additionalProperties": false,
   "properties": {
       "process": {
           "type": "object",
@@ -25,6 +26,8 @@
           "type": "object",
           "title": "Enviroment",
           "oneOf":[
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/noop-env-schema.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/localproc-schema.json#"},
             {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/docker-enc-schema.json#"}
           ]
       }

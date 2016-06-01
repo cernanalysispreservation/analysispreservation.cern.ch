@@ -3,6 +3,7 @@
   "type": "object",
   "title": "Glob Publisher",
   "id": "glob_publisher",
+  "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
