@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Output",
+  "type": "array",
+  "items": {
+    "title": "Output",
+    "type": "object",
+    "properties": {
+      "output_data": {
+        "title": "Output Data",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "title": "URL",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "comments": {
+        "title": "Comments",
+        "type": "string"
+      },
+      "keywords": {
+        "title": "Keywords",
+        "type": "string"
+      }
+    }
+  }
+}

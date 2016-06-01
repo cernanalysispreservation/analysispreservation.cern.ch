@@ -4,10 +4,10 @@
   "description": "Information concerning the state of the detector",
   "type": "object",
   "properties": {
-  "aod_processing": {
-      "title": "Measurement Specific AOD Processing",
+    "measurement_input": {
+      "title": "Input",
       "type": "object",
-      "id": "aod_processing",
+      "id": "measurement_input",
       "properties": {
         "primary_datasets": {
           "title": "Primary Datasets",
@@ -37,12 +37,11 @@
         }
       }
     },
-    "post_aod_processing": {
-      "title": "n-tuple Production",
-      "type": "array",
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-vtest01.json"
-      }
+    "measurement_code": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+    },
+    "measurement_output": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
     },
     "final_state_particles": {
       "title": "Final State Particles",
