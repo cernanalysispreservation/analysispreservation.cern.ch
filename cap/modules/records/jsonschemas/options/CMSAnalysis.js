@@ -957,63 +957,51 @@ window.schemaOptions = {
                   }
                 }
               },
-              "final_state_particles": {
+              "detector_final_state": {
+                "type": "depositgroup-object",
                 "order": 1,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
+                "label": false,
                 "fields": {
-                  "item": {
+                  "final_state_particles": {
+                    "order": 1,
+                    "minItems": 1,
+                    "type": "depositgroup-object-array",
                     "fields": {
-                      "object": {
-                        "placeholder": "Object",
-                        "noneLabel": "Select Object",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "jet_type": {
-                        "noneLabel": "Select Jet",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 2,
-                        "dependencies": {
-                          "object": ["jet", "bjet"]
-                        }
-                      },
-                      "sel_criteria": {
-                        "placeholder": "Selection Criteria",
-                        "type": "radio",
-                        "removeDefaultNone": true,
-                        "optionLabels": [
-                          "Tight",
-                          "Loose"
-                        ],
-                        "order": 4,
-                        "dependencies": {
-                          "object": ["electron", "muon", "tau"]
-                        }
-                      },
-                      "number": {
-                        "placeholder": "Number, e.g. 1",
-                        "order": 3,
-                        "type": "depositgroup-object",
+                      "item": {
                         "fields": {
-                          "sign": {
-                            "order": 1,
+                          "object": {
+                            "placeholder": "Object",
+                            "noneLabel": "Select Object",
                             "type": "select2",
-                            "removeDefaultNone": "true"
+                            "select2": true,
+                            "order": 1
+                          },
+                          "jet_type": {
+                            "noneLabel": "Select Jet",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["jet", "bjet"]
+                            }
+                          },
+                          "sel_criteria": {
+                            "placeholder": "Selection Criteria",
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "optionLabels": [
+                              "Tight",
+                              "Loose"
+                            ],
+                            "order": 4,
+                            "dependencies": {
+                              "object": ["electron", "muon", "tau"]
+                            }
                           },
                           "number": {
-                            "order": 2
-                          }
-                        }
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "type": "depositgroup-object-array",
-                        "order": 5,
-                        "fields": {
-                          "item": {
+                            "placeholder": "Number, e.g. 1",
+                            "order": 3,
+                            "type": "depositgroup-object",
                             "fields": {
                               "sign": {
                                 "order": 1,
@@ -1024,57 +1012,76 @@ window.schemaOptions = {
                                 "order": 2
                               }
                             }
-                          }
-                        }
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut, e.g. < 2.1",
-                        "type": "depositgroup-object-array",
-                        "order": 6,
-                        "fields": {
-                          "item": {
+                          },
+                          "pt_cut": {
+                            "placeholder": "PT Cut, e.g. > 20 Gev",
+                            "type": "depositgroup-object-array",
+                            "order": 5,
                             "fields": {
-                              "sign": {
-                                "order": 1,
-                                "type": "select2",
-                                "removeDefaultNone": "true"
-                              },
-                              "number": {
-                                "order": 2
+                              "item": {
+                                "fields": {
+                                  "sign": {
+                                    "order": 1,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "number": {
+                                    "order": 2
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "era_cut": {
+                            "placeholder": "ETA Cut, e.g. < 2.1",
+                            "type": "depositgroup-object-array",
+                            "order": 6,
+                            "fields": {
+                              "item": {
+                                "fields": {
+                                  "sign": {
+                                    "order": 1,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "number": {
+                                    "order": 2
+                                  }
+                                }
                               }
                             }
                           }
                         }
                       }
                     }
-                  }
-                }
-              },
-              "veto": {
-                "order": 2,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
-                "fields": {
-                  "item": {
+                  },
+                  "veto": {
+                    "order": 2,
+                    "minItems": 1,
+                    "type": "depositgroup-object-array",
                     "fields": {
-                      "particle": {
-                        "placeholder": "Particle",
-                        "noneLabel": "Select Particle",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "number": {
-                        "placeholder": "Number, e.g. 1",
-                        "order": 2
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "order": 3
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut, e.g. < 2.1",
-                        "order": 4
+                      "item": {
+                        "fields": {
+                          "particle": {
+                            "placeholder": "Particle",
+                            "noneLabel": "Select Particle",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 1
+                          },
+                          "number": {
+                            "placeholder": "Number, e.g. 1",
+                            "order": 2
+                          },
+                          "pt_cut": {
+                            "placeholder": "PT Cut, e.g. > 20 Gev",
+                            "order": 3
+                          },
+                          "era_cut": {
+                            "placeholder": "ETA Cut, e.g. < 2.1",
+                            "order": 4
+                          }
+                        }
                       }
                     }
                   }
@@ -1498,63 +1505,51 @@ window.schemaOptions = {
                   }
                 }
               },
-              "final_state_particles": {
+              "detector_final_state": {
+                "type": "depositgroup-object",
                 "order": 1,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
+                "label": false,
                 "fields": {
-                  "item": {
+                  "final_state_particles": {
+                    "order": 1,
+                    "minItems": 1,
+                    "type": "depositgroup-object-array",
                     "fields": {
-                      "object": {
-                        "placeholder": "Object",
-                        "noneLabel": "Select Object",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "jet_type": {
-                        "noneLabel": "Select Jet",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 2,
-                        "dependencies": {
-                          "object": ["jet", "bjet"]
-                        }
-                      },
-                      "sel_criteria": {
-                        "placeholder": "Selection Criteria",
-                        "type": "radio",
-                        "removeDefaultNone": true,
-                        "optionLabels": [
-                          "Tight",
-                          "Loose"
-                        ],
-                        "order": 4,
-                        "dependencies": {
-                          "object": ["electron", "muon", "tau"]
-                        }
-                      },
-                      "number": {
-                        "placeholder": "Number, e.g. 1",
-                        "order": 3,
-                        "type": "depositgroup-object",
+                      "item": {
                         "fields": {
-                          "sign": {
-                            "order": 1,
+                          "object": {
+                            "placeholder": "Object",
+                            "noneLabel": "Select Object",
                             "type": "select2",
-                            "removeDefaultNone": "true"
+                            "select2": true,
+                            "order": 1
+                          },
+                          "jet_type": {
+                            "noneLabel": "Select Jet",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["jet", "bjet"]
+                            }
+                          },
+                          "sel_criteria": {
+                            "placeholder": "Selection Criteria",
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "optionLabels": [
+                              "Tight",
+                              "Loose"
+                            ],
+                            "order": 4,
+                            "dependencies": {
+                              "object": ["electron", "muon", "tau"]
+                            }
                           },
                           "number": {
-                            "order": 2
-                          }
-                        }
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "type": "depositgroup-object-array",
-                        "order": 5,
-                        "fields": {
-                          "item": {
+                            "placeholder": "Number, e.g. 1",
+                            "order": 3,
+                            "type": "depositgroup-object",
                             "fields": {
                               "sign": {
                                 "order": 1,
@@ -1565,57 +1560,76 @@ window.schemaOptions = {
                                 "order": 2
                               }
                             }
-                          }
-                        }
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut, e.g. < 2.1",
-                        "type": "depositgroup-object-array",
-                        "order": 6,
-                        "fields": {
-                          "item": {
+                          },
+                          "pt_cut": {
+                            "placeholder": "PT Cut, e.g. > 20 Gev",
+                            "type": "depositgroup-object-array",
+                            "order": 5,
                             "fields": {
-                              "sign": {
-                                "order": 1,
-                                "type": "select2",
-                                "removeDefaultNone": "true"
-                              },
-                              "number": {
-                                "order": 2
+                              "item": {
+                                "fields": {
+                                  "sign": {
+                                    "order": 1,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "number": {
+                                    "order": 2
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "era_cut": {
+                            "placeholder": "ETA Cut, e.g. < 2.1",
+                            "type": "depositgroup-object-array",
+                            "order": 6,
+                            "fields": {
+                              "item": {
+                                "fields": {
+                                  "sign": {
+                                    "order": 1,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "number": {
+                                    "order": 2
+                                  }
+                                }
                               }
                             }
                           }
                         }
                       }
                     }
-                  }
-                }
-              },
-              "veto": {
-                "order": 2,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
-                "fields": {
-                  "item": {
+                  },
+                  "veto": {
+                    "order": 2,
+                    "minItems": 1,
+                    "type": "depositgroup-object-array",
                     "fields": {
-                      "particle": {
-                        "placeholder": "Particle",
-                        "noneLabel": "Select Particle",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "number": {
-                        "placeholder": "Number, e.g. 1",
-                        "order": 2
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut, e.g. > 20 Gev",
-                        "order": 3
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut, e.g. < 2.1",
-                        "order": 4
+                      "item": {
+                        "fields": {
+                          "particle": {
+                            "placeholder": "Particle",
+                            "noneLabel": "Select Particle",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 1
+                          },
+                          "number": {
+                            "placeholder": "Number, e.g. 1",
+                            "order": 2
+                          },
+                          "pt_cut": {
+                            "placeholder": "PT Cut, e.g. > 20 Gev",
+                            "order": 3
+                          },
+                          "era_cut": {
+                            "placeholder": "ETA Cut, e.g. < 2.1",
+                            "order": 4
+                          }
+                        }
                       }
                     }
                   }

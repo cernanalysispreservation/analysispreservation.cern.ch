@@ -43,137 +43,143 @@
     "measurement_output": {
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
     },
-    "final_state_particles": {
-      "title": "Final State Particles",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "object": {
-            "title": "Object",
-            "type": "string",
-            "enum": [
-              "electron",
-              "muon",
-              "tau",
-              "jet",
-              "bjet",
-              "photon"
-            ]
-          },
-          "jet_type": {
-            "type": "string",
-            "title": "Jet type",
-            "enum": [
-              "AK4",
-              "AK8"
-            ],
-            "dependencies": [
-              "object"
-            ]
-          },
-          "sel_criteria": {
-            "type": "string",
-            "title": "Selection Criteria",
-            "enum": ["tight", "loose"],
-            "dependencies": [
-              "object"
-            ]
-          },
-          "number": {
-            "title": "Number",
+    "detector_final_state": {
+      "title": "Detector Final State",
+      "type": "object",
+      "properties": {
+        "final_state_particles": {
+          "title": "Particles",
+          "type": "array",
+          "items": {
             "type": "object",
             "properties": {
-              "sign": {
+              "object": {
+                "title": "Object",
                 "type": "string",
-                "title": "<, >, =, <=, >=",
                 "enum": [
-                  "<",
-                  ">",
-                  "=",
-                  "<=",
-                  ">="
+                  "electron",
+                  "muon",
+                  "tau",
+                  "jet",
+                  "bjet",
+                  "photon"
+                ]
+              },
+              "jet_type": {
+                "type": "string",
+                "title": "Jet type",
+                "enum": [
+                  "AK4",
+                  "AK8"
                 ],
-                "default": "="
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "sel_criteria": {
+                "type": "string",
+                "title": "Selection Criteria",
+                "enum": ["tight", "loose"],
+                "dependencies": [
+                  "object"
+                ]
               },
               "number": {
-                "type": "number",
-                "title": "Number"
-              }
-            }
-          },
-          "pt_cut": {
-            "title": "pT Cuts",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "sign": {
-                  "type": "string",
-                  "title": "<, >, =",
-                  "enum": [
-                    ">",
-                    "=",
-                    "<"
-                  ],
-                  "default": ">"
-                },
-                "number": {
-                  "type": "number",
-                  "title": "GeV"
+                "title": "Number",
+                "type": "object",
+                "properties": {
+                  "sign": {
+                    "type": "string",
+                    "title": "<, >, =, <=, >=",
+                    "enum": [
+                      "<",
+                      ">",
+                      "=",
+                      "<=",
+                      ">="
+                    ],
+                    "default": "="
+                  },
+                  "number": {
+                    "type": "number",
+                    "title": "Number"
+                  }
                 }
-              }
-            }
-          },
-          "era_cut": {
-            "title": "|η| Cuts",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "sign": {
-                  "type": "string",
-                  "title": "<, >, =",
-                  "enum": [
-                    ">",
-                    "=",
-                    "<"
-                  ],
-                  "default": ">"
-                },
-                "number": {
-                  "type": "number",
-                  "title": "GeV"
+              },
+              "pt_cut": {
+                "title": "pT Cuts",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sign": {
+                      "type": "string",
+                      "title": "<, >, =",
+                      "enum": [
+                        ">",
+                        "=",
+                        "<"
+                      ],
+                      "default": ">"
+                    },
+                    "number": {
+                      "type": "number",
+                      "title": "GeV"
+                    }
+                  }
+                }
+              },
+              "era_cut": {
+                "title": "|η| Cuts",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sign": {
+                      "type": "string",
+                      "title": "<, >, =",
+                      "enum": [
+                        ">",
+                        "=",
+                        "<"
+                      ],
+                      "default": ">"
+                    },
+                    "number": {
+                      "type": "number",
+                      "title": "GeV"
+                    }
+                  }
                 }
               }
             }
           }
-        }
-      }
-    },
-    "veto": {
-      "title": "Vetos",
-      "description": "Provide vetos",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "particle": {
-            "title": "Particle",
-            "type": "string",
-            "enum": ["electron", "muon", "bjet"]
-          },
-          "number": {
-            "title": "Number",
-            "type": "integer"
-          },
-          "pt_cut": {
-            "title": "PT",
-            "type": "string"
-          },
-          "era_cut": {
-            "title": "ETA",
-            "type": "string"
+        },
+        "veto": {
+          "title": "Vetos",
+          "description": "Provide vetos",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "particle": {
+                "title": "Particle",
+                "type": "string",
+                "enum": ["electron", "muon", "bjet"]
+              },
+              "number": {
+                "title": "Number",
+                "type": "integer"
+              },
+              "pt_cut": {
+                "title": "PT",
+                "type": "string"
+              },
+              "era_cut": {
+                "title": "ETA",
+                "type": "string"
+              }
+            }
           }
         }
       }
