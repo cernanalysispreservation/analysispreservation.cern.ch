@@ -15,7 +15,11 @@
           "type": "string"
         },
         "abstract": {
-          "title": "Abstract/Conclusion",
+          "title": "Abstract",
+          "type": "string"
+        },
+        "conclusion": {
+          "title": "Conclusion",
           "type": "string"
         }
       }

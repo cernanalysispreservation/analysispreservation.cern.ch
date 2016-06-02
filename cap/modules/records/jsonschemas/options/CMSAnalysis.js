@@ -22,7 +22,13 @@ window.schemaOptions = {
             "order": 2,
             "type": "textarea",
             "rows": 5,
-            "placeholder": "Please provide a short abstract/conclusion for the analysis."
+            "placeholder": "If not provided here the abstract can be extracted from the final paper."
+          },
+          "conclusion": {
+            "order": 4,
+            "type": "textarea",
+            "rows": 5,
+            "placeholder": "Please provide a short conclusion for the analysis."
           }
         }
       },
@@ -167,6 +173,9 @@ window.schemaOptions = {
                                     "noneLabel": "Year",
                                     "select2": true,
                                     "dataSource": datasource_triggerRunPeriod
+                                  },
+                                  "trigger_efficiency": {
+                                    "order": 4
                                   }
                                 },
                                 "postRender": function(callback){
@@ -701,6 +710,9 @@ window.schemaOptions = {
                                     "noneLabel": "Year",
                                     "select2": true,
                                     "dataSource": datasource_triggerRunPeriod
+                                  },
+                                  "trigger_efficiency": {
+                                    "order": 4
                                   }
                                 },
                                 "postRender": function(callback){
@@ -2017,7 +2029,7 @@ window.schemaOptions = {
                 }
               },
               "output": {
-                "order": 2,
+                "order": 3,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
