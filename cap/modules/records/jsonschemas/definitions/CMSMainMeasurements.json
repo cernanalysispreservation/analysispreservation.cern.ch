@@ -48,7 +48,7 @@
       "type": "object",
       "properties": {
         "final_state_particles": {
-          "title": "Particles",
+          "title": "Physics Objects",
           "type": "array",
           "items": {
             "type": "object",
@@ -62,7 +62,10 @@
                   "tau",
                   "jet",
                   "bjet",
-                  "photon"
+                  "photon",
+                  "track",
+                  "vertex",
+                  "MET"
                 ]
               },
               "jet_type": {
