@@ -20,58 +20,195 @@
         }
       }
     },
-    "aod_processing": {
-      "title": "AOD Processing",
-      "description": "Provide AOD Processing information",
-      "type": "object",
-      "id": "aod_processing",
-      "properties": {
-        "primary_datasets": {
-          "title": "Primary Datasets",
-          "description": "Add CMS primary datasets",
-          "type": "array",
-          "id": "primary-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
-            "properties": {
-              "copypaste": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "mc_dataset": {
-          "title": "Monte Carlo Datasets",
-          "description": "Add Monte Carlo datasets",
-          "type": "array",
-          "id": "mc-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
-            "defaultProperties": [
-              "title"
-            ]
-          }
-        }
-      }
+    "n_tuple_production": {
+      "title": "n-tuple Production",
+      "type": "array",
+      "id": "n_tuple",
+      "default": [{}],
+      "items": {
+				"type": "object",
+				"properties": {
+					"input_data": {
+						"title": "Input",
+						"type": "object",
+						"id": "input_data",
+						"properties": {
+							"primary_datasets": {
+								"title": "Primary Datasets",
+								"description": "Add CMS primary datasets",
+								"type": "array",
+								"id": "primary-datasets",
+								"items": {
+									"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
+									"properties": {
+										"copypaste": {
+											"type": "string"
+										}
+									}
+								}
+							},
+							"mc_dataset": {
+								"title": "Monte Carlo Datasets",
+								"description": "Add Monte Carlo datasets",
+								"type": "array",
+								"id": "mc-datasets",
+								"items": {
+									"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
+									"defaultProperties": [
+										"title"
+									]
+								}
+							},
+							"mc_signal_selection": {
+								"title": "MC Signal Selection",
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"signal": {
+											"title": "Signal",
+											"type": "string"
+										},
+										"bin": {
+											"title": "Bin",
+											"type": "object",
+											"properties": {
+												"pt_hat": {
+													"title": "pt_hat",
+													"type": "string"
+												},
+												"num_events": {
+													"title": "Number of Events",
+													"type": "string"
+												}
+											}
+										},
+										"generator_tune": {
+											"title": "Generator and Tune",
+											"type": "object",
+											"properties": {
+												"generator": {
+													"type": "string",
+													"enum": ["need", "more", "information"]
+												},
+												"tune": {
+													"type": "string",
+													"enum": ["need", "more", "information"]
+												}
+											}
+										},
+										"pT": {
+											"title": "PT",
+											"type": "string"
+										},
+										"rapidity": {
+											"title": "Rapidity",
+											"enum": ["Rapidity", "Pseudorapidity"]
+										},
+										"decay_channel": {
+											"title": "Decay Channel",
+											"type": "string"
+										},
+										"decay_engine": {
+											"title": "Decay Engine",
+											"type": "string",
+											"enum": ["need", "more", "information"]
+										},
+										"additional_info": {
+											"title": "Additional Information",
+											"type": "string"
+										}
+									}
+								}
+							},
+							"background": {
+								"title": "MC Background",
+								"type": "array",
+								"items": {
+									"type": "object",
+									"properties": {
+										"generator_tune": {
+											"title": "Generator and Tune",
+											"type": "object",
+											"properties": {
+												"generator": {
+													"type": "string",
+													"enum": ["need", "more", "information"]
+												},
+												"tune": {
+													"type": "string",
+													"enum": ["need", "more", "information"]
+												}
+											}
+										},
+										"collision_species": {
+											"title": "Collision Species",
+											"type": "string",
+											"enum": ["pp", "PbPb", "pPb"]
+										},
+										"collision_energy": {
+											"title": "Collision Energy",
+											"type": "string"
+										},
+										"bin": {
+											"title": "Bin",
+											"type": "object",
+											"properties": {
+												"pt_hat": {
+													"title": "pt_hat",
+													"type": "string"
+												},
+												"num_events": {
+													"title": "Number of Events",
+													"type": "string"
+												}
+											}
+										},
+										"additional_info": {
+											"title": "Additional Information",
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"code": {
+						"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+					},
+					"output": {
+						"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
+					}
+				}
+			}
     },
-    "physics_information": {
-      "title": "Physics Information",
+    "main_measurements": {
+      "title": "Main Measurements",
       "description": "Provide information about datasets, triggers, physics objects, etc",
       "type": "array",
-      "id": "physics-information",
+      "id": "main-measurements",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
       }
     },
-    "post_aod_processing": {
-      "title": "Post-AOD Processing",
+    "auxiliary_measurements": {
+      "title": "Auxiliary Measurements",
+      "description": "Provide information about datasets, triggers, physics objects, etc",
       "type": "array",
-      "default": [{}],
+      "id": "auxiliary-measurements",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
       }
     },
+    "post_n_tuple": {
+			"title": "Post n-tuple",
+			"type": "array",
+			"default": [{}],
+			"items": {
+				"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSnTupleProduction.json"
+			}
+		},
     "documentations": {
       "title": "Documentations",
       "description": "Provide documentation and other things",

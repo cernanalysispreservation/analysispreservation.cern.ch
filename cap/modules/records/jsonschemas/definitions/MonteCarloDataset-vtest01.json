@@ -98,40 +98,6 @@
           }
         }
       }
-    },
-    "triggers": {
-      "title": "Selection Triggers",
-      "description": "Add triggers here",
-      "type": "array",
-      "items": {
-        "title": "Trigger",
-        "type": "object",
-        "id": "trigger",
-        "properties": {
-          "trigger": {
-            "title": "Trigger",
-            "type": "string",
-            "enum": [],
-            "dependencies": [
-              "run_period",
-              "element"
-            ]
-          },
-          "run_period": {
-            "title": "Run Period",
-            "type": "string",
-            "enum": []
-          },
-          "element": {
-            "title": "Element",
-            "type": "string",
-            "enum": [],
-            "dependencies": [
-              "run_period"
-            ]
-          }
-        }
-      }
     }
   }
 }
