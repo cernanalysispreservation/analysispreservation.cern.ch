@@ -27,7 +27,7 @@
           "type": "array",
           "id": "mc-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
             "defaultProperties": [
               "title"
             ]

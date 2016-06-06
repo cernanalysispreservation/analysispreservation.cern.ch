@@ -195,7 +195,7 @@ window.schemaOptions = {
               }
             }
           },
-          "mc_dataset": {
+          "mc_sig_dataset": {
             "type": "depositgroup-object-quickfill",
             "order": 2,
             "droplist": "true",
@@ -367,6 +367,112 @@ window.schemaOptions = {
                             "placeholder": ""
                           }
                         }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "mc_bg_dataset": {
+            "type": "depositgroup-object-quickfill",
+            "order": 3,
+            "droplist": "true",
+            "actionbar": false,
+            "toolbarSticky": false,
+            "typeahead": {
+              "config": {
+                "autoselect": true,
+                "highlight": true,
+                "hint": true,
+                "minLength": 1
+              },
+              "datasets": {
+                "type": "remote",
+                "source": "/CMS/das/autocomplete?query=%QUERY"
+              }
+            },
+            "fields": {
+              "item": {
+                "fields": {
+                  "dataset_metadata": {
+                    "type": "object-autocomplete-import",
+                    "label": "MC Dataset",
+                    "typeahead": {
+                      "config": {
+                        "autoselect": true,
+                        "highlight": true,
+                        "hint": true,
+                        "minLength": 1
+                      },
+                      "datasets": {
+                        "type": "remote",
+                        "source": "/CMS/das/autocomplete?query=%QUERY"
+                      },
+                      "importSource": {
+                        "type": "origin",
+                        "method": "get",
+                        "source": "/CMS/das",
+                        "data": "query"
+                      },
+                      "correlation": {
+                        "title": "name",
+                        "@type": "",
+                        "description": "physics_group_name",
+                        "licence": "",
+                        "persistent_identifiers": "",
+                        "issued": "creation_time",
+                        "modified":"modification_time",
+                        "available": "",
+                        "run_number": "",
+                        "dataset_id": "dataset_id",
+                        "type": "datatype",
+                        "numbers": {
+                          "nblocks": "nblocks",
+                          "nfiles": "nfiles",
+                          "nevents": "nevents",
+                          "nlumis": "nlumis"
+                        }
+                      }
+                    },
+                    "queryField": "title",
+                    "fields": {
+                      "title": {
+                        "order": 0
+                      },
+                      "@type": {
+                        "order": 2
+                      },
+                      "description": {
+                        "order": 1
+                      },
+                      "licence": {
+                        "order": 9
+                      },
+                      "persistent_identifiers": {
+                        "order": 12,
+                        "type": "depositgroup-object-array"
+                      },
+                      "issued": {
+                        "order": 6
+                      },
+                      "modified": {
+                        "order": 7
+                      },
+                      "available": {
+                        "order": 8
+                      },
+                      "run_number": {
+                        "order": 5
+                      },
+                      "dataset_id": {
+                        "order": 3
+                      },
+                      "type": {
+                        "order": 10
+                      },
+                      "numbers": {
+                        "order": 4
                       }
                     }
                   },

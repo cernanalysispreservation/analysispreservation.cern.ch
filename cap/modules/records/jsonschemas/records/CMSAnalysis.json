@@ -43,13 +43,25 @@
             }
           }
         },
-        "mc_dataset": {
-          "title": "Monte Carlo Datasets",
-          "description": "Add Monte Carlo datasets",
+        "mc_sig_dataset": {
+          "title": "Monte Carlo Signal Datasets",
+          "description": "Add Monte Carlo Signal datasets",
           "type": "array",
-          "id": "mc-datasets",
+          "id": "mc_sig_dataset",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
+            "defaultProperties": [
+              "title"
+            ]
+          }
+        },
+        "mc_bg_dataset": {
+          "title": "Monte Carlo Background Datasets",
+          "description": "Add Monte Carlo Background datasets",
+          "type": "array",
+          "id": "mc_bg_dataset",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloBackgroundDataset-vtest01.json",
             "defaultProperties": [
               "title"
             ]
@@ -90,7 +102,7 @@
                 "type": "array",
                 "id": "mc-datasets",
                 "items": {
-                  "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloDataset-vtest01.json",
+                  "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
                   "defaultProperties": [
                     "title"
                   ]
