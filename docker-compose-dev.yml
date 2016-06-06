@@ -16,28 +16,20 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 
-web:
-  build: ./docker/nginx/
-  restart: "always"
-  ports:
-    - "80:80"
-    - "443:443"
-  links:
-    - app
-  volumes_from:
-    - static
-
 app:
   build: .
   command: cap run -h 0.0.0.0 -p 5000 --with-threads
+  ports:
+    - "80:5000"
   environment:
     - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
     - APP_CACHE_REDIS_URL=redis://cache:6379/0
     - APP_CACHE_TYPE=redis
     - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
     - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgres/cap
-    # - APP_CERN_APP_CREDENTIALS_KEY=REPLACEME
-    # - APP_CERN_APP_CREDENTIALS_SECRET=REPLACEME
+    - APP_ENABLE_SUPERPOWERS_FOR_EVERYONE=True
+    - ASSET_DEBUG=True
+    - DEBUG=True
   links:
     - elasticsearch
     - redis
@@ -45,21 +37,20 @@ app:
 
 redis:
   image: redis
+  ports:
+    - "6379:6379"
 
 postgres:
   image: postgres
   environment:
     - POSTGRES_USER=cap
     - POSTGRES_PASSWORD=cap
+  ports:
+    - "5432:5432"
 
 elasticsearch:
   image: elasticsearch
   command: elasticsearch -Des.network.host=0.0.0.0
-
-static:
-  restart: "no"
-  build: .
-  command: /bin/true
-  volumes:
-    - "/usr/local/var/cap-instance/static"
-    - ".:/code"
+  ports:
+    - "9200:9200"
+    - "9300:9300"
