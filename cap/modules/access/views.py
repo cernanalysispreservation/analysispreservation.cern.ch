@@ -38,7 +38,11 @@ def identity_loader_session():
     try:
         identity = Identity(
             session['identity.id'], session['identity.auth_type'])
-        identity.provides = session['identity.provides']
+        if current_app.config.get('ENABLE_SUPERPOWERS_FOR_EVERYONE', False):
+            egroups = get_egroups_roles_relations()
+            identity.provides = set(egroups['data-preservation-admins'])
+        else:
+            identity.provides = session['identity.provides']
         return identity
     except KeyError:
         return None

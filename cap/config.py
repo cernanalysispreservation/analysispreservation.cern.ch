@@ -105,9 +105,6 @@ JSON_METADATA_PATH = "/_metadata"
 # Mail
 MAIL_SUPPRESS_SEND = True
 
-DEBUG = True
-ASSET_DEBUG = True
-
 # OAuth configuration
 CERN_APP_CREDENTIALS = {
     'consumer_key': os.environ.get('CERN_APP_CREDENTIALS_KEY'),
@@ -121,10 +118,10 @@ CERN_REMOTE_APP["params"].update({
      }
 })
 OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
-SECURITY_SEND_REGISTER_EMAIL=False
+SECURITY_SEND_REGISTER_EMAIL = False
 
 THEME_SITENAME = _("CERN Analysis Preservation")
-THEME_LOGO =  "img/cap_logo_lrg.svg"
+THEME_LOGO = "img/cap_logo_lrg.svg"
 # REQUIREJS_CONFIG = 'js/build.js'
 THEME_GOOGLE_SITE_VERIFICATION = []
 BASE_TEMPLATE = "cap_theme/page.html"
@@ -154,4 +151,7 @@ SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
 
-JSONSCHEMAS_HOST = 'https://localhost:5000'
+JSONSCHEMAS_HOST = 'http://localhost:5000'
+
+ENABLE_SUPERPOWERS_FOR_EVERYONE = False
+"""Enable all the users to perform all the actions."""
