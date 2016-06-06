@@ -4,6 +4,10 @@
   "description": "Information concerning the state of the detector",
   "type": "object",
   "properties": {
+    "measurement_description": {
+      "title": "Measurement Description",
+      "type": "string"
+    },
     "measurement_input": {
       "title": "Input",
       "type": "object",

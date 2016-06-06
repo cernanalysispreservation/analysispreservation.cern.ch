@@ -953,6 +953,10 @@ window.schemaOptions = {
         "fields": {
           "item": {
             "fields": {
+              "measurement_description": {
+                "order": 1,
+                "placeholder": "Please provide some description for this measurement"
+              },
               "measurement_input": {
                 "type": "depositgroup-object",
                 "order": 3,
@@ -1348,7 +1352,7 @@ window.schemaOptions = {
               },
               "detector_final_state": {
                 "type": "depositgroup-object",
-                "order": 1,
+                "order": 2,
                 "label": false,
                 "fields": {
                   "final_state_particles": {
