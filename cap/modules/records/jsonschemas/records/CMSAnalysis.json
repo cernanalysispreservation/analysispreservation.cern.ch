@@ -69,53 +69,87 @@
         }
       }
     },
-    "n_tuple_production": {
-      "title": "n-tuple Production",
-      "type": "array",
-      "id": "n_tuple",
-      "default": [{}],
-      "items": {
-        "type": "object",
-        "properties": {
-          "input_data": {
-            "title": "Input",
-            "type": "object",
-            "id": "input_data",
-            "properties": {
-              "primary_datasets": {
-                "title": "Primary Datasets",
-                "description": "Add CMS primary datasets",
-                "type": "array",
-                "id": "primary-datasets",
-                "items": {
-                  "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
-                  "properties": {
-                    "copypaste": {
-                      "type": "string"
-                    }
-                  }
-                }
-              },
-              "mc_dataset": {
-                "title": "Monte Carlo Datasets",
-                "description": "Add Monte Carlo datasets",
-                "type": "array",
-                "id": "mc-datasets",
-                "items": {
-                  "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
-                  "defaultProperties": [
-                    "title"
-                  ]
+    "input_code_output": {
+      "type": "object",
+      "title": "Generic n-tuple Production",
+      "properties": {
+        "code_base": {
+          "title": "Code Base",
+          "type": "object",
+          "properties": {
+            "os": {
+              "title": "OS",
+              "description": "Provide OS",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "title": "Name",
+                  "type": "string"
+                },
+                "version": {
+                  "title": "Version",
+                  "type": "string"
                 }
               }
+            },
+            "software": {
+              "title": "Analysis Software",
+              "descritpion": "Provide software descritpion",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "title": "Name",
+                  "type": "string"
+                },
+                "version": {
+                  "title": "Version",
+                  "type": "string"
+                },
+                "global_tag": {
+                  "title": "Global Tag",
+                  "type": "string"
+                }
+              }
+            },
+            "user_code": {
+              "title": "User Code",
+              "description": "Provide user code",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "title": "URL",
+                  "type": "string"
+                },
+                "tag": {
+                  "title": "Tag",
+                  "type": "string"
+                }
+              }
+            },
+            "run_instructions": {
+              "title": "How to Reproduce",
+              "description": "Provide run instructions",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "title": "Type",
+                  "type": "string",
+                  "enum": ["readme", "makefile", "upload"]
+                }
+              }
+            },
+            "keywords": {
+              "title": "Keywords",
+              "type": "string"
+            },
+            "comments": {
+              "title": "Comments",
+              "type": "string"
             }
-          },
-          "code": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
-          },
-          "output": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
           }
+        },
+        "n_tuple": {
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
         }
       }
     },
@@ -139,11 +173,12 @@
       }
     },
     "post_n_tuple": {
+      "type": "object",
       "title": "Post n-tuple",
-      "type": "array",
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSnTupleProduction.json"
+      "properties": {
+        "n_tuple": {
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+        }
       }
     },
     "documentations": {

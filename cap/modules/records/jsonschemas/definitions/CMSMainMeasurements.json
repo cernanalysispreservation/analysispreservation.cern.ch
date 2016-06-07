@@ -8,44 +8,8 @@
       "title": "Measurement Description",
       "type": "string"
     },
-    "measurement_input": {
-      "title": "Input",
-      "type": "object",
-      "id": "measurement_input",
-      "properties": {
-        "primary_datasets": {
-          "title": "Primary Datasets",
-          "description": "Add CMS primary datasets",
-          "type": "array",
-          "id": "primary-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
-            "properties": {
-              "copypaste": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "mc_dataset": {
-          "title": "Monte Carlo Datasets",
-          "description": "Add Monte Carlo datasets",
-          "type": "array",
-          "id": "mc-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
-            "defaultProperties": [
-              "title"
-            ]
-          }
-        }
-      }
-    },
-    "measurement_code": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
-    },
-    "measurement_output": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
+    "n_tuple": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
     },
     "detector_final_state": {
       "title": "Detector Final State",
