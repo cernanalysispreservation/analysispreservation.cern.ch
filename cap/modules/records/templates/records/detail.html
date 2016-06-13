@@ -21,7 +21,7 @@
                         </ul>
                         {%- if record.id|can_edit %}
                             <div class="edit-btn">
-                                <a href="{{ url_for('records.edit_record', pid_value= record.pid_value) }}" class="btn">Edit</a>
+                                <a href="{{ url_for('records.edit_record', pid_value= record.get('_deposit', {}).get('pid',{}).get('value', None)) }}" class="btn">Edit</a>
                             </div>
                         {% endif %}
                     </nav>
@@ -30,7 +30,7 @@
                         {% block record_tabs_content_default %}
                             <div role="tabpanel" class="tab-pane active" id="info">
                                 <div id="record-fields"
-                                     data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                                     data-schema="{{ url_for('records.jsonschema_deposit', collection=record.collections[0]) }}"
                                      data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
                                     {%- if record.get("collections", None) %}
                                         <div id="record-collections">

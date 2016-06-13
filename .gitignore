@@ -67,3 +67,5 @@ target/
 #Certificates
 *.crt
 *.key
+
+/cap/modules/records/jsonschemas_gen/*

@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "description": "Describe information needed for deposit module.",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "_collections": {
+      "type": "array",
+      "item": {
+        "type": "string"
+      }
+    },
+    "_deposit": {
+      "name": "_deposit",
+      "properties": {
+        "created_by": {
+          "name": "created_by",
+          "type": "integer"
+        },
+        "id": {
+          "name": "id",
+          "type": "string"
+        },
+        "owners": {
+          "items": [
+            {
+              "type": "integer"
+            }
+          ],
+          "name": "owners",
+          "type": "array"
+        },
+        "pid": {
+          "name": "pid",
+          "properties": {
+            "revision_id": {
+              "type": "integer"
+            },
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "name": "status",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "recid": {
+      "description": "Invenio record identifier (integer).",
+      "type": "number"
+    },
+    "title": {
+      "description": "Record title.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "$schema",
+    "_collections",
+    "_deposit"
+  ],
+  "title": "CAP Record Schema v1.0.0",
+  "type": "object"
+}

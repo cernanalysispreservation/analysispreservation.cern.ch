@@ -38,5 +38,5 @@ def cap_record_fetcher(record_uuid, data):
     return FetchedPID(
         provider=RecordIdProvider,
         pid_type=RecordIdProvider.pid_type,
-        pid_value=str(data['pid_value']),
+        pid_value=str(data.get('_deposit', {}).get('pid',{}).get('value', None)),
     )

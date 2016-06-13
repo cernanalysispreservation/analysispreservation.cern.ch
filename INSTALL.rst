@@ -103,6 +103,7 @@ depend on:
    cdvirtualenv src/cap
    python manage.py collect -v
    python manage.py assets build
+   python ./scripts/schemas.py
 
 Create database to hold persistent data:
 

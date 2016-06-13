@@ -26,7 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
-import json
+import simplejson as json
 import os
 import re
 from functools import partial
@@ -200,19 +200,29 @@ def create_record(collection):
     provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
     pid = provider.pid.pid_value
 
-    data = dict()
+    data = {}
+    _deposit = {}
     _metadata = json.loads(request.get_data())
-
-    data['$schema'] = urljoin(
-            current_app.config.get('JSONSCHEMAS_HOST'),
-            url_for('records.jsonschema', collection=collection.name))
-    data['pid_value'] = pid
-    data['control_number'] = pid
+    print(_metadata)
+    _deposit['created_by'] = current_user.id
+    # _deposit['id'] = recid.int
+    _deposit['pid'] = {
+        "revision_id": 0,
+        "type": "recid",
+        "value": pid
+    }
+    _deposit['status'] = "draft"
+    _deposit['pid_value'] = pid
+    _deposit['control_number'] = pid
     if collection.parent and collection.parent.parent.name == 'CERNAnalysisPreservation':
         data['experiment'] = collection.parent.name
     data['collections'] = [collection.name]
-    data['creator'] = current_user.id
 
+    data['$schema'] = urljoin(
+        current_app.config.get('JSONSCHEMAS_HOST'),
+        url_for('records.jsonschema', collection=collection.name))
+    # data["recid"] = recid.int
+    data["_deposit"] = _deposit
     data['_metadata'] = _metadata
 
     record = Record.create(data, id_=recid)
@@ -689,11 +699,27 @@ def stream_file(uri):
 def jsonschema(collection):
     jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
                                    'records', '{0}.json'.format(collection))
+    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
+
+    with open(jsonschema_path) as file:
+        jsonschema_content = file.read()
+
+    try:
+        result = JsonRef.replace_refs(json.loads(jsonschema_content), loader=json_resolver.resolve)
+        ren = render_template('records/deposit-base-extended.html', schema=json.dumps(result, indent=4))
+        return jsonify(json.loads(ren))
+    except:
+        return jsonify(json.loads(render_template('records/deposit-base-refs.html', collection=collection)))
+
+
+@blueprint.route('/jsonschemas/deposit/<collection>/')
+def jsonschema_deposit(collection):
+    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas_gen',
+                                   'records', '{0}.json'.format(collection))
     with open(jsonschema_path) as file:
         jsonschema_content = json.loads(file.read())
-    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
-    result = JsonRef.replace_refs(jsonschema_content, loader=json_resolver.resolve)
-    return jsonify(result)
+
+    return jsonify(jsonschema_content)
 
 
 @blueprint.route('/jsonschemas/options/<collection>/')
@@ -705,11 +731,12 @@ def jsonschema_options(collection):
                     mimetype='application/javascript')
 
 
-@blueprint.route('/jsonschemas/definitions/<definition>')
+@blueprint.route('/jsonschemas/definitions/<path:definition>')
 def jsonschema_definitions(definition):
     jsonschema_definition_path = os.path.join(os.path.dirname(__file__),
-                                              'jsonschemas', 'definitions',
+                                              'jsonschemas_gen', 'definitions',
                                               definition)
+
     response = Response(stream_file(jsonschema_definition_path),
                         mimetype='application/json')
     response.headers.add('Access-Control-Allow-Origin', '*')

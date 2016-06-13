@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <div id="record-display" class="cap-box"  ng-controller="recordsController" ng-init="initRecord({% if record %}{{record.pid_value}}, '{{record.experiment}}'{% endif %});">
+                <div id="record-display" class="cap-box"  ng-controller="recordsController" ng-init="initRecord({% if record %}{{record.get('_deposit', {}).get('pid',{}).get('value', None) }}, '{{record.experiment}}'{% endif %});">
                     <nav id="record-menu" class="navbar">
                         <ul class="rec_nav nav navbar-nav nav-tabs" role="tablist">
                             <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
@@ -22,7 +22,7 @@
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="info">
                             <div id="record-form"
-                                 data-schema="{{ url_for('records.jsonschema', collection=record.collections[0]) }}"
+                                 data-schema="{{ url_for('records.jsonschema_deposit', collection=record.collections[0]) }}"
                                  data-options="{{ url_for('records.jsonschema_options', collection=record.collections[0]) }}">
                                 {%- if record.get("collections", None) %}
                                     <div id="record-collections">
