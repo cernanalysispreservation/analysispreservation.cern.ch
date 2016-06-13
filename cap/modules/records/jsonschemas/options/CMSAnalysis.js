@@ -894,391 +894,58 @@ window.schemaOptions = {
         "fields": {
           "item": {
             "fields": {
-              "measurement_input": {
-                "type": "depositgroup-object",
-                "order": 3,
-                "label": false,
-                "fields": {
-                  "primary_datasets": {
-                    "type": "depositgroup-object-quickfill",
-                    "order": 1,
-                    "droplist": "true",
-                    "actionbar": false,
-                    "toolbarSticky": false,
-                    "typeahead": {
-                      "config": {
-                        "autoselect": true,
-                        "highlight": true,
-                        "hint": true,
-                        "minLength": 1
-                      },
-                      "datasets": {
-                        "type": "remote",
-                        "source": "/CMS/das/autocomplete?query=%QUERY"
-                      }
-                    },
-                    "fields": {
-                      "item": {
-                        "fields": {
-                          "dataset_metadata": {
-                            "order": 1,
-                            "type": "object-autocomplete-import",
-                            "label": "Primary Dataset",
-                            "typeahead": {
-                              "config": {
-                                "autoselect": true,
-                                "highlight": true,
-                                "hint": true,
-                                "minLength": 1
-                              },
-                              "datasets": {
-                                "type": "remote",
-                                "source": "/CMS/das/autocomplete?query=%QUERY"
-                              },
-                              "importSource": {
-                                "type": "origin",
-                                "method": "get",
-                                "source": "/CMS/das",
-                                "data": "query"
-                              },
-                              "correlation": {
-                                "title": "name",
-                                "@type": "",
-                                "description": "physics_group_name",
-                                "licence": "",
-                                "persistent_identifiers": "",
-                                "issued": "creation_time",
-                                "modified":"modification_time",
-                                "available": "",
-                                "run_number": "",
-                                "dataset_id": "dataset_id",
-                                "type": "datatype",
-                                "numbers": {
-                                  "nblocks": "nblocks",
-                                  "nfiles": "nfiles",
-                                  "nevents": "nevents",
-                                  "nlumis": "nlumis"
-                                }
-                              }
-                            },
-                            "queryField": "title",
-                            "fields": {
-                              "title": {
-                                "order": 0
-                              },
-                              "@type": {
-                                "order": 2
-                              },
-                              "description": {
-                                "order": 1
-                              },
-                              "licence": {
-                                "order": 9
-                              },
-                              "persistent_identifiers": {
-                                "order": 12,
-                                "type": "depositgroup-object-array"
-                              },
-                              "issued": {
-                                "order": 6
-                              },
-                              "modified": {
-                                "order": 7
-                              },
-                              "available": {
-                                "order": 8
-                              },
-                              "run_number": {
-                                "order": 5
-                              },
-                              "dataset_id": {
-                                "order": 3
-                              },
-                              "type": {
-                                "order": 10
-                              },
-                              "numbers": {
-                                "order": 4
-                              }
-                            }
-                          },
-                          "triggers": {
-                            "order": 11,
-                            "actionbarStyle": "bottom",
-                            "toolbarSticky": "true",
-                            "type": "depositgroup-object-array",
-                            "fields": {
-                              "item": {
-                                "fields": {
-                                  "trigger": {
-                                    "order": 3,
-                                    "noneLabel": "Trigger",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "element": {
-                                    "order": 2,
-                                    "noneLabel": "Element",
-                                    "type": "select2",
-                                    "select2": true
-                                  },
-                                  "run_period": {
-                                    "order": 1,
-                                    "type": "select2",
-                                    "noneLabel": "Year",
-                                    "select2": true,
-                                    "dataSource": datasource_triggerRunPeriod
-                                  }
-                                },
-                                "postRender": function(callback){
-                                  var triggerYear = this.childrenByPropertyId["run_period"];
-                                  var triggerElement = this.childrenByPropertyId["element"];
-                                  var triggerTrigger = this.childrenByPropertyId["trigger"];
-                                  triggerTrigger.subscribe(triggerElement, function(element){
-                                    var year = triggerYear.getValue();
-                                    this.schema.enum = this.options.optionLabels = cms_triggers[year][element];
-                                    this.refresh();
-                                  });
-                                  triggerElement.subscribe(triggerYear, function(year){
-                                    if (cms_triggers && cms_triggers[year]) {
-                                      this.schema.enum = this.options.optionLabels = Object.keys(cms_triggers[year]);
-                                    }
-                                    this.refresh();
-                                  });
-                                  callback();
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "mc_dataset": {
-                    "type": "depositgroup-object-quickfill",
-                    "order": 2,
-                    "droplist": "true",
-                    "actionbar": false,
-                    "toolbarSticky": false,
-                    "typeahead": {
-                      "config": {
-                        "autoselect": true,
-                        "highlight": true,
-                        "hint": true,
-                        "minLength": 1
-                      },
-                      "datasets": {
-                        "type": "remote",
-                        "source": "/CMS/das/autocomplete?query=%QUERY"
-                      }
-                    },
-                    "fields": {
-                      "item": {
-                        "fields": {
-                          "dataset_metadata": {
-                            "type": "object-autocomplete-import",
-                            "label": "MC Dataset",
-                            "typeahead": {
-                              "config": {
-                                "autoselect": true,
-                                "highlight": true,
-                                "hint": true,
-                                "minLength": 1
-                              },
-                              "datasets": {
-                                "type": "remote",
-                                "source": "/CMS/das/autocomplete?query=%QUERY"
-                              },
-                              "importSource": {
-                                "type": "origin",
-                                "method": "get",
-                                "source": "/CMS/das",
-                                "data": "query"
-                              },
-                              "correlation": {
-                                "title": "name",
-                                "@type": "",
-                                "description": "physics_group_name",
-                                "licence": "",
-                                "persistent_identifiers": "",
-                                "issued": "creation_time",
-                                "modified":"modification_time",
-                                "available": "",
-                                "run_number": "",
-                                "dataset_id": "dataset_id",
-                                "type": "datatype",
-                                "numbers": {
-                                  "nblocks": "nblocks",
-                                  "nfiles": "nfiles",
-                                  "nevents": "nevents",
-                                  "nlumis": "nlumis"
-                                }
-                              }
-                            },
-                            "queryField": "title",
-                            "fields": {
-                              "title": {
-                                "order": 0
-                              },
-                              "@type": {
-                                "order": 2
-                              },
-                              "description": {
-                                "order": 1
-                              },
-                              "licence": {
-                                "order": 9
-                              },
-                              "persistent_identifiers": {
-                                "order": 12,
-                                "type": "depositgroup-object-array"
-                              },
-                              "issued": {
-                                "order": 6
-                              },
-                              "modified": {
-                                "order": 7
-                              },
-                              "available": {
-                                "order": 8
-                              },
-                              "run_number": {
-                                "order": 5
-                              },
-                              "dataset_id": {
-                                "order": 3
-                              },
-                              "type": {
-                                "order": 10
-                              },
-                              "numbers": {
-                                "order": 4
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
+              "measurement_description": {
+                "order": 1,
+                "placeholder": "Please provide some description for this measurement"
               },
-              "measurement_code": {
-                "order": 4,
+              "n_tuple": {
+                "order": 2,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
                   "item": {
                     "fields": {
-                      "os": {
-                        "type": "depositgroup-object-array",
+                      "input_data": {
+                        "type": "depositgroup-object",
                         "order": 1,
                         "fields": {
-                          "item": {
-                            "fields": {
-                              "name": {
-                                "placeholder": "Name, e.g. SLC"
-                              },
-                              "version": {
-                                "placeholder": "Version, e.g. 6"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "software": {
-                        "type": "depositgroup-object-array",
-                        "order": 2,
-                        "fields": {
-                          "item": {
-                            "fields": {
-                              "name": {
-                                "placeholder": "Name, e.g. CMSSW"
-                              },
-                              "version": {
-                                "placeholder": "Version, e.g. 5_3_x"
-                              },
-                              "global_tag": {
-                                "placeholder": "Tag"
-                              }
-                            }
+                          "dataset": {
+                            "order": 1,
+                            "noneLabel": "Select Dataset",
+                            "type": "select2",
+                            "select2": true
+                          },
+                          "mcsig": {
+                            "order": 2,
+                            "noneLabel": "Select MC Signal Dataset",
+                            "type": "select2",
+                            "select2": true
+                          },
+                          "mcbg": {
+                            "order": 3,
+                            "noneLabel": "Select MC Background Dataset",
+                            "type": "select2",
+                            "select2": true
                           }
                         }
                       },
                       "user_code": {
-                        "type": "depositgroup-object-array",
+                        "type": "depositgroup-object",
+                        "order": 2,
+                        "fields": {
+                          "config_files": {
+                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                          }
+                        }
+                      },
+                      "output_data": {
+                        "type": "depositgroup-object",
                         "order": 3,
                         "fields": {
-                          "item": {
-                            "fields": {
-                              "url": {
-                                "type": "url-harvest",
-                                "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
-                                "order": 1
-                              },
-                              "tag": {
-                                "placeholder": "E.g. v2.1",
-                                "order": 2
-                              }
-                            }
+                          "output_url": {
+                            "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                           }
                         }
-                      },
-                      "run_instructions": {
-                        "type": "depositgroup-object-array",
-                        "order": 6,
-                        "fields": {
-                          "item": {
-                            "fields": {
-                              "type": {
-                                "type": "select",
-                                "optionLabels": ["README file", "Makefile", "Upload something else"]
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "comments": {
-                        "order": 8,
-                        "type": "textarea",
-                        "rows": 10,
-                        "placeholder": ""
-                      }
-                    }
-                  }
-                }
-              },
-              "measurement_output": {
-                "order": 5,
-                "type": "depositgroup-object-array",
-                "toolbarSticky": "true",
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "output_data": {
-                        "type": "depositgroup-object-array",
-                        "order": 5,
-                        "fields": {
-                          "item": {
-                            "fields": {
-                              "url": {
-                                "type": "url-harvest",
-                                "order": 1,
-                                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "keywords": {
-                        "type": "tags",
-                        "order": 7,
-                        "placeholder": "E.g. keyword1, keyword2"
-                      },
-                      "comments": {
-                        "order": 8,
-                        "type": "textarea",
-                        "rows": 10,
-                        "placeholder": ""
                       }
                     }
                   }
@@ -1286,7 +953,7 @@ window.schemaOptions = {
               },
               "detector_final_state": {
                 "type": "depositgroup-object",
-                "order": 1,
+                "order": 2,
                 "label": false,
                 "fields": {
                   "final_state_particles": {

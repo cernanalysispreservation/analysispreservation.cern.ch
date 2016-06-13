@@ -169,7 +169,7 @@
       "type": "array",
       "id": "auxiliary-measurements",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSAuxiliaryMeasurements.json"
       }
     },
     "post_n_tuple": {
