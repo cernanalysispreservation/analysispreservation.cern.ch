@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "n-tuple",
+  "type": "array",
+  "default": [{}],
+  "items": {
+    "title": "Input",
+    "type": "object",
+    "properties": {
+      "input_data": {
+        "title": "Input",        
+        "type": "object",
+        "properties": {
+          "dataset": {
+            "title": "Dataset",
+            "type": "string",
+            "enum": ["ntuple1", "ntuple2", "ntuple3"]
+          },
+          "mcsig": {
+            "title": "MC Signal Dataset",
+            "type": "string",
+            "enum": ["ds1", "ds2", "ds3"]
+          },
+          "mcbg": {
+            "title": "MC Background Dataset",
+            "type": "string",
+            "enum": ["ds1", "ds2", "ds3"]
+          }
+        }
+      },
+      "user_code": {
+        "title": "Produced With",
+        "type": "object",
+        "properties": {
+          "config_files": {
+            "title": "URL",
+            "type": "string"
+          }
+        }
+      },
+      "output_data": {
+        "title": "Output",        
+        "type": "object",
+        "properties": {
+          "output_url": {
+            "title": "URL",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

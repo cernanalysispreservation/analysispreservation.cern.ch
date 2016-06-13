@@ -174,10 +174,10 @@
     },
     "post_n_tuple": {
       "type": "object",
-      "title": "Post n-tuple",
+      "title": "Final Results",
       "properties": {
         "n_tuple": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSFinalInputCodeOutput.json"
         }
       }
     },
