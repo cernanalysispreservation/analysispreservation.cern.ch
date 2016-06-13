@@ -2,19 +2,18 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "title": "Constant Publisher",
-  "id": "constant_publisher",
+  "additionalProperties": false,
   "properties": {
     "publisher_type": {
       "type": "string",
       "enum": [
         "constant-pub"
-      ],
-      "default": "constant-pub"
+      ]
     },
     "publish": {
       "type": "object",
       "oneOf":[
-        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema.json#"}
+        {"$ref": "../../utils/shallow-primitive-schema.json#"}
       ]
     }
   },

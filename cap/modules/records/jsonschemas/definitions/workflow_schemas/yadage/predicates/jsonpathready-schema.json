@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "JSONPath ready predicate",
+  "additionalProperties": false,
+  "properties": {
+    "dependency_type": {
+      "type": "string",
+      "enum": [
+        "jsonpath_ready"
+      ]
+    },
+    "expressions": {"type":"array"}
+  }
+}
