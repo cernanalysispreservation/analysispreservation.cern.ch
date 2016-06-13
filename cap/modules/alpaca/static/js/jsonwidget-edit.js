@@ -93,8 +93,13 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
             });
           });
 
-          recordPost.error(function(){
-            $("#record-modal .modal-body").html("There was an error in your form.</br>Please check again..");
+          recordPost.error(function(response){
+            var message = "<strong>There was an error in your form.</br>Please check again..</strong></br>";
+            message += "<hr>";
+            message += "Probable errors in the form:</br>";
+            message += "<p class='text-danger'>- "+response.responseJSON.message+"</p>";
+
+            $("#record-modal .modal-body").html(message);
             $("#record-modal").modal('show');
             $("#record-modal button[data-dismiss='modal']").click(function(){
               $(".record-rendered-loading").hide();

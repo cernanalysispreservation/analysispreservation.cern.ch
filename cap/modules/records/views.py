@@ -57,6 +57,7 @@ from invenio_search.api import DefaultFilter
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
+from jsonschema.exceptions import ValidationError
 from cap.config import JSON_METADATA_PATH
 
 from elasticsearch_dsl.query import QueryString
@@ -225,7 +226,17 @@ def create_record(collection):
     data["_deposit"] = _deposit
     data['_metadata'] = _metadata
 
-    record = Record.create(data, id_=recid)
+    try:
+        record = Record.create(data, id_=recid)
+    except ValidationError as error:
+        print("============================")
+        print(error.message)
+        print("============================")
+
+        db.session.rollback()
+        resp = jsonify(**{'message': error.message})
+        resp.status_code = 400
+        return resp
 
     # Invenio-Indexer is delegating the document inferring to
     # Invenio-Search which is analysing the string splitting by `/` and
@@ -247,7 +258,9 @@ def create_record(collection):
 
     db.session.commit()
 
-    return jsonify(**{'pid': pid})
+    resp = jsonify(**{'pid': pid})
+    resp.status_code = 200
+    return resp
 
 
 def get_collections_tree(collections):
@@ -337,9 +350,6 @@ def recid(pid_value=None):
         ActionUsers.action == 'records-read',
         ActionUsers.user_id.is_(None)).first()
 
-
-    print(record)
-    permission_edit_record = update_permission_factory(record)
     permission_read_record = read_permission_factory(record)
 
     if is_public or permission_read_record.can():
@@ -371,17 +381,32 @@ def update_record(pid_value=None):
 
     try:
         _metadata_patch = request.get_data()
+        print(_metadata_patch)
         prepare_patch = json.loads(_metadata_patch)
         for m in prepare_patch:
             m["path"] = JSON_METADATA_PATH + m.get("path", "")
         record = record.patch(patch=prepare_patch)
     except (JsonPatchException, JsonPointerException):
+        db.session.rollback()
         abort(400)
 
-    record.commit()
+    try:
+        record.commit()
+    except ValidationError as error:
+        print("============================")
+        print(error.message)
+        print("============================")
+        db.session.rollback()
+        resp = jsonify(**{'message': error.message})
+        resp.status_code = 400
+
+        return resp
 
     db.session.commit()
-    return '200'
+    resp = jsonify()
+    resp.status_code = 200
+
+    return resp
 
 
 @blueprint.route('/<pid_value>/permissions', methods=['GET', 'POST'])
@@ -415,7 +440,9 @@ def record_permissions(pid_value=None):
                 {"action": p.action, "user": {"email": p.role.name}}
             )
 
-    return jsonify(**result)
+    resp = jsonify(**result)
+    resp.status_code = 200
+    return resp
 
 
 def get_record_permissions(recid=None):
@@ -476,7 +503,9 @@ def change_record_privacy(pid_value=None):
 
     db.session.commit()
 
-    return '200'
+    resp = jsonify()
+    resp.status_code = 200
+    return resp
 
 
 @blueprint.route('/<pid_value>/permissions/update', methods=['POST'])
@@ -494,7 +523,9 @@ def update_record_permissions(pid_value=None):
     userrole_list = request.get_json().keys()
 
     if not (current_app.config.get('EMAIL_REGEX', None)):
-        return '500'
+        resp = jsonify(**{message: "ERROR in email regex ;)"})
+        resp.status_code = 400
+        return resp
 
     email_regex = re.compile(current_app.config.get('EMAIL_REGEX'), )
 
@@ -564,7 +595,9 @@ def update_record_permissions(pid_value=None):
 
     db.session.commit()
 
-    return '200'
+    resp = jsonify()
+    resp.status_code = 200
+    return resp
 
 
 def delete_record_edit_permissions(recid=None, user=None):
