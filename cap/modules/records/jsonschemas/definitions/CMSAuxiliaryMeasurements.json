@@ -8,6 +8,10 @@
       "title": "Measurement Description",
       "type": "string"
     },
+    "detailed_measurement_description": {
+      "title": "Description Details",
+      "type": "string"
+    },
     "n_tuple": {
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
     },

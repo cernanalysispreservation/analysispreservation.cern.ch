@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "n-tuple",
+  "title": "n-tuple Processing",
   "type": "array",
   "default": [{}],
   "items": {
@@ -13,16 +13,6 @@
         "properties": {
           "dataset": {
             "title": "Dataset",
-            "type": "string",
-            "enum": ["ntuple1", "ntuple2", "ntuple3"]
-          },
-          "mcsig": {
-            "title": "MC Signal Dataset",
-            "type": "string",
-            "enum": ["ds1", "ds2", "ds3"]
-          },
-          "mcbg": {
-            "title": "MC Background Dataset",
             "type": "string",
             "enum": ["ds1", "ds2", "ds3"]
           }

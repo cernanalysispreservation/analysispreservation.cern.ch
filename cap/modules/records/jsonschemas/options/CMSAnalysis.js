@@ -633,18 +633,6 @@ window.schemaOptions = {
                         "noneLabel": "Select Dataset",
                         "type": "select2",
                         "select2": true
-                      },
-                      "mcsig": {
-                        "order": 2,
-                        "noneLabel": "Select MC Signal Dataset",
-                        "type": "select2",
-                        "select2": true
-                      },
-                      "mcbg": {
-                        "order": 3,
-                        "noneLabel": "Select MC Background Dataset",
-                        "type": "select2",
-                        "select2": true
                       }
                     }
                   },
@@ -681,10 +669,16 @@ window.schemaOptions = {
             "fields": {
               "measurement_description": {
                 "order": 1,
-                "placeholder": "Please provide some description for this measurement"
+                "placeholder": "E.g. signal measurement of NNN in Z -> ee final state"
+              },
+              "detailed_measurement_description": {
+                "order": 2,
+                "type": "textarea",
+                "rows": 10,
+                "placeholder": "If applicable, please provide a more detailed description for this measurement"
               },
               "n_tuple": {
-                "order": 2,
+                "order": 4,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
@@ -697,18 +691,6 @@ window.schemaOptions = {
                           "dataset": {
                             "order": 1,
                             "noneLabel": "Select Dataset",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "mcsig": {
-                            "order": 2,
-                            "noneLabel": "Select MC Signal Dataset",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "mcbg": {
-                            "order": 3,
-                            "noneLabel": "Select MC Background Dataset",
                             "type": "select2",
                             "select2": true
                           }
@@ -738,7 +720,7 @@ window.schemaOptions = {
               },
               "detector_final_state": {
                 "type": "depositgroup-object",
-                "order": 2,
+                "order": 3,
                 "label": false,
                 "fields": {
                   "final_state_particles": {
@@ -898,8 +880,14 @@ window.schemaOptions = {
                 "order": 1,
                 "placeholder": "Please provide some description for this measurement"
               },
-              "n_tuple": {
+              "detailed_measurement_description": {
                 "order": 2,
+                "type": "textarea",
+                "rows": 10,
+                "placeholder": "If applicable, please provide a more detailed description for this measurement"
+              },
+              "n_tuple": {
+                "order": 4,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
@@ -912,18 +900,6 @@ window.schemaOptions = {
                           "dataset": {
                             "order": 1,
                             "noneLabel": "Select Dataset",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "mcsig": {
-                            "order": 2,
-                            "noneLabel": "Select MC Signal Dataset",
-                            "type": "select2",
-                            "select2": true
-                          },
-                          "mcbg": {
-                            "order": 3,
-                            "noneLabel": "Select MC Background Dataset",
                             "type": "select2",
                             "select2": true
                           }
@@ -953,7 +929,7 @@ window.schemaOptions = {
               },
               "detector_final_state": {
                 "type": "depositgroup-object",
-                "order": 2,
+                "order": 3,
                 "label": false,
                 "fields": {
                   "final_state_particles": {
@@ -1121,18 +1097,6 @@ window.schemaOptions = {
                       "dataset": {
                         "order": 1,
                         "noneLabel": "Select Dataset",
-                        "type": "select2",
-                        "select2": true
-                      },
-                      "mcsig": {
-                        "order": 2,
-                        "noneLabel": "Select MC Signal Dataset",
-                        "type": "select2",
-                        "select2": true
-                      },
-                      "mcbg": {
-                        "order": 3,
-                        "noneLabel": "Select MC Background Dataset",
                         "type": "select2",
                         "select2": true
                       }
