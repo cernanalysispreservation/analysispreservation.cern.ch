@@ -541,9 +541,13 @@ def update_record_permissions(pid_value=None):
             # Role.add(tmp_role)
             roles.append(userrole)
 
+    print("|||||||||")
 
-    users = User.query.filter(User.email.in_(emails)).all()
-    roles = Role.query.filter(Role.name.in_(roles)).all()
+    if emails:
+        users = User.query.filter(User.email.in_(emails)).all()
+    if roles:
+        print(str(roles))
+        roles = Role.query.filter(Role.name.in_(roles)).all()
 
     action_edit_record = RecordUpdateActionNeed(str(record.id))
     action_read_record = RecordReadActionNeed(str(record.id))
@@ -747,12 +751,23 @@ def jsonschema(collection):
 
 @blueprint.route('/jsonschemas/deposit/<collection>/')
 def jsonschema_deposit(collection):
-    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas_gen',
+    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
                                    'records', '{0}.json'.format(collection))
-    with open(jsonschema_path) as file:
-        jsonschema_content = json.loads(file.read())
+    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
 
-    return jsonify(jsonschema_content)
+    with open(jsonschema_path) as file:
+        jsonschema_content = file.read()
+
+    try:
+        result = JsonRef.replace_refs(json.loads(jsonschema_content), loader=json_resolver.resolve)
+        return jsonify(result)
+    except:
+        jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas_gen',
+                                       'records', '{0}.json'.format(collection))
+        with open(jsonschema_path) as file:
+            jsonschema_content = json.loads(file.read())
+
+        return jsonify(jsonschema_content)
 
 
 @blueprint.route('/jsonschemas/options/<collection>/')
