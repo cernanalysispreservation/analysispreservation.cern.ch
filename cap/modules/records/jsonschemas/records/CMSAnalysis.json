@@ -154,7 +154,7 @@
       }
     },
     "main_measurements": {
-      "title": "Main Measurements",
+      "title": "Main Measurement Workflow",
       "description": "Provide information about datasets, triggers, physics objects, etc",
       "type": "array",
       "id": "main-measurements",
@@ -164,7 +164,7 @@
       }
     },
     "auxiliary_measurements": {
-      "title": "Auxiliary Measurements",
+      "title": "Auxiliary Measurement Workflow - Trigger Efficiency, Background Measurement, Systematic Uncertainty, MC Scale Factor, Object Efficiency, Rate, Acceptance Correction",
       "description": "Provide information about datasets, triggers, physics objects, etc",
       "type": "array",
       "id": "auxiliary-measurements",
@@ -182,7 +182,7 @@
       }
     },
     "documentations": {
-      "title": "Documentations",
+      "title": "Additional Documentations",
       "description": "Provide documentation and other things",
       "type": "array",
       "id": "documentations",
