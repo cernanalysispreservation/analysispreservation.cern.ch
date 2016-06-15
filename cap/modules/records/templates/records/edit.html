@@ -32,6 +32,15 @@
                                         {% endfor %}
                                     </div>
                                 {% endif %}
+                                <div style="padding: 0 10px ;">
+                                    <div class="alert alert-danger" style="margin: 15px 0;">
+                                      <div class="progress">
+                                          <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                          </div>
+                                      </div>
+                                      WARNING: This is just a <strong>DEMO</strong>. Data saved is <strong>NOT</strong> backed-up at the moment and might be lost during any system upgrade
+                                    </div>
+                                </div>
                                 <div class="record-loading">
                                     <img src="{{url_for('static', filename='img/loader.gif')}}">
                                 </div>
