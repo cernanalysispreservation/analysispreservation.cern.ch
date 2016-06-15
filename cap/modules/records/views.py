@@ -535,19 +535,16 @@ def update_record_permissions(pid_value=None):
         else:
             #: [TOBEFIXED] Needs to check if E-Group exists
             try:
-                tmp_role = _datastore.create_role(name=userrole)
+                role = Role.query.filter(Role.name == userrole).first()
+                if not role:
+                    tmp_role = _datastore.create_role(name=userrole)
+                roles.append(userrole)
             except:
-                print("Soemthing happened when trying to create '"+userrole+"' role")
+                print("Something happened when trying to create '"+userrole+"' role")
             # Role.add(tmp_role)
-            roles.append(userrole)
 
-    print("|||||||||")
-
-    if emails:
-        users = User.query.filter(User.email.in_(emails)).all()
-    if roles:
-        print(str(roles))
-        roles = Role.query.filter(Role.name.in_(roles)).all()
+    users = User.query.filter(User.email.in_(emails)).all()
+    roles = Role.query.filter(Role.name.in_(roles)).all()
 
     action_edit_record = RecordUpdateActionNeed(str(record.id))
     action_read_record = RecordReadActionNeed(str(record.id))

@@ -129,7 +129,7 @@ define(['underscore'], function(_) {
             $scope.notification = $scope.notification + '<br />' + update;
           });
         };
-        $scope.add_permissions = function(recid, data){
+        $scope.add_permissions = function(data){
           // Cleaning "garbage" entries from newly added users, where
           // "op" is "remove"
           var new_data;
@@ -141,9 +141,10 @@ define(['underscore'], function(_) {
             }
           });
 
-          capLocalClient.set_record_permissions(recid, data)
+          capLocalClient.set_record_permissions($scope.pid_value, data)
           .then(function(response) {
             $scope.new = [];
+            get_record_permissions();
           }, function(error) {
             $scope.hello = "ERROR";
           }, function(update){

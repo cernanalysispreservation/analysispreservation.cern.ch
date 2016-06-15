@@ -19,7 +19,7 @@
   {{ changes = (fltPermissions | pick: 'op;' | groupBy: 'user.email');""}}
   {{ allPermissions = (fltPermissions | groupBy: 'user.email');""}}
   <ul class="col-sm-12 permissions-list-changes" ng-show="!isEmptyObject(changes);">
-    <header>Current Changes<a ng-click="add_permissions('{%- endraw %}{{record.pid_value}}{%- raw %}', changes);get_record_permissions('{%- endraw %}{{record.pid_value}}{%- raw %}');" class="pull-right" href="#">Update rights</a></header>
+    <header>Current Changes<a ng-click="add_permissions(changes);" class="pull-right" href="#">Update rights</a></header>
     <header class="permissions-header centered">
       <div class="col-sm-3">User</div>
       <div class="col-sm-9">
