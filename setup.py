@@ -42,7 +42,8 @@ install_requires = [
     'psycopg2',
     'flask-kvsession',
     'pysqlite',
-    'simplejson'
+    'simplejson',
+    'invenio-accounts==1.0.0a8',
     'invenio-access==1.0.0a4',
     'invenio-assets==1.0.0a4',
     'invenio-base==1.0.0a6',
@@ -51,7 +52,7 @@ install_requires = [
     'invenio-indexer==1.0.0a3',
     # 'invenio-oauthclient>=1.0.0a1',
     'invenio-pidstore==1.0.0a7',
-    'invenio-records==1.0.0a12',
+    'invenio-records==1.0.0a14',
     'invenio-records-rest>=1.0.0a7',
     'invenio-records-ui==1.0.0a5',
     'invenio-search==1.0.0a7',

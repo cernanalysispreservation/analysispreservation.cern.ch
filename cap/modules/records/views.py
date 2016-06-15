@@ -204,7 +204,6 @@ def create_record(collection):
     data = {}
     _deposit = {}
     _metadata = json.loads(request.get_data())
-    print(_metadata)
     _deposit['created_by'] = current_user.id
     # _deposit['id'] = recid.int
     _deposit['pid'] = {
