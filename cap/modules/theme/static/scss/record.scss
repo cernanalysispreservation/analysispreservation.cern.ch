@@ -248,3 +248,14 @@
         background-color: rgba(84, 187, 249, 0.1);
     }
 }
+
+.panel-heading .panel-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    float: right;
+}
+.panel-heading .panel-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";
+}

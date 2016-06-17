@@ -251,6 +251,11 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
   $.alpaca.Fields.DepositGroupArrayField = $.alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
       return "depositgroup-array";
+    },
+    doResolveItemContainer: function() {
+      var self = this;
+
+      return $(self.container).find('.panel-body');
     }
   });
 
