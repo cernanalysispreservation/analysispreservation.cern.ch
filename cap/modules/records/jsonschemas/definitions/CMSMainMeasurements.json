@@ -12,6 +12,9 @@
       "title": "Description Details",
       "type": "string"
     },
+    "code_base": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+    },
     "n_tuple": {
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
     },

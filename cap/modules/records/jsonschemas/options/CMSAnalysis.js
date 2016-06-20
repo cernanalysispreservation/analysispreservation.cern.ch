@@ -29,6 +29,33 @@ window.schemaOptions = {
             "type": "textarea",
             "rows": 5,
             "placeholder": "Please provide a short conclusion for the analysis."
+          },
+          "os": {
+            "type": "depositgroup-object",
+            "order": 5,
+            "fields": {
+              "name": {
+                "placeholder": "Name, e.g. SLC"
+              },
+              "version": {
+                "placeholder": "Version, e.g. 6"
+              }
+            }
+          },
+          "software": {
+            "type": "depositgroup-object",
+            "order": 6,
+            "fields": {
+              "name": {
+                "placeholder": "Name, e.g. CMSSW"
+              },
+              "version": {
+                "placeholder": "Version, e.g. 5_3_x"
+              },
+              "global_tag": {
+                "placeholder": "Tag"
+              }
+            }
           }
         }
       },
@@ -552,68 +579,14 @@ window.schemaOptions = {
             "type": "depositgroup-object",
             "toolbarSticky": "true",
             "fields": {
-              "os": {
-                "type": "depositgroup-object",
-                "order": 1,
-                "fields": {
-                  "name": {
-                    "placeholder": "Name, e.g. SLC"
-                  },
-                  "version": {
-                    "placeholder": "Version, e.g. 6"
-                  }
-                }
+              "url": {
+                "type": "url-harvest",
+                "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
+                "order": 1
               },
-              "software": {
-                "type": "depositgroup-object",
-                "order": 2,
-                "fields": {
-                  "name": {
-                    "placeholder": "Name, e.g. CMSSW"
-                  },
-                  "version": {
-                    "placeholder": "Version, e.g. 5_3_x"
-                  },
-                  "global_tag": {
-                    "placeholder": "Tag"
-                  }
-                }
-              },
-              "user_code": {
-                "type": "depositgroup-object",
-                "order": 3,
-                "fields": {
-                  "url": {
-                    "type": "url-harvest",
-                    "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
-                    "order": 1
-                  },
-                  "tag": {
-                    "placeholder": "E.g. v2.1",
-                    "order": 2
-                  }
-                }
-              },
-              "run_instructions": {
-                "type": "depositgroup-object",
-                "order": 6,
-                "fields": {
-                  "type": {
-                    "type": "select",
-                    "optionLabels": ["README file", "Makefile", "Upload something else"]
-                  }
-                }
-              },
-              "keywords": {
-                "type": "tags",
-                "order": 7,
-                "placeholder": "E.g. keyword1, keyword2"
-              },
-              "comments": {
-                "order": 8,
-                "type": "textarea",
-                "rows": 10,
-                "placeholder": ""
+              "tag": {
+                "placeholder": "E.g. v2.1",
+                "order": 2
               }
             }
           },
@@ -645,9 +618,19 @@ window.schemaOptions = {
                       }
                     }
                   },
-                  "output_data": {
+                  "run_instructions": {
                     "type": "depositgroup-object",
                     "order": 3,
+                    "fields": {
+                      "type": {
+                        "type": "select",
+                        "optionLabels": ["README file", "Makefile", "Upload something else"]
+                      }
+                    }
+                  },
+                  "output_data": {
+                    "type": "depositgroup-object",
+                    "order": 4,
                     "fields": {
                       "output_url": {
                         "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
@@ -677,8 +660,24 @@ window.schemaOptions = {
                 "rows": 10,
                 "placeholder": "If applicable, please provide a more detailed description for this measurement"
               },
-              "n_tuple": {
+              "code_base": {
                 "order": 4,
+                "type": "depositgroup-object",
+                "toolbarSticky": "true",
+                "fields": {
+                  "url": {
+                    "type": "url-harvest",
+                    "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
+                    "order": 1
+                  },
+                  "tag": {
+                    "placeholder": "E.g. v2.1",
+                    "order": 2
+                  }
+                }
+              },
+              "n_tuple": {
+                "order": 5,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
@@ -705,9 +704,19 @@ window.schemaOptions = {
                           }
                         }
                       },
-                      "output_data": {
+                      "run_instructions": {
                         "type": "depositgroup-object",
                         "order": 3,
+                        "fields": {
+                          "type": {
+                            "type": "select",
+                            "optionLabels": ["README file", "Makefile", "Upload something else"]
+                          }
+                        }
+                      },
+                      "output_data": {
+                        "type": "depositgroup-object",
+                        "order": 4,
                         "fields": {
                           "output_url": {
                             "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
@@ -849,7 +858,7 @@ window.schemaOptions = {
                 }
               },
               "event_selection": {
-                "order": 6,
+                "order": 7,
                 "type": "depositgroup-object",
                 "fields": {
                   "event_filter": {
@@ -886,8 +895,24 @@ window.schemaOptions = {
                 "rows": 10,
                 "placeholder": "If applicable, please provide a more detailed description for this measurement"
               },
-              "n_tuple": {
+              "code_base": {
                 "order": 4,
+                "type": "depositgroup-object",
+                "toolbarSticky": "true",
+                "fields": {
+                  "url": {
+                    "type": "url-harvest",
+                    "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
+                    "order": 1
+                  },
+                  "tag": {
+                    "placeholder": "E.g. v2.1",
+                    "order": 2
+                  }
+                }
+              },
+              "n_tuple": {
+                "order": 5,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
@@ -914,9 +939,19 @@ window.schemaOptions = {
                           }
                         }
                       },
-                      "output_data": {
+                      "run_instructions": {
                         "type": "depositgroup-object",
                         "order": 3,
+                        "fields": {
+                          "type": {
+                            "type": "select",
+                            "optionLabels": ["README file", "Makefile", "Upload something else"]
+                          }
+                        }
+                      },
+                      "output_data": {
+                        "type": "depositgroup-object",
+                        "order": 4,
                         "fields": {
                           "output_url": {
                             "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
@@ -1058,7 +1093,7 @@ window.schemaOptions = {
                 }
               },
               "event_selection": {
-                "order": 6,
+                "order": 7,
                 "type": "depositgroup-object",
                 "fields": {
                   "event_filter": {
@@ -1083,6 +1118,22 @@ window.schemaOptions = {
         "type": "depositgroup",
         "label": false,
         "fields": {
+          "code_base": {
+            "order": 1,
+            "type": "depositgroup-object",
+            "toolbarSticky": "true",
+            "fields": {
+              "url": {
+                "type": "url-harvest",
+                "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
+                "order": 1
+              },
+              "tag": {
+                "placeholder": "E.g. v2.1",
+                "order": 2
+              }
+            }
+          },
           "n_tuple": {
             "order": 2,
             "type": "depositgroup-object-array",
@@ -1111,9 +1162,19 @@ window.schemaOptions = {
                       }
                     }
                   },
-                  "output_data": {
+                  "run_instructions": {
                     "type": "depositgroup-object",
                     "order": 3,
+                    "fields": {
+                      "type": {
+                        "type": "select",
+                        "optionLabels": ["README file", "Makefile", "Upload something else"]
+                      }
+                    }
+                  },
+                  "output_data": {
+                    "type": "depositgroup-object",
+                    "order": 4,
                     "fields": {
                       "output_url": {
                         "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"

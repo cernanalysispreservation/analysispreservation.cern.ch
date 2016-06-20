@@ -28,6 +28,18 @@
           }
         }
       },
+      "run_instructions": {
+        "title": "Run Instructions",
+        "description": "Provide run instructions",
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "enum": ["readme", "makefile", "upload"]
+          }
+        }
+      },
       "output_data": {
         "title": "Output",        
         "type": "object",
