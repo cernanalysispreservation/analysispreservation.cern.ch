@@ -126,8 +126,8 @@
       }
     },
     "auxiliary_measurements": {
-      "title": "Auxiliary Measurement Workflow - Trigger Efficiency, Background Measurement, Systematic Uncertainty, MC Scale Factor, Object Efficiency, Rate, Acceptance Correction",
-      "description": "Provide information about datasets, triggers, physics objects, etc",
+      "title": "Auxiliary Measurement Workflow (Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections...)",
+      "helper": "E.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
       "type": "array",
       "id": "auxiliary-measurements",
       "items": {

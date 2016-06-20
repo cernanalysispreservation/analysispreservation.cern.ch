@@ -19,7 +19,7 @@
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
     },
     "detector_final_state": {
-      "title": "Detector Final State",
+      "title": "Final State",
       "type": "object",
       "properties": {
         "final_state_particles": {
@@ -34,9 +34,9 @@
                 "enum": [
                   "electron",
                   "muon",
-                  "tau",
                   "jet",
                   "bjet",
+                  "taujet",
                   "photon",
                   "track",
                   "vertex",
@@ -125,7 +125,7 @@
                     },
                     "number": {
                       "type": "number",
-                      "title": "GeV"
+                      "title": " "
                     }
                   }
                 }

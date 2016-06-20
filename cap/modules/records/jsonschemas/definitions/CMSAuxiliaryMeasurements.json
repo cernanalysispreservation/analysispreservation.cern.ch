@@ -34,9 +34,9 @@
                 "enum": [
                   "electron",
                   "muon",
-                  "tau",
                   "jet",
                   "bjet",
+                  "taujet",
                   "photon",
                   "track",
                   "vertex",
@@ -125,7 +125,7 @@
                     },
                     "number": {
                       "type": "number",
-                      "title": "GeV"
+                      "title": " "
                     }
                   }
                 }

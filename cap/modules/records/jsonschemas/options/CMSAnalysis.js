@@ -614,7 +614,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                       }
                     }
                   },
@@ -700,7 +700,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                           }
                         }
                       },
@@ -935,7 +935,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                           }
                         }
                       },
@@ -1158,7 +1158,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                       }
                     }
                   },
