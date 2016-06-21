@@ -763,13 +763,12 @@ window.schemaOptions = {
                               "Tight",
                               "Loose"
                             ],
-                            "order": 4,
+                            "order": 2,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
                           "number": {
-                            "placeholder": "Number, e.g. 1",
                             "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
@@ -779,8 +778,65 @@ window.schemaOptions = {
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 2
+                                "order": 3,
+                                "placeholder": "Number, e.g. 1"
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
+                            }
+                          },
+                          "number_vertex": {
+                            "order": 3,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 3,
+                                "placeholder": "1",
+                                "maximum": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "number_tracks": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "number": {
+                                "order": 1,
+                                "placeholder": "E.g. 2",
+                                "minimum": 2
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "bjet_identifier": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
@@ -800,6 +856,9 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
@@ -819,6 +878,9 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           }
                         }
@@ -998,13 +1060,12 @@ window.schemaOptions = {
                               "Tight",
                               "Loose"
                             ],
-                            "order": 4,
+                            "order": 2,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
                           "number": {
-                            "placeholder": "Number, e.g. 1",
                             "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
@@ -1014,8 +1075,65 @@ window.schemaOptions = {
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 2
+                                "order": 3,
+                                "placeholder": "Number, e.g. 1"
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
+                            }
+                          },
+                          "number_vertex": {
+                            "order": 3,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 3,
+                                "placeholder": "1",
+                                "maximum": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "number_tracks": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "number": {
+                                "order": 1,
+                                "placeholder": "E.g. 2",
+                                "minimum": 2
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "bjet_identifier": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
@@ -1035,6 +1153,9 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
@@ -1054,6 +1175,9 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           }
                         }
@@ -1198,7 +1322,7 @@ window.schemaOptions = {
                 "order": 1,
                 "placeholder": "E.g. CMS-ANA-2012-049"
               },
-                "url": {
+              "url": {
                 "order": 2,
                 "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
               },
