@@ -829,6 +829,33 @@ window.schemaOptions = {
                                 }
                               }
                             }
+                          },
+                          "physics_objects": {
+                            "type": "select2",
+                            "select2": true,
+                            "multiple": true,
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "order": 3,
+                            "dataSource": function(callback) {
+                              var physics_objects_field = this.getParent().getParent().getParent().childrenByPropertyId["final_state_particles"];
+                              var physics_object_array = [];
+                              var elementCounter = {"electron": 0, "muon": 0, "tau": 0, "jet": 0, "bjet": 0, "photon": 0, "track": 0, "vertex": 0, "MET": 0, "HT": 0};
+                              for (i = 0; i < physics_objects_field.children.length; ++i) {
+                                var numberOfParticles = physics_objects_field.children[i].childrenByPropertyId["number"].childrenByPropertyId["number"].getValue();
+                                var j = 0;
+                                do {
+                                  var obj = new Object();
+                                  var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
+                                  ++elementCounter[element];
+                                  obj.value = element + elementCounter[element];
+                                  obj.text = element + elementCounter[element];
+                                  physics_object_array.push(obj);
+                                  ++j;
+                                } while(j < numberOfParticles)
+                              }
+                              callback(physics_object_array);
+                            }
                           }
                         }
                       }

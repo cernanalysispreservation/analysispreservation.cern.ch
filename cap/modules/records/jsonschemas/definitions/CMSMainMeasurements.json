@@ -281,6 +281,11 @@
                 "dependencies": [
                   "relation_type"
                 ]
+              },
+              "physics_objects": {
+                "type": "string",
+                "title": "Physics Objects Available",
+                "enum": []
               }
             }
           }
