@@ -761,15 +761,53 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose"
+                              "Loose",
+                              "Other"
                             ],
                             "order": 2,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
-                          "number": {
+                          "isolation": {
                             "order": 3,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "notracks": {
+                                "order": 1,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTg": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              },
+                              "calorimeter": {
+                                "order": 2,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTs": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              }
+                            },
+                            "dependencies": {
+                              "sel_criteria": ["other"]
+                            }
+                          },
+                          "number": {
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -787,7 +825,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_vertex": {
-                            "order": 3,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -807,7 +845,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_tracks": {
-                            "order": 4,
+                            "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
                               "number": {
@@ -821,7 +859,7 @@ window.schemaOptions = {
                             }
                           },
                           "bjet_identifier": {
-                            "order": 4,
+                            "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
                               "tag": {
@@ -842,7 +880,7 @@ window.schemaOptions = {
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 5,
+                            "order": 7,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -864,7 +902,7 @@ window.schemaOptions = {
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 6,
+                            "order": 8,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1058,15 +1096,53 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose"
+                              "Loose",
+                              "Other"
                             ],
                             "order": 2,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
-                          "number": {
+                          "isolation": {
                             "order": 3,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "notracks": {
+                                "order": 1,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTg": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              },
+                              "calorimeter": {
+                                "order": 2,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTs": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              }
+                            },
+                            "dependencies": {
+                              "sel_criteria": ["other"]
+                            }
+                          },
+                          "number": {
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -1084,7 +1160,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_vertex": {
-                            "order": 3,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -1104,7 +1180,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_tracks": {
-                            "order": 4,
+                            "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
                               "number": {
@@ -1118,7 +1194,7 @@ window.schemaOptions = {
                             }
                           },
                           "bjet_identifier": {
-                            "order": 4,
+                            "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
                               "tag": {
@@ -1139,7 +1215,7 @@ window.schemaOptions = {
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 5,
+                            "order": 7,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1161,7 +1237,7 @@ window.schemaOptions = {
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 6,
+                            "order": 8,
                             "fields": {
                               "item": {
                                 "fields": {

@@ -59,9 +59,46 @@
               "sel_criteria": {
                 "type": "string",
                 "title": "Selection Criteria",
-                "enum": ["tight", "loose"],
+                "enum": ["tight", "loose", "other"],
                 "dependencies": [
                   "object"
+                ]
+              },
+              "isolation": {
+                "title": "Isolation",
+                "type": "object",
+                "properties": {
+                  "notracks": {
+                    "title": "no tracks",
+                    "type": "object",
+                    "properties": {
+                      "pTg": {
+                        "type": "number",
+                        "title": "pT >"
+                      },
+                      "deltaRs": {
+                        "type": "number",
+                        "title": "ΔR <"
+                      }
+                    }
+                  },
+                  "calorimeter": {
+                    "title": "calorimeter",
+                    "type": "object",
+                    "properties": {
+                      "pTs": {
+                        "type": "number",
+                        "title": "pT <"
+                      },
+                      "deltaRs": {
+                        "type": "number",
+                        "title": "ΔR <"
+                      }
+                    }
+                  }
+                },
+                "dependencies": [
+                  "sel_criteria"
                 ]
               },
               "number": {
