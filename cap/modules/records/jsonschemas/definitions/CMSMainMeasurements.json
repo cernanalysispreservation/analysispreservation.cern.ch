@@ -239,6 +239,52 @@
             }
           }
         },
+        "final_state_relations": {
+          "title": "Relations",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "relation_type": {
+                "type": "string",
+                "title": "Relation Type",
+                "enum": ["charge", "angle", "invariant mass"]
+              },
+              "charge_relation": {
+                "type": "string",
+                "title": "Charge",
+                "enum": ["same sign", "opposite sign"],
+                "dependencies": [
+                  "relation_type"
+                ]
+              },
+              "angle_relation": {
+                "type": "number",
+                "title": "Degrees",
+                "dependencies": [
+                  "relation_type"
+                ]
+              },
+              "invariant_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                  "lower_range": {
+                    "type": "number",
+                    "title": "<"
+                  },
+                  "upper_range": {
+                    "type": "number",
+                    "title": ">"
+                  }
+                },
+                "dependencies": [
+                  "relation_type"
+                ]
+              }
+            }
+          }
+        },
         "veto": {
           "title": "Vetos",
           "description": "Provide vetos",

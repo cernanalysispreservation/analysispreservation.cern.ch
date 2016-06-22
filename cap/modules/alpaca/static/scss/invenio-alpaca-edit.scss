@@ -775,12 +775,12 @@ textarea.alpaca-control {
 }
 */
 
-[data-alpaca-field-name$="sel_criteria"]{
+[data-alpaca-field-name$="sel_criteria"],[data-alpaca-field-name$="relation_type"],[data-alpaca-field-name$="charge_relation"]{
   .alpaca-control {
     float: left;
     width: auto!important;
     margin: 0;
-    margin-right: 20px;
+    margin-left: 20px;
     border: 0;
     line-height: $input_height+5;
   }

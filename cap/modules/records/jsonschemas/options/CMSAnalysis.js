@@ -925,8 +925,55 @@ window.schemaOptions = {
                       }
                     }
                   },
-                  "veto": {
+                  "final_state_relations": {
                     "order": 2,
+                    "type": "depositgroup-object-array",
+                    "fields": {
+                      "item": {
+                        "fields": {
+                          "relation_type": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 1
+                          },
+                          "charge_relation": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["charge"]
+                            }
+                          },
+                          "angle_relation": {
+                            "placeholder": "E.g. 80",
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["angle"]
+                            }
+                          },
+                          "invariant_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["invariant mass"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "veto": {
+                    "order": 3,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
@@ -1260,8 +1307,55 @@ window.schemaOptions = {
                       }
                     }
                   },
-                  "veto": {
+                  "final_state_relations": {
                     "order": 2,
+                    "type": "depositgroup-object-array",
+                    "fields": {
+                      "item": {
+                        "fields": {
+                          "relation_type": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 1
+                          },
+                          "charge_relation": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["charge"]
+                            }
+                          },
+                          "angle_relation": {
+                            "placeholder": "E.g. 80",
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["angle"]
+                            }
+                          },
+                          "invariant_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["invariant mass"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "veto": {
+                    "order": 3,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
