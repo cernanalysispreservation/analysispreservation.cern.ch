@@ -891,6 +891,20 @@ window.schemaOptions = {
                       }
                     }
                   }
+                },
+                "postRender": function(callback) {
+                  var relations = this.childrenByPropertyId["final_state_relations"];
+                  this.childrenByPropertyId["final_state_particles"].on("change", function() {
+                    for (relation of relations.children) {
+                      relation.childrenByPropertyId["physics_objects"].refresh();
+                    }
+                  });
+                  this.childrenByPropertyId["final_state_particles"].on("remove", function() {
+                    for (relation of relations.children) {
+                      relation.childrenByPropertyId["physics_objects"].refresh();
+                    }
+                  });
+                  callback();
                 }
               },
               "event_selection": {
