@@ -566,6 +566,14 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
             $(self.getControlEl()).select2();
           }
 
+          if(self.options.refreshDeps) {
+            var label = self.field.find('label');
+            var refresh_button = "</br><button class='refresh-deps-btn'><i class='fa fa-refresh'></i></button>";
+            label.append(refresh_button);
+            label.find(".refresh-deps-btn").click(function(){
+              self.refresh();
+            });
+          }
           callback();
       });
     }
