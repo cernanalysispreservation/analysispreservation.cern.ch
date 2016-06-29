@@ -1,3 +1,4 @@
+var input_data_list = {};
 var cms_triggers = {};
 var datasource_triggerRunPeriod = function(callback){
   $.get("/static/jsonschemas/fields/cms_triggers.json", function(data){
@@ -605,7 +606,11 @@ window.schemaOptions = {
                         "order": 1,
                         "noneLabel": "Select Dataset",
                         "type": "select2",
-                        "select2": true
+                        "refreshDeps": true,
+                        "multiple": true,
+                        "dataSource": function(callback){
+                          callback(_.values(input_data_list));
+                        }
                       }
                     }
                   },
@@ -614,7 +619,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
+                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
                       }
                     }
                   },
@@ -691,7 +696,11 @@ window.schemaOptions = {
                             "order": 1,
                             "noneLabel": "Select Dataset",
                             "type": "select2",
-                            "select2": true
+                            "refreshDeps": true,
+                            "multiple": true,
+                            "dataSource": function(callback){
+                              callback(_.values(input_data_list));
+                            }
                           }
                         }
                       },
@@ -700,7 +709,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
+                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
                           }
                         }
                       },
@@ -761,126 +770,32 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose",
-                              "Other"
+                              "Loose"
                             ],
-                            "order": 2,
+                            "order": 4,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
-                          "isolation": {
+                          "number": {
+                            "placeholder": "Number, e.g. 1",
                             "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
-                              "notracks": {
-                                "order": 1,
-                                "type": "depositgroup-object",
-                                "fields": {
-                                  "pTg": {
-                                    "order": 1,
-                                    "placeholder": "E.g. ?"
-                                  },
-                                  "deltaRs": {
-                                    "order": 2,
-                                    "placeholder": "E.g. ?"
-                                  }
-                                }
-                              },
-                              "calorimeter": {
-                                "order": 2,
-                                "type": "depositgroup-object",
-                                "fields": {
-                                  "pTs": {
-                                    "order": 1,
-                                    "placeholder": "E.g. ?"
-                                  },
-                                  "deltaRs": {
-                                    "order": 2,
-                                    "placeholder": "E.g. ?"
-                                  }
-                                }
-                              }
-                            },
-                            "dependencies": {
-                              "sel_criteria": ["other"]
-                            }
-                          },
-                          "number": {
-                            "order": 5,
-                            "type": "depositgroup-object",
-                            "fields": {
                               "sign": {
                                 "order": 1,
                                 "type": "select2",
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 3,
-                                "placeholder": "Number, e.g. 1"
+                                "order": 2
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
-                            }
-                          },
-                          "number_vertex": {
-                            "order": 5,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "sign": {
-                                "order": 1,
-                                "type": "select2",
-                                "removeDefaultNone": "true"
-                              },
-                              "number": {
-                                "order": 3,
-                                "placeholder": "1",
-                                "maximum": 1,
-                                "minimum": 1
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["vertex"]
-                            }
-                          },
-                          "number_tracks": {
-                            "order": 6,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "number": {
-                                "order": 1,
-                                "placeholder": "E.g. 2",
-                                "minimum": 2
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["vertex"]
-                            }
-                          },
-                          "bjet_identifier": {
-                            "order": 6,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "tag": {
-                                "noneLabel": "Select Tag",
-                                "type": "select2",
-                                "select2": true,
-                                "order": 1
-                              },
-                              "value": {
-                                "order": 3,
-                                "placeholder": "1"
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 7,
+                            "order": 5,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -894,15 +809,12 @@ window.schemaOptions = {
                                   }
                                 }
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 8,
+                            "order": 6,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -916,56 +828,6 @@ window.schemaOptions = {
                                   }
                                 }
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "final_state_relations": {
-                    "order": 2,
-                    "type": "depositgroup-object-array",
-                    "fields": {
-                      "item": {
-                        "fields": {
-                          "relation_type": {
-                            "type": "radio",
-                            "removeDefaultNone": true,
-                            "order": 1
-                          },
-                          "charge_relation": {
-                            "type": "radio",
-                            "removeDefaultNone": true,
-                            "order": 2,
-                            "dependencies": {
-                              "relation_type": ["charge"]
-                            }
-                          },
-                          "angle_relation": {
-                            "placeholder": "E.g. 80",
-                            "order": 2,
-                            "dependencies": {
-                              "relation_type": ["angle"]
-                            }
-                          },
-                          "invariant_mass": {
-                            "type": "depositgroup-object",
-                            "order": 2,
-                            "fields": {
-                              "lower_range": {
-                                "placeholder": "E.g. ?",
-                                "order": 1
-                              },
-                              "upper_range": {
-                                "placeholder": "E.g. ?",
-                                "order": 2
-                              }
-                            },
-                            "dependencies": {
-                              "relation_type": ["invariant mass"]
                             }
                           }
                         }
@@ -973,7 +835,7 @@ window.schemaOptions = {
                     }
                   },
                   "veto": {
-                    "order": 3,
+                    "order": 2,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
@@ -1073,7 +935,11 @@ window.schemaOptions = {
                             "order": 1,
                             "noneLabel": "Select Dataset",
                             "type": "select2",
-                            "select2": true
+                            "refreshDeps": true,
+                            "multiple": true,
+                            "dataSource": function(callback){
+                              callback(_.values(input_data_list));
+                            }
                           }
                         }
                       },
@@ -1082,7 +948,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
+                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
                           }
                         }
                       },
@@ -1143,126 +1009,32 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose",
-                              "Other"
+                              "Loose"
                             ],
-                            "order": 2,
+                            "order": 4,
                             "dependencies": {
                               "object": ["electron", "muon", "tau"]
                             }
                           },
-                          "isolation": {
+                          "number": {
+                            "placeholder": "Number, e.g. 1",
                             "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
-                              "notracks": {
-                                "order": 1,
-                                "type": "depositgroup-object",
-                                "fields": {
-                                  "pTg": {
-                                    "order": 1,
-                                    "placeholder": "E.g. ?"
-                                  },
-                                  "deltaRs": {
-                                    "order": 2,
-                                    "placeholder": "E.g. ?"
-                                  }
-                                }
-                              },
-                              "calorimeter": {
-                                "order": 2,
-                                "type": "depositgroup-object",
-                                "fields": {
-                                  "pTs": {
-                                    "order": 1,
-                                    "placeholder": "E.g. ?"
-                                  },
-                                  "deltaRs": {
-                                    "order": 2,
-                                    "placeholder": "E.g. ?"
-                                  }
-                                }
-                              }
-                            },
-                            "dependencies": {
-                              "sel_criteria": ["other"]
-                            }
-                          },
-                          "number": {
-                            "order": 5,
-                            "type": "depositgroup-object",
-                            "fields": {
                               "sign": {
                                 "order": 1,
                                 "type": "select2",
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 3,
-                                "placeholder": "Number, e.g. 1"
+                                "order": 2
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
-                            }
-                          },
-                          "number_vertex": {
-                            "order": 5,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "sign": {
-                                "order": 1,
-                                "type": "select2",
-                                "removeDefaultNone": "true"
-                              },
-                              "number": {
-                                "order": 3,
-                                "placeholder": "1",
-                                "maximum": 1,
-                                "minimum": 1
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["vertex"]
-                            }
-                          },
-                          "number_tracks": {
-                            "order": 6,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "number": {
-                                "order": 1,
-                                "placeholder": "E.g. 2",
-                                "minimum": 2
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["vertex"]
-                            }
-                          },
-                          "bjet_identifier": {
-                            "order": 6,
-                            "type": "depositgroup-object",
-                            "fields": {
-                              "tag": {
-                                "noneLabel": "Select Tag",
-                                "type": "select2",
-                                "select2": true,
-                                "order": 1
-                              },
-                              "value": {
-                                "order": 3,
-                                "placeholder": "1"
-                              }
-                            },
-                            "dependencies": {
-                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 7,
+                            "order": 5,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1276,15 +1048,12 @@ window.schemaOptions = {
                                   }
                                 }
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 8,
+                            "order": 6,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1298,56 +1067,6 @@ window.schemaOptions = {
                                   }
                                 }
                               }
-                            },
-                            "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "final_state_relations": {
-                    "order": 2,
-                    "type": "depositgroup-object-array",
-                    "fields": {
-                      "item": {
-                        "fields": {
-                          "relation_type": {
-                            "type": "radio",
-                            "removeDefaultNone": true,
-                            "order": 1
-                          },
-                          "charge_relation": {
-                            "type": "radio",
-                            "removeDefaultNone": true,
-                            "order": 2,
-                            "dependencies": {
-                              "relation_type": ["charge"]
-                            }
-                          },
-                          "angle_relation": {
-                            "placeholder": "E.g. 80",
-                            "order": 2,
-                            "dependencies": {
-                              "relation_type": ["angle"]
-                            }
-                          },
-                          "invariant_mass": {
-                            "type": "depositgroup-object",
-                            "order": 2,
-                            "fields": {
-                              "lower_range": {
-                                "placeholder": "E.g. ?",
-                                "order": 1
-                              },
-                              "upper_range": {
-                                "placeholder": "E.g. ?",
-                                "order": 2
-                              }
-                            },
-                            "dependencies": {
-                              "relation_type": ["invariant mass"]
                             }
                           }
                         }
@@ -1355,7 +1074,7 @@ window.schemaOptions = {
                     }
                   },
                   "veto": {
-                    "order": 3,
+                    "order": 2,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
@@ -1443,7 +1162,11 @@ window.schemaOptions = {
                         "order": 1,
                         "noneLabel": "Select Dataset",
                         "type": "select2",
-                        "select2": true
+                        "refreshDeps": true,
+                        "multiple": true,
+                        "dataSource": function(callback){
+                          callback(_.values(input_data_list));
+                        }
                       }
                     }
                   },
@@ -1452,7 +1175,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
+                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
                       }
                     }
                   },
@@ -1492,7 +1215,7 @@ window.schemaOptions = {
                 "order": 1,
                 "placeholder": "E.g. CMS-ANA-2012-049"
               },
-              "url": {
+                "url": {
                 "order": 2,
                 "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
               },
@@ -1589,8 +1312,100 @@ window.schemaOptions = {
     }
   };
 
-// window.schemaPostRender = function(control) {
-//   var triggerYear = control.childrenByPropertyId["run_period"];
-//   var triggerElement = control.childrenByPropertyId["run_period"];
-//   window.bb = control;
-// };
+
+
+
+
+
+window.schemaPostRender = function(control){
+  var root = control.children;
+  var observableList = ["input_datasets"];
+
+  root = _.reject(root, function(r){
+    if (_.indexOf(observableList, r.name) > -1)
+      return false;
+    else
+      return true;
+  });
+
+  root.forEach(function(child){
+    child.children.forEach(function(input){
+      input.on("add", function(){
+        updateDependencies(
+          input,
+          ["dataset_metadata", "title"],
+          [
+            ["input_code_output", "n_tuple", "input_data"],
+            ["main_measurements", "n_tuple", "input_data"],
+            ["auxiliary_measurements", "n_tuple", "input_data"],
+            ["post_n_tuple", "n_tuple", "input_data"],
+          ]
+        );
+      });
+      input.on("remove", function(){
+      });
+    });
+  });
+
+  var updateDependencies = function(input, propertyId, output){
+    // Update the list of dependencies from input fields
+    var depsToAdd = {};
+    _.each(input.children, function(d){
+      var tmp_obj = d;
+      if (Alpaca.isArray(propertyId)){
+        propertyId.forEach(function(property){
+          tmp_obj = tmp_obj.childrenByPropertyId[property];
+        });
+      }
+      else {
+        tmp_obj = tmp_obj.childrenByPropertyId[propertyId];
+      }
+      if ( tmp_obj.parent.type == "object-autocomplete-import"){
+        depsToAdd[tmp_obj.id] = tmp_obj.parent.parent.options.ac_input_value;
+      }
+      else {
+        depsToAdd[tmp_obj.id] = tmp_obj.data;
+      }
+    });
+
+    _.extendOwn(input_data_list, depsToAdd);
+
+    var refresh_output = function(field, output){
+      output.every(function(prop){
+        if (_.indexOf(["array", "depositgroup-array", "depositgroup-object-array"], field.type) != -1 ) {
+          _.each(field.children, function(child_field){
+            var tmp_output = _.rest(output, _.indexOf(output, prop));
+            refresh_output(child_field, tmp_output);
+          });
+          return false;
+        }
+        else {
+          if(field.childrenByPropertyId[prop]) {
+            field = field.childrenByPropertyId[prop];
+            return true;
+          }
+        }
+      });
+
+      if ( _.indexOf(["array", "depositgroup-array", "depositgroup-object-array"], field.type) < 0) {
+        field.field.empty();
+        field.refresh();
+      }
+    };
+
+    // Refresh the fields to get the updates
+    if (output && Alpaca.isArray(output[0])){
+      _.each(output, function(out){
+        refresh_output(control, out);
+      });
+    }
+    else{
+      refresh_output(control, output);
+    }
+  };
+
+
+};
+
+
+

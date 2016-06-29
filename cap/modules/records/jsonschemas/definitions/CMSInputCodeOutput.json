@@ -14,7 +14,7 @@
           "dataset": {
             "title": "Dataset",
             "type": "string",
-            "enum": ["ds1", "ds2", "ds3"]
+            "enum": []
           }
         }
       },
