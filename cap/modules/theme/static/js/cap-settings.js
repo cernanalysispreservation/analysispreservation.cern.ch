@@ -36,7 +36,7 @@ require.config({
     "json-patch": "node_modules/fast-json-patch/dist/json-patch-duplex.min",
     "angular-filter": "node_modules/angular-filter/dist/angular-filter",
     "jsoneditor": "node_modules/jsoneditor/dist/jsoneditor.min",
-    "bootstrap-tagsinput": "node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min"
+    "bootstrap-tokenfield": "node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.min"
   },
   shim: {
     'jquery': {

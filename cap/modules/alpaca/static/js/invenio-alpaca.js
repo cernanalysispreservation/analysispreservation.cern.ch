@@ -1,4 +1,4 @@
-define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-tagsinput',], function($, alpaca, _, Handlebars){
+define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-tokenfield'], function($, alpaca, _, Handlebars){
 
   Alpaca.registerView({
     "id": "invenio-view",
@@ -175,7 +175,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
         window.ppppp = self;
         this.base(function() {
             if ((self.view.type !== "display") && self.control) {
-                $(self.control).tagsinput();
+                $(self.control).tokenfield();
             }
 
             callback();
@@ -203,11 +203,11 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
         droplist_btn.click(function(){
 
-          var list = droplist.tagsinput('items');
+          var list = droplist.tokenfield('getTokens');
           if (list.length < 1){
             return false;
           }
-          list = droplist.tagsinput('items');
+          list = droplist.tokenfield('getTokens');
 
           self.resolveItemSchemaOptions(function(itemSchema, itemOptions, circular) {
             // we only allow addition if the resolved schema isn't circularly referenced
@@ -224,7 +224,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
               if(li["options"]["ac_input_value"])
                 selfList.push(li["options"]["ac_input_value"]);
             });
-            var newList = _.difference(list, selfList);
+            var newList = _.difference(_.pluck(list, "value"), selfList);
 
             _.each(newList, function(listing){
               var extraOptions = {
@@ -958,8 +958,8 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
       // process typeahead
       var ac_input = self.field;
       ac_input = $(ac_input).find(inputField);
-      ac_input.tagsinput({
-        "typeaheadjs": [
+      ac_input.tokenfield({
+        typeahead: [
           tConfig,
           tDatasets
         ]
