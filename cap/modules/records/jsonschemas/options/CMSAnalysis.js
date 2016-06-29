@@ -1117,6 +1117,33 @@ window.schemaOptions = {
                             "select2": true,
                             "order": 1
                           },
+                          "electron_type": {
+                            "noneLabel": "Select Electron",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["electron"]
+                            }
+                          },
+                          "muon_type": {
+                            "noneLabel": "Select Muon",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["muon"]
+                            }
+                          },
+                          "tau_type": {
+                            "noneLabel": "Select Tau",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["tau"]
+                            }
+                          },
                           "jet_type": {
                             "noneLabel": "Select Jet",
                             "type": "select2",
@@ -1124,6 +1151,24 @@ window.schemaOptions = {
                             "order": 2,
                             "dependencies": {
                               "object": ["jet", "bjet"]
+                            }
+                          },
+                          "photon_type": {
+                            "noneLabel": "Select Photon",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["photon"]
+                            }
+                          },
+                          "met_type": {
+                            "noneLabel": "Select MET",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["MET"]
                             }
                           },
                           "sel_criteria": {
@@ -1134,9 +1179,46 @@ window.schemaOptions = {
                               "Tight",
                               "Loose"
                             ],
-                            "order": 4,
+                            "order": 3,
                             "dependencies": {
-                              "object": ["electron", "muon", "tau"]
+                              "object": ["electron", "muon", "tau", "photon"]
+                            }
+                          },
+                          "isolation": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "notracks": {
+                                "order": 1,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTg": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              },
+                              "calorimeter": {
+                                "order": 2,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTs": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              }
+                            },
+                            "dependencies": {
+                              "sel_criteria": ["other"]
                             }
                           },
                           "number": {
@@ -1191,6 +1273,33 @@ window.schemaOptions = {
                                 }
                               }
                             }
+                          },
+                          "physics_objects": {
+                            "type": "select2",
+                            "select2": true,
+                            "multiple": true,
+                            "minItems": 2,
+                            "maxItems": 2,
+                            "order": 3,
+                            "dataSource": function(callback) {
+                              var physics_objects_field = this.getParent().getParent().getParent().childrenByPropertyId["final_state_particles"];
+                              var physics_object_array = [];
+                              var elementCounter = {"electron": 0, "muon": 0, "tau": 0, "jet": 0, "bjet": 0, "photon": 0, "track": 0, "vertex": 0, "MET": 0, "HT": 0};
+                              for (i = 0; i < physics_objects_field.children.length; ++i) {
+                                var numberOfParticles = physics_objects_field.children[i].childrenByPropertyId["number"].childrenByPropertyId["number"].getValue();
+                                var j = 0;
+                                do {
+                                  var obj = new Object();
+                                  var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
+                                  ++elementCounter[element];
+                                  obj.value = element + elementCounter[element];
+                                  obj.text = element + elementCounter[element];
+                                  physics_object_array.push(obj);
+                                  ++j;
+                                } while(j < numberOfParticles)
+                              }
+                              callback(physics_object_array);
+                            }
                           }
                         }
                       }
@@ -1226,6 +1335,20 @@ window.schemaOptions = {
                       }
                     }
                   }
+                },
+                "postRender": function(callback) {
+                  var relations = this.childrenByPropertyId["final_state_relations"];
+                  this.childrenByPropertyId["final_state_particles"].on("change", function() {
+                    for (relation of relations.children) {
+                      relation.childrenByPropertyId["physics_objects"].refresh();
+                    }
+                  });
+                  this.childrenByPropertyId["final_state_particles"].on("remove", function() {
+                    for (relation of relations.children) {
+                      relation.childrenByPropertyId["physics_objects"].refresh();
+                    }
+                  });
+                  callback();
                 }
               },
               "event_selection": {
