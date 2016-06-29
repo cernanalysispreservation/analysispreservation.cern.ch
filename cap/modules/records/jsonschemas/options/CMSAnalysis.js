@@ -755,6 +755,33 @@ window.schemaOptions = {
                             "select2": true,
                             "order": 1
                           },
+                          "electron_type": {
+                            "noneLabel": "Select Electron",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["electron"]
+                            }
+                          },
+                          "muon_type": {
+                            "noneLabel": "Select Muon",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["muon"]
+                            }
+                          },
+                          "tau_type": {
+                            "noneLabel": "Select Tau",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["tau"]
+                            }
+                          },
                           "jet_type": {
                             "noneLabel": "Select Jet",
                             "type": "select2",
@@ -762,6 +789,24 @@ window.schemaOptions = {
                             "order": 2,
                             "dependencies": {
                               "object": ["jet", "bjet"]
+                            }
+                          },
+                          "photon_type": {
+                            "noneLabel": "Select Photon",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["photon"]
+                            }
+                          },
+                          "met_type": {
+                            "noneLabel": "Select MET",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["MET"]
                             }
                           },
                           "sel_criteria": {
@@ -772,9 +817,46 @@ window.schemaOptions = {
                               "Tight",
                               "Loose"
                             ],
-                            "order": 4,
+                            "order": 3,
                             "dependencies": {
-                              "object": ["electron", "muon", "tau"]
+                              "object": ["electron", "muon", "tau", "photon"]
+                            }
+                          },
+                          "isolation": {
+                            "order": 4,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "notracks": {
+                                "order": 1,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTg": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              },
+                              "calorimeter": {
+                                "order": 2,
+                                "type": "depositgroup-object",
+                                "fields": {
+                                  "pTs": {
+                                    "order": 1,
+                                    "placeholder": "E.g. ?"
+                                  },
+                                  "deltaRs": {
+                                    "order": 2,
+                                    "placeholder": "E.g. ?"
+                                  }
+                                }
+                              }
+                            },
+                            "dependencies": {
+                              "sel_criteria": ["other"]
                             }
                           },
                           "number": {
