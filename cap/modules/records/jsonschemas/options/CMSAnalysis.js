@@ -8,6 +8,7 @@ var datasource_triggerRunPeriod = function(callback){
   });
 };
 
+
 window.schemaOptions = {
     "fields": {
       "basic_info": {
@@ -619,7 +620,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                       }
                     }
                   },
@@ -709,7 +710,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                           }
                         }
                       },
@@ -815,7 +816,8 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose"
+                              "Loose",
+                              "Other"
                             ],
                             "order": 3,
                             "dependencies": {
@@ -860,8 +862,7 @@ window.schemaOptions = {
                             }
                           },
                           "number": {
-                            "placeholder": "Number, e.g. 1",
-                            "order": 3,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -870,14 +871,71 @@ window.schemaOptions = {
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 2
+                                "order": 3,
+                                "placeholder": "Number, e.g. 1"
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
+                            }
+                          },
+                          "number_vertex": {
+                            "order": 5,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 3,
+                                "placeholder": "1",
+                                "maximum": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "number_tracks": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "number": {
+                                "order": 1,
+                                "placeholder": "E.g. 2",
+                                "minimum": 2
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "bjet_identifier": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 5,
+                            "order": 7,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -891,12 +949,15 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 6,
+                            "order": 8,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -910,6 +971,56 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "final_state_relations": {
+                    "order": 2,
+                    "type": "depositgroup-object-array",
+                    "fields": {
+                      "item": {
+                        "fields": {
+                          "relation_type": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 1
+                          },
+                          "charge_relation": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["charge"]
+                            }
+                          },
+                          "angle_relation": {
+                            "placeholder": "E.g. 80",
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["angle"]
+                            }
+                          },
+                          "invariant_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["invariant mass"]
                             }
                           },
                           "physics_objects": {
@@ -944,7 +1055,7 @@ window.schemaOptions = {
                     }
                   },
                   "veto": {
-                    "order": 2,
+                    "order": 3,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
@@ -1071,7 +1182,7 @@ window.schemaOptions = {
                         "order": 2,
                         "fields": {
                           "config_files": {
-                            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                           }
                         }
                       },
@@ -1177,7 +1288,8 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
-                              "Loose"
+                              "Loose",
+                              "Other"
                             ],
                             "order": 3,
                             "dependencies": {
@@ -1222,8 +1334,7 @@ window.schemaOptions = {
                             }
                           },
                           "number": {
-                            "placeholder": "Number, e.g. 1",
-                            "order": 3,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -1232,14 +1343,71 @@ window.schemaOptions = {
                                 "removeDefaultNone": "true"
                               },
                               "number": {
-                                "order": 2
+                                "order": 3,
+                                "placeholder": "Number, e.g. 1"
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track"]
+                            }
+                          },
+                          "number_vertex": {
+                            "order": 5,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "sign": {
+                                "order": 1,
+                                "type": "select2",
+                                "removeDefaultNone": "true"
+                              },
+                              "number": {
+                                "order": 3,
+                                "placeholder": "1",
+                                "maximum": 1,
+                                "minimum": 1
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "number_tracks": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "number": {
+                                "order": 1,
+                                "placeholder": "E.g. 2",
+                                "minimum": 2
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["vertex"]
+                            }
+                          },
+                          "bjet_identifier": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["bjet"]
                             }
                           },
                           "pt_cut": {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "type": "depositgroup-object-array",
-                            "order": 5,
+                            "order": 7,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1253,12 +1421,15 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
                           "era_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "type": "depositgroup-object-array",
-                            "order": 6,
+                            "order": 8,
                             "fields": {
                               "item": {
                                 "fields": {
@@ -1272,6 +1443,56 @@ window.schemaOptions = {
                                   }
                                 }
                               }
+                            },
+                            "dependencies": {
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "final_state_relations": {
+                    "order": 2,
+                    "type": "depositgroup-object-array",
+                    "fields": {
+                      "item": {
+                        "fields": {
+                          "relation_type": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 1
+                          },
+                          "charge_relation": {
+                            "type": "radio",
+                            "removeDefaultNone": true,
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["charge"]
+                            }
+                          },
+                          "angle_relation": {
+                            "placeholder": "E.g. 80",
+                            "order": 2,
+                            "dependencies": {
+                              "relation_type": ["angle"]
+                            }
+                          },
+                          "invariant_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["invariant mass"]
                             }
                           },
                           "physics_objects": {
@@ -1306,7 +1527,7 @@ window.schemaOptions = {
                     }
                   },
                   "veto": {
-                    "order": 2,
+                    "order": 3,
                     "minItems": 1,
                     "type": "depositgroup-object-array",
                     "fields": {
@@ -1421,7 +1642,7 @@ window.schemaOptions = {
                     "order": 2,
                     "fields": {
                       "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
                       }
                     }
                   },
@@ -1461,7 +1682,7 @@ window.schemaOptions = {
                 "order": 1,
                 "placeholder": "E.g. CMS-ANA-2012-049"
               },
-                "url": {
+              "url": {
                 "order": 2,
                 "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
               },
@@ -1557,8 +1778,6 @@ window.schemaOptions = {
       }
     }
   };
-
-
 
 
 
