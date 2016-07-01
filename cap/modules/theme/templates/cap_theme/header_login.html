@@ -1,12 +1,11 @@
 
 {%- if not current_user.is_authenticated %}
 <form class="navbar-form navbar-right">
-  <a href=" {{url_for_security('login')}}" class="btn">{{_('LOGIN')}}</a>
-  {% if security.registerable %}<a href=" {{url_for_security('register')}}" type="submit" class="btn ">{{_('SIGN UP')}}</a>{% endif %}
+  <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern')}}" class="btn btn-default">{{_('Sign in with CERN')}}</a>
 </form>
 {%- else %}
 <div class="navbar-form navbar-right">
     <a href="#" class="btn"><i class="fa fa-user"></i>{{current_user.email}}</a>
-    <a href=" {{url_for_security('logout')}}" class="btn"> {{_('LOG OUT')}}</a>
+    <a href="{{url_for('cap_theme.logout')}}" class="btn"><i class="fa fa-sign-out"></i></a>
 </div>
 {%- endif %}

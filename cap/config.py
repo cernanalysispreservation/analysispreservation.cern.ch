@@ -7,9 +7,12 @@ import os
 import copy
 from invenio_oauthclient.contrib import cern
 
+
 # Identity function for string extraction
 def _(x):
     return x
+
+DEBUG = True
 
 # Default language and timezone
 BABEL_DEFAULT_LANGUAGE = 'en'
@@ -68,6 +71,9 @@ CAP_COLLAB_EGROUPS = dict(
         ]
     )
 )
+
+ACCOUNTS_REGISTER_BLUEPRINT = False
+SECURITY_BLUEPRINT_NAME = 'access'
 
 RECORDS_REST_ENDPOINTS = dict(
     recid=dict(

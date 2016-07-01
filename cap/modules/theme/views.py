@@ -2,7 +2,9 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify, current_app, redirect
+from flask_login import logout_user, login_required
+from flask_security.views import logout as security_logout
 
 blueprint = Blueprint(
     'cap_theme',
@@ -24,3 +26,9 @@ def index():
 def search():
     """CAP Search page."""
     return render_template('cap_theme/search.html')
+
+
+@blueprint.route('/logout')
+@login_required
+def logout(next=None):
+    return security_logout()
