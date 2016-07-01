@@ -130,10 +130,12 @@ $input_radius: 3px;
   > .newarray {
     width: 100%;
   }
+}
 
-  .depositgroup-object-fields {
-    background-color: #fff;
-  }
+.depositgroup-array .panel-body > .newarray {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
 }
 
 .modal-body > .alpaca-container-item {
