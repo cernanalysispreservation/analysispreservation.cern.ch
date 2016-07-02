@@ -46,7 +46,7 @@ install_requires = [
     'gunicorn',
     'invenio-accounts==1.0.0a12',
     'invenio-assets==1.0.0a4',
-    'invenio-base==1.0.0a11',
+    'invenio-base==1.0.0a12',
     'invenio-collections==1.0.0a2',
     'invenio-db[versioning]==1.0.0a9',
     'invenio-indexer==1.0.0a6',
