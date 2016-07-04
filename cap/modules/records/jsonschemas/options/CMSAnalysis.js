@@ -1026,13 +1026,16 @@ window.schemaOptions = {
                           "physics_objects": {
                             "type": "select2",
                             "select2": true,
+                            "select2Opts": {
+                              placeholder: "Click to select physics objects from the list"
+                            },
                             "multiple": true,
                             "minItems": 2,
                             "maxItems": 2,
                             "order": 3,
                             "dataSource": function(callback) {
                               var physics_objects_field = this.getParent().getParent().getParent().childrenByPropertyId["final_state_particles"];
-                              var physics_object_array = [];
+                              var physics_object_array = ["Add objects to create relations between them"];
                               var elementCounter = {"electron": 0, "muon": 0, "tau": 0, "jet": 0, "bjet": 0, "photon": 0, "track": 0, "vertex": 0, "MET": 0, "HT": 0};
                               for (i = 0; i < physics_objects_field.children.length; ++i) {
                                 var numberOfParticles = physics_objects_field.children[i].childrenByPropertyId["number"].childrenByPropertyId["number"].getValue();
@@ -1498,13 +1501,16 @@ window.schemaOptions = {
                           "physics_objects": {
                             "type": "select2",
                             "select2": true,
+                            "select2Opts": {
+                              "placeholder": "Click to select physics objects from the list"
+                            },
                             "multiple": true,
                             "minItems": 2,
                             "maxItems": 2,
                             "order": 3,
                             "dataSource": function(callback) {
                               var physics_objects_field = this.getParent().getParent().getParent().childrenByPropertyId["final_state_particles"];
-                              var physics_object_array = [];
+                              var physics_object_array = ["Add objects to create relations between them"];
                               var elementCounter = {"electron": 0, "muon": 0, "tau": 0, "jet": 0, "bjet": 0, "photon": 0, "track": 0, "vertex": 0, "MET": 0, "HT": 0};
                               for (i = 0; i < physics_objects_field.children.length; ++i) {
                                 var numberOfParticles = physics_objects_field.children[i].childrenByPropertyId["number"].childrenByPropertyId["number"].getValue();

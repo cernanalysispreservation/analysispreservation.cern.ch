@@ -562,8 +562,9 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
       var self = this;
 
       this.base(model, function() {
-          if (self.options.select2 && $.fn.select2){
-            $(self.getControlEl()).select2();
+          if (self.options.select2 && $.fn.select2 && self.options.select2Opts){
+            var select2_options = self.options.select2Opts;
+            $(self.getControlEl()).select2(select2_options);
           }
 
           if(self.options.refreshDeps) {

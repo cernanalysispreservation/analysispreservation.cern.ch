@@ -894,3 +894,13 @@ textarea.alpaca-control {
     font-size: inherit;
   }
 }
+
+.alpaca-field-select2 {
+  .select2-search--inline {
+    width: 100%;
+  }
+
+  input.select2-search__field {
+    width: 100%!important;
+  }
+}
