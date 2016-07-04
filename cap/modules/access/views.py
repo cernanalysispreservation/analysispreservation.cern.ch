@@ -16,14 +16,6 @@ access_blueprint = Blueprint('access', __name__,
 
 # principal = Principal(current_app)
 
-@access_blueprint.route('/login/')
-def login():
-    """Redirect the login request to CERN OAuth login or CAP home page."""
-    if not current_user.is_authenticated:
-        return redirect(url_for("invenio_oauthclient.login",
-                                remote_app='cern'))
-    return redirect(url_for('front.home'))
-
 
 @access_blueprint.record_once
 def init(state):
