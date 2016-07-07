@@ -26,9 +26,3 @@ def index():
 def search():
     """CAP Search page."""
     return render_template('cap_theme/search.html')
-
-
-@blueprint.route('/logout')
-@login_required
-def logout(next=None):
-    return security_logout()

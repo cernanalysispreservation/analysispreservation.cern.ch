@@ -22,7 +22,7 @@ I18N_LANGUAGES = [
 
 BASE_TEMPLATE = "invenio_theme/page.html"
 COVER_TEMPLATE = "invenio_theme/page_cover.html"
-SETTINGS_TEMPLATE = "invenio_theme/settings/content.html"
+SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
@@ -73,7 +73,11 @@ CAP_COLLAB_EGROUPS = dict(
 )
 
 ACCOUNTS_REGISTER_BLUEPRINT = False
-SECURITY_BLUEPRINT_NAME = 'access'
+SECURITY_POST_CHANGE_VIEW = False
+SECURITY_RECOVERABLE = False
+SECURITY_REGISTERABLE = False
+SECURITY_CHANGEABLE = False
+OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
 RECORDS_REST_ENDPOINTS = dict(
     recid=dict(
