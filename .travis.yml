@@ -45,4 +45,6 @@ before_script:
   - travis_retry pip install kwalitee GitPython --pre
   - kwalitee check message -s ${TRAVIS_COMMIT_RANGE}
 
-script: true
+script: 
+  - python scripts/ref_url_validation.py
+  
