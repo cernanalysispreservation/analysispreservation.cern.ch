@@ -5,12 +5,12 @@
   "properties": {
     "basic_info": {
       "title": "Basic Information",
+      "description": "Please provide some information relevant for all parts of the Analysis here",
       "propertyOrder": 10,
       "type": "object",
       "id": "basic_info",
       "properties": {
         "analysis_number": {
-          "description": "Analysis Description",
           "title": "Analysis Number",
           "type": "string"
         },
@@ -23,8 +23,8 @@
           "type": "string"
         },
         "os": {
-          "title": "OS",
-          "description": "Provide OS",
+          "title": "Operation System",
+          "description": "Please provide information about your operation system",
           "type": "object",
           "properties": {
             "name": {
@@ -39,7 +39,7 @@
         },
         "software": {
           "title": "Analysis Software",
-          "descritpion": "Provide software descritpion",
+          "description": "Please provide a software description",
           "type": "object",
           "properties": {
             "name": {
@@ -60,12 +60,13 @@
     },
     "input_datasets": {
       "title": "Input Data",
+      "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
       "type": "object",
       "id": "input_datasets",
       "properties": {
         "primary_datasets": {
           "title": "Primary Datasets",
-          "description": "Add CMS primary datasets",
+          "description": "Please list all primary datasets here",
           "type": "array",
           "id": "primary-datasets",
           "items": {
@@ -79,7 +80,7 @@
         },
         "mc_sig_dataset": {
           "title": "Monte Carlo Signal Datasets",
-          "description": "Add Monte Carlo Signal datasets",
+          "description": "Please list all Monte Carlo Signal datasets",
           "type": "array",
           "id": "mc_sig_dataset",
           "items": {
@@ -91,7 +92,7 @@
         },
         "mc_bg_dataset": {
           "title": "Monte Carlo Background Datasets",
-          "description": "Add Monte Carlo Background datasets",
+          "description": "Please list all Monte Carlo Background datasets",
           "type": "array",
           "id": "mc_bg_dataset",
           "items": {
@@ -104,8 +105,8 @@
       }
     },
     "input_code_output": {
-      "type": "object",
       "title": "Generic n-tuple Production",
+      "type": "object",
       "properties": {
         "code_base": {
           "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
@@ -117,7 +118,7 @@
     },
     "main_measurements": {
       "title": "Main Measurement Workflow",
-      "description": "Provide information about datasets, triggers, physics objects, etc",
+      "description": "Please provide information about the main measurements of your analysis",
       "type": "array",
       "id": "main-measurements",
       "default": [{}],
@@ -126,8 +127,8 @@
       }
     },
     "auxiliary_measurements": {
-      "title": "Auxiliary Measurement Workflow (Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections...)",
-      "helper": "E.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
+      "title": "Auxiliary Measurement Workflow",
+      "description": "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
       "type": "array",
       "id": "auxiliary-measurements",
       "items": {
@@ -135,8 +136,9 @@
       }
     },
     "post_n_tuple": {
-      "type": "object",
       "title": "Final Results",
+      "description": "Please provide information about the combination of measurements for the final results of your analysis ",
+      "type": "object",
       "properties": {
         "code_base": {
           "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
@@ -148,7 +150,7 @@
     },
     "documentations": {
       "title": "Additional Documentations",
-      "description": "Provide documentation and other things",
+      "description": "Please provide all documentation",
       "type": "array",
       "id": "documentations",
       "default": [{}],
@@ -158,7 +160,7 @@
     },
     "internal_discussions": {
       "title": "Internal Discussions",
-      "description": "Add Internal Discussions",
+      "description": "Please add all internal discussions",
       "type": "array",
       "id": "internal-discussions",
       "default": [{}],
@@ -168,7 +170,7 @@
     },
     "presentations": {
       "title": "Presentations",
-      "description": "Add Presentations",
+      "description": "Please add all presentations",
       "type": "array",
       "id": "presentations",
       "default": [{}],
@@ -178,7 +180,7 @@
     },
     "publications": {
       "title": "Publications",
-      "description": "Add publications or Import from CADI",
+      "description": "Please add all publications",
       "type": "array",
       "id": "publications",
       "default": [{}],
@@ -188,7 +190,7 @@
     },
     "keywords": {
       "title": "Keywords",
-      "description": "Add keywords here",
+      "description": "Please add keywords here",
       "type": "string",
       "id": "keywords"
     }

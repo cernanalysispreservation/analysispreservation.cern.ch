@@ -19,7 +19,7 @@
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
     },
     "detector_final_state": {
-      "title": "Final State",
+      "title": "Event Selection",
       "type": "object",
       "properties": {
         "final_state_particles": {
