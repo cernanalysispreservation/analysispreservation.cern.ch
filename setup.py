@@ -44,7 +44,7 @@ install_requires = [
     'invenio-access==1.0.0a5',
     'simplejson',
     'gunicorn',
-    'invenio-accounts==1.0.0a12',
+    'invenio-accounts==1.0.0a8',
     'invenio-assets==1.0.0a4',
     'invenio-base==1.0.0a12',
     'invenio-collections==1.0.0a2',
@@ -52,12 +52,12 @@ install_requires = [
     'invenio-indexer==1.0.0a6',
     # 'invenio-oauthclient>=1.0.0a1',
     'invenio-pidstore==1.0.0a7',
-    'invenio-records==1.0.0a16',
+    'invenio-records==1.0.0a14',
     'invenio-records-rest==1.0.0a13',
     'invenio-records-ui==1.0.0a6',
     'invenio-search==1.0.0a7',
     'invenio-search-ui==1.0.0a4',
-    'invenio-theme==1.0.0a11',
+    'invenio-theme==1.0.0a13',
     'invenio[minimal]>=3.0.0a2,<3.1.0',
 ]
 

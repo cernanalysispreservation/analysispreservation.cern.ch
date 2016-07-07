@@ -10,7 +10,7 @@ from flask_principal import AnonymousIdentity, Identity, Principal, RoleNeed
 
 from invenio_oauthclient.signals import account_setup_received
 
-access_blueprint = Blueprint('access', __name__,
+access_blueprint = Blueprint('cap_access', __name__,
                              url_prefix='/access',
                              template_folder='templates')
 
