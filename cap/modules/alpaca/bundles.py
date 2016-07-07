@@ -90,7 +90,6 @@ display_css = NpmBundle(
 edit_css = NpmBundle(
     Bundle(
         'node_modules/select2/dist/css/select2.css',
-        'node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput-typeahead.css',
         'scss/invenio-alpaca-edit.scss',
         filters="scss, cleancss",
     ),
