@@ -1,784 +1,1137 @@
-[
-{
-  "schema": "mappings/atlasworkflows.json",
+[{
   "collection": "ATLASWorkflows",
   "metadata": {
     "basic_info": {
       "title": "This is a comlpex ATLAS Workflow example"
     },
-    "workflows": [
-      {
-        "stages": [
-          {
-            "dependencies": [],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "ntuple": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "single-from-ctx"
+    "workflows": [{
+      "stages": [{
+        "dependencies": [],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./ntupling.sh {inputtype} {input} {output}",
+              "process_type": "string-interpolated-cmd"
             },
-            "name": "preparedata",
-            "parameters": {
-              "input": "{dataset_data}",
-              "inputtype": "data",
-              "output": "{dataset_data}.ntup.root"
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "ntuple": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
             }
           },
-          {
-            "dependencies": [],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "ntuple": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "single-from-ctx"
-            },
-            "name": "mcback1",
-            "parameters": {
-              "input": "{dataset_mcback_one}",
-              "inputtype": "mc",
-              "output": "/workdir/{dataset_mcback_one}.ntup.root"
-            }
-          },
-          {
-            "dependencies": [],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "ntuple": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "single-from-ctx"
-            },
-            "name": "mcback2",
-            "parameters": {
-              "input": "{dataset_mcback_one}",
-              "inputtype": "mc",
-              "output": "/workdir/{dataset_mcback_one}.ntup.root"
-            }
-          },
-          {
-            "dependencies": [],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./getsignal.sh {par_one} {par_two} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "signal_sample": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "single-from-ctx"
-            },
-            "name": "acquire_signal",
-            "parameters": {
-              "output": "/workdir/signal.input.root",
-              "par_two": "{signal_par_two}",
-              "par_one": "{signal_par_one}"
-            }
-          },
-          {
-            "dependencies": [
-              "acquire_signal"
-            ],
-            "scheduler": {
-              "outputs": "signal_sample",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./ntupling.sh {inputtype} {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "ntuple": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "acquire_signal"
-              ]
-            },
-            "name": "mcsignal",
-            "parameters": {
-              "output": "/workdir/signal.ntup.root",
-              "inputtype": "mc"
-            }
-          },
-          {
-            "dependencies": [
-              "mcsignal"
-            ],
-            "scheduler": {
-              "outputs": "ntuple",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./makehistos_mc.sh {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "mchistos": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "mcsignal"
-              ]
-            },
-            "name": "hist_mcsignal",
-            "parameters": {
-              "output": "/workdir/signal.histos.root"
-            }
-          },
-          {
-            "dependencies": [
-              "mcback1"
-            ],
-            "scheduler": {
-              "outputs": "ntuple",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./makehistos_mc.sh {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "mchistos": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "mcback1"
-              ]
-            },
-            "name": "hist_mc1",
-            "parameters": {
-              "output": "/workdir/back1.histos.root"
-            }
-          },
-          {
-            "dependencies": [
-              "mcback2"
-            ],
-            "scheduler": {
-              "outputs": "ntuple",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./makehistos_mc.sh {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "mchistos": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "mcback2"
-              ]
-            },
-            "name": "hist_mc2",
-            "parameters": {
-              "output": "/workdir/back2.histos.root"
-            }
-          },
-          {
-            "dependencies": [
-              "preparedata"
-            ],
-            "scheduler": {
-              "outputs": "ntuple",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./makehistos_data.sh {input} {output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "datahistos": "output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "preparedata"
-              ]
-            },
-            "name": "hist_data",
-            "parameters": {
-              "output": "/workdir/data.histos.root"
-            }
-          },
-          {
-            "dependencies": [
-              "preparedata"
-            ],
-            "scheduler": {
-              "outputs": "ntuple",
-              "to_input": "input",
-              "scheduler_type": "reduce-from-dep",
-              "step": {
-                "process": {
-                  "cmd": "./makehistos_datadriven.sh {tight_cut} {input} {output_loose} {output_tight}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "tight": "output_tight",
-                    "loose": "output_loose"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "from_stages": [
-                "preparedata"
-              ]
-            },
-            "name": "data_driven_back_hists",
-            "parameters": {
-              "tight_cut": "{data_driven_cut}",
-              "output_tight": "/workdir/data.histos.root:/tight_hist",
-              "output_loose": "/workdir/data.histos.root:/hist_loose"
-            }
-          },
-          {
-            "dependencies": [
-              "data_driven_back_hists"
-            ],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./estimate.sh {tighthisto} {loosehisto} {estimate_output}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "estimate": "estimate_output"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "zip-from-dep",
-              "zip": [
-                {
-                  "zip_with": [
-                    "tighthisto"
-                  ],
-                  "outputs": "tight",
-                  "from_stages": [
-                    "data_driven_back_hists"
-                  ]
-                },
-                {
-                  "zip_with": [
-                    "loosehisto"
-                  ],
-                  "outputs": "loose",
-                  "from_stages": [
-                    "data_driven_back_hists"
-                  ]
-                }
-              ]
-            },
-            "name": "hist_estimate",
-            "parameters": {
-              "estimate_output": "/workdir/estimate.hist.root"
-            }
-          },
-          {
-            "dependencies": [
-              "hist_estimate",
-              "hist_data",
-              "hist_mc1",
-              "hist_mc2",
-              "hist_mcsignal"
-            ],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./runfit.sh {data} {signal} {back1} {back2} {back3} {fitresults} {workspace}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "results": "fitresults",
-                    "workspace": "workspace"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "zip-from-dep",
-              "zip": [
-                {
-                  "zip_with": [
-                    "back1",
-                    "back2",
-                    "back3"
-                  ],
-                  "outputs": "estimate|mchistos",
-                  "from_stages": [
-                    "hist_mc1",
-                    "hist_mc2",
-                    "hist_estimate"
-                  ]
-                },
-                {
-                  "zip_with": [
-                    "signal"
-                  ],
-                  "outputs": "mchistos",
-                  "from_stages": [
-                    "hist_mcsignal"
-                  ]
-                },
-                {
-                  "zip_with": [
-                    "data"
-                  ],
-                  "outputs": "datahistos",
-                  "from_stages": [
-                    "hist_data"
-                  ]
-                }
-              ]
-            },
-            "name": "fit",
-            "parameters": {
-              "workspace": "/workdir/fit.workspace.root",
-              "fitresults": "/workdir/fitresults.yaml"
-            }
-          },
-          {
-            "dependencies": [
-              "hist_estimate",
-              "hist_data",
-              "hist_mc1",
-              "hist_mc2",
-              "hist_mcsignal"
-            ],
-            "scheduler": {
-              "step": {
-                "process": {
-                  "cmd": "./runplots.sh {data} {signal} {back1} {back2} {back3} {plotdir}",
-                  "process_type": "string-interpolated-cmd"
-                },
-                "publisher": {
-                  "publisher_type": "frompar-pub",
-                  "outputmap": {
-                    "plots": "plotdir"
-                  }
-                },
-                "environment": {
-                  "imagetag": "latest",
-                  "image": "lukasheinrich/workflow-dummy",
-                  "envscript": "",
-                  "environment_type": "docker-encapsulated",
-                  "env": {},
-                  "resources": []
-                }
-              },
-              "scheduler_type": "zip-from-dep",
-              "zip": [
-                {
-                  "zip_with": [
-                    "back1",
-                    "back2",
-                    "back3"
-                  ],
-                  "outputs": "estimate|mchistos",
-                  "from_stages": [
-                    "hist_mc1",
-                    "hist_mc2",
-                    "hist_estimate"
-                  ]
-                },
-                {
-                  "zip_with": [
-                    "signal"
-                  ],
-                  "outputs": "mchistos",
-                  "from_stages": [
-                    "hist_mcsignal"
-                  ]
-                },
-                {
-                  "zip_with": [
-                    "data"
-                  ],
-                  "outputs": "datahistos",
-                  "from_stages": [
-                    "hist_data"
-                  ]
-                }
-              ]
-            },
-            "name": "plots",
-            "parameters": {
-              "plotdir": "/workdir/plots"
-            }
-          }
-        ],
-        "context": {
-          "signal_par_two": null,
-          "dataset_data": null,
-          "data_driven_cut": null,
-          "dataset_mcback_one": null,
-          "dataset_mcback_two": null,
-          "signal_par_one": null
+          "scheduler_type": "single-from-ctx"
+        },
+        "name": "preparedata",
+        "parameters": {
+          "input": "{dataset_data}",
+          "inputtype": "data",
+          "output": "{dataset_data}.ntup.root"
         }
+      }, {
+        "dependencies": [],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./ntupling.sh {inputtype} {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "ntuple": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "single-from-ctx"
+        },
+        "name": "mcback1",
+        "parameters": {
+          "input": "{dataset_mcback_one}",
+          "inputtype": "mc",
+          "output": "/workdir/{dataset_mcback_one}.ntup.root"
+        }
+      }, {
+        "dependencies": [],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./ntupling.sh {inputtype} {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "ntuple": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "single-from-ctx"
+        },
+        "name": "mcback2",
+        "parameters": {
+          "input": "{dataset_mcback_one}",
+          "inputtype": "mc",
+          "output": "/workdir/{dataset_mcback_one}.ntup.root"
+        }
+      }, {
+        "dependencies": [],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./getsignal.sh {par_one} {par_two} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "signal_sample": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "single-from-ctx"
+        },
+        "name": "acquire_signal",
+        "parameters": {
+          "output": "/workdir/signal.input.root",
+          "par_two": "{signal_par_two}",
+          "par_one": "{signal_par_one}"
+        }
+      }, {
+        "dependencies": [
+          "acquire_signal"
+        ],
+        "scheduler": {
+          "outputs": "signal_sample",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./ntupling.sh {inputtype} {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "ntuple": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "acquire_signal"
+          ]
+        },
+        "name": "mcsignal",
+        "parameters": {
+          "output": "/workdir/signal.ntup.root",
+          "inputtype": "mc"
+        }
+      }, {
+        "dependencies": [
+          "mcsignal"
+        ],
+        "scheduler": {
+          "outputs": "ntuple",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./makehistos_mc.sh {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "mchistos": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "mcsignal"
+          ]
+        },
+        "name": "hist_mcsignal",
+        "parameters": {
+          "output": "/workdir/signal.histos.root"
+        }
+      }, {
+        "dependencies": [
+          "mcback1"
+        ],
+        "scheduler": {
+          "outputs": "ntuple",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./makehistos_mc.sh {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "mchistos": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "mcback1"
+          ]
+        },
+        "name": "hist_mc1",
+        "parameters": {
+          "output": "/workdir/back1.histos.root"
+        }
+      }, {
+        "dependencies": [
+          "mcback2"
+        ],
+        "scheduler": {
+          "outputs": "ntuple",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./makehistos_mc.sh {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "mchistos": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "mcback2"
+          ]
+        },
+        "name": "hist_mc2",
+        "parameters": {
+          "output": "/workdir/back2.histos.root"
+        }
+      }, {
+        "dependencies": [
+          "preparedata"
+        ],
+        "scheduler": {
+          "outputs": "ntuple",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./makehistos_data.sh {input} {output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "datahistos": "output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "preparedata"
+          ]
+        },
+        "name": "hist_data",
+        "parameters": {
+          "output": "/workdir/data.histos.root"
+        }
+      }, {
+        "dependencies": [
+          "preparedata"
+        ],
+        "scheduler": {
+          "outputs": "ntuple",
+          "to_input": "input",
+          "scheduler_type": "reduce-from-dep",
+          "step": {
+            "process": {
+              "cmd": "./makehistos_datadriven.sh {tight_cut} {input} {output_loose} {output_tight}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "tight": "output_tight",
+                "loose": "output_loose"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "from_stages": [
+            "preparedata"
+          ]
+        },
+        "name": "data_driven_back_hists",
+        "parameters": {
+          "tight_cut": "{data_driven_cut}",
+          "output_tight": "/workdir/data.histos.root:/tight_hist",
+          "output_loose": "/workdir/data.histos.root:/hist_loose"
+        }
+      }, {
+        "dependencies": [
+          "data_driven_back_hists"
+        ],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./estimate.sh {tighthisto} {loosehisto} {estimate_output}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "estimate": "estimate_output"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "zip-from-dep",
+          "zip": [{
+            "zip_with": [
+              "tighthisto"
+            ],
+            "outputs": "tight",
+            "from_stages": [
+              "data_driven_back_hists"
+            ]
+          }, {
+            "zip_with": [
+              "loosehisto"
+            ],
+            "outputs": "loose",
+            "from_stages": [
+              "data_driven_back_hists"
+            ]
+          }]
+        },
+        "name": "hist_estimate",
+        "parameters": {
+          "estimate_output": "/workdir/estimate.hist.root"
+        }
+      }, {
+        "dependencies": [
+          "hist_estimate",
+          "hist_data",
+          "hist_mc1",
+          "hist_mc2",
+          "hist_mcsignal"
+        ],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./runfit.sh {data} {signal} {back1} {back2} {back3} {fitresults} {workspace}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "results": "fitresults",
+                "workspace": "workspace"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "zip-from-dep",
+          "zip": [{
+            "zip_with": [
+              "back1",
+              "back2",
+              "back3"
+            ],
+            "outputs": "estimate|mchistos",
+            "from_stages": [
+              "hist_mc1",
+              "hist_mc2",
+              "hist_estimate"
+            ]
+          }, {
+            "zip_with": [
+              "signal"
+            ],
+            "outputs": "mchistos",
+            "from_stages": [
+              "hist_mcsignal"
+            ]
+          }, {
+            "zip_with": [
+              "data"
+            ],
+            "outputs": "datahistos",
+            "from_stages": [
+              "hist_data"
+            ]
+          }]
+        },
+        "name": "fit",
+        "parameters": {
+          "workspace": "/workdir/fit.workspace.root",
+          "fitresults": "/workdir/fitresults.yaml"
+        }
+      }, {
+        "dependencies": [
+          "hist_estimate",
+          "hist_data",
+          "hist_mc1",
+          "hist_mc2",
+          "hist_mcsignal"
+        ],
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "./runplots.sh {data} {signal} {back1} {back2} {back3} {plotdir}",
+              "process_type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "publisher_type": "frompar-pub",
+              "outputmap": {
+                "plots": "plotdir"
+              }
+            },
+            "environment": {
+              "imagetag": "latest",
+              "image": "lukasheinrich/workflow-dummy",
+              "envscript": "",
+              "environment_type": "docker-encapsulated",
+              "env": {},
+              "resources": []
+            }
+          },
+          "scheduler_type": "zip-from-dep",
+          "zip": [{
+            "zip_with": [
+              "back1",
+              "back2",
+              "back3"
+            ],
+            "outputs": "estimate|mchistos",
+            "from_stages": [
+              "hist_mc1",
+              "hist_mc2",
+              "hist_estimate"
+            ]
+          }, {
+            "zip_with": [
+              "signal"
+            ],
+            "outputs": "mchistos",
+            "from_stages": [
+              "hist_mcsignal"
+            ]
+          }, {
+            "zip_with": [
+              "data"
+            ],
+            "outputs": "datahistos",
+            "from_stages": [
+              "hist_data"
+            ]
+          }]
+        },
+        "name": "plots",
+        "parameters": {
+          "plotdir": "/workdir/plots"
+        }
+      }],
+      "context": {
+        "signal_par_two": null,
+        "dataset_data": null,
+        "data_driven_cut": null,
+        "dataset_mcback_one": null,
+        "dataset_mcback_two": null,
+        "signal_par_one": null
       }
-    ]
+    }]
   }
-},
-{
-  "schema": "mappings/atlasworkflows.json",
+}, {
   "collection": "ATLASWorkflows",
   "metadata": {
-      "basic_info": {
-        "title": "This is a simple ATLAS Workflow example"
-      },
-      "workflows": [
-        {
-          "stages": [
-            {
-              "scheduler": {
-                "step": {
-                  "process": {
-                    "cmd": "/resources/download.py {dataset} {outDir} {outList}",
-                    "process-type": "string-interpolated-cmd"
-                  },
-                  "publisher": {
-                    "outputmap": {
-                      "output": "outList"
-                    },
-                    "publisher-type": "process-attr-pub"
-                  },
-                  "environment": {
-                    "envscript": "/resources/downloadenv.sh",
-                    "image": "lukasheinrich/dilepton_download",
-                    "environment-type": "docker-encapsulated",
-                    "resources": [
-                      "CVMFS",
-                      "GRIDProxy"
-                    ]
-                  }
-                },
-                "scheduler-type": "singlestep-from-context"
-              },
-              "name": "download",
-              "parameters": {
-                "outList": "/workdir/files.list",
-                "outDir": "/workdir/grid_download",
-                "dataset": "{dataset}"
-              }
+    "basic_info": {
+      "title": "This is a simple ATLAS Workflow example"
+    },
+    "workflows": [{
+      "stages": [{
+        "scheduler": {
+          "step": {
+            "process": {
+              "cmd": "/resources/download.py {dataset} {outDir} {outList}",
+              "process-type": "string-interpolated-cmd"
             },
-            {
-              "dependencies": [
-                "download"
-              ],
-              "scheduler": {
-                "outputs": "output",
-                "to_input": "filelist",
-                "step": {
-                  "process": {
-                    "cmd": "./DileptonAnalysis {blinded} {include_truth} {filter} {input_type} -maxsyst {maxsyst} -m {minintup} -f {filelist}",
-                    "process-type": "string-interpolated-cmd"
-                  },
-                  "publisher": {
-                    "outputmap": {
-                      "output": "minintup"
-                    },
-                    "publisher-type": "process-attr-pub"
-                  },
-                  "environment": {
-                    "envscript": "/resources/ntuplingenv.sh",
-                    "image": "lukasheinrich/dilepton_ntupling",
-                    "environment-type": "docker-encapsulated",
-                    "resources": [
-                      "CVMFS"
-                    ]
-                  }
-                },
-                "from_stages": [
-                  "download"
-                ],
-                "scheduler-type": "reduce-from-dep-output"
+            "publisher": {
+              "outputmap": {
+                "output": "outList"
               },
-              "name": "ntupling",
-              "parameters": {
-                "include_truth": "-truth",
-                "maxsyst": 1,
-                "input_type": "-mc",
-                "filter": "-nomllalpgenfilter",
-                "minintup": "/workdir/mini.root",
-                "blinded": "-unblind"
-              }
+              "publisher-type": "process-attr-pub"
             },
-            {
-              "dependencies": [
-                "ntupling"
-              ],
-              "scheduler": {
-                "outputs": "output",
-                "to_input": "miniroot",
-                "step": {
-                  "process": {
-                    "cmd": "python preparehistfit.py {miniroot} {efficiency_file} {xsections_file} {modelName} {histfittree_file} {yield_file}",
-                    "process-type": "string-interpolated-cmd"
-                  },
-                  "publisher": {
-                    "outputmap": {
-                      "output_tree": "histfittree_file",
-                      "output_yield": "yield_file"
-                    },
-                    "publisher-type": "process-attr-pub"
-                  },
-                  "environment": {
-                    "envscript": "/resources/prepareenv.sh",
-                    "image": "lukasheinrich/dilepton_histfitprep",
-                    "environment-type": "docker-encapsulated",
-                    "resources": [
-                      "CVMFS"
-                    ]
-                  }
-                },
-                "from_stages": [
-                  "ntupling"
-                ],
-                "scheduler-type": "reduce-from-dep-output"
-              },
-              "name": "histfitprepare",
-              "parameters": {
-                "histfittree_file": "/workdir/out.root",
-                "efficiency_file": "{efficiency_file}",
-                "xsections_file": "{xsections_file}",
-                "modelName": "{modelName}",
-                "yield_file": "/workdir/out.yield"
-              }
-            },
-            {
-              "dependencies": [
-                "histfitprepare"
-              ],
-              "scheduler": {
-                "outputs": "output_tree",
-                "to_input": "histfitroot",
-                "step": {
-                  "process": {
-                    "cmd": "./luke_run_limit.sh {histfitroot} {fitresults}",
-                    "process-type": "string-interpolated-cmd"
-                  },
-                  "publisher": {
-                    "outputmap": {
-                      "output": "fitresults"
-                    },
-                    "publisher-type": "process-attr-pub"
-                  },
-                  "environment": {
-                    "envscript": "/resources/fitenv.sh",
-                    "image": "lukasheinrich/dilepton_fit",
-                    "environment-type": "docker-encapsulated",
-                    "resources": [
-                      "CVMFS"
-                    ]
-                  }
-                },
-                "from_stages": [
-                  "histfitprepare"
-                ],
-                "scheduler-type": "reduce-from-dep-output"
-              },
-              "name": "fit",
-              "parameters": {
-                "fitresults": "/workdir/fit.tgz"
-              }
-            },
-            {
-              "dependencies": [
-                "fit"
-              ],
-              "scheduler": {
-                "outputs": "output",
-                "to_input": "fitresultsarchive",
-                "step": {
-                  "process": {
-                    "cmd": "/resources/pMSSM-TwoLep-Fit/post_fit.sh {fitresultsarchive} {workdir} {modelName} {resultsyaml}",
-                    "process-type": "string-interpolated-cmd"
-                  },
-                  "publisher": {
-                    "outputmap": {
-                      "output": "resultsyaml"
-                    },
-                    "publisher-type": "process-attr-pub"
-                  },
-                  "environment": {
-                    "envscript": "/resources/fitenv.sh",
-                    "image": "lukasheinrich/dilepton_fit",
-                    "environment-type": "docker-encapsulated",
-                    "resources": [
-                      "CVMFS"
-                    ]
-                  }
-                },
-                "from_stages": [
-                  "fit"
-                ],
-                "scheduler-type": "reduce-from-dep-output"
-              },
-              "name": "postproc",
-              "parameters": {
-                "workdir": "/workdir/postproc",
-                "resultsyaml": "/workdir/results.yaml",
-                "modelName": "{modelName}"
-              }
+            "environment": {
+              "envscript": "/resources/downloadenv.sh",
+              "image": "lukasheinrich/dilepton_download",
+              "environment-type": "docker-encapsulated",
+              "resources": [
+                "CVMFS",
+                "GRIDProxy"
+              ]
             }
-          ],
-          "context": {
-            "efficiency_file": null,
-            "xsections_file": null,
-            "modelName": null,
-            "dataset": null
-          }
+          },
+          "scheduler-type": "singlestep-from-context"
+        },
+        "name": "download",
+        "parameters": {
+          "outList": "/workdir/files.list",
+          "outDir": "/workdir/grid_download",
+          "dataset": "{dataset}"
         }
-      ]
-    }
+      }, {
+        "dependencies": [
+          "download"
+        ],
+        "scheduler": {
+          "outputs": "output",
+          "to_input": "filelist",
+          "step": {
+            "process": {
+              "cmd": "./DileptonAnalysis {blinded} {include_truth} {filter} {input_type} -maxsyst {maxsyst} -m {minintup} -f {filelist}",
+              "process-type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "outputmap": {
+                "output": "minintup"
+              },
+              "publisher-type": "process-attr-pub"
+            },
+            "environment": {
+              "envscript": "/resources/ntuplingenv.sh",
+              "image": "lukasheinrich/dilepton_ntupling",
+              "environment-type": "docker-encapsulated",
+              "resources": [
+                "CVMFS"
+              ]
+            }
+          },
+          "from_stages": [
+            "download"
+          ],
+          "scheduler-type": "reduce-from-dep-output"
+        },
+        "name": "ntupling",
+        "parameters": {
+          "include_truth": "-truth",
+          "maxsyst": 1,
+          "input_type": "-mc",
+          "filter": "-nomllalpgenfilter",
+          "minintup": "/workdir/mini.root",
+          "blinded": "-unblind"
+        }
+      }, {
+        "dependencies": [
+          "ntupling"
+        ],
+        "scheduler": {
+          "outputs": "output",
+          "to_input": "miniroot",
+          "step": {
+            "process": {
+              "cmd": "python preparehistfit.py {miniroot} {efficiency_file} {xsections_file} {modelName} {histfittree_file} {yield_file}",
+              "process-type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "outputmap": {
+                "output_tree": "histfittree_file",
+                "output_yield": "yield_file"
+              },
+              "publisher-type": "process-attr-pub"
+            },
+            "environment": {
+              "envscript": "/resources/prepareenv.sh",
+              "image": "lukasheinrich/dilepton_histfitprep",
+              "environment-type": "docker-encapsulated",
+              "resources": [
+                "CVMFS"
+              ]
+            }
+          },
+          "from_stages": [
+            "ntupling"
+          ],
+          "scheduler-type": "reduce-from-dep-output"
+        },
+        "name": "histfitprepare",
+        "parameters": {
+          "histfittree_file": "/workdir/out.root",
+          "efficiency_file": "{efficiency_file}",
+          "xsections_file": "{xsections_file}",
+          "modelName": "{modelName}",
+          "yield_file": "/workdir/out.yield"
+        }
+      }, {
+        "dependencies": [
+          "histfitprepare"
+        ],
+        "scheduler": {
+          "outputs": "output_tree",
+          "to_input": "histfitroot",
+          "step": {
+            "process": {
+              "cmd": "./luke_run_limit.sh {histfitroot} {fitresults}",
+              "process-type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "outputmap": {
+                "output": "fitresults"
+              },
+              "publisher-type": "process-attr-pub"
+            },
+            "environment": {
+              "envscript": "/resources/fitenv.sh",
+              "image": "lukasheinrich/dilepton_fit",
+              "environment-type": "docker-encapsulated",
+              "resources": [
+                "CVMFS"
+              ]
+            }
+          },
+          "from_stages": [
+            "histfitprepare"
+          ],
+          "scheduler-type": "reduce-from-dep-output"
+        },
+        "name": "fit",
+        "parameters": {
+          "fitresults": "/workdir/fit.tgz"
+        }
+      }, {
+        "dependencies": [
+          "fit"
+        ],
+        "scheduler": {
+          "outputs": "output",
+          "to_input": "fitresultsarchive",
+          "step": {
+            "process": {
+              "cmd": "/resources/pMSSM-TwoLep-Fit/post_fit.sh {fitresultsarchive} {workdir} {modelName} {resultsyaml}",
+              "process-type": "string-interpolated-cmd"
+            },
+            "publisher": {
+              "outputmap": {
+                "output": "resultsyaml"
+              },
+              "publisher-type": "process-attr-pub"
+            },
+            "environment": {
+              "envscript": "/resources/fitenv.sh",
+              "image": "lukasheinrich/dilepton_fit",
+              "environment-type": "docker-encapsulated",
+              "resources": [
+                "CVMFS"
+              ]
+            }
+          },
+          "from_stages": [
+            "fit"
+          ],
+          "scheduler-type": "reduce-from-dep-output"
+        },
+        "name": "postproc",
+        "parameters": {
+          "workdir": "/workdir/postproc",
+          "resultsyaml": "/workdir/results.yaml",
+          "modelName": "{modelName}"
+        }
+      }],
+      "context": {
+        "efficiency_file": null,
+        "xsections_file": null,
+        "modelName": null,
+        "dataset": null
+      }
+    }]
   }
-]
+}, {
+  "metadata": {
+    "publications": [{
+      "url": "https://cds.cern.ch/record/2051857",
+      "reviewegroup": "\"lhcb-review-Charm-D2Kpimumu\"",
+      "roles": "[object Object]"
+    }, {
+      "url": "https://cds.cern.ch/record/2059301",
+      "reviewegroup": "\"lhcb-review-Charm-D2Kpimumu\"",
+      "roles": "[object Object]"
+    }],
+    "analysis_steps": [{
+      "input_data": {
+        "mc_data": [],
+        "data": []
+      },
+      "code": {
+        "lhcb_code": [],
+        "user_code": []
+      },
+      "output_data": {}
+    }],
+    "dst_selection": {
+      "input_data": {
+        "mc_data": [],
+        "data": []
+      },
+      "code": {
+        "lhcb_code": [],
+        "user_code": []
+      },
+      "output_data": {}
+    },
+    "presentations": [],
+    "basic_info": {
+      "analysis_name": "BF of D0 -> Kpimumu",
+      "analysis_number": "ANA-2014-060"
+    },
+    "internal_discussions": [{
+      "url": "https://indico.cern.ch/event/257863/session/4/contribution/17/material/slides/0.pdf",
+      "meeting": "Analysis and software week",
+      "title": "Search for D0->hhmumu"
+    }, {
+      "url": "https://indico.cern.ch/event/201548/session/7/contribution/33/material/slides/0.pdf",
+      "meeting": "Analysis and software week",
+      "title": "Update on D-> hh(')mumu with 2012 data"
+    }, {
+      "url": "https://indico.cern.ch/event/311262/contribution/0/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "WG review: BR of D0-> kpimumu in rho/omega region"
+    }, {
+      "url": "https://indico.cern.ch/event/311251/contribution/2/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "WG review: D0->Kpimumu"
+    }, {
+      "url": "https://indico.cern.ch/event/402930/contribution/3/attachments/807263/1106369/RC_UNBLINDING_01072015.pdf",
+      "meeting": "Charm WG",
+      "title": "[RC report] D0->Kpimumu unblinded BR results"
+    }, {
+      "url": "https://indico.cern.ch/event/203965/contribution/3/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "Update on D->hh'mumnu"
+    }, {
+      "url": "https://indico.cern.ch/event/291727/contribution/3/material/slides/0.pdf",
+      "meeting": "Charm WG,VRD WG",
+      "title": "D0 ->hh'mumu"
+    }, {
+      "url": "https://indico.cern.ch/event/246872/contribution/2/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "Update on D-> hh(')mumu with 2012 data"
+    }, {
+      "url": "https://indico.cern.ch/event/311281/contribution/3/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "Status of D0->Kpimumu"
+    }, {
+      "url": "https://indico.cern.ch/event/269060/contribution/6/material/slides/0.pdf",
+      "meeting": "Charm WG",
+      "title": "News on D->hhmumu"
+    }],
+    "documentations": [],
+    "extra_info": {
+      "status": "8 - journal review",
+      "arxiv": "1510.08367",
+      "egroup": "lhcb-review-Charm-D2Kpimumu",
+      "twiki": "https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/D02KPiMUMU"
+    }
+  },
+  "collection": "LHCbAnalysis"
+}, {
+  "metadata": {
+    "publications": [{
+      "url": "http://dx.doi.org/10.1007/JHEP03(2016)159",
+      "reviewegroup": "lhcb-paper-2015-041-reviewers"
+    }],
+    "analysis_steps": [{
+      "input_data": {
+        "mc_data": [],
+        "data": []
+      },
+      "code": {
+        "lhcb_code": ["DaVinci v36r7p7", "ROOT v6.04", "uncertainties 2.4.6", "mcerp v0.1", "LuaLaTeX beta-0.79.1"],
+        "platform": "x86_64-slc6-gcc48-opt",
+        "user_code": [{
+          "link": "https://github.com/alexpearce/CharmProduction/",
+          "instructions": "Contact c.b@cern.ch to request access to the repository. Instructons for running the analysis are contained within README.md"
+        }]
+      },
+      "output_data": {}
+    }],
+    "dst_selection": {
+      "input_data": {
+        "mc_data": [{
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21263002/DST",
+          "generator": "Pythia8",
+          "mc_production": "27764"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23263020/DST",
+          "generator": "Pythia8",
+          "mc_production": "27765"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23263011/DST",
+          "generator": "Pythia8",
+          "mc_production": "27766"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21263010/DST",
+          "generator": "Pythia8",
+          "mc_production": "27767"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27163003/DST",
+          "generator": "Pythia8",
+          "mc_production": "27768"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27265002/DST",
+          "generator": "Pythia8",
+          "mc_production": "27769"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21103010/DST",
+          "generator": "Pythia8",
+          "mc_production": "282495"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23103011/DST",
+          "generator": "Pythia8",
+          "mc_production": "282496"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27165006/DST",
+          "generator": "Pythia8",
+          "mc_production": "28247"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23103020/DST",
+          "generator": "Pythia8",
+          "mc_production": "28248"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21103003/DST",
+          "generator": "Pythia8",
+          "mc_production": "28249"
+        }, {
+          "reconstruction_software": "Reco15em",
+          "stripping_software": "N/A",
+          "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27163071/DST",
+          "generator": "Pythia8",
+          "mc_production": "28250"
+        }],
+        "data": [{
+          "year": "2015",
+          "stripping_software": "N/A",
+          "location": " sim://LHCb/Collision15em/Beam6500GeV-VeloClosed-MagDown/Real Data/Turbo01em/94000000/TURBO.MDST",
+          "reconstruction_software": "Turbo01em"
+        }]
+      },
+      "code": {
+        "lhcb_code": [],
+        "user_code": []
+      },
+      "stripping_line": "N/A",
+      "output_data": {},
+      "trigger": "Hlt2CharmHad.*TurboDecision"
+    },
+    "presentations": [{}, {}, {}, {}],
+    "basic_info": {
+      "analysis_name": "Charm cross-sections at 13 TeV (part 1 - early measurements)",
+      "analysis_number": "ANA-2015-023"
+    },
+    "internal_discussions": [{
+      "url": "https://indico.cern.ch/event/339405/contribution/0",
+      "meeting": "lhcb-general",
+      "title": "LHCb week: General discussion on 2015 early measurements"
+    }, {
+      "url": "https://indico.cern.ch/event/345459/",
+      "meeting": "lhcb-general",
+      "title": "General discussion on 2Early Measurements Task Force (EMTF) PPTS meeting: General discussion on 2015 early measurements015 early measurements"
+    }, {
+      "url": "https://indico.cern.ch/event/352357/",
+      "meeting": "lhcb-general",
+      "title": "LHCb week: General discussion on 2015 early measurements and presentation on Charm measurement"
+    }, {
+      "url": "https://indico.cern.ch/event/361834/contribution/1",
+      "meeting": "lhcb-phys-charm",
+      "title": "Charm WG: Presentation on the measurement"
+    }, {
+      "url": "https://indico.cern.ch/event/382233/contribution/10",
+      "meeting": "lhcb-general",
+      "title": "Institute of Physics rehearsal: Presentation on the measurement"
+    }, {
+      "url": "https://indico.cern.ch/event/331664/session/1/contribution/10",
+      "meeting": "lhcb-general",
+      "title": "59th Analysis and Software week: Presentation on measurement progress"
+    }, {
+      "url": "https://indico.cern.ch/event/361849/",
+      "meeting": "lhcb-phys-charm",
+      "title": "Charm WG: Request for working group review presentation"
+    }, {
+      "url": "https://indico.cern.ch/event/358594/session/3/contribution/2",
+      "meeting": "lhcb-general",
+      "title": "60th Analysis and Software week: Status update"
+    }, {
+      "url": "https://indico.cern.ch/event/383066/session/2",
+      "meeting": "lhcb-general",
+      "title": "Tuesday meeting: Request to proceed to PAPER"
+    }],
+    "documentations": [{
+      "url": "https://cds.cern.ch/record/2012800",
+      "comment": "LHCb-ANA-2015-023"
+    }],
+    "extra_info": {
+      "status": "9 - PAPER published",
+      "arxiv": "1510.01707",
+      "egroup": "lhcb-charm-xs-reviewers",
+      "twiki": "https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/CharmCrossSection2015"
+    }
+  },
+  "collection": "LHCbAnalysis"
+}, {
+  "metadata": {
+    "auxiliary_measurements": [],
+    "input_datasets": {
+      "primary_datasets": [{
+        "dataset_metadata": {
+          "available": null,
+          "run_number": null,
+          "description": "NoGroup",
+          "title": "/BTag/HIRun2013-PromptReco-v1/DQM",
+          "persistent_identifiers": [],
+          "issued": "2013-01-15 08:54:53",
+          "modified": "2013-01-15 08:54:53",
+          "numbers": {
+            "nfiles": 7,
+            "nevents": 0,
+            "nblocks": 1,
+            "nlumis": 428,
+            "extend": null
+          },
+          "dataset_id": 7116767,
+          "type": "data"
+        },
+        "triggers": []
+      }, {
+        "dataset_metadata": {
+          "available": null,
+          "run_number": null,
+          "description": "NoGroup",
+          "title": "/BarrelMuon/CRUZET1-v1/RAW",
+          "persistent_identifiers": [],
+          "issued": "2008-05-28 16:41:19",
+          "modified": "2009-04-14 16:58:21",
+          "numbers": {
+            "nfiles": 576,
+            "nevents": 17086479,
+            "nblocks": 1,
+            "nlumis": 932,
+            "extend": null
+          },
+          "dataset_id": 14926,
+          "type": "data"
+        },
+        "triggers": []
+      }],
+      "mc_bg_dataset": [],
+      "mc_sig_dataset": [{
+        "dataset_metadata": {
+          "available": null,
+          "run_number": null,
+          "description": "Physics",
+          "title": "/14TeV_T1T1_2BC_350_100_MadGraph/Summer12-L1TDR_POSTLS161_V1-v1/GEN",
+          "persistent_identifiers": [],
+          "issued": "2012-12-23 20:45:36",
+          "modified": "2012-12-24 09:51:29",
+          "numbers": {
+            "nfiles": 1,
+            "nevents": 66844,
+            "nblocks": 1,
+            "nlumis": 223,
+            "extend": null
+          },
+          "dataset_id": 6955725,
+          "type": "mc"
+        },
+        "mc_signal_selection": []
+      }, {
+        "dataset_metadata": {
+          "available": null,
+          "persistent_identifiers": [],
+          "dataset_id": null,
+          "run_number": null,
+          "numbers": {
+            "nfiles": null,
+            "nevents": null,
+            "nblocks": null,
+            "nlumis": null,
+            "extend": null
+          }
+        },
+        "mc_signal_selection": []
+      }]
+    },
+    "input_code_output": {
+      "code_base": {},
+      "n_tuple": [{
+        "input_data": {
+          "dataset": ["dataset=/BarrelMuon/CRUZET1-v1/RAW", "dataset=/14TeV_T1T1_2BC_350_100_MadGraph/Summer12-L1TDR_POSTLS161_V1-v1/GEN"]
+        },
+        "user_code": {},
+        "output_data": {},
+        "run_instructions": {}
+      }]
+    },
+    "presentations": [{}],
+    "basic_info": {
+      "abstract": "Few words go here",
+      "os": {
+        "version": "6",
+        "name": "SLC"
+      },
+      "analysis_number": "CMS-ANA-2015-012",
+      "software": {
+        "version": "5_3_2",
+        "name": "CMSSW"
+      }
+    },
+    "internal_discussions": [{}],
+    "main_measurements": [{
+      "code_base": {},
+      "detector_final_state": {
+        "veto": [],
+        "final_state_particles": [{}],
+        "final_state_relations": []
+      },
+      "n_tuple": [{
+        "input_data": {
+          "dataset": ["dataset=/BTag/HIRun2013-PromptReco-v1/DQM"]
+        },
+        "user_code": {},
+        "output_data": {},
+        "run_instructions": {}
+      }],
+      "event_selection": {}
+    }],
+    "documentations": [{}],
+    "post_n_tuple": {
+      "code_base": {},
+      "n_tuple": [{
+        "input_data": {},
+        "user_code": {},
+        "output_data": {},
+        "run_instructions": {}
+      }]
+    },
+    "publications": [{
+      "persistent_identifiers": []
+    }]
+  },
+  "collection": "CMSAnalysis"
+}]

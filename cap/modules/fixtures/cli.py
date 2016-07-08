@@ -16,6 +16,7 @@ from invenio_access.permissions import ParameterizedActionNeed
 from invenio_accounts.models import User, Role
 from invenio_collections.models import Collection
 from invenio_db import db
+from invenio_collections.models import Collection
 from invenio_indexer.utils import RecordIndexer
 from invenio_pidstore.providers.recordid import RecordIdProvider
 from invenio_records import Record
@@ -25,6 +26,8 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          update_permission_factory)
 from jsonpatch import JsonPatchException, JsonPointerException
 from cap.config import JSON_METADATA_PATH
+
+from cap.modules.records.views import construct_record
 
 RecordIndexActionNeed = partial(ParameterizedActionNeed, 'records-index')
 
@@ -41,8 +44,9 @@ def fixtures():
 
 @fixtures.command()
 @click.option('--source', '-s', default=False)
+@click.option('--force', '-f', is_flag=True, default=False)
 @with_appcontext
-def records(source):
+def records(source, force):
     if not source:
         source = pkg_resources.resource_filename(
             'cap.modules.fixtures', 'data/records.json'
@@ -52,37 +56,29 @@ def records(source):
         data = json.load(json_r)
 
     for d in data:
-        print(d)
-        add_record(d["metadata"], d["collection"], d["schema"])
+        add_record(
+            d.get("metadata", None),
+            d.get("collection", None),
+            d.get("schema", None), force)
 
 
-def add_record(metadata, collection, schema):
+def add_record(metadata, collection, schema, force):
     """Add record."""
 
-    # Creating a uuid4
-    recid = uuid4()
+    collection = Collection.query.filter(
+        Collection.name == collection).first()
 
-    # Creating a PID for the record
-    provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
-    pid = provider.pid.pid_value
+    if collection is None:
+        return
 
-    data = dict()
-
-    data['$schema'] = urljoin(
-            current_app.config.get('JSONSCHEMAS_HOST'),
-            '/jsonschemas/'+collection)
-    data['pid_value'] = pid
-    data['control_number'] = pid
-    data['collections'] = [collection]
-    data['creator'] = 1
-    data['_metadata'] = metadata
+    data, pid, recid = construct_record(collection, metadata, '1', {} if force else schema)
 
     record = Record.create(data, id_=recid)
 
     # Invenio-Indexer is delegating the document inferring to
     # Invenio-Search which is analysing the string splitting by `/` and
     # using `.json` to be sure that it cans understand the mapping.
-    record['$schema'] = 'mappings/{0}.json'.format(collection.lower())
+    record['$schema'] = 'mappings/{0}.json'.format(collection.name.lower())
 
     indexer = RecordIndexer()
     indexer.index(record)

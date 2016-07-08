@@ -181,7 +181,7 @@ def get_readable_records_by_user(user_id, roles):
 def create_record_view(collection):
 
     collection = Collection.query.filter(
-            Collection.name == collection ).first_or_404()
+        Collection.name == collection).first_or_404()
 
     return render_template('records/create.html', collection=collection.name)
 
@@ -192,38 +192,16 @@ def create_record(collection):
     """Basic test view."""
 
     collection = Collection.query.filter(
-            Collection.name == collection ).first_or_404()
+        Collection.name == collection).first_or_404()
 
-    # Creating a uuid4
-    recid = uuid4()
+    schema = urljoin(current_app.config.get('JSONSCHEMAS_HOST'),
+                     url_for('records.jsonschema',
+                             collection=collection.name))
 
-    # Creating a PID for the record
-    provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
-    pid = provider.pid.pid_value
-
-    data = {}
-    _deposit = {}
-    _metadata = json.loads(request.get_data())
-    _deposit['created_by'] = current_user.id
-    # _deposit['id'] = recid.int
-    _deposit['pid'] = {
-        "revision_id": 0,
-        "type": "recid",
-        "value": pid
-    }
-    _deposit['status'] = "draft"
-    _deposit['pid_value'] = pid
-    _deposit['control_number'] = pid
-    if collection.parent and collection.parent.parent.name == 'CERNAnalysisPreservation':
-        data['experiment'] = collection.parent.name
-    data['collections'] = [collection.name]
-
-    data['$schema'] = urljoin(
-        current_app.config.get('JSONSCHEMAS_HOST'),
-        url_for('records.jsonschema', collection=collection.name))
-    # data["recid"] = recid.int
-    data["_deposit"] = _deposit
-    data['_metadata'] = _metadata
+    data, pid, recid = construct_record(collection,
+                                        json.loads(request.get_data()),
+                                        current_user.id,
+                                        schema)
 
     try:
         record = Record.create(data, id_=recid)
@@ -260,6 +238,39 @@ def create_record(collection):
     resp = jsonify(**{'pid': pid})
     resp.status_code = 200
     return resp
+
+
+def construct_record(collection, metadata, creator_id, schema):
+    # Creating a uuid4
+    recid = uuid4()
+
+    # Creating a PID for the record
+    provider = RecordIdProvider.create(object_type='rec', object_uuid=recid)
+    pid = provider.pid.pid_value
+
+    data = {}
+    _deposit = {}
+    _metadata = metadata
+    _deposit['created_by'] = creator_id
+    # _deposit['id'] = recid.int
+    _deposit['pid'] = {
+        "revision_id": 0,
+        "type": "recid",
+        "value": pid
+    }
+    _deposit['status'] = "draft"
+    _deposit['pid_value'] = pid
+    _deposit['control_number'] = pid
+    if collection.parent and collection.parent.parent.name == 'CERNAnalysisPreservation':
+        data['experiment'] = collection.parent.name
+    data['collections'] = [collection.name]
+
+    data['$schema'] = schema
+    # data["recid"] = recid.int
+    data["_deposit"] = _deposit
+    data['_metadata'] = _metadata
+
+    return data, pid, recid
 
 
 def get_collections_tree(collections):

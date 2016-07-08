@@ -162,7 +162,11 @@ If you want to populate the database with example records you can run:
 
 .. code-block:: shell
 
+   # For creating demo records with schema validation
    python manage.py fixtures records
+
+   # For creating demo records without validation ( --force )
+   python manage.py fixtures records -f
 
 General Recommendations
 ------------
