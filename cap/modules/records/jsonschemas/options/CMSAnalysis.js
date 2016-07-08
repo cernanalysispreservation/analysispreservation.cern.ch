@@ -1023,6 +1023,23 @@ window.schemaOptions = {
                               "relation_type": ["invariant mass"]
                             }
                           },
+                          "transverse_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["transverse mass"]
+                            }
+                          },
                           "physics_objects": {
                             "type": "select2",
                             "select2": true,
@@ -1501,6 +1518,23 @@ window.schemaOptions = {
                             },
                             "dependencies": {
                               "relation_type": ["invariant mass"]
+                            }
+                          },
+                          "transverse_mass": {
+                            "type": "depositgroup-object",
+                            "order": 2,
+                            "fields": {
+                              "lower_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 1
+                              },
+                              "upper_range": {
+                                "placeholder": "E.g. ?",
+                                "order": 2
+                              }
+                            },
+                            "dependencies": {
+                              "relation_type": ["transverse mass"]
                             }
                           },
                           "physics_objects": {

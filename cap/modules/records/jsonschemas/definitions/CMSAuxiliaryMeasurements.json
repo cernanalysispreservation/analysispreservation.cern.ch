@@ -320,7 +320,7 @@
               "relation_type": {
                 "type": "string",
                 "title": "Relation Type",
-                "enum": ["charge", "angle", "invariant mass"]
+                "enum": ["charge", "angle", "invariant mass", "transverse mass"]
               },
               "charge_relation": {
                 "type": "string",
@@ -338,6 +338,23 @@
                 ]
               },
               "invariant_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                  "lower_range": {
+                    "type": "number",
+                    "title": "<"
+                  },
+                  "upper_range": {
+                    "type": "number",
+                    "title": ">"
+                  }
+                },
+                "dependencies": [
+                  "relation_type"
+                ]
+              },
+              "transverse_mass": {
                 "title": "GeV",
                 "type": "object",
                 "properties": {
