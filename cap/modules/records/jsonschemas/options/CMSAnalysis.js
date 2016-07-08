@@ -973,7 +973,7 @@ window.schemaOptions = {
                               }
                             },
                             "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "HT"]
                             }
                           }
                         }
@@ -1044,8 +1044,13 @@ window.schemaOptions = {
                                   var obj = new Object();
                                   var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
                                   ++elementCounter[element];
-                                  obj.value = element + elementCounter[element];
-                                  obj.text = element + elementCounter[element];
+                                  if (element = "MET") {
+                                    obj.value = element;
+                                    obj.text = element;
+                                  } else {
+                                    obj.value = element + elementCounter[element];
+                                    obj.text = element + elementCounter[element];
+                                  }
                                   physics_object_array.push(obj);
                                   ++j;
                                 } while(j < numberOfParticles)
@@ -1448,7 +1453,7 @@ window.schemaOptions = {
                               }
                             },
                             "dependencies": {
-                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
+                              "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "HT"]
                             }
                           }
                         }
@@ -1519,8 +1524,13 @@ window.schemaOptions = {
                                   var obj = new Object();
                                   var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
                                   ++elementCounter[element];
-                                  obj.value = element + elementCounter[element];
-                                  obj.text = element + elementCounter[element];
+                                  if (element = "MET") {
+                                    obj.value = element;
+                                    obj.text = element;
+                                  } else {
+                                    obj.value = element + elementCounter[element];
+                                    obj.text = element + elementCounter[element];
+                                  }
                                   physics_object_array.push(obj);
                                   ++j;
                                 } while(j < numberOfParticles)
