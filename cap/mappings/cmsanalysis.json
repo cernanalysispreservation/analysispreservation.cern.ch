@@ -4,6 +4,10 @@
       "properties": {
         "_metadata": {
           "properties": {
+            "document_type_human": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
             "physics_information": {
               "type": "object",
               "properties": {

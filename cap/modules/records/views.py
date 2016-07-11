@@ -65,6 +65,9 @@ from cap.config import JSON_METADATA_PATH, JSONSCHEMAS_VERSIONS
 from cap.modules.records.serializers import json_v1
 
 from .fetchers import cap_record_fetcher
+import six
+from werkzeug.local import LocalProxy
+from cap.config import CAP_COLLECTION_TO_DOCUMENT_TYPE
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -240,7 +243,14 @@ def create_record(collection):
     return resp
 
 
+def get_document_type(collection_name):
+    """Calculate the human readable name for the document type specified."""
+    return CAP_COLLECTION_TO_DOCUMENT_TYPE.get(
+        collection_name, collection_name)
+
+
 def construct_record(collection, metadata, creator_id, schema):
+    """Create a record."""
     # Creating a uuid4
     recid = uuid4()
 
@@ -264,6 +274,7 @@ def construct_record(collection, metadata, creator_id, schema):
     if collection.parent and collection.parent.parent.name == 'CERNAnalysisPreservation':
         data['experiment'] = collection.parent.name
     data['collections'] = [collection.name]
+    data['document_type_human'] = get_document_type(collection.name)
 
     data['$schema'] = schema
     # data["recid"] = recid.int
