@@ -41,7 +41,9 @@ class CAPAccess(object):
         """Extension initialization."""
         if app:
             self.init_app(app)
-            store = RedisStore(redis.StrictRedis())
+            store = RedisStore(redis.StrictRedis(
+                host=app.config.get('ACCESS_SESSION_REDIS_HOST', 'localhost')
+            ))
             KVSessionExtension(store, app)
 
     def init_app(self, app):

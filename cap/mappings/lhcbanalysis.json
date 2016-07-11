@@ -7,6 +7,10 @@
         },
         "_metadata": {
           "properties": {
+            "document_type_human": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
             "basic_info": {
               "properties": {
                 "analysis_name": {

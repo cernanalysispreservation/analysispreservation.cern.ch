@@ -64,10 +64,11 @@ setup_requires = [
 install_requires = [
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
+    'Flask>=0.11.1',
+    'Flask-CORS>=2.1.0',
     'Flask-BabelEx>=0.9.2',
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
-    'Flask>=0.11.1',
     'invenio-access>=1.0.0a9',
     'invenio-accounts>=1.0.0a15',
     'invenio-assets>=1.0.0b2',
@@ -90,6 +91,7 @@ install_requires = [
     'invenio-rest[cors]>=1.0.0a8',
     'invenio-search-ui>=1.0.0a5',
     'invenio-search>=1.0.0a7',
+    'invenio-search-ui>=1.0.0a5',
     'invenio-theme>=1.0.0a14',
     'invenio-userprofiles>=1.0.0a7',
 ]

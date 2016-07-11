@@ -30,7 +30,8 @@ app:
     - "80:5000"
   environment:
     - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
-    - APP_CACHE_REDIS_URL=redis://cache:6379/0
+    - APP_ACCESS_SESSION_REDIS_HOST=redis
+    - APP_CACHE_REDIS_URL=redis://redis:6379/0
     - APP_CACHE_TYPE=redis
     - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
     - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgres/cap
