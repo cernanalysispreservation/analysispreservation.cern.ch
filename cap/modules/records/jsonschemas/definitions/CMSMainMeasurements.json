@@ -47,7 +47,7 @@
               },
               "electron_type": {
                 "type": "string",
-                "title": "Jet type",
+                "title": "Electron type",
                 "enum": [
                   "GsfElectron"
                 ],
@@ -57,7 +57,7 @@
               },
               "muon_type": {
                 "type": "string",
-                "title": "Jet type",
+                "title": "Muon type",
                 "enum": [
                   "PFMuon",
                   "GlobalMuon",
@@ -69,7 +69,7 @@
               },
               "tau_type": {
                 "type": "string",
-                "title": "Jet type",
+                "title": "Tau type",
                 "enum": [
                   "PFTau"
                 ],
@@ -108,7 +108,7 @@
               },
               "photon_type": {
                 "type": "string",
-                "title": "Jet type",
+                "title": "Photon type",
                 "enum": [
                   "Photon",
                   "Conversion"
@@ -131,7 +131,7 @@
               "sel_criteria": {
                 "type": "string",
                 "title": "Selection Criteria",
-                "enum": ["tight", "loose", "other"],
+                "enum": ["tight", "medium", "loose", "other"],
                 "dependencies": [
                   "object"
                 ]
@@ -231,8 +231,117 @@
                   "object"
                 ]
               },
-              "bjet_identifier": {
-                "title": "Identifier",
+              "electron_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
+                    ]
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "muon_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
+                    ]
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "tau_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "AgainstElectronLooseMVA",
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
+                    ]
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "jet_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
+                    ]
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "bjet_discriminator": {
+                "title": "Discriminator",
                 "type": "object",
                 "properties": {
                   "tag": {
@@ -244,7 +353,42 @@
                       "simpleSecondaryVertexHighEffBJetTags",
                       "simpleSecondaryVertexHighEffBJetTags",
                       "combinedSecondaryVertexBJetTags",
-                      "jetProbabilityBJetTags"
+                      "jetProbabilityBJetTags",
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
+                    ]
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": [
+                  "object"
+                ]
+              },
+              "photon_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " ",
+                    "dependencies": [
+                      "tag"
                     ]
                   },
                   "value": {
@@ -401,9 +545,20 @@
             "type": "object",
             "properties": {
               "particle": {
-                "title": "Particle",
+                "title": "Physics Object",
                 "type": "string",
-                "enum": ["electron", "muon", "bjet"]
+                "enum": [
+                  "electron",
+                  "muon",
+                  "tau",
+                  "jet",
+                  "bjet",
+                  "photon",
+                  "track",
+                  "vertex",
+                  "MET",
+                  "HT"
+                ]
               },
               "number": {
                 "title": "Number",

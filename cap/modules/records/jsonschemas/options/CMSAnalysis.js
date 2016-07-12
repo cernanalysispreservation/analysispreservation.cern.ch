@@ -828,16 +828,17 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
+                              "Medium",
                               "Loose",
                               "Other"
                             ],
-                            "order": 3,
+                            "order": 4,
                             "dependencies": {
-                              "object": ["electron", "muon", "tau", "photon"]
+                              "object": ["electron", "muon", "tau", "photon", "jet", "bjet"]
                             }
                           },
                           "isolation": {
-                            "order": 4,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "notracks": {
@@ -874,7 +875,7 @@ window.schemaOptions = {
                             }
                           },
                           "number": {
-                            "order": 5,
+                            "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -892,7 +893,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_vertex": {
-                            "order": 5,
+                            "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -912,7 +913,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_tracks": {
-                            "order": 6,
+                            "order": 4,
                             "type": "depositgroup-object",
                             "fields": {
                               "number": {
@@ -925,7 +926,7 @@ window.schemaOptions = {
                               "object": ["vertex"]
                             }
                           },
-                          "bjet_identifier": {
+                          "electron_discriminator": {
                             "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
@@ -935,6 +936,117 @@ window.schemaOptions = {
                                 "select2": true,
                                 "order": 1
                               },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["electron"]
+                            }
+                          },
+                          "muon_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["muon"]
+                            }
+                          },
+                          "tau_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["tau"]
+                            }
+                          },
+                          "jet_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["jet"]
+                            }
+                          },
+                          "bjet_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
                               "value": {
                                 "order": 3,
                                 "placeholder": "1"
@@ -942,6 +1054,32 @@ window.schemaOptions = {
                             },
                             "dependencies": {
                               "object": ["bjet"]
+                            }
+                          },
+                          "photon_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["photon"]
                             }
                           },
                           "pt_cut": {
@@ -1107,8 +1245,8 @@ window.schemaOptions = {
                       "item": {
                         "fields": {
                           "particle": {
-                            "placeholder": "Particle",
-                            "noneLabel": "Select Particle",
+                            "placeholder": "Physics Object",
+                            "noneLabel": "Select Physics Object",
                             "type": "select2",
                             "select2": true,
                             "order": 1
@@ -1333,16 +1471,17 @@ window.schemaOptions = {
                             "removeDefaultNone": true,
                             "optionLabels": [
                               "Tight",
+                              "Medium",
                               "Loose",
                               "Other"
                             ],
-                            "order": 3,
+                            "order": 4,
                             "dependencies": {
-                              "object": ["electron", "muon", "tau", "photon"]
+                              "object": ["electron", "muon", "tau", "photon", "jet", "bjet"]
                             }
                           },
                           "isolation": {
-                            "order": 4,
+                            "order": 5,
                             "type": "depositgroup-object",
                             "fields": {
                               "notracks": {
@@ -1379,7 +1518,7 @@ window.schemaOptions = {
                             }
                           },
                           "number": {
-                            "order": 5,
+                            "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -1397,7 +1536,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_vertex": {
-                            "order": 5,
+                            "order": 3,
                             "type": "depositgroup-object",
                             "fields": {
                               "sign": {
@@ -1417,7 +1556,7 @@ window.schemaOptions = {
                             }
                           },
                           "number_tracks": {
-                            "order": 6,
+                            "order": 4,
                             "type": "depositgroup-object",
                             "fields": {
                               "number": {
@@ -1430,7 +1569,7 @@ window.schemaOptions = {
                               "object": ["vertex"]
                             }
                           },
-                          "bjet_identifier": {
+                          "electron_discriminator": {
                             "order": 6,
                             "type": "depositgroup-object",
                             "fields": {
@@ -1440,6 +1579,117 @@ window.schemaOptions = {
                                 "select2": true,
                                 "order": 1
                               },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["electron"]
+                            }
+                          },
+                          "muon_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["muon"]
+                            }
+                          },
+                          "tau_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["tau"]
+                            }
+                          },
+                          "jet_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["jet"]
+                            }
+                          },
+                          "bjet_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
                               "value": {
                                 "order": 3,
                                 "placeholder": "1"
@@ -1447,6 +1697,32 @@ window.schemaOptions = {
                             },
                             "dependencies": {
                               "object": ["bjet"]
+                            }
+                          },
+                          "photon_discriminator": {
+                            "order": 6,
+                            "type": "depositgroup-object",
+                            "fields": {
+                              "tag": {
+                                "noneLabel": "Select Tag",
+                                "type": "select2",
+                                "select2": true,
+                                "order": 1
+                              },
+                              "custom_tag": {
+                                "order": 2,
+                                "placeholder": "E.g. MyCustomDiscriminatorTag",
+                                "dependencies": {
+                                  "tag": ["other..."]
+                                }
+                              },
+                              "value": {
+                                "order": 3,
+                                "placeholder": "1"
+                              }
+                            },
+                            "dependencies": {
+                              "object": ["photon"]
                             }
                           },
                           "pt_cut": {
@@ -1569,7 +1845,7 @@ window.schemaOptions = {
                             "type": "select2",
                             "select2": true,
                             "select2Opts": {
-                              "placeholder": "Click to select physics objects from the list"
+                              placeholder: "Click to select physics objects from the list"
                             },
                             "multiple": true,
                             "minItems": 2,
@@ -1612,8 +1888,8 @@ window.schemaOptions = {
                       "item": {
                         "fields": {
                           "particle": {
-                            "placeholder": "Particle",
-                            "noneLabel": "Select Particle",
+                            "placeholder": "Physics Object",
+                            "noneLabel": "Select Physics Object",
                             "type": "select2",
                             "select2": true,
                             "order": 1
