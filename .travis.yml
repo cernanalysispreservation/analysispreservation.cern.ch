@@ -53,7 +53,7 @@ before_script:
   - travis_retry pip install kwalitee GitPython --pre
   - kwalitee check message -s ${TRAVIS_COMMIT_RANGE}
 
-script: 
+script:
   - py.test tests
 
 after_success:
