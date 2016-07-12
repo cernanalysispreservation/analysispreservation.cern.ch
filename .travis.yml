@@ -32,7 +32,14 @@ language: python
 python:
   - "2.7"
 
+env:
+  - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+
 before_install:
+  - mkdir /tmp/elasticsearch
+  - wget -O - https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/${ES_VERSION}/elasticsearch-${ES_VERSION}.tar.gz | tar xz --directory=/tmp/elasticsearch --strip-components=1
+  - /tmp/elasticsearch/bin/elasticsearch &
+  - sleep 30
   - travis_retry pip install coveralls
   - travis_retry pip install kwalitee --pre
   - echo ${TRAVIS_COMMIT_RANGE}
@@ -48,6 +55,18 @@ before_install:
 
 install:
   - travis_retry pip install -r requirements.txt --pre -e .[tests]
+  - travis_retry cap db init
+  - travis_retry cap db create
+  - travis_retry cap index init
+  - travis_retry cap collections create CERNAnalysisPreservation
+  - travis_retry cap collections create CMS -p CERNAnalysisPreservation
+  - travis_retry cap collections create CMSQuestionnaire -p CMS
+  - travis_retry cap collections create CMSAnalysis -p CMS
+  - travis_retry cap collections create LHCb -p CERNAnalysisPreservation
+  - travis_retry cap collections create LHCbAnalysis -p LHCb
+  - travis_retry cap collections create ATLAS -p CERNAnalysisPreservation
+  - travis_retry cap collections create ATLASWorkflows -p ATLAS
+  - travis_retry cap collections create ALICE -p CERNAnalysisPreservation
 
 before_script:
   - travis_retry pip install kwalitee GitPython --pre
