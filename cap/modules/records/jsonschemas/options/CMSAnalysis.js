@@ -63,7 +63,7 @@ window.schemaOptions = {
       },
       "input_datasets": {
         "type": "depositgroup",
-        "order": 2,
+        "order": 3,
         "label": false,
         "fields": {
           "primary_datasets": {
@@ -571,75 +571,84 @@ window.schemaOptions = {
           }
         }
       },
+      "n-tuple_production_check": {
+        "order": 5,
+        "type": "radio",
+        "removeDefaultNone": "true"
+      },
       "input_code_output": {
-        "type": "depositgroup",
-        "order": 3,
+        "type": "depositgroup-array",
+        "order": 7,
         "label": false,
         "fields": {
-          "code_base": {
-            "order": 1,
-            "type": "depositgroup-object",
-            "toolbarSticky": "true",
+          "item": {
             "fields": {
-              "url": {
-                "type": "url-harvest",
-                "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
-                "order": 1
-              },
-              "tag": {
-                "placeholder": "E.g. v2.1",
-                "order": 2
-              }
-            }
-          },
-          "n_tuple": {
-            "order": 2,
-            "type": "depositgroup-object-array",
-            "toolbarSticky": "true",
-            "fields": {
-              "item": {
+              "code_base": {
+                "order": 1,
+                "type": "depositgroup-object",
+                "toolbarSticky": "true",
                 "fields": {
-                  "input_data": {
-                    "type": "depositgroup-object",
-                    "order": 1,
+                  "url": {
+                    "type": "url-harvest",
+                    "placeholder": "E.g. git@github.com:johndoe/myrepo.git",
+                    "order": 1
+                  },
+                  "tag": {
+                    "placeholder": "E.g. v2.1",
+                    "order": 2
+                  }
+                }
+              },
+              "n_tuple": {
+                "order": 2,
+                "type": "depositgroup-object-array",
+                "toolbarSticky": "true",
+                "fields": {
+                  "item": {
                     "fields": {
-                      "dataset": {
+                      "input_data": {
+                        "type": "depositgroup-object",
                         "order": 1,
-                        "noneLabel": "Select Dataset",
-                        "type": "select2",
-                        "refreshDeps": true,
-                        "multiple": true,
-                        "dataSource": function(callback){
-                          callback(_.values(input_data_list));
+                        "fields": {
+                          "dataset": {
+                            "order": 1,
+                            "noneLabel": "Select Dataset",
+                            "type": "select2",
+                            "refreshDeps": true,
+                            "multiple": true,
+                            "dataSource": function(callback){
+                              callback(_.values(input_data_list));
+                            }
+                          }
                         }
-                      }
-                    }
-                  },
-                  "user_code": {
-                    "type": "depositgroup-object",
-                    "order": 2,
-                    "fields": {
-                      "config_files": {
-                        "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
-                      }
-                    }
-                  },
-                  "run_instructions": {
-                    "type": "depositgroup-object",
-                    "order": 3,
-                    "fields": {
-                      "type": {
-                        "type": "select",
-                        "optionLabels": ["README file", "Makefile", "Upload something else"]
-                      }
-                    }
-                  },
-                  "output_data": {
-                    "type": "depositgroup-object",
-                    "order": 4,
-                    "fields": {
-                      "output_url": {
-                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                      },
+                      "user_code": {
+                        "type": "depositgroup-object",
+                        "order": 2,
+                        "fields": {
+                          "config_files": {
+                            "placeholder": "E.g. git@github.com:johndoe/.../my-config-file.root"
+                          }
+                        }
+                      },
+                      "run_instructions": {
+                        "type": "depositgroup-object",
+                        "order": 3,
+                        "fields": {
+                          "type": {
+                            "type": "select",
+                            "optionLabels": ["README file", "Makefile", "Upload something else"]
+                          }
+                        }
+                      },
+                      "output_data": {
+                        "type": "depositgroup-object",
+                        "order": 4,
+                        "fields": {
+                          "output_url": {
+                            "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                          }
+                        }
                       }
                     }
                   }
@@ -647,10 +656,13 @@ window.schemaOptions = {
               }
             }
           }
+        },
+        "dependencies": {
+          "n-tuple_production_check": ["yes"]
         }
       },
       "main_measurements": {
-        "order": 4,
+        "order": 9,
         "toolbarSticky": "true",
         "type": "depositgroup-array",
         "fields": {
@@ -1155,7 +1167,7 @@ window.schemaOptions = {
         }
       },
       "auxiliary_measurements": {
-        "order": 5,
+        "order": 11,
         "toolbarSticky": "true",
         "type": "depositgroup-array",
         "fields": {
@@ -1660,7 +1672,7 @@ window.schemaOptions = {
         }
       },
       "post_n_tuple": {
-        "order": 6,
+        "order": 13,
         "type": "depositgroup",
         "label": false,
         "fields": {
@@ -1738,7 +1750,7 @@ window.schemaOptions = {
         }
       },
       "documentations": {
-        "order": 7,
+        "order": 15,
         "type": "depositgroup-array",
         "toolbarSticky": "true",
         "fields": {
@@ -1766,7 +1778,7 @@ window.schemaOptions = {
       },
       "internal_discussions": {
         "type": "depositgroup-array",
-        "order": 8,
+        "order": 16,
         "fields": {
           "item": {
             "fields": {
@@ -1779,7 +1791,7 @@ window.schemaOptions = {
       },
       "presentations": {
         "type": "depositgroup-array",
-        "order": 9,
+        "order": 17,
         "fields": {
           "item": {
             "fields": {
@@ -1791,7 +1803,7 @@ window.schemaOptions = {
         }
       },
       "publications": {
-        "order": 10,
+        "order": 18,
         "type": "depositgroup-array",
         "fields": {
           "item": {
@@ -1839,7 +1851,7 @@ window.schemaOptions = {
       "keywords": {
         "type": "tags",
         "format": "textarea",
-        "order": 11,
+        "order": 19,
         "placeholder": "E.g. keyword1, keyword2"
       }
     }

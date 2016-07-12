@@ -104,17 +104,33 @@
         }
       }
     },
+    "n-tuple_production_check": {
+      "title": "Did you produce n-tuples as an initial step to any measurement?",
+      "type": "string",
+      "enum": [
+        "yes",
+        "no"
+      ]
+    },
     "input_code_output": {
-      "title": "Generic n-tuple Production",
-      "type": "object",
-      "properties": {
-        "code_base": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
-        },
-        "n_tuple": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+      "title": "n-tuple Production",
+      "description": "Please provide the n-tuples you used for your measurements",
+      "type": "array",
+      "default": [{}],
+      "items": {
+        "type": "object",
+        "properties": {
+          "code_base": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+          },
+          "n_tuple": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+          }
         }
-      }
+      },
+      "dependencies": [
+        "n-tuple_production_check"
+      ]
     },
     "main_measurements": {
       "title": "Main Measurement Workflow",
