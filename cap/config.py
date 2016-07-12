@@ -189,6 +189,7 @@ OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 JSONSCHEMAS_HOST = 'http://localhost:5000'
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
+JSONSCHEMAS_ENDPOINT = '/schemas'
 
 # User profile
 # ============
@@ -224,3 +225,5 @@ SECRET_KEY = "changeme"
 #     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
 # config.setdefault(
 #     'THEME_500_TEMPLATE', 'invenio_theme/500.html')
+
+

@@ -76,6 +76,7 @@ install_requires = [
     # 'invenio-collections==1.0.0a2',
     'invenio-db[versioning]==1.0.0a9',
     'invenio-indexer==1.0.0a6',
+    'invenio-jsonschemas==1.0.0a3',
     # 'invenio-oauthclient>=1.0.0a1',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore==1.0.0a7',
@@ -216,6 +217,9 @@ setup(
         ],
         'invenio_search.mappings': [
             'mappings = cap.modules.records',
+        ],
+        'invenio_jsonschemas.schemas': [
+            'cap_records = cap.modules.records.jsonschemas',
         ],
     },
     extras_require=extras_require,
