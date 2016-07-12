@@ -282,7 +282,7 @@
                   "object"
                 ]
               },
-              "era_cut": {
+              "eta_cut": {
                 "title": "|η| Cuts",
                 "type": "array",
                 "items": {
@@ -299,8 +299,22 @@
                       "default": ">"
                     },
                     "number": {
+                      "type": "string",
+                      "title": " ",
+                      "enum": [
+                        "1.1",
+                        "1.5",
+                        "2.4",
+                        "2.5",
+                        "other"
+                      ]
+                    },
+                    "other_number": {
                       "type": "number",
-                      "title": " "
+                      "title": " ",
+                      "dependencies": [
+                        "number"
+                      ]
                     }
                   }
                 },
@@ -399,7 +413,7 @@
                 "title": "PT",
                 "type": "string"
               },
-              "era_cut": {
+              "eta_cut": {
                 "title": "ETA",
                 "type": "string"
               }

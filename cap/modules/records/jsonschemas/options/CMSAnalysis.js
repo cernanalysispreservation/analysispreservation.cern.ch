@@ -954,8 +954,7 @@ window.schemaOptions = {
                               "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
-                          "era_cut": {
-                            "placeholder": "ETA Cut, e.g. < 2.1",
+                          "eta_cut": {
                             "type": "depositgroup-object-array",
                             "order": 8,
                             "fields": {
@@ -967,7 +966,16 @@ window.schemaOptions = {
                                     "removeDefaultNone": "true"
                                   },
                                   "number": {
-                                    "order": 2
+                                    "order": 2,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "other_number": {
+                                    "order": 3,
+                                    "placeholder": "E.g. 1.0",
+                                    "dependencies": {
+                                      "number": ["other"]
+                                    }
                                   }
                                 }
                               }
@@ -1101,7 +1109,7 @@ window.schemaOptions = {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "order": 3
                           },
-                          "era_cut": {
+                          "eta_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "order": 4
                           }
@@ -1451,8 +1459,7 @@ window.schemaOptions = {
                               "object": ["electron", "muon", "jet", "bjet", "tau", "photon", "track", "MET", "HT"]
                             }
                           },
-                          "era_cut": {
-                            "placeholder": "ETA Cut, e.g. < 2.1",
+                          "eta_cut": {
                             "type": "depositgroup-object-array",
                             "order": 8,
                             "fields": {
@@ -1464,7 +1471,16 @@ window.schemaOptions = {
                                     "removeDefaultNone": "true"
                                   },
                                   "number": {
-                                    "order": 2
+                                    "order": 2,
+                                    "type": "select2",
+                                    "removeDefaultNone": "true"
+                                  },
+                                  "other_number": {
+                                    "order": 3,
+                                    "placeholder": "E.g. 1.0",
+                                    "dependencies": {
+                                      "number": ["other"]
+                                    }
                                   }
                                 }
                               }
@@ -1598,7 +1614,7 @@ window.schemaOptions = {
                             "placeholder": "PT Cut, e.g. > 20 Gev",
                             "order": 3
                           },
-                          "era_cut": {
+                          "eta_cut": {
                             "placeholder": "ETA Cut, e.g. < 2.1",
                             "order": 4
                           }
