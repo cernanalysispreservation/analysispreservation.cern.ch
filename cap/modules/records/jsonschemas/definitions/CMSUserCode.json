@@ -11,6 +11,10 @@
     "tag": {
       "title": "Tag",
       "type": "string"
+    },
+    "revision_id": {
+      "title": "Revision Identifier",
+      "type": "string"
     }
   }
 }

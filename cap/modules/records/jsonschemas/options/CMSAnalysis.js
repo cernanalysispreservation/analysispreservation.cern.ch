@@ -49,13 +49,20 @@ window.schemaOptions = {
             "order": 6,
             "fields": {
               "name": {
-                "placeholder": "Name, e.g. CMSSW"
+                "placeholder": "Name, e.g. CMSSW",
+                "order": 1
               },
               "version": {
-                "placeholder": "Version, e.g. 5_3_x"
+                "placeholder": "Version, e.g. 5_3_x",
+                "order": 2
               },
-              "global_tag": {
-                "placeholder": "Tag"
+              "global_tag_data": {
+                "placeholder": "Data Tag",
+                "order": 3
+              },
+              "global_tag_MC": {
+                "placeholder": "Monte Carlo Data Tag",
+                "order": 4
               }
             }
           }
@@ -596,6 +603,10 @@ window.schemaOptions = {
                   "tag": {
                     "placeholder": "E.g. v2.1",
                     "order": 2
+                  },
+                  "revision_id": {
+                    "placeholder": "E.g. your git commit hash",
+                    "order": 3
                   }
                 }
               },
@@ -691,6 +702,10 @@ window.schemaOptions = {
                   "tag": {
                     "placeholder": "E.g. v2.1",
                     "order": 2
+                  },
+                  "revision_id": {
+                    "placeholder": "E.g. your git commit hash",
+                    "order": 3
                   }
                 }
               },
@@ -1334,6 +1349,10 @@ window.schemaOptions = {
                   "tag": {
                     "placeholder": "E.g. v2.1",
                     "order": 2
+                  },
+                  "revision_id": {
+                    "placeholder": "E.g. your git commit hash",
+                    "order": 3
                   }
                 }
               },
@@ -1965,6 +1984,10 @@ window.schemaOptions = {
               "tag": {
                 "placeholder": "E.g. v2.1",
                 "order": 2
+              },
+              "revision_id": {
+                "placeholder": "E.g. your git commit hash",
+                "order": 3
               }
             }
           },

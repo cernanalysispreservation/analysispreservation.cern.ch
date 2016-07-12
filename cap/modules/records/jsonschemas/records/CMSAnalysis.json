@@ -50,8 +50,12 @@
               "title": "Version",
               "type": "string"
             },
-            "global_tag": {
-              "title": "Global Tag",
+            "global_tag_data": {
+              "title": "Global Tag Data",
+              "type": "string"
+            },
+            "global_tag_MC": {
+              "title": "Global Tag MC",
               "type": "string"
             }
           }
