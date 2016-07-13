@@ -576,21 +576,6 @@
           }
         }
       }
-    },
-    "event_selection": {
-      "title": "Event Filter",
-      "type": "object",
-      "properties": {
-        "event_filter": {
-          "title": "Event Filter",
-          "type": "string",
-          "enum": ["HCAL noise cleaning filter", "ECAL spike removal"]
-        },
-        "reference": {
-          "title": "Reference",
-          "type": "string"
-        }
-      }
     }
   }
 }

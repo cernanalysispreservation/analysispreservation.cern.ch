@@ -136,6 +136,28 @@
           }
         }
       }
+    },
+    "event_selection": {
+      "title": "Event Filter",
+      "type": "object",
+      "properties": {
+        "event_filter": {
+          "title": "Event Filter",
+          "type": "string",
+          "enum": []
+        },
+        "custom_event_filter": {
+          "title": " ",
+          "type": "string",
+          "dependencies": [
+            "event_filter"
+          ]
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        }
+      }
     }
   }
 }

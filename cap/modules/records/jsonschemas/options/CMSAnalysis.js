@@ -7,7 +7,7 @@ var datasource_triggerRunPeriod = function(callback){
     callback(result);
   });
 };
-
+var event_filters = ["HCAL noise cleaning filter", "ECAL spike removal", "other..."];
 
 window.schemaOptions = {
     "fields": {
@@ -225,6 +225,54 @@ window.schemaOptions = {
                           callback();
                         }
                       }
+                    }
+                  },
+                  "event_selection": {
+                    "order": 7,
+                    "type": "depositgroup-object",
+                    "fields": {
+                      "event_filter": {
+                        "type": "select2",
+                        "select2": true,
+                        "order": 1,
+                        "select2Opts": {
+                          placeholder: "Click to select Event Filter"
+                        },
+                        "multiple": true,
+                        "dataSource": function(callback) {
+                          var objarray = [];
+                          var obj, element;
+                          for (i = 0; i < event_filters.length; ++i) {
+                            obj = new Object();
+                            element = event_filters[i];
+                            obj.value = element;
+                            obj.text = element;
+                            objarray.push(obj);
+                          }
+                          callback(objarray);
+                        }
+                      },
+                      "custom_event_filter": {
+                        "order": 2,
+                        "placeholder": "Please specify your event filter",
+                        "dependencies": {
+                          "event_filter": ["other..."]
+                        }
+                      },
+                      "reference": {
+                        "order": 3,
+                        "placeholder": ""
+                      }
+                    },
+                    "postRender": function(callback){
+                      this.on("change", function() {
+                        var newValue = this.childrenByPropertyId["custom_event_filter"].getValue();
+                        if (event_filters.lastIndexOf(newValue) == -1) {
+                          event_filters.splice(event_filters.length-1, 0, newValue);
+                          this.childrenByPropertyId["event_filter"].refresh();
+                        }
+                      });
+                      callback();
                     }
                   }
                 }
@@ -1297,23 +1345,6 @@ window.schemaOptions = {
                   });
                   callback();
                 }
-              },
-              "event_selection": {
-                "order": 7,
-                "type": "depositgroup-object",
-                "fields": {
-                  "event_filter": {
-                    "placeholder": "Event Filter",
-                    "noneLabel": "Select Event Filter",
-                    "type": "select2",
-                    "select2": true,
-                    "order": 1
-                  },
-                  "reference": {
-                    "order": 2,
-                    "placeholder": ""
-                  }
-                }
               }
             }
           }
@@ -1943,23 +1974,6 @@ window.schemaOptions = {
                     }
                   });
                   callback();
-                }
-              },
-              "event_selection": {
-                "order": 7,
-                "type": "depositgroup-object",
-                "fields": {
-                  "event_filter": {
-                    "placeholder": "Event Filter",
-                    "noneLabel": "Select Event Filter",
-                    "type": "select2",
-                    "select2": true,
-                    "order": 1
-                  },
-                  "reference": {
-                    "order": 2,
-                    "placeholder": ""
-                  }
                 }
               }
             }
