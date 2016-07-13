@@ -106,6 +106,16 @@
                   "object"
                 ]
               },
+              "jet_corrections": {
+                "type": "string",
+                "title": "Jet Corrections",
+                "enum": [
+                  "JetCorrections"
+                ],
+                "dependencies": [
+                  "object"
+                ]
+              },
               "photon_type": {
                 "type": "string",
                 "title": "Photon type",
@@ -134,6 +144,30 @@
                 "enum": ["tight", "medium", "loose", "other"],
                 "dependencies": [
                   "object"
+                ]
+              },
+              "met_pf_corrections": {
+                "type": "string",
+                "title": "MET Corrections",
+                "enum": [
+                  "Type0PFCorrections",
+                  "Type1PFCorrections",
+                  "Type2PFCorrections"
+                ],
+                "dependencies": [
+                  "met_type"
+                ]
+              },
+              "met_calo_corrections": {
+                "type": "string",
+                "title": "MET Corrections",
+                "enum": [
+                  "Type0CaloCorrections",
+                  "Type1CaloCorrections",
+                  "Type2CaloCorrections"
+                ],
+                "dependencies": [
+                  "met_type"
                 ]
               },
               "isolation": {

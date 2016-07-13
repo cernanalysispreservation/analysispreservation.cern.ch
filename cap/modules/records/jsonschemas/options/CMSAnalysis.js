@@ -867,6 +867,15 @@ window.schemaOptions = {
                               "object": ["jet", "bjet"]
                             }
                           },
+                          "jet_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "object": ["jet", "bjet"]
+                            }
+                          },
                           "photon_type": {
                             "noneLabel": "Select Photon",
                             "type": "select2",
@@ -883,6 +892,24 @@ window.schemaOptions = {
                             "order": 2,
                             "dependencies": {
                               "object": ["MET"]
+                            }
+                          },
+                          "met_pf_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "met_type": ["PFMET"]
+                            }
+                          },
+                          "met_calo_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "met_type": ["CaloMET"]
                             }
                           },
                           "sel_criteria": {
@@ -1497,6 +1524,15 @@ window.schemaOptions = {
                               "object": ["jet", "bjet"]
                             }
                           },
+                          "jet_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "object": ["jet", "bjet"]
+                            }
+                          },
                           "photon_type": {
                             "noneLabel": "Select Photon",
                             "type": "select2",
@@ -1513,6 +1549,24 @@ window.schemaOptions = {
                             "order": 2,
                             "dependencies": {
                               "object": ["MET"]
+                            }
+                          },
+                          "met_pf_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "met_type": ["PFMET"]
+                            }
+                          },
+                          "met_calo_corrections": {
+                            "noneLabel": "Select Corrections",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 3,
+                            "dependencies": {
+                              "met_type": ["CaloMET"]
                             }
                           },
                           "sel_criteria": {
