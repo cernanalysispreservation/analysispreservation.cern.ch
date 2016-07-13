@@ -29,7 +29,9 @@ SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 SECRET_KEY = "changeme"
 
 # Theme
-THEME_SITENAME = _("cap")
+THEME_SITENAME = _("CERN Analysis Preservation")
+THEME_LOGO = "img/cap_logo_lrg.svg"
+THEME_GOOGLE_SITE_VERIFICATION = []
 
 REQUIREJS_CONFIG = 'js/cap-build.js'
 
@@ -130,10 +132,6 @@ CERN_REMOTE_APP["params"].update({
 OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
 SECURITY_SEND_REGISTER_EMAIL = False
 
-THEME_SITENAME = _("CERN Analysis Preservation")
-THEME_LOGO = "img/cap_logo_lrg.svg"
-# REQUIREJS_CONFIG = 'js/build.js'
-THEME_GOOGLE_SITE_VERIFICATION = []
 BASE_TEMPLATE = "cap_theme/page.html"
 SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
 # config.setdefault(

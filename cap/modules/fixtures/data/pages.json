@@ -1,0 +1,16 @@
+[
+  {
+    "url": "/about",
+    "title": "About Cap",
+    "description": "Test",
+    "file": "pages/about.html",
+    "template_name": "invenio_pages/dynamic.html"
+  },
+  {
+    "url": "/terms",
+    "title": "Terms of Use",
+    "description": "Test",
+    "file": "pages/terms.html",
+    "template_name": "invenio_pages/dynamic.html"
+  }
+]

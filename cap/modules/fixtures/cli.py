@@ -9,8 +9,6 @@ import pkg_resources
 import json
 
 
-
-
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import ParameterizedActionNeed
 from invenio_accounts.models import User, Role
@@ -26,6 +24,7 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          update_permission_factory)
 from jsonpatch import JsonPatchException, JsonPointerException
 from cap.config import JSON_METADATA_PATH
+from .pages import loadpages
 
 from cap.modules.records.views import construct_record
 
@@ -37,9 +36,26 @@ try:
 except ImportError:
     from urllib.parse import urljoin
 
+
 @click.group()
 def fixtures():
     """Create demo records."""
+
+
+@fixtures.command()
+@with_appcontext
+def init():
+    """Load basic data."""
+    loadpages()
+
+
+@fixtures.command('loadpages')
+@click.option('--force', '-f', is_flag=True, default=False)
+@with_appcontext
+def loadpages_cli(force):
+    """Load pages."""
+    loadpages(force=force)
+    click.secho('Created pages', fg='green')
 
 
 @fixtures.command()
@@ -71,7 +87,8 @@ def add_record(metadata, collection, schema, force):
     if collection is None:
         return
 
-    data, pid, recid = construct_record(collection, metadata, '1', {} if force else schema)
+    data, pid, recid = construct_record(
+        collection, metadata, '1', {} if force else schema)
 
     record = Record.create(data, id_=recid)
 

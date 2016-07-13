@@ -1,27 +1,20 @@
 <footer class="footer">
   <div class="menu-wrapper">
     <div class="container">
-      {#
       <div class="row footer-menu">
         <div class="col-sm-3 col-md-2">
-        <h5>{{_('ABOUT')}}</h5>
-        <ul class="list-unstyled">
-        <li><a href="#">{{_('About us')}}</a></li>
-        <li><a href="#">{{_('Mission')}}</a></li>
-        </ul>
+          <ul class="list-unstyled">
+            <li><a href="/terms">{{_('Terms of Use')}}</a></li>
+            <li><a href="/about">{{_('About')}}</a></li>
+          </ul>
         </div>
-        <div class="col-sm-3 col-md-2">
-        <h5>{{_('RESOURCES')}}</h5></div>
-        <div class="col-sm-3 col-md-2">
-        <h5>{{_('ABOUT')}}</h5></div>
+        <div class="col-sm-9 col-md-10">
+          <ul class="list-unstyled pull-right">
+            <li>&copy; 2016 {{_(config.THEME_SITENAME)}}</li>
+            <li>{{_('Powered by ')}}<a href="http://invenio-software.org/" target="_blank">Invenio</a></li>
+          </ul>
+        </div>
       </div>
-      #}
-    </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <p class="pull-right"><a href="#">{{_('Terms of Use')}}</a></p>
-      <p>&copy; 2016 {{_(config.THEME_SITENAME)}}</p>
     </div>
   </div>
 </footer>
