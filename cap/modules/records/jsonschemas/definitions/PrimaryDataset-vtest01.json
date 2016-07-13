@@ -158,6 +158,10 @@
           "type": "string"
         }
       }
+    },
+    "json_file": {
+      "title": "json File for Validated Runs",
+      "type": "string"
     }
   }
 }

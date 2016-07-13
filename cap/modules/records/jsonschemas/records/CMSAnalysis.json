@@ -22,6 +22,21 @@
           "title": "Conclusion",
           "type": "string"
         },
+        "people_info": {
+          "title": "People Involved",
+          "description": "Please provide information about your operation system",
+          "type": "object",
+          "properties": {
+            "names": {
+              "title": "Names",
+              "type": "string"
+            },
+            "email": {
+              "title": "Email-Adresses",
+              "type": "string"
+            }
+          }
+        },
         "os": {
           "title": "Operation System",
           "description": "Please provide information about your operation system",

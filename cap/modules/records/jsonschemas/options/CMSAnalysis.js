@@ -27,10 +27,26 @@ window.schemaOptions = {
             "placeholder": "If not provided here the abstract can be extracted from the final paper."
           },
           "conclusion": {
-            "order": 4,
+            "order": 3,
             "type": "textarea",
             "rows": 5,
             "placeholder": "Please provide a short conclusion for the analysis."
+          },
+          "people_info": {
+            "type": "depositgroup-object",
+            "order": 4,
+            "fields": {
+              "names": {
+                "order": 1,
+                "type": "personalname",
+                "placeholder": "E.g. John Doe, Jane Doe"
+              },
+              "email": {
+                "order": 2,
+                "type": "email",
+                "placeholder": "E.g. john.doe@cern.ch, jane.doe@cern.ch"
+              }
+            }
           },
           "os": {
             "type": "depositgroup-object",
@@ -46,7 +62,7 @@ window.schemaOptions = {
           },
           "software": {
             "type": "depositgroup-object",
-            "order": 6,
+            "order": 7,
             "fields": {
               "name": {
                 "placeholder": "Name, e.g. CMSSW",
@@ -274,6 +290,10 @@ window.schemaOptions = {
                       });
                       callback();
                     }
+                  },
+                  "json_file": {
+                    "order": 10,
+                    "placeholder": "Please enter link to json file"
                   }
                 }
               }
@@ -2109,6 +2129,10 @@ window.schemaOptions = {
                         "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
                       }
                     }
+                  },
+                  "datacard": {
+                    "order": 5,
+                    "type": "file"
                   }
                 }
               }

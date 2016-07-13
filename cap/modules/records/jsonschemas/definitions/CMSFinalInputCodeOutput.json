@@ -49,7 +49,11 @@
             "type": "string"
           }
         }
-      }
+      },
+	  "datacard": {
+		"title": "Combine Datacard",        
+        "type": "string"
+	  }
     }
   }
 }
