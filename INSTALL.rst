@@ -46,7 +46,7 @@ and do a system install for the Sass preprocessor by following `Sass web guide <
 
 .. code-block:: shell
 
-  sudo npm -g sass node-sass clean-css uglify-js requirejs
+  sudo npm install -g sass node-sass clean-css uglify-js requirejs
 
 
 Installation
@@ -92,7 +92,7 @@ depend on:
 .. code-block:: shell
 
    cd cap
-   python manage.py npm
+   cap npm
    cdvirtualenv var/cap-instance/static
    npm install bower
    npm install
@@ -101,37 +101,37 @@ depend on:
    npm start
 
    cdvirtualenv src/cap
-   python manage.py collect -v
-   python manage.py assets build
+   cap collect -v
+   cap assets build
    python ./scripts/schemas.py
 
 Create database to hold persistent data:
 
 .. code-block:: shell
 
-   python manage.py db init
-   python manage.py db create
+   cap db init
+   cap db create
 
 Create a user account:
 
 .. code-block:: shell
 
-   python manage.py users create info@inveniosoftware.org -a
+   cap users create info@inveniosoftware.org -a
 
 Create some basic collections:
 
 .. code-block:: shell
 
-   python manage.py collections create CERNAnalysisPreservation
-   python manage.py collections create CMS -p CERNAnalysisPreservation
-   python manage.py collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
-   python manage.py collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
-   python manage.py collections create LHCb -p CERNAnalysisPreservation
-   python manage.py collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
-   python manage.py collections create ATLAS -p CERNAnalysisPreservation
-   python manage.py collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
-   python manage.py collections create ATLASAnalysis -p ATLAS -q '_type:atlasanalysis'
-   python manage.py collections create ALICE -p CERNAnalysisPreservation
+   cap collections create CERNAnalysisPreservation
+   cap collections create CMS -p CERNAnalysisPreservation
+   cap collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
+   cap collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
+   cap collections create LHCb -p CERNAnalysisPreservation
+   cap collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
+   cap collections create ATLAS -p CERNAnalysisPreservation
+   cap collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
+   cap collections create ATLASAnalysis -p ATLAS -q '_type:atlasanalysis'
+   cap collections create ALICE -p CERNAnalysisPreservation
 
 Start Elasticsearch in the background:
 
@@ -143,13 +143,13 @@ Create the index in ElasticSearch using the mappings:
 
 .. code-block:: shell
 
-   python manage.py index init
+   cap index init
 
 Start the web application (in debugging mode):
 
 .. code-block:: shell
 
-   python manage.py --debug run
+   cap --debug run
 
 
 Now we can create our first record by going to ``http://localhost:5000/records/<collection_name>/create/``
@@ -163,10 +163,10 @@ If you want to populate the database with example records you can run:
 .. code-block:: shell
 
    # For creating demo records with schema validation
-   python manage.py fixtures records
+   cap fixtures records
 
    # For creating demo records without validation ( --force )
-   python manage.py fixtures records -f
+   cap fixtures records -f
 
 General Recommendations
 ------------
@@ -207,8 +207,8 @@ If you have trouble indexing the database try:
 
 .. code-block:: shell
 
-   python manage.py db destroy
-   python manage.py db init
+   cap db destroy
+   cap db init
 
 and if that does not work try:
 
@@ -216,4 +216,4 @@ and if that does not work try:
 
    curl -XDELETE 'http://localhost:9200/rec*'
    curl -XDELETE 'http://localhost:9200/map*'
-   python manage.py db init
+   cap db init
