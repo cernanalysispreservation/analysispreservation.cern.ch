@@ -2,15 +2,16 @@
 
 from __future__ import absolute_import, print_function
 
+import codecs
 import json
 
 import pkg_resources
-from flask import Blueprint, g, jsonify, render_template, request
+from flask import Blueprint, current_app, g, jsonify, render_template, request
 from flask_principal import RoleNeed
 from flask_security import login_required
+from py2neo import Graph
 from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
-import codecs
 
 from cap.modules.records.views import collection_records, get_collections_tree
 
@@ -55,7 +56,8 @@ def lhcb_records():
 def lhcb_analyses_short():
     title = request.args.get('title', '')
 
-    filepath = pkg_resources.resource_filename('cap.modules.experiments.scripts', '/lhcb/analyses_short.json')
+    filepath = pkg_resources.resource_filename(
+        'cap.modules.experiments.scripts', '/lhcb/analyses_short.json')
     with open(filepath, 'r') as fp:
         data = json.load(fp)
 
@@ -87,6 +89,7 @@ def lhcb_publications():
 
     return jsonify(get_lhcb_publications_by_ananote(title))
 
+
 def get_lhcb_WG_analysis_by_title(title):
     filepath = pkg_resources.resource_filename(
         'cap.modules.experiments.scripts', '/lhcb/analyses.json')
@@ -100,6 +103,7 @@ def get_lhcb_WG_analysis_by_title(title):
         return {}
 
     return a
+
 
 def get_lhcb_publications_by_ananote(ananote):
     # LHCb Publications DB JSON file "LHCb_publications.json" must be placed
@@ -116,6 +120,23 @@ def get_lhcb_publications_by_ananote(ananote):
         return {}
 
     return a
+
+
+@lhcb_bp.route('/api/dependencies/platform/<app_name>/<app_version>')
+@lhcb_permission.require(403)
+def get_platform(app_name, app_version):
+    """ Method for getting a platform name from application name """
+    results = []
+    url = current_app.config['GRAPHENEDB_URL']
+    graph = Graph(url + '/db/data/')
+    query = "MATCH (n:Application{project:{app_name}, " \
+            "version:{app_version}})-[*..3]-(p:Platform) " \
+            "RETURN p.platform as platform LIMIT 5"
+    for num in graph.cypher.execute(query, app_name=app_name,
+                                    app_version=app_version):
+        results.append(num)
+
+    return '<br/>'.join(str(x) for x in results)
 
 
 @lhcb_bp.route('/api/analysis', methods=['GET', 'POST'])
@@ -143,7 +164,7 @@ def lhcb_analysis():
         if "status" in wg:
             results['status'] = wg["status"]
         if ("collabreport" in wg) and not (isinstance(wg["collabreport"], basestring)):
-            for k,r in wg["collabreport"].iteritems():
+            for k, r in wg["collabreport"].iteritems():
                 tmp_report = {}
                 if "link" in r:
                     tmp_report['url'] = r["link"]
@@ -155,7 +176,7 @@ def lhcb_analysis():
 
             results['internal_discussions'] = internal_reports
         if ("report" in wg) and not (isinstance(wg["report"], basestring)):
-            for k,r in wg["report"].iteritems():
+            for k, r in wg["report"].iteritems():
                 tmp_report = {}
                 if "link" in r:
                     tmp_report['url'] = r["link"]
@@ -169,7 +190,7 @@ def lhcb_analysis():
         if ("presentation" in wg) and not \
            (isinstance(wg["presentation"], basestring)):
             presentations = []
-            for k,r in wg["presentation"].iteritems():
+            for k, r in wg["presentation"].iteritems():
                 tmp_presentation = {}
                 if "link" in r:
                     tmp_presentation['url'] = r["link"]
@@ -183,7 +204,7 @@ def lhcb_analysis():
 
         if "ananote" in wg:
             pubs = get_lhcb_publications_by_ananote(
-                                        wg["ananote"])
+                wg["ananote"])
             publications = []
             if "CDS" in pubs:
                 for p in pubs['CDS']:
@@ -203,6 +224,5 @@ def lhcb_analysis():
         publications = get_lhcb_publications_by_ananote(ananote)
         if "ananote" in publications:
             wg = get_lhcb_WG_analysis_by_title(title)
-
 
     return jsonify(results)

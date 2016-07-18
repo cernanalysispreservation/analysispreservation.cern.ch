@@ -105,11 +105,12 @@ RECORDS_REST_ENDPOINTS = dict(
     ),
 )
 
+#: Default api endpoint for LHCb db
+GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
 #: Default base template.
 RECORDS_UI_BASE_TEMPLATE = 'records/detail.html'
 #: Default tombstone template.
 RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
-
 
 # CAP collaboration groups
 # ========================

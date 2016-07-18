@@ -65,6 +65,7 @@ install_requires = [
     'Flask-BabelEx>=0.9.2',
     'click',
     'psycopg2',
+    'py2neo',
     'flask-kvsession',
     'pysqlite',
     'invenio-access==1.0.0a5',
