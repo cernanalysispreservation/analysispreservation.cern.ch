@@ -22,7 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-import os, json
+import os
+import json
 import pkg_resources
 import re
 import sys
@@ -30,6 +31,7 @@ from pprint import pprint
 
 results = []
 errors = []
+
 
 def fetch_schema(path):
     return json.loads(pkg_resources.resource_string('cap', path))
@@ -44,12 +46,13 @@ def get_ref(d):
         elif isinstance(v, list):
             if any(x in k for x in options):
                 for r in v:
-                    if '$ref' in r:                        
+                    if '$ref' in r:
                         results.append(r['$ref'])
         else:
             if '$ref' in k:
                 results.append(v)
     return results
+
 
 def validate_ref(json_to_check, schema_path):
     """Returns non valid $ref urls"""
@@ -59,7 +62,8 @@ def validate_ref(json_to_check, schema_path):
         if not out:
             pprint("Location: " + schema_path + " Error: Not valid url:" + url)
             sys.exit(1)
-            
+
+
 def test_ref_is_valid():
     root_dir = os.path.join(
         'cap', 'modules', 'records', 'jsonschemas', 'records')

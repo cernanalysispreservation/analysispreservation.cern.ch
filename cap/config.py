@@ -191,6 +191,14 @@ JSONSCHEMAS_HOST = 'http://localhost:5000'
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
 
+JSONSCHEMAS_VERSIONS = {
+    "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
+    "ATLASWorkflows": "ATLASWorkflows-v0.0.1",
+    "CMSAnalysis": "CMSAnalysis-v0.0.1",
+    "CMSQuestionnaire": "CMSQuestionnaire-v0.0.1",
+    "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
+}
+
 # User profile
 # ============
 #: Enable all the users to perform all the actions

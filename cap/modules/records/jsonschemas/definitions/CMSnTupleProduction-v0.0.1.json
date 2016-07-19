@@ -13,7 +13,7 @@
           "type": "array",
           "id": "primary-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-v0.0.1.json",
             "properties": {
               "copypaste": {
                 "type": "string"
@@ -27,7 +27,7 @@
           "type": "array",
           "id": "mc-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-v0.0.1.json",
             "defaultProperties": [
               "title"
             ]
@@ -36,10 +36,10 @@
       }
     },
     "code": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
     },
     "output": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput.json"
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSOutput-v0.0.1.json"
     }
   }
 }

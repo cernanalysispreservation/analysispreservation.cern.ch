@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Monte Carlo Dataset",
-  "description": "Information concerning the Monte Carlo Dataset used",
+  "title": "Primary Dataset",
+  "description": "Information concerning the ATLAS primary dataset used",
   "type": "object",
   "properties": {
     "@type": {
@@ -14,13 +14,13 @@
       "title": "Title",
       "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
       "autocomplete": true,
-      "propertyOrder": 301
+      "propertyOrder": 201
     },
     "description": {
       "type": "string",
       "title": "Description",
       "format": "textarea",
-      "description": "Provide a description for the MC dataset"
+      "description": "Provide a description for the primary dataset"
     },
     "licence": {
       "type": "string",
@@ -32,14 +32,19 @@
       "description": "",
       "type": "array",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
       }
     },
-    "issued": {
-      "title": "Issued",
+    "software_version": {
+      "title": "Software Version",
+      "type": "string",
+      "description": "Provide the software version that produced the data"
+    },
+    "produced": {
+      "title": "Date Produced",
       "type": "string",
       "format": "datetime",
-      "description": "Provide date/time the dataset was issued"
+      "description": "Provide date/time the primary dataset was produced"
     },
     "modified": {
       "title": "Modified",
@@ -50,10 +55,10 @@
     "available": {
       "title": "Year Availble",
       "type": "number",
-      "description": "Provide the year the MC dataset will be available in public. e.g. 2014"
+      "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
     },
-    "mc_identifier": {
-      "title": "MC Identifier",
+    "run_number": {
+      "title": "Run #",
       "type": "number",
       "description": "e.g. 146242"
     },
@@ -62,20 +67,10 @@
       "type": "number",
       "description": "Provide dataset ID e.g. 1853590"
     },
-    "generator": {
-      "title": "Generator Used",
-      "type": "string",
-      "description": "Provide generator used"
-    },
-    "geant_version": {
-      "title": "GEANT Version Used",
-      "type": "number",
-      "description": "Provide GEANT version used e.g. 9.6"
-    },
     "type": {
       "title": "Type",
       "type": "string",
-      "description": "Provide type of item e.g. 'mc'"
+      "description": "Provide type of item e.g. 'data'"
     },
     "numbers": {
       "title": "Numbers",
@@ -86,8 +81,8 @@
           "title": "Numbers of events",
           "type": "number"
         },
-        "nlumis": {
-          "title": "Number of lumis",
+        "integrated_luminosity": {
+          "title": "Integrated Luminosity",
           "type": "number"
         },
         "nfiles": {

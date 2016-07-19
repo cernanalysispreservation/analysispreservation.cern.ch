@@ -89,7 +89,7 @@
           "type": "array",
           "id": "primary-datasets",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-v0.0.1.json",
             "properties": {
               "copypaste": {
                 "type": "string"
@@ -103,7 +103,7 @@
           "type": "array",
           "id": "mc_sig_dataset",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-v0.0.1.json",
             "defaultProperties": [
               "title"
             ]
@@ -115,7 +115,7 @@
           "type": "array",
           "id": "mc_bg_dataset",
           "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloBackgroundDataset-vtest01.json",
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloBackgroundDataset-v0.0.1.json",
             "defaultProperties": [
               "title"
             ]
@@ -140,10 +140,10 @@
         "type": "object",
         "properties": {
           "code_base": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
           },
           "n_tuple": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput-v0.0.1.json"
           }
         }
       },
@@ -158,7 +158,7 @@
       "id": "main-measurements",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSMainMeasurements-v0.0.1.json"
       }
     },
     "auxiliary_measurements": {
@@ -167,7 +167,7 @@
       "type": "array",
       "id": "auxiliary-measurements",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSAuxiliaryMeasurements.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSAuxiliaryMeasurements-v0.0.1.json"
       }
     },
     "post_n_tuple": {
@@ -176,10 +176,10 @@
       "type": "object",
       "properties": {
         "code_base": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
         },
         "n_tuple": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSFinalInputCodeOutput.json"
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSFinalInputCodeOutput-v0.0.1.json"
         }
       }
     },
@@ -190,7 +190,7 @@
       "id": "documentations",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-v0.0.1.json"
       }
     },
     "internal_discussions": {
@@ -200,7 +200,7 @@
       "id": "internal-discussions",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-v0.0.1.json"
       }
     },
     "presentations": {
@@ -210,7 +210,7 @@
       "id": "presentations",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-v0.0.1.json"
       }
     },
     "publications": {
@@ -220,7 +220,7 @@
       "id": "publications",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Publication-vtest01.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Publication-v0.0.1.json"
       }
     },
     "keywords": {

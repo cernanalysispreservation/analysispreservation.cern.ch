@@ -13,10 +13,10 @@
       "type": "string"
     },
     "code_base": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode.json"
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
     },
     "n_tuple": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput.json"
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput-v0.0.1.json"
     },
     "detector_final_state": {
       "title": "Event Selection",
@@ -138,6 +138,14 @@
                   "object"
                 ]
               },
+              "sel_criteria": {
+                "type": "string",
+                "title": "Selection Criteria",
+                "enum": ["tight", "medium", "loose", "other"],
+                "dependencies": [
+                  "object"
+                ]
+              },
               "met_pf_corrections": {
                 "type": "string",
                 "title": "MET Corrections",
@@ -160,14 +168,6 @@
                 ],
                 "dependencies": [
                   "met_type"
-                ]
-              },
-              "sel_criteria": {
-                "type": "string",
-                "title": "Selection Criteria",
-                "enum": ["tight", "medium", "loose", "other"],
-                "dependencies": [
-                  "object"
                 ]
               },
               "isolation": {
