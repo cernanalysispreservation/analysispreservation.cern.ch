@@ -13,7 +13,12 @@
       "default": "frompar-pub"
     },
     "outputmap": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "param_card": {
+          "type": "string"
+        }
+      }
     }
   },
   "required": [

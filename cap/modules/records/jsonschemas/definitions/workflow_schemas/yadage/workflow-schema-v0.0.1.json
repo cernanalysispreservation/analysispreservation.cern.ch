@@ -9,7 +9,7 @@
       "type": "array",
       "title": "Stages",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/stage-schema.json#"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json#"
       }
     }
   },

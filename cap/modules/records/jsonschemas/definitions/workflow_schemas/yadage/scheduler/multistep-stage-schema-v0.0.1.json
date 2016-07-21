@@ -12,9 +12,9 @@
       ],
       "default": "multistep-stage"
     },
-    "parameters": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/parameterselection.json#" },
-    "step": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/packtivity-schema.json#" },
-    "workflow": {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema.json#"},
+    "parameters": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#" },
+    "step": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
+    "workflow": {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"},
     "scatter": {
       "type":"object",
       "title": "Scatter",
