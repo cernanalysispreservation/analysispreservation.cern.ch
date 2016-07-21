@@ -1,8 +1,331 @@
 [{
   "collection": "ATLASWorkflows",
   "metadata": {
+    "workflows": [
+      {
+        "name": "RECAST",
+        "workflow": {
+          "stages": [
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "init"
+                ]
+              },
+              "name": "download",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "/resources/download.py {dataset} {outDir} {outList}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output": "outList"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/dilepton_download",
+                    "envscript": "/resources/downloadenv.sh",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": [
+                      "CVMFS",
+                      "GRIDProxy"
+                    ]
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": "{workdir}/files.list",
+                    "key": "outList"
+                  },
+                  {
+                    "value": "{workdir}/grid_download",
+                    "key": "outDir"
+                  },
+                  {
+                    "value": {
+                      "output": "dataset",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "dataset"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "download"
+                ]
+              },
+              "name": "ntupling",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./DileptonAnalysis {blinded} {include_truth} {filter} {input_type} -maxsyst {maxsyst} -m {minintup} -f {filelist}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output": "minintup"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/dilepton_ntupling",
+                    "envscript": "/resources/ntuplingenv.sh",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": "-truth",
+                    "key": "include_truth"
+                  },
+                  {
+                    "value": 1,
+                    "key": "maxsyst"
+                  },
+                  {
+                    "value": "-mc",
+                    "key": "input_type"
+                  },
+                  {
+                    "value": {
+                      "output": "output",
+                      "stages": "download",
+                      "unwrap": true
+                    },
+                    "key": "filelist"
+                  },
+                  {
+                    "value": "-nomllalpgenfilter",
+                    "key": "filter"
+                  },
+                  {
+                    "value": "{workdir}/mini.root",
+                    "key": "minintup"
+                  },
+                  {
+                    "value": "-unblind",
+                    "key": "blinded"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "ntupling"
+                ]
+              },
+              "name": "histfitprepare",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "python preparehistfit.py {miniroot} {efficiency_file} {xsections_file} {modelName} {histfittree_file} {yield_file}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output_tree": "histfittree_file",
+                      "output_yield": "yield_file"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/dilepton_histfitprep",
+                    "envscript": "/resources/prepareenv.sh",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "xsections_file",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "xsections_file"
+                  },
+                  {
+                    "value": {
+                      "output": "output",
+                      "stages": "ntupling",
+                      "unwrap": true
+                    },
+                    "key": "miniroot"
+                  },
+                  {
+                    "value": {
+                      "output": "efficiency_file",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "efficiency_file"
+                  },
+                  {
+                    "value": "{workdir}/out.root",
+                    "key": "histfittree_file"
+                  },
+                  {
+                    "value": {
+                      "output": "modelName",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "modelName"
+                  },
+                  {
+                    "value": "{workdir}/out.yield",
+                    "key": "yield_file"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "histfitprepare"
+                ]
+              },
+              "name": "fit",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./luke_run_limit.sh {histfitroot} {fitresults}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output": "fitresults"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/dilepton_fit",
+                    "envscript": "/resources/fitenv.sh",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "output_tree",
+                      "stages": "histfitprepare",
+                      "unwrap": true
+                    },
+                    "key": "histfitroot"
+                  },
+                  {
+                    "value": "{workdir}/fit.tgz",
+                    "key": "fitresults"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "fit"
+                ]
+              },
+              "name": "postproc",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "/resources/pMSSM-TwoLep-Fit/post_fit.sh {fitresultsarchive} {workdir} {modelName} {resultsyaml}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output": "resultsyaml"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/dilepton_fit",
+                    "envscript": "/resources/fitenv.sh",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": [
+                      "CVMFS"
+                    ]
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "output",
+                      "stages": "fit",
+                      "unwrap": true
+                    },
+                    "key": "fitresultsarchive"
+                  },
+                  {
+                    "value": "{workdir}/postproc",
+                    "key": "workdir"
+                  },
+                  {
+                    "value": "{workdir}/results.yaml",
+                    "key": "resultsyaml"
+                  },
+                  {
+                    "value": {
+                      "output": "modelName",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "modelName"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
     "basic_info": {
-      "title": "This is a comlpex ATLAS Workflow example"
+      "title": "Run1EwkTwoLepton"
+    }
+  },
+  "schema": "https://localhost:5000/records/jsonschemas/ATLASWorkflows/"
+},{
+  "collection": "ATLASWorkflows",
+  "metadata":  {
+    "basic_info": {
+      "title": "This is a comlpex ATLAS Workflow example (VIS DEMO)"
     },
     "workflows": [{
       "stages": [{
@@ -537,12 +860,13 @@
         "signal_par_one": null
       }
     }]
-  }
-}, {
+  },
+  "schema": {}
+},{
   "collection": "ATLASWorkflows",
   "metadata": {
     "basic_info": {
-      "title": "This is a simple ATLAS Workflow example"
+      "title": "This is a simple ATLAS Workflow example (VIS DEMO)"
     },
     "workflows": [{
       "stages": [{
@@ -740,8 +1064,694 @@
         "dataset": null
       }
     }]
-  }
-}, {
+  },
+  "schema": {}
+},
+{
+  "collection": "ATLASWorkflows",
+  "metadata": {
+    "workflows": [
+      {
+        "name": "HiggsMCProd",
+        "workflow": {
+          "stages": [
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "init"
+                ]
+              },
+              "name": "prepare",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./paramfromtemplate.py inputs/template_paramcard.dat {param_card}  -i \"{{kHzz: {kHzz}, kAzz: {kAzz}, kHww: {kHww}, kAww: {kAww}}}\"",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "param_card": "param_card"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/higgs-mc-studies",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "kAzz",
+                      "stages": "init"
+                    },
+                    "key": "kAzz"
+                  },
+                  {
+                    "value": "{workdir}/param.dat",
+                    "key": "param_card"
+                  },
+                  {
+                    "value": {
+                      "output": "kHzz",
+                      "stages": "init"
+                    },
+                    "key": "kHzz"
+                  },
+                  {
+                    "value": {
+                      "output": "kAww",
+                      "stages": "init"
+                    },
+                    "key": "kAww"
+                  },
+                  {
+                    "value": {
+                      "output": "kHww",
+                      "stages": "init"
+                    },
+                    "key": "kHww"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "prepare"
+                ]
+              },
+              "name": "grid",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./scripts/setupgrid.sh {param_card} {gridpack}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "gridpack": "gridpack"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/higgs-mc-studies",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "param_card",
+                      "stages": "prepare"
+                    },
+                    "key": "param_card"
+                  },
+                  {
+                    "value": "{workdir}/grid.tar.gz",
+                    "key": "gridpack"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "grid"
+                ]
+              },
+              "name": "subchain",
+              "scheduler": {
+                "scheduler_type": "multistep-stage",
+                "scatter": {
+                  "method": "zip",
+                  "parameters": [
+                    "seed"
+                  ]
+                },
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "nevents",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "nevents"
+                  },
+                  {
+                    "value": {
+                      "output": "gridpack",
+                      "stages": "grid",
+                      "unwrap": true
+                    },
+                    "key": "gridpack"
+                  },
+                  {
+                    "value": {
+                      "output": "seeds",
+                      "stages": "init",
+                      "flatten": true
+                    },
+                    "key": "seed"
+                  }
+                ],
+                "workflow": {
+                  "stages": [
+                    {
+                      "dependencies": {
+                        "dependency_type": "jsonpath_ready",
+                        "expressions": [
+                          "init"
+                        ]
+                      },
+                      "name": "madevent",
+                      "scheduler": {
+                        "step": {
+                          "process": {
+                            "cmd": "./scripts/rungrid.sh {gridpack} {nevents} {seed} {lhefile}",
+                            "process_type": "string-interpolated-cmd"
+                          },
+                          "publisher": {
+                            "publisher_type": "frompar-pub",
+                            "outputmap": {
+                              "lhefile": "lhefile"
+                            }
+                          },
+                          "environment": {
+                            "imagetag": "latest",
+                            "image": "lukasheinrich/higgs-mc-studies",
+                            "envscript": "",
+                            "environment_type": "docker-encapsulated",
+                            "env": {},
+                            "resources": []
+                          }
+                        },
+                        "scheduler_type": "singlestep-stage",
+                        "parameters": [
+                          {
+                            "value": "{workdir}/lhefile.lhe",
+                            "key": "lhefile"
+                          },
+                          {
+                            "value": {
+                              "output": "nevents",
+                              "stages": "init"
+                            },
+                            "key": "nevents"
+                          },
+                          {
+                            "value": {
+                              "output": "gridpack",
+                              "stages": "init"
+                            },
+                            "key": "gridpack"
+                          },
+                          {
+                            "value": {
+                              "output": "seed",
+                              "stages": "init"
+                            },
+                            "key": "seed"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "dependencies": {
+                        "dependency_type": "jsonpath_ready",
+                        "expressions": [
+                          "madevent"
+                        ]
+                      },
+                      "name": "pythia",
+                      "scheduler": {
+                        "step": {
+                          "process": {
+                            "cmd": "/analysis/pythia_main/example_main {settings_file} {hepmcfile} {lhefile}",
+                            "process_type": "string-interpolated-cmd"
+                          },
+                          "publisher": {
+                            "publisher_type": "frompar-pub",
+                            "outputmap": {
+                              "hepmcfile": "hepmcfile"
+                            }
+                          },
+                          "environment": {
+                            "imagetag": "latest",
+                            "image": "lukasheinrich/higgs-mc-studies",
+                            "envscript": "",
+                            "environment_type": "docker-encapsulated",
+                            "env": {},
+                            "resources": []
+                          }
+                        },
+                        "scheduler_type": "singlestep-stage",
+                        "parameters": [
+                          {
+                            "value": {
+                              "output": "lhefile",
+                              "stages": "madevent"
+                            },
+                            "key": "lhefile"
+                          },
+                          {
+                            "value": "{workdir}/outputfile.hepmc",
+                            "key": "hepmcfile"
+                          },
+                          {
+                            "value": "/analysis/mainPythiaMLM.cmnd",
+                            "key": "settings_file"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "dependencies": {
+                        "dependency_type": "jsonpath_ready",
+                        "expressions": [
+                          "pythia"
+                        ]
+                      },
+                      "name": "delphes",
+                      "scheduler": {
+                        "step": {
+                          "process": {
+                            "cmd": "DelphesHepMC {detector_card} {outputfile} {inputfile}",
+                            "process_type": "string-interpolated-cmd"
+                          },
+                          "publisher": {
+                            "publisher_type": "frompar-pub",
+                            "outputmap": {
+                              "delphesoutput": "outputfile"
+                            }
+                          },
+                          "environment": {
+                            "imagetag": "latest",
+                            "image": "lukasheinrich/higgs-mc-studies",
+                            "envscript": "",
+                            "environment_type": "docker-encapsulated",
+                            "env": {},
+                            "resources": []
+                          }
+                        },
+                        "scheduler_type": "singlestep-stage",
+                        "parameters": [
+                          {
+                            "value": "/analysis/template_cards/modified_delphes_card_ATLAS.tcl",
+                            "key": "detector_card"
+                          },
+                          {
+                            "value": "{workdir}/outputfile.root",
+                            "key": "outputfile"
+                          },
+                          {
+                            "value": {
+                              "output": "hepmcfile",
+                              "stages": "pythia"
+                            },
+                            "key": "inputfile"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "dependencies": {
+                        "dependency_type": "jsonpath_ready",
+                        "expressions": [
+                          "delphes"
+                        ]
+                      },
+                      "name": "analysis",
+                      "scheduler": {
+                        "step": {
+                          "process": {
+                            "cmd": "./scripts/runpost.sh {fromdelphes} {analysis_output}",
+                            "process_type": "string-interpolated-cmd"
+                          },
+                          "publisher": {
+                            "publisher_type": "frompar-pub",
+                            "outputmap": {
+                              "analysis_output": "analysis_output"
+                            }
+                          },
+                          "environment": {
+                            "imagetag": "latest",
+                            "image": "lukasheinrich/higgs-mc-studies",
+                            "envscript": "",
+                            "environment_type": "docker-encapsulated",
+                            "env": {},
+                            "resources": []
+                          }
+                        },
+                        "scheduler_type": "singlestep-stage",
+                        "parameters": [
+                          {
+                            "value": {
+                              "output": "delphesoutput",
+                              "stages": "delphes"
+                            },
+                            "key": "fromdelphes"
+                          },
+                          {
+                            "value": "{workdir}/anaout.root",
+                            "key": "analysis_output"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "subchain"
+                ]
+              },
+              "name": "rootmerge",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "hadd {mergedfile} {inputfiles}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "mergedfile": "mergedfile"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/higgs-mc-studies",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": "{workdir}/anamerged.root",
+                    "key": "mergedfile"
+                  },
+                  {
+                    "value": {
+                      "output": "analysis_output",
+                      "stages": "subchain.[*].analysis"
+                    },
+                    "key": "inputfiles"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "MadgraphDelphesAthena",
+        "workflow": {
+          "stages": [
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": []
+              },
+              "name": "prepare",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./paramfromyaml.py --madgraph -f {inputpars} {model} {parametercard}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "parcard": "parametercard"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/recast_phenoexample",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": "sm",
+                    "key": "model"
+                  },
+                  {
+                    "value": "defaultparam.yml",
+                    "key": "inputpars"
+                  },
+                  {
+                    "value": "{workdir}/param.dat",
+                    "key": "parametercard"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "prepare",
+                  "init"
+                ]
+              },
+              "name": "madgraph",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./steermadgraph.py proc.dat default_run.dat {paramcard} {outputlhe} -e {events}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "lhefile": "outputlhe"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/recast_phenoexample",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "parcard",
+                      "stages": "prepare",
+                      "unwrap": true
+                    },
+                    "key": "paramcard"
+                  },
+                  {
+                    "value": "{workdir}/output.lhe",
+                    "key": "outputlhe"
+                  },
+                  {
+                    "value": {
+                      "output": "nevents",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "events"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "madgraph"
+                ]
+              },
+              "name": "pythia",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "./steerpythia.py {lhefile} {outputhepmc} -e {events}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "hepmcfile": "outputhepmc"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/recast_phenoexample",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "lhefile",
+                      "stages": "madgraph",
+                      "unwrap": true
+                    },
+                    "key": "lhefile"
+                  },
+                  {
+                    "value": "{workdir}/output.hepmc",
+                    "key": "outputhepmc"
+                  },
+                  {
+                    "value": {
+                      "output": "nevents",
+                      "stages": "init",
+                      "unwrap": true
+                    },
+                    "key": "events"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "pythia"
+                ]
+              },
+              "name": "delphes",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "DelphesHepMC  {delphes_card} {outputroot} {inputhepmc} && root2lhco {outputroot} {outputlhco}",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "lhcofile": "outputlhco",
+                      "rootfile": "outputroot"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/root-delphes",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": "{workdir}/output.lhco",
+                    "key": "outputlhco"
+                  },
+                  {
+                    "value": "delphes/cards/delphes_card_ATLAS.tcl",
+                    "key": "delphes_card"
+                  },
+                  {
+                    "value": "{workdir}/output.root",
+                    "key": "outputroot"
+                  },
+                  {
+                    "value": {
+                      "output": "hepmcfile",
+                      "stages": "pythia"
+                    },
+                    "key": "inputhepmc"
+                  }
+                ]
+              }
+            },
+            {
+              "dependencies": {
+                "dependency_type": "jsonpath_ready",
+                "expressions": [
+                  "pythia"
+                ]
+              },
+              "name": "athena",
+              "scheduler": {
+                "step": {
+                  "process": {
+                    "cmd": "source /analysis/setup.sh && export INPUT={input} && export OUTPUT={output} && athena.py jo.py",
+                    "process_type": "string-interpolated-cmd"
+                  },
+                  "publisher": {
+                    "publisher_type": "frompar-pub",
+                    "outputmap": {
+                      "output": "output"
+                    }
+                  },
+                  "environment": {
+                    "imagetag": "latest",
+                    "image": "lukasheinrich/quickathenahepmc",
+                    "envscript": "",
+                    "environment_type": "docker-encapsulated",
+                    "env": {},
+                    "resources": []
+                  }
+                },
+                "scheduler_type": "singlestep-stage",
+                "parameters": [
+                  {
+                    "value": {
+                      "output": "hepmcfile",
+                      "stages": "pythia",
+                      "unwrap": true
+                    },
+                    "key": "input"
+                  },
+                  {
+                    "value": "{workdir}/plot.png",
+                    "key": "output"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "basic_info": {
+      "title": "TestAnalysis1"
+    }
+  },
+  "schema": "https://localhost:5000/records/jsonschemas/ATLASWorkflows/"
+},
+ {
   "metadata": {
     "publications": [{
       "url": "https://cds.cern.ch/record/2051857",
@@ -828,7 +1838,8 @@
       "twiki": "https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/D02KPiMUMU"
     }
   },
-  "collection": "LHCbAnalysis"
+  "collection": "LHCbAnalysis",
+  "schema": "https://localhost:5000/records/jsonschemas/LHCbAnalysis/"
 }, {
   "metadata": {
     "publications": [{
@@ -853,83 +1864,109 @@
     "dst_selection": {
       "input_data": {
         "mc_data": [{
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21263002/DST",
           "generator": "Pythia8",
           "mc_production": "27764"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23263020/DST",
           "generator": "Pythia8",
           "mc_production": "27765"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23263011/DST",
           "generator": "Pythia8",
           "mc_production": "27766"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21263010/DST",
           "generator": "Pythia8",
           "mc_production": "27767"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27163003/DST",
           "generator": "Pythia8",
           "mc_production": "27768"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27265002/DST",
           "generator": "Pythia8",
           "mc_production": "27769"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21103010/DST",
           "generator": "Pythia8",
           "mc_production": "282495"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23103011/DST",
           "generator": "Pythia8",
           "mc_production": "282496"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27165006/DST",
           "generator": "Pythia8",
           "mc_production": "28247"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/23103020/DST",
           "generator": "Pythia8",
           "mc_production": "28248"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/21103003/DST",
           "generator": "Pythia8",
           "mc_production": "28249"
         }, {
-          "reconstruction_software": "Reco15em",
-          "stripping_software": "N/A",
+          "reconstruction_software": {
+            "reconstruction_software_name": "Reco15em"
+          },
+          "stripping_software": {},
           "location": "sim://MC/2015/Beam6500GeV-Jun2015-MagDown-Nu1.6-Pythia8/Sim08h/Trig0x40f9014e/Reco15em/Turbo01em/27163071/DST",
           "generator": "Pythia8",
           "mc_production": "28250"
         }],
         "data": [{
           "year": "2015",
-          "stripping_software": "N/A",
+          "stripping_software": {},
           "location": " sim://LHCb/Collision15em/Beam6500GeV-VeloClosed-MagDown/Real Data/Turbo01em/94000000/TURBO.MDST",
-          "reconstruction_software": "Turbo01em"
+          "reconstruction_software": {
+            "reconstruction_software_name": "Turbo01em"
+          }
         }]
       },
       "code": {
@@ -993,145 +2030,109 @@
       "twiki": "https://twiki.cern.ch/twiki/bin/viewauth/LHCbPhysics/CharmCrossSection2015"
     }
   },
-  "collection": "LHCbAnalysis"
+  "collection": "LHCbAnalysis",
+  "schema": "https://localhost:5000/records/jsonschemas/LHCbAnalysis/"
 }, {
   "metadata": {
-    "auxiliary_measurements": [],
-    "input_datasets": {
-      "primary_datasets": [{
-        "dataset_metadata": {
-          "available": null,
-          "run_number": null,
-          "description": "NoGroup",
-          "title": "/BTag/HIRun2013-PromptReco-v1/DQM",
-          "persistent_identifiers": [],
-          "issued": "2013-01-15 08:54:53",
-          "modified": "2013-01-15 08:54:53",
-          "numbers": {
-            "nfiles": 7,
-            "nevents": 0,
-            "nblocks": 1,
-            "nlumis": 428,
-            "extend": null
-          },
-          "dataset_id": 7116767,
-          "type": "data"
+     "auxiliary_measurements": [],
+     "n-tuple_production_check": "no",
+     "input_datasets": {
+        "primary_datasets": [],
+        "mc_bg_dataset": [],
+        "mc_sig_dataset": []
+     },
+     "presentations": [
+        {}
+     ],
+     "basic_info": {
+        "people_info": {
+           "names": "John Doe",
+           "email": "john.doe@cern.ch"
         },
-        "triggers": []
-      }, {
-        "dataset_metadata": {
-          "available": null,
-          "run_number": null,
-          "description": "NoGroup",
-          "title": "/BarrelMuon/CRUZET1-v1/RAW",
-          "persistent_identifiers": [],
-          "issued": "2008-05-28 16:41:19",
-          "modified": "2009-04-14 16:58:21",
-          "numbers": {
-            "nfiles": 576,
-            "nevents": 17086479,
-            "nblocks": 1,
-            "nlumis": 932,
-            "extend": null
-          },
-          "dataset_id": 14926,
-          "type": "data"
+        "abstract": "A few words go here",
+        "conclusion": "A conclusion go here",
+        "os": {
+           "version": "6",
+           "name": "SLC"
         },
-        "triggers": []
-      }],
-      "mc_bg_dataset": [],
-      "mc_sig_dataset": [{
-        "dataset_metadata": {
-          "available": null,
-          "run_number": null,
-          "description": "Physics",
-          "title": "/14TeV_T1T1_2BC_350_100_MadGraph/Summer12-L1TDR_POSTLS161_V1-v1/GEN",
-          "persistent_identifiers": [],
-          "issued": "2012-12-23 20:45:36",
-          "modified": "2012-12-24 09:51:29",
-          "numbers": {
-            "nfiles": 1,
-            "nevents": 66844,
-            "nblocks": 1,
-            "nlumis": 223,
-            "extend": null
-          },
-          "dataset_id": 6955725,
-          "type": "mc"
-        },
-        "mc_signal_selection": []
-      }, {
-        "dataset_metadata": {
-          "available": null,
-          "persistent_identifiers": [],
-          "dataset_id": null,
-          "run_number": null,
-          "numbers": {
-            "nfiles": null,
-            "nevents": null,
-            "nblocks": null,
-            "nlumis": null,
-            "extend": null
-          }
-        },
-        "mc_signal_selection": []
-      }]
-    },
-    "input_code_output": {
-      "code_base": {},
-      "n_tuple": [{
-        "input_data": {
-          "dataset": ["dataset=/BarrelMuon/CRUZET1-v1/RAW", "dataset=/14TeV_T1T1_2BC_350_100_MadGraph/Summer12-L1TDR_POSTLS161_V1-v1/GEN"]
-        },
-        "user_code": {},
-        "output_data": {},
-        "run_instructions": {}
-      }]
-    },
-    "presentations": [{}],
-    "basic_info": {
-      "abstract": "Few words go here",
-      "os": {
-        "version": "6",
-        "name": "SLC"
-      },
-      "analysis_number": "CMS-ANA-2015-012",
-      "software": {
-        "version": "5_3_2",
-        "name": "CMSSW"
-      }
-    },
-    "internal_discussions": [{}],
-    "main_measurements": [{
-      "code_base": {},
-      "detector_final_state": {
-        "veto": [],
-        "final_state_particles": [{}],
-        "final_state_relations": []
-      },
-      "n_tuple": [{
-        "input_data": {
-          "dataset": ["dataset=/BTag/HIRun2013-PromptReco-v1/DQM"]
-        },
-        "user_code": {},
-        "output_data": {},
-        "run_instructions": {}
-      }],
-      "event_selection": {}
-    }],
-    "documentations": [{}],
-    "post_n_tuple": {
-      "code_base": {},
-      "n_tuple": [{
-        "input_data": {},
-        "user_code": {},
-        "output_data": {},
-        "run_instructions": {}
-      }]
-    },
-    "publications": [{
-      "persistent_identifiers": []
-    }]
+        "analysis_number": "CMS-ANA-2016-999",
+        "software": {
+           "version": "5_3_2",
+           "name": "CMSSW"
+        }
+     },
+     "internal_discussions": [
+        {}
+     ],
+     "main_measurements": [
+        {
+           "measurement_description": "signal measurment of ZZZ->",
+           "detector_final_state": {
+              "veto": [],
+              "final_state_particles": [
+                 {
+                    "met_type": "CaloMET",
+                    "object": "MET",
+                    "met_calo_corrections": "Type1CaloCorrections",
+                    "pt_cut": [
+                       {
+                          "number": 20,
+                          "sign": ">"
+                       }
+                    ]
+                 },
+                 {
+                    "jet_type": "AK5Calo",
+                    "pt_cut": [],
+                    "sel_criteria": "medium",
+                    "object": "bjet",
+                    "jet_corrections": "JetCorrections",
+                    "number": {
+                       "number": 2,
+                       "sign": "="
+                    },
+                    "eta_cut": [],
+                    "bjet_discriminator": {
+                       "tag": "combinedSecondaryVertexBJetTags"
+                    }
+                 }
+              ],
+              "final_state_relations": []
+           },
+           "n_tuple": [
+              {
+                 "input_data": {},
+                 "user_code": {},
+                 "output_data": {},
+                 "run_instructions": {}
+              }
+           ],
+           "code_base": {
+              "url": "https://github.com/johndoe/repo",
+              "tag": "v2.1"
+           }
+        }
+     ],
+     "documentations": [
+        {}
+     ],
+     "post_n_tuple": {
+        "code_base": {},
+        "n_tuple": [
+           {
+              "input_data": {},
+              "user_code": {},
+              "output_data": {},
+              "run_instructions": {}
+           }
+        ]
+     },
+     "publications": [
+        {
+           "persistent_identifiers": []
+        }
+     ]
   },
-  "collection": "CMSAnalysis"
+  "collection": "CMSAnalysis",
+  "schema": "https://localhost:5000/records/jsonschemas/CMSAnalysis/"
 }]
