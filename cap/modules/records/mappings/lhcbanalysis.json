@@ -44,10 +44,10 @@
                 "output_data": {
                   "properties": {
                     "mc_data": {
-                      "type": "string"
+                      "type": "nested"
                     },
                     "data": {
-                      "type": "string"
+                      "type": "nested"
                     }
                   },
                   "type": "object"
@@ -55,10 +55,10 @@
                 "input_data": {
                   "properties": {
                     "mc_data": {
-                      "type": "string"
+                      "type": "nested"
                     },
                     "data": {
-                      "type": "string"
+                      "type": "nested"
                     }
                   },
                   "type": "object"
@@ -110,10 +110,10 @@
                 "output_data": {
                   "properties": {
                     "mc_data": {
-                      "type": "string"
+                      "type": "nested"
                     },
                     "data": {
-                      "type": "string"
+                      "type": "nested"
                     }
                   },
                   "type": "object"
@@ -157,7 +157,8 @@
                           "type": "string"
                         },
                         "reconstruction_software": {
-                          "type": "string"
+                          "enabled": false,
+                          "type": "object"
                         },
                         "mc_production": {
                           "type": "string"
@@ -174,7 +175,8 @@
                           "type": "string"
                         },
                         "reconstruction_software": {
-                          "type": "string"
+                          "enabled": false,
+                          "type": "object"
                         },
                         "stripping_software": {
                           "type": "string"
