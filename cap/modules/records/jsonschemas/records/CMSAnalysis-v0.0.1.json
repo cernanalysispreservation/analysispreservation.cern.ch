@@ -129,7 +129,8 @@
       "enum": [
         "yes",
         "no"
-      ]
+      ],
+      "default": "no"
     },
     "input_code_output": {
       "title": "n-tuple Production",
@@ -146,10 +147,7 @@
             "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput-v0.0.1.json"
           }
         }
-      },
-      "dependencies": [
-        "n-tuple_production_check"
-      ]
+      }
     },
     "main_measurements": {
       "title": "Main Measurement Workflow",
@@ -229,6 +227,9 @@
       "type": "string",
       "id": "keywords"
     }
+  },
+  "dependencies": {
+    "input_code_output": ["n-tuple_production_check"]
   },
   "type": "object"
 }

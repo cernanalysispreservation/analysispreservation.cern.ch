@@ -29,7 +29,7 @@ require.config({
     typeahead: "node_modules/typeahead.js/dist/typeahead.jquery",
     handlebars: "node_modules/handlebars/dist/handlebars.amd.min",
     moment: "node_modules/moment/min/moment.min",
-    alpaca: "node_modules/alpaca/build/alpaca/bootstrap/alpaca",
+    alpaca: "node_modules/alpaca/dist/alpaca/bootstrap/alpaca",
     "invenio-alpaca": "js/invenio-alpaca",
     "module-getter": "js/module-getter",
     "ref-parser": "node_modules/json-schema-ref-parser/dist/ref-parser",

@@ -649,7 +649,8 @@ window.schemaOptions = {
       "n-tuple_production_check": {
         "order": 5,
         "type": "radio",
-        "removeDefaultNone": "true"
+        "removeDefaultNone": "true",
+        "rightLabel": "Did you produce n-tuples as an initial step to any measurement?"
       },
       "input_code_output": {
         "type": "depositgroup-array",
