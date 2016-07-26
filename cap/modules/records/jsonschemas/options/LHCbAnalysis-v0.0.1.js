@@ -32,7 +32,7 @@ window.schemaOptions = {
         "fields": {
           "analysis_name": {
             "label": "Analysis Name",
-            "placeholder": "Start typing and select an Analysis Name to import metadata, e.g. CPV in D0 -> KS KS",
+            "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name.",
             "typeahead": {
               "config": {
                 "minLength": 1
@@ -50,23 +50,78 @@ window.schemaOptions = {
               "correlation": {
                 "#": {
                   "basic_info": {
-                    "analysis_number": "ananote"
+                    "status": "status",
+                    "egroup": "egroup"
+                  },
+                  "extra_info": {
+                    "analysis_number": "ananote",
+                    "twiki": "twiki",
+                    "arxiv": "arxiv"
                   },
                   "internal_discussions": "internal_discussions",
                   "presentations": "presentations",
-                  "publications": "publications",
-                  "extra_info": {
-                    "status": "status",
-                    "twiki": "twiki",
-                    "egroup": "egroup",
-                    "arxiv": "arxiv"
-                  },
+                  "publications": "publications"
                 }
               }
             }
           },
+          "proponents": {
+            "order": 2,
+            "type": "personalname",
+            "placeholder": "E.g. John Doe; Jane Doe"
+          },
+          "status": {
+            "order": 3,
+            "placeholder": "Status",
+            "noneLabel": "Select Status",
+            "type": "select2",
+            "select2": true
+          },
+          "status_notes": {
+            "order": 4,
+            "placeholder": "E.g. ??",
+            "dependencies": {
+              "status": ["x - other"]
+            }
+          },
+          "reviewers": {
+            "order": 5,
+            "type": "personalname",
+            "placeholder": "E.g. John Roe; Jane Roe"
+          },
+          "egroup": {
+            "order": 6,
+            "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+          },
+          "institutes": {
+            "order": 7,
+            "placeholder": "E.g. Institute A; Institute B"
+          },
+          "keywords": {
+            "order": 8,
+            "type": "tags",
+            "placeholder": "E.g. keyword1, keyword2"
+          }
+        }
+      },
+      "extra_info": {
+        "type": "depositgroup",
+        "order": 2,
+        "fields": {
           "analysis_number": {
-            "placeholder": "E.g. ANA-2015-014"
+            "placeholder": "E.g. LHCb-ANA-2015-002"
+          },
+          "public_paper": {
+            "placeholder": "E.g. LHCb-PAPER-2015-039"
+          },
+          "conf_report": {
+            "placeholder": "E.g. ??"
+          },
+          "arxiv": {
+            "placeholder": "E.g. 1508.06087"
+          },
+          "twiki": {
+            "placeholder": "E.g. https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
           }
         }
       },
@@ -85,30 +140,30 @@ window.schemaOptions = {
                     "fields": {
                       "year": {
                         "order": 4,
-						"placeholder": "E.g. 2015"
+                        "placeholder": "E.g. 2015"
                       },
                       "reconstruction_software": {
-						"order": 2,
-						"type": "depositgroup-object",
-						"fields": {
-						  "reconstruction_software_name": {
+                        "order": 2,
+                        "type": "depositgroup-object",
+                        "fields": {
+                          "reconstruction_software_name": {
                             "placeholder": "E.g. Brunel Reco"
-						  },
-						   "reconstruction_software_version": {
+                          },
+                          "reconstruction_software_version": {
                             "placeholder": "E.g. 13"
-						  }
+                          }
                         }
                       },
                       "stripping_software": {
-						"order": 3,
-						"type": "depositgroup-object",
-						"fields": {
-						  "stripping_software_name": {
+                        "order": 3,
+                        "type": "depositgroup-object",
+                        "fields": {
+                          "stripping_software_name": {
                             "placeholder": "E.g. DaVinciStripping"
-						  },
-						   "stripping_software_version": {
+                          },
+                          "stripping_software_version": {
                             "placeholder": "E.g. 17"
-						  }
+                          }
                         }
                       },
                       "location": {
@@ -134,27 +189,27 @@ window.schemaOptions = {
                         "placeholder": "E.g. MC Gen"
                       },
                       "reconstruction_software": {
-						"order": 4,
-						"type": "depositgroup-object",
-						"fields": {
-						  "reconstruction_software_name": {
+                        "order": 4,
+                        "type": "depositgroup-object",
+                        "fields": {
+                          "reconstruction_software_name": {
                             "placeholder": "E.g. MC Reco"
-						  },
-						   "reconstruction_software_version": {
+                          },
+                          "reconstruction_software_version": {
                             "placeholder": "E.g. 11"
-						  }
+                          }
                         }
                       },
                       "stripping_software": {
-						"order": 5,
-						"type": "depositgroup-object",
-						"fields": {
-						  "stripping_software_name": {
+                        "order": 5,
+                        "type": "depositgroup-object",
+                        "fields": {
+                          "stripping_software_name": {
                             "placeholder": "E.g. MC Strip"
-						  },
-						   "stripping_software_version": {
+                          },
+                          "stripping_software_version": {
                             "placeholder": "E.g. 16"
-						  }
+                          }
                         }
                       },
                       "location": {
@@ -357,19 +412,19 @@ window.schemaOptions = {
         "type": "depositgroup-array",
         "order": 6,
         "fields": {
-		  "item": {
+          "item": {
             "fields": {
-			  "url": {
-				"placeholder": "E.g. https://indico.cern.ch/event/473187/"
-			  },
-			  "title": {
-				"placeholder": "E.g. CP violation searches in the charm sector at LHCb"
-			  },
-			  "meeting": {
-				"placeholder": "E.g. CERN-LHC Seminar"
-			  }
-			}
-		  }
+              "url": {
+                "placeholder": "E.g. https://indico.cern.ch/event/473187/"
+              },
+                "title": {
+                "placeholder": "E.g. CP violation searches in the charm sector at LHCb"
+              },
+                "meeting": {
+                "placeholder": "E.g. CERN-LHC Seminar"
+              }
+            }
+          }
         }
       },
       "publications": {
@@ -378,16 +433,16 @@ window.schemaOptions = {
         "fields": {
           "item": {
             "fields": {
-			  "url": {
-				"placeholder": "E.g. https://cds.cern.ch/record/2030613"
-			  },
-			  "reviewegroup": {
-				"placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
-			  },
-			  "roles": {
-				"placeholder": ""
-			  }
-			  // currently not included in json
+              "url": {
+                "placeholder": "E.g. https://cds.cern.ch/record/2030613"
+              },
+              "reviewegroup": {
+                "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+              },
+              "roles": {
+                "placeholder": ""
+              }
+              // currently not included in json
               /*
               "journal_title": {
                 "order": 1
@@ -409,28 +464,6 @@ window.schemaOptions = {
                 "order": 6
               }*/
             }
-          }
-        }
-      },
-      "extra_info": {
-        "type": "depositgroup",
-        "order": 2,
-        "fields": {
-          "arxiv": {
-            "placeholder": "E.g. 1508.06087"
-          },
-          "keywords": {
-            "type": "tags",
-            "placeholder": "E.g. keyword1, keyword2"
-          },
-          "egroup": {
-            "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
-          },
-          "status": {
-            "placeholder": "E.g. 9 - PAPER published"
-          },
-          "twiki": {
-            "placeholder": "E.g. https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
           }
         }
       }
