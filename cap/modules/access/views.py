@@ -8,7 +8,7 @@ from flask import Blueprint, current_app, g, redirect, session, url_for
 from flask_login import current_user
 from flask_principal import AnonymousIdentity, Identity, Principal, RoleNeed
 
-from invenio_oauthclient.signals import account_setup_received
+from invenio_oauthclient.signals import account_setup_received, account_info_received
 
 access_blueprint = Blueprint('cap_access', __name__,
                              url_prefix='/access',
@@ -47,9 +47,27 @@ def identity_saver_session(identity):
     session['identity.provides'] = identity.provides
 
 
-@account_setup_received.connect
-def oauth_response(remote, token=None, response=None, account_setup=None):
+@account_info_received.connect
+def oauth_response_info(remote, token=None, response=None, account_info=None):
     """Adds the current identity provides using the OAuth information"""
+    # Requests of all the information about the current user.
+
+    me = remote.get('https://oauthresource.web.cern.ch/api/Me')
+    # Gets the relation between e-groups and concrete roles.
+    egroups_roles_relations = get_egroups_roles_relations()
+    # For each item in the user information response, if it is a "Group" item,
+    # we add the needs allowed to that group.
+    for item in me.data:
+        if item['Type'] == 'http://schemas.xmlsoap.org/claims/Group':
+            g.identity.provides |= set(
+                egroups_roles_relations.get(item['Value'], []))
+    identity_saver_session(g.identity)
+
+
+@account_setup_received.connect
+def oauth_response_setup(remote, token=None, response=None, account_setup=None):
+    """Adds the current identity provides using the OAuth information"""
+
     # Requests of all the information about the current user.
     me = remote.get('https://oauthresource.web.cern.ch/api/Me')
     # Gets the relation between e-groups and concrete roles.
@@ -58,7 +76,8 @@ def oauth_response(remote, token=None, response=None, account_setup=None):
     # we add the needs allowed to that group.
     for item in me.data:
         if item['Type'] == 'http://schemas.xmlsoap.org/claims/Group':
-            g.identity.provides |= set(egroups_roles_relations.get(item['Value'], []))
+            g.identity.provides |= set(
+                egroups_roles_relations.get(item['Value'], []))
     identity_saver_session(g.identity)
 
 

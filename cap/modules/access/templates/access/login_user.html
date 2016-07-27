@@ -22,37 +22,15 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
-{%- extends config.ACCOUNTS_COVER_TEMPLATE %}
 
-{% from "invenio_oauthclient/_macros.html" import oauth_button %}
+{%- extends 'invenio_accounts/login_user.html' %}
 
-{% block panel %}
-<div class="col-md-6 col-md-offset-3">
-  <div class="panel panel-default">
-    <div class="panel-body">
-      {%- block form_header %}
-      <h3 class="text-center panel-free-title">{{_('Log in to account') }}</h3>
-      {%- endblock form_header %}
-      {%- block form_outer %}
-        {% if config.OAUTHCLIENT_REMOTE_APPS %}
-          {% for name in config.OAUTHCLIENT_REMOTE_APPS.keys() %}
-            {{ oauth_button(name) }}
-          {% endfor %}
-        {% endif %}
-      {%- endblock form_outer %}
-    </div>
-    {%- block registerable %}
-    {%- if security.registerable %}
-    <div class="panel-footer text-center">
-        <h4 class="text-muted">{% trans sitename=config.ACCOUNTS_SITENAME %}New to {{sitename}}?{% endtrans %} <a href="{{url_for('security.register')}}">{{_('Sign Up')}}</a></h4>
-    </div>
-    {%- endif %}
-    {%- endblock %}
-  </div>
-  {%- block recoverable %}
-  {%- if security.recoverable %}
-  <a href="{{url_for('security.forgot_password')}}" class="text-muted">{{_('Forgot password?')}}</a>
-  {%- endif %}
-  {%- endblock %}
-</div>
-{% endblock panel %}
+{%- from "invenio_oauthclient/_macros.html" import oauth_button %}
+
+{%- block form_outer %}
+  {% if config.OAUTHCLIENT_REMOTE_APPS %}
+    {% for name in config.OAUTHCLIENT_REMOTE_APPS.keys() %}
+      {{ oauth_button(name) }}
+    {% endfor %}
+  {% endif %}
+{% endblock %}

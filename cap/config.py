@@ -65,7 +65,7 @@ BASE_TEMPLATE = "cap_theme/page.html"
 #: Cover template for entire site.
 COVER_TEMPLATE = "invenio_theme/page_cover.html"
 #: Settings template for entire site.
-SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
+# SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 #: Template for 404 page.
 THEME_404_TEMPLATE = "cap_theme/404.html"
 #: Template for 500 page.
@@ -104,8 +104,9 @@ RECORDS_REST_ENDPOINTS = dict(
                                  ':json_v1_search'),
         },
         list_route='/records/',
-        item_route='/records/<pid_value>',
+        item_route='/records/<pid(recid):pid_value>',
         default_media_type='application/json',
+        read_permission_factory_imp=None
     ),
 )
 
@@ -155,27 +156,26 @@ SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
 
-
 # Accounts
 # ========
 #: Login registration template.
-SECURITY_LOGIN_USER_TEMPLATE = "access/login_user.html"
+OAUTHCLIENT_LOGIN_USER_TEMPLATE = "access/login_user.html"
 #: Login confirmation mail.
 SECURITY_SEND_REGISTER_EMAIL = False
 
-ACCOUNTS_REGISTER_BLUEPRINT = False
-SECURITY_POST_CHANGE_VIEW = False
+ACCOUNTS_REGISTER_BLUEPRINT = 'cap_theme'
 SECURITY_RECOVERABLE = False
 SECURITY_REGISTERABLE = False
 SECURITY_CHANGEABLE = False
-SECURITY_SEND_REGISTER_EMAIL = False
+SECURITY_CONFIRMABLE = False
+BLUEPRINT_NAME = 'cap_theme'
 
 # Logging
 # =======
 #: CERN OAuth configuration
 CERN_APP_CREDENTIALS = {
     'consumer_key': os.environ.get('CERN_APP_CREDENTIALS_KEY'),
-    'consumer_secret': os.environ.get('CERN_APP_CREDENTIALS_SECRET'),
+    'consumer_secret': os.environ.get('CERN_APP_CREDENTIALS_SECRET')
 }
 
 CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
@@ -186,12 +186,12 @@ CERN_REMOTE_APP["params"].update({
 })
 OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
 #: OAuth login template.
-OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
+# OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
 # JSON Schemas
 # ============
 #: Hostname for JSON Schemas.
-JSONSCHEMAS_HOST = 'http://localhost:5000'
+JSONSCHEMAS_HOST = 'https://localhost:5000'
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
