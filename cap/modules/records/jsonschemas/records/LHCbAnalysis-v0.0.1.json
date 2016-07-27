@@ -13,11 +13,12 @@
         "analysis_name": {
           "title": "Analysis Name",
           "type": "string",
-          "required": "true"
+          "required": true
         },
         "proponents": {
           "title": "Proponents",
-          "type": "string"
+          "type": "string",
+          "required": true
         },
         "status": {
           "title": "Status",
@@ -34,7 +35,8 @@
             "8 - journal review",
             "9 - PAPER published",
             "x - other"
-          ]
+          ],
+          "required": true
         },
         "status_notes": {
           "type": "string",
@@ -82,8 +84,7 @@
         },
         "twiki": {
           "title": "tWiki page",
-          "type": "string",
-          "required": "true"
+          "type": "string"
         },
         "arxiv": {
           "title": "arXiv ID",
