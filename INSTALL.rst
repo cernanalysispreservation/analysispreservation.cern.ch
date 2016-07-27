@@ -96,9 +96,6 @@ depend on:
    cdvirtualenv var/cap-instance/static
    npm install bower
    npm install
-   cd node_modules/alpaca
-   npm install
-   npm start
 
    cdvirtualenv src/cap
    cap collect -v

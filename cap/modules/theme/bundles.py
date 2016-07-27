@@ -3,6 +3,34 @@ from __future__ import absolute_import, print_function
 from flask_assets import Bundle
 from invenio_assets import NpmBundle
 
+
+# Used when ASSETS_DEBUG is False - like production
+almondjs = NpmBundle(
+    "node_modules/almond/almond.js",
+    "js/settings.js",
+    filters="uglifyjs",
+    output="gen/almond.%(version)s.js",
+    npm={
+        "almond": "~0.3.1",
+        "hogan.js": "~3.0.2",
+        "requirejs-hogan-plugin": "~0.3.1"
+    }
+)
+
+# require.js is only used when:
+#
+#  - ASSETS_DEBUG is True
+#  - REQUIREJS_RUN_IN_DEBUG is not False
+requirejs = NpmBundle(
+    "node_modules/requirejs/require.js",
+    "js/settings.js",
+    output="gen/require.%(version)s.js",
+    filters="uglifyjs",
+    npm={
+        "requirejs": "~2.1.22",
+    }
+)
+
 css = NpmBundle(
     'scss/cap.scss',
     filters='scss, cleancss',
@@ -21,10 +49,6 @@ js = NpmBundle(
         'js/settings.js',
         'js/cap-settings.js',
         filters='uglifyjs',
-    ),
-    Bundle(
-        # 'js/main.js',
-        filters='requirejs',
     ),
     filters='jsmin',
     output="gen/cap.%(version)s.js",
