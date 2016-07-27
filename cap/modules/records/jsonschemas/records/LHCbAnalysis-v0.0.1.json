@@ -97,18 +97,24 @@
       "properties": {
         "stripping_line": {
           "title": "Stripping Line",
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "trigger": {
           "title": "Trigger",
-          "type": "string"
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "input_data": {
           "title": "Input Data",
           "type": "object",
           "properties": {
             "data": {
-              "title": "Data",
+              "title": "Collision Data",
               "type": "array",
               "items": {
                 "type": "object",
@@ -146,7 +152,7 @@
                     }
                   },
                   "location": {
-                    "title": "Location",
+                    "title": "Sample",
                     "type": "string"
                   }
                 }
@@ -195,7 +201,11 @@
                     }
                   },
                   "location": {
-                    "title": "Location",
+                    "title": "Sample",
+                    "type": "string"
+                  },
+                  "used_tools": {
+                    "title": "Used Tools",
                     "type": "string"
                   }
                 }
@@ -246,12 +256,18 @@
           "type": "object",
           "properties": {
             "data": {
-              "title": "Data",
-              "type": "string"
+              "title": "Collision Data",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             },
             "mc_data": {
               "title": "MC Data",
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         }
@@ -270,7 +286,7 @@
             "type": "object",
             "properties": {
               "data": {
-                "title": "Data",
+                "title": "Collision Data",
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -329,12 +345,18 @@
             "type": "object",
             "properties": {
               "data": {
-                "title": "Data",
-                "type": "string"
+                "title": "Collision Data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               },
               "mc_data": {
                 "title": "MC Data",
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }

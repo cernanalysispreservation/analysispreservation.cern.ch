@@ -215,6 +215,10 @@ window.schemaOptions = {
                       "location": {
                         "order": 1,
                         "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
+                      },
+                      "used_tools": {
+                        "order": 6,
+                        "placeholder": "E.g. TupleToolIsolation"
                       }
                     }
                   }
@@ -269,10 +273,40 @@ window.schemaOptions = {
             "type": "depositgroup-object",
             "fields": {
               "data": {
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                "type": "depositgroup-object-array",
+                "toolbarSticky": "true",
+                "fields": {
+                  "item": {
+                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                  }
+                }
               },
               "mc_data": {
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                "type": "depositgroup-object-array",
+                "toolbarSticky": "true",
+                "fields": {
+                  "item": {
+                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                  }
+                }
+              }
+            }
+          },
+          "stripping_line": {
+            "type": "depositgroup-object-array",
+            "toolbarSticky": "true",
+            "fields": {
+              "item": {
+                "placeholder": "E.g. Stripping Line"
+              }
+            }
+          },
+          "trigger": {
+            "type": "depositgroup-object-array",
+            "toolbarSticky": "true",
+            "fields": {
+              "item": {
+                "placeholder": "E.g. Trigger 1"
               }
             }
           }
@@ -355,10 +389,22 @@ window.schemaOptions = {
                 "type": "depositgroup-object",
                 "fields": {
                   "data": {
-                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                    "type": "depositgroup-object-array",
+                    "toolbarSticky": "true",
+                    "fields": {
+                      "item": {
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+                      }
+                    }
                   },
                   "mc_data": {
-                    "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                    "type": "depositgroup-object-array",
+                    "toolbarSticky": "true",
+                    "fields": {
+                      "item": {
+                        "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-mcdata.root"
+                      }
+                    }
                   }
                 }
               }
