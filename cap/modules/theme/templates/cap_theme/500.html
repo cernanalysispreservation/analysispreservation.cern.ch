@@ -1,0 +1,17 @@
+{% extends "cap_theme/page.html" %}
+
+{%- block page_body -%}
+  <div align="center" class="error-text-container">
+    <h4>Sorry, our servers are having some issues processing your request. </h4>
+    <p>The error has been reported to our developers and we will solve it very soon!</p>
+    <p>If you have any questions, please email <a href="mailto:analysis­preservation­support@cern.ch">analysis­preservation­support@cern.ch</a>.</p>
+  </div>
+
+  <div class="row-fluid error-container" align="center">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+          <img src="{{ url_for('static', filename='img/errors/500.svg') }}" width="90%">
+      </div>
+  </div>
+  <div class="col-md-3"></div>
+{%- endblock -%}
