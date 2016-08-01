@@ -78,7 +78,7 @@ install_requires = [
     'invenio-db[versioning]==1.0.0a9',
     'invenio-indexer==1.0.0a6',
     'invenio-jsonschemas==1.0.0a3',
-    # 'invenio-oauthclient==1.0.0a6',
+    'invenio-oauthclient==1.0.0a8',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore==1.0.0a9',
     'invenio-records==1.0.0a17',

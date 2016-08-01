@@ -6,7 +6,7 @@ import os
 import sys
 
 from invenio_base.app import create_app_factory
-from invenio_base.wsgi import create_wsgi_factory
+from invenio_base.wsgi import create_wsgi_factory, wsgi_proxyfix
 from invenio_config import create_conf_loader
 
 from . import config
@@ -36,6 +36,7 @@ create_api = create_app_factory(
     config_loader=conf_loader,
     blueprint_entry_points=['invenio_base.api_blueprints'],
     extension_entry_points=['invenio_base.api_apps'],
+
     converter_entry_points=['invenio_base.api_converters'],
     instance_path=instance_path,
 )
@@ -46,7 +47,7 @@ create_app = create_app_factory(
     config_loader=conf_loader,
     blueprint_entry_points=['invenio_base.blueprints'],
     extension_entry_points=['invenio_base.apps'],
-    wsgi_factory=create_wsgi_factory({'/api': create_api}),
+    wsgi_factory=wsgi_proxyfix(create_wsgi_factory({'/api': create_api})),
     instance_path=instance_path,
     static_folder=static_folder,
 )

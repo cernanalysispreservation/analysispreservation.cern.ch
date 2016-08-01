@@ -29,7 +29,7 @@ web:
 
 app:
   build: .
-  command: cap run -h 0.0.0.0 -p 5000 --with-threads
+  command: cap run -h 0.0.0.0 --with-threads
   environment:
     - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
     - APP_CACHE_REDIS_URL=redis://cache:6379/0
@@ -38,6 +38,7 @@ app:
     - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgres/cap
     # - APP_CERN_APP_CREDENTIALS_KEY=REPLACEME
     # - APP_CERN_APP_CREDENTIALS_SECRET=REPLACEME
+    - APP_WSGI_PROXIES=1
   links:
     - elasticsearch
     - redis

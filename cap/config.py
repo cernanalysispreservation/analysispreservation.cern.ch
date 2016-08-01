@@ -174,8 +174,8 @@ BLUEPRINT_NAME = 'cap_theme'
 # =======
 #: CERN OAuth configuration
 CERN_APP_CREDENTIALS = {
-    'consumer_key': os.environ.get('CERN_APP_CREDENTIALS_KEY'),
-    'consumer_secret': os.environ.get('CERN_APP_CREDENTIALS_SECRET')
+    'consumer_key': os.environ.get('APP_CERN_APP_CREDENTIALS_KEY'),
+    'consumer_secret': os.environ.get('APP_CERN_APP_CREDENTIALS_SECRET')
 }
 
 CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
