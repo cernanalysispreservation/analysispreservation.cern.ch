@@ -1,7 +1,5 @@
 -e git+git://github.com/inveniosoftware/invenio-oauthclient.git@3f7f0899e3cc8e40ab5a832177adbb6159bdef9e#egg=invenio-oauthclient
 
--e git+git://github.com/inveniosoftware/invenio-collections#egg=invenio-collections
-
 #-e git+git://github.com/inveniosoftware/invenio-records-rest#egg=invenio-records-rest
 
 -e .

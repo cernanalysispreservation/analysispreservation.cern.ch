@@ -74,7 +74,7 @@ install_requires = [
     'invenio-accounts==1.0.0a13',
     'invenio-assets==1.0.0a4',
     'invenio-base==1.0.0a12',
-    # 'invenio-collections==1.0.0a2',
+    'invenio-collections==1.0.0a3',
     'invenio-db[versioning]==1.0.0a9',
     'invenio-indexer==1.0.0a6',
     'invenio-jsonschemas==1.0.0a3',
