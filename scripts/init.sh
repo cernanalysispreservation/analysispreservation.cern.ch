@@ -1,3 +1,4 @@
+#!/usr/bin/env sh
 
 # Creation of the database and tables.
 cap db init
@@ -19,4 +20,3 @@ cap collections create LHCbAnalysis -p LHCb
 cap collections create ATLAS -p CERNAnalysisPreservation
 cap collections create ATLASWorkflows -p ATLAS
 cap collections create ALICE -p CERNAnalysisPreservation
-

@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 # Destroy db
 cap db destroy --yes-i-know
 # Init and create db

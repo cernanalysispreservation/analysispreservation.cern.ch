@@ -16,7 +16,9 @@
 # 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
 
-FROM python:2.7
+# "python:2.7" image is not working because the installation of nodejs is not
+# recognising the os distribution.
+FROM python:2.7.11
 
 # Install dependencies
 RUN apt-get update \
@@ -27,7 +29,8 @@ RUN apt-get update \
         nodejs \
     && apt-get clean autoclean
 
-RUN npm install --silent -g node-sass clean-css uglify-js requirejs
+RUN npm install --silent -g node-sass clean-css uglify-js requirejs bower \
+    gulp gulp-clean gulp-nodemon jshint gulp-jshint
 
 WORKDIR /code/
 
@@ -36,18 +39,8 @@ COPY . /code/
 RUN pip install -r requirements.txt \
     && pip install -e .[all]
 
-RUN echo '{ "allow_root": true }' > /root/.bowerrc \
-    && cap npm \
-    && cd /usr/local/var/cap-instance/static/ \
-    && npm install bower \
-    && npm install \
-    && cd - \
-    && cd /usr/local/var/cap-instance/static/node_modules/alpaca \
-    && npm install gulp gulp-clean gulp-nodemon jshint gulp-jshint \
-    && npm install \
-    && npm start \
-    && cd - \
-    && cap collect -v \
-    && cap assets build
+RUN bash /code/scripts/build-assets.sh
+
+RUN python scripts/schemas.py
 
 CMD ["cap", "run", "-h", "0.0.0.0"]
