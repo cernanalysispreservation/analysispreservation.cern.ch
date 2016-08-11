@@ -120,6 +120,10 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "processing_pass": {
+                    "title": "Processing Pass",
+                    "type": "string"
+                  },
                   "year": {
                     "title": "Year",
                     "type": "string"
@@ -166,7 +170,7 @@
                 "type": "object",
                 "properties": {
                   "mc_production": {
-                    "title": "MC Production",
+                    "title": "Production",
                     "type": "string"
                   },
                   "generator": {
@@ -219,11 +223,11 @@
           "type": "object",
           "properties": {
             "platform": {
-              "title": "Platform Name",
+              "title": "Platform",
               "type": "string"
             },
             "lhcb_code": {
-              "title": "LHCb code",
+              "title": "Application",
               "type": "array",
               "items": {
                 "type": "string"
@@ -307,11 +311,11 @@
             "type": "object",
             "properties": {
               "platform": {
-                "title": "Platform Name",
+                "title": "Platform",
                 "type": "string"
               },
               "lhcb_code": {
-                "title": "LHCb code",
+                "title": "Application",
                 "type": "array",
                 "items": {
                   "type": "string",

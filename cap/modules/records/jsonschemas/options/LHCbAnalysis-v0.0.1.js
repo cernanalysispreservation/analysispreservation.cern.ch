@@ -138,6 +138,10 @@ window.schemaOptions = {
                 "fields": {
                   "item": {
                     "fields": {
+                      "processing_pass": {
+                        "order": 1,
+                        "placeholder": "E.g. Reco15a-Stripping22b"
+                      },
                       "year": {
                         "order": 4,
                         "placeholder": "E.g. 2015"
@@ -167,7 +171,7 @@ window.schemaOptions = {
                         }
                       },
                       "location": {
-                        "order": 1,
+                        "order": 6,
                         "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
                       }
                     }
@@ -181,7 +185,7 @@ window.schemaOptions = {
                   "item": {
                     "fields": {
                       "mc_production": {
-                        "order": 2,
+                        "order": 1,
                         "placeholder": "E.g. MC Prod"
                       },
                       "generator": {
@@ -213,7 +217,7 @@ window.schemaOptions = {
                         }
                       },
                       "location": {
-                        "order": 1,
+                        "order": 8,
                         "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
                       },
                       "used_tools": {
@@ -232,7 +236,7 @@ window.schemaOptions = {
               "lhcb_code": {
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
-                "order": 2,
+                "order": 1,
                 "fields": {
                   "item": {
                     "placeholder": "E.g. DaVinci v33r6"
@@ -264,7 +268,7 @@ window.schemaOptions = {
                 }
               },
               "platform": {
-                "order": 1,
+                "order": 2,
                 "placeholder": "E.g. x86_64-slc5-gcc46-opt"
               }
             }
@@ -348,7 +352,7 @@ window.schemaOptions = {
                   "lhcb_code": {
                     "type": "depositgroup-object-array",
                     "toolbarSticky": "true",
-                    "order": 2,
+                    "order": 1,
                     "fields": {
                       "item": {
                         "placeholder": " E.g. DaVinci v33r6"
@@ -380,7 +384,7 @@ window.schemaOptions = {
                     }
                   },
                   "platform": {
-                    "order": 1,
+                    "order": 2,
                     "placeholder": "E.g. x86_64-slc5-gcc46-opt"
                   }
                 }
