@@ -18,13 +18,58 @@
 Detailed installation guide
 ===========================
 
+Docker installation
+-------------------
+
+You should have installed Docker and docker-compose on your machine. Then, you
+can build the application using the development configuration:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml build
+
+
+Now that you have built the application inside the docker containers, you will
+need to initialize some modules. This initialization consist of the creation of
+the tables inside the database, the default user (user:
+info@inveniosoftware.org, password: infoinfo), the required communities and the
+ElasticSearch index.
+
+To initialise it then, you will need to perform:
+
+.. code-block:: shell
+
+   docker-compose run app bash scripts/init.sh
+
+
+Optionally, if you want to populate the database with some example records, you
+can run:
+
+.. code-block:: shell
+
+   docker-compose run app cap fixtures records -f
+
+
+And lately, you can start the application:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml up
+
+
+Now, open your browser and navigate to http://localhost/
+
+
+Bare installation
+-----------------
+
 .. admonition:: CAVEAT LECTOR
 
    Invenio v3.0 alpha is a bleeding-edge developer preview version that is
    scheduled for public release in Q1/2016.
 
 Prerequisites
--------------
+^^^^^^^^^^^^^
 
 Invenio v3.0 needs several prerequisite software packages to function:
 
@@ -50,7 +95,7 @@ and do a system install for the Sass preprocessor by following `Sass web guide <
 
 
 Installation
-------------
+^^^^^^^^^^^^
 
 Let's start by creating a new virtual environment that will hold our CAP
 v3.0 instance:
@@ -157,7 +202,7 @@ Now we can create our first record by going to ``http://localhost:5000/records/<
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
 Populating The Database With Example Records
-~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""""""""""""""""
 If you want to populate the database with example records you can run:
 
 .. code-block:: shell
@@ -169,7 +214,7 @@ If you want to populate the database with example records you can run:
    cap fixtures records -f
 
 General Recommendations
-------------
+"""""""""""""""""""""""
 
 You can specify the python version for the virtual environment by running (e.g. to use python 2.7):
 
@@ -179,10 +224,10 @@ You can specify the python version for the virtual environment by running (e.g. 
 
 
 Troubleshooting
-------------
+^^^^^^^^^^^^^^^
 
 Missing Requirements
-~~~~~~~~~~~~~
+""""""""""""""""""""
 If you have trouble with the setup check if you are missing one of the following requirements:
 
 .. code-block:: shell
@@ -192,7 +237,7 @@ If you have trouble with the setup check if you are missing one of the following
 The version of python2 given by ``python2 --version`` should be greater than 2.7.10.
 
 Errors with npm start and Alpaca
-~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""""
 If ``npm start`` fails for alpaca, you can try:
 
 .. code-block:: shell
@@ -202,7 +247,7 @@ If ``npm start`` fails for alpaca, you can try:
    npm start   
 
 Database Indexing Problems
-~~~~~~~~~~~~~
+""""""""""""""""""""""""""
 If you have trouble indexing the database try:
 
 .. code-block:: shell
