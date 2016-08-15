@@ -27,10 +27,8 @@ class MetadataSchemaV1(Schema):
 
     def get_general_title(self, obj):
         """Get type title."""
-
-        collection = obj.get('collections', [])[0]
-        if collection:
-            collection_mappings = CAP_RECORD_MAPPINGS.get(collection, None)
+        collection = obj.get('collections', [None])[0]
+        collection_mappings = CAP_RECORD_MAPPINGS.get(collection, None)
         if collection_mappings:
             return resolve(obj, collection_mappings.get("general_title", ""))
 
