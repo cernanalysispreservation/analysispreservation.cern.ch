@@ -36,6 +36,9 @@ def _(x):
     return x
 
 DEBUG = True
+# ASSETS_DEBUG = True
+
+REQUIREJS_CONFIG = 'js/cap-build.js'
 
 # Mail
 # ====
