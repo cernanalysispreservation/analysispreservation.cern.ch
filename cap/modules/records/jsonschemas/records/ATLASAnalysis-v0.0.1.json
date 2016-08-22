@@ -105,12 +105,12 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-v0.0.1.json"
       }
     },
-    "post_aod_processing": {
-      "title": "Post-AOD Processing",
+    "workflows": {
+      "title": "Workflows",
       "type": "array",
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PostAODProcessing-v0.0.1.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/records/ATLASWorkflows-v0.0.1.json"
       }
     },
     "documentations": {
