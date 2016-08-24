@@ -36,8 +36,7 @@ WORKDIR /code/
 
 COPY . /code/
 
-RUN pip install -r requirements.txt \
-    && pip install -e .[all]
+RUN pip install -r requirements.txt
 
 RUN bash /code/scripts/build-assets.sh
 

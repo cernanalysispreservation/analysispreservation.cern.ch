@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 import os
 import copy
 from invenio_oauthclient.contrib import cern
+from flask_principal import RoleNeed
 
 
 def _(x):
@@ -120,28 +121,28 @@ RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 # CAP collaboration groups
 # ========================
 #: Configuration for collaborations
-CAP_COLLAB_EGROUPS = dict(
-    CMS=dict(
-        collaboration_cms=[
-            "cms-members"
-        ]
-    ),
-    ALICE=dict(
-        collaboration_alice=[
-            "alice-member"
-        ]
-    ),
-    ATLAS=dict(
-        collaboration_atlas=[
-            "atlas-active-members-all"
-        ]
-    ),
-    LHCb=dict(
-        collaboration_lhcb=[
-            "lhcb-general"
-        ]
-    )
-)
+CAP_COLLAB_EGROUPS = {
+    "collaboration_cms": [
+        "cms-members"
+    ],
+    "collaboration_alice": [
+        "alice-member"
+    ],
+    "collaboration_atlas": [
+        "atlas-active-members-all"
+    ],
+    "collaboration_lhcb": [
+        "lhcb-general"
+    ]
+}
+
+#: E-Groups for superuser rights
+SUPERUSER_EGROUPS = [
+    'analysis-preservation-support',
+    'data-preservation-admins',
+]
+
+SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
 # Search
 # ======
@@ -179,11 +180,11 @@ CERN_APP_CREDENTIALS = {
 }
 
 CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
-CERN_REMOTE_APP["params"].update({
-    'request_token_params': {
-        "scope": "Email Groups",
-    }
-})
+# CERN_REMOTE_APP["params"].update({
+#     'request_token_params': {
+#         "scope": "Email Groups",
+#     }
+# })
 OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
 #: OAuth login template.
 # OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'

@@ -78,7 +78,7 @@ install_requires = [
     'invenio-db[versioning]==1.0.0a9',
     'invenio-indexer==1.0.0a6',
     'invenio-jsonschemas==1.0.0a3',
-    'invenio-oauthclient==1.0.0a8',
+    # 'invenio-oauthclient==1.0.0a9',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore==1.0.0a9',
     'invenio-records==1.0.0a17',
@@ -172,13 +172,13 @@ setup(
             'invenio_search = invenio_search:InvenioSearch',
             'invenio_records = invenio_records:InvenioRecords',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
-            'cap_accesss = cap.modules.access.ext:Access',
+            'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
             'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
             'invenio_search = invenio_search:InvenioSearch',
-            'cap_access = cap.modules.access.ext:Access',
+            'cap_access = cap.modules.access.ext:CAPAccess',
         ],
         'invenio_access.actions': [
             'cap_alice_access = '

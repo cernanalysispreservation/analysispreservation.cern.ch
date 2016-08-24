@@ -8,9 +8,10 @@ from flask_kvsession import KVSessionExtension
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
                                       KeywordOp, OrOp, NotOp)
 from simplekv.memory.redisstore import RedisStore
+from .loader import update_identity
 
 
-class Access(object):
+class CAPAccess(object):
     """Access extension."""
 
     def __init__(self, app=None):
@@ -22,8 +23,6 @@ class Access(object):
 
     def init_app(self, app):
         """Initialize configuration."""
-        app.config.setdefault("SECURITY_LOGIN_USER_TEMPLATE",
-                              "access/login_user.html")
         app.extensions['cap-access'] = self
 
 
@@ -34,21 +33,21 @@ def authenticated_query(query, **kwargs):
         'collaboration_alice': [],
         'collaboration_atlas': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('atlasworkflows'))
+                Keyword('collections'),
+                DoubleQuotedValue('atlasworkflows'))
         ],
         'collaboration_cms': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('cmsanalysis')),
+                Keyword('collections'),
+                DoubleQuotedValue('cmsanalysis')),
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('cmsquestionnaire'))
+                Keyword('collections'),
+                DoubleQuotedValue('cmsquestionnaire'))
         ],
         'collaboration_lhcb': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('lhcbanalysis'))
+                Keyword('collections'),
+                DoubleQuotedValue('lhcbanalysis'))
         ]
     }
 
