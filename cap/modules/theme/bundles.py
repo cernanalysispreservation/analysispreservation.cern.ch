@@ -5,7 +5,7 @@ from invenio_assets import NpmBundle
 
 css = NpmBundle(
     'scss/cap.scss',
-    filters='scss, cleancss',
+    filters='node-scss, cleancss',
     output='gen/cap.%(version)s.css',
     npm={
         "almond": "~0.3.1",
@@ -48,7 +48,7 @@ search_js = NpmBundle(
 
 front_css = NpmBundle(
     'scss/frontpage.scss',
-    filters='scss, cleancss',
+    filters='node-scss, cleancss',
     output='gen/cap.front.%(version)s.css',
     npm={
         "almond": "~0.3.1",
