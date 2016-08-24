@@ -61,7 +61,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask>=0.10.1',
+    'Flask>=0.11.1',
     'Flask-BabelEx>=0.9.2',
     'click',
     'psycopg2',
