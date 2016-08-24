@@ -5,7 +5,7 @@ from invenio_assets import NpmBundle
 
 # css = NpmBundle(
 #     'scss/cap.scss',
-#     filters='scss, cleancss',
+#     filters='node-scss, cleancss',
 #     output='gen/cap.%(version)s.css',
 #     npm={
 #         "almond": "~0.3.1",
@@ -63,7 +63,7 @@ experiments_js = NpmBundle(
 
 experiments_css = NpmBundle(
     'scss/experiments.scss',
-    filters='scss, cleancss',
+    filters='node-scss, cleancss',
     output='gen/cap.%(version)s.css',
     npm={
         "almond": "~0.3.1",
