@@ -79,7 +79,7 @@ edit_js = NpmBundle(
 
 display_css = NpmBundle(
     'scss/invenio-alpaca-display.scss',
-    filters="scss, cleancss",
+    filters="node-scss, cleancss",
     output="gen/invenio.alpaca.display.%(version)s.css",
     npm={
         "almond": "~0.3.1",
@@ -91,7 +91,7 @@ edit_css = NpmBundle(
     Bundle(
         'node_modules/select2/dist/css/select2.css',
         'scss/invenio-alpaca-edit.scss',
-        filters="scss, cleancss",
+        filters="node-scss, cleancss",
     ),
     output="gen/invenio.alpaca.edit.%(version)s.css",
     npm={
