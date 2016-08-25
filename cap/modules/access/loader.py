@@ -18,8 +18,7 @@ def update_identity(sender, identity):
         if current_user.get_id() is not None:
             # Set the identity user object
             identity.user = current_user
-
-            session_groups = session.get("cern_resource", {}).get("Group", [])
+            session_groups = session['identity.cern_provides']
 
             superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
             superuser_roles = current_app.config.get('SUPERUSER_ROLES', {})

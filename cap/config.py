@@ -123,23 +123,23 @@ RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 #: Configuration for collaborations
 CAP_COLLAB_EGROUPS = {
     "collaboration_cms": [
-        "cms-members"
+        RoleNeed("cms-members@cern.ch")
     ],
     "collaboration_alice": [
-        "alice-member"
+        RoleNeed("alice-member@cern.ch")
     ],
     "collaboration_atlas": [
-        "atlas-active-members-all"
+        RoleNeed("atlas-active-members-all@cern.ch")
     ],
     "collaboration_lhcb": [
-        "lhcb-general"
+        RoleNeed("lhcb-general@cern.ch")
     ]
 }
 
 #: E-Groups for superuser rights
 SUPERUSER_EGROUPS = [
-    'analysis-preservation-support',
-    'data-preservation-admins',
+    RoleNeed('analysis-preservation-support@cern.ch'),
+    RoleNeed('data-preservation-admins@cern.ch'),
 ]
 
 SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
