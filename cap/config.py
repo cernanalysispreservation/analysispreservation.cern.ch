@@ -85,6 +85,7 @@ RECORDS_UI_ENDPOINTS = dict(
         pid_type='recid',
         route='/records/<pid_value>',
         template='records/detail.html',
+        record_class='invenio_records_files.api:Record'
     ),
 )
 
