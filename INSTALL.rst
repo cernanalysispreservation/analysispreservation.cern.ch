@@ -15,10 +15,14 @@
     along with Invenio; if not, write to the Free Software Foundation, Inc.,
     59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-Detailed installation guide
+Detailed Installation Guide
 ===========================
 
-Docker installation
+There are two possibilities for setting up your own development version
+of CERN Analysis Preservation, one with docker and one with python
+virtualenvwrapper.
+
+Docker Installation
 -------------------
 
 You should have installed Docker and docker-compose on your machine. Then, you
@@ -60,18 +64,16 @@ And lately, you can start the application:
 Now, open your browser and navigate to http://localhost/
 
 
-Bare installation
+Bare Installation
 -----------------
 
-.. admonition:: CAVEAT LECTOR
-
-   Invenio v3.0 alpha is a bleeding-edge developer preview version that is
-   scheduled for public release in Q1/2016.
+CERN Analysis Preservation is based on Invenio v3.0 alpha (scheduled for
+public release in Q3/2016).
 
 Prerequisites
 ^^^^^^^^^^^^^
 
-Invenio v3.0 needs several prerequisite software packages to function:
+Invenio v3.0 requires some additional software packages:
 
 - `Elasticsearch <https://www.elastic.co/products/elasticsearch>`_
 - `PostgreSQL <http://www.postgresql.org/>`_
@@ -87,40 +89,9 @@ For example, on Debian GNU/Linux, you can install them as follows:
                         rabbitmq-server \
                         redis-server
 
-and do a system install for the Sass preprocessor by following `Sass web guide <http://sass-lang.com/install>`_ and running:
-
-.. code-block:: shell
-
-  sudo npm install -g sass node-sass clean-css uglify-js requirejs
-
-
-Installation
-^^^^^^^^^^^^
-
-Let's start by creating a new virtual environment that will hold our CAP
-v3.0 instance:
-
-.. code-block:: shell
-
-   mkvirtualenv cap
-
-Start redis server in the background:
-
-.. code-block:: shell
-
-   redis-server &
-
-Install CAP package:
-
-.. code-block:: shell
-
-   cdvirtualenv
-   mkdir src && cd src
-   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
-   cd cap
-   pip install -r requirements.txt
-
-Add the following lines in your "elasticsearch.yml":
+Now, add the following lines in your "elasticsearch.yml" (for
+Debian GNU/Linux the full path is
+``/etc/elasticsearch/elasticsearch.yml``):
 
 .. code-block:: shell
 
@@ -131,21 +102,67 @@ Add the following lines in your "elasticsearch.yml":
   http.port: 9200
   http.publish_port: 9200
 
-Run npm to install any necessary JavaScript assets the Invenio modules
-depend on:
+Finally, do a system install (see below for how to do a local install
+instead) for the Sass preprocessor by following
+`Sass web guide <http://sass-lang.com/install>`_ and running:
+
+.. code-block:: shell
+
+  sudo npm install -g node-sass clean-css uglify-js requirejs
+
+Installation
+^^^^^^^^^^^^
+
+Let's start by cloning the repository:
+
+.. code-block:: shell
+
+   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
+
+Environment Setup
+"""""""""""""""""
+
+All else will be installed inside a python *virtualenv* for easy
+maintenance and encapsulation of the libraries required. To do so,
+create a new virtual environment to hold our CAP instance
+from inside the repository folder:
 
 .. code-block:: shell
 
    cd cap
+   mkvirtualenv cap_venv
+
+Start redis server in the background:
+
+.. code-block:: shell
+
+   redis-server &
+
+Install the CAP package from inside your ``cap`` repository folder and
+run npm to install the necessary JavaScript assets the Invenio modules
+depend on:
+
+.. code-block:: shell
+
+   pip install -r requirements.txt
    cap npm
    cdvirtualenv var/cap-instance/static
    npm install bower
    npm install
+
+Install alpaca:
+
+.. code-block:: shell
+
    cd node_modules/alpaca
    npm install
    npm start
 
-   cdvirtualenv src/cap
+Build the assets:
+
+.. code-block:: shell
+
+   cd cap
    cap collect -v
    cap assets build
    python ./scripts/schemas.py
@@ -196,14 +213,13 @@ Start the web application (in debugging mode):
 
    cap --debug run
 
-
-Now we can create our first record by going to ``http://localhost:5000/records/<collection_name>/create/``
+Now you can create your first record by going to ``http://localhost:5000/records/<collection_name>/create/``
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
-Populating The Database With Example Records
+Populating the Database with Example Records
 """"""""""""""""""""""""""""""""""""""""""""
-If you want to populate the database with example records you can run:
+If you want to populate the database with example records simply run:
 
 .. code-block:: shell
 
@@ -214,30 +230,57 @@ If you want to populate the database with example records you can run:
    cap fixtures records -f
 
 General Recommendations
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Specify Python Version
 """""""""""""""""""""""
 
-You can specify the python version for the virtual environment by running (e.g. to use python 2.7):
+You can specify the python version for the virtual environment on
+creation as follows (e.g. to use python 2.7):
 
 .. code-block:: shell
 
-   mkvirtualenv -p /usr/bin/python2.7 cap
+   mkvirtualenv -p /usr/bin/python2.7 cap_venv
 
+Local Installation of npms and gems
+"""""""""""""""""""""""""""""""""""
+
+You do not need to install sass and all npm dependencies globally if you add
+
+.. code-block:: shell
+
+   export GEM_HOME="$VIRTUAL_ENV/gems"
+   export GEM_PATH=""
+   export PATH="$GEM_HOME/bin:$PATH"
+   export npm_config_prefix=$VIRTUAL_ENV
+
+to the ``postactivate`` of your ``.virtualenv`` folder and run
+
+.. code-block:: shell
+
+   cdvirtualenv
+   gem install sass
+   npm -g install node-sass clean-css uglify-js requirejs
+
+after creating your virtual environment.
 
 Troubleshooting
 ^^^^^^^^^^^^^^^
 
 Missing Requirements
 """"""""""""""""""""
-If you have trouble with the setup check if you are missing one of the following requirements:
+If you have trouble with the setup check if you are missing one of the
+following requirements:
 
 .. code-block:: shell
 
-   nodejs npm ruby gcc python2 python2-pysqlite python-virtualenvwrapper python2-lxml python2-pip
+   npm ruby gcc python-virtualenvwrapper
 
-The version of python2 given by ``python2 --version`` should be greater than 2.7.10.
+The version of python2 given by ``python2 --version`` should be greater
+than 2.7.10.
 
-Errors with npm start and Alpaca
-""""""""""""""""""""""""""""""""
+Errors with ``npm start`` and Alpaca
+""""""""""""""""""""""""""""""""""""
 If ``npm start`` fails for alpaca, you can try:
 
 .. code-block:: shell
@@ -245,6 +288,24 @@ If ``npm start`` fails for alpaca, you can try:
    npm install gulp gulp-clean jshint gulp-jshint
    npm install
    npm start   
+
+If it fails because it is missing a gulpfile, try the following:
+
+.. code-block:: shell
+
+   cdvirtualenv var/cap-instance/static/node_modules
+   wget https://github.com/gitana/alpaca/archive/1.5.17.tar.gz
+   tar -xvf 1.5.17.tar.gz
+   mv alpaca-1.5.17/ alpaca
+   cd alpaca
+
+and then repeat
+
+.. code-block:: shell
+
+   npm install gulp gulp-clean jshint gulp-jshint
+   npm install
+   npm start 
 
 Database Indexing Problems
 """"""""""""""""""""""""""
