@@ -1,39 +1,37 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "properties": {
-    "_files": {
-      "items": {
-        "description": "Describe information needed for files in records.",
-        "properties": {
-          "bucket": {
-            "type": "string"
-          },
-          "checksum": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "previewer": {
-            "description": "Identifier for previewer needed to preview this file.",
-            "type": "string"
-          },
-          "size": {
-            "type": "integer"
-          },
-          "type": {
-            "description": "File type extension.",
-            "type": "string"
-          },
-          "version_id": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "type": "array"
-    }
-  },
-  "title": "CAP Files Schema v1.0.0",
-  "type": "object"
+ "$schema": "http://json-schema.org/draft-04/schema#",
+ "title": "CAP Files Schema v1.0.0",
+ "type": "object",
+ "properties": {
+   "bucket": {
+     "title": "Bucket",
+     "type": "string"
+   },
+   "checksum": {
+     "title": "Checksum",
+     "type": "string"
+   },
+   "key": {
+     "title": "Key",
+     "type": "string"
+   },
+   "previewer": {
+     "title": "Previewer",
+     "description": "Identifier for previewer needed to preview this file.",
+     "type": "string"
+   },
+   "size": {
+     "title": "Size",
+     "type": "integer"
+   },
+   "type": {
+     "title": "Type",
+     "description": "File type extension.",
+     "type": "string"
+   },
+   "version_id": {
+     "title": "Version",
+     "type": "string"
+   }
+ }
 }
