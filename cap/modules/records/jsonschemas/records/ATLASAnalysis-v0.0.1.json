@@ -80,7 +80,7 @@
       "description": "Files related to the analysis",
       "type": "string",
       "id": "files",
-      "additionalProperties": false,
+      "additionalProperties": false
     }
   }
 }
