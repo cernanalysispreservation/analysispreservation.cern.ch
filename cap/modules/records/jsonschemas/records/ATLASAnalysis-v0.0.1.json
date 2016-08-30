@@ -70,10 +70,11 @@
     "files": {
       "title": "Files",
       "description": "Files related to the analysis",
-      "type": "array",
-      "id": "files",
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsconschemas/definitions/file-v1.0.0.json"
+      "type": "object",
+      "properties": {
+        "files": {
+          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/file-v1.0.0.json"
+        }
       }
     }
   }
