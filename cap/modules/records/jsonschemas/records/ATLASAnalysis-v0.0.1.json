@@ -10,6 +10,11 @@
       "type": "object",
       "id": "basic_info",
       "properties": {
+        "analysis_title": {
+          "description": "Title of the analysis",
+          "title": "Analysis Title",
+          "type": "string"
+        },
         "glance_id": {
           "description": "ID of related glance record",
           "title": "Glance ID",
@@ -19,22 +24,21 @@
           "title": "Abstract",
           "type": "string"
         },
-        "conclusion": {
-          "title": "Conclusion",
-          "type": "string"
-        },
         "people_info": {
           "title": "People Involved",
           "description": "Information about the people involved in this analysis",
-          "type": "object",
-          "properties": {
-            "names": {
-              "title": "Names",
-              "type": "string"
-            },
-            "email": {
-              "title": "Email-Adresses",
-              "type": "string"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "email": {
+                "title": "Email-Adress",
+                "type": "string"
+              }
             }
           }
         }
@@ -45,6 +49,7 @@
       "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
       "type": "array",
       "id": "input_datasets",
+      "additionalProperties": false,
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDataset-v0.0.1.json"
       }
@@ -52,6 +57,8 @@
     "workflows": {
       "title": "Workflows",
       "type": "array",
+      "id": "workflows",
+      "additionalProperties": false,
       "default": [{}],
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json"
@@ -62,6 +69,7 @@
       "description": "Publications related to the analysis",
       "type": "array",
       "id": "publications",
+      "additionalProperties": false,
       "default": [{}],
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPublication-v0.0.1.json"
@@ -70,12 +78,9 @@
     "files": {
       "title": "Files",
       "description": "Files related to the analysis",
-      "type": "object",
-      "properties": {
-        "files": {
-          "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/file-v1.0.0.json"
-        }
-      }
+      "type": "string",
+      "id": "files",
+      "additionalProperties": false,
     }
   }
 }
