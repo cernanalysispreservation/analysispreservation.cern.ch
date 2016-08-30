@@ -320,6 +320,5 @@ and if that does not work try:
 
 .. code-block:: shell
 
-   curl -XDELETE 'http://localhost:9200/rec*'
-   curl -XDELETE 'http://localhost:9200/map*'
+   curl -XDELETE 'http://localhost:9200/_all'
    cap db init
