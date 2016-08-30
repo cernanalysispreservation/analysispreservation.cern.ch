@@ -1,0 +1,39 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"id": "atlas_analyis",
+	"title": "ATLAS Analysis",
+	"type": "object",
+	"properties": {
+		"basic_info": {
+			"type": "object",
+			"title": "Basic Info",
+			"properties": {
+				"title": {
+					"title": "Analysis Title",
+					"type": "string"
+				}
+			}
+		},
+		"workflows": {
+			"type": "array",
+			"title": "Workflows",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"title": "Name",
+						"type": "string"
+					},
+					"workflow": {
+						"oneOf":[{
+							"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"
+						}]
+					}
+				}
+			}
+		}
+	},
+	"required": [
+		"workflows"
+	]
+}
