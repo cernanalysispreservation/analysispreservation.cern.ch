@@ -26,12 +26,6 @@ def search():
     return render_template('cap_theme/search.html')
 
 
-@blueprint.route('/logout')
-def logout():
-    """CAP logout endpoint."""
-    return security_logout()
-
-
 def page_not_found(e):
     """Error handler to show a 404.html page in case of a 404 error."""
     return render_template(current_app.config['THEME_404_TEMPLATE']), 404
