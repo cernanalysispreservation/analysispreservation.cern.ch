@@ -22,12 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-import os
 import json
-import pkg_resources
+import os
 import re
 import sys
 from pprint import pprint
+
+import pkg_resources
 
 results = []
 errors = []

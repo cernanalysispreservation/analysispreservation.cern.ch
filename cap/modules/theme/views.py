@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, current_app, render_template
 
 blueprint = Blueprint(
     'cap_theme',

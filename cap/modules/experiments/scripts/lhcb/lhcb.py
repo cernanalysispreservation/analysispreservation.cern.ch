@@ -1,6 +1,5 @@
-import shelve
 import json
-
+import shelve
 
 filenames = [
     "dbases/charm.shelve",

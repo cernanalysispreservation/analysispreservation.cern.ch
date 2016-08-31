@@ -6,8 +6,9 @@ import redis
 from flask import session
 from flask_kvsession import KVSessionExtension
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
-                                      KeywordOp, OrOp, NotOp)
+                                      KeywordOp, NotOp, OrOp)
 from simplekv.memory.redisstore import RedisStore
+
 from .loader import update_identity
 
 

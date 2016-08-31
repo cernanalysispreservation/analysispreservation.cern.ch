@@ -7,6 +7,7 @@ import sys
 
 from invenio_base.app import create_app_factory
 from invenio_base.wsgi import create_wsgi_factory, wsgi_proxyfix
+
 from invenio_config import create_conf_loader
 
 from . import config

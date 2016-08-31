@@ -26,10 +26,10 @@
 
 from __future__ import absolute_import, print_function
 
-import simplejson as json
 import os
 
 import jsonresolver
+import simplejson as json
 
 
 @jsonresolver.route('/records/jsonschemas/definitions/<path:jsonschema>',

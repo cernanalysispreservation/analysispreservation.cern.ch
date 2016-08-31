@@ -26,10 +26,12 @@
 """CERN Analysis Preservation base configuration."""
 
 from __future__ import absolute_import, print_function
-import os
+
 import copy
-from invenio_oauthclient.contrib import cern
+import os
+
 from flask_principal import RoleNeed
+from invenio_oauthclient.contrib import cern
 
 
 def _(x):

@@ -9,9 +9,9 @@ import pkg_resources
 from flask import Blueprint, current_app, g, jsonify, render_template, request
 from flask_principal import RoleNeed
 from flask_security import login_required
-from py2neo import Graph
 from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
+from py2neo import Graph
 
 from cap.modules.records.views import collection_records, get_collections_tree
 

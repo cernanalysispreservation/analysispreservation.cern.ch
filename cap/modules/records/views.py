@@ -26,12 +26,14 @@
 
 from __future__ import absolute_import, print_function
 
-import simplejson as json
 import os
 import re
 from functools import partial
 from uuid import uuid4
 
+import simplejson as json
+import six
+from elasticsearch_dsl.query import QueryString
 from flask import (Blueprint, Response, abort, current_app, jsonify,
                    render_template, request, url_for)
 from flask.ext.login import current_user, login_required
@@ -39,7 +41,7 @@ from flask_security import login_required
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
-from invenio_accounts.models import User, Role
+from invenio_accounts.models import Role, User
 from invenio_collections.models import Collection
 from invenio_db import db
 from invenio_indexer.utils import RecordIndexer
@@ -51,20 +53,19 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
-from invenio_records_ui.views import record_view, default_view_method
-from invenio_search import current_search_client, RecordsSearch
+from invenio_records_ui.views import default_view_method, record_view
+from invenio_search import RecordsSearch, current_search_client
 from invenio_search.api import DefaultFilter
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
 from jsonschema.exceptions import ValidationError
-from cap.config import JSON_METADATA_PATH, JSONSCHEMAS_VERSIONS
-
-from elasticsearch_dsl.query import QueryString
-from cap.modules.records.serializers import json_v1
-from .fetchers import cap_record_fetcher
-import six
 from werkzeug.local import LocalProxy
+
+from cap.config import JSON_METADATA_PATH, JSONSCHEMAS_VERSIONS
+from cap.modules.records.serializers import json_v1
+
+from .fetchers import cap_record_fetcher
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 

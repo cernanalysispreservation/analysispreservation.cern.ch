@@ -1,10 +1,9 @@
 """CAP access permissions loader."""
 
-from flask_login import current_user
-from flask_principal import identity_loaded
 from flask import current_app, session
+from flask_login import current_user
+from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 from werkzeug.local import LocalProxy
-from flask_principal import AnonymousIdentity, RoleNeed
 
 current_flask_security = LocalProxy(
     lambda: current_app.extensions['security']

@@ -1,5 +1,5 @@
-import os
 import errno
+import os
 
 PROJECT_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 JSONSCHEMAS_DIR = os.path.join(

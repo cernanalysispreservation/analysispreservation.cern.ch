@@ -1,17 +1,14 @@
+import json
+from functools import partial
+from pprint import pprint
+
+import click
+import pkg_resources
 from flask import current_app
 from flask_cli import with_appcontext
-
-
-from pprint import pprint
-from functools import partial
-import pkg_resources
-import json
-import click
-
-
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import ParameterizedActionNeed
-from invenio_accounts.models import User, Role
+from invenio_accounts.models import Role, User
 from invenio_collections.models import Collection
 from invenio_db import db
 from invenio_indexer.utils import RecordIndexer
@@ -20,12 +17,12 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
-from cap.config import JSON_METADATA_PATH
-from .pages import loadpages
 from jsonschema.exceptions import ValidationError
 
-
+from cap.config import JSON_METADATA_PATH
 from cap.modules.records.views import construct_record
+
+from .pages import loadpages
 
 RecordIndexActionNeed = partial(ParameterizedActionNeed, 'records-index')
 
