@@ -34,6 +34,8 @@ python:
   - "2.7"
 
 env:
+  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+  - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
   - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
 
 before_install:
@@ -53,17 +55,22 @@ before_install:
          TRAVIS_COMMIT_RANGE=$PR_FIRST^..$TRAVIS_COMMIT
        fi
   - echo ${TRAVIS_COMMIT_RANGE}
+  - "travis_retry pip install --upgrade pip setuptools py"
+  - "travis_retry pip install twine wheel coveralls requirements-builder"
+  - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
+  - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
+  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
 
 install:
-  - travis_retry pip install -r requirements.txt --pre -e .[tests]
-  - chmod a+x ./scripts/init-db.sh
+  - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+  - "travis_retry pip install -e .[docs,tests]"
 
 before_script:
   - travis_retry pip install kwalitee GitPython --pre
   - kwalitee check message -s ${TRAVIS_COMMIT_RANGE}
 
 script:
-  - py.test tests
+  - "./run-tests.sh"
 
 after_success:
   - coveralls

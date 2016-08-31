@@ -33,7 +33,6 @@ import tempfile
 
 import pytest
 from flask_cli import ScriptInfo
-
 from invenio_db import db as db_
 from sqlalchemy_utils.functions import create_database, database_exists
 
@@ -96,5 +95,3 @@ def db(app):
     yield db_
     db_.session.remove()
     db_.drop_all()
-
-

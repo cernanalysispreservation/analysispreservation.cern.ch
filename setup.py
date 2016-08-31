@@ -28,7 +28,6 @@ import os
 import sys
 
 from setuptools import find_packages, setup
-from setuptools.command.test import test as TestCommand
 
 # readme = open('README.rst').read()
 readme = ""
@@ -58,72 +57,61 @@ for reqs in extras_require.values():
 
 setup_requires = [
     'Babel>=1.3',
+    'pytest-runner>=2.9',
 ]
 
 install_requires = [
-    'Flask>=0.11.1',
     'Flask-BabelEx>=0.9.2',
-    'click',
-    'psycopg2',
-    'py2neo==2.0.8',
-    'flask-kvsession',
-    'pysqlite',
-    'invenio-access==1.0.0a8',
-    'simplejson',
-    'gunicorn',
-    'invenio-accounts==1.0.0a13',
-    'invenio-assets==1.0.0b2',
-    'invenio-base==1.0.0a12',
-    'invenio-collections==1.0.0a3',
-    'invenio-db==1.0.0b1',
-    'invenio-indexer==1.0.0a6',
-    'invenio-jsonschemas==1.0.0a3',
-    'invenio-oauthclient==1.0.0a11',
+    'Flask-KVSession>=0.6.2',
+    'Flask>=0.11.1',
+    'invenio-access>=1.0.0a8',
+    'invenio-accounts>=1.0.0a13',
+    'invenio-assets>=1.0.0b2',
+    'invenio-base>=1.0.0a12',
+    'invenio-collections>=1.0.0a3',
+    'invenio-db[postgresql,versioning]>=1.0.0b1',
+    'invenio-deposit>=1.0.0a3',
+    'invenio-indexer>=1.0.0a6',
+    'invenio-jsonschemas>=1.0.0a3',
+    'invenio-oauthclient>=1.0.0a9',
     'invenio-pages>=1.0.0a3',
-    'invenio-pidstore==1.0.0a9',
-    'invenio-records==1.0.0a17',
-    'invenio-records-rest==1.0.0a15',
-    'invenio-records-ui==1.0.0a7',
-    'invenio-search==1.0.0a7',
-    'invenio-search-ui==1.0.0a5',
-    'invenio-theme==1.0.0a13',
-    'invenio-userprofiles==1.0.0a7',
-    'invenio[minimal]>=3.0.0a2,<3.1.0',
+    'invenio-pidstore>=1.0.0a9',
+    'invenio-records-rest>=1.0.0a15',
+    'invenio-records-ui>=1.0.0a7',
+    'invenio-records>=1.0.0a17',
+    'invenio-search-ui>=1.0.0a5',
+    'invenio-search>=1.0.0a7',
+    'invenio-theme>=1.0.0a13',
+    'invenio-userprofiles>=1.0.0a7',
+    'py2neo==2.0.8',
+    'simplejson>=3.8.2',
+    'Flask-KVSession>=0.6.2',
+    'Flask>=0.11.1',
+    'invenio-access>=1.0.0a8',
+    'invenio-accounts>=1.0.0a13',
+    'invenio-assets>=1.0.0a4',
+    'invenio-base>=1.0.0a12',
+    'invenio-collections>=1.0.0a3',
+    'invenio-db[postgresql,versioning]>=1.0.0b1',
+    'invenio-deposit>=1.0.0a3',
+    'invenio-indexer>=1.0.0a6',
+    'invenio-jsonschemas>=1.0.0a3',
+    'invenio-oauthclient>=1.0.0a9',
+    'invenio-pages>=1.0.0a3',
+    'invenio-pidstore>=1.0.0a9',
+    'invenio-records-rest>=1.0.0a15',
+    'invenio-records-ui>=1.0.0a6',
+    'invenio-records>=1.0.0a17',
+    'invenio-search-ui>=1.0.0a4',
+    'invenio-search>=1.0.0a7',
+    'invenio-theme>=1.0.0a13',
+    'invenio-userprofiles>=1.0.0a7',
+    'py2neo==2.0.8',
+    'simplejson>=3.8.2',
 ]
 
 
 packages = find_packages()
-
-
-class PyTest(TestCommand):
-    """PyTest Test."""
-
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-
-    def initialize_options(self):
-        """Init pytest."""
-        TestCommand.initialize_options(self)
-        self.pytest_args = []
-        try:
-            from ConfigParser import ConfigParser
-        except ImportError:
-            from configparser import ConfigParser
-        config = ConfigParser()
-        config.read('pytest.ini')
-        self.pytest_args = config.get('pytest', 'addopts').split(' ')
-
-    def finalize_options(self):
-        """Finalize pytest."""
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        """Run tests."""
-        # import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
 
 # Get the version string. Cannot be done with import!
 g = {}
@@ -169,15 +157,11 @@ setup(
             'cap.modules.records.fetchers:cap_record_fetcher',
         ],
         'invenio_base.apps': [
-            'invenio_search = invenio_search:InvenioSearch',
-            'invenio_records = invenio_records:InvenioRecords',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
-            'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
-            'invenio_search = invenio_search:InvenioSearch',
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'cap_access = cap.modules.access.ext:CAPAccess',
         ],
@@ -219,10 +203,10 @@ setup(
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',
         ],
         'invenio_search.mappings': [
-            'mappings = cap.modules.records',
+            'mappings = cap',
         ],
         'invenio_jsonschemas.schemas': [
-            'cap_records = cap.modules.records.jsonschemas',
+            'cap = cap.jsonschemas',
         ],
     },
     extras_require=extras_require,
@@ -246,5 +230,4 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Development Status :: 1 - Planning',
     ],
-    cmdclass={},
 )

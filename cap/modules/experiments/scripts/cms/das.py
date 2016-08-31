@@ -30,29 +30,30 @@
 DAS command line tool
 """
 from __future__ import print_function
-__author__ = "Valentin Kuznetsov"
 
+import cookielib
+import httplib
+import json
 # system modules
 import os
-import sys
 import pwd
+import re
+import ssl
+import sys
+import time
+import urllib
+import urllib2
+from math import log
+from optparse import OptionParser
+from types import GeneratorType
+
+__author__ = "Valentin Kuznetsov"
+
 if  sys.version_info < (2, 6):
     raise Exception("DAS requires python 2.6 or greater")
 
 DAS_CLIENT = 'das-client/1.0::python/%s.%s' % sys.version_info[:2]
 
-import ssl
-import os
-import re
-import time
-import json
-import urllib
-import urllib2
-import httplib
-import cookielib
-from   optparse import OptionParser
-from   math import log
-from   types import GeneratorType
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False

@@ -26,7 +26,6 @@ from __future__ import absolute_import, print_function
 
 from marshmallow import Schema, fields
 
-
 CAP_RECORD_MAPPINGS = dict(
     LHCbAnalysis=dict(
         general_title='_metadata.basic_info.analysis_name'

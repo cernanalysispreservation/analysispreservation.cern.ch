@@ -22,8 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-import os
 import errno
+import os
 
 PROJECT_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir)
 JSONSCHEMAS_DIR = os.path.join(

@@ -23,8 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 import json
-import urllib2
 import os
+import urllib2
 
 sources = {
     "2010": "http://fwyzard.web.cern.ch/fwyzard/hlt/2010/dataset",
