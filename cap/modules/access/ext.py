@@ -8,7 +8,7 @@ from flask_kvsession import KVSessionExtension
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
                                       KeywordOp, OrOp, NotOp)
 from simplekv.memory.redisstore import RedisStore
-from .loader import update_identity
+from .loader import load_extra_info
 
 
 class CAPAccess(object):
