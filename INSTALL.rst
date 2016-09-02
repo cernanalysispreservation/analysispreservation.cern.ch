@@ -19,49 +19,8 @@ Detailed Installation Guide
 ===========================
 
 There are two possibilities for setting up your own development version
-of CERN Analysis Preservation, one with docker and one with python
-virtualenvwrapper.
-
-Docker Installation
--------------------
-
-You should have installed Docker and docker-compose on your machine. Then, you
-can build the application using the development configuration:
-
-.. code-block:: shell
-
-   docker-compose -f docker-compose-dev.yml build
-
-
-Now that you have built the application inside the docker containers, you will
-need to initialize some modules. This initialization consist of the creation of
-the tables inside the database, the default user (user:
-info@inveniosoftware.org, password: infoinfo), the required communities and the
-ElasticSearch index.
-
-To initialise it then, you will need to perform:
-
-.. code-block:: shell
-
-   docker-compose run app bash scripts/init.sh
-
-
-Optionally, if you want to populate the database with some example records, you
-can run:
-
-.. code-block:: shell
-
-   docker-compose run app cap fixtures records -f
-
-
-And lately, you can start the application:
-
-.. code-block:: shell
-
-   docker-compose -f docker-compose-dev.yml up
-
-
-Now, open your browser and navigate to http://localhost/
+of CERN Analysis Preservation, one with python virtualenvwrapper and one
+with docker.
 
 
 Bare Installation
@@ -135,7 +94,7 @@ instance from inside the repository folder:
 .. code-block:: shell
 
    cd cap
-   mkvirtualenv cap_venv
+   mkvirtualenv cap
 
 Start redis server in the background:
 
@@ -244,7 +203,7 @@ creation as follows (e.g. to use python 2.7):
 
 .. code-block:: shell
 
-   mkvirtualenv -p /usr/bin/python2.7 cap_venv
+   mkvirtualenv -p /usr/bin/python2.7 cap
 
 Local Installation of npms and gems
 """""""""""""""""""""""""""""""""""
@@ -309,3 +268,45 @@ and if that does not work try:
 
    curl -XDELETE 'http://localhost:9200/_all'
    cap db init
+
+
+Docker Installation
+-------------------
+
+You should have installed Docker and docker-compose on your machine. Then, you
+can build the application using the development configuration:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml build
+
+
+Now that you have built the application inside the docker containers, you will
+need to initialize some modules. This initialization consist of the creation of
+the tables inside the database, the default user (user:
+info@inveniosoftware.org, password: infoinfo), the required communities and the
+ElasticSearch index.
+
+To initialise it then, you will need to perform:
+
+.. code-block:: shell
+
+   docker-compose run app bash scripts/init.sh
+
+
+Optionally, if you want to populate the database with some example records, you
+can run:
+
+.. code-block:: shell
+
+   docker-compose run app cap fixtures records -f
+
+
+And lately, you can start the application:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml up
+
+
+Now, open your browser and navigate to http://localhost/
