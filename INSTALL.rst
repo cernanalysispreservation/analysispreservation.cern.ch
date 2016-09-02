@@ -102,8 +102,9 @@ Debian GNU/Linux the full path is
   http.port: 9200
   http.publish_port: 9200
 
-Finally, do a system install (see below for how to do a local install
-instead) for the Sass preprocessor by following
+Finally, do a system-wide install (see below for how to do a local
+install enclosed inside your virtual environment instead) for the Sass
+preprocessor by following
 `Sass web guide <http://sass-lang.com/install>`_ and running:
 
 .. code-block:: shell
@@ -123,9 +124,13 @@ Environment Setup
 """""""""""""""""
 
 All else will be installed inside a python *virtualenv* for easy
-maintenance and encapsulation of the libraries required. To do so,
-create a new virtual environment to hold our CAP instance
-from inside the repository folder:
+maintenance and encapsulation of the libraries required. From inside
+your `cap` folder you can choose anytime whatever virtual environment
+you want to work on (just type `workon virtualenv_installed`) or you can
+choose to create a new one.
+
+To do the latter, create a new virtual environment to hold our CAP
+instance from inside the repository folder:
 
 .. code-block:: shell
 
@@ -244,7 +249,9 @@ creation as follows (e.g. to use python 2.7):
 Local Installation of npms and gems
 """""""""""""""""""""""""""""""""""
 
-You do not need to install sass and all npm dependencies globally if you add
+You do not need to install sass and all npm dependencies globally on
+your system. You can install them inside your virtual environment so
+they will only be accessible from within it. Simply add:
 
 .. code-block:: shell
 
