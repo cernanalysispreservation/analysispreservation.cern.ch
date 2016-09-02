@@ -33,6 +33,9 @@ import os
 from flask_principal import RoleNeed
 from invenio_oauthclient.contrib import cern
 
+from invenio_deposit import config
+from invenio_records_rest.utils import deny_all, allow_all
+
 
 def _(x):
     """Identity function for string extraction"""
@@ -181,20 +184,14 @@ CERN_APP_CREDENTIALS = {
     'consumer_secret': os.environ.get('APP_CERN_APP_CREDENTIALS_SECRET')
 }
 
-CERN_REMOTE_APP = copy.deepcopy(cern.REMOTE_APP)
-# CERN_REMOTE_APP["params"].update({
-#     'request_token_params': {
-#         "scope": "Email Groups",
-#     }
-# })
-OAUTHCLIENT_REMOTE_APPS = {'cern': CERN_REMOTE_APP}
+OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
 #: OAuth login template.
 # OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
 # JSON Schemas
 # ============
 #: Hostname for JSON Schemas.
-JSONSCHEMAS_HOST = 'https://localhost:5000'
+JSONSCHEMAS_HOST = 'localhost:5000'
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
@@ -241,3 +238,45 @@ SECRET_KEY = "changeme"
 #     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
 # config.setdefault(
 #     'THEME_500_TEMPLATE', 'invenio_theme/500.html')
+
+
+# Deposit
+# ============
+#: Default jsonschema for deposit
+DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v1.0.0.json'
+
+#: Default schemanform for deposit
+DEPOSIT_DEFAULT_SCHEMAFORM = 'json/lhcb-v1.0.0.json'
+#: Search api url for deposit
+DEPOSIT_SEARCH_API = '/api/deposits/'
+
+#: Template for deposit records API.
+#DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
+
+
+# #: Endpoints for deposit.
+DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
+DEPOSIT_REST_ENDPOINTS = copy.deepcopy(config.DEPOSIT_REST_ENDPOINTS)
+# DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
+DEPOSIT_REST_ENDPOINTS['depid'].update({
+    # 'pid_type': 'depid',
+    # 'pid_minter': 'cap_deposit_minter',
+    # 'pid_fetcher': 'cap_deposit_fetcher',
+    # 'record_serializers': {
+    #     'application/json': (
+    #         'cap.modules.records.serializers'
+    #         ':json_v1_response')
+    # },
+    'create_permission_factory_imp': allow_all,
+    'read_permission_factory_imp': allow_all,
+    'update_permission_factory_imp': allow_all,
+    'delete_permission_factory_imp': allow_all,
+    'links_factory_imp': 'cap.modules.deposit.links:links_factory',
+})
+
+# Collections
+# ===========
+#: Remove signals (Only for debug mode)
+COLLECTIONS_REGISTER_RECORD_SIGNALS = False
+
+DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
