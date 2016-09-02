@@ -21,7 +21,7 @@ display_js = NpmBundle(
         "handlebars": "~4.0.5",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
-        # "alpaca": "1.5.17",
+        "alpaca": "1.5.17",
         "gulp": "3.9.0",
     }
 )
@@ -45,7 +45,7 @@ create_js = NpmBundle(
         "handlebars": "~4.0.5",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
-        # "alpaca": "1.5.17",
+        "alpaca": "1.5.17",
         "gulp": "3.9.0",
         "fast-json-patch": "~0.5.4",
         "jsoneditor": "~5.1.5",
@@ -71,7 +71,7 @@ edit_js = NpmBundle(
         "handlebars": "~4.0.5",
         "moment": "~2.10.6",
         "json-schema-ref-parser": "~1.4.0",
-        # "alpaca": "1.5.17",
+        "alpaca": "1.5.17",
         "gulp": "3.9.0",
         "fast-json-patch": "~0.5.4",
     }

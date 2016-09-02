@@ -156,7 +156,6 @@ Install alpaca:
 
    cd node_modules/alpaca
    npm install
-   npm start
 
 Build the assets:
 
@@ -269,7 +268,7 @@ Troubleshooting
 
 Missing Requirements
 """"""""""""""""""""
-If you have trouble with the setup check if you are missing one of the
+If you have trouble with the setup, check if you are missing one of the
 following requirements:
 
 .. code-block:: shell
@@ -279,33 +278,14 @@ following requirements:
 The version of python2 given by ``python2 --version`` should be greater
 than 2.7.10.
 
-Errors with ``npm start`` and Alpaca
-""""""""""""""""""""""""""""""""""""
-If ``npm start`` fails for alpaca, you can try:
+Errors with Alpaca
+""""""""""""""""""
+If alpaca does not install correctly try:
 
 .. code-block:: shell
 
    npm install gulp gulp-clean jshint gulp-jshint
    npm install
-   npm start   
-
-If it fails because it is missing a gulpfile, try the following:
-
-.. code-block:: shell
-
-   cdvirtualenv var/cap-instance/static/node_modules
-   wget https://github.com/gitana/alpaca/archive/1.5.17.tar.gz
-   tar -xvf 1.5.17.tar.gz
-   mv alpaca-1.5.17/ alpaca
-   cd alpaca
-
-and then repeat
-
-.. code-block:: shell
-
-   npm install gulp gulp-clean jshint gulp-jshint
-   npm install
-   npm start 
 
 Database Indexing Problems
 """"""""""""""""""""""""""
