@@ -114,18 +114,11 @@ depend on:
    npm install bower
    npm install
 
-Install alpaca:
+Build the assets from your repository folder:
 
 .. code-block:: shell
 
-   cd node_modules/alpaca
-   npm install
-
-Build the assets:
-
-.. code-block:: shell
-
-   cd cap
+   cd -
    cap collect -v
    cap assets build
    python ./scripts/schemas.py
@@ -243,15 +236,6 @@ following requirements:
 
 The version of python2 given by ``python2 --version`` should be greater
 than 2.7.10.
-
-Errors with Alpaca
-""""""""""""""""""
-If alpaca does not install correctly try:
-
-.. code-block:: shell
-
-   npm install gulp gulp-clean jshint gulp-jshint
-   npm install
 
 Database Indexing Problems
 """"""""""""""""""""""""""
