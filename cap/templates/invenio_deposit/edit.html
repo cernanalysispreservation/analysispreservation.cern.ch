@@ -1,0 +1,64 @@
+{%- extends config.DEPOSIT_BASE_TEMPLATE %}
+{%- block css %}
+    {% assets "invenio_deposit_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {{ super() }}
+{%- endblock css %}
+
+{%- block javascript %}
+  {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  {% assets "invenio_deposit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{%- endblock javascript %}
+
+{%- block page_body %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="invenio-records">
+          <invenio-records
+            {% if pid %}
+              initialization="{{ config.DEPOSIT_RECORDS_API.format(pid_value=pid.pid_value) }}"
+            {% else %}
+              initialization="{{ config.DEPOSIT_SEARCH_API }}"
+            {% endif %}
+            response-params='{{ config.DEPOSIT_RESPONSE_MESSAGES | tojson }}'
+            extra-params='{"headers":{"Content-Type": "application/json"}, "data":{"$schema":"{{ url_for("invenio_jsonschemas.get_schema", schema_path=config.DEPOSIT_DEFAULT_JSONSCHEMA) }}"}}'
+            form="{{ url_for('static', filename=config.DEPOSIT_DEFAULT_SCHEMAFORM) }}"
+            record='{{ record | tojson }}'
+            schema="{{ url_for('invenio_jsonschemas.get_schema', schema_path=config.DEPOSIT_DEFAULT_JSONSCHEMA) }}">
+            <invenio-records-loading
+              template="{{ url_for('static', filename='node_modules/invenio-records-js/dist/templates/loading.html') }}">
+            </invenio-records-loading>
+            <invenio-records-alert
+              template="{{ url_for('static', filename='node_modules/invenio-records-js/dist/templates/alert.html') }}">
+            </invenio-records-alert>
+            <invenio-records-actions
+              template="{{ url_for('static', filename=config.DEPOSIT_UI_JSTEMPLATE_ACTIONS) }}">
+            </invenio-records-actions>
+            <invenio-records-form
+              form-templates='{{ config.DEPOSIT_FORM_TEMPLATES | tojson }}'
+              form-templates-base="{{ url_for('static', filename=config.DEPOSIT_FORM_TEMPLATES_BASE) }}"
+              template="{{ url_for('static', filename=config.DEPOSIT_UI_JSTEMPLATE_FORM) }}">
+            </invenio-records-form>
+          </invenio-records>
+          <invenio-files-uploader
+            method="PUT"
+            endpoint="/api/files"
+            {% if pid %}
+              action="{{ config.DEPOSIT_RECORDS_API|format(pid_value=pid.pid_value) }}"
+            {% else %}
+              initialization="{{ config.DEPOSIT_SEARCH_API }}"
+            {% endif %}
+            extra-params='{"headers":{"Content-Type": "application/json"}}'
+          >
+            <invenio-files-upload-zone
+              template="{{ url_for('static', filename='node_modules/invenio-files-js/dist/templates/upload.html') }}">
+            </invenio-files-upload-zone>
+            <invenio-files-list
+              template="{{ url_for('static', filename='node_modules/invenio-files-js/dist/templates/list.html') }}"
+            ></invenio-files-list>
+        </invenio-files-uploader>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endblock %}
