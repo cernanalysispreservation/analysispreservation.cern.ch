@@ -203,7 +203,8 @@ setup(
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',
         ],
         'invenio_search.mappings': [
-            'mappings = cap',
+            'deposits = cap.mappings',
+            'records = cap.mappings',
         ],
         'invenio_jsonschemas.schemas': [
             'cap = cap.jsonschemas',

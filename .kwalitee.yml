@@ -31,6 +31,7 @@ components:
 - UI
 - access
 - base
+- deposit
 - docker
 - docs
 - fixtures
