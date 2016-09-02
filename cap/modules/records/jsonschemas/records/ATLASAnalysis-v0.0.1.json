@@ -50,19 +50,13 @@
       "type": "array",
       "id": "input_datasets",
       "additionalProperties": false,
+      "default": [{}],
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDataset-v0.0.1.json"
       }
     },
-    "workflows": {
-      "title": "Workflows",
-      "type": "array",
-      "id": "workflows",
-      "additionalProperties": false,
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json"
-      }
+    "workflows": { 
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json" 
     },
     "publications": {
       "title": "Publications",
@@ -74,13 +68,6 @@
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPublication-v0.0.1.json"
       }
-    },
-    "files": {
-      "title": "Files",
-      "description": "Files related to the analysis",
-      "type": "string",
-      "id": "files",
-      "additionalProperties": false
     }
   }
 }
