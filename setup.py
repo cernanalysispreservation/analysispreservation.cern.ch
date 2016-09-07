@@ -78,7 +78,7 @@ install_requires = [
     'invenio-db==1.0.0b1',
     'invenio-indexer==1.0.0a6',
     'invenio-jsonschemas==1.0.0a3',
-    # 'invenio-oauthclient==1.0.0a9',
+    # 'invenio-oauthclient==1.0.0a11', Uncomment when oathclient commit is merged
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore==1.0.0a9',
     'invenio-records==1.0.0a17',
@@ -178,6 +178,7 @@ setup(
         'invenio_base.api_apps': [
             'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
             'invenio_search = invenio_search:InvenioSearch',
+            'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'cap_access = cap.modules.access.ext:CAPAccess',
         ],
         'invenio_access.actions': [

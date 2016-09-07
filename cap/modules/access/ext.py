@@ -6,9 +6,8 @@ import redis
 from flask import session
 from flask_kvsession import KVSessionExtension
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
-                                      KeywordOp, OrOp, NotOp)
+                                      KeywordOp, OrOp)
 from simplekv.memory.redisstore import RedisStore
-from .loader import load_extra_info
 
 
 class CAPAccess(object):
