@@ -261,6 +261,34 @@ DEPOSIT_SEARCH_API = '/api/deposits/'
 #: Template for deposit records API.
 #DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
 
+DEPOSIT_GROUPS = {
+    "lhcb": {
+        "schema": "deposits/records/lhcb-v1.0.0.json",
+        "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "schema_form": "json/deposits/records/lhcb-v1.0.0.json",
+        "endpoint": "",
+        "permissions": {
+            'create_permission_factory_imp': allow_all,
+            'read_permission_factory_imp': allow_all,
+            'update_permission_factory_imp': allow_all,
+            'delete_permission_factory_imp': allow_all,
+        }
+    },
+    "cms-analysis": {
+        "schema": "deposits/records/cms-analysis-v1.0.0.json",
+        "schema_form": "json/deposits/records/cms-analysis-v1.0.0.json",
+        "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "endpoint": "",
+        "permissions": {
+            'create_permission_factory_imp': allow_all,
+            'read_permission_factory_imp': allow_all,
+            'update_permission_factory_imp': allow_all,
+            'delete_permission_factory_imp': allow_all,
+        }
+    }
+}
 
 # #: Endpoints for deposit.
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
@@ -282,6 +310,10 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
 
+DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(config.DEPOSIT_RECORDS_UI_ENDPOINTS)
+DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
+    'template': 'cap_deposit/edit.html',
+})
 # Collections
 # ===========
 #: Remove signals (Only for debug mode)
