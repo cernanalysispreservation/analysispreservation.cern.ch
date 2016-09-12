@@ -99,6 +99,11 @@
         }
       }
     },
+    "mc_signal_cross_section": {
+      "title": "Cross Section",
+      "type": "number",
+      "required": "true"
+    },
     "background": {
       "title": "MC Background",
       "type": "array",

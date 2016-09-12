@@ -140,6 +140,14 @@
                   "Type2CaloCorrections"
                 ]
               },
+              "track_type": {
+                "type": "string",
+                "title": "Track type",
+                "enum": [
+                  "Heavy-Ion",
+                  "pp"
+                ]
+              },
               "isolation": {
                 "title": "Isolation",
                 "type": "object",
@@ -447,6 +455,7 @@
               "photon_type": ["object"],
               "met_pf_corrections": ["met_type"],
               "met_calo_corrections": ["met_type"],
+              "track_type": ["object"],
               "isolation": ["sel_criteria"],
               "number": ["object"],
               "number_vertex": ["object"],

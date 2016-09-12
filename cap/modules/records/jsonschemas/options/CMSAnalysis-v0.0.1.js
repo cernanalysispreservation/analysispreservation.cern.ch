@@ -427,6 +427,10 @@ window.schemaOptions = {
                       }
                     }
                   },
+                  "mc_signal_cross_section": {
+                    "order": 2,
+                    "placeholder": ""
+                  },
                   "mc_signal_selection": {
                     "order": 6,
                     "type": "depositgroup-object-array",
@@ -606,6 +610,10 @@ window.schemaOptions = {
                       }
                     }
                   },
+                  "mc_bg_cross_section": {
+                    "order": 2,
+                    "placeholder": ""
+                  },
                   "background": {
                     "order": 7,
                     "title": "Background",
@@ -778,14 +786,18 @@ window.schemaOptions = {
                 "order": 1,
                 "placeholder": "E.g. signal measurement of NNN in Z -> ee final state"
               },
-              "detailed_measurement_description": {
+              "ana_note_number": {
                 "order": 2,
+                "placeholder": ""
+              },
+              "detailed_measurement_description": {
+                "order": 3,
                 "type": "textarea",
                 "rows": 10,
                 "placeholder": "If applicable, please provide a more detailed description for this measurement"
               },
               "code_base": {
-                "order": 4,
+                "order": 5,
                 "type": "depositgroup-object",
                 "toolbarSticky": "true",
                 "fields": {
@@ -805,7 +817,7 @@ window.schemaOptions = {
                 }
               },
               "n_tuple": {
-                "order": 5,
+                "order": 6,
                 "type": "depositgroup-object-array",
                 "toolbarSticky": "true",
                 "fields": {
@@ -861,7 +873,7 @@ window.schemaOptions = {
               },
               "detector_final_state": {
                 "type": "depositgroup-object",
-                "order": 3,
+                "order": 4,
                 "label": false,
                 "fields": {
                   "final_state_particles": {
@@ -957,6 +969,15 @@ window.schemaOptions = {
                             "order": 3,
                             "dependencies": {
                               "met_type": ["CaloMET"]
+                            }
+                          },
+                          "track_type": {
+                            "noneLabel": "Select Track",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["track"]
                             }
                           },
                           "sel_criteria": {
@@ -1614,6 +1635,15 @@ window.schemaOptions = {
                             "order": 3,
                             "dependencies": {
                               "met_type": ["CaloMET"]
+                            }
+                          },
+                          "track_type": {
+                            "noneLabel": "Select Track",
+                            "type": "select2",
+                            "select2": true,
+                            "order": 2,
+                            "dependencies": {
+                              "object": ["track"]
                             }
                           },
                           "sel_criteria": {

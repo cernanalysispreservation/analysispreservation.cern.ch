@@ -132,7 +132,8 @@
           },
           "trigger_efficiency": {
             "title": "Trigger Efficiency",
-            "type": "string"
+            "type": "string",
+            "required": "true"
           }
         }
       }
