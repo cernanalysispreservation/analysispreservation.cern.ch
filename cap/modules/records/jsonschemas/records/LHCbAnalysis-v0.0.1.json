@@ -313,24 +313,21 @@
           },
           "code": {
             "title": "Code",
-            "type": "object",
-            "properties": {
-              "platform": {
-                "title": "Platform",
-                "type": "string"
-              },
-              "lhcb_code": {
-                "title": "Application",
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "description": "URL/Location"
-                }
-              },
-              "user_code": {
-                "title": "User code",
-                "type": "array",
-                "items": {
+            "type": "array",
+            "default": [{}],
+            "items": {
+              "type": "object",
+              "properties": {
+                "platform": {
+                  "title": "Platform",
+                  "type": "string"
+                },
+                "lhcb_code": {
+                  "title": "Application",
+                  "type": "string"
+                },
+                "user_code": {
+                  "title": "User code",
                   "type": "object",
                   "properties": {
                     "description": {

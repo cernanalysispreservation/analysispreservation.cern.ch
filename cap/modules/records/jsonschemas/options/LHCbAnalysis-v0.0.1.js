@@ -347,24 +347,19 @@ window.schemaOptions = {
                 }
               },
               "code": {
-                "type": "depositgroup-object",
+                "toolbarSticky": "true",
+                "type": "depositgroup-object-array",
                 "fields": {
-                  "lhcb_code": {
-                    "type": "depositgroup-object-array",
-                    "toolbarSticky": "true",
-                    "order": 1,
+                  "item": {
                     "fields": {
-                      "item": {
+                      "lhcb_code": {
+                        "order": 1,
                         "placeholder": " E.g. DaVinci v33r6"
-                      }
-                    }
-                  },
-                  "user_code": {
-                    "type": "depositgroup-object-array",
-                    "toolbarSticky": "true",
-                    "order": 3,
-                    "fields": {
-                      "item": {
+                      },
+                      "user_code": {
+                        "type": "depositgroup-object",
+                        "toolbarSticky": "true",
+                        "order": 3,
                         "fields": {
                           "link": {
                             "order": 1,
@@ -380,12 +375,12 @@ window.schemaOptions = {
                             "placeholder": "Please enter the instructions for using the code, e.g. Open 'README' file"
                           }
                         }
+                      },
+                      "platform": {
+                        "order": 2,
+                        "placeholder": "E.g. x86_64-slc5-gcc46-opt"
                       }
                     }
-                  },
-                  "platform": {
-                    "order": 2,
-                    "placeholder": "E.g. x86_64-slc5-gcc46-opt"
                   }
                 }
               },
