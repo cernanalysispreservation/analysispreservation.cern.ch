@@ -138,16 +138,20 @@ window.schemaOptions = {
                 "fields": {
                   "item": {
                     "fields": {
-                      "processing_pass": {
+                      "location": {
                         "order": 1,
+                        "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
+                      },
+                      "processing_pass": {
+                        "order": 2,
                         "placeholder": "E.g. Reco15a-Stripping22b"
                       },
                       "year": {
-                        "order": 4,
+                        "order": 5,
                         "placeholder": "E.g. 2015"
                       },
                       "reconstruction_software": {
-                        "order": 2,
+                        "order": 3,
                         "type": "depositgroup-object",
                         "fields": {
                           "reconstruction_software_name": {
@@ -159,7 +163,7 @@ window.schemaOptions = {
                         }
                       },
                       "stripping_software": {
-                        "order": 3,
+                        "order": 4,
                         "type": "depositgroup-object",
                         "fields": {
                           "stripping_software_name": {
@@ -169,10 +173,6 @@ window.schemaOptions = {
                             "placeholder": "E.g. 17"
                           }
                         }
-                      },
-                      "location": {
-                        "order": 6,
-                        "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
                       }
                     }
                   }
@@ -184,8 +184,12 @@ window.schemaOptions = {
                 "fields": {
                   "item": {
                     "fields": {
-                      "mc_production": {
+                      "location": {
                         "order": 1,
+                        "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
+                      },
+                      "mc_production": {
+                        "order": 2,
                         "placeholder": "E.g. MC Prod"
                       },
                       "generator": {
@@ -216,13 +220,15 @@ window.schemaOptions = {
                           }
                         }
                       },
-                      "location": {
-                        "order": 8,
-                        "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
-                      },
                       "used_tools": {
                         "order": 6,
                         "placeholder": "E.g. TupleToolIsolation"
+                      },
+                      "db_tags": {
+                        "order": 7,
+                        "noneLabel": "Select Status",
+                        "type": "select2",
+                        "select2": true
                       }
                     }
                   }
@@ -234,14 +240,8 @@ window.schemaOptions = {
             "type": "depositgroup-object",
             "fields": {
               "lhcb_code": {
-                "type": "depositgroup-object-array",
-                "toolbarSticky": "true",
                 "order": 1,
-                "fields": {
-                  "item": {
-                    "placeholder": "E.g. DaVinci v33r6"
-                  }
-                }
+                "placeholder": "E.g. DaVinci v33r6"
               },
               "user_code": {
                 "type": "depositgroup-object-array",

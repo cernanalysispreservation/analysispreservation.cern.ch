@@ -120,6 +120,10 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "location": {
+                    "title": "Sample",
+                    "type": "string"
+                  },
                   "processing_pass": {
                     "title": "Processing Pass",
                     "type": "string"
@@ -155,10 +159,6 @@
                         "type": "string"
                       }
                     }
-                  },
-                  "location": {
-                    "title": "Sample",
-                    "type": "string"
                   }
                 }
               }
@@ -169,9 +169,13 @@
               "items": {
                 "type": "object",
                 "properties": {
+                  "location": {
+                    "title": "Sample",
+                    "type": "string"
+                  },
                   "mc_production": {
                     "title": "Production",
-                    "type": "string"
+                    "type": "number"
                   },
                   "generator": {
                     "title": "Generator",
@@ -205,13 +209,17 @@
                       }
                     }
                   },
-                  "location": {
-                    "title": "Sample",
-                    "type": "string"
-                  },
                   "used_tools": {
                     "title": "Used Tools",
                     "type": "string"
+                  },
+                  "db_tags": {
+                    "title": "Database Tags",
+                    "type": "string",
+                    "enum": [
+                      "DDDB",
+                      "SIMCOND"
+                    ]
                   }
                 }
               }
@@ -228,10 +236,7 @@
             },
             "lhcb_code": {
               "title": "Application",
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             },
             "user_code": {
               "title": "User code",
