@@ -5,302 +5,180 @@ window.schemaOptions = {
         "label": false,
         "type": "depositgroup",
         "fields": {
-          "analysis_number": {
-            "placeholder": "Please provide analysis number"
+          "analysis_title": {
+            "order": 1,
+            "placeholder": "Please provide the analysis title"
+          },
+          "glance_id": {
+            "order": 2,
+            "placeholder": "Please provide the Glance ID"
+          },
+          "abstract": {
+            "order": 3,
+            "type": "textarea",
+            "rows": 5,
+            "placeholder": "If not provided here, the abstract can be extracted from the final paper."
+          },
+          "people_info": {
+            "type": "depositgroup-object-array",
+            "order": 4,
+            "fields": {
+              "item": {
+                "fields": {
+                  "name": {
+                    "order": 1,
+                    "type": "personalname",
+                    "placeholder": "E.g. John Doe, Jane Doe"
+                  },
+                  "email": {
+                    "order": 2,
+                    "type": "email",
+                    "placeholder": "E.g. john.doe@cern.ch, jane.doe@cern.ch"
+                  }
+                }
+              }
+            }
           }
         }
       },
-      "aod_processing": {
-        "type": "depositgroup",
+      "input_datasets": {
+        "type": "depositgroup-array",
         "order": 2,
         "label": false,
         "fields": {
-          "primary_datasets": {
-            "type": "depositgroup-object-array",
-            "order": 1,
-            "droplist": "true",
-            "actionbar": false,
-            "toolbarSticky": false,
-            "fields": {
-              "item": {
-                "type": "object-autocomplete-import"
-              }
-            }
-          },
-          "mc_dataset": {
-            "type": "depositgroup-object-array",
-            "description": "Add Monte Carlo datasets",
-            "order": 2,
-            "droplist": "true",
-            "actionbar": false,
-            "toolbarSticky": false,
-            "fields": {
-              "item": {
-                "type": "object-autocomplete-import"
-              }
-            }
-          },
-          "triggers": {
-            "order": 3,
-            "actionbarStyle": "bottom",
-            "toolbarSticky": "true",
-            "type": "depositgroup-object-array",
-            "fields": {
-              "item": {
-                "fields": {
-                  "trigger": {
-                    "order": 1,
-                    "type": "select2",
-                    "select2": true,
-                    "dataSource": "/records/jsonschemas/fields/triggerSelection.json"
-                  },
-                  "otherr": {
-                    "order": 2
-                  },
-                  "run_period": {
-                    "hidden": true
-                  },
-                  "efficiency": {
-                    "hidden": true
-                  },
-                  "name": {
-                    "hidden": true
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "physics_information": {
-        "order": 4,
-        "toolbarSticky": "true",
-        "type": "depositgroup-array",
-        "fields": {
           "item": {
-            "fields":{
-              "final_state_particles": {
+            "fields": {
+              "title": {
                 "order": 1,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "particle": {
-                        "placeholder": "Particle",
-                        "noneLabel": "Select Particle",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "number": {
-                        "placeholder": "Number",
-                        "order": 2
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut",
-                        "order": 3
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut",
-                        "order": 4
-                      }
-                    }
-                  }
-                }
+                "placeholder": "E.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542",
               },
-              "physics_object": {
+              "type": {
                 "order": 2,
-                "type": "depositgroup-object-array"
+                "placeholder": "E.g. simulation"
               },
-              "cuts": {
+              "format": {
                 "order": 3,
-                "type": "depositgroup-object-array",
-                "minItems": 1
-              },
-              "veto": {
-                "order": 4,
-                "minItems": 1,
-                "type": "depositgroup-object-array",
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "particle": {
-                        "placeholder": "Particle",
-                        "noneLabel": "Select Particle",
-                        "type": "select2",
-                        "select2": true,
-                        "order": 1
-                      },
-                      "number": {
-                        "placeholder": "Number",
-                        "order": 2
-                      },
-                      "pt_cut": {
-                        "placeholder": "PT Cut",
-                        "order": 3
-                      },
-                      "era_cut": {
-                        "placeholder": "ETA Cut",
-                        "order": 4
-                      }
-                    }
-                  }
-                }
+                "placeholder": "E.g. AOD"
               }
             }
           }
         }
       },
-      "post_aod_processing": {
-        "order": 5,
+      "workflows": {
         "type": "depositgroup-array",
-        "toolbarSticky": "true",
+        "order": 3,
         "fields": {
           "item": {
             "fields": {
-              "input_data": {
-                "type": "depositgroup-object-array",
-                "order": 4,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "filename": {
-                      },
-                      "url": {
-                        "type": "url"
-                      }
-                    }
-                  }
-                }
-              },
-              "output_data": {
-                "type": "depositgroup-object-array",
-                "order": 5,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "url": {
-                        "type": "url-harvest",
-                        "order": 1
-                      }
-                    }
-                  }
-                }
-              },
-              "os": {
-                "type": "depositgroup-object-array",
+              "name": {
                 "order": 1,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "name": {
-                        "placeholder": "Name"
-                      },
-                      "version": {
-                        "placeholder": "Version"
-                      }
-                    }
-                  }
-                }
+                "placeholder": "Please enter a name",
               },
-              "software": {
-                "type": "depositgroup-object-array",
+              "workflow": {
                 "order": 2,
+                // "type": "depositgroup-object",
                 "fields": {
-                  "item": {
+                  "context": {
+                    // "type": "depositgroup-object"
+                  },
+                  "stages": {
+                    "type": "depositgroup-object-array",
                     "fields": {
-                      "name": {
-                        "placeholder": "Software Used"
-                      },
-                      "version": {
-                        "placeholder": "Version"
-                      },
-                      "global_tag": {
-                        "placeholder": "Tag"
+                      "item": {
+                        "fields": {
+                          "name": {
+                            "order": 1
+                          },
+                          "dependencies": {
+                            "type": "depositgroup-object-array",
+                            "order": 4,
+                            "fields": {
+                              "items": {
+                                "fields": {
+                                  "placeholder": "Add dependency",
+                                  "type": "select",
+                                  "multiple": true,
+                                  "dataSource": function(callback){
+                                    callback(_.values(dependencies));
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "parameters": {
+                            "type": "depositgroup-object",
+                            "order": 3
+                          },
+                          "scheduler": {
+                            "order": 2,
+                            "schemaTypeField": "scheduler_type",
+                            "fields": {
+                              "scheduler_type": {
+                                "hidden": "true"
+                              },
+                              "step": {
+                                "fields": {
+                                  "schema_type": {
+                                    "hidden": "true"
+                                  },
+                                  "process": {
+                                    "fields": {
+                                      "process-type": {
+                                        "hidden": "true"
+                                      }
+                                    }
+                                  },
+                                  "publisher": {
+                                    "schemaTypeField": "publisher_type",
+                                    "fields": {
+                                      "publisher_type": {
+                                        "hidden": "true"
+                                      }
+                                    }
+                                  },
+                                  "environment": {
+                                    "fields": {
+                                      "environment_type": {
+                                        "hidden": "true"
+                                      },
+                                      "image": {
+                                        "order" : 1
+                                      },
+                                      "imagetag": {
+                                        "order" : 2
+                                      },
+                                      "resources": {
+                                        "order" : 3,
+                                        "type": "depositgroup-object-array"
+                                      },
+                                      "envscript": {
+                                        "order" : 4
+                                      },
+                                      "envvars": {
+                                        "order" : 5
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
+                  },
+                  "processes": {
+                  },
+                  "environments": {
+                    "type": "depositgroup-array",
+                  },
+                  "publishers": {
+                    "type": "depositgroup-array",
                   }
                 }
-              },
-              "user_code": {
-                "type": "depositgroup-object-array",
-                "order": 3,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "url": {
-                        "type": "url-harvest",
-                        "placeholder": "URL",
-                        "order": 1
-                      },
-                      "tag": {
-                        "placeholder": "Tag",
-                        "order": 2
-                      }
-                    }
-                  }
-                }
-              },
-              "run_instructions": {
-                "type": "depositgroup-object-array",
-                "order": 6,
-                "fields": {
-                  "item": {
-                    "fields": {
-                      "type": {
-                        "type": "select",
-                        "optionLabels": ["README file", "Makefile", "Upload something else"]
-                      }
-                    }
-                  }
-                }
-              },
-              "keywords": {
-                "type": "tags",
-                "order": 7
-              },
-              "comments": {
-                "order": 8,
-                "type": "textarea",
-                "rows": 10
               }
             }
           }
-        }
-      },
-      "documentations": {
-        "order": 6,
-        "type": "depositgroup-array",
-        "toolbarSticky": "true",
-        "fields": {
-          "item": {
-            "ref_id": {
-              "order": 1
-            },
-            "url": {
-              "order": 2
-            },
-            "keyword": {
-              "type": "tags",
-              "order": 3
-            },
-            "comment": {
-              "order": 4
-            }
-          }
-        }
-      },
-      "internal_discussions": {
-        "type": "depositgroup-array",
-        "order": 7,
-        "fields": {
-        }
-      },
-      "presentations": {
-        "type": "depositgroup-array",
-        "order": 8,
-        "fields": {
         }
       },
       "publications": {
@@ -309,36 +187,45 @@ window.schemaOptions = {
         "fields": {
           "item": {
             "fields": {
-              "journal_title": {
-                "order": 1
-              },
-              "journal_year": {
-                "order": 2
-              },
-              "journal_volume": {
-                "order": 3
-              },
-              "journal_issue": {
-                "order": 4
-              },
-              "journal_page": {
-                "order": 5
+              "access": {
+                "order": 1,
+                "placeholder": "Selection Criteria",
+                "type": "radio",
+                "removeDefaultNone": true
               },
               "persistent_identifiers": {
+                "order": 2,
                 "type": "depositgroup-object-array",
-                "order": 6
+                "fields": {
+                  "item": {
+                    "fields": {
+                      "identifier": {
+                        "order": 1,
+                        "placeholder": "E.g. a DUNS number"
+                      },
+                      "scheme": {
+                        "order": 2,
+                        "placeholder": "E.g. DUNS"
+                      }
+                    }
+                  }
+                }
               },
-              "editorial_board": {
-                "type": "depositgroup-object-array"
+              "url": {
+                "order": 3,
+                "placeholder": "E.g. http://arxiv.org/abs/1403.5294"
+              },
+              "document_type": {
+                "order": 4,
+                "placeholder": "E.g. preprint"
+              },
+              "comment": {
+                "order": 5,
+                "placeholder": "E.g. internal draft"
               }
             }
           }
         }
-      },
-      "keywords": {
-        "type": "tags",
-        "format": "textarea",
-        "order": 10
       }
     }
   };
