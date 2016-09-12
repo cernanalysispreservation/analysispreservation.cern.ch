@@ -1356,7 +1356,7 @@ window.schemaOptions = {
                                   var obj = new Object();
                                   var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
                                   ++elementCounter[element];
-                                  if (element = "MET") {
+                                  if (element == "MET") {
                                     obj.value = element;
                                     obj.text = element;
                                   } else {
@@ -2013,7 +2013,7 @@ window.schemaOptions = {
                                   var obj = new Object();
                                   var element = physics_objects_field.children[i].childrenByPropertyId["object"].getValue();
                                   ++elementCounter[element];
-                                  if (element = "MET") {
+                                  if (element == "MET") {
                                     obj.value = element;
                                     obj.text = element;
                                   } else {
