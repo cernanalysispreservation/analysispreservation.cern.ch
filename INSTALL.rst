@@ -237,6 +237,16 @@ following requirements:
 The version of python2 given by ``python2 --version`` should be greater
 than 2.7.10.
 
+Non-matching Requirements
+"""""""""""""""""""""""""
+If you encounter a problem with requirements that do not match it may
+be because the python eggs are not included in your virtualenv and you
+will have to update them running:
+
+.. code-block:: shell
+
+   pip install -r requirements.txt
+
 Database Indexing Problems
 """"""""""""""""""""""""""
 If you have trouble indexing the database try:
