@@ -2,21 +2,23 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template
+
+from cap.modules.access.views import redirect_user_to_experiment
 
 blueprint = Blueprint(
-    'cap_theme',
-    __name__,
-    template_folder='templates',
-    static_folder='static',
-)
+        'cap_theme',
+        __name__,
+        template_folder='templates',
+        static_folder='static',
+        )
 
 
 @blueprint.route('/')
+@redirect_user_to_experiment
 # @register_menu(blueprint, 'main.index', 'Search')
 def index():
     """Frontpage blueprint."""
-
     return render_template('cap_theme/home.html')
 
 

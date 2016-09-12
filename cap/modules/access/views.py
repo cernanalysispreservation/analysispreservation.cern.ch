@@ -26,7 +26,12 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint
+from functools import wraps
+
+from flask import Blueprint, current_app, g, redirect, url_for
+from flask_principal import RoleNeed
+
+from cap.config import CAP_COLLAB_EGROUPS, CAP_COLLAB_PAGES
 
 from flask_login import current_user
 from flask_principal import identity_loaded
@@ -58,3 +63,19 @@ def load_extra_info(sender, identity):
         for collab, egroups in collab_egroups.iteritems():
             if [i for i in egroups if i in groups]:
                 identity.provides |= set([RoleNeed(collab)])
+
+
+def redirect_user_to_experiment(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+
+        collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
+        experiments = [collab for collab in collab_egroups 
+                if RoleNeed(collab) in g.identity.provides]
+
+        if len(experiments) == 1:
+           return redirect(url_for(CAP_COLLAB_PAGES.get(experiments[0])))
+        else:
+            return f(*args, **kwargs)
+
+    return decorated_function

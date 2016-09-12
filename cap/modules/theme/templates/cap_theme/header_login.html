@@ -1,7 +1,7 @@
 
 {%- if not current_user.is_authenticated %}
 <form class="navbar-form navbar-right">
-  <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern')}}" class="btn btn-default">{{_('Sign in with CERN')}}</a>
+  <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-default">{{_('Sign in with CERN')}}</a>
 </form>
 {%- else %}
 <div class="navbar-form navbar-right">

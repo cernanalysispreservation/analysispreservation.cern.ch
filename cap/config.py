@@ -26,10 +26,12 @@
 """CERN Analysis Preservation base configuration."""
 
 from __future__ import absolute_import, print_function
-import os
+
 import copy
-from invenio_oauthclient.contrib import cern
+import os
+
 from flask_principal import RoleNeed
+from invenio_oauthclient.contrib import cern
 
 
 def _(x):
@@ -143,6 +145,13 @@ SUPERUSER_EGROUPS = [
 ]
 
 SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
+
+CAP_COLLAB_PAGES = {
+    'collaboration_lhcb': 'cap_lhcb.lhcb_landing',                                               
+    'collaboration_atlas': 'cap_atlas.atlas_landing',
+    'collaboration_cms': 'cap_cms.cms_landing',
+    'collaboration_alice': 'cap_alice.alice_landing',
+}
 
 # Search
 # ======
