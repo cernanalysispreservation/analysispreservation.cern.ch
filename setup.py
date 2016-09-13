@@ -70,7 +70,7 @@ install_requires = [
     'invenio-base>=1.0.0a12',
     'invenio-collections>=1.0.0a3',
     'invenio-db[postgresql,versioning]>=1.0.0b1',
-    'invenio-deposit>=1.0.0a3',
+    'invenio-deposit>=1.0.0a5',
     'invenio-indexer>=1.0.0a6',
     'invenio-jsonschemas>=1.0.0a3',
     'invenio-oauthclient>=1.0.0a9',
@@ -115,6 +115,7 @@ setup(
             'cap = cap.cli:cli',
         ],
         'invenio_base.blueprints': [
+            'cap = cap.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
@@ -122,21 +123,16 @@ setup(
             'cap_alice = cap.modules.experiments.views.alice:alice_bp',
             'cap_alpaca = cap.modules.alpaca.views:blueprint',
             'cap_access = cap.modules.access.views:access_blueprint',
+            'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
         ],
         # 'invenio_i18n.translations': [
         #     'messages = cap',
         # ],
-        'invenio_pidstore.minters': [
-            'cap_record_minter = cap.modules.records.minters:cap_record_minter',
-        ],
-        'invenio_pidstore.fetchers': [
-            'cap_record_fetcher = '
-            'cap.modules.records.fetchers:cap_record_fetcher',
-        ],
         'invenio_base.apps': [
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_records = cap.modules.records.ext:Records',
+            'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
         ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
@@ -175,11 +171,22 @@ setup(
             'cap_experiments_css = '
             'cap.modules.experiments.bundles:experiments_css',
         ],
+        'invenio_pidstore.minters': [
+            'cap_record_minter = cap.modules.records.minters:cap_record_minter',
+            'cap_deposit_minter = cap.modules.deposit.minters:cap_deposit_minter',
+        ],
+        'invenio_pidstore.fetchers': [
+            'cap_record_fetcher = '
+            'cap.modules.records.fetchers:cap_record_fetcher',
+            'cap_deposit_fetcher = '
+            'cap.modules.deposit.fetchers:cap_deposit_fetcher',
+        ],
         'invenio_records.jsonresolver': [
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',
         ],
         'invenio_search.mappings': [
-            'mappings = cap',
+            'deposits = cap.mappings',
+            'records = cap.mappings',
         ],
         'invenio_jsonschemas.schemas': [
             'cap = cap.jsonschemas',
