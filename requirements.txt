@@ -1,3 +1,1 @@
--e git+git://github.com/ioannistsanaktsidis/invenio-oauthclient.git@f6f438239f356a994ae6bbf0f399c5c0edbdc008#egg=invenio-oauthclient
-
 -e .[all]

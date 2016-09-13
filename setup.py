@@ -78,7 +78,7 @@ install_requires = [
     'invenio-db==1.0.0b1',
     'invenio-indexer==1.0.0a6',
     'invenio-jsonschemas==1.0.0a3',
-    # 'invenio-oauthclient==1.0.0a11', Uncomment when oathclient commit is merged
+    'invenio-oauthclient==1.0.0a11',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore==1.0.0a9',
     'invenio-records==1.0.0a17',
