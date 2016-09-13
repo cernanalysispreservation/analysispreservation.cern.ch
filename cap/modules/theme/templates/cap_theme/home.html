@@ -16,6 +16,7 @@
          {%- include "cap_theme/searchbar.html" %}
          <div class="row">
             <div id="cap-experiments">
+                {% if 'collaboration_alice' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -24,6 +25,8 @@
                       <div class="exp-name">ALICE</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_atlas' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -32,6 +35,8 @@
                       <div class="exp-name">ATLAS</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_cms' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -40,6 +45,8 @@
                       <div class="exp-name">CMS</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_lhcb' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -48,6 +55,7 @@
                       <div class="exp-name">LHCb</div>
                     </a>
                 </div>
+                {% endif %}
             </div>
          </div>
      </div>

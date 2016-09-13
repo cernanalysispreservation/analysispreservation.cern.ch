@@ -2,9 +2,10 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, render_template
+from flask import Blueprint, current_app, render_template
 
-from cap.modules.access.views import redirect_user_to_experiment
+from cap.modules.access.views import (get_user_experiments,
+                                      redirect_user_to_experiment)
 
 blueprint = Blueprint(
         'cap_theme',
@@ -19,7 +20,9 @@ blueprint = Blueprint(
 # @register_menu(blueprint, 'main.index', 'Search')
 def index():
     """Frontpage blueprint."""
-    return render_template('cap_theme/home.html')
+    experiments = get_user_experiments()
+    return render_template('cap_theme/home.html',
+            experiments=experiments)
 
 
 @blueprint.route('/search')

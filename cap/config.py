@@ -146,6 +146,7 @@ SUPERUSER_EGROUPS = [
 
 SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
+# Start pages for experiments
 CAP_COLLAB_PAGES = {
     'collaboration_lhcb': 'cap_lhcb.lhcb_landing',                                               
     'collaboration_atlas': 'cap_atlas.atlas_landing',

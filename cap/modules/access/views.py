@@ -29,18 +29,12 @@ from __future__ import absolute_import, print_function
 from functools import wraps
 
 from flask import Blueprint, current_app, g, redirect, url_for
-from flask_principal import RoleNeed
-
-from cap.config import CAP_COLLAB_EGROUPS, CAP_COLLAB_PAGES
-
 from flask_login import current_user
-from flask_principal import identity_loaded
-from flask import current_app
-from flask_principal import AnonymousIdentity, RoleNeed
+from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 
 access_blueprint = Blueprint('cap_access', __name__,
-                             url_prefix='/access',
-                             template_folder='templates')
+        url_prefix='/access',
+        template_folder='templates')
 
 
 @identity_loaded.connect
@@ -66,16 +60,24 @@ def load_extra_info(sender, identity):
 
 
 def redirect_user_to_experiment(f):
+    """Decorator for redirecting users to their experiments."""
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        experiments = get_user_experiments()
+        collab_pages = current_app.config.get('CAP_COLLAB_PAGES', {})
 
-        collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
-        experiments = [collab for collab in collab_egroups 
-                if RoleNeed(collab) in g.identity.provides]
-
+        # if user is in more than one experiment, he won't be redirected
         if len(experiments) == 1:
-           return redirect(url_for(CAP_COLLAB_PAGES.get(experiments[0])))
+            return redirect(url_for(collab_pages[experiments[0]]))
         else:
             return f(*args, **kwargs)
 
     return decorated_function
+
+
+def get_user_experiments():
+    """Return an array with user's experiments."""
+    collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
+    experiments = [collab for collab in collab_egroups 
+            if RoleNeed(collab) in g.identity.provides]
+    return experiments
