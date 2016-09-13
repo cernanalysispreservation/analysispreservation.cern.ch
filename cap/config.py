@@ -33,17 +33,22 @@ import os
 from flask_principal import RoleNeed
 from invenio_deposit import config
 from invenio_oauthclient.contrib import cern
-from invenio_records_rest.utils import allow_all, deny_all
-from invenio_records_rest.facets import terms_filter
 from invenio_deposit.config import DEPOSIT_REST_FACETS, \
     DEPOSIT_REST_SORT_OPTIONS
 from invenio_records_rest.config import RECORDS_REST_FACETS, \
     RECORDS_REST_SORT_OPTIONS
+from invenio_deposit.scopes import write_scope
+from invenio_deposit.utils import check_oauth2_scope
+
+from cap.modules.records.permissions import deposit_delete_permission_factory, \
+    deposit_read_permission_factory, record_create_permission_factory, \
+    record_update_permission_factory
 
 
 def _(x):
     """Identity function for string extraction"""
     return x
+
 
 DEBUG = True
 
@@ -86,8 +91,8 @@ REQUIREJS_CONFIG = 'js/cap-build.js'
 # Records
 # =======
 #: Records configuration
-RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
-    "read_permission_factory"
+RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.records.permissions:"\
+    "deposit_read_permission_factory"
 
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
@@ -308,12 +313,22 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     #         'cap.modules.records.serializers'
     #         ':json_v1_response')
     # },
-    'create_permission_factory_imp': allow_all,
-    'read_permission_factory_imp': allow_all,
-    'update_permission_factory_imp': allow_all,
-    'delete_permission_factory_imp': allow_all,
+    'create_permission_factory_imp': check_oauth2_scope(
+        lambda record: record_create_permission_factory(
+            record=record).can(),
+        write_scope.id),
+    'read_permission_factory_imp': deposit_read_permission_factory,
+    'update_permission_factory_imp': check_oauth2_scope(
+        lambda record: record_update_permission_factory(
+            record=record).can(),
+        write_scope.id),
+    'delete_permission_factory_imp': check_oauth2_scope(
+        lambda record: deposit_delete_permission_factory(
+            record=record).can(),
+        write_scope.id),
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
+
 
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
@@ -325,5 +340,3 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
 # ===========
 #: Remove signals (Only for debug mode)
 COLLECTIONS_REGISTER_RECORD_SIGNALS = False
-
-DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
