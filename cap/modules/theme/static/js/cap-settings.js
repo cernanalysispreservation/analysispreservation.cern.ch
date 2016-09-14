@@ -27,7 +27,7 @@ require.config({
   baseUrl: "/static/",
   paths: {
     angular: "node_modules/angular/angular",
-    jquery: "node_modules/jquery/dist/jquery",
+    jquery: "node_modules/jquery/jquery",
     bootstrap: "node_modules/bootstrap/dist/js/bootstrap",
     select2: "node_modules/select2/dist/js/select2.min",
     underscore: "node_modules/underscore/underscore-min",

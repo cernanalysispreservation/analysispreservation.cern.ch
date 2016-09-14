@@ -38,7 +38,7 @@ display_js = NpmBundle(
     filters="requirejs",
     output="gen/invenio.alpaca.display.%(version)s.js",
     npm={
-        "jquery": "~2.1.4",
+        "jquery": "~1.9.1",
         "select2": "~4.0.1",
         "underscore": "~1.8.3",
         "typeahead.js": "~0.10.5",
@@ -61,7 +61,7 @@ create_js = NpmBundle(
     ),
     output="gen/invenio.alpaca.edit.%(version)s.js",
     npm={
-        "jquery": "~2.1.4",
+        "jquery": "~1.9.1",
         "select2": "~4.0.1",
         "underscore": "~1.8.3",
         "typeahead.js": "~0.10.5",
@@ -87,7 +87,7 @@ edit_js = NpmBundle(
     ),
     output="gen/invenio.alpaca.edit.%(version)s.js",
     npm={
-        "jquery": "~2.1.4",
+        "jquery": "~1.9.1",
         "select2": "~4.0.1",
         "underscore": "~1.8.3",
         "typeahead.js": "~0.10.5",
