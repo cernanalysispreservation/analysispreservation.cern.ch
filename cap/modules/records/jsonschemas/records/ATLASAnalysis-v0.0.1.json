@@ -2,6 +2,7 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "ATLAS Analysis (JSON schema)",
   "description": "Schema describing properties of an ATLAS analysis",
+  "type": "object",
   "properties": {
     "basic_info": {
       "title": "Basic Information",
@@ -9,156 +10,64 @@
       "type": "object",
       "id": "basic_info",
       "properties": {
-        "analysis_number": {
-          "description": "Analysis Description",
-          "title": "Analysis Number",
+        "analysis_title": {
+          "description": "Title of the analysis",
+          "title": "Analysis Title",
           "type": "string"
-        }
-      }
-    },
-    "aod_processing": {
-      "title": "AOD Processing",
-      "description": "Provide AOD Processing information",
-      "type": "object",
-      "id": "aod_processing",
-      "properties": {
-        "primary_datasets": {
-          "title": "Primary Datasets",
-          "description": "Add primary datasets",
-          "type": "array",
-          "id": "primary-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPrimaryDataset-v0.0.1.json",
-            "properties": {
-              "copypaste": {
-                "type": "string"
-              }
-            }
-          }
         },
-        "mc_dataset": {
-          "title": "Monte Carlo Datasets",
-          "description": "Add Monte Carlo datasets",
-          "type": "array",
-          "id": "mc-datasets",
-          "items": {
-            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASMonteCarloDataset-v0.0.1.json",
-            "defaultProperties": [
-              "title"
-            ]
-          }
+        "glance_id": {
+          "description": "ID of related glance record",
+          "title": "Glance ID",
+          "type": "string"
         },
-        "triggers": {
-          "title": "Selection Triggers",
-          "description": "Add triggers here",
+        "abstract": {
+          "title": "Abstract",
+          "type": "string"
+        },
+        "people_info": {
+          "title": "People Involved",
+          "description": "Information about the people involved in this analysis",
           "type": "array",
           "items": {
-            "title": "Trigger",
             "type": "object",
-            "id": "trigger",
             "properties": {
-              "trigger": {
-                "title": "Trigger",
-                "type": "string"
-              },
-              "other": {
-                "title": "Other",
-                "type": "string"
-              },
               "name": {
                 "title": "Name",
                 "type": "string"
               },
-              "run_period": {
-                "title": "Run Period",
-                "type": "object",
-                "properties": {
-                  "start_date": {
-                    "title": "Start Date",
-                    "type": "string",
-                    "format": "date"
-                  },
-                  "end_date": {
-                    "title": "End Date",
-                    "type": "string",
-                    "format": "date"
-                  }
-                }
-              },
-              "efficiency": {
-                "title": "Efficiency",
-                "type": "string",
-                "format": "uri"
+              "email": {
+                "title": "Email-Adress",
+                "type": "string"
               }
             }
           }
         }
       }
     },
-    "physics_information": {
-      "title": "Physics Information",
-      "description": "Provide information about datasets, triggers, physics objects, etc",
+    "input_datasets": {
+      "title": "Input Data",
+      "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
       "type": "array",
-      "id": "physics-information",
+      "id": "input_datasets",
+      "additionalProperties": false,
       "default": [{}],
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/DetectorState-v0.0.1.json"
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDataset-v0.0.1.json"
       }
     },
-    "workflows": {
-      "title": "Workflows",
-      "type": "array",
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/records/ATLASWorkflows-v0.0.1.json"
-      }
-    },
-    "documentations": {
-      "title": "Documentations",
-      "description": "Provide documentation and other things",
-      "type": "array",
-      "id": "documentations",
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDocumentation-v0.0.1.json"
-      }
-    },
-    "internal_discussions": {
-      "title": "Internal Discussions",
-      "description": "Add Internal Discussions",
-      "type": "array",
-      "id": "internal-discussions",
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-v0.0.1.json"
-      }
-    },
-    "presentations": {
-      "title": "Presentations",
-      "description": "Add Presentations",
-      "type": "array",
-      "id": "presentations",
-      "default": [{}],
-      "items": {
-        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-v0.0.1.json"
-      }
+    "workflows": { 
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json" 
     },
     "publications": {
       "title": "Publications",
-      "description": "Add publications",
+      "description": "Publications related to the analysis",
       "type": "array",
       "id": "publications",
+      "additionalProperties": false,
       "default": [{}],
       "items": {
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASPublication-v0.0.1.json"
       }
-    },
-    "keywords": {
-      "title": "Keywords",
-      "description": "Add keywords here",
-      "type": "string",
-      "id": "keywords"
     }
-  },
-  "type": "object"
+  }
 }

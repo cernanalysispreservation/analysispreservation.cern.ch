@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ATLAS Dataset",
+  "description": "Information concerning the ATLAS datasets used",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "description": "Filename of dataset, e.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542",
+    },
+    "type": {
+      "title": "Data Type",
+      "type": "string",
+      "description": "Type of data, e.g. 'simulation'"
+    },
+    "format": {
+      "title": "Data Format",
+      "type": "string",
+      "description": "Format of data, e.g. 'AOD'"
+    }
+  }
+}
