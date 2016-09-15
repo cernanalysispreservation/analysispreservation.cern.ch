@@ -29,16 +29,14 @@ PROJECT_BASE = os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pard
 JSONSCHEMAS_DIR = os.path.join(
     PROJECT_BASE,
     'cap',
-    'modules',
-    'records',
-    'jsonschemas')
+    'jsonschemas',
+)
 
 JSONSCHEMAS_OUT_DIR = os.path.join(
     PROJECT_BASE,
     'cap',
-    'modules',
-    'records',
-    'jsonschemas_gen')
+    'jsonschemas_gen',
+)
 
 print(PROJECT_BASE)
 print(JSONSCHEMAS_DIR)

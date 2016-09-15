@@ -69,4 +69,4 @@ target/
 *.crt
 *.key
 
-/cap/modules/records/jsonschemas_gen/*
+/cap/jsonschemas_gen/*

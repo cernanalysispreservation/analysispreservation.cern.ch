@@ -764,7 +764,7 @@ def stream_file(uri):
 def jsonschema(collection):
     collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
 
-    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
+    jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas',
                                    'records', '{0}.json'.format(collection))
     json_resolver = JSONResolver(
         plugins=['cap.modules.records.resolvers.jsonschemas'])
@@ -779,6 +779,7 @@ def jsonschema(collection):
             'records/deposit-base-extended.html', schema=json.dumps(result, indent=4))
         return jsonify(json.loads(ren))
     except:
+        # import ipdb;ipdb.set_trace()
         return jsonify(json.loads(render_template('records/deposit-base-refs.html', collection=collection)))
 
 
@@ -786,7 +787,7 @@ def jsonschema(collection):
 def jsonschema_deposit(collection):
     collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
 
-    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
+    jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas',
                                    'records', '{0}.json'.format(collection))
     json_resolver = JSONResolver(
         plugins=['cap.modules.records.resolvers.jsonschemas'])
@@ -799,7 +800,7 @@ def jsonschema_deposit(collection):
             jsonschema_content), loader=json_resolver.resolve)
         return jsonify(result)
     except:
-        jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas_gen',
+        jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas_gen',
                                        'records', '{0}.json'.format(collection))
         with open(jsonschema_path) as file:
             jsonschema_content = json.loads(file.read())
@@ -811,7 +812,7 @@ def jsonschema_deposit(collection):
 def jsonschema_options(collection):
     collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
 
-    jsonschema_options_path = os.path.join(os.path.dirname(__file__),
+    jsonschema_options_path = os.path.join(os.path.dirname(__file__),'..','..',
                                            'jsonschemas', 'options',
                                            '{0}.js'.format(collection))
     return Response(stream_file(jsonschema_options_path),
@@ -820,7 +821,7 @@ def jsonschema_options(collection):
 
 @blueprint.route('/jsonschemas/definitions/<path:definition>')
 def jsonschema_definitions(definition):
-    jsonschema_definition_path = os.path.join(os.path.dirname(__file__),
+    jsonschema_definition_path = os.path.join(os.path.dirname(__file__),'..','..',
                                               'jsonschemas_gen', 'definitions',
                                               definition)
 
@@ -832,7 +833,7 @@ def jsonschema_definitions(definition):
 
 @blueprint.route('/jsonschemas/fields/<field>')
 def jsonschema_fields(field):
-    jsonschema_fields_path = os.path.join(os.path.dirname(__file__),
+    jsonschema_fields_path = os.path.join(os.path.dirname(__file__),'..','..',
                                           'jsonschemas', 'fields',
                                           field)
     return Response(stream_file(jsonschema_fields_path),
