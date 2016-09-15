@@ -1,9 +1,12 @@
 from elasticsearch_dsl.query import QueryString
 from flask import (Blueprint, abort, current_app, jsonify,
-                   render_template, url_for)
+                   render_template, url_for,g)
 from flask.views import View
 from flask_security import login_required
 from cap.config import DEPOSIT_GROUPS
+from invenio_records_rest.utils import deny_all, allow_all
+from flask_principal import RoleNeed
+from invenio_access import DynamicPermission
 
 blueprint = Blueprint(
     'cap_deposit_ui',
@@ -25,6 +28,7 @@ def create_blueprint():
                 'deposit_item_new_{0}'.format(group_name),
                 template_name=group.get('item_new_template', None),
                 schema=group.get('schema', None),
+                create_permission_roles=group.get('create_permission_roles', []),
                 schema_form=group.get('schema_form', None),
             )
         )
@@ -43,29 +47,41 @@ def create_blueprint():
 
 class NewItemView(View):
 
-    def __init__(self, template_name=None, schema=None, schema_form=None, read_permission_factory=None, create_permission_factory=None, update_permission_factory=None, delete_permission_factory=None):
+    def __init__(self, template_name=None, schema=None, schema_form=None, read_permission_factory=None, create_permission_roles=[], create_permission_factory=None, update_permission_factory=None, delete_permission_factory=None):
 
         self.template_name = template_name
         self.schema = schema
         self.schema_form = schema_form
+        self.create_permission_roles = create_permission_roles
         self.read_permission_factory = read_permission_factory
         self.create_permission_factory = create_permission_factory
         self.update_permission_factory = update_permission_factory
         self.delete_permission_factory = delete_permission_factory
 
+        create_permission_roles = set()
+        if self.create_permission_roles:
+            create_permission_roles = [RoleNeed(role)
+                                       for role in self.create_permission_roles]
+            self.create_permission = DynamicPermission(*create_permission_roles)
+        else:
+            self.create_permission = DynamicPermission(*create_permission_roles)
+
     def check_permissions(self):
-        raise NotImplementedError()
+        return self.create_permission.allows(g.identity)
 
     def render_template(self, context):
         return render_template(self.template_name, **context)
 
     def dispatch_request(self):
-        context = {
-            "record": {'_deposit': {'id': None}},
-            "schema": self.schema,
-            "schema_form": self.schema_form,
-        }
-        return self.render_template(context)
+        if self.check_permissions():
+            context = {
+                "record": {'_deposit': {'id': None}},
+                "schema": self.schema,
+                "schema_form": self.schema_form,
+            }
+            return self.render_template(context)
+        else:
+            abort(403)
 
 
 class ListView(View):

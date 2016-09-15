@@ -128,16 +128,16 @@ RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 #: Configuration for collaborations
 CAP_COLLAB_EGROUPS = {
     "collaboration_cms": [
-        RoleNeed("cms-members@cern.ch")
+        RoleNeed("cms-members@cern.ch"),
     ],
     "collaboration_alice": [
-        RoleNeed("alice-member@cern.ch")
+        RoleNeed("alice-member@cern.ch"),
     ],
     "collaboration_atlas": [
-        RoleNeed("atlas-active-members-all@cern.ch")
+        RoleNeed("atlas-active-members-all@cern.ch"),
     ],
     "collaboration_lhcb": [
-        RoleNeed("lhcb-general@cern.ch")
+        RoleNeed("lhcb-general@cern.ch"),
     ]
 }
 
@@ -151,7 +151,7 @@ SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
 # Start pages for experiments
 CAP_COLLAB_PAGES = {
-    'collaboration_lhcb': 'cap_lhcb.lhcb_landing',                                               
+    'collaboration_lhcb': 'cap_lhcb.lhcb_landing',
     'collaboration_atlas': 'cap_atlas.atlas_landing',
     'collaboration_cms': 'cap_cms.cms_landing',
     'collaboration_alice': 'cap_alice.alice_landing',
@@ -268,12 +268,10 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "schema_form": "json/deposits/records/lhcb-v1.0.0.json",
         "endpoint": "",
-        "permissions": {
-            'create_permission_factory_imp': allow_all,
-            'read_permission_factory_imp': allow_all,
-            'update_permission_factory_imp': allow_all,
-            'delete_permission_factory_imp': allow_all,
-        }
+        "create_permission_roles": [
+            'collaboration_lhcb',
+        ],
+        # 'create_permission_factory_imp': deposit_create_permission_factory
     },
     "cms-analysis": {
         "schema": "deposits/records/cms-analysis-v1.0.0.json",
@@ -281,12 +279,10 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        "permissions": {
-            'create_permission_factory_imp': allow_all,
-            'read_permission_factory_imp': allow_all,
-            'update_permission_factory_imp': allow_all,
-            'delete_permission_factory_imp': allow_all,
-        }
+        "create_permission_roles": [
+            'collaboration_cms',
+        ],
+        # 'create_permission_factory_imp': deposit_create_permission_factory
     }
 }
 
