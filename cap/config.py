@@ -31,10 +31,9 @@ import copy
 import os
 
 from flask_principal import RoleNeed
-from invenio_oauthclient.contrib import cern
-
 from invenio_deposit import config
-from invenio_records_rest.utils import deny_all, allow_all
+from invenio_oauthclient.contrib import cern
+from invenio_records_rest.utils import allow_all, deny_all
 
 
 def _(x):

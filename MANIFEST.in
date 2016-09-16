@@ -4,6 +4,7 @@ include *.sh
 include *.txt
 include *.yml
 include .coveragerc
+include COPYING
 include Dockerfile
 include pytest.ini
 include docker/nginx/Dockerfile

@@ -32,11 +32,10 @@ import shutil
 import tempfile
 
 import pytest
+from cap.factory import create_app
 from flask_cli import ScriptInfo
 from invenio_db import db as db_
 from sqlalchemy_utils.functions import create_database, database_exists
-
-from cap.factory import create_app
 
 
 @pytest.yield_fixture(scope='session')

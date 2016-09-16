@@ -61,6 +61,8 @@ setup_requires = [
 ]
 
 install_requires = [
+    'py2neo==2.0.8',
+    'simplejson>=3.8.2',
     'Flask-BabelEx>=0.9.2',
     'Flask-KVSession>=0.6.2',
     'Flask>=0.11.1',
@@ -69,6 +71,7 @@ install_requires = [
     'invenio-assets>=1.0.0b2',
     'invenio-base>=1.0.0a12',
     'invenio-collections>=1.0.0a3',
+    'invenio-config>=1.0.0b1',
     'invenio-db[postgresql,versioning]>=1.0.0b1',
     'invenio-deposit>=1.0.0a3',
     'invenio-indexer>=1.0.0a6',
@@ -83,31 +86,6 @@ install_requires = [
     'invenio-search>=1.0.0a7',
     'invenio-theme>=1.0.0a13',
     'invenio-userprofiles>=1.0.0a7',
-    'py2neo==2.0.8',
-    'simplejson>=3.8.2',
-    'Flask-KVSession>=0.6.2',
-    'Flask>=0.11.1',
-    'invenio-access>=1.0.0a8',
-    'invenio-accounts>=1.0.0a13',
-    'invenio-assets>=1.0.0a4',
-    'invenio-base>=1.0.0a12',
-    'invenio-collections>=1.0.0a3',
-    'invenio-db[postgresql,versioning]>=1.0.0b1',
-    'invenio-deposit>=1.0.0a5',
-    'invenio-indexer>=1.0.0a6',
-    'invenio-jsonschemas>=1.0.0a3',
-    'invenio-oauthclient>=1.0.0a9',
-    'invenio-pages>=1.0.0a3',
-    'invenio-pidstore>=1.0.0a9',
-    'invenio-records-rest>=1.0.0a15',
-    'invenio-records-ui>=1.0.0a6',
-    'invenio-records>=1.0.0a17',
-    'invenio-search-ui>=1.0.0a4',
-    'invenio-search>=1.0.0a7',
-    'invenio-theme>=1.0.0a13',
-    'invenio-userprofiles>=1.0.0a7',
-    'py2neo==2.0.8',
-    'simplejson>=3.8.2',
 ]
 
 
@@ -196,8 +174,10 @@ setup(
             'cap.modules.experiments.bundles:experiments_css',
         ],
         'invenio_pidstore.minters': [
-            'cap_record_minter = cap.modules.records.minters:cap_record_minter',
-            'cap_deposit_minter = cap.modules.deposit.minters:cap_deposit_minter',
+            'cap_record_minter = '
+            'cap.modules.records.minters:cap_record_minter',
+            'cap_deposit_minter = '
+            'cap.modules.deposit.minters:cap_deposit_minter',
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
@@ -223,8 +203,8 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 or later \
-        (GPLv2+)',
+        'License :: OSI Approved :: GNU General Public License v2 or later'\
+        '(GPLv2+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',

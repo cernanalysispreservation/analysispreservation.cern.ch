@@ -67,7 +67,7 @@ def validate_ref(json_to_check, schema_path):
 
 def test_ref_is_valid():
     root_dir = os.path.join(
-        'cap', 'modules', 'records', 'jsonschemas', 'records')
+        'cap', 'jsonschemas', 'records')
     for schemas_dir, _, schemas in os.walk(root_dir):
         schemas_path = os.path.sep.join(schemas_dir.split(os.path.sep)[1:])
 
