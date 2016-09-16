@@ -34,6 +34,11 @@ from flask_principal import RoleNeed
 from invenio_deposit import config
 from invenio_oauthclient.contrib import cern
 from invenio_records_rest.utils import allow_all, deny_all
+from invenio_records_rest.facets import terms_filter
+from invenio_deposit.config import DEPOSIT_REST_FACETS, \
+    DEPOSIT_REST_SORT_OPTIONS
+from invenio_records_rest.config import RECORDS_REST_FACETS, \
+    RECORDS_REST_SORT_OPTIONS
 
 
 def _(x):
@@ -81,7 +86,12 @@ REQUIREJS_CONFIG = 'js/cap-build.js'
 # Records
 # =======
 #: Records configuration
-RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:read_permission_factory"
+RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
+    "read_permission_factory"
+
+#: Records sort/facets options
+RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
+RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
 
 #: Endpoints for displaying records.
 RECORDS_UI_ENDPOINTS = dict(
@@ -253,7 +263,7 @@ SECRET_KEY = "changeme"
 DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v1.0.0.json'
 
 #: Default schemanform for deposit
-DEPOSIT_DEFAULT_SCHEMAFORM = 'json/lhcb-v1.0.0.json'
+DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
 #: Search api url for deposit
 DEPOSIT_SEARCH_API = '/api/deposits/'
 
@@ -305,7 +315,9 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
 
-DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(config.DEPOSIT_RECORDS_UI_ENDPOINTS)
+# TODO Resolve when '/deposit/new/' is removed
+DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
+    config.DEPOSIT_RECORDS_UI_ENDPOINTS)
 DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'template': 'cap_deposit/edit.html',
 })
