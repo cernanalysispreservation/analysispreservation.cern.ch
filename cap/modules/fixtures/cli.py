@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 import json
+import os
 from functools import partial
 from pprint import pprint
 
@@ -30,20 +31,16 @@ import click
 import pkg_resources
 from flask import current_app
 from flask_cli import with_appcontext
-from invenio_access.models import ActionRoles, ActionUsers
+from invenio_access.models import  ActionUsers
 from invenio_access.permissions import ParameterizedActionNeed
-from invenio_accounts.models import Role, User
 from invenio_collections.models import Collection
 from invenio_db import db
+from invenio_files_rest.models import Bucket, Location, ObjectVersion
 from invenio_indexer.utils import RecordIndexer
-from invenio_records import Record
 from invenio_records.permissions import (RecordReadActionNeed,
-                                         RecordUpdateActionNeed,
-                                         read_permission_factory,
-                                         update_permission_factory)
+                                         RecordUpdateActionNeed,)
 from jsonschema.exceptions import ValidationError
-
-from cap.config import JSON_METADATA_PATH
+from invenio_records_files.api import Record, RecordsBuckets
 from cap.modules.records.views import construct_record
 
 from .pages import loadpages
@@ -99,7 +96,31 @@ def records(source, force):
             force)
 
 
-def add_record(metadata, collection, schema, force):
+@fixtures.command()
+@click.option('--source', '-s', default=False)
+@click.option('--force', '-f', is_flag=True, default=False)
+@with_appcontext
+def records_files(source, force):
+    if not source:
+        source = pkg_resources.resource_filename(
+            'cap.modules.fixtures', 'data/records_files.json'
+        )
+
+    with open(source) as json_r:
+        data = json.load(json_r)
+
+    for d in data:
+        add_record(
+            d.get("metadata", None),
+            d.get("collection", None),
+            d.get("schema", None),
+            force,
+           d.get("files", []))
+
+    db.session.commit()
+
+
+def add_record(metadata, collection, schema, force, files=[]):
     """Add record."""
 
     collection = Collection.query.filter(
@@ -110,9 +131,35 @@ def add_record(metadata, collection, schema, force):
 
     data, pid, recid = construct_record(
         collection, metadata, 1, {} if force else schema)
+    d = current_app.config['DATADIR']
+    loc = Location(name='local', uri=d, default=True)
 
+    buckets = []
+    data['_files'] = []
+
+    for file in files:
+        bucket = Bucket.create(loc)
+        buckets.append(bucket)
+
+    with open(pkg_resources.resource_filename(
+            'cap.modules.fixtures', os.path.join('data', 'files', file)
+            ), 'rb') as fp:
+        obj = ObjectVersion.create(bucket, file, stream=fp)
+
+        data['_files'].append({
+                'bucket': str(obj.bucket_id),
+                'key': obj.key,
+                'size': obj.file.size,
+                'checksum': str(obj.file.checksum),
+                'version_id': str(obj.version_id),
+        })
     try:
         record = Record.create(data, id_=recid)
+
+        for bucket in buckets:
+            rb = RecordsBuckets(record_id=record.id, bucket_id=bucket.id)
+            db.session.add(rb)
+
         # Invenio-Indexer is delegating the document inferring to
         # Invenio-Search which is analysing the string splitting by `/` and
         # using `.json` to be sure that it cans understand the mapping.

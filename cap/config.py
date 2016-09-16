@@ -31,6 +31,8 @@ import copy
 import os
 
 from flask_principal import RoleNeed
+from invenio_oauthclient.contrib import cern
+from os.path import dirname, join
 from invenio_deposit import config
 from invenio_oauthclient.contrib import cern
 from invenio_records_rest.utils import allow_all, deny_all
@@ -100,6 +102,19 @@ RECORDS_UI_ENDPOINTS = dict(
         pid_type='recid',
         route='/records/<pid_value>',
         template='records/detail.html',
+        record_class='invenio_records_files.api:Record'
+    ),
+    recid_preview=dict(
+        pid_type='recid',
+        route='/records/<pid_value>/preview/<path:filename>',
+        view_imp='invenio_previewer.views.preview',
+        record_class='invenio_records_files.api:Record',
+    ),
+    recid_files=dict(
+        pid_type='recid',
+        route='/records/<pid_value>/files/<path:filename>',
+        view_imp='invenio_files_rest.views.file_download_ui',
+        record_class='invenio_records_files.api:Record',
     ),
 )
 
@@ -222,11 +237,6 @@ JSONSCHEMAS_VERSIONS = {
     "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
 }
 
-# User profile
-# ============
-#: Enable all the users to perform all the actions
-ENABLE_SUPERPOWERS_FOR_EVERYONE = False
-
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
 SECRET_KEY = "changeme"
@@ -339,3 +349,7 @@ DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_deposit/actions.html'
 COLLECTIONS_REGISTER_RECORD_SIGNALS = False
 
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
+
+# Datadir
+# =======
+DATADIR = join(dirname(__file__), 'data')

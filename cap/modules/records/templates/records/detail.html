@@ -41,6 +41,7 @@
                             {% block record_tabs_menu_before %}{% endblock %}
                             {% block record_tabs_menu_default %}
                                 <li role="presentation" class="active"><a href="#info" role="tab" data-toggle="tab">Basic Info</a></li>
+                                <li role="presentation"><a href="#results" role="tab" data-toggle="tab">Results</a></li>
                             {% endblock %}
                             {% block record_tabs_menu_after %}{% endblock %}
                         </ul>
@@ -71,6 +72,25 @@
                                     </div>
                                 </div>
                                 <div id="record-data">
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="results">
+                                <div class="record-fields" style="background-color: #F8FAFC;">
+                                    <div class="record-rendered">
+                                        {% for file in record._files %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    File: <a href="{{ url_for('invenio_records_ui.recid_files', pid_value=record.get('_deposit', {}).get('pid',{}).get('value', None), filename=file.key) }}">{{ file.key }}</a>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <iframe frameborder="0" height="3300em" width="100%"
+                                                            src="{{ url_for('invenio_records_ui.recid_preview', pid_value=record.get('_deposit', {}).get('pid',{}).get('value', None), filename=file.key) }}">
+                                                    </iframe>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         {% endblock %}

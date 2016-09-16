@@ -54,8 +54,7 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
 from invenio_records_ui.views import default_view_method, record_view
-from invenio_search import RecordsSearch, current_search_client
-from invenio_search.api import DefaultFilter
+from invenio_search import RecordsSearch
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
@@ -270,6 +269,7 @@ def construct_record(collection, metadata, creator_id, schema):
     # data["recid"] = recid.int
     data["_deposit"] = _deposit
     data['_metadata'] = _metadata
+    data['_files'] = []
 
     return data, pid, recid
 
