@@ -27,7 +27,28 @@
 from __future__ import absolute_import, print_function
 
 from invenio_base.app import create_cli
-
+from flask import current_app
+from flask.cli import with_appcontext
+from invenio_db import db
+from invenio_files_rest.models import Location
 from .factory import create_app
 
+
 cli = create_cli(create_app=create_app)
+
+
+@cli.group()
+def location():
+    """Files command"""
+
+
+@location.command('add')
+@with_appcontext
+def location_cli():
+    """Load default location for files."""
+    d = current_app.config['DATADIR_FILES']
+    with db.session.begin_nested():
+        Location.query.delete()
+        loc = Location(name='local', uri=d, default=True)
+        db.session.add(loc)
+    db.session.commit()

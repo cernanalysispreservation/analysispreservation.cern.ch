@@ -30,6 +30,7 @@ from __future__ import absolute_import, print_function
 import copy
 import os
 
+from os.path import dirname, join
 from flask_principal import RoleNeed
 from invenio_deposit import config
 from invenio_oauthclient.contrib import cern
@@ -44,6 +45,7 @@ from invenio_records_rest.config import RECORDS_REST_FACETS, \
 def _(x):
     """Identity function for string extraction"""
     return x
+
 
 DEBUG = True
 
@@ -267,6 +269,9 @@ DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
 #: Search api url for deposit
 DEPOSIT_SEARCH_API = '/api/deposits/'
 
+#: Default location for files
+DATADIR_FILES = join(dirname(__file__), 'data')
+
 #: Template for deposit records API.
 #DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
 
@@ -325,5 +330,3 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
 # ===========
 #: Remove signals (Only for debug mode)
 COLLECTIONS_REGISTER_RECORD_SIGNALS = False
-
-DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
