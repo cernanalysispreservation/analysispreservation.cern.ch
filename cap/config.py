@@ -320,6 +320,10 @@ DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
 DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'template': 'cap_deposit/edit.html',
 })
+
+#: Template for <invenio-records-actions>
+DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_deposit/actions.html'
+
 # Collections
 # ===========
 #: Remove signals (Only for debug mode)

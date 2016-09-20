@@ -19,6 +19,7 @@
           <invenio-records
             {% if pid %}
               initialization="{{ config.DEPOSIT_RECORDS_API.format(pid_value=pid.pid_value) }}"
+              links='{{pid|tolinksjs(record)|tojson}}'
             {% else %}
               initialization="{{ config.DEPOSIT_SEARCH_API }}"
             {% endif %}
