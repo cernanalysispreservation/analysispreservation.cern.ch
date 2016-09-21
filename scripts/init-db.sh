@@ -25,11 +25,14 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-# Destroy db
+# Destroy db and indexes
 cap db destroy --yes-i-know
-# Init and create db
+curl -XDELETE 'http://localhost:9200/_all/'
+
+# Init and create db and indexes
 cap db init
 cap db create
+cap index init
 
 # Create collections
 cap collections create CERNAnalysisPreservation
