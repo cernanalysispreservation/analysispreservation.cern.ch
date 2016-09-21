@@ -26,19 +26,17 @@
 
 from __future__ import absolute_import, print_function
 
-import json
 import ssl
 import urllib
 import urllib2
 
 from flask import Blueprint, g, jsonify, render_template, request
-from flask_principal import RoleNeed
 from flask_security import login_required
-from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
 
 from cap.modules.records.views import collection_records, get_collections_tree
 
+from ..permissions.cms import cms_permission
 from ..scripts.cms import das
 
 cms_bp = Blueprint(
@@ -59,10 +57,6 @@ ctx.verify_mode = ssl.CERT_NONE
 @login_required
 def restrict_bp_to_cms_members():
     g.experiment = 'CMS'
-
-
-cms_group_need = RoleNeed('collaboration_cms')
-cms_permission = DynamicPermission(cms_group_need)
 
 
 @cms_bp.route('/')

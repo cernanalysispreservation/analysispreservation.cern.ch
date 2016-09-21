@@ -39,6 +39,8 @@ from invenio_deposit.config import DEPOSIT_REST_FACETS, \
 from invenio_records_rest.config import RECORDS_REST_FACETS, \
     RECORDS_REST_SORT_OPTIONS
 
+from cap.modules.deposit.permissions import UpdateDepositPermission, CreateDepositPermission, ReadDepositPermission
+
 
 def _(x):
     """Identity function for string extraction"""
@@ -267,7 +269,7 @@ DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
 DEPOSIT_SEARCH_API = '/api/deposits/'
 
 #: Template for deposit records API.
-#DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
+# DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
@@ -279,7 +281,10 @@ DEPOSIT_GROUPS = {
         "create_permission_roles": [
             'collaboration_lhcb',
         ],
-        # 'create_permission_factory_imp': deposit_create_permission_factory
+        'create_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
+        'read_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
+        'update_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
+        'delete_permission_factory_imp': allow_all,
     },
     "cms-analysis": {
         "schema": "deposits/records/cms-analysis-v1.0.0.json",
@@ -290,7 +295,10 @@ DEPOSIT_GROUPS = {
         "create_permission_roles": [
             'collaboration_cms',
         ],
-        # 'create_permission_factory_imp': deposit_create_permission_factory
+        'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
+        'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
+        'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
+        'delete_permission_factory_imp': allow_all,
     }
 }
 
@@ -307,9 +315,10 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     #         'cap.modules.records.serializers'
     #         ':json_v1_response')
     # },
-    'create_permission_factory_imp': allow_all,
-    'read_permission_factory_imp': allow_all,
-    'update_permission_factory_imp': allow_all,
+    'create_permission_factory_imp': CreateDepositPermission,
+    'read_permission_factory_imp': ReadDepositPermission,
+    'update_permission_factory_imp': UpdateDepositPermission,
+    # TODO update delete permission when 'discard'/'delete' is ready
     'delete_permission_factory_imp': allow_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })

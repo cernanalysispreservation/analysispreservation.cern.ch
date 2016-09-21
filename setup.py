@@ -140,17 +140,6 @@ setup(
             'cap_access = cap.modules.access.ext:CAPAccess',
         ],
         'invenio_access.actions': [
-            'cap_alice_access = '
-            'cap.modules.experiments.views.alice:alice_group_need',
-
-            'cap_atlas_access = '
-            'cap.modules.experiments.views.atlas:atlas_group_need',
-
-            'cap_cms_access = '
-            'cap.modules.experiments.views.cms:cms_group_need',
-
-            'cap_lhcb_access = '
-            'cap.modules.experiments.views.lhcb:lhcb_group_need',
         ],
         'invenio_assets.bundles': [
             'cap_theme_css = cap.modules.theme.bundles:css',

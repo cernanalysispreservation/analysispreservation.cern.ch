@@ -27,12 +27,11 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, g, jsonify, render_template
-from flask_principal import RoleNeed
 from flask_security import login_required
-from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
 
 from cap.modules.records.views import collection_records, get_collections_tree
+from ..permissions.alice import alice_permission
 
 alice_bp = Blueprint(
     'cap_alice',
@@ -47,10 +46,6 @@ alice_bp = Blueprint(
 @login_required
 def restrict_bp_to_alice_members():
     g.experiment = 'ALICE'
-
-
-alice_group_need = RoleNeed('collaboration_alice')
-alice_permission = DynamicPermission(alice_group_need)
 
 
 @alice_bp.route('/')

@@ -31,13 +31,14 @@ import json
 
 import pkg_resources
 from flask import Blueprint, current_app, g, jsonify, render_template, request
-from flask_principal import RoleNeed
 from flask_security import login_required
-from invenio_access import DynamicPermission
 from invenio_collections.models import Collection
 from py2neo import Graph
 
 from cap.modules.records.views import collection_records, get_collections_tree
+
+from ..permissions.lhcb import lhcb_permission
+
 
 lhcb_bp = Blueprint(
     'cap_lhcb',
@@ -52,10 +53,6 @@ lhcb_bp = Blueprint(
 @login_required
 def restrict_bp_to_lhcb_members():
     g.experiment = 'LHCb'
-
-
-lhcb_group_need = RoleNeed('collaboration_lhcb')
-lhcb_permission = DynamicPermission(lhcb_group_need)
 
 
 @lhcb_bp.route('/')
