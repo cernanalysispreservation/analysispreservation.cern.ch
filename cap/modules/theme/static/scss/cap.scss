@@ -152,5 +152,17 @@ button:focus {
 }
 
 .pointer-none {
-    pointer-events: no
+    pointer-events: none;
+}
+
+.col-centered {
+    text-align: center;
+}
+
+.text-color {
+    color: $theme-color;
+}
+
+.footer>.menu-wrapper a {
+    color: $theme-color;
 }
