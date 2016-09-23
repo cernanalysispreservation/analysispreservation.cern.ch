@@ -26,8 +26,42 @@
 
 from __future__ import absolute_import, print_function
 
+import json
+import os
+
+import click
+from flask import current_app
 from invenio_base.app import create_cli
 
+from .compilers import compile_jsonschema
 from .factory import create_app
+from .utils import (get_abs_schema_path, get_jsonschemas_from_dir,
+                    resolve_schema_path, save_jsonschema)
 
 cli = create_cli(create_app=create_app)
+
+
+def compile_jsonschema_cli(schemas_dir):
+    """Compile json schemas in given directory.
+
+    Take all schema_name-src.json schemas and resolve allOf and $ref keywords.
+    Save resolved schema to schema_name.json file.
+    """
+    for schema_name in get_jsonschemas_from_dir(schemas_dir):
+        schema = resolve_schema_path(schema_name)
+        compiled_schema = compile_jsonschema(schema)
+        out_file = os.path.join(current_app.config['JSONSCHEMAS_ROOT'],
+                                schema_name.replace('-src',''))
+        save_jsonschema(compiled_schema, out_file)
+
+
+@cli.command('compiledeposit')
+def compile_deposit_cli():
+    """Compile deposit jsonschema."""
+    compile_jsonschema_cli(current_app.config.get('JSONSCHEMAS_DEPOSIT_DIR', ''))
+
+
+@cli.command('compilerecord')
+def compile_record_cli():
+    """Compile record jsonschema."""
+    compile_jsonschema_cli(current_app.config.get('JSONSCHEMAS_RECORDS_DIR', ''))

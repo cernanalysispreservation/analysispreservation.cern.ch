@@ -29,19 +29,20 @@ from __future__ import absolute_import, print_function
 
 import copy
 import os
+from os.path import dirname, join
 
 from flask_principal import RoleNeed
-from invenio_oauthclient.contrib import cern
-from os.path import dirname, join
 from invenio_deposit import config
+from invenio_deposit.config import (DEPOSIT_REST_FACETS,
+                                    DEPOSIT_REST_SORT_OPTIONS)
 from invenio_oauthclient.contrib import cern
+from invenio_records_rest.config import (RECORDS_REST_FACETS,
+                                         RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.utils import allow_all, deny_all
-from invenio_deposit.config import DEPOSIT_REST_FACETS, \
-    DEPOSIT_REST_SORT_OPTIONS
-from invenio_records_rest.config import RECORDS_REST_FACETS, \
-    RECORDS_REST_SORT_OPTIONS
 
-from cap.modules.deposit.permissions import UpdateDepositPermission, CreateDepositPermission, ReadDepositPermission
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
 
 
 def _(x):
@@ -49,6 +50,9 @@ def _(x):
     return x
 
 DEBUG = True
+
+# Path to app root dir
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Mail
 # ====
@@ -236,6 +240,17 @@ JSONSCHEMAS_VERSIONS = {
     "CMSQuestionnaire": "CMSQuestionnaire-v0.0.1",
     "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
 }
+
+JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
+
+# directories with jsonschemas
+JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
+JSONSCHEMAS_RECORDS_DIR = 'records/'
+
+# User profile
+# ============
+#: Enable all the users to perform all the actions
+ENABLE_SUPERPOWERS_FOR_EVERYONE = False
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.

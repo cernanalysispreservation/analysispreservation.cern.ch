@@ -1,0 +1,14 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "test",
+    "type": "object",
+    "additionalProperties": false,
+    "allOf": [
+        {
+            "$ref": "test_schemas/subschema1-src.json"
+        },
+        {
+            "$ref": "test_schemas/subschema2.json"
+        }
+    ]
+}
