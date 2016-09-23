@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Multiple Step Scheduler",
+  "id": "multistep-stage",
+  "additionalProperties": false,
+  "properties": {
+    "scheduler_type": {
+      "type": "string",
+      "enum": [
+        "multistep-stage"
+      ],
+      "default": "multistep-stage"
+    },
+    "parameters": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#" },
+    "step": { "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
+    "workflow": {"$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"},
+    "scatter": {
+      "type":"object",
+      "title": "Scatter",
+      "additionalProperties": false,
+      "properties": {
+        "parameters": {
+          "type": "array",
+          "title": "Parameters",
+          "items": {
+            "type": "string"
+          }
+        },
+        "method": {
+          "title": "Method",
+          "type":"string"
+        }
+      }
+    },
+    "required": [
+      "scheduler_type"
+    ]
+  }
+}

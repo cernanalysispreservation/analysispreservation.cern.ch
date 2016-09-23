@@ -1,11 +1,37 @@
+{# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+#}
 
-{%- if not current_user.is_authenticated %}
-<form class="navbar-form navbar-right">
-  <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern')}}" class="btn btn-default">{{_('Sign in with CERN')}}</a>
-</form>
-{%- else %}
-<div class="navbar-form navbar-right">
-    <a href="#" class="btn"><i class="fa fa-user"></i>{{current_user.email}}</a>
-    <a href="{{url_for('security.logout')}}" class="btn"><i class="fa fa-sign-out"></i></a>
-</div>
-{%- endif %}
+{% block navbar_login %}
+  {%- if not current_user.is_authenticated %}
+  <form class="navbar-form navbar-right">
+    <a  href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-default sign-in-btn btn-lg" >{{_('Sign in with CERN')}}</a>
+  </form>
+  {%- else %}
+  <div class="navbar-form navbar-right">
+    <a class="btn pointer-none"><i class="fa fa-user"></i>{{current_user.email}}</a>
+    <a href="{{url_for('security.logout')}}" class="btn"><i class="fa fa-power-off" aria-hidden="true"></i></a>
+  </div>
+  {%- endif %}
+{% endblock %}

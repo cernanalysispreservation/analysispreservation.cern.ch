@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Creator",
+  "description": "A representation of a person, company, organization, or place",
+  "type": "object",
+  "properties": {
+    "fn": {
+      "title": "Formatted Name",
+      "propertyOrder": 10,
+      "description": "Formatted Name",
+      "type": "string"
+    },
+    "familyName": {
+      "propertyOrder": 20,
+      "title": "Last Name",
+      "type": "string"
+    },
+    "givenName": {
+      "propertyOrder": 30,
+      "title": "First Name",
+      "type": "string"
+    },
+    "additionalName": {
+      "propertyOrder": 40,
+      "title": "Additional Name",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "honorificPrefix": {
+      "propertyOrder": 50,
+      "type": "array",
+      "title": "Prefix",
+      "items": {
+        "type": "string"
+      }
+    },
+    "honorificSuffix": {
+      "propertyOrder": 60,
+      "type": "array",
+      "title": "Suffix",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nickname": {
+      "propertyOrder": 45,
+      "title": "Nickname",
+      "type": "string"
+    },
+    "url": {
+      "title": "Personal URL",
+      "propertyOrder": 80,
+      "type": "string",
+      "format": "uri"
+    },
+    "email": {
+      "title": "Email",
+      "propertyOrder": 60,
+      "type": "string",
+      "format": "email"
+    },
+    "tel": {
+      "propertyOrder": 90,
+      "type": "object",
+      "title": "Phone",
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "title": "Numb.",
+          "format": "phone"
+        }
+      }
+    },
+    "adr": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Address-v0.0.1.json"
+    },
+    "photo": {
+      "title": "Photo",
+      "type": "string"
+    },
+    "logo": {
+      "type": "string",
+      "title": "Logo"
+    },
+    "sound": {
+      "type": "string",
+      "title": "Sound"
+    },
+    "bday": {
+      "title": "Birthday",
+      "type": "string",
+      "format": "date"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "role": {
+      "title": "Role",
+      "type": "string"
+    },
+    "org": {
+      "title": "Group/Organisation",
+      "type": "object",
+      "properties": {
+        "organizationName": {
+          "title": "Organisation Name",
+          "type": "string"
+        },
+        "organizationUnit": {
+          "title": "Organisation Unit",
+          "type": "string"
+        }
+      }
+    },
+    "identifiers": {
+      "title": "Identifiers",
+      "type": "array",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
+      }
+    }
+  }
+}

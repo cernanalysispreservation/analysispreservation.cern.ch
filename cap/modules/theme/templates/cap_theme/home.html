@@ -1,3 +1,28 @@
+{# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+#}
+
 {%- extends "cap_theme/page.html" %}
 
 {%- block header %}
@@ -16,6 +41,7 @@
          {%- include "cap_theme/searchbar.html" %}
          <div class="row">
             <div id="cap-experiments">
+                {% if 'collaboration_alice' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -24,6 +50,8 @@
                       <div class="exp-name">ALICE</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_atlas' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -32,6 +60,8 @@
                       <div class="exp-name">ATLAS</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_cms' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -40,6 +70,8 @@
                       <div class="exp-name">CMS</div>
                     </a>
                 </div>
+                {% endif %}
+                {% if 'collaboration_lhcb' in experiments %}
                 <div class="col-sm-3">
                     <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
                       <div class="exp-img">
@@ -48,6 +80,7 @@
                       <div class="exp-name">LHCb</div>
                     </a>
                 </div>
+                {% endif %}
             </div>
          </div>
      </div>

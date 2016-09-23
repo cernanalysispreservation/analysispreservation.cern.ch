@@ -3,13 +3,13 @@
 # This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2016 CERN.
 #
-# CERN Analysis Preservation Framework is free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# CERN Analysis Preservation Framework is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
@@ -22,14 +22,17 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-import os, json
-import pkg_resources
+import json
+import os
 import re
 import sys
 from pprint import pprint
 
+import pkg_resources
+
 results = []
 errors = []
+
 
 def fetch_schema(path):
     return json.loads(pkg_resources.resource_string('cap', path))
@@ -44,12 +47,13 @@ def get_ref(d):
         elif isinstance(v, list):
             if any(x in k for x in options):
                 for r in v:
-                    if '$ref' in r:                        
+                    if '$ref' in r:
                         results.append(r['$ref'])
         else:
             if '$ref' in k:
                 results.append(v)
     return results
+
 
 def validate_ref(json_to_check, schema_path):
     """Returns non valid $ref urls"""
@@ -59,10 +63,11 @@ def validate_ref(json_to_check, schema_path):
         if not out:
             pprint("Location: " + schema_path + " Error: Not valid url:" + url)
             sys.exit(1)
-            
+
+
 def test_ref_is_valid():
     root_dir = os.path.join(
-        'cap', 'modules', 'records', 'jsonschemas', 'records')
+        'cap', 'jsonschemas', 'records')
     for schemas_dir, _, schemas in os.walk(root_dir):
         schemas_path = os.path.sep.join(schemas_dir.split(os.path.sep)[1:])
 

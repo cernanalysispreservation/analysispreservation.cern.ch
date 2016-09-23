@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "id": "parameter_selection",
+  "title": "Parameter Selection",
+  "additionalProperties": false,
+  "items": {
+    "type":"object",
+    "properties": {
+      "key": {
+        "title": "Key/Attribute",
+        "type": "string"
+      },
+      "value": {
+        "title": "Value",
+        "oneOf":[
+          {"type":"string"},
+          {"type":"number"},
+          {
+            "type":"object",
+            "additionalProperties": false,
+            "properties": {
+              "stages": {"type":"string"},
+              "output": {"type":"string"},
+              "unwrap": {"type":"boolean"},
+              "flatten":{"type":"boolean"}
+            }
+          }
+        ]
+      }
+    }
+  }
+}

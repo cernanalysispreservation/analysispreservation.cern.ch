@@ -1,32 +1,52 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+import json
+from functools import partial
+from pprint import pprint
+
+import click
+import pkg_resources
 from flask import current_app
 from flask_cli import with_appcontext
-
-
-from uuid import uuid4
-import click
-from functools import partial
-import pkg_resources
-import json
-
-
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import ParameterizedActionNeed
-from invenio_accounts.models import User, Role
+from invenio_accounts.models import Role, User
 from invenio_collections.models import Collection
 from invenio_db import db
-from invenio_collections.models import Collection
 from invenio_indexer.utils import RecordIndexer
-from invenio_pidstore.providers.recordid import RecordIdProvider
 from invenio_records import Record
 from invenio_records.permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
-from jsonpatch import JsonPatchException, JsonPointerException
-from cap.config import JSON_METADATA_PATH
-from .pages import loadpages
+from jsonschema.exceptions import ValidationError
 
+from cap.config import JSON_METADATA_PATH
 from cap.modules.records.views import construct_record
+
+from .pages import loadpages
 
 RecordIndexActionNeed = partial(ParameterizedActionNeed, 'records-index')
 
@@ -75,7 +95,8 @@ def records(source, force):
         add_record(
             d.get("metadata", None),
             d.get("collection", None),
-            d.get("schema", None), force)
+            d.get("schema", None),
+            force)
 
 
 def add_record(metadata, collection, schema, force):
@@ -88,28 +109,36 @@ def add_record(metadata, collection, schema, force):
         return
 
     data, pid, recid = construct_record(
-        collection, metadata, '1', {} if force else schema)
+        collection, metadata, 1, {} if force else schema)
 
-    record = Record.create(data, id_=recid)
+    try:
+        record = Record.create(data, id_=recid)
+        # Invenio-Indexer is delegating the document inferring to
+        # Invenio-Search which is analysing the string splitting by `/` and
+        # using `.json` to be sure that it cans understand the mapping.
+        record['$schema'] = 'mappings/{0}.json'.format(collection.name.lower())
 
-    # Invenio-Indexer is delegating the document inferring to
-    # Invenio-Search which is analysing the string splitting by `/` and
-    # using `.json` to be sure that it cans understand the mapping.
-    record['$schema'] = 'mappings/{0}.json'.format(collection.name.lower())
+        indexer = RecordIndexer()
+        indexer.index(record)
 
-    indexer = RecordIndexer()
-    indexer.index(record)
+        # Creating permission needs for the record
+        action_edit_record = RecordUpdateActionNeed(str(recid))
+        action_read_record = RecordReadActionNeed(str(recid))
+        action_index_record = RecordIndexActionNeed(str(recid))
 
-    # Creating permission needs for the record
-    action_edit_record = RecordUpdateActionNeed(str(recid))
-    action_read_record = RecordReadActionNeed(str(recid))
-    action_index_record = RecordIndexActionNeed(str(recid))
+        # Giving index, read, write permissions to user/creator
+        db.session.add(ActionUsers.allow(action_edit_record))
+        db.session.add(ActionUsers.allow(action_read_record))
+        db.session.add(ActionUsers.allow(action_index_record))
 
-    # Giving index, read, write permissions to user/creator
-    db.session.add(ActionUsers.allow(action_edit_record))
-    db.session.add(ActionUsers.allow(action_read_record))
-    db.session.add(ActionUsers.allow(action_index_record))
+        db.session.commit()
 
-    db.session.commit()
+        print("DONE!!!")
 
-    print("DONE!!!")
+    except ValidationError as error:
+        print("============================")
+        pprint(error.message)
+        pprint(error.path)
+        print("============================")
+
+        db.session.rollback()

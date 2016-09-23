@@ -1,0 +1,22 @@
+{
+  "mappings": {
+    "lhcb-v1.0.0": {
+      "properties": {
+        "basic_info": {
+          "type": "object",
+          "properties": {
+            "anal_name": {
+              "type": "string"
+            }
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "control_number": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

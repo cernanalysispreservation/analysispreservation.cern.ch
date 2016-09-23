@@ -1,0 +1,22 @@
+include *.py
+include *.rst
+include *.sh
+include *.txt
+include *.yml
+include .coveragerc
+include COPYING
+include Dockerfile
+include pytest.ini
+include docker/nginx/Dockerfile
+recursive-include cap *.gif
+recursive-include cap *.html
+recursive-include cap *.ico
+recursive-include cap *.js
+recursive-include cap *.json
+recursive-include cap *.png
+recursive-include cap *.scss
+recursive-include cap *.svg
+recursive-include docker *.conf
+recursive-include scripts *.py
+recursive-include scripts *.sh
+recursive-include tests *.py

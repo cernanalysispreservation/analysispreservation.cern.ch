@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Monte Carlo Signal Dataset",
+  "description": "Information concerning the Monte Carlo Signal Dataset used",
+  "type": "object",
+  "properties": {
+    "dataset_metadata": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "title": "@type",
+          "description": "e.g. dcat:Dataset"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title",
+          "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
+          "autocomplete": true,
+          "propertyOrder": 301
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "format": "textarea",
+          "description": "Provide a description for the MC dataset"
+        },
+        "licence": {
+          "type": "string",
+          "title": "Licence",
+          "description": "e.g. CC0 waiver"
+        },
+        "persistent_identifiers": {
+          "title": "Persistent Identifiers",
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
+          }
+        },
+        "issued": {
+          "title": "Issued",
+          "type": "string",
+          "format": "datetime",
+          "description": "Provide date/time the dataset was issued"
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "string",
+          "format": "datetime",
+          "hidden": "true"
+        },
+        "available": {
+          "title": "Year Available",
+          "type": "number",
+          "description": "Provide the year the MC dataset will be available in public. e.g. 2014"
+        },
+        "run_number": {
+          "title": "Run #",
+          "type": "number",
+          "description": "e.g. 146242"
+        },
+        "dataset_id": {
+          "title": "Dataset ID",
+          "type": "number",
+          "description": "Provide dataset ID e.g. 1853590"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "description": "Provide type of item e.g. 'mc'"
+        },
+        "numbers": {
+          "title": "Numbers",
+          "description": "Numbers concerning various stuff",
+          "type": "object",
+          "properties": {
+            "nevents": {
+              "title": "Numbers of events",
+              "type": "number"
+            },
+            "nlumis": {
+              "title": "Number of lumis",
+              "type": "number"
+            },
+            "nfiles": {
+              "title": "Number of files",
+              "type": "number"
+            },
+            "nblocks": {
+              "title": "Number of blocks",
+              "type": "number"
+            },
+            "extend": {
+              "title": "Extend",
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "mc_signal_cross_section": {
+      "title": "Cross Section",
+      "type": "number",
+      "required": "true"
+    },
+    "mc_signal_selection": {
+      "title": "MC Signal",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "signal": {
+            "title": "Signal",
+            "type": "string"
+          },
+          "bin": {
+            "title": "Bin",
+            "type": "object",
+            "properties": {
+              "pt_hat": {
+                "title": "pt_hat",
+                "type": "string"
+              },
+              "num_events": {
+                "title": "Number of Events",
+                "type": "string"
+              }
+            }
+          },
+          "generator_tune": {
+            "title": "Generator and Tune",
+            "type": "object",
+            "properties": {
+              "generator": {
+                "type": "string",
+                "enum": ["need", "more", "information"]
+              },
+              "tune": {
+                "type": "string",
+                "enum": ["need", "more", "information"]
+              }
+            }
+          },
+          "pT": {
+            "title": "PT",
+            "type": "string"
+          },
+          "rapidity": {
+            "title": "Rapidity",
+            "enum": ["Rapidity", "Pseudorapidity"]
+          },
+          "decay_channel": {
+            "title": "Decay Channel",
+            "type": "string"
+          },
+          "decay_engine": {
+            "title": "Decay Engine",
+            "type": "string",
+            "enum": ["need", "more", "information"]
+          },
+          "additional_info": {
+            "title": "Additional Information",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

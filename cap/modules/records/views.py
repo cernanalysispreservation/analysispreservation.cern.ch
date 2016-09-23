@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of CERN Analysis Preservation.
+# This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2016 CERN.
 #
-# CERN Analysis Preservation is free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# CERN Analysis Preservation is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with CERN Analysis Preservation; if not, write to the
+# along with CERN Analysis Preservation Framework; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 # MA 02111-1307, USA.
 #
@@ -26,12 +26,14 @@
 
 from __future__ import absolute_import, print_function
 
-import simplejson as json
 import os
 import re
 from functools import partial
 from uuid import uuid4
 
+import simplejson as json
+import six
+from elasticsearch_dsl.query import QueryString
 from flask import (Blueprint, Response, abort, current_app, jsonify,
                    render_template, request, url_for)
 from flask.ext.login import current_user, login_required
@@ -39,7 +41,7 @@ from flask_security import login_required
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
-from invenio_accounts.models import User, Role
+from invenio_accounts.models import Role, User
 from invenio_collections.models import Collection
 from invenio_db import db
 from invenio_indexer.utils import RecordIndexer
@@ -51,20 +53,19 @@ from invenio_records.permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)
-from invenio_records_ui.views import record_view, default_view_method
-from invenio_search import current_search_client, RecordsSearch
+from invenio_records_ui.views import default_view_method, record_view
+from invenio_search import RecordsSearch, current_search_client
 from invenio_search.api import DefaultFilter
 from jsonpatch import JsonPatchException, JsonPointerException
 from jsonref import JsonRef
 from jsonresolver import JSONResolver
 from jsonschema.exceptions import ValidationError
-from cap.config import JSON_METADATA_PATH
-
-from elasticsearch_dsl.query import QueryString
-from cap.modules.records.serializers import json_v1
-from .fetchers import cap_record_fetcher
-import six
 from werkzeug.local import LocalProxy
+
+from cap.config import JSON_METADATA_PATH, JSONSCHEMAS_VERSIONS
+from cap.modules.records.serializers import json_v1
+
+from .fetchers import cap_record_fetcher
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -135,7 +136,7 @@ def get_indexable_records_by_user(user_id, roles):
     r_private = ActionRoles.query.filter(
         ActionRoles.action == 'records-index',
         ActionRoles.role_id in roles).with_entities(ActionRoles.argument).all()
-    r_list = u_private+r_private+list(set(public)-set(u_private))
+    r_list = u_private + r_private + list(set(public) - set(u_private))
     return zip(*r_list)[0] if r_list else []
 
 
@@ -156,7 +157,7 @@ def get_readable_records_by_user(user_id, roles):
     r_private = ActionRoles.query.filter(
         ActionRoles.action == 'records-read',
         ActionRoles.role_id in roles).with_entities(ActionRoles.argument).all()
-    r_list = u_private+r_private+list(set(public)-set(u_private))
+    r_list = u_private + r_private + list(set(public) - set(u_private))
     return zip(*r_list)[0] if r_list else []
 
 # [TOBEFIXED] Leaivng here for thoughs/examplle/etc
@@ -280,8 +281,8 @@ def get_collections_tree(collections):
         result.append({
             'name': current_collection['node'].name,
             'children': get_collections_tree(
-                    current_collection['children'])
-                    if 'children' in current_collection else []
+                current_collection['children'])
+            if 'children' in current_collection else []
         })
     return result
 
@@ -303,12 +304,13 @@ def get_collections_queries(collections):
 @login_required
 def collection_records(collection=None):
     collections = Collection.query.filter(
-            Collection.name.in_([collection])).one().drilldown_tree()
+        Collection.name.in_([collection])).one().drilldown_tree()
 
     query_array = get_collections_queries(collections)
     query_string = ' or '.join(query_array)
 
-    search = RecordsSearch().params(version=True).query(QueryString(query=query_string))
+    search = RecordsSearch().params(version=True).query(
+        QueryString(query=query_string))
     response = search.execute().to_dict()
     recs = json_v1.serialize_search(cap_record_fetcher, response)
 
@@ -365,7 +367,8 @@ def recid(pid_value=None):
     if is_public or permission_read_record.can():
         return record_view(pid_value,
                            resolver,
-                           ['records/detail-'+record.get("collections", [""])[0]+'.html', 'records/detail.html'],
+                           ['records/detail-' + record.get("collections", [""])[
+                               0] + '.html', 'records/detail.html'],
                            None,
                            default_view_method
                            )
@@ -438,7 +441,7 @@ def record_permissions(pid_value=None):
     if record.get('experiment', None):
         result['collab_egroup'] = six.next(
             six.itervalues(collab_egroups.get(record['experiment']))
-            )[0]
+        )[0]
 
     for p in permissions:
         if isinstance(p, ActionUsers) and p.user:
@@ -464,16 +467,22 @@ def get_record_permissions(recid=None):
     action_index_record = RecordIndexActionNeed(str(recid))
 
     permissions = dict()
-    permissions['u_edit'] = ActionUsers.query_by_action(action_edit_record).all()
-    permissions['u_read'] = ActionUsers.query_by_action(action_read_record).all()
-    permissions['u_index'] = ActionUsers.query_by_action(action_index_record).all()
+    permissions['u_edit'] = ActionUsers.query_by_action(
+        action_edit_record).all()
+    permissions['u_read'] = ActionUsers.query_by_action(
+        action_read_record).all()
+    permissions['u_index'] = ActionUsers.query_by_action(
+        action_index_record).all()
 
-    permissions['r_edit'] = ActionRoles.query_by_action(action_edit_record).all()
-    permissions['r_read'] = ActionRoles.query_by_action(action_read_record).all()
-    permissions['r_index'] = ActionRoles.query_by_action(action_index_record).all()
+    permissions['r_edit'] = ActionRoles.query_by_action(
+        action_edit_record).all()
+    permissions['r_read'] = ActionRoles.query_by_action(
+        action_read_record).all()
+    permissions['r_index'] = ActionRoles.query_by_action(
+        action_index_record).all()
 
     result = permissions['u_edit'] + permissions['u_read'] + permissions['u_index'] + \
-        permissions['r_edit']+permissions['r_read']+permissions['r_index']
+        permissions['r_edit'] + permissions['r_read'] + permissions['r_index']
 
     return result
 
@@ -527,7 +536,6 @@ def update_record_permissions(pid_value=None):
 
     pid, record = resolver.resolve(pid_value)
 
-
     emails = []
     roles = []
     userrole_list = request.get_json().keys()
@@ -550,7 +558,8 @@ def update_record_permissions(pid_value=None):
                     tmp_role = _datastore.create_role(name=userrole)
                 roles.append(userrole)
             except:
-                print("Something happened when trying to create '"+userrole+"' role")
+                print("Something happened when trying to create '" +
+                      userrole + "' role")
             # Role.add(tmp_role)
 
     users = User.query.filter(User.email.in_(emails)).all()
@@ -564,21 +573,27 @@ def update_record_permissions(pid_value=None):
         for user in users:
             for action in request.get_json().get(user.email, None):
                 if (action.get("action", None) == "records-read" and action.get("op", None) == "add"):
-                    db.session.add(ActionUsers.allow(action_read_record, user=user))
+                    db.session.add(ActionUsers.allow(
+                        action_read_record, user=user))
                 elif (action.get("action", None) == "records-index" and action.get("op", None) == "add"):
-                    db.session.add(ActionUsers.allow(action_index_record, user=user))
+                    db.session.add(ActionUsers.allow(
+                        action_index_record, user=user))
                 elif (action.get("action", None) == "records-update" and action.get("op", None) == "add"):
-                    db.session.add(ActionUsers.allow(action_edit_record, user=user))
+                    db.session.add(ActionUsers.allow(
+                        action_edit_record, user=user))
                 elif (action.get("action", None) == "records-read" and action.get("op", None) == "remove"):
-                    au = ActionUsers.query.filter(ActionUsers.action == "records-read", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-read", ActionUsers.argument == str(
+                        record.id), ActionUsers.user_id == user.id).first()
                     if (au):
                         db.session.delete(au)
                 elif (action.get("action", None) == "records-index" and action.get("op", None) == "remove"):
-                    au = ActionUsers.query.filter(ActionUsers.action == "records-index", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-index", ActionUsers.argument == str(
+                        record.id), ActionUsers.user_id == user.id).first()
                     if (au):
                         db.session.delete(au)
                 elif (action.get("action", None) == "records-update" and action.get("op", None) == "remove"):
-                    au = ActionUsers.query.filter(ActionUsers.action == "records-update", ActionUsers.argument == str(record.id), ActionUsers.user_id == user.id).first()
+                    au = ActionUsers.query.filter(ActionUsers.action == "records-update", ActionUsers.argument == str(
+                        record.id), ActionUsers.user_id == user.id).first()
                     if (au):
                         db.session.delete(au)
 
@@ -586,21 +601,27 @@ def update_record_permissions(pid_value=None):
         for role in roles:
             for action in request.get_json().get(role.name, None):
                 if (action.get("action", None) == "records-read" and action.get("op", None) == "add"):
-                    db.session.add(ActionRoles.allow(action_read_record, role=role))
+                    db.session.add(ActionRoles.allow(
+                        action_read_record, role=role))
                 elif (action.get("action", None) == "records-index" and action.get("op", None) == "add"):
-                    db.session.add(ActionRoles.allow(action_index_record, role=role))
+                    db.session.add(ActionRoles.allow(
+                        action_index_record, role=role))
                 elif (action.get("action", None) == "records-update" and action.get("op", None) == "add"):
-                    db.session.add(ActionRoles.allow(action_edit_record, role=role))
+                    db.session.add(ActionRoles.allow(
+                        action_edit_record, role=role))
                 elif (action.get("action", None) == "records-read" and action.get("op", None) == "remove"):
-                    au = ActionRoles.query.filter(ActionRoles.action == "records-read", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-read", ActionRoles.argument == str(
+                        record.id), ActionRoles.role_id == role.id).first()
                     if (au):
                         db.session.delete(au)
                 elif (action.get("action", None) == "records-index" and action.get("op", None) == "remove"):
-                    au = ActionRoles.query.filter(ActionRoles.action == "records-index", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-index", ActionRoles.argument == str(
+                        record.id), ActionRoles.role_id == role.id).first()
                     if (au):
                         db.session.delete(au)
                 elif (action.get("action", None) == "records-update" and action.get("op", None) == "remove"):
-                    au = ActionRoles.query.filter(ActionRoles.action == "records-update", ActionRoles.argument == str(record.id), ActionRoles.role_id == role.id).first()
+                    au = ActionRoles.query.filter(ActionRoles.action == "records-update", ActionRoles.argument == str(
+                        record.id), ActionRoles.role_id == role.id).first()
                     if (au):
                         db.session.delete(au)
 
@@ -741,35 +762,45 @@ def stream_file(uri):
 
 @blueprint.route('/jsonschemas/<collection>/')
 def jsonschema(collection):
-    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
+    collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
+
+    jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas',
                                    'records', '{0}.json'.format(collection))
-    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
+    json_resolver = JSONResolver(
+        plugins=['cap.modules.records.resolvers.jsonschemas'])
 
     with open(jsonschema_path) as file:
         jsonschema_content = file.read()
 
     try:
-        result = JsonRef.replace_refs(json.loads(jsonschema_content), loader=json_resolver.resolve)
-        ren = render_template('records/deposit-base-extended.html', schema=json.dumps(result, indent=4))
+        result = JsonRef.replace_refs(json.loads(
+            jsonschema_content), loader=json_resolver.resolve)
+        ren = render_template(
+            'records/deposit-base-extended.html', schema=json.dumps(result, indent=4))
         return jsonify(json.loads(ren))
     except:
+        # import ipdb;ipdb.set_trace()
         return jsonify(json.loads(render_template('records/deposit-base-refs.html', collection=collection)))
 
 
 @blueprint.route('/jsonschemas/deposit/<collection>/')
 def jsonschema_deposit(collection):
-    jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas',
+    collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
+
+    jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas',
                                    'records', '{0}.json'.format(collection))
-    json_resolver = JSONResolver(plugins=['cap.modules.records.resolvers.jsonschemas'])
+    json_resolver = JSONResolver(
+        plugins=['cap.modules.records.resolvers.jsonschemas'])
 
     with open(jsonschema_path) as file:
         jsonschema_content = file.read()
 
     try:
-        result = JsonRef.replace_refs(json.loads(jsonschema_content), loader=json_resolver.resolve)
+        result = JsonRef.replace_refs(json.loads(
+            jsonschema_content), loader=json_resolver.resolve)
         return jsonify(result)
     except:
-        jsonschema_path = os.path.join(os.path.dirname(__file__), 'jsonschemas_gen',
+        jsonschema_path = os.path.join(os.path.dirname(__file__), '..','..','jsonschemas_gen',
                                        'records', '{0}.json'.format(collection))
         with open(jsonschema_path) as file:
             jsonschema_content = json.loads(file.read())
@@ -779,7 +810,9 @@ def jsonschema_deposit(collection):
 
 @blueprint.route('/jsonschemas/options/<collection>/')
 def jsonschema_options(collection):
-    jsonschema_options_path = os.path.join(os.path.dirname(__file__),
+    collection = JSONSCHEMAS_VERSIONS.get(collection, collection)
+
+    jsonschema_options_path = os.path.join(os.path.dirname(__file__),'..','..',
                                            'jsonschemas', 'options',
                                            '{0}.js'.format(collection))
     return Response(stream_file(jsonschema_options_path),
@@ -788,7 +821,7 @@ def jsonschema_options(collection):
 
 @blueprint.route('/jsonschemas/definitions/<path:definition>')
 def jsonschema_definitions(definition):
-    jsonschema_definition_path = os.path.join(os.path.dirname(__file__),
+    jsonschema_definition_path = os.path.join(os.path.dirname(__file__),'..','..',
                                               'jsonschemas_gen', 'definitions',
                                               definition)
 
@@ -800,7 +833,7 @@ def jsonschema_definitions(definition):
 
 @blueprint.route('/jsonschemas/fields/<field>')
 def jsonschema_fields(field):
-    jsonschema_fields_path = os.path.join(os.path.dirname(__file__),
+    jsonschema_fields_path = os.path.join(os.path.dirname(__file__),'..','..',
                                           'jsonschemas', 'fields',
                                           field)
     return Response(stream_file(jsonschema_fields_path),

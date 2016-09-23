@@ -15,18 +15,24 @@
     along with Invenio; if not, write to the Free Software Foundation, Inc.,
     59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-Detailed installation guide
+Detailed Installation Guide
 ===========================
 
-.. admonition:: CAVEAT LECTOR
+There are two possibilities for setting up your own development version
+of CERN Analysis Preservation, one with python virtualenvwrapper and one
+with docker.
 
-   Invenio v3.0 alpha is a bleeding-edge developer preview version that is
-   scheduled for public release in Q1/2016.
+
+Bare Installation
+-----------------
+
+CERN Analysis Preservation is based on Invenio v3.0 alpha (scheduled for
+public release in Q3/2016).
 
 Prerequisites
--------------
+^^^^^^^^^^^^^
 
-Invenio v3.0 needs several prerequisite software packages to function:
+Invenio v3.0 requires some additional software packages:
 
 - `Elasticsearch <https://www.elastic.co/products/elasticsearch>`_
 - `PostgreSQL <http://www.postgresql.org/>`_
@@ -42,40 +48,9 @@ For example, on Debian GNU/Linux, you can install them as follows:
                         rabbitmq-server \
                         redis-server
 
-and do a system install for the Sass preprocessor by following `Sass web guide <http://sass-lang.com/install>`_ and running:
-
-.. code-block:: shell
-
-  sudo npm install -g sass node-sass clean-css uglify-js requirejs
-
-
-Installation
-------------
-
-Let's start by creating a new virtual environment that will hold our CAP
-v3.0 instance:
-
-.. code-block:: shell
-
-   mkvirtualenv cap
-
-Start redis server in the background:
-
-.. code-block:: shell
-
-   redis-server &
-
-Install CAP package:
-
-.. code-block:: shell
-
-   cdvirtualenv
-   mkdir src && cd src
-   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
-   cd cap
-   pip install -r requirements.txt
-
-Add the following lines in your "elasticsearch.yml":
+Now, add the following lines in your "elasticsearch.yml" (for
+Debian GNU/Linux the full path is
+``/etc/elasticsearch/elasticsearch.yml``):
 
 .. code-block:: shell
 
@@ -86,21 +61,64 @@ Add the following lines in your "elasticsearch.yml":
   http.port: 9200
   http.publish_port: 9200
 
-Run npm to install any necessary JavaScript assets the Invenio modules
-depend on:
+Finally, do a system-wide install (see below for how to do a local
+install enclosed inside your virtual environment instead) for the Sass
+preprocessor by following
+`Sass web guide <http://sass-lang.com/install>`_ and running:
+
+.. code-block:: shell
+
+  sudo npm install -g node-sass clean-css uglify-js requirejs
+
+Installation
+^^^^^^^^^^^^
+
+Let's start by cloning the repository:
+
+.. code-block:: shell
+
+   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
+
+Environment Setup
+"""""""""""""""""
+
+All else will be installed inside a python *virtualenv* for easy
+maintenance and encapsulation of the libraries required. From inside
+your `cap` folder you can choose anytime whatever virtual environment
+you want to work on (just type `workon virtualenv_installed`) or you can
+choose to create a new one.
+
+To do the latter, create a new virtual environment to hold our CAP
+instance from inside the repository folder:
 
 .. code-block:: shell
 
    cd cap
+   mkvirtualenv cap
+
+Start redis server in the background:
+
+.. code-block:: shell
+
+   redis-server &
+
+Install the CAP package from inside your ``cap`` repository folder and
+run npm to install the necessary JavaScript assets the Invenio modules
+depend on:
+
+.. code-block:: shell
+
+   pip install -r requirements.txt
    cap npm
    cdvirtualenv var/cap-instance/static
    npm install bower
    npm install
-   cd node_modules/alpaca
-   npm install
-   npm start
 
-   cdvirtualenv src/cap
+Build the assets from your repository folder:
+
+.. code-block:: shell
+
+   cd -
    cap collect -v
    cap assets build
    python ./scripts/schemas.py
@@ -151,14 +169,13 @@ Start the web application (in debugging mode):
 
    cap --debug run
 
-
-Now we can create our first record by going to ``http://localhost:5000/records/<collection_name>/create/``
+Now you can create your first record by going to ``http://localhost:5000/records/<collection_name>/create/``
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
-Populating The Database With Example Records
-~~~~~~~~~~~~~
-If you want to populate the database with example records you can run:
+Populating the Database with Example Records
+""""""""""""""""""""""""""""""""""""""""""""
+If you want to populate the database with example records simply run:
 
 .. code-block:: shell
 
@@ -169,40 +186,69 @@ If you want to populate the database with example records you can run:
    cap fixtures records -f
 
 General Recommendations
-------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
-You can specify the python version for the virtual environment by running (e.g. to use python 2.7):
+Specify Python Version
+"""""""""""""""""""""""
+
+You can specify the python version for the virtual environment on
+creation as follows (e.g. to use python 2.7):
 
 .. code-block:: shell
 
    mkvirtualenv -p /usr/bin/python2.7 cap
 
+Local Installation of npms and gems
+"""""""""""""""""""""""""""""""""""
+
+You do not need to install sass and all npm dependencies globally on
+your system. You can install them inside your virtual environment so
+they will only be accessible from within it. Simply add:
+
+.. code-block:: shell
+
+   export GEM_HOME="$VIRTUAL_ENV/gems"
+   export GEM_PATH=""
+   export PATH="$GEM_HOME/bin:$PATH"
+   export npm_config_prefix=$VIRTUAL_ENV
+
+to the ``postactivate`` of your ``.virtualenv`` folder and run
+
+.. code-block:: shell
+
+   cdvirtualenv
+   gem install sass
+   npm -g install node-sass clean-css uglify-js requirejs
+
+after creating your virtual environment.
 
 Troubleshooting
-------------
+^^^^^^^^^^^^^^^
 
 Missing Requirements
-~~~~~~~~~~~~~
-If you have trouble with the setup check if you are missing one of the following requirements:
+""""""""""""""""""""
+If you have trouble with the setup, check if you are missing one of the
+following requirements:
 
 .. code-block:: shell
 
-   nodejs npm ruby gcc python2 python2-pysqlite python-virtualenvwrapper python2-lxml python2-pip
+   npm ruby gcc python-virtualenvwrapper
 
-The version of python2 given by ``python2 --version`` should be greater than 2.7.10.
+The version of python2 given by ``python2 --version`` should be greater
+than 2.7.10.
 
-Errors with npm start and Alpaca
-~~~~~~~~~~~~~
-If ``npm start`` fails for alpaca, you can try:
+Non-matching Requirements
+"""""""""""""""""""""""""
+If you encounter a problem with requirements that do not match it may
+be because the python eggs are not included in your virtualenv and you
+will have to update them running:
 
 .. code-block:: shell
 
-   npm install gulp gulp-clean jshint gulp-jshint
-   npm install
-   npm start   
+   pip install -r requirements.txt
 
 Database Indexing Problems
-~~~~~~~~~~~~~
+""""""""""""""""""""""""""
 If you have trouble indexing the database try:
 
 .. code-block:: shell
@@ -214,6 +260,47 @@ and if that does not work try:
 
 .. code-block:: shell
 
-   curl -XDELETE 'http://localhost:9200/rec*'
-   curl -XDELETE 'http://localhost:9200/map*'
+   curl -XDELETE 'http://localhost:9200/_all'
    cap db init
+
+
+Docker Installation
+-------------------
+
+You should have installed Docker and docker-compose on your machine. Then, you
+can build the application using the development configuration:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml build
+
+
+Now that you have built the application inside the docker containers, you will
+need to initialize some modules. This initialization consist of the creation of
+the tables inside the database, the default user (user:
+info@inveniosoftware.org, password: infoinfo), the required communities and the
+ElasticSearch index.
+
+To initialise it then, you will need to perform:
+
+.. code-block:: shell
+
+   docker-compose run app bash scripts/init.sh
+
+
+Optionally, if you want to populate the database with some example records, you
+can run:
+
+.. code-block:: shell
+
+   docker-compose run app cap fixtures records -f
+
+
+And lately, you can start the application:
+
+.. code-block:: shell
+
+   docker-compose -f docker-compose-dev.yml up
+
+
+Now, open your browser and navigate to http://localhost/

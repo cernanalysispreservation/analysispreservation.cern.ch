@@ -1,0 +1,577 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Detector State",
+  "description": "Information concerning the state of the detector",
+  "type": "object",
+  "properties": {
+    "measurement_description": {
+      "title": "Measurement Description",
+      "type": "string"
+    },
+    "detailed_measurement_description": {
+      "title": "Description Details",
+      "type": "string"
+    },
+    "code_base": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
+    },
+    "n_tuple": {
+      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput-v0.0.1.json"
+    },
+    "detector_final_state": {
+      "title": "Event Selection",
+      "type": "object",
+      "properties": {
+        "final_state_particles": {
+          "title": "Physics Objects",
+          "type": "array",
+          "default": [{}],
+          "items": {
+            "type": "object",
+            "properties": {
+              "object": {
+                "title": "Object",
+                "type": "string",
+                "enum": [
+                  "electron",
+                  "muon",
+                  "tau",
+                  "jet",
+                  "bjet",
+                  "photon",
+                  "track",
+                  "vertex",
+                  "MET",
+                  "HT"
+                ]
+              },
+              "electron_type": {
+                "type": "string",
+                "title": "Electron type",
+                "enum": [
+                  "GsfElectron"
+                ]
+              },
+              "muon_type": {
+                "type": "string",
+                "title": "Muon type",
+                "enum": [
+                  "PFMuon",
+                  "GlobalMuon",
+                  "TrackerMuon"
+                ]
+              },
+              "tau_type": {
+                "type": "string",
+                "title": "Tau type",
+                "enum": [
+                  "PFTau"
+                ]
+              },
+              "jet_type": {
+                "type": "string",
+                "title": "Jet type",
+                "enum": [
+                  "AK4PF",
+                  "AK5PF",
+                  "AK6PF",
+                  "AK7PF",
+                  "AK8PF",
+                  "AK4Calo",
+                  "AK5Calo",
+                  "AK6Calo",
+                  "AK7Calo",
+                  "AK8Calo",
+                  "KT4PF",
+                  "KT5PF",
+                  "KT6PF",
+                  "KT7PF",
+                  "KT8PF",
+                  "KT4Calo",
+                  "KT5Calo",
+                  "KT6Calo",
+                  "KT7Calo",
+                  "KT8Calo"
+                ]
+              },
+              "jet_corrections": {
+                "type": "string",
+                "title": "Jet Corrections",
+                "enum": [
+                  "JetCorrections"
+                ]
+              },
+              "photon_type": {
+                "type": "string",
+                "title": "Photon type",
+                "enum": [
+                  "Photon",
+                  "Conversion"
+                ]
+              },
+              "met_type": {
+                "type": "string",
+                "title": "MET type",
+                "enum": [
+                  "PFMET",
+                  "CaloMET"
+                ]
+              },
+              "sel_criteria": {
+                "type": "string",
+                "title": "Selection Criteria",
+                "enum": ["tight", "medium", "loose", "other"]
+              },
+              "met_pf_corrections": {
+                "type": "string",
+                "title": "MET Corrections",
+                "enum": [
+                  "Type0PFCorrections",
+                  "Type1PFCorrections",
+                  "Type2PFCorrections"
+                ]
+              },
+              "met_calo_corrections": {
+                "type": "string",
+                "title": "MET Corrections",
+                "enum": [
+                  "Type0CaloCorrections",
+                  "Type1CaloCorrections",
+                  "Type2CaloCorrections"
+                ]
+              },
+              "track_type": {
+                "type": "string",
+                "title": "Track type",
+                "enum": [
+                  "Heavy-Ion",
+                  "pp"
+                ]
+              },
+              "isolation": {
+                "title": "Isolation",
+                "type": "object",
+                "properties": {
+                  "notracks": {
+                    "title": "no tracks",
+                    "type": "object",
+                    "properties": {
+                      "pTg": {
+                        "type": "number",
+                        "title": "pT >"
+                      },
+                      "deltaRs": {
+                        "type": "number",
+                        "title": "ΔR <"
+                      }
+                    }
+                  },
+                  "calorimeter": {
+                    "title": "calorimeter",
+                    "type": "object",
+                    "properties": {
+                      "pTs": {
+                        "type": "number",
+                        "title": "pT <"
+                      },
+                      "deltaRs": {
+                        "type": "number",
+                        "title": "ΔR <"
+                      }
+                    }
+                  }
+                }
+              },
+              "number": {
+                "title": "Number",
+                "type": "object",
+                "properties": {
+                  "sign": {
+                    "type": "string",
+                    "title": "<, >, =, <=, >=",
+                    "enum": [
+                      "<",
+                      ">",
+                      "=",
+                      "<=",
+                      ">="
+                    ],
+                    "default": "="
+                  },
+                  "number": {
+                    "type": "number",
+                    "title": "Number"
+                  }
+                }
+              },
+              "number_vertex": {
+                "title": "Number",
+                "type": "object",
+                "properties": {
+                  "sign": {
+                    "type": "string",
+                    "title": "=",
+                    "enum": [
+                      "="
+                    ]
+                  },
+                  "number": {
+                    "type": "number",
+                    "title": "Number"
+                  }
+                }
+              },
+              "number_tracks": {
+                "title": "Number of Tracks",
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "number",
+                    "title": ">"
+                  }
+                }
+              },
+              "electron_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "muon_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "tau_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "AgainstElectronLooseMVA",
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "jet_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "bjet_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "trackCountingHighPurBJetTags",
+                      "trackCountingHighEffBJetTags",
+                      "simpleSecondaryVertexHighEffBJetTags",
+                      "simpleSecondaryVertexHighEffBJetTags",
+                      "combinedSecondaryVertexBJetTags",
+                      "jetProbabilityBJetTags",
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "photon_discriminator": {
+                "title": "Discriminator",
+                "type": "object",
+                "properties": {
+                  "tag": {
+                    "type": "string",
+                    "title": "Tag",
+                    "enum": [
+                      "other..."
+                    ]
+                  },
+                  "custom_tag": {
+                    "type": "string",
+                    "title": " "
+                  },
+                  "value": {
+                    "type": "number",
+                    "title": "Value"
+                  }
+                },
+                "dependencies": {
+                  "custom_tag": ["tag"]
+                }
+              },
+              "pt_cut": {
+                "title": "pT Cuts",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sign": {
+                      "type": "string",
+                      "title": "<, >, =",
+                      "enum": [
+                        ">",
+                        "=",
+                        "<"
+                      ],
+                      "default": ">"
+                    },
+                    "number": {
+                      "type": "number",
+                      "title": "GeV"
+                    }
+                  }
+                }
+              },
+              "eta_cut": {
+                "title": "|η| Cuts",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "sign": {
+                      "type": "string",
+                      "title": "<, >, =",
+                      "enum": [
+                        ">",
+                        "=",
+                        "<"
+                      ],
+                      "default": ">"
+                    },
+                    "number": {
+                      "type": "string",
+                      "title": " ",
+                      "enum": [
+                        "1.1",
+                        "1.5",
+                        "2.4",
+                        "2.5",
+                        "other"
+                      ]
+                    },
+                    "other_number": {
+                      "type": "number",
+                      "title": " "
+                    }
+                  },
+                  "dependencies": {
+                    "other_number": ["number"]
+                  }
+                }
+              }
+            },
+            "dependencies": {
+              "electron_type": ["object"],
+              "muon_type": ["object"],
+              "tau_type": ["object"],
+              "jet_type": ["object"],
+              "jet_corrections": ["object"],
+              "photon_type": ["object"],
+              "met_type": ["object"],
+              "sel_criteria": ["object"],
+              "photon_type": ["object"],
+              "met_pf_corrections": ["met_type"],
+              "met_calo_corrections": ["met_type"],
+              "track_type": ["object"],
+              "isolation": ["sel_criteria"],
+              "number": ["object"],
+              "number_vertex": ["object"],
+              "number_tracks": ["object"],
+              "electron_discriminator": ["object"],
+              "muon_discriminator": ["object"],
+              "tau_discriminator": ["object"],
+              "jet_discriminator": ["object"],
+              "bjet_discriminator": ["object"],
+              "photon_discriminator": ["object"],
+              "pt_cut": ["object"],
+              "eta_cut": ["object"]
+            }
+          }
+        },
+        "final_state_relations": {
+          "title": "Relations",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "relation_type": {
+                "type": "string",
+                "title": "Relation Type",
+                "enum": ["charge", "angle", "invariant mass", "transverse mass"]
+              },
+              "charge_relation": {
+                "type": "string",
+                "title": "Charge",
+                "enum": ["same sign", "opposite sign"]
+              },
+              "angle_relation": {
+                "type": "number",
+                "title": "Degrees"
+              },
+              "invariant_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                  "lower_range": {
+                    "type": "number",
+                    "title": "<"
+                  },
+                  "upper_range": {
+                    "type": "number",
+                    "title": ">"
+                  }
+                }
+              },
+              "transverse_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                  "lower_range": {
+                    "type": "number",
+                    "title": "<"
+                  },
+                  "upper_range": {
+                    "type": "number",
+                    "title": ">"
+                  }
+                }
+              },
+              "physics_objects": {
+                "type": "string",
+                "title": "Physics Objects Available",
+                "enum": []
+              }
+            },
+            "dependencies": {
+              "charge_relation": ["relation_type"],
+              "angle_relation": ["relation_type"],
+              "invariant_mass": ["relation_type"],
+              "transverse_mass": ["relation_type"]
+            }
+          }
+        },
+        "veto": {
+          "title": "Vetos",
+          "description": "Provide vetos",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "particle": {
+                "title": "Physics Object",
+                "type": "string",
+                "enum": [
+                  "electron",
+                  "muon",
+                  "tau",
+                  "jet",
+                  "bjet",
+                  "photon",
+                  "track",
+                  "vertex",
+                  "MET",
+                  "HT"
+                ]
+              },
+              "number": {
+                "title": "Number",
+                "type": "integer"
+              },
+              "pt_cut": {
+                "title": "PT",
+                "type": "string"
+              },
+              "eta_cut": {
+                "title": "ETA",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

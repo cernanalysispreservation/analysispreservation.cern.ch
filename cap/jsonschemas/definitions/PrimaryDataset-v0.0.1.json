@@ -1,0 +1,168 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Primary Dataset",
+  "description": "Information concerning the CMS Primary Dataset used",
+  "type": "object",
+  "properties": {
+    "dataset_metadata": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string",
+          "title": "@type",
+          "description": "e.g. dcat:Dataset"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title",
+          "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
+          "autocomplete": true,
+          "propertyOrder": 201
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "format": "textarea",
+          "description": "Provide a description for the primary dataset"
+        },
+        "licence": {
+          "type": "string",
+          "title": "Licence",
+          "description": "e.g. CC0 waiver"
+        },
+        "persistent_identifiers": {
+          "title": "Persistent Identifiers",
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
+          }
+        },
+        "issued": {
+          "title": "Issued",
+          "type": "string",
+          "format": "datetime",
+          "description": "Provide date/time the primary dataset was issued"
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "string",
+          "format": "datetime",
+          "hidden": "true"
+        },
+        "available": {
+          "title": "Year Availble",
+          "type": "number",
+          "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
+        },
+        "run_number": {
+          "title": "Run #",
+          "type": "number",
+          "description": "e.g. 146242"
+        },
+        "dataset_id": {
+          "title": "Dataset ID",
+          "type": "number",
+          "description": "Provide dataset ID e.g. 1853590"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string",
+          "description": "Provide type of item e.g. 'data'"
+        },
+        "numbers": {
+          "title": "Numbers",
+          "description": "Numbers concerning various stuff",
+          "type": "object",
+          "properties": {
+            "nevents": {
+              "title": "Numbers of events",
+              "type": "number"
+            },
+            "nlumis": {
+              "title": "Number of lumis",
+              "type": "number"
+            },
+            "nfiles": {
+              "title": "Number of files",
+              "type": "number"
+            },
+            "nblocks": {
+              "title": "Number of blocks",
+              "type": "number"
+            },
+            "extend": {
+              "title": "Extend",
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "triggers": {
+      "title": "Selection Triggers",
+      "description": "Add triggers here",
+      "type": "array",
+      "items": {
+        "title": "Trigger",
+        "type": "object",
+        "id": "trigger",
+        "properties": {
+          "trigger": {
+            "title": "Trigger",
+            "type": "string",
+            "enum": [],
+            "dependencies": [
+              "run_period",
+              "element"
+            ]
+          },
+          "run_period": {
+            "title": "Run Period",
+            "type": "string",
+            "enum": []
+          },
+          "element": {
+            "title": "Element",
+            "type": "string",
+            "enum": [],
+            "dependencies": [
+              "run_period"
+            ]
+          },
+          "trigger_efficiency": {
+            "title": "Trigger Efficiency",
+            "type": "string",
+            "required": "true"
+          }
+        }
+      }
+    },
+    "event_selection": {
+      "title": "Event Filter",
+      "type": "object",
+      "properties": {
+        "event_filter": {
+          "title": "Event Filter",
+          "type": "string",
+          "enum": []
+        },
+        "custom_event_filter": {
+          "title": " ",
+          "type": "string",
+          "dependencies": [
+            "event_filter"
+          ]
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        }
+      }
+    },
+    "json_file": {
+      "title": "json File for Validated Runs",
+      "type": "string"
+    }
+  }
+}

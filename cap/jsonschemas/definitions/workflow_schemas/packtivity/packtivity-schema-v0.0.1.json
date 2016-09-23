@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Packtivity Meta Description",
+  "id": "packtivity_meta",
+  "additionalProperties": false,
+  "properties": {
+      "process": {
+          "type": "object",
+          "title": "Process",
+          "oneOf":[
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json#"}
+          ]
+      },
+      "publisher": {
+          "type": "object",
+          "title": "Publisher",
+          "oneOf":[
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json#"}
+          ]
+      },
+      "environment": {
+          "type": "object",
+          "title": "Enviroment",
+          "oneOf":[
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/noop-env-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/localproc-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/packtivity/environment/docker-enc-schema-v0.0.1.json#"}
+          ]
+      }
+  },
+  "required": [
+    "process",
+    "publisher",
+    "environment"
+  ]
+}

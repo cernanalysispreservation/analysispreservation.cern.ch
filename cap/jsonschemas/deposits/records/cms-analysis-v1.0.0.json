@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Deposit schema.",
+  "description": "Describe information needed for deposit module.",
+  "properties": {
+    "basic_info": {
+      "type": "object",
+      "properties": {
+        "anal_name": {
+          "type": "string",
+          "title": "Analysis Name"
+        },
+        "cadi": {
+          "type": "string",
+          "title": "CADI #"
+        }
+      }
+    },
+    "$schema": {
+      "type": "string"
+    },
+    "_deposit": {
+      "type": "object",
+      "name": "_deposit",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "name": "id"
+        },
+        "pid": {
+          "type": "object",
+          "name": "pid",
+          "properties": {
+            "revision_id": {
+              "type": "integer"
+            },
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          }
+        },
+        "created_by": {
+          "type": "integer",
+          "name": "created_by"
+        },
+        "owners": {
+          "type": "array",
+          "name": "owners",
+          "items": [
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "name": "status",
+          "enum": [
+            "draft",
+            "published"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "_files": {
+      "type": "array",
+      "name": "_files",
+      "items": {
+        "$ref": "../records-files/records-files-v1.0.0.json"
+      }
+    }
+  },
+  "required": [
+    "_deposit"
+  ]
+}

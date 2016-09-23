@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Yadage Stage",
+  "id": "yadage_stage",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "dependencies": {
+      "type": "object",
+      "title": "Dependencies",
+      "oneOf": [
+        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"}
+      ]
+    },
+    "scheduler": {
+      "type": "object",
+      "title": "Scheduler",
+      "oneOf":[
+        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json#"},
+        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema-v0.0.1.json#"}
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "scheduler"
+  ]
+}

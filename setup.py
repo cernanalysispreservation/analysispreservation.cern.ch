@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of CERN Analysis Preservation Framework. 
+# This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2016 CERN.
 #
-# CERN Analysis Preservation Framework is free software; you can redistribute it
-# and/or modify it under the terms of the GNU General Public License as
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation; either version 2 of the
 # License, or (at your option) any later version.
 #
-# CERN Analysis Preservation Framework is distributed in the hope that it will be
-# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # General Public License for more details.
 #
@@ -28,7 +28,6 @@ import os
 import sys
 
 from setuptools import find_packages, setup
-from setuptools.command.test import test as TestCommand
 
 # readme = open('README.rst').read()
 readme = ""
@@ -58,69 +57,39 @@ for reqs in extras_require.values():
 
 setup_requires = [
     'Babel>=1.3',
+    'pytest-runner>=2.9',
 ]
 
 install_requires = [
-    'Flask>=0.10.1',
+    'py2neo==2.0.8',
+    'simplejson>=3.8.2',
     'Flask-BabelEx>=0.9.2',
-    'click',
-    'psycopg2',
-    'flask-kvsession',
-    'pysqlite',
-    'invenio-access==1.0.0a5',
-    'simplejson',
-    'gunicorn',
-    'invenio-accounts==1.0.0a8',
-    'invenio-assets==1.0.0a4',
-    'invenio-base==1.0.0a12',
-    # 'invenio-collections==1.0.0a2',
-    'invenio-db[versioning]==1.0.0a9',
-    'invenio-indexer==1.0.0a6',
-    # 'invenio-oauthclient>=1.0.0a1',
+    'Flask-KVSession>=0.6.2',
+    'Flask>=0.11.1',
+    'invenio-access>=1.0.0a8',
+    'invenio-accounts>=1.0.0a13',
+    'invenio-assets>=1.0.0b2',
+    'invenio-base>=1.0.0a12',
+    'invenio-collections>=1.0.0a3',
+    'invenio-config>=1.0.0b1',
+    'invenio-db[postgresql,versioning]>=1.0.0b1',
+    'invenio-deposit>=1.0.0a3',
+    'invenio-indexer>=1.0.0a6',
+    'invenio-jsonschemas>=1.0.0a3',
+    'invenio-oauthclient>=1.0.0a9',
     'invenio-pages>=1.0.0a3',
-    'invenio-pidstore==1.0.0a7',
-    'invenio-records==1.0.0a14',
-    'invenio-records-rest==1.0.0a13',
-    'invenio-records-ui==1.0.0a6',
-    'invenio-search==1.0.0a7',
-    'invenio-search-ui==1.0.0a4',
-    'invenio-theme==1.0.0a13',
-    'invenio[minimal]>=3.0.0a2,<3.1.0',
+    'invenio-pidstore>=1.0.0a9',
+    'invenio-records-rest>=1.0.0a15',
+    'invenio-records-ui>=1.0.0a7',
+    'invenio-records>=1.0.0a17',
+    'invenio-search-ui>=1.0.0a5',
+    'invenio-search>=1.0.0a7',
+    'invenio-theme>=1.0.0a13',
+    'invenio-userprofiles>=1.0.0a7',
 ]
 
 
 packages = find_packages()
-
-
-class PyTest(TestCommand):
-    """PyTest Test."""
-
-    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
-
-    def initialize_options(self):
-        """Init pytest."""
-        TestCommand.initialize_options(self)
-        self.pytest_args = []
-        try:
-            from ConfigParser import ConfigParser
-        except ImportError:
-            from configparser import ConfigParser
-        config = ConfigParser()
-        config.read('pytest.ini')
-        self.pytest_args = config.get('pytest', 'addopts').split(' ')
-
-    def finalize_options(self):
-        """Finalize pytest."""
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        """Run tests."""
-        # import here, cause outside the eggs aren't loaded
-        import pytest
-        errno = pytest.main(self.pytest_args)
-        sys.exit(errno)
 
 # Get the version string. Cannot be done with import!
 g = {}
@@ -134,7 +103,7 @@ setup(
     description=__doc__,
     long_description=readme + '\n\n' + history,
     keywords='cap cern analysis preservation',
-    license='GPLv2',
+    license='GPLv2+',
     author='CERN',
     author_email='info@inveniosoftware.org',
     url='https://github.com/analysispreservationcernch',
@@ -147,6 +116,7 @@ setup(
             'cap = cap.cli:cli',
         ],
         'invenio_base.blueprints': [
+            'cap = cap.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
@@ -154,41 +124,22 @@ setup(
             'cap_alice = cap.modules.experiments.views.alice:alice_bp',
             'cap_alpaca = cap.modules.alpaca.views:blueprint',
             'cap_access = cap.modules.access.views:access_blueprint',
+            'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
         ],
         # 'invenio_i18n.translations': [
         #     'messages = cap',
         # ],
-        'invenio_pidstore.minters': [
-            'cap_record_minter = cap.modules.records.minters:cap_record_minter',
-        ],
-        'invenio_pidstore.fetchers': [
-            'cap_record_fetcher = '
-            'cap.modules.records.fetchers:cap_record_fetcher',
-        ],
         'invenio_base.apps': [
-            'invenio_search = invenio_search:InvenioSearch',
-            'invenio_records = invenio_records:InvenioRecords',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
-            'cap_accesss = cap.modules.access.ext:Access',
+            'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_records = cap.modules.records.ext:Records',
+            'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
         ],
         'invenio_base.api_apps': [
-            'invenio_pidstore = invenio_pidstore:InvenioPIDStore',
-            'invenio_search = invenio_search:InvenioSearch',
-            'cap_access = cap.modules.access.ext:Access',
+            'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
+            'cap_access = cap.modules.access.ext:CAPAccess',
         ],
         'invenio_access.actions': [
-            'cap_alice_access = '
-            'cap.modules.experiments.views.alice:alice_group_need',
-
-            'cap_atlas_access = '
-            'cap.modules.experiments.views.atlas:atlas_group_need',
-
-            'cap_cms_access = '
-            'cap.modules.experiments.views.cms:cms_group_need',
-
-            'cap_lhcb_access = '
-            'cap.modules.experiments.views.lhcb:lhcb_group_need',
         ],
         'invenio_assets.bundles': [
             'cap_theme_css = cap.modules.theme.bundles:css',
@@ -211,11 +162,27 @@ setup(
             'cap_experiments_css = '
             'cap.modules.experiments.bundles:experiments_css',
         ],
+        'invenio_pidstore.minters': [
+            'cap_record_minter = '
+            'cap.modules.records.minters:cap_record_minter',
+            'cap_deposit_minter = '
+            'cap.modules.deposit.minters:cap_deposit_minter',
+        ],
+        'invenio_pidstore.fetchers': [
+            'cap_record_fetcher = '
+            'cap.modules.records.fetchers:cap_record_fetcher',
+            'cap_deposit_fetcher = '
+            'cap.modules.deposit.fetchers:cap_deposit_fetcher',
+        ],
         'invenio_records.jsonresolver': [
             'jsonresolver = cap.modules.records.resolvers.jsonschemas',
         ],
         'invenio_search.mappings': [
-            'mappings = cap.modules.records',
+            'deposits = cap.mappings',
+            'records = cap.mappings',
+        ],
+        'invenio_jsonschemas.schemas': [
+            'cap = cap.jsonschemas',
         ],
     },
     extras_require=extras_require,
@@ -225,7 +192,8 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'License :: OSI Approved :: GNU General Public License v2 or later'\
+        '(GPLv2+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
@@ -238,5 +206,4 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Development Status :: 1 - Planning',
     ],
-    cmdclass={},
 )

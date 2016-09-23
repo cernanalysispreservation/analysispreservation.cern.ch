@@ -1,3 +1,27 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+
 """Access module."""
 
 from __future__ import absolute_import, print_function
@@ -6,11 +30,11 @@ import redis
 from flask import session
 from flask_kvsession import KVSessionExtension
 from invenio_query_parser.ast import (AndOp, DoubleQuotedValue, Keyword,
-                                      KeywordOp, OrOp, NotOp)
+                                      KeywordOp, OrOp)
 from simplekv.memory.redisstore import RedisStore
 
 
-class Access(object):
+class CAPAccess(object):
     """Access extension."""
 
     def __init__(self, app=None):
@@ -22,8 +46,6 @@ class Access(object):
 
     def init_app(self, app):
         """Initialize configuration."""
-        app.config.setdefault("SECURITY_LOGIN_USER_TEMPLATE",
-                              "access/login_user.html")
         app.extensions['cap-access'] = self
 
 
@@ -34,21 +56,21 @@ def authenticated_query(query, **kwargs):
         'collaboration_alice': [],
         'collaboration_atlas': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('atlasworkflows'))
+                Keyword('collections'),
+                DoubleQuotedValue('atlasworkflows'))
         ],
         'collaboration_cms': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('cmsanalysis')),
+                Keyword('collections'),
+                DoubleQuotedValue('cmsanalysis')),
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('cmsquestionnaire'))
+                Keyword('collections'),
+                DoubleQuotedValue('cmsquestionnaire'))
         ],
         'collaboration_lhcb': [
             KeywordOp(
-                    Keyword('collections'),
-                    DoubleQuotedValue('lhcbanalysis'))
+                Keyword('collections'),
+                DoubleQuotedValue('lhcbanalysis'))
         ]
     }
 
