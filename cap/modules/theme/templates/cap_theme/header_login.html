@@ -29,8 +29,32 @@
     <a  href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-default sign-in-btn btn-lg" >{{_('Sign in with CERN')}}</a>
   </form>
   {%- else %}
-  <div class="navbar-right">
-    <a class="btn pointer-none"><i class="fa fa-user"></i><span class="hidden-md hidden-l hidden-sm hidden-xs">{{current_user.email}}</span></a>
+  <div id="cap-home-user-menu" class="pull-right dropdown">
+      <button id="cap-home-user" class="dropdown btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-user"></i>
+        <span class="caret"></span>
+      </button>
+        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="cap-home-user">
+          <li class="header">
+            <span class="hidden-md hidden-l hidden-sm hidden-xs">Signed In As</br> <strong>{{current_user.email}}</strong></span>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li class="">
+            <a href="{{url_for('invenio_userprofiles.profile')}}">
+              Your Profile
+            </a>
+          </li>
+          <li class="">
+            <a href="{{url_for('invenio_oauthclient_settings.index')}}">
+              Your Settings
+            </a>
+          </li>
+          <li class="">
+            <a href="{{url_for('invenio_oauth2server_settings.index')}}">
+              Your Applications
+            </a>
+          </li>
+        </ul>
     <a href="{{url_for('security.logout')}}" class="btn hidden-sm hidden-xs"><i class="fa fa-power-off" aria-hidden="true"></i></a>
   </div>
   {%- endif %}

@@ -1,12 +1,14 @@
 {%- extends config.DEPOSIT_BASE_TEMPLATE %}
 {%- block css %}
     {% assets "invenio_deposit_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {% assets "invenio_search_ui_search_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
     {{ super() }}
 {%- endblock css %}
 
 {%- block javascript %}
   {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
   {% assets "invenio_deposit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  {{super()}}
 {%- endblock javascript %}
 
 {%- block page_body %}

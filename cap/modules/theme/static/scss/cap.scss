@@ -46,6 +46,15 @@ $cap_box_color: $cap_color;
 @import "footer";
 @import "record";
 
+.cap-main {
+  height: 100vh;
+}
+
+.cap-container {
+  height: 100vh;
+  padding-top: $cap_header_height+30;
+}
+
 
 header {
     nav.navbar-default {

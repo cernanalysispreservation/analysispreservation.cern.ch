@@ -5,14 +5,14 @@ $cap_header_height: 90px;
 
 .cap-header {
     background-color: #ffffff;
-    border-bottom: 1px solid #3498DB;
+    border-bottom: 1px solid $cap_base_color;
     height: $cap_header_height;
     padding: 25px 0;
 }
 
 .cap-home-logo {
     display: inline-block;
-    margin-top: -12px
+    margin-top: -12px;
 }
 
 #header-upload {
@@ -24,7 +24,35 @@ $cap_header_height: 90px;
     border-radius: 2px;
 }
 
+#cap-home-user-menu {
+    color: #333;
 
-.header-search-bar {
-    
+    .btn {
+        background-color: #fff;
+        font-size: 18px;
+        height: 40px;
+        border-radius: 2px;
+        border: 1px solid #ccc;
+        color: #ccc;
+    }
+    .dropdown-menu {
+        right: 40px;
+
+        li.header{
+            padding: 0 10px;
+            color: #767676;
+        }
+
+        li {
+            padding: 0;
+
+            a {
+                padding: 4px 10px;
+            }
+            a:hover {
+                background-color: $cap_base_color;
+                color: #fff;
+            }
+        }
+    }
 }

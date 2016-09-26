@@ -26,19 +26,71 @@
 {%- extends "cap_theme/page.html" %}
 
 {%- block page_header %}
+  {% if current_user.is_authenticated %}
+    {{ super() }}
+  {% endif %}
   {% block css %}
     {{ super() }}
     {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-    {% assets "invenio_search_ui_search_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
   {% endblock css %}
 {% endblock page_header %}
 
 {% block page_body %}
-<div class="cap-home">
-  <div class="container-fluid custom-container">
+<div class="container-fluid custom-container">
+  <div class="cap-main">
+  {% if current_user.is_authenticated %}
+   <div class="row">
+      <div id="cap-experiments">
+          {% if 'collaboration_alice' in experiments %}
+          <div class="col-sm-6">
+              <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
+                <div class="exp-img col-sm-5">
+                  <img src="{{ url_for('static', filename='img/ALICE.svg') }}" alt="">
+                </div>
+                <div class="exp-name col-sm-7">ALICE</div>
+              </a>
+          </div>
+          {% endif %}
+          {% if 'collaboration_atlas' in experiments %}
+          <div class="col-sm-6">
+              <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
+                <div class="exp-img col-sm-5">
+                  <img src="{{ url_for('static', filename='img/ATLAS.svg') }}" alt="">
+                </div>
+                <div class="exp-name col-sm-7">ATLAS</div>
+              </a>
+          </div>
+          {% endif %}
+          {% if 'collaboration_cms' in experiments %}
+          <div class="col-sm-6">
+              <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
+                <div class="exp-img col-sm-5">
+                  <img src="{{ url_for('static', filename='img/CMS.svg') }}" alt="">
+                </div>
+                <div class="exp-name col-sm-7">CMS</div>
+              </a>
+          </div>
+          {% endif %}
+          {% if 'collaboration_lhcb' in experiments %}
+          <div class="col-sm-6">
+              <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
+                <div class="exp-img col-sm-5">
+                  <img src="{{ url_for('static', filename='img/LHCb.svg') }}" alt="">
+                </div>
+                <div class="exp-name col-sm-7">LHCb</div>
+              </a>
+          </div>
+          {% endif %}
+      </div>
+   </div>
+  {% else %}
     <div class="row">
       <div class="col-md-5 custom-col">
-        <a  href="/"><img id="logo-position" src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" width="80%" /></a>  
+        <div class="row">
+          <div class="col-md-12">
+            <a  href="/"><img id="logo-position" src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" width="80%" /></a>  
+          </div>
+        </div>
         <div class="row">
           <div class="col-md-12">
             <h2  class="pull-left custom-header"><strong>Welcome to the </strong><strong id="cern-strong-header">CERN</strong><br><strong>Analysis Preservation Portal.</strong></h2>  
@@ -50,12 +102,12 @@
              <a id="login-button"  href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-primary btn-lg" >{{_('Log in with your CERN account')}}</a>
           </div>
         </div>
-        
       </div>
       <div class="col-md-7" >
         <img src="{{ url_for('static', filename='img/home-image.svg')}}"/>
       </div>
     </div>
+  {% endif %}
   </div>
 </div>
 {% endblock %}
@@ -66,5 +118,4 @@
     {% assets "cap_theme_front_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "cap_theme_records_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-    {% assets "cap_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {% endblock javascript %}

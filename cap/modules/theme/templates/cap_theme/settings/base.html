@@ -23,13 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
-{% extends "cap_theme/page.html" %}}
+{%- extends "invenio_theme/page_settings.html" %}
 
-{% block page_body %}
-<div class="container">
-  <div class="row">
-    {% block settings_menu %}{% endblock %}
-    {% block settings_content %}{% endblock %}
-  </div>
+{%- block page_body scoped %}
+
+<div class="cap-container">
+    {{super()}}
 </div>
 {% endblock %}

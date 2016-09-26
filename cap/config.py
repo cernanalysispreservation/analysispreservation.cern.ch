@@ -78,7 +78,7 @@ BASE_TEMPLATE = "cap_theme/page.html"
 #: Cover template for entire site.
 COVER_TEMPLATE = "invenio_theme/page_cover.html"
 #: Settings template for entire site.
-# SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
+SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 #: Template for 404 page.
 THEME_404_TEMPLATE = "cap_theme/404.html"
 #: Template for 500 page.
@@ -332,7 +332,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'delete_permission_factory_imp': allow_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
-
+DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
     config.DEPOSIT_RECORDS_UI_ENDPOINTS)
