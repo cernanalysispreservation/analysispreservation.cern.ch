@@ -23,6 +23,8 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+@import "variables";
+
 #cap_home_search {
     margin-top: 100px;
 }
@@ -127,4 +129,33 @@ li.result-item {
 .dl-object {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+#cern-strong-header {
+    color:$theme-color;
+}
+
+.custom-container {
+    margin: 2%;
+}
+
+.custom-col {
+    margin-top:3%;
+}
+
+.custom-header {
+    margin-top:13%; 
+    color: #000000;
+}
+
+#logo-position {
+    margin-left: -3%;
+}
+
+#login-button {
+    background-color: $theme-color; 
+    padding: 9px 14%; 
+    margin-top:2%;
+    font-size: 16px;
+    border-radius: 2px;
 }
