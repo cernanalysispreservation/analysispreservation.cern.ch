@@ -31,6 +31,10 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 @import "../node_modules/font-awesome/scss/font-awesome";
 $cap_color: #8A949E;
 
+
+$cap_base_color: #3498DB;
+$cap_btn_bg: $cap_base_color;
+
 $cap_box_bg: #fff;
 $cap_box_color: $cap_color;
 
@@ -38,9 +42,10 @@ $cap_box_color: $cap_color;
 @import "type";
 @import "body";
 @import "navbar";
+@import "header";
 @import "footer";
 @import "record";
-@import "searchbar";
+
 
 header {
     nav.navbar-default {
@@ -54,9 +59,8 @@ header {
 .cap-box {
     background-color: #fff;
     color: #8A949E;
-    box-shadow: 0px 0px 100px rgba(194, 196, 208, 1);
     padding: 20px;
-    border-radius: 3px;
+    border: 1px solid $cap_base_color;
 
     > header {
         color: #8A949E;
@@ -74,13 +78,6 @@ header {
         padding: 0;
         margin: 0;
     }
-}
-
-.cap-container {
-    background-color: #ffffff;  
-    border-bottom: 2.5px solid; 
-    border-bottom-color:#3498DB;
-    height: 87px;
 }
 
 .cap-checkbox {

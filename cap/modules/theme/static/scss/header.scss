@@ -1,0 +1,30 @@
+$header_btn_height: 40px;
+$cap_header_height: 90px;
+
+@import "searchbar";
+
+.cap-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #3498DB;
+    height: $cap_header_height;
+    padding: 25px 0;
+}
+
+.cap-home-logo {
+    display: inline-block;
+    margin-top: -12px
+}
+
+#header-upload {
+    background-color: $cap_btn_bg;
+    color: #fff;
+    height: $header_btn_height;
+    line-height: 24px;
+    font-size: 16px;
+    border-radius: 2px;
+}
+
+
+.header-search-bar {
+    
+}

@@ -29,7 +29,7 @@
             <div id="invenio-search-bar">
                 <invenio-search-bar
                         template="{{ url_for('static', filename='html/searchbar.html') }}"
-                        placeholder="{{ _('Start typing') }}">
+                        placeholder="{{ _('Search') }}">
                 </invenio-search-bar>
                  <!-- ERROR -->
                 <invenio-search-error
@@ -44,11 +44,13 @@
                     </invenio-search-loading>
                 </div>
                  <!-- COUNT -->
+                <!--
                 <div class="invenio-search-count text-center">
-                    <invenio-search-count
+                   <invenio-search-count
                             template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/count.html') }}">
                     </invenio-search-count>
                 </div>
+                -->
                  <!-- RESULTS -->
                 <invenio-search-results
                         template="{{ url_for('static', filename='html/results.html') }}">
