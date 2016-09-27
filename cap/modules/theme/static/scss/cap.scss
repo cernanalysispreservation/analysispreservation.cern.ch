@@ -176,3 +176,18 @@ button:focus {
 .error-page {
     margin-top: 10%;
 }
+
+body::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
+  //    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: $lightgrey;
+}
+
+body::-webkit-scrollbar, .scrollable::-webkit-scrollbar {
+  width: 6px;
+  background-color: $lightgrey;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: $theme-color;
+}
+
