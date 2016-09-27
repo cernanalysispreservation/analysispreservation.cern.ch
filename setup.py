@@ -177,6 +177,7 @@ setup(
             'cap.modules.experiments.bundles:experiments_js',
             'cap_experiments_css = '
             'cap.modules.experiments.bundles:experiments_css',
+            'cap_forms_css = cap.modules.deposit.bundles:forms_css',
         ],
         'invenio_pidstore.minters': [
             'cap_record_minter = '

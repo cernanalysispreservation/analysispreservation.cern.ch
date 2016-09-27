@@ -1,0 +1,35 @@
+<div sf-array="form" class="schema-form-array {{form.htmlClass}}" ng-model="$$value$$" ng-model-options="form.ngModelOptions">
+    <label class="control-label col-sm-3" ng-show="showTitle()">{{ form.title }}</label>
+    <div class="col-sm-9">
+        <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
+            <li class="list-group-item {{ form.fieldHtmlClass }}"
+                ng-class="{'deposit-inline': form.inline}"
+                ng-repeat="item in modelArray track by $index">
+                <div class="close-container" ng-class="{'clear-form': !form.inline}">
+                    <button ng-hide="form.readonly || form.remove === null"
+                            ng-click="deleteFromArray($index)"
+                            ng-disabled="form.schema.minItems >= modelArray.length"
+                            style="position: relative; z-index: 20;"
+                            type="button" class="close pull-right">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                </div>
+                <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+            </li>
+        </ol>
+    </div>
+    <div class="clearfix" style="padding: 15px;" ng-model="modelArray">
+        <div class="help-block"
+             ng-show="(hasError() && errorMessage(schemaError())) || form.description"
+             ng-bind-html="(hasError() && errorMessage(schemaError())) || form.description"></div>
+
+        <button ng-hide="form.readonly || form.add === null"
+                ng-click="appendToArray()"
+                ng-disabled="form.schema.maxItems <= modelArray.length"
+                type="button"
+                class="btn {{ form.style.add || 'btn-default' }} pull-right">
+            <i class="glyphicon glyphicon-plus"></i>
+            {{ form.add || 'Add'}}
+        </button>
+    </div>
+</div>

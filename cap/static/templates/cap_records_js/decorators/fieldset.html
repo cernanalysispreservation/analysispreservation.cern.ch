@@ -1,0 +1,14 @@
+<fieldset ng-disabled="form.readonly"
+          class="schema-form-fieldset {{ form.htmlClass }}">
+    <div class="panel panel-default deposit-panel">
+        <div class="panel-heading">
+            <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.title | uppercase }}</strong></span>
+            <div class="help-block" ng-if="form.description"
+                 ng-bind-html="form.description"></div>
+        </div>
+        <div class="panel-body" ng-hide="collapsed">
+            <sf-decorator ng-repeat="item in form.items"
+                          form="item"></sf-decorator>
+        </div>
+    </div>
+</fieldset>

@@ -32,6 +32,11 @@ import os
 from os.path import dirname, join
 
 from celery.schedules import crontab
+
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
+
 from flask_principal import RoleNeed
 from invenio_deposit import config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
@@ -42,9 +47,7 @@ from invenio_records_rest.config import (RECORDS_REST_FACETS,
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
+from os.path import dirname, join
 
 
 def _(x):
@@ -410,9 +413,10 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'permission_factory_imp': "cap.modules.deposit.permissions:ReadDepositPermission",
 })
 
-#: Template for <invenio-records-actions>
-DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_records_js/actions.html'
+#: Template for <invenio-records-form>
+DEPOSIT_UI_JSTEMPLATE_FORM = 'templates/cap_records_js/form.html'
 
+DEPOSIT_FORM_TEMPLATES_BASE = 'templates/cap_records_js/decorators'
 
 #: Response messages for deposit
 DEPOSIT_RESPONSE_MESSAGES = dict(

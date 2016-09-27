@@ -1,5 +1,216 @@
-[
-    {
-        "key": "basic_info"
-    }
+[  
+   {  
+      "key": "basic_info",
+      "type": "fieldset",
+      "htmlClass": "custom-panel",
+      "items":[  
+         {
+          "key": "basic_info.analysis_name",
+          "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
+
+         },
+         {
+          "key": "basic_info.egroup",
+          "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+         },
+         {
+          "key": "basic_info.institutes",
+          "placeholder": "E.g. Institute A; Institute B"
+         },
+         {
+          "key": "basic_info.keywords",
+          "placeholder": "E.g. keyword1, keyword2"
+         },
+         {
+          "key": "basic_info.proponents",
+          "placeholder": "E.g. John Doe; Jane Doe"
+         },
+         {
+          "key": "basic_info.reviewers",
+          "placeholder": "E.g. John Roe; Jane Roe"       
+         },
+         {  
+            "key": "basic_info.status",
+            "type": "select",
+            "title": "Status",
+            "titleMap":[  
+               {  
+                  "value": "0 - planned / open topic",
+                  "name": "0 - planned / open topic"
+               },
+               {  
+                  "value": "1 - in preparation",
+                  "name": "1 - in preparation"
+               },
+               {  
+                  "value": "2 - ANA note released",
+                  "name": "2 - ANA note released"
+               },
+               {  
+                  "value": "3 - review committee",
+                  "name": "3 - review committee"
+               },
+               {  
+                  "value": "4 - collaboration review",
+                  "name": "4 - collaboration review"
+               },
+               {  
+                  "value": "5 -",
+                  "name": "5 -"
+               },
+               {  
+                  "value": "6 - CONF note published",
+                  "name": "6 - CONF note published"
+               },
+               {  
+                  "value": "7 -",
+                  "name": "7 -"
+               },
+               {  
+                  "value": "8 - journal review",
+                  "name": "8 - journal review"
+               },
+               {  
+                  "value": "9 - PAPER published",
+                  "name": "9 - PAPER published"
+               },
+               {  
+                  "value": "x - other",
+                  "name": "x - other"
+               }
+            ]
+         },
+         {
+          "key": "basic_info.status_notes"
+         }
+      ]
+   },
+   {  
+      "key": "extra_info",
+      "htmlClass": "custom-panel"
+   },
+   {  
+      "key": "documentations",
+      "htmlClass": "custom-panel"
+   },
+   {  
+      "key": "internal_discussions",
+      "htmlClass": "custom-panel"
+   },
+   {
+      "key": "dst_selection",
+      "type": "fieldset",
+      "htmlClass": "custom-panel",
+      "items":[
+        {
+          "key": "dst_selection.code"
+        },
+        {
+          "key": "dst_selection.input_data.data"
+        },
+        {
+          "key": "dst_selection.input_data.mc_data",
+          "items": [
+            {
+              "key": "dst_selection.input_data.mc_data[].items.db_tags",
+              "type": "select",
+              "title": "Database Tags",
+              "titleMap": [
+                {  
+                  "value": "DDDB",
+                  "name": "DDDB"
+               },
+               {  
+                  "value": "SIMCOND",
+                  "name": "SIMCOND"
+               }
+              ]
+            },    
+            {
+              "key": "dst_selection.input_data.mc_data[].items.generator",
+              "title": "Generator"
+            },
+            {
+              "key": "dst_selection.input_data.mc_data[].items.location",
+              "title": "Sample"
+            },
+            {
+              "key": "dst_selection.input_data.mc_data[].items.mc_production",
+              "type": "number",
+              "title": "Production"
+            },
+            {
+              "key": "dst_selection.input_data.mc_data[].items.reconstruction_software",
+              "type": "fieldset",
+              "title": "Reconstruction software",
+              "items": [
+                {
+                  "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_name",
+                  "title": "Name"
+                },
+                {
+                  "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_version",
+                  "title": "Version"
+                }
+              ]              
+            },
+            {
+              "key": "dst_selection.input_data.mc_data[].items.stripping_software",
+              "type": "fieldset",
+              "title": "Stripping software",
+              "items": [
+                {
+                  "key": "dst_selection.input_data.mc_data[].items.stripping_software_name",
+                  "title": "Name"
+                },
+                {
+                  "key": "dst_selection.input_data.mc_data[].items.stripping_software_version",
+                  "title": "Version"
+                }
+              ]              
+            },
+            {
+              "key": "dst_selection.input_data.mc_data[].items.used_tools",
+              "title": "Used Tools"
+            }
+          ]
+        },
+        {
+          "key": "dst_selection.output_data",
+          "type": "fieldset",
+          "items": [
+            {
+              "key": "dst_selection.output_data.data",
+              "title": "Collision Data", 
+              "startEmpty": true
+            },
+            {
+              "key": "dst_selection.output_data.mc_data",
+              "title": "MC Data",
+              "startEmpty": true
+            }
+          ]
+        },
+        {
+          "key": "dst_selection.stripping_line",
+          "title": "Stripping Line",
+          "startEmpty": true
+        },
+        {
+          "key": "dst_selection.trigger",
+          "title": "Trigger",
+          "startEmpty": true
+        },
+        {
+          "key": "presentations",
+          "title": "Presentations",
+          "startEmpty": true
+        },
+        {
+          "key": "publications",
+          "title": "Publications",
+          "startEmpty": true
+        }
+      ]
+   }
 ]

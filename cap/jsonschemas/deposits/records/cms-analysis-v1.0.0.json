@@ -103,6 +103,7 @@
           "type": "string"
         }
       }, 
+      "title": "Basic Information", 
       "type": "object"
     }
   }, 

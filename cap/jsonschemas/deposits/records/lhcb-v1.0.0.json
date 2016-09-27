@@ -215,22 +215,24 @@
           "type": "string"
         }, 
         "status": {
-          "enum": [
-            "0 - planned / open topic", 
-            "1 - in preparation", 
-            "2 - ANA note released", 
-            "3 - review committee", 
-            "4 - collaboration review", 
-            "5 -", 
-            "6 - CONF note published", 
-            "7 -", 
-            "8 - journal review", 
-            "9 - PAPER published", 
-            "x - other"
-          ], 
-          "required": true, 
-          "title": "Status", 
-          "type": "string"
+          "type": {
+            "enum": [
+              "0 - planned / open topic", 
+              "1 - in preparation", 
+              "2 - ANA note released", 
+              "3 - review committee", 
+              "4 - collaboration review", 
+              "5 -", 
+              "6 - CONF note published", 
+              "7 -", 
+              "8 - journal review", 
+              "9 - PAPER published", 
+              "x - other"
+            ], 
+            "required": true, 
+            "type": "string"  
+          },
+          "title": "Status"
         }, 
         "status_notes": {
           "dependencies": [
@@ -360,12 +362,14 @@
               "items": {
                 "properties": {
                   "db_tags": {
-                    "enum": [
-                      "DDDB", 
-                      "SIMCOND"
+                    "type": {
+                      "enum": [
+                        "DDDB", 
+                        "SIMCOND"
                     ], 
                     "title": "Database Tags", 
-                    "type": "string"
+                    "type": "string"  
+                    }
                   }, 
                   "generator": {
                     "title": "Generator", 

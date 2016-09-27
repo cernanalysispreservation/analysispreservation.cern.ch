@@ -1,4 +1,15 @@
-{% extends 'invenio_deposit/edit.html' %}
+{% extends 'cap_theme/page.html' %}
+
+{%- block css %}
+    {{ super() }}
+    {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{%- endblock css %}
+
+{%- block javascript %}
+  {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  {% assets "invenio_deposit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+  {{super()}}
+{%- endblock javascript %}
 
 {% if schema and schema_form %}
   {% set _schema = url_for('invenio_jsonschemas.get_schema', schema_path=schema, _external=True) %}
@@ -34,9 +45,6 @@
             <invenio-records-alert
               template="{{ url_for('static', filename='templates/cap_records_js/alert.html') }}">
             </invenio-records-alert>
-            <invenio-records-actions
-              template="{{ url_for('static', filename=config.DEPOSIT_UI_JSTEMPLATE_ACTIONS) }}">
-            </invenio-records-actions>
             <invenio-records-form
               form-templates='{{ config.DEPOSIT_FORM_TEMPLATES | tojson }}'
               form-templates-base="{{ url_for('static', filename=config.DEPOSIT_FORM_TEMPLATES_BASE) }}"
@@ -58,7 +66,7 @@
               template="{{ url_for('static', filename='templates/cap_files_js/upload.html') }}">
             </invenio-files-upload-zone>
             <invenio-files-list
-              template="{{ url_for('static', filename='node_modules/invenio-files-js/dist/templates/list.html') }}"
+              template="{{ url_for('static', filename='templates/cap_files_js/list.html') }}"
             ></invenio-files-list>
         </invenio-files-uploader>
         </div>

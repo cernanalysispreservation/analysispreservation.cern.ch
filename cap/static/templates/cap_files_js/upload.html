@@ -1,4 +1,4 @@
-<div ng-hide="!recordsVM.invenioRecordsEndpoints.self || filesVM.files[0].links.self">
+<div ng-hide="!recordsVM.invenioRecordsEndpoints.self || filesVM.files[0].links.self" class="pull-right upload-zone">
   <div class="well"
     ngf-drag-over-class="'dragover'"
     ngf-drop=""
@@ -12,7 +12,7 @@
   </div>
   <p class="text-center legend"><strong>— OR —</strong></p>
   <p class="text-center">
-    <button  class="btn btn-primary"
+    <button  class="btn btn-primary select-file-btn" 
       ngf-max-size="20GB"
       ngf-multiple="true"
       ngf-select=""

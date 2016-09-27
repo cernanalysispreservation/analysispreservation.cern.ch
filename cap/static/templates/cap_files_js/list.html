@@ -1,0 +1,49 @@
+<div ng-show="filesVM.files.length > 0" class="panel panel-default upload-zone pull-right">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-6">
+        <p ng-show="filesVM.files.length > 0" class="text-muted">
+        </p>
+      </div>
+      <div class="col-sm-offset-2 col-sm-4">
+        <div class="form-inline text-right">
+          <div class="form-group">
+            <span class="text-muted">{{ (filesVM.files | filter:fileSearch).length }} files </span>
+            <input type="text" class="input-sm form-control" placeholder="Search the files" ng-model="fileSearch" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <tr>
+      <th>Filename</th>
+      <th>Size</th>
+      <th class="text-center">Progress</th>
+      <th class="text-center">Actions</th>
+    </tr>
+    <tr class="sel-file" ng-repeat="f in filesVM.files | filter:fileSearch">
+      <td>{{ f.key | limitTo:40 }} <span ng-show="f.key.length > 50">...</span></td>
+      <td>{{ f.size | bytesToHumanReadable }}</td>
+      <td class="text-center">
+        <span ng-show="f.progress < 100 && !f.errored">{{ f.progress }} %</span>
+        <span ng-show="f.processing && !f.errored">Processing...</span>
+        <span ng-show="f.errored" class="text-danger">Error</span>
+        <span ng-show="f.completed" class="text-success">✓</span>
+      </td>
+      <td ng-show="f" class="text-center"><a ng-click="filesVM.remove(f)">✗</a></td>
+    </tr>
+    <tr ng-show="(filesVM.files | filter:fileSearch).length == 0">
+      <td colspan="4" class="text-center text-muted"> No results.</td>
+    </tr>
+  </table>
+  <div class="panel-footer">
+    <div class="text-right">
+      <span class="text-muted" ng-show="filesVM.invenioFilesBusy && filesVM.getCompleted().length < filesVM.files.length">
+        Loading ..
+      </span>
+      <button class="btn btn-sm btn-default" type="submit" ng-show="filesVM.invenioFilesBusy" ng-click="filesVM.cancel()">Cancel</button>
+      <button class="btn btn-sm btn-primary select-file-btn" type="submit" ng-disabled="filesVM.invenioFilesBusy || filesVM.getCompleted().length === filesVM.files.length" ng-click="filesVM.upload()">Start upload</button>
+    </div>
+  </div>
+</div>

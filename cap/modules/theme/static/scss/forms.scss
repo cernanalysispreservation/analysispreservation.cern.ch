@@ -1,0 +1,164 @@
+/* -*- coding: utf-8 -*-
+*
+* This file is part of CERN Analysis Preservation Framework.
+* Copyright (C) 2016 CERN.
+*
+* CERN Analysis Preservation Framework is free software; you can redistribute
+* it and/or modify it under the terms of the GNU General Public License as
+* published by the Free Software Foundation; either version 2 of the
+* License, or (at your option) any later version.
+*
+* CERN Analysis Preservation Framework is distributed in the hope that it will
+* be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with CERN Analysis Preservation Framework; if not, write to the
+* Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+* MA 02111-1307, USA.
+*
+* In applying this license, CERN does not
+* waive the privileges and immunities granted to it by virtue of its status
+* as an Intergovernmental Organization or submit itself to any jurisdiction.
+*/
+
+@import "variables";
+
+/* Deposit forms general style */
+
+.forms-font-color {
+  color: $text-dark;
+}
+
+.forms-filter-fields-font-size {
+  font-size: medium;
+}
+
+.deposit-panel {
+  border: none;
+}
+
+.custom-panel .deposit-panel {
+  border:none;
+}
+
+#fixed-column-height{
+  height: 486px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
+.panel-default>.panel-heading {
+  background-color: #ffffff;
+  border-bottom: 4px solid #eff6f9;
+  padding: 25px 15px;
+}
+
+@media (min-width: 768px) {
+  .form-horizontal .control-label {
+    text-align: left;
+  }  
+}
+
+.form-control {
+  background-color: #eff6f9;
+  border: none;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.filter-fields {
+  margin-left: 10%; 
+  font-size: x-large;
+}
+
+.fixed-column {
+  position: fixed;
+}
+
+.form-main-column {
+  float: right;
+}
+
+@media (min-width: 768px) {
+  .col-sm-4.fixed-column {
+    width: 375px;
+  }    
+}
+
+/* Button style for deposit form */
+
+.action-btn {
+  padding: 6px 25px;
+}
+
+.save-btn {
+  border-radius: 2px;
+  background-color: $clouds;
+}
+
+.save-publish-btn {
+  background-color: $turquoise;
+  border-radius: 2px;
+  color: $text-white;    
+}
+
+.edit-save-btn {
+  background-color: $clouds;
+}
+
+.discard-btn {
+  background-color: $alizarin;
+  border-radius: 2px;
+  color: $text-white;
+}
+
+.save-btn:hover {
+  background-color: $clouds;
+}
+
+.save-publish-btn:hover {
+  background-color: $turquoise;
+  color: $text-white;    
+}
+
+.edit-save-btn:hover {
+  background-color: $clouds;
+}
+
+.discard-btn:hover {
+  background-color: $alizarin;
+  color: $text-white;
+}
+
+.select-file-btn {
+  background-color: #3b97d3;
+  color: #fff;
+  height: 40px;
+  line-height: 24px;
+  font-size: 16px;
+  border-radius: 2px;
+}
+
+.select-file-btn:hover {
+  background-color: $light-blue-theme-color;
+  color: $white;
+}
+
+/* Progress bar */
+
+.custom-progress-bar {
+  width: 13%;
+  display: inline-flex;
+  float: right;
+  border-radius: 0px;
+}
+
+.upload-zone {
+  width: 66%;
+}
