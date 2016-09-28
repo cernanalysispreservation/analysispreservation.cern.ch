@@ -49,6 +49,7 @@ def _(x):
     """Identity function for string extraction"""
     return x
 
+
 DEBUG = True
 
 # Path to app root dir
@@ -260,27 +261,6 @@ SECRET_KEY = "changeme"
 # Database
 # ============
 # SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
-
-# config.setdefault(
-#     'COVER_TEMPLATE', 'invenio_theme/page_cover.html')
-# config.setdefault(
-#     'SETTINGS_TEMPLATE', 'invenio_theme/page_settings.html')
-# config.setdefault(
-#     'THEME_BASE_TEMPLATE', config['BASE_TEMPLATE'])
-# config.setdefault(
-#     'THEME_COVER_TEMPLATE', config['COVER_TEMPLATE'])
-# config.setdefault(
-#     'THEME_SETTINGS_TEMPLATE', config['SETTINGS_TEMPLATE'])
-# config.setdefault(
-#     'THEME_ERROR_TEMPLATE', 'invenio_theme/error.html')
-# config.setdefault(
-#     'THEME_401_TEMPLATE', 'invenio_theme/401.html')
-# config.setdefault(
-#     'THEME_403_TEMPLATE', 'invenio_theme/403.html')
-# config.setdefault(
-#     'THEME_404_TEMPLATE', 'invenio_theme/404.html')
-# config.setdefault(
-#     'THEME_500_TEMPLATE', 'invenio_theme/500.html')
 
 
 # Deposit
