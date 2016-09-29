@@ -27,17 +27,25 @@
   <div class="menu-wrapper">
     <div class="container">
       <div class="row footer-menu">
-        <div class="col-sm-3 col-md-2">
-          <ul class="list-unstyled">
-            <li><a href="/terms">{{_('Terms of Use')}}</a></li>
-            <li><a href="/about">{{_('About')}}</a></li>
-          </ul>
+        <div class="col-md-12" id="logo-footer">
+          <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}"/>
         </div>
-        <div class="col-sm-9 col-md-10">
-          <ul class="list-unstyled pull-right">
-            <li>&copy; 2016 {{_(config.THEME_SITENAME)}}</li>
-            <li>{{_('Powered by ')}}<a href="http://invenio-software.org/" target="_blank">Invenio</a></li>
-          </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-centered">
+          <span>
+            <a href="#" class="text-color">Team</a> |
+            <a href="#" class="text-color">Contact</a> | 
+            <a href="#" class="text-color">Contribute</a> | 
+            <a href="#" class="text-color">Source Code</a>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-centered">
+          <span>Copyright 2016 <i class="fa fa-copyright" aria-hidden="true"></i>
+            <a href="#" class="text-color">CERN</a>. Created & Hosted by <a href="#" class="text-color">CERN</a>. Powered by <a class="text-color" href="http://invenio-software.org/">Invenio Software</a>
+          </span>
         </div>
       </div>
     </div>

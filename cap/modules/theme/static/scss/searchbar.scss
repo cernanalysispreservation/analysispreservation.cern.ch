@@ -24,34 +24,50 @@
  */
 
 
-$cap_searchbar_height: 60px;
+$cap_searchbar_bgcolor: #eff6f9;
 
 #cap-home-search {
-    height: $cap_searchbar_height;
-    margin-top: 50px;
+    height: $header_btn_height;
 
     > div, > span {
-        height: $cap_searchbar_height;
-        line-height: $cap_searchbar_height;
+        height: $header_btn_height;
+        line-height: $header_btn_height;
     }
 
-    input, select {
-        width: 100%;
-        height: $cap_searchbar_height;
-        background-color: transparent;
+    .header-search-bar {
+        height: $header_btn_height;
+        background-color: $cap_searchbar_bgcolor;
         box-shadow: none;
+        border-radius: 2px;
         border: 0;
-        border-bottom: 1px solid #d4d4d4;
-        border-radius: 0;
+        float: left;
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        border-radius: 0px;
-        -webkit-border-radius: 0px;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
         outline: 0;
         font-size: 18px;
         font-weight: 400;
         color: $cap_color;
+        width: 100%;
+    }
+
+    .header-search-btn {
+        background-color: $cap_btn_bg;
+        float: left;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+        color: #fff;
+        font-size: 25px;
+        font-weight: 100;
+        height: $header_btn_height;
+        width: $header_btn_height;
+        border: 0;
+        position: absolute;
+        right: 0;
+        line-height: $header_btn_height;
+        padding: 0 9px;
     }
 
     .search-input-main {
@@ -78,7 +94,7 @@ $cap_searchbar_height: 60px;
             top: 0;
             left: 0;
             margin-left: 15px;
-            line-height: $cap_searchbar_height;
+            line-height: $header_btn_height;
             line-height: 100%;
             color: #8A949E;
             font-size: 2em;
@@ -86,37 +102,10 @@ $cap_searchbar_height: 60px;
         }
 
         input {
-            padding-left: $cap_searchbar_height;
+            padding-left: 10px;
         }
     }
 
-    .search-input-sep {
-        display: inline-block;
-        height: 60px;
-        line-height: 60px;
-        float: left;
-        font-size: 18px;
-        text-align: center;
-        font-weight: 400;
-        color: #BDC2C7;
-    }
-
-    .search-input-collection {
-        //width: 20%;
-        float: left;
-
-        i.fa {
-            position: absolute;
-            right: 20px;
-            font-size: 20px;
-            color: $cap_color;
-            padding-top: 20px;
-        }
-        select {
-            width: 100%;
-            text-indent: 15px;
-        }
-    }
 }
 
 

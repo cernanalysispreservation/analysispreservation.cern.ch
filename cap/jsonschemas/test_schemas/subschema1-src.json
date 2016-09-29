@@ -1,0 +1,7 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "subschema1",
+    "type": "object",
+    "additionalProperties": false,
+    "$ref": "test_schemas/subschema3.json"
+}

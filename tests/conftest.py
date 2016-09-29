@@ -32,9 +32,12 @@ import shutil
 import tempfile
 
 import pytest
+
 from cap.factory import create_app
+from elasticsearch.exceptions import RequestError
 from flask_cli import ScriptInfo
 from invenio_db import db as db_
+from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 
 
@@ -94,3 +97,16 @@ def db(app):
     yield db_
     db_.session.remove()
     db_.drop_all()
+
+
+@pytest.yield_fixture()
+def es(app):
+    """Provide elasticsearch access."""
+    try:
+        list(current_search.create())
+    except RequestError:
+        list(current_search.delete(ignore=[400, 404]))
+        list(current_search.create())
+    current_search_client.indices.refresh()
+    yield current_search_client
+    list(current_search.delete(ignore=[404]))

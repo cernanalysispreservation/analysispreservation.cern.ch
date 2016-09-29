@@ -29,17 +29,20 @@ from __future__ import absolute_import, print_function
 
 import copy
 import os
+from os.path import dirname, join
 
 from flask_principal import RoleNeed
 from invenio_deposit import config
+from invenio_deposit.config import (DEPOSIT_REST_FACETS,
+                                    DEPOSIT_REST_SORT_OPTIONS)
 from invenio_oauthclient.contrib import cern
+from invenio_records_rest.config import (RECORDS_REST_FACETS,
+                                         RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.utils import allow_all, deny_all
-from invenio_deposit.config import DEPOSIT_REST_FACETS, \
-    DEPOSIT_REST_SORT_OPTIONS
-from invenio_records_rest.config import RECORDS_REST_FACETS, \
-    RECORDS_REST_SORT_OPTIONS
 
-from cap.modules.deposit.permissions import UpdateDepositPermission, CreateDepositPermission, ReadDepositPermission
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
 
 
 def _(x):
@@ -47,6 +50,9 @@ def _(x):
     return x
 
 DEBUG = True
+
+# Path to app root dir
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Mail
 # ====
@@ -76,7 +82,7 @@ BASE_TEMPLATE = "cap_theme/page.html"
 #: Cover template for entire site.
 COVER_TEMPLATE = "invenio_theme/page_cover.html"
 #: Settings template for entire site.
-# SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
+SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 #: Template for 404 page.
 THEME_404_TEMPLATE = "cap_theme/404.html"
 #: Template for 500 page.
@@ -100,6 +106,19 @@ RECORDS_UI_ENDPOINTS = dict(
         pid_type='recid',
         route='/records/<pid_value>',
         template='records/detail.html',
+        record_class='invenio_records_files.api:Record'
+    ),
+    recid_preview=dict(
+        pid_type='recid',
+        route='/records/<pid_value>/preview/<path:filename>',
+        view_imp='invenio_previewer.views.preview',
+        record_class='invenio_records_files.api:Record',
+    ),
+    recid_files=dict(
+        pid_type='recid',
+        route='/records/<pid_value>/files/<path:filename>',
+        view_imp='invenio_files_rest.views.file_download_ui',
+        record_class='invenio_records_files.api:Record',
     ),
 )
 
@@ -222,6 +241,12 @@ JSONSCHEMAS_VERSIONS = {
     "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
 }
 
+JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
+
+# directories with jsonschemas
+JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
+JSONSCHEMAS_RECORDS_DIR = 'records/'
+
 # User profile
 # ============
 #: Enable all the users to perform all the actions
@@ -322,7 +347,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'delete_permission_factory_imp': allow_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
-
+DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
     config.DEPOSIT_RECORDS_UI_ENDPOINTS)
@@ -339,3 +364,7 @@ DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_deposit/actions.html'
 COLLECTIONS_REGISTER_RECORD_SIGNALS = False
 
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
+
+# Datadir
+# =======
+DATADIR = join(dirname(__file__), 'data')

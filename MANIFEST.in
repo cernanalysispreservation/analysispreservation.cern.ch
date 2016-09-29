@@ -11,6 +11,7 @@ include docker/nginx/Dockerfile
 recursive-include cap *.gif
 recursive-include cap *.html
 recursive-include cap *.ico
+recursive-include cap *.ipynb
 recursive-include cap *.js
 recursive-include cap *.json
 recursive-include cap *.png

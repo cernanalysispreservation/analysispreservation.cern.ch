@@ -1,4 +1,4 @@
-{# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2016 CERN.
@@ -21,7 +21,33 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-#}
+# or submit itself to any jurisdiction.
 
-{% assets "cap_theme_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-{% assets "cap_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+"""Unit tests Cap Deposit indexing."""
+
+from __future__ import absolute_import, print_function
+
+from invenio_deposit.api import Deposit
+from invenio_search import current_search
+
+
+def test_create_deposit_index(db, es):
+    """Test if deposit index is created."""
+    deposit_index_name = 'deposits-records-lhcb-v1.0.0'
+
+    Deposit.create({
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': 1
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    # Make sure the '_deposit' is added in the record
+    assert '_deposit' in res['hits']['hits'][0]['_source']

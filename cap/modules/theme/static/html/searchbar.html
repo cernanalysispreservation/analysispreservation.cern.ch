@@ -1,23 +1,20 @@
 <form class="form row">
     <div id="cap-home-search">
-        <div class="search-input-main col-sm-9 col-xs-12">
-            <i class="fa fa-search"></i>
-                <input
-                    class="form-control"
-                    type="text"
-                    placeholder="{{ placeholder }}"
-                    ng-model="vm.userQuery"
-                    ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
-                    ng-keyup="$event.keyCode == 13 && updateQuery()"
-                />
-        </div>
-        <span class="search-input-sep col-sm-1 hidden-xs">in</span>
-        <div class="search-input-collection col-sm-2 hidden-xs">
-            <i class="fa fa-caret-down"></i>
-            <select>
-                <option>All Collections</option>
-                <option>CMS</option>
-            </select>
+        <div class="search-input-main col-xs-12">
+            <input
+                type="text"
+                placeholder="{{ placeholder }}"
+                ng-model="vm.userQuery"
+                ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
+                ng-keyup="$event.keyCode == 13 && updateQuery()"
+                class="header-search-bar"
+            />
+            <button
+                class="header-search-btn"
+                ng-click="updateQuery()"
+            >
+                <span class="fa fa-search"></span>
+            </button>
         </div>
     </div>
 </form>
