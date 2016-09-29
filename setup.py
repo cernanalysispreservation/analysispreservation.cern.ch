@@ -67,6 +67,7 @@ install_requires = [
     'Flask-BabelEx>=0.9.2',
     'Flask-KVSession>=0.6.2',
     'Flask>=0.11.1',
+    'flask-wtf==0.12',
     'invenio-access>=1.0.0a9',
     'invenio-accounts>=1.0.0a14',
     'invenio-assets>=1.0.0b2',
