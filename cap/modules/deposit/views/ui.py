@@ -24,11 +24,11 @@
 
 
 """CAP deposit UI views"""
-
-from flask import abort, Blueprint, current_app, render_template, url_for
-from flask.views import View
+from ..api import CAPDeposit
 from cap.config import DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
+from flask import Blueprint, abort, current_app, render_template, url_for
+from flask.views import View
 
 blueprint = Blueprint(
     'cap_deposit_ui',
@@ -50,7 +50,8 @@ def create_blueprint():
                 'deposit_item_new_{0}'.format(group_name),
                 template_name=group.get('item_new_template', None),
                 schema=group.get('schema', None),
-                create_permission_factory=group.get('create_permission_factory_imp', None),
+                create_permission_factory=group.get(
+                    'create_permission_factory_imp', None),
                 schema_form=group.get('schema_form', None),
             )
         )
@@ -70,7 +71,6 @@ def create_blueprint():
 @blueprint.app_template_filter('tolinksjs')
 def to_links_js(pid, deposit=None):
     """Get API links."""
-
     self_url = current_app.config['DEPOSIT_RECORDS_API'].format(
         pid_value=pid.pid_value)
 
@@ -79,15 +79,47 @@ def to_links_js(pid, deposit=None):
         'html': url_for(
             'invenio_deposit_ui.{}'.format(pid.pid_type),
             pid_value=pid.pid_value),
+        'bucket': current_app.config['DEPOSIT_FILES_API'] + '/{0}'.format(
+            str(deposit.files.bucket.id)),
         'discard': self_url + '/actions/discard',
         'edit': self_url + '/actions/edit',
         'publish': self_url + '/actions/publish',
+        'files': self_url + '/files',
     }
+
+
+@blueprint.app_template_filter('tofilesjs')
+def to_files_js(deposit):
+    """List files in a deposit."""
+    res = []
+
+    for f in deposit.files:
+        res.append({
+            'key': f.key,
+            'version_id': f.version_id,
+            'checksum': f.file.checksum,
+            'size': f.file.size,
+            'completed': True,
+            'progress': 100,
+            'links': {
+                'self': (
+                    current_app.config['DEPOSIT_FILES_API'] +
+                    u'/{bucket}/{key}?versionId={version_id}'.format(
+                        bucket=f.bucket_id,
+                        key=f.key,
+                        version_id=f.version_id,
+                    )),
+            }
+        })
+
+    return res
 
 
 class NewItemView(View):
 
-    def __init__(self, template_name=None, schema=None, schema_form=None,
+    def __init__(self, template_name=None,
+                 schema=None,
+                 schema_form=None,
                  create_permission_factory=None):
 
         self.template_name = template_name
@@ -118,7 +150,12 @@ class NewItemView(View):
 
 class ListView(View):
 
-    def __init__(self, template_name=None, schema=None, schema_form=None, read_permission_factory=None, create_permission_factory=None, update_permission_factory=None, delete_permission_factory=None):
+    def __init__(self, template_name=None,
+                 schema=None, schema_form=None,
+                 read_permission_factory=None,
+                 create_permission_factory=None,
+                 update_permission_factory=None,
+                 delete_permission_factory=None):
 
         self.template_name = template_name
         self.schema = schema

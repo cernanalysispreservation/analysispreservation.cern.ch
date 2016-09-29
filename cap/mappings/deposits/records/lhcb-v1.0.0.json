@@ -47,21 +47,30 @@
             }
           }
         },
-        "_files": {
+         "_files": {
           "type": "object",
           "properties": {
-            "key": {
-              "type": "string",
-              "index": "not_analyzed"
-            },
             "bucket": {
               "type": "string",
               "index": "not_analyzed"
             },
-            "size": {
-              "type": "integer"
+            "key": {
+              "type": "string",
+              "index": "not_analyzed",
+              "copy_to": "filename"
             },
             "version_id": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "size": {
+              "type": "long"
+            },
+            "checksum": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "type": {
               "type": "string",
               "index": "not_analyzed"
             }

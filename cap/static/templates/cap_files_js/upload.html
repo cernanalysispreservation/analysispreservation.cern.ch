@@ -1,0 +1,25 @@
+<div ng-hide="!recordsVM.invenioRecordsEndpoints.self || filesVM.files[0].links.self">
+  <div class="well"
+    ngf-drag-over-class="'dragover'"
+    ngf-drop=""
+    ngf-change="filesVM.addFiles($newFiles)"
+    ngf-max-size="20GB"
+    ngf-multiple="true"
+  >
+    <center>
+      Drop files or folders here
+    </center>
+  </div>
+  <p class="text-center legend"><strong>— OR —</strong></p>
+  <p class="text-center">
+    <button  class="btn btn-primary"
+      ngf-max-size="20GB"
+      ngf-multiple="true"
+      ngf-select=""
+      ngf-change="filesVM.addFiles($newFiles)"
+    >
+      Click to select
+    </button>
+  </p>
+  <hr />
+</div>

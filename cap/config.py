@@ -293,7 +293,8 @@ DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v1.0.0.json'
 DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
 #: Search api url for deposit
 DEPOSIT_SEARCH_API = '/api/deposits/'
-
+#: Files api url for deposit
+DEPOSIT_FILES_API = '/api/files'
 #: Template for deposit records API.
 # DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
 
@@ -331,21 +332,28 @@ DEPOSIT_GROUPS = {
 # #: Endpoints for deposit.
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
 DEPOSIT_REST_ENDPOINTS = copy.deepcopy(config.DEPOSIT_REST_ENDPOINTS)
+_PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
+
 # DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
 DEPOSIT_REST_ENDPOINTS['depid'].update({
     # 'pid_type': 'depid',
     'pid_minter': 'cap_deposit_minter',
     'pid_fetcher': 'cap_deposit_fetcher',
+    'record_class': 'cap.modules.deposit.api:CAPDeposit',
     # 'record_serializers': {
     #     'application/json': (
     #         'cap.modules.records.serializers'
     #         ':json_v1_response')
     # },
+    'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
+    'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
+    'file_item_route':
+        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
     'create_permission_factory_imp': CreateDepositPermission,
     'read_permission_factory_imp': ReadDepositPermission,
     'update_permission_factory_imp': UpdateDepositPermission,
     # TODO update delete permission when 'discard'/'delete' is ready
-    'delete_permission_factory_imp': allow_all,
+    'delete_permission_factory_imp': deny_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
 DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
@@ -383,8 +391,6 @@ DEPOSIT_RESPONSE_MESSAGES = dict(
 # ===========
 #: Remove signals (Only for debug mode)
 COLLECTIONS_REGISTER_RECORD_SIGNALS = False
-
-DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
 
 # Datadir
 # =======

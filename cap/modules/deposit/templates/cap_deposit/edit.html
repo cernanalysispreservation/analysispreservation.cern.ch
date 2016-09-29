@@ -45,16 +45,17 @@
           </invenio-records>
           <invenio-files-uploader
             method="PUT"
-            endpoint="/api/files"
+            endpoint="{{ config.DEPOSIT_FILES_API }}"
             {% if pid %}
-              action="{{ config.DEPOSIT_RECORDS_API|format(pid_value=pid.pid_value) }}"
+              action="{{ config.DEPOSIT_RECORDS_API.format(pid_value=pid.pid_value) }}"
+              files='{{record|tofilesjs|tojson}}'
             {% else %}
               initialization="{{ config.DEPOSIT_SEARCH_API }}"
             {% endif %}
             extra-params='{"headers":{"Content-Type": "application/json"}}'
           >
             <invenio-files-upload-zone
-              template="{{ url_for('static', filename='node_modules/invenio-files-js/dist/templates/upload.html') }}">
+              template="{{ url_for('static', filename='templates/cap_files_js/upload.html') }}">
             </invenio-files-upload-zone>
             <invenio-files-list
               template="{{ url_for('static', filename='node_modules/invenio-files-js/dist/templates/list.html') }}"

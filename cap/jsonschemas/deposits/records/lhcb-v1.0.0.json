@@ -65,11 +65,45 @@
         "id"
       ]
     },
-    "_files": {
-      "type": "array",
-      "name": "_files",
+   "_files": {
       "items": {
-        "$ref": "../records-files/records-files-v1.0.0.json"
+        "type": "object",
+        "description": "Describe information needed for files in records.",
+        "properties": {
+          "checksum": {
+            "type": "string"
+          },
+          "bucket": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "description": "File type extension."
+          },
+          "size": {
+            "type": "integer"
+          }
+        }
+      },
+      "type": "array"
+    },
+    "_buckets": {
+      "type": "object",
+      "properties": {
+        "record": {
+          "type": "string",
+          "description": "Record bucket ID."
+        },
+        "deposit": {
+          "type": "string",
+          "description": "Deposit bucket ID."
+        }
       }
     }
   },
