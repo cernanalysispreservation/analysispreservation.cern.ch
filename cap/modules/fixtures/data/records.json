@@ -41,11 +41,15 @@
                 "scheduler_type": "singlestep-stage",
                 "parameters": [
                   {
-                    "value": "{workdir}/files.list",
+                    "value": {
+                      "value": "{workdir}/files.list"
+                    },
                     "key": "outList"
                   },
                   {
-                    "value": "{workdir}/grid_download",
+                    "value": {
+                      "value": "{workdir}/grid_download"
+                    },
                     "key": "outDir"
                   },
                   {
@@ -93,15 +97,21 @@
                 "scheduler_type": "singlestep-stage",
                 "parameters": [
                   {
-                    "value": "-truth",
+                    "value": {
+                      "value": "-truth"
+                    },
                     "key": "include_truth"
                   },
                   {
-                    "value": 1,
+                    "value": {
+                      "value": "1"
+                    },
                     "key": "maxsyst"
                   },
                   {
-                    "value": "-mc",
+                    "value": {
+                      "value": "-mc"
+                    },
                     "key": "input_type"
                   },
                   {
@@ -113,15 +123,21 @@
                     "key": "filelist"
                   },
                   {
-                    "value": "-nomllalpgenfilter",
+                    "value": {
+                      "value": "-nomllalpgenfilter"
+                    },
                     "key": "filter"
                   },
                   {
-                    "value": "{workdir}/mini.root",
+                    "value": {
+                      "value": "{workdir}/mini.root"
+                    },
                     "key": "minintup"
                   },
                   {
-                    "value": "-unblind",
+                    "value": {
+                      "value": "-unblind"
+                    },
                     "key": "blinded"
                   }
                 ]
@@ -186,7 +202,9 @@
                     "key": "efficiency_file"
                   },
                   {
-                    "value": "{workdir}/out.root",
+                    "value": {
+                      "value": "{workdir}/out.root"
+                    },
                     "key": "histfittree_file"
                   },
                   {
@@ -198,7 +216,9 @@
                     "key": "modelName"
                   },
                   {
-                    "value": "{workdir}/out.yield",
+                    "value": {
+                      "value": "{workdir}/out.yield"
+                    },
                     "key": "yield_file"
                   }
                 ]
@@ -246,7 +266,9 @@
                     "key": "histfitroot"
                   },
                   {
-                    "value": "{workdir}/fit.tgz",
+                    "value": {
+                      "value": "{workdir}/fit.tgz"
+                    },
                     "key": "fitresults"
                   }
                 ]
@@ -294,11 +316,15 @@
                     "key": "fitresultsarchive"
                   },
                   {
-                    "value": "{workdir}/postproc",
+                    "value": {
+                      "value": "{workdir}/postproc"
+                    },
                     "key": "workdir"
                   },
                   {
-                    "value": "{workdir}/results.yaml",
+                    "value": {
+                      "value": "{workdir}/results.yaml"
+                    },
                     "key": "resultsyaml"
                   },
                   {
@@ -1114,7 +1140,9 @@
                     "key": "kAzz"
                   },
                   {
-                    "value": "{workdir}/param.dat",
+                    "value": {
+                      "value": "{workdir}/param.dat"
+                    },
                     "key": "param_card"
                   },
                   {
@@ -1180,7 +1208,9 @@
                     "key": "param_card"
                   },
                   {
-                    "value": "{workdir}/grid.tar.gz",
+                    "value": {
+                      "value": "{workdir}/grid.tar.gz"
+                    },
                     "key": "gridpack"
                   }
                 ]
@@ -1262,7 +1292,9 @@
                         "scheduler_type": "singlestep-stage",
                         "parameters": [
                           {
-                            "value": "{workdir}/lhefile.lhe",
+                            "value": {
+                              "value": "{workdir}/lhefile.lhe"
+                            },
                             "key": "lhefile"
                           },
                           {
@@ -1328,11 +1360,15 @@
                             "key": "lhefile"
                           },
                           {
-                            "value": "{workdir}/outputfile.hepmc",
+                            "value": {
+                              "value": "{workdir}/outputfile.hepmc"
+                            },
                             "key": "hepmcfile"
                           },
                           {
-                            "value": "/analysis/mainPythiaMLM.cmnd",
+                            "value": {
+                              "value": "/analysis/mainPythiaMLM.cmnd"
+                            },
                             "key": "settings_file"
                           }
                         ]
@@ -1370,11 +1406,15 @@
                         "scheduler_type": "singlestep-stage",
                         "parameters": [
                           {
-                            "value": "/analysis/template_cards/modified_delphes_card_ATLAS.tcl",
+                            "value": {
+                              "value": "/analysis/template_cards/modified_delphes_card_ATLAS.tcl"
+                            },
                             "key": "detector_card"
                           },
                           {
-                            "value": "{workdir}/outputfile.root",
+                            "value": {
+                              "value": "{workdir}/outputfile.root"
+                            },
                             "key": "outputfile"
                           },
                           {
@@ -1426,7 +1466,9 @@
                             "key": "fromdelphes"
                           },
                           {
-                            "value": "{workdir}/anaout.root",
+                            "value": {
+                              "value": "{workdir}/anaout.root"
+                            },
                             "key": "analysis_output"
                           }
                         ]
@@ -1468,7 +1510,9 @@
                 "scheduler_type": "singlestep-stage",
                 "parameters": [
                   {
-                    "value": "{workdir}/anamerged.root",
+                    "value": {
+                      "value": "{workdir}/anamerged.root"
+                    },
                     "key": "mergedfile"
                   },
                   {
@@ -1518,15 +1562,21 @@
                 "scheduler_type": "singlestep-stage",
                 "parameters": [
                   {
-                    "value": "sm",
+                    "value": {
+                      "value": "sm"
+                    },
                     "key": "model"
                   },
                   {
-                    "value": "defaultparam.yml",
+                    "value": {
+                      "value": "defaultparam.yml"
+                    },
                     "key": "inputpars"
                   },
                   {
-                    "value": "{workdir}/param.dat",
+                    "value": {
+                      "value": "{workdir}/param.dat"
+                    },
                     "key": "parametercard"
                   }
                 ]
@@ -1573,7 +1623,9 @@
                     "key": "paramcard"
                   },
                   {
-                    "value": "{workdir}/output.lhe",
+                    "value": {
+                      "value": "{workdir}/output.lhe"
+                    },
                     "key": "outputlhe"
                   },
                   {
@@ -1627,7 +1679,9 @@
                     "key": "lhefile"
                   },
                   {
-                    "value": "{workdir}/output.hepmc",
+                    "value": {
+                      "value": "{workdir}/output.hepmc"
+                    },
                     "key": "outputhepmc"
                   },
                   {
@@ -1674,15 +1728,21 @@
                 "scheduler_type": "singlestep-stage",
                 "parameters": [
                   {
-                    "value": "{workdir}/output.lhco",
+                    "value": {
+                      "value": "{workdir}/output.lhco"
+                    },
                     "key": "outputlhco"
                   },
                   {
-                    "value": "delphes/cards/delphes_card_ATLAS.tcl",
+                    "value": {
+                      "value": "delphes/cards/delphes_card_ATLAS.tcl"
+                    },
                     "key": "delphes_card"
                   },
                   {
-                    "value": "{workdir}/output.root",
+                    "value": {
+                      "value": "{workdir}/output.root"
+                    },
                     "key": "outputroot"
                   },
                   {
@@ -1735,7 +1795,9 @@
                     "key": "input"
                   },
                   {
-                    "value": "{workdir}/plot.png",
+                    "value": {
+                      "value": "{workdir}/plot.png"
+                    },
                     "key": "output"
                   }
                 ]
