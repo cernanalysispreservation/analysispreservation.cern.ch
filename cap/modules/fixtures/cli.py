@@ -115,7 +115,7 @@ def records_files(source, force):
             d.get("collection", None),
             d.get("schema", None),
             force,
-           d.get("files", []))
+            d.get("files", []))
 
     db.session.commit()
 
@@ -141,18 +141,18 @@ def add_record(metadata, collection, schema, force, files=[]):
         bucket = Bucket.create(loc)
         buckets.append(bucket)
 
-    with open(pkg_resources.resource_filename(
-            'cap.modules.fixtures', os.path.join('data', 'files', file)
-            ), 'rb') as fp:
-        obj = ObjectVersion.create(bucket, file, stream=fp)
+        with open(pkg_resources.resource_filename(
+                'cap.modules.fixtures', os.path.join('data', 'files', file)
+                ), 'rb') as fp:
+            obj = ObjectVersion.create(bucket, file, stream=fp)
 
-        data['_files'].append({
-                'bucket': str(obj.bucket_id),
-                'key': obj.key,
-                'size': obj.file.size,
-                'checksum': str(obj.file.checksum),
-                'version_id': str(obj.version_id),
-        })
+            data['_files'].append({
+                    'bucket': str(obj.bucket_id),
+                    'key': obj.key,
+                    'size': obj.file.size,
+                    'checksum': str(obj.file.checksum),
+                    'version_id': str(obj.version_id),
+            })
     try:
         record = Record.create(data, id_=recid)
 
