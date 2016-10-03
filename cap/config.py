@@ -353,6 +353,9 @@ DEPOSIT_RESPONSE_MESSAGES = dict(
     publish=dict(
         message="Published succesfully."
     ),
+    edit=dict(
+        message="Edited succesfully."
+    ),
 )
 
 # Collections

@@ -34,6 +34,9 @@ cap db init
 cap db create
 cap index init
 
+# Create location for files
+cap files location local var/data --default
+
 # Create collections
 cap collections create CERNAnalysisPreservation
 cap collections create CMS -p CERNAnalysisPreservation
