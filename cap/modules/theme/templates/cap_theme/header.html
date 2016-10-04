@@ -28,39 +28,47 @@
 {% block navbar %} 
 <div class="container-fluid cap-header navbar-fixed-top"> 
     <div class="col-sm-2">
-      {% block brand %}
-      <a class="cap-home-logo" href="/">
-        <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
-        <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
-      </a>
-      <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;">
-      {% endblock %}
+        {% block brand %}
+        <a class="cap-home-logo" href="/">
+            <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
+            <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
+        </a>
+        <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;">
+        {% endblock %}
     </div>
 
+    {%- block navbar_search %}
+    <div class="col-sm-7">
+        {%- include "cap_theme/searchbar.html" %}
+    </div>
+    {%- endblock navbar_search %}
 
-  {%- block navbar_search %}
-  <div class="col-sm-7">
-      {%- include "cap_theme/searchbar.html" %}
-  </div>
-  {%- endblock navbar_search %}
-
-  {%- block navbar_right %}
+    {%- block navbar_right %}
     <div class="col-sm-3">
-      <div class="row">
-      {%- block navbar_new_deposit %}
-        <div class="col-xs-4">
-          <a href="#" class="btn" id="header-upload">
-            <i class="fa fa-cloud-upload"></i>
-            Create <div class="visible-lg-inline-block">An Analysis</div>
-          </a>
+        <div class="row">
+            {%- block navbar_new_deposit %}
+            <div class="col-xs-4">
+                {% if "deposit_groups" in session %}
+                <div class="dropdown">
+                    <a href="#" class="btn" id="header-upload" data-toggle="dropdown">
+                        <i class="fa fa-cloud-upload"></i>
+                        Create <div class="visible-lg-inline-block">An Analysis</div>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="header-upload">
+                        {% for group in session["deposit_groups"] %}
+                        <li><a class="dropdown-item" href="{{ url_for('cap_deposit_ui.deposit_item_new_{0}'.format(group)) }}">{{group}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {%- endblock navbar_new_deposit %}
+            <div class="col-xs-8">
+                {%- include "cap_theme/header_login.html" %}
+            </div>
         </div>
-      {%- endblock navbar_new_deposit %}
-      <div class="col-xs-8">
-      {%- include "cap_theme/header_login.html" %}
-      </div>
     </div>
-    </div>
-  {%- endblock navbar_right %}
+    {%- endblock navbar_right %}
 </div>
 {% endblock %}
 
