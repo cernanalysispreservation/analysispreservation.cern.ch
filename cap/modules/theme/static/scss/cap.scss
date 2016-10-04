@@ -47,6 +47,9 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
   padding-top: $cap_header_height+30;
 }
 
+#cap-container {
+  padding-top: $cap_header_height;
+}
 
 header {
   nav.navbar-default {

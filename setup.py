@@ -131,6 +131,7 @@ setup(
         'invenio_base.blueprints': [
             'cap = cap.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
+            'cap_experiments = cap.modules.experiments.views.rest:experiments_bp',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',

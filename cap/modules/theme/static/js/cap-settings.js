@@ -41,6 +41,7 @@ require.config({
     "ref-parser": "node_modules/json-schema-ref-parser/dist/ref-parser",
     "json-patch": "node_modules/fast-json-patch/dist/json-patch-duplex.min",
     "angular-filter": "node_modules/angular-filter/dist/angular-filter",
+    "angular-animate": "node_modules/angular-animate/angular-animate",
     "jsoneditor": "node_modules/jsoneditor/dist/jsoneditor.min",
     "bootstrap-tokenfield": "node_modules/bootstrap-tokenfield/dist/bootstrap-tokenfield.min"
   },

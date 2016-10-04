@@ -24,24 +24,30 @@
  */
 
 
+define([], function() {
+  var components = angular.module('cap.pushmenu.components', []);
 
+  components.directive('recursive', [
+    '$compile', function($compile) {
+      return {
+        restrict: 'EACM',
+        priority: 100000,
+        compile: function(tElement, tAttr) {
+          var compiledContents, contents;
+          contents = tElement.contents().remove();
+          compiledContents = null;
+          return function(scope, iElement, iAttr) {
+            if (!compiledContents) {
+              compiledContents = $compile(contents);
+            }
+            compiledContents(scope, function(clone, scope) {
+              return iElement.append(clone);
+            });
+          };
+        }
+      };
+    }
+  ]);
 
-require([
-    'js/experiments/app',
-    'js/experiments/cap.pushmenu'
-  ], function(app) {
-      // Initialize the app
-      angular.element(document).ready(function() {
-        angular.bootstrap(document.
-                          getElementById("cap-container"),['cap.experiments']);
-      });
+  return components;
 });
-
-
-
-
-
-
-
-
-

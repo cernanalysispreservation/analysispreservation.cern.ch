@@ -23,14 +23,24 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-
 #experiment-land {
   margin-top: 50px;
 }
-
 
 #cap-experiments {
   a.cap-box {
     display: block;
   }
+}
+
+.multilevelpushmenu_wrapper {
+  margin-top: 90px;
+  position: fixed !important;
+}
+
+#experiment-land {
+  position: absolute;
+  top: 90px;
+  left: 300px;
+  z-index: 1;
 }
