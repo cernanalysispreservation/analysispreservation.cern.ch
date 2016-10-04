@@ -1,0 +1,17 @@
+﻿<div ng-show="visible" ng-class="{visible: visible, multilevelpushmenu_inactive: inactive && !collapsed}" class="levelHolderClass color{{level}}">
+    <div class="menu-header" ng-show="level == 0">
+        <h2><i class="floatRight cursorPointer" ng-class="menu.icon" ng-click="openMenu($event, menu)"></i>{{menu.title}}</h2>
+    </div>
+    <ul ng-class="{invisible: inactive}">
+        <li ng-repeat="item in menu.items" style="padding-left: {{0.6*(level+1)}}em">
+            <a ng-href="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
+                <i class="floatRight" ng-class="item.icon"></i>
+                {{item.name}}
+                <i ng-if="item.menu" class="iconSpacing" ng-class="options.groupIcon"></i>
+            </a>
+            <div ng-if="item.menu">
+                <recursive><cap-submenu menu="item.menu" level="childrenLevel" visible="item.visible"></cap-submenu></recursive>
+            </div>
+        </li>
+    </ul>
+</div>

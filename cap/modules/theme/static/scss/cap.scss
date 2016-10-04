@@ -55,6 +55,9 @@ $cap_box_color: $cap_color;
   padding-top: $cap_header_height+30;
 }
 
+#cap-container {
+  padding-top: $cap_header_height;
+}
 
 header {
     nav.navbar-default {

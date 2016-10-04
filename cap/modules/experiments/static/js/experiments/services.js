@@ -47,6 +47,22 @@ define([], function() {
               deferred.reject(response);
           });
           return deferred.promise;
+        },
+        get_experiment_menu: function(limit) {
+          var deferred = $q.defer();
+          deferred.notify('started');
+          var url = '/experiment/menu';
+          $http({
+            method: 'GET',
+            url: url
+          }).then(function(response) {
+              deferred.notify('finished');
+              deferred.resolve(response);
+            }, function (response) {
+              deferred.notify('error');
+              deferred.reject(response);
+          });
+          return deferred.promise;
         }
       };
     }]);

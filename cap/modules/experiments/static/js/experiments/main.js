@@ -24,11 +24,24 @@
  */
 
 
+
+
 require([
     'js/experiments/app',
+    'js/experiments/cap.pushmenu'
   ], function(app) {
       // Initialize the app
       angular.element(document).ready(function() {
-        angular.bootstrap(document.getElementById("cap-experiments"), ['cap.experiments']);
+        angular.bootstrap(document.
+                          getElementById("cap-container"),['cap.experiments']);
       });
 });
+
+
+
+
+
+
+
+
+

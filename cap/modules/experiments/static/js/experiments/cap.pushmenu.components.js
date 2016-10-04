@@ -22,24 +22,32 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
-@import "variables";
 
 
-#cap-experiments {
-  a.cap-box {
-    display: block;
-  }
-}
+define([], function() {
+  var components = angular.module('cap.pushmenu.components', []);
 
+  components.directive('recursive', [
+    '$compile', function($compile) {
+      return {
+        restrict: 'EACM',
+        priority: 100000,
+        compile: function(tElement, tAttr) {
+          var compiledContents, contents;
+          contents = tElement.contents().remove();
+          compiledContents = null;
+          return function(scope, iElement, iAttr) {
+            if (!compiledContents) {
+              compiledContents = $compile(contents);
+            }
+            compiledContents(scope, function(clone, scope) {
+              return iElement.append(clone);
+            });
+          };
+        }
+      };
+    }
+  ]);
 
-.multilevelpushmenu_wrapper {
-  margin-top: 90px;
-  position: fixed !important;
-}
-
-#experiment-land {
-  position: absolute;
-  top: 90px;
-  left: 300px;
-  z-index: 1;
-}
+  return components;
+});

@@ -81,14 +81,18 @@ experiments_js = NpmBundle(
     output="gen/cap.experiments.%(version)s.js",
     npm={
         "almond": "~0.3.1",
-        "angular": "~1.4.7"
+        "angular": "~1.4.7",
+        "angular-animate": "~1.3",
     }
 )
 
 experiments_css = NpmBundle(
-    'scss/experiments.scss',
-    filters='node-scss, cleancss',
-    output='gen/cap.%(version)s.css',
+    Bundle(
+        'scss/experiments.scss',
+        "scss/pushmenu.scss",
+        filters='node-scss, cleancss',
+    ),
+    output='gen/cap.experiments.%(version)s.css',
     npm={
         "almond": "~0.3.1",
         "bootstrap-sass": "~3.3.5",
