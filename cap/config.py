@@ -336,7 +336,24 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
 })
 
 #: Template for <invenio-records-actions>
-DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_deposit/actions.html'
+DEPOSIT_UI_JSTEMPLATE_ACTIONS = 'templates/cap_records_js/actions.html'
+
+
+#: Response messages for deposit
+DEPOSIT_RESPONSE_MESSAGES = dict(
+    self=dict(
+        message="Saved successfully."
+    ),
+    delete=dict(
+        message="Deleted succesfully."
+    ),
+    discard=dict(
+        message="Changes discarded succesfully."
+    ),
+    publish=dict(
+        message="Published succesfully."
+    ),
+)
 
 # Collections
 # ===========

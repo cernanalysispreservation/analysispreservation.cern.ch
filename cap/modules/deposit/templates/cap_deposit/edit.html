@@ -23,7 +23,7 @@
             {% else %}
               initialization="{{ config.DEPOSIT_SEARCH_API }}"
             {% endif %}
-            response-params='{{ config.DEPOSIT_RESPONSE_MESSAGES | tojson }}'
+            template-params='{"messages": {{ config.DEPOSIT_RESPONSE_MESSAGES|tojson }} }'
             extra-params='{"headers":{"Content-Type": "application/json"}}'
             form="{{_schema_form}}"
             record='{{ record | tojson }}'
@@ -32,7 +32,7 @@
               template="{{ url_for('static', filename='node_modules/invenio-records-js/dist/templates/loading.html') }}">
             </invenio-records-loading>
             <invenio-records-alert
-              template="{{ url_for('static', filename='node_modules/invenio-records-js/dist/templates/alert.html') }}">
+              template="{{ url_for('static', filename='templates/cap_records_js/alert.html') }}">
             </invenio-records-alert>
             <invenio-records-actions
               template="{{ url_for('static', filename=config.DEPOSIT_UI_JSTEMPLATE_ACTIONS) }}">

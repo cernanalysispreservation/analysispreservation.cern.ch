@@ -1,4 +1,4 @@
-<div ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams.responseParams[recordsVM.invenioRecordsAlert.action].hide">
+<div ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams[recordsVM.invenioRecordsAlert.action].hide">
     <div ng-show="recordsVM.invenioRecordsEndpoints.self">
       <ul class="list-inline text-right">
         <li><button ng-disabled="depositionForm.$invalid || depositionForm.$prestine || recordsVM.invenioRecordsLoading" class="btn btn-default" ng-click="recordsVM.actionHandler(['self', 'PUT'])">Save</button></li>
