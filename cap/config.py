@@ -260,7 +260,7 @@ SECRET_KEY = "changeme"
 
 # Database
 # ============
-# SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
+SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 
 
 # Deposit
