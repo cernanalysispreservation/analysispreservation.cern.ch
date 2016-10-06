@@ -29,7 +29,7 @@ from __future__ import absolute_import, print_function
 from functools import wraps
 
 from flask import Blueprint, current_app, g, redirect, session, url_for
-from flask_login import current_user, user_logged_in
+from flask_login import current_user
 from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 
 from cap.utils import obj_or_import_string
@@ -61,12 +61,13 @@ def load_extra_info(sender, identity):
                 identity.provides |= set([RoleNeed(collab)])
 
         # Set deposit groups for user
-        if 'deposit_groups' not in session:
+        if 'deposit_groups' not in session or not session['deposit_groups']:
             deposit_groups = current_app.config.get('DEPOSIT_GROUPS', {})
             session['deposit_groups'] = []
             for group, obj in deposit_groups.iteritems():
                 # Check if user has permission for this deposit group
-                if obj_or_import_string(obj['create_permission_factory_imp']).can():
+                if obj_or_import_string(
+                        obj['create_permission_factory_imp']).can():
                     session['deposit_groups'].append(group)
 
 
@@ -89,6 +90,6 @@ def redirect_user_to_experiment(f):
 def get_user_experiments():
     """Return an array with user's experiments."""
     collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
-    experiments = [collab for collab in collab_egroups 
+    experiments = [collab for collab in collab_egroups
                    if RoleNeed(collab) in g.identity.provides]
     return experiments
