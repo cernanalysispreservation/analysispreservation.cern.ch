@@ -65,6 +65,7 @@ install_requires = [
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask-BabelEx>=0.9.2',
+    'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask>=0.11.1',
     'invenio-access>=1.0.0a9',
@@ -135,14 +136,16 @@ setup(
         #     'messages = cap',
         # ],
         'invenio_base.apps': [
-            'cap_fixtures = cap.modules.fixtures:CAPFixtures',
             'cap_access = cap.modules.access.ext:CAPAccess',
-            'cap_records = cap.modules.records.ext:Records',
+            'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
+            'cap_fixtures = cap.modules.fixtures:CAPFixtures',
+            'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
-            'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'cap_access = cap.modules.access.ext:CAPAccess',
+            'cap_cache = cap.modules.cache.ext:CAPCache',
+            'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
         ],
         'invenio_access.actions': [
         ],
