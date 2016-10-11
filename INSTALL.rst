@@ -61,6 +61,15 @@ Debian GNU/Linux the full path is
   http.port: 9200
   http.publish_port: 9200
 
+In order to use PostgreSQL you need to start the database server. This
+is very operation system specific, so you should check how it works for
+yours. When the server is running, switch to the default PostgreSQL user
+and create a user who is allowed to create databases:
+
+.. code-block:: shell
+
+   createuser -d $Username
+
 Finally, do a system-wide install (see below for how to do a local
 install enclosed inside your virtual environment instead) for the Sass
 preprocessor by following
