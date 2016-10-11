@@ -32,7 +32,7 @@ require.config({
     select2: "node_modules/select2/dist/js/select2.min",
     underscore: "node_modules/underscore/underscore-min",
     bloodhound: "node_modules/typeahead.js/dist/bloodhound",
-    typeahead: "node_modules/typeahead.js/dist/typeahead.jquery",
+    'bootstrap3-typeahead': "node_modules/bootstrap-3-typeahead/bootstrap3-typeahead",
     handlebars: "node_modules/handlebars/dist/handlebars.amd.min",
     moment: "node_modules/moment/min/moment.min",
     alpaca: "node_modules/alpaca/dist/alpaca/bootstrap/alpaca",
@@ -53,9 +53,6 @@ require.config({
     },
     angular: {
       exports: "angular"
-    },
-    typeahead: {
-      deps: ["jquery"]
     },
     "ref-parser": {
       deps: ["jquery"]

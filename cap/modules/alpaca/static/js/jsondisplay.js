@@ -25,7 +25,7 @@
 
 
 
-require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter' ,'bloodhound', 'typeahead'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
+require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter' ,'bloodhound'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, Bloodhound) {
 
   function loadScript(url, callback){
 
@@ -69,7 +69,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       var loading = $('.record-loading', element)[0];
       if (!(schemaOptions)) schemaOptions = {};
       $RefParser.bundle(schemaName, function(e, schema){
-        $(target).alpaca({
+        Alpaca(target, {
           "schema": schema,
           "view":"invenio-display",
           "options": schemaOptions,

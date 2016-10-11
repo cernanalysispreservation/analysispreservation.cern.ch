@@ -23,7 +23,7 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-tokenfield'], function($, alpaca, _, Handlebars){
+define(["jquery", "alpaca","underscore", "handlebars", 'bootstrap3-typeahead', 'bootstrap-tokenfield'], function($, alpaca, _, Handlebars){
 
   Alpaca.registerView({
     "id": "invenio-view",
@@ -124,7 +124,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
 
 
-  $.alpaca.Fields.DepositGroupField = $.alpaca.Fields.ObjectField.extend({
+  Alpaca.Fields.DepositGroupField = Alpaca.Fields.ObjectField.extend({
     getFieldType: function() {
       return "depositgroup";
     }
@@ -132,7 +132,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup", Alpaca.Fields.DepositGroupField);
 
-  $.alpaca.Fields.DepositGroupObjectField = $.alpaca.Fields.ObjectField.extend({
+  Alpaca.Fields.DepositGroupObjectField = Alpaca.Fields.ObjectField.extend({
     getFieldType: function() {
       return "depositgroup-object";
     }
@@ -140,7 +140,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup-object", Alpaca.Fields.DepositGroupObjectField);
 
-  $.alpaca.Fields.MltChoiceCheckboxField = $.alpaca.Fields.CheckBoxField.extend({
+  Alpaca.Fields.MltChoiceCheckboxField = Alpaca.Fields.CheckBoxField.extend({
     getFieldType: function() {
       return "mlt-choice-cb";
     }
@@ -148,7 +148,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("mlt-choice-cb", Alpaca.Fields.MltChoiceCheckboxField);
 
-  $.alpaca.Fields.MltChoiceRadioField = $.alpaca.Fields.RadioField.extend({
+  Alpaca.Fields.MltChoiceRadioField = Alpaca.Fields.RadioField.extend({
     getFieldType: function() {
       return "mlt-choice-radio";
     }
@@ -156,7 +156,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("mlt-choice-radio", Alpaca.Fields.MltChoiceRadioField);
 
-  $.alpaca.Fields.DepositGroupObjectArrayField = $.alpaca.Fields.ArrayField.extend({
+  Alpaca.Fields.DepositGroupObjectArrayField = Alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
       return "depositgroup-object-array";
     }
@@ -164,7 +164,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup-object-array", Alpaca.Fields.DepositGroupObjectArrayField);
 
-  $.alpaca.Fields.URLHarvestField = $.alpaca.Fields.URLField.extend({
+  Alpaca.Fields.URLHarvestField = Alpaca.Fields.URLField.extend({
     getFieldType: function() {
       return "url-harvest";
     },
@@ -190,7 +190,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("url-harvest", Alpaca.Fields.URLHarvestField);
 
-  $.alpaca.Fields.TagsField = $.alpaca.Fields.TextField.extend({
+  Alpaca.Fields.TagsField = Alpaca.Fields.TextField.extend({
     getFieldType: function() {
       return "tags";
     },
@@ -210,7 +210,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("tags", Alpaca.Fields.TagsField);
 
-  $.alpaca.Fields.DepositGroupObjectQuickfillField = $.alpaca.Fields.ArrayField.extend({
+  Alpaca.Fields.DepositGroupObjectQuickfillField = Alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
       return "depositgroup-object-quickfill";
     },
@@ -273,7 +273,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup-object-quickfill", Alpaca.Fields.DepositGroupObjectQuickfillField);
 
-  $.alpaca.Fields.DepositGroupArrayField = $.alpaca.Fields.ArrayField.extend({
+  Alpaca.Fields.DepositGroupArrayField = Alpaca.Fields.ArrayField.extend({
     getFieldType: function() {
       return "depositgroup-array";
     },
@@ -286,7 +286,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("depositgroup-array", Alpaca.Fields.DepositGroupArrayField);
 
-  $.alpaca.Fields.ObjectAutocompleteImportField = $.alpaca.Fields.ObjectField.extend({
+  Alpaca.Fields.ObjectAutocompleteImportField = Alpaca.Fields.ObjectField.extend({
     getFieldType: function() {
       return "object-autocomplete-import";
     },
@@ -579,7 +579,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("object-autocomplete-import", Alpaca.Fields.ObjectAutocompleteImportField);
 
-  $.alpaca.Fields.Select2Field = $.alpaca.Fields.SelectField.extend({
+  Alpaca.Fields.Select2Field = Alpaca.Fields.SelectField.extend({
     getFieldType: function() {
       return "select2";
     },
@@ -607,7 +607,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
 
   Alpaca.registerFieldClass("select2", Alpaca.Fields.Select2Field);
 
-  $.alpaca.Fields.TextField2 = $.alpaca.Fields.TextField.extend({
+  Alpaca.Fields.TextField2 = Alpaca.Fields.TextField.extend({
     applyTypeAhead: function() {
       var self = this;
       if (self.options.typeahead && !Alpaca.isEmpty(self.options.typeahead))
@@ -1022,7 +1022,7 @@ define(["jquery", "alpaca","underscore", "handlebars", 'typeahead', 'bootstrap-t
     }
   };
 
-  $.alpaca.Fields.oneOfField = $.alpaca.Fields.ObjectField.extend({
+  Alpaca.Fields.oneOfField = Alpaca.Fields.ObjectField.extend({
     getFieldType: function() {
       return "oneOf";
     },

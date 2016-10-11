@@ -25,7 +25,7 @@
 
 
 
-require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'jsoneditor','bloodhound', 'typeahead', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, JSONEditor, Bloodhound) {
+require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' , 'invenio-alpaca','module-getter', 'jsoneditor','bloodhound', 'json-patch'], function($, _select2, _, Handlebars, moment, $RefParser,invenio_alpaca, module_getter, JSONEditor, Bloodhound) {
 
   function loadScript(url, callback){
 
@@ -131,7 +131,7 @@ require(['jquery', 'select2', 'underscore' ,'handlebars', 'moment','ref-parser' 
       $RefParser.bundle(schemaName, function(e, schema){
         // Print schema in console
         schemaOptions["hideInitValidationError"] = true;
-        $(target).alpaca({
+        Alpaca(target, {
           "data": recordData,
           "schema": schema,
           "view":"invenio-view",
