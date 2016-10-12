@@ -142,6 +142,7 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
+            'cap_jsonschemas = cap.modules.jsonschemas:CAPJSONschemas',
             'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [

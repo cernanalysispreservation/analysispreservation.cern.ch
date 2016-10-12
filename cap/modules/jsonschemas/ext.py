@@ -22,12 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""cap base Invenio configuration."""
+"""CAP JSON-schemas."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_base.app import create_cli
+from .cli import schemas
 
-from .factory import create_app
 
-cli = create_cli(create_app=create_app)
+class CAPJSONschemas(object):
+    """CAP JSON-schemas extension."""
+
+    def __init__(self, app=None):
+        """Extension initialization."""
+        if app:
+            self.init_app(app)
+
+    def init_app(self, app):
+        """Flask application initialization."""
+        app.cli.add_command(schemas)

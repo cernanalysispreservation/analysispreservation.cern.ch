@@ -2,16 +2,15 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "CMS Deposit Schema.",
     "type": "object",
-    "additionalProperties": false,
     "allOf": [
         {
-            "$ref": "deposits/records/deposit-src.json"
+            "$ref": "deposits/common/deposit-v1.0.0.json"
         },
         {
             "$ref": "records/cms-analysis-v1.0.0.json"
+        },
+        {
+            "$ref": "deposits/common/file-v1.0.0.json"
         }
-    ],
-    "required": [
-        "_deposit"
     ]
 }

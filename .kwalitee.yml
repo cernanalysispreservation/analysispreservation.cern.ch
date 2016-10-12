@@ -30,6 +30,7 @@ components:
 - LHCb
 - UI
 - access
+- alpaca
 - base
 - deposit
 - docker
@@ -41,7 +42,7 @@ components:
 - kwalitee
 - records
 - search
+- schemas
 - templates
 - tests
 - travis
-- alpaca

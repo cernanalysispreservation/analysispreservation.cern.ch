@@ -5,9 +5,9 @@ import unittest
 from flask import Flask
 from mock import patch
 
-from cap.cli import compile_jsonschema_cli
-from cap.compilers import _resolve_all_of, _resolve_ref
-from cap.utils import resolve_schema_path
+from cap.modules.jsonschemas.cli import compile_jsonschema_cli
+from cap.modules.jsonschemas.compilers import _resolve_all_of, _resolve_ref
+from cap.modules.jsonschemas.utils import resolve_schema_path
 
 base_schema = {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -47,7 +47,7 @@ def test_resolve_all_of_adds_all_properties_to_root_schema(app):
     assert set(keys).issubset(schema)
 
 
-@patch('cap.compilers._resolve_ref')
+@patch('cap.modules.jsonschemas.compilers._resolve_ref')
 def test_resolve_all_of_adds_all_refschema_properties_to_root_schema(mock_method, app):
     ref_schemas = [
         {'a': 'b'}, 
@@ -69,7 +69,7 @@ def test_resolve_ref_when_no_ref_key_returns_unchanged_schema(app):
     assert schema == base_schema
 
 
-@patch('cap.compilers.resolve_schema_path')
+@patch('cap.modules.jsonschemas.compilers.resolve_schema_path')
 def test_resolve_ref_removes_ref_key(mock_method, app):
     base_schema['$ref'] = ''
     mock_method.return_value = {}
@@ -79,7 +79,7 @@ def test_resolve_ref_removes_ref_key(mock_method, app):
     assert '$ref' not in schema
 
 
-@patch('cap.compilers.resolve_schema_path')
+@patch('cap.modules.jsonschemas.compilers.resolve_schema_path')
 def test_resolve_ref_adds_all_refschema_properties_to_root_schema(mock_method, app):
     base_schema['$ref'] = ''
     ref_schema = {

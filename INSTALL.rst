@@ -182,6 +182,23 @@ Now you can create your first record by going to ``http://localhost:5000/records
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
+
+Compiling JSON-schemas to be use by CAP instance
+""""""""""""""""""""""""""""""""""""""""""""
+For CERN Analysis Preservation instance to work ( records, deposits, validations, etc) we need to compile the schemas to a format that can be utilised by the various 'comsumers'
+
+To compile the schemas do:
+
+.. code-block:: shell
+
+   # NOTICE: At this point order of commands is important [TODO]
+   # For record schemas
+   cap schemas compilerecord
+
+   # For deposits schemas
+   cap schemas compiledeposit
+
+
 Populating the Database with Example Records
 """"""""""""""""""""""""""""""""""""""""""""
 If you want to populate the database with example records simply run:
