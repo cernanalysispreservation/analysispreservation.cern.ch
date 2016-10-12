@@ -1,83 +1,114 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Deposit schema.",
-  "description": "Describe information needed for deposit module.",
+  "$schema": "http://json-schema.org/draft-04/schema#", 
+  "description": "Describe information needed for deposit module.", 
   "properties": {
-    "basic_info": {
-      "type": "object",
+    "_buckets": {
       "properties": {
-        "anal_name": {
-          "type": "string",
-          "title": "Analysis Name"
-        },
-        "cadi": {
-          "type": "string",
-          "title": "CADI #"
+        "deposit": {
+          "description": "Deposit bucket ID.", 
+          "type": "string"
+        }, 
+        "record": {
+          "description": "Record bucket ID.", 
+          "type": "string"
         }
-      }
-    },
-    "$schema": {
-      "type": "string"
-    },
+      }, 
+      "type": "object"
+    }, 
     "_deposit": {
-      "type": "object",
-      "name": "_deposit",
+      "name": "_deposit", 
       "properties": {
-        "id": {
-          "type": "integer",
-          "name": "id"
-        },
-        "pid": {
-          "type": "object",
-          "name": "pid",
-          "properties": {
-            "revision_id": {
-              "type": "integer"
-            },
-            "type": {
-              "type": "string"
-            },
-            "value": {
-              "type": "string"
-            }
-          }
-        },
         "created_by": {
-          "type": "integer",
-          "name": "created_by"
-        },
+          "name": "created_by", 
+          "type": "integer"
+        }, 
+        "id": {
+          "name": "id", 
+          "type": "integer"
+        }, 
         "owners": {
-          "type": "array",
-          "name": "owners",
           "items": [
             {
               "type": "integer"
             }
-          ]
-        },
+          ], 
+          "name": "owners", 
+          "type": "array"
+        }, 
+        "pid": {
+          "name": "pid", 
+          "properties": {
+            "revision_id": {
+              "type": "integer"
+            }, 
+            "type": {
+              "type": "string"
+            }, 
+            "value": {
+              "type": "string"
+            }
+          }, 
+          "type": "object"
+        }, 
         "status": {
-          "type": "string",
-          "name": "status",
           "enum": [
-            "draft",
+            "draft", 
             "published"
-          ]
+          ], 
+          "name": "status", 
+          "type": "string"
         }
-      },
+      }, 
       "required": [
         "id"
-      ]
-    },
+      ], 
+      "type": "object"
+    }, 
     "_files": {
-      "type": "array",
-      "name": "_files",
       "items": {
-        "$ref": "../records-files/records-files-v1.0.0.json"
-      }
+        "description": "Describe information needed for files in records.", 
+        "properties": {
+          "bucket": {
+            "type": "string"
+          }, 
+          "checksum": {
+            "type": "string"
+          }, 
+          "key": {
+            "type": "string"
+          }, 
+          "size": {
+            "type": "integer"
+          }, 
+          "type": {
+            "description": "File type extension.", 
+            "type": "string"
+          }, 
+          "version_id": {
+            "type": "string"
+          }
+        }, 
+        "type": "object"
+      }, 
+      "type": "array"
+    }, 
+    "basic_info": {
+      "properties": {
+        "anal_name": {
+          "title": "Analysis Name", 
+          "type": "string"
+        }, 
+        "cadi": {
+          "title": "CADI #", 
+          "type": "string"
+        }
+      }, 
+      "type": "object"
     }
-  },
+  }, 
   "required": [
     "_deposit"
-  ]
+  ], 
+  "title": "CMS Deposit Schema.", 
+  "type": "object"
 }

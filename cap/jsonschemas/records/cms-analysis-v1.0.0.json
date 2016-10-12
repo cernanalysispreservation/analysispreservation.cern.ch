@@ -1,21 +1,21 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Deposit schema.",
-  "description": "Describe information needed for deposit module.",
+  "$schema": "http://json-schema.org/draft-04/schema#", 
+  "description": "Describe information needed for deposit module.", 
   "properties": {
     "basic_info": {
-      "type": "object",
       "properties": {
         "anal_name": {
-          "type": "string",
-          "title": "Analysis Name"
-        },
+          "title": "Analysis Name", 
+          "type": "string"
+        }, 
         "cadi": {
-          "type": "string",
-          "title": "CADI #"
+          "title": "CADI #", 
+          "type": "string"
         }
-      }
+      }, 
+      "type": "object"
     }
-  }
+  }, 
+  "title": "Deposit schema.", 
+  "type": "object"
 }
