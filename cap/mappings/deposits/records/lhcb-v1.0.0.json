@@ -18,7 +18,7 @@
           "type": "object",
           "properties": {
             "id": {
-              "type": "string",
+              "type": "integer",
               "index": "not_analyzed"
             },
             "pid": {
