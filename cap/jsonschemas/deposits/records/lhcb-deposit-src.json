@@ -2,13 +2,15 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "LHCb Deposit Schema.",
     "type": "object",
-    "additionalProperties": false,
     "allOf": [
         {
             "$ref": "deposits/records/deposit-src.json"
         },
         {
-            "$ref": "records/lhcb-v1.0.0.json"
+            "$ref": "records/lhcb-src.json"
+        },
+        {
+            "$ref": "records/file-src.json"
         }
     ],
     "required": [

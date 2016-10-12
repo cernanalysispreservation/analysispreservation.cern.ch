@@ -1,0 +1,467 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Deposit schema.",
+  "description": "Describe information needed for deposit module.",
+   "properties": {
+    "basic_info": {
+      "title": "Basic Information",
+      "type": "object",
+      "id": "basic_info",
+      "properties": {
+        "analysis_name": {
+          "title": "Analysis Name",
+          "type": "string",
+          "required": true
+        },
+        "proponents": {
+          "title": "Proponents",
+          "type": "string",
+          "required": true
+        },
+        "status": {
+          "title": "Status",
+          "type": "string",
+          "enum": [
+            "0 - planned / open topic",
+            "1 - in preparation",
+            "2 - ANA note released",
+            "3 - review committee",
+            "4 - collaboration review",
+            "5 -",
+            "6 - CONF note published",
+            "7 -",
+            "8 - journal review",
+            "9 - PAPER published",
+            "x - other"
+          ],
+          "required": true
+        },
+        "status_notes": {
+          "type": "string",
+          "title": "Notes on Status",
+          "dependencies": [
+            "status"
+          ]
+        },
+        "reviewers": {
+          "title": "Reviewers",
+          "type": "string"
+        },
+        "egroup": {
+          "title": "Review eGroup",
+          "type": "string"
+        },
+        "institutes": {
+          "title": "Institutes Involved",
+          "type": "string"
+        },
+        "keywords": {
+          "title": "Keywords",
+          "description": "Add keywords here",
+          "type": "string",
+          "id": "keywords"
+        }
+      }
+    },
+    "extra_info": {
+      "title": "Extra Information",
+      "type": "object",
+      "id": "extra_info",
+      "properties": {
+        "analysis_number": {
+          "title": "Analysis note (ANA) number",
+          "type": "string"
+        },
+        "public_paper": {
+          "title": "Public Paper",
+          "type": "string"
+        },
+        "conf_report": {
+          "title": "Conference Report (CONF)",
+          "type": "string"
+        },
+        "twiki": {
+          "title": "tWiki page",
+          "type": "string"
+        },
+        "arxiv": {
+          "title": "arXiv ID",
+          "type": "string"
+        }
+      }
+    },
+    "dst_selection": {
+      "title": "DST selection",
+      "type": "object",
+      "properties": {
+        "stripping_line": {
+          "title": "Stripping Line",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "trigger": {
+          "title": "Trigger",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "input_data": {
+          "title": "Input Data",
+          "type": "object",
+          "properties": {
+            "data": {
+              "title": "Collision Data",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "title": "Sample",
+                    "type": "string"
+                  },
+                  "processing_pass": {
+                    "title": "Processing Pass",
+                    "type": "string"
+                  },
+                  "year": {
+                    "title": "Year",
+                    "type": "string"
+                  },
+                  "reconstruction_software": {
+                    "title": "Reconstruction software",
+                    "type": "object",
+                    "properties": {
+                      "reconstruction_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "reconstruction_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "stripping_software": {
+                    "title": "Stripping software",
+                    "type": "object",
+                    "properties": {
+                      "stripping_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "stripping_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "mc_data": {
+              "title": "MC Data",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "title": "Sample",
+                    "type": "string"
+                  },
+                  "mc_production": {
+                    "title": "Production",
+                    "type": "number"
+                  },
+                  "generator": {
+                    "title": "Generator",
+                    "type": "string"
+                  },
+                  "reconstruction_software": {
+                    "title": "Reconstruction software",
+                    "type": "object",
+                    "properties": {
+                      "reconstruction_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "reconstruction_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "stripping_software": {
+                    "title": "Stripping software",
+                    "type": "object",
+                    "properties": {
+                      "stripping_software_name": {
+                        "title": "Name",
+                        "type": "string"
+                      },
+                      "stripping_software_version": {
+                        "title": "Version",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "used_tools": {
+                    "title": "Used Tools",
+                    "type": "string"
+                  },
+                  "db_tags": {
+                    "title": "Database Tags",
+                    "type": "string",
+                    "enum": [
+                      "DDDB",
+                      "SIMCOND"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "code": {
+          "title": "Code",
+          "type": "object",
+          "properties": {
+            "platform": {
+              "title": "Platform",
+              "type": "string"
+            },
+            "lhcb_code": {
+              "title": "Application",
+              "type": "string"
+            },
+            "user_code": {
+              "title": "User code",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "title": "Description",
+                    "type": "string"
+                  },
+                  "link": {
+                    "title": "URL",
+                    "type": "string"
+                  },
+                  "instructions": {
+                    "title": "Instructions",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "output_data": {
+          "title": "Output Data",
+          "type": "object",
+          "properties": {
+            "data": {
+              "title": "Collision Data",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "mc_data": {
+              "title": "MC Data",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "analysis_steps": {
+      "title": "Analysis Steps",
+      "type": "array",
+      "default": [{}],
+      "items": {
+        "title": "Analysis Step",
+        "type": "object",
+        "properties": {
+          "input_data": {
+            "title": "Input Data",
+            "type": "object",
+            "properties": {
+              "data": {
+                "title": "Collision Data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mc_data": {
+                "title": "MC Data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "code": {
+            "title": "Code",
+            "type": "array",
+            "default": [{}],
+            "items": {
+              "type": "object",
+              "properties": {
+                "platform": {
+                  "title": "Platform",
+                  "type": "string"
+                },
+                "lhcb_code": {
+                  "title": "Application",
+                  "type": "string"
+                },
+                "user_code": {
+                  "title": "User code",
+                  "type": "object",
+                  "properties": {
+                    "description": {
+                      "title": "Description",
+                      "type": "string"
+                    },
+                    "link": {
+                      "title": "URL",
+                      "type": "string"
+                    },
+                    "instructions": {
+                      "title": "Instructions",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "output_data": {
+            "title": "Output Data",
+            "type": "object",
+            "properties": {
+              "data": {
+                "title": "Collision Data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mc_data": {
+                "title": "MC Data",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "documentations": {
+      "title": "Documentations",
+      "type": "array",
+      "id": "documentations",
+      "items": {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "title": "Documentation",
+        "description": "Add documentation",
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "keyword": {
+            "title": "Keyword",
+            "type": "string"
+          },
+          "comment": {
+            "title": "Comment",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "internal_discussions": {
+      "title": "Internal Discussions",
+      "type": "array",
+      "id": "internal-discussions",
+      "items": {
+        "type": "object",
+        "title": "Reports",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "meeting": {
+            "title": "E-Group",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "presentations": {
+      "title": "Presentations",
+      "type": "array",
+      "id": "presentations",
+      "items": {
+        "type": "object",
+        "title": "Presentation",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "meeting": {
+            "title": "Meeting (GROUP?)",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "publications": {
+      "title": "Publications",
+      "type": "array",
+      "id": "publications",
+      "items": {
+        "type": "object",
+        "title": "Publications",
+        "properties": {
+          "url": {
+            "title": "URL",
+            "type": "string"
+          },
+          "reviewegroup": {
+            "title": "Review Group",
+            "type": "string"
+          },
+          "roles": {
+            "title": "Roles",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
