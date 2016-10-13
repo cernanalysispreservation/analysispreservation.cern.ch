@@ -1,0 +1,14 @@
+{% set deposit_groups = (session.id | user_deposit_groups) %}
+{% if deposit_groups %}
+<div class="dropdown">
+    <a href="#" class="btn" id="header-upload" data-toggle="dropdown">
+        <i class="fa fa-cloud-upload"></i>
+        Create <div class="visible-lg-inline-block">An Analysis</div>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="header-upload">
+        {% for group in deposit_groups %}
+        <li><a class="dropdown-item" href="{{ url_for('cap_deposit_ui.deposit_item_new_{0}'.format(group)) }}">{{group}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

@@ -25,8 +25,8 @@
 
 {%- extends "invenio_theme/header.html" %}
 
-{% block navbar %} 
-<div class="container-fluid cap-header navbar-fixed-top"> 
+{% block navbar %}
+<div class="container-fluid cap-header navbar-fixed-top">
     <div class="col-sm-2">
         {% block brand %}
         <a class="cap-home-logo" href="/">
@@ -48,19 +48,7 @@
         <div class="row">
             {%- block navbar_new_deposit %}
             <div class="col-xs-4">
-                {% if "deposit_groups" in session %}
-                <div class="dropdown">
-                    <a href="#" class="btn" id="header-upload" data-toggle="dropdown">
-                        <i class="fa fa-cloud-upload"></i>
-                        Create <div class="visible-lg-inline-block">An Analysis</div>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="header-upload">
-                        {% for group in session["deposit_groups"] %}
-                        <li><a class="dropdown-item" href="{{ url_for('cap_deposit_ui.deposit_item_new_{0}'.format(group)) }}">{{group}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
+                {%- include "cap_theme/new_deposit_btn.html" %}
             </div>
             {%- endblock navbar_new_deposit %}
             <div class="col-xs-8">
