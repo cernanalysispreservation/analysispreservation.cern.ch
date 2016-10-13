@@ -115,6 +115,22 @@ def to_files_js(deposit):
     return res
 
 
+@blueprint.app_template_filter('user_deposit_groups')
+def get_user_deposit_groups(user_id):
+    """Get Deposit Groups."""
+
+    # Set deposit groups for user
+    deposit_groups = current_app.config.get('DEPOSIT_GROUPS', {})
+    user_deposit_groups = []
+    for group, obj in deposit_groups.iteritems():
+        # Check if user has permission for this deposit group
+        if obj_or_import_string(
+                obj['create_permission_factory_imp']).can():
+            user_deposit_groups.append(group)
+
+    return user_deposit_groups
+
+
 class NewItemView(View):
 
     def __init__(self, template_name=None,

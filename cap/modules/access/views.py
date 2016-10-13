@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 from functools import wraps
 
-from flask import Blueprint, current_app, g, redirect, session, url_for
+from flask import Blueprint, current_app, g, redirect, session, url_for, abort
 from flask_login import current_user
 from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 
