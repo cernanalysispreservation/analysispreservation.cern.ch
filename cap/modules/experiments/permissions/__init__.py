@@ -24,3 +24,18 @@
 
 
 """CAP deposit permissions"""
+
+from alice import alice_permission
+from atlas import atlas_permission
+from cms import cms_permission
+from lhcb import lhcb_permission
+
+
+collaboration_permissions = {
+    'collaboration_alice': alice_permission,
+    'collaboration_atlas': atlas_permission,
+    'collaboration_cms': cms_permission,
+    'collaboration_lhcb': lhcb_permission,
+}
+
+__all__ = ['collaboration_permissions']

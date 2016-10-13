@@ -25,8 +25,15 @@
 
 """CAP CMS permissions"""
 
-from flask_principal import RoleNeed
-from invenio_access import DynamicPermission
 
-cms_group_need = RoleNeed('collaboration_cms')
-cms_permission = DynamicPermission(cms_group_need)
+from invenio_access import DynamicPermission
+from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+
+
+cms_group_need = set(
+    [g for g in get_collaboration_group_needs('collaboration_cms')])
+cms_group_need |= set([g for g in
+                       get_superuser_needs()])
+
+
+cms_permission = DynamicPermission(*cms_group_need)
