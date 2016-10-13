@@ -24,54 +24,54 @@
  */
 
 .navbar-extra {
-  margin-top: -$navbar-margin-bottom;
-  padding-top: $navbar-padding-vertical;
-  padding-bottom: $navbar-padding-vertical;
-  padding-left: $navbar-padding-horizontal;
-  padding-right: $navbar-padding-horizontal;
-  margin-bottom: $navbar-margin-bottom;
-  h1 {
-    color: #fff;
-    font-weight: 200;
-  }
-  h2, h3, h4, h5 {
-    color: $navbar-inverse-link-color;
-    font-weight: $font-weight;
-  }
+    margin-top: -$navbar-margin-bottom;
+    padding-top: $navbar-padding-vertical;
+    padding-bottom: $navbar-padding-vertical;
+    padding-left: $navbar-padding-horizontal;
+    padding-right: $navbar-padding-horizontal;
+    margin-bottom: $navbar-margin-bottom;
+    h1 {
+        color: #fff;
+        font-weight: 200;
+    }
+    h2, h3, h4, h5 {
+        color: $navbar-inverse-link-color;
+        font-weight: $font-weight;
+    }
 }
 
 
 .page-title {
-  h1, h2, h3, h4, h5 {
-    color: lighten($color1, 20%);
-    margin-bottom: 20px;
-    small{
-      font-weight: inherit;
+    h1, h2, h3, h4, h5 {
+        color: lighten($color1, 20%);
+        margin-bottom: 20px;
+        small{
+            font-weight: inherit;
+        }
     }
-  }
 
-  margin-top: -$navbar-margin-bottom;
-  margin-bottom: $navbar-margin-bottom;
+    margin-top: -$navbar-margin-bottom;
+    margin-bottom: $navbar-margin-bottom;
 }
 
 
 .error-page.container .row {
-  margin-left: 50px;
-  margin-top: 100px;
-  margin-bottom: 100px;
+    margin-left: 50px;
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
 
 html {
-  background: rgba(255,255,255,1);
-  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(252,252,252,1)));
-  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
-  background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
-  background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
-  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=0 );
+    background: rgba(255,255,255,1);
+    background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(252,252,252,1)));
+    background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(252,252,252,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=0 );
 }
 
 body {
-  font-family: $font-family-sans-serif;
+    font-family: $font-family-sans-serif;
 }

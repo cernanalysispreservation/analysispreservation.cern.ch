@@ -47,12 +47,12 @@ $cap_box_color: $cap_color;
 @import "record";
 
 .cap-main {
-  height: 100vh;
+    height: 100vh;
 }
 
 .cap-container {
-  height: 100vh;
-  padding-top: $cap_header_height+30;
+    height: 100vh;
+    padding-top: $cap_header_height+30;
 }
 
 
@@ -61,8 +61,8 @@ header {
         background-color: transparent;
     }
     .navbar.navbar-inverse {
-      background-color: transparent;
-      }
+        background-color: transparent;
+    }
 }
 
 .cap-box {
@@ -90,53 +90,53 @@ header {
 }
 
 .cap-checkbox {
-  width: 120px;
-  height: 26px;
-  background: #AFB9C5;
-  float: right;
-  position: relative;
-  border-radius: 50px;
-  // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
-  &:after {
-    content: 'Private';
-    color: #fff;
-    position: absolute;
-    right: 10px;
-    z-index: 0;
-    font: 12px/26px Arial, sans-serif;
-    font-weight: bold;
-    text-shadow: 1px 1px 0px rgba(255,255,255,.15);
-  }
-  &:before {
-    content: 'Public';
-    color: #2C3E50;
-    position: absolute;
-    left: 10px;
-    z-index: 0;
-    font: 12px/26px Arial, sans-serif;
-    font-weight: bold;
-  }
-  label {
-    display: block;
-    width: 62px;
-    height: 20px;
-    cursor: pointer;
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    z-index: 1;
-    background: #fcfff4;
-    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    width: 120px;
+    height: 26px;
+    background: #AFB9C5;
+    float: right;
+    position: relative;
     border-radius: 50px;
-    transition: all 0.4s ease;
-    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
-  }
-  input[type=checkbox] {
-    visibility: hidden;
-    &:checked + label {
-      left: 55px;
+    // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+    &:after {
+        content: 'Private';
+        color: #fff;
+        position: absolute;
+        right: 10px;
+        z-index: 0;
+        font: 12px/26px Arial, sans-serif;
+        font-weight: bold;
+        text-shadow: 1px 1px 0px rgba(255,255,255,.15);
     }
-  }
+    &:before {
+        content: 'Public';
+        color: #2C3E50;
+        position: absolute;
+        left: 10px;
+        z-index: 0;
+        font: 12px/26px Arial, sans-serif;
+        font-weight: bold;
+    }
+    label {
+        display: block;
+        width: 62px;
+        height: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        z-index: 1;
+        background: #fcfff4;
+        background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+        border-radius: 50px;
+        transition: all 0.4s ease;
+        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+    }
+    input[type=checkbox] {
+        visibility: hidden;
+        &:checked + label {
+            left: 55px;
+        }
+    }
 }
 
 .vertical-text {
@@ -178,16 +178,16 @@ button:focus {
 }
 
 body::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
-  //    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: $lightgrey;
+    //    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: $lightgrey;
 }
 
 body::-webkit-scrollbar, .scrollable::-webkit-scrollbar {
-  width: 6px;
-  background-color: $lightgrey;
+    width: 6px;
+    background-color: $lightgrey;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: $theme-color;
+    background-color: $theme-color;
 }
 

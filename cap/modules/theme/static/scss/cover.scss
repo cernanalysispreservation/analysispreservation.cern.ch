@@ -32,75 +32,76 @@ $cover-panel-padding: 40px;
 
 html.cover-page,
 body.cover-page {
-  height: 100%;
-  position: relative;
+    height: 100%;
+    position: relative;
 }
 body.cover-page {
-  color: #fff;
-  text-align: center;
-  #gradient.horizontal($color1; $color1-gradient; 0%; 100%);
+    color: #fff;
+    text-align: center;
+    #gradient.horizontal($color1; $color1-gradient; 0%; 100%);
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
-  width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%;
+    width: 100%;
+    height: 100%; /* For at least Firefox */
+    min-height: 100%;
 
-  .masthead-brand {
-    font-family: $brand-font-family;
-    font-weight: $brand-font-weight;
-    font-size: $brand-font-size;
-    color: $text-white;
-    margin: $cover-panel-padding*2 0;
-  }
-  .panel {
-    color: #000;
-    border-radius: $border-radius-large*2;
-  }
-  .panel-free-title {
-    margin: $cover-panel-padding 0;
-  }
-  h3 {
-    color: $brand-primary;
-  }
-  .panel-body {
-    padding-left: $cover-panel-padding;
-    padding-right: $cover-panel-padding;
-    padding-bottom: $cover-panel-padding;
-  }
-  .panel-footer {
-    padding-left: $cover-panel-padding;
-    padding-right: $cover-panel-padding;
-    padding-top: $cover-panel-padding/2;
-    padding-bottom: $cover-panel-padding/2;
-    border-bottom-left-radius: $border-radius-large*2;
-    border-bottom-right-radius: $border-radius-large*2;
-  }
-
-  .sign-up {
-    text-align: left;
-    $cover-signup-margin: 30px;
-
-    h1, h2, h3, h4, h5, form {
-      margin-top: $cover-signup-margin;
+    .masthead-brand {
+        font-family: $brand-font-family;
+        font-weight: $brand-font-weight;
+        font-size: $brand-font-size;
+        color: $text-white;
+        margin: $cover-panel-padding*2 0;
+    }
+    .panel {
+        color: #000;
+        border-radius: $border-radius-large*2;
+    }
+    .panel-free-title {
+        margin: $cover-panel-padding 0;
+    }
+    h3 {
+        color: $brand-primary;
+    }
+    .panel-body {
+        padding-left: $cover-panel-padding;
+        padding-right: $cover-panel-padding;
+        padding-bottom: $cover-panel-padding;
+    }
+    .panel-footer {
+        padding-left: $cover-panel-padding;
+        padding-right: $cover-panel-padding;
+        padding-top: $cover-panel-padding/2;
+        padding-bottom: $cover-panel-padding/2;
+        border-bottom-left-radius: $border-radius-large*2;
+        border-bottom-right-radius: $border-radius-large*2;
     }
 
-    form {
-      margin-bottom: $cover-signup-margin;
+    .sign-up {
+        text-align: left;
+        $cover-signup-margin: 30px;
+
+        h1, h2, h3, h4, h5, form {
+            margin-top: $cover-signup-margin;
+        }
+
+        form {
+            margin-bottom: $cover-signup-margin;
+        }
+
+        p {
+            font-size: floor(($font-size-base * 1.20));
+        }
+
+        a, a:hover, a:active {
+            color: $text-white;
+        }
     }
 
-    p {
-      font-size: floor(($font-size-base * 1.20));
+    .sign-up-benefits {
+        p {
+            color: lighten($color1, 60%);
+        }
     }
-
-    a, a:hover, a:active {
-      color: $text-white;
-    }
-  }
-  .sign-up-benefits {
-    p {
-      color: lighten($color1, 60%);
-    }
-  }
 }

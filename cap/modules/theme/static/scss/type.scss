@@ -30,22 +30,22 @@ $font-family-sans-serif:  'Futura', "Helvetica Neue", Helvetica, Arial, sans-ser
 $headings-font-weight: $font-weight;
 
 body {
-  font-weight: $font-weight;
-  color: $text-dark;
+    font-weight: $font-weight;
+    color: $text-dark;
 }
 
 .text-white {
-  color: $text-white;
+      color: $text-white;
 
-  a,
-  a:focus,
-  a:hover {
-    color: $text-white;
-  }
+      a,
+      a:focus,
+      a:hover {
+            color: $text-white;
+      }
 }
 
 a.text-white,
 a.text-white:focus,
 a.text-white:hover {
-  color: $text-white;
+    color: $text-white;
 }

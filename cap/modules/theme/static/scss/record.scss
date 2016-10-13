@@ -35,7 +35,7 @@
     height:50px;
     margin-bottom: 0;
 
-     .navbar-nav {
+    .navbar-nav {
         display: inline-block;
         float: none;
     }
@@ -153,13 +153,13 @@
         padding: 6px 0;
 
         .fa-circle.success {
-           color: green;
+            color: green;
         }
         .fa-circle.warning {
-           color: orange;
+            color: orange;
         }
         .fa-circle.error {
-           color: red;
+            color: red;
         }
     }
 }
@@ -268,7 +268,7 @@
         }
 
         .fa-check.can {
-           color: green;
+            color: green;
         }
     }.collaboration-item {
         background-color: rgba(84, 187, 249, 0.1);
