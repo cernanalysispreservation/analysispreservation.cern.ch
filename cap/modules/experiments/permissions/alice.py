@@ -25,8 +25,14 @@
 
 """CAP ALICE permissions"""
 
-from flask_principal import RoleNeed
 from invenio_access import DynamicPermission
+from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
 
-alice_group_need = RoleNeed('collaboration_alice')
-alice_permission = DynamicPermission(alice_group_need)
+
+alice_group_need = set(
+    [g for g in get_collaboration_group_needs('collaboration_alice')])
+alice_group_need |= set([g for g in
+                         get_superuser_needs()])
+
+
+alice_permission = DynamicPermission(*alice_group_need)

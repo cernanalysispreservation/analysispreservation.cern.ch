@@ -25,8 +25,15 @@
 
 """CAP LHCb permissions"""
 
-from flask_principal import RoleNeed
-from invenio_access import DynamicPermission
 
-lhcb_group_need = RoleNeed('collaboration_lhcb')
-lhcb_permission = DynamicPermission(lhcb_group_need)
+from invenio_access import DynamicPermission
+from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+
+
+lhcb_group_need = set(
+    [g for g in get_collaboration_group_needs('collaboration_lhcb')])
+lhcb_group_need |= set([g for g in
+                        get_superuser_needs()])
+
+
+lhcb_permission = DynamicPermission(*lhcb_group_need)

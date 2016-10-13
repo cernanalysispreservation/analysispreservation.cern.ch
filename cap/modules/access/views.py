@@ -33,42 +33,12 @@ from flask_login import current_user
 from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 
 from cap.utils import obj_or_import_string
+from cap.modules.experiments.permissions import collaboration_permissions
+
 
 access_blueprint = Blueprint('cap_access', __name__,
                              url_prefix='/access',
                              template_folder='templates')
-
-
-@identity_loaded.connect
-def load_extra_info(sender, identity):
-    """Access rights for user."""
-    if isinstance(identity, AnonymousIdentity):
-        return
-    if current_user.get_id() is not None:
-        # Fetch groups from the identity
-        groups = identity.provides
-        superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
-        superuser_roles = current_app.config.get('SUPERUSER_ROLES', {})
-
-        # Grant all privileges if user is superuser
-        if [i for i in superuser_egroups if i in groups]:
-            identity.provides |= set(superuser_roles)
-
-        # Grant priviliges according to group
-        collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
-        for collab, egroups in collab_egroups.iteritems():
-            if [i for i in egroups if i in groups]:
-                identity.provides |= set([RoleNeed(collab)])
-
-        # Set deposit groups for user
-        if 'deposit_groups' not in session or not session['deposit_groups']:
-            deposit_groups = current_app.config.get('DEPOSIT_GROUPS', {})
-            session['deposit_groups'] = []
-            for group, obj in deposit_groups.iteritems():
-                # Check if user has permission for this deposit group
-                if obj_or_import_string(
-                        obj['create_permission_factory_imp']).can():
-                    session['deposit_groups'].append(group)
 
 
 def redirect_user_to_experiment(f):
@@ -89,7 +59,6 @@ def redirect_user_to_experiment(f):
 
 def get_user_experiments():
     """Return an array with user's experiments."""
-    collab_egroups = current_app.config.get('CAP_COLLAB_EGROUPS', {})
-    experiments = [collab for collab in collab_egroups
-                   if RoleNeed(collab) in g.identity.provides]
+    experiments = [collab for collab, needs in
+                   collaboration_permissions.items() if needs.can()]
     return experiments

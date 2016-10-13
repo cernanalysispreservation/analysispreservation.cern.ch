@@ -23,17 +23,18 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP ATLAS permissions"""
+from cap.config import CAP_COLLAB_EGROUPS, SUPERUSER_EGROUPS
 
 
-from invenio_access import DynamicPermission
-from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+def get_collaboration_group_needs(collaboration_name=None):
+    if collaboration_name in CAP_COLLAB_EGROUPS:
+        return CAP_COLLAB_EGROUPS[collaboration_name]
+    else:
+        return []
 
 
-atlas_group_need = set(
-    [g for g in get_collaboration_group_needs('collaboration_atlas')])
-atlas_group_need |= set([g for g in
-                         get_superuser_needs()])
-
-
-atlas_permission = DynamicPermission(*atlas_group_need)
+def get_superuser_needs():
+    if SUPERUSER_EGROUPS:
+        return SUPERUSER_EGROUPS
+    else:
+        return []
