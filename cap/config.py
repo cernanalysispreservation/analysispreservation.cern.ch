@@ -29,20 +29,18 @@ from __future__ import absolute_import, print_function
 
 import copy
 import os
-from os.path import dirname, join
 
 from flask_principal import RoleNeed
+from os.path import dirname, join
 from invenio_deposit import config
-from invenio_deposit.config import (DEPOSIT_REST_FACETS,
-                                    DEPOSIT_REST_SORT_OPTIONS)
 from invenio_oauthclient.contrib import cern
-from invenio_records_rest.config import (RECORDS_REST_FACETS,
-                                         RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.utils import allow_all, deny_all
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
+from invenio_deposit.config import DEPOSIT_REST_FACETS, \
+    DEPOSIT_REST_SORT_OPTIONS
+from invenio_records_rest.config import RECORDS_REST_FACETS, \
+    RECORDS_REST_SORT_OPTIONS
+from invenio_records_rest.facets import terms_filter
+from cap.modules.deposit.permissions import UpdateDepositPermission, CreateDepositPermission, ReadDepositPermission
 
 
 def _(x):
@@ -120,6 +118,23 @@ RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
 
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
+
+#: Record search facets.
+RECORDS_REST_FACETS = {
+    '_all': {
+        'aggs': {
+            'collections': {
+                'terms': {
+                    'field': 'document_type_human',
+                },
+            },
+        },
+        'post_filters': {
+            'collections': terms_filter('collections'),
+        },
+    },
+}
+
 RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
 
 #: Endpoints for displaying records.
@@ -166,6 +181,7 @@ RECORDS_REST_ENDPOINTS = dict(
         read_permission_factory_imp=None
     ),
 )
+
 
 #: Default api endpoint for LHCb db
 GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
@@ -269,10 +285,13 @@ JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
 JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
 JSONSCHEMAS_RECORDS_DIR = 'records/'
 
-# User profile
-# ============
-#: Enable all the users to perform all the actions
-ENABLE_SUPERPOWERS_FOR_EVERYONE = False
+CAP_COLLECTION_TO_DOCUMENT_TYPE = {
+    'ATLASAnalysis': 'ATLAS Analysis',
+    'ATLASWorkflows': 'ATLAS Workflows',
+    'CMSAnalysis': "CMS Analysis",
+    'CMSQuestionnaire': "CMS Questionnaire",
+    'LHCbAnalysis': "LHCb Analysis",
+}
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
