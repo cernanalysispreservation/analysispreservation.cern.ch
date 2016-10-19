@@ -44,7 +44,25 @@ window.schemaOptions = {
           },
           "opt_title": {
             "order": 5
-          }
+          },
+          "preapproval_date":
+            "order": 
+            "type": "depositgroup-object",
+            "fields": {
+                "order": ,
+                "type": "select2",
+                "select2": true,
+                "optionLabels": [
+                  "Scheduled for (please specify in \"Additional comments\")",
+                  "Approximate date range (please specify in \"Additional comments\")",
+                  "Completely undecided",
+                  "Not seeking approval"
+                ]
+              },
+              "comments": {
+                "order": 2,
+                "type": "textarea"
+            }
         }
       },
       "general": {
@@ -191,7 +209,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "We study the correlation matrix between input variables.",
                   "We also study dependencies beyond linear correlation (please specify in \"Additional comments\").",
-                  "Other (please specify in \"Additional type\")"
+                  "Other (please specify in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -207,7 +225,7 @@ window.schemaOptions = {
             "order": 8,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "Yes, we use the correlation matrix and remove highly correlated variables.",
@@ -228,7 +246,7 @@ window.schemaOptions = {
             "order": 9,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "We do not study that.",
@@ -251,13 +269,13 @@ window.schemaOptions = {
             "order": 10,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
-                  "We do not study that.",
-                  "Yes, but this does not apply to my analysis.",
-                  "Yes, and I need to check whether this applies to my analysis.",
-                  "No (please specify in \"Additional comments\")"
+                  "Undecided",
+                  "Yes",
+                  "Does not apply: we only have one background process"
+                  "No (please specify what you do in \"Additional comments\")"
                 ]
               },
               "comments": {
@@ -273,7 +291,7 @@ window.schemaOptions = {
             "order": 11,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "We do not perform any checks.",
@@ -294,7 +312,7 @@ window.schemaOptions = {
             "order": 12,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "We do not perform any checks.",
@@ -438,7 +456,7 @@ window.schemaOptions = {
             "order": 6,
             "fields": {
               "name": {
-                "type": "mlt-choice-cb",
+                "type": "mlt-choice-radio",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "We do not check that.",
@@ -639,13 +657,13 @@ window.schemaOptions = {
             "order": 7,
             "fields": {
               "name": {
-                "type": "mlt-choice-radio",
+                "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "The \"combine\" tool from the Higgs group",
                   "LandS",
                   "RooStas",
-                  "Theta",
+                  "theta",
                   "Other (please specify in \"Additional comments\")"
                 ]
               },
@@ -834,7 +852,7 @@ window.schemaOptions = {
             "order": 4,
             "fields": {
               "name": {
-                "type": "mlt-choice-radio",
+                "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "Bin-by-bin factor",
@@ -857,7 +875,7 @@ window.schemaOptions = {
             "order": 5,
             "fields": {
               "name": {
-                "type": "mlt-choice-radio",
+                "type": "mlt-choice-cb",
                 "removeDefaultNone": true,
                 "optionLabels": [
                   "RooUnfold",
