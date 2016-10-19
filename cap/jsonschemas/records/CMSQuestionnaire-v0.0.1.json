@@ -4,7 +4,7 @@
     "description" : "<p>The present questionnaire has the purpose of informing the Statistics Committee on the details of ongoing analyses, in the interest of a quicker and simpler path to approval of physics results. We recommend that you submit your answers at your earliest convenience, regardless of the status of your analysis (in progress, or in advanced stage, or about to be pre-approved). Changes in the statistical analysis after submission can be sent as a simplified \"update\", using a link you will receive via email after submitting this form.</p><p>Please note: each analysis with a separate CADI entry should fill out a separate entry. It is highly advisable that the questionnaire be filled by an author who knows the details of the full analysis, if necessary in consultation with colleagues.</p><p>The purpose of this questionnaire is two-fold:</p><ul><li>It points you to the relevant best practices and recommendations of the CMS Statistics Committee.</li><li>It provides the Statistics Committee with feedback about the statistical methods used at an early point of the analysis where potential issues can still be clarified or fixed.</li></ul><p>Note: There are multiple-choice answers for many questions. These will not always cover your case. If you are unsure about which answer to choose, just choose the answer you think decribes best what you do and use the text field \"Additional comments\" for clarification. Also note that many questions foresee that you choose more than one option, in this case choose <em>all</em> which apply.</p><p>We thank you for your patience and we encourage you to be as explicative as possible in the free-text boxes. Also, we do appreciate any feedback you may be willing to provide, through a text box at the end.</p>",
     "properties": {
         "content": {
-            "title": "Analysis Content",
+            "title": "Analysis Context",
             "type": "object",
             "properties": {
                 "name": {
@@ -50,7 +50,26 @@
                     "title": "If no CADI entry is available, please provide the title and applicable references",
                     "description": "analysis note numbers, etc.",
                     "type": "string"
-                }
+                },
+                "preapproval_date": {
+                    "title": "Preapproval date",
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "title": "",
+                            "type": "string",
+                            "enum": [
+                                "schedule",
+                                "date_range",
+                                "undecided",
+                                "not_approval",
+                            ]
+                        },
+                        "comments": {
+                            "title": "Additional comments",
+                            "type": "string"
+                        }
+                    }
             },
             "required": [
                 "name",
@@ -142,7 +161,7 @@
                             "enum": ["boosted", "fisher", "likelehoods", "ann", "other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -161,7 +180,7 @@
                             "enum": ["output_cut","output_fit","other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -180,7 +199,7 @@
                             "enum": ["1d","2d","other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -199,7 +218,7 @@
                             "enum": ["matrix","nonlinear","other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -217,7 +236,7 @@
                             "enum": ["yes","no","other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -242,7 +261,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -259,14 +278,14 @@
                             "description": "When training with more than one background, do you mix all samples in the proportions you expect in data?",
                             "type": "string",
                             "enum": [
-                                "not_studied",
-                                "yes_not_relevant",
-                                "yes_need_to_check",
-                                "no_other"
+                                "undecided",
+                                "yes",
+                                "no"
+                                "other"
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -289,7 +308,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -312,7 +331,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string"
                         }
                     }
@@ -338,12 +357,12 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "What functional form is used?",
+                            "description": "What functional forms are used?",
                             "type": "string",
                             "enum": ["templates","parametric","other"]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -369,7 +388,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -398,7 +417,7 @@
                             "type": "string"
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -434,7 +453,7 @@
                             "dependencies": "name"
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -460,7 +479,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -483,7 +502,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -504,7 +523,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }  
@@ -530,7 +549,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -555,7 +574,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -597,7 +616,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -656,7 +675,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -681,7 +700,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -710,7 +729,7 @@
                             "dependencies": "name"
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string"
                         }
                     },
@@ -723,7 +742,7 @@
                     "type": "object",
                     "properties": {
                         "name": {
-                            "description": "In the case toy data are generated as part of the procedureb determine the test statistic distribution or to compute the expected limit / expected limit bandsb the nuisance parameter are chosen for the toys.",
+                            "description": "In the case toy data is generated as part of the limit setting procedure - e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands - please specify how the nuisance parameter are chosen for the toys:",
                             "type": "string",
                             "enum": [
                                 "not_relevant",
@@ -734,7 +753,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -760,7 +779,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -806,7 +825,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -829,7 +848,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -842,12 +861,12 @@
         },
         "unfolding": {
             "title": "Unfolding",
-            "description": "Take a second and read the <a target='_blank' href='http://cousins.web.cern.ch/cousins/unfolding_15sep10.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>",
+            "description": "Take a second and read the <a target='_blank' href='http://cousins.web.cern.ch/cousins/unfolding_14mar13.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>",
             "type": "object",
             "properties": {
                 "note_read": {
-                    "title": "\"Interim recommendations on unfolding techniques\" Read",
-                    "description": "Have you read the SC note on \"Interim recommendations on unfolding techniques\"?",
+                    "title": "Interim recommendations on unfolding techniques Read",
+                    "description": "Have you read the SC note on Interim recommendations on unfolding techniques?",
                     "type": "string",
                     "enum": [
                         "yes",
@@ -889,7 +908,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -912,7 +931,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -941,7 +960,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -1010,7 +1029,7 @@
                             "type": "string"
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string"
                         }
                     },
@@ -1031,7 +1050,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -1070,7 +1089,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -1094,7 +1113,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -1116,7 +1135,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string",
                             "dependencies": "name"
                         }
@@ -1147,7 +1166,7 @@
                             ]
                         },
                         "comments": {
-                            "title": "Additional Type",
+                            "title": "Additional comments",
                             "type": "string"
                         }
                     }
