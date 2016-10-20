@@ -24,23 +24,6 @@
  */
 
 
-$navbar-height: 96px;
-$navbar-inverse-bg: $color1;
-$navbar-inverse-link-color: lighten($color1, 60%);
-$navbar-inverse-link-hover-bg: darken($color1, 5%);
-$navbar-inverse-brand-color: #fff;
-
-.navbar-static-top {
-    border-width: 0 0 0;
-}
-
-.navbar-brand {
-    font-family: $brand-font-family;
-    font-weight: $brand-font-weight;
-    font-size: $brand-font-size;
-    padding: $navbar-brand-padding-vertical $navbar-padding-horizontal
-}
-
 header {
     .navbar.navbar-inverse {
         background-color: transparent;

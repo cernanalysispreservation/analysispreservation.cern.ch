@@ -140,26 +140,11 @@ header {
     }
 }
 
-.vertical-text {
-    transform: rotate(90deg);
-    transform-origin: left top 0;
-}
-
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
     outline: none;
-}
-
-.cap-pill {
-    border-radius: $brand-pill-radius;
-    padding: 5px;
-    background-color: #f4f4f4;
-}
-
-.pointer-none {
-    pointer-events: none;
 }
 
 .col-centered {

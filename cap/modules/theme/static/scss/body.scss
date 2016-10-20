@@ -24,38 +24,6 @@
  */
 
 
-.navbar-extra {
-    margin-top: -$navbar-margin-bottom;
-    padding-top: $navbar-padding-vertical;
-    padding-bottom: $navbar-padding-vertical;
-    padding-left: $navbar-padding-horizontal;
-    padding-right: $navbar-padding-horizontal;
-    margin-bottom: $navbar-margin-bottom;
-    h1 {
-        color: #fff;
-        font-weight: 200;
-    }
-    h2, h3, h4, h5 {
-        color: $navbar-inverse-link-color;
-        font-weight: $font-weight;
-    }
-}
-
-
-.page-title {
-    h1, h2, h3, h4, h5 {
-        color: lighten($color1, 20%);
-        margin-bottom: 20px;
-        small{
-            font-weight: inherit;
-        }
-    }
-
-    margin-top: -$navbar-margin-bottom;
-    margin-bottom: $navbar-margin-bottom;
-}
-
-
 .error-page.container .row {
     margin-left: 50px;
     margin-top: 100px;
