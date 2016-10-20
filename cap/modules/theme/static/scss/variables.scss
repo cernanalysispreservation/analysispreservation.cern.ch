@@ -30,14 +30,29 @@ $brand-font-family: "Futura";
 $brand-font-weight: 400;
 $brand-font-size: 40px;
 
-$color1: #0047A8;
-$color1-gradient: #2BBCFF; //lighten($color1, 15%);
-$color2: #90C5A9;
-$color3: #7A9A95;
-$color4: #EF6D3B;
-$color5: #FA8B60;
-$lightgrey: #ECF0F1;
-$theme-color: #3498DB;
+// brand colors
+
+$light-blue-theme-color: #3b97d3;   // logo color, please don't change
+$dark-blue-theme-color: #2c3e50;    // logo color, please don't change
+$light-grey-theme-color: #ecf0f1;   // logo color, please don't change
+
+// blue
+
+$color1: #0047A8; //33%blue //dark-bright-blue
+$color1-gradient: #2BBCFF; //lighten($color1, 15%); //58%blue light-bright-blue
+
+// green
+
+$color2: #90C5A9; //67%green light-dull-green
+$color3: #7A9A95; //54%green medium-dull-greyish-green
+
+//orange
+
+$color4: #EF6D3B; //58%orange medium-orange
+$color5: #FA8B60; //68%orange light-dull-orange
+
+
+
 
 $navbar-brand-padding-vertical: 15px;
 

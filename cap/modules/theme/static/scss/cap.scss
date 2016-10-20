@@ -33,8 +33,8 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 $cap_color: #8A949E;
 
 
-$cap_base_color: #3498DB;
-$cap_btn_bg: $cap_base_color;
+$light-blue-theme-color: #3498DB;
+$cap_btn_bg: $light-blue-theme-color;
 
 $cap_box_bg: #fff;
 $cap_box_color: $cap_color;
@@ -70,7 +70,7 @@ header {
     background-color: #fff;
     color: #8A949E;
     padding: 20px;
-    border: 1px solid $cap_base_color;
+    border: 1px solid $light-blue-theme-color;
 
     > header {
         color: #8A949E;
@@ -110,7 +110,7 @@ header {
     }
     &:before {
         content: 'Public';
-        color: #2C3E50;
+        color: $dark-blue-theme-color;
         position: absolute;
         left: 10px;
         z-index: 0;
@@ -167,11 +167,11 @@ button:focus {
 }
 
 .text-color {
-    color: $theme-color;
+    color: $light-blue-theme-color;
 }
 
 .footer>.menu-wrapper a {
-    color: $theme-color;
+    color: $light-blue-theme-color;
 }
 
 .error-page {
@@ -180,15 +180,15 @@ button:focus {
 
 body::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
     //    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: $lightgrey;
+    background-color: $light-grey-theme-color;
 }
 
 body::-webkit-scrollbar, .scrollable::-webkit-scrollbar {
     width: 6px;
-    background-color: $lightgrey;
+    background-color: $light-grey-theme-color;
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: $theme-color;
+    background-color: $light-blue-theme-color;
 }
 

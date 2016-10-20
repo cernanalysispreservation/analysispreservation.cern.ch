@@ -31,7 +31,7 @@ $cap_header_height: 90px;
 
 .cap-header {
     background-color: #ffffff;
-    border-bottom: 1px solid $cap_base_color;
+    border-bottom: 1px solid $light-blue-theme-color;
     height: $cap_header_height;
     padding: 25px 0;
 }
@@ -76,7 +76,7 @@ $cap_header_height: 90px;
                 padding: 4px 10px;
             }
             a:hover {
-                background-color: $cap_base_color;
+                background-color: $light-blue-theme-color;
                 color: #fff;
             }
         }
