@@ -24,11 +24,14 @@
  */
 
 
+@import "variables";
+
 /* Links */
 /*
  * Base structure
  */
 $cover-panel-padding: 40px;
+$cover-color-light: lighten($cover-color, 15%);
 
 html.cover-page,
 body.cover-page {
@@ -36,9 +39,9 @@ body.cover-page {
     position: relative;
 }
 body.cover-page {
-    color: #fff;
+    color: white;
     text-align: center;
-    #gradient.horizontal($color1; $color1-gradient; 0%; 100%);
+    #gradient.horizontal($cover-color; $cover-color-gradient; 0%; 100%);
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -55,14 +58,14 @@ body.cover-page {
         margin: $cover-panel-padding*2 0;
     }
     .panel {
-        color: #000;
+        color: black;
         border-radius: $border-radius-large*2;
     }
     .panel-free-title {
         margin: $cover-panel-padding 0;
     }
     h3 {
-        color: $brand-primary;
+        color: $cover-color-light;
     }
     .panel-body {
         padding-left: $cover-panel-padding;

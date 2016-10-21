@@ -24,7 +24,9 @@
  */
 
 
-$cap_searchbar_bgcolor: #eff6f9;
+@import "variables";
+
+$cap_searchbar_bgcolor: $light-grey-theme-color;
 
 #cap-home-search {
     height: $header_btn_height;
@@ -49,7 +51,7 @@ $cap_searchbar_bgcolor: #eff6f9;
         outline: 0;
         font-size: 18px;
         font-weight: 400;
-        color: $cap_color;
+        color: $dark-grey-element-color;
         width: 100%;
     }
 
@@ -58,7 +60,7 @@ $cap_searchbar_bgcolor: #eff6f9;
         float: left;
         border-top-right-radius: 2px;
         border-bottom-right-radius: 2px;
-        color: #fff;
+        color: white;
         font-size: 25px;
         font-weight: 100;
         height: $header_btn_height;
@@ -75,18 +77,18 @@ $cap_searchbar_bgcolor: #eff6f9;
         float: left;
 
         ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-            color: #BDC2C7;
+            color: $dark-grey-element-color;
         }
         :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-           color:    #BDC2C7;
+           color:    $dark-grey-element-color;
            opacity:  1;
         }
         ::-moz-placeholder { /* Mozilla Firefox 19+ */
-           color:    #BDC2C7;
+           color:    $dark-grey-element-color;
            opacity:  1;
         }
         :-ms-input-placeholder { /* Internet Explorer 10-11 */
-           color:    #BDC2C7;
+           color:    $dark-grey-element-color;
         }
 
         i.fa {
@@ -96,7 +98,7 @@ $cap_searchbar_bgcolor: #eff6f9;
             margin-left: 15px;
             line-height: $header_btn_height;
             line-height: 100%;
-            color: #8A949E;
+            color: $dark-grey-element-color;
             font-size: 2em;
             padding: 11px;
         }

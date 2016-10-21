@@ -24,6 +24,8 @@
  */
 
 
+@import "variables";
+
 $input_height: 30px;
 $input_radius: 3px;
 
@@ -34,7 +36,7 @@ $input_radius: 3px;
 .autocomplete-import {
     position: relative;
     border-radius: $input_radius;
-    border:    1px solid #ccc;
+    border:    1px solid $dark-grey-bg-border-color;
     margin: 10px;
 
     > span.twitter-typeahead {
@@ -91,7 +93,7 @@ $input_radius: 3px;
             display: inline-block;
         }
         input {
-            border: 1px solid #ccc;
+            border: 1px solid $dark-grey-bg-border-color;
         }
     }
 }
@@ -103,7 +105,7 @@ $input_radius: 3px;
         padding: 10px;
 
         > .newarray {
-            background-color: #f5f5f5;
+            background-color: $light-grey-bg-color;
             margin-bottom: 10px;
         }
 
@@ -138,10 +140,10 @@ $input_radius: 3px;
 .depositgroup-array {
     > .newarray {
         margin: 10px;
-        background-color: #f5f5f5;
+        background-color: $light-grey-bg-color;
 
         .depositgroup-object > .newarray {
-            background-color: #D8D8D8;
+            background-color: $grey-bg-color;
         }
     }
 
@@ -149,7 +151,7 @@ $input_radius: 3px;
 }
 
 .simple-panel {
-    background-color: #f5f5f5;
+    background-color: $light-grey-bg-color;
     margin: 10px;
     padding-left: 10px;
 }
@@ -205,7 +207,7 @@ textarea.alpaca-control {
 .alpaca-control { 
     width: 75%;
     height: $input_height;
-    background-color: #eee;
+    background-color: $grey-border-color;
     padding: 3px 10px;
     border-radius: $input_radius;
     float: right;
@@ -221,10 +223,10 @@ textarea.alpaca-control {
 }
 
 .droplist {
-    border: 2px dashed #ccc;
+    border: 2px dashed $dark-grey-bg-border-color;
     border-bottom: 0;
     border-radius: 4px;
-    color: #A5A5A5;
+    color: $grey-element-color;
     padding: 5px;
     width: 100%;
     height: 50px;
@@ -234,12 +236,12 @@ textarea.alpaca-control {
 .droplist-btn {
     width: 100%;
     margin-top: -2px;
-    border: 2px dashed #ccc;
+    border: 2px dashed $dark-grey-bg-border-color;
     border-top: 0;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
-    background-color: #ccc;
-    color: #f5f5f5;
+    background-color: $dark-grey-bg-border-color;
+    color: $light-grey-bg-color;
 }
 
 .depositgroup-desc {
@@ -309,7 +311,7 @@ textarea.alpaca-control {
                 width: 100%;
                 
                 .newarray {
-                    background-color: #ccc;
+                    background-color: $dark-grey-bg-border-color;
                     border-radius: 3px;
                     width: 75%;
 
@@ -335,7 +337,7 @@ textarea.alpaca-control {
     .url-harvest-container {
         position: relative;
         height: $input_height;
-        background-color: #ccc;
+        background-color: $dark-grey-bg-border-color;
 
         input {
             width: 100%;

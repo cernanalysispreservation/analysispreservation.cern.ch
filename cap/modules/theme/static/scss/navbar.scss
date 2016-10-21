@@ -24,6 +24,8 @@
  */
 
 
+@import "variables";
+
 header {
     .navbar.navbar-inverse {
         background-color: transparent;
@@ -37,12 +39,12 @@ header {
     a.btn:focus,
     a.btn:hover,
     a.btn {
-        color: $cap_color;
+        color: $dark-grey-element-color;
         font-weight: 400;
     }
 
     a.btn i.fa-user {
-        background-color: #ccc;
+        background-color: $dark-grey-bg-border-color;
         padding: 5px;
         margin-right: 5px;
         border-radius: 50%;

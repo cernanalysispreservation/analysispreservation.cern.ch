@@ -24,11 +24,16 @@
  */
 
 
+// font
+
 $btn-font-weight: 100;
 
 $brand-font-family: "Futura";
 $brand-font-weight: 400;
 $brand-font-size: 40px;
+
+
+// colors
 
 // brand colors
 
@@ -38,28 +43,53 @@ $light-grey-theme-color: #ecf0f1;   // logo color, please don't change
 
 // blue
 
-$color1: #0047A8; //33%blue //dark-bright-blue
-$color1-gradient: #2BBCFF; //lighten($color1, 15%); //58%blue light-bright-blue
+$cover-color: #0047A8; // dark-bright-blue
+$cover-color-gradient: #2BBCFF; // light-bright-blue
+
+$light-blue: #54BBF9;    // lighter than theme color, better to use theme color?
+
+// grey
+
+$grey-border-color: #eeeeee;
+$light-grey-bg-color: #f5f5f5;
+$grey-bg-color: #D8D8D8;
+$dark-grey-bg-border-color: #cccccc;
+$dark-grey-element-color: #8A949E;
+$grey-element-color: #A5A5A5;
+$alt-grey-element-color: #AFB9C5;
 
 // green
 
-$color2: #90C5A9; //67%green light-dull-green
-$color3: #7A9A95; //54%green medium-dull-greyish-green
+$custom-green: #169776;
 
-//orange
+// text colors
 
-$color4: #EF6D3B; //58%orange medium-orange
-$color5: #FA8B60; //68%orange light-dull-orange
+$text-white: white;
+$text-dark: $dark-grey-element-color;
+$message-color: #cd5c5c;
+
+// cap design colors
+
+$cap_btn_bg: $light-blue-theme-color;
+$label-color: #fcfff4;
+$dark-grey: #333333;    // used only once, better to use dark-blue-theme-color?
+
+// other predefined colors used:
+
+// black
+// white
+// green
+// orange
+// red
 
 
-
+// sizes
 
 $navbar-brand-padding-vertical: 15px;
-
-$brand-primary: lighten($color1, 15%);
-$text-white: #fff;
-$text-dark: #8A949E;
 
 $breakpoint-tablet: 892px;
 
 $brand-pill-radius: 3px;
+
+$header_btn_height: 40px;
+$cap_header_height: 90px;

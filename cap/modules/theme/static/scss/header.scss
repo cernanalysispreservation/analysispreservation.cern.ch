@@ -24,13 +24,11 @@
  */
 
 
-$header_btn_height: 40px;
-$cap_header_height: 90px;
-
 @import "searchbar";
+@import "variables";
 
 .cap-header {
-    background-color: #ffffff;
+    background-color: white;
     border-bottom: 1px solid $light-blue-theme-color;
     height: $cap_header_height;
     padding: 25px 0;
@@ -43,7 +41,7 @@ $cap_header_height: 90px;
 
 #header-upload {
     background-color: $cap_btn_bg;
-    color: #fff;
+    color: white;
     height: $header_btn_height;
     line-height: 24px;
     font-size: 16px;
@@ -51,22 +49,22 @@ $cap_header_height: 90px;
 }
 
 #cap-home-user-menu {
-    color: #333;
+    color: $dark-grey;
 
     .btn {
-        background-color: #fff;
+        background-color: white;
         font-size: 18px;
         height: 40px;
         border-radius: 2px;
-        border: 1px solid #ccc;
-        color: #ccc;
+        border: 1px solid $dark-grey-bg-border-color;
+        color: $dark-grey-bg-border-color;
     }
     .dropdown-menu {
         right: 40px;
 
         li.header{
             padding: 0 10px;
-            color: #767676;
+            color: $grey-element-color;
         }
 
         li {
@@ -77,7 +75,7 @@ $cap_header_height: 90px;
             }
             a:hover {
                 background-color: $light-blue-theme-color;
-                color: #fff;
+                color: white;
             }
         }
     }

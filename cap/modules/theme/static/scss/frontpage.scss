@@ -42,7 +42,7 @@
     }
 
     .exp-img {
-        border-right: 1px solid #ccc;
+        border-right: 1px solid $dark-grey-bg-border-color;
 
         img {
             max-height: 50px;
@@ -109,7 +109,7 @@ li.result-item {
 
 .custom-header {
     margin-top:13%;
-    color: #000000;
+    color: black;
 }
 
 #logo-position {
