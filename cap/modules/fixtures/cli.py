@@ -132,13 +132,12 @@ def add_record(metadata, collection, schema, force, files=[]):
     data, pid, recid = construct_record(
         collection, metadata, 1, {} if force else schema)
     d = current_app.config['DATADIR']
-    loc = Location(name='local', uri=d, default=True)
 
     buckets = []
     data['_files'] = []
 
     for file in files:
-        bucket = Bucket.create(loc)
+        bucket = Bucket.create(default_location=Location.get_default())
         buckets.append(bucket)
 
         with open(pkg_resources.resource_filename(
