@@ -704,7 +704,7 @@ window.schemaOptions = {
           },
           "toy_data": {
             "type": "depositgroup-object",
-            "order": 10,
+            "order": 9,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -727,7 +727,7 @@ window.schemaOptions = {
           },
           "theory_error": {
             "type": "depositgroup-object",
-            "order": 9,
+            "order": 10,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
