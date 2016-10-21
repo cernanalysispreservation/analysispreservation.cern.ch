@@ -71,11 +71,12 @@ window.schemaOptions = {
           "opt_title": {
             "order": 5
           },
-          "preapproval_date":
-            "order": 
+          "preapproval_date": {
+            "order": 1,
             "type": "depositgroup-object",
             "fields": {
-                "order": ,
+              "name": {
+                "order": 1,
                 "type": "select2",
                 "select2": true,
                 "optionLabels": [
@@ -88,7 +89,9 @@ window.schemaOptions = {
               "comments": {
                 "order": 2,
                 "type": "textarea"
+              }
             }
+          }
         }
       },
       "general": {
@@ -300,7 +303,7 @@ window.schemaOptions = {
                 "optionLabels": [
                   "Undecided",
                   "Yes",
-                  "Does not apply: we only have one background process"
+                  "Does not apply: we only have one background process",
                   "No (please specify what you do in \"Additional comments\")"
                 ]
               },
@@ -331,7 +334,7 @@ window.schemaOptions = {
                   "name": ["other"]
                 }
               }
-            }   
+            }
           },
           "robustness_checks": {
             "type": "depositgroup-object",
@@ -352,7 +355,7 @@ window.schemaOptions = {
                   "name": ["other"]
                 }
               }
-            }   
+            }
           }
         }
       },
@@ -730,7 +733,7 @@ window.schemaOptions = {
           },
           "toy_data": {
             "type": "depositgroup-object",
-            "order": 10,
+            "order": 9,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",
@@ -753,7 +756,7 @@ window.schemaOptions = {
           },
           "theory_error": {
             "type": "depositgroup-object",
-            "order": 9,
+            "order": 10,
             "fields": {
               "name": {
                 "type": "mlt-choice-radio",

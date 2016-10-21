@@ -62,7 +62,7 @@
                                 "schedule",
                                 "date_range",
                                 "undecided",
-                                "not_approval",
+                                "not_approval"
                             ]
                         },
                         "comments": {
@@ -70,6 +70,7 @@
                             "type": "string"
                         }
                     }
+                }
             },
             "required": [
                 "name",
@@ -280,7 +281,7 @@
                             "enum": [
                                 "undecided",
                                 "yes",
-                                "no"
+                                "no",
                                 "other"
                             ]
                         },
@@ -1185,3 +1186,4 @@
         }
     }
 }
+
