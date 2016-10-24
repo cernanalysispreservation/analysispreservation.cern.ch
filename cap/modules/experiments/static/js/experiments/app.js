@@ -26,12 +26,15 @@
 
 define([
     'angular',
+    'angular-animate',
     'js/experiments/services',
-    'js/experiments/controllers'
+    'js/experiments/controllers',
+    'js/experiments/cap.pushmenu'
   ], function (angular) {
   var app = angular.module('cap.experiments', [
     'cap.experiments.services',
     'cap.experiments.controllers',
+    'cap.pushmenu'
   ]);
   return app;
 });
