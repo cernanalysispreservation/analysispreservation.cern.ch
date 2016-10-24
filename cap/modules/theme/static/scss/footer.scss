@@ -32,48 +32,48 @@ $footer-background-color1: $light-grey-bg-color;
 $footer-background-color2: lighten($footer-background-color1, 4%);
 
 html {
-    position: relative;
-    min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    margin-bottom: $footer-height;
-    background-color: transparent;
+  margin-bottom: $footer-height;
+  background-color: transparent;
 }
 
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: $footer-height;
-    // background-color: $footer-background-color2;
-    color: darken($footer-background-color2, 40%);
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $footer-height;
+  // background-color: $footer-background-color2;
+  color: darken($footer-background-color2, 40%);
 }
 
 .footer > .menu-wrapper {
-    // background-color: $footer-background-color1;
-    color: darken($footer-background-color1, 40%);
+  // background-color: $footer-background-color1;
+  color: darken($footer-background-color1, 40%);
 
-    a {
-        color: darken($footer-background-color1, 40%);
-    }
+  a {
+    color: darken($footer-background-color1, 40%);
+  }
 }
 
 .footer .row {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .footer-exp-logos {
-    text-align: center;
+  text-align: center;
 
-    img {
-        margin-left: 20px;
-        height: 55px;
-        width: auto;
-        margin-top: 15px;
-    }
+  img {
+    margin-left: 20px;
+    height: 55px;
+    width: auto;
+    margin-top: 15px;
+  }
 }
 
 #logo-footer {
-    text-align: center;
+  text-align: center;
 }

@@ -27,263 +27,263 @@
 @import "variables";
 
 #record-display {
-    background-color: white;
-    padding: 0;
-    margin-top: 80px;
+  background-color: white;
+  padding: 0;
+  margin-top: 80px;
 }
 
 #record-menu.navbar {
-    text-align: center;
-    height:50px;
-    margin-bottom: 0;
+  text-align: center;
+  height:50px;
+  margin-bottom: 0;
 
-    .navbar-nav {
-        display: inline-block;
-        float: none;
+  .navbar-nav {
+    display: inline-block;
+    float: none;
+  }
+
+  .nav-tabs>li.active>a,
+  .nav-tabs>li.active>a:focus,
+  .nav-tabs>li.active>a:hover {
+    border-bottom: 2px solid $light-blue;
+    color: $grey-element-color;
+  }
+
+  .nav-tabs>li {
+
+    > a {
+      background-color: transparent;
+      border: 0;
+      border-bottom-color: transparent;
+      color: $dark-grey-element-color;
+      font-weight: 400;
+      max-height: 50px;
     }
 
-    .nav-tabs>li.active>a,
-    .nav-tabs>li.active>a:focus,
-    .nav-tabs>li.active>a:hover {
-        border-bottom: 2px solid $light-blue;
-        color: $grey-element-color;
+    >a:hover,
+    >a:focus {
+      background-color: transparent;
+      border-bottom: 2px solid $dark-grey-bg-border-color;
+      color: $grey-element-color;
     }
+  }
 
-    .nav-tabs>li {
+  .edit-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
 
-        > a {
-            background-color: transparent;
-            border: 0;
-            border-bottom-color: transparent;
-            color: $dark-grey-element-color;
-            font-weight: 400;
-            max-height: 50px;
-        }
-
-        >a:hover,
-        >a:focus {
-            background-color: transparent;
-            border-bottom: 2px solid $dark-grey-bg-border-color;
-            color: $grey-element-color;
-        }
+    a:hover,
+    a:visited,
+    a:focus,a {
+      background-color: $custom-green;
+      color: $light-grey-bg-color;
+      margin: 10px;
+      padding: 5px 20px;
+      font-size: 12px;
     }
-
-    .edit-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        a:hover,
-        a:visited,
-        a:focus,a {
-            background-color: $custom-green;
-            color: $light-grey-bg-color;
-            margin: 10px;
-            padding: 5px 20px;
-            font-size: 12px;
-        }
-    }
+  }
 }
 
 #record-data {
-    background-color: $dark-grey-bg-border-color;
-    min-height: 300px;
+  background-color: $dark-grey-bg-border-color;
+  min-height: 300px;
 }
 
 #record-fields,
 #record-permissions,
 #record-files,
 #record-form {
-    background-color: $light-grey-bg-color;
-    border-bottom: 1px solid $grey-border-color;
-    border-top: 1px solid $grey-border-color;
-    min-height: 300px
+  background-color: $light-grey-bg-color;
+  border-bottom: 1px solid $grey-border-color;
+  border-top: 1px solid $grey-border-color;
+  min-height: 300px
 }
 
 #record-collections {
-    padding: 10px;
-    border-bottom: 1px solid $grey-border-color;
-    font-size: 12px;
+  padding: 10px;
+  border-bottom: 1px solid $grey-border-color;
+  font-size: 12px;
 
-    .btn {
-        padding: 5px;
-        background-color: $light-blue;
-        color: white;
-        font-weight: lighter;
-        font-size: 12px;
-    }
+  .btn {
+    padding: 5px;
+    background-color: $light-blue;
+    color: white;
+    font-weight: lighter;
+    font-size: 12px;
+  }
 }
 
 .record-rendered-loading {
-    background: $grey-border-color;
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.5;
+  background: $grey-border-color;
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
 }
 
 .record-rendered {
-    padding: 20px 10px;
+  padding: 20px 10px;
 }
 
 .record-loading {
-    padding: 80px;
-    margin: 0 auto;
-    text-align: center;
+  padding: 80px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 #record-files {
-    header.files-header {
-        padding: 10px 0;
-        border-bottom: 1px solid $grey-border-color;
-        font-size: 14px;
-        display: inline-block;
-        width: 100%;
-        float: left;
-    }
+  header.files-header {
+    padding: 10px 0;
+    border-bottom: 1px solid $grey-border-color;
+    font-size: 14px;
+    display: inline-block;
+    width: 100%;
+    float: left;
+  }
 
-    .centered {
-        text-align:  center;
-    }
+  .centered {
+    text-align:  center;
+  }
 
-    .file-row {
-        display: inline-block;
-        width: 100%;
-        padding: 6px 0;
+  .file-row {
+    display: inline-block;
+    width: 100%;
+    padding: 6px 0;
 
-        .fa-circle.success {
-            color: green;
-        }
-        .fa-circle.warning {
-            color: orange;
-        }
-        .fa-circle.error {
-            color: red;
-        }
+    .fa-circle.success {
+      color: green;
     }
+    .fa-circle.warning {
+      color: orange;
+    }
+    .fa-circle.error {
+      color: red;
+    }
+  }
 }
 
 #record-permissions {
+  display: inline-block;
+  width: 100%;
+
+  header.permissions-header {
+    padding: 10px 0;
+    border-bottom: 1px solid $grey-border-color;
+    font-size: 14px;
     display: inline-block;
     width: 100%;
+    float: left;
+  }
 
-    header.permissions-header {
-        padding: 10px 0;
-        border-bottom: 1px solid $grey-border-color;
-        font-size: 14px;
-        display: inline-block;
-        width: 100%;
+  .centered {
+    text-align:  center;
+  }
+
+  #permissions-query {
+
+  }
+  #record-permissions-fltr {
+    padding: 10px;
+    border-bottom: 1px solid $grey-border-color;
+    font-size: 12px;
+    display: inline-block;
+    width: 100%;
+    float: left;
+
+    .permissions-query-container {
+      position: relative;
+      float: left;
+      display: inline-block;
+      width: 100%;
+
+      input#permissions-query {
+        width: 40%;
+        padding: 5px;
+        border: 1px solid $grey-border-color;
         float: left;
-    }
+        height: 30px;
+      }
 
-    .centered {
-        text-align:  center;
-    }
-
-    #permissions-query {
-
-    }
-    #record-permissions-fltr {
-        padding: 10px;
-        border-bottom: 1px solid $grey-border-color;
+      .permissions-add {
+        background: $dark-blue-theme-color;
+        padding: 0;
+        float: left;
+        border-radius: 0;
+        margin-left: -1px;
+        height: 30px;
+        padding: 5px;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
+        color: white;
         font-size: 12px;
-        display: inline-block;
-        width: 100%;
-        float: left;
+      }
+    }
+  }
 
-        .permissions-query-container {
-            position: relative;
-            float: left;
-            display: inline-block;
-            width: 100%;
+  .permissions-list-changes {
+    background-color: $light-grey-theme-color;
 
-            input#permissions-query {
-                width: 40%;
-                padding: 5px;
-                border: 1px solid $grey-border-color;
-                float: left;
-                height: 30px;
-            }
-
-            .permissions-add {
-                background: $dark-blue-theme-color;
-                padding: 0;
-                float: left;
-                border-radius: 0;
-                margin-left: -1px;
-                height: 30px;
-                padding: 5px;
-                border-bottom-right-radius: 3px;
-                border-top-right-radius: 3px;
-                color: white;
-                font-size: 12px;
-            }
-        }
+    .permissions-header {
+      background-color: transparent;
+      border-bottom: 1px solid $grey-border-color;
+      font-size: 14px;
+      padding: 10px 0;
+      color: inherit;
     }
 
-    .permissions-list-changes {
-        background-color: $light-grey-theme-color;
+    > header {
+      padding: 10px;
+      font-size: 13px;
+      border-bottom: 1px solid $grey-border-color;
+      color: $dark-grey-element-color;
 
-        .permissions-header {
-            background-color: transparent;
-            border-bottom: 1px solid $grey-border-color;
-            font-size: 14px;
-            padding: 10px 0;
-            color: inherit;
-        }
+      a,
+      a:hover,
+      a:focus {
+        padding: 5px 10px;
+        margin-top: -5px;
+        margin-right: -5px;
+        background-color: $dark-blue-theme-color;
+        color: white;
+        border-radius: 2px;
+        font-size: 12px;
+      }
+    }
+  }
 
-        > header {
-            padding: 10px;
-            font-size: 13px;
-            border-bottom: 1px solid $grey-border-color;
-            color: $dark-grey-element-color;
+  .permissions-list-item-changes,
+  .permissions-list-item {
+    display: inline-block;
+    width: 100%;
+    padding: 6px 0;
+    line-height: 28px;
 
-            a,
-            a:hover,
-            a:focus {
-                padding: 5px 10px;
-                margin-top: -5px;
-                margin-right: -5px;
-                background-color: $dark-blue-theme-color;
-                color: white;
-                border-radius: 2px;
-                font-size: 12px;
-            }
-        }
+    .fa-check {
+      color: $dark-grey-bg-border-color;
+      border-radius: 50%;
+      padding: 5px;
+      border: 2px solid;
     }
 
-    .permissions-list-item-changes,
-    .permissions-list-item {
-        display: inline-block;
-        width: 100%;
-        padding: 6px 0;
-        line-height: 28px;
-
-        .fa-check {
-            color: $dark-grey-bg-border-color;
-            border-radius: 50%;
-            padding: 5px;
-            border: 2px solid;
-        }
-
-        .fa-check.can {
-            color: green;
-        }
-    }.collaboration-item {
-        background-color: rgba(84, 187, 249, 0.1); //eef8fe
+    .fa-check.can {
+      color: green;
     }
+  }.collaboration-item {
+    background-color: rgba(84, 187, 249, 0.1); //eef8fe
+  }
 }
 
 .panel-heading .panel-toggle:after {
-    /* symbol for "opening" panels */
-    font-family: 'Glyphicons Halflings';
-    content: "\e114";
-    float: right;
+  /* symbol for "opening" panels */
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
+  float: right;
 }
 .panel-heading .panel-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content: "\e080";
+  /* symbol for "collapsed" panels */
+  content: "\e080";
 }

@@ -40,132 +40,132 @@ $icon-font-path: "/static/node_modules/bootstrap/fonts/";
 $fa-font-path: "/static/node_modules/font-awesome/fonts";
 
 .cap-main {
-    height: 100vh;
+  height: 100vh;
 }
 
 .cap-container {
-    height: 100vh;
-    padding-top: $cap_header_height+30;
+  height: 100vh;
+  padding-top: $cap_header_height+30;
 }
 
 
 header {
-    nav.navbar-default {
-        background-color: transparent;
-    }
-    .navbar.navbar-inverse {
-        background-color: transparent;
-    }
+  nav.navbar-default {
+    background-color: transparent;
+  }
+  .navbar.navbar-inverse {
+    background-color: transparent;
+  }
 }
 
 .cap-box {
-    background-color: white;
+  background-color: white;
+  color: $dark-grey-element-color;
+  padding: 20px;
+  border: 1px solid $light-blue-theme-color;
+
+  > header {
     color: $dark-grey-element-color;
-    padding: 20px;
-    border: 1px solid $light-blue-theme-color;
+    font-weight: 400;
+    font-family: 'Futura';
+    font-size: 20px;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    text-indent: 0.1px;
+    border-bottom: 1px solid $grey-border-color;
+  }
 
-    > header {
-        color: $dark-grey-element-color;
-        font-weight: 400;
-        font-family: 'Futura';
-        font-size: 20px;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-        text-indent: 0.1px;
-        border-bottom: 1px solid $grey-border-color;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .cap-checkbox {
-    width: 120px;
-    height: 26px;
-    background: $alt-grey-element-color;
-    float: right;
-    position: relative;
+  width: 120px;
+  height: 26px;
+  background: $alt-grey-element-color;
+  float: right;
+  position: relative;
+  border-radius: 50px;
+  // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+  &:after {
+    content: 'Private';
+    color: white;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+  }
+  &:before {
+    content: 'Public';
+    color: $dark-blue-theme-color;
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+  }
+  label {
+    display: block;
+    width: 62px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    background: $label-color;
+    background: linear-gradient(top, $label-color 0%, #dfe5d7 40%, #b3bead 100%);
     border-radius: 50px;
-    // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
-    &:after {
-        content: 'Private';
-        color: white;
-        position: absolute;
-        right: 10px;
-        z-index: 0;
-        font: 12px/26px Arial, sans-serif;
-        font-weight: bold;
-        text-shadow: 1px 1px 0px rgba(255,255,255,.15);
+    transition: all 0.4s ease;
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
+  }
+  input[type=checkbox] {
+    visibility: hidden;
+    &:checked + label {
+      left: 55px;
     }
-    &:before {
-        content: 'Public';
-        color: $dark-blue-theme-color;
-        position: absolute;
-        left: 10px;
-        z-index: 0;
-        font: 12px/26px Arial, sans-serif;
-        font-weight: bold;
-    }
-    label {
-        display: block;
-        width: 62px;
-        height: 20px;
-        cursor: pointer;
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        z-index: 1;
-        background: $label-color;
-        background: linear-gradient(top, $label-color 0%, #dfe5d7 40%, #b3bead 100%);
-        border-radius: 50px;
-        transition: all 0.4s ease;
-        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.3);
-    }
-    input[type=checkbox] {
-        visibility: hidden;
-        &:checked + label {
-            left: 55px;
-        }
-    }
+  }
 }
 
 input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+  outline: none;
 }
 
 .col-centered {
-    text-align: center;
+  text-align: center;
 }
 
 .text-color {
-    color: $light-blue-theme-color;
+  color: $light-blue-theme-color;
 }
 
 .footer>.menu-wrapper a {
-    color: $light-blue-theme-color;
+  color: $light-blue-theme-color;
 }
 
 .error-page {
-    margin-top: 10%;
+  margin-top: 10%;
 }
 
 body::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
-    //    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: $light-grey-theme-color;
+  //  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: $light-grey-theme-color;
 }
 
 body::-webkit-scrollbar, .scrollable::-webkit-scrollbar {
-    width: 6px;
-    background-color: $light-grey-theme-color;
+  width: 6px;
+  background-color: $light-grey-theme-color;
 }
 
 body::-webkit-scrollbar-thumb {
-    background-color: $light-blue-theme-color;
+  background-color: $light-blue-theme-color;
 }
 

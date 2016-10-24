@@ -27,99 +27,99 @@
 @import "variables";
 
 #cap-experiments {
-    margin-left: 25%;
-    margin-right: 25%;
-    margin-top: 12.5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  margin-top: 12.5%;
 
-    .exp-img, .exp-name {
-        float: left;
-    }
+  .exp-img, .exp-name {
+    float: left;
+  }
 
-    @media (max-width: 1000px) {
-        .exp-img {
-        display: none;
-        }
-    }
-
+  @media (max-width: 1000px) {
     .exp-img {
-        border-right: 1px solid $dark-grey-bg-border-color;
-
-        img {
-            max-height: 50px;
-        margin-right: 15px;
-        }
+    display: none;
     }
+  }
 
-    .exp-name {
-        font-size: 22px;
-        line-height: 35px;
+  .exp-img {
+    border-right: 1px solid $dark-grey-bg-border-color;
+
+    img {
+      max-height: 50px;
+    margin-right: 15px;
     }
+  }
+
+  .exp-name {
+    font-size: 22px;
+    line-height: 35px;
+  }
 }
 
 .sign-in-btn{
-    margin-left: -5%;
+  margin-left: -5%;
 }
 
 #cap-hello {
 }
 
 #cap-experiments {
-    a.cap-box {
-        display: inline-block;
-        width: 100%;
-        height: 250px;
-        text-align: center;
-        padding: 25% 0;
-        margin-bottom: 25px;
-    }
+  a.cap-box {
+    display: inline-block;
+    width: 100%;
+    height: 250px;
+    text-align: center;
+    padding: 25% 0;
+    margin-bottom: 25px;
+  }
 }
 
 #cap-records {
 }
 
 .table-summary > tbody > tr:first-child > td {
-    border: none;
+  border: none;
 }
 
 .btn.btn-default.show-more {
-    width: 5em;
-    margin-left: calc(50% - 2.5em);
+  width: 5em;
+  margin-left: calc(50% - 2.5em);
 }
 
 li.result-item {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 .dl-object {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 #cern-strong-header {
-    color: $light-blue-theme-color;
+  color: $light-blue-theme-color;
 }
 
 .custom-container {
-    margin: 2%;
+  margin: 2%;
 }
 
 .custom-col {
-    margin-top:3%;
+  margin-top:3%;
 }
 
 .custom-header {
-    margin-top:13%;
-    color: black;
+  margin-top:13%;
+  color: black;
 }
 
 #logo-position {
-    margin-left: -3%;
+  margin-left: -3%;
 }
 
 #login-button {
-    background-color: $light-blue-theme-color;
-    padding: 9px 14%;
-    margin-top:2%;
-    font-size: 16px;
-    border-radius: 2px;
+  background-color: $light-blue-theme-color;
+  padding: 9px 14%;
+  margin-top:2%;
+  font-size: 16px;
+  border-radius: 2px;
 }

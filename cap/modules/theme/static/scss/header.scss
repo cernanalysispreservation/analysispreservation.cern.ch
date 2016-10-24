@@ -28,55 +28,55 @@
 @import "variables";
 
 .cap-header {
-    background-color: white;
-    border-bottom: 1px solid $light-blue-theme-color;
-    height: $cap_header_height;
-    padding: 25px 0;
+  background-color: white;
+  border-bottom: 1px solid $light-blue-theme-color;
+  height: $cap_header_height;
+  padding: 25px 0;
 }
 
 .cap-home-logo {
-    display: inline-block;
-    margin-top: -12px;
+  display: inline-block;
+  margin-top: -12px;
 }
 
 #header-upload {
-    background-color: $cap_btn_bg;
-    color: white;
-    height: $header_btn_height;
-    line-height: 24px;
-    font-size: 16px;
-    border-radius: 2px;
+  background-color: $cap_btn_bg;
+  color: white;
+  height: $header_btn_height;
+  line-height: 24px;
+  font-size: 16px;
+  border-radius: 2px;
 }
 
 #cap-home-user-menu {
-    color: $dark-grey;
+  color: $dark-grey;
 
-    .btn {
-        background-color: white;
-        font-size: 18px;
-        height: 40px;
-        border-radius: 2px;
-        border: 1px solid $dark-grey-bg-border-color;
-        color: $dark-grey-bg-border-color;
+  .btn {
+    background-color: white;
+    font-size: 18px;
+    height: 40px;
+    border-radius: 2px;
+    border: 1px solid $dark-grey-bg-border-color;
+    color: $dark-grey-bg-border-color;
+  }
+  .dropdown-menu {
+    right: 40px;
+
+    li.header{
+      padding: 0 10px;
+      color: $grey-element-color;
     }
-    .dropdown-menu {
-        right: 40px;
 
-        li.header{
-            padding: 0 10px;
-            color: $grey-element-color;
-        }
+    li {
+      padding: 0;
 
-        li {
-            padding: 0;
-
-            a {
-                padding: 4px 10px;
-            }
-            a:hover {
-                background-color: $light-blue-theme-color;
-                color: white;
-            }
-        }
+      a {
+        padding: 4px 10px;
+      }
+      a:hover {
+        background-color: $light-blue-theme-color;
+        color: white;
+      }
     }
+  }
 }

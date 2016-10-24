@@ -29,99 +29,99 @@
 $cap_searchbar_bgcolor: $light-grey-theme-color;
 
 #cap-home-search {
+  height: $header_btn_height;
+
+  > div, > span {
     height: $header_btn_height;
+    line-height: $header_btn_height;
+  }
 
-    > div, > span {
-        height: $header_btn_height;
-        line-height: $header_btn_height;
+  .header-search-bar {
+    height: $header_btn_height;
+    background-color: $cap_searchbar_bgcolor;
+    box-shadow: none;
+    border-radius: 2px;
+    border: 0;
+    float: left;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    outline: 0;
+    font-size: 18px;
+    font-weight: 400;
+    color: $dark-grey-element-color;
+    width: 100%;
+  }
+
+  .header-search-btn {
+    background-color: $cap_btn_bg;
+    float: left;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    color: white;
+    font-size: 25px;
+    font-weight: 100;
+    height: $header_btn_height;
+    width: $header_btn_height;
+    border: 0;
+    position: absolute;
+    right: 0;
+    line-height: $header_btn_height;
+    padding: 0 9px;
+  }
+
+  .search-input-main {
+    //width: 75%;
+    float: left;
+
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color: $dark-grey-element-color;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:  $dark-grey-element-color;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:  $dark-grey-element-color;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:  $dark-grey-element-color;
     }
 
-    .header-search-bar {
-        height: $header_btn_height;
-        background-color: $cap_searchbar_bgcolor;
-        box-shadow: none;
-        border-radius: 2px;
-        border: 0;
-        float: left;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        -webkit-border-radius: 2px;
-        -moz-border-radius: 2px;
-        outline: 0;
-        font-size: 18px;
-        font-weight: 400;
-        color: $dark-grey-element-color;
-        width: 100%;
+    i.fa {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin-left: 15px;
+      line-height: $header_btn_height;
+      line-height: 100%;
+      color: $dark-grey-element-color;
+      font-size: 2em;
+      padding: 11px;
     }
 
-    .header-search-btn {
-        background-color: $cap_btn_bg;
-        float: left;
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
-        color: white;
-        font-size: 25px;
-        font-weight: 100;
-        height: $header_btn_height;
-        width: $header_btn_height;
-        border: 0;
-        position: absolute;
-        right: 0;
-        line-height: $header_btn_height;
-        padding: 0 9px;
+    input {
+      padding-left: 10px;
     }
-
-    .search-input-main {
-        //width: 75%;
-        float: left;
-
-        ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-            color: $dark-grey-element-color;
-        }
-        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-           color:    $dark-grey-element-color;
-           opacity:  1;
-        }
-        ::-moz-placeholder { /* Mozilla Firefox 19+ */
-           color:    $dark-grey-element-color;
-           opacity:  1;
-        }
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
-           color:    $dark-grey-element-color;
-        }
-
-        i.fa {
-            position: absolute;
-            top: 0;
-            left: 0;
-            margin-left: 15px;
-            line-height: $header_btn_height;
-            line-height: 100%;
-            color: $dark-grey-element-color;
-            font-size: 2em;
-            padding: 11px;
-        }
-
-        input {
-            padding-left: 10px;
-        }
-    }
+  }
 
 }
 
 
 .result-item {
-    header {
-        display: inline-block;
-        width:  100%;
+  header {
+    display: inline-block;
+    width:  100%;
 
-        .title {
-            float: left;
-        }
-
-        .collection {
-            float: right;
-        }
+    .title {
+      float: left;
     }
+
+    .collection {
+      float: right;
+    }
+  }
 }
