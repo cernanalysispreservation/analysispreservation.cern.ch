@@ -38,22 +38,24 @@
     </div>
 
     {%- block navbar_search %}
-    <div class="col-sm-7">
-        {%- include "cap_theme/searchbar.html" %}
+    <div class="col-sm-6">
+        {%- if current_user.is_authenticated %}
+            {%- include "cap_theme/searchbar.html" %}
+        {%- endif %}
     </div>
     {%- endblock navbar_search %}
 
     {%- block navbar_right %}
-    <div class="col-sm-3">
-        <div class="row">
+    <div class="col-sm-4">
+        {%- if current_user.is_authenticated %}
             {%- block navbar_new_deposit %}
-            <div class="col-xs-4">
-                {%- include "cap_theme/new_deposit_btn.html" %}
-            </div>
+                <div class="col-xs-4">
+                    {%- include "cap_theme/new_deposit_btn.html" %}
+                </div>
             {%- endblock navbar_new_deposit %}
-            <div class="col-xs-8">
-                {%- include "cap_theme/header_login.html" %}
-            </div>
+        {% endif %}
+        <div class="text-right">
+            {%- include "cap_theme/header_login.html" %}
         </div>
     </div>
     {%- endblock navbar_right %}

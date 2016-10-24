@@ -25,11 +25,15 @@
 
 {% block navbar_login %}
   {%- if not current_user.is_authenticated %}
-  <form class="navbar-right">
-    <a  href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-default sign-in-btn btn-lg" >{{_('Sign in with CERN')}}</a>
-  </form>
+  <div>
+    <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="login-button btn btn-primary btn-lg" >
+      <i class="fa fa-sign-in"></i>
+      <span class="visible-lg-inline">{{_('Log in with your CERN account')}}</span>
+      <span class="visible-md-inline visible-sm-inline">{{_('CERN Login')}}</span>
+    </a>
+  </div>
   {%- else %}
-  <div id="cap-home-user-menu" class="pull-right dropdown">
+  <div id="cap-home-user-menu" class="dropdown">
       <button id="cap-home-user" class="dropdown btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-user"></i>
         <span class="caret"></span>
