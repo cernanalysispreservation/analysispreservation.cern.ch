@@ -91,7 +91,6 @@ install_requires = [
     'invenio-rest[cors]>=1.0.0a8',
     'invenio-search-ui>=1.0.0a5',
     'invenio-search>=1.0.0a8',
-    'invenio-search-ui>=1.0.0a5',
     'invenio-theme>=1.0.0a14',
     'invenio-userprofiles>=1.0.0a7',
 ]

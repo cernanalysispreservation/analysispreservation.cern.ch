@@ -379,8 +379,10 @@ DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
     config.DEPOSIT_RECORDS_UI_ENDPOINTS)
+
 DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'template': 'cap_deposit/edit.html',
+    'permission_factory_imp': "cap.modules.deposit.permissions:ReadDepositPermission",
 })
 
 #: Template for <invenio-records-actions>
