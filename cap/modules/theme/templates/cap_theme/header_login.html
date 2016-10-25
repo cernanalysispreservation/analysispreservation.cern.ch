@@ -54,8 +54,13 @@
               Your Applications
             </a>
           </li>
+          <li role="separator" class="divider"></li>
+          <li class="">
+            <a href="{{url_for('security.logout')}}">
+              Sign out
+            </a>
+          </li>
         </ul>
-    <a href="{{url_for('security.logout')}}" class="btn hidden-sm hidden-xs"><i class="fa fa-power-off" aria-hidden="true"></i></a>
   </div>
   {%- endif %}
 
