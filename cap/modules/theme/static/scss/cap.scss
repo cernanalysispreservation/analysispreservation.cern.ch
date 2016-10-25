@@ -24,6 +24,10 @@
  */
 
 
+// Setting the path to fonts files.
+$icon-font-path: "/static/node_modules/bootstrap/fonts/";
+$fa-font-path: "/static/node_modules/font-awesome/fonts";
+
 @import "../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap";
 @import "../node_modules/font-awesome/scss/font-awesome";
 
@@ -34,10 +38,6 @@
 @import "header";
 @import "footer";
 @import "record";
-
-// Setting the path to fonts files. test
-$icon-font-path: "/static/node_modules/bootstrap/fonts/";
-$fa-font-path: "/static/node_modules/font-awesome/fonts";
 
 .cap-main {
   height: 100vh;
