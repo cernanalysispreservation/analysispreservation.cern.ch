@@ -39,10 +39,10 @@
         <span class="caret"></span>
       </button>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="cap-home-user">
-          <li class="header">
-            <span class="hidden-md hidden-l hidden-sm hidden-xs">Signed In As</br> <strong>{{current_user.email}}</strong></span>
+          <li class="header visible-lg-block">
+            <span>Signed In As</br> <strong>{{current_user.email}}</strong></span>
           </li>
-          <li role="separator" class="divider"></li>
+          <li role="separator" class="divider visible-lg-block"></li>
           <li class="">
             <a href="{{url_for('invenio_userprofiles.profile')}}">
               Your Profile
