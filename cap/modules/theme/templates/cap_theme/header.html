@@ -96,8 +96,15 @@
                 Your Applications
               </a>
             </li>
+            <li role="separator" class="divider visible-sm-block visible-xs-block"></li>
+            <li class="visible-sm-block visible-xs-block">
+              <a href="{{url_for('security.logout')}}">
+                <i class="fa fa-power-off"></i>
+                Sign Out
+              </a>
+            </li>
           </ul>
-          <a href="{{url_for('security.logout')}}" class="btn hidden-sm hidden-xs"><i class="fa fa-power-off" aria-hidden="true"></i></a>
+          <a href="{{url_for('security.logout')}}" class="btn visible-lg-inline-block visible-md-inline-block"><i class="fa fa-power-off" aria-hidden="true"></i></a>
         </div>
       </div>
     </div>
