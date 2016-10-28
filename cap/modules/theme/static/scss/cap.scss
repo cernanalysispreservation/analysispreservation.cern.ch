@@ -169,3 +169,10 @@ body::-webkit-scrollbar-thumb {
   background-color: $light-blue-theme-color;
 }
 
+.login-button {
+  background-color: $light-blue-theme-color;
+  padding: 9px 14%;
+  font-size: 16px;
+  border-radius: 2px;
+  white-space: normal;
+}

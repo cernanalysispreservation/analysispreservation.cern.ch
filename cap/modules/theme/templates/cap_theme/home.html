@@ -104,8 +104,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12">
-             <a id="login-button"  href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="btn btn-primary btn-lg" >{{_('Log in with your CERN account')}}</a>
+          <div class="col-md-12 home-login-button">
+            <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="login-button btn btn-primary btn-lg" >
+              <i class="fa fa-sign-in"></i>
+              <span>{{_('Log in with your CERN account')}}</span>
+            </a>
           </div>
         </div>
       </div>

@@ -27,36 +27,90 @@
 
 {% block navbar %}
 <div class="container-fluid cap-header navbar-fixed-top">
-    <div class="col-sm-2">
-        {% block brand %}
-        <a class="cap-home-logo" href="/">
-            <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
-            <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
+
+  {# logo #}
+  <div class="col-sm-2">
+    <a class="cap-home-logo" href="/">
+      <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
+      <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
+    </a>
+    <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;">
+  </div>
+
+  {%- if not current_user.is_authenticated %}
+
+    {# login button #}
+    <div class="col-sm-6"></div>
+    <div class="col-sm-4"> 
+      <div class="text-right">
+        <a href=" {{url_for('invenio_oauthclient.login', remote_app='cern', next=url_for('cap_theme.index'))}}" class="login-button btn btn-primary btn-lg" >
+          <i class="fa fa-sign-in"></i>
+          <span class="visible-lg-inline">{{_('Log in with your CERN account')}}</span>
+          <span class="visible-md-inline visible-sm-inline">{{_('CERN Login')}}</span>
         </a>
-        <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;">
-        {% endblock %}
+      </div>
+    </div>
+  {% endif %}
+
+  {%- if current_user.is_authenticated %}
+
+    {# searchbar #}
+    <div class="col-sm-6">
+      {%- include "cap_theme/searchbar.html" %}
     </div>
 
-    {%- block navbar_search %}
-    <div class="col-sm-7">
-        {%- include "cap_theme/searchbar.html" %}
-    </div>
-    {%- endblock navbar_search %}
+    <div class="col-sm-4">
 
-    {%- block navbar_right %}
-    <div class="col-sm-3">
-        <div class="row">
-            {%- block navbar_new_deposit %}
-            <div class="col-xs-4">
-                {%- include "cap_theme/new_deposit_btn.html" %}
-            </div>
-            {%- endblock navbar_new_deposit %}
-            <div class="col-xs-8">
-                {%- include "cap_theme/header_login.html" %}
-            </div>
+      {# "Create An Analysis" button #}
+      <div class="col-xs-4">
+        {%- include "cap_theme/new_deposit_btn.html" %}
+      </div>
+
+      {# profile dropdown and logout button #}
+      <div class="col-xs-8 text-right">
+        <div id="cap-home-user-menu" class="dropdown">
+          <button id="cap-home-user" class="dropdown btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user"></i>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="cap-home-user">
+            <li class="header visible-lg-block">
+              <span>Signed In As</br> <strong>{{current_user.email}}</strong></span>
+            </li>
+            <li role="separator" class="divider visible-lg-block"></li>
+            <li class="">
+              <a href="{{url_for('invenio_userprofiles.profile')}}">
+                <i class="fa fa-user"></i>
+                Your Profile
+              </a>
+            </li>
+            <li class="">
+              <a href="{{url_for('invenio_oauthclient_settings.index')}}">
+                <i class="fa fa-link"></i>
+                Your Settings
+              </a>
+            </li>
+            <li class="">
+              <a href="{{url_for('invenio_oauth2server_settings.index')}}">
+                <i class="fa fa-shield"></i>
+                Your Applications
+              </a>
+            </li>
+            <li role="separator" class="divider visible-sm-block visible-xs-block"></li>
+            <li class="visible-sm-block visible-xs-block">
+              <a href="{{url_for('security.logout')}}">
+                <i class="fa fa-power-off"></i>
+                Sign Out
+              </a>
+            </li>
+          </ul>
+          <a href="{{url_for('security.logout')}}" class="btn visible-lg-inline-block visible-md-inline-block"><i class="fa fa-power-off" aria-hidden="true"></i></a>
         </div>
+      </div>
     </div>
-    {%- endblock navbar_right %}
+
+  {%- endif %}
+
 </div>
 {% endblock %}
 
