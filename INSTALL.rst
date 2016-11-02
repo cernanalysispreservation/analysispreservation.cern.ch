@@ -77,7 +77,7 @@ preprocessor by following
 
 .. code-block:: shell
 
-  sudo npm install -g node-sass clean-css uglify-js requirejs
+  sudo npm install -g node-sass@3.8.0 clean-css uglify-js requirejs
 
 Installation
 ^^^^^^^^^^^^
