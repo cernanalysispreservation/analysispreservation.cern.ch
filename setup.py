@@ -71,6 +71,8 @@ install_requires = [
     'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
     'Flask-BabelEx>=0.9.2',
+    'Flask-Assets>=0.12',
+    'Flask-Collect==1.2.2',
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
@@ -127,6 +129,15 @@ setup(
     entry_points={
         'console_scripts': [
             'cap = cap.cli:cli',
+        ],
+        'cap.apps': [
+            'invenio_theme = invenio_theme:InvenioTheme',
+            'invenio_assets = invenio_assets:InvenioAssets',
+            'invenio_i18n = invenio_i18n:InvenioI18N',
+        ],
+        'cap.blueprints': [
+            'cap = cap.views:blueprint',
+            'cap_theme = cap.modules.theme.views:blueprint',
         ],
         'invenio_base.blueprints': [
             'cap = cap.views:blueprint',

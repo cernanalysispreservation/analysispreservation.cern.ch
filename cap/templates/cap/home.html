@@ -1,0 +1,9 @@
+{%- extends "cap/page.html" %}
+
+{% block css %}
+    {{ super() }}
+    {% assets "cap_experiments_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{% endblock css %}
+
+
+{# <meta tags> #}

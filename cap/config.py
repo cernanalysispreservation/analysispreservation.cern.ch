@@ -330,9 +330,11 @@ SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 
 # Deposit
 # ============
+#: Default base template for deposit
+#: -- removes <html>,<body>,etc unneeded tags
+DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Default jsonschema for deposit
 DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v1.0.0.json'
-
 #: Default schemanform for deposit
 DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
 #: Search api url for deposit

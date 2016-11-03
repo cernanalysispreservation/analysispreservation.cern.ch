@@ -77,9 +77,8 @@ def to_links_js(pid, deposit=None):
 
     return {
         'self': self_url,
-        'html': url_for(
-            'invenio_deposit_ui.{}'.format(pid.pid_type),
-            pid_value=pid.pid_value),
+        # [TO FIX] create a coneverter to format `html` link
+        'html': '/deposit/{}'.format(pid.pid_value),
         'bucket': current_app.config['DEPOSIT_FILES_API'] + '/{0}'.format(
             str(deposit.files.bucket.id)),
         'discard': self_url + '/actions/discard',

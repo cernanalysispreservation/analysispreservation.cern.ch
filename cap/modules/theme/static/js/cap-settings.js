@@ -27,6 +27,7 @@ require.config({
   baseUrl: "/static/",
   paths: {
     angular: "node_modules/angular/angular",
+    "angular-route": "node_modules/angular-route/angular-route",
     jquery: "node_modules/jquery/jquery",
     bootstrap: "node_modules/bootstrap/dist/js/bootstrap",
     select2: "node_modules/select2/dist/js/select2.min",
@@ -36,6 +37,7 @@ require.config({
     handlebars: "node_modules/handlebars/dist/handlebars.amd.min",
     moment: "node_modules/moment/min/moment.min",
     alpaca: "node_modules/alpaca/dist/alpaca/bootstrap/alpaca",
+    "schemaForm": "node_modules/angular-schema-form/dist/schema-form",
     "invenio-alpaca": "js/invenio-alpaca",
     "module-getter": "js/module-getter",
     "ref-parser": "node_modules/json-schema-ref-parser/dist/ref-parser",
@@ -54,6 +56,9 @@ require.config({
     },
     angular: {
       exports: "angular"
+    },
+    'angular-route': {
+      deps: ["angular"]
     },
     "ref-parser": {
       deps: ["jquery"]

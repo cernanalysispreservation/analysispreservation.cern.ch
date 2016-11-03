@@ -70,7 +70,21 @@ create_app = create_app_factory(
     config_loader=conf_loader,
     blueprint_entry_points=['invenio_base.blueprints'],
     extension_entry_points=['invenio_base.apps'],
-    wsgi_factory=wsgi_proxyfix(create_wsgi_factory({'/api': create_api})),
     instance_path=instance_path,
     static_folder=static_folder,
+)
+
+
+create_front = create_app_factory(
+    'cap',
+    config_loader=conf_loader,
+    blueprint_entry_points=['cap.blueprints'],
+    extension_entry_points=['cap.apps'],
+    instance_path=instance_path,
+    static_folder=static_folder,
+    wsgi_factory=wsgi_proxyfix(
+        create_wsgi_factory({
+            '/api': create_api,
+            '/app': create_app,
+        })),
 )

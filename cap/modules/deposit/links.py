@@ -11,6 +11,9 @@ def links_factory(pid):
     """Deposit links factory."""
     links = deposit_links_factory(pid)
 
+    # Update 'html' key to point to the frontend app
+    # links['html'] = links['html'].replace('/app/', '/')
+
     bucket_link = default_bucket_link_factory(pid)
     if bucket_link is not None:
         links['bucket'] = bucket_link
