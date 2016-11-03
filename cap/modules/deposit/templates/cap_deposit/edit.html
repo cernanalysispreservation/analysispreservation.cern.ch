@@ -1,15 +1,4 @@
-{% extends 'cap_theme/page.html' %}
-
-{%- block css %}
-    {{ super() }}
-    {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-{%- endblock css %}
-
-{%- block javascript %}
-  {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-  {% assets "invenio_deposit_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-  {{super()}}
-{%- endblock javascript %}
+{% extends 'invenio_deposit/edit_base.html' %}
 
 {% if schema and schema_form %}
   {% set _schema = url_for('invenio_jsonschemas.get_schema', schema_path=schema, _external=True) %}

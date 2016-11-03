@@ -23,18 +23,50 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+///////////////////////////////////////////
+///////////////////////////////////////////
+// CAP app Deposit Controller
 
-define([
-    'angular',
-    'angular-animate',
-    'js/experiments/services',
-    'js/experiments/controllers',
-    'js/experiments/cap.pushmenu'
-  ], function (angular) {
-  var app = angular.module('cap.experiments', [
-    'cap.experiments.services',
-    'cap.experiments.controllers',
-    'cap.pushmenu'
-  ]);
-  return app;
-});
+var capDepositCtrl = function($scope, $route, $routeParams, $location,  capLocalClient) {
+  $scope.name = 'DepositController';
+};
+
+capDepositCtrl.resolve = {
+  _html: function(capLocalClient) {
+    return capLocalClient.get_deposit_template($scope.pid);
+  }
+};
+
+capDepositCtrl.$inject = [
+  '$scope',
+  '$route',
+  '$routeParams',
+  '$location',
+  'capLocalClient',
+];
+
+angular.module('cap.app')
+  .controller('DepositController', capDepositCtrl);
+
+
+
+///////////////////////////////////////////
+///////////////////////////////////////////
+// CAP app WG Controller
+
+var capWGCtrl = function($scope, $route, $routeParams, $location, capLocalClient) {
+  $scope.name = 'WGController';
+
+  $scope.params = $routeParams;
+};
+
+capWGCtrl.$inject = [
+  '$scope',
+  '$route',
+  '$routeParams',
+  '$location',
+  'capLocalClient',
+];
+
+angular.module('cap.app')
+  .controller('WGController', capWGCtrl);

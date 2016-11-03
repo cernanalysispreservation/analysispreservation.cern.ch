@@ -26,22 +26,19 @@
 
 
 
-require([
-    'js/experiments/app',
-    'js/experiments/cap.pushmenu'
-  ], function(app) {
-      // Initialize the app
-      angular.element(document).ready(function() {
-        angular.bootstrap(document.
-                          getElementById("cap-container"),['cap.experiments']);
-      });
+
+// Initialize the app
+angular.element(document).ready(function() {
+  angular.bootstrap(
+    document.getElementById("cap-container"),
+    [
+      'capRecords',
+      'mgcrea.ngStrap', 'schemaForm',
+      'mgcrea.ngStrap.modal', 'pascalprecht.translate', 'ui.select',
+      'mgcrea.ngStrap.select', 'invenioFiles',
+      'angular-loading-bar',
+      'capSearch',
+      'cap.app',
+    ]
+  );
 });
-
-
-
-
-
-
-
-
-

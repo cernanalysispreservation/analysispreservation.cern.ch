@@ -76,12 +76,25 @@ alice_js = NpmBundle(
 )
 
 experiments_js = NpmBundle(
-    "js/experiments/main.js",
-    filters='requirejs',
+    # "node_modules/d3/d3.js",
+    "node_modules/angular/angular.js",
+    "node_modules/angular-route/angular-route.js",
+    "node_modules/angular-animate/angular-animate.js",
+    'node_modules/angular-loading-bar/build/loading-bar.js',
+    'node_modules/invenio-search-js/dist/invenio-search-js.js',
+    'node_modules/invenio-records-js/dist/invenio-records-js.js',
+    "js/cap/cap.search.js",
+    "js/cap/cap.records.js",
+    "js/cap/cap.services.js",
+    "js/cap/cap.app.js",
+    "js/cap/cap.controllers.js",
+    "js/cap/cap.config.js",
+    "js/experiments/app.js",
+    "js/cap/cap.main.js",
     output="gen/cap.experiments.%(version)s.js",
     npm={
-        "almond": "~0.3.1",
         "angular": "~1.4.7",
+        "angular-route": "~1.4.7",
         "angular-animate": "~1.3",
     }
 )

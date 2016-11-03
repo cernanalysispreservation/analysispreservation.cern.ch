@@ -7,3 +7,21 @@
 
 
 {# <meta tags> #}
+
+{%- block page_body %}
+<div ng-controller="capCtrl" ng-init="init('{{g.experiment}}');get_experiment_records();">
+    <cap-push-menu menu="menu" options="options"></cap-push-menu>
+    <div id="experiment-land" class="container cap-container" >
+        <div ng-view></div>
+    </div>
+</div>
+{%- endblock %}
+
+
+{% block javascript %}
+    {% assets "invenio_search_ui_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {{ super() }}
+
+    {% assets "cap_experiments_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{% endblock %}
