@@ -83,6 +83,8 @@ experiments_js = NpmBundle(
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/invenio-search-js/dist/invenio-search-js.js',
     'node_modules/invenio-records-js/dist/invenio-records-js.js',
+    "js/cap/cap.pushmenu.components.js",
+    "js/cap/cap.pushmenu.js",
     "js/cap/cap.search.js",
     "js/cap/cap.records.js",
     "js/cap/cap.services.js",

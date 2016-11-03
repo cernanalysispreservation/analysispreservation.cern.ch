@@ -44,86 +44,83 @@ experiments_bp = Blueprint(
     static_folder='static',
 )
 
-CAP_EXPERIMENT_MENU = [
-    {
-        'name': 'Working Groups',
-        'id': 'itemId',
-        'icon': 'fa fa-users',
-        'link': '#',
-        'menu': {
-            'title': 'Working Groups',
+def CAP_EXPERIMENT_MENU(experiment):
+    def _l(str):
+        return str
+
+    _menu = [
+        {
+            'name': 'Working Groups',
+            'id': 'itemId',
             'icon': 'fa fa-users',
-            'id': 'iteid',
-            'items': [
-                {
-                    'name': 'WG1',
-                    'link': '#',
-                    'menu': {
-                        'title': 'Working Groups',
-                        'icon': 'fa fa-users',
-                        'items': [
-                            {
-                                'name': 'WG1',
-                                'link': '#'
-                            }, {
-                                'name': 'WG2',
-                                'link': '#'
-                            }, {
-                                'name': 'WG3',
-                                'link': '#'
-                            }
-                        ]
+            'link': _l('/WG'),
+            'menu': {
+                'title': 'Working Groups',
+                'icon': 'fa fa-users',
+                'id': 'itemid',
+                'items': [
+                    {
+                        'name': 'WG1',
+                        'link': _l('/WG/WG1')
+                    }, {
+                        'name': 'WG2',
+                        'link': _l('/WG/WG2')
+                    }, {
+                        'name': 'WG3',
+                        'link': _l('/WG/WG3')
                     }
-                }, {
-                    'name': 'WG2',
-                    'link': '#'
-                }, {
-                    'name': 'WG3',
-                    'link': '#'
-                }
-            ]
+                ]
+            }
+        }, {
+            'name': 'Publications',
+            'link': _l('/publications'),
+            'icon': 'fa fa-book'
+        }, {
+            'name': 'My Deposits',
+            'icon': 'fa fa-file-text',
+            'link': _l('/deposit'),
+            'menu': {
+                "title": 'My Deposits',
+                'icon': 'fa fa-file-text-o',
+                'items': [
+                    {
+                        'name': 'All',
+                        'link': _l('/deposit?')
+                    }, {
+                        'name': 'Published',
+                        'link': _l('/deposit?status=published'),
+                        'icon': ''
+
+                    }, {
+                        'name': 'On Review',
+                        'link': _l('/deposit'),
+                        'icon': ''
+
+                    }, {
+                        'name': 'Drafts',
+                        'link': _l('/deposit?status=draft'),
+                        'icon': ''
+                    }, {
+                        'name': 'Create CMS Analysis',
+                        'link': _l('/deposit/new/cms-analysis'),
+                        'icon': ''
+                    }, {
+                        'name': 'Create LHCb Analysis',
+                        'link': _l('/deposit/new/lhcb'),
+                        'icon': ''
+                    }
+                ]
+            }
         }
-    }, {
-        'name': 'Publications',
-        'link': '/deposit',
-        'icon': 'fa fa-book'
-    }, {
-        'name': 'My Records',
-        'icon': 'fa fa-file-text-o',
-        'link': '#',
-        'menu': {
-            "title": 'My Records',
-            'icon': 'fa fa-file-text-o',
-            'items': [
-                {
-                    'name': 'All',
-                    'link': '#'
-                }, {
-                    'name': 'Published',
-                    'link': '#',
-                    'icon': ''
+    ]
 
-                }, {
-                    'name': 'On Review',
-                    'link': '#',
-                    'icon': ''
-
-                }, {
-                    'name': 'Drafts',
-                    'link': '#',
-                    'icon': ''
-
-                }
-            ]
-        }
-    }
-]
+    return _menu
 
 # def create_menu_rule(endpoint=None, experiment=None):
 
 
-@experiments_bp.route('/menu')
-def experiment_menu():
+@experiments_bp.route('/<experiment>/menu')
+def experiment_menu(experiment):
     """Experiment menu."""
     # _menu = {
     #     'title': g.experiment,
@@ -131,7 +128,7 @@ def experiment_menu():
     #     'icon': 'fa fa-bars',
     #     'items': CAP_EXPERIMENT_MENU,
     # }
-    return jsonify(CAP_EXPERIMENT_MENU)
+    return jsonify(CAP_EXPERIMENT_MENU(experiment))
 
 
 @experiments_bp.route('/records')

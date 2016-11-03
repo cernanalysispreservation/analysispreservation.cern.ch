@@ -26,7 +26,7 @@ $pushmenu-bgc: #eee;
     .levelHolderClass {
         overflow: hidden;
         background: $pushmenu-bgc;
-        border-right: 1px solid $theme-color;
+        border-right: 1px solid $light-blue-theme-color;
         width: auto;
         min-height: 100%;
         font-size: 14px;
@@ -42,7 +42,7 @@ $pushmenu-bgc: #eee;
         font-size: 16px;
         line-height: 1em;
         font-weight: bold;
-        color: $theme-color-dark;
+        color: $dark-blue-theme-color;
         padding: 0 .4em 0 .4em;
     }
 
@@ -59,13 +59,13 @@ $pushmenu-bgc: #eee;
 
         li {
             cursor: pointer;
-            border-top: 1px solid $theme-color;
+            border-top: 1px solid $light-blue-theme-color;
             padding: .7em .4em;
             margin-left: -.4em;
             // padding-bottom: 0;
 
             &:last-child {
-                // border-bottom: 1px solid $theme-color;
+                // border-bottom: 1px solid $light-blue-theme-color;
             }
 
             &:hover {
@@ -82,10 +82,10 @@ $pushmenu-bgc: #eee;
         line-height: 1em;
         padding: .2em .2em;
         text-decoration: none;
-        color: $theme-color-dark;
+        color: $dark-blue-theme-color;
 
         &:hover {
-            color: $theme-color-dark;
+            color: $dark-blue-theme-color;
         }
     }
 
@@ -93,7 +93,7 @@ $pushmenu-bgc: #eee;
         display: block;
         padding: .4em .4em .4em .4em;
         background: inherit;
-        border-top: 1px solid $theme-color;
+        border-top: 1px solid $light-blue-theme-color;
     }
 
     .invisible {

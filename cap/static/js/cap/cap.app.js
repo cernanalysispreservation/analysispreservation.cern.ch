@@ -5,5 +5,6 @@ var app = angular.module('cap.app', [
   'invenioFiles',
   'ngRoute',
   'cap.services',
+  'cap.pushmenu',
   'angular-loading-bar',
 ]);
