@@ -40,51 +40,28 @@
   {% if current_user.is_authenticated %}
     <div class="row">
       <div id="cap-experiments">
-        {% if experiments %}
-          {% if 'ALICE' in experiments %}
-          <div class="col-sm-6">
-              <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
-                <div class="exp-img col-sm-5">
-                  <img src="{{ url_for('static', filename='img/ALICE.svg') }}" alt="">
-                </div>
-                <div class="exp-name col-sm-7">ALICE</div>
-              </a>
-          </div>
-          {% endif %}
-          {% if 'ATLAS' in experiments %}
-          <div class="col-sm-6">
-              <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
-                <div class="exp-img col-sm-5">
-                  <img src="{{ url_for('static', filename='img/ATLAS.svg') }}" alt="">
-                </div>
-                <div class="exp-name col-sm-7">ATLAS</div>
-              </a>
-          </div>
-          {% endif %}
-          {% if 'CMS' in experiments %}
-          <div class="col-sm-6">
-              <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
-                <div class="exp-img col-sm-5">
-                  <img src="{{ url_for('static', filename='img/CMS.svg') }}" alt="">
-                </div>
-                <div class="exp-name col-sm-7">CMS</div>
-              </a>
-          </div>
-          {% endif %}
-          {% if 'LHCb' in experiments %}
-          <div class="col-sm-6">
-              <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
-                <div class="exp-img col-sm-5">
-                  <img src="{{ url_for('static', filename='img/LHCb.svg') }}" alt="">
-                </div>
-                <div class="exp-name col-sm-7">LHCb</div>
-              </a>
-          </div>
-          {% endif %}
-        {% else %}
+        {% if not experiments %}
           <div>
             Welcome to CERN Analysis Preservation. You need to be a member of a collaboration (ATLAS, ALICE, CMS, LHCb) to be able to move on...
           </div>
+        {% endif %}
+          <img src="{{ url_for('static', filename='img/experiments.svg') }}" alt="" usemap="#experiment_map" class="img-responsive center-block">
+        {% if experiments %}
+          <map name="experiment_map">
+            {% if 'collaboration_alice' in experiments %}
+              <area shape="poly" coords="0,0,0,462,372,231" href="{{url_for('cap_alice.alice_landing')}}" title="ALICE" alt="ALICE" />
+            {% endif %}
+            {% if 'collaboration_atlas' in experiments %}
+              <area shape="poly" coords="0,462,790,462,372,231" href="{{url_for('cap_atlas.atlas_landing')}}" title="ATLAS" alt="ATLAS" />
+            {% endif %}
+            {% if 'collaboration_cms' in experiments %}
+              <area shape="poly" coords="0,0,790,0,372,231" href="{{url_for('cap_cms.cms_landing')}}" title="CMS" alt="CMS" />
+            {% endif %}
+            {% if 'collaboration_lhcb' in experiments %}
+              <area shape="poly" coords="790,0,790,462,372,231" href="{{url_for('cap_lhcb.lhcb_landing')}}" title="LHCb" alt="LHCb" />
+            {% endif %}
+            <area shape="default" nohref="nohref" title="" alt=""/>
+          </map>
         {% endif %}
       </div>
     </div>
