@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 import json
+import os
 import shelve
 
 filenames = [
@@ -38,61 +39,65 @@ filenames = [
     "dbases/rd.shelve"
 ]
 
-base = {}
-tmp_title_list = []
+def dump_analyses_to_json():
+    base = {}
+    tmp_title_list = []
+    home_dir = os.path.dirname(os.path.abspath(__file__))
 
-for filename in filenames:
-    base_field = "analysis"
+    os.chdir(home_dir)
 
-    title_list = []
-
-    s = shelve.open(filename)
-
-    # Get list of "title" for Anal.Name Autocomplete
-    title_list = s.get('analysis').keys()
-    for n in title_list:
-        tmp_title_list.append({"value": n})
-
-    working_group = filename.split("/")[1];
-    working_group = working_group.replace(".shelve", "")
-
-    with open('../../static/jsonschemas/fields/lhcb_ana_titles_'+working_group+'.json', 'w') as fp:
+    # Create dir for jsonschemas if doesnt exist
+    output_dir = '../../static/jsonschemas/fields'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    for filename in filenames:
+        base_field = "analysis"
+    
+        title_list = []
+    
+        s = shelve.open(filename)
+    
+        # Get list of "title" for Anal.Name Autocomplete
+        title_list = s.get('analysis').keys()
+        for n in title_list:
+            tmp_title_list.append({"value": n})
+    
+        working_group = filename.split("/")[1]
+        working_group = working_group.replace(".shelve", "")
+    
+        with open('../../static/jsonschemas/fields/lhcb_ana_titles_'+working_group+'.json', 'w') as fp:
+            json.dump(tmp_title_list, fp)
+    
+        def resolveObj(s, f, k):
+            newk = {}
+            for p in s[f][k]:
+                if (hasattr(s[f][k][p], '__iter__')):
+                    newp = {}
+                    for l in s[f][k][p]:
+                        try:
+                            newp[l] = s[p][l]
+                        except:
+                            newk[p] = s[f][k][p]
+                            break
+                    newk[p] = newp
+                else:
+                    newk[p] = s[f][k][p]
+            return newk
+    
+    
+        for k in s.get(base_field):
+            if not k in base:
+                base[k] = resolveObj(s,base_field, k)
+    
+        s.close()
+    
+    with open('../../static/jsonschemas/fields/lhcb_ana_titles.json', 'w') as fp:
         json.dump(tmp_title_list, fp)
-    print("Accessing file: "+working_group)
-
-    def resolveObj(s, f, k):
-        newk = {}
-        for p in s[f][k]:
-            if (hasattr(s[f][k][p], '__iter__')):
-                newp = {}
-                for l in s[f][k][p]:
-                    try:
-                        newp[l] = s[p][l]
-                    except:
-                        newk[p] = s[f][k][p]
-                        # print("Warning", l)
-                        break
-                newk[p] = newp
-            else:
-                newk[p] = s[f][k][p]
-        return newk
+    
+    with open('../../scripts/analyses.json', 'w') as fp:
+        json.dump(base, fp, ensure_ascii=False)
 
 
-    for k in s.get(base_field):
-        if k in base:
-            print("#### Already exists: "+k)
-        else:
-            base[k] = resolveObj(s,base_field, k)
-
-    # with open('analyses_short.json', 'w') as fp:
-    #     json.dump(s[base_field], fp, ensure_ascii=False)
-
-    # print json.dumps(base, indent=4, sort_keys=True)
-
-    s.close()
-
-with open('../../static/jsonschemas/fields/lhcb_ana_titles.json', 'w') as fp:
-    json.dump(tmp_title_list, fp)
-
-with open('../../scripts/analyses.json', 'w') as fp:
-    json.dump(base, fp, ensure_ascii=False)
+if __name__=='__main__':
+    dump_analyses_to_json()

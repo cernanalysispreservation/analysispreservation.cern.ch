@@ -17,6 +17,7 @@ recursive-include cap *.json
 recursive-include cap *.png
 recursive-include cap *.scss
 recursive-include cap *.svg
+recursive-include cap *.sh
 recursive-include docker *.conf
 recursive-include scripts *.py
 recursive-include scripts *.sh

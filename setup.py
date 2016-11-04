@@ -65,6 +65,7 @@ install_requires = [
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask>=0.11.1',
+    'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
     'Flask-BabelEx>=0.9.2',
     'Flask-Cache>=0.13.1',

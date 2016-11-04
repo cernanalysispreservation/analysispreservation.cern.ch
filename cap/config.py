@@ -29,18 +29,22 @@ from __future__ import absolute_import, print_function
 
 import copy
 import os
-
-from flask_principal import RoleNeed
 from os.path import dirname, join
+
+from celery.schedules import crontab
+from flask_principal import RoleNeed
 from invenio_deposit import config
+from invenio_deposit.config import (DEPOSIT_REST_FACETS,
+                                    DEPOSIT_REST_SORT_OPTIONS)
 from invenio_oauthclient.contrib import cern
-from invenio_records_rest.utils import allow_all, deny_all
-from invenio_deposit.config import DEPOSIT_REST_FACETS, \
-    DEPOSIT_REST_SORT_OPTIONS
-from invenio_records_rest.config import RECORDS_REST_FACETS, \
-    RECORDS_REST_SORT_OPTIONS
+from invenio_records_rest.config import (RECORDS_REST_FACETS,
+                                         RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.facets import terms_filter
-from cap.modules.deposit.permissions import UpdateDepositPermission, CreateDepositPermission, ReadDepositPermission
+from invenio_records_rest.utils import allow_all, deny_all
+
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
 
 
 def _(x):
@@ -73,6 +77,27 @@ ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
 
+# Celery
+# ======
+#: Import modules
+CELERY_IMPORTS = {
+    'cap.modules.experiments.tasks',
+}
+#: Scheduled tasks
+CELERYBEAT_SCHEDULE = {
+    'get_publications_files': {
+        'task': 'cap.modules.experiments.tasks.get_publications_files',
+        'schedule': crontab(minute=0, hour=1)
+    },
+    'get_working_groups_files': {
+        'task': 'cap.modules.experiments.tasks.get_working_groups_files',
+        'schedule': crontab(minute=10, hour=1)
+    },
+    'dump_lhcb_analyses_to_json': {
+        'task': 'cap.modules.experiments.tasks.dump_lhcb_analyses_to_json',
+        'schedule': crontab(minute=20, hour=1)
+    },
+}
 
 # Mail
 # ====
