@@ -31,11 +31,11 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
+              "contributor_name": {
                 "title": "Name",
                 "type": "string"
               },
-              "email": {
+              "contributor_email": {
                 "title": "Email-Adress",
                 "type": "string"
               }
@@ -44,7 +44,7 @@
         }
       }
     },
-    "input_datasets": {
+    "input_data": {
       "title": "Input Data",
       "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
       "type": "array",
@@ -55,10 +55,10 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASDataset-v0.0.1.json"
       }
     },
-    "workflows": { 
+    "workflow": { 
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json" 
     },
-    "publications": {
+    "publication": {
       "title": "Publications",
       "description": "Publications related to the analysis",
       "type": "array",
