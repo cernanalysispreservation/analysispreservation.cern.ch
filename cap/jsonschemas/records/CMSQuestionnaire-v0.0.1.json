@@ -213,7 +213,7 @@
                     "title": "Study of correlations/dependencies ",
                     "type": "object",
                     "properties": {
-                        "correlations_dependencies_name": {
+                        "correlations_dependencies_study": {
                             "description": "Do you study the correlations and dependencies between the input variables?",
                             "type": "string",
                             "enum": ["matrix","nonlinear","other"]
