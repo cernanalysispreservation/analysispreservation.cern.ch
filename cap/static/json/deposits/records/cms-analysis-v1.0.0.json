@@ -1,5 +1,368 @@
 [
-    {
-        "key": "basic_info"
-    }
+  {
+    "key": "basic_info",
+    "htmlClass": "custom-panel",
+    "items": [
+      {
+      "key": "basic_info.analysis_number",
+      "placeholder": "Please provide CADI analysis number to connect, e.g. CMS-ANA-2012-049"
+      },
+      {
+      "key": "basic_info.abstract",
+      "placeholder": "If not provided, it can be extracted from the final paper"
+      },
+      {
+      "key": "basic_info.conclusion",
+      "placeholder": "Please add a short conclusion for the analysis"
+      },
+      {
+      "key": "basic_info.people_info",
+      "items": [
+        {
+          "key": "basic_info.people_info.name",
+          "title": "Names",
+          "placeholder": "E.g. John Doe, Jane Doe"
+        },
+        {
+          "key": "basic_info.people_info.email",
+          "title": "Email-Adresses",
+          "placeholder": "E.g. john.doe@cern.ch, jane.doe@cern.ch"
+        }
+      ]
+      },
+      {
+      "key": "basic_info.os",
+      "items": [
+        {
+          "key": "basic_info.os.name",
+          "title": "Name",
+          "placeholder": "E.g. SLC"
+        },
+        {
+          "key": "basic_info.os.version",
+          "title": "Version",
+          "placeholder": "E.g. 6"
+        }
+      ]
+      },
+      {
+      "key": "basic_info.software",
+      "items": [
+        {
+          "key": "basic_info.software.name",
+          "title": "Name",
+          "placeholder": "E.g. CMSSW"
+        },
+        {
+          "key": "basic_info.software.version",
+          "title": "Version",
+          "placeholder": "E.g. 5_3_x"
+        },
+        {
+          "key": "basic_info.software.global_tag_data",
+          "title": "Gloab Tag Data",
+          "placeholder": "Data Tag"
+        },
+        {
+          "key": "basic_info.software.global_tag_MC",
+          "title": "Gloab Tag MC",
+          "placeholder": "Monte Carlo Data Tag"
+        }
+      ]
+      }
+    ]
+  },
+  {
+    "key": "n-tuple_production_check.confirm",
+    "title":"Did you produce n-tuples as an initial step to any measurement?",
+    "type": "radios",
+    "titleMap": [
+      {
+        "value": true,
+        "name": "Yes"
+      },
+      {
+        "value": false,
+        "name": "No"
+      }
+    ]
+  },
+  {
+    "key": "input_code_output",
+    "condition": "recordsVM.invenioRecordsModel['n-tuple_production_check']['confirm']",
+    "items": [
+      {
+        "key": "input_code_output[].code_base.url",
+        "title": "URL",
+        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+      },
+      {
+        "key": "input_code_output[].code_base.tag",
+        "title": "Tag",
+        "placeholder": "E.g. v2.1"
+      },
+      {
+        "key": "input_code_output[].code_base.revision_id",
+        "title": "Revision Identifier",
+        "placeholder": "E.g. your git commit hash"
+      },
+      {
+        "key": "input_code_output[].n_tuple",
+        "items": [
+          {
+            "key": "input_code_output[].n_tuple[].user_code.config_files",
+            "title": "Configuration File",
+            "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+          },
+          {
+            "key": "input_code_output[].n_tuple[].output_data.output_url",
+            "title": "Output",
+            "placeholder": "E.g. root://eospublic.cern.ch/eos/mydir/../my-file-data.root"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "main_measurements",
+    "items": [
+      {
+        "key": "main_measurements[].measurement_description",
+        "title": "Measurement Description",
+        "placeholder": "E.g. signal measurement of NNN in Z -> ee final state"
+      },
+      {
+        "key": "main_measurements[].detailed_measurement_description",
+        "title": "Description Details",
+        "type": "textarea",
+        "placeholder": "If applicable, please provide a more detailed description for this measurement"
+      },
+      {
+        "key": "main_measurements[].code_base",
+        "items": [
+          {
+            "key": "main_measurements[].code_base.url",
+            "title": "URL",
+            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+          },
+          {
+            "key": "main_measurements[].code_base.tag",
+            "title": "Tag",
+            "placeholder": "E.g. v2.1"
+          },
+          {
+            "key": "main_measurements[].code_base.revision_id",
+            "title": "Revision Identifier",
+            "placeholder": "E.g. your commit hash"
+          }
+        ]
+      },
+      {
+        "key": "main_measurements[].n_tuple",
+        "items": [
+          {
+            "key": "main_measurements[].n_tuple[].user_code.config_files",
+            "title": "Configuration File",
+            "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+          },
+          {
+            "key": "main_measurements[].n_tuple[].output_data.output_url",
+            "title": "Output",
+            "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "auxiliary_measurements",
+    "startEmpty": true,
+    "items": [
+      {
+        "key": "auxiliary_measurements[].measurement_description",
+        "title": "Measurement Description",
+        "placeholder": "Please provide some description for this measurement"
+      },
+      {
+        "key": "auxiliary_measurements[].detailed_measurement_description",
+        "title": "Description Details",
+        "type": "textarea",
+        "placeholder": "If applicable, please provide a more detailed description for this measurement"
+      },
+      {
+        "key": "auxiliary_measurements[].code_base",
+        "title": "User Code Base",
+        "type": "fieldset",
+        "items": [
+          {
+            "key": "auxiliary_measurements[].code_base.url",
+            "title": "URL",
+            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+          },
+          {
+            "key": "auxiliary_measurements[].code_base.tag",
+            "title": "Tag",
+            "placeholder": "E.g. v2.1"
+          },
+          {
+            "key": "auxiliary_measurements[].code_base.revision_id",
+            "title": "Revision Identifier",
+            "placeholder": "E.g. your git commit hash"
+          }
+        ]
+      },
+      {
+        "key": "auxiliary_measurements[].n_tuple",
+        "items": [
+          {
+            "key": "auxiliary_measurements[].n_tuple[].user_code.config_files",
+            "title": "Configuration File",
+            "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+          },
+          {
+            "key": "auxiliary_measurements[].n_tuple[].output_data.output_url",
+            "title": "Output",
+            "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "post_n_tuple",
+    "type": "fieldset",
+    "items": [
+      {
+        "key": "post_n_tuple.code_base",
+        "type": "fieldset",
+        "items": [
+          {
+            "key": "post_n_tuple.url",
+            "title": "URL",
+            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+          },
+          {
+            "key": "post_n_tuple.tag",
+            "title": "Tag",
+            "placeholder": "E.g. v2.1"
+          },
+          {
+            "key": "post_n_tuple.revision_id",
+            "title": "Revision Identifier",
+            "placeholder": "E.g. your git commit hash (6bc9fc0c67724ab522057794502b83c4c0c5)"
+          },
+          {
+            "key": "post_n_tuple.n_tuple",
+            "items": [
+              {
+                "key": "post_n_tuple.n_tuple[].user_code"
+              },
+              
+              {
+                "key": "post_n_tuple.n_tuple[].output_data"
+              },
+              {
+                "key": "post_n_tuple.n_tuple[].datacard"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "documentations",
+    "htmlClass": "custom-panel",
+    "items": [
+      {
+        "key": "documentations[].CADI_ID",
+        "placeholder": "E.g. CMS-ANA-2012-049"
+      },
+      {
+        "key": "documentations[].url",
+        "placeholder": "E.g. https://twiki.cern.ch/twiki/.."
+      },
+      {
+        "key": "documentations[].keyword",
+        "placeholder": "E.g. keyword1"
+      },
+      {
+        "key": "documentations[].comment",
+        "placeholder": "E.g. Shows more detail concerning this analysis"
+      }
+    ]
+  },
+  {
+    "key": "internal_discussions",
+    "htmlClass": "custom-panel",
+    "items": [
+      {
+        "key": "internal_discussions[].url",
+        "placeholder": "E.g. https://indico.cern.ch/event/../discussion-slides.pdf"
+      }
+    ]
+  },
+  {
+    "key": "presentations",
+    "htmlClass": "custom-panel",
+    "items": [
+      {
+        "key": "presentations[].url",
+        "placeholder": "E.g. https://indico.cern.ch/event/524974/"
+      }
+    ]
+  },
+  {
+    "key": "publications",
+    "htmlClass": "custom-panel",
+    "items": [
+      {
+        "key": "publications[].journal_title",
+        "title": "Journal Title",
+        "placeholder": "Please enter the journal title"
+      },
+      {
+        "key": "publications[].journal_year",
+        "title": "Journal Year",
+        "placeholder": "Please enter the journal year"
+      },
+      {
+        "key": "publications[].journal_volume",
+        "title": "Journal Volume",
+        "placeholder": "Please enter the journal volume"
+      },
+      {
+        "key": "publications[].journal_issue",
+        "title": "Journal Issue",
+        "placeholder": "Please enter the journal issue"
+      },
+      {
+        "key": "publications[].journal_page",
+        "title": "Journal Page",
+        "placeholder": "Please enter the journal page number"
+      },
+      {
+        "key": "publications[].persistent_identifiers",
+        "title": "Identifiers",
+        "startEmpty": true,
+        "items": [
+          {
+            "key": "publications[].persistent_identifiers[].identifier",
+            "title": "Identifier",
+            "placeholder": "E.g. DUNS number"
+          },
+          {
+            "key": "publications[].persistent_identifiers[].scheme",
+            "title": "Scheme",
+            "placeholder": "E.g. DUNS"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "keywords",
+    "htmlClass": "custom-panel",
+    "placeholder": "E.g. keyword1, keyword2"
+  }
 ]

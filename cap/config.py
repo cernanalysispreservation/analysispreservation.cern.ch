@@ -32,11 +32,6 @@ import os
 from os.path import dirname, join
 
 from celery.schedules import crontab
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
-
 from flask_principal import RoleNeed
 from invenio_deposit import config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
@@ -47,7 +42,9 @@ from invenio_records_rest.config import (RECORDS_REST_FACETS,
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 
-from os.path import dirname, join
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
 
 
 def _(x):

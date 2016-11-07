@@ -12,6 +12,14 @@
               "type": "string"
             }
           }
+        },
+        "n-tuple_production_check": {
+          "type": "object",
+          "properties": {
+            "confirm": {
+              "type": "boolean"
+            }
+          }
         }
       }
     }
