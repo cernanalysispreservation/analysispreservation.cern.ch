@@ -3,23 +3,23 @@
     "title": "CMS Statistics Questionnaire",
     "description" : "<p>The present questionnaire has the purpose of informing the Statistics Committee on the details of ongoing analyses, in the interest of a quicker and simpler path to approval of physics results. We recommend that you submit your answers at your earliest convenience, regardless of the status of your analysis (in progress, or in advanced stage, or about to be pre-approved). Changes in the statistical analysis after submission can be sent as a simplified \"update\", using a link you will receive via email after submitting this form.</p><p>Please note: each analysis with a separate CADI entry should fill out a separate entry. It is highly advisable that the questionnaire be filled by an author who knows the details of the full analysis, if necessary in consultation with colleagues.</p><p>The purpose of this questionnaire is two-fold:</p><ul><li>It points you to the relevant best practices and recommendations of the CMS Statistics Committee.</li><li>It provides the Statistics Committee with feedback about the statistical methods used at an early point of the analysis where potential issues can still be clarified or fixed.</li></ul><p>Note: There are multiple-choice answers for many questions. These will not always cover your case. If you are unsure about which answer to choose, just choose the answer you think decribes best what you do and use the text field \"Additional comments\" for clarification. Also note that many questions foresee that you choose more than one option, in this case choose <em>all</em> which apply.</p><p>We thank you for your patience and we encourage you to be as explicative as possible in the free-text boxes. Also, we do appreciate any feedback you may be willing to provide, through a text box at the end.</p>",
     "properties": {
-        "content": {
+        "analysis_content": {
             "title": "Analysis Context",
             "type": "object",
             "properties": {
-                "name": {
+                "contributor_name": {
                     "title": "Your name",
                     "type": "string"
                 },
-                "email": {
+                "contributor_email": {
                     "title": "Your email address",
                     "type": "string"
                 },
-                "group": {
+                "contributor_group": {
                     "title": "Working group",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "contributor_group_name": {
                             "title": "Name",
                             "type": "string",
                             "enum": [
@@ -41,12 +41,12 @@
                         }
                     }
                 },
-                "cadi": {
+                "cadi_id": {
                     "title": "CADI entry number, if available",
                     "description": "e.g., HIG-11-032",
                     "type": "string"
                 },
-                "opt_title": {
+                "analysis_title": {
                     "title": "If no CADI entry is available, please provide the title and applicable references",
                     "description": "analysis note numbers, etc.",
                     "type": "string"
@@ -55,7 +55,7 @@
                     "title": "Preapproval date",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "preapproval_date_name": {
                             "title": "",
                             "type": "string",
                             "enum": [
@@ -126,7 +126,7 @@
                     "type": "string",
                     "enum": ["yes" ,"no"]
                 },
-                "multi_usage": {
+                "multivariate_usage": {
                     "title": "Usage of multi-variante descriminant",
                     "description": "Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background? If the answer is \"No\", please proceed with the next section.",
                     "type": "string",
@@ -137,7 +137,7 @@
                     "description": "What software are you using?",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "software_name": {
                             "description": "What software are you using?",
                             "type": "string",
                             "enum": ["tmva", "other"]
@@ -152,11 +152,11 @@
                         "comments": ["name"]
                     }
                 },
-                "type": {
+                "discriminant_type": {
                     "title": "Used Type",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "discriminant_type_name": {
                             "description": "What type of discriminant do you use?",
                             "type": "string",
                             "enum": ["boosted", "fisher", "likelehoods", "ann", "other"]
@@ -175,7 +175,7 @@
                     "title": "MVA Output Usage",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "mva_output_usage_name": {
                             "description": "How do you make use of the MVA output in the analysis?",
                             "type": "string",
                             "enum": ["output_cut","output_fit","other"]
@@ -194,7 +194,7 @@
                     "title": "Input Variable Checks",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "input_check_name": {
                             "description": "How have you checked that the input variables, including their dependencies, are well-modeled?",
                             "type": "string",
                             "enum": ["1d","2d","other"]
@@ -209,11 +209,11 @@
                         "comments": "name"
                     }
                 },
-                "correlation_studies": {
+                "correlations_dependencies": {
                     "title": "Study of correlations/dependencies ",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "correlations_dependencies_name": {
                             "description": "Do you study the correlations and dependencies between the input variables?",
                             "type": "string",
                             "enum": ["matrix","nonlinear","other"]
@@ -231,7 +231,7 @@
                 "input_selection": {
                     "title": "Input variable selection ",
                     "properties": {
-                        "name": {
+                        "input_selection_pruning": {
                             "description": "How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?",
                             "type": "string",
                             "enum": ["yes","no","other"]
@@ -275,7 +275,7 @@
                     "title": "Background Mix",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "background_sample_mix": {
                             "description": "When training with more than one background, do you mix all samples in the proportions you expect in data?",
                             "type": "string",
                             "enum": [
@@ -295,11 +295,11 @@
                         "comments": "name"
                     }
                 },
-                "overtraining_checks": {
+                "overtraining": {
                     "title": "Overtraining Checks",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "overtraining_checks": {
                             "description": "How do you make sure you are not affected by overtraining?",
                             "type": "string",
                             "enum": [
@@ -318,11 +318,11 @@
                         "comments": "name"
                     }
                 },
-                "robustness_checks": {
+                "robustness": {
                     "title": "Robustness Checks",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "robustness_checks": {
                             "description": "Do you perform the following robustness check?",
                             "type": "string",
                             "enum": [
@@ -343,7 +343,7 @@
             "title": "Data Fitting",
             "type": "object",
             "properties": {
-                "usage": {
+                "data_fitting_usage": {
                     "title": "Usage of fitting of data distributions",
                     "description": "Does the analysis include fitting of data distributions? If the answer is \"No\", please proceed with the next section.",
                     "type": "string",
@@ -357,7 +357,7 @@
                     "title": "Functional Form",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "functional_form_name": {
                             "description": "What functional forms are used?",
                             "type": "string",
                             "enum": ["templates","parametric","other"]
@@ -372,11 +372,11 @@
                         "comments": "name"
                     }
                 },
-                "fitting_model_choice": {
+                "fitting_model": {
                     "title": "Fitting Model Choice",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "fitting_model_choice": {
                             "description": "How do you choose the fitting model?",
                             "type": "string",
                             "enum": [
@@ -398,11 +398,11 @@
                         "comments": "name"
                     }
                 },
-                "test_stats": {
+                "test_statistics": {
                     "title": "Test Statistic",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "test_statistic_name": {
                             "description": "Which test statistic are you using to perform the fit(s)?",
                             "type": "string",
                             "enum": [
@@ -427,11 +427,11 @@
                         "comments": "name"
                     }
                 },
-                "goodness_test": {
+                "goodness": {
                     "title": "Goodness-Of-Fit Test (incl. p-values)",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "goodness_test": {
                             "description": "Do you perform a goodness-of-fit test for the fit(s)? If the answer is \"Yes\" or \"Undecided\", please provide additional information and the resultung p-values(s).",
                             "type": "string",
                             "enum": [
@@ -464,11 +464,11 @@
                         "comments": "name"
                     }
                 },
-                "toy_exp": {
+                "pull_distribution": {
                     "title": "Check of Pull Distributions in Toy Experiments ",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "pull_distribution_check": {
                             "description": "Do you check that the pull distribution in toy experiments is distributed as expected for an unbiased method (mean 0, width 1)?",
                             "type": "string",
                             "enum": [
@@ -489,11 +489,11 @@
                         "comments": "name"
                     }  
                 },
-                "cov_matrix": {
+                "covariance_matrix": {
                     "title": "Covariance Matrix Check",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "covariance_matrix_check": {
                             "description": "In case you are using the returned parameters in other parts of your analysis: are you accounting for the covariance matrix (error and off-diagonal correlation terms) of the parameter uncertainties?",
                             "type": "string",
                             "enum": [
@@ -509,11 +509,11 @@
                         }
                     }
                 },
-                "bcgrnd_shape": {
+                "background_shape": {
                     "title": "Background Shape Choice ",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "background_shape_choice": {
                             "description": "In case you perform a fit to the background shape with a function: How do you choose the functional form?",
                             "type": "string",
                             "enum": [
@@ -533,11 +533,11 @@
                         "comments": "name"
                     }
                 },
-                "fit_func_params": {
+                "fit_parameters": {
                     "title": "Fit Function: Choice of Number of Parameters ",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "fit_parameters_choice": {
                             "description": "In case you perform a fit using a functional form which exists for many different number of parameters (such as polynomials): How are you choosing the number of parameters?",
                             "type": "string",
                             "enum": [
@@ -559,11 +559,11 @@
                         "comments": "name"
                     }  
                 },
-                "param_bounds": {
+                "parameter_boundaries": {
                     "title": "Parameter Boundaries",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "parameter_boundaries_returned": {
                             "description": "Are any of the parameters returned by the fit close (less than 3 sigma) to their physical or pre-defined boundary?",
                             "type": "string",
                             "enum": [
@@ -590,7 +590,7 @@
             "title": "Confidence Intervals and Limits",
             "type": "object",
             "properties": {
-                "usage": {
+                "confidence_usage": {
                     "title": "Usage of confidence intervals and limits",
                     "description": "Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? (If the answer is \"No\", please proceed with the next section.)",
                     "type": "string",
@@ -604,7 +604,7 @@
                     "title": "Citation of limit or two-sided confidence interval ",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "citation_choice": {
                             "description": "Will you cite a limit or a two-sided confidence interval?",
                             "type": "string",
                             "enum": [
@@ -660,7 +660,7 @@
                     "title": "Approach(es)",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "approaches_used": {
                             "description": "Mark the approach(es) you are using",
                             "type": "string",
                             "enum": [
@@ -689,7 +689,7 @@
                     "title": "Software",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "software_name": {
                             "description": "What software tool are you using for your confidence interval calculations?",
                             "type": "string",
                             "enum": [
@@ -710,11 +710,11 @@
                         "comments": "name"
                     }
                 },
-                "test_stats": {
+                "test_statistics": {
                     "title": "Test Statistics",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "test_statistic_name": {
                             "description": "In the case of frequentist/CLs confidence interval construction: which test statistic do you use? As an example of the detail you should provide: \"the HCG choice is qmu = -2 Ln[L(mu, theta_mu_* )/L(mu* ,theta* )], with 0 < mu* < mu at the denominator, and the numerator has nuisances set at conditional ML estimate for data at given mu, theta_mu_*\"(If you chose \"other\", please specify the test statistic used)",
                             "type": "string",
                             "enum": [
@@ -742,7 +742,7 @@
                     "title": "Toy Data",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "nuisance_parameter_choice": {
                             "description": "In the case toy data is generated as part of the limit setting procedure - e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands - please specify how the nuisance parameter are chosen for the toys:",
                             "type": "string",
                             "enum": [
@@ -767,7 +767,7 @@
                     "title": "Theory Error in Signal Cross Section",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "theory_error_action": {
                             "description": "In case you convert a limit on a signal cross section into a limit on the mass (or another parameter; we call it \"mass\" here): how do you account for the theory error on the signal cross section?",
                             "type": "string",
                             "enum": [
@@ -802,7 +802,7 @@
                     "type": "string",
                     "enum": ["yes", "no"]
                 },
-                "usage": {
+                "discovery_statements": {
                     "title": "Usage",
                     "description": "Does the analysis include discovery-related statements, such as citing p-values of the null hypothesis or a \"significance\"? If the answer is \"No\", please proceed with the next section.",
                     "type": "string",
@@ -816,7 +816,7 @@
                     "title": "Test Statistics",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "test_statistic_name": {
                             "description": "To evaluate the p-value(s) of the null hypothesis, what test statistic was used?",
                             "type": "string",
                             "enum": [
@@ -839,7 +839,7 @@
                     "title": "Look-Elsewhere Effect",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "lookelsewhere_effect_action": {
                             "description": "Do you account for the look-elsewhere effect?",
                             "type": "string",
                             "enum": [
@@ -874,7 +874,7 @@
                         "no"
                     ]
                 },
-                "usage": {
+                "unfolding_usage": {
                     "title": "Usage",
                     "description": "Is unfolding used in parts of the analysis? (If the answer is \"No\", please proceed with the next section)",
                     "type": "string",
@@ -897,7 +897,7 @@
                     "title": "Technique",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "unfolding_technique": {
                             "description": "Which unfolding technique are you using?",
                             "type": "string",
                             "enum": [
@@ -922,7 +922,7 @@
                     "title": "Software",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "software_name": {
                             "description": "Which software are you using?",
                             "type": "string",
                             "enum": [
@@ -941,17 +941,17 @@
                         "comments": "name"
                     }
                 },
-                "validation": {
+                "unfolding_validation": {
                     "title": "How do you validate the unfolding procedure (e.g., comparison with other techniques, toy studies, etc.)?",
                     "description": "How do you validate the unfolding procedure (e.g., comparison with other techniques, toy studies, etc.)?",
                     "type": "string",
                     "format": "textarea"
                 },
-                "event_weight_application": {
+                "event_weight": {
                     "title": "Event Weight Application",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "event_weight_application": {
                             "description": "In case you apply weights to the number of observed (real data) events, e.g. to correct for trigger prescales.",
                             "type": "string",
                             "enum": [
@@ -985,7 +985,7 @@
                         "no"
                     ]
                 },
-                "consideration": {
+                "uncertainties_consideration": {
                     "title": "Consideration of Systematic Uncertainties",
                     "description": "Have you considered that systematic uncertainties constrained by sideband measurements in the data, and whose estimate thus depends on the size of the analyzed dataset, should be treated as statistical uncertainties?",
                     "type": "string",
@@ -1007,7 +1007,7 @@
                     "title": "Crosschecks",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "method_crosschecks": {
                             "description": "Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data? If the answer is \"No\": Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check? What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?",
                             "type": "string",
                             "enum": [
@@ -1042,7 +1042,7 @@
                     "title": "Template Morphing",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "template_morphing_usage": {
                             "description": "Do you use \"template morphing\" in your analysis, e.g. to model a systematic uncertainty in the statistical model?",
                             "type": "string",
                             "enum": [
@@ -1062,7 +1062,7 @@
                 }
             }
         },
-        "other": {
+        "other_statistics": {
             "title": "Other Statistics Related Items",
             "description": "Take a second read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>",
             "type": "object",
@@ -1080,7 +1080,7 @@
                     "title": "Blind Analysis Performed",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "blind_analysis_performed": {
                             "description": "Do you perform a blind analysis? If so, can you succinctly describe what was done?",
                             "type": "string",
                             "enum":[
@@ -1103,7 +1103,7 @@
                     "title": "Methods of Combined Measurements",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "combined_measurements_methods": {
                             "description": "In case you combine measurements in your analysis: what method is used?",
                             "type": "string",
                             "enum": [
@@ -1127,7 +1127,7 @@
                     "title": "Correlation Treatment",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "correlation_treatment_action": {
                             "description": "In case you use the results of another CMS analysis: how did you treat correlations from common systematic uncertainties and from potential overlap in the datasets?",
                             "type": "string",
                             "enum": [
@@ -1156,7 +1156,7 @@
                     "title": "Subjects to Change",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "statistical_changes": {
                             "description": "What statistical element of your analysis is not yet frozen (what changes can be expected)?",
                             "type": "string",
                             "enum": [
