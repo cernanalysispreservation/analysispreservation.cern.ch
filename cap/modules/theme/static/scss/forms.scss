@@ -91,10 +91,22 @@
   }    
 }
 
+
+.custom-textarea {
+  resize: none;
+  height: 133px !important;
+}
+
 /* Button style for deposit form */
 
 .action-btn {
   padding: 6px 25px;
+}
+
+.add-btn {
+  background-color: $cap_btn_bg;
+  border-radius: 2px;
+  color: $text-white;
 }
 
 .save-btn {
@@ -114,6 +126,12 @@
 
 .discard-btn {
   background-color: $alizarin;
+  border-radius: 2px;
+  color: $text-white;
+}
+
+.add-btn:hover {
+  background-color: $cap_btn_bg;
   border-radius: 2px;
   color: $text-white;
 }

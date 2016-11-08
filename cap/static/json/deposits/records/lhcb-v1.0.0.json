@@ -1,216 +1,437 @@
 [  
-   {  
-      "key": "basic_info",
-      "type": "fieldset",
-      "htmlClass": "custom-panel",
-      "items":[  
-         {
-          "key": "basic_info.analysis_name",
-          "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
+  {  
+    "key": "basic_info",
+    "type": "fieldset",
+    "htmlClass": "custom-panel",
+    "items":[  
+       {
+        "key": "basic_info.analysis_name",
+        "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
 
-         },
-         {
-          "key": "basic_info.egroup",
-          "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
-         },
-         {
-          "key": "basic_info.institutes",
-          "placeholder": "E.g. Institute A; Institute B"
-         },
-         {
-          "key": "basic_info.keywords",
-          "placeholder": "E.g. keyword1, keyword2"
-         },
-         {
-          "key": "basic_info.proponents",
-          "placeholder": "E.g. John Doe; Jane Doe"
-         },
-         {
-          "key": "basic_info.reviewers",
-          "placeholder": "E.g. John Roe; Jane Roe"       
-         },
-         {  
-            "key": "basic_info.status",
-            "type": "select",
-            "title": "Status",
-            "titleMap":[  
-               {  
-                  "value": "0 - planned / open topic",
-                  "name": "0 - planned / open topic"
-               },
-               {  
-                  "value": "1 - in preparation",
-                  "name": "1 - in preparation"
-               },
-               {  
-                  "value": "2 - ANA note released",
-                  "name": "2 - ANA note released"
-               },
-               {  
-                  "value": "3 - review committee",
-                  "name": "3 - review committee"
-               },
-               {  
-                  "value": "4 - collaboration review",
-                  "name": "4 - collaboration review"
-               },
-               {  
-                  "value": "5 -",
-                  "name": "5 -"
-               },
-               {  
-                  "value": "6 - CONF note published",
-                  "name": "6 - CONF note published"
-               },
-               {  
-                  "value": "7 -",
-                  "name": "7 -"
-               },
-               {  
-                  "value": "8 - journal review",
-                  "name": "8 - journal review"
-               },
-               {  
-                  "value": "9 - PAPER published",
-                  "name": "9 - PAPER published"
-               },
-               {  
-                  "value": "x - other",
-                  "name": "x - other"
-               }
+       },
+       {
+        "key": "basic_info.proponents",
+        "placeholder": "E.g. John Doe; Jane Doe"
+       },
+       {  
+          "key": "basic_info.status",
+          "type": "select",
+          "title": "Status",
+          "titleMap":[  
+             {  
+                "value": "0 - planned / open topic",
+                "name": "0 - planned / open topic"
+             },
+             {  
+                "value": "1 - in preparation",
+                "name": "1 - in preparation"
+             },
+             {  
+                "value": "2 - ANA note released",
+                "name": "2 - ANA note released"
+             },
+             {  
+                "value": "3 - review committee",
+                "name": "3 - review committee"
+             },
+             {  
+                "value": "4 - collaboration review",
+                "name": "4 - collaboration review"
+             },
+             {  
+                "value": "5 -",
+                "name": "5 -"
+             },
+             {  
+                "value": "6 - CONF note published",
+                "name": "6 - CONF note published"
+             },
+             {  
+                "value": "7 -",
+                "name": "7 -"
+             },
+             {  
+                "value": "8 - journal review",
+                "name": "8 - journal review"
+             },
+             {  
+                "value": "9 - PAPER published",
+                "name": "9 - PAPER published"
+             },
+             {  
+                "value": "x - other",
+                "name": "x - other"
+             }
+          ]
+       },
+       {
+        "key": "basic_info.reviewers",
+        "placeholder": "E.g. John Roe; Jane Roe"       
+       },
+       {
+        "key": "basic_info.egroup",
+        "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+       },
+       {
+        "key": "basic_info.institutes",
+        "placeholder": "E.g. Institute A; Institute B"
+       },
+       {
+        "key": "basic_info.keywords",
+        "placeholder": "E.g. keyword1, keyword2"
+       }
+    ]
+  },
+  {  
+    "key": "extra_info",
+    "type": "fieldset",
+    "items": [
+      {
+        "key": "extra_info.analysis_number",
+        "placeholder": "E.g. LHCb-ANA-2015-002"
+      },
+      {
+        "key": "extra_info.arxiv",
+        "placeholder": "E.g. 1508.06087"
+      },
+      {
+        "key": "extra_info.conf_report",
+        "placeholder": "E.g. CONF"
+      },
+      {
+        "key": "extra_info.public_paper",
+        "placeholder": "E.g. LHCb-PAPER-2015-039"
+      },
+      {
+        "key": "extra_info.twiki",
+        "placeholder": "E.g. https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
+      }
+    ]
+  },
+  {
+    "key": "dst_selection",
+    "type": "fieldset",
+    "items": [
+      {
+        "key": "dst_selection.code",
+        "items": [
+          {
+            "key": "dst_selection.code.lhcb_code",
+            "placeholder": "E.g. DaVinci v33r6"
+          },
+          {
+            "key": "dst_selection.code.platform",
+            "placeholder": "E.g. x86_64-slc5-gcc46-opt"
+          },
+          {
+            "key": "dst_selection.code.user_code",
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "dst_selection.code.user_code[].link",
+                "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
+              },
+              {
+                "key": "dst_selection.code.user_code[].description",
+                "placeholder": "E.g. Please enter the user code description, location, etc"
+              },
+              {
+                "key": "dst_selection.code.user_code[].instructions",
+                "type": "textarea",
+                "fieldHtmlClass": "custom-textarea",
+                "placeholder": "E.g. Please enter the instructions for using the code, e.g. Open 'README' file"
+              }
             ]
-         },
-         {
-          "key": "basic_info.status_notes"
-         }
-      ]
-   },
-   {  
-      "key": "extra_info",
-      "htmlClass": "custom-panel"
-   },
-   {  
-      "key": "documentations",
-      "htmlClass": "custom-panel"
-   },
-   {  
-      "key": "internal_discussions",
-      "htmlClass": "custom-panel"
-   },
-   {
-      "key": "dst_selection",
-      "type": "fieldset",
-      "htmlClass": "custom-panel",
-      "items":[
-        {
-          "key": "dst_selection.code"
-        },
-        {
-          "key": "dst_selection.input_data.data"
-        },
-        {
-          "key": "dst_selection.input_data.mc_data",
-          "items": [
-            {
-              "key": "dst_selection.input_data.mc_data[].items.db_tags",
-              "type": "select",
-              "title": "Database Tags",
-              "titleMap": [
-                {  
-                  "value": "DDDB",
-                  "name": "DDDB"
-               },
-               {  
-                  "value": "SIMCOND",
-                  "name": "SIMCOND"
-               }
-              ]
-            },    
-            {
-              "key": "dst_selection.input_data.mc_data[].items.generator",
-              "title": "Generator"
-            },
-            {
-              "key": "dst_selection.input_data.mc_data[].items.location",
-              "title": "Sample"
-            },
-            {
-              "key": "dst_selection.input_data.mc_data[].items.mc_production",
-              "type": "number",
-              "title": "Production"
-            },
-            {
-              "key": "dst_selection.input_data.mc_data[].items.reconstruction_software",
-              "type": "fieldset",
-              "title": "Reconstruction software",
-              "items": [
-                {
-                  "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_name",
-                  "title": "Name"
-                },
-                {
-                  "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_version",
-                  "title": "Version"
-                }
-              ]              
-            },
-            {
-              "key": "dst_selection.input_data.mc_data[].items.stripping_software",
-              "type": "fieldset",
-              "title": "Stripping software",
-              "items": [
-                {
-                  "key": "dst_selection.input_data.mc_data[].items.stripping_software_name",
-                  "title": "Name"
-                },
-                {
-                  "key": "dst_selection.input_data.mc_data[].items.stripping_software_version",
-                  "title": "Version"
-                }
-              ]              
-            },
-            {
-              "key": "dst_selection.input_data.mc_data[].items.used_tools",
-              "title": "Used Tools"
-            }
-          ]
-        },
-        {
-          "key": "dst_selection.output_data",
-          "type": "fieldset",
-          "items": [
-            {
-              "key": "dst_selection.output_data.data",
-              "title": "Collision Data", 
-              "startEmpty": true
-            },
-            {
-              "key": "dst_selection.output_data.mc_data",
-              "title": "MC Data",
-              "startEmpty": true
-            }
-          ]
-        },
-        {
-          "key": "dst_selection.stripping_line",
-          "title": "Stripping Line",
-          "startEmpty": true
-        },
-        {
-          "key": "dst_selection.trigger",
-          "title": "Trigger",
-          "startEmpty": true
-        },
-        {
-          "key": "presentations",
-          "title": "Presentations",
-          "startEmpty": true
-        },
-        {
-          "key": "publications",
-          "title": "Publications",
-          "startEmpty": true
-        }
-      ]
-   }
+          }
+        ]
+      },
+      {
+        "key": "dst_selection.input_data",
+        "type": "fieldset",
+        "items": [
+          {
+            "key": "dst_selection.input_data.data",
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "dst_selection.input_data.data[].location",
+                "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
+              },
+              {
+                "key": "dst_selection.input_data.data[].processing_pass",
+                "placeholder": "E.g. Reco15a-Stripping22b"
+              },
+              {
+                "key": "dst_selection.input_data.data[].reconstruction_software",
+                "items": [
+                  {
+                    "key": "dst_selection.input_data.data[].reconstruction_software.reconstruction_software_name",
+                    "placeholder": "E.g. Brunel Reco"
+                  },
+                  {
+                    "key": "dst_selection.input_data.data[].reconstruction_software.reconstruction_software_version",
+                    "placeholder": "E.g. 13"
+                  }
+                ]
+              },
+              {
+                "key": "dst_selection.input_data.data[].stripping_software",
+                "items": [
+                  {
+                    "key": "dst_selection.input_data.data[].stripping_software.stripping_software_name",
+                    "placeholder": "E.g. DaVinciStripping"
+                  },
+                  {
+                    "key": "dst_selection.input_data.data[].stripping_software.stripping_software_version",
+                    "placeholder": "E.g. 17"
+                  }
+                ]
+              },
+              {
+                "key": "dst_selection.input_data.data[].year",
+                "placeholder": "E.g 2015"
+              }
+            ]
+          },
+          {
+            "key": "dst_selection.input_data.mc_data",
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "dst_selection.input_data.mc_data[].items.location",
+                "title": "Sample",
+                "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.mc_production",
+                "title": "Production",
+                "placeholder": "E.g. MC Prod"
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.generator",
+                "title": "Generator",
+                "placeholder": "E.g. MC Gen"
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.reconstruction_software",
+                "type": "fieldset",
+                "title": "Reconstruction software",
+                "items": [
+                  {
+                    "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_name",
+                    "title": "Name",
+                    "placeholder": "E.g. MC Reco"
+                  },
+                  {
+                    "key": "dst_selection.input_data.mc_data[].items.reconstruction_software_version",
+                    "title": "Version",
+                    "placeholder": "E.g. 11"
+                  }
+                ]              
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.stripping_software",
+                "type": "fieldset",
+                "title": "Stripping software",
+                "items": [
+                  {
+                    "key": "dst_selection.input_data.mc_data[].items.stripping_software_name",
+                    "title": "Name",
+                    "placeholder": "E.g. MC Strip"
+                  },
+                  {
+                    "key": "dst_selection.input_data.mc_data[].items.stripping_software_version",
+                    "title": "Version",
+                    "placeholder": "E.g. 16"
+                  }
+                ]              
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.used_tools",
+                "title": "Used Tools",
+                "placeholder": "E.g. TupleToolIsolation"
+              },
+              {
+                "key": "dst_selection.input_data.mc_data[].items.db_tags",
+                "type": "select",
+                "title": "Database Tags",
+                "titleMap": [
+                  {  
+                    "value": "DDDB",
+                    "name": "DDDB"
+                 },
+                 {  
+                    "value": "SIMCOND",
+                    "name": "SIMCOND"
+                 }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "dst_selection.output_data",
+        "type": "fieldset",
+        "items": [
+          {
+            "key": "dst_selection.output_data.data",
+            "title": "Collision Data", 
+            "startEmpty": true
+          },
+          {
+            "key": "dst_selection.output_data.mc_data",
+            "title": "MC Data",
+            "startEmpty": true
+          }
+        ]
+      },
+      {
+        "key": "dst_selection.stripping_line",
+        "title": "Stripping Line",
+        "startEmpty": true
+      },
+      {
+        "key": "dst_selection.trigger",
+        "title": "Trigger",
+        "startEmpty": true
+      }
+    ]
+  },
+  {
+    "key": "analysis_steps",
+    "items": [
+      {
+        "key": "analysis_steps[].code",
+        "items": [
+          {
+            "key": "analysis_steps[].code[].lhcb_code",
+            "placeholder": "E.g. DaVinci v33r6"
+          },
+          {
+            "key": "analysis_steps[].code[].platform",
+            "placeholder": "E.g. x86_64-slc5-gcc46-opt"
+          },
+          {
+            "key": "analysis_steps[].code[].user_code",
+            "items": [
+              {
+                "key": "analysis_steps[].code[].user_code.link",
+                "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
+              },
+              {
+                "key": "analysis_steps[].code[].user_code.description",
+                "placeholder": "Please enter the user code description, location, etc"
+              },
+              {
+                "key": "analysis_steps[].code[].user_code.instructions",
+                "type": "textarea",
+                "fieldHtmlClass": "custom-textarea",
+                "placeholder": "Please enter the instructions for using the code, e.g. Open 'README' file"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "analysis_steps[].input_data",
+        "items": [
+          {
+            "key": "analysis_steps[].input_data.data",
+            "startEmpty": true
+          },
+          {
+            "key": "analysis_steps[].input_data.mc_data",
+            "startEmpty": true
+          }
+        ]
+      },
+      {
+        "key": "analysis_steps[].output_data",
+        "items": [
+          {
+            "key": "analysis_steps[].output_data.data",
+            "startEmpty": true
+          },
+          {
+            "key": "analysis_steps[].output_data.mc_data",
+            "startEmpty": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "key": "additional_resources",
+    "type": "fieldset",
+    "items": [
+      {  
+        "key": "additional_resources.internal_discussions",
+        "items": [
+          {
+            "key": "additional_resources.internal_discussions[].meeting",
+            "placeholder": "E.g. lhcb-general"
+          },
+          {
+            "key": "additional_resources.internal_discussions[].title",
+            "placeholder": "E.g. Update on D0-KS KS"
+          },
+          {
+            "key": "additional_resources.internal_discussions[].url",
+            "placeholder": "E.g. https://indico.cern.ch/event/.../contribution/.../material/slides/discussion-slides.pdf"
+          }
+        ]
+      },
+      {
+        "key": "additional_resources.presentations",
+        "items": [
+          {
+            "key": "additional_resources.presentations[].meeting",
+            "placeholder": "E.g. CERN-LHC Seminar"
+          },
+          {
+            "key": "additional_resources.presentations[].title",
+            "placeholder": "E.g. CP violation searches in the charm sector at LHCb"
+          },
+          {
+            "key": "additional_resources.presentations[].url",
+            "placeholder": "E.g. https://indico.cern.ch/event/473187/"
+          }
+        ]
+      },
+      {
+        "key": "additional_resources.publications",
+        "items": [
+          {
+            "key": "additional_resources.publications[].reviewegroup",
+            "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
+          },
+          {
+            "key": "additional_resources.publications[].roles"
+          },
+          {
+            "key": "additional_resources.publications[].url",
+            "placeholder": "E.g. https://cds.cern.ch/record/2030613"
+          }
+        ]
+      },
+      {  
+        "key": "additional_resources.documentations",
+        "items": [
+          {
+            "key": "additional_resources.documentations[].url",
+            "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
+          },
+          {
+            "key": "additional_resources.documentations[].keyword",
+            "placeholder": "E.g. keyword1"
+          },
+          {
+            "key": "additional_resources.documentations[].comment",
+            "placeholder": "E.g. Shows more detail concerning this analysis"
+          }
+        ]
+      }
+    ]
+  }
 ]

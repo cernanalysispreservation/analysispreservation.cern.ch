@@ -29,8 +29,10 @@
 $cap_searchbar_bgcolor: $light-grey-theme-color;
 
 #cap-home-search {
+  width: 85%;
+  float: right;
   height: $header_btn_height;
-
+  
   > div, > span {
     height: $header_btn_height;
     line-height: $header_btn_height;

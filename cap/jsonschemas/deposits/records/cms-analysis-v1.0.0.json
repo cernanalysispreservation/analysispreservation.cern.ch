@@ -167,6 +167,7 @@
          }
       },
       "input_datasets":{  
+         "_comment":"This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
          "title":"Input Data",
          "description":"Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
          "type":"object",
@@ -175,55 +176,36 @@
             "primary_datasets":{  
                "title":"Primary Datasets",
                "description":"Please list all primary datasets here",
-               "type":"array",
-               "id":"primary-datasets",
-               "items":{  
-                  "$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/PrimaryDataset-v0.0.1.json",
-                  "properties":{  
-                     "copypaste":{  
-                        "type":"string"
-                     }
-                  }
-               }
+               "type":"string",
+               "id":"primary-datasets"
             },
             "mc_sig_dataset":{  
                "title":"Monte Carlo Signal Datasets",
                "description":"Please list all Monte Carlo Signal datasets",
-               "type":"array",
-               "id":"mc_sig_dataset",
-               "items":{  
-                  "$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloSignalDataset-v0.0.1.json",
-                  "defaultProperties":[  
-                     "title"
-                  ]
-               }
+               "type":"string",
+               "id":"mc_sig_dataset"
             },
             "mc_bg_dataset":{  
                "title":"Monte Carlo Background Datasets",
                "description":"Please list all Monte Carlo Background datasets",
-               "type":"array",
-               "id":"mc_bg_dataset",
-               "items":{  
-                  "$ref":"https://analysis-preservation.cern.ch/records/jsonschemas/definitions/MonteCarloBackgroundDataset-v0.0.1.json",
-                  "defaultProperties":[  
-                     "title"
-                  ]
-               }
+               "type":"string",
+               "id":"mc_bg_dataset"
             }
          }
       },
       "n-tuple_production_check":{  
          "title":"Did you produce n-tuples as an initial step to any measurement?",
          "type":"object",
-         "properties": {
-            "confirm": {
-              "type": "boolean",
-              "default": false
+         "properties":{  
+            "confirm":{  
+               "type":"boolean",
+               "default":false
             }
          }
       },
       "input_code_output":{  
          "title":"n-tuple Production",
+         "description": "Please provide the n-tuples you used for your measurements",
          "type":"array",
          "default":[  
             {  
@@ -234,76 +216,81 @@
             "type":"object",
             "properties":{  
                "code_base":{  
-                  "title": "User Code Base",
-                  "description": "Provide user code",
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "title": "URL",
-                      "type": "string"
-                    },
-                    "tag": {
-                      "title": "Tag",
-                      "type": "string"
-                    },
-                    "revision_id": {
-                      "title": "Revision Identifier",
-                      "type": "string"
-                    }
+                  "title":"User Code Base",
+                  "description":"Provide user code",
+                  "type":"object",
+                  "properties":{  
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     },
+                     "tag":{  
+                        "title":"Tag",
+                        "type":"string"
+                     },
+                     "revision_id":{  
+                        "title":"Revision Identifier",
+                        "type":"string"
+                     }
                   }
                },
                "n_tuple":{  
-                  "title": "Processing",
-                  "type": "array",
-                  "default": [{}],
-                  "items": {
-                    "title": "Input",
-                    "type": "object",
-                    "properties": {
-                      "input_data": {
-                        "title": "Input",        
-                        "type": "object",
-                        "properties": {
-                          "dataset": {
-                            "title": "Dataset",
-                            "type": "string",
-                            "enum": []
-                          }
+                  "title":"Processing",
+                  "type":"array",
+                  "default":[  
+                     {  
+
+                     }
+                  ],
+                  "items":{  
+                     "title":"Input",
+                     "type":"object",
+                     "properties":{  
+                        "input_data":{  
+                           "title":"Input",
+                           "type":"object",
+                           "properties":{  
+                              "dataset":{  
+                                 "title":"Dataset",
+                                 "type":"string",
+                                 "enum":[  
+
+                                 ]
+                              }
+                           }
+                        },
+                        "user_code":{  
+                           "title":"Configuration File",
+                           "type":"object",
+                           "properties":{  
+                              "config_files":{  
+                                 "title":"URL",
+                                 "type":"string"
+                              }
+                           }
+                        },
+                        "run_instructions":{  
+                           "title":"Run Instructions",
+                           "description":"Provide run instructions",
+                           "enum":[  
+                                 "readme",
+                                 "makefile",
+                                 "upload"
+                              ],
+                            "title":"Type",
+                            "type":"string"
+                        },
+                        "output_data":{  
+                           "title":"Output",
+                           "type":"object",
+                           "properties":{  
+                              "output_url":{  
+                                 "title":"URL",
+                                 "type":"string"
+                              }
+                           }
                         }
-                      },
-                      "user_code": {
-                        "title": "Configuration File",
-                        "type": "object",
-                        "properties": {
-                          "config_files": {
-                            "title": "URL",
-                            "type": "string"
-                          }
-                        }
-                      },
-                      "run_instructions": {
-                        "title": "Run Instructions",
-                        "description": "Provide run instructions",
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "title": "Type",
-                            "type": "string",
-                            "enum": ["readme", "makefile", "upload"]
-                          }
-                        }
-                      },
-                      "output_data": {
-                        "title": "Output",        
-                        "type": "object",
-                        "properties": {
-                          "output_url": {
-                            "title": "URL",
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
+                     }
                   }
                }
             }
@@ -311,6 +298,7 @@
       },
       "main_measurements":{  
          "title":"Main Measurement Workflow",
+         "description": "Please provide information about the main measurements of your analysis",
          "type":"array",
          "id":"main-measurements",
          "default":[  
@@ -392,18 +380,13 @@
                         "run_instructions":{  
                            "title":"Run Instructions",
                            "description":"Provide run instructions",
-                           "type":"object",
-                           "properties":{  
-                              "type":{  
-                                 "title":"Type",
-                                 "type":"string",
-                                 "enum":[  
-                                    "readme",
-                                    "makefile",
-                                    "upload"
-                                 ]
-                              }
-                           }
+                           "enum":[  
+                                 "readme",
+                                 "makefile",
+                                 "upload"
+                              ],
+                            "title":"Type",
+                            "type":"string"
                         },
                         "output_data":{  
                            "title":"Output",
@@ -1084,76 +1067,81 @@
                   "type":"string"
                },
                "code_base":{  
-                  "title": "User Code Base",
-                  "description": "Provide user code",
-                  "type": "object",
-                  "properties": {
-                    "url": {
-                      "title": "URL",
-                      "type": "string"
-                    },
-                    "tag": {
-                      "title": "Tag",
-                      "type": "string"
-                    },
-                    "revision_id": {
-                      "title": "Revision Identifier",
-                      "type": "string"
-                    }
+                  "title":"User Code Base",
+                  "description":"Provide user code",
+                  "type":"object",
+                  "properties":{  
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     },
+                     "tag":{  
+                        "title":"Tag",
+                        "type":"string"
+                     },
+                     "revision_id":{  
+                        "title":"Revision Identifier",
+                        "type":"string"
+                     }
                   }
                },
                "n_tuple":{  
-                  "title": "Processing",
-                  "type": "array",
-                  "default": [{}],
-                  "items": {
-                    "title": "Input",
-                    "type": "object",
-                    "properties": {
-                      "input_data": {
-                        "title": "Input",        
-                        "type": "object",
-                        "properties": {
-                          "dataset": {
-                            "title": "Dataset",
-                            "type": "string",
-                            "enum": []
-                          }
+                  "title":"Processing",
+                  "type":"array",
+                  "default":[  
+                     {  
+
+                     }
+                  ],
+                  "items":{  
+                     "title":"Input",
+                     "type":"object",
+                     "properties":{  
+                        "input_data":{  
+                           "title":"Input",
+                           "type":"object",
+                           "properties":{  
+                              "dataset":{  
+                                 "title":"Dataset",
+                                 "type":"string",
+                                 "enum":[  
+
+                                 ]
+                              }
+                           }
+                        },
+                        "user_code":{  
+                           "title":"Configuration File",
+                           "type":"object",
+                           "properties":{  
+                              "config_files":{  
+                                 "title":"URL",
+                                 "type":"string"
+                              }
+                           }
+                        },
+                        "run_instructions":{  
+                           "title":"Run Instructions",
+                           "description":"Provide run instructions",   
+                           "title":"Type",
+                           "type":"string",
+                           "enum":[  
+                              "readme",
+                              "makefile",
+                              "upload"
+                           ]
+                        },
+                        "output_data":{  
+                           "title":"Output",
+                           "type":"object",
+                           "properties":{  
+                              "output_url":{  
+                                 "title":"URL",
+                                 "type":"string"
+                              }
+                           }
                         }
-                      },
-                      "user_code": {
-                        "title": "Configuration File",
-                        "type": "object",
-                        "properties": {
-                          "config_files": {
-                            "title": "URL",
-                            "type": "string"
-                          }
-                        }
-                      },
-                      "run_instructions": {
-                        "title": "Run Instructions",
-                        "description": "Provide run instructions",
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "title": "Type",
-                            "type": "string",
-                            "enum": ["readme", "makefile", "upload"]
-                          }
-                        }
-                      },
-                      "output_data": {
-                        "title": "Output",        
-                        "type": "object",
-                        "properties": {
-                          "output_url": {
-                            "title": "URL",
-                            "type": "string"
-                          }
-                        }
-                      }
-                    }
+                     }
                   }
                },
                "detector_final_state":{  
@@ -1865,24 +1853,17 @@
                         }
                      },
                      "run_instructions":{  
-                        "title":"Run Instructions",
-                        "description":"Provide run instructions",
-                        "type":"object",
-                        "properties":{  
-                           "type":{  
-                              "title":"Type",
-                              "type":"string",
-                              "type":{  
-                                 "enum":[  
-                                    "readme",
-                                    "makefile",
-                                    "upload"
-                                 ]
-                              }
-                           }
-                        }
-                     },
-                     "output_data":{  
+                       "title":"Run Instructions",
+                       "description":"Provide run instructions",
+                       "enum":[  
+                             "readme",
+                             "makefile",
+                             "upload"
+                          ],
+                        "title":"Type",
+                        "type":"string"
+                      },
+                      "output_data":{  
                         "title":"Output",
                         "type":"object",
                         "properties":{  
@@ -1901,136 +1882,147 @@
             }
          }
       },
-      "documentations":{  
-         "title":"Additional Documentations",
-         "type":"array",
-         "id":"documentations",
-         "default":[  
-            {  
+      "additional_resources":{  
+         "title":"Additional Resources",
+         "description": "Please provide information about the additional resources of the analysis",
+         "type":"object",
+         "properties":{  
+            "documentations":{  
+               "title":"Additional Documentations",
+               "description": "Please provide all documentation",
+               "type":"array",
+               "id":"documentations",
+               "default":[  
+                  {  
 
-            }
-         ],
-         "items":{  
-            "title":"Documentation",
-            "description":"Add documentation",
-            "type":"object",
-            "properties":{  
-               "CADI_ID":{  
-                  "title":"CADI ID",
-                  "type":"string"
-               },
-               "url":{  
-                  "title":"URL",
-                  "type":"string"
-               },
-               "keyword":{  
-                  "title":"Keyword",
-                  "type":"string"
-               },
-               "comment":{  
-                  "title":"Comment",
-                  "type":"string"
-               }
-            }
-         }
-      },
-      "internal_discussions":{  
-         "title":"Internal Discussions",
-         "type":"array",
-         "id":"internal-discussions",
-         "default":[  
-            {  
-
-            }
-         ],
-         "items":{  
-            "type":"object",
-            "title":"Internal Discussion",
-            "properties":{  
-               "url":{  
-                  "title":"URL",
-                  "type":"string"
-               }
-            }
-         }
-      },
-      "presentations":{  
-         "title":"Presentations",
-         "type":"array",
-         "id":"presentations",
-         "default":[  
-            {  
-
-            }
-         ],
-         "items":{  
-            "type":"object",
-            "title":"Presentation",
-            "properties":{  
-               "url":{  
-                  "title":"URL",
-                  "type":"string"
-               }
-            }
-         }
-      },
-      "publications":{  
-         "title":"Publications",
-         "type":"array",
-         "id":"publications",
-         "default":[  
-            {  
-
-            }
-         ],
-         "items":{  
-            "type":"object",
-            "properties":{  
-               "persistent_identifiers":{  
-                  "title":"Identifiers",
-                  "type":"array",
-                  "items":{  
-                     "type":"object",
-                     "identifier":{  
-                        "title":"Identifier",
-                        "description":"An issued identifier, e.g. a DUNS number",
+                  }
+               ],
+               "items":{  
+                  "title":"Documentation",
+                  "description":"Add documentation",
+                  "type":"object",
+                  "properties":{  
+                     "CADI_ID":{  
+                        "title":"CADI ID",
                         "type":"string"
                      },
-                     "scheme":{  
-                        "title":"Scheme",
-                        "description":"An identifier scheme, e.g. DUNS",
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     },
+                     "keyword":{  
+                        "title":"Keyword",
+                        "type":"string"
+                     },
+                     "comment":{  
+                        "title":"Comment",
                         "type":"string"
                      }
                   }
                }
             },
-            "journal_title":{  
-               "title":"Journal Title",
-               "type":"string"
+            "internal_discussions":{  
+               "title":"Internal Discussions",
+               "description": "Please add all internal discussions",
+               "type":"array",
+               "id":"internal-discussions",
+               "default":[  
+                  {  
+
+                  }
+               ],
+               "items":{  
+                  "type":"object",
+                  "title":"Internal Discussion",
+                  "properties":{  
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  }
+               }
             },
-            "journal_year":{  
-               "title":"Journal Year",
-               "type":"integer"
+            "presentations":{  
+               "title":"Presentations",
+               "description": "Please add all presentations",
+               "type":"array",
+               "id":"presentations",
+               "default":[  
+                  {  
+
+                  }
+               ],
+               "items":{  
+                  "type":"object",
+                  "title":"Presentation",
+                  "properties":{  
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  }
+               }
             },
-            "journal_volume":{  
-               "title":"Journal Volume",
-               "type":"integer"
+            "publications":{  
+               "title":"Publications",
+               "description": "Please add all publications",
+               "type":"array",
+               "id":"publications",
+               "default":[  
+                  {  
+
+                  }
+               ],
+               "items":{  
+                  "type":"object",
+                  "properties":{  
+                     "persistent_identifiers":{  
+                        "title":"Identifiers",
+                        "type":"array",
+                        "items":{  
+                           "type":"object",
+                           "identifier":{  
+                              "title":"Identifier",
+                              "description":"An issued identifier, e.g. a DUNS number",
+                              "type":"string"
+                           },
+                           "scheme":{  
+                              "title":"Scheme",
+                              "description":"An identifier scheme, e.g. DUNS",
+                              "type":"string"
+                           }
+                        }
+                     }
+                  },
+                  "journal_title":{  
+                     "title":"Journal Title",
+                     "type":"string"
+                  },
+                  "journal_year":{  
+                     "title":"Journal Year",
+                     "type":"integer"
+                  },
+                  "journal_volume":{  
+                     "title":"Journal Volume",
+                     "type":"integer"
+                  },
+                  "journal_issue":{  
+                     "title":"Journal Issue",
+                     "type":"integer"
+                  },
+                  "journal_page":{  
+                     "title":"Journal Page",
+                     "type":"integer"
+                  }
+               }
             },
-            "journal_issue":{  
-               "title":"Journal Issue",
-               "type":"integer"
-            },
-            "journal_page":{  
-               "title":"Journal Page",
-               "type":"integer"
+            "keywords":{  
+               "title":"Keywords",
+               "description":"Please add keywords here",
+               "type":"string",
+               "id":"keywords"
             }
          }
-      },
-      "keywords":{  
-         "title":"Keywords",
-         "description":"Please add keywords here",
-         "type":"string",
-         "id":"keywords"
       }
    },
    "dependencies":{  

@@ -9,10 +9,14 @@
       },
       {
       "key": "basic_info.abstract",
+      "fieldHtmlClass": "custom-textarea",
+      "type": "textarea",
       "placeholder": "If not provided, it can be extracted from the final paper"
       },
       {
       "key": "basic_info.conclusion",
+      "fieldHtmlClass": "custom-textarea",
+      "type": "textarea",
       "placeholder": "Please add a short conclusion for the analysis"
       },
       {
@@ -60,17 +64,20 @@
         },
         {
           "key": "basic_info.software.global_tag_data",
-          "title": "Gloab Tag Data",
+          "title": "Global Tag Data",
           "placeholder": "Data Tag"
         },
         {
           "key": "basic_info.software.global_tag_MC",
-          "title": "Gloab Tag MC",
+          "title": "Global Tag MC",
           "placeholder": "Monte Carlo Data Tag"
         }
       ]
       }
     ]
+  },
+  {
+    "key": "input_datasets"
   },
   {
     "key": "n-tuple_production_check.confirm",
@@ -92,19 +99,24 @@
     "condition": "recordsVM.invenioRecordsModel['n-tuple_production_check']['confirm']",
     "items": [
       {
-        "key": "input_code_output[].code_base.url",
-        "title": "URL",
-        "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
-      },
-      {
-        "key": "input_code_output[].code_base.tag",
-        "title": "Tag",
-        "placeholder": "E.g. v2.1"
-      },
-      {
-        "key": "input_code_output[].code_base.revision_id",
-        "title": "Revision Identifier",
-        "placeholder": "E.g. your git commit hash"
+        "key": "input_code_output[].code_base",
+        "items": [
+          {
+            "key": "input_code_output[].code_base.url",
+            "title": "URL",
+            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+          },
+          {
+            "key": "input_code_output[].code_base.tag",
+            "title": "Tag",
+            "placeholder": "E.g. v2.1"
+          },
+          {
+            "key": "input_code_output[].code_base.revision_id",
+            "title": "Revision Identifier",
+            "placeholder": "E.g. your git commit hash"
+          }
+        ]
       },
       {
         "key": "input_code_output[].n_tuple",
@@ -113,6 +125,25 @@
             "key": "input_code_output[].n_tuple[].user_code.config_files",
             "title": "Configuration File",
             "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+          },
+          {
+            "key": "input_code_output[].n_tuple[].run_instructions",
+            "title": "Run Instructions",
+            "type": "select",
+            "titleMap": [
+              {
+                "value": "readme",
+                "name": "readme"
+              },
+              {
+                "value": "makefile",
+                "name": "makefile"
+              },
+              {
+                "value": "upload",
+                "name": "upload"
+              }
+            ]
           },
           {
             "key": "input_code_output[].n_tuple[].output_data.output_url",
@@ -135,6 +166,7 @@
         "key": "main_measurements[].detailed_measurement_description",
         "title": "Description Details",
         "type": "textarea",
+        "fieldHtmlClass": "custom-textarea",
         "placeholder": "If applicable, please provide a more detailed description for this measurement"
       },
       {
@@ -166,6 +198,25 @@
             "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
           },
           {
+            "key": "main_measurements[].n_tuple[].run_instructions",
+            "title": "Run Instructions",
+            "type": "select",
+            "titleMap": [
+              {
+                "value": "readme",
+                "name": "readme"
+              },
+              {
+                "value": "makefile",
+                "name": "makefile"
+              },
+              {
+                "value": "upload",
+                "name": "upload"
+              }
+            ]
+          },
+          {
             "key": "main_measurements[].n_tuple[].output_data.output_url",
             "title": "Output",
             "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
@@ -187,6 +238,7 @@
         "key": "auxiliary_measurements[].detailed_measurement_description",
         "title": "Description Details",
         "type": "textarea",
+        "fieldHtmlClass": "custom-textarea",
         "placeholder": "If applicable, please provide a more detailed description for this measurement"
       },
       {
@@ -218,6 +270,25 @@
             "key": "auxiliary_measurements[].n_tuple[].user_code.config_files",
             "title": "Configuration File",
             "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+          },
+          {
+            "key": "auxiliary_measurements[].n_tuple[].run_instructions",
+            "type": "select",
+            "title": "Run Instructions",
+            "titleMap": [
+              {
+                "value": "readme",
+                "name": "readme"
+              },
+              {
+                "value": "makefile",
+                "name": "makefile"
+              },
+              {
+                "value": "upload",
+                "name": "upload"
+              }
+            ]
           },
           {
             "key": "auxiliary_measurements[].n_tuple[].output_data.output_url",
@@ -255,14 +326,33 @@
             "key": "post_n_tuple.n_tuple",
             "items": [
               {
-                "key": "post_n_tuple.n_tuple[].user_code"
-              },
-              
-              {
-                "key": "post_n_tuple.n_tuple[].output_data"
+                "key": "post_n_tuple.n_tuple[].user_code.config_files",
+                "title": "Configuration File",
+                "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
               },
               {
-                "key": "post_n_tuple.n_tuple[].datacard"
+                "key": "post_n_tuple.n_tuple[].run_instructions",
+                "type": "select",
+                "title": "Run Instructions",
+                "titleMap": [
+                  {
+                    "value": "readme",
+                    "name": "readme"
+                  },
+                  {
+                    "value": "makefile",
+                    "name": "makefile"
+                  },
+                  {
+                    "value": "upload",
+                    "name": "upload"
+                  }
+                ]
+              },
+              {
+                "key": "post_n_tuple[].n_tuple[].output_data.output_url",
+                "title": "Output",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
               }
             ]
           }
@@ -271,98 +361,99 @@
     ]
   },
   {
-    "key": "documentations",
-    "htmlClass": "custom-panel",
+    "key": "additional_resources",
+    "type": "fieldset",
     "items": [
       {
-        "key": "documentations[].CADI_ID",
-        "placeholder": "E.g. CMS-ANA-2012-049"
-      },
-      {
-        "key": "documentations[].url",
-        "placeholder": "E.g. https://twiki.cern.ch/twiki/.."
-      },
-      {
-        "key": "documentations[].keyword",
-        "placeholder": "E.g. keyword1"
-      },
-      {
-        "key": "documentations[].comment",
-        "placeholder": "E.g. Shows more detail concerning this analysis"
-      }
-    ]
-  },
-  {
-    "key": "internal_discussions",
-    "htmlClass": "custom-panel",
-    "items": [
-      {
-        "key": "internal_discussions[].url",
-        "placeholder": "E.g. https://indico.cern.ch/event/../discussion-slides.pdf"
-      }
-    ]
-  },
-  {
-    "key": "presentations",
-    "htmlClass": "custom-panel",
-    "items": [
-      {
-        "key": "presentations[].url",
-        "placeholder": "E.g. https://indico.cern.ch/event/524974/"
-      }
-    ]
-  },
-  {
-    "key": "publications",
-    "htmlClass": "custom-panel",
-    "items": [
-      {
-        "key": "publications[].journal_title",
-        "title": "Journal Title",
-        "placeholder": "Please enter the journal title"
-      },
-      {
-        "key": "publications[].journal_year",
-        "title": "Journal Year",
-        "placeholder": "Please enter the journal year"
-      },
-      {
-        "key": "publications[].journal_volume",
-        "title": "Journal Volume",
-        "placeholder": "Please enter the journal volume"
-      },
-      {
-        "key": "publications[].journal_issue",
-        "title": "Journal Issue",
-        "placeholder": "Please enter the journal issue"
-      },
-      {
-        "key": "publications[].journal_page",
-        "title": "Journal Page",
-        "placeholder": "Please enter the journal page number"
-      },
-      {
-        "key": "publications[].persistent_identifiers",
-        "title": "Identifiers",
-        "startEmpty": true,
+        "key": "additional_resources.documentations",
         "items": [
           {
-            "key": "publications[].persistent_identifiers[].identifier",
-            "title": "Identifier",
-            "placeholder": "E.g. DUNS number"
+            "key": "additional_resources.documentations[].CADI_ID",
+            "placeholder": "E.g. CMS-ANA-2012-049"
           },
           {
-            "key": "publications[].persistent_identifiers[].scheme",
-            "title": "Scheme",
-            "placeholder": "E.g. DUNS"
+            "key": "additional_resources.documentations[].url",
+            "placeholder": "E.g. https://twiki.cern.ch/twiki/.."
+          },
+          {
+            "key": "additional_resources.documentations[].keyword",
+            "placeholder": "E.g. keyword1"
+          },
+          {
+            "key": "additional_resources.documentations[].comment",
+            "placeholder": "E.g. Shows more detail concerning this analysis"
           }
         ]
+      },
+      {
+        "key": "additional_resources.internal_discussions",
+        "items": [
+          {
+            "key": "additional_resources.internal_discussions[].url",
+            "placeholder": "E.g. https://indico.cern.ch/event/../discussion-slides.pdf"
+          }
+        ]
+      },
+      {
+        "key": "additional_resources.presentations",
+        "items": [
+          {
+            "key": "additional_resources.presentations[].url",
+            "placeholder": "E.g. https://indico.cern.ch/event/524974/"
+          }
+        ]
+      },
+      {
+        "key": "additional_resources.publications",
+        "items": [
+          {
+            "key": "additional_resources.publications[].journal_title",
+            "title": "Journal Title",
+            "placeholder": "Please enter the journal title"
+          },
+          {
+            "key": "additional_resources.publications[].journal_year",
+            "title": "Journal Year",
+            "placeholder": "Please enter the journal year"
+          },
+          {
+            "key": "additional_resources.publications[].journal_volume",
+            "title": "Journal Volume",
+            "placeholder": "Please enter the journal volume"
+          },
+          {
+            "key": "additional_resources.publications[].journal_issue",
+            "title": "Journal Issue",
+            "placeholder": "Please enter the journal issue"
+          },
+          {
+            "key": "additional_resources.publications[].journal_page",
+            "title": "Journal Page",
+            "placeholder": "Please enter the journal page number"
+          },
+          {
+            "key": "additional_resources.publications[].persistent_identifiers",
+            "title": "Identifiers",
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "additional_resources.publications[].persistent_identifiers[].identifier",
+                "title": "Identifier",
+                "placeholder": "E.g. DUNS number"
+              },
+              {
+                "key": "additional_resources.publications[].persistent_identifiers[].scheme",
+                "title": "Scheme",
+                "placeholder": "E.g. DUNS"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "key": "additional_resources.keywords",
+        "placeholder": "E.g. keyword1, keyword2"
       }
     ]
-  },
-  {
-    "key": "keywords",
-    "htmlClass": "custom-panel",
-    "placeholder": "E.g. keyword1, keyword2"
   }
 ]

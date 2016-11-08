@@ -1,565 +1,576 @@
-{
-  "$schema": "http://json-schema.org/draft-04/schema#", 
-  "description": "Describe information needed for deposit module.", 
-  "properties": {
-    "_buckets": {
-      "properties": {
-        "deposit": {
-          "description": "Deposit bucket ID.", 
-          "type": "string"
-        }, 
-        "record": {
-          "description": "Record bucket ID.", 
-          "type": "string"
-        }
-      }, 
-      "type": "object"
-    }, 
-    "_deposit": {
-      "name": "_deposit", 
-      "properties": {
-        "created_by": {
-          "name": "created_by", 
-          "type": "integer"
-        }, 
-        "id": {
-          "name": "id", 
-          "type": "integer"
-        }, 
-        "owners": {
-          "items": [
-            {
-              "type": "integer"
+{  
+   "$schema":"http://json-schema.org/draft-04/schema#",
+   "description":"Describe information needed for deposit module.",
+   "properties":{  
+      "_buckets":{  
+         "properties":{  
+            "deposit":{  
+               "description":"Deposit bucket ID.",
+               "type":"string"
+            },
+            "record":{  
+               "description":"Record bucket ID.",
+               "type":"string"
             }
-          ], 
-          "name": "owners", 
-          "type": "array"
-        }, 
-        "pid": {
-          "name": "pid", 
-          "properties": {
-            "revision_id": {
-              "type": "integer"
-            }, 
-            "type": {
-              "type": "string"
-            }, 
-            "value": {
-              "type": "string"
-            }
-          }, 
-          "type": "object"
-        }, 
-        "status": {
-          "enum": [
-            "draft", 
-            "published"
-          ], 
-          "name": "status", 
-          "type": "string"
-        }
-      }, 
-      "required": [
-        "id"
-      ], 
-      "type": "object"
-    }, 
-    "_files": {
-      "items": {
-        "description": "Describe information needed for files in records.", 
-        "properties": {
-          "bucket": {
-            "type": "string"
-          }, 
-          "checksum": {
-            "type": "string"
-          }, 
-          "key": {
-            "type": "string"
-          }, 
-          "size": {
-            "type": "integer"
-          }, 
-          "type": {
-            "description": "File type extension.", 
-            "type": "string"
-          }, 
-          "version_id": {
-            "type": "string"
-          }
-        }, 
-        "type": "object"
-      }, 
-      "type": "array"
-    }, 
-    "analysis_steps": {
-      "default": [
-        {}
-      ], 
-      "items": {
-        "properties": {
-          "code": {
-            "default": [
-              {}
-            ], 
-            "items": {
-              "properties": {
-                "lhcb_code": {
-                  "title": "Application", 
-                  "type": "string"
-                }, 
-                "platform": {
-                  "title": "Platform", 
-                  "type": "string"
-                }, 
-                "user_code": {
-                  "properties": {
-                    "description": {
-                      "title": "Description", 
-                      "type": "string"
-                    }, 
-                    "instructions": {
-                      "title": "Instructions", 
-                      "type": "string"
-                    }, 
-                    "link": {
-                      "title": "URL", 
-                      "type": "string"
-                    }
-                  }, 
-                  "title": "User code", 
-                  "type": "object"
-                }
-              }, 
-              "type": "object"
-            }, 
-            "title": "Code", 
-            "type": "array"
-          }, 
-          "input_data": {
-            "properties": {
-              "data": {
-                "items": {
-                  "type": "string"
-                }, 
-                "title": "Collision Data", 
-                "type": "array"
-              }, 
-              "mc_data": {
-                "items": {
-                  "type": "string"
-                }, 
-                "title": "MC Data", 
-                "type": "array"
-              }
-            }, 
-            "title": "Input Data", 
-            "type": "object"
-          }, 
-          "output_data": {
-            "properties": {
-              "data": {
-                "items": {
-                  "type": "string"
-                }, 
-                "title": "Collision Data", 
-                "type": "array"
-              }, 
-              "mc_data": {
-                "items": {
-                  "type": "string"
-                }, 
-                "title": "MC Data", 
-                "type": "array"
-              }
-            }, 
-            "title": "Output Data", 
-            "type": "object"
-          }
-        }, 
-        "title": "Analysis Step", 
-        "type": "object"
-      }, 
-      "title": "Analysis Steps", 
-      "type": "array"
-    }, 
-    "basic_info": {
-      "id": "basic_info", 
-      "properties": {
-        "analysis_name": {
-          "required": true, 
-          "title": "Analysis Name", 
-          "type": "string"
-        }, 
-        "egroup": {
-          "title": "Review eGroup", 
-          "type": "string"
-        }, 
-        "institutes": {
-          "title": "Institutes Involved", 
-          "type": "string"
-        }, 
-        "keywords": {
-          "description": "Add keywords here", 
-          "id": "keywords", 
-          "title": "Keywords", 
-          "type": "string"
-        }, 
-        "proponents": {
-          "required": true, 
-          "title": "Proponents", 
-          "type": "string"
-        }, 
-        "reviewers": {
-          "title": "Reviewers", 
-          "type": "string"
-        }, 
-        "status": {
-          "type": {
-            "enum": [
-              "0 - planned / open topic", 
-              "1 - in preparation", 
-              "2 - ANA note released", 
-              "3 - review committee", 
-              "4 - collaboration review", 
-              "5 -", 
-              "6 - CONF note published", 
-              "7 -", 
-              "8 - journal review", 
-              "9 - PAPER published", 
-              "x - other"
-            ], 
-            "required": true, 
-            "type": "string"  
-          },
-          "title": "Status"
-        }, 
-        "status_notes": {
-          "dependencies": [
-            "status"
-          ], 
-          "title": "Notes on Status", 
-          "type": "string"
-        }
-      }, 
-      "title": "Basic Information", 
-      "type": "object"
-    }, 
-    "documentations": {
-      "id": "documentations", 
-      "items": {
-        "$schema": "http://json-schema.org/draft-04/schema#", 
-        "description": "Add documentation", 
-        "properties": {
-          "comment": {
-            "title": "Comment", 
-            "type": "string"
-          }, 
-          "keyword": {
-            "title": "Keyword", 
-            "type": "string"
-          }, 
-          "url": {
-            "title": "URL", 
-            "type": "string"
-          }
-        }, 
-        "title": "Documentation", 
-        "type": "object"
-      }, 
-      "title": "Documentations", 
-      "type": "array"
-    }, 
-    "dst_selection": {
-      "properties": {
-        "code": {
-          "properties": {
-            "lhcb_code": {
-              "title": "Application", 
-              "type": "string"
-            }, 
-            "platform": {
-              "title": "Platform", 
-              "type": "string"
-            }, 
-            "user_code": {
-              "items": {
-                "properties": {
-                  "description": {
-                    "title": "Description", 
-                    "type": "string"
-                  }, 
-                  "instructions": {
-                    "title": "Instructions", 
-                    "type": "string"
-                  }, 
-                  "link": {
-                    "title": "URL", 
-                    "type": "string"
+         },
+         "type":"object"
+      },
+      "_deposit":{  
+         "name":"_deposit",
+         "properties":{  
+            "created_by":{  
+               "name":"created_by",
+               "type":"integer"
+            },
+            "id":{  
+               "name":"id",
+               "type":"integer"
+            },
+            "owners":{  
+               "items":[  
+                  {  
+                     "type":"integer"
                   }
-                }, 
-                "type": "object"
-              }, 
-              "title": "User code", 
-              "type": "array"
-            }
-          }, 
-          "title": "Code", 
-          "type": "object"
-        }, 
-        "input_data": {
-          "properties": {
-            "data": {
-              "items": {
-                "properties": {
-                  "location": {
-                    "title": "Sample", 
-                    "type": "string"
-                  }, 
-                  "processing_pass": {
-                    "title": "Processing Pass", 
-                    "type": "string"
-                  }, 
-                  "reconstruction_software": {
-                    "properties": {
-                      "reconstruction_software_name": {
-                        "title": "Name", 
-                        "type": "string"
-                      }, 
-                      "reconstruction_software_version": {
-                        "title": "Version", 
-                        "type": "string"
-                      }
-                    }, 
-                    "title": "Reconstruction software", 
-                    "type": "object"
-                  }, 
-                  "stripping_software": {
-                    "properties": {
-                      "stripping_software_name": {
-                        "title": "Name", 
-                        "type": "string"
-                      }, 
-                      "stripping_software_version": {
-                        "title": "Version", 
-                        "type": "string"
-                      }
-                    }, 
-                    "title": "Stripping software", 
-                    "type": "object"
-                  }, 
-                  "year": {
-                    "title": "Year", 
-                    "type": "string"
+               ],
+               "name":"owners",
+               "type":"array"
+            },
+            "pid":{  
+               "name":"pid",
+               "properties":{  
+                  "revision_id":{  
+                     "type":"integer"
+                  },
+                  "type":{  
+                     "type":"string"
+                  },
+                  "value":{  
+                     "type":"string"
                   }
-                }, 
-                "type": "object"
-              }, 
-              "title": "Collision Data", 
-              "type": "array"
-            }, 
-            "mc_data": {
-              "items": {
-                "properties": {
-                  "db_tags": {
-                    "type": {
-                      "enum": [
-                        "DDDB", 
-                        "SIMCOND"
-                    ], 
-                    "title": "Database Tags", 
-                    "type": "string"  
-                    }
-                  }, 
-                  "generator": {
-                    "title": "Generator", 
-                    "type": "string"
-                  }, 
-                  "location": {
-                    "title": "Sample", 
-                    "type": "string"
-                  }, 
-                  "mc_production": {
-                    "title": "Production", 
-                    "type": "number"
-                  }, 
-                  "reconstruction_software": {
-                    "properties": {
-                      "reconstruction_software_name": {
-                        "title": "Name", 
-                        "type": "string"
-                      }, 
-                      "reconstruction_software_version": {
-                        "title": "Version", 
-                        "type": "string"
-                      }
-                    }, 
-                    "title": "Reconstruction software", 
-                    "type": "object"
-                  }, 
-                  "stripping_software": {
-                    "properties": {
-                      "stripping_software_name": {
-                        "title": "Name", 
-                        "type": "string"
-                      }, 
-                      "stripping_software_version": {
-                        "title": "Version", 
-                        "type": "string"
-                      }
-                    }, 
-                    "title": "Stripping software", 
-                    "type": "object"
-                  }, 
-                  "used_tools": {
-                    "title": "Used Tools", 
-                    "type": "string"
+               },
+               "type":"object"
+            },
+            "status":{  
+               "enum":[  
+                  "draft",
+                  "published"
+               ],
+               "name":"status",
+               "type":"string"
+            }
+         },
+         "required":[  
+            "id"
+         ],
+         "type":"object"
+      },
+      "_files":{  
+         "items":{  
+            "description":"Describe information needed for files in records.",
+            "properties":{  
+               "bucket":{  
+                  "type":"string"
+               },
+               "checksum":{  
+                  "type":"string"
+               },
+               "key":{  
+                  "type":"string"
+               },
+               "size":{  
+                  "type":"integer"
+               },
+               "type":{  
+                  "description":"File type extension.",
+                  "type":"string"
+               },
+               "version_id":{  
+                  "type":"string"
+               }
+            },
+            "type":"object"
+         },
+         "type":"array"
+      },
+      "analysis_steps":{  
+        "description": "Please provide information about the steps of the analysis",
+         "default":[  
+            {  
+
+            }
+         ],
+         "items":{  
+            "properties":{  
+               "code":{  
+                  "default":[  
+                     {  
+
+                     }
+                  ],
+                  "items":{  
+                     "properties":{  
+                        "lhcb_code":{  
+                           "title":"Application",
+                           "type":"string"
+                        },
+                        "platform":{  
+                           "title":"Platform",
+                           "type":"string"
+                        },
+                        "user_code":{  
+                           "properties":{  
+                              "description":{  
+                                 "title":"Description",
+                                 "type":"string"
+                              },
+                              "instructions":{  
+                                 "title":"Instructions",
+                                 "type":"string"
+                              },
+                              "link":{  
+                                 "title":"URL",
+                                 "type":"string"
+                              }
+                           },
+                           "title":"User code",
+                           "type":"object"
+                        }
+                     },
+                     "type":"object"
+                  },
+                  "title":"Code",
+                  "type":"array"
+               },
+               "input_data":{  
+                  "properties":{  
+                     "data":{  
+                        "items":{  
+                           "type":"string"
+                        },
+                        "title":"Collision Data",
+                        "type":"array"
+                     },
+                     "mc_data":{  
+                        "items":{  
+                           "type":"string"
+                        },
+                        "title":"MC Data",
+                        "type":"array"
+                     }
+                  },
+                  "title":"Input Data",
+                  "type":"object"
+               },
+               "output_data":{  
+                  "properties":{  
+                     "data":{  
+                        "items":{  
+                           "type":"string"
+                        },
+                        "title":"Collision Data",
+                        "type":"array"
+                     },
+                     "mc_data":{  
+                        "items":{  
+                           "type":"string"
+                        },
+                        "title":"MC Data",
+                        "type":"array"
+                     }
+                  },
+                  "title":"Output Data",
+                  "type":"object"
+               }
+            },
+            "title":"Analysis Step",
+            "type":"object"
+         },
+         "title":"Analysis Steps",
+         "type":"array"
+      },
+      "basic_info":{  
+         "id":"basic_info",
+         "description": "Please provide some information relevant for all parts of the Analysis here",
+         "properties":{  
+            "analysis_name":{  
+               "required":true,
+               "title":"Analysis Name",
+               "type":"string"
+            },
+            "egroup":{  
+               "title":"Review eGroup",
+               "type":"string"
+            },
+            "institutes":{  
+               "title":"Institutes Involved",
+               "type":"string"
+            },
+            "keywords":{  
+               "id":"keywords",
+               "title":"Keywords",
+               "type":"string"
+            },
+            "proponents":{  
+               "required":true,
+               "title":"Proponents",
+               "type":"string"
+            },
+            "reviewers":{  
+               "title":"Reviewers",
+               "type":"string"
+            },
+            "status":{  
+               "enum":[  
+                  "0 - planned / open topic",
+                  "1 - in preparation",
+                  "2 - ANA note released",
+                  "3 - review committee",
+                  "4 - collaboration review",
+                  "5 -",
+                  "6 - CONF note published",
+                  "7 -",
+                  "8 - journal review",
+                  "9 - PAPER published",
+                  "x - other"
+               ],
+               "required":true,
+               "type":"string",
+               "title":"Status"
+            },
+            "status_notes":{  
+               "dependencies":[  
+                  "status"
+               ],
+               "title":"Notes on Status",
+               "type":"string"
+            }
+         },
+         "title":"Basic Information",
+         "type":"object"
+      },
+      "dst_selection":{  
+         "properties":{  
+            "code":{  
+               "properties":{  
+                  "lhcb_code":{  
+                     "title":"Application",
+                     "type":"string"
+                  },
+                  "platform":{  
+                     "title":"Platform",
+                     "type":"string"
+                  },
+                  "user_code":{  
+                     "items":{  
+                        "properties":{  
+                           "description":{  
+                              "title":"Description",
+                              "type":"string"
+                           },
+                           "instructions":{  
+                              "title":"Instructions",
+                              "type":"string"
+                           },
+                           "link":{  
+                              "title":"URL",
+                              "type":"string"
+                           }
+                        },
+                        "type":"object"
+                     },
+                     "title":"User code",
+                     "type":"array"
                   }
-                }, 
-                "type": "object"
-              }, 
-              "title": "MC Data", 
-              "type": "array"
+               },
+               "title":"Code",
+               "type":"object"
+            },
+            "input_data":{  
+               "properties":{  
+                  "data":{  
+                     "items":{  
+                        "properties":{  
+                           "location":{  
+                              "title":"Sample",
+                              "type":"string"
+                           },
+                           "processing_pass":{  
+                              "title":"Processing Pass",
+                              "type":"string"
+                           },
+                           "reconstruction_software":{  
+                              "properties":{  
+                                 "reconstruction_software_name":{  
+                                    "title":"Name",
+                                    "type":"string"
+                                 },
+                                 "reconstruction_software_version":{  
+                                    "title":"Version",
+                                    "type":"string"
+                                 }
+                              },
+                              "title":"Reconstruction software",
+                              "type":"object"
+                           },
+                           "stripping_software":{  
+                              "properties":{  
+                                 "stripping_software_name":{  
+                                    "title":"Name",
+                                    "type":"string"
+                                 },
+                                 "stripping_software_version":{  
+                                    "title":"Version",
+                                    "type":"string"
+                                 }
+                              },
+                              "title":"Stripping software",
+                              "type":"object"
+                           },
+                           "year":{  
+                              "title":"Year",
+                              "type":"string"
+                           }
+                        },
+                        "type":"object"
+                     },
+                     "title":"Collision Data",
+                     "type":"array"
+                  },
+                  "mc_data":{  
+                     "items":{  
+                        "properties":{  
+                           "db_tags":{  
+                              "type":{  
+                                 "enum":[  
+                                    "DDDB",
+                                    "SIMCOND"
+                                 ],
+                                 "title":"Database Tags",
+                                 "type":"string"
+                              }
+                           },
+                           "generator":{  
+                              "title":"Generator",
+                              "type":"string"
+                           },
+                           "location":{  
+                              "title":"Sample",
+                              "type":"string"
+                           },
+                           "mc_production":{  
+                              "title":"Production",
+                              "type":"string"
+                           },
+                           "reconstruction_software":{  
+                              "properties":{  
+                                 "reconstruction_software_name":{  
+                                    "title":"Name",
+                                    "type":"string"
+                                 },
+                                 "reconstruction_software_version":{  
+                                    "title":"Version",
+                                    "type":"string"
+                                 }
+                              },
+                              "title":"Reconstruction software",
+                              "type":"object"
+                           },
+                           "stripping_software":{  
+                              "properties":{  
+                                 "stripping_software_name":{  
+                                    "title":"Name",
+                                    "type":"string"
+                                 },
+                                 "stripping_software_version":{  
+                                    "title":"Version",
+                                    "type":"string"
+                                 }
+                              },
+                              "title":"Stripping software",
+                              "type":"object"
+                           },
+                           "used_tools":{  
+                              "title":"Used Tools",
+                              "type":"string"
+                           }
+                        },
+                        "type":"object"
+                     },
+                     "title":"MC Data",
+                     "type":"array"
+                  }
+               },
+               "title":"Input Data",
+               "type":"object"
+            },
+            "output_data":{  
+               "properties":{  
+                  "data":{  
+                     "items":{  
+                        "type":"string"
+                     },
+                     "title":"Collision Data",
+                     "type":"array"
+                  },
+                  "mc_data":{  
+                     "items":{  
+                        "type":"string"
+                     },
+                     "title":"MC Data",
+                     "type":"array"
+                  }
+               },
+               "title":"Output Data",
+               "type":"object"
+            },
+            "stripping_line":{  
+               "items":{  
+                  "type":"string"
+               },
+               "title":"Stripping Line",
+               "type":"array"
+            },
+            "trigger":{  
+               "items":{  
+                  "type":"string"
+               },
+               "title":"Trigger",
+               "type":"array"
             }
-          }, 
-          "title": "Input Data", 
-          "type": "object"
-        }, 
-        "output_data": {
-          "properties": {
-            "data": {
-              "items": {
-                "type": "string"
-              }, 
-              "title": "Collision Data", 
-              "type": "array"
-            }, 
-            "mc_data": {
-              "items": {
-                "type": "string"
-              }, 
-              "title": "MC Data", 
-              "type": "array"
+         },
+         "title":"DST selection",
+         "type":"object"
+      },
+      "extra_info":{  
+         "id":"extra_info",
+         "description": "Please provide any extra information relevant to Analysis here",
+         "properties":{  
+            "analysis_number":{  
+               "title":"Analysis note (ANA) number",
+               "type":"string"
+            },
+            "arxiv":{  
+               "title":"arXiv ID",
+               "type":"string"
+            },
+            "conf_report":{  
+               "title":"Conference Report (CONF)",
+               "type":"string"
+            },
+            "public_paper":{  
+               "title":"Public Paper",
+               "type":"string"
+            },
+            "twiki":{  
+               "title":"tWiki page",
+               "type":"string"
             }
-          }, 
-          "title": "Output Data", 
-          "type": "object"
-        }, 
-        "stripping_line": {
-          "items": {
-            "type": "string"
-          }, 
-          "title": "Stripping Line", 
-          "type": "array"
-        }, 
-        "trigger": {
-          "items": {
-            "type": "string"
-          }, 
-          "title": "Trigger", 
-          "type": "array"
-        }
-      }, 
-      "title": "DST selection", 
-      "type": "object"
-    }, 
-    "extra_info": {
-      "id": "extra_info", 
-      "properties": {
-        "analysis_number": {
-          "title": "Analysis note (ANA) number", 
-          "type": "string"
-        }, 
-        "arxiv": {
-          "title": "arXiv ID", 
-          "type": "string"
-        }, 
-        "conf_report": {
-          "title": "Conference Report (CONF)", 
-          "type": "string"
-        }, 
-        "public_paper": {
-          "title": "Public Paper", 
-          "type": "string"
-        }, 
-        "twiki": {
-          "title": "tWiki page", 
-          "type": "string"
-        }
-      }, 
-      "title": "Extra Information", 
-      "type": "object"
-    }, 
-    "internal_discussions": {
-      "id": "internal-discussions", 
-      "items": {
-        "properties": {
-          "meeting": {
-            "title": "E-Group", 
-            "type": "string"
-          }, 
-          "title": {
-            "title": "Title", 
-            "type": "string"
-          }, 
-          "url": {
-            "title": "URL", 
-            "type": "string"
-          }
-        }, 
-        "title": "Reports", 
-        "type": "object"
-      }, 
-      "title": "Internal Discussions", 
-      "type": "array"
-    }, 
-    "presentations": {
-      "id": "presentations", 
-      "items": {
-        "properties": {
-          "meeting": {
-            "title": "Meeting (GROUP?)", 
-            "type": "string"
-          }, 
-          "title": {
-            "title": "Title", 
-            "type": "string"
-          }, 
-          "url": {
-            "title": "URL", 
-            "type": "string"
-          }
-        }, 
-        "title": "Presentation", 
-        "type": "object"
-      }, 
-      "title": "Presentations", 
-      "type": "array"
-    }, 
-    "publications": {
-      "id": "publications", 
-      "items": {
-        "properties": {
-          "reviewegroup": {
-            "title": "Review Group", 
-            "type": "string"
-          }, 
-          "roles": {
-            "title": "Roles", 
-            "type": "string"
-          }, 
-          "url": {
-            "title": "URL", 
-            "type": "string"
-          }
-        }, 
-        "title": "Publications", 
-        "type": "object"
-      }, 
-      "title": "Publications", 
-      "type": "array"
-    }
-  }, 
-  "title": "LHCb Deposit Schema.", 
-  "type": "object"
+         },
+         "title":"Extra Information",
+         "type":"object"
+      },
+      "additional_resources":{  
+         "title":"Additional Resources",
+         "description":"Please provide information about the additional resources of the analysis",
+         "type":"object",
+         "properties":{  
+            "internal_discussions":{  
+               "id":"internal-discussions",
+               "items":{  
+                  "properties":{  
+                     "meeting":{  
+                        "title":"E-Group",
+                        "type":"string"
+                     },
+                     "title":{  
+                        "title":"Title",
+                        "type":"string"
+                     },
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  },
+                  "title":"Reports",
+                  "type":"object"
+               },
+               "title":"Internal Discussions",
+               "type":"array"
+            },
+            "presentations":{  
+               "id":"presentations",
+               "items":{  
+                  "properties":{  
+                     "meeting":{  
+                        "title":"Meeting (GROUP?)",
+                        "type":"string"
+                     },
+                     "title":{  
+                        "title":"Title",
+                        "type":"string"
+                     },
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  },
+                  "title":"Presentation",
+                  "type":"object"
+               },
+               "title":"Presentations",
+               "type":"array"
+            },
+            "publications":{  
+               "id":"publications",
+               "items":{  
+                  "properties":{  
+                     "reviewegroup":{  
+                        "title":"Review Group",
+                        "type":"string"
+                     },
+                     "roles":{  
+                        "title":"Roles",
+                        "type":"string"
+                     },
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  },
+                  "title":"Publications",
+                  "type":"object"
+               },
+               "title":"Publications",
+               "type":"array"
+            },
+            "documentations":{  
+               "id":"documentations",
+               "items":{  
+                  "$schema":"http://json-schema.org/draft-04/schema#",
+                  "description":"Add documentation",
+                  "properties":{  
+                     "comment":{  
+                        "title":"Comment",
+                        "type":"string"
+                     },
+                     "keyword":{  
+                        "title":"Keyword",
+                        "type":"string"
+                     },
+                     "url":{  
+                        "title":"URL",
+                        "type":"string"
+                     }
+                  },
+                  "title":"Documentation",
+                  "type":"object"
+               },
+               "title":"Documentations",
+               "type":"array"
+            }
+         }
+      }
+   },
+   "title":"LHCb Deposit Schema.",
+   "type":"object"
 }
