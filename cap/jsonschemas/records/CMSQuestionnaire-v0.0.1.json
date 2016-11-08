@@ -246,11 +246,11 @@
                         "comments": "name"
                     }
                 },
-                "null_pdf": {
+                "mva_techniques": {
                     "title": "Null PDF",
                     "type": "object",
                     "properties": {
-                        "name": {
+                        "mva_techniques_action": {
                             "description": "Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?",
                             "type": "string",
                             "enum": [
