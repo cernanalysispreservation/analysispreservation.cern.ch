@@ -7,30 +7,25 @@
     "dataset_metadata": {
       "type": "object",
       "properties": {
-        "@type": {
-          "type": "string",
-          "title": "@type",
-          "description": "e.g. dcat:Dataset"
-        },
-        "title": {
+        "dataset_title": {
           "type": "string",
           "title": "Title",
           "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
           "autocomplete": true,
           "propertyOrder": 201
         },
-        "description": {
+        "dataset_description": {
           "type": "string",
           "title": "Description",
           "format": "textarea",
           "description": "Provide a description for the primary dataset"
         },
-        "licence": {
+        "dataset_licence": {
           "type": "string",
           "title": "Licence",
           "description": "e.g. CC0 waiver"
         },
-        "persistent_identifiers": {
+        "data_identifier": {
           "title": "Persistent Identifiers",
           "description": "",
           "type": "array",
@@ -38,19 +33,19 @@
             "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
           }
         },
-        "issued": {
+        "date_issued": {
           "title": "Issued",
           "type": "string",
           "format": "datetime",
           "description": "Provide date/time the primary dataset was issued"
         },
-        "modified": {
+        "date_modified": {
           "title": "Modified",
           "type": "string",
           "format": "datetime",
           "hidden": "true"
         },
-        "available": {
+        "date_available": {
           "title": "Year Availble",
           "type": "number",
           "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
@@ -65,29 +60,29 @@
           "type": "number",
           "description": "Provide dataset ID e.g. 1853590"
         },
-        "type": {
+        "data_type": {
           "title": "Type",
           "type": "string",
           "description": "Provide type of item e.g. 'data'"
         },
-        "numbers": {
+        "dataset_numbers": {
           "title": "Numbers",
           "description": "Numbers concerning various stuff",
           "type": "object",
           "properties": {
-            "nevents": {
+            "number_events": {
               "title": "Numbers of events",
               "type": "number"
             },
-            "nlumis": {
+            "number_lumis": {
               "title": "Number of lumis",
               "type": "number"
             },
-            "nfiles": {
+            "number_files": {
               "title": "Number of files",
               "type": "number"
             },
-            "nblocks": {
+            "number_blocks": {
               "title": "Number of blocks",
               "type": "number"
             },
@@ -99,7 +94,7 @@
         }
       }
     },
-    "triggers": {
+    "selection_triggers": {
       "title": "Selection Triggers",
       "description": "Add triggers here",
       "type": "array",
