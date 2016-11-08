@@ -4,7 +4,7 @@
   "description": "Add publications",
   "type": "object",
   "properties": {
-    "persistent_identifiers": {
+    "publication_identifier": {
       "title": "Identifiers",
       "type": "array",
       "items": {
