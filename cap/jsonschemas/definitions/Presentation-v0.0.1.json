@@ -3,7 +3,7 @@
   "type": "object",
   "title": "Presentation",
   "properties": {
-    "url": {
+    "presentation_url": {
       "title": "URL",
       "type": "string"
     }
