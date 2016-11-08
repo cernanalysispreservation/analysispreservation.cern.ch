@@ -62,6 +62,9 @@ setup_requires = [
 ]
 
 install_requires = [
+    'elasticsearch<3.0.0,>=2.0.0', # temporary fix
+    'elasticsearch-dsl<3.0.0,>=2.0.0', # temporary fix
+    'celery<4.0,>=3.1.19', # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask>=0.11.1',
