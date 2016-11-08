@@ -22,7 +22,7 @@
         "title": "Produced With",
         "type": "object",
         "properties": {
-          "config_files": {
+          "configuration_files_url": {
             "title": "URL",
             "type": "string"
           }
@@ -33,7 +33,7 @@
         "description": "Provide run instructions",
         "type": "object",
         "properties": {
-          "type": {
+          "run_instructions_type": {
             "title": "Type",
             "type": "string",
             "enum": ["readme", "makefile", "upload"]
@@ -44,7 +44,7 @@
         "title": "Output",        
         "type": "object",
         "properties": {
-          "output_url": {
+          "output_data_url": {
             "title": "URL",
             "type": "string"
           }
