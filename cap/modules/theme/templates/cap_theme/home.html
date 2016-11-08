@@ -37,7 +37,6 @@
 
 {% block page_body %}
 <div class="container-fluid custom-container">
-  <div class="cap-main">
   {% if current_user.is_authenticated %}
     <div class="row">
       <div id="cap-experiments">
@@ -90,7 +89,7 @@
       </div>
     </div>
   {% else %}
-    <div class="row">
+    <div class="row push-footer">
       <div class="col-md-5 custom-col">
         <div class="row">
           <div class="col-md-12">
@@ -117,7 +116,6 @@
       </div>
     </div>
   {% endif %}
-  </div>
 </div>
 {% endblock %}
 
