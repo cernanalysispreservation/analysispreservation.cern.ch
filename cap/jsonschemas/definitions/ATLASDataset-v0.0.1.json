@@ -4,17 +4,17 @@
   "description": "Information concerning the ATLAS datasets used",
   "type": "object",
   "properties": {
-    "title": {
+    "dataset_title": {
       "type": "string",
       "title": "Title",
       "description": "Filename of dataset, e.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542",
     },
-    "type": {
+    "data_type": {
       "title": "Data Type",
       "type": "string",
       "description": "Type of data, e.g. 'simulation'"
     },
-    "format": {
+    "data_format": {
       "title": "Data Format",
       "type": "string",
       "description": "Format of data, e.g. 'AOD'"
