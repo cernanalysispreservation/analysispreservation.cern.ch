@@ -5,7 +5,7 @@
 	"items": {
 		"type": "object",
 		"properties": {
-			"name": {
+			"workflow name": {
 				"title": "Name",
 				"type": "string"
 			},
