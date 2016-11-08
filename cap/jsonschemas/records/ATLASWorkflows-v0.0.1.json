@@ -8,17 +8,17 @@
 			"type": "object",
 			"title": "Basic Info",
 			"properties": {
-				"title": {
+				"analysis_title": {
 					"title": "Analysis Title",
 					"type": "string"
 				}
 			}
 		},
-		"workflows": {
+		"workflow": {
 			"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/ATLASWorkflows-v0.0.1.json"
 		}
 	},
 	"required": [
-		"workflows"
+		"workflow"
 	]
 }
