@@ -24,24 +24,25 @@
 
 import json
 import os
+
 from functools import partial
 from pprint import pprint
 
 import click
 import pkg_resources
+
 from flask import current_app
 from flask_cli import with_appcontext
-from invenio_access.models import  ActionUsers
+from invenio_access.models import ActionUsers
 from invenio_access.permissions import ParameterizedActionNeed
 from invenio_collections.models import Collection
 from invenio_db import db
 from invenio_files_rest.models import Bucket, Location, ObjectVersion
 from invenio_indexer.utils import RecordIndexer
-from invenio_records.permissions import (RecordReadActionNeed,
-                                         RecordUpdateActionNeed,)
-from jsonschema.exceptions import ValidationError
-from invenio_records_files.api import Record, RecordsBuckets
+
 from cap.modules.records.views import construct_record
+from invenio_records_files.api import Record, RecordsBuckets
+from jsonschema.exceptions import ValidationError
 
 from .pages import loadpages
 
@@ -142,15 +143,15 @@ def add_record(metadata, collection, schema, force, files=[]):
 
         with open(pkg_resources.resource_filename(
                 'cap.modules.fixtures', os.path.join('data', 'files', file)
-                ), 'rb') as fp:
+        ), 'rb') as fp:
             obj = ObjectVersion.create(bucket, file, stream=fp)
 
             data['_files'].append({
-                    'bucket': str(obj.bucket_id),
-                    'key': obj.key,
-                    'size': obj.file.size,
-                    'checksum': str(obj.file.checksum),
-                    'version_id': str(obj.version_id),
+                'bucket': str(obj.bucket_id),
+                'key': obj.key,
+                'size': obj.file.size,
+                'checksum': str(obj.file.checksum),
+                'version_id': str(obj.version_id),
             })
     try:
         record = Record.create(data, id_=recid)

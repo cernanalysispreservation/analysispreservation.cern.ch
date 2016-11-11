@@ -8,6 +8,7 @@ include COPYING
 include Dockerfile
 include pytest.ini
 include docker/nginx/Dockerfile
+recursive-include cap *.db
 recursive-include cap *.gif
 recursive-include cap *.html
 recursive-include cap *.ico
