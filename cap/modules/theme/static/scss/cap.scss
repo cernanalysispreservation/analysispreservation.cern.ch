@@ -175,3 +175,11 @@ body::-webkit-scrollbar-thumb {
   border-radius: 2px;
   white-space: normal;
 }
+
+.login-button:hover {
+  background-color: $hover-theme-color;
+  border-color: $hover-theme-color;
+}
+
+
+
