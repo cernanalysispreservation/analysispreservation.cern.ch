@@ -25,12 +25,14 @@
 
 {%- extends 'invenio_accounts/login_user.html' %}
 
-{%- from "invenio_oauthclient/_macros.html" import oauth_button %}
-
 {%- block form_outer %}
   {% if config.OAUTHCLIENT_REMOTE_APPS %}
     {% for name in config.OAUTHCLIENT_REMOTE_APPS.keys() %}
-      {{ oauth_button(name) }}
+      <a class="btn btn-default btn-lg btn-block"
+     href="{{url_for('invenio_oauthclient.login', remote_app=name, next=url_for('cap_theme.index'))}}">
+      <i class="fa fa-{{ name|lower() }}"></i> {{
+      _('Sign in with %(title)s', title=config.OAUTHCLIENT_REMOTE_APPS[name]['title'])}}
+      </a>
     {% endfor %}
   {% endif %}
 {% endblock %}
