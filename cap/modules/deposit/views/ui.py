@@ -29,6 +29,7 @@ from cap.config import DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
 from flask import Blueprint, abort, current_app, render_template, url_for
 from flask.views import View
+from flask_security import login_required
 
 blueprint = Blueprint(
     'cap_deposit_ui',
@@ -152,6 +153,7 @@ class NewItemView(View):
     def render_template(self, context):
         return render_template(self.template_name, **context)
 
+    @login_required
     def dispatch_request(self):
         if self._create_deposit_permission.can():
             context = {
@@ -187,6 +189,7 @@ class ListView(View):
     def render_template(self, context):
         return render_template(self.template_name, **context)
 
+    @login_required
     def dispatch_request(self):
         context = {
             "schema": self.schema,
