@@ -44,7 +44,9 @@
 }
 
 #fixed-column-height{
-  height: 486px;
+  // TOFIX: calc() values and offset height should be calculated by components
+  // heigh (box-height, buttons-height, etc)
+  height: calc(100vh - 300px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
