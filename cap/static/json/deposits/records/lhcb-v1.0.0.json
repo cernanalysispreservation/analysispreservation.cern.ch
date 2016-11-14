@@ -125,7 +125,6 @@
           },
           {
             "key": "dst_selection.code.user_code",
-            "startEmpty": true,
             "items": [
               {
                 "key": "dst_selection.code.user_code[].link",
@@ -276,25 +275,53 @@
         "items": [
           {
             "key": "dst_selection.output_data.data",
-            "title": "Collision Data", 
-            "startEmpty": true
+            "startEmpty": true,
+            "title": "Collision Data",
+            "items": [
+              {
+                "key": "dst_selection.output_data.data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/../my-file-data.root",
+                "notitle": true
+              }
+            ] 
           },
           {
             "key": "dst_selection.output_data.mc_data",
             "title": "MC Data",
-            "startEmpty": true
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "dst_selection.output_data.mc_data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/../my-file-data.root",
+                "notitle": true
+              }
+            ]
           }
         ]
       },
       {
         "key": "dst_selection.stripping_line",
         "title": "Stripping Line",
-        "startEmpty": true
+        "startEmpty": true,
+        "items": [
+          {
+           "key": "dst_selection.stripping_line[].name",
+            "placeholder": "E.g. Stripping Line",
+            "notitle": true 
+          }
+        ]
       },
       {
         "key": "dst_selection.trigger",
         "title": "Trigger",
-        "startEmpty": true
+        "startEmpty": true,
+        "items": [
+          {
+            "key": "dst_selection.trigger[].name",
+            "placeholder": "E.g. Trigger 1",
+            "notitle": true 
+          }
+        ]
       }
     ]
   },
@@ -335,27 +362,57 @@
       },
       {
         "key": "analysis_steps[].input_data",
+        "type": "fieldset",
         "items": [
           {
             "key": "analysis_steps[].input_data.data",
-            "startEmpty": true
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "analysis_steps[].input_data.data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
+                "notitle": true
+              }
+            ]
           },
           {
             "key": "analysis_steps[].input_data.mc_data",
-            "startEmpty": true
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "analysis_steps[].input_data.mc_data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
+                "notitle": true
+              }
+            ]
           }
         ]
       },
       {
         "key": "analysis_steps[].output_data",
+        "type": "fieldset",
         "items": [
           {
             "key": "analysis_steps[].output_data.data",
-            "startEmpty": true
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "analysis_steps[].output_data.data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
+                "notitle": true
+              }
+            ]
           },
           {
             "key": "analysis_steps[].output_data.mc_data",
-            "startEmpty": true
+            "startEmpty": true,
+            "items": [
+              {
+                "key": "analysis_steps[].output_data.mc_data[].name",
+                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
+                "notitle": true
+              }
+            ]
           }
         ]
       }
