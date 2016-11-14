@@ -31,7 +31,7 @@ require.config({
     bootstrap: "node_modules/bootstrap/dist/js/bootstrap",
     select2: "node_modules/select2/dist/js/select2.min",
     underscore: "node_modules/underscore/underscore-min",
-    bloodhound: "node_modules/typeahead.js/dist/bloodhound",
+    bloodhound: "node_modules/bloodhound-js/dist/bloodhound.min",
     'bootstrap3-typeahead': "node_modules/bootstrap-3-typeahead/bootstrap3-typeahead",
     handlebars: "node_modules/handlebars/dist/handlebars.amd.min",
     moment: "node_modules/moment/min/moment.min",
