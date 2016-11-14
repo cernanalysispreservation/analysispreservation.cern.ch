@@ -35,8 +35,8 @@ python:
 
 env:
   - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
-  - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
-  - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+  # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+  # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
 
 before_install:
   - mkdir /tmp/elasticsearch
@@ -59,8 +59,8 @@ before_install:
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
   - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
-  - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
-  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
+  # - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
+  # - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
