@@ -28,6 +28,8 @@ from __future__ import absolute_import, print_function
 
 import os
 
+import pkg_resources
+
 import jsonresolver
 import simplejson as json
 
@@ -42,3 +44,25 @@ def resolve_definitions(jsonschema):
     with open(jsonschema_definition_path) as file:
         jsonschema_definition = file.read()
     return json.loads(jsonschema_definition)
+
+
+@jsonresolver.route('/schemas/<path:path>',
+                    host='analysis-preservation.cern.ch')
+def resolve_schemas(path):
+    """Resolve CAP JSON schemas."""
+
+    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
+
+    with open(_schema_path, 'r') as f:
+        return json.load(f)
+
+
+@jsonresolver.route('/schemas/<path:path>',
+                    host='localhost:5000')
+def resolve_schemas_test(path):
+    """Resolve "test" CAP JSON schemas."""
+
+    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
+
+    with open(_schema_path, 'r') as f:
+        return json.load(f)

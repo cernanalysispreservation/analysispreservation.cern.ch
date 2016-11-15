@@ -199,7 +199,7 @@ setup(
             'records = cap.mappings',
         ],
         'invenio_jsonschemas.schemas': [
-            'cap = cap.jsonschemas',
+            'cap_schemas = cap.jsonschemas',
         ],
     },
     extras_require=extras_require,
