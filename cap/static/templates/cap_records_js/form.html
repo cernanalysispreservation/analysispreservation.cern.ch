@@ -26,10 +26,10 @@
         <i class="fa fa-search fa-2x forms-font-color" aria-hidden="true"></i>
         <span class="forms-font-color filter-fields"> Filter Fields</span>
       </div>
-      <div ng-repeat="formElement in recordsVM.invenioRecordsForm" class="panel-body">
+      <div ng-repeat="formElement in recordsVM.invenioRecordsForm" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body">
         <span class="forms-filter-fields-font-size"><strong>{{formElement.title | uppercase}}</strong>
           <ul >
-            <li ng-repeat="(key, value) in formElement.schema.properties">{{value.title}}</li>
+            <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties">{{value.title}}</li>
           </ul>
       </div>
     </div>
@@ -42,7 +42,7 @@
     sf-schema="recordsVM.invenioRecordsSchema"
     sf-form="recordsVM.invenioRecordsForm"
     sf-model="recordsVM.invenioRecordsModel"
-    sf-options="{ formDefaults: { disableSuccessState: true, feedback: false, onChange: 'recordsVM.removeValidationMessage(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true} } }"
+    sf-options="{ formDefaults: { disableSuccessState: true, feedback: false, onChange: 'recordsVM.removeValidationMessage(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true}, allowDisplay: true } }"
     ></form>
   </div>
 </div>

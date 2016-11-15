@@ -82,6 +82,7 @@
   {
     "key": "n-tuple_production_check.confirm",
     "title":"Did you produce n-tuples as an initial step to any measurement?",
+    "allowDisplay": false,
     "type": "radios",
     "titleMap": [
       {
