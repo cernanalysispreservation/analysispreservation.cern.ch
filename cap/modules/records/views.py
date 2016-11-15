@@ -49,7 +49,7 @@ from invenio_pidstore.providers.recordid import RecordIdProvider
 from invenio_pidstore.resolver import Resolver
 from invenio_records import Record
 from invenio_records.models import RecordMetadata
-from invenio_records.permissions import (RecordReadActionNeed,
+from .permissions import (RecordReadActionNeed,
                                          RecordUpdateActionNeed,
                                          read_permission_factory,
                                          update_permission_factory)

@@ -24,7 +24,7 @@
 
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_access.permissions import DynamicPermission
-from invenio_records.permissions import RecordReadActionNeed
+from cap.modules.records.permissions import RecordReadActionNeed
 
 
 def read_permission_factory(record):
