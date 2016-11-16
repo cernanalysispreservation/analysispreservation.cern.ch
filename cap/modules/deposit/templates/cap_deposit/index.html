@@ -15,3 +15,20 @@
 
 {%- block javascript %}
 {%- endblock javascript %}
+
+{%- block body_inner %}
+<div id="invenio-search">
+  <invenio-search
+   search-endpoint="{{ config.DEPOSIT_SEARCH_API }}"
+   search-headers='{"Accept": "{{ config.DEPOSIT_SEARCH_MIMETYPE|default('application/json')}}"}'
+   search-url-replace="false"
+   search-url-listen="false"
+  >
+  {{super()}}
+  </invenio-search>
+</div>
+{%- endblock body_inner %}
+
+{%- block page_body %}
+  {{super()}}
+{%- endblock page_body %}
