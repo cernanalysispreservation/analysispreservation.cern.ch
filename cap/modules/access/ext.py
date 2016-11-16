@@ -55,13 +55,13 @@ def authenticated_query(query, **kwargs):
     """Enhance query with user authentication rules."""
 
     collaborations_dictionary = {
-        'collaboration_alice': [],
-        'collaboration_atlas': [
+        'ALICE': [],
+        'ATLAS': [
             KeywordOp(
                 Keyword('collections'),
                 DoubleQuotedValue('atlasworkflows'))
         ],
-        'collaboration_cms': [
+        'CMS': [
             KeywordOp(
                 Keyword('collections'),
                 DoubleQuotedValue('cmsanalysis')),
@@ -69,7 +69,7 @@ def authenticated_query(query, **kwargs):
                 Keyword('collections'),
                 DoubleQuotedValue('cmsquestionnaire'))
         ],
-        'collaboration_lhcb': [
+        'LHCb': [
             KeywordOp(
                 Keyword('collections'),
                 DoubleQuotedValue('lhcbanalysis'))

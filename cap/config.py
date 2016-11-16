@@ -219,16 +219,16 @@ RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 # ========================
 #: Configuration for collaborations
 CAP_COLLAB_EGROUPS = {
-    "collaboration_cms": [
+    "CMS": [
         RoleNeed("cms-members@cern.ch"),
     ],
-    "collaboration_alice": [
+    "ALICE": [
         RoleNeed("alice-member@cern.ch"),
     ],
-    "collaboration_atlas": [
+    "ATLAS": [
         RoleNeed("atlas-active-members-all@cern.ch"),
     ],
-    "collaboration_lhcb": [
+    "LHCb": [
         RoleNeed("lhcb-general@cern.ch"),
     ]
 }
@@ -243,10 +243,10 @@ SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
 # Start pages for experiments
 CAP_COLLAB_PAGES = {
-    'collaboration_lhcb': 'cap_lhcb.lhcb_landing',
-    'collaboration_atlas': 'cap_atlas.atlas_landing',
-    'collaboration_cms': 'cap_cms.cms_landing',
-    'collaboration_alice': 'cap_alice.alice_landing',
+    'LHCb': 'cap_lhcb.lhcb_landing',
+    'ATLAS': 'cap_atlas.atlas_landing',
+    'CMS': 'cap_cms.cms_landing',
+    'ALICE': 'cap_alice.alice_landing',
 }
 
 # Search
@@ -351,9 +351,6 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "schema_form": "json/deposits/records/lhcb-v1.0.0.json",
         "endpoint": "",
-        "create_permission_roles": [
-            'collaboration_lhcb',
-        ],
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
@@ -365,9 +362,6 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        "create_permission_roles": [
-            'collaboration_cms',
-        ],
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',

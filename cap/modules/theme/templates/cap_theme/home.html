@@ -41,7 +41,7 @@
     <div class="row">
       <div id="cap-experiments">
         {% if experiments %}
-          {% if 'collaboration_alice' in experiments %}
+          {% if 'ALICE' in experiments %}
           <div class="col-sm-6">
               <a href="{{url_for('cap_alice.alice_landing')}}" class="cap-box">
                 <div class="exp-img col-sm-5">
@@ -51,7 +51,7 @@
               </a>
           </div>
           {% endif %}
-          {% if 'collaboration_atlas' in experiments %}
+          {% if 'ATLAS' in experiments %}
           <div class="col-sm-6">
               <a href="{{url_for('cap_atlas.atlas_landing')}}" class="cap-box">
                 <div class="exp-img col-sm-5">
@@ -61,7 +61,7 @@
               </a>
           </div>
           {% endif %}
-          {% if 'collaboration_cms' in experiments %}
+          {% if 'CMS' in experiments %}
           <div class="col-sm-6">
               <a href="{{url_for('cap_cms.cms_landing')}}" class="cap-box">
                 <div class="exp-img col-sm-5">
@@ -71,7 +71,7 @@
               </a>
           </div>
           {% endif %}
-          {% if 'collaboration_lhcb' in experiments %}
+          {% if 'LHCb' in experiments %}
           <div class="col-sm-6">
               <a href="{{url_for('cap_lhcb.lhcb_landing')}}" class="cap-box">
                 <div class="exp-img col-sm-5">

@@ -31,7 +31,7 @@ from cap.modules.experiments.permissions.common import get_collaboration_group_n
 
 
 atlas_group_need = set(
-    [g for g in get_collaboration_group_needs('collaboration_atlas')])
+    [g for g in get_collaboration_group_needs('ATLAS')])
 atlas_group_need |= set([g for g in
                          get_superuser_needs()])
 

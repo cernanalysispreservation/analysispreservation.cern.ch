@@ -32,10 +32,10 @@ from lhcb import lhcb_permission
 
 
 collaboration_permissions = {
-    'collaboration_alice': alice_permission,
-    'collaboration_atlas': atlas_permission,
-    'collaboration_cms': cms_permission,
-    'collaboration_lhcb': lhcb_permission,
+    'ALICE': alice_permission,
+    'ATLAS': atlas_permission,
+    'CMS': cms_permission,
+    'LHCb': lhcb_permission,
 }
 
 __all__ = ['collaboration_permissions']
