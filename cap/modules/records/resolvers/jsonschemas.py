@@ -33,8 +33,9 @@ import pkg_resources
 import jsonresolver
 import simplejson as json
 
+from cap.config import JSONSCHEMAS_HOST
 
-@jsonresolver.route('/records/jsonschemas/definitions/<path:jsonschema>',
+@jsonresolver.route('/app/records/jsonschemas/definitions/<path:jsonschema>',
                     host='analysis-preservation.cern.ch')
 def resolve_definitions(jsonschema):
     """Resolve the JSON definition schema."""
@@ -46,21 +47,10 @@ def resolve_definitions(jsonschema):
     return json.loads(jsonschema_definition)
 
 
-@jsonresolver.route('/schemas/<path:path>',
-                    host='analysis-preservation.cern.ch')
+@jsonresolver.route('/app/schemas/<path:path>',
+                    host=JSONSCHEMAS_HOST)
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
-
-    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
-
-    with open(_schema_path, 'r') as f:
-        return json.load(f)
-
-
-@jsonresolver.route('/schemas/<path:path>',
-                    host='localhost:5000')
-def resolve_schemas_test(path):
-    """Resolve "test" CAP JSON schemas."""
 
     _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
 
