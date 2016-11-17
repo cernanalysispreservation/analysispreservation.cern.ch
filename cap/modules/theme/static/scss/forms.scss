@@ -36,11 +36,12 @@
 }
 
 .deposit-panel {
-  border: none;
+  border: 1px solid $light-blue-theme-color;
+  border-radius: 0;
 }
 
 .custom-panel .deposit-panel {
-  border:none;
+  // border:none;
 }
 
 #fixed-column-height{
@@ -53,9 +54,9 @@
 
 
 .panel-default>.panel-heading {
-  background-color: #ffffff;
-  border-bottom: 4px solid #eff6f9;
-  padding: 25px 15px;
+  background-color: #eff6f9;;
+  border-bottom: 1px solid $light-blue-theme-color;
+  padding: 20px 10px;
 }
 
 @media (min-width: 768px) {
@@ -103,6 +104,7 @@
 
 .action-btn {
   padding: 6px 25px;
+  border: 1px solid $light-blue-theme-color;
 }
 
 .add-btn {

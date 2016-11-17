@@ -26,15 +26,14 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, g, jsonify, render_template
+from flask import Blueprint, session, jsonify, redirect
 from flask_security import login_required
 from invenio_collections.models import Collection
 
 from cap.modules.records.views import collection_records, get_collections_tree
-from ..permissions.alice import alice_permission
-from ..permissions.atlas import atlas_permission
-from ..permissions.cms import cms_permission
-from ..permissions.lhcb import lhcb_permission
+from cap.modules.access.views import get_user_experiments
+
+from cap.modules.experiments.permissions import collaboration_permissions
 
 experiments_bp = Blueprint(
     'cap_experiments',
@@ -119,6 +118,7 @@ def CAP_EXPERIMENT_MENU(experiment):
 # def create_menu_rule(endpoint=None, experiment=None):
 
 
+@login_required
 @experiments_bp.route('/<experiment>/menu')
 def experiment_menu(experiment):
     """Experiment menu."""
@@ -131,8 +131,11 @@ def experiment_menu(experiment):
     return jsonify(CAP_EXPERIMENT_MENU(experiment))
 
 
-@experiments_bp.route('/records')
-@alice_permission.require(403)
-def alice_records():
-    """Basic ALICE records view."""
-    return collection_records(collection=g.experiment)
+# TOFIX: Add explicit experiments array
+@login_required
+@experiments_bp.route('/set/<experiment>')
+def set_global_experiment(experiment=None):
+    if experiment in collaboration_permissions:
+        if collaboration_permissions[experiment].can():
+            session['current_experiment'] = experiment
+            return redirect('/'+experiment)

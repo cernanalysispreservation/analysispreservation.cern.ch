@@ -2,6 +2,7 @@
 
 {% block css %}
     {{ super() }}
+    {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
     {% assets "cap_experiments_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
     {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
 {% endblock css %}
@@ -10,7 +11,7 @@
 {# <meta tags> #}
 
 {%- block page_body %}
-<div ng-controller="capCtrl" ng-init="init('{{g.experiment}}');get_experiment_records();">
+<div>
     <cap-push-menu menu="menu" options="options"></cap-push-menu>
     <div id="experiment-land" class="container cap-container" >
         <div ng-view></div>

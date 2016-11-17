@@ -10,15 +10,9 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
 
   $scope.hello = 'CERN Analysis Preservation experiments';
   $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
-  $scope.init = function(exp){
-    $scope.exp = exp;
-    $scope.menu = {
-      'title': $scope.exp,
-      'id': 'menuId',
-      'icon': 'fa fa-bars',
-      'items': []
-    };
-    get_experiment_menu();
+  $scope.init = function(){
+    get_user();
+
     $scope.events = [];
     $scope.options = {
       containersToPush: [$('#experiment-land')],
@@ -50,7 +44,31 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
     };
   };
 
-  var get_experiment_menu= function(){
+  var get_user = function(){
+    capLocalClient.get_user()
+      .then(function(response){
+
+        $scope.user = response.data || {};
+        $scope.exp = response.data["current_experiment"];
+
+        if($scope.exp !== ""){
+          $scope.menu = {
+            'title': $scope.exp,
+            'id': 'menuId',
+            'icon': 'fa fa-bars',
+            'items': []
+          };
+          get_experiment_menu();
+        }
+        else {
+
+        }
+      }, function(error) {
+        $scope.error = error;
+      });
+     };
+
+  var get_experiment_menu = function(){
       capLocalClient.get_experiment_menu()
       .then(function(response) {
         var _menu = [{
@@ -59,14 +77,11 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
           'icon': 'fa fa-home'
         }];
         $scope.menu.items = _menu.concat(response.data);
-        console.log(_menu);
-        console.log($scope.menu.items);
       }, function(error) {
-        $scope.hello = "ERROR";
-      }, function(update){
-        $scope.notification = $scope.notification + '<br />' + update;
+        $scope.error = "ERROR";
       });
   };
+
   $scope.get_experiment_records= function(){
       capLocalClient.get_experiment_records(exp = $scope.exp, limit=30)
       .then(function(response) {

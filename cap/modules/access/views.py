@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 from functools import wraps
 
-from flask import Blueprint, current_app, g, redirect, session, url_for, abort
+from flask import Blueprint, current_app, g, redirect, session, url_for, abort, jsonify
 from flask_login import current_user
 from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
 
@@ -41,6 +41,27 @@ access_blueprint = Blueprint('cap_access', __name__,
                              template_folder='templates')
 
 
+@access_blueprint.route('/user')
+def get_user():
+    if current_user.is_authenticated:
+        _user = {
+            "id": current_user.id,
+            "email": current_user.email,
+            "collaborations": get_user_experiments(),
+            "deposit_groups": get_user_deposit_groups(),
+            "current_experiment": session.get("current_experiment", ""),
+        }
+
+        response = jsonify(_user)
+        response.status_code = 200
+        return response
+    else:
+        response = jsonify()
+        response.status_code = 200
+        return response
+
+
+# TO_REMOVE after deletion of endpoints
 def redirect_user_to_experiment(f):
     """Decorator for redirecting users to their experiments."""
     @wraps(f)
@@ -62,3 +83,20 @@ def get_user_experiments():
     experiments = [collab for collab, needs in
                    collaboration_permissions.items() if needs.can()]
     return experiments
+
+
+def get_user_deposit_groups():
+    """Get Deposit Groups."""
+
+    # Set deposit groups for user
+    deposit_groups = current_app.config.get('DEPOSIT_GROUPS', {})
+    user_deposit_groups = []
+    for group, obj in deposit_groups.iteritems():
+        # Check if user has permission for this deposit group
+        if obj_or_import_string(
+                obj['create_permission_factory_imp']).can():
+            user_deposit_groups.append(group)
+
+    return user_deposit_groups
+
+

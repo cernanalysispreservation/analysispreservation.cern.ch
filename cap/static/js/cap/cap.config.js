@@ -42,6 +42,11 @@ function capExperimentsConfiguration($routeProvider, $locationProvider) {
       template: '<h1>records.index.html</h1>',
       // templateUrl: 'records.index.html',
       controller: 'RecordsController'
+    })
+    .when('/experiments', {
+      templateUrl: '/static/templates/cap/experiments.html',
+      // templateUrl: 'records.index.html',
+      controller: 'WGController'
     });
 
   $locationProvider.html5Mode({

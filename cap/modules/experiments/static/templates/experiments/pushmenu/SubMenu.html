@@ -1,6 +1,8 @@
 ﻿<div ng-show="visible" ng-class="{visible: visible, multilevelpushmenu_inactive: inactive && !collapsed}" class="levelHolderClass color{{level}}">
     <div class="menu-header" ng-show="level == 0">
-        <h2><i class="floatRight cursorPointer" ng-class="menu.icon" ng-click="openMenu($event, menu)"></i>{{menu.title}}</h2>
+        <h2>
+            <i class="floatRight cursorPointer" ng-class="menu.icon" ng-click="openMenu($event, menu)"></i>{{menu.title}}<a class="exp_chooser" href="/experiments">(change experiment)</a>
+        </h2>
     </div>
     <ul ng-class="{invisible: inactive}">
         <li ng-repeat="item in menu.items" style="padding-left: {{0.6*(level+1)}}em">

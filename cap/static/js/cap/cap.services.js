@@ -27,6 +27,40 @@
 var services = angular.module('cap.services', [])
   .service('capLocalClient', ['$http', '$q', function($http, $q) {
     return {
+      get_user: function() {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/app/access/user';
+        $http({
+          method: 'GET',
+          url: url
+        })
+          .then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      set_experiment: function(experiment) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/app/experiment/set/'+experiment;
+        $http({
+          method: 'POST',
+          url: url
+        })
+          .then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
       get_experiment_records: function(limit) {
         var deferred = $q.defer();
         deferred.notify('started');

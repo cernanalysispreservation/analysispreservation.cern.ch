@@ -77,7 +77,7 @@ install_requires = [
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
     'invenio-access>=1.0.0a9',
-    'invenio-accounts>=1.0.0a15',
+    'invenio-accounts>=1.0.0b1',
     'invenio-assets>=1.0.0b2',
     'invenio-base>=1.0.0a14',
     'invenio-celery>=1.0.0a4',
