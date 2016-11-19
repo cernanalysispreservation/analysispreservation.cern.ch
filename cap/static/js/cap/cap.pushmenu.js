@@ -72,7 +72,6 @@ pushmenu.directive('capSubmenu', [
         scope.options = options = ctrl.GetOptions();
         scope.childrenLevel = scope.level + 1;
         onOpen = function() {
-          console.log('onopen');
           $(element).width(ctrl.GetBaseWidth());
           if (!scope.collapsed) {
             scope.inactive = false;
@@ -97,7 +96,7 @@ pushmenu.directive('capSubmenu', [
               options.onCollapseMenuStart();
               $(element).css("margin-left", marginCollapsed);
             } else {
-              options.onExpandMenuStart();
+              // options.onExpandMenuStart();
               $(element).css("margin-left", "0");
             }
             animatePromise = $animate.addClass(element, 'slide', {
@@ -105,13 +104,13 @@ pushmenu.directive('capSubmenu', [
               toMargin: scope.collapsed ? marginCollapsed : 0
             });
             animatePromise.then(function() {
-              scope.$apply(function() {
-                if (scope.collapsed) {
-                  return options.onCollapseMenuEnd();
-                } else {
-                  return options.onExpandMenuEnd();
-                }
-              });
+              // scope.$apply(function() {
+              //   if (scope.collapsed) {
+              //     return options.onCollapseMenuEnd();
+              //   } else {
+              //     return options.onExpandMenuEnd();
+              //   }
+              // });
               return;
             });
             if(scope.level === 0)
@@ -158,15 +157,15 @@ pushmenu.directive('capSubmenu', [
             var animatePromise;
             if (visible) {
               if (scope.level > 0) {
-                options.onExpandMenuStart();
+                // options.onExpandMenuStart();
                 animatePromise = $animate.addClass(element, 'slide', {
                   fromMargin: -256,
                   toMargin: 0
                 });
                 animatePromise.then(function() {
-                  scope.$apply(function() {
-                    options.onExpandMenuEnd();
-                  });
+                  // scope.$apply(function() {
+                  //   options.onExpandMenuEnd();
+                  // });
                 });
               }
               onOpen();
