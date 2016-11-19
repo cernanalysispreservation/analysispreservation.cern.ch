@@ -20,6 +20,18 @@ function capExperimentsConfiguration($routeProvider, $locationProvider) {
       controller: 'DepositController',
       // resolve: capDepositCtrl.resolve
     })
+    .when('/publications/', {
+      templateUrl: '/app/records',
+      controller: 'RecordController',
+    })
+    .when('/records/:recid/', {
+      templateUrl: function(params) {
+        return '/app/records/'+params.recid;
+      },
+      // template: '{{_html}}',
+      controller: 'RecordController',
+      // resolve: capDepositCtrl.resolve
+    })
     .when('/deposit/new/lhcb/', {
       templateUrl: '/app/deposit/lhcb/new',
       controller: 'DepositController',
@@ -37,11 +49,6 @@ function capExperimentsConfiguration($routeProvider, $locationProvider) {
       template: '<h1>WORKING GROUPS :: {{params.wg_name}}</h1>',
       // templateUrl: 'records.index.html',
       controller: 'WGController'
-    })
-    .when('/records', {
-      template: '<h1>records.index.html</h1>',
-      // templateUrl: 'records.index.html',
-      controller: 'RecordsController'
     })
     .when('/experiments', {
       templateUrl: '/static/templates/cap/experiments.html',

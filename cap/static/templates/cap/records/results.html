@@ -1,0 +1,39 @@
+<div ng-if="vm.invenioSearchResults.hits.total != 0">
+  <div class="list-group">
+    <a class="list-group-item"
+        ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
+        ng-href="/records/{{ record.id }}/">
+      <div class="pull-left">
+        <div class="btn btn-sm btn-link">
+          <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
+        </div>
+      </div>
+      <div class="pull-left">
+        <h5 class="list-group-item-heading">
+          {{ record.metadata.title_statement.title }}
+        </h5>
+        <p class="list-group-item-text">
+          Created {{ record.metadata._deposit.created[0] }}
+        </p>
+      </div>
+      <small class="pull-right label label-default">
+        #{{ record.id }}
+      </small>
+      <div class="clearfix"></div>
+    </a>
+  </div>
+</div>
+<div ng-if="vm.invenioSearchResults.hits.total == 0">
+<div class="list-group">
+  <div class="list-group-item">
+    <div align="center">
+      <h1>No uploads</h1>
+      <p>Get started by making your first upload</p>
+      <a class="btn btn-success" href="/deposit/new">
+          <i class="glyphicon glyphicon-upload"></i>
+          New Upload
+      </a>
+    </div>
+  </div>
+</div>
+</div>

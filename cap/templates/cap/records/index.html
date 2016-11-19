@@ -1,0 +1,23 @@
+{% extends 'invenio_deposit/index.html' %}
+
+{%- block body_inner %}
+<h2>Publications</h2>
+<div id="invenio-search">
+  <invenio-search
+   search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}"
+   search-headers='{"Accept": "{{ config.DEPOSIT_SEARCH_MIMETYPE|default('application/json')}}"}'
+  >
+    {%- block page_body %}
+        {{super()}}
+    {%- endblock page_body %}
+  </invenio-search>
+</div>
+{%- endblock body_inner %}
+
+{%- block search_results %}
+<invenio-search-results
+class="list-group"
+template="{{ url_for('static', filename='templates/cap/records/results.html') }}">
+</invenio-search-results>
+{%- endblock search_results %}
+{%- block new_upload %}{%- endblock new_upload %}

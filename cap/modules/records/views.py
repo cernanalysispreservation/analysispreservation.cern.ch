@@ -22,26 +22,23 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Jinja utilities for Invenio."""
+"""Blueprint for Records."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_indexer.signals import before_record_index
+from flask import (Blueprint, render_template,)
+from flask_login import login_required
 
-# from .indexer import indexer_receiver
-from .views import blueprint
+blueprint = Blueprint(
+    'records',
+    __name__,
+    template_folder='templates',
+    url_prefix='/records',
+    static_folder='static'
+)
 
 
-class Records(object):
-    """Records extension."""
-
-    def __init__(self, app=None):
-        """Extension initialization."""
-        if app:
-            self.init_app(app)
-
-    def init_app(self, app):
-        """Flask application initialization."""
-        app.register_blueprint(blueprint)
-        # before_record_index.connect(indexer_receiver, sender=app)
-        app.extensions['cap_records'] = self
+@blueprint.route('/')
+@login_required
+def index():
+    return render_template('cap/records/index.html')

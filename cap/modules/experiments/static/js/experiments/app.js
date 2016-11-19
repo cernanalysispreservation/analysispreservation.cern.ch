@@ -70,3 +70,26 @@ capWGCtrl.$inject = [
 
 angular.module('cap.app')
   .controller('WGController', capWGCtrl);
+
+
+
+///////////////////////////////////////////
+///////////////////////////////////////////
+// CAP app Records Controller
+
+var capRecordCtrl = function($scope, $route, $routeParams, $location, capLocalClient) {
+  $scope.name = 'RecordController';
+
+  $scope.params = $routeParams;
+};
+
+capRecordCtrl.$inject = [
+  '$scope',
+  '$route',
+  '$routeParams',
+  '$location',
+  'capLocalClient',
+];
+
+angular.module('cap.app')
+  .controller('RecordController', capRecordCtrl);
