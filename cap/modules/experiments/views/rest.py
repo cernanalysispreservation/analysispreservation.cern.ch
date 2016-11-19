@@ -30,7 +30,6 @@ from flask import Blueprint, session, jsonify, redirect
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-from cap.modules.records.views import collection_records, get_collections_tree
 from cap.modules.access.views import get_user_experiments
 
 from cap.modules.experiments.permissions import collaboration_permissions

@@ -24,6 +24,16 @@
 
 """Blueprint for Records."""
 
+#########################################################
+#########################################################
+##                                                     ##
+##            ***** LEGACY VIEWS *****                 ##
+##   Kept for compatibility with "old" records and     ##
+##   until all needed parts are moved to new style     ##
+##                                                     ##
+#########################################################
+#########################################################
+
 from __future__ import absolute_import, print_function
 
 import os

@@ -33,18 +33,21 @@ from os.path import dirname, join
 
 from celery.schedules import crontab
 from flask_principal import RoleNeed
-from invenio_deposit import config
+from invenio_deposit import config as deposit_config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
                                     DEPOSIT_REST_SORT_OPTIONS)
 from invenio_oauthclient.contrib import cern
 from invenio_records_rest.config import (RECORDS_REST_FACETS,
-                                         RECORDS_REST_SORT_OPTIONS)
+                                         RECORDS_REST_SORT_OPTIONS,
+                                         RECORDS_REST_ENDPOINTS)
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 
 from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission)
+
+from cap.modules.records.search import CapRecordSearch
 
 
 def _(x):
@@ -137,11 +140,29 @@ REQUIREJS_CONFIG = 'js/cap-build.js'
 
 # Records
 # =======
+#: Records base template
+RECORDS_UI_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Records configuration
 RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
     "read_permission_factory"
 
 #: Records sort/facets options
+RECORDS_REST_SORT_OPTIONS = dict(
+    records=dict(
+        bestmatch=dict(
+            title=_('Best match'),
+            fields=['_score'],
+            default_order='desc',
+            order=1,
+        ),
+        mostrecent=dict(
+            title=_('Most recent'),
+            fields=['_created'],
+            default_order='desc',
+            order=2,
+        ),
+    )
+)
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.
@@ -167,7 +188,7 @@ RECORDS_UI_ENDPOINTS = dict(
     recid=dict(
         pid_type='recid',
         route='/records/<pid_value>',
-        template='records/detail.html',
+        template='invenio_records_ui/detail.html',
         record_class='invenio_records_files.api:Record'
     ),
     recid_preview=dict(
@@ -185,35 +206,33 @@ RECORDS_UI_ENDPOINTS = dict(
 )
 
 #: Records REST API endpoints.
-RECORDS_REST_ENDPOINTS = dict(
-    recid=dict(
-        pid_type='recid',
-        pid_minter='cap_record_minter',
-        pid_fetcher='cap_record_fetcher',
-        search_index='_all',
-        search_type=None,
-        record_serializers={
-            'application/json': ('cap.modules.records.serializers'
-                                 ':json_v1_response'),
-        },
-        search_serializers={
-            'application/json': ('cap.modules.records.serializers'
-                                 ':json_v1_search'),
-        },
-        list_route='/records/',
-        item_route='/records/<pid(recid):pid_value>',
-        default_media_type='application/json',
-        read_permission_factory_imp=None
-    ),
-)
+RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
+RECORDS_REST_ENDPOINTS['recid'].update({
+    # pid_type='recid',
+    'pid_minter': 'cap_record_minter',
+    'pid_fetcher': 'cap_record_fetcher',
+    # 'search_index': 'records',
+    # 'record_class': "invenio_records_files.api:Record",
+    # search_type=None,
+    'search_class': CapRecordSearch,
+    # 'search_factory_imp': 'invenio_records_rest.query.es_search_factory',
+    # record_serializers={
+    #     'application/json': ('cap.modules.records.serializers'
+    #                          ':json_v1_response'),
+    # },
+    # search_serializers={
+    #     'application/json': ('cap.modules.records.serializers'
+    #                          ':json_v1_search'),
+    # },
+    # list_route='/records/',
+    # item_route='/records/<pid(recid):pid_value>',
+    # default_media_type='application/json',
+    # 'read_permission_factory_imp': allow_all
+})
 
 
 #: Default api endpoint for LHCb db
 GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
-#: Default base template.
-RECORDS_UI_BASE_TEMPLATE = 'records/detail.html'
-#: Default tombstone template.
-RECORDS_UI_TOMBSTONE_TEMPLATE = 'records/detail.html'
 
 # CAP collaboration groups
 # ========================
@@ -252,7 +271,7 @@ CAP_COLLAB_PAGES = {
 # Search
 # ======
 #: Default API endpoint for search UI.
-SEARCH_UI_SEARCH_API = '/api/records/'
+# SEARCH_UI_SEARCH_API = '/api/records/'
 
 #: Default ElasticSearch hosts
 SEARCH_ELASTIC_HOSTS = ["localhost:9200"]
@@ -371,7 +390,7 @@ DEPOSIT_GROUPS = {
 
 # #: Endpoints for deposit.
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
-DEPOSIT_REST_ENDPOINTS = copy.deepcopy(config.DEPOSIT_REST_ENDPOINTS)
+DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
 _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 
 # DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
@@ -399,7 +418,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
 DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
-    config.DEPOSIT_RECORDS_UI_ENDPOINTS)
+    deposit_config.DEPOSIT_RECORDS_UI_ENDPOINTS)
 
 DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'template': 'cap_deposit/edit.html',

@@ -35,7 +35,8 @@ from flask_security import login_required
 from invenio_collections.models import Collection
 from py2neo import Graph
 
-from cap.modules.records.views import collection_records, get_collections_tree
+# TOFIX: To be updated when records view_.py is removed
+from cap.modules.records.views_ import collection_records, get_collections_tree
 
 from ..permissions.lhcb import lhcb_permission
 

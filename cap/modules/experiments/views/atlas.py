@@ -30,7 +30,8 @@ from flask import Blueprint, g, jsonify, render_template
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-from cap.modules.records.views import collection_records, get_collections_tree
+# TOFIX: To be updated when records view_.py is removed
+from cap.modules.records.views_ import collection_records, get_collections_tree
 from ..permissions.atlas import atlas_permission
 
 

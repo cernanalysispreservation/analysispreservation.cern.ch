@@ -40,9 +40,11 @@ from invenio_db import db
 from invenio_files_rest.models import Bucket, Location, ObjectVersion
 from invenio_indexer.utils import RecordIndexer
 
-from cap.modules.records.views import construct_record
+# TOFIX: To be updated when records view_.py is removed
+from cap.modules.records.views_ import construct_record
 from cap.modules.records.permissions import (RecordReadActionNeed,
                                              RecordUpdateActionNeed,)
+
 from invenio_records_files.api import Record, RecordsBuckets
 from jsonschema.exceptions import ValidationError
 
