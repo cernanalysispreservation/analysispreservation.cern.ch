@@ -65,6 +65,7 @@ install_requires = [
     'elasticsearch<3.0.0,>=2.0.0',  # temporary fix
     'elasticsearch-dsl<3.0.0,>=2.0.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
+    'cryptography>=1.6',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask>=0.11.1',
@@ -84,7 +85,7 @@ install_requires = [
     'invenio-collections>=1.0.0a3',
     'invenio-config>=1.0.0b1',
     'invenio-db[postgresql,versioning]>=1.0.0b3',
-    'invenio-files-rest>=1.0.0a13',
+    'invenio-files-rest>=1.0.0a14',
     'invenio-deposit>=1.0.0a6',
     'invenio-indexer>=1.0.0a8',
     'invenio-jsonschemas>=1.0.0a3',
@@ -93,7 +94,7 @@ install_requires = [
     'invenio-pidstore>=1.0.0b1',
     'invenio-previewer==1.0.0a6',
     'invenio-records[postgresql]>=1.0.0b1',
-    'invenio-records-files>=1.0.0a7',
+    'invenio-records-files>=1.0.0a8',
     'invenio-records-rest>=1.0.0a16',
     'invenio-records-ui>=1.0.0a8',
     'invenio-rest[cors]>=1.0.0a10',

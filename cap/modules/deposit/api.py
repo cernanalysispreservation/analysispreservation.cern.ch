@@ -26,9 +26,17 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app
+
 from invenio_deposit.api import Deposit, preserve
 from invenio_files_rest.models import Bucket, Location
 from invenio_records_files.models import RecordsBuckets
+
+from werkzeug.local import LocalProxy
+
+current_jsonschemas = LocalProxy(
+    lambda: current_app.extensions['invenio-jsonschemas']
+)
 
 PRESERVE_FIELDS = (
     '_deposit',
@@ -43,6 +51,16 @@ class CAPDeposit(Deposit):
     def is_published(self):
         """Check if deposit is published."""
         return self['_deposit'].get('pid') is not None
+
+    @property
+    def record_schema(self):
+        """Convert deposit schema to a valid record schema."""
+        schema_path = current_jsonschemas.url_to_path(self['$schema'].replace('/app/schemas', '/schemas'))
+        schema_prefix = current_app.config['DEPOSIT_JSONSCHEMAS_PREFIX']
+        if schema_path and schema_path.startswith(schema_prefix):
+            return current_jsonschemas.path_to_url(
+                schema_path[len(schema_prefix):]
+            )
 
     @classmethod
     def create(cls, data, id_=None):
