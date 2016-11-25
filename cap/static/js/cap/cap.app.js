@@ -7,4 +7,5 @@ var app = angular.module('cap.app', [
   'cap.services',
   'cap.pushmenu',
   'angular-loading-bar',
+  'ui.bootstrap'
 ]);

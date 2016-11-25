@@ -12,8 +12,11 @@
         <h5 class="list-group-item-heading">
           {{ record.metadata.title_statement.title }}
         </h5>
-        <p class="list-group-item-text">
-          Created {{ record.metadata._deposit.created[0] }}
+        <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
+          Created ({{record.created | date:'yyyy-MM-dd'}})
+        </p>
+        <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
+          {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
         </p>
       </div>
       <small class="pull-right label label-default">
@@ -29,10 +32,10 @@
     <div align="center">
       <h1>No uploads</h1>
       <p>Get started by making your first upload</p>
-      <a class="btn btn-success" href="/deposit/new">
+      <!-- <a class="btn btn-success" href="/deposit/new">
           <i class="glyphicon glyphicon-upload"></i>
           New Upload
-      </a>
+      </a> -->
     </div>
   </div>
 </div>

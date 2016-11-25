@@ -15,7 +15,7 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
 
     $scope.events = [];
     $scope.options = {
-      containersToPush: [$('#experiment-land')],
+      containersToPush: [],
       direction: 'ltr',
       // onExpandMenuStart: function() {
       //   $scope.events.push('Started expanding...');

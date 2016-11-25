@@ -81,6 +81,7 @@ experiments_js = NpmBundle(
     "node_modules/angular-route/angular-route.js",
     "node_modules/angular-animate/angular-animate.js",
     'node_modules/angular-loading-bar/build/loading-bar.js',
+    'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
     'node_modules/invenio-search-js/dist/invenio-search-js.js',
     'node_modules/invenio-records-js/dist/invenio-records-js.js',
     "js/cap/cap.pushmenu.components.js",
@@ -96,6 +97,7 @@ experiments_js = NpmBundle(
     output="gen/cap.experiments.%(version)s.js",
     npm={
         "angular": "~1.4.7",
+        "angular-ui-bootstrap": "~2.2.0",
         "angular-route": "~1.4.7",
         "angular-animate": "~1.3",
     }

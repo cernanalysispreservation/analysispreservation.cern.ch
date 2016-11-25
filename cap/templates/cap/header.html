@@ -47,45 +47,45 @@
         <div class="row">
             {%- block navbar_new_deposit %}
             <div class="col-xs-4">
-                <div class="dropdown">
-                    <a href="#" class="btn" id="header-upload" data-toggle="dropdown">
-                        <i class="fa fa-cloud-upload"></i>
-                        Create <div class="visible-lg-inline-block">An Analysis</div>
+                {% raw %}
+                <div class="dropdown" uib-dropdown is-open="status.isopen">
+                    <a href="#" class="btn" uib-dropdown-toggle ng-disabled="disabled" id="header-upload">
+                      <i class="fa fa-cloud-upload"></i>
+                      Create <div class="visible-lg-inline-block">An Analysis</div> 
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="header-upload">
-                        {% raw %}
-                        <li ng-repeat="dg in user.deposit_groups"><a class="dropdown-item" href="/deposit/new/{{dg}}">{{dg}}</a></li>
-                        {% endraw %}
+                    <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="header-upload">
+                      <li ng-repeat="dg in user.deposit_groups"><a class="dropdown-item" href="/deposit/new/{{dg}}">{{dg}}</a></li>
                     </ul>
                 </div>
+                {% endraw %}
             </div>
             {%- endblock navbar_new_deposit %}
             {% raw %}
             <div class="col-xs-8 text-right">
-                <div id="cap-home-user-menu" class="dropdown">
-                  <button id="cap-home-user" class="dropdown btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
+                  <button id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user"></i>
                     <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="cap-home-user">
+                  <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
                     <li class="header visible-lg-block">
                       <span>Signed In As</br> <strong>{{user.email}}</strong></span>
                     </li>
                     <li role="separator" class="divider visible-lg-block"></li>
                     <li class="">
-                      <a href="">
+                      <a href="#">
                         <i class="fa fa-user"></i>
                         Your Profile
                       </a>
                     </li>
                     <li class="">
-                      <a href="">
+                      <a href="#">
                         <i class="fa fa-link"></i>
                         Your Settings
                       </a>
                     </li>
                     <li class="">
-                      <a href="">
+                      <a href="#">
                         <i class="fa fa-shield"></i>
                         Your Applications
                       </a>
