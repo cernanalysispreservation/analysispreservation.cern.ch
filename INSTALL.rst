@@ -145,6 +145,12 @@ Create a user account:
 
    cap users create info@inveniosoftware.org -a
 
+Add Elasticsearch plugins:
+
+.. code-block:: shell
+
+   /tmp/elasticsearch/bin/plugin install -b mapper-attachments
+
 Create some basic collections:
 
 .. code-block:: shell
