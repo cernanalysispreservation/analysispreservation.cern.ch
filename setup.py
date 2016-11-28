@@ -66,12 +66,13 @@ install_requires = [
     'elasticsearch-dsl<3.0.0,>=2.0.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
     'cryptography>=1.6',  # temporary fix
+    'setuptools>=18.5',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask>=0.11.1',
     'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
-    'Flask-BabelEx>=0.9.2',
+    'Flask-BabelEx>=0.9.3',
     'Flask-Assets>=0.12',
     'Flask-Collect==1.2.2',
     'Flask-Cache>=0.13.1',
