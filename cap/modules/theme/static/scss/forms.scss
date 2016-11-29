@@ -176,11 +176,15 @@
 
 .custom-progress-bar {
   width: 13%;
-  display: inline-flex;
   float: right;
-  border-radius: 0px;
+  border-radius: 2px;
 }
 
 .upload-zone {
   width: 66%;
+}
+
+.deposit-panel .field-required:after {
+  content: " *";
+  color: $dark-grey-element-color;
 }

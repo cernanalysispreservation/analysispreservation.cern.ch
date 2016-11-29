@@ -207,7 +207,6 @@
       "description": "Please provide some information relevant for all parts of the Analysis here",
       "properties": {
         "analysis_name": {
-          "required": true,
           "title": "Analysis Name",
           "type": "string"
         },
@@ -225,7 +224,6 @@
           "type": "string"
         },
         "proponents": {
-          "required": true,
           "title": "Proponents",
           "type": "string"
         },
@@ -247,7 +245,6 @@
             "9 - PAPER published",
             "x - other"
           ],
-          "required": true,
           "type": "string",
           "title": "Status"
         },
@@ -259,6 +256,11 @@
           "type": "string"
         }
       },
+      "required": [
+        "analysis_name",
+        "proponents",
+        "reviewers"
+      ],
       "title": "Basic Information",
       "type": "object"
     },
@@ -500,6 +502,9 @@
           "type": "string"
         }
       },
+      "required": [
+        "analysis_number"
+      ],
       "title": "Extra Information",
       "type": "object"
     },
