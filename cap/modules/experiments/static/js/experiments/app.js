@@ -27,7 +27,7 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $route, $routeParams, $location,  capLocalClient) {
+var capDepositCtrl = function($scope, $location,  capLocalClient) {
   $scope.name = 'DepositController';
 };
 
@@ -39,8 +39,6 @@ capDepositCtrl.resolve = {
 
 capDepositCtrl.$inject = [
   '$scope',
-  '$route',
-  '$routeParams',
   '$location',
   'capLocalClient',
 ];
@@ -54,17 +52,16 @@ angular.module('cap.app')
 ///////////////////////////////////////////
 // CAP app WG Controller
 
-var capWGCtrl = function($scope, $route, $routeParams, $location, capLocalClient) {
+var capWGCtrl = function($scope, $location, $stateParams, capLocalClient) {
   $scope.name = 'WGController';
 
-  $scope.params = $routeParams;
+  $scope.wg_name = $stateParams.wg_name;
 };
 
 capWGCtrl.$inject = [
   '$scope',
-  '$route',
-  '$routeParams',
   '$location',
+  '$stateParams',
   'capLocalClient',
 ];
 
@@ -77,16 +74,14 @@ angular.module('cap.app')
 ///////////////////////////////////////////
 // CAP app Records Controller
 
-var capRecordCtrl = function($scope, $route, $routeParams, $location, capLocalClient) {
+var capRecordCtrl = function($scope, $location, capLocalClient) {
   $scope.name = 'RecordController';
 
-  $scope.params = $routeParams;
+  // $scope.params = $routeParams;
 };
 
 capRecordCtrl.$inject = [
   '$scope',
-  '$route',
-  '$routeParams',
   '$location',
   'capLocalClient',
 ];

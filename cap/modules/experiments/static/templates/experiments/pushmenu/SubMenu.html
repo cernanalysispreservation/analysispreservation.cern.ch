@@ -6,7 +6,7 @@
     </div>
     <ul ng-class="{invisible: inactive}">
         <li ng-repeat="item in menu.items" style="padding-left: {{0.6*(level+1)}}em">
-            <a ng-href="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
+            <a ui-sref="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
                 <i class="floatRight" ng-class="item.icon"></i>
                 {{item.name}}
                 <i ng-if="item.menu" class="iconSpacing" ng-class="options.groupIcon"></i>

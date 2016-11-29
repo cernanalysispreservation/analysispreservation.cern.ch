@@ -3,7 +3,7 @@ var app = angular.module('cap.app', [
   'capSearch',
   'capRecords',
   'invenioFiles',
-  'ngRoute',
+  'ui.router',
   'cap.services',
   'cap.pushmenu',
   'angular-loading-bar',

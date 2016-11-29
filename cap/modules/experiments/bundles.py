@@ -76,9 +76,7 @@ alice_js = NpmBundle(
 )
 
 experiments_js = NpmBundle(
-    # "node_modules/d3/d3.js",
-    "node_modules/angular/angular.js",
-    "node_modules/angular-route/angular-route.js",
+    "node_modules/angular-ui-router/release/angular-ui-router.min.js",
     "node_modules/angular-animate/angular-animate.js",
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
@@ -98,7 +96,7 @@ experiments_js = NpmBundle(
     npm={
         "angular": "~1.4.7",
         "angular-ui-bootstrap": "~2.2.0",
-        "angular-route": "~1.4.7",
+        "angular-ui-router": "~0.3.2",
         "angular-animate": "~1.3",
     }
 )
