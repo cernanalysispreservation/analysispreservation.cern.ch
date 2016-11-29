@@ -3,10 +3,8 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient) {
-  $scope.$route = $route;
+var capCtrl = function ($rootScope, $scope, $location, capLocalClient) {
   $scope.$location = $location;
-  $scope.$routeParams = $routeParams;
 
   $scope.hello = 'CERN Analysis Preservation experiments';
   $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
@@ -73,7 +71,7 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
       .then(function(response) {
         var _menu = [{
           'name': 'Home',
-          'link': '/'+$scope.exp,
+          'link': 'home',
           'icon': 'fa fa-home'
         }];
         $scope.menu.items = _menu.concat(response.data);
@@ -96,9 +94,8 @@ var capCtrl = function ($scope, $route, $routeParams, $location, capLocalClient)
 
 // Inject depedencies
 capCtrl.$inject = [
+  '$rootScope',
   '$scope',
-  '$route',
-  '$routeParams',
   '$location',
   'capLocalClient'
 ];

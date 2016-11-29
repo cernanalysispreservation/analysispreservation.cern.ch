@@ -14,14 +14,19 @@
 <div>
     <cap-push-menu menu="menu" options="options"></cap-push-menu>
     <div id="experiment-land" class="container cap-container" >
-        <div ng-view></div>
+        <ui-view>
+            <i>
+                <strong>Loading...</strong></br>
+                Some content will load here. Check if your URL is correct (go to the <a href="{{url_for("cap.index")}}">home page</a> )
+            </i>
+        </ui-view>
     </div>
 </div>
 {%- endblock %}
 
 
 {% block javascript %}
-    {% assets "invenio_search_ui_search_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+
     {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {{ super() }}
 
