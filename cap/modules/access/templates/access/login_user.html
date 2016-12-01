@@ -29,7 +29,7 @@
   {% if config.OAUTHCLIENT_REMOTE_APPS %}
     {% for name in config.OAUTHCLIENT_REMOTE_APPS.keys() %}
       <a class="btn btn-default btn-lg btn-block" target="_self"
-     href="{{url_for('invenio_oauthclient.login', remote_app=name, next=url_for('cap.index'))}}">
+     href="{{url_for('invenio_oauthclient.login', remote_app=name, next=request.args.get('next', '/') )}}">
       <i class="fa fa-{{ name|lower() }}"></i> {{
       _('Sign in with %(title)s', title=config.OAUTHCLIENT_REMOTE_APPS[name]['title'])}}
       </a>

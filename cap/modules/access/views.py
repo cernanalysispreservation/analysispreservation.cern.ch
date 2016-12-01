@@ -56,7 +56,7 @@ def get_user():
         response.status_code = 200
         return response
     else:
-        response = jsonify()
+        response = jsonify(False)
         response.status_code = 200
         return response
 

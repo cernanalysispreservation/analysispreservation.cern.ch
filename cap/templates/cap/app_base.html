@@ -1,0 +1,30 @@
+{%- extends "cap/page.html" %}
+
+{% block css %}
+    {{ super() }}
+    {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {% assets "cap_experiments_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+{% endblock css %}
+
+
+{# <meta tags> #}
+
+{%- block page_body %}
+<ui-view id="experiment-land">
+    <div  class="container cap-container" >
+        <i>
+            <strong>Loading...</strong></br>
+            Some content will load here. Check if your URL is correct (go to the <a href="{{url_for("cap.index")}}">home page</a> )
+        </i>
+    </div>
+</ui-view>
+{%- endblock %}
+
+
+{% block javascript %}
+    {% assets "invenio_deposit_dependencies_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {{ super() }}
+
+    {% assets "cap_experiments_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+{% endblock %}

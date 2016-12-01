@@ -51,7 +51,7 @@ def CAP_EXPERIMENT_MENU(experiment):
             'name': 'Working Groups',
             'id': 'itemId',
             'icon': 'fa fa-users',
-            'link': _l('working_groups'),
+            'link': _l('app.working_groups'),
             'menu': {
                 'title': 'Working Groups',
                 'icon': 'fa fa-users',
@@ -59,52 +59,52 @@ def CAP_EXPERIMENT_MENU(experiment):
                 'items': [
                     {
                         'name': 'WG1',
-                        'link': _l('working_group_item({wg_name: "WG1"})')
+                        'link': _l('app.working_group_item({wg_name: "WG1"})')
                     }, {
                         'name': 'WG2',
-                        'link': _l('working_group_item({wg_name: "WG2"})')
+                        'link': _l('app.working_group_item({wg_name: "WG2"})')
                     }, {
                         'name': 'WG3',
-                        'link': _l('working_group_item({wg_name: "WG3"})')
+                        'link': _l('app.working_group_item({wg_name: "WG3"})')
                     }
                 ]
             }
         }, {
             'name': 'Publications',
-            'link': _l('publications'),
+            'link': _l('app.publications'),
             'icon': 'fa fa-book'
         }, {
             'name': 'My Deposits',
             'icon': 'fa fa-file-text',
-            'link': _l('deposit'),
+            'link': _l('app.deposit'),
             'menu': {
                 "title": 'My Deposits',
                 'icon': 'fa fa-file-text-o',
                 'items': [
                     {
                         'name': 'All',
-                        'link': _l('deposit')
+                        'link': _l('app.deposit')
                     }, {
                         'name': 'Published',
-                        'link': _l('deposit({status: "published"})'),
+                        'link': _l('app.deposit({status: "published"})'),
                         'icon': ''
 
                     }, {
                         'name': 'On Review',
-                        'link': _l('deposit({status: "published"})'),
+                        'link': _l('app.deposit({status: "published"})'),
                         'icon': ''
 
                     }, {
                         'name': 'Drafts',
-                        'link': _l('deposit({status: "draft"})'),
+                        'link': _l('app.deposit({status: "draft"})'),
                         'icon': ''
                     }, {
                         'name': 'Create CMS Analysis',
-                        'link': _l('deposit_new_cms'),
+                        'link': _l('app.deposit_new_cms'),
                         'icon': ''
                     }, {
                         'name': 'Create LHCb Analysis',
-                        'link': _l('deposit_new_lhcb'),
+                        'link': _l('app.deposit_new_lhcb'),
                         'icon': ''
                     }
                 ]
@@ -137,4 +137,4 @@ def set_global_experiment(experiment=None):
     if experiment in collaboration_permissions:
         if collaboration_permissions[experiment].can():
             session['current_experiment'] = experiment
-            return redirect('/'+experiment)
+            return redirect('/')

@@ -15,4 +15,9 @@ blueprint = Blueprint(
 @blueprint.route('/', defaults={'path': ''})
 @blueprint.route('/<path:path>')
 def index(path):
+    return render_template('cap/app_base.html')
+
+
+@blueprint.route('/templates/app')
+def templates():
     return render_template('cap/app.html')

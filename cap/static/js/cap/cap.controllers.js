@@ -3,7 +3,7 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($rootScope, $scope, $location, capLocalClient) {
+var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state) {
   $scope.$location = $location;
 
   $scope.hello = 'CERN Analysis Preservation experiments';
@@ -42,24 +42,66 @@ var capCtrl = function ($rootScope, $scope, $location, capLocalClient) {
     };
   };
 
+  var assignCurrentUser = function(user) {
+    $rootScope.currentUser = user;
+  };
+
   var get_user = function(){
     capLocalClient.get_user()
       .then(function(response){
 
-        $scope.user = response.data || {};
-        $scope.exp = response.data["current_experiment"];
+        var user = response.data || false;
 
-        if($scope.exp !== ""){
-          $scope.menu = {
-            'title': $scope.exp,
-            'id': 'menuId',
-            'icon': 'fa fa-bars',
-            'items': []
-          };
-          get_experiment_menu();
+        assignCurrentUser(user);
+
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+          console.log(toState);
+          var requireLogin = false;
+
+          if (toState.data && toState.data.requireLogin) {
+            requireLogin = toState.data.requireLogin;
+          }
+
+          if (requireLogin && !$rootScope.currentUser) {
+            event.preventDefault();
+            // redirect me to login page
+
+            var pathname = $window.location.pathname;
+            $window.location.href = '/app/login?next='+pathname;
+          }
+        });
+
+        // Browser pointing at homepage [user NOT LOGGEDIN]
+        // Take him to welcome page
+        if ($state.current.name === '' && !user){
+          $state.go('welcome');
         }
-        else {
+        // Browser pointing at welcome [user LOGGEDIN]
+        // Take him to home/app page
+        else if ($state.current.name === 'welcome' && user){
+          $state.go('app');
+        }
 
+        // If user current_experiment isn't set, take user
+        // to experiments page
+        if (user){
+          if (user['current_experiment'] === ""){
+            $state.go('app.experiments');
+          }
+          else {
+            $scope.exp = user["current_experiment"];
+          }
+
+          if($scope.exp !== ""){
+            $scope.menu = {
+              'title': $scope.exp,
+              'id': 'menuId',
+              'icon': 'fa fa-bars',
+              'items': []
+            };
+            get_experiment_menu();
+          }
         }
       }, function(error) {
         $scope.error = error;
@@ -71,7 +113,7 @@ var capCtrl = function ($rootScope, $scope, $location, capLocalClient) {
       .then(function(response) {
         var _menu = [{
           'name': 'Home',
-          'link': 'home',
+          'link': 'app',
           'icon': 'fa fa-home'
         }];
         $scope.menu.items = _menu.concat(response.data);
@@ -96,8 +138,10 @@ var capCtrl = function ($rootScope, $scope, $location, capLocalClient) {
 capCtrl.$inject = [
   '$rootScope',
   '$scope',
+  '$window',
   '$location',
-  'capLocalClient'
+  'capLocalClient',
+  '$state'
 ];
 
 angular.module('cap.app')
