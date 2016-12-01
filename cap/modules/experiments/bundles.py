@@ -94,7 +94,7 @@ experiments_js = NpmBundle(
     "js/cap/cap.main.js",
     output="gen/cap.experiments.%(version)s.js",
     npm={
-        "angular": "~1.4.7",
+        "angular": "~1.5",
         "angular-ui-bootstrap": "~2.2.0",
         "angular-ui-router": "~0.3.2",
         "angular-animate": "~1.3",
@@ -109,7 +109,6 @@ experiments_css = NpmBundle(
     ),
     output='gen/cap.experiments.%(version)s.css',
     npm={
-        "almond": "~0.3.1",
         "bootstrap-sass": "~3.3.5",
         "font-awesome": "~4.4.0",
     }
