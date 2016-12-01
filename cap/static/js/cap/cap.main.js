@@ -30,7 +30,7 @@
 // Initialize the app
 angular.element(document).ready(function() {
   angular.bootstrap(
-    document.getElementById("cap-container"),
+    document.body,
     [
       'capRecords',
       'mgcrea.ngStrap', 'schemaForm',

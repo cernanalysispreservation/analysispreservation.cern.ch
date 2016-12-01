@@ -38,12 +38,12 @@
     </div>
 
     {%- block navbar_search %}
-    <div class="col-sm-7">
+    <div ng-show="currentUser" class="col-sm-7">
     </div>
     {%- endblock navbar_search %}
 
     {%- block navbar_right %}
-    <div class="col-sm-3">
+    <div ng-show="currentUser" class="col-sm-3">
         <div class="row">
             {%- block navbar_new_deposit %}
             <div class="col-xs-4">
@@ -51,10 +51,10 @@
                 <div class="dropdown" uib-dropdown is-open="status.isopen">
                     <a href="#" class="btn" uib-dropdown-toggle ng-disabled="disabled" id="header-upload">
                       <i class="fa fa-cloud-upload"></i>
-                      Create <div class="visible-lg-inline-block">An Analysis</div> 
+                      Create <div class="visible-lg-inline-block">An Analysis</div>
                     </a>
                     <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="header-upload">
-                      <li ng-repeat="dg in user.deposit_groups"><a class="dropdown-item" href="/deposit/new/{{dg}}">{{dg}}</a></li>
+                      <li ng-repeat="dg in currentUser.deposit_groups"><a class="dropdown-item" href="/deposit/new/{{dg}}">{{dg}}</a></li>
                     </ul>
                 </div>
                 {% endraw %}
@@ -69,7 +69,7 @@
                   </button>
                   <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
                     <li class="header visible-lg-block">
-                      <span>Signed In As</br> <strong>{{user.email}}</strong></span>
+                      <span>Signed In As</br> <strong>{{currentUser.email}}</strong></span>
                     </li>
                     <li role="separator" class="divider visible-lg-block"></li>
                     <li class="">

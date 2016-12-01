@@ -12,9 +12,12 @@
         <h5 class="list-group-item-heading">
           {{ record.metadata.title_statement.title }}
         </h5>
-        <p class="list-group-item-text">
-          Created {{ record.metadata._deposit.created[0] }}
-        </p>
+          <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
+            Created ({{record.created | date:'yyyy-MM-dd'}})
+          </p>
+          <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
+            {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
+          </p>
       </div>
       <small class="pull-right label label-default">
         #{{ record.id }}

@@ -46,7 +46,7 @@
     {%- endblock css %}
     {%- endblock head %}
   </head>
-  <body id="cap-container"  ng-controller="capCtrl" ng-init="init();" {% if body_css_classes %} class="{{ body_css_classes|join(' ') }}"{% endif %}{% if g.ln %} lang="{{ g.ln.split('_', 1)[0]|safe }}"{% if rtl_direction %} {{ rtl_direction|safe }}{% endif %}{% endif %} itemscope itemtype="http://schema.org/WebPage" data-spy="scroll" data-target=".scrollspy-target">
+  <body ng-controller="capCtrl" ng-init="init();" {% if body_css_classes %} class="{{ body_css_classes|join(' ') }}"{% endif %}{% if g.ln %} lang="{{ g.ln.split('_', 1)[0]|safe }}"{% if rtl_direction %} {{ rtl_direction|safe }}{% endif %}{% endif %} itemscope itemtype="http://schema.org/WebPage" data-spy="scroll" data-target=".scrollspy-target">
     {%- block body %}
     {%- block browserupgrade %}
     <!--[if lt IE 8]>
@@ -55,7 +55,6 @@
     {%- endblock browserupgrade %}
     {%- block body_inner %}
     {%- block page_header %}
-{% include "invenio_theme/header.html" %}
     {%- endblock page_header %}
     {%- block page_body %}
 {% include "invenio_theme/body.html" %}
