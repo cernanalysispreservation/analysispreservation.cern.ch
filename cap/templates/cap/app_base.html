@@ -13,10 +13,11 @@
 {%- block page_body %}
 <ui-view id="experiment-land">
     <div  class="container cap-container" >
-        <i>
+        <div id="loading-spinner">
+            <div class="spinner"></div>
             <strong>Loading...</strong></br>
             Some content will load here. Check if your URL is correct (go to the <a href="{{url_for("cap.index")}}">home page</a> )
-        </i>
+        </div>
     </div>
 </ui-view>
 {%- endblock %}
