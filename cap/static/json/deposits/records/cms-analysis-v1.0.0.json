@@ -80,24 +80,7 @@
     "key": "input_datasets"
   },
   {
-    "key": "n-tuple_production_check.confirm",
-    "title":"Did you produce n-tuples as an initial step to any measurement?",
-    "allowDisplay": false,
-    "type": "radios",
-    "titleMap": [
-      {
-        "value": true,
-        "name": "Yes"
-      },
-      {
-        "value": false,
-        "name": "No"
-      }
-    ]
-  },
-  {
     "key": "input_code_output",
-    "condition": "recordsVM.invenioRecordsModel['n-tuple_production_check']['confirm']",
     "items": [
       {
         "key": "input_code_output[].code_base",

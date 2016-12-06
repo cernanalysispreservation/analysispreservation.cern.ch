@@ -28,7 +28,7 @@
       </div>
       <cap-progress-bar progress="progress" type="type" form="depositionForm" el="recordsVM.invenioRecordsSchema"></cap-progress-bar>
       <div ng-repeat="formElement in recordsVM.invenioRecordsForm track by $index" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body">
-        <span class="forms-filter-fields-font-size"><strong>{{formElement.title | uppercase}}</strong> 
+        <span class="forms-filter-fields-font-size cursor-pointer fixed-column-link" ng-click="updateContent($index, recordsVM.invenioRecordsForm.length)"><strong>{{formElement.title | uppercase}}</strong></span>
         <span class="progress-bar progress-bar-{{type[formElement.key[0]]}} custom-progress-bar" role="progressbar" >{{ progress[formElement.key[0]] }} %</span>
           <ul >
             <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties">{{value.title}}</li>

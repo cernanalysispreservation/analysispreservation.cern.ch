@@ -132,6 +132,18 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
         $scope.notification = $scope.notification + '<br />' + update;
       });
   };
+
+  $scope.updateContent= function(index, arraySize){
+    $(function() {
+      for(var i=0; i<arraySize; i++) {
+        if(index !== i) {
+          $(document.forms[0].childNodes[i]).hide();
+        } else {
+          $(document.forms[0].childNodes[i]).show();
+        }
+      }
+    });
+  };
 };
 
 // Inject depedencies

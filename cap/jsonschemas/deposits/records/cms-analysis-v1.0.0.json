@@ -193,16 +193,6 @@
             }
          }
       },
-      "n-tuple_production_check":{  
-         "title":"Did you produce n-tuples as an initial step to any measurement?",
-         "type":"object",
-         "properties":{  
-            "confirm":{  
-               "type":"boolean",
-               "default":false
-            }
-         }
-      },
       "input_code_output":{  
          "title":"n-tuple Production",
          "description": "Please provide the n-tuples you used for your measurements",
@@ -2024,11 +2014,6 @@
             }
          }
       }
-   },
-   "dependencies":{  
-      "input_code_output":[  
-         "n-tuple_production_check"
-      ]
    },
    "title":"CMS Deposit Schema.",
    "type":"object"
