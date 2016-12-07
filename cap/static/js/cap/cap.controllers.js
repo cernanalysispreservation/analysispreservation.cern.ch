@@ -5,6 +5,10 @@
 
 var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state) {
   $scope.$location = $location;
+  //Variables for search filter fields 
+  //TODO(Move to appropriate controller)
+  $scope.query = {};
+  $scope.queryBy = '$';
 
   $scope.hello = 'CERN Analysis Preservation experiments';
   $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
@@ -110,20 +114,20 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
 
   var get_experiment_menu = function(){
       capLocalClient.get_experiment_menu()
-      .then(function(response) {
-        var _menu = [{
-          'name': 'Home',
-          'link': 'app',
-          'icon': 'fa fa-home'
-        }];
-        $scope.menu.items = _menu.concat(response.data);
-      }, function(error) {
-        $scope.error = "ERROR";
-      });
+        .then(function(response) {
+          var _menu = [{
+            'name': 'Home',
+            'link': 'app',
+            'icon': 'fa fa-home'
+          }];
+          $scope.menu.items = _menu.concat(response.data);
+        }, function(error) {
+          $scope.error = "ERROR";
+        });
   };
 
   $scope.get_experiment_records= function(){
-      capLocalClient.get_experiment_records(exp = $scope.exp, limit=30)
+    capLocalClient.get_experiment_records(exp = $scope.exp, limit=30)
       .then(function(response) {
         $scope.experiments = response;
       }, function(error) {

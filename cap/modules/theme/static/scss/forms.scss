@@ -66,6 +66,7 @@
 }
 
 .form-control {
+  
   background-color: #eff6f9;
   border: none;
   box-shadow: none;
@@ -73,6 +74,20 @@
 
 .form-control:focus {
   box-shadow: none;
+}
+
+.search-fields {
+  position: relative;
+}
+
+.search-fields input{
+  text-indent: 30px;
+}
+
+.search-fields .fa-search{
+  position: absolute;
+  top: 30px;
+  left: 17px;
 }
 
 .filter-fields {
@@ -191,4 +206,12 @@
 
 .fixed-column-link:hover {
   color: #6f7b86;
+}
+
+.filter-fields-searchbar {
+  background-color: $text-white;
+}
+
+#no-results {
+  margin-left: 3%;
 }

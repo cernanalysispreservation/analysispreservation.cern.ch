@@ -96,6 +96,8 @@
   padding-right: 30px;
 }
 
-#cap-home-user-menu {
-  margin-right: 15px;
+@media only screen and (min-width : 768px) {
+  #cap-home-user-menu {
+    margin-right: 7%;
+  }
 }

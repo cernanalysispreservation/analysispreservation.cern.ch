@@ -22,18 +22,24 @@
       </div>
     </div>
     <div ng-init="progress={}; type={}" class="panel panel-default deposit-panel" id="fixed-column-height">
-      <div class="panel-heading forms-font-color">
-        <i class="fa fa-search fa-2x forms-font-color" aria-hidden="true"></i>
-        <span class="forms-font-color filter-fields"> Filter Fields</span>
+      <div class="panel-heading forms-font-color search-fields">  
+        <span class="fa fa-search forms-font-color"></span>
+        <input 
+          type="text"
+          class="form-control filter-fields-searchbar"
+          placeholder="Filter fields..."
+          ng-model="query[queryBy]"
+        >
       </div>
       <cap-progress-bar progress="progress" type="type" form="depositionForm" el="recordsVM.invenioRecordsSchema"></cap-progress-bar>
-      <div ng-repeat="formElement in recordsVM.invenioRecordsForm track by $index" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body">
+      <div ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body">
         <span class="forms-filter-fields-font-size cursor-pointer fixed-column-link" ng-click="updateContent($index, recordsVM.invenioRecordsForm.length)"><strong>{{formElement.title | uppercase}}</strong></span>
         <span class="progress-bar progress-bar-{{type[formElement.key[0]]}} custom-progress-bar" role="progressbar" >{{ progress[formElement.key[0]] }} %</span>
           <ul >
             <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties">{{value.title}}</li>
           </ul>
       </div>
+      <span id="no-results" ng-show="(recordsVM.invenioRecordsForm | filter:query).length == 0">No results found. Please try again.</span>
     </div>
   </div>
   <div class="col-sm-8 form-main-column">
