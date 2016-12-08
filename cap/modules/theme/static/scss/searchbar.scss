@@ -26,13 +26,14 @@
 
 @import "variables";
 
-$cap_searchbar_bgcolor: $light-grey-theme-color;
+$cap_searchbar_bgcolor: #fff;
 
 #cap-home-search {
   width: 85%;
   float: right;
   height: $header_btn_height;
-  
+  padding-top: 5px;
+
   > div, > span {
     height: $header_btn_height;
     line-height: $header_btn_height;
@@ -43,7 +44,7 @@ $cap_searchbar_bgcolor: $light-grey-theme-color;
     background-color: $cap_searchbar_bgcolor;
     box-shadow: none;
     border-radius: 2px;
-    border: 0;
+    border: 1px solid $light-blue-theme-color;
     float: left;
     -webkit-appearance: none;
     -moz-appearance: none;
