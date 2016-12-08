@@ -32,6 +32,10 @@
   img {
     margin-top: 5%;
   }
+  
+  img.map, map area {
+    outline: none;
+  }
 
   @media (max-width: 768px) {
     margin-top: 40%;
