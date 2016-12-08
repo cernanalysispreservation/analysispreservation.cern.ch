@@ -92,6 +92,7 @@ experiments_js = NpmBundle(
     "js/cap/cap.controllers.js",
     "js/cap/cap.config.js",
     "js/experiments/app.js",
+    "js/cap/components/contentBar.js",
     "js/cap/cap.main.js",
     output="gen/cap.experiments.%(version)s.js",
     npm={

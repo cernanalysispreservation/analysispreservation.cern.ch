@@ -192,3 +192,33 @@ body::-webkit-scrollbar-thumb {
 #invenio-search {
   padding-top: 15px;
 }
+
+.content {
+  padding-top: 30px;
+}
+
+#cap-content-bar {
+  border-bottom: 1px solid $light-blue-theme-color;
+  max-height: $content-bar-height;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  background-color: #fff;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+    display: inline-block;
+
+    li {
+      padding: 5px 10px;
+      float: left;
+    }
+  }
+}
+
+#cap-content-main {
+  top: $content-bar-height;
+}
