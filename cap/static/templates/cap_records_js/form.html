@@ -15,7 +15,6 @@
           <div ng-show="!recordsVM.invenioRecordsEndpoints.self">
             <ul class="list-inline text-center">
               <li><button ng-disabled="depositionForm.$invalid || recordsVM.invenioRecordsLoading" class="btn save-btn action-btn" ng-click="recordsVM.actionHandler(['self', 'PUT'])">Save</button></li>
-              <li><button ng-disabled="depositionForm.$invalid || recordsVM.invenioRecordsLoading" class="btn  save-publish-btn action-btn" ng-click="recordsVM.actionHandler([['self', 'PUT'], ['publish', 'POST']], '/deposit')">Save & Publish</button></li>
             </ul>
           </div>
         </div>
