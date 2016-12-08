@@ -7,7 +7,7 @@
 {%- endblock javascript %}
 
 {%- block body_inner %}
-<div id="invenio-search">
+<div id="cap-deposit-index" class="content">
   <invenio-search
    search-endpoint="{{ config.DEPOSIT_SEARCH_API }}"
    search-headers='{"Accept": "{{ config.DEPOSIT_SEARCH_MIMETYPE|default('application/json')}}"}'
