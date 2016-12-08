@@ -216,11 +216,11 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     # search_type=None,
     'search_class': CapRecordSearch,
     # 'search_factory_imp': 'invenio_records_rest.query.es_search_factory',
-    # record_serializers={
-    #     'application/json': ('cap.modules.records.serializers'
-    #                          ':json_v1_response'),
-    # },
-    # search_serializers={
+    'record_serializers': {
+        'application/json': ('cap.modules.records.serializers'
+                             ':json_v1_response'),
+    },
+    # 'search_serializers': {
     #     'application/json': ('cap.modules.records.serializers'
     #                          ':json_v1_search'),
     # },

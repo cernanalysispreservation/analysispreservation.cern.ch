@@ -62,6 +62,7 @@ create_api = create_app_factory(
 
     converter_entry_points=['invenio_base.api_converters'],
     instance_path=instance_path,
+    static_folder=static_folder,
 )
 
 

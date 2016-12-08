@@ -22,25 +22,26 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Record serialization."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_records_rest.serializers.response import record_responsify, \
-    search_responsify
+from invenio_records_rest.serializers.json import JSONSerializer
+from invenio_records_files.api import Record
 
-from .json import CAPSchemaSerializer as JSONSerializer
-from .schemas.json import RecordSchemaJSONV1
 
-# Serializers
-# ===========
-#: CAP JSON serializer version 1.0.0
-json_v1 = JSONSerializer(RecordSchemaJSONV1)
+class CAPSchemaSerializer(JSONSerializer):
+    """Schema for records v1 in JSON."""
 
-# Records-REST serializers
-# ========================
-#: JSON record serializer for individual records.
-json_v1_response = record_responsify(json_v1, 'application/json')
+    def preprocess_record(self, pid, record, links_factory=None):
+        """Include files for single record retrievals."""
+        result = super(CAPSchemaSerializer, self).preprocess_record(
+            pid, record, links_factory=links_factory
+        )
 
-#: JSON record serializer for search results.
-json_v1_search = search_responsify(json_v1, 'application/json')
+        # Add/remove files depending on access right.
+        if isinstance(record, Record) and record.files:
+        #     if not has_request_context() or has_read_files_permission(
+        #             current_user, record):
+            result['files'] = record['_files']
+
+        return result
