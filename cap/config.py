@@ -457,3 +457,9 @@ COLLECTIONS_REGISTER_RECORD_SIGNALS = False
 # Datadir
 # =======
 DATADIR = join(dirname(__file__), 'data')
+
+# Files
+# ===========
+# TOFIX: Fix to check '$schema' permissions( like
+#        'UpdateDepositPermission') for file upload
+FILES_REST_PERMISSION_FACTORY = allow_all

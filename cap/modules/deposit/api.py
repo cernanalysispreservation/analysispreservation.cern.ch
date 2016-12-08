@@ -52,6 +52,16 @@ class CAPDeposit(Deposit):
         """Check if deposit is published."""
         return self['_deposit'].get('pid') is not None
 
+
+    @classmethod
+    def get_record(cls, id_, with_deleted=False):
+        """Get record instance."""
+        deposit = super(CAPDeposit, cls).get_record(
+            id_=id_, with_deleted=with_deleted)
+        deposit['_files'] = deposit.files.dumps()
+        return deposit
+
+
     @property
     def record_schema(self):
         """Convert deposit schema to a valid record schema."""
