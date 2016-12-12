@@ -27,10 +27,11 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $location,  capLocalClient, deposit) {
+var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, contentBarTabs) {
   $scope.name = 'DepositController';
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
+  $scope.contentBarTabs = contentBarTabs;
   $scope.mi = deposit.meta_info;
 };
 
@@ -38,7 +39,8 @@ capDepositCtrl.$inject = [
   '$scope',
   '$location',
   'capLocalClient',
-  'deposit'
+  'deposit',
+  'contentBarTabs'
 ];
 
 angular.module('cap.app')
@@ -72,17 +74,19 @@ angular.module('cap.app')
 ///////////////////////////////////////////
 // CAP app Records Controller
 
-var capRecordCtrl = function($scope, $location, capLocalClient, recordss) {
+var capRecordCtrl = function($scope, $location, capLocalClient, recordss, contentBarTabs) {
   $scope.name = 'RecordController';
 
   $scope.recordss = recordss;
+  $scope.contentBarTabs = contentBarTabs;
 };
 
 capRecordCtrl.$inject = [
   '$scope',
   '$location',
   'capLocalClient',
-  'recordss'
+  'recordss',
+  'contentBarTabs'
 ];
 
 angular.module('cap.app')

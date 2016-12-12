@@ -120,6 +120,19 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
           return capLocalClient
                   .get_record($stateParams.recid);
         },
+        contentBarTabs: function($stateParams){
+          return [{
+            "title": "Overview",
+            "link": "app.records.overview({recid:"+$stateParams.recid+"})"
+            },{
+            "title": "Files",
+            "link": "app.records.files({recid:"+$stateParams.recid+"})"
+            },{
+            "title": "Visualisation",
+            "link": "app.records.visual({recid:"+$stateParams.recid+"})"
+            }];
+        }
+      },
       data: {
         requireLogin: true
       }
@@ -200,9 +213,32 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       abstract: true,
       views: {
         'content': {
-          templateUrl: function($stateParams) {
-            return '/app/deposit/'+$stateParams.depid;
-          },
+          templateUrl: '/static/templates/cap/content_with_bar.html',
+          controller: 'DepositController',
+        }
+      },
+      resolve: {
+        deposit: function(capLocalClient, $stateParams){
+          return capLocalClient
+                  .get_deposit($stateParams.depid);
+        },
+        contentBarTabs: function($stateParams){
+          return [{
+            "title": "Overview",
+            "link": "app.deposit_item.overview({depid:"+$stateParams.depid+"})"
+            },{
+            "title": "Files",
+            "link": "app.deposit_item.files({depid:"+$stateParams.depid+"})"
+            },{
+            "title": "Settings",
+            "link": "app.deposit_item.settings({depid:"+$stateParams.depid+"})"
+          }];
+        }
+      },
+      data: {
+        requireLogin: true
+      }
+    })
     .state({
       name: 'app.deposit_item.overview',
       url: '',
@@ -264,6 +300,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
           // controller: 'DepositController',
         }
       },
+      data: {
+        requireLogin: true
       }
     });
 

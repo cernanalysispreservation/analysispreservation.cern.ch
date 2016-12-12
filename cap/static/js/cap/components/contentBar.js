@@ -8,18 +8,6 @@ angular.module('cap.app').component('capContentBar', {
 
     // The controller that handles our component logic
     controller: function ($scope) {
-        $scope.tabs = [{
-            "title": "Overview",
-            "link": "app.records.overview({recid:6})"
-            },{
-            "title": "Files",
-            "link": "app.records.files({recid:6})"
-            },{
-            "title": "Visualisation",
-            "link": "app.records.visual({recid:6})"
-            },{
-            "title": "Settings",
-            "link": "app.records.overview({recid:6})"
-            }];
+        $scope.tabs = this.tabs;
     }
 });

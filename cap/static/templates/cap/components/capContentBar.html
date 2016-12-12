@@ -1,8 +1,8 @@
 <div id="cap-content-bar">
     <div class="container">
-        <ul >
-            <li ng-repeat="tab in tabs">
-                <a ui-sref="{{tab.link}}">{{tab.title}}</a>
+        <ul ng-repeat="tab in tabs">
+            <li ui-sref-active="active" ui-sref="{{tab.link}}" >
+                <a >{{tab.title}}</a>
             </li>
         </ul>
     </div>

@@ -40,6 +40,8 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 @import "record";
 @import "utils";
 
+
+
 .push-footer {
   height: 100vh;
 }
@@ -62,13 +64,13 @@ header {
 }
 
 .cap-box {
-  background-color: white;
+  background-color: #fff;
   color: $dark-grey-element-color;
   padding: 20px;
   border: 1px solid $light-blue-theme-color;
 
   > header {
-    color: $dark-grey-element-color;
+    color: #fff;
     font-weight: 400;
     font-family: 'Futura';
     font-size: 20px;
@@ -194,7 +196,13 @@ body::-webkit-scrollbar-thumb {
 }
 
 .content {
-  padding-top: 30px;
+  // padding-top: 30px;
+}
+
+#cap-content {
+  display: inline-block;
+  width: 100%;
+  float: left;
 }
 
 #cap-content-bar {
@@ -209,16 +217,22 @@ body::-webkit-scrollbar-thumb {
   ul {
     list-style: none;
     margin: 0;
-    padding: 5px;
+    padding: 0;
+    height: $content-bar-height;
     display: inline-block;
 
     li {
-      padding: 5px 10px;
+      padding: 10px 30px;
       float: left;
+    }
+
+    li.active {
+      border-bottom: 2px solid $light-blue-theme-color;
+      padding-bottom: 8px;
     }
   }
 }
 
 #cap-content-main {
-  top: $content-bar-height;
+  margin-top: $content-bar-height; 
 }
