@@ -1,0 +1,42 @@
+<div class="container cap-container">
+  <div class="row">
+    <div class="col-md-12">
+      <div
+        id="invenio-records">
+        <invenio-records
+          initialization="{{deposit.meta_info.initialization}}"
+          links="{{deposit.links}}"
+          template-params="{{deposit.meta_info.template_params}}"
+          extra-params="{{deposit.meta_info.extra_params}}"
+          form="{{deposit.meta_info.schema_form}}"
+          record="{{deposit.metadata}}"
+          schema="{{deposit.meta_info.schema}}">
+          <invenio-records-loading template="/api/static/node_modules/invenio-records-js/dist/templates/loading.html">
+          </invenio-records-loading>
+          <invenio-records-alert template="/api/static/templates/cap_records_js/alert.html">
+          </invenio-records-alert>
+          <invenio-records-form
+            form-templates="{{deposit.meta_info.form_template.form_templates}}"
+            form-templates-base="{{deposit.meta_info.form_template.form_templates_base}}"
+            template="/api/static/templates/cap_records_js/form.html">
+          </invenio-records-form>
+        </invenio-records>
+        <invenio-files-uploader
+          method="PUT"
+          endpoint="/api/deposits"
+          action="{{deposit.meta_info.files.action}}"
+          files="{{deposit.meta_info.files.files}}"
+          links="{{deposit.links}}"
+          extra-params="{{deposit.meta_info.files.extra_params}}"
+        >
+          <invenio-files-upload-zone
+            template="/api/static/templates/cap_files_js/upload.html">
+          </invenio-files-upload-zone>
+          <invenio-files-list
+            template="/api/static/templates/cap_files_js/list.html"
+          ></invenio-files-list>
+        </invenio-files-uploader>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,7 @@
  */
 
 
-var services = angular.module('cap.services', [])
+var capLocalClient = angular.module('cap.services', [])
   .service('capLocalClient', ['$http', '$q', function($http, $q) {
     return {
       get_user: function() {
@@ -55,6 +55,38 @@ var services = angular.module('cap.services', [])
           .then(function(response) {
             deferred.notify('finished');
             deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_record: function(pid_value) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/api/records/'+pid_value;
+        $http({
+          method: 'GET',
+          url: url,
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response.data);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_deposit: function(pid_value) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/api/deposits/'+pid_value;
+        $http({
+          method: 'GET',
+          url: url,
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response.data);
           }, function (response) {
             deferred.notify('error');
             deferred.reject(response);

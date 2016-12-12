@@ -7,7 +7,8 @@
 {%- endblock javascript %}
 
 {%- block body_inner %}
-<div id="cap-deposit-index" class="content">
+<div id="cap-deposit-index" class="cap-container container">
+  <h2>Deposits</h2>
   <invenio-search
    search-endpoint="{{ config.DEPOSIT_SEARCH_API }}"
    search-headers='{"Accept": "{{ config.DEPOSIT_SEARCH_MIMETYPE|default('application/json')}}"}'
@@ -15,12 +16,62 @@
    search-url-listen="false"
   >
   {{super()}}
+
   </invenio-search>
 </div>
 {%- endblock body_inner %}
 
 {%- block page_body %}
-  {%- block new_upload %}
-  {%- endblock new_upload %}
-  {{super()}}
+<div class="search-page">
+  {% block search_error %}{{super()}}{% endblock search_error %}
+
+  <div class="panel panel-default cap-panel">
+    <div class="panel-heading">
+      {%- block search_facets %}
+      <invenio-search-facets
+      template="{{ url_for('static', filename='templates/invenio_deposit/selectstatus.html') }}">
+      </invenio-search-facets>
+      {%- endblock search_facets %}
+      {%- block search_sort %}
+      <div class="pull-right form-inline">
+        <div class="form-group">
+        {%- set sort_options = config.get('DEPOSIT_REST_SORT_OPTIONS', {}).get(config.DEPOSIT_UI_SEARCH_INDEX) %}
+        {%- if sort_options %}
+          <label>{{ _('Sort') }}</label>
+          {%- block search_sort_select scoped %}
+          <invenio-search-select-box
+            sort-key="sort"
+            available-options='{{ sort_options|format_sortoptions|safe }}'
+            template="{{ url_for('static', filename='templates/invenio_deposit/selectbox.html') }}"
+            >
+          </invenio-search-select-box>
+          {%- endblock search_sort_select %}
+          {%- block search_sort_order scoped %}
+          <invenio-search-sort-order
+          sort-key="sort"
+          template="{{ url_for('static', filename='templates/invenio_deposit/togglebutton.html') }}"
+          >
+          </invenio-search-sort-order>
+          {%- endblock search_sort_order %}
+        {%- endif %}
+        </div>
+      </div>
+      {%- endblock search_sort %}
+    </div>
+    {%- block search_results %}
+    <invenio-search-results
+      class="list-group"
+      template="{{ url_for('static', filename='templates/invenio_deposit/results.html') }}">
+    </invenio-search-results>
+    {%- endblock search_results %}
+  </div>
+  {%- block search_pagination_bottom %}
+  <div align="center">
+    <invenio-search-pagination
+      template="{{ url_for('static', filename='templates/invenio_search_ui/pagination.html') }}">
+    </invenio-search-pagination>
+  </div>
+  {%- endblock search_pagination_bottom %}
+
+</div>
 {%- endblock page_body %}
