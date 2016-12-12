@@ -399,11 +399,11 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'pid_minter': 'cap_deposit_minter',
     'pid_fetcher': 'cap_deposit_fetcher',
     'record_class': 'cap.modules.deposit.api:CAPDeposit',
-    # 'record_serializers': {
-    #     'application/json': (
-    #         'cap.modules.records.serializers'
-    #         ':json_v1_response')
-    # },
+    'record_serializers': {
+        'application/json': (
+            'cap.modules.records.serializers'
+            ':json_v1_response')
+    },
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
     'file_item_route':

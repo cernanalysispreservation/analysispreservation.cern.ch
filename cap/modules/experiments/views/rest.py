@@ -70,7 +70,7 @@ def CAP_EXPERIMENT_MENU(experiment):
                 ]
             }
         }, {
-            'name': 'Publications',
+            'name': 'Shared Records',
             'link': _l('app.publications'),
             'icon': 'fa fa-book'
         }, {

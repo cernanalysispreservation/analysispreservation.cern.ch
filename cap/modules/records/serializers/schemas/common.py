@@ -150,28 +150,25 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
         # import ipdb;ipdb.set_trace()
         # _meta_info['boom'] = "bam"
         if _id:
-            _meta_info['boom'] = "bam"
             _meta_info['initialization'] = current_app.config['DEPOSIT_RECORDS_API'].format(pid_value=_id)
             _meta_info['files'] = {
                 'action': current_app.config['DEPOSIT_RECORDS_API'].format(pid_value=_id),
                 'files': m.get('_files', [])
             }
         else:
-            _meta_info['boom'] = "bammmmm"
             _meta_info['initialization'] = current_app.config['DEPOSIT_SEARCH_API']
 
-        _meta_info['template-params'] = {
+        _meta_info['template_params'] = {
             "messages": current_app.config['DEPOSIT_RESPONSE_MESSAGES']
         }
-        _meta_info['extra-params'] = {
+        _meta_info['extra_params'] = {
             "headers": {
                 "Content-Type": "application/json"
             }
         }
 
-        _meta_info['schema'] = m.get('$schema', "")
-        _meta_info['schema_form'] = m.get(
-            '$schema', "").replace('/schemas/', '/static/json/')
+        _meta_info['schema'] = m.get('$schema', "").replace('http://', 'https://')
+        _meta_info['schema_form'] = _meta_info['schema'].replace('/schemas/', '/static/json/')
 
         _meta_info['loading_template'] = url_for('static', filename='node_modules/invenio-records-js/dist/templates/loading.html')
         _meta_info['alert_template'] = url_for('static', filename='templates/cap_records_js/alert.html')
@@ -187,8 +184,8 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                     "Content-Type": "application/json"
                 }
             },
-            'upload-zone-template': url_for('static', filename='templates/cap_files_js/upload.html'),
-            'list-template': url_for('static', filename='templates/cap_files_js/list.html'),
+            'upload_zone_template': url_for('static', filename='templates/cap_files_js/upload.html'),
+            'list_template': url_for('static', filename='templates/cap_files_js/list.html'),
         })
 
         return _meta_info
