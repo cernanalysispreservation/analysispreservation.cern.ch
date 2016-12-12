@@ -44,10 +44,10 @@
   // border:none;
 }
 
-#fixed-column-height{
+.cap-fixed-height-col{
   // TOFIX: calc() values and offset height should be calculated by components
   // heigh (box-height, buttons-height, etc)
-  height: calc(100vh - 300px);
+  height: calc(100vh - 200px);
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -62,7 +62,7 @@
 @media (min-width: 768px) {
   .form-horizontal .control-label {
     text-align: left;
-  }  
+  }
 }
 
 .form-control {
@@ -161,7 +161,7 @@
 
 .save-publish-btn:hover {
   background-color: $turquoise;
-  color: $text-white;    
+  color: $text-white;
 }
 
 .edit-save-btn:hover {
@@ -196,10 +196,10 @@
 }
 
 .upload-zone {
-  width: 66%;
+  width: 100%;
 }
 
-.deposit-panel .field-required:after {
+.cap-panel .field-required:after {
   content: " *";
   color: $dark-grey-element-color;
 }
@@ -214,4 +214,54 @@
 
 #no-results {
   margin-left: 3%;
+}
+
+$cap-deposit-sidebar-width: 300px;
+
+.cap-deposit {
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+}
+.cap-deposit-sidebar {
+  width: $cap-deposit-sidebar-width;
+  position: relative;
+  float: left;
+  border: 1px solid $light-blue-theme-color;
+  margin-right: 10px;
+
+
+  .cap-panel {
+    border: 0;
+  }
+}
+
+.cap-deposit-form {
+  left: $cap-deposit-sidebar-width+10;
+  height: 100%;
+  overflow: scroll;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid $light-blue-theme-color;
+
+  .cap-panel {
+    border: 0;
+    background-color: transparent;
+
+    .panel-heading {
+      background-color: transparent;
+      padding: 15px 0;
+      border: 0;
+    }
+    .panel-body {
+      background-color: #eff6f9;
+      border: 1px solid $light-blue-theme-color;
+
+      input {
+        background-color: #fff;
+        border: 1px solid $light-blue-theme-color;
+        border-radius: 0;
+      }
+    }
+  }
 }

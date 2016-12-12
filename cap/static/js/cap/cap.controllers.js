@@ -138,12 +138,14 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
   };
 
   $scope.updateContent= function(index, arraySize){
+    console.log("index");
+    console.log(index);
     $(function() {
       for(var i=0; i<arraySize; i++) {
         if(index !== i) {
-          $(document.forms[0].childNodes[i]).hide();
+          $(document.forms[1].childNodes[i]).hide();
         } else {
-          $(document.forms[0].childNodes[i]).show();
+          $(document.forms[1].childNodes[i]).show();
         }
       }
     });

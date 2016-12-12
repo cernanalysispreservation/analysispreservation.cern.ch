@@ -91,7 +91,3 @@ capRecordCtrl.$inject = [
 
 angular.module('cap.app')
   .controller('RecordController', capRecordCtrl);
-];
-
-angular.module('cap.app')
-  .controller('RecordController', capRecordCtrl);
