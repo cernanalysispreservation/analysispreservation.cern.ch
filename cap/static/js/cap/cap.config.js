@@ -49,11 +49,23 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
-      name: 'app.working_groups',
-      url: 'WG',
+      name: 'app.index',
+      url: '',
       views: {
         'content': {
-          template: '<h1>WORKING GROUPS (overview)</h1>',
+          template: '<div class="container cap-content">'+
+          '<h1>Welcome to CERN Analysis Preservation</h1>'+
+          '<h2>You are in the {{exp}} homepage</h2></div>',
+          controller: 'WGController',
+        }
+      }
+    })
+    .state({
+      name: 'app.working_groups',
+      url: '/WG',
+      views: {
+        'content': {
+          template: '<div class="container cap-content"><h1>WORKING GROUPS (overview)</h1></div>',
           controller: 'WGController',
         },
         'header': {},
@@ -68,7 +80,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: 'WG/{wg_name}',
       views: {
         'content': {
-          template: '<h1>WORKING GROUPS :: {{wg_name}}</h1>',
+          template: '<div class="container cap-container"><h1>WORKING GROUPS :: {{wg_name}}</h1></div>',
           controller: 'WGController',
         }
       },

@@ -51,18 +51,20 @@ app.directive('capProgressBar', function() {
     link: function(scope, element, attrs, vm) {
       var req = {};
       var current_key = '';
-      
+
       scope.$watch('form.$error', function(newValue, oldValue) {
         // Get the required fields
-        angular.forEach(scope.el.properties, function(value, key) {
-            if(key.indexOf("_") !== 0) {
-              scope.progress[key] = 0;
-              scope.type[key] = '';
-              if(value.name !== "_deposit" && value.required !== undefined) {
-                req[key] = value.required;
-              }              
-            }
-        });
+        if(scope.el){
+          angular.forEach(scope.el.properties, function(value, key) {
+              if(key.indexOf("_") !== 0) {
+                scope.progress[key] = 0;
+                scope.type[key] = '';
+                if(value.name !== "_deposit" && value.required !== undefined) {
+                  req[key] = value.required;
+                }
+              }
+          });
+        }
 
         // Calculate percentage for every element
         if (newValue !== oldValue) {
@@ -76,11 +78,11 @@ app.directive('capProgressBar', function() {
               if(req[current_key].indexOf(key) > -1) {
                 if(req[current_key].length == 1) {
                   if(value.$invalid) {
-                    scope.progress[current_key] = 0;  
+                    scope.progress[current_key] = 0;
                     scope.type[current_key] = '';
                   } else {
                     scope.progress[current_key] = 100;
-                    scope.type[current_key] = 'success';  
+                    scope.type[current_key] = 'success';
                   }
                 } else {
                   if(!value.$invalid) {
@@ -88,7 +90,7 @@ app.directive('capProgressBar', function() {
                     if(scope.progress[current_key] >= 98 && scope.progress[current_key] <= 102){
                       scope.progress[current_key] = 100;
                     }
-                    
+
                   }
                   if (scope.progress[current_key] == 100) {
                     scope.type[current_key] = 'success';
