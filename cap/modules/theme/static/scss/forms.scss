@@ -190,9 +190,13 @@
 /* Progress bar */
 
 .custom-progress-bar {
-  width: 13%;
+  width: 15%;
   float: right;
   border-radius: 2px;
+}
+
+.progress-bar-disabled {
+  background-color: $dark-grey-element-color;
 }
 
 .upload-zone {

@@ -20,28 +20,27 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
-
 /**
-  * @ngdoc directive
-  * @name capLoading
-  * @description
-  *    Progress bar directive handler
-  * @namespace capLoading
-  * @example
-  *    Usage:
-  *     <cap-loading
-  *      progress="progress"
-  *      type="type"
-  *      form="depositionForm"
-  *      el="recordsVM.invenioRecordsSchema">
-  *     </cap-loading>
-  *
-  */
+ * @ngdoc directive
+ * @name capProgressBar
+ * @description
+ *    Progress bar directive handler
+ * @namespace capLoading
+ * @example
+ *    Usage:
+ *     <cap-progress-bar
+ *      progress="progress"
+ *      type="type"
+ *      form="depositionForm"
+ *      el="recordsVM.invenioRecordsSchema">
+ *     </cap-progress-bar>
+ *
+ */
 var app = angular.module("cap.directives", ['capRecords']);
 
 app.directive('capProgressBar', function() {
   return {
-    restrict:'E',
+    restrict: 'E',
     scope: {
       form: '=',
       el: '=',
@@ -52,55 +51,76 @@ app.directive('capProgressBar', function() {
       var req = {};
       var current_key = '';
 
+
+      // TODO Fix depositionForm to contain categories
       scope.$watch('form.$error', function(newValue, oldValue) {
         // Get the required fields
-        if(scope.el){
+        if (scope.el) {
           angular.forEach(scope.el.properties, function(value, key) {
-              if(key.indexOf("_") !== 0) {
-                scope.progress[key] = 0;
-                scope.type[key] = '';
-                if(value.name !== "_deposit" && value.required !== undefined) {
-                  req[key] = value.required;
-                }
-              }
-          });
-        }
-
-        // Calculate percentage for every element
-        if (newValue !== oldValue) {
-          angular.forEach(scope.form, function(value, key) {
-            if((key.indexOf('$') !== 0) && value.$dirty) {
-              angular.forEach(req, function(v, k) {
-                if(v.indexOf(key) > -1) {
-                  current_key = k;
-                }
-              });
-              if(req[current_key].indexOf(key) > -1) {
-                if(req[current_key].length == 1) {
-                  if(value.$invalid) {
-                    scope.progress[current_key] = 0;
-                    scope.type[current_key] = '';
-                  } else {
-                    scope.progress[current_key] = 100;
-                    scope.type[current_key] = 'success';
-                  }
-                } else {
-                  if(!value.$invalid) {
-                    scope.progress[current_key] += parseInt(100/req[current_key].length);
-                    if(scope.progress[current_key] >= 98 && scope.progress[current_key] <= 102){
-                      scope.progress[current_key] = 100;
-                    }
-
-                  }
-                  if (scope.progress[current_key] == 100) {
-                    scope.type[current_key] = 'success';
-                  } else if(scope.progress[current_key] > 0) {
-                    scope.type[current_key] = 'warning';
-                  }
-                }
+            if (key.indexOf("_") !== 0) {
+              scope.progress[key] = 0;
+              scope.type[key] = '';
+              if (value.name !== "_deposit" && value.required !== undefined) {
+                req[key] = value.required;
               }
             }
           });
+        }
+        
+        // Not available when no required fields
+        angular.forEach(scope.progress, function(value, key){
+          if (!(key in req)){
+            scope.progress[key] = 'N/A';
+            scope.type[key] = 'disabled';
+          }
+        });
+        
+
+        // Calculate percentage for every element
+        if (oldValue !== newValue) {
+          angular.forEach(scope.form, function(value, key) {
+            if ((key.indexOf('$') !== 0) && value.$dirty) {
+              angular.forEach(req, function(v, k) {
+                if (v.indexOf(key) > -1) {
+                  current_key = k;
+                }
+              });
+              if (req[current_key].indexOf(key) > -1) {
+                calculatePercentage(req, current_key, value);
+              }
+            }
+          });
+        }
+
+        if (scope.form.$valid) {
+          angular.forEach(req, function(value, key) {
+            scope.progress[key] = 100;
+            scope.type[key] = 'success';
+          });
+        }
+
+        function calculatePercentage(req, current_key, value) {
+          if (req[current_key].length == 1) {
+            if (value.$invalid) {
+              scope.progress[current_key] = 0;
+              scope.type[current_key] = '';
+            } else {
+              scope.progress[current_key] = 100;
+              scope.type[current_key] = 'success';
+            }
+          } else {
+            if (value.$valid) {
+              scope.progress[current_key] += parseInt(100 / req[current_key].length);
+              if (scope.progress[current_key] >= 98 && scope.progress[current_key] <= 102) {
+                scope.progress[current_key] = 100;
+              }
+            }
+            if (scope.progress[current_key] == 100) {
+              scope.type[current_key] = 'success';
+            } else if (scope.progress[current_key] > 0) {
+              scope.type[current_key] = 'warning';
+            }
+          }
         }
       }, true);
     }
