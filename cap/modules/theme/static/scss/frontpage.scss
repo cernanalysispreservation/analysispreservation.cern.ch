@@ -29,12 +29,8 @@
 #cap-experiments {
   text-align: center;
 
-  img {
+  figure {
     margin-top: 5%;
-  }
-  
-  img.map, map area {
-    outline: none;
   }
 
   @media (max-width: 768px) {
@@ -52,7 +48,6 @@
 
 #cap-hello {
 }
-
 
 #cap-records {
 }

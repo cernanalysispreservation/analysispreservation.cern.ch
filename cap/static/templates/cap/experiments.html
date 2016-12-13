@@ -3,13 +3,24 @@
       Welcome to CERN Analysis Preservation. You need to be a member of a collaboration (ATLAS, ALICE, CMS, LHCb) to be able to move on...
     </div>
 
-    <img src="/static/img/experiments.svg" alt="" usemap="#experiment_map" class="img-responsive center-block">
-
-    <map name="experiment_map">
-        <area shape="poly" coords="0,0,0,462,372,231" ng-if="(currentUser.collaborations).indexOf('ALICE') > -1" target="_self" href="/app/experiment/set/ALICE" title="ALICE" alt="ALICE" />
-        <area shape="poly" coords="0,462,790,462,372,231" ng-if="(currentUser.collaborations).indexOf('ATLAS') > -1" target="_self" href="/app/experiment/set/ATLAS" title="ATLAS" alt="ATLAS" />
-        <area shape="poly" coords="0,0,790,0,372,231" ng-if="(currentUser.collaborations).indexOf('CMS') > -1" target="_self" href="/app/experiment/set/CMS" title="CMS" alt="CMS" />
-        <area shape="poly" coords="790,0,790,462,372,231" ng-if="(currentUser.collaborations).indexOf('LHCb') > -1" target="_self" href="/app/experiment/set/LHCb" title="LHCb" alt="LHCb" />
-        <area shape="default" nohref="nohref" title="" alt=""/>
-    </map>
+    <figure class="image-responsive center-block">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 730 462" preserveAspectRatio="xMidYMid meet" width="50%">
+        
+        <image width="730" height="462" xlink:href="/static/img/experiments.svg"/>
+        
+        <a ng-if="(currentUser.collaborations).indexOf('ALICE') >= 0" target="_self" xlink:href="/app/experiment/set/ALICE">
+            <polygon points="0,0,0,462,365,231" opacity="0"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('ATLAS') >= 0" target="_self" xlink:href="/app/experiment/set/ATLAS">
+            <polygon points="0,462,730,462,365,231" opacity="0"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('CMS') >= 0" target="_self" xlink:href="/app/experiment/set/CMS">
+            <polygon points="0,0,730,0,365,231" opacity="0"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('LHCb') >= 0" target="_self" xlink:href="/app/experiment/set/LHCb">
+            <polygon points="730,0,730,462,365,231" opacity="0"/>
+        </a>
+        
+        </svg>
+    </figure>
 </div>
