@@ -33,7 +33,7 @@
             <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
             <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
         </a>
-        <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;">
+        <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;left:0;width:200px;pointer-events:none;">
         {% endblock %}
     </div>
 
