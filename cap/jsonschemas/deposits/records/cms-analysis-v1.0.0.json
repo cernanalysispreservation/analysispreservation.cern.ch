@@ -114,17 +114,21 @@
             "people_info":{  
                "title":"People Involved",
                "description":"Please provide information about the people involved",
-               "type":"object",
-               "properties":{  
-                  "names":{  
-                     "title":"Names",
-                     "type":"string"
-                  },
-                  "email":{  
-                     "title":"Email-Adresses",
-                     "type":"string"
-                  }
+               "type":"array",
+               "items": {
+                  "type": "object",
+                  "properties":{  
+                     "names":{  
+                        "title":"Names",
+                        "type":"string"
+                     },
+                     "email":{  
+                        "title":"Email-Adresses",
+                        "type":"string"
+                     }
+                  }   
                }
+               
             },
             "os":{  
                "title":"Operation System",

@@ -1,0 +1,69 @@
+<div sf-array="form" ng-init="selected = { tab: 0 }"
+     class="clearfix schema-form-tabarray schema-form-tabarray-{{form.tabType || 'left'}} {{form.htmlClass}}">
+  <div class="panel panel-default cap-panel">
+        <div class="panel-heading">
+            <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.schema.title | uppercase }}</strong></span>
+            <div class="help-block" ng-if="form.description"
+                 ng-bind-html="form.description">
+            </div>
+        </div>
+        <div class="panel-body" ng-init="queryFilter={}; queryByFilter='$';">
+          <div ng-if="!form.tabType || form.tabType !== 'right'"
+                     ng-class="{'col-xs-3': !form.tabType || form.tabType === 'left'}">
+              <div class="forms-font-color tabarray-search-fields">
+                 <span class="fa fa-search forms-font-color tabarray-fields"></span>
+                 <input
+                  ng-disabled="!modelArray[0]['name']"
+                  type="text"
+                  class="form-control filter-fields-searchbar-tabarray"
+                  placeholder="Filter fields..."
+                  ng-model="queryFilter[queryByFilter]"
+                 >
+              </div>
+            <ul class="nav no-bullets fixed-height-with-scroll" 
+                ng-class="{ 'tabs-left': !form.tabType || form.tabType === 'left'}">
+              <li ng-repeat="item in modelArray | filter:queryFilter track by $index"
+                  ng-click="$event.preventDefault() || (selected.tab = $index)"
+                  ng-class="{active: selected.tab === $index}">
+                  <a href="#">{{interp(form.title,{'$index':$index, value: item}) || $index}}
+                    <i ng-hide="form.readonly"
+                        ng-click="selected.tab = deleteFromArray($index).length - 1" 
+                        class="fa fa-times pull-right remove-element-from-list"></i>
+                  </a>
+              </li>
+              <span ng-show="(modelArray | filter:queryFilter).length == 0">No results found. Please try again.</span>
+            </ul>
+              <button ng-hide="form.readonly" ng-click="$event.preventDefault() || (selected.tab = appendToArray().length - 1)" href="#" class="btn {{ form.style.add || 'add-btn' }} action-btn add-new-tabarray-btn">
+              {{ form.add || 'Add New'}}
+              </button>
+          </div>
+          <div ng-class="{'col-xs-9': !form.tabType || form.tabType === 'left' || form.tabType === 'right'}">
+            <div class="tab-content {{form.fieldHtmlClass}}">
+              <div class="tab-pane clearfix"
+                   ng-repeat="item in modelArray track by $index"
+                   ng-show="selected.tab === $index"
+                   ng-class="{active: selected.tab === $index}">
+                   <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+              </div>
+            </div>
+          </div>    
+        </div>
+  </div>
+
+  <div ng-if="form.tabType === 'right'" class="col-xs-3">
+    <ul class="nav nav-tabs tabs-right">
+      <li ng-repeat="item in modelArray track by $index"
+          ng-click="$event.preventDefault() || (selected.tab = $index)"
+          ng-class="{active: selected.tab === $index}">
+          <a href="#">{{interp(form.title,{'$index':$index, value: item}) || $index}}</a>
+      </li>
+      <li ng-hide="form.readonly" ng-click="$event.preventDefault() || appendToArray()">
+        <a href="#">
+          <i class="glyphicon glyphicon-plus"></i>
+          {{ form.add || 'Add'}}
+          </a>
+      </li>
+    </ul>
+  </div>
+
+</div>

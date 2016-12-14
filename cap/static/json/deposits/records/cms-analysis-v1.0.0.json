@@ -21,15 +21,17 @@
       },
       {
       "key": "basic_info.people_info",
+      "type": "tabarray",
+      "title": "{{value.name || 'New item'}}",
       "items": [
         {
-          "key": "basic_info.people_info.name",
-          "title": "Names",
+          "key": "basic_info.people_info[].name",
+          "title": "Name",
           "placeholder": "E.g. John Doe, Jane Doe"
         },
         {
-          "key": "basic_info.people_info.email",
-          "title": "Email-Adresses",
+          "key": "basic_info.people_info[].email",
+          "title": "Email-Address",
           "placeholder": "E.g. john.doe@cern.ch, jane.doe@cern.ch"
         }
       ]

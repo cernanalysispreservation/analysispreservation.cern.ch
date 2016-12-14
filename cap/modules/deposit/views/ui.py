@@ -27,7 +27,7 @@
 from ..api import CAPDeposit
 from cap.config import DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, render_template, url_for, jsonify
+from flask import Blueprint, abort, current_app, jsonify, render_template, url_for
 from flask.views import View
 from flask_security import login_required
 
@@ -60,7 +60,8 @@ DEPOSIT_DEFAULT_METAINFO = {
             "radios": "radios.html",
             "radios_inline": "radios_inline.html",
             "select": "select.html",
-            "textarea": "textarea.html"
+            "textarea": "textarea.html",
+            'tabarray': 'tabarray.html'
         },
         "form_templates_base": "/api/static/templates/cap_records_js/decorators",
         "template": "/api/static/templates/cap_records_js/form.html"

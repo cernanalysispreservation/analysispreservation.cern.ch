@@ -91,6 +91,21 @@ $sidebar-navigation-height: 80px;
   left: 17px;
 }
 
+.tabarray-search-fields {
+  position: relative;  
+}
+
+.filter-fields-searchbar-tabarray{
+  text-indent: 30px;
+}
+
+.tabarray-search-fields .fa-search {
+  position: absolute;
+  top: 10px;
+  left: 10px; 
+}
+
+
 .filter-fields {
   margin-left: 10%; 
   font-size: x-large;
@@ -186,6 +201,14 @@ $sidebar-navigation-height: 80px;
 .select-file-btn:hover {
   background-color: $light-blue-theme-color;
   color: $white;
+}
+
+.add-new-tabarray-btn {
+  width: 100%;
+}
+
+.remove-element-from-list {
+  color: $dark-grey-element-color;
 }
 
 /* Progress bar */
@@ -338,4 +361,18 @@ $cap-deposit-sidebar-width: 300px;
 
     }
   }
+}
+
+.no-bullets {
+  list-style-type: none;
+}
+
+.fixed-height-with-scroll {
+  overflow: scroll;
+  overflow-x: hidden;
+  height: 18vh;
+}
+
+.nav>li>a:hover {
+  background-color: $light-grey-bg-color;
 }

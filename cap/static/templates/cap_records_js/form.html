@@ -1,6 +1,6 @@
 <div class="row">
  <div class="cap-deposit">
-    <div class="cap-deposit-sidebar cap-fixed-height-col">
+    <div ng-init="query={}; queryBy='$';" class="cap-deposit-sidebar cap-fixed-height-col">
      <div class="panel panel-default cap-panel">
        <div class="panel-heading">
          <div ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams[recordsVM.invenioRecordsAlert.action].hide">
@@ -36,9 +36,6 @@
          >
        </div>
        <div id="cap-deposit-navigation">
-
-
-
          <div ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body  cursor-pointer" ng-click="updateContent( recordsVM.invenioRecordsForm.length, $index)">
           <div class="dropdown" uib-dropdown >
             <div uib-dropdown-toggle id="nav{{formElement.key[0]}}" >
@@ -69,7 +66,7 @@
      sf-schema="recordsVM.invenioRecordsSchema"
      sf-form="recordsVM.invenioRecordsForm"
      sf-model="recordsVM.invenioRecordsModel"
-     sf-options="{ formDefaults: { disableSuccessState: true, feedback: false, onChange: 'recordsVM.removeValidationMessage(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true}, allowDisplay: true } }"
+     sf-options="{ validateOnRender: true, formDefaults: { feedback: true, onChange: 'recordsVM.removeValidationMessage(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true}, allowDisplay: true } }"
      ></form>
    </div>
  </div>

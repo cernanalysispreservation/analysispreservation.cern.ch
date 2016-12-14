@@ -6,10 +6,6 @@
 var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state) {
   $scope.$location = $location;
   //Variables for search filter fields 
-  //TODO(Move to appropriate controller)
-  $scope.query = {};
-  $scope.queryBy = '$';
-
   $scope.hello = 'CERN Analysis Preservation experiments';
   $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
   $scope.init = function(){
