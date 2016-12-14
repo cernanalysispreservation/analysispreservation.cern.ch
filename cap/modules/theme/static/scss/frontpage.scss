@@ -27,11 +27,9 @@
 @import "variables";
 
 #cap-experiments {
-  text-align: center;
 
-  figure {
-    margin-top: 5%;
-  }
+  text-align: center;
+  margin-top: 5%;
 
   @media (max-width: 768px) {
     margin-top: 40%;
