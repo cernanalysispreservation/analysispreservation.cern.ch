@@ -1,14 +1,31 @@
 <div id="cap-experiments">
-    <div ng-repeat="e in currentUser.collaborations" class="col-sm-6">
-        <a target="_self" href="/app/experiment/set/{{e}}" class="cap-box">
-          <div class="exp-img col-sm-5">
-            <img src="/static/img/{{e}}.svg" alt="">
-          </div>
-          <div class="exp-name col-sm-7">{{e}}</div>
-        </a>
+    <div ng-if="(currentUser.collaborations).length <= 0">
+      Welcome to CERN Analysis Preservation. You need to be a member of a collaboration (ATLAS, ALICE, CMS, LHCb) to be able to move on...
     </div>
 
     <div>
-      Welcome to CERN Analysis Preservation. You need to be a member of a collaboration (ATLAS, ALICE, CMS, LHCb) to be able to move on...
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 730 462" preserveAspectRatio="xMidYMid meet" width="40%">
+        
+        <image width="730" height="462" xlink:href="/static/img/lhc.svg"/>
+        
+        <!-- show images and link only if the user is a member of the collaboration -->
+        <a ng-if="(currentUser.collaborations).indexOf('ALICE') >= 0" target="_self" xlink:href="/app/experiment/set/ALICE">
+            <polygon points="0,0,0,462,365,231" opacity="0"/>
+            <image x="0" y="146" width="96.6" height="131.5" xlink:href="/static/img/ALICE.svg"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('ATLAS') >= 0" target="_self" xlink:href="/app/experiment/set/ATLAS">
+            <polygon points="0,462,730,462,365,231" opacity="0"/>
+            <image x="289.5" y="260" width="131.5" height="131.5" xlink:href="/static/img/ATLAS.svg"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('CMS') >= 0" target="_self" xlink:href="/app/experiment/set/CMS">
+            <polygon points="0,0,730,0,365,231" opacity="0"/>
+            <image x="289.5" y="0" width="131.6" height="131.5" xlink:href="/static/img/CMS.svg"/>
+        </a>
+        <a ng-if="(currentUser.collaborations).indexOf('LHCb') >= 0" target="_self" xlink:href="/app/experiment/set/LHCb">
+            <polygon points="730,0,730,462,365,231" opacity="0"/>
+            <image x="598.5" y="172.5" width="131.6" height="78.9" xlink:href="/static/img/LHCb.svg"/>
+        </a>
+
+        </svg>
     </div>
 </div>
