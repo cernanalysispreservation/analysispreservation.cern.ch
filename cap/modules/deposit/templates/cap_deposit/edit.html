@@ -40,25 +40,6 @@
               template="{{ url_for('static', filename=config.DEPOSIT_UI_JSTEMPLATE_FORM) }}">
             </invenio-records-form>
           </invenio-records>
-          <invenio-files-uploader
-            method="PUT"
-            endpoint="{{ config.DEPOSIT_FILES_API }}"
-            {% if pid %}
-              action="{{ config.DEPOSIT_RECORDS_API.format(pid_value=pid.pid_value) }}"
-              files='{{record|tofilesjs|tojson}}'
-              links='{{pid|tolinksjs(record)|tojson}}'
-            {% else %}
-              initialization="{{ config.DEPOSIT_SEARCH_API }}"
-            {% endif %}
-            extra-params='{"headers":{"Content-Type": "application/json"}}'
-          >
-            <invenio-files-upload-zone
-              template="{{ url_for('static', filename='templates/cap_files_js/upload.html') }}">
-            </invenio-files-upload-zone>
-            <invenio-files-list
-              template="{{ url_for('static', filename='templates/cap_files_js/list.html') }}"
-            ></invenio-files-list>
-          </invenio-files-uploader>
         </div>
       </div>
     </div>

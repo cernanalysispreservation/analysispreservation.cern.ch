@@ -67,7 +67,7 @@ class DepositPermission(OrPermissions):
         """Retrieve deposit group information for specific schema"""
         try:
             schema = self.deposit.get("$schema", None) \
-                                 .split('/schemas' + '/', 1)[1]
+                                 .split('/schemas/', 1)[1]
         except:
             return None
 

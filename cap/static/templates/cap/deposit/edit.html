@@ -21,21 +21,6 @@
             template="/api/static/templates/cap_records_js/form.html">
           </invenio-records-form>
         </invenio-records>
-        <invenio-files-uploader
-          method="PUT"
-          endpoint="/api/deposits"
-          action="{{deposit.meta_info.files.action}}"
-          files="{{deposit.meta_info.files.files}}"
-          links="{{deposit.links}}"
-          extra-params="{{deposit.meta_info.files.extra_params}}"
-        >
-          <invenio-files-upload-zone
-            template="/api/static/templates/cap_files_js/upload.html">
-          </invenio-files-upload-zone>
-          <invenio-files-list
-            template="/api/static/templates/cap_files_js/list.html"
-          ></invenio-files-list>
-        </invenio-files-uploader>
       </div>
     </div>
   </div>
