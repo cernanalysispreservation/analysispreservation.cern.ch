@@ -310,7 +310,7 @@ OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
 # JSON Schemas
 # ============
 #: Hostname for JSON Schemas.
-JSONSCHEMAS_HOST = 'localhost:5000'
+JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
