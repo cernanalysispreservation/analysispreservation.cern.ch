@@ -1,6 +1,6 @@
 <div class="row">
- <div class="cap-deposit cap-fixed-height-col">
-    <div ng-init="progress={}; type={}" class="cap-deposit-sidebar cap-fixed-height-col">
+ <div class="cap-deposit">
+    <div ng-init="progress={}; type={};" class="cap-deposit-sidebar cap-fixed-height-col">
      <div class="panel panel-default cap-panel">
        <div class="panel-heading">
          <div ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams[recordsVM.invenioRecordsAlert.action].hide">
@@ -30,12 +30,16 @@
        </div>
        <div id="cap-deposit-navigation">
          <cap-progress-bar progress="progress" type="type" form="depositionForm" el="recordsVM.invenioRecordsSchema"></cap-progress-bar>
-         <div id="cap-deposit-navigation" ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body">
-           <span class="forms-filter-fields-font-size cursor-pointer fixed-column-link" ng-click="updateContent($index, recordsVM.invenioRecordsForm.length)"><strong>{{formElement.title | uppercase}}</strong></span>
-           <span class="progress-bar progress-bar-{{type[formElement.key[0]]}} custom-progress-bar" role="progressbar" >{{ progress[formElement.key[0]] }} <span  ng-hide="progress[formElement.key[0]] == 'N/A'">%</span></span>
-             <ul >
-               <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties">{{value.title}}</li>
-             </ul>
+         <div ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body  cursor-pointer" ng-click="updateContent( recordsVM.invenioRecordsForm.length, $index)">
+          <div class="dropdown" uib-dropdown >
+            <div uib-dropdown-toggle id="nav{{formElement.key[0]}}" >
+              <span class="forms-filter-fields-font-size fixed-column-link" ><strong>{{formElement.title | uppercase}}</strong></span>
+              <span class="progress-bar progress-bar-{{type[formElement.key[0]]}} custom-progress-bar" role="progressbar" >{{ progress[formElement.key[0]] }} <span  ng-hide="progress[formElement.key[0]] == 'N/A'">%</span></span>
+            </div>
+            <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="nav{{formElement.key[0]}}">
+             <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties"><i class="fa fa-circle-o"></i>{{value.title}}</li>
+            </ul>
+          </div>
          </div>
          <span id="no-results" ng-show="(recordsVM.invenioRecordsForm | filter:query).length == 0">No results found. Please try again.</span>
         </div>

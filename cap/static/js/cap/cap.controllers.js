@@ -137,9 +137,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
       });
   };
 
-  $scope.updateContent= function(index, arraySize){
-    console.log("index");
-    console.log(index);
+  $scope.updateContent= function(arraySize, index){
     $(function() {
       for(var i=0; i<arraySize; i++) {
         if(index !== i) {

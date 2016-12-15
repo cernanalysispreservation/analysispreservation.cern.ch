@@ -55,6 +55,7 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 }
 
 header {
+  z-index: 999;
   nav.navbar-default {
     background-color: transparent;
   }
@@ -211,7 +212,7 @@ body::-webkit-scrollbar-thumb {
   text-align: center;
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 10;
   background-color: #fff;
 
   ul {

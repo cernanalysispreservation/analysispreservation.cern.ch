@@ -25,6 +25,7 @@
 
 @import "variables";
 
+$sidebar-navigation-height: 80px;
 /* Deposit forms general style */
 
 .forms-font-color {
@@ -66,9 +67,9 @@
 }
 
 .form-control {
-  
-  background-color: #eff6f9;
-  border: none;
+  background-color: #fff;
+  border: 1px solid #3b97d3;
+  border-radius: 0;
   box-shadow: none;
 }
 
@@ -136,7 +137,7 @@
 .save-publish-btn {
   background-color: $turquoise;
   border-radius: 2px;
-  color: $text-white;    
+  color: $text-white;
 }
 
 .edit-save-btn {
@@ -232,11 +233,25 @@ $cap-deposit-sidebar-width: 300px;
   position: relative;
   float: left;
   border: 1px solid $light-blue-theme-color;
+  background-color: #fff;
   margin-right: 10px;
 
 
+  .panel-heading {
+    height: $sidebar-navigation-height;
+    z-index: 1;
+    position: relative;
+  }
+  .panel-body {
+    border-bottom: 1px solid $light-grey-theme-color;
+    padding: 0 10px;
+  }
   .cap-panel {
     border: 0;
+    // z-index: 0;
+  }
+  .dropdown-menu {
+    z-index: 0;
   }
 }
 
@@ -251,6 +266,8 @@ $cap-deposit-sidebar-width: 300px;
   .cap-panel {
     border: 0;
     background-color: transparent;
+    height: 100%;
+    overflow: hidden;
 
     .panel-heading {
       background-color: transparent;
@@ -260,12 +277,65 @@ $cap-deposit-sidebar-width: 300px;
     .panel-body {
       background-color: #eff6f9;
       border: 1px solid $light-blue-theme-color;
+    }
+  }
+}
 
-      input {
-        background-color: #fff;
-        border: 1px solid $light-blue-theme-color;
-        border-radius: 0;
+#cap-deposit-navigation {
+  height: 100%;
+  top: 2*$sidebar-navigation-height;
+  // height: 90%;
+  top: 0px;
+  padding-top: 160px;
+  position: absolute;
+  width: 100%;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
+    background-color: $light-grey-theme-color;
+  }
+
+  &::-webkit-scrollbar, .scrollable::-webkit-scrollbar {
+    width: 6px;
+    background-color: $light-grey-theme-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $light-blue-theme-color;
+  }
+
+
+
+  .dropdown {
+    .dropdown-toggle {
+      padding: 15px 0;
+    }
+
+    ul {
+      width: 100%;
+      padding: 0;
+      border: 0;
+      position: relative;
+
+      background-color: #fff;
+      border: 0;
+      border-radius: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+
+      li {
+        padding: 8px 3px;
+        border-bottom: $light-grey-theme-color;
+        font-weight: 100;
+        border-bottom: 1px solid $light-grey-theme-color;
+
+        i.fa-circle-o {
+          margin-right: 10px;
+          font-size: 10px;
+        }
       }
+
     }
   }
 }
