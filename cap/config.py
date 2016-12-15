@@ -36,17 +36,18 @@ from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
                                     DEPOSIT_REST_SORT_OPTIONS)
+from invenio_deposit.scopes import write_scope
+from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib import cern
-from invenio_records_rest.config import (RECORDS_REST_FACETS,
-                                         RECORDS_REST_SORT_OPTIONS,
-                                         RECORDS_REST_ENDPOINTS)
+from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
+                                         RECORDS_REST_FACETS,
+                                         RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 
 from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission)
-
 from cap.modules.records.search import CapRecordSearch
 
 
@@ -404,13 +405,21 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
             'cap.modules.records.serializers'
             ':json_v1_response')
     },
+    'search_class':'invenio_deposit.search:DepositSearch',
+    'search_factory_imp':'cap.modules.deposit.query.search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
     'file_item_route':
-        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
-    'create_permission_factory_imp': CreateDepositPermission,
-    'read_permission_factory_imp': ReadDepositPermission,
-    'update_permission_factory_imp': UpdateDepositPermission,
+    '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
+    'create_permission_factory_imp': check_oauth2_scope(
+        lambda record: CreateDepositPermission(record).can(),
+        write_scope.id),
+    'read_permission_factory_imp': check_oauth2_scope(
+        lambda record: ReadDepositPermission(record).can(),
+        write_scope.id),
+    'update_permission_factory_imp': check_oauth2_scope(
+        lambda record: UpdateDepositPermission(record).can(),
+        write_scope.id),
     # TODO update delete permission when 'discard'/'delete' is ready
     'delete_permission_factory_imp': deny_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
