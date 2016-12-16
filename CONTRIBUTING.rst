@@ -50,9 +50,9 @@ We follow a typical `GitHub flow
      * if you're not the primary author of this commit
 
 
-4. Please add any ``(closes #123)`` directives in your commit log
-   message if your pull request closes an open issue, as well as
-   ``(references #123)`` if it does not close but address a part of
+4. Please add any ``(closes #123)`` directives in your pull request
+   message, if it closes an open issue, as well as
+   ``(references #123)``, if it does not close but address a part of
    the respective issue.
 5. Test your branch on a local site and check the conformity of your
    commit messages with kwalitee, see the section on
