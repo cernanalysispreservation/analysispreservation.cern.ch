@@ -368,6 +368,8 @@ DEPOSIT_GROUPS = {
     "lhcb": {
         "schema": "/app/schemas/deposits/records/lhcb-v1.0.0.json",
         "schema_form": "/static/json/deposits/records/lhcb-v1.0.0.json",
+        "name": "LHCb Analysis",
+        "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
@@ -379,6 +381,8 @@ DEPOSIT_GROUPS = {
     "cms-analysis": {
         "schema": "/app/schemas/deposits/records/cms-analysis-v1.0.0.json",
         "schema_form": "/static/json/deposits/records/cms-analysis-v1.0.0.json",
+        "name": "CMS Analysis",
+        "description": "Create an CMS Analysis (analysis metadata, workflows, etc)",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",

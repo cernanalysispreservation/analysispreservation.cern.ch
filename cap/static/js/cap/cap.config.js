@@ -39,7 +39,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app',
-      url: '/',
+      url: '',
       abstract: true,
       views: {
         '': {
@@ -50,7 +50,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.index',
-      url: '',
+      url: '/',
       views: {
         'content': {
           template: '<div class="container cap-content">'+
@@ -77,7 +77,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.working_group_item',
-      url: 'WG/{wg_name}',
+      url: '/WG/{wg_name}',
       views: {
         'content': {
           template: '<div class="container cap-container"><h1>WORKING GROUPS :: {{wg_name}}</h1></div>',
@@ -90,7 +90,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.experiments',
-      url: 'experiments',
+      url: '/experiments',
       views: {
         'content': {
           templateUrl: '/static/templates/cap/experiments.html',
@@ -106,7 +106,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.publications',
-      url: 'publications',
+      url: '/publications',
       views: {
         'content': {
           templateUrl: '/app/records'
@@ -119,7 +119,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     .state({
       name: 'app.records',
       // TOFIX check for integers
-      url: 'records/{recid}',
+      url: '/records/{recid}',
       abstract: true,
       views: {
         'content': {
@@ -206,7 +206,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.deposit',
-      url: 'deposit?status',
+      url: '/deposit?status',
       views: {
         'content': {
           templateUrl: function($stateParams) {
@@ -221,7 +221,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.deposit_item',
-      url: 'deposit/{depid:int}',
+      url: '/deposit/{depid:int}',
       abstract: true,
       views: {
         'content': {
@@ -291,8 +291,23 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
+      name: 'app.select_deposit_new',
+      url: '/deposit/create_new',
+      onEnter: ['$state','$stateParams', '$uibModal', function($state, $stateParams, $uibModal) {
+          $uibModal.open({
+            templateUrl: "/static/templates/cap/deposit/createNewDepositModal.html",
+            controller: ['$scope', function($scope) {
+            }],
+          });
+        }
+      ],
+      data: {
+        requireLogin: true
+      }
+    })
+    .state({
       name: 'app.deposit_new',
-      url: 'deposit/new/{deposit_group}',
+      url: '/deposit/new/{deposit_group}',
       views: {
         'content': {
           templateUrl: '/static/templates/cap/deposit/edit.html',

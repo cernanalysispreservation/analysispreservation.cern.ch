@@ -237,3 +237,66 @@ body::-webkit-scrollbar-thumb {
 #cap-content-main {
   margin-top: $content-bar-height; 
 }
+
+.modal {
+  text-align: center;
+  padding: 0!important;
+
+  .cap-box {
+    padding: 0;
+  }
+
+  .header {
+    background-color: $light-grey-theme-color;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid $light-blue-theme-color;
+  }
+
+  .modal-body {
+    max-height: 200px;
+    padding: 0;
+
+    a,
+    a:focus,
+    a:hover {
+      outline: -webkit-focus-ring-color 0;
+      outline-offset: 0;
+      text-decoration: none;
+    }
+
+    .item {
+      padding: 10px;
+      border-bottom: 1px solid $light-grey-theme-color;
+
+      h4, h5 {
+        color: #747474;
+      }
+      .description {
+        color: #979797;
+      }
+    }
+  }
+
+  .modal-footer {
+    // background-/color: $light-grey-theme-color;
+    padding: 10px;
+    // text-align: center;
+    border-top: 1px solid $light-blue-theme-color;
+  }
+
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}

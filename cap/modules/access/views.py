@@ -95,7 +95,11 @@ def get_user_deposit_groups():
         # Check if user has permission for this deposit group
         if obj_or_import_string(
                 obj['create_permission_factory_imp']).can():
-            user_deposit_groups.append(group)
+            group_data = {}
+            group_data['name'] = obj.get('name', '')
+            group_data['deposit_group'] = group
+            group_data['description'] = obj.get('description', '')
+            user_deposit_groups.append(group_data)
 
     return user_deposit_groups
 

@@ -48,14 +48,11 @@
         <div class="row">
             {%- block navbar_new_deposit %}
               {% raw %}
-              <div id="cap-user-deposit-menu" class="dropdown" uib-dropdown is-open="status.isopen">
-                  <a href="#" class="btn" uib-dropdown-toggle ng-disabled="disabled" id="header-upload">
+              <div id="cap-user-deposit-menu">
+                  <a ui-sref="app.select_deposit_new" class="btn" id="header-upload">
                     <i class="fa fa-cloud-upload"></i>
                     Create <div class="visible-lg-inline-block">An Analysis</div>
                   </a>
-                  <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="header-upload">
-                    <li ng-repeat="dg in currentUser.deposit_groups"><a class="dropdown-item" href="/deposit/new/{{dg}}">{{dg}}</a></li>
-                  </ul>
               </div>
               {% endraw %}
             {%- endblock navbar_new_deposit %}

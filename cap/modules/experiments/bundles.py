@@ -80,6 +80,7 @@ experiments_js = NpmBundle(
     "node_modules/angular-animate/angular-animate.js",
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+    'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
     'node_modules/invenio-search-js/dist/invenio-search-js.js',
     'node_modules/invenio-records-js/dist/invenio-records-js.js',
     "js/cap/cap.pushmenu.components.js",

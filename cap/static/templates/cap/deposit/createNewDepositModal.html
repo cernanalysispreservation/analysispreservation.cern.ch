@@ -1,0 +1,18 @@
+<div class="cap-box">
+    <div class="header">
+        <h3 class="modal-title">
+            Choose from list to create
+        </h3>
+    </div>
+    <div class="modal-body">
+        <a ui-sref="app.deposit_new({deposit_group: dg.deposit_group})" ng-repeat="dg in currentUser.deposit_groups" ng-click="$dismiss()">
+            <div class="item">
+                <h4>{{dg.name}}</h4>
+                <div class="description">{{dg.description}}</div>
+            </div>
+        </a>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="$dismiss()">Done</button>
+    </div>
+</div>
