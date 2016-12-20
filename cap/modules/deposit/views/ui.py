@@ -27,7 +27,7 @@
 from ..api import CAPDeposit
 from cap.config import DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, render_template, url_for
+from flask import Blueprint, abort, current_app, render_template, url_for, jsonify
 from flask.views import View
 from flask_security import login_required
 
@@ -38,6 +38,57 @@ blueprint = Blueprint(
     url_prefix='/deposit',
     static_folder='../static'
 )
+
+DEPOSIT_DEFAULT_METAINFO = {
+    "alert_template": "/api/static/templates/cap_records_js/alert.html",
+    "extra_params": {
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    },
+    "files": {
+        "files": [],
+        "list_template": "/api/static/templates/cap_files_js/list.html",
+        "upload_zone_template": "/api/static/templates/cap_files_js/upload.html"
+    },
+    "form_template": {
+        "form_templates": {
+            "array": "array.html",
+            "button": "button.html",
+            "default": "default.html",
+            "fieldset": "fieldset.html",
+            "radios": "radios.html",
+            "radios_inline": "radios_inline.html",
+            "select": "select.html",
+            "textarea": "textarea.html"
+        },
+        "form_templates_base": "/api/static/templates/cap_records_js/decorators",
+        "template": "/api/static/templates/cap_records_js/form.html"
+    },
+    "initialization": "/api/deposits/",
+    "loading_template": "/api/static/node_modules/invenio-records-js/dist/templates/loading.html",
+    "schema": "/schemas/records/cms-analysis-v1.0.0.json",
+    "schema_form": "/static/json/records/cms-analysis-v1.0.0.json",
+    "template_params": {
+        "messages": {
+            "delete": {
+              "message": "Deleted succesfully."
+            },
+            "discard": {
+                "message": "Changes discarded succesfully."
+            },
+            "edit": {
+                "message": "Edited succesfully."
+            },
+            "publish": {
+                "message": "Published succesfully."
+            },
+            "self": {
+                "message": "Saved successfully."
+            }
+        }
+    }
+}
 
 
 def create_blueprint():
@@ -141,7 +192,6 @@ class NewItemView(View):
         self.template_name = template_name
         self.schema = schema
         self.schema_form = schema_form
-
         try:
             assert create_permission_factory
             self._create_deposit_permission = \
@@ -155,12 +205,17 @@ class NewItemView(View):
     @login_required
     def dispatch_request(self):
         if self._create_deposit_permission.can():
-            context = {
+            deposit = {
+                "metadata": {'_deposit': {'id': None}},
+                "meta_info": DEPOSIT_DEFAULT_METAINFO,
                 "record": {'_deposit': {'id': None}},
                 "schema": self.schema,
                 "schema_form": self.schema_form,
             }
-            return self.render_template(context)
+
+            deposit["meta_info"]["schema"] = self.schema
+            deposit["meta_info"]["schema_form"] = self.schema_form
+            return jsonify(deposit)
         else:
             abort(403)
 

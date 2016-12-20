@@ -10,7 +10,7 @@
           extra-params="{{deposit.meta_info.extra_params}}"
           form="{{deposit.meta_info.schema_form}}"
           record="{{deposit.metadata}}"
-          schema="{{deposit.meta_info.schema}}">
+          schema="{{location_url+deposit.meta_info.schema}}">
           <invenio-records-loading template="/api/static/node_modules/invenio-records-js/dist/templates/loading.html">
           </invenio-records-loading>
           <invenio-records-alert template="/api/static/templates/cap_records_js/alert.html">

@@ -291,25 +291,21 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
-      name: 'app.deposit_new_lhcb',
-      url: 'deposit/new/lhcb',
+      name: 'app.deposit_new',
+      url: 'deposit/new/{deposit_group}',
       views: {
         'content': {
-          templateUrl: '/app/deposit/lhcb/new',
-          // controller: 'DepositController',
+          templateUrl: '/static/templates/cap/deposit/edit.html',
+          controller: 'DepositController',
         }
       },
-      data: {
-        requireLogin: true,
-      }
-    })
-    .state({
-      name: 'app.deposit_new_cms',
-      url: 'deposit/new/cms-analysis',
-      views: {
-        'content': {
-          templateUrl: '/app/deposit/cms-analysis/new',
-          // controller: 'DepositController',
+      resolve: {
+        deposit: function(capLocalClient, $stateParams){
+          return capLocalClient
+                  .get_new_deposit($stateParams.deposit_group);
+        },
+        contentBarTabs: function($stateParams){
+          return "";
         }
       },
       data: {

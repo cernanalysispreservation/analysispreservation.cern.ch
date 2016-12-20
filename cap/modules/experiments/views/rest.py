@@ -100,11 +100,11 @@ def CAP_EXPERIMENT_MENU(experiment):
                         'icon': ''
                     }, {
                         'name': 'Create CMS Analysis',
-                        'link': _l('app.deposit_new_cms'),
+                        'link': _l('app.deposit_new({deposit_group:"cms-analysis"})'),
                         'icon': ''
                     }, {
                         'name': 'Create LHCb Analysis',
-                        'link': _l('app.deposit_new_lhcb'),
+                        'link': _l('app.deposit_new({deposit_group:"lhcb"})'),
                         'icon': ''
                     }
                 ]

@@ -93,6 +93,22 @@ var capLocalClient = angular.module('cap.services', [])
         });
         return deferred.promise;
       },
+      get_new_deposit: function(deposit_group) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/app/deposit/'+deposit_group+'/new';
+        $http({
+          method: 'GET',
+          url: url,
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response.data);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
       get_experiment_records: function(limit) {
         var deferred = $q.defer();
         deferred.notify('started');

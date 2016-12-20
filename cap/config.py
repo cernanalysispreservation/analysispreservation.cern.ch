@@ -366,10 +366,10 @@ DEPOSIT_FILES_API = '/api/files'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
-        "schema": "deposits/records/lhcb-v1.0.0.json",
+        "schema": "/app/schemas/deposits/records/lhcb-v1.0.0.json",
+        "schema_form": "/static/json/deposits/records/lhcb-v1.0.0.json",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
-        "schema_form": "json/deposits/records/lhcb-v1.0.0.json",
         "endpoint": "",
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
@@ -377,8 +377,8 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "cms-analysis": {
-        "schema": "deposits/records/cms-analysis-v1.0.0.json",
-        "schema_form": "json/deposits/records/cms-analysis-v1.0.0.json",
+        "schema": "/app/schemas/deposits/records/cms-analysis-v1.0.0.json",
+        "schema_form": "/static/json/deposits/records/cms-analysis-v1.0.0.json",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",

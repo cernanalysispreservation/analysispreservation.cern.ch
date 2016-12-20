@@ -65,6 +65,7 @@ class DepositPermission(OrPermissions):
 
     def _get_deposit_group_info(self):
         """Retrieve deposit group information for specific schema"""
+        # import ipdb;ipdb.set_trace()
         try:
             schema = self.deposit.get("$schema", None) \
                                  .split('/schemas/', 1)[1]
@@ -76,7 +77,7 @@ class DepositPermission(OrPermissions):
                 (depgroup
                  for dg, depgroup
                  in current_app.config.get('DEPOSIT_GROUPS').iteritems()
-                 if depgroup['schema'] == schema
+                 if schema in depgroup['schema']
                  ),
                 None
             )
