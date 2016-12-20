@@ -2,7 +2,9 @@
   <div class="row">
     <div class="col-md-12">
       <div
-        id="invenio-records">
+        id="invenio-records"
+        ng-init="initDeposit();" >
+
         <invenio-records
           initialization="{{deposit.meta_info.initialization}}"
           links="{{deposit.links}}"

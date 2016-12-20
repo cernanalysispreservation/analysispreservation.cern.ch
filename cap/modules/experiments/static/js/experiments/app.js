@@ -44,11 +44,11 @@ var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, conte
   }
 
   $scope.initDeposit = function() {
-    $scope.progress = [];
-    $scope.type = [];
+    $scope.progress = {};
+    $scope.type = {};
     $scope.req = {};
     $scope.current_key = '';
-    $scope.depositionForm = [];
+    $scope.depositionForm = {};
   };
 
   $scope.$on('sf-render-finished', function(event){
