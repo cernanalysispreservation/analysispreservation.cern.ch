@@ -89,6 +89,7 @@ experiments_js = NpmBundle(
     "js/cap/cap.records.js",
     "js/cap/cap.services.js",
     "js/cap/cap.directives.js",
+    "js/cap/cap.factories.js",
     "js/cap/cap.app.js",
     "js/cap/cap.controllers.js",
     "js/cap/cap.config.js",

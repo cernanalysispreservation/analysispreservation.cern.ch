@@ -73,10 +73,6 @@ $sidebar-navigation-height: 80px;
   box-shadow: none;
 }
 
-.form-control:focus {
-  box-shadow: none;
-}
-
 .search-fields {
   position: relative;
 }
@@ -253,7 +249,7 @@ $cap-deposit-sidebar-width: 300px;
 }
 .cap-deposit-sidebar {
   width: $cap-deposit-sidebar-width;
-  position: relative;
+  position: fixed;
   float: left;
   border: 1px solid $light-blue-theme-color;
   background-color: #fff;
@@ -279,6 +275,8 @@ $cap-deposit-sidebar-width: 300px;
 }
 
 .cap-deposit-form {
+  width: 73%;
+  float: right;
   left: $cap-deposit-sidebar-width+10;
   height: 100%;
   overflow: scroll;

@@ -1,6 +1,7 @@
 <fieldset
   ng-disabled="form.readonly"
-  class="schema-form-fieldset {{ form.htmlClass }}">
+  class="schema-form-fieldset {{ form.htmlClass }}"
+  id="{{ form.key.slice(-1)[0] }}">
     <div class="panel panel-default cap-panel">
         <div class="panel-heading">
             <span class="forms-font-color forms-filter-fields-font-size">

@@ -50,7 +50,8 @@
               </span>
             </div>
             <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="nav{{formElement.key[0]}}">
-             <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties"><i class="fa fa-circle-o"></i>{{value.title}}</li>
+             <li ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties" event-focus="click" event-focus-id="{{key}}" ng-click="$event.stopPropagation();"><i class="fa fa-circle-o"></i>
+             {{value.title}}</li>
             </ul>
           </div>
          </div>
