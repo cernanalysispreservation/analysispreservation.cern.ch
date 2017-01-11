@@ -42,7 +42,8 @@ class CAPAccess(object):
         if app:
             self.init_app(app)
             store = RedisStore(redis.StrictRedis(
-                host=app.config.get('ACCESS_SESSION_REDIS_HOST', 'localhost')
+                host=app.config.get('ACCESS_SESSION_REDIS_HOST', 'localhost'),
+                password=app.config.get('REDIS_PASSWORD', '')
             ))
             KVSessionExtension(store, app)
 
