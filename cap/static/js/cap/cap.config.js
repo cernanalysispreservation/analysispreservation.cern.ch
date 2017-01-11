@@ -297,6 +297,10 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
           $uibModal.open({
             templateUrl: "/static/templates/cap/deposit/createNewDepositModal.html",
             controller: ['$scope', function($scope) {
+              $scope.$on('modal.closing', function (event, toState, toParams) {
+                // [TOFIX] needs to transition to previous state, than 'Home'
+                $state.go('app.index');
+              });
             }],
           });
         }

@@ -8,5 +8,6 @@ var app = angular.module('cap.app', [
   'cap.directives',
   'cap.pushmenu',
   'angular-loading-bar',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'cfp.hotkeys'
 ]);

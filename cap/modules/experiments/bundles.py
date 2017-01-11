@@ -81,6 +81,7 @@ experiments_js = NpmBundle(
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
+    'node_modules/angular-hotkeys/build/hotkeys.js',
     'node_modules/invenio-search-js/dist/invenio-search-js.js',
     'node_modules/invenio-records-js/dist/invenio-records-js.js',
     "js/cap/cap.pushmenu.components.js",
@@ -88,6 +89,7 @@ experiments_js = NpmBundle(
     "js/cap/cap.search.js",
     "js/cap/cap.records.js",
     "js/cap/cap.services.js",
+    "js/cap/cap.shortcuts.js",
     "js/cap/cap.directives.js",
     "js/cap/cap.factories.js",
     "js/cap/cap.app.js",
@@ -102,11 +104,13 @@ experiments_js = NpmBundle(
         "angular-ui-bootstrap": "~2.2.0",
         "angular-ui-router": "~0.3.2",
         "angular-animate": "~1.3",
+        "angular-hotkeys": "~1.7.0"
     }
 )
 
 experiments_css = NpmBundle(
     Bundle(
+        'node_modules/angular-hotkeys/build/hotkeys.css',
         'scss/experiments.scss',
         "scss/pushmenu.scss",
         filters='node-scss, cleancss',
@@ -115,5 +119,6 @@ experiments_css = NpmBundle(
     npm={
         "bootstrap-sass": "~3.3.5",
         "font-awesome": "~4.4.0",
+        "angular-hotkeys": "~1.7.0"
     }
 )

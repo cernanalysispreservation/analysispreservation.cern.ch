@@ -3,13 +3,14 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state) {
+var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state, hotkeys) {
   $scope.$location = $location;
-  //Variables for search filter fields 
+  //Variables for search filter fields
   $scope.hello = 'CERN Analysis Preservation experiments';
   $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
   $scope.init = function(){
-    get_user();
+    // Request user info to get application needed user metadata
+    initAppWithUser();
 
     $scope.events = [];
     $scope.options = {
@@ -46,7 +47,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
     $rootScope.currentUser = user;
   };
 
-  var get_user = function(){
+  var initAppWithUser = function(){
     capLocalClient.get_user()
       .then(function(response){
 
@@ -54,6 +55,8 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
 
         assignCurrentUser(user);
 
+        // Initialise shortcuts/hotkeys for quick navigation
+        initCapGlobalShortcuts(hotkeys, $scope, $state);
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           console.log(toState);
@@ -153,7 +156,8 @@ capCtrl.$inject = [
   '$window',
   '$location',
   'capLocalClient',
-  '$state'
+  '$state',
+  'hotkeys'
 ];
 
 angular.module('cap.app')
