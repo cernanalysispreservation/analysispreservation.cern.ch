@@ -127,6 +127,17 @@ app.directive('capProgressBar', function() {
   }
 });
 
+
+/**
+ * @ngdoc directive
+ * @name eventFocus
+ * @description
+ *    Focus on specific key of the form
+ * @namespace eventFocus
+ * @example
+ *    Usage:
+ *     <event-focus="click">
+ */
 app.directive('eventFocus', ['focus', function(focus) {
     return function(scope, elem, attr) {
       elem.on(attr.eventFocus, function() {
