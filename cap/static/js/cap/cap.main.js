@@ -39,6 +39,7 @@ angular.element(document).ready(function() {
       'angular-loading-bar',
       'capSearch',
       'cap.app',
+      'ng.jsoneditor'
     ]
   );
 });

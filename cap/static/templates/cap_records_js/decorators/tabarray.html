@@ -7,46 +7,60 @@
                  ng-bind-html="form.description">
             </div>
         </div>
-        <div class="panel-body" ng-init="queryFilter={}; queryByFilter='$';">
-          <div ng-if="!form.tabType || form.tabType !== 'right'"
-                     ng-class="{'col-xs-3': !form.tabType || form.tabType === 'left'}">
-              <div class="forms-font-color tabarray-search-fields">
-                 <span class="fa fa-search forms-font-color tabarray-fields"></span>
-                 <input
-                  ng-disabled="!modelArray[0]['name']"
-                  type="text"
-                  class="form-control filter-fields-searchbar-tabarray"
-                  placeholder="Filter fields..."
-                  ng-model="queryFilter[queryByFilter]"
-                 >
+        <div class="panel-body tabs-container" ng-init="queryFilter={}; queryByFilter='$';">
+          <uib-tabset active="0" type="pills">
+            <uib-tab index="0">
+              <uib-tab-heading>
+                <i class="fa fa-long-arrow-left"></i>
+              </uib-tab-heading>
+              <div id="tabarray-nav" ng-if="!form.tabType || form.tabType !== 'right'"
+                         ng-class="{'col-xs-3': !form.tabType || form.tabType === 'left'}">
+                  <div class="forms-font-color tabarray-search-fields">
+                     <span class="fa fa-search forms-font-color tabarray-fields"></span>
+                     <input
+                      ng-disabled="!modelArray[0]['name']"
+                      type="text"
+                      class="form-control filter-fields-searchbar-tabarray"
+                      placeholder="Filter fields..."
+                      ng-model="queryFilter[queryByFilter]"
+                     >
+                  </div>
+                <ul class="nav no-bullets fixed-height-with-scroll" 
+                    ng-class="{ 'tabs-left': !form.tabType || form.tabType === 'left'}">
+                  <li ng-repeat="item in modelArray | filter:queryFilter track by $index"
+                      ng-click="$event.preventDefault() || (selected.tab = $index)"
+                      ng-class="{active: selected.tab === $index}">
+                      <a href="#">{{interp(form.title,{'$index':$index, value: item}) || $index}}
+                        <i ng-hide="form.readonly"
+                            ng-click="selected.tab = deleteFromArray($index).length - 1" 
+                            class="fa fa-times pull-right remove-element-from-list"></i>
+                      </a>
+                  </li>
+                  <span ng-show="(modelArray | filter:queryFilter).length == 0">No items to filter</span>
+                </ul>
+                  <button ng-hide="form.readonly" ng-click="$event.preventDefault() || (selected.tab = appendToArray().length - 1)" href="#" class="btn {{ form.style.add || 'add-btn' }} action-btn add-new-tabarray-btn">
+                  {{ form.add || 'Add New'}}
+                  </button>
               </div>
-            <ul class="nav no-bullets fixed-height-with-scroll" 
-                ng-class="{ 'tabs-left': !form.tabType || form.tabType === 'left'}">
-              <li ng-repeat="item in modelArray | filter:queryFilter track by $index"
-                  ng-click="$event.preventDefault() || (selected.tab = $index)"
-                  ng-class="{active: selected.tab === $index}">
-                  <a href="#">{{interp(form.title,{'$index':$index, value: item}) || $index}}
-                    <i ng-hide="form.readonly"
-                        ng-click="selected.tab = deleteFromArray($index).length - 1" 
-                        class="fa fa-times pull-right remove-element-from-list"></i>
-                  </a>
-              </li>
-              <span ng-show="(modelArray | filter:queryFilter).length == 0">No results found. Please try again.</span>
-            </ul>
-              <button ng-hide="form.readonly" ng-click="$event.preventDefault() || (selected.tab = appendToArray().length - 1)" href="#" class="btn {{ form.style.add || 'add-btn' }} action-btn add-new-tabarray-btn">
-              {{ form.add || 'Add New'}}
-              </button>
-          </div>
-          <div ng-class="{'col-xs-9': !form.tabType || form.tabType === 'left' || form.tabType === 'right'}">
-            <div class="tab-content {{form.fieldHtmlClass}}">
-              <div class="tab-pane clearfix"
-                   ng-repeat="item in modelArray track by $index"
-                   ng-show="selected.tab === $index"
-                   ng-class="{active: selected.tab === $index}">
-                   <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+              <div ng-class="{'col-xs-9': !form.tabType || form.tabType === 'left' || form.tabType === 'right'}">
+                <div class="tab-content {{form.fieldHtmlClass}}">
+                  <div class="tab-pane clearfix"
+                       ng-repeat="item in modelArray track by $index"
+                       ng-show="selected.tab === $index"
+                       ng-class="{active: selected.tab === $index}">
+                       <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>    
+            </uib-tab>
+
+            <uib-tab index="1">
+              <uib-tab-heading>
+                <i class="fa fa-pencil"></i>
+              </uib-tab-heading>
+              <div ng-jsoneditor ng-model="$$value$$" options="{mode: 'code'}" style="width:100%;height:100%;"></div>
+            </uib-tab>
+          </uib-tabset>
         </div>
   </div>
 

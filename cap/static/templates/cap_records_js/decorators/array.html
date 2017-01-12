@@ -1,7 +1,10 @@
 <div sf-array="form" id="{{ form.key.slice(-1)[0] }}" class="schema-form-array {{form.htmlClass}}" ng-model="$$value$$" ng-model-options="form.ngModelOptions">
     <div class="panel panel-default cap-panel">
       <div class="panel-heading">
-            <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.title | uppercase }}</strong></span>
+            <div class="title">
+              <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.title | uppercase }}</strong>
+              </span>
+            </div>
             <button ng-hide="form.readonly || form.add === null"
                 ng-click="appendToArray()"
                 ng-disabled="form.schema.maxItems <= modelArray.length"
@@ -12,23 +15,37 @@
             <div class="help-block" ng-if="form.description"
                  ng-bind-html="form.description"></div>
         </div>
-        <div class="panel-body" ng-hide="collapsed">
-          <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
-              <li class="list-group-item {{ form.fieldHtmlClass }}"
-                  ng-class="{'deposit-inline': form.inline}"
-                  ng-repeat="item in modelArray track by $index">
-                  <div class="close-container" ng-class="{'clear-form': !form.inline}">
-                      <button ng-hide="form.readonly || form.remove === null"
-                              ng-click="deleteFromArray($index)"
-                              ng-disabled="form.schema.minItems >= modelArray.length"
-                              style="position: relative; z-index: 20;"
-                              type="button" class="close pull-right">
-                          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-                      </button>
-                  </div>
-                  <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
-              </li>
-          </ol>
+        <div class="panel-body tabs-container" ng-hide="collapsed">
+          <uib-tabset active="0" type="pills">
+            <uib-tab index="0">
+              <uib-tab-heading>
+                <i class="fa fa-long-arrow-left"></i>
+              </uib-tab-heading>
+              <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
+                  <li class="list-group-item {{ form.fieldHtmlClass }}"
+                      ng-class="{'deposit-inline': form.inline}"
+                      ng-repeat="item in modelArray track by $index">
+                      <div class="close-container" ng-class="{'clear-form': !form.inline}">
+                          <button ng-hide="form.readonly || form.remove === null"
+                                  ng-click="deleteFromArray($index)"
+                                  ng-disabled="form.schema.minItems >= modelArray.length"
+                                  style="position: relative; z-index: 20;"
+                                  type="button" class="close pull-right">
+                              <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                          </button>
+                      </div>
+                      <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
+                  </li>
+              </ol>
+              </uib-tab>
+
+              <uib-tab index="1">
+                <uib-tab-heading>
+                  <i class="fa fa-pencil"></i>
+                </uib-tab-heading>
+                <div ng-jsoneditor ng-model="$$value$$" options="{mode: 'code'}" style="width:100%;height:100%;"></div>
+              </uib-tab>
+            </uib-tabset>
         </div>
     </div>
 
