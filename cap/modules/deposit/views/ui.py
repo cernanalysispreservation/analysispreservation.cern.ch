@@ -61,7 +61,8 @@ DEPOSIT_DEFAULT_METAINFO = {
             "radios_inline": "radios_inline.html",
             "select": "select.html",
             "textarea": "textarea.html",
-            'tabarray': 'tabarray.html'
+            "tabarray": "tabarray.html",
+            "checkboxes": "checkboxes.html"
         },
         "form_templates_base": "/api/static/templates/cap_records_js/decorators",
         "template": "/api/static/templates/cap_records_js/form.html"

@@ -4,7 +4,7 @@
             Choose from list to create
         </h3>
     </div>
-    <div class="modal-body">
+    <div class="modal-body modal-body-create-new">
         <a ui-sref="app.deposit_new({deposit_group: dg.deposit_group})" ng-repeat="dg in currentUser.deposit_groups" ng-click="$dismiss()">
             <div class="item">
                 <h4>{{dg.name}}</h4>

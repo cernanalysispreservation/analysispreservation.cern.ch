@@ -26,7 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, session, jsonify, redirect
+from flask import Blueprint, jsonify, redirect, session
 from flask_security import login_required
 from invenio_collections.models import Collection
 
@@ -41,6 +41,7 @@ experiments_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
 
 def CAP_EXPERIMENT_MENU(experiment):
     def _l(str):
@@ -105,6 +106,10 @@ def CAP_EXPERIMENT_MENU(experiment):
                     }, {
                         'name': 'Create LHCb Analysis',
                         'link': _l('app.deposit_new({deposit_group:"lhcb"})'),
+                        'icon': ''
+                    }, {
+                        'name': 'Create CMS Questionnaire',
+                        'link': _l('app.deposit_new({deposit_group:"cms-questionnaire"})'),
                         'icon': ''
                     }
                 ]

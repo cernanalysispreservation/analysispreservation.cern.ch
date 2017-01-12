@@ -301,3 +301,8 @@ body::-webkit-scrollbar-thumb {
   text-align: left;
   vertical-align: middle;
 }
+
+.modal-body-create-new {
+  height: 250px;
+  overflow-y: auto;
+}
