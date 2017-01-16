@@ -1,4 +1,5 @@
-Support
-=======
+Community support
+=================
 
-All support possibilities.
+-  Feedback form
+-  Contact information

@@ -1,4 +1,0 @@
-Background
-==========
-
-What is this?
