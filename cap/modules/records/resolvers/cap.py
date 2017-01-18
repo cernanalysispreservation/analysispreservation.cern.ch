@@ -22,21 +22,25 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""CAP JSON-schemas."""
+"""Resolver JSON for default JSON Schemas."""
 
 from __future__ import absolute_import, print_function
 
-from .cli import schemas
+import os
 
+import pkg_resources
 
-class CAPJSONSchemas(object):
-    """CAP JSON-schemas extension."""
+import jsonresolver
+import simplejson as json
 
-    def __init__(self, app=None):
-        """Extension initialization."""
-        if app:
-            self.init_app(app)
+from cap.config import JSONSCHEMAS_HOST
 
-    def init_app(self, app):
-        """Flask application initialization."""
-        app.cli.add_command(schemas)
+@jsonresolver.route('/app/schemas/<path:path>',
+                    host='analysis-preservation.cern.ch')
+def resolve_cap_schemas(path):
+    """Resolve CAP JSON schemas."""
+
+    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
+
+    with open(_schema_path, 'r') as f:
+        return json.load(f)

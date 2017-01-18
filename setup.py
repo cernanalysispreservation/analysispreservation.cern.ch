@@ -66,7 +66,7 @@ install_requires = [
     'elasticsearch-dsl<3.0.0,>=2.0.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
     'cryptography>=1.6',  # temporary fix
-    'setuptools>=18.5',  # temporary fix
+    'setuptools>=20.6.7',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'Flask>=0.11.1',
@@ -161,7 +161,6 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
-            'cap_jsonschemas = cap.modules.jsonschemas:CAPJSONschemas',
             'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
@@ -206,7 +205,8 @@ setup(
             'cap.modules.deposit.fetchers:cap_deposit_fetcher',
         ],
         'invenio_records.jsonresolver': [
-            'jsonresolver = cap.modules.records.resolvers.jsonschemas',
+            'cap = cap.modules.records.resolvers.cap',
+            'local = cap.modules.records.resolvers.local',
         ],
         'invenio_search.mappings': [
             'deposits = cap.mappings',

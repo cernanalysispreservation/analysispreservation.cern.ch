@@ -45,6 +45,9 @@ from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 
+from jsonresolver import JSONResolver
+from jsonresolver.contrib.jsonref import json_loader_factory
+
 from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission)
@@ -156,12 +159,12 @@ RECORDS_REST_SORT_OPTIONS = dict(
             default_order='desc',
             order=1,
         ),
-        mostrecent=dict(
-            title=_('Most recent'),
-            fields=['_created'],
-            default_order='desc',
-            order=2,
-        ),
+        # mostrecent=dict(
+        #     title=_('Most recent'),
+        #     fields=['_created'],
+        #     default_order='desc',
+        #     order=2,
+        # ),
     )
 )
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
@@ -272,7 +275,7 @@ CAP_COLLAB_PAGES = {
 # Search
 # ======
 #: Default API endpoint for search UI.
-# SEARCH_UI_SEARCH_API = '/api/records/'
+SEARCH_UI_SEARCH_API = '/api/records/'
 
 #: Default ElasticSearch hosts
 SEARCH_ELASTIC_HOSTS = ["localhost:9200"]
@@ -315,6 +318,15 @@ JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
+
+JSONSCHEMAS_REPLACE_REFS = True
+JSONSCHEMAS_REPLACE_ALLOF = True
+
+JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
+    plugins=[
+        'cap.modules.records.resolvers.local',
+        'cap.modules.records.resolvers.cap',
+        ]))
 
 JSONSCHEMAS_VERSIONS = {
     "ATLASAnalysis": "ATLASAnalysis-v0.0.1",

@@ -26,6 +26,6 @@
 
 from __future__ import absolute_import, print_function
 
-from .ext import CAPJSONschemas
+from .ext import CAPJSONSchemas
 
-__all__ = ('CAPJSONschemas', )
+__all__ = ('CAPJSONSchemas', )

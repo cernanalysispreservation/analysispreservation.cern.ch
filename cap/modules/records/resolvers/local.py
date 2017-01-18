@@ -35,17 +35,6 @@ import simplejson as json
 
 from cap.config import JSONSCHEMAS_HOST
 
-@jsonresolver.route('/app/records/jsonschemas/definitions/<path:jsonschema>',
-                    host='analysis-preservation.cern.ch')
-def resolve_definitions(jsonschema):
-    """Resolve the JSON definition schema."""
-    jsonschema_definition_path = os.path.join(os.path.dirname(os.path.dirname(__file__)),
-                                              'jsonschemas', 'definitions',
-                                              jsonschema)
-    with open(jsonschema_definition_path) as file:
-        jsonschema_definition = file.read()
-    return json.loads(jsonschema_definition)
-
 
 @jsonresolver.route('/app/schemas/<path:path>',
                     host=JSONSCHEMAS_HOST)
