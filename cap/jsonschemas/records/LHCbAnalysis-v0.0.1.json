@@ -371,7 +371,7 @@
       }
     },
     "workflows": { 
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/LHCbWorkflows.json" 
+      "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/LHCbWorkflows.json#" 
     },
     "documentations": {
       "title": "Documentations",

@@ -15,7 +15,7 @@
     "publish": {
       "type": "object",
       "oneOf":[
-        {"$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/workflow_schemas/utils/shallow-primitive-schema-v0.0.1.json#"}
+        {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/utils/shallow-primitive-schema-v0.0.1.json#"}
       ]
     }
   },

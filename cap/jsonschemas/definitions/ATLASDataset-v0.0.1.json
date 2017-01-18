@@ -7,7 +7,7 @@
     "title": {
       "type": "string",
       "title": "Title",
-      "description": "Filename of dataset, e.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542",
+      "description": "Filename of dataset, e.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542"
     },
     "type": {
       "title": "Data Type",

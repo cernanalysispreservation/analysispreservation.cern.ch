@@ -13,10 +13,10 @@
       "type": "string"
     },
     "code_base": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSUserCode-v0.0.1.json"
+      "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/CMSUserCode-v0.0.1.json"
     },
     "n_tuple": {
-      "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/CMSInputCodeOutput-v0.0.1.json"
+      "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/CMSInputCodeOutput-v0.0.1.json"
     },
     "detector_final_state": {
       "title": "Event Selection",
