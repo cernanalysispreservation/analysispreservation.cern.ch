@@ -14,6 +14,7 @@ What it does
 
 1. Capture
 
+-  Data model and metadata schema
 -  Submission forms
 -  REST API
 -  Connectivity

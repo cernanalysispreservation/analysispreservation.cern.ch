@@ -12,9 +12,16 @@ These will be the CAP docs some time in the future.
         :glob:
         :maxdepth: 2
 
-        background
-        getting-started
+        Whatitis
+        whatitdoes
+        walkthroughs
+        FAQ
         support
+        glossary
+        reference
+        contribute
+        license
+
 
     .. toctree::
         :hidden:
