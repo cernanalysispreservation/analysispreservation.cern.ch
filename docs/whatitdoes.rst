@@ -1,28 +1,41 @@
 What it does
-==================
-And what it does not
-
+=====================================
+.. |illustration| image::
 CERN Analysis Preservation provide a centralised platform for physicists to describe, preserve, find, exchange information, and serves as a concrete effort to substantiate analyses reproducibility.
 
-- Describe
-Data model
+1. Capture
 
-Metadata
-CERN SIS, together with preservation managers from the physics collaborations, identified the core components and their relationships of a physics analysis and the metadata therein, to make sure analysis instances can be captured comprehensively.
-The metadata schemata in CAP are represent in JSON format, which provides the flexibility to allow each collaboration and working group to tailor their
+Depending on the preference and work environment of the researcher, analysis information can be entered through a submission form on the web interface, or via the REST API.
 
-Depending on the preference and work environment of the researcher, analysis information can be entered through a submission form on the web interface, or via the REST API, where input format can be tailored according to experiments and wor king groups requirements.
+-  Submission forms
 
+The analysis data are modelled in JSON format that is conforming to certain JSON Schema to ensure the compliance of captured JSON snippets with standard metadata requirements. The platform draws inspiration from the Open Archival Information System (OAIS) recommended practices to ensure long-term preservation of captured assets.
 
+CERN SIS, together with preservation managers from the physics collaborations, identified the core components of a physics analysis and the metadata therein, to make sure analysis instances can be captured comprehensively.
+The flexibility of JSON format metadata schemata allows each collaboration and working group to tailor their input format according to experiments and working groups requirements.
 
-- Search and retrieve
+-  REST API
+-  Connectivity
+-  Versioning
+
+2. Search and retrieve
+
+-  Search capability
 The JSON snippets entered by user are stored in the Invenio digital repository database and sent to an Elasticsearch cluster that is being used for indexing and information retrieval needs.
+
+-  Facets/ filter
 Before, information about an analysis was scattered around many databases. With CAP users will be able to find an analysis with specific parameters, processed with a specific algorithm, or using a specific dataset or simulation (just to name a few examples). This opens ups new possibilities for internal collaboration.
 
-- Review and compare
+3. Review and compare
 
+-  Authorisation/ access control
+-  Report compilation
 
+4. Reproduce and reuse
 
-- Reuse and reproduce
+-  Analysis environment preservation
+-  Analysis take-over
 
-- Re-interpret
+5. Re-interpret
+
+-  RECAST
