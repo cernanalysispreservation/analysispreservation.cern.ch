@@ -4,11 +4,11 @@
   "description": "Add documentation",
   "type": "object",
   "properties": {
-    "CADI_ID": {
+    "cadi_id": {
       "title": "CADI ID",
       "type": "string"
     },
-    "url": {
+    "documentation_url": {
       "title": "URL",
       "type": "string"
     },

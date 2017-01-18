@@ -4,11 +4,11 @@
   "description": "Provide user code",
   "type": "object",
   "properties": {
-    "url": {
+    "user_code_url": {
       "title": "URL",
       "type": "string"
     },
-    "tag": {
+    "user_code_tag": {
       "title": "Tag",
       "type": "string"
     },

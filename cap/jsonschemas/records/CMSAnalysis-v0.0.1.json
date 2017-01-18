@@ -27,11 +27,11 @@
           "description": "Please provide information about your operation system",
           "type": "object",
           "properties": {
-            "names": {
+            "contributor_name": {
               "title": "Names",
               "type": "string"
             },
-            "email": {
+            "contributor_email": {
               "title": "Email-Adresses",
               "type": "string"
             }
@@ -42,11 +42,11 @@
           "description": "Please provide information about your operation system",
           "type": "object",
           "properties": {
-            "name": {
+            "os_name": {
               "title": "Name",
               "type": "string"
             },
-            "version": {
+            "os_version": {
               "title": "Version",
               "type": "string"
             }
@@ -57,11 +57,11 @@
           "description": "Please provide a software description",
           "type": "object",
           "properties": {
-            "name": {
+            "software_name": {
               "title": "Name",
               "type": "string"
             },
-            "version": {
+            "software_version": {
               "title": "Version",
               "type": "string"
             },
@@ -77,13 +77,13 @@
         }
       }
     },
-    "input_datasets": {
+    "input_data": {
       "title": "Input Data",
       "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
       "type": "object",
       "id": "input_datasets",
       "properties": {
-        "primary_datasets": {
+        "primary_dataset": {
           "title": "Primary Datasets",
           "description": "Please list all primary datasets here",
           "type": "array",
@@ -181,7 +181,7 @@
         }
       }
     },
-    "documentations": {
+    "documentation": {
       "title": "Additional Documentations",
       "description": "Please provide all documentation",
       "type": "array",
@@ -191,7 +191,7 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Documentation-v0.0.1.json"
       }
     },
-    "internal_discussions": {
+    "internal_discussion": {
       "title": "Internal Discussions",
       "description": "Please add all internal discussions",
       "type": "array",
@@ -201,7 +201,7 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/InternalDiscussion-v0.0.1.json"
       }
     },
-    "presentations": {
+    "presentation": {
       "title": "Presentations",
       "description": "Please add all presentations",
       "type": "array",
@@ -211,7 +211,7 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Presentation-v0.0.1.json"
       }
     },
-    "publications": {
+    "publication": {
       "title": "Publications",
       "description": "Please add all publications",
       "type": "array",

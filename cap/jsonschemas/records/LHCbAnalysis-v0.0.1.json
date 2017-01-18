@@ -10,17 +10,17 @@
       "type": "object",
       "id": "basic_info",
       "properties": {
-        "analysis_name": {
+        "analysis_title": {
           "title": "Analysis Name",
           "type": "string",
           "required": true
         },
-        "proponents": {
+        "analysis_proponents": {
           "title": "Proponents",
           "type": "string",
           "required": true
         },
-        "status": {
+        "analysis_status": {
           "title": "Status",
           "type": "string",
           "enum": [
@@ -38,7 +38,7 @@
           ],
           "required": true
         },
-        "status_notes": {
+        "analysis_status_notes": {
           "type": "string",
           "title": "Notes on Status",
           "dependencies": [
@@ -49,11 +49,11 @@
           "title": "Reviewers",
           "type": "string"
         },
-        "egroup": {
+        "review_egroup": {
           "title": "Review eGroup",
           "type": "string"
         },
-        "institutes": {
+        "institutes_involved": {
           "title": "Institutes Involved",
           "type": "string"
         },
@@ -78,7 +78,7 @@
           "title": "Public Paper",
           "type": "string"
         },
-        "conf_report": {
+        "conference_report": {
           "title": "Conference Report (CONF)",
           "type": "string"
         },
@@ -86,7 +86,7 @@
           "title": "tWiki page",
           "type": "string"
         },
-        "arxiv": {
+        "arxiv_id": {
           "title": "arXiv ID",
           "type": "string"
         }
@@ -114,13 +114,13 @@
           "title": "Input Data",
           "type": "object",
           "properties": {
-            "data": {
+            "dataset": {
               "title": "Collision Data",
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "dataset_location": {
                     "title": "Sample",
                     "type": "string"
                   },
@@ -128,7 +128,7 @@
                     "title": "Processing Pass",
                     "type": "string"
                   },
-                  "year": {
+                  "dataset_year": {
                     "title": "Year",
                     "type": "string"
                   },
@@ -169,7 +169,7 @@
               "items": {
                 "type": "object",
                 "properties": {
-                  "location": {
+                  "dataset_location": {
                     "title": "Sample",
                     "type": "string"
                   },
@@ -248,7 +248,7 @@
                     "title": "Description",
                     "type": "string"
                   },
-                  "link": {
+                  "code_url": {
                     "title": "URL",
                     "type": "string"
                   },
@@ -265,7 +265,7 @@
           "title": "Output Data",
           "type": "object",
           "properties": {
-            "data": {
+            "dataset": {
               "title": "Collision Data",
               "type": "array",
               "items": {
@@ -295,7 +295,7 @@
             "title": "Input Data",
             "type": "object",
             "properties": {
-              "data": {
+              "dataset": {
                 "title": "Collision Data",
                 "type": "array",
                 "items": {
@@ -334,7 +334,7 @@
                       "title": "Description",
                       "type": "string"
                     },
-                    "link": {
+                    "code_url": {
                       "title": "URL",
                       "type": "string"
                     },
@@ -351,7 +351,7 @@
             "title": "Output Data",
             "type": "object",
             "properties": {
-              "data": {
+              "dataset": {
                 "title": "Collision Data",
                 "type": "array",
                 "items": {
@@ -370,10 +370,10 @@
         }
       }
     },
-    "workflows": { 
+    "workflow": { 
       "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/LHCbWorkflows.json" 
     },
-    "documentations": {
+    "documentation": {
       "title": "Documentations",
       "type": "array",
       "id": "documentations",
@@ -383,7 +383,7 @@
         "description": "Add documentation",
         "type": "object",
         "properties": {
-          "url": {
+          "documentation_url": {
             "title": "URL",
             "type": "string"
           },
@@ -398,7 +398,7 @@
         }
       }
     },
-    "internal_discussions": {
+    "internal_discussion": {
       "title": "Internal Discussions",
       "type": "array",
       "id": "internal-discussions",
@@ -406,22 +406,22 @@
         "type": "object",
         "title": "Reports",
         "properties": {
-          "url": {
+          "discussion_url": {
             "title": "URL",
             "type": "string"
           },
-          "title": {
+          "discussion_title": {
             "title": "Title",
             "type": "string"
           },
-          "meeting": {
+          "discussion_egroup": {
             "title": "E-Group",
             "type": "string"
           }
         }
       }
     },
-    "presentations": {
+    "presentation": {
       "title": "Presentations",
       "type": "array",
       "id": "presentations",
@@ -429,22 +429,22 @@
         "type": "object",
         "title": "Presentation",
         "properties": {
-          "url": {
+          "presentation_url": {
             "title": "URL",
             "type": "string"
           },
-          "title": {
+          "presentation_title": {
             "title": "Title",
             "type": "string"
           },
-          "meeting": {
+          "presentation_meeting": {
             "title": "Meeting (GROUP?)",
             "type": "string"
           }
         }
       }
     },
-    "publications": {
+    "publication": {
       "title": "Publications",
       "type": "array",
       "id": "publications",
@@ -452,11 +452,11 @@
         "type": "object",
         "title": "Publications",
         "properties": {
-          "url": {
+          "publication_url": {
             "title": "URL",
             "type": "string"
           },
-          "reviewegroup": {
+          "review_egroup": {
             "title": "Review Group",
             "type": "string"
           },

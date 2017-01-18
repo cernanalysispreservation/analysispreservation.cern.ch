@@ -13,7 +13,7 @@
         "internal"
       ]
     },
-    "persistent_identifiers": {
+    "publication_identifier": {
       "title": "Identifiers",
       "description": "Identifier numbers for the publication, e.g. arXiv ID or CDS ID",
       "type": "array",
@@ -21,7 +21,7 @@
         "$ref": "https://analysis-preservation.cern.ch/records/jsonschemas/definitions/Identifiers-v0.0.1.json"
       }
     },
-    "url": {
+    "publication_url": {
       "title": "URL",
       "description": "Full URL for the publication, e.g. http://arxiv.org/abs/1403.5294",
       "type": "string"
