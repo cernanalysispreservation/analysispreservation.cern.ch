@@ -15,9 +15,18 @@ The ultimate goal of CAP is to improve both human and machine readability of ana
 The High Energy Physics community has been tirelessly exploring and adopting innovative forms of communciation to ensure the ever growing information needs of the community members are sufficiently met. CERN Analysis Preservation (CAP) is another attempt to reinforce the current communication model, and make collaborative research easier.
 
 -  Team
+CERN-SIS:
+CERN-IT:
+Physics collaborations:
 
--  Contributors
+-  Contributors/ veterans
 
 -  Partners
+CMS
+LHCb
+ATLAS
+ALICE
 
 -  Related projects
+RECAST
+DASPOS

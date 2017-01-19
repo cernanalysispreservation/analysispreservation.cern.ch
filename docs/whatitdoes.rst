@@ -14,9 +14,16 @@ Core components of a physics analysis and the metadata therein are identified to
 Depending on the preference and work environment of the researcher, analysis information can be entered through a submission form on the web interface, or via the REST API.
 
 -  Submission forms
-Submission forms are unique to each collaboration. Taking into consideration the diversity of approach, workflow and language used for physics analyses within collaborations, the default analysis components and fields for description on the analysis forms are appropriate to collaboration requirements.
 
-One analysis correspond one analysis form, which contains default fields, fixed fields, required fields, and conditional fields.
+Submission forms are unique to each collaboration. Taking into consideration the diversity of approach, workflow and language used for physics analyses within collaborations, the default analysis components and fields for description on the analysis forms are appropriate to collaboration requirements.
+Go here for more information on the terminologies used on the forms.
+
+As the active profile page for a physics analysis,
+
+Analysis forms contains fields for basic analysis information, which are fixed to each form, and fields for analysis component specific information, which can be added or left out, depending on the progression of the analysis that is being recorded.
+
+ default fields, fixed fields, required fields, and conditional fields.
+
 
 -  REST API
 
