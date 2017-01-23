@@ -326,7 +326,7 @@ JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     plugins=[
         'cap.modules.records.resolvers.local',
         'cap.modules.records.resolvers.cap',
-        ]))
+    ]))
 
 JSONSCHEMAS_VERSIONS = {
     "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
@@ -464,6 +464,19 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
 })
 
 #: Template for <invenio-records-form>
+DEPOSIT_FORM_TEMPLATES = {
+    "array": "array.html",
+    "button": "button.html",
+    "default": "default.html",
+    "fieldset": "fieldset.html",
+    "radios": "radios.html",
+    "radios_inline": "radios_inline.html",
+    "select": "select.html",
+    "textarea": "textarea.html",
+    "tabarray": "tabarray.html",
+    "checkboxes": "checkboxes.html"
+}
+
 DEPOSIT_UI_JSTEMPLATE_FORM = 'templates/cap_records_js/form.html'
 
 DEPOSIT_FORM_TEMPLATES_BASE = 'templates/cap_records_js/decorators'

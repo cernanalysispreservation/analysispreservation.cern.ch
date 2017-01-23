@@ -25,7 +25,7 @@
 
 """CAP deposit UI views"""
 from ..api import CAPDeposit
-from cap.config import DEPOSIT_GROUPS
+from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
 from flask import Blueprint, abort, current_app, jsonify, render_template, url_for
 from flask.views import View
@@ -52,18 +52,7 @@ DEPOSIT_DEFAULT_METAINFO = {
         "upload_zone_template": "/api/static/templates/cap_files_js/upload.html"
     },
     "form_template": {
-        "form_templates": {
-            "array": "array.html",
-            "button": "button.html",
-            "default": "default.html",
-            "fieldset": "fieldset.html",
-            "radios": "radios.html",
-            "radios_inline": "radios_inline.html",
-            "select": "select.html",
-            "textarea": "textarea.html",
-            "tabarray": "tabarray.html",
-            "checkboxes": "checkboxes.html"
-        },
+        "form_templates": DEPOSIT_FORM_TEMPLATES,
         "form_templates_base": "/api/static/templates/cap_records_js/decorators",
         "template": "/api/static/templates/cap_records_js/form.html"
     },

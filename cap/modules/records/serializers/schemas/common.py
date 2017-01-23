@@ -22,12 +22,12 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from marshmallow import Schema, ValidationError, fields, validates_schema
 from flask import current_app, has_request_context, url_for
+from marshmallow import Schema, ValidationError, fields, validates_schema
 from werkzeug.routing import BuildError
 
-from invenio_search.utils import schema_to_index
 from invenio_search import current_search
+from invenio_search.utils import schema_to_index
 
 
 def schema_prefix(schema):
@@ -90,7 +90,8 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                     else None
 
                 # Constructing links
-                self_url = current_app.config['DEPOSIT_RECORDS_API'].format(pid_value=_id)
+                self_url = current_app.config[
+                    'DEPOSIT_RECORDS_API'].format(pid_value=_id)
 
                 links['self'] = self_url
                 # [TO FIX] create a coneverter to format `html` link
@@ -107,7 +108,8 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                 # html_key = 'html'
 
                 # Constructing links
-                self_url = current_app.config['SEARCH_UI_SEARCH_API']+'{pid_value}'.format(pid_value=_id)
+                self_url = current_app.config[
+                    'SEARCH_UI_SEARCH_API'] + '{pid_value}'.format(pid_value=_id)
 
                 links['self'] = self_url
 
@@ -150,13 +152,15 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
         # import ipdb;ipdb.set_trace()
         # _meta_info['boom'] = "bam"
         if _id:
-            _meta_info['initialization'] = current_app.config['DEPOSIT_RECORDS_API'].format(pid_value=_id)
+            _meta_info['initialization'] = current_app.config[
+                'DEPOSIT_RECORDS_API'].format(pid_value=_id)
             _meta_info['files'] = {
                 'action': current_app.config['DEPOSIT_RECORDS_API'].format(pid_value=_id),
                 'files': m.get('_files', [])
             }
         else:
-            _meta_info['initialization'] = current_app.config['DEPOSIT_SEARCH_API']
+            _meta_info['initialization'] = current_app.config[
+                'DEPOSIT_SEARCH_API']
 
         _meta_info['template_params'] = {
             "messages": current_app.config['DEPOSIT_RESPONSE_MESSAGES']
@@ -167,11 +171,15 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
             }
         }
 
-        _meta_info['schema'] = m.get('$schema', "").replace('http://', 'https://')
-        _meta_info['schema_form'] = _meta_info['schema'].replace('/schemas/', '/static/json/')
+        _meta_info['schema'] = m.get(
+            '$schema', "").replace('http://', 'https://')
+        _meta_info['schema_form'] = _meta_info[
+            'schema'].replace('/schemas/', '/static/json/')
 
-        _meta_info['loading_template'] = url_for('static', filename='node_modules/invenio-records-js/dist/templates/loading.html')
-        _meta_info['alert_template'] = url_for('static', filename='templates/cap_records_js/alert.html')
+        _meta_info['loading_template'] = url_for(
+            'static', filename='node_modules/invenio-records-js/dist/templates/loading.html')
+        _meta_info['alert_template'] = url_for(
+            'static', filename='templates/cap_records_js/alert.html')
         _meta_info['form_template'] = {
             'form_templates': current_app.config['DEPOSIT_FORM_TEMPLATES'],
             'form_templates_base': url_for('static', filename=current_app.config['DEPOSIT_FORM_TEMPLATES_BASE']),
