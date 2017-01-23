@@ -191,6 +191,7 @@ setup(
             'cap_experiments_css = '
             'cap.modules.experiments.bundles:experiments_css',
             'cap_forms_css = cap.modules.deposit.bundles:forms_css',
+            'cap_forms_js = cap.modules.deposit.bundles:forms_js',
         ],
         'invenio_celery.tasks': [
             'cap_deposit = cap.modules.deposit.loaders',
