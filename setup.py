@@ -192,6 +192,9 @@ setup(
             'cap.modules.experiments.bundles:experiments_css',
             'cap_forms_css = cap.modules.deposit.bundles:forms_css',
         ],
+        'invenio_celery.tasks': [
+            'cap_deposit = cap.modules.deposit.loaders',
+        ],
         'invenio_pidstore.minters': [
             'cap_record_minter = '
             'cap.modules.records.minters:cap_record_minter',

@@ -159,9 +159,40 @@
         "key": "main_measurements[].code_base",
         "items": [
           {
-            "key": "main_measurements[].code_base.url",
-            "title": "URL",
-            "placeholder": "E.g. git@github.com:johndoe/myrepo.git"
+            "key": "main_measurements[].code_base._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
+          },
+          {            
+            "key": "main_measurements[].code_base.source",
+            "condition": "model['main_measurements'][arrayIndex]['code_base']['_type'] == 'external_url'",
+            "items": [
+              {
+                "key": "main_measurements[].code_base.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
+              },
+              {
+                "key": "main_measurements[].code_base.source.url",
+                "notitle": true,
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
+              }
+            ]
+          },
+          {
+            "key": "main_measurements[].code_base.key",
+            "condition": "model['main_measurements'][arrayIndex]['code_base']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
           },
           {
             "key": "main_measurements[].code_base.tag",
@@ -179,9 +210,45 @@
         "key": "main_measurements[].n_tuple",
         "items": [
           {
-            "key": "main_measurements[].n_tuple[].user_code.config_files",
-            "title": "Configuration File",
-            "placeholder": "E.g. git@github.com:johndoe/../my-config-file.root"
+            "key": "main_measurements[].n_tuple[].user_code",
+            "items": [
+              {
+                "key": "main_measurements[].n_tuple[].user_code._type",
+                "title": "Please select the preferred way to upload a file",
+                "type": "radios",
+                "titleMap": [
+                  {"value": "external_url", "name": "External URL"},
+                  {"value": "file_upload", "name": "File Upload"}
+                ]
+              },
+              {            
+                "key": "main_measurements[].n_tuple[].user_code.source",
+                "condition": "model['main_measurements'][arrayIndex]['n_tuple'][arrayIndex]['user_code']['_type'] == 'external_url'",
+                "items": [
+                  {
+                    "key": "main_measurements[].n_tuple[].user_code.source.preserved",
+                    "type": "radios",
+                    "destroyStrategy": "retain",
+                    "titleMap": [
+                      {"value": true, "name": "Yes"},
+                      {"value": false, "name": "No"}
+                    ]
+                  },
+                  {
+                    "key": "main_measurements[].n_tuple[].user_code.source.url",
+                    "notitle": true,
+                    "destroyStrategy": "retain",
+                    "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
+                  }
+                ]
+              },
+              {
+                "key": "main_measurements[].n_tuple[].user_code.key",
+                "condition": "model['main_measurements'][arrayIndex]['n_tuple'][arrayIndex]['user_code']['_type'] == 'file_upload'",
+                "type": "file_selector",
+                "title": "Select file"
+              }
+            ]
           },
           {
             "key": "main_measurements[].n_tuple[].run_instructions",

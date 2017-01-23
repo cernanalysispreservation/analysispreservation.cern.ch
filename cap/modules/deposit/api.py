@@ -34,6 +34,7 @@ from invenio_records_files.models import RecordsBuckets
 
 from werkzeug.local import LocalProxy
 
+
 current_jsonschemas = LocalProxy(
     lambda: current_app.extensions['invenio-jsonschemas']
 )
@@ -52,7 +53,6 @@ class CAPDeposit(Deposit):
         """Check if deposit is published."""
         return self['_deposit'].get('pid') is not None
 
-
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""
@@ -61,16 +61,22 @@ class CAPDeposit(Deposit):
         deposit['_files'] = deposit.files.dumps()
         return deposit
 
-
     @property
     def record_schema(self):
         """Convert deposit schema to a valid record schema."""
-        schema_path = current_jsonschemas.url_to_path(self['$schema'].replace('/app/schemas', '/schemas'))
+        schema_path = current_jsonschemas.url_to_path(
+            self['$schema'].replace('/app/schemas', '/schemas'))
         schema_prefix = current_app.config['DEPOSIT_JSONSCHEMAS_PREFIX']
         if schema_path and schema_path.startswith(schema_prefix):
             return current_jsonschemas.path_to_url(
                 schema_path[len(schema_prefix):]
             )
+
+    def commit(self, *args, **kwargs):
+        """Synchronize files before commit."""
+        self.files.flush()
+        result = super(CAPDeposit, self).commit(*args, **kwargs)
+        return result
 
     @classmethod
     def create(cls, data, id_=None):
@@ -81,7 +87,6 @@ class CAPDeposit(Deposit):
         bucket = Bucket.create(
             default_location=Location.get_default()
         )
-        data['_buckets'] = {'deposit': str(bucket.id)}
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
         RecordsBuckets.create(record=deposit.model, bucket=bucket)
         return deposit

@@ -1,286 +1,276 @@
-{  
-   "$schema":"http://json-schema.org/draft-04/schema#",
-   "description":"Describe information needed for deposit module.",
-   "properties":{  
-      "_buckets":{  
-         "properties":{  
-            "deposit":{  
-               "description":"Deposit bucket ID.",
-               "type":"string"
-            },
-            "record":{  
-               "description":"Record bucket ID.",
-               "type":"string"
-            }
-         },
-         "type":"object"
+{
+   "$schema": "http://json-schema.org/draft-04/schema#",
+   "description": "Describe information needed for deposit module.",
+   "properties": {
+      "_cap_status": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
       },
-      "_deposit":{  
-         "name":"_deposit",
-         "properties":{  
-            "created_by":{  
-               "name":"created_by",
-               "type":"integer"
+      "_deposit": {
+         "name": "_deposit",
+         "properties": {
+            "created_by": {
+               "name": "created_by",
+               "type": "integer"
             },
-            "id":{  
-               "name":"id",
-               "type":"integer"
+            "id": {
+               "name": "id",
+               "type": "integer"
             },
-            "owners":{  
-               "items":[  
-                  {  
-                     "type":"integer"
+            "owners": {
+               "items": [
+                  {
+                     "type": "integer"
                   }
                ],
-               "name":"owners",
-               "type":"array"
+               "name": "owners",
+               "type": "array"
             },
-            "pid":{  
-               "name":"pid",
-               "properties":{  
-                  "revision_id":{  
-                     "type":"integer"
+            "pid": {
+               "name": "pid",
+               "properties": {
+                  "revision_id": {
+                     "type": "integer"
                   },
-                  "type":{  
-                     "type":"string"
+                  "type": {
+                     "type": "string"
                   },
-                  "value":{  
-                     "type":"string"
+                  "value": {
+                     "type": "string"
                   }
                },
-               "type":"object"
+               "type": "object"
             },
-            "status":{  
-               "enum":[  
+            "status": {
+               "enum": [
                   "draft",
                   "published"
                ],
-               "name":"status",
-               "type":"string"
+               "name": "status",
+               "type": "string"
             }
          },
-         "required":[  
+         "required": [
             "id"
          ],
-         "type":"object"
+         "type": "object"
       },
-      "_files":{  
-         "items":{  
-            "description":"Describe information needed for files in records.",
-            "properties":{  
-               "bucket":{  
-                  "type":"string"
+      "_files": {
+         "items": {
+            "description": "Describe information needed for files in records.",
+            "properties": {
+               "bucket": {
+                  "type": "string"
                },
-               "checksum":{  
-                  "type":"string"
+               "checksum": {
+                  "type": "string"
                },
-               "key":{  
-                  "type":"string"
+               "key": {
+                  "type": "string"
                },
-               "size":{  
-                  "type":"integer"
+               "size": {
+                  "type": "integer"
                },
-               "type":{  
-                  "description":"File type extension.",
-                  "type":"string"
+               "type": {
+                  "description": "File type extension.",
+                  "type": "string"
                },
-               "version_id":{  
-                  "type":"string"
+               "version_id": {
+                  "type": "string"
                }
             },
-            "type":"object"
+            "type": "object"
          },
-         "type":"array"
+         "type": "array"
       },
-      "basic_info":{  
-         "title":"Basic Information",
-         "description":"Please provide some information relevant for all parts of the Analysis here",
-         "propertyOrder":10,
-         "type":"object",
-         "id":"basic_info",
-         "properties":{  
-            "analysis_number":{  
-               "title":"Analysis Number",
-               "type":"string"
+      "basic_info": {
+         "title": "Basic Information",
+         "description": "Please provide some information relevant for all parts of the Analysis here",
+         "propertyOrder": 10,
+         "type": "object",
+         "id": "basic_info",
+         "properties": {
+            "analysis_number": {
+               "title": "Analysis Number",
+               "type": "string"
             },
-            "abstract":{  
-               "title":"Abstract",
-               "type":"string"
+            "abstract": {
+               "title": "Abstract",
+               "type": "string"
             },
-            "conclusion":{  
-               "title":"Conclusion",
-               "type":"string"
+            "conclusion": {
+               "title": "Conclusion",
+               "type": "string"
             },
-            "people_info":{  
-               "title":"People Involved",
-               "description":"Please provide information about the people involved",
-               "type":"array",
+            "people_info": {
+               "title": "People Involved",
+               "description": "Please provide information about the people involved",
+               "type": "array",
                "items": {
                   "type": "object",
-                  "properties":{  
-                     "names":{  
-                        "title":"Names",
-                        "type":"string"
+                  "properties": {
+                     "names": {
+                        "title": "Names",
+                        "type": "string"
                      },
-                     "email":{  
-                        "title":"Email-Adresses",
-                        "type":"string"
+                     "email": {
+                        "title": "Email-Adresses",
+                        "type": "string"
                      }
-                  }   
-               }
-               
-            },
-            "os":{  
-               "title":"Operation System",
-               "description":"Please provide information about your operation system",
-               "type":"object",
-               "properties":{  
-                  "name":{  
-                     "title":"Name",
-                     "type":"string"
-                  },
-                  "version":{  
-                     "title":"Version",
-                     "type":"string"
                   }
                }
             },
-            "software":{  
-               "title":"Analysis Software",
-               "description":"Please provide a software description",
-               "type":"object",
-               "properties":{  
-                  "name":{  
-                     "title":"Name",
-                     "type":"string"
+            "os": {
+               "title": "Operation System",
+               "description": "Please provide information about your operation system",
+               "type": "object",
+               "properties": {
+                  "name": {
+                     "title": "Name",
+                     "type": "string"
                   },
-                  "version":{  
-                     "title":"Version",
-                     "type":"string"
+                  "version": {
+                     "title": "Version",
+                     "type": "string"
+                  }
+               }
+            },
+            "software": {
+               "title": "Analysis Software",
+               "description": "Please provide a software description",
+               "type": "object",
+               "properties": {
+                  "name": {
+                     "title": "Name",
+                     "type": "string"
                   },
-                  "global_tag_data":{  
-                     "title":"Global Tag Data",
-                     "type":"string"
+                  "version": {
+                     "title": "Version",
+                     "type": "string"
                   },
-                  "global_tag_MC":{  
-                     "title":"Global Tag MC",
-                     "type":"string"
+                  "global_tag_data": {
+                     "title": "Global Tag Data",
+                     "type": "string"
+                  },
+                  "global_tag_MC": {
+                     "title": "Global Tag MC",
+                     "type": "string"
                   }
                }
             }
          }
       },
-      "input_datasets":{  
-         "_comment":"This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
-         "title":"Input Data",
-         "description":"Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
-         "type":"object",
-         "id":"input_datasets",
-         "properties":{  
-            "primary_datasets":{  
-               "title":"Primary Datasets",
-               "description":"Please list all primary datasets here",
-               "type":"string",
-               "id":"primary-datasets"
+      "input_datasets": {
+         "_comment": "This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
+         "title": "Input Data",
+         "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
+         "type": "object",
+         "id": "input_datasets",
+         "properties": {
+            "primary_datasets": {
+               "title": "Primary Datasets",
+               "description": "Please list all primary datasets here",
+               "type": "string",
+               "id": "primary-datasets"
             },
-            "mc_sig_dataset":{  
-               "title":"Monte Carlo Signal Datasets",
-               "description":"Please list all Monte Carlo Signal datasets",
-               "type":"string",
-               "id":"mc_sig_dataset"
+            "mc_sig_dataset": {
+               "title": "Monte Carlo Signal Datasets",
+               "description": "Please list all Monte Carlo Signal datasets",
+               "type": "string",
+               "id": "mc_sig_dataset"
             },
-            "mc_bg_dataset":{  
-               "title":"Monte Carlo Background Datasets",
-               "description":"Please list all Monte Carlo Background datasets",
-               "type":"string",
-               "id":"mc_bg_dataset"
+            "mc_bg_dataset": {
+               "title": "Monte Carlo Background Datasets",
+               "description": "Please list all Monte Carlo Background datasets",
+               "type": "string",
+               "id": "mc_bg_dataset"
             }
          }
       },
-      "input_code_output":{  
-         "title":"n-tuple Production",
+      "input_code_output": {
+         "title": "n-tuple Production",
          "description": "Please provide the n-tuples you used for your measurements",
-         "type":"array",
-         "default":[  
-            {  
-
-            }
+         "type": "array",
+         "default": [
+            {}
          ],
-         "items":{  
-            "type":"object",
-            "properties":{  
-               "code_base":{  
-                  "title":"User Code Base",
-                  "description":"Provide user code",
-                  "type":"object",
-                  "properties":{  
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
+         "items": {
+            "type": "object",
+            "properties": {
+               "code_base": {
+                  "title": "User Code Base",
+                  "description": "Provide user code",
+                  "type": "object",
+                  "properties": {
+                     "url": {
+                        "title": "URL",
+                        "type": "string"
                      },
-                     "tag":{  
-                        "title":"Tag",
-                        "type":"string"
+                     "tag": {
+                        "title": "Tag",
+                        "type": "string"
                      },
-                     "revision_id":{  
-                        "title":"Revision Identifier",
-                        "type":"string"
+                     "revision_id": {
+                        "title": "Revision Identifier",
+                        "type": "string"
                      }
                   }
                },
-               "n_tuple":{  
-                  "title":"Processing",
-                  "type":"array",
-                  "default":[  
-                     {  
-
-                     }
+               "n_tuple": {
+                  "title": "Processing",
+                  "type": "array",
+                  "default": [
+                     {}
                   ],
-                  "items":{  
-                     "title":"Input",
-                     "type":"object",
-                     "properties":{  
-                        "input_data":{  
-                           "title":"Input",
-                           "type":"object",
-                           "properties":{  
-                              "dataset":{  
-                                 "title":"Dataset",
-                                 "type":"string",
-                                 "enum":[  
-
-                                 ]
+                  "items": {
+                     "title": "Input",
+                     "type": "object",
+                     "properties": {
+                        "input_data": {
+                           "title": "Input",
+                           "type": "object",
+                           "properties": {
+                              "dataset": {
+                                 "title": "Dataset",
+                                 "type": "string",
+                                 "enum": []
                               }
                            }
                         },
-                        "user_code":{  
-                           "title":"Configuration File",
-                           "type":"object",
-                           "properties":{  
-                              "config_files":{  
-                                 "title":"URL",
-                                 "type":"string"
+                        "user_code": {
+                           "title": "Configuration File",
+                           "type": "object",
+                           "properties": {
+                              "config_files": {
+                                 "title": "URL",
+                                 "type": "string"
                               }
                            }
                         },
-                        "run_instructions":{  
-                           "title":"Run Instructions",
-                           "description":"Provide run instructions",
-                           "enum":[  
-                                 "readme",
-                                 "makefile",
-                                 "upload"
-                              ],
-                            "title":"Type",
-                            "type":"string"
+                        "run_instructions": {
+                           "title": "Type",
+                           "description": "Provide run instructions",
+                           "enum": [
+                              "readme",
+                              "makefile",
+                              "upload"
+                           ],
+                           "type": "string"
                         },
-                        "output_data":{  
-                           "title":"Output",
-                           "type":"object",
-                           "properties":{  
-                              "output_url":{  
-                                 "title":"URL",
-                                 "type":"string"
+                        "output_data": {
+                           "title": "Output",
+                           "type": "object",
+                           "properties": {
+                              "output_url": {
+                                 "title": "URL",
+                                 "type": "string"
                               }
                            }
                         }
@@ -290,130 +280,117 @@
             }
          }
       },
-      "main_measurements":{  
-         "title":"Main Measurement Workflow",
+      "main_measurements": {
+         "title": "Main Measurement Workflow",
          "description": "Please provide information about the main measurements of your analysis",
-         "type":"array",
-         "id":"main-measurements",
-         "default":[  
-            {  
-
-            }
+         "type": "array",
+         "id": "main-measurements",
+         "default": [
+            {}
          ],
-         "items":{  
-            "title":"Detector State",
-            "description":"Information concerning the state of the detector",
-            "type":"object",
-            "properties":{  
-               "measurement_description":{  
-                  "title":"Measurement Description",
-                  "type":"string"
+         "items": {
+            "title": "Detector State",
+            "description": "Information concerning the state of the detector",
+            "type": "object",
+            "properties": {
+               "measurement_description": {
+                  "title": "Measurement Description",
+                  "type": "string"
                },
-               "ana_note_number":{  
-                  "title":"Analysis Note Number",
-                  "type":"string"
+               "ana_note_number": {
+                  "title": "Analysis Note Number",
+                  "type": "string"
                },
-               "detailed_measurement_description":{  
-                  "title":"Description Details",
-                  "type":"string"
+               "detailed_measurement_description": {
+                  "title": "Description Details",
+                  "type": "string"
                },
-               "code_base":{  
-                  "title":"User Code Base",
-                  "description":"Provide user code",
-                  "type":"object",
-                  "properties":{  
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
-                     },
-                     "tag":{  
-                        "title":"Tag",
-                        "type":"string"
-                     },
-                     "revision_id":{  
-                        "title":"Revision Identifier",
-                        "type":"string"
-                     }
+               "code_base": {
+                  "title": "User Code Base",
+                  "description": "Provide user code",
+                  "type": "object",
+                  "x-cap-file": {
+                     "fetch_from": "/source/url",
+                     "file_key": "/key",
+                     "condition": "/source/preserved"
+                  },
+                  "properties": {
+                     "$ref": "#/definitions/file"
                   }
                },
-               "n_tuple":{  
-                  "title":"Processing",
-                  "type":"array",
-                  "default":[  
-                     {  
-
-                     }
+               "n_tuple": {
+                  "title": "Processing",
+                  "type": "array",
+                  "default": [
+                     {}
                   ],
-                  "items":{  
-                     "title":"Input",
-                     "type":"object",
-                     "properties":{  
-                        "input_data":{  
-                           "title":"Input",
-                           "type":"object",
-                           "properties":{  
-                              "dataset":{  
-                                 "title":"Dataset",
-                                 "type":"string",
-                                 "enum":[  
-
-                                 ]
+                  "items": {
+                     "title": "Input",
+                     "type": "object",
+                     "properties": {
+                        "input_data": {
+                           "title": "Input",
+                           "type": "object",
+                           "properties": {
+                              "dataset": {
+                                 "title": "Dataset",
+                                 "type": "string",
+                                 "enum": []
                               }
                            }
                         },
-                        "user_code":{  
-                           "title":"Configuration File",
-                           "type":"object",
-                           "properties":{  
-                              "config_files":{  
-                                 "title":"URL",
-                                 "type":"string"
-                              }
+                        "user_code": {
+                           "title": "Configuration File",
+                           "type": "object",
+                           "x-cap-file": {
+                              "fetch_from": "/source/url",
+                              "file_key": "/key",
+                              "condition": "/source/preserved"
+                           },
+                           "properties": {
+                              "$ref": "#/definitions/file"
                            }
                         },
-                        "run_instructions":{  
-                           "title":"Run Instructions",
-                           "description":"Provide run instructions",
-                           "enum":[  
-                                 "readme",
-                                 "makefile",
-                                 "upload"
-                              ],
-                            "title":"Type",
-                            "type":"string"
+                        "run_instructions": {
+                           "title": "Type",
+                           "description": "Provide run instructions",
+                           "enum": [
+                              "readme",
+                              "makefile",
+                              "upload"
+                           ],
+                           "type": "string"
                         },
-                        "output_data":{  
-                           "title":"Output",
-                           "type":"object",
-                           "properties":{  
-                              "output_url":{  
-                                 "title":"URL",
-                                 "type":"string"
+                        "output_data": {
+                           "title": "Output",
+                           "type": "object",
+                           "properties": {
+                              "output_url": {
+                                 "title": "URL",
+                                 "type": "string"
                               }
                            }
                         }
                      }
                   }
                },
-               "detector_final_state":{  
-                  "title":"Event Selection",
-                  "type":"object",
-                  "properties":{  
-                     "final_state_particles":{  
-                        "title":"Physics Objects",
-                        "type":"array",
-                        "default":[  
-                           {  
-
-                           }
+               "detector_final_state": {
+                  "title": "Event Selection",
+                  "type": "object",
+                  "properties": {
+                     "final_state_particles": {
+                        "title": "Physics Objects",
+                        "type": "array",
+                        "default": [
+                           {}
                         ],
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "object":{  
-                                 "title":"Object",
-                                 "type":"string",
-                                 "enum":[  
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "object": {
+                                 "title": "Object",
+                                 "type": "string",
+                                 "enum": [
                                     "electron",
                                     "muon",
                                     "tau",
@@ -426,33 +403,33 @@
                                     "HT"
                                  ]
                               },
-                              "electron_type":{  
-                                 "type":"string",
-                                 "title":"Electron type",
-                                 "enum":[  
+                              "electron_type": {
+                                 "type": "string",
+                                 "title": "Electron type",
+                                 "enum": [
                                     "GsfElectron"
                                  ]
                               },
-                              "muon_type":{  
-                                 "type":"string",
-                                 "title":"Muon type",
-                                 "enum":[  
+                              "muon_type": {
+                                 "type": "string",
+                                 "title": "Muon type",
+                                 "enum": [
                                     "PFMuon",
                                     "GlobalMuon",
                                     "TrackerMuon"
                                  ]
                               },
-                              "tau_type":{  
-                                 "type":"string",
-                                 "title":"Tau type",
-                                 "enum":[  
+                              "tau_type": {
+                                 "type": "string",
+                                 "title": "Tau type",
+                                 "enum": [
                                     "PFTau"
                                  ]
                               },
-                              "jet_type":{  
-                                 "type":"string",
-                                 "title":"Jet type",
-                                 "enum":[  
+                              "jet_type": {
+                                 "type": "string",
+                                 "title": "Jet type",
+                                 "enum": [
                                     "AK4PF",
                                     "AK5PF",
                                     "AK6PF",
@@ -475,261 +452,261 @@
                                     "KT8Calo"
                                  ]
                               },
-                              "jet_corrections":{  
-                                 "type":"string",
-                                 "title":"Jet Corrections",
-                                 "enum":[  
+                              "jet_corrections": {
+                                 "type": "string",
+                                 "title": "Jet Corrections",
+                                 "enum": [
                                     "JetCorrections"
                                  ]
                               },
-                              "photon_type":{  
-                                 "type":"string",
-                                 "title":"Photon type",
-                                 "enum":[  
+                              "photon_type": {
+                                 "type": "string",
+                                 "title": "Photon type",
+                                 "enum": [
                                     "Photon",
                                     "Conversion"
                                  ]
                               },
-                              "met_type":{  
-                                 "type":"string",
-                                 "title":"MET type",
-                                 "enum":[  
+                              "met_type": {
+                                 "type": "string",
+                                 "title": "MET type",
+                                 "enum": [
                                     "PFMET",
                                     "CaloMET"
                                  ]
                               },
-                              "met_pf_corrections":{  
-                                 "type":"string",
-                                 "title":"MET Corrections",
-                                 "enum":[  
+                              "met_pf_corrections": {
+                                 "type": "string",
+                                 "title": "MET Corrections",
+                                 "enum": [
                                     "Type0PFCorrections",
                                     "Type1PFCorrections",
                                     "Type2PFCorrections"
                                  ]
                               },
-                              "met_calo_corrections":{  
-                                 "type":"string",
-                                 "title":"MET Corrections",
-                                 "enum":[  
+                              "met_calo_corrections": {
+                                 "type": "string",
+                                 "title": "MET Corrections",
+                                 "enum": [
                                     "Type0CaloCorrections",
                                     "Type1CaloCorrections",
                                     "Type2CaloCorrections"
                                  ]
                               },
-                              "track_type":{  
-                                 "type":"string",
-                                 "title":"Track type",
-                                 "enum":[  
+                              "track_type": {
+                                 "type": "string",
+                                 "title": "Track type",
+                                 "enum": [
                                     "Heavy-Ion",
                                     "pp"
                                  ]
                               },
-                              "sel_criteria":{  
-                                 "type":"string",
-                                 "title":"Selection Criteria",
-                                 "enum":[  
+                              "sel_criteria": {
+                                 "type": "string",
+                                 "title": "Selection Criteria",
+                                 "enum": [
                                     "tight",
                                     "medium",
                                     "loose",
                                     "other"
                                  ]
                               },
-                              "isolation":{  
-                                 "title":"Isolation",
-                                 "type":"object",
-                                 "properties":{  
-                                    "notracks":{  
-                                       "title":"no tracks",
-                                       "type":"object",
-                                       "properties":{  
-                                          "pTg":{  
-                                             "type":"number",
-                                             "title":"pT >"
+                              "isolation": {
+                                 "title": "Isolation",
+                                 "type": "object",
+                                 "properties": {
+                                    "notracks": {
+                                       "title": "no tracks",
+                                       "type": "object",
+                                       "properties": {
+                                          "pTg": {
+                                             "type": "number",
+                                             "title": "pT >"
                                           },
-                                          "deltaRs":{  
-                                             "type":"number",
-                                             "title":"ΔR <"
+                                          "deltaRs": {
+                                             "type": "number",
+                                             "title": "ΔR <"
                                           }
                                        }
                                     },
-                                    "calorimeter":{  
-                                       "title":"calorimeter",
-                                       "type":"object",
-                                       "properties":{  
-                                          "pTs":{  
-                                             "type":"number",
-                                             "title":"pT <"
+                                    "calorimeter": {
+                                       "title": "calorimeter",
+                                       "type": "object",
+                                       "properties": {
+                                          "pTs": {
+                                             "type": "number",
+                                             "title": "pT <"
                                           },
-                                          "deltaRs":{  
-                                             "type":"number",
-                                             "title":"ΔR <"
+                                          "deltaRs": {
+                                             "type": "number",
+                                             "title": "ΔR <"
                                           }
                                        }
                                     }
                                  }
                               },
-                              "number":{  
-                                 "title":"Number",
-                                 "type":"object",
-                                 "properties":{  
-                                    "sign":{  
-                                       "type":"string",
-                                       "title":"<, >, =, <=, >=",
-                                       "enum":[  
+                              "number": {
+                                 "title": "Number",
+                                 "type": "object",
+                                 "properties": {
+                                    "sign": {
+                                       "type": "string",
+                                       "title": "<, >, =, <=, >=",
+                                       "enum": [
                                           "<",
                                           ">",
                                           "=",
                                           "<=",
                                           ">="
                                        ],
-                                       "default":"="
+                                       "default": "="
                                     },
-                                    "number":{  
-                                       "type":"number",
-                                       "title":"Number"
+                                    "number": {
+                                       "type": "number",
+                                       "title": "Number"
                                     }
                                  }
                               },
-                              "number_vertex":{  
-                                 "title":"Number",
-                                 "type":"object",
-                                 "properties":{  
-                                    "sign":{  
-                                       "type":"string",
-                                       "title":"=",
-                                       "enum":[  
+                              "number_vertex": {
+                                 "title": "Number",
+                                 "type": "object",
+                                 "properties": {
+                                    "sign": {
+                                       "type": "string",
+                                       "title": "=",
+                                       "enum": [
                                           "="
                                        ]
                                     },
-                                    "number":{  
-                                       "type":"number",
-                                       "title":"Number"
+                                    "number": {
+                                       "type": "number",
+                                       "title": "Number"
                                     }
                                  }
                               },
-                              "number_tracks":{  
-                                 "title":"Number of Tracks",
-                                 "type":"object",
-                                 "properties":{  
-                                    "number":{  
-                                       "type":"number",
-                                       "title":">"
+                              "number_tracks": {
+                                 "title": "Number of Tracks",
+                                 "type": "object",
+                                 "properties": {
+                                    "number": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "electron_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "electron_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "muon_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "muon_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "tau_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "tau_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "AgainstElectronLooseMVA",
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "jet_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "jet_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "bjet_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "bjet_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "trackCountingHighPurBJetTags",
                                           "trackCountingHighEffBJetTags",
                                           "simpleSecondaryVertexHighEffBJetTags",
@@ -739,90 +716,90 @@
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "photon_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "photon_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "pt_cut":{  
-                                 "title":"pT Cuts",
-                                 "type":"array",
-                                 "items":{  
-                                    "type":"object",
-                                    "properties":{  
-                                       "sign":{  
-                                          "type":"string",
-                                          "title":"<, >, =",
-                                          "enum":[  
+                              "pt_cut": {
+                                 "title": "pT Cuts",
+                                 "type": "array",
+                                 "items": {
+                                    "type": "object",
+                                    "properties": {
+                                       "sign": {
+                                          "type": "string",
+                                          "title": "<, >, =",
+                                          "enum": [
                                              ">",
                                              "=",
                                              "<"
                                           ],
-                                          "default":">"
+                                          "default": ">"
                                        },
-                                       "number":{  
-                                          "type":"number",
-                                          "title":"GeV"
+                                       "number": {
+                                          "type": "number",
+                                          "title": "GeV"
                                        }
                                     }
                                  }
                               },
-                              "eta_cut":{  
-                                 "title":"|η| Cuts",
-                                 "type":"array",
-                                 "items":{  
-                                    "type":"object",
-                                    "properties":{  
-                                       "sign":{  
-                                          "type":"string",
-                                          "title":"<, >, =",
-                                          "enum":[  
+                              "eta_cut": {
+                                 "title": "|η| Cuts",
+                                 "type": "array",
+                                 "items": {
+                                    "type": "object",
+                                    "properties": {
+                                       "sign": {
+                                          "type": "string",
+                                          "title": "<, >, =",
+                                          "enum": [
                                              ">",
                                              "=",
                                              "<"
                                           ],
-                                          "default":">"
+                                          "default": ">"
                                        },
-                                       "number":{  
-                                          "type":"string",
-                                          "title":" ",
-                                          "enum":[  
+                                       "number": {
+                                          "type": "string",
+                                          "title": " ",
+                                          "enum": [
                                              "1.1",
                                              "1.5",
                                              "2.4",
@@ -830,186 +807,181 @@
                                              "other"
                                           ]
                                        },
-                                       "other_number":{  
-                                          "type":"number",
-                                          "title":" "
+                                       "other_number": {
+                                          "type": "number",
+                                          "title": " "
                                        }
                                     },
-                                    "dependencies":{  
-                                       "other_number":[  
+                                    "dependencies": {
+                                       "other_number": [
                                           "number"
                                        ]
                                     }
                                  }
                               }
                            },
-                           "dependencies":{  
-                              "electron_type":[  
+                           "dependencies": {
+                              "electron_type": [
                                  "object"
                               ],
-                              "muon_type":[  
+                              "muon_type": [
                                  "object"
                               ],
-                              "tau_type":[  
+                              "tau_type": [
                                  "object"
                               ],
-                              "jet_type":[  
+                              "jet_type": [
                                  "object"
                               ],
-                              "jet_corrections":[  
+                              "jet_corrections": [
                                  "object"
                               ],
-                              "photon_type":[  
+                              "photon_type": [
                                  "object"
                               ],
-                              "met_type":[  
+                              "met_type": [
                                  "object"
                               ],
-                              "sel_criteria":[  
+                              "sel_criteria": [
                                  "object"
                               ],
-                              "photon_type":[  
-                                 "object"
-                              ],
-                              "met_pf_corrections":[  
+                              "met_pf_corrections": [
                                  "met_type"
                               ],
-                              "met_calo_corrections":[  
+                              "met_calo_corrections": [
                                  "met_type"
                               ],
-                              "track_type":[  
+                              "track_type": [
                                  "object"
                               ],
-                              "isolation":[  
+                              "isolation": [
                                  "sel_criteria"
                               ],
-                              "number":[  
+                              "number": [
                                  "object"
                               ],
-                              "number_vertex":[  
+                              "number_vertex": [
                                  "object"
                               ],
-                              "number_tracks":[  
+                              "number_tracks": [
                                  "object"
                               ],
-                              "electron_discriminator":[  
+                              "electron_discriminator": [
                                  "object"
                               ],
-                              "muon_discriminator":[  
+                              "muon_discriminator": [
                                  "object"
                               ],
-                              "tau_discriminator":[  
+                              "tau_discriminator": [
                                  "object"
                               ],
-                              "jet_discriminator":[  
+                              "jet_discriminator": [
                                  "object"
                               ],
-                              "bjet_discriminator":[  
+                              "bjet_discriminator": [
                                  "object"
                               ],
-                              "photon_discriminator":[  
+                              "photon_discriminator": [
                                  "object"
                               ],
-                              "pt_cut":[  
+                              "pt_cut": [
                                  "object"
                               ],
-                              "eta_cut":[  
+                              "eta_cut": [
                                  "object"
                               ]
                            }
                         }
                      },
-                     "final_state_relations":{  
-                        "title":"Relations",
-                        "type":"array",
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "relation_type":{  
-                                 "type":"string",
-                                 "title":"Relation Type",
-                                 "enum":[  
+                     "final_state_relations": {
+                        "title": "Relations",
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "relation_type": {
+                                 "type": "string",
+                                 "title": "Relation Type",
+                                 "enum": [
                                     "charge",
                                     "angle",
                                     "invariant mass",
                                     "transverse mass"
                                  ]
                               },
-                              "charge_relation":{  
-                                 "type":"string",
-                                 "title":"Charge",
-                                 "enum":[  
+                              "charge_relation": {
+                                 "type": "string",
+                                 "title": "Charge",
+                                 "enum": [
                                     "same sign",
                                     "opposite sign"
                                  ]
                               },
-                              "angle_relation":{  
-                                 "type":"number",
-                                 "title":"Degrees"
+                              "angle_relation": {
+                                 "type": "number",
+                                 "title": "Degrees"
                               },
-                              "invariant_mass":{  
-                                 "title":"GeV",
-                                 "type":"object",
-                                 "properties":{  
-                                    "lower_range":{  
-                                       "type":"number",
-                                       "title":"<"
+                              "invariant_mass": {
+                                 "title": "GeV",
+                                 "type": "object",
+                                 "properties": {
+                                    "lower_range": {
+                                       "type": "number",
+                                       "title": "<"
                                     },
-                                    "upper_range":{  
-                                       "type":"number",
-                                       "title":">"
+                                    "upper_range": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "transverse_mass":{  
-                                 "title":"GeV",
-                                 "type":"object",
-                                 "properties":{  
-                                    "lower_range":{  
-                                       "type":"number",
-                                       "title":"<"
+                              "transverse_mass": {
+                                 "title": "GeV",
+                                 "type": "object",
+                                 "properties": {
+                                    "lower_range": {
+                                       "type": "number",
+                                       "title": "<"
                                     },
-                                    "upper_range":{  
-                                       "type":"number",
-                                       "title":">"
+                                    "upper_range": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "physics_objects":{  
-                                 "type":"string",
-                                 "title":"Physics Objects Available",
-                                 "enum":[  
-
-                                 ]
+                              "physics_objects": {
+                                 "type": "string",
+                                 "title": "Physics Objects Available",
+                                 "enum": []
                               }
                            },
-                           "dependencies":{  
-                              "charge_relation":[  
+                           "dependencies": {
+                              "charge_relation": [
                                  "relation_type"
                               ],
-                              "angle_relation":[  
+                              "angle_relation": [
                                  "relation_type"
                               ],
-                              "invariant_mass":[  
+                              "invariant_mass": [
                                  "relation_type"
                               ],
-                              "transverse_mass":[  
+                              "transverse_mass": [
                                  "relation_type"
                               ]
                            }
                         }
                      },
-                     "veto":{  
-                        "title":"Vetos",
-                        "description":"Provide vetos",
-                        "type":"array",
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "particle":{  
-                                 "title":"Physics Object",
-                                 "type":"string",
-                                 "enum":[  
+                     "veto": {
+                        "title": "Vetos",
+                        "description": "Provide vetos",
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "particle": {
+                                 "title": "Physics Object",
+                                 "type": "string",
+                                 "enum": [
                                     "electron",
                                     "muon",
                                     "tau",
@@ -1022,17 +994,17 @@
                                     "HT"
                                  ]
                               },
-                              "number":{  
-                                 "title":"Number",
-                                 "type":"integer"
+                              "number": {
+                                 "title": "Number",
+                                 "type": "integer"
                               },
-                              "pt_cut":{  
-                                 "title":"PT",
-                                 "type":"string"
+                              "pt_cut": {
+                                 "title": "PT",
+                                 "type": "string"
                               },
-                              "eta_cut":{  
-                                 "title":"ETA",
-                                 "type":"string"
+                              "eta_cut": {
+                                 "title": "ETA",
+                                 "type": "string"
                               }
                            }
                         }
@@ -1042,121 +1014,114 @@
             }
          }
       },
-      "auxiliary_measurements":{  
-         "title":"Auxiliary Measurement Workflow",
-         "description":"Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
-         "type":"array",
-         "id":"auxiliary-measurements",
-         "items":{  
-            "title":"Detector State",
-            "description":"Information concerning the state of the detector",
-            "type":"object",
-            "properties":{  
-               "measurement_description":{  
-                  "title":"Measurement Description",
-                  "type":"string"
+      "auxiliary_measurements": {
+         "title": "Auxiliary Measurement Workflow",
+         "description": "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
+         "type": "array",
+         "id": "auxiliary-measurements",
+         "items": {
+            "title": "Detector State",
+            "description": "Information concerning the state of the detector",
+            "type": "object",
+            "properties": {
+               "measurement_description": {
+                  "title": "Measurement Description",
+                  "type": "string"
                },
-               "detailed_measurement_description":{  
-                  "title":"Description Details",
-                  "type":"string"
+               "detailed_measurement_description": {
+                  "title": "Description Details",
+                  "type": "string"
                },
-               "code_base":{  
-                  "title":"User Code Base",
-                  "description":"Provide user code",
-                  "type":"object",
-                  "properties":{  
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
+               "code_base": {
+                  "title": "User Code Base",
+                  "description": "Provide user code",
+                  "type": "object",
+                  "properties": {
+                     "url": {
+                        "title": "URL",
+                        "type": "string"
                      },
-                     "tag":{  
-                        "title":"Tag",
-                        "type":"string"
+                     "tag": {
+                        "title": "Tag",
+                        "type": "string"
                      },
-                     "revision_id":{  
-                        "title":"Revision Identifier",
-                        "type":"string"
+                     "revision_id": {
+                        "title": "Revision Identifier",
+                        "type": "string"
                      }
                   }
                },
-               "n_tuple":{  
-                  "title":"Processing",
-                  "type":"array",
-                  "default":[  
-                     {  
-
-                     }
+               "n_tuple": {
+                  "title": "Processing",
+                  "type": "array",
+                  "default": [
+                     {}
                   ],
-                  "items":{  
-                     "title":"Input",
-                     "type":"object",
-                     "properties":{  
-                        "input_data":{  
-                           "title":"Input",
-                           "type":"object",
-                           "properties":{  
-                              "dataset":{  
-                                 "title":"Dataset",
-                                 "type":"string",
-                                 "enum":[  
-
-                                 ]
+                  "items": {
+                     "title": "Input",
+                     "type": "object",
+                     "properties": {
+                        "input_data": {
+                           "title": "Input",
+                           "type": "object",
+                           "properties": {
+                              "dataset": {
+                                 "title": "Dataset",
+                                 "type": "string",
+                                 "enum": []
                               }
                            }
                         },
-                        "user_code":{  
-                           "title":"Configuration File",
-                           "type":"object",
-                           "properties":{  
-                              "config_files":{  
-                                 "title":"URL",
-                                 "type":"string"
+                        "user_code": {
+                           "title": "Configuration File",
+                           "type": "object",
+                           "properties": {
+                              "config_files": {
+                                 "title": "URL",
+                                 "type": "string"
                               }
                            }
                         },
-                        "run_instructions":{  
-                           "title":"Run Instructions",
-                           "description":"Provide run instructions",   
-                           "title":"Type",
-                           "type":"string",
-                           "enum":[  
+                        "run_instructions": {
+                           "title": "Type",
+                           "description": "Provide run instructions",
+                           "type": "string",
+                           "enum": [
                               "readme",
                               "makefile",
                               "upload"
                            ]
                         },
-                        "output_data":{  
-                           "title":"Output",
-                           "type":"object",
-                           "properties":{  
-                              "output_url":{  
-                                 "title":"URL",
-                                 "type":"string"
+                        "output_data": {
+                           "title": "Output",
+                           "type": "object",
+                           "properties": {
+                              "output_url": {
+                                 "title": "URL",
+                                 "type": "string"
                               }
                            }
                         }
                      }
                   }
                },
-               "detector_final_state":{  
-                  "title":"Event Selection",
-                  "type":"object",
-                  "properties":{  
-                     "final_state_particles":{  
-                        "title":"Physics Objects",
-                        "type":"array",
-                        "default":[  
-                           {  
-
-                           }
+               "detector_final_state": {
+                  "title": "Event Selection",
+                  "type": "object",
+                  "properties": {
+                     "final_state_particles": {
+                        "title": "Physics Objects",
+                        "type": "array",
+                        "default": [
+                           {}
                         ],
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "object":{  
-                                 "title":"Object",
-                                 "type":"string",
-                                 "enum":[  
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "object": {
+                                 "title": "Object",
+                                 "type": "string",
+                                 "enum": [
                                     "electron",
                                     "muon",
                                     "tau",
@@ -1169,33 +1134,33 @@
                                     "HT"
                                  ]
                               },
-                              "electron_type":{  
-                                 "type":"string",
-                                 "title":"Electron type",
-                                 "enum":[  
+                              "electron_type": {
+                                 "type": "string",
+                                 "title": "Electron type",
+                                 "enum": [
                                     "GsfElectron"
                                  ]
                               },
-                              "muon_type":{  
-                                 "type":"string",
-                                 "title":"Muon type",
-                                 "enum":[  
+                              "muon_type": {
+                                 "type": "string",
+                                 "title": "Muon type",
+                                 "enum": [
                                     "PFMuon",
                                     "GlobalMuon",
                                     "TrackerMuon"
                                  ]
                               },
-                              "tau_type":{  
-                                 "type":"string",
-                                 "title":"Tau type",
-                                 "enum":[  
+                              "tau_type": {
+                                 "type": "string",
+                                 "title": "Tau type",
+                                 "enum": [
                                     "PFTau"
                                  ]
                               },
-                              "jet_type":{  
-                                 "type":"string",
-                                 "title":"Jet type",
-                                 "enum":[  
+                              "jet_type": {
+                                 "type": "string",
+                                 "title": "Jet type",
+                                 "enum": [
                                     "AK4PF",
                                     "AK5PF",
                                     "AK6PF",
@@ -1218,261 +1183,261 @@
                                     "KT8Calo"
                                  ]
                               },
-                              "jet_corrections":{  
-                                 "type":"string",
-                                 "title":"Jet Corrections",
-                                 "enum":[  
+                              "jet_corrections": {
+                                 "type": "string",
+                                 "title": "Jet Corrections",
+                                 "enum": [
                                     "JetCorrections"
                                  ]
                               },
-                              "photon_type":{  
-                                 "type":"string",
-                                 "title":"Photon type",
-                                 "enum":[  
+                              "photon_type": {
+                                 "type": "string",
+                                 "title": "Photon type",
+                                 "enum": [
                                     "Photon",
                                     "Conversion"
                                  ]
                               },
-                              "met_type":{  
-                                 "type":"string",
-                                 "title":"MET type",
-                                 "enum":[  
+                              "met_type": {
+                                 "type": "string",
+                                 "title": "MET type",
+                                 "enum": [
                                     "PFMET",
                                     "CaloMET"
                                  ]
                               },
-                              "sel_criteria":{  
-                                 "type":"string",
-                                 "title":"Selection Criteria",
-                                 "enum":[  
+                              "sel_criteria": {
+                                 "type": "string",
+                                 "title": "Selection Criteria",
+                                 "enum": [
                                     "tight",
                                     "medium",
                                     "loose",
                                     "other"
                                  ]
                               },
-                              "met_pf_corrections":{  
-                                 "type":"string",
-                                 "title":"MET Corrections",
-                                 "enum":[  
+                              "met_pf_corrections": {
+                                 "type": "string",
+                                 "title": "MET Corrections",
+                                 "enum": [
                                     "Type0PFCorrections",
                                     "Type1PFCorrections",
                                     "Type2PFCorrections"
                                  ]
                               },
-                              "met_calo_corrections":{  
-                                 "type":"string",
-                                 "title":"MET Corrections",
-                                 "enum":[  
+                              "met_calo_corrections": {
+                                 "type": "string",
+                                 "title": "MET Corrections",
+                                 "enum": [
                                     "Type0CaloCorrections",
                                     "Type1CaloCorrections",
                                     "Type2CaloCorrections"
                                  ]
                               },
-                              "track_type":{  
-                                 "type":"string",
-                                 "title":"Track type",
-                                 "enum":[  
+                              "track_type": {
+                                 "type": "string",
+                                 "title": "Track type",
+                                 "enum": [
                                     "Heavy-Ion",
                                     "pp"
                                  ]
                               },
-                              "isolation":{  
-                                 "title":"Isolation",
-                                 "type":"object",
-                                 "properties":{  
-                                    "notracks":{  
-                                       "title":"no tracks",
-                                       "type":"object",
-                                       "properties":{  
-                                          "pTg":{  
-                                             "type":"number",
-                                             "title":"pT >"
+                              "isolation": {
+                                 "title": "Isolation",
+                                 "type": "object",
+                                 "properties": {
+                                    "notracks": {
+                                       "title": "no tracks",
+                                       "type": "object",
+                                       "properties": {
+                                          "pTg": {
+                                             "type": "number",
+                                             "title": "pT >"
                                           },
-                                          "deltaRs":{  
-                                             "type":"number",
-                                             "title":"ΔR <"
+                                          "deltaRs": {
+                                             "type": "number",
+                                             "title": "ΔR <"
                                           }
                                        }
                                     },
-                                    "calorimeter":{  
-                                       "title":"calorimeter",
-                                       "type":"object",
-                                       "properties":{  
-                                          "pTs":{  
-                                             "type":"number",
-                                             "title":"pT <"
+                                    "calorimeter": {
+                                       "title": "calorimeter",
+                                       "type": "object",
+                                       "properties": {
+                                          "pTs": {
+                                             "type": "number",
+                                             "title": "pT <"
                                           },
-                                          "deltaRs":{  
-                                             "type":"number",
-                                             "title":"ΔR <"
+                                          "deltaRs": {
+                                             "type": "number",
+                                             "title": "ΔR <"
                                           }
                                        }
                                     }
                                  }
                               },
-                              "number":{  
-                                 "title":"Number",
-                                 "type":"object",
-                                 "properties":{  
-                                    "sign":{  
-                                       "type":"string",
-                                       "title":"<, >, =, <=, >=",
-                                       "enum":[  
+                              "number": {
+                                 "title": "Number",
+                                 "type": "object",
+                                 "properties": {
+                                    "sign": {
+                                       "type": "string",
+                                       "title": "<, >, =, <=, >=",
+                                       "enum": [
                                           "<",
                                           ">",
                                           "=",
                                           "<=",
                                           ">="
                                        ],
-                                       "default":"="
+                                       "default": "="
                                     },
-                                    "number":{  
-                                       "type":"number",
-                                       "title":"Number"
+                                    "number": {
+                                       "type": "number",
+                                       "title": "Number"
                                     }
                                  }
                               },
-                              "number_vertex":{  
-                                 "title":"Number",
-                                 "type":"object",
-                                 "properties":{  
-                                    "sign":{  
-                                       "type":"string",
-                                       "title":"=",
-                                       "enum":[  
+                              "number_vertex": {
+                                 "title": "Number",
+                                 "type": "object",
+                                 "properties": {
+                                    "sign": {
+                                       "type": "string",
+                                       "title": "=",
+                                       "enum": [
                                           "="
                                        ]
                                     },
-                                    "number":{  
-                                       "type":"number",
-                                       "title":"Number"
+                                    "number": {
+                                       "type": "number",
+                                       "title": "Number"
                                     }
                                  }
                               },
-                              "number_tracks":{  
-                                 "title":"Number of Tracks",
-                                 "type":"object",
-                                 "properties":{  
-                                    "number":{  
-                                       "type":"number",
-                                       "title":">"
+                              "number_tracks": {
+                                 "title": "Number of Tracks",
+                                 "type": "object",
+                                 "properties": {
+                                    "number": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "electron_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "electron_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "muon_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "muon_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "tau_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "tau_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "AgainstElectronLooseMVA",
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "jet_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "jet_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "bjet_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "bjet_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "trackCountingHighPurBJetTags",
                                           "trackCountingHighEffBJetTags",
                                           "simpleSecondaryVertexHighEffBJetTags",
@@ -1482,90 +1447,90 @@
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "photon_discriminator":{  
-                                 "title":"Discriminator",
-                                 "type":"object",
-                                 "properties":{  
-                                    "tag":{  
-                                       "type":"string",
-                                       "title":"Tag",
-                                       "enum":[  
+                              "photon_discriminator": {
+                                 "title": "Discriminator",
+                                 "type": "object",
+                                 "properties": {
+                                    "tag": {
+                                       "type": "string",
+                                       "title": "Tag",
+                                       "enum": [
                                           "other..."
                                        ]
                                     },
-                                    "custom_tag":{  
-                                       "type":"string",
-                                       "title":" "
+                                    "custom_tag": {
+                                       "type": "string",
+                                       "title": " "
                                     },
-                                    "value":{  
-                                       "type":"number",
-                                       "title":"Value"
+                                    "value": {
+                                       "type": "number",
+                                       "title": "Value"
                                     }
                                  },
-                                 "dependencies":{  
-                                    "custom_tag":[  
+                                 "dependencies": {
+                                    "custom_tag": [
                                        "tag"
                                     ]
                                  }
                               },
-                              "pt_cut":{  
-                                 "title":"pT Cuts",
-                                 "type":"array",
-                                 "items":{  
-                                    "type":"object",
-                                    "properties":{  
-                                       "sign":{  
-                                          "type":"string",
-                                          "title":"<, >, =",
-                                          "enum":[  
+                              "pt_cut": {
+                                 "title": "pT Cuts",
+                                 "type": "array",
+                                 "items": {
+                                    "type": "object",
+                                    "properties": {
+                                       "sign": {
+                                          "type": "string",
+                                          "title": "<, >, =",
+                                          "enum": [
                                              ">",
                                              "=",
                                              "<"
                                           ],
-                                          "default":">"
+                                          "default": ">"
                                        },
-                                       "number":{  
-                                          "type":"number",
-                                          "title":"GeV"
+                                       "number": {
+                                          "type": "number",
+                                          "title": "GeV"
                                        }
                                     }
                                  }
                               },
-                              "eta_cut":{  
-                                 "title":"|η| Cuts",
-                                 "type":"array",
-                                 "items":{  
-                                    "type":"object",
-                                    "properties":{  
-                                       "sign":{  
-                                          "type":"string",
-                                          "title":"<, >, =",
-                                          "enum":[  
+                              "eta_cut": {
+                                 "title": "|η| Cuts",
+                                 "type": "array",
+                                 "items": {
+                                    "type": "object",
+                                    "properties": {
+                                       "sign": {
+                                          "type": "string",
+                                          "title": "<, >, =",
+                                          "enum": [
                                              ">",
                                              "=",
                                              "<"
                                           ],
-                                          "default":">"
+                                          "default": ">"
                                        },
-                                       "number":{  
-                                          "type":"string",
-                                          "title":" ",
-                                          "enum":[  
+                                       "number": {
+                                          "type": "string",
+                                          "title": " ",
+                                          "enum": [
                                              "1.1",
                                              "1.5",
                                              "2.4",
@@ -1573,186 +1538,181 @@
                                              "other"
                                           ]
                                        },
-                                       "other_number":{  
-                                          "type":"number",
-                                          "title":" "
+                                       "other_number": {
+                                          "type": "number",
+                                          "title": " "
                                        }
                                     },
-                                    "dependencies":{  
-                                       "other_number":[  
+                                    "dependencies": {
+                                       "other_number": [
                                           "number"
                                        ]
                                     }
                                  }
                               }
                            },
-                           "dependencies":{  
-                              "electron_type":[  
+                           "dependencies": {
+                              "electron_type": [
                                  "object"
                               ],
-                              "muon_type":[  
+                              "muon_type": [
                                  "object"
                               ],
-                              "tau_type":[  
+                              "tau_type": [
                                  "object"
                               ],
-                              "jet_type":[  
+                              "jet_type": [
                                  "object"
                               ],
-                              "jet_corrections":[  
+                              "jet_corrections": [
                                  "object"
                               ],
-                              "photon_type":[  
+                              "photon_type": [
                                  "object"
                               ],
-                              "met_type":[  
+                              "met_type": [
                                  "object"
                               ],
-                              "sel_criteria":[  
+                              "sel_criteria": [
                                  "object"
                               ],
-                              "photon_type":[  
-                                 "object"
-                              ],
-                              "met_pf_corrections":[  
+                              "met_pf_corrections": [
                                  "met_type"
                               ],
-                              "met_calo_corrections":[  
+                              "met_calo_corrections": [
                                  "met_type"
                               ],
-                              "track_type":[  
+                              "track_type": [
                                  "object"
                               ],
-                              "isolation":[  
+                              "isolation": [
                                  "sel_criteria"
                               ],
-                              "number":[  
+                              "number": [
                                  "object"
                               ],
-                              "number_vertex":[  
+                              "number_vertex": [
                                  "object"
                               ],
-                              "number_tracks":[  
+                              "number_tracks": [
                                  "object"
                               ],
-                              "electron_discriminator":[  
+                              "electron_discriminator": [
                                  "object"
                               ],
-                              "muon_discriminator":[  
+                              "muon_discriminator": [
                                  "object"
                               ],
-                              "tau_discriminator":[  
+                              "tau_discriminator": [
                                  "object"
                               ],
-                              "jet_discriminator":[  
+                              "jet_discriminator": [
                                  "object"
                               ],
-                              "bjet_discriminator":[  
+                              "bjet_discriminator": [
                                  "object"
                               ],
-                              "photon_discriminator":[  
+                              "photon_discriminator": [
                                  "object"
                               ],
-                              "pt_cut":[  
+                              "pt_cut": [
                                  "object"
                               ],
-                              "eta_cut":[  
+                              "eta_cut": [
                                  "object"
                               ]
                            }
                         }
                      },
-                     "final_state_relations":{  
-                        "title":"Relations",
-                        "type":"array",
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "relation_type":{  
-                                 "type":"string",
-                                 "title":"Relation Type",
-                                 "enum":[  
+                     "final_state_relations": {
+                        "title": "Relations",
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "relation_type": {
+                                 "type": "string",
+                                 "title": "Relation Type",
+                                 "enum": [
                                     "charge",
                                     "angle",
                                     "invariant mass",
                                     "transverse mass"
                                  ]
                               },
-                              "charge_relation":{  
-                                 "type":"string",
-                                 "title":"Charge",
-                                 "enum":[  
+                              "charge_relation": {
+                                 "type": "string",
+                                 "title": "Charge",
+                                 "enum": [
                                     "same sign",
                                     "opposite sign"
                                  ]
                               },
-                              "angle_relation":{  
-                                 "type":"number",
-                                 "title":"Degrees"
+                              "angle_relation": {
+                                 "type": "number",
+                                 "title": "Degrees"
                               },
-                              "invariant_mass":{  
-                                 "title":"GeV",
-                                 "type":"object",
-                                 "properties":{  
-                                    "lower_range":{  
-                                       "type":"number",
-                                       "title":"<"
+                              "invariant_mass": {
+                                 "title": "GeV",
+                                 "type": "object",
+                                 "properties": {
+                                    "lower_range": {
+                                       "type": "number",
+                                       "title": "<"
                                     },
-                                    "upper_range":{  
-                                       "type":"number",
-                                       "title":">"
+                                    "upper_range": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "transverse_mass":{  
-                                 "title":"GeV",
-                                 "type":"object",
-                                 "properties":{  
-                                    "lower_range":{  
-                                       "type":"number",
-                                       "title":"<"
+                              "transverse_mass": {
+                                 "title": "GeV",
+                                 "type": "object",
+                                 "properties": {
+                                    "lower_range": {
+                                       "type": "number",
+                                       "title": "<"
                                     },
-                                    "upper_range":{  
-                                       "type":"number",
-                                       "title":">"
+                                    "upper_range": {
+                                       "type": "number",
+                                       "title": ">"
                                     }
                                  }
                               },
-                              "physics_objects":{  
-                                 "type":"string",
-                                 "title":"Physics Objects Available",
-                                 "enum":[  
-
-                                 ]
+                              "physics_objects": {
+                                 "type": "string",
+                                 "title": "Physics Objects Available",
+                                 "enum": []
                               }
                            },
-                           "dependencies":{  
-                              "charge_relation":[  
+                           "dependencies": {
+                              "charge_relation": [
                                  "relation_type"
                               ],
-                              "angle_relation":[  
+                              "angle_relation": [
                                  "relation_type"
                               ],
-                              "invariant_mass":[  
+                              "invariant_mass": [
                                  "relation_type"
                               ],
-                              "transverse_mass":[  
+                              "transverse_mass": [
                                  "relation_type"
                               ]
                            }
                         }
                      },
-                     "veto":{  
-                        "title":"Vetos",
-                        "description":"Provide vetos",
-                        "type":"array",
-                        "items":{  
-                           "type":"object",
-                           "properties":{  
-                              "particle":{  
-                                 "title":"Physics Object",
-                                 "type":"string",
-                                 "enum":[  
+                     "veto": {
+                        "title": "Vetos",
+                        "description": "Provide vetos",
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "particle": {
+                                 "title": "Physics Object",
+                                 "type": "string",
+                                 "enum": [
                                     "electron",
                                     "muon",
                                     "tau",
@@ -1765,17 +1725,17 @@
                                     "HT"
                                  ]
                               },
-                              "number":{  
-                                 "title":"Number",
-                                 "type":"integer"
+                              "number": {
+                                 "title": "Number",
+                                 "type": "integer"
                               },
-                              "pt_cut":{  
-                                 "title":"PT",
-                                 "type":"string"
+                              "pt_cut": {
+                                 "title": "PT",
+                                 "type": "string"
                               },
-                              "eta_cut":{  
-                                 "title":"ETA",
-                                 "type":"string"
+                              "eta_cut": {
+                                 "title": "ETA",
+                                 "type": "string"
                               }
                            }
                         }
@@ -1785,240 +1745,251 @@
             }
          }
       },
-      "post_n_tuple":{  
-         "title":"Final Results",
-         "description":"Please provide information about the combination of measurements for the final results of your analysis ",
-         "type":"object",
-         "properties":{  
-            "code_base":{  
-               "title":"User Code Base",
-               "description":"Provide user code",
-               "type":"object",
-               "properties":{  
-                  "url":{  
-                     "title":"URL",
-                     "type":"string"
+      "post_n_tuple": {
+         "title": "Final Results",
+         "description": "Please provide information about the combination of measurements for the final results of your analysis ",
+         "type": "object",
+         "properties": {
+            "code_base": {
+               "title": "User Code Base",
+               "description": "Provide user code",
+               "type": "object",
+               "properties": {
+                  "url": {
+                     "title": "URL",
+                     "type": "string"
                   },
-                  "tag":{  
-                     "title":"Tag",
-                     "type":"string"
+                  "tag": {
+                     "title": "Tag",
+                     "type": "string"
                   },
-                  "revision_id":{  
-                     "title":"Revision Identifier",
-                     "type":"string"
+                  "revision_id": {
+                     "title": "Revision Identifier",
+                     "type": "string"
                   }
                }
             },
-            "n_tuple":{  
-               "title":"Processing",
-               "type":"array",
-               "default":[  
-                  {  
-
-                  }
+            "n_tuple": {
+               "title": "Processing",
+               "type": "array",
+               "default": [
+                  {}
                ],
-               "items":{  
-                  "title":"Input",
-                  "type":"object",
-                  "properties":{  
-                     "input_data":{  
-                        "title":"Input",
-                        "type":"object",
-                        "properties":{  
-                           "dataset":{  
-                              "title":"Dataset",
-                              "type":"string",
-                              "type":{  
-                                 "enum":[  
-
-                                 ]
+               "items": {
+                  "title": "Input",
+                  "type": "object",
+                  "properties": {
+                     "input_data": {
+                        "title": "Input",
+                        "type": "object",
+                        "properties": {
+                           "dataset": {
+                              "title": "Dataset",
+                              "type": {
+                                 "enum": []
                               }
                            }
                         }
                      },
-                     "user_code":{  
-                        "title":"Produced With",
-                        "type":"object",
-                        "properties":{  
-                           "config_files":{  
-                              "title":"URL",
-                              "type":"string"
+                     "user_code": {
+                        "title": "Produced With",
+                        "type": "object",
+                        "properties": {
+                           "config_files": {
+                              "title": "URL",
+                              "type": "string"
                            }
                         }
                      },
-                     "run_instructions":{  
-                       "title":"Run Instructions",
-                       "description":"Provide run instructions",
-                       "enum":[  
-                             "readme",
-                             "makefile",
-                             "upload"
-                          ],
-                        "title":"Type",
-                        "type":"string"
-                      },
-                      "output_data":{  
-                        "title":"Output",
-                        "type":"object",
-                        "properties":{  
-                           "output_url":{  
-                              "title":"URL",
-                              "type":"string"
+                     "run_instructions": {
+                        "title": "Type",
+                        "description": "Provide run instructions",
+                        "enum": [
+                           "readme",
+                           "makefile",
+                           "upload"
+                        ],
+                        "type": "string"
+                     },
+                     "output_data": {
+                        "title": "Output",
+                        "type": "object",
+                        "properties": {
+                           "output_url": {
+                              "title": "URL",
+                              "type": "string"
                            }
                         }
                      },
-                     "datacard":{  
-                        "title":"Combine Datacard",
-                        "type":"string"
+                     "datacard": {
+                        "title": "Combine Datacard",
+                        "type": "string"
                      }
                   }
                }
             }
          }
       },
-      "additional_resources":{  
-         "title":"Additional Resources",
+      "additional_resources": {
+         "title": "Additional Resources",
          "description": "Please provide information about the additional resources of the analysis",
-         "type":"object",
-         "properties":{  
-            "documentations":{  
-               "title":"Additional Documentations",
+         "type": "object",
+         "properties": {
+            "documentations": {
+               "title": "Additional Documentations",
                "description": "Please provide all documentation",
-               "type":"array",
-               "id":"documentations",
-               "default":[  
-                  {  
-
-                  }
+               "type": "array",
+               "id": "documentations",
+               "default": [
+                  {}
                ],
-               "items":{  
-                  "title":"Documentation",
-                  "description":"Add documentation",
-                  "type":"object",
-                  "properties":{  
-                     "CADI_ID":{  
-                        "title":"CADI ID",
-                        "type":"string"
+               "items": {
+                  "title": "Documentation",
+                  "description": "Add documentation",
+                  "type": "object",
+                  "properties": {
+                     "CADI_ID": {
+                        "title": "CADI ID",
+                        "type": "string"
                      },
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
+                     "url": {
+                        "title": "URL",
+                        "type": "string"
                      },
-                     "keyword":{  
-                        "title":"Keyword",
-                        "type":"string"
+                     "keyword": {
+                        "title": "Keyword",
+                        "type": "string"
                      },
-                     "comment":{  
-                        "title":"Comment",
-                        "type":"string"
+                     "comment": {
+                        "title": "Comment",
+                        "type": "string"
                      }
                   }
                }
             },
-            "internal_discussions":{  
-               "title":"Internal Discussions",
+            "internal_discussions": {
+               "title": "Internal Discussions",
                "description": "Please add all internal discussions",
-               "type":"array",
-               "id":"internal-discussions",
-               "default":[  
-                  {  
-
-                  }
+               "type": "array",
+               "id": "internal-discussions",
+               "default": [
+                  {}
                ],
-               "items":{  
-                  "type":"object",
-                  "title":"Internal Discussion",
-                  "properties":{  
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
+               "items": {
+                  "type": "object",
+                  "title": "Internal Discussion",
+                  "properties": {
+                     "url": {
+                        "title": "URL",
+                        "type": "string"
                      }
                   }
                }
             },
-            "presentations":{  
-               "title":"Presentations",
+            "presentations": {
+               "title": "Presentations",
                "description": "Please add all presentations",
-               "type":"array",
-               "id":"presentations",
-               "default":[  
-                  {  
-
-                  }
+               "type": "array",
+               "id": "presentations",
+               "default": [
+                  {}
                ],
-               "items":{  
-                  "type":"object",
-                  "title":"Presentation",
-                  "properties":{  
-                     "url":{  
-                        "title":"URL",
-                        "type":"string"
+               "items": {
+                  "type": "object",
+                  "title": "Presentation",
+                  "properties": {
+                     "url": {
+                        "title": "URL",
+                        "type": "string"
                      }
                   }
                }
             },
-            "publications":{  
-               "title":"Publications",
+            "publications": {
+               "title": "Publications",
                "description": "Please add all publications",
-               "type":"array",
-               "id":"publications",
-               "default":[  
-                  {  
-
-                  }
+               "type": "array",
+               "id": "publications",
+               "default": [
+                  {}
                ],
-               "items":{  
-                  "type":"object",
-                  "properties":{  
-                     "persistent_identifiers":{  
-                        "title":"Identifiers",
-                        "type":"array",
-                        "items":{  
-                           "type":"object",
-                           "identifier":{  
-                              "title":"Identifier",
-                              "description":"An issued identifier, e.g. a DUNS number",
-                              "type":"string"
+               "items": {
+                  "type": "object",
+                  "properties": {
+                     "persistent_identifiers": {
+                        "title": "Identifiers",
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "identifier": {
+                              "title": "Identifier",
+                              "description": "An issued identifier, e.g. a DUNS number",
+                              "type": "string"
                            },
-                           "scheme":{  
-                              "title":"Scheme",
-                              "description":"An identifier scheme, e.g. DUNS",
-                              "type":"string"
+                           "scheme": {
+                              "title": "Scheme",
+                              "description": "An identifier scheme, e.g. DUNS",
+                              "type": "string"
                            }
                         }
                      }
                   },
-                  "journal_title":{  
-                     "title":"Journal Title",
-                     "type":"string"
+                  "journal_title": {
+                     "title": "Journal Title",
+                     "type": "string"
                   },
-                  "journal_year":{  
-                     "title":"Journal Year",
-                     "type":"integer"
+                  "journal_year": {
+                     "title": "Journal Year",
+                     "type": "integer"
                   },
-                  "journal_volume":{  
-                     "title":"Journal Volume",
-                     "type":"integer"
+                  "journal_volume": {
+                     "title": "Journal Volume",
+                     "type": "integer"
                   },
-                  "journal_issue":{  
-                     "title":"Journal Issue",
-                     "type":"integer"
+                  "journal_issue": {
+                     "title": "Journal Issue",
+                     "type": "integer"
                   },
-                  "journal_page":{  
-                     "title":"Journal Page",
-                     "type":"integer"
+                  "journal_page": {
+                     "title": "Journal Page",
+                     "type": "integer"
                   }
                }
             },
-            "keywords":{  
-               "title":"Keywords",
-               "description":"Please add keywords here",
-               "type":"string",
-               "id":"keywords"
+            "keywords": {
+               "title": "Keywords",
+               "description": "Please add keywords here",
+               "type": "string",
+               "id": "keywords"
             }
          }
       }
    },
-   "title":"CMS Deposit Schema.",
-   "type":"object"
+   "title": "CMS Deposit Schema.",
+   "type": "object",
+   "definitions": {
+      "file": {
+         "source": {
+            "title": "URL",
+            "type": "object",
+            "properties": {
+               "preserved": {
+                  "title": "Preserve files from URL?",
+                  "type": "boolean",
+                  "default": true
+               },
+               "url": {
+                  "type": "string",
+                  "pattern": "^(http|https)://"
+               }
+            }
+         },
+         "key": {
+            "type": "string"
+         },
+         "version_id": {
+            "type": "string"
+         }
+      }
+   }
 }

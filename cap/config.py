@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -326,7 +326,8 @@ JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     plugins=[
         'cap.modules.records.resolvers.local',
         'cap.modules.records.resolvers.cap',
-    ]))
+    ],
+))
 
 JSONSCHEMAS_VERSIONS = {
     "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
@@ -429,6 +430,9 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'pid_minter': 'cap_deposit_minter',
     'pid_fetcher': 'cap_deposit_fetcher',
     'record_class': 'cap.modules.deposit.api:CAPDeposit',
+    'record_loaders': {
+        'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
+    },
     'record_serializers': {
         'application/json': (
             'cap.modules.records.serializers'

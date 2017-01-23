@@ -29,6 +29,11 @@
 
 // Initialize the app
 angular.element(document).ready(function() {
+
+  angular.module('capRecords').config(['schemaFormDecoratorsProvider', function(decoratorsProvider){
+    decoratorsProvider.addMapping('bootstrapDecorator', 'file_selector', '/static/templates/cap_records_js/decorators/file_selector.html');
+  }]);
+
   angular.bootstrap(
     document.getElementById("cap-main-container"),
     [
