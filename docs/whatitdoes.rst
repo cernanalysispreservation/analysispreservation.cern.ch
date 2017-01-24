@@ -22,6 +22,19 @@ Visit the Glossary page for more information on the terminologies used on the fo
 -  REST API
 
 -  Connectivity
+To reduce user effort and ensure accuracy of input information, CAP is working on connecting to standing, yet scattered analysis information databases and systems inside of collaborations, 
+
+1. ATLAS
+  - Glance
+  - AMI
+2. ALICE
+3. CMS
+  - CADI
+  - DAS
+4. LHCb
+  - Bookkeeping (BK)
+  - Publications
+  - Working Groups (WG)
 
 -  Versioning
 Each analysis page is identified with a unique
@@ -31,10 +44,15 @@ An Analyses record grows as the analysis proceed, and CAP keep track of each ste
 2. Search and retrieve
 
 -  Search capability
-The JSON snippets entered by user are stored in the Invenio digital repository database and sent to an Elasticsearch cluster that is being used for indexing and information retrieval needs.
+With the ever-present global search bar at the top of the screen, users can search through all shared analyses within their collaboration, past or on-going. From the "My Deposits" tab, users can easily sift through analyses they created and those they are involved in, i.e. when added to an analysis by collaborators.
+*Note that permissions for "Analyses involved" are in accordance to the analysis setting.
+
+On CAP, all analysis metadata are indexed, which means users will be able to find an analysis with specific parameters, processed with a specific algorithm, or using a specific dataset or simulation (just to name a few examples). This opens ups new possibilities for internal collaboration.
+
+
 
 -  Facets/ filter
-Before, information about an analysis was scattered around many databases. With CAP users will be able to find an analysis with specific parameters, processed with a specific algorithm, or using a specific dataset or simulation (just to name a few examples). This opens ups new possibilities for internal collaboration.
+
 
 3. Review and compare
 
