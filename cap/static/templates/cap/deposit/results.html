@@ -2,7 +2,7 @@
   <div class="list-group">
     <a class="list-group-item"
         ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
-        ui-sref="app.deposit_item.overview( { depid: {{ record.metadata._deposit.id }} })">
+        target="_self" ng-href="/deposit/{{ record.metadata._deposit.id }}">
       <div class="pull-left">
         <div class="btn btn-sm btn-link">
           <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
@@ -12,15 +12,18 @@
         <h5 class="list-group-item-heading">
           {{ record.metadata.title_statement.title }}
         </h5>
-        <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
-          Created ({{record.created | date:'yyyy-MM-dd'}})
-        </p>
-        <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
-          {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
-        </p>
+          <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
+            Created ({{record.created | date:'yyyy-MM-dd'}})
+          </p>
+          <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
+            {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
+          </p>
       </div>
       <small class="pull-right label label-default">
-        #{{ record.metadata._deposit.id }}
+        #{{ record.id }}
+      </small>
+      <small class="pull-right label label-success type-of-analysis">
+        {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
       </small>
       <div class="clearfix"></div>
     </a>
@@ -32,10 +35,6 @@
     <div align="center">
       <h1>No uploads</h1>
       <p>Get started by making your first upload</p>
-      <!-- <a class="btn btn-success" href="/deposit/new">
-          <i class="glyphicon glyphicon-upload"></i>
-          New Upload
-      </a> -->
     </div>
   </div>
 </div>

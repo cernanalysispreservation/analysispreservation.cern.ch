@@ -30,8 +30,7 @@ from flask import Blueprint, jsonify, redirect, session
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-from cap.modules.access.views import get_user_experiments, \
-    get_user_deposit_groups
+from cap.modules.access.views import get_user_deposit_groups, get_user_experiments
 
 from cap.modules.experiments.permissions import collaboration_permissions
 
@@ -55,7 +54,7 @@ def CAP_EXPERIMENT_MENU(experiment):
         for group in groups:
             res.append({
                 'name': group.get("name", group.get("deposit_group", "")),
-                'link': _l('app.deposit_new({deposit_group:"'+group.get("deposit_group", "")+'"})'),
+                'link': _l('app.deposit_new({deposit_group:"' + group.get("deposit_group", "") + '"})'),
                 'icon': ''
             })
 

@@ -25,7 +25,6 @@
 
 @import "variables";
 
-$sidebar-navigation-height: 80px;
 /* Deposit forms general style */
 
 .forms-font-color {
@@ -76,6 +75,7 @@ $sidebar-navigation-height: 80px;
 }
 
 .search-fields {
+  height: 77px !important;
   position: relative;
 }
 
@@ -143,6 +143,7 @@ $sidebar-navigation-height: 80px;
 /* Button style for deposit form */
 
 .action-btn {
+  width: 210px;
   padding: 6px 25px;
   border: 1px solid $light-blue-theme-color;
 }
@@ -273,8 +274,13 @@ $cap-deposit-sidebar-width: 300px;
 
 
   .panel-heading {
+<<<<<<< HEAD
     height: $sidebar-navigation-height;
     // z-index: 1;
+=======
+    z-index: 1;
+    height: 120px;
+>>>>>>> UI: fixes naming and styling in actions
     position: relative;
   }
   .panel-body {
@@ -504,4 +510,12 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
 .checkboxes-padding-description {
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.sidebar-list-actions>li {
+  padding-top: 5px;
+}
+
+.save-as-draft {
+  margin-top: 8%;
 }

@@ -22,6 +22,9 @@
       <small class="pull-right label label-default">
         #{{ record.id }}
       </small>
+      <small class="pull-right label label-success type-of-analysis">
+        {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
+      </small>
       <div class="clearfix"></div>
     </a>
   </div>
@@ -30,12 +33,7 @@
 <div class="list-group">
   <div class="list-group-item">
     <div align="center">
-      <h1>No uploads</h1>
-      <p>Get started by making your first upload</p>
-      <a class="btn btn-success" href="/deposit/new">
-          <i class="glyphicon glyphicon-upload"></i>
-          New Upload
-      </a>
+      <h1>No shared records found</h1>
     </div>
   </div>
 </div>

@@ -8,7 +8,11 @@
 
 {%- block body_inner %}
 <div id="cap-deposit-index" class="cap-container container">
-  <h2>Deposits</h2>
+  <div class="panel panel-default cap-panel">
+    <div class="panel-body">
+      <h2>Deposits</h2>
+    </div>
+  </div>
   <invenio-search
    search-endpoint="{{ config.DEPOSIT_SEARCH_API }}"
    search-headers='{"Accept": "{{ config.DEPOSIT_SEARCH_MIMETYPE|default('application/json')}}"}'
@@ -28,12 +32,9 @@
   <div class="panel panel-default cap-panel">
     <div class="panel-heading">
       {%- block search_facets %}
-      <invenio-search-facets
-      template="{{ url_for('static', filename='templates/invenio_deposit/selectstatus.html') }}">
-      </invenio-search-facets>
       {%- endblock search_facets %}
       {%- block search_sort %}
-      <div class="pull-right form-inline">
+      <div class="form-inline">
         <div class="form-group">
         {%- set sort_options = config.get('DEPOSIT_REST_SORT_OPTIONS', {}).get(config.DEPOSIT_UI_SEARCH_INDEX) %}
         {%- if sort_options %}
@@ -61,7 +62,7 @@
     {%- block search_results %}
     <invenio-search-results
       class="list-group"
-      template="{{ url_for('static', filename='templates/invenio_deposit/results.html') }}">
+      template="{{ url_for('static', filename='templates/cap/deposit/results.html') }}">
     </invenio-search-results>
     {%- endblock search_results %}
   </div>

@@ -2,7 +2,12 @@
 
 {%- block body_inner %}
 <div id="cap-records-index" class="cap-container container">
-<h2>Shared Records</h2>
+<div class="panel panel-default cap-panel">
+  <div class="panel-body">
+    <h2>Shared Records</h2>
+  </div>
+</div>
+
 <div id="invenio-search">
   <invenio-search
    search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}"

@@ -510,7 +510,7 @@ DEPOSIT_RESPONSE_MESSAGES = dict(
         message="Changes discarded succesfully."
     ),
     publish=dict(
-        message="Published succesfully."
+        message="Record shared succesfully."
     ),
     edit=dict(
         message="Edited succesfully."
