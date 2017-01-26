@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -43,6 +43,42 @@ access_blueprint = Blueprint('cap_access', __name__,
 
 @access_blueprint.route('/user')
 def get_user():
+    if False: # FIXME: remove after making local login work
+        return """
+{
+  "collaborations": [
+    "ATLAS",
+    "LHCb",
+    "CMS",
+    "ALICE"
+  ],
+  "current_experiment": "ATLAS",
+  "deposit_groups": [
+    {
+      "deposit_group": "cms-analysis",
+      "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+      "name": "CMS Analysis"
+    },
+    {
+      "deposit_group": "lhcb",
+      "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
+      "name": "LHCb Analysis"
+    },
+    {
+      "deposit_group": "cms-questionnaire",
+      "description": "Create a CMS Questionnaire",
+      "name": "CMS Questionnaire"
+    },
+    {
+      "deposit_group": "atlas-workflows",
+      "description": "Create a ATLAS Workflow",
+      "name": "ATLAS Workflow"
+    }
+  ],
+  "email": "info@inveniosoftware.org",
+  "id": 1
+}
+"""
     if current_user.is_authenticated:
         _user = {
             "id": current_user.id,
@@ -102,5 +138,3 @@ def get_user_deposit_groups():
             user_deposit_groups.append(group_data)
 
     return user_deposit_groups
-
-

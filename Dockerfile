@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,22 +22,19 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
-# "python:2.7" image is not working because the installation of nodejs is not
-# recognising the os distribution.
-FROM python:2.7.11
+# Using Python 2.7:
+FROM python:2.7
 
 # Install dependencies
 RUN apt-get update \
     && apt-get -qy upgrade --fix-missing --no-install-recommends \
     # Node.js
     && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get -qy install --fix-missing --no-install-recommends \
-        nodejs \
+    && apt-get install -y nodejs \
     && apt-get clean autoclean
 
-RUN npm install --silent -g node-sass clean-css uglify-js requirejs bower \
-    gulp gulp-clean gulp-nodemon jshint gulp-jshint
+RUN npm install -g npm
+RUN npm install -g node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs bower
 
 WORKDIR /code/
 

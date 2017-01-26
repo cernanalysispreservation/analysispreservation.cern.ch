@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -109,7 +109,8 @@ experiments_js = NpmBundle(
         "angular-animate": "~1.3",
         "angular-hotkeys": "~1.7.0",
         "ng-jsoneditor": "~1.0.0",
-        "angular-media-queries": "~0.6.1"
+        "angular-media-queries": "~0.6.1",
+        "jsoneditor": "~5.5.6"
     }
 )
 

@@ -7,7 +7,6 @@ include .coveragerc
 include COPYING
 include Dockerfile
 include pytest.ini
-include docker/nginx/Dockerfile
 recursive-include cap *.db
 recursive-include cap *.gif
 recursive-include cap *.html
@@ -19,6 +18,7 @@ recursive-include cap *.png
 recursive-include cap *.scss
 recursive-include cap *.svg
 recursive-include cap *.sh
+recursive-include docker Dockerfile
 recursive-include docker *.conf
 recursive-include scripts *.py
 recursive-include scripts *.sh

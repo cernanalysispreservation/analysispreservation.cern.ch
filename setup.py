@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -66,6 +66,7 @@ install_requires = [
     'elasticsearch-dsl<3.0.0,>=2.0.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
     'cryptography>=1.6',  # temporary fix
+    'gunicorn>=19.6.0',
     'setuptools>=20.6.7',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',

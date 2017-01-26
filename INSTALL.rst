@@ -1,5 +1,5 @@
 ..  This file is part of Invenio
-    Copyright (C) 2014 CERN.
+    Copyright (C) 2014, 2017 CERN.
 
     Invenio is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License as
@@ -15,22 +15,22 @@
     along with Invenio; if not, write to the Free Software Foundation, Inc.,
     59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
 
-Detailed Installation Guide
-===========================
+====================
+ Installation Guide
+====================
 
 There are two possibilities for setting up your own development version
 of CERN Analysis Preservation, one with python virtualenvwrapper and one
 with docker.
 
 
-Bare Installation
+1. Bare Installation
+====================
+
+CERN Analysis Preservation is based on Invenio v3.0 alpha.
+
+1.1 Prerequisites
 -----------------
-
-CERN Analysis Preservation is based on Invenio v3.0 alpha (scheduled for
-public release in Q3/2016).
-
-Prerequisites
-^^^^^^^^^^^^^
 
 Invenio v3.0 requires some additional software packages:
 
@@ -77,19 +77,16 @@ preprocessor by following
 
 .. code-block:: shell
 
-  sudo npm install -g node-sass@3.8.0 clean-css uglify-js requirejs
+  sudo npm install -g node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs
 
-Installation
-^^^^^^^^^^^^
+1.2 Installation
+----------------
 
 Let's start by cloning the repository:
 
 .. code-block:: shell
 
    git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
-
-Environment Setup
-"""""""""""""""""
 
 All else will be installed inside a python *virtualenv* for easy
 maintenance and encapsulation of the libraries required. From inside
@@ -178,19 +175,20 @@ Create the index in ElasticSearch using the mappings:
 
    cap index init
 
-Start the web application (in debugging mode):
+Start the web application in debug mode:
 
 .. code-block:: shell
 
-   cap --debug run
+   gunicorn -b :5000 --log-level debug cap.wsgi:application
 
 Now you can create your first record by going to ``http://localhost:5000/records/<collection_name>/create/``
 
   ex. ``http://localhost:5000/records/CMS/create/`` which creates the record and takes you to the record page
 
 
-Compiling JSON-schemas to be use by CAP instance
-""""""""""""""""""""""""""""""""""""""""""""
+1.3 Compiling JSON-schemas to be use by CAP instance
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 For CERN Analysis Preservation instance to work ( records, deposits, validations, etc) we need to compile the schemas to a format that can be utilised by the various 'comsumers'
 
 To compile the schemas do:
@@ -205,8 +203,8 @@ To compile the schemas do:
    cap schemas compiledeposit
 
 
-Populating the Database with Example Records
-""""""""""""""""""""""""""""""""""""""""""""
+1.4 Populating the Database with Example Records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If you want to populate the database with example records simply run:
 
 .. code-block:: shell
@@ -217,11 +215,11 @@ If you want to populate the database with example records simply run:
    # For creating demo records without validation ( --force )
    cap fixtures records -f
 
-General Recommendations
-^^^^^^^^^^^^^^^^^^^^^^^
+1.5 General Recommendations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Specify Python Version
-"""""""""""""""""""""""
+1.5.1 Specify Python Version
+""""""""""""""""""""""""""""
 
 You can specify the python version for the virtual environment on
 creation as follows (e.g. to use python 2.7):
@@ -230,8 +228,8 @@ creation as follows (e.g. to use python 2.7):
 
    mkvirtualenv -p /usr/bin/python2.7 cap
 
-Local Installation of npms and gems
-"""""""""""""""""""""""""""""""""""
+1.5.2 Local Installation of npms and gems
+"""""""""""""""""""""""""""""""""""""""""
 
 You do not need to install sass and all npm dependencies globally on
 your system. You can install them inside your virtual environment so
@@ -250,15 +248,15 @@ to the ``postactivate`` of your ``.virtualenv`` folder and run
 
    cdvirtualenv
    gem install sass
-   npm -g install node-sass clean-css uglify-js requirejs
+   npm -g install node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs
 
 after creating your virtual environment.
 
-Troubleshooting
-^^^^^^^^^^^^^^^
+1.6 Troubleshooting
+~~~~~~~~~~~~~~~~~~~
 
-Missing Requirements
-""""""""""""""""""""
+1.6.1 Missing Requirements
+""""""""""""""""""""""""""
 If you have trouble with the setup, check if you are missing one of the
 following requirements:
 
@@ -269,8 +267,8 @@ following requirements:
 The version of python2 given by ``python2 --version`` should be greater
 than 2.7.10.
 
-Non-matching Requirements
-"""""""""""""""""""""""""
+1.6.2 Non-matching Requirements
+"""""""""""""""""""""""""""""""
 If you encounter a problem with requirements that do not match it may
 be because the python eggs are not included in your virtualenv and you
 will have to update them running:
@@ -279,8 +277,8 @@ will have to update them running:
 
    pip install -r requirements.txt
 
-Database Indexing Problems
-""""""""""""""""""""""""""
+1.6.3 Database Indexing Problems
+""""""""""""""""""""""""""""""""
 If you have trouble indexing the database try:
 
 .. code-block:: shell
@@ -296,43 +294,38 @@ and if that does not work try:
    cap db init
 
 
-Docker Installation
--------------------
+2. Docker Installation
+======================
 
-You should have installed Docker and docker-compose on your machine. Then, you
-can build the application using the development configuration:
+First, install ``docker-engine`` and ``docker-compose`` on your machine.
+
+Second, build the CERN Analysis Preservation images, using the development
+configuration:
 
 .. code-block:: shell
 
    docker-compose -f docker-compose-dev.yml build
 
-
-Now that you have built the application inside the docker containers, you will
-need to initialize some modules. This initialization consist of the creation of
-the tables inside the database, the default user (user:
-info@inveniosoftware.org, password: infoinfo), the required communities and the
-ElasticSearch index.
-
-To initialise it then, you will need to perform:
+Third, start the CERN Analysis Preservation application:
 
 .. code-block:: shell
 
-   docker-compose run app bash scripts/init.sh
+   docker-compose -f docker-compose-dev.yml up -d
 
-
-Optionally, if you want to populate the database with some example records, you
-can run:
+Fourth, create database and initialise default collections and users:
 
 .. code-block:: shell
 
-   docker-compose run app cap fixtures records -f
+   docker exec -i -t analysispreservationcernch_web_1 /code/scripts/init.sh
 
-
-And lately, you can start the application:
+Fifth, populate the database with some example records (optional):
 
 .. code-block:: shell
 
-   docker-compose -f docker-compose-dev.yml up
+   docker exec -i -t analysispreservationcernch_web_1 cap fixtures records -f
 
+Finally, see the site in action:
 
-Now, open your browser and navigate to http://localhost/
+.. code-block:: shell
+
+   firefox http://localhost/

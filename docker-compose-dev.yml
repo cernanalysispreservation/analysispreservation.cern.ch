@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,10 +22,9 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
-app:
+web:
   build: .
-  command: cap run -h 0.0.0.0 -p 5000 --with-threads
+  command: gunicorn -b :5000 --log-level debug cap.wsgi:application
   ports:
     - "80:5000"
   environment:
@@ -34,31 +33,30 @@ app:
     - APP_CACHE_REDIS_URL=redis://redis:6379/0
     - APP_CACHE_TYPE=redis
     - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
-    - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgres/cap
-    - APP_ENABLE_SUPERPOWERS_FOR_EVERYONE=True
+    - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgresql/cap
     - ASSET_DEBUG=True
     - DEBUG=True
   links:
     - elasticsearch
     - redis
-    - postgres
+    - postgresql
 
 redis:
   image: redis
   ports:
-    - "6379:6379"
+    - "26379:6379"
 
-postgres:
+postgresql:
   image: postgres
   environment:
     - POSTGRES_USER=cap
     - POSTGRES_PASSWORD=cap
   ports:
-    - "5432:5432"
+    - "25432:5432"
 
 elasticsearch:
-  image: elasticsearch
-  command: elasticsearch -Des.network.host=0.0.0.0
+  build: .
+  dockerfile: ./docker/elasticsearch/Dockerfile
   ports:
-    - "9200:9200"
-    - "9300:9300"
+    - "29200:9200"
+    - "29300:9300"

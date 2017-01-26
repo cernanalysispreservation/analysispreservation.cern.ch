@@ -1,7 +1,3 @@
-#!/usr/bin/env sh
-#
-# -*- coding: utf-8 -*-
-#
 # This file is part of CERN Analysis Preservation Framework.
 # Copyright (C) 2016, 2017 CERN.
 #
@@ -24,27 +20,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Create database and tables:
-cap db init
-cap db create
+# Use Elasticsearch 2:
+FROM elasticsearch:2
 
-# Create default user:
-cap users create info@inveniosoftware.org -a --password infoinfo
-
-# Create indexes:
-cap index init
-
-# Create location for files:
-cap files location local var/data --default
-
-# Create collections:
-cap collections create CERNAnalysisPreservation
-cap collections create CMS -p CERNAnalysisPreservation
-cap collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
-cap collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
-cap collections create LHCb -p CERNAnalysisPreservation
-cap collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
-cap collections create ATLAS -p CERNAnalysisPreservation
-cap collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
-cap collections create ATLASAnalysis -p ATLAS -q '_type:atlasanalysis'
-cap collections create ALICE -p CERNAnalysisPreservation
+# Install Elasticsarch plugins:
+RUN plugin install -b mapper-attachments

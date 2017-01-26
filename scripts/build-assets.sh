@@ -1,9 +1,7 @@
 #!/usr/bin/env sh
 #
-# -*- coding: utf-8 -*-
-#
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -26,21 +24,11 @@
 
 
 # Generation of NPM assets based on the bundle.py files of the project.
-'{ "allow_root": true }' > /root/.bowerrc
+echo '{ "allow_root": true }' > /root/.bowerrc
 cap npm
-cd /usr/local/var/cap-instance/static/
+cd /usr/local/var/cap-instance/static/ || exit
 npm install
-cd /usr/local/var/cap-instance/static/node_modules/
-
-# Manual installation of Alpaca since the NPM version is not working.
-rm -rf alpaca
-wget https://github.com/gitana/alpaca/archive/1.5.17.tar.gz
-tar -xvf 1.5.17.tar.gz
-mv alpaca-1.5.17/ alpaca
-cd alpaca
-npm install
-npm start
-cd /code
+cd /usr/local/var/cap-instance/static/node_modules/ || exit
 
 # Build assets.
 cap collect -v
