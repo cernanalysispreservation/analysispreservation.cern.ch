@@ -22,7 +22,7 @@ Visit the Glossary page for more information on the terminologies used on the fo
 -  REST API
 
 -  Connectivity
-To reduce user effort and ensure accuracy of input information, CAP is working on connecting to standing, yet scattered analysis information databases and systems inside of collaborations, 
+To reduce user effort and ensure accuracy of input information, CAP is working on connecting to standing, yet scattered analysis information databases and systems inside of collaborations,
 
 1. ATLAS
   - Glance
@@ -63,7 +63,5 @@ On CAP, all analysis metadata are indexed, which means users will be able to fin
 
 -  Analysis environment preservation
 -  Analysis take-over
-
-5. Re-interpret
-
 -  RECAST
+-  REANA

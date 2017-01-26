@@ -25,10 +25,16 @@ Physics collaborations:
 
 -  Partners
 CMS
+
 LHCb
+
 ATLAS
+
 ALICE
 
 -  Related projects
 RECAST
+
 DASPOS
+
+REANA
