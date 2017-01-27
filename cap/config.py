@@ -416,6 +416,19 @@ DEPOSIT_GROUPS = {
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'delete_permission_factory_imp': allow_all,
+    },
+    "atlas-workflows": {
+        "schema": "/app/schemas/deposits/records/ATLASWorkflows-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/ATLASWorkflows-v0.0.1.json",
+        "name": "ATLAS Workflow",
+        "description": "Create a ATLAS Workflow",
+        "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "endpoint": "",
+        'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'delete_permission_factory_imp': allow_all,
     }
 }
 

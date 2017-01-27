@@ -1,0 +1,11 @@
+[
+    {
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap",
+        "items": [
+            {
+                "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card",
+                "type": "string"
+            }
+        ]
+    }
+]

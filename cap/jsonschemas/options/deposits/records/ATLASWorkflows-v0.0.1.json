@@ -1,0 +1,6 @@
+[
+    {
+        "key": "basic_info"
+    },
+    {"$ref": "https://analysis-preservation.cern.ch/app/schemas/options/definitions/ATLASWorkflows-v0.0.1.json"}
+]

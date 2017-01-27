@@ -1,0 +1,4 @@
+[
+    "workflows[].workflow.stages[].scheduler.step.publisher.globexpression",
+    "workflows[].workflow.stages[].scheduler.step.publisher.outputkey"
+]

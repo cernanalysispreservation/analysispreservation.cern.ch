@@ -1,0 +1,26 @@
+[
+    {
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish.publish_type",
+        "type": "select",
+        "title": "Process Type",
+        "placeholder": "Select sub-schema to use",
+        "titleMap": [
+          {
+            "value": "-1",
+            "name": "Select a Process Type"
+          },
+          {
+            "value": "0",
+            "name": "shallow-primitive-schema-v0.0.1.json"
+          }
+        ]
+    },
+    {
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish",
+        "type": "fieldset",
+        "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publish']['publish_type'] == 0",
+        "items": [
+            "workflows[].workflow.stages[].scheduler.step.publisher.publish.value"
+        ]
+    }
+]

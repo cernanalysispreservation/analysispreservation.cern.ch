@@ -1,0 +1,59 @@
+{
+    "key": "workflows[].workflow.stages[].scheduler.parameters",
+    "type": "array",
+    "items": [
+        "workflows[].workflow.stages[].scheduler.parameters[].key",
+        {
+            "key": "workflows[].workflow.stages[].scheduler.parameters[].value_type",
+            "type": "select",
+            "title": "Parameter Type",
+            "placeholder": "Select sub-schema to use",
+            "titleMap": [
+              {
+                "value": "-1",
+                "name": "Select a Parameter Type"
+              },
+              {
+                "value": "0",
+                "name": "sting, number"
+              },
+              {
+                "value": "1",
+                "name": "parameters object"
+              }
+            ]
+        },
+        {
+            "key": "workflows[].workflow.stages[].scheduler.parameters[].value",
+            "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['parameters'][arrayIndices[2]]['value_type'] == 0",
+            "type": "string"
+        },
+        {
+            "key": "workflows[].workflow.stages[].scheduler.parameters[].value",
+            "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['parameters'][arrayIndices[2]]['value_type'] == 1",
+            "type": "fieldset",
+            "items": [
+                {
+                    "key": "workflows[].workflow.stages[].scheduler.parameters[].value.stages",
+                    "title": "Stages",
+                    "type": "string"
+                },
+                {
+                    "key": "workflows[].workflow.stages[].scheduler.parameters[].value.output",
+                    "title": "Output",
+                    "type": "string"
+                },
+                {
+                    "key": "workflows[].workflow.stages[].scheduler.parameters[].value.unwrap",
+                    "title": "Unwrap",
+                    "type": "boolean"
+                },
+                {
+                    "key": "workflows[].workflow.stages[].scheduler.parameters[].value.flatten",
+                    "title": "Flatten",
+                    "type": "boolean"
+                }
+            ]
+        }
+    ]
+}

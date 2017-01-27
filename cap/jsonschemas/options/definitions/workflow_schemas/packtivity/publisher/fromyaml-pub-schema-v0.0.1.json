@@ -1,0 +1,3 @@
+[
+    "workflows[].workflow.stages[].scheduler.step.publisher.yamlfile"
+]

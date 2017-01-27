@@ -7,6 +7,7 @@
   "properties": {
     "dependency_type": {
       "type": "string",
+      "title": "Dependency Type",
       "enum": [
         "jsonpath_ready"
       ],
@@ -14,12 +15,10 @@
     },
     "expressions": {
       "type":"array",
+      "title": "Expressions",
       "items": {
         "type": "string"
       }
     }
-  },
-  "required": [
-    "dependency_type"
-  ]
+  }
 }

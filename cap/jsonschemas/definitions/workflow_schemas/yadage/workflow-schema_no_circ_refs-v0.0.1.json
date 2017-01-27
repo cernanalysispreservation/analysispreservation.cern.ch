@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "id": "yadage_workflow",
+  "title": "Yadage Workflow",
+  "additionalProperties": false,
+  "properties": {
+    "stages": {
+      "type": "array",
+      "title": "Stages",
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/stage-schema_no_circ_refs-v0.0.1.json#"
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+[
+    {
+        "key": "workflows[].workflow.stages[].scheduler.step.process.cmd"
+    }
+]
