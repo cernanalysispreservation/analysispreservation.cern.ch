@@ -1,4 +1,4 @@
-Walk-throughs
+Tutorials
 =============================
 1. Submit an analysis (webform)
 

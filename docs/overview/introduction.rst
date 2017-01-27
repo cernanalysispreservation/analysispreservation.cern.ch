@@ -1,6 +1,5 @@
 What it is
 ==================
--  Scope and goal
 
 *CERN Analysis Preservation* - capture, preserve and reuse analyses information in HEP.
 
@@ -10,31 +9,24 @@ By structuring and capturing the research data analysis workflow steps and resul
 
 The ultimate goal of CAP is to improve both human and machine readability of analyses outputs, and enable reproduction even many years after its initial publication, permitting to extend impact of perserved analyses through validation and recasting projects.
 
--  Movitation
+Motivation
+----------
 
 The High Energy Physics community has been tirelessly exploring and adopting innovative forms of communciation to ensure the ever growing information needs of the community members are sufficiently met. CERN Analysis Preservation (CAP) is another attempt to reinforce the current communication model, and make collaborative research easier.
 
 Physics data analysis go through a long and complex process before
 
--  Team
-CERN-SIS:
-CERN-IT:
-Physics collaborations:
-
--  Contributors/ veterans
-
--  Partners
-CMS
-
-LHCb
-
-ATLAS
-
-ALICE
-
--  Related projects
-RECAST
-
-DASPOS
-
-REANA
+- Team
+  CERN-SIS:
+  CERN-IT:
+  Physics collaborations:
+- Contributors/ veterans
+- Partners
+  CMS
+  LHCb
+  ATLAS
+  ALICE
+- Related projects
+  RECAST
+  DASPOS
+  REANA

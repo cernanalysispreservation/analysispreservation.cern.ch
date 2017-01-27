@@ -1,5 +1,5 @@
-Community support
-=================
+Support
+=======
 
 -  Feedback form
 -  Contact information

@@ -1,5 +1,6 @@
-Frequentlu Asked Questions
+Frequently Asked Questions
 ===============================
+
 - I am an experimentalalist, how can I use it?
 
 - I am a theorist, how can I use it?
