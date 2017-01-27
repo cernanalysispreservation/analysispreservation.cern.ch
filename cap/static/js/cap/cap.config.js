@@ -68,8 +68,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
           template: '<div class="container cap-content"><h1>WORKING GROUPS (overview)</h1></div>',
           controller: 'WGController',
         },
-        'header': {},
-        'sidebar': {},
+        'header': {}
       },
       data: {
         requireLogin: true
@@ -95,9 +94,6 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         'content': {
           templateUrl: '/static/templates/cap/experiments.html',
           controller: 'WGController',
-        },
-        'sidebar': {
-          template: "<span></span>"
         }
       },
       data: {

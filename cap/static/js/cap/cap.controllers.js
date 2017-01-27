@@ -3,7 +3,7 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state, hotkeys) {
+var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state, hotkeys, screenSize) {
   $scope.$location = $location;
   //Variables for search filter fields
   $scope.hello = 'CERN Analysis Preservation experiments';
@@ -11,6 +11,39 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
   $scope.init = function(){
     // Request user info to get application needed user metadata
     initAppWithUser();
+
+    screenSize.rules = {
+      large: '(min-width: 1400px)',
+      small: '(max-width: 1400px)'
+    };
+
+    $scope.menuToggle = function() {
+      $scope.menuContainerOpen = !$scope.menuContainerOpen;
+    };
+
+    if (screenSize.is('large')){
+      $scope.menuContainerOpen = true;
+      $scope.menuContainerAutoclose = 'disabled';
+    }
+    else {
+      $scope.menuContainerOpen = false;
+      $scope.menuContainerAutoclose = 'outsideClick';
+    }
+
+    $scope.menuContainerOpen = screenSize.on( 'large', function(match){
+        console.log("large::" + match + " -::-" + $scope.menuContainerOpen);
+        $scope.menuContainerOpen = match;
+        if (match) {
+          $scope.menuContainerAutoclose = 'disabled';
+        }
+        else{
+          $scope.menuContainerAutoclose = 'outsideClick';
+        }
+        $scope.$apply();
+        console.log("large2::" + match + " -::-" + $scope.menuContainerOpen);
+    });
+
+
 
     $scope.events = [];
     $scope.options = {
@@ -157,7 +190,8 @@ capCtrl.$inject = [
   '$location',
   'capLocalClient',
   '$state',
-  'hotkeys'
+  'hotkeys',
+  'screenSize'
 ];
 
 angular.module('cap.app')

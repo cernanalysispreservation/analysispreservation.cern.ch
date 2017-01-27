@@ -31,12 +31,24 @@
   background-color: #fff;
   border-bottom: 1px solid $light-blue-theme-color;
   height: $cap_header_height;
-  padding: 5px 0;
+  padding: 5px 10px;
+}
+
+#cap-menu-toggle {
+  float: left;
+
+  a {
+    height: 50px;
+    font-size: 20px;
+    display: inline-block;
+    line-height: 50px;
+    padding: 0 15px;
+    margin: 0;
+  }
 }
 
 .cap-home-logo {
   display: inline-block;
-  margin-left: -15px;
 
   img {
     height: $cap_header_height - 10;
@@ -96,8 +108,21 @@
   padding-right: 30px;
 }
 
+#invenio-search-bar {
+  max-width: 650px;
+  width: auto;
+  min-width: 100px;
+  float: left;
+}
+
 @media only screen and (min-width : 768px) {
   #cap-home-user-menu {
     margin-right: 7%;
+  }
+}
+@media only screen and (min-width : 1000px) {
+
+  #invenio-search-bar {
+    width: 100%;
   }
 }

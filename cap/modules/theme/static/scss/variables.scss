@@ -57,6 +57,7 @@ $light-grey-bg-color: #f5f5f5;
 $grey-bg-color: #D8D8D8;
 $dark-grey-bg-border-color: #cccccc;
 $dark-grey-element-color: #8A949E;
+$blue-light-color: #eff6f9;
 $grey-element-color: #A5A5A5;
 $alt-grey-element-color: #AFB9C5;
 $clouds: #ecf0f1;
@@ -102,10 +103,13 @@ $brand-pill-radius: 3px;
 $header_btn_height: 40px;
 $cap_header_height: 60px;
 
-$cap_searchbar_bgcolor: #eff6f9;
+$cap_searchbar_bgcolor: $blue-light-color;
 
 // Footer
 $footer-height: 150px;
 $footer-background-color1: $light-grey-bg-color;
 $footer-background-color2: lighten($footer-background-color1, 4%);
 
+
+// Sidebar
+$sidebar-width: 230px;

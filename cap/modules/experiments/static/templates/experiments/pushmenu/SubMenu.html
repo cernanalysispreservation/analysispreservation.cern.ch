@@ -1,16 +1,19 @@
-﻿<div ng-show="visible" ng-class="{visible: visible, multilevelpushmenu_inactive: inactive && !collapsed}" class="levelHolderClass color{{level}}">
-    <div class="menu-header" ng-show="level == 0">
-        <h2>
-            <i class="floatRight cursorPointer" ng-class="menu.icon" ng-click="openMenu($event, menu)"></i>{{menu.title}}<a class="exp_chooser" href="/experiments">(change experiment)</a>
-        </h2>
-    </div>
+﻿<div class="levelHolderClass">
     <ul ng-class="{invisible: inactive}">
-        <li ng-repeat="item in menu.items" style="padding-left: {{0.6*(level+1)}}em">
-            <a ui-sref="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
-                <i class="floatRight" ng-class="item.icon"></i>
-                {{item.name}}
-                <i ng-if="item.menu" class="iconSpacing" ng-class="options.groupIcon"></i>
-            </a>
+        <li ng-repeat="item in menu.items">
+            <div class="nav-item" ui-sref-active="active" ng-class="{'has-child': item.menu}">
+                <a ui-sref="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
+                    <div ng-hide="item.menu" class="nav-icon">
+                        <i class="" ng-class="item.icon ? item.icon: 'fa fa-square'"></i>
+                    </div>
+                    <div ng-hide="item.menu" class="nav-title">
+                        {{item.name}}
+                    </div>
+                    <div ng-show="item.menu" class="nav-title">
+                        {{item.name | uppercase }}
+                    </div>
+                </a>
+            </div>
             <div ng-if="item.menu">
                 <recursive><cap-submenu menu="item.menu" level="childrenLevel" visible="item.visible"></cap-submenu></recursive>
             </div>

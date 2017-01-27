@@ -30,7 +30,8 @@ from flask import Blueprint, jsonify, redirect, session
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-from cap.modules.access.views import get_user_experiments
+from cap.modules.access.views import get_user_experiments, \
+    get_user_deposit_groups
 
 from cap.modules.experiments.permissions import collaboration_permissions
 
@@ -47,7 +48,46 @@ def CAP_EXPERIMENT_MENU(experiment):
     def _l(str):
         return str
 
+    def users_deposit_groups():
+        groups = get_user_deposit_groups()
+        print(groups)
+        res = []
+        for group in groups:
+            res.append({
+                'name': group.get("name", group.get("deposit_group", "")),
+                'link': _l('app.deposit_new({deposit_group:"'+group.get("deposit_group", "")+'"})'),
+                'icon': ''
+            })
+
+        return res
+
     _menu = [
+        {
+            'name': 'Shared Records',
+            'link': _l('app.publications'),
+            'icon': 'fa fa-share-square'
+        },
+        {
+            'name': 'My Deposits',
+            'icon': 'fa fa-file-text',
+            'link': _l('app.deposit'),
+            'menu': {
+                "title": 'My Deposits',
+                'icon': 'fa fa-file-text-o',
+                'items': [
+                    {
+                        'name': 'Shared',
+                        'link': _l('app.deposit({status: "published"})'),
+                        'icon': 'fa fa-share-square-o'
+
+                    }, {
+                        'name': 'Drafts',
+                        'link': _l('app.deposit({status: "draft"})'),
+                        'icon': 'fa fa-pencil-square'
+                    }
+                ]
+            }
+        },
         {
             'name': 'Working Groups',
             'id': 'itemId',
@@ -70,49 +110,15 @@ def CAP_EXPERIMENT_MENU(experiment):
                     }
                 ]
             }
-        }, {
-            'name': 'Shared Records',
-            'link': _l('app.publications'),
-            'icon': 'fa fa-book'
-        }, {
-            'name': 'My Deposits',
+        },
+        {
+            'name': 'Create',
             'icon': 'fa fa-file-text',
-            'link': _l('app.deposit'),
+            'link': _l('app.select_deposit_new'),
             'menu': {
-                "title": 'My Deposits',
+                "title": 'Create',
                 'icon': 'fa fa-file-text-o',
-                'items': [
-                    {
-                        'name': 'All',
-                        'link': _l('app.deposit')
-                    }, {
-                        'name': 'Published',
-                        'link': _l('app.deposit({status: "published"})'),
-                        'icon': ''
-
-                    }, {
-                        'name': 'On Review',
-                        'link': _l('app.deposit({status: "published"})'),
-                        'icon': ''
-
-                    }, {
-                        'name': 'Drafts',
-                        'link': _l('app.deposit({status: "draft"})'),
-                        'icon': ''
-                    }, {
-                        'name': 'Create CMS Analysis',
-                        'link': _l('app.deposit_new({deposit_group:"cms-analysis"})'),
-                        'icon': ''
-                    }, {
-                        'name': 'Create LHCb Analysis',
-                        'link': _l('app.deposit_new({deposit_group:"lhcb"})'),
-                        'icon': ''
-                    }, {
-                        'name': 'Create CMS Questionnaire',
-                        'link': _l('app.deposit_new({deposit_group:"cms-questionnaire"})'),
-                        'icon': ''
-                    }
-                ]
+                'items': users_deposit_groups()
             }
         }
     ]

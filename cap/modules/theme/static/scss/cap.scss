@@ -205,6 +205,19 @@ body::-webkit-scrollbar-thumb {
   display: inline-block;
   width: 100%;
   float: left;
+
+  &.menu-opened {
+    padding-left: $sidebar-width;
+  }
+}
+
+@media (max-width: 1300px) { 
+  #cap-content {
+
+    &.menu-opened {
+      padding-left: auto;
+    }
+  }
 }
 
 #cap-content-bar {
@@ -212,8 +225,8 @@ body::-webkit-scrollbar-thumb {
   max-height: $content-bar-height;
   text-align: center;
   position: fixed;
+  top: $cap_header_height;
   width: 100%;
-  z-index: 10;
   background-color: #fff;
 
   ul {

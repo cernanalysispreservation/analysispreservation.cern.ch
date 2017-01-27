@@ -2,8 +2,8 @@
     <div ui-view="header">
         {% include 'cap/header.html' %}
     </div>
-    <div ui-view="sidebar">
+    <div id="cap-sidebar-left" ng-show="menuContainerOpen" ng-class="menuContainerOpen ? 'menu-opened' : 'menu-closed'">
         <cap-push-menu menu="menu" options="options"></cap-push-menu>
     </div>
-    <div id="cap-content" ui-view="content"></div>
+    <div id="cap-content" ui-view="content" ng-class="menuContainerOpen ? 'menu-opened' : 'menu-closed'"></div>
 </div>

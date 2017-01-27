@@ -1,5 +1,6 @@
 
 var app = angular.module('cap.app', [
+  'matchMedia',
   'capSearch',
   'capRecords',
   'invenioFiles',

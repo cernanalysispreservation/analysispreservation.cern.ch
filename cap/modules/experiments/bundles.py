@@ -77,6 +77,7 @@ alice_js = NpmBundle(
 
 experiments_js = NpmBundle(
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
+    "node_modules/angular-media-queries/match-media.js",
     "node_modules/angular-animate/angular-animate.js",
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
@@ -107,7 +108,8 @@ experiments_js = NpmBundle(
         "angular-ui-router": "~0.3.2",
         "angular-animate": "~1.3",
         "angular-hotkeys": "~1.7.0",
-        "ng-jsoneditor": "~1.0.0"
+        "ng-jsoneditor": "~1.0.0",
+        "angular-media-queries": "~0.6.1"
     }
 )
 
