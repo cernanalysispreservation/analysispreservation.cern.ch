@@ -47,7 +47,7 @@ app.directive('capProgressBar', function() {
       progress: '=',
       type: '='
     },
-    link: function(scope, element, attrs, vm) {
+    link: function(scope, element, attrs) {
       var req = {};
       var current_key = '';
 
@@ -139,15 +139,47 @@ app.directive('capProgressBar', function() {
  *     <event-focus="click">
  */
 app.directive('eventFocus', ['focus', function(focus) {
-    return function(scope, elem, attr) {
-      elem.on(attr.eventFocus, function() {
-        focus(attr.eventFocusId);
-      });
-      
-      // Removes bound events in the element itself
-      // when the scope is destroyed
-      scope.$on('$destroy', function() {
-        element.off(attr.eventFocus);
-      });
-    };
-  }])
+  return function(scope, elem, attr) {
+    elem.on(attr.eventFocus, function() {
+      focus(attr.eventFocusId);
+    });
+    
+    // Removes bound events in the element itself
+    // when the scope is destroyed
+    scope.$on('$destroy', function() {
+      element.off(attr.eventFocus);
+    });
+  };
+}])
+
+
+app.directive('capResults', ['capLocalClient', function(capLocalClient) {
+  return {
+    restrict: 'E',
+    template: '{{results.data.hits.hits.length}}',
+    scope: {
+      limit: '=',
+      status: '=',
+      type: '='
+    },
+    link: function(scope, element, attrs) {
+      console.log(scope);
+      if(attrs.type == 'records') {
+        capLocalClient.get_experiment_records(limit=attrs.limit)
+        .then(function(response) {
+          console.log(response);
+          scope.results = response;
+        }, function(error) {
+          console.log('Error fetching records');
+        });  
+      } else {
+        capLocalClient.get_deposits(limit=attrs.limit, status=attrs.status)
+        .then(function(response) {
+          scope.results = response;
+        }, function(error) {
+          console.log('Error fetching deposits');
+        });  
+      }
+    }
+  }
+}])

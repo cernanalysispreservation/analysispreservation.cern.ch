@@ -149,7 +149,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
         .then(function(response) {
           var _menu = [{
             'name': 'Home',
-            'link': 'app',
+            'link': 'app.index',
             'icon': 'fa fa-home'
           }];
           $scope.menu.items = _menu.concat(response.data);

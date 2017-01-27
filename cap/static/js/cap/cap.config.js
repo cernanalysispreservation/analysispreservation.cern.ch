@@ -53,10 +53,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '/',
       views: {
         'content': {
-          template: '<div class="container cap-content">'+
-          '<h1>Welcome to CERN Analysis Preservation</h1>'+
-          '<h2>You are in the {{exp}} homepage</h2></div>',
-          controller: 'WGController',
+          templateUrl: '/static/templates/cap/experiment_intro.html'
         }
       }
     })

@@ -129,6 +129,27 @@ var capLocalClient = angular.module('cap.services', [])
         });
         return deferred.promise;
       },
+      get_deposits: function(limit, status) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/api/deposits/';
+        $http({
+          method: 'GET',
+          url: url,
+          params: {
+            size: limit || 20,
+            page: 1,
+            status: status || ''
+          }
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
       get_experiment_menu: function(limit) {
         var deferred = $q.defer();
         deferred.notify('started');
