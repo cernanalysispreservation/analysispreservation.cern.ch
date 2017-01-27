@@ -29,6 +29,7 @@ from werkzeug.routing import BuildError
 from invenio_search import current_search
 from invenio_search.utils import schema_to_index
 
+from cap.modules.deposit.views.ui import DEPOSIT_DEFAULT_METAINFO
 
 def schema_prefix(schema):
     """Get index prefix for a given schema."""
@@ -173,8 +174,8 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
 
         _meta_info['schema'] = m.get(
             '$schema', "").replace('http://', 'https://')
-        _meta_info['schema_form'] = _meta_info[
-            'schema'].replace('/schemas/', '/static/json/')
+        _meta_info['schema_form'] = _meta_info['schema'].replace(
+            '/schemas/', '/schemas/options/')
 
         _meta_info['loading_template'] = url_for(
             'static', filename='node_modules/invenio-records-js/dist/templates/loading.html')
