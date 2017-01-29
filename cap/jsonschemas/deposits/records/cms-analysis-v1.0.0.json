@@ -511,35 +511,39 @@
                                     "other"
                                  ]
                               },
-                              "isolation": {
-                                 "title": "Isolation",
-                                 "type": "object",
-                                 "properties": {
-                                    "notracks": {
-                                       "title": "no tracks",
-                                       "type": "object",
-                                       "properties": {
-                                          "pTg": {
-                                             "type": "number",
-                                             "title": "pT >"
+                              "isolation":{  
+                                 "title":"Isolation",
+                                 "type":"object",
+                                 "properties":{  
+                                    "notracks":{  
+                                       "title":"no tracks",
+                                       "type":"object",
+                                       "properties":{  
+                                          "pTg":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"pT >"
                                           },
-                                          "deltaRs": {
-                                             "type": "number",
-                                             "title": "ΔR <"
+                                          "deltaRs":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"ΔR <"
                                           }
                                        }
                                     },
-                                    "calorimeter": {
-                                       "title": "calorimeter",
-                                       "type": "object",
-                                       "properties": {
-                                          "pTs": {
-                                             "type": "number",
-                                             "title": "pT <"
+                                    "calorimeter":{  
+                                       "title":"calorimeter",
+                                       "type":"object",
+                                       "properties":{  
+                                          "pTs":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"pT <"
                                           },
-                                          "deltaRs": {
-                                             "type": "number",
-                                             "title": "ΔR <"
+                                          "deltaRs":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"ΔR <"
                                           }
                                        }
                                     }
@@ -561,9 +565,10 @@
                                        ],
                                        "default": "="
                                     },
-                                    "number": {
-                                       "type": "number",
-                                       "title": "Number"
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Number"
                                     }
                                  }
                               },
@@ -578,40 +583,43 @@
                                           "="
                                        ]
                                     },
-                                    "number": {
-                                       "type": "number",
-                                       "title": "Number"
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Number"
                                     }
                                  }
                               },
-                              "number_tracks": {
-                                 "title": "Number of Tracks",
-                                 "type": "object",
-                                 "properties": {
-                                    "number": {
-                                       "type": "number",
-                                       "title": ">"
+                              "number_tracks":{  
+                                 "title":"Number of Tracks",
+                                 "type":"object",
+                                 "properties":{  
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":">"
                                     }
                                  }
                               },
-                              "electron_discriminator": {
-                                 "title": "Discriminator",
-                                 "type": "object",
-                                 "properties": {
-                                    "tag": {
-                                       "type": "string",
-                                       "title": "Tag",
-                                       "enum": [
-                                          "other..."
+                              "electron_discriminator":{  
+                                 "title":"Discriminator",
+                                 "type":"object",
+                                 "properties":{  
+                                    "tag":{  
+                                       "type":"string",
+                                       "title":"Tag",
+                                       "enum":[  
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -635,9 +643,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -655,16 +664,17 @@
                                        "title": "Tag",
                                        "enum": [
                                           "AgainstElectronLooseMVA",
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -688,9 +698,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -720,9 +731,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -746,9 +758,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -757,39 +770,42 @@
                                     ]
                                  }
                               },
-                              "pt_cut": {
-                                 "title": "pT Cuts",
-                                 "type": "array",
-                                 "items": {
-                                    "type": "object",
-                                    "properties": {
-                                       "sign": {
-                                          "type": "string",
-                                          "title": "<, >, =",
-                                          "enum": [
+                              "pt_cut":{  
+                                 "title":"pT Cuts",
+                                 "type":"array",
+                                 "default": [],
+                                 "items":{  
+                                    "type":"object",
+                                    "properties":{  
+                                       "sign":{  
+                                          "type":"string",
+                                          "title":"<, >, =",
+                                          "enum":[  
                                              ">",
                                              "=",
                                              "<"
                                           ],
                                           "default": ">"
                                        },
-                                       "number": {
-                                          "type": "number",
-                                          "title": "GeV"
+                                       "number":{  
+                                          "type":"string",
+                                          "pattern": "^[\\d\\.]+$",
+                                          "title":"GeV"
                                        }
                                     }
                                  }
                               },
-                              "eta_cut": {
-                                 "title": "|η| Cuts",
-                                 "type": "array",
-                                 "items": {
-                                    "type": "object",
-                                    "properties": {
-                                       "sign": {
-                                          "type": "string",
-                                          "title": "<, >, =",
-                                          "enum": [
+                              "eta_cut":{  
+                                 "title":"|η| Cuts",
+                                 "type":"array",
+                                 "default": [],
+                                 "items":{  
+                                    "type":"object",
+                                    "properties":{  
+                                       "sign":{  
+                                          "type":"string",
+                                          "title":"<, >, =",
+                                          "enum":[  
                                              ">",
                                              "=",
                                              "<"
@@ -807,9 +823,10 @@
                                              "other"
                                           ]
                                        },
-                                       "other_number": {
-                                          "type": "number",
-                                          "title": " "
+                                       "other_number":{  
+                                          "type":"string",
+                                          "pattern": "^[\\d\\.]+$",
+                                          "title":" "
                                        }
                                     },
                                     "dependencies": {
@@ -905,47 +922,51 @@
                                  "enum": [
                                     "charge",
                                     "angle",
-                                    "invariant mass",
-                                    "transverse mass"
+                                    "invariant_mass",
+                                    "transverse_mass"
                                  ]
                               },
-                              "charge_relation": {
-                                 "type": "string",
-                                 "title": "Charge",
-                                 "enum": [
-                                    "same sign",
-                                    "opposite sign"
+                              "charge_relation":{  
+                                 "type":"string",
+                                 "title":"Charge",
+                                 "enum":[  
+                                    "same_sign",
+                                    "opposite_sign"
                                  ]
                               },
-                              "angle_relation": {
-                                 "type": "number",
-                                 "title": "Degrees"
+                              "angle_relation":{  
+                                 "type":"string",
+                                 "pattern": "^[\\d\\.]+$",
+                                 "title":"Degrees"
                               },
-                              "invariant_mass": {
-                                 "title": "GeV",
-                                 "type": "object",
-                                 "properties": {
-                                    "lower_range": {
-                                       "type": "number",
-                                       "title": "<"
+                              "invariant_mass":{  
+                                 "title":"GeV",
+                                 "type":"object",
+                                 "properties":{  
+                                    "lower_range":{  
+                                       "type":"string",
+                                       "title":"<"
                                     },
-                                    "upper_range": {
-                                       "type": "number",
-                                       "title": ">"
+                                    "upper_range":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":">"
                                     }
                                  }
                               },
-                              "transverse_mass": {
-                                 "title": "GeV",
-                                 "type": "object",
-                                 "properties": {
-                                    "lower_range": {
-                                       "type": "number",
-                                       "title": "<"
+                              "transverse_mass":{  
+                                 "title":"GeV",
+                                 "type":"object",
+                                 "properties":{  
+                                    "lower_range":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"<"
                                     },
-                                    "upper_range": {
-                                       "type": "number",
-                                       "title": ">"
+                                    "upper_range":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":">"
                                     }
                                  }
                               },
@@ -994,9 +1015,10 @@
                                     "HT"
                                  ]
                               },
-                              "number": {
-                                 "title": "Number",
-                                 "type": "integer"
+                              "number":{  
+                                 "title":"Number",
+                                 "pattern": "^[\\d\\.]+$",
+                                 "type":"string"
                               },
                               "pt_cut": {
                                  "title": "PT",
@@ -1242,35 +1264,39 @@
                                     "pp"
                                  ]
                               },
-                              "isolation": {
-                                 "title": "Isolation",
-                                 "type": "object",
-                                 "properties": {
-                                    "notracks": {
-                                       "title": "no tracks",
-                                       "type": "object",
-                                       "properties": {
-                                          "pTg": {
-                                             "type": "number",
-                                             "title": "pT >"
+                              "isolation":{  
+                                 "title":"Isolation",
+                                 "type":"object",
+                                 "properties":{  
+                                    "notracks":{  
+                                       "title":"no tracks",
+                                       "type":"object",
+                                       "properties":{  
+                                          "pTg":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"pT >"
                                           },
-                                          "deltaRs": {
-                                             "type": "number",
-                                             "title": "ΔR <"
+                                          "deltaRs":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"ΔR <"
                                           }
                                        }
                                     },
-                                    "calorimeter": {
-                                       "title": "calorimeter",
-                                       "type": "object",
-                                       "properties": {
-                                          "pTs": {
-                                             "type": "number",
-                                             "title": "pT <"
+                                    "calorimeter":{  
+                                       "title":"calorimeter",
+                                       "type":"object",
+                                       "properties":{  
+                                          "pTs":{  
+                                             "type":"string",
+                                             "pattern": "^[\\d\\.]+$",
+                                             "title":"pT <"
                                           },
-                                          "deltaRs": {
-                                             "type": "number",
-                                             "title": "ΔR <"
+                                          "deltaRs":{  
+                                             "type":"string",
+                                             "pattern": "\\d*\\.?\\d+",
+                                             "title":"ΔR <"
                                           }
                                        }
                                     }
@@ -1292,9 +1318,10 @@
                                        ],
                                        "default": "="
                                     },
-                                    "number": {
-                                       "type": "number",
-                                       "title": "Number"
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Number"
                                     }
                                  }
                               },
@@ -1309,19 +1336,21 @@
                                           "="
                                        ]
                                     },
-                                    "number": {
-                                       "type": "number",
-                                       "title": "Number"
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Number"
                                     }
                                  }
                               },
-                              "number_tracks": {
-                                 "title": "Number of Tracks",
-                                 "type": "object",
-                                 "properties": {
-                                    "number": {
-                                       "type": "number",
-                                       "title": ">"
+                              "number_tracks":{  
+                                 "title":"Number of Tracks",
+                                 "type":"object",
+                                 "properties":{  
+                                    "number":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":">"
                                     }
                                  }
                               },
@@ -1340,9 +1369,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1351,24 +1381,25 @@
                                     ]
                                  }
                               },
-                              "muon_discriminator": {
-                                 "title": "Discriminator",
-                                 "type": "object",
-                                 "properties": {
-                                    "tag": {
-                                       "type": "string",
-                                       "title": "Tag",
-                                       "enum": [
-                                          "other..."
+                              "muon_discriminator":{  
+                                 "title":"Discriminator",
+                                 "type":"object",
+                                 "properties":{  
+                                    "tag":{  
+                                       "type":"string",
+                                       "title":"Tag",
+                                       "enum":[  
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1393,9 +1424,10 @@
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1404,24 +1436,25 @@
                                     ]
                                  }
                               },
-                              "jet_discriminator": {
-                                 "title": "Discriminator",
-                                 "type": "object",
-                                 "properties": {
-                                    "tag": {
-                                       "type": "string",
-                                       "title": "Tag",
-                                       "enum": [
-                                          "other..."
+                              "jet_discriminator":{  
+                                 "title":"Discriminator",
+                                 "type":"object",
+                                 "properties":{  
+                                    "tag":{  
+                                       "type":"string",
+                                       "title":"Tag",
+                                       "enum":[  
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1441,19 +1474,19 @@
                                           "trackCountingHighPurBJetTags",
                                           "trackCountingHighEffBJetTags",
                                           "simpleSecondaryVertexHighEffBJetTags",
-                                          "simpleSecondaryVertexHighEffBJetTags",
                                           "combinedSecondaryVertexBJetTags",
                                           "jetProbabilityBJetTags",
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1462,24 +1495,25 @@
                                     ]
                                  }
                               },
-                              "photon_discriminator": {
-                                 "title": "Discriminator",
-                                 "type": "object",
-                                 "properties": {
-                                    "tag": {
-                                       "type": "string",
-                                       "title": "Tag",
-                                       "enum": [
-                                          "other..."
+                              "photon_discriminator":{  
+                                 "title":"Discriminator",
+                                 "type":"object",
+                                 "properties":{  
+                                    "tag":{  
+                                       "type":"string",
+                                       "title":"Tag",
+                                       "enum":[  
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
                                        "type": "string",
                                        "title": " "
                                     },
-                                    "value": {
-                                       "type": "number",
-                                       "title": "Value"
+                                    "value":{  
+                                       "type":"string",
+                                       "pattern": "^[\\d\\.]+$",
+                                       "title":"Value"
                                     }
                                  },
                                  "dependencies": {
@@ -1504,9 +1538,10 @@
                                           ],
                                           "default": ">"
                                        },
-                                       "number": {
-                                          "type": "number",
-                                          "title": "GeV"
+                                       "number":{  
+                                          "type":"string",
+                                          "pattern": "^[\\d\\.]+$",
+                                          "title":"GeV"
                                        }
                                     }
                                  }
