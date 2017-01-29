@@ -228,6 +228,7 @@ body::-webkit-scrollbar-thumb {
   top: $cap_header_height;
   width: 100%;
   background-color: #fff;
+  z-index: 100;
 
   ul {
     list-style: none;
@@ -250,6 +251,7 @@ body::-webkit-scrollbar-thumb {
 
 #cap-content-main {
   margin-top: $content-bar-height; 
+  z-index: 10;
 }
 
 .modal {

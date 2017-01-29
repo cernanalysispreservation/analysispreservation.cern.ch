@@ -48,7 +48,9 @@ $sidebar-navigation-height: 80px;
 .cap-fixed-height-col{
   // TOFIX: calc() values and offset height should be calculated by components
   // heigh (box-height, buttons-height, etc)
-  height: calc(100vh - 200px);
+  height: calc(100vh - 60px);
+  margin-top: -1px;
+  margin-left: -1px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -257,10 +259,13 @@ $cap-deposit-sidebar-width: 300px;
   padding: 0;
   overflow: hidden;
   width: 100%;
+  padding-left: $cap-deposit-sidebar-width;
 }
 .cap-deposit-sidebar {
   width: $cap-deposit-sidebar-width;
-  position: fixed;
+  position: absolute;
+  left: 0;
+  height: 100%;
   float: left;
   border: 1px solid $light-blue-theme-color;
   background-color: #fff;
@@ -278,6 +283,9 @@ $cap-deposit-sidebar-width: 300px;
   }
   .cap-panel {
     border: 0;
+    position: fixed;
+    width: $cap-deposit-sidebar-width;
+    height: 100vh;
     // z-index: 0;
   }
   .dropdown-menu {
@@ -286,12 +294,11 @@ $cap-deposit-sidebar-width: 300px;
 }
 
 .cap-deposit-form {
-  width: 73%;
-  float: right;
-  left: $cap-deposit-sidebar-width+10;
+  width: 100%;
   height: 100%;
   overflow: scroll;
   padding: 20px;
+  margin: 0;
   background-color: #fff;
   border: 1px solid $light-blue-theme-color;
 
