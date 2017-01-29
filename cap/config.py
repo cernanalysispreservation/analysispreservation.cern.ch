@@ -158,33 +158,39 @@ RECORDS_REST_SORT_OPTIONS = dict(
             default_order='desc',
             order=1,
         ),
-        # mostrecent=dict(
-        #     title=_('Most recent'),
-        #     fields=['_created'],
-        #     default_order='desc',
-        #     order=2,
-        # ),
+        mostrecent=dict(
+            title=_('Most recent'),
+            fields=['_created'],
+            default_order='desc',
+            order=2,
+        ),
     )
 )
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.
 RECORDS_REST_FACETS = {
-    '_all': {
+    'deposits': {
         'aggs': {
             'collections': {
                 'terms': {
-                    'field': 'document_type_human',
+                    'field': '_type',
+                },
+            },
+            'status': {
+                'terms': {
+                    'field': '_deposit.status',
                 },
             },
         },
         'post_filters': {
-            'collections': terms_filter('collections'),
+            'collections': terms_filter('_type'),
+            'status': terms_filter('_deposit.status'),
         },
     },
 }
 
-RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
+#RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS) 
 
 #: Endpoints for displaying records.
 RECORDS_UI_ENDPOINTS = dict(
@@ -274,7 +280,12 @@ CAP_COLLAB_PAGES = {
 # Search
 # ======
 #: Default API endpoint for search UI.
-SEARCH_UI_SEARCH_API = '/api/records/'
+SEARCH_UI_SEARCH_API = '/api/deposits/'
+
+#: Templates 
+SEARCH_UI_SEARCH_TEMPLATE = "cap_search_ui/search.html"
+SEARCH_UI_JSTEMPLATE_RESULTS = 'templates/cap_search_ui/results.html'
+#SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
 
 #: Default ElasticSearch hosts
 SEARCH_ELASTIC_HOSTS = ["localhost:9200"]

@@ -153,6 +153,7 @@ setup(
             'cap_alpaca = cap.modules.alpaca.views:blueprint',
             'cap_access = cap.modules.access.views:access_blueprint',
             'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
+            'cap_search_ui = cap.modules.search_ui.views:blueprint',
         ],
         # 'invenio_i18n.translations': [
         #     'messages = cap',

@@ -10,9 +10,3 @@ blueprint = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
-
-
-@blueprint.route('/search')
-def search():
-    """CAP Search page."""
-    return render_template('cap_theme/search.html')

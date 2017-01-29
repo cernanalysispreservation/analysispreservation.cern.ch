@@ -48,23 +48,17 @@
             </invenio-search-count>
         </div>
         -->
-        <div class="col-md-3">
+        <!--div class="col-md-3">
             <invenio-search-facets
                     template="{{ url_for('static', filename='html/facets.html') }}"
             ></invenio-search-facets>
-        </div>
+        </div-->
 
-        <div class="col-md-9">
+        <div class="col-md-offset-2 col-md-9">
             <!-- RESULTS -->
             <invenio-search-results
                     template="{{ url_for('static', filename='html/results.html') }}">
             </invenio-search-results>
-            <!-- PAGINATION -->
-            <center>
-                <invenio-search-pagination
-                        template="{{ url_for('static', filename='html/pagination.html') }}">
-                </invenio-search-pagination>
-            </center>
         </div>
     </invenio-search>
 </div>

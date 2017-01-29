@@ -58,6 +58,15 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
+      name: 'app.search',
+      url: '/search',
+      views: {
+        'content': {
+          templateUrl: '/app/search'
+        }
+      }
+    })
+    .state({
       name: 'app.working_groups',
       url: '/WG',
       views: {

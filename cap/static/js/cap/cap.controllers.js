@@ -90,6 +90,9 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
         initCapGlobalShortcuts(hotkeys, $scope, $state);
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+          console.log(toState);
+          $scope.currentState = toState.name;
+
           var requireLogin = false;
 
           if (toState.data && toState.data.requireLogin) {
@@ -136,6 +139,8 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
             get_experiment_menu();
           }
         }
+
+
       }, function(error) {
         $scope.error = error;
       });

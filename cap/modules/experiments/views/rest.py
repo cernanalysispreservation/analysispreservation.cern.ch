@@ -30,8 +30,8 @@ from flask import Blueprint, jsonify, redirect, session
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-from cap.modules.access.views import get_user_deposit_groups, get_user_experiments
-
+from cap.modules.access.views import (get_user_deposit_groups,
+                                      get_user_experiments)
 from cap.modules.experiments.permissions import collaboration_permissions
 
 experiments_bp = Blueprint(
@@ -65,6 +65,11 @@ def CAP_EXPERIMENT_MENU(experiment):
             'name': 'Shared Records',
             'link': _l('app.publications'),
             'icon': 'fa fa-share-square'
+        },
+        {
+            'name': 'Search',
+            'link': _l('app.search'),
+            'icon': 'fa fa-search'
         },
         {
             'name': 'My Deposits',
