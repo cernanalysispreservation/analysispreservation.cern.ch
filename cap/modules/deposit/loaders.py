@@ -27,7 +27,7 @@
 
 from itertools import groupby
 
-from celery import group, shared_task
+from celery import shared_task
 
 import jsonpointer
 import requests
@@ -78,13 +78,16 @@ class XCapFileValidationError(ValidationError):
             jsonpointer.set_pointer(
                 self.instance, self.validator_value['file_key'], key)
         else:
-            data, part = jsonpointer.JsonPointer(self.validator_value).to_last(
+            data, part = jsonpointer.JsonPointer(
+                self.validator_value['file_key']
+            ).to_last(
                 self.instance
             )
-            if part is not None:
-                del data[part]
-            else:
-                del data
+            if data:
+                if part is not None:
+                    del data[part]
+                else:
+                    del data
 
 
 def x_cap_file(validator, config, instance, schema):
@@ -172,7 +175,8 @@ def process_x_cap_files(record, x_cap_files):
 
 def json_v1_loader(data=None):
     """Load data from request and process URLs."""
-    data = data or request.json
+    from copy import deepcopy
+    data = deepcopy(data or request.json)
 
     if request and request.view_args.get('pid_value'):
         _, record = request.view_args.get('pid_value').data
@@ -183,7 +187,8 @@ def json_v1_loader(data=None):
 
         @after_this_request
         def _preserve_files(response):
-            group(download_url(record_id, url) for url in urls).delay()
+            for url in urls:
+                download_url.delay(record_id, url)
             return response
 
     return data
