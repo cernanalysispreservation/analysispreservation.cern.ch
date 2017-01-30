@@ -95,3 +95,11 @@ class CAPDeposit(Deposit):
     def clear(self, *args, **kwargs):
         """Clear only drafts."""
         super(CAPDeposit, self).clear(*args, **kwargs)
+
+    def publish(self, *args, **kwargs):
+        """Simple file check before publishing."""
+        for file_ in self.files:
+            if file_.checksum is None:
+                raise  # TODO raise REST exception ...
+
+        return super(CAPDeposit, self).publish(*args, **kwargs)

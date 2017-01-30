@@ -27,7 +27,7 @@
 
 from itertools import groupby
 
-from celery import shared_task
+from celery import group, shared_task
 
 import jsonpointer
 import requests
@@ -35,6 +35,7 @@ import requests
 from cap.modules.deposit.api import CAPDeposit
 from flask import after_this_request, current_app, request
 from invenio_db import db
+from invenio_files_rest.models import FileInstance, ObjectVersion
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import Draft4Validator, extend
 from operator import attrgetter
@@ -101,7 +102,7 @@ def extract_refs_from_errors(errors):
     return [error.ref for error in errors if error.condition]
 
 
-def process_x_cap_files(data):
+def extract_x_cap_files(data):
     """Extract urls and references from data."""
     schema = data['$schema']
 
@@ -117,30 +118,44 @@ def process_x_cap_files(data):
 
 
 @shared_task
-def preserve_files(record_id):
-    """Preserve files from record."""
+def download_url(record_id, url):
+    """Create new file object and assign it to object version."""
     record = CAPDeposit.get_record(record_id)
+    record.files[url].file.set_contents(
+        requests.get(url, stream=True).raw,
+        default_location=record.files.bucket.location.uri,
+    )
+    db.session.commit()
 
+
+def process_x_cap_files(record, x_cap_files):
+    """Process files, update record."""
+    result = []
     old_keys = set(record.files.keys)
     used_keys = set()
 
-    all_errors = process_x_cap_files(record)
-
     # Download new files.
-    urls = {error.url for error in all_errors if error.condition and error.url}
+    urls = {error.url for error in x_cap_files if error.condition and error.url}
     for url in urls:
         if url not in record.files:
-            record.files[url] = requests.get(url, stream=True).raw
+            result.append(url)
+
+            obj = ObjectVersion.create(
+                bucket=record.files.bucket, key=url
+            )
+            obj.file = FileInstance.create()
+            record.files.flush()
+
             record.files[url]['source_url'] = url
 
     # Update file key for external URLs.
-    for error in all_errors:
+    for error in x_cap_files:
         if error.url:
             error.update_file_key(error.url)
 
     # Calculate references.
     keyfunc = attrgetter('file_key')
-    for key, errors in groupby(sorted(all_errors, key=keyfunc), keyfunc):
+    for key, errors in groupby(sorted(x_cap_files, key=keyfunc), keyfunc):
         if key is None:
             continue
 
@@ -152,8 +167,7 @@ def preserve_files(record_id):
     for key in old_keys - used_keys:
         record.files[key]['refs'] = []
 
-    record.commit()
-    db.session.commit()
+    return result
 
 
 def json_v1_loader(data=None):
@@ -162,10 +176,14 @@ def json_v1_loader(data=None):
 
     if request and request.view_args.get('pid_value'):
         _, record = request.view_args.get('pid_value').data
+        record_id = str(record.id)
+        x_cap_files = extract_x_cap_files(data)
+        urls = process_x_cap_files(record, x_cap_files)
+        data['_files'] = record.files.dumps()
 
         @after_this_request
         def _preserve_files(response):
-            preserve_files.delay(str(record.id))
+            group(download_url(record_id, url) for url in urls).delay()
             return response
 
     return data
