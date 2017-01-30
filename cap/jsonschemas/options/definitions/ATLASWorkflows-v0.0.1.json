@@ -1,6 +1,6 @@
 {
     "key": "workflows",
-    "title": "Workflows",
+    "title": "{{value.name || 'New Workflow'}}",
     "type": "tabarray",
     "items": [
         {

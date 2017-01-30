@@ -260,10 +260,10 @@ $cap-deposit-sidebar-width: 300px;
   padding: 0;
   overflow: hidden;
   width: 100%;
-  padding-left: $cap-deposit-sidebar-width;
+  min-height: 100vh;
 }
 .cap-deposit-sidebar {
-  width: $cap-deposit-sidebar-width;
+  width: $cap-deposit-sidebar-width + 2px;
   position: absolute;
   left: 0;
   height: 100%;
@@ -302,6 +302,8 @@ $cap-deposit-sidebar-width: 300px;
   margin: 0;
   background-color: #fff;
   border: 1px solid $light-blue-theme-color;
+  border-top: 0;
+  margin-bottom: $footer-height;
 
   .cap-panel {
     border: 0;
@@ -317,6 +319,25 @@ $cap-deposit-sidebar-width: 300px;
     .panel-body {
       background-color: #eff6f9;
       border: 1px solid $light-blue-theme-color;
+    }
+  }
+
+  .tabs-container {
+    .nav-pills {
+      margin-top: -10px;
+
+      li {
+        float: right;
+        background-color: transparent;
+
+        a:hover {
+          background-color: transparent;
+        }
+      }
+
+      li.active {
+        display: none;
+      }
     }
   }
 }
