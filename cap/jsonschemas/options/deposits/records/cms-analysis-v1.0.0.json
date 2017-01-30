@@ -171,6 +171,7 @@
                 "key": "main_measurements[].detector_final_state.final_state_particles[].object",
                 "type": "select", 
                 "titleMap": [
+                  {"value": "", "name": ""},
                   {"value": "electron", "name": "electron"},
                   {"value": "muon", "name": "muon"},
                   {"value": "tau", "name": "tau"},

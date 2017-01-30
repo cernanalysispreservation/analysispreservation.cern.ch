@@ -391,6 +391,7 @@
                                  "title": "Object",
                                  "type": "string",
                                  "enum": [
+                                    "",
                                     "electron",
                                     "muon",
                                     "tau",
@@ -401,7 +402,8 @@
                                     "vertex",
                                     "MET",
                                     "HT"
-                                 ]
+                                 ],
+                                 "default": ""
                               },
                               "electron_type": {
                                  "type": "string",

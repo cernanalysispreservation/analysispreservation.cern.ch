@@ -10,7 +10,13 @@
 <div id="cap-deposit-index" class="cap-container container">
   <div class="panel panel-default cap-panel">
     <div class="panel-body">
+    {% if request.url.split('=')[-1] == 'draft' %}
       <h2>Drafts <span class="badge">{{ '{{vm.invenioSearchResults.hits.total}}' }}</span></h2>
+    {% elif request.url.split('=')[-1] == 'published' %}
+      <h2>Shared <span class="badge">{{ '{{vm.invenioSearchResults.hits.total}}' }}</span></h2>
+    {% else %}
+      <h2>Deposits <span class="badge">{{ '{{vm.invenioSearchResults.hits.total}}' }}</span></h2>
+    {% endif %}
     </div>
   </div>
   <invenio-search
