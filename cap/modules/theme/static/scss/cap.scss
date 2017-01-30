@@ -326,3 +326,12 @@ body::-webkit-scrollbar-thumb {
   margin-right: 1%;
   background-color: $turquoise;
 }
+
+.fixed-home-panel {
+  height: 204px; 
+  overflow-y: auto;
+}
+
+.link-color {
+  color: $link-color-default-blue !important;
+}

@@ -153,31 +153,41 @@ app.directive('eventFocus', ['focus', function(focus) {
 }])
 
 
+/**
+ * @ngdoc directive
+ * @name capResults
+ * @description
+ *    Returns deposits and records 
+ *    depending on status and limit
+ * @namespace capResults
+ * @example
+ *    Usage:
+ *     <cap-results limit='10' type='records'>
+ *     <cap-results limit='10' status='draft' type='deposits'>
+ */
 app.directive('capResults', ['capLocalClient', function(capLocalClient) {
   return {
     restrict: 'E',
-    template: '{{results.data.hits.hits.length}}',
+    templateUrl: 'static/templates/cap/recent_results.html',
     scope: {
       limit: '=',
       status: '=',
       type: '='
     },
     link: function(scope, element, attrs) {
-      console.log(scope);
       if(attrs.type == 'records') {
         capLocalClient.get_experiment_records(limit=attrs.limit)
         .then(function(response) {
-          console.log(response);
           scope.results = response;
         }, function(error) {
-          console.log('Error fetching records');
+          scope.error = error;
         });  
       } else {
         capLocalClient.get_deposits(limit=attrs.limit, status=attrs.status)
         .then(function(response) {
           scope.results = response;
         }, function(error) {
-          console.log('Error fetching deposits');
+          scope.error = error;
         });  
       }
     }
