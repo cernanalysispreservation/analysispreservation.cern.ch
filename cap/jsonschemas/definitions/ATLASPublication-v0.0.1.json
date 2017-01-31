@@ -6,7 +6,6 @@
   "properties": {
     "access": {
       "title": "Access Level",
-      "description": "Access level of publication",
       "type": "string",
       "enum": [
         "public",
@@ -23,17 +22,14 @@
     },
     "url": {
       "title": "URL",
-      "description": "Full URL for the publication, e.g. http://arxiv.org/abs/1403.5294",
       "type": "string"
     },
     "document_type": {
       "title": "Document Type",
-      "description": "e.g. 'preprint' or 'CERN report'",
       "type": "string"
     },
     "comment": {
       "title": "Comment",
-      "description": "e.g. 'internal draft', 'support document', etc.",
       "type": "string"
     }
   }

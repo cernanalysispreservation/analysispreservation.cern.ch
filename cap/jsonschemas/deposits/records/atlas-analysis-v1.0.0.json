@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "ATLAS Analysis (JSON schema)",
+  "description": "Schema describing properties of an ATLAS analysis",
+  "type": "object",
+  "properties": {
+    "_deposit": {
+      "name": "_deposit",
+      "properties": {
+        "created_by": {
+          "name": "created_by",
+          "type": "integer"
+        },
+        "id": {
+          "name": "id",
+          "type": "integer"
+        },
+        "owners": {
+          "items": [{
+            "type": "integer"
+          }],
+          "name": "owners",
+          "type": "array"
+        },
+        "pid": {
+          "name": "pid",
+          "properties": {
+            "revision_id": {
+              "type": "integer"
+            },
+            "type": {
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "published"
+          ],
+          "name": "status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "_files": {
+      "items": {
+        "description": "Describe information needed for files in records.",
+        "properties": {
+          "bucket": {
+            "type": "string"
+          },
+          "checksum": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          },
+          "type": {
+            "description": "File type extension.",
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "basic_info": {
+      "title": "Basic Information",
+      "propertyOrder": 10,
+      "type": "object",
+      "id": "basic_info",
+      "properties": {
+        "analysis_title": {
+          "title": "Analysis Title",
+          "type": "string"
+        },
+        "glance_id": {
+          "title": "Glance ID",
+          "type": "string"
+        },
+        "abstract": {
+          "title": "Abstract",
+          "type": "string"
+        },
+        "people_info": {
+          "title": "People Involved",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "email": {
+                "title": "Email-Adress",
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "analysis_title",
+        "glance_id"
+      ]
+    },
+    "input_datasets": {
+      "title": "Input Data",
+      "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
+      "type": "array",
+      "id": "input_datasets",
+      "additionalProperties": false,
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/ATLASDataset-v0.0.1.json"
+      }
+    },
+    "workflows": { 
+      "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/ATLASWorkflows_no_circ_refs-v0.0.1.json" 
+    },
+    "publications": {
+      "title": "Publications",
+      "description": "Publications related to the analysis",
+      "type": "array",
+      "id": "publications",
+      "additionalProperties": false,
+      "default": [{}],
+      "items": {
+        "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/ATLASPublication-v0.0.1.json"
+      }
+    }
+  }
+}

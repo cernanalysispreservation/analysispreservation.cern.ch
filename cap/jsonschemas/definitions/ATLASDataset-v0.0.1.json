@@ -6,18 +6,15 @@
   "properties": {
     "title": {
       "type": "string",
-      "title": "Title",
-      "description": "Filename of dataset, e.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542"
+      "title": "Title"
     },
     "type": {
       "title": "Data Type",
-      "type": "string",
-      "description": "Type of data, e.g. 'simulation'"
+      "type": "string"
     },
     "format": {
       "title": "Data Format",
-      "type": "string",
-      "description": "Format of data, e.g. 'AOD'"
+      "type": "string"
     }
   }
 }

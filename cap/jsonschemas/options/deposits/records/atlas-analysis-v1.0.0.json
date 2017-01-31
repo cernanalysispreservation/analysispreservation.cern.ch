@@ -1,0 +1,97 @@
+[
+    {
+      "key": "basic_info",
+      "type": "fieldset",
+      "items": [
+          {
+              "key": "basic_info.analysis_title",
+              "placeholder": "Please provide the analysis title"
+          },
+          {
+              "key": "basic_info.glance_id",
+              "placeholder": "Please provide the Glance ID"
+          },
+          {
+              "key": "basic_info.abstract",
+              "fieldHtmlClass": "custom-textarea",
+              "type": "textarea",
+              "placeholder": "If not provided here, the abstract can be extracted from the final paper"
+          },
+          {
+              "key": "basic_info.people_info",
+              "type": "tabarray",
+              "title": "{{value.name || 'New item'}}",
+              "items": [
+                {
+                  "key": "basic_info.people_info[].name",
+                  "title": "Name",
+                  "placeholder": "E.g. John Doe, Jane Doe"
+                },
+                {
+                  "key": "basic_info.people_info[].email",
+                  "title": "Email-Address",
+                  "placeholder": "E.g. john.doe@cern.ch, jane.doe@cern.ch"
+                }
+              ]
+          }
+      ]
+    },
+    {
+      "key": "input_datasets",
+      "items": [
+        {
+          "key": "input_datasets[].title",
+          "placeholder": "E.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542"
+        },
+        {
+          "key": "input_datasets[].type",
+          "placeholder": "E.g. simulation"
+        },
+        {
+          "key": "input_datasets[].format",
+          "placeholder": "E.g. AOD"
+        }
+      ]
+    },
+    {
+      "$ref": "https://analysis-preservation.cern.ch/app/schemas/options/definitions/ATLASWorkflows-v0.0.1.json"
+    },
+    {
+      "key": "publications",
+      "items": [
+        {
+          "key": "publications[].access",
+          "type": "radios",
+          "titleMap": [
+            {"value": "public","name": "Public"},
+            {"value": "internal","name": "Internal"}
+          ]
+        },
+        {
+          "key": "publications[].persistent_identifiers",
+          "items": [
+            {
+              "key": "publications[].persistent_identifiers[].identifier",
+              "placeholder": "E.g. DUNS number"
+            },
+            {
+              "key": "publications[].persistent_identifiers[].scheme",
+              "placeholder": "E.g. DUNS"
+            }
+          ]
+        },
+        {
+          "key": "publications[].url",
+          "placeholder": "E.g. http://arxiv.org/abs/1403.5294"
+        },
+        {
+          "key": "publications[].document_type",
+          "placeholder": "E.g. preprint"
+        },
+        {
+          "key": "publications[].comment",
+          "placeholder": "E.g. internal draft, support document, etc."
+        }
+      ]   
+    }
+]
