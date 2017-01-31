@@ -635,7 +635,7 @@
                                        "type": "string",
                                        "title": "Tag",
                                        "enum": [
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
@@ -690,7 +690,7 @@
                                        "type": "string",
                                        "title": "Tag",
                                        "enum": [
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
@@ -723,7 +723,7 @@
                                           "simpleSecondaryVertexHighEffBJetTags",
                                           "combinedSecondaryVertexBJetTags",
                                           "jetProbabilityBJetTags",
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
@@ -750,7 +750,7 @@
                                        "type": "string",
                                        "title": "Tag",
                                        "enum": [
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
@@ -1360,7 +1360,7 @@
                                        "type": "string",
                                        "title": "Tag",
                                        "enum": [
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
@@ -1415,7 +1415,7 @@
                                        "title": "Tag",
                                        "enum": [
                                           "AgainstElectronLooseMVA",
-                                          "other..."
+                                          "other"
                                        ]
                                     },
                                     "custom_tag": {
