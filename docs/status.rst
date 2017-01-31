@@ -71,7 +71,7 @@ Autocompletion, suggestion of content and automatic filling in of information wi
 Rerun
 -----
 
-Rerunning an analysis with RECAST and without interfering in the way the analysis is done is possible right now. This pillar will provide the necessary wrap-around so you can rerun your analysis directly on CERN Analysis Preservation.
+Rerunning an analysis with REANA and without interfering in the way the analysis is done is possible right now. This pillar will provide the necessary wrap-around so you can rerun your analysis directly on CERN Analysis Preservation.
 
 **ALICE - information required**
 	Pending, as no information has been provided yet.
