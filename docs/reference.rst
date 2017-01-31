@@ -2,9 +2,13 @@ Reference Guide
 ======================
 
 .. toctree::
-    :hidden:
 
-    glossary
+	jargon
+
+.. toctree::
+	:hidden:
+
+	glossary
 
 Metadata schema
 ---------------
