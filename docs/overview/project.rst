@@ -32,19 +32,19 @@ REST API
 Connectivity
 ~~~~~~~~~~~~
 
-To reduce user effort and ensure accuracy of input information, CAP is working on connecting to standing, yet scattered analysis information databases and systems inside of collaborations,
+To reduce user effort and ensure accuracy of input information, CAP is working on connecting scattered analysis information databases and systems existing inside of collaborations, to enable auto-completion and auto-fill functions of the analysis form.
 
 1. ATLAS
 
    - Glance
    - AMI
-   
+
 2. ALICE
 3. CMS
 
    - CADI
    - DAS
-   
+
 4. LHCb
 
    - Bookkeeping (BK)
@@ -54,9 +54,7 @@ To reduce user effort and ensure accuracy of input information, CAP is working o
 Versioning
 ~~~~~~~~~~
 
-Each analysis page is identified with a unique
-
-An Analyses record grows as the analysis proceed, and CAP keep track of each step of the way by assigning each stage of the analysis a unique persistent identifier
+Upon creation on the CAP platform, each analysis will be persistently identified with a unique identifier, and each edit after will be recorded as an updated version of the analysis through the identifier system. This will enable references to intermediary analysis steps in the analysis notes, and keep track of the analyses each step of the way.
 
 Search and Retrieve
 -------------------
@@ -79,18 +77,22 @@ Facets/ filter
 Review and compare
 ------------------
 
-TODO Short descrription
+CAP aim to make the analysis review process easier with its flexible authorisation mechanism and strcutured way of presenting analysis details.
+
 
 Authorisation/Access Control
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Due to the sensitive nature of the research data and analysis strategy - especially in the intial stage o f analyses - accessibility of analyses information on CAP is subjected to configurations set by the researchers involved. When starting a new analysis, the analysis form creator can grant read and edit rights to researchers in the analysis team if needed, and the form can be kept confidential to the analysis team until it contains sufficient descriptive information about the new analysis and can be shared with the collaboration.
 
 Report Compilation
 ~~~~~~~~~~~~~~~~~~
+Detailed analysis information can be exported from CAP, to generate status report.
+In addition to the analysis meeting presentation slides, CAP can also be a robust source of reference on analysis meetings.
 
 Reproduce and Reuse
 -------------------
 
-TODO Short descrription
+
 
 Analysis environment preservation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
