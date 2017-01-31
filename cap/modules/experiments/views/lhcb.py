@@ -28,8 +28,11 @@ from __future__ import absolute_import, print_function
 
 import codecs
 import json
+import re
+from urllib import unquote
 
 import pkg_resources
+import requests
 from flask import Blueprint, current_app, g, jsonify, render_template, request
 from flask_security import login_required
 from invenio_collections.models import Collection
@@ -39,7 +42,6 @@ from py2neo import Graph
 from cap.modules.records.views_ import collection_records, get_collections_tree
 
 from ..permissions.lhcb import lhcb_permission
-
 
 lhcb_bp = Blueprint(
     'cap_lhcb',
@@ -248,3 +250,39 @@ def lhcb_analysis():
             wg = get_lhcb_WG_analysis_by_title(title)
 
     return jsonify(results)
+
+
+@lhcb_bp.route('/api/collisiondata/', methods=['GET'])
+@lhcb_permission.require(403)
+def lhcb_getcollisiondata():
+    stripping_line = request.args.get('stripping_line', '')
+    params = parse_stripping_line(unquote(stripping_line))
+    url = current_app.config.get('LHCB_GETCOLLISIONDATA_URL', '')
+    res = {}
+
+    if params:
+        processing_pass = '{0}-{1}'.format(params.get('reco', ''),
+                                           params.get('stripping', ''))
+        year = '20{}'.format(params.get('year', ''))
+        rec_soft, rec_version = requests.get(url=url + params.get('reco', '')).json()[0].split(' ')
+        strip_soft, strip_version = requests.get(url=url + processing_pass).json()[0].split(' ')
+
+        res = {
+            'year': year,
+            'processing_pass': processing_pass,
+            'reconstruction': {
+                'software': rec_soft,
+                'version': rec_version,
+            },
+            'stripping': {
+                'software': strip_soft,
+                'version': strip_version,
+            }
+        }
+
+    return jsonify(res)
+
+def parse_stripping_line(stripping_line):
+    regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco\w{3}).*(?P<stripping>Stripping\w{3})'
+    res = re.search(regex, stripping_line)
+    return res.groupdict() if res else None

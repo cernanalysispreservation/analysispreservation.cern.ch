@@ -154,7 +154,39 @@
             "items": [
               {
                 "key": "dst_selection.input_data.data[].location",
-                "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR"
+                "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
+                "type": "cap:formAutofill",
+                "isAsync": "true",
+                "ref": {
+                    "url": "/app/LHCb/api/collisiondata",
+                    "paramKey": "stripping_line",
+                    "map": [
+                    {
+                        "s": ["year"],
+                        "t": ["#", "year"]
+                    },
+                    {
+                        "s": ["processing_pass"],
+                        "t": ["#", "processing_pass"]
+                    },
+                    {
+                        "s": ["reconstruction", "software"],
+                        "t": ["#", "reconstruction_software", "reconstruction_software_name"]
+                    },
+                    {
+                        "s": ["reconstruction", "version"],
+                        "t": ["#", "reconstruction_software", "reconstruction_software_version"]
+                    },
+                    {
+                        "s": ["stripping", "software"],
+                        "t": ["#", "stripping_software", "stripping_software_name"]
+                    },
+                    {
+                        "s": ["stripping", "version"],
+                        "t": ["#", "stripping_software", "stripping_software_version"]
+                    }
+                    ]
+                }
               },
               {
                 "key": "dst_selection.input_data.data[].processing_pass",

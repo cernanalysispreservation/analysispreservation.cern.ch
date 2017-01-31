@@ -44,7 +44,6 @@ from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
                                          RECORDS_REST_SORT_OPTIONS)
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
-
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 
@@ -360,6 +359,10 @@ SECRET_KEY = "changeme"
 # ============
 SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 
+# Ana's database
+ANA_LHCB_DATABASE_URL = 'http://datadependency.cern.ch'
+LHCB_GETCOLLISIONDATA_URL = '{0}/{1}?{2}='.format(ANA_LHCB_DATABASE_URL,
+                                             'getRecoStripSoft', 'propass')
 
 # Deposit
 # ============
