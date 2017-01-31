@@ -58,13 +58,12 @@
     </a>
   </div>
 </div>
-<div ng-if="vm.invenioSearchResults.hits.total == 0">
-<div class="list-group">
-  <div class="list-group-item">
-    <div align="center">
-      <h1>No shared records found</h1>
-      <p ng-if="results.config.url.indexOf('deposits') !== -1">Get started by making your first upload</p>
-    </div>
+<div ng-if="results.data.hits.total == 0">
+  <div ng-if="results.config.url.indexOf('deposits') !== -1" align="center">
+    <h1>No Analyses Found</h1>
+    <p>Get started by making your first upload</p>
   </div>
-</div>
+  <div ng-if="results.config.url.indexOf('records') !== -1" align="center">
+    <h1>No Shared Records Found</h1>
+  </div>
 </div>
