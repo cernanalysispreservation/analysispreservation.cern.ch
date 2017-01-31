@@ -12,7 +12,7 @@ First, install the necessary requirements:
 
 .. code-block:: console
 
-    python python-virtualenvwrapper
+	python python-virtualenvwrapper
 
 Second, clone the repository (or your own fork) if you have not done so already:
 
@@ -24,13 +24,13 @@ Third, create the virtual environment:
 
 .. code-block:: console
 
-    mkvirtualenv -p /usr/bin/python2.7 capdocs
+	mkvirtualenv -p /usr/bin/python2.7 capdocs
 
 and install Sphinx:
 
 .. code-block:: console
 
-    pip install Sphinx
+	pip install Sphinx
 
 Now you are all set. Whenever you want to build your docs in the future, just follow the below instructions.
 
@@ -41,23 +41,23 @@ To build the docs, switch into the docs folder inside your repository folder
 
 .. code-block:: console
 
-    cd ~/PATH_TO_YOUR_CLONED_FOLDER/cap/docs
+	cd ~/PATH_TO_YOUR_CLONED_FOLDER/cap/docs
 
 and run
 
 .. code-block:: console
 
-    make html
+	make html
 
 If that does not work and you do not see the ``(capdocs)`` in your terminal as such:
 
 .. code-block:: console
 
-    (capdocs) [USER@COMPUTER cap]$
+	(capdocs) [USER@COMPUTER cap]$
 
 then do the following:
 
 .. code-block:: console
 
-    workon capdocs
-    make html
+	workon capdocs
+	make html

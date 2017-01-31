@@ -40,26 +40,26 @@ Thank you for helping us helping you!
 Further Reading
 ---------------
 
-    .. toctree::
-        :glob:
-        :maxdepth: 1
+.. toctree::
+	:glob:
+	:maxdepth: 1
 
-        overview
-        getting-started
-        tutorials
-        reference
+	overview
+	getting-started
+	tutorials
+	reference
 
-        status
-        support
-        FAQ <faq>
+	status
+	support
+	FAQ <faq>
 
 
-    .. toctree::
-        :hidden:
+.. toctree::
+	:hidden:
 
-        README
-        style-guide
-        tableofcontent
+	README
+	style-guide
+	tableofcontent
 
 
 License
