@@ -176,10 +176,10 @@ angular.module('cap.app')
 ///////////////////////////////////////////
 // CAP app Records Controller
 
-var capRecordCtrl = function($scope, $location, capLocalClient, recordss, contentBarTabs) {
+var capRecordCtrl = function($scope, $location, capLocalClient, record, contentBarTabs) {
   $scope.name = 'RecordController';
 
-  $scope.recordss = recordss;
+  $scope.record = record;
   $scope.contentBarTabs = contentBarTabs;
 };
 
@@ -187,7 +187,7 @@ capRecordCtrl.$inject = [
   '$scope',
   '$location',
   'capLocalClient',
-  'recordss',
+  'record',
   'contentBarTabs'
 ];
 

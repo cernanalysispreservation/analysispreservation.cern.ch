@@ -121,7 +121,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         }
       },
       resolve: {
-        recordss: function(capLocalClient, $stateParams){
+        record: function(capLocalClient, $stateParams){
           return capLocalClient
                   .get_record($stateParams.recid);
         },
@@ -148,10 +148,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '',
       views: {
         'contentMain': {
-          templateUrl: function($stateParams) {
-            return '/app/records/'+$stateParams.recid;
-          },
-          controller: 'RecordController'
+          controller: 'RecordController',
+          templateUrl: '/static/templates/cap/records/record_detail.html'
         }
       },
       data: {

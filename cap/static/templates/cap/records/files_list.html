@@ -6,10 +6,10 @@
         <invenio-files-uploader
           method="PUT"
           endpoint="/api/records"
-          action="{{recordss.meta_info.files.action}}"
-          files="{{recordss.meta_info.files.files}}"
-          links="{{recordss.links}}"
-          extra-params="{{recordss.meta_info.files.extra_params}}"
+          action="{{record.meta_info.files.action}}"
+          files="{{record.meta_info.files.files}}"
+          links="{{record.links}}"
+          extra-params="{{record.meta_info.files.extra_params}}"
         >
           <invenio-files-list
             template="/api/static/templates/cap_files_js/list.html"
