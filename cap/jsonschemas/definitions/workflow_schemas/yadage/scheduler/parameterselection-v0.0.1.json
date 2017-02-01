@@ -20,11 +20,21 @@
             "type":"object",
             "additionalProperties": false,
             "properties": {
+              "expression_type": {
+                "type": "string",
+                "enum": [
+                  "stage-output-selector"
+                ],
+                "default": "stage-output-selector"
+              },
               "stages": {"type":"string"},
               "output": {"type":"string"},
               "unwrap": {"type":"boolean"},
               "flatten":{"type":"boolean"}
-            }
+            },
+            "required": [
+              "expression_type"
+            ]
           }
         ]
       }

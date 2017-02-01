@@ -24,6 +24,7 @@
           "type": "array",
           "title": "Parameters",
           "items": {
+            "title": "Parameter",
             "type": "string"
           }
         },

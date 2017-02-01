@@ -1,0 +1,24 @@
+{
+    "mappings": {
+        "atlas-workflows-v0.0.1": {
+            "properties": {
+                "basic_info": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "workflows": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

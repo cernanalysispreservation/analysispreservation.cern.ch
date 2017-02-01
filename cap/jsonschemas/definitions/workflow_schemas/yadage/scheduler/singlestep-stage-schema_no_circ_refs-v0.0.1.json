@@ -13,7 +13,7 @@
     "parameters": { "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#" },
     "step": { "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
     "workflow": {
-      "type": "string"
+      "type": "object"
     }
   }
 }

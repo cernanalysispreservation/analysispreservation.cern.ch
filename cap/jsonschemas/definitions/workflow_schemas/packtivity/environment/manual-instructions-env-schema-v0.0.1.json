@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Manual Instructions Environment",
+  "additionalProperties": false,
+  "properties": {
+    "environment_type": {
+      "type": "string",
+      "title": "Process Type",
+      "enum": ["manual-instructions-env"],
+      "default":"manual-instructions-env"
+    },
+    "instructions": {
+      "type": "string",
+      "title": "Instructions"
+    }
+  },
+  "required": [
+    "environment_type",
+    "instructions"
+  ]
+}

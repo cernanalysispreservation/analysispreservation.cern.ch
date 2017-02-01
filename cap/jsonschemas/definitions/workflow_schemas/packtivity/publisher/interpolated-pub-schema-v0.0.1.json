@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Simple Interpolated Publisher",
+  "additionalProperties": false,
+  "properties": {
+    "publisher_type": {
+      "type": "string",
+      "enum": [
+        "interpolated-pub"
+      ]
+    },
+    "publish": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "publisher_type",
+    "publish"
+  ]
+}

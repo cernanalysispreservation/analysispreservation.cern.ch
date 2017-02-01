@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "String Interpolated Script",
+  "additionalProperties": false,
+  "properties": {
+    "process_type": {
+      "type": "string",
+      "title": "Process Type",
+      "enum": ["interpolated-script-cmd"],
+      "default":"interpolated-script-cmd"
+    },
+    "script": {
+      "type": "string",
+      "title": "Script"
+    },
+    "interpreter": {
+      "type": "string",
+      "title": "Interpreter",
+      "default":"sh"
+    }
+  },
+  "required": [
+    "process_type",
+    "script"
+  ]
+}

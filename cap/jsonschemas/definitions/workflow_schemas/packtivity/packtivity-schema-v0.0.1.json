@@ -9,7 +9,9 @@
           "type": "object",
           "title": "Process",
           "oneOf":[
-            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/process/scriptproc-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/process/manual-instructions-proc-schema-v0.0.1.json#"}
           ]
       },
       "publisher": {
@@ -19,7 +21,9 @@
             {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema-v0.0.1.json#"},
             {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema-v0.0.1.json#"},
             {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json#"},
-            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/interpolated-pub-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/publisher/manual-instructions-pub-schema-v0.0.1.json#"}
           ]
       },
       "environment": {
@@ -28,7 +32,8 @@
           "oneOf":[
             {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/environment/noop-env-schema-v0.0.1.json#"},
             {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/environment/localproc-schema-v0.0.1.json#"},
-            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/environment/docker-enc-schema-v0.0.1.json#"}
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/environment/docker-enc-schema-v0.0.1.json#"},
+            {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/packtivity/environment/manual-instructions-env-schema-v0.0.1.json#"}
           ]
       }
   },

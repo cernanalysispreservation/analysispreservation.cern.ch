@@ -1,13 +1,5 @@
 [
     {
-        "key": "workflows[].stages[].dependencies.expressions",
-        "type": "array",
-        "items": [
-            {
-                "key": "workflows[].stages[].dependencies.expressions",
-                "type": "string",
-                "nonTitle": true
-            }
-        ]
+        "key": "workflows[].workflow.stages[].dependencies.expressions"
     }
 ]

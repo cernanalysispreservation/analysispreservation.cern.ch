@@ -418,8 +418,8 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "atlas-workflows": {
-        "schema": "/app/schemas/deposits/records/ATLASWorkflows-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/ATLASWorkflows-v0.0.1.json",
+        "schema": "/app/schemas/deposits/records/atlas-workflows-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
         "description": "Create an ATLAS Workflow",
         "list_template": "cap_deposit/index.html",
