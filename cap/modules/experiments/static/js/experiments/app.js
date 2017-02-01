@@ -52,7 +52,6 @@ var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, conte
   };
 
   $scope.$on('sf-render-finished', function(event){
-    console.log("formm::", $scope.depositionForm);
 
     watchAndUpdate({}, {});
 
@@ -264,7 +263,6 @@ var capFormAutofillCtrl = function( $scope, $interpolate , $http){
             if (angular.isArray(mapping["s"])){
               resp = response.data.results[0];
               angular.forEach(mapping["s"], function(key){
-                  console.log("m_f_::", key);
                     resp = resp[key];
               });
             }

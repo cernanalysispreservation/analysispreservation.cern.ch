@@ -38,7 +38,10 @@
          <div ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body  cursor-pointer" ng-click="updateContent( recordsVM.invenioRecordsForm.length, $index)">
           <div class="dropdown" uib-dropdown auto-close="disabled" is-open="status.isopen">
             <div uib-dropdown-toggle id="nav{{formElement.key[0]}}" >
-              <span class="forms-filter-fields-font-size fixed-column-link" >
+              <span class="forms-filter-fields-font-size fixed-column-link" ng-if="formElement.title.indexOf('{{') !== -1">
+                {{formElement.key[0] | uppercase}}
+              </span>
+              <span class="forms-filter-fields-font-size fixed-column-link" ng-if="formElement.title.indexOf('{{') == -1">
                 {{formElement.title | uppercase}}
               </span>
               <i class="fa" ng-class="{'fa-caret-down':status.isopen, 'fa-caret-right':!status.isopen}" aria-hidden="true"></i>

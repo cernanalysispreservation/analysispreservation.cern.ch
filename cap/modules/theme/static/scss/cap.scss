@@ -335,3 +335,11 @@ body::-webkit-scrollbar-thumb {
 .link-color {
   color: $link-color-default-blue !important;
 }
+
+.panel-default>.panel-heading .records-badge {
+  background-color: $light-blue-theme-color;
+}
+
+.list-group-item-position {
+  margin-top: 1%;
+}

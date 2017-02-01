@@ -31,7 +31,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
     }
 
     $scope.menuContainerOpen = screenSize.on( 'large', function(match){
-        console.log("large::" + match + " -::-" + $scope.menuContainerOpen);
         $scope.menuContainerOpen = match;
         if (match) {
           $scope.menuContainerAutoclose = 'disabled';
@@ -40,7 +39,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
           $scope.menuContainerAutoclose = 'outsideClick';
         }
         $scope.$apply();
-        console.log("large2::" + match + " -::-" + $scope.menuContainerOpen);
     });
 
 
@@ -92,7 +90,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
         initCapGlobalShortcuts(hotkeys, $scope, $state);
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-          console.log(toState);
           var requireLogin = false;
 
           if (toState.data && toState.data.requireLogin) {

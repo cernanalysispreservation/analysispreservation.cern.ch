@@ -27,24 +27,10 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default cap-panel">
-        <div class="panel-heading" >
-          <h2 class="panel-title forms-font-color">JSON</h2>
-        </div>
-        <div class="panel-body fixed-home-panel">
-          <pre>
-            {{record.metadata | json}}
-          </pre>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-md-6">
       <div class="panel panel-default cap-panel">
         <div class="panel-heading" >
-          <h2 class="panel-title forms-font-color">Files <span class="badge" style="background-color:#3b97d3;">{{record.meta_info.files.files.length}}</span></h2>
+          <h2 class="panel-title forms-font-color">Files <span class="badge records-badge">{{record.meta_info.files.files.length}}</span></h2>
         </div>
         <div class="panel-body fixed-home-panel">
           <div class="list-group">
@@ -55,12 +41,12 @@
                   <i class="fa fa-file text-success" aria-hidden="true"></i>
                 </div>
               </div>
-              <div class="pull-left" style="margin-top: 1%;">
+              <div class="pull-left list-group-item-position">
                   <p class="list-group-item-text">
                     {{ f.key | limitTo:40 }} <span ng-show="f.key.length > 50">...</span>
                   </p>
               </div>
-              <small class="pull-right label label-default" style="margin-top: 1%;">
+              <small class="pull-right label label-default list-group-item-position">
                 {{ f.size | bytesToHumanReadable}}
               </small>
               <div class="clearfix"></div>
@@ -72,7 +58,7 @@
     <div class="col-md-6">
       <div class="panel panel-default cap-panel">
         <div class="panel-heading" >
-          <h2 class="panel-title forms-font-color">Members <span class="badge" style="background-color:#3b97d3;">{{record.metadata.basic_info.people_info.length}}</span></h2>
+          <h2 class="panel-title forms-font-color">Members <span class="badge records-badge">{{record.metadata.basic_info.people_info.length}}</span></h2>
         </div>
         <div class="panel-body fixed-home-panel">
           <div class="list-group">
@@ -83,7 +69,7 @@
                   <i class="fa fa-user" aria-hidden="true"></i>
                 </div>
               </div>
-              <div class="pull-left" style="margin-top: 1%;">
+              <div class="pull-left list-group-item-position">
                   <p class="list-group-item-text">
                     {{p.name}} (<em>{{p.email}}</em>)
                   </p>
@@ -91,6 +77,20 @@
               <div class="clearfix"></div>
             </a>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
+          <h2 class="panel-title forms-font-color">JSON</h2>
+        </div>
+        <div class="panel-body fixed-home-panel">
+          <pre>
+            {{record.metadata | json}}
+          </pre>
         </div>
       </div>
     </div>
