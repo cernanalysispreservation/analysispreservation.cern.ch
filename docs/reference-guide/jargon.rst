@@ -6,7 +6,7 @@ Although we try to be clear in our meaning, there are words that might appear an
 .. glossary::
 
 	CAP
-		An acronym for CERN Analysis Preservation. If you do not know what that is yet, take a look :doc:`here <overview/introduction>`.
+		An acronym for CERN Analysis Preservation. If you do not know what that is yet, take a look :doc:`here <../overview/introduction>`.
 
 	Deposit
 		We use this as synonym for the analysis form.

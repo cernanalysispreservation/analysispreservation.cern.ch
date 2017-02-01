@@ -12,7 +12,7 @@ Frequently Asked Questions
 		No, we do not want nor can we do that. An analysis is an extremely complex research work which is precisely the reason why we care to preserve it. After all, if it were easy to automate the process of an analysis, why store it? What we are trying to do is to help you with repetitive tasks, help you find information you need and support your review and approval process so you can focus on the actual research.
 
 	I keep on hearing this word ... and I do not know what it means. Can you help me?
-		Sure, if you cannot find an explanation :doc:`here <jargon>` simply ask us :doc:`directly <support>` and we will help you.
+		Sure, if you cannot find an explanation :doc:`here <reference-guide/jargon>` simply ask us :doc:`directly <support>` and we will help you.
 
 	
 

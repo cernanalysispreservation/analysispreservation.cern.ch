@@ -1,18 +1,15 @@
 Reference Guide
 ======================
 
-.. todo::
-	Add short introduction.
-
 .. toctree::
 
-	jargon
-	Schema Reference <schema-reference>
+	reference-guide/jargon
+	Schema Reference <reference-guide/schema-reference>
 
 .. toctree::
 	:hidden:
 
-	glossary
+	reference-guide/glossary
 
 .. Publications
 .. ------------
