@@ -102,7 +102,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '/publications',
       views: {
         'content': {
-          templateUrl: '/app/records'
+          templateUrl: '/static/templates/cap/shared_records.html',
+          controller: 'capCtrl'
         }
       },
       data: {
