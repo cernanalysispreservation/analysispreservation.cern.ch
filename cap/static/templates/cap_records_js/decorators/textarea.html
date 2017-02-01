@@ -1,9 +1,9 @@
 <div class="form-group has-feedback {{ form.htmlClass }} schema-form-textarea"
      ng-class="{'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true &&  hasSuccess()}">
-    <label class="control-label col-sm-3 {{ form.labelHtmlClass }}" ng-class="{'sr-only': !showTitle(), 'field-required': form.required}"
+    <label class="control-label col-sm-12 {{ form.labelHtmlClass }}" ng-class="{'sr-only': !showTitle(), 'field-required': form.required}"
            for="{{ form.key.slice(-1)[0] }}">{{ form.title }}</label>
 
-    <div class="col-sm-9">
+    <div class="col-sm-12">
         <textarea ng-if="!form.fieldAddonLeft && !form.fieldAddonRight"
                   class="form-control {{ form.fieldHtmlClass }}"
                   id="{{ form.key.slice(-1)[0] }}"

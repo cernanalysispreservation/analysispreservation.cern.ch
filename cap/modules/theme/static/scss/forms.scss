@@ -32,7 +32,7 @@
 }
 
 .forms-filter-fields-font-size {
-  font-size: medium;
+  font-size: 14px;
 }
 
 .cap-panel {
@@ -224,9 +224,14 @@
 /* Progress bar */
 
 .custom-progress-bar {
-  width: 15%;
+  width: 50px;
   float: right;
   border-radius: 2px;
+  position: absolute;
+  right: 0;
+  height: 25px;
+  line-height: 25px;
+  top: 10px;
 }
 
 .progress-bar-disabled {
@@ -260,6 +265,7 @@ $cap-deposit-sidebar-width: 300px;
   padding: 0;
   overflow: hidden;
   width: 100%;
+  padding-left: $cap-deposit-sidebar-width;
   min-height: 100vh;
 }
 .cap-deposit-sidebar {
@@ -305,6 +311,11 @@ $cap-deposit-sidebar-width: 300px;
   border-top: 0;
   margin-bottom: $footer-height;
 
+  .cap-deposit-form-inner {
+    max-width: 1000px;
+    min-width: 400px;
+    margin: 0 auto;
+  }
   .cap-panel {
     border: 0;
     background-color: transparent;
@@ -369,6 +380,7 @@ $cap-deposit-sidebar-width: 300px;
   .dropdown {
     .dropdown-toggle {
       padding: 15px 0;
+      padding-right: 55px;
     }
 
     ul {
