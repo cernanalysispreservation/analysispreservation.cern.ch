@@ -261,15 +261,15 @@ var capFormAutofillCtrl = function( $scope, $interpolate , $http){
 
           if (mapping["s"]){
             if (angular.isArray(mapping["s"])){
-              resp = response.data.results[0];
+              resp = response.data;
               angular.forEach(mapping["s"], function(key){
                     resp = resp[key];
               });
             }
             else{
               // [TOFIX] for now gets only first result
-              if (response.data.results[0])
-                resp = response.data.results[0][mapping["s"]];
+              if (response.data)
+                resp = response.data[mapping["s"]];
             }
           }
 

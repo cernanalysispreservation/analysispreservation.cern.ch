@@ -547,3 +547,12 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
 .save-as-draft {
   margin-top: 8%;
 }
+
+.autofill-btn {
+  position: absolute;
+  top: 0;
+  right: 15px;
+  border-radius: 0;
+  color: #fff;
+  background-color: $light-blue-theme-color;
+}
