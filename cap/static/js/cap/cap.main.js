@@ -30,8 +30,19 @@
 // Initialize the app
 angular.element(document).ready(function() {
 
-  angular.module('capRecords').config(['schemaFormDecoratorsProvider', function(decoratorsProvider){
-    decoratorsProvider.addMapping('bootstrapDecorator', 'file_selector', '/static/templates/cap_records_js/decorators/file_selector.html');
+  angular.module('capRecords').config(['schemaFormDecoratorsProvider', 'sfBuilderProvider', function(decoratorsProvider, sfBuilderProvider){
+    decoratorsProvider.addMapping(
+      'bootstrapDecorator',
+      'file_selector',
+      '/static/templates/cap_records_js/decorators/file_selector.html'
+      );
+
+    decoratorsProvider.defineAddOn(
+      'bootstrapDecorator',
+      'cap:formAutofill',
+      '/static/templates/cap_records_js/decorators/formAutofill.html',
+      sfBuilderProvider.stdBuilders
+    );
   }]);
 
   angular.bootstrap(
