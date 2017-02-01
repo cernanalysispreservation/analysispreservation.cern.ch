@@ -35,4 +35,16 @@
       </a>
     {% endfor %}
   {% endif %}
+  {% if config.DEBUG %}
+  <hr>
+  {%- with form = login_user_form %}
+  <form action="{{ url_for_security('login') }}" method="POST" name="login_user_form">
+  {{form.hidden_tag()}}
+  {{form_errors(form)}}
+  {{ render_field(form.email, icon="fa fa-user", autofocus=True, errormsg=False) }}
+  {{ render_field(form.password, icon="fa fa-lock", errormsg=False) }}
+    <button type="submit" class="btn btn-primary btn-lg btn-block"><i class="fa fa-sign-in"></i> {{_('Log In')}}</button>
+  </form>
+  {%- endwith %}
+  {% endif %}
 {% endblock %}

@@ -31,6 +31,26 @@ cap db create
 # Create default user:
 cap users create info@inveniosoftware.org -a --password infoinfo
 
+cap users create cms@cap.ch -a --password cmscms
+cap users create lhcb@cap.ch -a --password lhcblhcb
+cap users create atlas@cap.ch -a --password atlasatlas
+cap users create alice@cap.ch -a --password alicealice
+
+cap roles create cms-members@cern.ch
+cap roles create alice-member@cern.ch
+cap roles create atlas-active-members-all@cern.ch
+cap roles create lhcb-general@cern.ch
+
+cap roles add info@inveniosoftware.org cms-members@cern.ch
+cap roles add info@inveniosoftware.org alice-member@cern.ch
+cap roles add info@inveniosoftware.org atlas-active-members-all@cern.ch
+cap roles add info@inveniosoftware.org lhcb-general@cern.ch
+
+cap roles add cms@cap.ch cms-members@cern.ch
+cap roles add alice@cap.ch alice-member@cern.ch
+cap roles add atlas@cap.ch atlas-active-members-all@cern.ch
+cap roles add lhcb@cap.ch lhcb-general@cern.ch
+
 # Create indexes:
 cap index init
 
