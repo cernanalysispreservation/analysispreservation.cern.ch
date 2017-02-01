@@ -231,7 +231,7 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     # list_route='/records/',
     # item_route='/records/<pid(recid):pid_value>',
     # default_media_type='application/json',
-    # 'read_permission_factory_imp': allow_all
+    'read_permission_factory_imp': allow_all
 })
 
 
