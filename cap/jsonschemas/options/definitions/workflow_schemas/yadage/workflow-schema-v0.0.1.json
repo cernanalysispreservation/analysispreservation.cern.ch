@@ -3,6 +3,6 @@
         "key": "workflows[].workflow.stages",
         "title": "Stages",
         "type": "tabarray",
-        "items": {"$ref": "https://analysis-preservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json"}
+        "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json"}
     }
 ]

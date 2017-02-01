@@ -13,15 +13,15 @@
       "type": "object",
       "title": "Dependencies",
       "oneOf": [
-        {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"}
+        {"$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"}
       ]
     },
     "scheduler": {
       "type": "object",
       "title": "Scheduler",
       "oneOf":[
-        {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema_no_circ_refs-v0.0.1.json#"},
-        {"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema_no_circ_refs-v0.0.1.json#"}
+        {"$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema_no_circ_refs-v0.0.1.json#"},
+        {"$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema_no_circ_refs-v0.0.1.json#"}
       ]
     }
   },

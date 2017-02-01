@@ -96,7 +96,7 @@ html_theme_options = {
     'logo': 'cap_logo_docs_lrg.svg',
     'description': 'CERN Analysis Preservation is a data preservation service run at CERN currently targeted at storing the LHC experiment data.',
     'github_user': 'cernanalysispreservation',
-    'github_repo': 'analysis-preservation.cern.ch',
+    'github_repo': 'analysispreservation.cern.ch',
     'github_banner': 'banner.svg',
     'github_button': False,
     'sidebar_includehidden': False,
@@ -171,6 +171,3 @@ texinfo_documents = [
      author, 'CERNAnalysisPreservation', 'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

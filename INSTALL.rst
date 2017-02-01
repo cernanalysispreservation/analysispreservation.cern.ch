@@ -86,7 +86,7 @@ Let's start by cloning the repository:
 
 .. code-block:: shell
 
-   git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
+   git clone https://github.com/cernanalysispreservation/analysispreservation.cern.ch.git cap
 
 All else will be installed inside a python *virtualenv* for easy
 maintenance and encapsulation of the libraries required. From inside

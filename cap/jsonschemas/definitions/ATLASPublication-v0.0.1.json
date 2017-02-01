@@ -17,7 +17,7 @@
       "description": "Identifier numbers for the publication, e.g. arXiv ID or CDS ID",
       "type": "array",
       "items": {
-        "$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/Identifiers-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/Identifiers-v0.0.1.json"
       }
     },
     "url": {

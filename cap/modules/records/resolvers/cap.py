@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -36,7 +36,7 @@ import simplejson as json
 from cap.config import JSONSCHEMAS_HOST
 
 @jsonresolver.route('/app/schemas/<path:path>',
-                    host='analysis-preservation.cern.ch')
+                    host='analysispreservation.cern.ch')
 def resolve_cap_schemas(path):
     """Resolve CAP JSON schemas."""
 

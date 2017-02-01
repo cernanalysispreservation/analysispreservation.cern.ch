@@ -1,13 +1,13 @@
-.. image:: https://travis-ci.org/cernanalysispreservation/analysis-preservation.cern.ch.png
-   :target: https://travis-ci.org/cernanalysispreservation/analysis-preservation.cern.ch
+.. image:: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch.png
+   :target: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch
 .. image:: https://badges.gitter.im/Join%20Chat.svg
-   :target: https://gitter.im/cernanalysispreservation/analysis-preservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+   :target: https://gitter.im/cernanalysispreservation/analysispreservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 
 About
 -----
 
-This is source code behind `https://analysis-preservation.cern.ch/
-<https://analysis-preservation.cern.ch>`_.  This source code overlay
+This is source code behind `https://analysispreservation.cern.ch/
+<https://analysispreservation.cern.ch>`_.  This source code overlay
 installs on top of `Invenio
 <https://github.com/inveniosoftware/invenio>`_ digital library
 platform.

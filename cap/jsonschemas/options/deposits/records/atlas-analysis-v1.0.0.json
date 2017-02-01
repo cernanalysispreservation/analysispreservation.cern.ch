@@ -54,7 +54,7 @@
       ]
     },
     {
-      "$ref": "https://analysis-preservation.cern.ch/app/schemas/options/definitions/ATLASWorkflows-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/ATLASWorkflows-v0.0.1.json"
     },
     {
       "key": "publications",
@@ -92,6 +92,6 @@
           "key": "publications[].comment",
           "placeholder": "E.g. internal draft, support document, etc."
         }
-      ]   
+      ]
     }
 ]

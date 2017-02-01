@@ -3,20 +3,20 @@
 ==============
 
 Any contribution, bug report, feature request and code contributions are
-encouraged and welcome, so please go ahead and don't withhold feedback! 
+encouraged and welcome, so please go ahead and don't withhold feedback!
 
 Bug Reports and Feature Requests
 ================================
 
 If you find a bug or have a feature request, please search for
 `already reported problems
-<https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/issues>`_
+<https://github.com/cernanalysispreservation/analysispreservation.cern.ch/issues>`_
 before submitting a new issue. Also, remember to set labels to
 indicate what you're filing an issue for.
 
 If you would like to take a more active part in the CERN Analysis
 Preservation developments, you can `watch ongoing discussions
-<https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/notifications>`_
+<https://github.com/cernanalysispreservation/analysispreservation.cern.ch/notifications>`_
 and `become part of the team
 <https://github.com/orgs/cernanalysispreservation/teams>`_.
 
@@ -30,13 +30,13 @@ We follow a typical `GitHub flow
 2. Start a new topical branch for any contribution. Give it a
    descriptive name, say ``fix-CMS-schema-mappings``.
 3. Create logically separate commits for logically separate things
-   
+
    Remember, it is a lot easier to squash commits into one than it is
    to break them apart.
    If you are unsure what to do, mind the following based on the
-   `official Invenio documentation 
+   `official Invenio documentation
    <https://invenio.readthedocs.io/en/latest/technology/git.html#r1-remarks-on-commit-history>`_:
-   
+
    Split the commit
      * if the same commit addresses more than one logically separate
        problem
@@ -56,7 +56,7 @@ We follow a typical `GitHub flow
    the respective issue.
 5. Test your branch on a local site and check the conformity of your
    commit messages with kwalitee, see the section on
-   `Formating Commit Messages`_. You can also check out `this blog post 
+   `Formating Commit Messages`_. You can also check out `this blog post
    <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_
    on commit messages.
 7. If everything works as expected, issue a pull request.
@@ -90,7 +90,7 @@ The format required by kwalitee follows the structure indicated below:
     Signed-off-by YOURSELF
 
 ``KEYWORD`` needs to be one of
-`these <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/blob/c4446015db6598a310b874371c8f5c62ba6f52ee/.kwalitee.yml>`_,
+`these <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/c4446015db6598a310b874371c8f5c62ba6f52ee/.kwalitee.yml>`_,
 according to the type of change that you're introducing.
 
 To create the ``Signed-off-by`` with your name and email as configured
@@ -106,5 +106,5 @@ Chatroom
 ========
 
 Our chatroom is on `gitter
-<https://gitter.im/cernanalysispreservation/analysis-preservation.cern.ch>`_,
+<https://gitter.im/cernanalysispreservation/analysispreservation.cern.ch>`_,
 it's open to everyone so feel free to join the conversation.

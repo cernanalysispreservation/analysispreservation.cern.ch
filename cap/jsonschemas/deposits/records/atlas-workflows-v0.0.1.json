@@ -4,13 +4,13 @@
     "type": "object",
     "allOf": [
         {
-            "$ref": "https://analysis-preservation.cern.ch/app/schemas/deposits/common/deposit-v1.0.0.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/deposit-v1.0.0.json"
         },
         {
-            "$ref": "https://analysis-preservation.cern.ch/app/schemas/deposits/records/ATLASWorkflows_no_circ_refs-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/records/ATLASWorkflows_no_circ_refs-v0.0.1.json"
         },
         {
-            "$ref": "https://analysis-preservation.cern.ch/app/schemas/deposits/common/file-v1.0.0.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-v1.0.0.json"
         }
     ]
 }

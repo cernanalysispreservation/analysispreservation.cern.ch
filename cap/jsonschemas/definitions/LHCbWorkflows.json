@@ -11,7 +11,7 @@
 			},
 			"workflow": {
 				"oneOf":[{
-					"$ref": "https://analysis-preservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"
+					"$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"
 				}]
 			}
 		}

@@ -26,7 +26,7 @@
             "key": "workflows[].workflow",
             "condition": "model['workflows'][arrayIndices[0]]['selectSubschema'] == 0",
             "type": "fieldset",
-            "items": {"$ref": "https://analysis-preservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"}
         }
     ]
 }

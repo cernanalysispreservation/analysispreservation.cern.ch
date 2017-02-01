@@ -18,7 +18,7 @@ Second, clone the repository (or your own fork) if you have not done so already:
 
 .. code-block:: console
 
-    git clone https://github.com/cernanalysispreservation/analysis-preservation.cern.ch.git cap
+    git clone https://github.com/cernanalysispreservation/analysispreservation.cern.ch.git cap
 
 Third, create the virtual environment:
 

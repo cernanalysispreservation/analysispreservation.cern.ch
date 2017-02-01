@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -42,7 +42,7 @@ print(PROJECT_BASE)
 print(JSONSCHEMAS_DIR)
 print("-----------------------")
 
-BASE_URL = "https://analysis-preservation.cern.ch"
+BASE_URL = "https://analysispreservation.cern.ch"
 UPDATETO_URL = "https://localhost:5000"
 
 
