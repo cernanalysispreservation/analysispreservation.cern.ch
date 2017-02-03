@@ -49,7 +49,8 @@ from jsonresolver.contrib.jsonref import json_loader_factory
 
 from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
-                                             UpdateDepositPermission)
+                                             UpdateDepositPermission,
+                                             DeleteDepositPermission)
 from cap.modules.records.search import CapRecordSearch
 
 
@@ -190,7 +191,7 @@ RECORDS_REST_FACETS = {
     },
 }
 
-#RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS) 
+# RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
 
 #: Endpoints for displaying records.
 RECORDS_UI_ENDPOINTS = dict(
@@ -282,7 +283,7 @@ CAP_COLLAB_PAGES = {
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = '/api/deposits/'
 
-#: Templates 
+#: Templates
 SEARCH_UI_SEARCH_TEMPLATE = "cap_search_ui/search.html"
 SEARCH_UI_JSTEMPLATE_RESULTS = 'templates/cap_search_ui/results.html'
 #SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
@@ -373,7 +374,7 @@ SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
 # Ana's database
 ANA_LHCB_DATABASE_URL = 'http://datadependency.cern.ch'
 LHCB_GETCOLLISIONDATA_URL = '{0}/{1}?{2}='.format(ANA_LHCB_DATABASE_URL,
-                                             'getRecoStripSoft', 'propass')
+                                                  'getRecoStripSoft', 'propass')
 
 # Deposit
 # ============
@@ -494,7 +495,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         lambda record: UpdateDepositPermission(record).can(),
         write_scope.id),
     # TODO update delete permission when 'discard'/'delete' is ready
-    'delete_permission_factory_imp': deny_all,
+    'delete_permission_factory_imp': allow_all,
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
 DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
