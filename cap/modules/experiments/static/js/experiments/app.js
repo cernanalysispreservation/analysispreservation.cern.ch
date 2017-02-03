@@ -28,20 +28,11 @@
 // CAP app Deposit Controller
 
 var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, contentBarTabs) {
-  var location_url = $location.protocol() + "://" + $location.host() + ":" + $location.port();
-
   $scope.name = 'DepositController';
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
   $scope.contentBarTabs = contentBarTabs;
   $scope.mi = deposit.meta_info;
-
-  if (deposit.meta_info.schema.indexOf(location_url) > -1) {
-    $scope.location_url = "";
-  }
-  else {
-    $scope.location_url = location_url;
-  }
 
   $scope.initDeposit = function() {
     $scope.progress = {};

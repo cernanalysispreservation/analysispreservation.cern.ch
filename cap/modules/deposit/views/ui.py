@@ -27,7 +27,8 @@
 from ..api import CAPDeposit
 from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, jsonify, render_template, url_for
+from flask import Blueprint, abort, current_app, jsonify, render_template, \
+    request, url_for
 from flask.views import View
 from flask_security import login_required
 
@@ -204,6 +205,8 @@ class NewItemView(View):
                 "schema_form": self.schema_form,
             }
 
+            _url_root = request.url_root
+            self.schema = _url_root+self.schema
             deposit["meta_info"]["schema"] = self.schema
             deposit["meta_info"]["schema_form"] = self.schema_form
             return jsonify(deposit)

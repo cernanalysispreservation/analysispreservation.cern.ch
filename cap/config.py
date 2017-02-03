@@ -393,7 +393,7 @@ DEPOSIT_FILES_API = '/api/files'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
-        "schema": "/app/schemas/deposits/records/lhcb-v1.0.0.json",
+        "schema": "schemas/deposits/records/lhcb-v1.0.0.json",
         "schema_form": "/app/schemas/options/deposits/records/lhcb-v1.0.0.json",
         "name": "LHCb Analysis",
         "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
@@ -406,7 +406,7 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "cms-analysis": {
-        "schema": "/app/schemas/deposits/records/cms-analysis-v1.0.0.json",
+        "schema": "schemas/deposits/records/cms-analysis-v1.0.0.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v1.0.0.json",
         "name": "CMS Analysis",
         "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
@@ -419,7 +419,7 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "cms-questionnaire": {
-        "schema": "/app/schemas/deposits/records/cms-questionnaire-v1.0.0.json",
+        "schema": "schemas/deposits/records/cms-questionnaire-v1.0.0.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v1.0.0.json",
         "name": "CMS Questionnaire",
         "description": "Create a CMS Questionnaire",
@@ -432,7 +432,7 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "atlas-workflows": {
-        "schema": "/app/schemas/deposits/records/atlas-workflows-v0.0.1.json",
+        "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
         "description": "Create an ATLAS Workflow",
@@ -445,7 +445,7 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': allow_all,
     },
     "atlas-analysis": {
-        "schema": "/app/schemas/deposits/records/atlas-analysis-v1.0.0.json",
+        "schema": "schemas/deposits/records/atlas-analysis-v1.0.0.json",
         "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v1.0.0.json",
         "name": "ATLAS Analysis",
         "description": "Create an ATLAS Analysis",

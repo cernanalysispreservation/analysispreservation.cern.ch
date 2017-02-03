@@ -172,8 +172,7 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
             }
         }
 
-        _meta_info['schema'] = m.get(
-            '$schema', "").replace('http://', 'https://')
+        _meta_info['schema'] = m.get('$schema', "")
         _meta_info['schema_form'] = _meta_info['schema'].replace(
             '/schemas/', '/schemas/options/')
 
