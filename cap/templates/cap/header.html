@@ -50,7 +50,7 @@
             <li class="header visible-lg-block" ng-repeat="experiment in currentUser.collaborations">
               <a  ng-if="experiment" href="/app/experiment/set/{{experiment}}" target="_self">
                 <i class="fa">
-                  <img width="20px" height="20px" src="/static/img/{{experiment}}.svg"/>
+                  <img width="20px" height="20px" ng-src="/static/img/{{experiment}}.svg"/>
                 </i>
                 {{experiment}}
               </a>
