@@ -3,7 +3,7 @@ Status Report
 
 .. note:: This page will be updated as development progresses. If you have any questions or something appears out of date please feel free to :doc:`contact us <support>`.
 
-Development wraps around the three pillars identified with the help of CERN physicists in the `5th CAP meeting <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/wiki/Fifth-CAP-meeting>`_:
+Development wraps around the `three pillars <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/wiki/Overview>`_ identified with the help of CERN physicists in the `5th CAP meeting <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/wiki/Fifth-CAP-meeting>`_:
 
 - `Describe`_
 - `Capture`_
@@ -16,7 +16,7 @@ Describe
 
 Experiment schemas are used to describe the most important features and data for an analysis. They will be accessible via web forms and an API. Thus, this pillar includes everything related to the *schemas*, *search*, *user interface* and *API*.
 
-**Schemas - work in progress**
+**Schema - work in progress**
 	**ALICE - information required**
 		Pending, as no schema or information for creating a schema has been provided yet.
 	**ATLAS - untested**
@@ -39,34 +39,37 @@ Capture
 
 Autocompletion, suggestion of content and automatic filling in of information will be handled by this pillar as well as save storage of information and data.
 
-**ALICE - information required**
-	Pending, as no information has been provided yet.
-**ATLAS - access to databases required**
-	Access to databases is not available to us yet, no connection possible.
+.. todo::
+	Add status update as soon as confirmed.
 
-	- Glance - no access
-	- AMI - no access
+.. **ALICE - information required**
+..	Pending, as no information has been provided yet.
+.. **ATLAS - access to databases required**
+..	Access to databases is not available to us yet, no connection possible.
 
-**CMS - access lost, connections not established**
-	Access to databases was lost due to API changes, more information is required on what else is needed or can be captured.
+..	- Glance - no access
+..	- AMI - no access
 
-	- CADI - waiting for reimplementation
-	- DAS - reconnection is work in progress
-	- more - information required
+.. **CMS - access lost, connections not established**
+..	Access to databases was lost due to API changes, more information is required on what else is needed or can be captured.
 
-**LHCb - mostly connected**
-	A connection to most databases is established.
+..	- CADI - waiting for reimplementation
+..	- DAS - reconnection is work in progress
+..	- more - information required
 
-	- Bookkeeping (BK) - no connection yet, ...
-	- Working Groups (WG) - connected
-	- Publications - connected
-	- Anna's DB - connected
+.. **LHCb - mostly connected**
+..	A connection to most databases is established.
 
-**Data upload - almost ready**
-	Uploading and saving files and data will be possible soon. Currently, last issues are resolved.
+..	- Bookkeeping (BK) - no connection yet, ...
+..	- Working Groups (WG) - connected
+..	- Publications - connected
+..	- Anna's DB - connected
 
-**Repository checkout - future work**
-	Checking out the required state of a repository that is linked to in the analysis information is important for preservation. It will be a future task.
+.. **Data upload - almost ready**
+..	Uploading and saving files and data will be possible soon. Currently, last issues are resolved.
+
+.. **Repository checkout - future work**
+..	Checking out the required state of a repository that is linked to in the analysis information is important for preservation. It will be a future task.
 
 Rerun
 -----
@@ -76,7 +79,7 @@ Rerunning an analysis with REANA and without interfering in the way the analysis
 **ALICE - information required**
 	Pending, as no information has been provided yet.
 **ATLAS - examples refined for real analyses**
-	A workflow schema exists and has already been refined for a real analysis. More examples are required.
+	Initiated by RECAST, a workflow schema exists and has already been refined for a real analysis. More examples are required.
 **CMS - example workflow in development**
 	Creating a first workflow schema for an analysis is currently work in progress.
 **LHCb - examples exist for real analyses**
