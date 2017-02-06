@@ -10,6 +10,7 @@ Reference Guide
 	:hidden:
 
 	reference-guide/glossary
+	reference-guide/api
 
 .. Publications
 .. ------------

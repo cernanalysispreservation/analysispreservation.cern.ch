@@ -8,3 +8,4 @@ This section will provide you with a wider background knowledge about CERN Analy
 
     overview/introduction
     overview/project
+    overview/related-projects
