@@ -404,7 +404,7 @@ DEPOSIT_GROUPS = {
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
-        'delete_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
     },
     "cms-analysis": {
         "schema": "schemas/deposits/records/cms-analysis-v1.0.0.json",
@@ -417,7 +417,7 @@ DEPOSIT_GROUPS = {
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'delete_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
     },
     "cms-questionnaire": {
         "schema": "schemas/deposits/records/cms-questionnaire-v1.0.0.json",
@@ -430,7 +430,7 @@ DEPOSIT_GROUPS = {
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'delete_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
     },
     "atlas-workflows": {
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
@@ -443,7 +443,7 @@ DEPOSIT_GROUPS = {
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'delete_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
     },
     "atlas-analysis": {
         "schema": "schemas/deposits/records/atlas-analysis-v1.0.0.json",
@@ -456,7 +456,7 @@ DEPOSIT_GROUPS = {
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'delete_permission_factory_imp': allow_all,
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
     }
 }
 
@@ -495,7 +495,9 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         lambda record: UpdateDepositPermission(record).can(),
         write_scope.id),
     # TODO update delete permission when 'discard'/'delete' is ready
-    'delete_permission_factory_imp': allow_all,
+    'delete_permission_factory_imp': check_oauth2_scope(
+        lambda record: DeleteDepositPermission(record).can(),
+        write_scope.id),
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
 DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"

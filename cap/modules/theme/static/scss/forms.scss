@@ -44,6 +44,7 @@
   // border:none;
 }
 
+/*
 .cap-fixed-height-col{
   // TOFIX: calc() values and offset height should be calculated by components
   // heigh (box-height, buttons-height, etc)
@@ -53,7 +54,7 @@
   overflow-y: scroll;
   overflow-x: hidden;
 }
-
+*/
 
 .panel-default>.panel-heading {
   background-color: #eff6f9;;
@@ -85,8 +86,8 @@
 
 .search-fields .fa-search{
   position: absolute;
-  top: 30px;
-  left: 17px;
+  top: 35px;
+  left: 24px;
 }
 
 #tabarray-nav {
@@ -255,6 +256,10 @@
   background-color: $text-white;
 }
 
+#search-bar-fixed-column{
+  margin-top: 7%;
+}
+
 #no-results {
   margin-left: 3%;
 }
@@ -280,7 +285,7 @@ $cap-deposit-sidebar-width: 300px;
 
 
   .panel-heading {
-    height: $sidebar-navigation-height;
+    //height: $sidebar-navigation-height;
     // z-index: 1;
     position: relative;
   }
@@ -355,10 +360,10 @@ $cap-deposit-sidebar-width: 300px;
 
 #cap-deposit-navigation {
   height: 100%;
-  top: 2*$sidebar-navigation-height;
+  //top: 2*$sidebar-navigation-height;
   // height: 90%;
   position: absolute;
-  width: 100%;
+  //width: 100%;
   overflow: scroll;
   overflow-x: hidden;
 
@@ -555,4 +560,10 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   border-radius: 0;
   color: #fff;
   background-color: $light-blue-theme-color;
+}
+
+#custom-divider {
+  border:1px solid #3b97d3; 
+  margin-left: -11px; 
+  width: 107%;
 }
