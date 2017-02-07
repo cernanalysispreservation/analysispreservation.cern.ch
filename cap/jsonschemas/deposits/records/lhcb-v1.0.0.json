@@ -162,7 +162,7 @@
                 "type": "array"
               }
             },
-            "title": "Input Data",
+            "title": "Input data",
             "type": "object"
           },
           "output_data": {
@@ -208,6 +208,10 @@
       "properties": {
         "analysis_name": {
           "title": "Analysis Name",
+          "type": "string"
+        },
+        "measurement": {
+          "title": "Measurement",
           "type": "string"
         },
         "egroup": {
@@ -301,13 +305,13 @@
           "title": "Code",
           "type": "object"
         },
-        "input_data": {
+        "production_info": {
           "properties": {
             "data": {
               "items": {
                 "properties": {
                   "location": {
-                    "title": "Sample",
+                    "title": "Bookkeeping path",
                     "type": "string"
                   },
                   "processing_pass": {
@@ -342,6 +346,18 @@
                     "title": "Stripping software",
                     "type": "object"
                   },
+                  "trigger": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "title": "Trigger",
+                    "type": "array"
+                  },
                   "year": {
                     "title": "Year",
                     "type": "string"
@@ -370,7 +386,7 @@
                     "type": "string"
                   },
                   "location": {
-                    "title": "Sample",
+                    "title": "Bookkeeping path",
                     "type": "string"
                   },
                   "mc_production": {
@@ -405,6 +421,18 @@
                     "title": "Stripping software",
                     "type": "object"
                   },
+                  "trigger": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "title": "Trigger",
+                    "type": "array"
+                  },
                   "used_tools": {
                     "title": "Used Tools",
                     "type": "string"
@@ -416,96 +444,11 @@
               "type": "array"
             }
           },
-          "title": "Input Data",
+          "title": "Production information",
           "type": "object"
-        },
-        "output_data": {
-          "properties": {
-            "data": {
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "title": "Collision Data",
-              "type": "array"
-            },
-            "mc_data": {
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "title": "MC Data",
-              "type": "array"
-            }
-          },
-          "title": "Output Data",
-          "type": "object"
-        },
-        "stripping_line": {
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              }
-            }
-          },
-          "title": "Stripping Line",
-          "type": "array"
-        },
-        "trigger": {
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              }
-            }
-          },
-          "title": "Trigger",
-          "type": "array"
         }
       },
       "title": "DST selection",
-      "type": "object"
-    },
-    "extra_info": {
-      "id": "extra_info",
-      "description": "Please provide any extra information relevant to Analysis here",
-      "properties": {
-        "analysis_number": {
-          "title": "Analysis note (ANA) number",
-          "type": "string"
-        },
-        "arxiv": {
-          "title": "arXiv ID",
-          "type": "string"
-        },
-        "conf_report": {
-          "title": "Conference Report (CONF)",
-          "type": "string"
-        },
-        "public_paper": {
-          "title": "Public Paper",
-          "type": "string"
-        },
-        "twiki": {
-          "title": "tWiki page",
-          "type": "string"
-        }
-      },
-      "required": [
-        "analysis_number"
-      ],
-      "title": "Extra Information",
       "type": "object"
     },
     "additional_resources": {
@@ -563,6 +506,26 @@
           "id": "publications",
           "items": {
             "properties": {
+              "analysis_number": {
+                "title": "Analysis note (ANA) number",
+                "type": "string"
+              },
+              "arxiv": {
+                "title": "arXiv ID",
+                "type": "string"
+              },
+              "conf_report": {
+                "title": "Conference Report (CONF)",
+                "type": "string"
+              },
+              "public_paper": {
+                "title": "Public Paper",
+                "type": "string"
+              },
+              "twiki": {
+                "title": "tWiki page",
+                "type": "string"
+              },
               "reviewegroup": {
                 "title": "Review Group",
                 "type": "string"
