@@ -52,7 +52,7 @@ pushmenu.directive('capPushMenu', [
           return options;
         };
       }],
-      templateUrl: '/static/templates/experiments/pushmenu/MainMenu.html',
+      templateUrl: '/static/templates/cap/pushmenu/MainMenu.html',
       restrict: 'E',
       replace: true
     };
@@ -199,7 +199,7 @@ pushmenu.directive('capSubmenu', [
           };
         })(this));
       },
-      templateUrl: '/static/templates/experiments/pushmenu/SubMenu.html',
+      templateUrl: '/static/templates/cap/pushmenu/SubMenu.html',
       require: '^capPushMenu',
       restrict: 'EA',
       replace: true

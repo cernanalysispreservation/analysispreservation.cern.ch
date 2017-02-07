@@ -28,7 +28,7 @@ from flask_assets import Bundle
 from invenio_assets import NpmBundle
 
 
-experiments_js = NpmBundle(
+app_js = NpmBundle(
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
     "node_modules/angular-media-queries/match-media.js",
     "node_modules/angular-animate/angular-animate.js",
@@ -40,21 +40,24 @@ experiments_js = NpmBundle(
     'node_modules/angular-hotkeys/build/hotkeys.js',
     'node_modules/invenio-search-js/dist/invenio-search-js.js',
     'node_modules/invenio-records-js/dist/invenio-records-js.js',
-    "js/cap/cap.pushmenu.components.js",
-    "js/cap/cap.pushmenu.js",
-    "js/cap/cap.search.js",
-    "js/cap/cap.records.js",
-    "js/cap/cap.services.js",
-    "js/cap/cap.shortcuts.js",
-    "js/cap/cap.directives.js",
-    "js/cap/cap.factories.js",
     "js/cap/cap.app.js",
-    "js/cap/cap.controllers.js",
+    "js/cap/directives/cap.pushmenu.components.js",
+    "js/cap/directives/cap.pushmenu.js",
+    "js/cap/services/capUserClient.js",
+    "js/cap/services/capRecordsClient.js",
+    "js/cap/cap.shortcuts.js",
+    "js/cap/factories/capFocus.js",
+    "js/cap/controllers/capCtrl.js",
+    "js/cap/controllers/capDepositCtrl.js",
+    "js/cap/controllers/capFormAutofillCtrl.js",
+    "js/cap/controllers/capWGCtrl.js",
+    "js/cap/controllers/capRecordCtrl.js",
+    "js/cap/directives/capResults.js",
+    "js/cap/directives/capEventFocus.js",
     "js/cap/cap.config.js",
-    "js/experiments/app.js",
     "js/cap/components/contentBar.js",
     "js/cap/cap.main.js",
-    output="gen/cap.experiments.%(version)s.js",
+    output="gen/cap.app.%(version)s.js",
     npm={
         "angular": "~1.5",
         "angular-ui-bootstrap": "~2.2.0",
@@ -67,14 +70,15 @@ experiments_js = NpmBundle(
     }
 )
 
-experiments_css = NpmBundle(
+app_css = NpmBundle(
     Bundle(
+        'scss/cap.scss',
         'node_modules/angular-hotkeys/build/hotkeys.css',
         'node_modules/jsoneditor/dist/jsoneditor.css',
         "scss/pushmenu.scss",
         filters='node-scss, cleancss',
     ),
-    output='gen/cap.experiments.%(version)s.css',
+    output='gen/cap.app.%(version)s.css',
     npm={
         "bootstrap-sass": "~3.3.5",
         "font-awesome": "~4.4.0",

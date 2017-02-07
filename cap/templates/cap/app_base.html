@@ -2,8 +2,7 @@
 
 {% block css %}
     {{ super() }}
-    {% assets "cap_theme_front_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-    {% assets "cap_experiments_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
+    {% assets "cap_app_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
     {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
 {% endblock css %}
 
@@ -27,5 +26,5 @@
     {% assets "cap_forms_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
     {{ super() }}
 
-    {% assets "cap_experiments_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
+    {% assets "cap_app_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
 {% endblock %}

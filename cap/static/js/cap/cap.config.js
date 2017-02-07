@@ -131,8 +131,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         }
       },
       resolve: {
-        record: function(capLocalClient, $stateParams){
-          return capLocalClient
+        record: function(capRecordsClient, $stateParams){
+          return capRecordsClient
                   .get_record($stateParams.recid);
         },
         contentBarTabs: function($stateParams){
@@ -231,8 +231,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         }
       },
       resolve: {
-        deposit: function(capLocalClient, $stateParams){
-          return capLocalClient
+        deposit: function(capRecordsClient, $stateParams){
+          return capRecordsClient
                   .get_deposit($stateParams.depid);
         },
         contentBarTabs: function($stateParams){
@@ -320,8 +320,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         }
       },
       resolve: {
-        deposit: function(capLocalClient, $stateParams){
-          return capLocalClient
+        deposit: function(capRecordsClient, $stateParams){
+          return capRecordsClient
                   .get_new_deposit($stateParams.deposit_group);
         },
         contentBarTabs: function($stateParams){

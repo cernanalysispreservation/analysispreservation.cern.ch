@@ -79,8 +79,9 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
-    'invenio-access>=1.0.0a10',
+    'invenio-access>=1.0.0a11',
     'invenio-accounts>=1.0.0b1',
+    'invenio-accounts-rest>=1.0.0a1',
     'invenio-assets>=1.0.0b4',
     'invenio-base>=1.0.0a14',
     'invenio-celery>=1.0.0b1',
@@ -145,7 +146,8 @@ setup(
         'invenio_base.blueprints': [
             'cap = cap.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
-            'cap_experiments = cap.modules.experiments.views.rest:experiments_bp',
+            'cap_experiments = '
+            'cap.modules.experiments.views.rest:experiments_bp',
             'cap_csm = cap.modules.experiments.views.cms:cms_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
@@ -159,7 +161,6 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_fixtures = cap.modules.fixtures:CAPFixtures',
-            'cap_records = cap.modules.records.ext:Records',
         ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
@@ -167,11 +168,8 @@ setup(
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
         ],
         'invenio_assets.bundles': [
-            'cap_theme_css = cap.modules.theme.bundles:css',
-            'cap_experiments_js = '
-            'cap.modules.experiments.bundles:experiments_js',
-            'cap_experiments_css = '
-            'cap.modules.experiments.bundles:experiments_css',
+            'cap_app_js = cap.bundles:app_js',
+            'cap_app_css = cap.bundles:app_css',
             'cap_forms_css = cap.modules.deposit.bundles:forms_css',
             'cap_forms_js = cap.modules.deposit.bundles:forms_js',
         ],

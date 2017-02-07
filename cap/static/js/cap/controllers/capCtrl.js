@@ -3,11 +3,9 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, $state, hotkeys, screenSize) {
+var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient, capUserClient, $state, hotkeys, screenSize) {
   $scope.$location = $location;
-  //Variables for search filter fields
-  $scope.hello = 'CERN Analysis Preservation experiments';
-  $scope.notification = 'Welcome to CERN Analysis Preservation experiments';
+
   $scope.init = function(){
     // Request user info to get application needed user metadata
     initAppWithUser();
@@ -79,7 +77,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
   };
 
   var initAppWithUser = function(){
-    capLocalClient.get_user()
+    capUserClient.get_user()
       .then(function(response){
 
         var user = response.data || false;
@@ -90,7 +88,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
         initCapGlobalShortcuts(hotkeys, $scope, $state);
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-          console.log(toState);
           $scope.currentState = toState.name;
 
           var requireLogin = false;
@@ -147,7 +144,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
      };
 
   var get_experiment_menu = function(){
-      capLocalClient.get_experiment_menu()
+      capUserClient.get_experiment_menu()
         .then(function(response) {
           var _menu = [{
             'name': 'Home',
@@ -161,7 +158,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capLocalClient, 
   };
 
   $scope.get_experiment_records= function(){
-    capLocalClient.get_experiment_records(exp = $scope.exp, limit=30)
+    capRecordsClient.get_experiment_records(exp = $scope.exp, limit=30)
       .then(function(response) {
         $scope.experiments = response;
       }, function(error) {
@@ -190,7 +187,8 @@ capCtrl.$inject = [
   '$scope',
   '$window',
   '$location',
-  'capLocalClient',
+  'capRecordsClient',
+  'capUserClient',
   '$state',
   'hotkeys',
   'screenSize'

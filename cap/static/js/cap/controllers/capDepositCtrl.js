@@ -27,7 +27,7 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, contentBarTabs) {
+var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
   $scope.name = 'DepositController';
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
@@ -130,173 +130,10 @@ var capDepositCtrl = function($scope, $location,  capLocalClient, deposit, conte
 capDepositCtrl.$inject = [
   '$scope',
   '$location',
-  'capLocalClient',
   'deposit',
   'contentBarTabs'
 ];
 
-angular.module('cap.app')
+angular.module('cap.controllers')
   .controller('DepositController', capDepositCtrl);
 
-
-
-///////////////////////////////////////////
-///////////////////////////////////////////
-// CAP app WG Controller
-
-var capWGCtrl = function($scope, $location, $stateParams, capLocalClient) {
-  $scope.name = 'WGController';
-
-  $scope.wg_name = $stateParams.wg_name;
-};
-
-capWGCtrl.$inject = [
-  '$scope',
-  '$location',
-  '$stateParams',
-  'capLocalClient'
-];
-
-angular.module('cap.app')
-  .controller('WGController', capWGCtrl);
-
-
-
-///////////////////////////////////////////
-///////////////////////////////////////////
-// CAP app Records Controller
-
-var capRecordCtrl = function($scope, $location, capLocalClient, record, contentBarTabs) {
-  $scope.name = 'RecordController';
-
-  $scope.record = record;
-  $scope.contentBarTabs = contentBarTabs;
-};
-
-capRecordCtrl.$inject = [
-  '$scope',
-  '$location',
-  'capLocalClient',
-  'record',
-  'contentBarTabs'
-];
-
-angular.module('cap.app')
-  .controller('RecordController', capRecordCtrl);
-
-
-
-
-///////////////////////////////////////////
-///////////////////////////////////////////
-// CAP app Records Controller
-
-var capFormAutofillCtrl = function( $scope, $interpolate , $http){
-  $scope.getData = function(ref, val, model, form) {
-    var _params = {};
-    _params[ref.paramKey] = val;
-    return $http.get(ref.url, {
-      params: _params
-    }).then(function(response){
-      return response.data.results.map(function(item){
-        if (ref["displayKey"]){
-          var _item = item;
-          angular.forEach(ref["displayKey"], function(key){
-            _item = _item[key];
-          });
-          return _item
-        }
-        else{
-          return item;
-        }
-      });
-    });
-  };
-
-
-  // Needs to be specified with the following options to function
-  //
-  // "type": "cap:formAutofill",
-  // "isAsync": "true",
-  // "ref": {
-  //   "url": "//maps.googleapis.com/maps/api/geocode/json",
-  //   "paramKey": "address",
-  //   "displayKey": ["formatted_address"],
-  //   "map": [
-  //     {
-  //       "s": "place_id",
-  //       "t": ["basic_info", "abstract"]
-  //     },
-  //     {
-  //       "s": ["geometry", "location_type"],
-  //       "t": ["#", "conclusion"]
-  //     },
-  //     {
-  //       "s": ["geometry", "location", "lat"],
-  //       "t": ["#", "software", "name"]
-  //     }
-  //   ]
-  // }
-  $scope.onSelect = function(_item, _model, _label, model, form) {
-    var ref = form.ref;
-    var _params = {};
-    _params[ref.paramKey] = _item;
-
-    $http.get(ref.url, {
-      params: _params
-    }).then(function(response){
-      if( ref && ref.map){
-        angular.forEach(ref.map, function(mapping){
-          var model_ref = model;
-          var resp = {};
-
-          if (mapping["s"]){
-            if (angular.isArray(mapping["s"])){
-              resp = response.data;
-              angular.forEach(mapping["s"], function(key){
-                    resp = resp[key];
-              });
-            }
-            else{
-              // [TOFIX] for now gets only first result
-              if (response.data)
-                resp = response.data[mapping["s"]];
-            }
-          }
-
-          if (mapping["t"]){
-            if (mapping["t"][0] === "#"){
-              _mapping = form.key.slice(0,-1);
-              _mapping = _mapping.concat((mapping["t"]).slice(1));
-            }
-            else{
-              _mapping = mapping["t"];
-            }
-
-            var m_length = _mapping.length;
-            angular.forEach(_mapping, function(key, index){
-              if (model_ref[key]){
-                model_ref = model_ref[key];
-              }
-              else if(index+1 !== m_length){
-                model_ref = model_ref[key] = {};
-              }
-              else if(index+1 === m_length){
-                model_ref = model_ref[key] = resp;
-              }
-            });
-          }
-        });
-      };
-    });
-  };
-};
-
-capFormAutofillCtrl.$inject = [
-  '$scope',
-  '$interpolate',
-  '$http'
-];
-
-angular.module('cap.app')
-  .controller('formAutofillCtrl', capFormAutofillCtrl);

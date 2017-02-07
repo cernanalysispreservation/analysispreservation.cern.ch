@@ -29,9 +29,8 @@
  *
  */
 
-var app = angular.module("cap.directives");
-
-app.factory('focus', function($timeout, $window) {
+angular.module("cap.factories")
+  .factory('focus', function($timeout, $window) {
     return function(id) {
       // timeout makes sure that is invoked after any other event has been triggered.
       // e.g. click events that need to run before the focus or

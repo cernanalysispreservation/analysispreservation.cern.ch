@@ -23,44 +23,8 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-
-var capLocalClient = angular.module('cap.services', [])
-  .service('capLocalClient', ['$http', '$q', function($http, $q) {
-    return {
-      get_user: function() {
-        var deferred = $q.defer();
-        deferred.notify('started');
-        var url = '/app/access/user';
-        $http({
-          method: 'GET',
-          url: url
-        })
-          .then(function(response) {
-            deferred.notify('finished');
-            deferred.resolve(response);
-          }, function (response) {
-            deferred.notify('error');
-            deferred.reject(response);
-        });
-        return deferred.promise;
-      },
-      set_experiment: function(experiment) {
-        var deferred = $q.defer();
-        deferred.notify('started');
-        var url = '/app/experiment/set/'+experiment;
-        $http({
-          method: 'POST',
-          url: url
-        })
-          .then(function(response) {
-            deferred.notify('finished');
-            deferred.resolve(response);
-          }, function (response) {
-            deferred.notify('error');
-            deferred.reject(response);
-        });
-        return deferred.promise;
-      },
+var capRecordsClient = function($http, $q) {
+	return {
       get_record: function(pid_value) {
         var deferred = $q.defer();
         deferred.notify('started');
@@ -149,39 +113,16 @@ var capLocalClient = angular.module('cap.services', [])
             deferred.reject(response);
         });
         return deferred.promise;
-      },
-      get_experiment_menu: function(limit) {
-        var deferred = $q.defer();
-        deferred.notify('started');
-        var url = '/app/experiment/'+'CMS'+'/menu';
-        $http({
-          method: 'GET',
-          url: url
-        }).then(function(response) {
-            deferred.notify('finished');
-            deferred.resolve(response);
-          }, function (response) {
-            deferred.notify('error');
-            deferred.reject(response);
-        });
-        return deferred.promise;
-      },
-      get_deposit_index: function(limit) {
-        var deferred = $q.defer();
-        deferred.notify('started');
-        var url = '/deposit';
-        $http({
-          method: 'GET',
-          url: url
-        }).then(function(response) {
-            deferred.notify('finished');
-            deferred.resolve(response);
-          }, function (response) {
-            deferred.notify('error');
-            deferred.reject(response);
-        });
-        return deferred.promise;
       }
-    };
-  }]);
+  }
+};
+
+capRecordsClient.$inject = [
+  '$http',
+  '$q'
+];
+
+angular.module('cap.services')
+  .service('capRecordsClient', capRecordsClient);
+
 
