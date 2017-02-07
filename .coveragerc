@@ -8,7 +8,6 @@ omit = cap/wsgi.py
        cap/modules/access/__init__.py
        cap/modules/access/ext.py
        cap/modules/access/views.py
-       cap/modules/alpaca/*.py
        cap/modules/experiments/__init__.py
        cap/modules/experiments/bundles.py
        cap/modules/fixtures/ext.py

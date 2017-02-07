@@ -97,7 +97,7 @@ install_requires = [
     'invenio-previewer==1.0.0a6',
     'invenio-records[postgresql]>=1.0.0b1',
     'invenio-records-files>=1.0.0a8',
-    'invenio-records-rest>=1.0.0a16',
+    'invenio-records-rest>=1.0.0a17',
     'invenio-records-ui>=1.0.0a8',
     'invenio-rest[cors]>=1.0.0a10',
     'invenio-search-ui>=1.0.0a5',
@@ -150,14 +150,10 @@ setup(
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
             'cap_alice = cap.modules.experiments.views.alice:alice_bp',
-            'cap_alpaca = cap.modules.alpaca.views:blueprint',
             'cap_access = cap.modules.access.views:access_blueprint',
             'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
             'cap_search_ui = cap.modules.search_ui.views:blueprint',
         ],
-        # 'invenio_i18n.translations': [
-        #     'messages = cap',
-        # ],
         'invenio_base.apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
@@ -170,24 +166,8 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
         ],
-        'invenio_access.actions': [
-        ],
         'invenio_assets.bundles': [
             'cap_theme_css = cap.modules.theme.bundles:css',
-            'cap_theme_js = cap.modules.theme.bundles:js',
-            'cap_theme_front_css = cap.modules.theme.bundles:front_css',
-            'cap_theme_front_js = cap.modules.theme.bundles:front_js',
-            'cap_theme_records_js = cap.modules.theme.bundles:records',
-            'cap_cms_js = cap.modules.experiments.bundles:cms_js',
-            'cap_lhcb_js = cap.modules.experiments.bundles:lhcb_js',
-            'cap_atlas_js = cap.modules.experiments.bundles:atlas_js',
-            'cap_alice_js = cap.modules.experiments.bundles:alice_js',
-            'cap_alpaca_display_css = cap.modules.alpaca.bundles:display_css',
-            'cap_alpaca_display_js = cap.modules.alpaca.bundles:display_js',
-            'cap_alpaca_create_js = cap.modules.alpaca.bundles:create_js',
-            'cap_alpaca_edit_js = cap.modules.alpaca.bundles:edit_js',
-            'cap_alpaca_edit_css = cap.modules.alpaca.bundles:edit_css',
-            'cap_search_js = cap.modules.theme.bundles:search_js',
             'cap_experiments_js = '
             'cap.modules.experiments.bundles:experiments_js',
             'cap_experiments_css = '

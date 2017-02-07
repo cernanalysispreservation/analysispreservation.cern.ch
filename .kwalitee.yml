@@ -30,7 +30,6 @@ components:
 - LHCb
 - UI
 - access
-- alpaca
 - base
 - deposit
 - docker

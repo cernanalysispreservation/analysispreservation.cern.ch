@@ -29,17 +29,16 @@ from __future__ import absolute_import, print_function
 import codecs
 import json
 import re
+
 from urllib import unquote
 
 import pkg_resources
 import requests
+
 from flask import Blueprint, current_app, g, jsonify, render_template, request
 from flask_security import login_required
 from invenio_collections.models import Collection
 from py2neo import Graph
-
-# TOFIX: To be updated when records view_.py is removed
-from cap.modules.records.views_ import collection_records, get_collections_tree
 
 from ..permissions.lhcb import lhcb_permission
 
@@ -50,30 +49,6 @@ lhcb_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
-
-
-@lhcb_bp.before_request
-@login_required
-def restrict_bp_to_lhcb_members():
-    g.experiment = 'LHCb'
-
-
-@lhcb_bp.route('/')
-@lhcb_permission.require(403)
-def lhcb_landing():
-    """Basic LHCb landing view."""
-    collections = Collection.query.filter(
-        Collection.name.in_(['LHCb'])).one().drilldown_tree()
-    return render_template('lhcb/landing_page.html',
-                           record_types=get_collections_tree(collections))
-
-
-@lhcb_bp.route('/records')
-@lhcb_permission.require(403)
-def lhcb_records():
-    """Basic LHCb records view."""
-    return collection_records(collection=g.experiment)
-
 
 @lhcb_bp.route('/analyses/short', methods=['GET', 'POST'])
 @lhcb_permission.require(403)

@@ -31,11 +31,9 @@ import urllib
 import urllib2
 
 from flask import Blueprint, g, jsonify, render_template, request
+
 from flask_security import login_required
 from invenio_collections.models import Collection
-
-# TOFIX: To be updated when records view_.py is removed
-from cap.modules.records.views_ import collection_records, get_collections_tree
 
 from ..permissions.cms import cms_permission
 from ..scripts.cms import das
@@ -54,29 +52,6 @@ ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
 
 
-@cms_bp.before_request
-@login_required
-def restrict_bp_to_cms_members():
-    g.experiment = 'CMS'
-
-
-@cms_bp.route('/')
-@cms_permission.require(403)
-def cms_landing():
-    """Basic CMS landing view."""
-    collections = Collection.query.filter(
-        Collection.name.in_(['CMS'])).one().drilldown_tree()
-    return render_template('cms/landing_page.html',
-                           record_types=get_collections_tree(collections))
-
-
-@cms_bp.route('/records')
-@cms_permission.require(403)
-def cms_records():
-    """Basic CMS records view."""
-    return collection_records(collection=g.experiment)
-
-
 @cms_bp.route('/das', methods=['GET'])
 @cms_permission.require(403)
 def das_client():
@@ -88,7 +63,7 @@ def das_client():
 
     jsondict = das.get_data(
         query=query, host=host, idx=idx, limit=limit, debug=debug)
-        #query=query, host="https://cmsweb.cern.ch", idx=0, limit=10, debug=0)
+    # query=query, host="https://cmsweb.cern.ch", idx=0, limit=10, debug=0)
 
     newdict = {}
     if (jsondict["nresults"] == 1):

@@ -23,53 +23,44 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
-<div class="row" id="invenio-search">
-    <div class="col-md-12">
-        <invenio-search search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}">
-            <div id="invenio-search-bar">
-                <invenio-search-bar
-                        template="{{ url_for('static', filename='html/searchbar.html') }}"
-                        placeholder="{{ _('Search') }}">
-                </invenio-search-bar>
-                 <!-- ERROR -->
-                <invenio-search-error
-                        template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/error.html') }}"
-                        message="{{ _('Error') }}">
-                </invenio-search-error>
-                 <!-- LOADING -->
-                <div class="invenio-search-loading text-center">
-                    <invenio-search-loading
-                            template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/loading.html') }}"
-                            message="{{ _('Loading') }}">
-                    </invenio-search-loading>
-                </div>
-                 <!-- COUNT -->
-                <!--
-                <div class="invenio-search-count text-center">
-                   <invenio-search-count
-                            template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/count.html') }}">
-                    </invenio-search-count>
-                </div>
-                -->
-                <div class="col-md-3">
-                    <invenio-search-facets
-                            template="{{ url_for('static', filename='html/facets.html') }}"
-                    ></invenio-search-facets>
-                </div>
+<div id="invenio-search-bar" ng-show="currentUser">
+    <invenio-search search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}">
+        <invenio-search-bar
+                template="{{ url_for('static', filename='html/searchbar.html') }}"
+                placeholder="{{ _('Search') }}">
+        </invenio-search-bar>
+         <!-- ERROR -->
+        <invenio-search-error
+                template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/error.html') }}"
+                message="{{ _('Error') }}">
+        </invenio-search-error>
+         <!-- LOADING -->
+        <div class="invenio-search-loading text-center">
+            <invenio-search-loading
+                    template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/loading.html') }}"
+                    message="{{ _('Loading') }}">
+            </invenio-search-loading>
+        </div>
+         <!-- COUNT -->
+        <!--
+        <div class="invenio-search-count text-center">
+           <invenio-search-count
+                    template="{{ url_for('static', filename='node_modules/invenio-search-js/src/invenio-search-js/templates/count.html') }}">
+            </invenio-search-count>
+        </div>
+        -->
+        <!--div class="col-md-3">
+            <invenio-search-facets
+                    template="{{ url_for('static', filename='html/facets.html') }}"
+            ></invenio-search-facets>
+        </div-->
 
-                <div class="col-md-9">
-                    <!-- RESULTS -->
-                    <invenio-search-results
-                            template="{{ url_for('static', filename='html/results.html') }}">
-                    </invenio-search-results>
-                    <!-- PAGINATION -->
-                    <center>
-                        <invenio-search-pagination
-                                template="{{ url_for('static', filename='html/pagination.html') }}">
-                        </invenio-search-pagination>
-                    </center>
-                </div>
-            </div>
-        </invenio-search>
-    </div>
+        <div class="col-md-offset-2 col-md-9">
+            <!-- RESULTS -->
+            <invenio-search-results
+                    template="{{ url_for('static', filename='html/results.html') }}">
+            </invenio-search-results>
+        </div>
+    </invenio-search>
 </div>
+

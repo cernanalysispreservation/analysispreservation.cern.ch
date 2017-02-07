@@ -136,12 +136,6 @@ def CAP_EXPERIMENT_MENU(experiment):
 @experiments_bp.route('/<experiment>/menu')
 def experiment_menu(experiment):
     """Experiment menu."""
-    # _menu = {
-    #     'title': g.experiment,
-    #     'id': 'menuId',
-    #     'icon': 'fa fa-bars',
-    #     'items': CAP_EXPERIMENT_MENU,
-    # }
     return jsonify(CAP_EXPERIMENT_MENU(experiment))
 
 

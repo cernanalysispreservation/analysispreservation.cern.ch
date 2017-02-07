@@ -139,8 +139,6 @@ SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
 THEME_404_TEMPLATE = "cap_theme/404.html"
 #: Template for 500 page.
 THEME_500_TEMPLATE = "cap_theme/500.html"
-#: JavaScript file containing the require.js build configuration.
-REQUIREJS_CONFIG = 'js/cap-build.js'
 
 # Records
 # =======

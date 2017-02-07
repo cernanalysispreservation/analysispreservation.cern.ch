@@ -343,3 +343,32 @@ body::-webkit-scrollbar-thumb {
 .list-group-item-position {
   margin-top: 1%;
 }
+
+
+#frontpage {
+
+  #cern-strong-header {
+    color: $light-blue-theme-color;
+  }
+
+  &.custom-container {
+    margin: 2%;
+  }
+
+  .custom-col {
+    margin-top:3%;
+  }
+
+  .custom-header {
+    margin-top:13%;
+    color: black;
+  }
+
+  #logo-position {
+    margin-left: -3%;
+  }
+
+  .home-login-button .login-button {
+    margin-top:2%;
+  }
+}

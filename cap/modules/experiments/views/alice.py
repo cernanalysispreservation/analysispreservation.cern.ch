@@ -30,8 +30,6 @@ from flask import Blueprint, g, jsonify, render_template
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-# TOFIX: To be updated when records view_.py is removed
-from cap.modules.records.views_ import collection_records, get_collections_tree
 from ..permissions.alice import alice_permission
 
 alice_bp = Blueprint(
@@ -41,26 +39,3 @@ alice_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
-
-
-@alice_bp.before_request
-@login_required
-def restrict_bp_to_alice_members():
-    g.experiment = 'ALICE'
-
-
-@alice_bp.route('/')
-@alice_permission.require(403)
-def alice_landing():
-    """Basic ALICE landing view."""
-    collections = Collection.query.filter(
-        Collection.name.in_(['ALICE'])).one().drilldown_tree()
-    return render_template('alice/landing_page.html',
-                           record_types=get_collections_tree(collections))
-
-
-@alice_bp.route('/records')
-@alice_permission.require(403)
-def alice_records():
-    """Basic ALICE records view."""
-    return collection_records(collection=g.experiment)

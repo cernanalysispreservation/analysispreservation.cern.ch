@@ -30,10 +30,7 @@ from flask import Blueprint, g, jsonify, render_template
 from flask_security import login_required
 from invenio_collections.models import Collection
 
-# TOFIX: To be updated when records view_.py is removed
-from cap.modules.records.views_ import collection_records, get_collections_tree
 from ..permissions.atlas import atlas_permission
-
 
 atlas_bp = Blueprint(
     'cap_atlas',
@@ -42,26 +39,3 @@ atlas_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
-
-
-@atlas_bp.before_request
-@login_required
-def restrict_bp_to_atlas_members():
-    g.experiment = 'ATLAS'
-
-
-@atlas_bp.route('/')
-@atlas_permission.require(403)
-def atlas_landing():
-    """Basic ATLAS landing view."""
-    collections = Collection.query.filter(
-        Collection.name.in_(['ATLAS'])).one().drilldown_tree()
-    return render_template('atlas/landing_page.html',
-                           record_types=get_collections_tree(collections))
-
-
-@atlas_bp.route('/records')
-@atlas_permission.require(403)
-def atlas_records():
-    """Basic ATLAS records view."""
-    return collection_records(collection=g.experiment)
