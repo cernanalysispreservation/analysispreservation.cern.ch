@@ -42,7 +42,7 @@ def test_create_deposit_index(db, es):
                 'type': 'recid',
                 'value': '1'
             },
-            'id': 1
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
 
         }
     })

@@ -20,9 +20,6 @@
             {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
           </p>
       </div>
-      <small class="pull-right label label-default">
-        #{{ record.id }}
-      </small>
       <small class="pull-right label label-success type-of-analysis">
         {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
       </small>
@@ -48,9 +45,6 @@
             {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
           </p>
       </div>
-      <small class="pull-right label label-default">
-        #{{ record.id }}
-      </small>
       <small class="pull-right label label-success type-of-analysis">
         {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
       </small>

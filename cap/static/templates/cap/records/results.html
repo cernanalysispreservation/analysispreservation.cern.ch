@@ -20,7 +20,7 @@
           </p>
       </div>
       <small class="pull-right label label-default">
-        #{{ record.id }}
+        #{{ record.metadata._deposit.id }}
       </small>
       <small class="pull-right label label-success type-of-analysis">
         {{record.metadata.$schema.split('/').pop().replace('.json', '')}}

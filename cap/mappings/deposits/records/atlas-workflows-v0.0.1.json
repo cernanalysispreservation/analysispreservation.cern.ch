@@ -10,7 +10,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "integer",
+                      "type":"string",
                       "index": "not_analyzed"
                     },
                     "pid": {

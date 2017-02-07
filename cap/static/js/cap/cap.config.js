@@ -222,7 +222,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.deposit_item',
-      url: '/deposit/{depid:int}',
+      url: '/deposit/{depid}',
       abstract: true,
       views: {
         'content': {
@@ -238,13 +238,13 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         contentBarTabs: function($stateParams){
           return [{
             "title": "Overview",
-            "link": "app.deposit_item.overview({depid:"+$stateParams.depid+"})"
+            "link": "app.deposit_item.overview({depid:'"+$stateParams.depid+"'})"
             },{
             "title": "Files",
-            "link": "app.deposit_item.files({depid:"+$stateParams.depid+"})"
+            "link": "app.deposit_item.files({depid:'"+$stateParams.depid+"'})"
             },{
             "title": "Settings",
-            "link": "app.deposit_item.settings({depid:"+$stateParams.depid+"})"
+            "link": "app.deposit_item.settings({depid:'"+$stateParams.depid+"'})"
           }];
         }
       },

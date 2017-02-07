@@ -22,7 +22,7 @@
             },
             "id": {
                "name": "id",
-               "type": "integer"
+               "type":"string"
             },
             "owners": {
                "items": [

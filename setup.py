@@ -82,15 +82,15 @@ install_requires = [
     'invenio-access>=1.0.0a11',
     'invenio-accounts>=1.0.0b1',
     'invenio-accounts-rest>=1.0.0a1',
-    'invenio-assets>=1.0.0b4',
+    'invenio-assets>=1.0.0b6',
     'invenio-base>=1.0.0a14',
     'invenio-celery>=1.0.0b1',
     'invenio-collections>=1.0.0a3',
     'invenio-config>=1.0.0b1',
     'invenio-db[postgresql,versioning]>=1.0.0b3',
     'invenio-files-rest>=1.0.0a14',
-    'invenio-deposit>=1.0.0a7',
     'invenio-indexer>=1.0.0a9',
+    'invenio-deposit>=1.0.0a8',
     'invenio-jsonschemas>=1.0.0a3',
     'invenio-oauthclient>=1.0.0a11',
     'invenio-pages>=1.0.0a3',
@@ -102,7 +102,7 @@ install_requires = [
     'invenio-records-ui>=1.0.0a8',
     'invenio-rest[cors]>=1.0.0a10',
     'invenio-search-ui>=1.0.0a5',
-    'invenio-search>=1.0.0a8',
+    'invenio-search>=1.0.0a9',
     'invenio-theme>=1.0.0a14',
     'invenio-userprofiles>=1.0.0a8',
 ]
@@ -179,14 +179,14 @@ setup(
         'invenio_pidstore.minters': [
             'cap_record_minter = '
             'cap.modules.records.minters:cap_record_minter',
-            'cap_deposit_minter = '
-            'cap.modules.deposit.minters:cap_deposit_minter',
+            # 'cap_deposit_minter = '
+            # 'cap.modules.deposit.minters:cap_deposit_minter',
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
             'cap.modules.records.fetchers:cap_record_fetcher',
-            'cap_deposit_fetcher = '
-            'cap.modules.deposit.fetchers:cap_deposit_fetcher',
+            # 'cap_deposit_fetcher = '
+            # 'cap.modules.deposit.fetchers:cap_deposit_fetcher',
         ],
         'invenio_records.jsonresolver': [
             'cap = cap.modules.records.resolvers.cap',

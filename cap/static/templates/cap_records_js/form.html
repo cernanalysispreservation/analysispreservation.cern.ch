@@ -16,9 +16,18 @@
                       Save as draft
                   </button>
                 </li>
-                <li><button ng-disabled="recordsVM.invenioRecordsLoading || !recordsVM.invenioRecordsEndpoints.self" ng-hide="!recordsVM.invenioRecordsEndpoints.initialization || recordsVM.invenioRecordsModel['_deposit']['status'] == 'published'" class="btn delete-btn action-btn" ng-click="recordsVM.actionHandler(['self', 'DELETE'], '/deposit?status=draft')">Delete draft</button></li>
-                 <li ng-hide='recordsVM.invenioRecordsModel["_deposit"]["status"] == "published"'><button  ng-disabled="depositionForm.$invalid || depositionForm.$dirty || recordsVM.invenioRecordsLoading" class="btn save-publish-btn action-btn" ng-click="recordsVM.actionHandler(['publish', 'POST'], '/publications')">Share within collaboration</button></li>
-                 <li ng-hide='recordsVM.invenioRecordsAlert.data.metadata["_deposit"]["status"] == "draft" || recordsVM.invenioRecordsModel["_deposit"]["status"]== "draft"' class="save-as-draft"><button  ng-disabled="depositionForm.$invalid || depositionForm.$pristine || recordsVM.invenioRecordsLoading" class="btn edit-save-btn action-btn" ng-click="recordsVM.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">Edit & Save</button></li>
+                <li ng-hide="!recordsVM.invenioRecordsEndpoints.initialization ||recordsVM.invenioRecordsModel['_deposit']['status'] == 'published'">
+                  <button ng-disabled="recordsVM.invenioRecordsLoading || !recordsVM.invenioRecordsEndpoints.self"  class="btn delete-btn action-btn" ng-click="recordsVM.actionHandler(['self', 'DELETE'], '/deposit?status=draft')">Delete draft</button>
+                </li>
+                 <li ng-hide='recordsVM.invenioRecordsModel["_deposit"]["status"] == "published"'>
+                  <button  ng-disabled="depositionForm.$invalid || depositionForm.$dirty || recordsVM.invenioRecordsLoading" class="btn save-publish-btn action-btn" ng-click="recordsVM.actionHandler(['publish', 'POST'], '/deposit?status=published')">Share within collaboration</button>
+                </li>
+                <li ng-hide='recordsVM.invenioRecordsAlert.data.metadata["_deposit"]["status"] == "draft" || recordsVM.invenioRecordsModel["_deposit"]["status"]== "draft"' class="save-as-draft">
+                  <button  ng-disabled="depositionForm.$invalid || depositionForm.$pristine || recordsVM.invenioRecordsLoading" class="btn edit-save-btn action-btn" ng-click="recordsVM.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">Edit & Save</button>
+                </li>
+                <li ng-hide='recordsVM.invenioRecordsAlert.data.metadata["_deposit"]["status"] == "draft" || recordsVM.invenioRecordsModel["_deposit"]["status"]== "draft"' class="save-as-draft">
+                  <button class="btn save-publish-btn action-btn" ng-click="recordsVM.actionHandler(['clone', 'POST'], '/deposit?status=draft')">Clone analysis</button>
+                </li>
                </ul>
              </div>
              <div ng-show="!recordsVM.invenioRecordsEndpoints.self" class="save-as-draft">

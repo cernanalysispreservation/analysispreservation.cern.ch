@@ -8,7 +8,7 @@
             "name": "_deposit",
             "properties": {
                 "id": {
-                    "type": "integer",
+                    "type": "string",
                     "name": "id"
                 },
                 "pid": {

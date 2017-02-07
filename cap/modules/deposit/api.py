@@ -26,12 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app
+import copy
 
-from invenio_deposit.api import Deposit, preserve
+from flask import current_app
+from invenio_deposit.api import Deposit, index, preserve
+from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.models import Bucket, Location
 from invenio_records_files.models import RecordsBuckets
-
 from werkzeug.local import LocalProxy
 
 
@@ -115,3 +116,24 @@ class CAPDeposit(Deposit):
     #             raise  # TODO raise REST exception ...
 
     #     return super(CAPDeposit, self).publish(*args, **kwargs)
+
+    @index
+    @mark_as_action
+    def clone(self, pid=None, id_=None):
+        """Clone a deposit.
+
+        Adds snapshot of the files when deposit is cloned.
+        """
+        data = copy.deepcopy(self.dumps())
+        del data['_deposit']
+        deposit = super(CAPDeposit, self).create(data, id_=id_)
+        deposit['_deposit']['cloned_from'] = {
+            'type': pid.pid_type,
+            'value': pid.pid_value,
+            'revision_id': self.revision_id,
+        }
+        bucket = self.files.bucket.snapshot()
+        RecordsBuckets.create(record=deposit.model, bucket=bucket)
+        # optionally we might need to do: deposit.files.flush()
+        deposit.commit()
+        return deposit
