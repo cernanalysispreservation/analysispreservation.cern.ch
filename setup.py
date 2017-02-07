@@ -88,8 +88,8 @@ install_requires = [
     'invenio-config>=1.0.0b1',
     'invenio-db[postgresql,versioning]>=1.0.0b3',
     'invenio-files-rest>=1.0.0a14',
-    'invenio-deposit>=1.0.0a6',
-    'invenio-indexer>=1.0.0a8',
+    'invenio-deposit>=1.0.0a7',
+    'invenio-indexer>=1.0.0a9',
     'invenio-jsonschemas>=1.0.0a3',
     'invenio-oauthclient>=1.0.0a11',
     'invenio-pages>=1.0.0a3',
@@ -209,7 +209,7 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 or later'\
+        'License :: OSI Approved :: GNU General Public License v2 or later'
         '(GPLv2+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
