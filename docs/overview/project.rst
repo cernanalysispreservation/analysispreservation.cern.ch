@@ -23,7 +23,7 @@ This section will give you some background knowledge on how we save, describe an
 JSON Data Model and Metadata Schema
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The analysis information is modelled in the JSON format conforming to a specified JSON schema to ensure data is added in the structure and formatting predefined by collaboration physicists. If you want to know more about JSON, there is a tutorial on :doc:`JSON and JSON Schemas <../tutorials/json>`. The platform draws inspiration from the Open Archival Information System (OAIS) recommended practices to ensure long-term preservation of captured assets.
+The analysis information is modelled in the JSON format conforming to a specified JSON schema to ensure data is added in the structure and formatting predefined by collaboration physicists. If you want to know more about JSON, there is a tutorial on :doc:`JSON and JSON Schema <../tutorials/json>`. The platform draws inspiration from the Open Archival Information System (OAIS) recommended practices to ensure long-term preservation of captured assets.
 
 Each schema is directly provided or created with support by collaboration physicists and tested as well as revised several times to ensure that important information will be preserved. Throughout this process core components of an analysis are identified and structured in a comprehensive way. Each collaboration has its own unique schema to capture the workflow that fits their requirements and a flexible design of the schema allows each working group to tailor their input according to their specific requirements. This will allow the existence of a fast diversity of analyses.
 The flexibility provided allows to duplicate, delete, ignore and create content within the constraints of the schema some of which are conditional and will thus react to certain inputs in specific fields.
@@ -70,7 +70,7 @@ Due to the sensitive nature of research data and analysis information - especial
 
 When starting a new analysis, the creator of the analysis draft record will be the only one able to view and edit the record. He can grant read or edit rights to researchers in the analysis team or working group.
 
-As soon as the analysis is submitted, the analysis will be shared with the collaboration meaning its members will aquire rights to view the analysis. Editing rights will remain as they were for the draft.
+As soon as the analysis is submitted, the analysis will be shared with the collaboration meaning its members will acquire rights to view the analysis. Editing rights will remain as they were for the draft.
 A draft version can be submitted any time. There is no drawback in keeping a draft until the analysis is published other than that analysis content is hidden from members of your collaboration.
 
 .. note::
@@ -112,7 +112,7 @@ CAP can also be a source of reference in analysis meetings.
 4. Reproduce and Rerun
 ----------------------
 
-In CAP analyses information is preserved with the aim of reproducable research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST. For more on this please go to :doc:`related projects <related-projects>`.
+In CAP analyses information is preserved with the aim of reproducible research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST. For more on this please go to :doc:`related projects <related-projects>`.
 
 .. Analysis Environment Preservation
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

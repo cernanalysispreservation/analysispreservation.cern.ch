@@ -20,7 +20,7 @@ Taking Part
 
 .. If you agree with us on the above maybe you want to help us grow.
 
-Do you want to help us grow? We are always happy for contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
+Do you want to help us grow? We are always happy to receive contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
 
 In case you are unsure what to do, you can contact us :doc:`directly <support>`.
 
@@ -29,10 +29,10 @@ Issues
 
 If you find a bug or have a (feature) request, go ahead and add an issue for it or comment on an `existing issue <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/issues>`_ in case this has already been addressed!
 
-Pull requests
+Pull Requests
 ~~~~~~~~~~~~~
 
-If you want to contribute directly to the project (e.g. code, json workflow files, documentation), you are welcome to create a pull request for your changes. If you want to know how to write good commit messages that will help us (now) and you (in a few weeks) to understand what you did, you may want to check out `this <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
+If you want to contribute directly to the project (e.g. code, JSON workflow files, documentation), you are welcome to create a pull request for your changes. If you want to know how to write good commit messages that will help us (now) and you (in a few weeks) to understand what you did, you may want to check out `this <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
 
 Thank you for helping us helping you!
 

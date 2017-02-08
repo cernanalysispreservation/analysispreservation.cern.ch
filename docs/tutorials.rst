@@ -10,7 +10,7 @@ Tutorials
 
 	4. Rerun an analysis
 
-	5. JSON and JSON Schemas
+	5. JSON and JSON Schema
 
 
 .. toctree::

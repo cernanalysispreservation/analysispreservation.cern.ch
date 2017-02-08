@@ -16,7 +16,7 @@ Describe
 
 Experiment schemas are used to describe the most important features and data for an analysis. They will be accessible via web forms and an API. Thus, this pillar includes everything related to the *schemas*, *search*, *user interface* and *API*.
 
-**Schemas - work in progress**
+**Schema - work in progress**
 	**ALICE - information required**
 		Pending, as no schema or information for creating a schema has been provided yet.
 	**ATLAS - untested**
