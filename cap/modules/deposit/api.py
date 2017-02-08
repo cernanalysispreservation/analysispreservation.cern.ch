@@ -309,13 +309,14 @@ class CAPDeposit(Deposit):
 
         return self
 
-    def publish(self, *args, **kwargs):
-        """Simple file check before publishing."""
-        for file_ in self.files:
-            if file_.data['checksum'] is None:
-                raise MultipartMissingParts()
+    # @mark_as_action
+    # def publish(self, *args, **kwargs):
+    #     """Simple file check before publishing."""
+    #     for file_ in self.files:
+    #         if file_.data['checksum'] is None:
+    #             raise MultipartMissingParts()
 
-        return super(CAPDeposit, self).publish(*args, **kwargs)
+    #     return super(CAPDeposit, self).publish(*args, **kwargs)
 
     @index
     @mark_as_action

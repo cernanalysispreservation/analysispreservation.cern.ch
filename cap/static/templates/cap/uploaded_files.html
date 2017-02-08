@@ -1,0 +1,22 @@
+<div class="col-sm-12">
+  <div ng-show="files_results.contents.length > 0" class="panel panel-default cap-panel">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-6">
+          <p ng-show="files_results.contents.length > 0" class="text-muted">
+          </p>
+        </div>
+      </div>
+    </div>
+    <table class="table">
+      <tr>
+        <th>Filename</th>
+        <th>Size</th>
+      </tr>
+      <tr class="sel-file" ng-repeat="f in files_results.contents">
+        <td>{{ f.key }}</td>
+        <td>{{ f.size | bytesToHumanReadable }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

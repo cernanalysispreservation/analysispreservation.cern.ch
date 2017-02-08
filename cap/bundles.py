@@ -55,6 +55,7 @@ app_js = NpmBundle(
     "js/cap/controllers/capRecordCtrl.js",
     "js/cap/directives/capResults.js",
     "js/cap/directives/capEventFocus.js",
+    "js/cap/directives/capFiles.js",
     "js/cap/cap.config.js",
     "js/cap/components/contentBar.js",
     "js/cap/cap.main.js",
