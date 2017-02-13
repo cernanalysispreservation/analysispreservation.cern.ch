@@ -28,6 +28,8 @@
 from flask_principal import Permission
 from invenio_access.permissions import DynamicPermission
 
+from flask import current_app
+
 AllowAllPermission = type('Allow', (), {
     'can': lambda self: True,
     'allows': lambda *args: True,
@@ -132,3 +134,19 @@ class OrPermissions(PermissionSet):
             if permission.allows(identity):
                 return True
         return False
+
+
+def admin_permission_factory(admin_view):
+    """Default factory for creating a permission for an admin.
+    It tries to load a :class:`invenio_access.permissions.DynamicPermission`
+    instance if `invenio_access` is installed.
+    Otherwise, it loads a :class:`flask_principal.Permission` instance.
+    :param admin_view: Instance of administration view which is currently being
+        protected.
+    :returns: Permission instance.
+    """
+
+    admin_needs = set([g for g in
+                       current_app.config['SUPERUSER_EGROUPS']])
+
+    return DynamicPermission(*admin_needs)

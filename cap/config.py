@@ -294,6 +294,12 @@ SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
 
+
+# Admin
+# ========
+ADMIN_PERMISSION_FACTORY = 'cap.modules.access.permissions.admin_permission_factory'
+
+
 # Accounts
 # ========
 #: Login registration template.
