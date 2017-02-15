@@ -84,9 +84,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
 
         assignCurrentUser(user);
 
-        // Initialise shortcuts/hotkeys for quick navigation
-        initCapGlobalShortcuts(hotkeys, $scope, $state);
-
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
           $scope.currentState = toState.name;
 
@@ -116,17 +113,23 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
           $state.go('app');
         }
 
-        // If user current_experiment isn't set, take user
-        // to experiments page
+        // If user current_experiment isn't set,
+        // set the first one of the list
         if (user){
           if (user['current_experiment'] === ""){
-            $state.go('app.experiments');
+            if(user['collaborations'].length === 0) {
+              $state.go('app.experiments');
+            } else {
+              // Initialise shortcuts/hotkeys for quick navigation
+              initCapGlobalShortcuts(hotkeys, $scope, $state);
+              $scope.exp = user['collaborations'][0]
+            }
           }
           else {
             $scope.exp = user["current_experiment"];
           }
 
-          if($scope.exp !== ""){
+          if($scope.exp !== "" && user['collaborations'].length !== 0){
             $scope.menu = {
               'title': $scope.exp,
               'id': 'menuId',

@@ -28,7 +28,7 @@
 {% block navbar %}
 <div class="container-fluid cap-header navbar-fixed-top">
     <div class="pull-left">
-        <div id="cap-menu-toggle">
+        <div ng-if="exp" id="cap-menu-toggle">
           <a id="btn-append-to" class="btn" ng-click="menuToggle();">
             <span class="fa fa-bars"></span>
           </a>
@@ -41,7 +41,7 @@
         <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;right:300px;width:100px;pointer-events:none;">
         {% endblock %}
         {% raw %}
-        <div id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
+        <div ng-if="exp" id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
           <button id="cap-experiments-dropdown" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
             {{exp}}
             <span class="caret"></span>
@@ -69,7 +69,7 @@
         <div class="row">
             {%- block navbar_new_deposit %}
               {% raw %}
-              <div id="cap-user-deposit-menu">
+              <div ng-if="exp" id="cap-user-deposit-menu">
                   <a ui-sref="app.select_deposit_new" class="btn" id="header-upload">
                     <i class="fa fa-cloud-upload"></i>
                     Create

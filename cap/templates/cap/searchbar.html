@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #}
 
-<div id="invenio-search-bar" ng-show="currentUser">
+<div ng-if='exp' id="invenio-search-bar" ng-show="currentUser">
     <invenio-search search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}">
         <invenio-search-bar
                 template="{{ url_for('static', filename='html/searchbar.html') }}"
