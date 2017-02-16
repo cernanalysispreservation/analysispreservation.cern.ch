@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "title": {
+      "title": "Analysis Title",
+      "type": "string"
+    },
+    "main_analysis": {
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/main-analysis-v0.0.1.json"    
+    },
+    "mc_analysis": {
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/mc-analysis-v0.0.1.json"   
+    }  
+  }   
+}

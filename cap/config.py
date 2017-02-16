@@ -455,6 +455,19 @@ DEPOSIT_GROUPS = {
         'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+    },
+    "alice-analysis": {
+        "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
+        "name": "ALICE Analysis",
+        "description": "Create an ALICE Analysis",
+        "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "endpoint": "",
+        'create_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
+        'read_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
+        'update_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
+        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
     }
 }
 

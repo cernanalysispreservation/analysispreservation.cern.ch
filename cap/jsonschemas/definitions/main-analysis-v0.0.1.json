@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#", 
+  "title": "Main Analysis",
+  "type": "object",
+  "properties": {
+    "train_id": {
+      "title": "Train ID",
+      "type": "string"
+    },
+    "run_id": {
+      "title": "Run ID",
+      "type": "string"
+    },
+    "configuration_files": {
+      "title": "Configuration Files",
+      "type": "string"
+    },
+    "wagon_names": {
+      "title": "Wagon Names",
+      "type": "string"
+    },
+    "wagon_paths": {
+      "title": "Wagon Paths",
+      "type": "string"
+    },
+    "dataset": {
+      "title": "Dataset",
+      "type": "string"
+    },
+    "reference_production": {
+      "title": "Reference Production",
+      "type": "string"
+    },
+    "dataset_aod": {
+      "title": "Dataset AOD",
+      "type": "string"
+    },
+    "run_numbers": {
+      "type": "array",
+      "title": "Run Numbers",
+      "items": {
+        "number": {
+          "title": "Run Number",
+          "type": "string"
+        }
+      }
+    },
+    "ali_physics": {
+      "title": "Ali Physics",
+      "type": "string"
+    },
+    "derived_dataset": {
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-datasets-v0.0.1.json"  
+    }
+  }
+}

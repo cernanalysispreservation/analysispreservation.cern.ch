@@ -1,0 +1,16 @@
+{
+  "mappings": {
+    "alice-analysis-v0.0.1": {
+      "properties": {
+        "main_analysis":{  
+          "type":"object",
+          "properties":{  
+            "train_id":{  
+               "type":"string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
