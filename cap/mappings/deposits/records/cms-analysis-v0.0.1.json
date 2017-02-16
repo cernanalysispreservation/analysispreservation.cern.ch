@@ -1,6 +1,6 @@
 {
   "mappings": {
-    "cms-analysis-v1.0.0": {
+    "cms-analysis-v0.0.1": {
       "properties": {
         "document_type_human": {
           "type": "string",

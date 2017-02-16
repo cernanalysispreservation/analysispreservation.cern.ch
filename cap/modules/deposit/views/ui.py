@@ -27,8 +27,7 @@
 from ..api import CAPDeposit
 from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, jsonify, render_template, \
-    request, url_for
+from flask import Blueprint, abort, current_app, jsonify, render_template, request, url_for
 from flask.views import View
 from flask_security import login_required
 
@@ -59,8 +58,8 @@ DEPOSIT_DEFAULT_METAINFO = {
     },
     "initialization": "/api/deposits/",
     "loading_template": "/api/static/node_modules/invenio-records-js/dist/templates/loading.html",
-    "schema": "/schemas/records/cms-analysis-v1.0.0.json",
-    "schema_form": "/static/json/records/cms-analysis-v1.0.0.json",
+    "schema": "/schemas/records/cms-analysis-v0.0.1.json",
+    "schema_form": "/static/json/records/cms-analysis-v0.0.1.json",
     "template_params": {
         "messages": {
             "delete": {
@@ -157,6 +156,7 @@ def to_files_js(deposit):
 
     return res
 
+
 class NewItemView(View):
 
     def __init__(self, template_name=None,
@@ -189,7 +189,7 @@ class NewItemView(View):
             }
 
             _url_root = request.url_root
-            self.schema = _url_root+self.schema
+            self.schema = _url_root + self.schema
             deposit["meta_info"]["schema"] = self.schema
             deposit["meta_info"]["schema_form"] = self.schema_form
             return jsonify(deposit)

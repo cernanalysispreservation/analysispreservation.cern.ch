@@ -1,13 +1,13 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "ATLAS Workflows Schema.",
+    "title": "CMS Deposit Schema.",
     "type": "object",
     "allOf": [
         {
             "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/deposit-v0.0.1.json"
         },
         {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/records/atlas-workflows-no-circ-refs-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/records/cms-analysis-v0.0.1.json"
         },
         {
             "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-v0.0.1.json"

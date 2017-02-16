@@ -1,11 +1,11 @@
 {
   "mappings": {
-    "alice-analysis-v0.0.1": {
+    "atlas-analysis-v0.0.1": {
       "properties": {
-        "main_analysis":{  
+        "basic_info":{  
           "type":"object",
           "properties":{  
-            "train_id":{  
+            "title":{  
                "type":"string"
             }
           }

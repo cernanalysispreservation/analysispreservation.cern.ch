@@ -10,7 +10,7 @@
                         }
                     }
                 },
-                 "workflows": {
+                "workflows": {
                     "type": "object",
                     "properties": {
                         "name": {
@@ -167,6 +167,23 @@
                             }
                         }
                     }
+                },
+                "title": {
+                  "type": "string"
+                },
+                "control_number": {
+                  "type": "string"
+                },
+                "creator": {
+                  "type": "integer"
+                },
+                "_created": {
+                  "type": "date",
+                  "copy_to": "created"
+                },
+                "_updated": {
+                  "type": "date",
+                  "copy_to": "updated"
                 }
             }
         }

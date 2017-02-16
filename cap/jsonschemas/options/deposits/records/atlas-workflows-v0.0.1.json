@@ -2,5 +2,5 @@
     {
         "key": "basic_info"
     },
-    {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/ATLASWorkflows-v0.0.1.json"}
+    {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/atlas-workflows-v0.0.1.json"}
 ]

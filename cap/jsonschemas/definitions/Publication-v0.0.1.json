@@ -8,7 +8,7 @@
       "title": "Identifiers",
       "type": "array",
       "items": {
-        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/Identifiers-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/identifiers-v0.0.1.json"
       }
     },
     "journal_title": {

@@ -1,6 +1,6 @@
 {
   "mappings": {
-    "lhcb-v1.0.0": {
+    "lhcb-v0.0.1": {
       "properties": {
         "document_type_human": {
           "type": "string",

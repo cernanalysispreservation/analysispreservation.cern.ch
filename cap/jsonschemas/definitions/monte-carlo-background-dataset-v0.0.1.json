@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Primary Dataset",
-  "description": "Information concerning the CMS Primary Dataset used",
+  "title": "Monte Carlo Background Dataset",
+  "description": "Information concerning the Monte Carlo Background Dataset used",
   "type": "object",
   "properties": {
     "dataset_metadata": {
@@ -17,13 +17,13 @@
           "title": "Title",
           "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
           "autocomplete": true,
-          "propertyOrder": 201
+          "propertyOrder": 301
         },
         "description": {
           "type": "string",
           "title": "Description",
           "format": "textarea",
-          "description": "Provide a description for the primary dataset"
+          "description": "Provide a description for the MC dataset"
         },
         "licence": {
           "type": "string",
@@ -35,14 +35,14 @@
           "description": "",
           "type": "array",
           "items": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/Identifiers-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/identifiers-v0.0.1.json"
           }
         },
         "issued": {
           "title": "Issued",
           "type": "string",
           "format": "datetime",
-          "description": "Provide date/time the primary dataset was issued"
+          "description": "Provide date/time the dataset was issued"
         },
         "modified": {
           "title": "Modified",
@@ -53,7 +53,7 @@
         "available": {
           "title": "Year Availble",
           "type": "number",
-          "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
+          "description": "Provide the year the MC dataset will be available in public. e.g. 2014"
         },
         "run_number": {
           "title": "Run #",
@@ -68,7 +68,7 @@
         "type": {
           "title": "Type",
           "type": "string",
-          "description": "Provide type of item e.g. 'data'"
+          "description": "Provide type of item e.g. 'mc'"
         },
         "numbers": {
           "title": "Numbers",
@@ -99,70 +99,60 @@
         }
       }
     },
-    "triggers": {
-      "title": "Selection Triggers",
-      "description": "Add triggers here",
+    "mc_signal_cross_section": {
+      "title": "Cross Section",
+      "type": "number",
+      "required": "true"
+    },
+    "background": {
+      "title": "MC Background",
       "type": "array",
       "items": {
-        "title": "Trigger",
         "type": "object",
-        "id": "trigger",
         "properties": {
-          "trigger": {
-            "title": "Trigger",
-            "type": "string",
-            "enum": [],
-            "dependencies": [
-              "run_period",
-              "element"
-            ]
+          "generator_tune": {
+            "title": "Generator and Tune",
+            "type": "object",
+            "properties": {
+              "generator": {
+                "type": "string",
+                "enum": ["need", "more", "information"]
+              },
+              "tune": {
+                "type": "string",
+                "enum": ["need", "more", "information"]
+              }
+            }
           },
-          "run_period": {
-            "title": "Run Period",
+          "collision_species": {
+            "title": "Collision Species",
             "type": "string",
-            "enum": []
+            "enum": ["pp", "PbPb", "pPb"]
           },
-          "element": {
-            "title": "Element",
-            "type": "string",
-            "enum": [],
-            "dependencies": [
-              "run_period"
-            ]
+          "collision_energy": {
+            "title": "Collision Energy",
+            "type": "string"
           },
-          "trigger_efficiency": {
-            "title": "Trigger Efficiency",
-            "type": "string",
-            "required": "true"
+          "bin": {
+            "title": "Bin",
+            "type": "object",
+            "properties": {
+              "pt_hat": {
+                "title": "pt_hat",
+                "type": "string"
+              },
+              "num_events": {
+                "title": "Number of Events",
+                "type": "string"
+              }
+            }
+          },
+          "additional_info": {
+            "title": "Additional Information",
+            "type": "string"
           }
         }
       }
-    },
-    "event_selection": {
-      "title": "Event Filter",
-      "type": "object",
-      "properties": {
-        "event_filter": {
-          "title": "Event Filter",
-          "type": "string",
-          "enum": []
-        },
-        "custom_event_filter": {
-          "title": " ",
-          "type": "string",
-          "dependencies": [
-            "event_filter"
-          ]
-        },
-        "reference": {
-          "title": "Reference",
-          "type": "string"
-        }
-      }
-    },
-    "json_file": {
-      "title": "json File for Validated Runs",
-      "type": "string"
     }
   }
 }

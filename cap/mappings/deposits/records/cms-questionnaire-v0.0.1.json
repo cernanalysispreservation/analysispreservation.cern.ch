@@ -1,6 +1,6 @@
 {  
    "mappings":{  
-      "cms-questionnaire-v1.0.0.json":{  
+      "cms-questionnaire-v0.0.1":{  
          "properties":{  
             "_deposit":{  
                "type":"object",

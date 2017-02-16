@@ -1,6 +1,6 @@
 {  
    "mappings":{  
-      "atlas-analysis-v1.0.0":{  
+      "atlas-analysis-v0.0.1":{  
          "properties":{  
             "document_type_human":{  
                "type":"string",

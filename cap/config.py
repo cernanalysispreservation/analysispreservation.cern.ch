@@ -380,9 +380,9 @@ LHCB_GETCOLLISIONDATA_URL = '{0}/{1}?{2}='.format(ANA_LHCB_DATABASE_URL,
 #: -- removes <html>,<body>,etc unneeded tags
 DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Default jsonschema for deposit
-DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v1.0.0.json'
+DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
 #: Default schemanform for deposit
-DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v1.0.0.json'
+DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v0.0.1.json'
 #: Search api url for deposit
 DEPOSIT_SEARCH_API = '/api/deposits/'
 #: Files api url for deposit
@@ -392,8 +392,8 @@ DEPOSIT_FILES_API = '/api/files'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
-        "schema": "schemas/deposits/records/lhcb-v1.0.0.json",
-        "schema_form": "/app/schemas/options/deposits/records/lhcb-v1.0.0.json",
+        "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
         "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
         "list_template": "cap_deposit/index.html",
@@ -405,8 +405,8 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
     },
     "cms-analysis": {
-        "schema": "schemas/deposits/records/cms-analysis-v1.0.0.json",
-        "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v1.0.0.json",
+        "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
         "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
         "list_template": "cap_deposit/index.html",
@@ -418,8 +418,8 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
     },
     "cms-questionnaire": {
-        "schema": "schemas/deposits/records/cms-questionnaire-v1.0.0.json",
-        "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v1.0.0.json",
+        "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
         "description": "Create a CMS Questionnaire",
         "list_template": "cap_deposit/index.html",
@@ -444,8 +444,8 @@ DEPOSIT_GROUPS = {
         'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
     },
     "atlas-analysis": {
-        "schema": "schemas/deposits/records/atlas-analysis-v1.0.0.json",
-        "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v1.0.0.json",
+        "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
         "description": "Create an ATLAS Analysis",
         "list_template": "cap_deposit/index.html",

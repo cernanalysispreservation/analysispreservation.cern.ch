@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "CAP Files Schema v1.0.0",
+  "title": "CAP Files Schema v0.0.1",
   "type": "object",
   "properties": {
     "_buckets": {

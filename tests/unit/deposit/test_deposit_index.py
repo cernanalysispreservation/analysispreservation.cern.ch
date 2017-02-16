@@ -33,7 +33,7 @@ from invenio_search import current_search
 
 def test_create_deposit_index(db, es):
     """Test if deposit index is created."""
-    deposit_index_name = 'deposits-records-lhcb-v1.0.0'
+    deposit_index_name = 'deposits-records-lhcb-v0.0.1'
 
     Deposit.create({
         '_deposit': {

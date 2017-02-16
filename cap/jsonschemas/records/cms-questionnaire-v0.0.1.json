@@ -73,12 +73,7 @@
             }
           }
         }
-      },
-      "required": [
-        "name",
-        "email",
-        "group"
-      ]
+      }
     },
     "general": {
       "title": "General Information",

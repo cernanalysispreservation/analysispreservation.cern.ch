@@ -128,11 +128,11 @@
       "additionalProperties": false,
       "default": [{}],
       "items": {
-        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/ATLASDataset-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/atlas-dataset-v0.0.1.json"
       }
     },
     "workflows": {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/ATLASWorkflows_no_circ_refs-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
     },
     "publications": {
       "title": "Publications",
@@ -142,7 +142,7 @@
       "additionalProperties": false,
       "default": [{}],
       "items": {
-        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/ATLASPublication-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/atlas-publication-v0.0.1.json"
       }
     }
   }

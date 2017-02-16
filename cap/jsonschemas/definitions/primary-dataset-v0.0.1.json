@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Monte Carlo Signal Dataset",
-  "description": "Information concerning the Monte Carlo Signal Dataset used",
+  "title": "Primary Dataset",
+  "description": "Information concerning the CMS Primary Dataset used",
   "type": "object",
   "properties": {
     "dataset_metadata": {
@@ -17,13 +17,13 @@
           "title": "Title",
           "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
           "autocomplete": true,
-          "propertyOrder": 301
+          "propertyOrder": 201
         },
         "description": {
           "type": "string",
           "title": "Description",
           "format": "textarea",
-          "description": "Provide a description for the MC dataset"
+          "description": "Provide a description for the primary dataset"
         },
         "licence": {
           "type": "string",
@@ -35,14 +35,14 @@
           "description": "",
           "type": "array",
           "items": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/Identifiers-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/identifiers-v0.0.1.json"
           }
         },
         "issued": {
           "title": "Issued",
           "type": "string",
           "format": "datetime",
-          "description": "Provide date/time the dataset was issued"
+          "description": "Provide date/time the primary dataset was issued"
         },
         "modified": {
           "title": "Modified",
@@ -51,9 +51,9 @@
           "hidden": "true"
         },
         "available": {
-          "title": "Year Available",
+          "title": "Year Availble",
           "type": "number",
-          "description": "Provide the year the MC dataset will be available in public. e.g. 2014"
+          "description": "Provide the year the primary dataset will be available in public. e.g. 2014"
         },
         "run_number": {
           "title": "Run #",
@@ -68,7 +68,7 @@
         "type": {
           "title": "Type",
           "type": "string",
-          "description": "Provide type of item e.g. 'mc'"
+          "description": "Provide type of item e.g. 'data'"
         },
         "numbers": {
           "title": "Numbers",
@@ -99,72 +99,70 @@
         }
       }
     },
-    "mc_signal_cross_section": {
-      "title": "Cross Section",
-      "type": "number",
-      "required": "true"
-    },
-    "mc_signal_selection": {
-      "title": "MC Signal",
+    "triggers": {
+      "title": "Selection Triggers",
+      "description": "Add triggers here",
       "type": "array",
       "items": {
+        "title": "Trigger",
         "type": "object",
+        "id": "trigger",
         "properties": {
-          "signal": {
-            "title": "Signal",
-            "type": "string"
-          },
-          "bin": {
-            "title": "Bin",
-            "type": "object",
-            "properties": {
-              "pt_hat": {
-                "title": "pt_hat",
-                "type": "string"
-              },
-              "num_events": {
-                "title": "Number of Events",
-                "type": "string"
-              }
-            }
-          },
-          "generator_tune": {
-            "title": "Generator and Tune",
-            "type": "object",
-            "properties": {
-              "generator": {
-                "type": "string",
-                "enum": ["need", "more", "information"]
-              },
-              "tune": {
-                "type": "string",
-                "enum": ["need", "more", "information"]
-              }
-            }
-          },
-          "pT": {
-            "title": "PT",
-            "type": "string"
-          },
-          "rapidity": {
-            "title": "Rapidity",
-            "enum": ["Rapidity", "Pseudorapidity"]
-          },
-          "decay_channel": {
-            "title": "Decay Channel",
-            "type": "string"
-          },
-          "decay_engine": {
-            "title": "Decay Engine",
+          "trigger": {
+            "title": "Trigger",
             "type": "string",
-            "enum": ["need", "more", "information"]
+            "enum": [],
+            "dependencies": [
+              "run_period",
+              "element"
+            ]
           },
-          "additional_info": {
-            "title": "Additional Information",
-            "type": "string"
+          "run_period": {
+            "title": "Run Period",
+            "type": "string",
+            "enum": []
+          },
+          "element": {
+            "title": "Element",
+            "type": "string",
+            "enum": [],
+            "dependencies": [
+              "run_period"
+            ]
+          },
+          "trigger_efficiency": {
+            "title": "Trigger Efficiency",
+            "type": "string",
+            "required": "true"
           }
         }
       }
+    },
+    "event_selection": {
+      "title": "Event Filter",
+      "type": "object",
+      "properties": {
+        "event_filter": {
+          "title": "Event Filter",
+          "type": "string",
+          "enum": []
+        },
+        "custom_event_filter": {
+          "title": " ",
+          "type": "string",
+          "dependencies": [
+            "event_filter"
+          ]
+        },
+        "reference": {
+          "title": "Reference",
+          "type": "string"
+        }
+      }
+    },
+    "json_file": {
+      "title": "json File for Validated Runs",
+      "type": "string"
     }
   }
 }
