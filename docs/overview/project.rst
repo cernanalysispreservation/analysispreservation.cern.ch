@@ -50,9 +50,9 @@ Connectivity
 
 To reduce user effort and ensure accuracy of added information, we are connecting to collaboration databases and systems containing analysis information. This allows us to auto-complete and auto-fill most of an analysis record as soon as it is created, given that the content exists in the databases we link to, as well as to keep the content updated and synchronized.
 
-You can check the status of current connections `here <../status.html#capture>`_. For more details on how autofill works you can go to the tutorial for :doc:`creating an analysis <../tutorials/create>`.
+Additionally, we offer a possibility for uploading files (e.g. configuration files) as well as providing a URL from which the files are copied and stored automatically.
 
-Additionally, there is a possibility for uploading files (e.g. configuration files) as well as providing a URL from which the files are copied and stored automatically.
+You can check the status of current connections `here <../status.html#capture>`_. For more details on how autofill works you can go to the tutorial for :doc:`creating an analysis <../tutorials/create>`.
 
 .. TODO link to file upload tutorial
 
@@ -66,9 +66,9 @@ Authorisation/Access Control
 
 Authorization on CAP is managed by CERN Single Sign-On, therefore restricting login to CERN members and restricting collaboration access to the collaboration you a member of.
 
-Due to the sensitive nature of research data and analysis information - especially in early stages of an analysis - accessibility of analysis information is subject to permissions set by the creator of an analysis and the researchers involved.
+Due to the sensitive nature of analysis information and content - especially in early stages of an analysis - accessibility of analysis information is subject to permissions set by the collaborations, as well as the creator of an analysis and the collaborators involved.
 
-When starting a new analysis, the creator of the analysis draft record will be the only one able to view and edit the record. He can grant read or edit rights to researchers in the analysis team or working group.
+When starting a new analysis submission to CAP, the analysis record is saved as a draft. By default, the creator of the draft record will be the only one able to view and edit it. Read or edit rights can be granted to researchers in the analysis team or the working group.
 
 As soon as the analysis is submitted, the analysis will be shared with the collaboration meaning its members will acquire rights to view the analysis. Editing rights will remain as they were for the draft.
 A draft version can be submitted any time. There is no drawback in keeping a draft until the analysis is published other than that analysis content is hidden from members of your collaboration.
@@ -91,7 +91,10 @@ Search capability
 
 Using the search bar at the top of the page or the dedicated search page that comes with it, users can search through their own and all shared analyses within their collaboration, past or on-going. Based on feedback by collaboration physicists filters will be created to enable search for specific content.
 
-Additionally, users can easily keep track of and find analyses they created and those that are shared with them through a personal dashboard.
+.. note::
+	You have suggestions on what is needed to make the search more useful to you? Please :doc:`let us know <../support>`!
+
+Additionally, users can easily keep track of and find analyses they created and those that are shared with them through the navigation sidebar or the personal dashboard on their home page.
 
 All analysis metadata are indexed, which means users can find analyses with specific parameters, processed with a specific algorithm, or using a specific dataset or simulation to name a few examples. Information that is not explicitly added to the schema and instead stored in an uploaded file are not indexed for search right now.
 
@@ -101,13 +104,13 @@ All analysis metadata are indexed, which means users can find analyses with spec
 3. Review and compare
 ---------------------
 
-CAP aims to simplify combining analysis as well as the process of analysis reviewing and approval by enabling the user to give specific access to analysis records and store relevant analysis information in one place.
+CAP aims to simplify combining analysis as well as the process of analysis reviewing and approval by enabling the user to give specific access to analysis records and store relevant analysis information in one place. As such, it can already be used as a source of reference in analysis meetings.
 
-Report Compilation
-~~~~~~~~~~~~~~~~~~
+.. Report Compilation
+.. ~~~~~~~~~~~~~~~~~~
 
-Analysis information will be exportable from CAP to generate a status report or a framework for the analysis note.
-CAP can also be a source of reference in analysis meetings.
+.. Analysis information will be exportable from CAP to generate a status report or a framework for the analysis note. Exporting a record underlies the same restrictions as accessing the record.
+
 
 4. Reproduce and Rerun
 ----------------------
@@ -123,6 +126,4 @@ In CAP analyses information is preserved with the aim of reproducible research. 
 5. Imagine...
 -------------
 
-The above use cases were derived from input we received from CERN physicists. As much as these are still evolving and we allow them to change to make improvements there are ideas that go beyond these. Some ideas we are already aware of but have not yet found the time to evaluate them, others will keep arising as the service grows.
-
-We are open to new ideas which is why all you can imagine to do with your analysis information that will help you with your research is part of what describes CAP.
+The above use cases were derived from input we received from CERN physicists. We are open to new ideas, which is why all you can imagine to do with your analysis information that will help you with your research is part of what describes CAP.

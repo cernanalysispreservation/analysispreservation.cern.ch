@@ -6,10 +6,10 @@
 Welcome to the Documentation for CERN Analysis Preservation
 ============================================================
 
-`CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service run at CERN currently targeted at storing analysis information from the four largest LHC experiments.
+`CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service run at CERN currently targeted at preserving analysis information from the four largest LHC experiments.
 It is an open source project licensed under the `GNU Public License 2.0 <https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html>`_, yet the information stored will be private.
 
-We want to make it easier for physicists who are meant to have access to this analysis information to find it, understand it and use it just as they have done before but with less effort involved. Plus, we want this to be possible as you are doing the analysis, during approval, after publishing the paper and even ten years afterwards - just in case something might come up that requires expertise for your analysis. In short:
+We want to make it easier for physicists who are meant to have access to this analysis information to find it, understand it and use it just as they have done before but with less effort involved. Plus, we want this to be possible as you are doing the analysis, during approval, after publishing the paper and many years afterwards, when technology has changed - just in case something comes up that requires expertise for your analysis. In short:
 
 **We do not want your work to get lost**. We would rather like to give it a very special place in our shelves.
 
@@ -50,7 +50,7 @@ Further Reading
 	reference
 
 	status
-	support
+	Support <support>
 	FAQ <faq>
 
 
