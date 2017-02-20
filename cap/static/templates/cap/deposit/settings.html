@@ -1,0 +1,105 @@
+<div class="container cap-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Permissions</h2>
+      <div id="record-permissions" class="" init="permissions=[]">
+        <div id="record-permissions-fltr">
+          <div class="permissions-query-container">
+            <div class="btn-input">
+            <input 
+              id="permissions-query"
+              ng-model="query"
+              placeholder="Type email to FILTER or ADD access rights"
+              uib-typeahead="address for address in getUsers($viewValue)"
+              typeahead-on-select="onUserSelect($item, $model, $label)"
+              typeahead-loading="loadingLocations"
+              typeahead-no-results="noUserResults"
+              typeahead-popup-template-url="/static/templates/cap/deposit/components/permissionTypeaheadPopup.html">
+
+              {{fltPermissions = (permissions | filter: query); "" }}
+              <div
+                class="btn permissions-add"
+                ng-click="add_permission(query, 'user');"
+                ng-disable="fltPermissions.length">
+                  Add rights
+              </div>
+            </div>
+
+            <i ng-show="loadingLocations" class="glyphicon glyphicon-refresh"></i>
+            <ul ng-show="query">
+              <ul ng-show="noUserResults" role="listbox">
+                  <li>
+                    No user with name: {{query}}
+                  </li>
+              </ul>
+              <ul role="listbox">
+                  <li ng-click="add_permission(query, 'egroup')">
+                    Add e-group with name: {{query}}
+                  </li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+
+        {{ changes = (fltPermissions | pick: 'op;' | groupBy: 'identity'); ""}}
+        {{ allPermissions = (fltPermissions | groupBy: 'identity'); ""}}
+
+        <ul class="col-sm-12 permissions-list-changes" ng-hide="changes | isEmpty">
+          <header>Current Changes<a ng-click="add_permissions(changes);" class="pull-right" href="#">Update rights</a></header>
+          <header class="permissions-header centered">
+            <div class="col-sm-3">User</div>
+            <div class="col-sm-9">
+              <div class="row">
+                <div class="col-sm-4">Read</div>
+                <div class="col-sm-4">Write</div>
+                <div class="col-sm-4">Admin</div>
+              </div>
+            </div>
+          </header>
+          <li class="permissions-list-item-changes centered" ng-repeat="(identity, value) in changes">
+              <div class="col-sm-3">{{ identity }}<i class="fa fa-users" ng-if="value[0].type =='egroup'" ></i></div>
+              <div class="col-sm-9">
+                <div class="row">
+                  {{ flag2 = (allPermissions[identity] | some: "action === 'deposit-read' && ( op !== 'remove')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-read')" ng-class="{'can': flag2}"></span></div>
+                  {{ flag3 = (allPermissions[identity] | some: "action === 'deposit-update' && ( op !== 'remove')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-update')" ng-class="{'can': flag3}"></span></div>
+                  {{ flag4 = (allPermissions[identity] | some: "action === 'deposit-admin' && ( op !== 'remove')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-admin')" ng-class="{'can': flag4}"></span></div>
+                </div>
+              </div>
+          </li>
+        </ul>
+        <header class="permissions-header centered">
+          <div class="col-sm-3">User/Role</div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-4">Read</div>
+              <div class="col-sm-4">Write</div>
+              <div class="col-sm-4">Admin</div>
+            </div>
+          </div>
+        </header>
+        <ul class="col-sm-12 permissions-list centered">
+          <li class="permissions-list-item" ng-repeat="(identity, value) in allPermissions">
+              <div class="col-sm-3">{{ identity }}<i class="fa fa-users" ng-if="value[0].type =='egroup'" ></i></div>
+              <div class="col-sm-9">
+                <div class="row">
+                  {{ flag2 = (value | some: "action === 'deposit-read' && ( op == undefinded || op == 'add')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-read')" ng-class="{'can': flag2}"></span></div>
+                  {{ flag3 = (value | some: "action === 'deposit-update' && ( op == undefinded || op == 'add')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-update')" ng-class="{'can': flag3}"></span></div>
+                  {{ flag4 = (allPermissions[identity] | some: "action === 'deposit-admin' && ( op !== 'remove')");""}}
+                  <div class="col-sm-4"><span class="fa fa-check" ng-click="toggle_permission_action(identity, value[0].type, 'deposit-admin')" ng-class="{'can': flag4}"></span></div>
+                </div>
+              </div>
+          </li>
+          <li ng-show="allPermissions | isEmpty">
+            <h5 class="centered">No permissions found</h5>
+            <h6 class="centered" ng-show="query">Give rights to user/role "{{query}}"</h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

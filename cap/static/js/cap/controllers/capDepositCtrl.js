@@ -27,8 +27,7 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
-  $scope.name = 'DepositController';
+var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs) {
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
   $scope.contentBarTabs = contentBarTabs;
@@ -43,7 +42,6 @@ var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
   };
 
   $scope.$on('sf-render-finished', function(event){
-
     watchAndUpdate({}, {});
 
     $scope.$watch('depositionForm.$error', function(newValue, oldValue) {
@@ -56,7 +54,7 @@ var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
     // console.log("EE::");
     if (newValue && oldValue) {
 
-      if ($scope.recordsVM.invenioRecordsSchema) {
+      if ($scope.recordsVM && $scope.recordsVM.invenioRecordsSchema) {
 
         var props = $scope.recordsVM.invenioRecordsSchema.properties;
         angular.forEach(props, function(value, key) {
@@ -93,7 +91,7 @@ var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
         });
       }
 
-      if ($scope.depositionForm.$valid) {
+      if ($scope.depositionForm && $scope.depositionForm.$valid) {
         angular.forEach($scope.req, function(value, key) {
           $scope.progress[key] = 100;
           $scope.type[key] = 'success';
@@ -125,15 +123,217 @@ var capDepositCtrl = function($scope, $location, deposit, contentBarTabs) {
       };
     }
   };
+
+
+
+  // Handle Deposit Permissions //
+  ////////////////////////////////
+  ////////////////////////////////
+
+  $scope.permissions = deposit.access;
+  $scope.new = [];
+  $scope.changes = {};
+
+
+  // Request users for autosuggestions
+  // 
+  $scope.getUsers = function (query) {
+    return $http.get('/api/users', {
+      params: {
+        q: query
+      }
+    }).then(function(response){
+      return response.data.hits.hits.map(function(item){
+        return item.email;
+      });
+    });
+  };
+
+  $scope.onUserSelect = function(_item, _model, _label, model, form) {
+      console.log("_item");
+      console.log(_item);
+
+      $scope.add_permission(_item, "user");
+  };
+
+  // var get_record_permissions = function() {
+  //   capLocalClient.get_record_permissions($scope.pid_value)
+  //   .then(function(response) {
+  //     $scope.permissions =
+  //     $scope.upd_permissions = [];
+  //     $scope.collab_egroup = response.data.collab_egroup;
+  //   }, function(error) {
+  //     $scope.hello = "ERROR";
+  //   }, function(update){
+  //     $scope.notification = $scope.notification + '<br />' + update;
+  //   });
+  // };
+
+  $scope.changePrivacy = function(pid_value){
+    capLocalClient.change_record_privacy(pid_value)
+    .then(function(response) {
+      $scope.privacy = response;
+    }, function(error) {
+      $scope.hello = "ERROR";
+    }, function(update){
+      $scope.notification = $scope.notification + '<br />' + update;
+    });
+  };
+
+  // $scope.get_permissions = function(){
+  //   $scope.permissions = $scope.deposit.access;
+  // };
+
+  $scope.add_permissions = function(permissions){
+    // Cleaning "garbage" entries from newly added users, where
+    // "op" is "remove"
+
+    var permissions_update = [];
+    angular.forEach(permissions, function(actions, identity){
+      if (angular.isArray(actions) && actions.length > 0) {
+        var identity_permission = {
+          "identity": identity,
+          "type":  actions[0].type,
+          "permissions": []
+        };
+
+        angular.forEach(actions, function(action){
+          console.log(action);
+          var _action = {
+            "op": action.op,
+            "action": action.action
+          };
+
+          identity_permission["permissions"].push(_action);
+        }); 
+
+        permissions_update.push(identity_permission);    
+      }
+
+    });
+
+    console.log("permissions_update");
+    console.log(permissions_update);
+    return $http({
+        url: $scope.deposit.links.permissions, 
+        method: 'POST',
+        data: {
+          permissions: permissions_update
+        }
+    }).then(function(response){
+      console.log("response::addPremissions");
+      console.log(response);
+      return response.data.hits.hits.map(function(item){
+        return item.email;
+      });
+    });
+
+
+
+    // var new_data;
+    // _.each($scope.new, function(new_entry){
+    //   if(data[new_entry]){
+    //     data[new_entry] = _.filter(data[new_entry], function(action){
+    //       return action["op"] !== "remove";
+    //     });
+    //   }
+    // });
+
+    // capLocalClient.set_record_permissions($scope.pid_value, data)
+    // .then(function(response) {
+    //   $scope.new = [];
+    //   get_record_permissions();
+    // }, function(error) {
+    //   $scope.hello = "ERROR";
+    // }, function(update){
+    //   $scope.notification = $scope.notification + '<br />' + update;
+    // });
+  };
+
+  // $scope.query = "";
+  // $scope.permissionsPopup = $scope.query.length ? true : false;
+  $scope.add_permission = function(identity, identity_type){
+    if (!(identity_type && identity_type.indexOf(["user", "egroup"])  ))
+      return;
+
+    var add = {
+      "op": "add",
+      "type": identity_type,
+      "action": "deposit-read",
+      "identity" : identity
+    };
+
+    $scope.permissions.push(add);
+    $scope.new.push(identity);
+    $scope.query = "";
+  };
+
+  $scope.toggle_permission_action = function(identity, identity_type, action){
+    if (!(identity_type && identity_type.indexOf(["user", "egroup"])  ))
+      return;
+
+    var identity_action = _.find($scope.permissions, function(p){
+      return ( p["action"] == action && p["identity"] == identity);
+    });
+
+    if(identity_action) {
+      if (identity_action["op"]){
+        if ($scope.new.indexOf(identity) !== -1 && identity_action["op"] == "remove")
+          identity_action["op"] = "add";
+        else if ($scope.new.indexOf(identity) !== -1 && identity_action["op"] == "add")
+          identity_action["op"] = "remove";
+        else
+          delete identity_action["op"];
+      }
+      else {
+        identity_action["op"] = "remove";
+      }
+    }
+    else {
+      var operation = {
+        "op": "add",
+        "type": identity_type,
+        "identity": identity,
+        "action": action
+      };
+      $scope.permissions.push(operation);
+    }
+  };
+
+  var validateEmail = function(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
 };
 
 capDepositCtrl.$inject = [
   '$scope',
   '$location',
+  '$http',
   'deposit',
   'contentBarTabs'
 ];
 
 angular.module('cap.controllers')
   .controller('DepositController', capDepositCtrl);
+
+
+var capKeyNavigation = function ($timeout) {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 38) {
+                var target = $(event.target).prev();
+                $(target).trigger('focus');
+            }
+            if (event.which === 40) {
+                var target = $(event.target).next();
+                $(target).trigger('focus');
+            }
+        });
+    };
+}
+
+
+angular.module('cap.controllers')
+  .directive('keyNavigation', capKeyNavigation);
 

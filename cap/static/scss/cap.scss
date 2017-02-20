@@ -98,7 +98,7 @@ header {
   border-radius: 50px;
   // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
   &:after {
-    content: 'Private';
+    content: 'No';
     color: white;
     position: absolute;
     right: 10px;
@@ -108,7 +108,7 @@ header {
     text-shadow: 1px 1px 0px rgba(255,255,255,.15);
   }
   &:before {
-    content: 'Public';
+    content: 'Admin';
     color: $dark-blue-theme-color;
     position: absolute;
     left: 10px;

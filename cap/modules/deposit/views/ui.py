@@ -31,6 +31,11 @@ from flask import Blueprint, abort, current_app, jsonify, render_template, reque
 from flask.views import View
 from flask_security import login_required
 
+
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_pidstore.resolver import Resolver
+from invenio_records import Record
+
 blueprint = Blueprint(
     'cap_deposit_ui',
     __name__,

@@ -268,6 +268,42 @@ SUPERUSER_EGROUPS = [
 
 SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
+
+#: Account-REST Configuration
+ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = allow_all
+"""Default get role permission factory: reject any request."""
+
+ACCOUNTS_REST_UPDATE_ROLE_PERMISSION_FACTORY = allow_all
+"""Default update role permission factory: reject any request."""
+
+ACCOUNTS_REST_DELETE_ROLE_PERMISSION_FACTORY = allow_all
+"""Default delete role permission factory: reject any request."""
+
+ACCOUNTS_REST_READ_ROLES_LIST_PERMISSION_FACTORY = allow_all
+"""Default list roles permission factory: reject any request."""
+
+ACCOUNTS_REST_CREATE_ROLE_PERMISSION_FACTORY = allow_all
+"""Default create role permission factory: reject any request."""
+
+ACCOUNTS_REST_ASSIGN_ROLE_PERMISSION_FACTORY = allow_all
+"""Default assign role to user permission factory: reject any request."""
+
+ACCOUNTS_REST_UNASSIGN_ROLE_PERMISSION_FACTORY = allow_all
+"""Default unassign role from user permission factory: reject any request."""
+
+ACCOUNTS_REST_READ_USER_ROLES_LIST_PERMISSION_FACTORY = allow_all
+"""Default list users roles permission factory: reject any request."""
+
+ACCOUNTS_REST_READ_USER_PROPERTIES_PERMISSION_FACTORY = allow_all
+"""Default read user properties permission factory: reject any request."""
+
+ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = allow_all
+"""Default modify user properties permission factory: reject any request."""
+
+ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
+"""Default list users permission factory: reject any request."""
+
+
 # Start pages for experiments
 CAP_COLLAB_PAGES = {
     'LHCb': 'cap_lhcb.lhcb_landing',
@@ -405,23 +441,28 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.lhcb.lhcb_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.lhcb.lhcb_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-analysis": {
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
-        "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+        "description":
+            "Create a CMS Analysis (analysis metadata, workflows, etc)",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.cms.cms_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-questionnaire": {
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
@@ -431,23 +472,28 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.cms.cms_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.cms.cms_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-workflows": {
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
+        "schema_form":
+            "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
         "description": "Create an ATLAS Workflow",
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-analysis": {
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
@@ -458,9 +504,12 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.atlas.atlas_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     },
     "alice-analysis": {
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
@@ -470,10 +519,12 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
-        'read_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
-        'update_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
-        'delete_permission_factory_imp': 'cap.modules.experiments.permissions.alice.alice_permission',
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.alice.alice_permission',
+        'read_permission_factory_imp':
+            'cap.modules.deposit.permissions.read_permission_factory',
+        'update_permission_factory_imp':
+            'cap.modules.deposit.permissions.update_permission_factory',
     }
 }
 

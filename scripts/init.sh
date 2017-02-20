@@ -40,11 +40,9 @@ cap roles create cms-members@cern.ch
 cap roles create alice-member@cern.ch
 cap roles create atlas-active-members-all@cern.ch
 cap roles create lhcb-general@cern.ch
+cap roles create analysis-preservation-support@cern.ch
 
-cap roles add info@inveniosoftware.org cms-members@cern.ch
-cap roles add info@inveniosoftware.org alice-member@cern.ch
-cap roles add info@inveniosoftware.org atlas-active-members-all@cern.ch
-cap roles add info@inveniosoftware.org lhcb-general@cern.ch
+cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
 
 cap roles add cms@inveniosoftware.org cms-members@cern.ch
 cap roles add alice@inveniosoftware.org alice-member@cern.ch

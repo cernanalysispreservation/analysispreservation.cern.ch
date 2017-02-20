@@ -34,5 +34,6 @@ angular.module('cap.app', [
   'cap.pushmenu',
   'angular-loading-bar',
   'ui.bootstrap',
+  'angular.filter',
   'cfp.hotkeys'
 ]);

@@ -31,6 +31,9 @@ from invenio_search.utils import schema_to_index
 
 from cap.modules.deposit.views.ui import DEPOSIT_DEFAULT_METAINFO
 
+from invenio_access.models import ActionRoles, ActionUsers
+
+
 def schema_prefix(schema):
     """Get index prefix for a given schema."""
     if not schema:
@@ -75,6 +78,7 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
     id = fields.Integer(attribute='pid.pid_value', dump_only=True)
     created = fields.Str(dump_only=True)
     meta_info = fields.Method('dump_meta_info', dump_only=True)
+    access = fields.Method('get_access', dump_only=True)
     links = fields.Raw()
     files = fields.Raw(dump_only=True)
 
@@ -150,8 +154,6 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
         _meta_info = obj.get('_meta_info', {})
         _id = obj.get('pid', {}).pid_value
 
-        # import ipdb;ipdb.set_trace()
-        # _meta_info['boom'] = "bam"
         if _id:
             _meta_info['initialization'] = current_app.config[
                 'DEPOSIT_RECORDS_API'].format(pid_value=_id)
@@ -177,13 +179,18 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
             '/schemas/', '/schemas/options/')
 
         _meta_info['loading_template'] = url_for(
-            'static', filename='node_modules/invenio-records-js/dist/templates/loading.html')
+            'static',
+            filename='node_modules/invenio-records-js/dist/templates/loading.html')
         _meta_info['alert_template'] = url_for(
             'static', filename='templates/cap_records_js/alert.html')
         _meta_info['form_template'] = {
             'form_templates': current_app.config['DEPOSIT_FORM_TEMPLATES'],
-            'form_templates_base': url_for('static', filename=current_app.config['DEPOSIT_FORM_TEMPLATES_BASE']),
-            'template': url_for('static', filename=current_app.config['DEPOSIT_UI_JSTEMPLATE_FORM']),
+            'form_templates_base': url_for(
+                'static',
+                filename=current_app.config['DEPOSIT_FORM_TEMPLATES_BASE']),
+            'template': url_for(
+                'static',
+                filename=current_app.config['DEPOSIT_UI_JSTEMPLATE_FORM']),
         }
 
         _meta_info['files'].update({
@@ -192,8 +199,40 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                     "Content-Type": "application/json"
                 }
             },
-            'upload_zone_template': url_for('static', filename='templates/cap_files_js/upload.html'),
-            'list_template': url_for('static', filename='templates/cap_files_js/list.html'),
+            'upload_zone_template': url_for(
+                'static', filename='templates/cap_files_js/upload.html'),
+            'list_template': url_for(
+                'static', filename='templates/cap_files_js/list.html'),
         })
 
         return _meta_info
+
+    def get_access(self, obj):
+        _uuid = obj.get('pid', None)
+        if _uuid is not None:
+            _uuid = _uuid.object_uuid
+
+        action_users = ActionUsers.query.filter(
+            ActionUsers.argument == str(_uuid)).all()
+
+        action_roles = ActionRoles.query.filter(
+            ActionRoles.argument == str(_uuid)).all()
+
+        _access = []
+        for au in action_users:
+            i = {
+                "type": "user",
+                "identity": au.user.email,
+                "action": au.action
+            }
+            _access.append(i)
+
+        for ar in action_roles:
+            i = {
+                "type": "egroup",
+                "identity": ar.role.name,
+                "action": ar.action
+            }
+            _access.append(i)
+
+        return _access

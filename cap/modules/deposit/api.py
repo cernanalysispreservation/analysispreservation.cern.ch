@@ -28,13 +28,24 @@ from __future__ import absolute_import, print_function
 
 import copy
 
-from flask import current_app
+from flask import current_app, request
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.models import Bucket, Location
 from invenio_records_files.models import RecordsBuckets
+
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_accounts.models import Role, User
+from invenio_db import db
+
 from werkzeug.local import LocalProxy
 
+from .permissions import (DepositReadActionNeed,
+                          DepositUpdateActionNeed,
+                          DepositAdminActionNeed)
+
+
+_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 current_jsonschemas = LocalProxy(
     lambda: current_app.extensions['invenio-jsonschemas']
@@ -45,6 +56,98 @@ PRESERVE_FIELDS = (
     '_buckets',
     '_files',
 )
+
+DEPOSIT_ACTIONS = [
+    'deposit-read',
+    'deposit-update',
+    'deposit-admin',
+]
+
+
+def set_user_permissions(user, permissions, id, dep_actions, session, access):
+    _permissions = (p for p in permissions if p.get(
+        "action", "") in DEPOSIT_ACTIONS)
+
+    for permission in _permissions:
+
+        if (permission.get("op", "") == "add"):
+            try:
+                session.add(ActionUsers.allow(
+                    dep_actions.get(
+                        permission.get("action", ""),
+                        ""),
+                    user=user
+                ))
+            except:
+                return
+
+            access.get(permission["action"], {}).get(
+                'user', []).append(user.id)
+
+        elif (permission.get("op", "") == "remove"):
+            try:
+                au = ActionUsers.query.filter(
+                    ActionUsers.action == permission.get("action", ""),
+                    ActionUsers.argument == str(id),
+                    ActionUsers.user_id == user.id).first()
+
+                if au:
+                    session.delete(au)
+
+            except:
+                return
+
+            access.get(permission["action"], {}).get(
+                'user', []).remove(user.id)
+
+    return access
+
+
+def set_egroup_permissions(role, permissions, id, dep_actions, session, access):
+    _permissions = (p for p in permissions if p.get(
+        "action", "") in DEPOSIT_ACTIONS)
+
+    for permission in _permissions:
+
+        if (permission.get("op", "") == "add"):
+            try:
+                session.add(ActionRoles.allow(
+                    dep_actions.get(
+                        permission.get("action", ""),
+                        ""),
+                    role=role
+                ))
+            except:
+                return
+
+            access.get(permission["action"], {}).get(
+                'roles', []).append(role.id)
+
+        elif (permission.get("op", "") == "remove"):
+            try:
+                au = ActionRoles.query.filter(
+                    ActionRoles.action == permission.get("action", ""),
+                    ActionRoles.argument == str(id),
+                    ActionRoles.role_id == role.id).first()
+
+                if au:
+                    session.delete(au)
+
+            except:
+                return
+
+            access.get(permission["action"], {}).get(
+                'roles', []).remove(role.id)
+
+    return access
+
+
+def construct_access():
+    access = {}
+    for a in DEPOSIT_ACTIONS:
+        access[a] = {"user": [], "roles": []}
+
+    return access
 
 
 class CAPDeposit(Deposit):
@@ -109,13 +212,65 @@ class CAPDeposit(Deposit):
         """Clear only drafts."""
         super(CAPDeposit, self).clear(*args, **kwargs)
 
-    # def publish(self, *args, **kwargs):
-    #     """Simple file check before publishing."""
-    #     for file_ in self.files:
-    #         if file_.checksum is None:
-    #             raise  # TODO raise REST exception ...
+    @mark_as_action
+    def permissions(self, pid=None):
+        data = request.get_json()
 
-    #     return super(CAPDeposit, self).publish(*args, **kwargs)
+        deposit_actions = {
+            "deposit-read": DepositReadActionNeed(str(self.id)),
+            "deposit-update": DepositUpdateActionNeed(str(self.id)),
+            "deposit-admin": DepositAdminActionNeed(str(self.id))
+        }
+
+        if self.get('_access', None) is None:
+            _access = construct_access()
+        else:
+            _access = self.get('_access')
+
+        with db.session.begin_nested():
+            for identity in data.get("permissions", []):
+                if identity.get("type") == "user":
+                    user = User.query.filter(
+                        User.email == identity.get("identity")).first()
+                    if user:
+                        _access = set_user_permissions(
+                            user,
+                            identity.get("permissions"),
+                            self.id,
+                            deposit_actions,
+                            db.session,
+                            _access
+                        )
+                elif identity.get("type") == "egroup":
+                    role = Role.query.filter(
+                        Role.name == identity.get("identity")).first()
+                    if role:
+                        _access = set_egroup_permissions(
+                            role,
+                            identity.get("permissions"),
+                            self.id,
+                            deposit_actions,
+                            db.session,
+                            _access
+                        )
+                    else:
+                        role = _datastore.create_role(
+                            name=identity.get("identity"))
+                        _access = set_egroup_permissions(
+                            role,
+                            identity.get("permissions"),
+                            self.id,
+                            deposit_actions,
+                            db.session,
+                            _access
+                        )
+
+        db.session.commit()
+
+        self["_access"] = _access
+        self.commit()
+
+        return self
 
     @index
     @mark_as_action

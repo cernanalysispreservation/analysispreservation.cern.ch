@@ -111,8 +111,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '/publications',
       views: {
         'content': {
-          templateUrl: '/static/templates/cap/shared_records.html',
-          controller: 'capCtrl'
+          templateUrl: '/static/templates/cap/shared_records.html'
         }
       },
       data: {
@@ -283,7 +282,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '/settings',
       views: {
         'contentMain': {
-          template: '<div class="container cap-content"><h2>Settings</h2></div>',
+          templateUrl: '/static/templates/cap/deposit/settings.html',
           controller: 'DepositController',
         }
       },

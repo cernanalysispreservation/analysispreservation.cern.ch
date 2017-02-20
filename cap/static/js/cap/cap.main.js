@@ -53,6 +53,7 @@ angular.element(document).ready(function() {
       'mgcrea.ngStrap.modal', 'pascalprecht.translate', 'ui.select',
       'mgcrea.ngStrap.select', 'invenioFiles',
       'angular-loading-bar',
+      'angular.filter',
       'capSearch',
       'cap.app',
       'ng.jsoneditor'
