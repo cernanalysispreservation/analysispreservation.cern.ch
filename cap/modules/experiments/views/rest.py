@@ -50,7 +50,6 @@ def CAP_EXPERIMENT_MENU(experiment):
 
     def users_deposit_groups():
         groups = get_user_deposit_groups()
-        print(groups)
         res = []
         for group in groups:
             res.append({
@@ -75,7 +74,7 @@ def CAP_EXPERIMENT_MENU(experiment):
         {
             'name': 'My Deposits',
             'icon': 'fa fa-file-text',
-            'link': _l('app.deposit'),
+            'link': _l('app.deposit_general'),
             'menu': {
                 "title": 'My Deposits',
                 'icon': 'fa fa-file-text-o',
@@ -93,29 +92,29 @@ def CAP_EXPERIMENT_MENU(experiment):
                 ]
             }
         },
-        {
-            'name': 'Working Groups',
-            'id': 'itemId',
-            'icon': 'fa fa-users',
-            'link': _l('app.working_groups'),
-            'menu': {
-                'title': 'Working Groups',
-                'icon': 'fa fa-users',
-                'id': 'itemid',
-                'items': [
-                    {
-                        'name': 'WG1',
-                        'link': _l('app.working_group_item({wg_name: "WG1"})')
-                    }, {
-                        'name': 'WG2',
-                        'link': _l('app.working_group_item({wg_name: "WG2"})')
-                    }, {
-                        'name': 'WG3',
-                        'link': _l('app.working_group_item({wg_name: "WG3"})')
-                    }
-                ]
-            }
-        },
+        # {
+        #     'name': 'Working Groups',
+        #     'id': 'itemId',
+        #     'icon': 'fa fa-users',
+        #     'link': _l('app.working_groups'),
+        #     'menu': {
+        #         'title': 'Working Groups',
+        #         'icon': 'fa fa-users',
+        #         'id': 'itemid',
+        #         'items': [
+        #             {
+        #                 'name': 'WG1',
+        #                 'link': _l('app.working_group_item({wg_name: "WG1"})')
+        #             }, {
+        #                 'name': 'WG2',
+        #                 'link': _l('app.working_group_item({wg_name: "WG2"})')
+        #             }, {
+        #                 'name': 'WG3',
+        #                 'link': _l('app.working_group_item({wg_name: "WG3"})')
+        #             }
+        #         ]
+        #     }
+        # },
         {
             'name': 'Create',
             'icon': 'fa fa-file-text',

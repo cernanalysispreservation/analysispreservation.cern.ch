@@ -61,9 +61,11 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
       // onGroupItemClick: function(event, item) {
       //   $scope.events.push('Group Item ' + item.name + ' clicked!');
       // },
-      // onItemClick: function(event, item) {
-      //   $scope.events.push('Item ' + item.name + ' clicked!');
-      // }//,
+      onItemClick: function(event, item) {
+        if(screenSize.is('small')) {
+          $scope.menuContainerOpen = false;          
+        }
+      }//,
       // onTitleItemClick: function(event, menu) {
       //   $scope.events.push('Title item ' + menu.title + ' clicked!');
       // },
