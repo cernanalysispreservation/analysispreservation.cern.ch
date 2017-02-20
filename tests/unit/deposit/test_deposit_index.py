@@ -27,15 +27,24 @@
 
 from __future__ import absolute_import, print_function
 
+import pytest
+
 from invenio_deposit.api import Deposit
 from invenio_search import current_search
 
 
-def test_create_deposit_index(db, es):
-    """Test if deposit index is created."""
-    deposit_index_name = 'deposits-records-lhcb-v0.0.1'
+@pytest.fixture
+def deposit_index():
+    deposit_index_name_prefix = 'deposits-records'
+    return deposit_index_name_prefix
+
+
+def test_create_deposit_lhcb_index(db, es, deposit_index):
+    """Test if deposit lhcb index is created."""
+    deposit_index_name = deposit_index + '-' + 'lhcb-v0.0.1'
 
     Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/lhcb-v0.0.1.json',
         '_deposit': {
             'status': 'draft',
             'pid': {
@@ -49,5 +58,114 @@ def test_create_deposit_index(db, es):
     db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
     res = current_search.client.search(index=deposit_index_name)
-    # Make sure the '_deposit' is added in the record
-    assert '_deposit' in res['hits']['hits'][0]['_source']
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
+
+
+def test_create_deposit_cms_analysis_index(db, es, deposit_index):
+    """Test if deposit cms analysis index is created."""
+    deposit_index_name = deposit_index + '-' + 'cms-analysis-v0.0.1'
+
+    Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
+
+
+def test_create_deposit_cms_questionnaire_index(db, es, deposit_index):
+    """Test if deposit cms questionnaire index is created."""
+    deposit_index_name = deposit_index + '-' + 'cms-questionnaire-v0.0.1'
+
+    Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/cms-questionnaire-v0.0.1.json',
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
+
+
+def test_create_deposit_atlas_analysis_index(db, es, deposit_index):
+    """Test if deposit atlas analysis index is created."""
+    deposit_index_name = deposit_index + '-' + 'atlas-analysis-v0.0.1'
+
+    Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/atlas-analysis-v0.0.1.json',
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
+
+
+def test_create_deposit_atlas_workflow_index(db, es, deposit_index):
+    """Test if deposit atlas workflows index is created."""
+    deposit_index_name = deposit_index + '-' + 'atlas-workflows-v0.0.1'
+
+    Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/atlas-workflows-v0.0.1.json',
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
+
+
+def test_create_deposit_alice_index(db, es, deposit_index):
+    """Test if deposit alice analysis index is created."""
+    deposit_index_name = deposit_index + '-' + 'alice-analysis-v0.0.1'
+
+    Deposit.create({
+        '$schema': 'https://localhost:5000/schemas/deposits/records/alice-analysis-v0.0.1.json',
+        '_deposit': {
+            'status': 'draft',
+            'pid': {
+                'type': 'recid',
+                'value': '1'
+            },
+            'id': '0a7dac44ac234fd39d941fa14bae63c3'
+
+        }
+    })
+    db.session.commit()
+    current_search.flush_and_refresh(deposit_index_name)
+    res = current_search.client.search(index=deposit_index_name)
+    assert 'id' in res['hits']['hits'][0]['_source']['_deposit']

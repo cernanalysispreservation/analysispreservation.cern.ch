@@ -70,3 +70,5 @@ target/
 *.key
 
 /cap/jsonschemas_gen/*
+
+/cap/test.db

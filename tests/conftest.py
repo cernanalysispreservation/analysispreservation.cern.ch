@@ -88,7 +88,7 @@ def script_info(app):
     yield ScriptInfo(create_app=lambda info: app)
 
 
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='session')
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -99,7 +99,7 @@ def db(app):
     db_.drop_all()
 
 
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='session')
 def es(app):
     """Provide elasticsearch access."""
     try:
