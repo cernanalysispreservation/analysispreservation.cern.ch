@@ -25,8 +25,8 @@
 
 """CAP ALICE permissions"""
 
-from invenio_access import DynamicPermission
 from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+from invenio_access import DynamicPermission
 
 
 alice_group_need = set(
@@ -36,3 +36,7 @@ alice_group_need |= set([g for g in
 
 
 alice_permission = DynamicPermission(*alice_group_need)
+
+
+def alice_permission_factory(*args):
+    return DynamicPermission(*alice_group_need)

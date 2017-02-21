@@ -47,11 +47,9 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
     $scope.$watch('depositionForm.$error', function(newValue, oldValue) {
       watchAndUpdate(newValue, oldValue);
     }, 'true');
-    // console.log("formm::", $scope['depositionForm'+$scope.deposit_id]);
   });
 
   var watchAndUpdate =  function(newValue, oldValue) {
-    // console.log("EE::");
     if (newValue && oldValue) {
 
       if ($scope.recordsVM && $scope.recordsVM.invenioRecordsSchema) {
@@ -150,9 +148,6 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
   };
 
   $scope.onUserSelect = function(_item, _model, _label, model, form) {
-      console.log("_item");
-      console.log(_item);
-
       $scope.add_permission(_item, "user");
   };
 
@@ -198,7 +193,6 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
         };
 
         angular.forEach(actions, function(action){
-          console.log(action);
           var _action = {
             "op": action.op,
             "action": action.action
@@ -212,8 +206,6 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
 
     });
 
-    console.log("permissions_update");
-    console.log(permissions_update);
     return $http({
         url: $scope.deposit.links.permissions, 
         method: 'POST',
@@ -221,33 +213,10 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
           permissions: permissions_update
         }
     }).then(function(response){
-      console.log("response::addPremissions");
-      console.log(response);
       return response.data.hits.hits.map(function(item){
         return item.email;
       });
     });
-
-
-
-    // var new_data;
-    // _.each($scope.new, function(new_entry){
-    //   if(data[new_entry]){
-    //     data[new_entry] = _.filter(data[new_entry], function(action){
-    //       return action["op"] !== "remove";
-    //     });
-    //   }
-    // });
-
-    // capLocalClient.set_record_permissions($scope.pid_value, data)
-    // .then(function(response) {
-    //   $scope.new = [];
-    //   get_record_permissions();
-    // }, function(error) {
-    //   $scope.hello = "ERROR";
-    // }, function(update){
-    //   $scope.notification = $scope.notification + '<br />' + update;
-    // });
   };
 
   // $scope.query = "";

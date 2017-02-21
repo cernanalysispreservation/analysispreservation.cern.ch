@@ -26,8 +26,8 @@
 """CAP LHCb permissions"""
 
 
-from invenio_access import DynamicPermission
 from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+from invenio_access import DynamicPermission
 
 
 lhcb_group_need = set(
@@ -37,3 +37,7 @@ lhcb_group_need |= set([g for g in
 
 
 lhcb_permission = DynamicPermission(*lhcb_group_need)
+
+
+def lhcb_permission_factory(*args):
+    return DynamicPermission(*lhcb_group_need)

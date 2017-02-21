@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 import copy
 
 from flask import current_app, request
+from flask_login import current_user
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.models import Bucket, Location
@@ -64,7 +65,28 @@ DEPOSIT_ACTIONS = [
 ]
 
 
-def set_user_permissions(user, permissions, id, dep_actions, session, access):
+def DEPOSIT_ACTIONS_NEEDS(id):
+    return {
+        "deposit-read": DepositReadActionNeed(str(id)),
+        "deposit-update": DepositUpdateActionNeed(str(id)),
+        "deposit-admin": DepositAdminActionNeed(str(id))
+    }
+
+
+def add_owner_permissions(uuid):
+    with db.session.begin_nested():
+        set_user_permissions(
+            current_user,
+            [{"op": "add", "action": action}
+                for action in DEPOSIT_ACTIONS],
+            uuid,
+            db.session,
+            {}  # TOFIX : Need to pass access object to update user
+        )
+    db.session.commit()
+
+
+def set_user_permissions(user, permissions, id, session, access):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -73,7 +95,7 @@ def set_user_permissions(user, permissions, id, dep_actions, session, access):
         if (permission.get("op", "") == "add"):
             try:
                 session.add(ActionUsers.allow(
-                    dep_actions.get(
+                    DEPOSIT_ACTIONS_NEEDS(id).get(
                         permission.get("action", ""),
                         ""),
                     user=user
@@ -103,7 +125,7 @@ def set_user_permissions(user, permissions, id, dep_actions, session, access):
     return access
 
 
-def set_egroup_permissions(role, permissions, id, dep_actions, session, access):
+def set_egroup_permissions(role, permissions, id, session, access):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -112,7 +134,7 @@ def set_egroup_permissions(role, permissions, id, dep_actions, session, access):
         if (permission.get("op", "") == "add"):
             try:
                 session.add(ActionRoles.allow(
-                    dep_actions.get(
+                    DEPOSIT_ACTIONS_NEEDS(id).get(
                         permission.get("action", ""),
                         ""),
                     role=role
@@ -204,6 +226,8 @@ class CAPDeposit(Deposit):
             default_location=Location.get_default()
         )
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
+
+        add_owner_permissions(deposit.id)
         RecordsBuckets.create(record=deposit.model, bucket=bucket)
         return deposit
 
@@ -215,12 +239,6 @@ class CAPDeposit(Deposit):
     @mark_as_action
     def permissions(self, pid=None):
         data = request.get_json()
-
-        deposit_actions = {
-            "deposit-read": DepositReadActionNeed(str(self.id)),
-            "deposit-update": DepositUpdateActionNeed(str(self.id)),
-            "deposit-admin": DepositAdminActionNeed(str(self.id))
-        }
 
         if self.get('_access', None) is None:
             _access = construct_access()
@@ -237,7 +255,6 @@ class CAPDeposit(Deposit):
                             user,
                             identity.get("permissions"),
                             self.id,
-                            deposit_actions,
                             db.session,
                             _access
                         )
@@ -249,7 +266,6 @@ class CAPDeposit(Deposit):
                             role,
                             identity.get("permissions"),
                             self.id,
-                            deposit_actions,
                             db.session,
                             _access
                         )
@@ -260,7 +276,6 @@ class CAPDeposit(Deposit):
                             role,
                             identity.get("permissions"),
                             self.id,
-                            deposit_actions,
                             db.session,
                             _access
                         )

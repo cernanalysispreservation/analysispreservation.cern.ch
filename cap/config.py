@@ -142,11 +142,11 @@ THEME_500_TEMPLATE = "cap_theme/500.html"
 
 # Records
 # =======
-#: Records base template
-RECORDS_UI_BASE_TEMPLATE = 'invenio_deposit/base.html'
-#: Records configuration
-RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
-    "read_permission_factory"
+# #: Records base template
+# RECORDS_UI_BASE_TEMPLATE = 'invenio_deposit/base.html'
+# #: Records configuration
+# RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
+#     "read_permission_factory"
 
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS = dict(
@@ -191,27 +191,27 @@ RECORDS_REST_FACETS = {
 
 # RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
 
-#: Endpoints for displaying records.
-RECORDS_UI_ENDPOINTS = dict(
-    recid=dict(
-        pid_type='recid',
-        route='/records/<pid_value>',
-        template='invenio_records_ui/detail.html',
-        record_class='invenio_records_files.api:Record'
-    ),
-    recid_preview=dict(
-        pid_type='recid',
-        route='/records/<pid_value>/preview/<path:filename>',
-        view_imp='invenio_previewer.views.preview',
-        record_class='invenio_records_files.api:Record',
-    ),
-    recid_files=dict(
-        pid_type='recid',
-        route='/records/<pid_value>/files/<path:filename>',
-        view_imp='invenio_records_files.utils.file_download_ui',
-        record_class='invenio_records_files.api:Record',
-    ),
-)
+# #: Endpoints for displaying records.
+# RECORDS_UI_ENDPOINTS = dict(
+#     recid=dict(
+#         pid_type='recid',
+#         route='/records/<pid_value>',
+#         template='invenio_records_ui/detail.html',
+#         record_class='invenio_records_files.api:Record'
+#     ),
+#     recid_preview=dict(
+#         pid_type='recid',
+#         route='/records/<pid_value>/preview/<path:filename>',
+#         view_imp='invenio_previewer.views.preview',
+#         record_class='invenio_records_files.api:Record',
+#     ),
+#     recid_files=dict(
+#         pid_type='recid',
+#         route='/records/<pid_value>/files/<path:filename>',
+#         view_imp='invenio_records_files.utils.file_download_ui',
+#         record_class='invenio_records_files.api:Record',
+#     ),
+# )
 
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
@@ -235,7 +235,7 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     # list_route='/records/',
     # item_route='/records/<pid(recid):pid_value>',
     # default_media_type='application/json',
-    # 'read_permission_factory_imp': allow_all
+    # 'read_permission_factory_imp': deny_all
 })
 
 
@@ -270,34 +270,34 @@ SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
 
 #: Account-REST Configuration
-ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
 """Default get role permission factory: reject any request."""
 
-ACCOUNTS_REST_UPDATE_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_UPDATE_ROLE_PERMISSION_FACTORY = deny_all
 """Default update role permission factory: reject any request."""
 
-ACCOUNTS_REST_DELETE_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_DELETE_ROLE_PERMISSION_FACTORY = deny_all
 """Default delete role permission factory: reject any request."""
 
-ACCOUNTS_REST_READ_ROLES_LIST_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_READ_ROLES_LIST_PERMISSION_FACTORY = deny_all
 """Default list roles permission factory: reject any request."""
 
-ACCOUNTS_REST_CREATE_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_CREATE_ROLE_PERMISSION_FACTORY = deny_all
 """Default create role permission factory: reject any request."""
 
-ACCOUNTS_REST_ASSIGN_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_ASSIGN_ROLE_PERMISSION_FACTORY = deny_all
 """Default assign role to user permission factory: reject any request."""
 
-ACCOUNTS_REST_UNASSIGN_ROLE_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_UNASSIGN_ROLE_PERMISSION_FACTORY = deny_all
 """Default unassign role from user permission factory: reject any request."""
 
-ACCOUNTS_REST_READ_USER_ROLES_LIST_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_READ_USER_ROLES_LIST_PERMISSION_FACTORY = deny_all
 """Default list users roles permission factory: reject any request."""
 
 ACCOUNTS_REST_READ_USER_PROPERTIES_PERMISSION_FACTORY = allow_all
 """Default read user properties permission factory: reject any request."""
 
-ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = allow_all
+ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = deny_all
 """Default modify user properties permission factory: reject any request."""
 
 ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
@@ -442,11 +442,11 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.lhcb.lhcb_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.lhcb.lhcb_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-analysis": {
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
@@ -458,11 +458,11 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.cms.cms_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.cms.cms_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-questionnaire": {
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
@@ -473,11 +473,11 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.cms.cms_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.cms.cms_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-workflows": {
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
@@ -489,11 +489,11 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.atlas.atlas_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-analysis": {
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
@@ -503,13 +503,12 @@ DEPOSIT_GROUPS = {
         "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
-        'create_permission_factory_imp': 'cap.modules.experiments.permissions.atlas.atlas_permission',
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.atlas.atlas_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.atlas.atlas_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "alice-analysis": {
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
@@ -520,11 +519,11 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.alice.alice_permission',
-        'read_permission_factory_imp':
-            'cap.modules.deposit.permissions.read_permission_factory',
-        'update_permission_factory_imp':
-            'cap.modules.deposit.permissions.update_permission_factory',
+            'cap.modules.experiments.permissions.alice.alice_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     }
 }
 

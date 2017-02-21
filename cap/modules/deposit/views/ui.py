@@ -31,7 +31,7 @@ from flask import Blueprint, abort, current_app, jsonify, render_template, reque
 from flask.views import View
 from flask_security import login_required
 
-
+from invenio_access import DynamicPermission
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_pidstore.resolver import Resolver
 from invenio_records import Record
@@ -175,7 +175,8 @@ class NewItemView(View):
         try:
             assert create_permission_factory
             self._create_deposit_permission = \
-                obj_or_import_string(create_permission_factory)
+                DynamicPermission(*obj_or_import_string(
+                    create_permission_factory))
         except:
             abort(403)
 

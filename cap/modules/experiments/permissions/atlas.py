@@ -26,8 +26,8 @@
 """CAP ATLAS permissions"""
 
 
-from invenio_access import DynamicPermission
 from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+from invenio_access import DynamicPermission
 
 
 atlas_group_need = set(
@@ -37,3 +37,7 @@ atlas_group_need |= set([g for g in
 
 
 atlas_permission = DynamicPermission(*atlas_group_need)
+
+
+def atlas_permission_factory(*args):
+    return DynamicPermission(*atlas_group_need)

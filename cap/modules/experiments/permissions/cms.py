@@ -26,8 +26,8 @@
 """CAP CMS permissions"""
 
 
-from invenio_access import DynamicPermission
 from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+from invenio_access import DynamicPermission
 
 
 cms_group_need = set(
@@ -37,3 +37,7 @@ cms_group_need |= set([g for g in
 
 
 cms_permission = DynamicPermission(*cms_group_need)
+
+
+def cms_permission_factory(*args):
+    return DynamicPermission(*cms_group_need)

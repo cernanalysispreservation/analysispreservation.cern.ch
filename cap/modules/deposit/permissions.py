@@ -27,35 +27,66 @@
 
 from functools import partial
 
-from flask import current_app, request
+from flask import current_app, request, g
 
-
-from cap.modules.access.permissions import OrPermissions, \
-    StrictDynamicPermission
 from cap.utils import obj_or_import_string
 from invenio_access.permissions import (
-    superuser_access, DynamicPermission, ParameterizedActionNeed)
+    DynamicPermission, ParameterizedActionNeed)
 
 
-class DepositPermission(OrPermissions):
+DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
+"""Action need for reading a record."""
+
+DepositAdminActionNeed = partial(ParameterizedActionNeed, 'deposit-admin')
+"""Action need for creating a record."""
+
+DepositUpdateActionNeed = partial(ParameterizedActionNeed, 'deposit-update')
+"""Action need for updating a record."""
+
+DepositDeleteActionNeed = partial(ParameterizedActionNeed, 'deposit-delete')
+"""Action need for deleting a record."""
+
+
+def deposit_read_need(record):
+    return DepositReadActionNeed(str(record.id))
+
+
+def deposit_admin_need(record):
+    return DepositAdminActionNeed(str(record.id))
+
+
+def deposit_update_need(record):
+    return DepositUpdateActionNeed(str(record.id))
+
+
+def deposit_delete_need(record):
+    return DepositDeleteActionNeed(str(record.id))
+
+
+class DepositPermission(DynamicPermission):
     """Generic deposit permission."""
+    actions = {
+        "read": deposit_read_need,
+        "update": deposit_update_need,
+        "admin": deposit_admin_need,
+    }
 
     def __init__(self, record, action):
         """Constructor.
         Args:
             deposit: deposit to which access is requested.
         """
-        super(DepositPermission, self).__init__()
-        # superuser can always do everything
-        self.permissions.add(StrictDynamicPermission(superuser_access))
-
+        _needs = set()
         self.deposit = record
         self.action = action
+        if action in self.actions:
+            _needs.add(self.actions[action](record))
+
+        self._needs = _needs
+
         self._load_deposit_group_permissions()
 
-    def _load_permissions(self):
-        """Create additional permission."""
-        raise NotImplementedError()
+        super(DepositPermission, self).__init__(*_needs)
 
     def _load_deposit_group_permissions(self):
         _deposit_group = self._get_deposit_group_info()
@@ -67,11 +98,11 @@ class DepositPermission(OrPermissions):
             obj_or_import_string(_permission_factory_imp)
 
         if _permission_factory_imp:
-            self.permissions.add(_permission_factory_imp(self.deposit))
+            for _need in _permission_factory_imp:
+                self._needs.add(_need)
 
     def _get_deposit_group_info(self):
         """Retrieve deposit group information for specific schema"""
-        # import ipdb;ipdb.set_trace()
         try:
             schema = self.deposit.get("$schema", None) \
                                  .split('/schemas/', 1)[1]
@@ -89,6 +120,22 @@ class DepositPermission(OrPermissions):
             )
 
         return _deposit_group
+
+    def allows(self, identity):
+        owners = self.deposit.get('_deposit', {}).get('owners', [])
+
+        if identity.id in owners:
+            return True
+
+        return super(DepositPermission, self).allows(identity)
+
+    def can(self):
+        owners = self.deposit.get('_deposit', {}).get('owners', [])
+
+        if g.identity.id in owners:
+            return True
+
+        return super(DepositPermission, self).can()
 
 
 class UpdateDepositPermission(DepositPermission):
@@ -121,46 +168,17 @@ class DeleteDepositPermission(DepositPermission):
         super(DeleteDepositPermission, self).__init__(record, 'delete')
 
 
-DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
-"""Action need for reading a record."""
-
-deposit_read_all = DepositReadActionNeed(None)
-"""Read all deposit action need."""
-
-DepositAdminActionNeed = partial(ParameterizedActionNeed, 'deposit-admin')
-"""Action need for creating a record."""
-
-deposit_admin_all = DepositAdminActionNeed(None)
-"""Create all deposit action need."""
-
-DepositUpdateActionNeed = partial(ParameterizedActionNeed, 'deposit-update')
-"""Action need for updating a record."""
-
-deposit_update_all = DepositUpdateActionNeed(None)
-"""Update all deposit action need."""
-
-DepositDeleteActionNeed = partial(ParameterizedActionNeed, 'deposit-delete')
-"""Action need for deleting a record."""
-
-deposit_delete_all = DepositDeleteActionNeed(None)
-"""Delete all deposit action need."""
-
-
 def read_permission_factory(record):
-    """Factory for creating read permissions for deposit."""
-    return DynamicPermission(DepositReadActionNeed(str(record.id)))
+    return DynamicPermission(deposit_read_need(record.id))
 
 
-def create_permission_factory(record):
-    """Factory for creating create permissions for deposit."""
-    return DynamicPermission(DepositAdminActionNeed(str(record.id)))
+def admin_permission_factory(record):
+    return DynamicPermission(deposit_admin_need(record.id))
 
 
 def update_permission_factory(record):
-    """Factory for creating update permissions for deposit."""
-    return DynamicPermission(DepositUpdateActionNeed(str(record.id)))
+    return DynamicPermission(deposit_update_need(record.id))
 
 
 def delete_permission_factory(record):
-    """Factory for creating delete permissions for deposit."""
-    return DynamicPermission(DepositDeleteActionNeed(str(record.id)))
+    return DynamicPermission(deposit_delete_need(record.id))

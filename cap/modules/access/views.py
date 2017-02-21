@@ -28,12 +28,12 @@ from __future__ import absolute_import, print_function
 
 from functools import wraps
 
-from flask import Blueprint, current_app, g, redirect, session, url_for, abort, jsonify
+from flask import Blueprint, current_app, jsonify, redirect, session, url_for
 from flask_login import current_user
-from flask_principal import AnonymousIdentity, RoleNeed, identity_loaded
+from flask_principal import Permission
 
-from cap.utils import obj_or_import_string
 from cap.modules.experiments.permissions import collaboration_permissions
+from cap.utils import obj_or_import_string
 
 
 access_blueprint = Blueprint('cap_access', __name__,
@@ -43,42 +43,6 @@ access_blueprint = Blueprint('cap_access', __name__,
 
 @access_blueprint.route('/user')
 def get_user():
-    if False: # FIXME: remove after making local login work
-        return """
-{
-  "collaborations": [
-    "ATLAS",
-    "LHCb",
-    "CMS",
-    "ALICE"
-  ],
-  "current_experiment": "ATLAS",
-  "deposit_groups": [
-    {
-      "deposit_group": "cms-analysis",
-      "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
-      "name": "CMS Analysis"
-    },
-    {
-      "deposit_group": "lhcb",
-      "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
-      "name": "LHCb Analysis"
-    },
-    {
-      "deposit_group": "cms-questionnaire",
-      "description": "Create a CMS Questionnaire",
-      "name": "CMS Questionnaire"
-    },
-    {
-      "deposit_group": "atlas-workflows",
-      "description": "Create a ATLAS Workflow",
-      "name": "ATLAS Workflow"
-    }
-  ],
-  "email": "info@inveniosoftware.org",
-  "id": 1
-}
-"""
     if current_user.is_authenticated:
         _user = {
             "id": current_user.id,
@@ -93,6 +57,7 @@ def get_user():
         return response
     else:
         response = jsonify(False)
+        # TOFIX Return status 401 and intercept from SPA
         response.status_code = 200
         return response
 
@@ -129,8 +94,9 @@ def get_user_deposit_groups():
     user_deposit_groups = []
     for group, obj in deposit_groups.iteritems():
         # Check if user has permission for this deposit group
-        if obj_or_import_string(
-                obj['create_permission_factory_imp']).can():
+        needs = obj_or_import_string(
+            obj['create_permission_factory_imp'])
+        if Permission(*needs).can():
             group_data = {}
             group_data['name'] = obj.get('name', '')
             group_data['deposit_group'] = group

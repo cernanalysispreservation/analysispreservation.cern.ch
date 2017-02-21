@@ -100,7 +100,6 @@ install_requires = [
     'invenio-records[postgresql]>=1.0.0b1',
     'invenio-records-files>=1.0.0a8',
     'invenio-records-rest>=1.0.0a17',
-    'invenio-records-ui>=1.0.0a8',
     'invenio-rest[cors]>=1.0.0a10',
     'invenio-search-ui>=1.0.0a5',
     'invenio-search>=1.0.0a9',

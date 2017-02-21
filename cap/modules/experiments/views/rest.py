@@ -32,7 +32,8 @@ from invenio_collections.models import Collection
 
 from cap.modules.access.views import (get_user_deposit_groups,
                                       get_user_experiments)
-from cap.modules.experiments.permissions import collaboration_permissions
+from cap.modules.experiments.permissions \
+    import collaboration_permissions_factory
 
 experiments_bp = Blueprint(
     'cap_experiments',
@@ -143,7 +144,7 @@ def experiment_menu(experiment):
 @login_required
 @experiments_bp.route('/set/<experiment>')
 def set_global_experiment(experiment=None):
-    if experiment in collaboration_permissions:
-        if collaboration_permissions[experiment].can():
+    if experiment in collaboration_permissions_factory:
+        if collaboration_permissions_factory[experiment]().can():
             session['current_experiment'] = experiment
             return redirect('/')

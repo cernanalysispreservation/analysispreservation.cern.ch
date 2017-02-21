@@ -25,10 +25,10 @@
 
 """CAP deposit permissions"""
 
-from alice import alice_permission
-from atlas import atlas_permission
-from cms import cms_permission
-from lhcb import lhcb_permission
+from alice import alice_permission, alice_permission_factory
+from atlas import atlas_permission, atlas_permission_factory
+from cms import cms_permission, cms_permission_factory
+from lhcb import lhcb_permission, lhcb_permission_factory
 
 
 collaboration_permissions = {
@@ -36,6 +36,13 @@ collaboration_permissions = {
     'ATLAS': atlas_permission,
     'CMS': cms_permission,
     'LHCb': lhcb_permission,
+}
+
+collaboration_permissions_factory = {
+    'ALICE': alice_permission_factory,
+    'ATLAS': atlas_permission_factory,
+    'CMS': cms_permission_factory,
+    'LHCb': lhcb_permission_factory,
 }
 
 __all__ = ['collaboration_permissions']
