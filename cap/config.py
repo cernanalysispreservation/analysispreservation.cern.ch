@@ -438,7 +438,7 @@ DEPOSIT_GROUPS = {
         "schema_form": "/app/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
         "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -454,7 +454,7 @@ DEPOSIT_GROUPS = {
         "name": "CMS Analysis",
         "description":
             "Create a CMS Analysis (analysis metadata, workflows, etc)",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -469,7 +469,7 @@ DEPOSIT_GROUPS = {
         "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
         "description": "Create a CMS Questionnaire",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -485,7 +485,7 @@ DEPOSIT_GROUPS = {
             "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
         "description": "Create an ATLAS Workflow",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -500,7 +500,7 @@ DEPOSIT_GROUPS = {
         "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
         "description": "Create an ATLAS Analysis",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -515,7 +515,7 @@ DEPOSIT_GROUPS = {
         "schema_form": "/app/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
         "name": "ALICE Analysis",
         "description": "Create an ALICE Analysis",
-        "list_template": "cap_deposit/index.html",
+        # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
@@ -567,7 +567,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         write_scope.id),
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
-DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
+#DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
     deposit_config.DEPOSIT_RECORDS_UI_ENDPOINTS)

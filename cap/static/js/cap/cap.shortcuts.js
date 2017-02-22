@@ -42,7 +42,7 @@ var initCapGlobalShortcuts = function(hotkeys, scope, state) {
     combo: 'r',
     description: 'Navigate to Shared Records',
     callback: function() {
-      state.go('app.publications');
+      state.go('app.shared');
     }
   });
 

@@ -5,6 +5,7 @@
 
 var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient, capUserClient, $state, hotkeys, screenSize) {
   $scope.$location = $location;
+  $scope.current_state_params = $state.params;
 
   $scope.init = function(){
     // Request user info to get application needed user metadata

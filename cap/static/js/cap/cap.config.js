@@ -107,8 +107,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
-      name: 'app.publications',
-      url: '/publications',
+      name: 'app.shared',
+      url: '/shared',
       views: {
         'content': {
           templateUrl: '/static/templates/cap/shared_records.html'
@@ -206,13 +206,24 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     })
     .state({
       name: 'app.deposit',
-      url: '/deposit?status',
+      url: '/deposit/{status:(?:draft|published)}',
       views: {
         'content': {
-          templateUrl: function($stateParams) {
-            return '/app/deposit?status='+$stateParams.status;
-          },
-          // controller: 'DepositController',
+          templateUrl: '/static/templates/cap/deposit/results.html',
+          controller: 'capCtrl',
+        }
+      },
+      data: {
+        requireLogin: true
+      }
+    })
+    .state({
+      name: 'app.deposit_general',
+      url: '/deposit',
+      views: {
+        'content': {
+          templateUrl: '/static/templates/cap/deposit/results.html',
+          controller: 'capCtrl',
         }
       },
       data: {

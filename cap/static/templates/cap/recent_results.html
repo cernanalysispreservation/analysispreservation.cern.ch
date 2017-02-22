@@ -1,9 +1,9 @@
 <div ng-if="results.data.hits.total != 0">
   <div class="list-group">
     <a class="list-group-item"
-    	ng-if="results.config.url.indexOf('deposits') !== -1"
-        ng-repeat="record in results.data.hits.hits track by $index"
-        target="_self" ng-href="/deposit/{{ record.metadata._deposit.id }}">
+    	 ng-if="results.config.url.indexOf('deposits') !== -1"
+       ng-repeat="record in results.data.hits.hits track by $index"
+       ui-sref="app.deposit_item.overview({depid:record.metadata._deposit.id})">
       <div class="pull-left">
         <div class="btn btn-sm btn-link">
           <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
@@ -28,7 +28,7 @@
     <a class="list-group-item"
     	ng-if="results.config.url.indexOf('deposits') == -1"
         ng-repeat="record in results.data.hits.hits track by $index"
-        target="_self" ng-href="/records/{{ record.id }}">
+        ui-sref="app.records.overview({recid:record.id})">
       <div class="pull-left">
         <div class="btn btn-sm btn-link">
           <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
@@ -61,3 +61,4 @@
     <h1>No Shared Records Found</h1>
   </div>
 </div>
+

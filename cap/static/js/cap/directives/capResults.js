@@ -39,13 +39,14 @@ angular.module('cap.directives')
   .directive('capResults', ['capRecordsClient', function(capRecordsClient) {
     return {
       restrict: 'E',
-      templateUrl: 'static/templates/cap/recent_results.html',
+      templateUrl: '/static/templates/cap/recent_results.html',
       scope: {
-        limit: '=',
-        status: '=',
-        type: '='
+        limit: '@',
+        status: '@',
+        type: '@'
       },
       link: function(scope, element, attrs) {
+        
         if(attrs.type == 'records') {
           capRecordsClient.get_experiment_records(limit=attrs.limit)
           .then(function(response) {

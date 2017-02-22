@@ -64,7 +64,7 @@ def CAP_EXPERIMENT_MENU(experiment):
     _menu = [
         {
             'name': 'Shared Records',
-            'link': _l('app.publications'),
+            'link': _l('app.shared'),
             'icon': 'fa fa-share-square'
         },
         {
