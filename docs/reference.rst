@@ -3,7 +3,7 @@ Reference Guide
 
 .. toctree::
 
-	reference-guide/jargon
+	reference-guide/terms
 	Schema Reference <reference-guide/schema-reference>
 
 .. toctree::

@@ -3,6 +3,9 @@ Status Report
 
 .. note:: This page will be updated as development progresses. If you have any questions or something appears out of date please feel free to :doc:`contact us <support>`.
 
+.. note::
+	During pre-release data will be stored and versioned. User experience can change over time, any feedback is welcome. Schema changes will be announced and will happen rarely to ensure stability.
+
 Development wraps around the `three pillars <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/wiki/Overview>`_ identified with the help of CERN physicists in the `5th CAP meeting <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/wiki/Fifth-CAP-meeting>`_:
 
 - `Describe`_
@@ -17,8 +20,8 @@ Describe
 Experiment schemas are used to describe the most important features and data for an analysis. They will be accessible via web forms and an API. Thus, this pillar includes everything related to the *schemas*, *search*, *user interface* and *API*.
 
 **Schema - work in progress**
-	**ALICE - information required**
-		Pending, as no schema or information for creating a schema has been provided yet.
+	**ALICE - untestet**
+		First version of schema exists. Waiting for feedback.
 	**ATLAS - untested**
 		Focus has been put on the workflow. A basic schema exists that will require testing and feedback.
 	**CMS - iterative testing and development**
@@ -55,6 +58,7 @@ Autocompletion, suggestion of content and automatic filling in of information wi
 
 ..	- CADI - waiting for reimplementation
 ..	- DAS - reconnection is work in progress
+..	- Trigger Information - TODO CMS Triggers are connected!?
 ..	- more - information required
 
 .. **LHCb - mostly connected**
@@ -66,7 +70,7 @@ Autocompletion, suggestion of content and automatic filling in of information wi
 ..	- Anna's DB - connected
 
 .. **Data upload - almost ready**
-..	Uploading and saving files and data will be possible soon. Currently, last issues are resolved.
+..	File upload works for local files and grabbing files from certain places (cds, TODO?). Error messages and retry on error will be implemented.
 
 .. **Repository checkout - future work**
 ..	Checking out the required state of a repository that is linked to in the analysis information is important for preservation. It will be a future task.

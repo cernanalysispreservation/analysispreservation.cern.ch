@@ -4,8 +4,13 @@ Overview
 This section will provide you with a wider background knowledge about CERN Analysis Preservation and the motivation behind it.
 
 .. toctree::
-    :maxdepth: 1
+	:maxdepth: 1
 
-    overview/introduction
-    overview/project
-    overview/related-projects
+	overview/introduction
+	overview/project
+
+
+.. toctree::
+	:hidden:
+
+	overview/related-projects

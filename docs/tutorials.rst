@@ -10,8 +10,11 @@ Tutorials
 
 	4. Rerun an analysis
 
-	5. JSON and JSON Schema
 
+.. toctree::
+	:maxdepth: 1
+	
+	tutorials/json
 
 .. toctree::
 	:hidden:
@@ -19,5 +22,5 @@ Tutorials
 
 	tutorials/create
 	tutorials/create-api
-	tutorials/json
+	
 	

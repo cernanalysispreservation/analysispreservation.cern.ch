@@ -115,7 +115,7 @@ CAP aims to simplify combining analysis as well as the process of analysis revie
 4. Reproduce and Rerun
 ----------------------
 
-In CAP analyses information is preserved with the aim of reproducible research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST. For more on this please go to :doc:`related projects <related-projects>`.
+In CAP analyses information is preserved with the aim of reproducible research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST (see :doc:`this list <../reference-guide/terms>` for a short information on these projects).
 
 .. Analysis Environment Preservation
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

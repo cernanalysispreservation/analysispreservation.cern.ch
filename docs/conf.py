@@ -100,6 +100,7 @@ html_theme_options = {
     'github_banner': 'banner.svg',
     'github_button': False,
     'sidebar_includehidden': False,
+    'show_related': True,
     #'page_width': '990px',
     #'fixed_sidebar': True
 }
