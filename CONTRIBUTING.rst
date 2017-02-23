@@ -5,6 +5,14 @@
 Any contribution, bug report, feature request and code contributions are
 encouraged and welcome, so please go ahead and don't withhold feedback!
 
+- `Bug Reports and Feature Requests`_
+- `Code Contributions`_
+
+  - `Formating Commit Messages`_
+  - `Change Propagation`_
+
+- `Chatroom`_
+
 Bug Reports and Feature Requests
 ================================
 
@@ -101,6 +109,35 @@ commits with a gpg key, verifying it was you who created this commit).
 For further reading, please refer to the `original repository on Github
 <https://github.com/inveniosoftware/kwalitee>`_ and the `official
 documentation <https://kwalitee.readthedocs.io/>`_.
+
+Change Propagation
+------------------
+
+Currently, CERN Analysis Preservation runs on three servers to allow
+internal and external testing while keeping the service stable.
+
+1. The `Production <https://analysispreservation.cern.ch>`_ server is
+   the most stable version where data is savely stored and versioned.
+   It receives rare updates to minimize the possibility of errors
+   occuring and to maximize service up-time. This server is meant for
+   long-term user testing and collaboration-wide access.
+   It follows the `production branch
+   <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/tree/production>`_
+   that receives updates from master after they were tested on the other
+   two branches.
+2. The `Quality Assurance <https://analysispreservation-qa.cern.ch>`_
+   server is where we test new features with certain users. It receives
+   more frequent updates and data may disappear after a while.
+   It follows the `qa branch
+   <https://github.com/cernanalysispreservation/analysispreservation.cern.ch/tree/qa>`_
+   that receives updates from master after they were tested there.
+3. The `Development <https://analysispreservation-dev.cern.ch>`_ server
+   is unstable and exists for internal testing (nightly builds). Nothing
+   is guaranteed to be preserved at any time, down-times are frequent
+   and no warnings are given when deletion or changes occur.
+   It follows the `master branch
+   <https://github.com/cernanalysispreservation/analysispreservation.cern.ch>`_
+   that receives updates from pull requests.
 
 Chatroom
 ========
