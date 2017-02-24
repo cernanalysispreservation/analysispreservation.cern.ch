@@ -2,18 +2,16 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "description": "Describe information needed for deposit module.",
   "properties": {
-    "_buckets": {
+    "_cap_status": {
+      "type": "object",
       "properties": {
-        "deposit": {
-          "description": "Deposit bucket ID.",
+        "url": {
           "type": "string"
         },
-        "record": {
-          "description": "Record bucket ID.",
+        "message": {
           "type": "string"
         }
-      },
-      "type": "object"
+      }
     },
     "_deposit": {
       "name": "_deposit",
@@ -67,9 +65,6 @@
         "description": "Describe information needed for files in records.",
         "properties": {
           "bucket": {
-            "type": "string"
-          },
-          "checksum": {
             "type": "string"
           },
           "key": {
@@ -220,7 +215,19 @@
         },
         "institutes": {
           "title": "Institutes Involved",
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "Ions and Fixed Target",
+            "b-hadrons and Quarkonia",
+            "B Decays to Charmonium",
+            "Detector Performance",
+            "Charmless b-hadron Decays",
+            "QCD Electroweak and Exotica",
+            "Rare Decays",
+            "Charm Physics",
+            "Semileptonic B decays",
+            "B Decays to Open Charm"
+          ]
         },
         "keywords": {
           "id": "keywords",
@@ -358,6 +365,18 @@
                     "title": "Trigger",
                     "type": "array"
                   },
+                  "davinci_script": {
+                    "title": "DaVinci Script",
+                    "type": "object",
+                    "x-cap-file": {
+                       "fetch_from": "/source/url",
+                       "file_key": "/key",
+                       "condition": "/source/preserved"
+                    },
+                    "properties": {
+                       "$ref": "#/definitions/file"
+                    }
+                  },
                   "year": {
                     "title": "Year",
                     "type": "string"
@@ -432,6 +451,18 @@
                     },
                     "title": "Trigger",
                     "type": "array"
+                  },
+                  "davinci_script": {
+                    "title": "DaVinci Script",
+                    "type": "object",
+                    "x-cap-file": {
+                       "fetch_from": "/source/url",
+                       "file_key": "/key",
+                       "condition": "/source/preserved"
+                    },
+                    "properties": {
+                       "$ref": "#/definitions/file"
+                    }
                   },
                   "used_tools": {
                     "title": "Used Tools",
@@ -574,5 +605,30 @@
     }
   },
   "title": "LHCb Deposit Schema.",
-  "type": "object"
+  "type": "object",
+  "definitions": {
+      "file": {
+         "source": {
+            "title": "URL",
+            "type": "object",
+            "properties": {
+               "preserved": {
+                  "title": "Preserve files from URL?",
+                  "type": "boolean",
+                  "default": true
+               },
+               "url": {
+                  "type": "string",
+                  "pattern": "^(http|https)://"
+               }
+            }
+         },
+         "key": {
+            "type": "string"
+         },
+         "version_id": {
+            "type": "string"
+         }
+      }
+   }
 }
