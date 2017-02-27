@@ -79,6 +79,7 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
+    'Flask-WTF==0.13.1',  # temporary fix invenio-oauth2server/issues/10
     'invenio-access>=1.0.0a10',
     'invenio-accounts>=1.0.0b1',
     'invenio-assets>=1.0.0b4',
