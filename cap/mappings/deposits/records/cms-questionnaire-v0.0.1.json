@@ -1,659 +1,662 @@
-{  
-   "mappings":{  
-      "cms-questionnaire-v0.0.1":{  
-         "properties":{  
-            "_deposit":{  
+{
+   "mappings":{
+      "cms-questionnaire-v0.0.1":{
+         "properties":{
+            "_experiment" : {
+               "type": "string"
+            },
+            "_deposit":{
                "type":"object",
-               "properties":{  
-                  "id":{  
+               "properties":{
+                  "id":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "pid":{  
+                  "pid":{
                      "type":"object",
-                     "properties":{  
-                        "revision_id":{  
+                     "properties":{
+                        "revision_id":{
                            "type":"integer"
                         },
-                        "type":{  
+                        "type":{
                            "type":"string"
                         },
-                        "value":{  
+                        "value":{
                            "type":"string",
                            "index":"not_analyzed"
                         }
                      }
                   },
-                  "created_by":{  
+                  "created_by":{
                      "type":"integer"
                   },
-                  "owners":{  
+                  "owners":{
                      "type":"integer"
                   },
-                  "status":{  
+                  "status":{
                      "type":"string"
                   }
                }
             },
-            "_files":{  
+            "_files":{
                "type":"object",
-               "properties":{  
-                  "key":{  
+               "properties":{
+                  "key":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "bucket":{  
+                  "bucket":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "size":{  
+                  "size":{
                      "type":"integer"
                   },
-                  "version_id":{  
+                  "version_id":{
                      "type":"string",
                      "index":"not_analyzed"
                   }
                }
             },
-            "document_type_human":{  
+            "document_type_human":{
                "type":"string",
                "index":"not_analyzed"
             },
-            "uncertainties":{  
+            "uncertainties":{
                "type":"object",
-               "properties":{  
-                  "consideration":{  
+               "properties":{
+                  "consideration":{
                      "type":"string"
                   },
-                  "twiki_read":{  
+                  "twiki_read":{
                      "type":"string"
                   },
-                  "template_morphing":{  
+                  "template_morphing":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "crosschecks":{  
+                  "crosschecks":{
                      "type":"object",
-                     "properties":{  
-                        "failure_procedure":{  
+                     "properties":{
+                        "failure_procedure":{
                            "type":"string"
                         },
-                        "deriving":{  
+                        "deriving":{
                            "type":"string"
                         },
-                        "comments":{  
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "recommendations_awareness":{  
+                  "recommendations_awareness":{
                      "type":"string"
                   }
                }
             },
-            "feedback":{  
+            "feedback":{
                "type":"object",
-               "properties":{  
-                  "subject_to_change":{  
+               "properties":{
+                  "subject_to_change":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "feedback":{  
+                  "feedback":{
                      "type":"string"
                   },
-                  "additional_comments":{  
+                  "additional_comments":{
                      "type":"string"
                   }
                }
             },
-            "general":{  
+            "general":{
                "type":"object",
-               "properties":{  
-                  "forum_subscription":{  
+               "properties":{
+                  "forum_subscription":{
                      "type":"string"
                   },
-                  "meetings_awareness":{  
+                  "meetings_awareness":{
                      "type":"string"
                   },
-                  "forum_awareness":{  
+                  "forum_awareness":{
                      "type":"string"
                   },
-                  "past_interaction":{  
+                  "past_interaction":{
                      "type":"string"
                   },
-                  "faq_awareness":{  
+                  "faq_awareness":{
                      "type":"string"
                   }
                }
             },
-            "data_fitting":{  
+            "data_fitting":{
                "type":"object",
-               "properties":{  
-                  "toy_exp":{  
+               "properties":{
+                  "toy_exp":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "functional_form":{  
+                  "functional_form":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "usage":{  
+                  "usage":{
                      "type":"string"
                   },
-                  "param_bounds":{  
+                  "param_bounds":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "bcgrnd_shape":{  
+                  "bcgrnd_shape":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "fitting_model_choice":{  
+                  "fitting_model_choice":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "test_stats":{  
+                  "test_stats":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         },
-                        "reason":{  
+                        "reason":{
                            "type":"string"
                         }
                      }
                   },
-                  "goodness_test":{  
+                  "goodness_test":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "p-value":{  
+                        "p-value":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "fit_func_params":{  
+                  "fit_func_params":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "cov_matrix":{  
+                  "cov_matrix":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  }
-               }
-            },
-            "discovery":{  
-               "type":"object",
-               "properties":{  
-                  "lookelsewhere_effect":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "twiki_read":{  
-                     "type":"string"
-                  },
-                  "test_statistics":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "usage":{  
-                     "type":"string"
-                  }
-               }
-            },
-            "confidence":{  
-               "type":"object",
-               "properties":{  
-                  "theory_error":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "support_awareness":{  
-                     "type":"string"
-                  },
-                  "usage":{  
-                     "type":"string"
-                  },
-                  "software":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "citation":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "test_stats":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        },
-                        "details":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "atlas_cms_agreement":{  
-                     "type":"string"
-                  },
-                  "recommendation_awareness":{  
-                     "type":"string"
-                  },
-                  "approaches":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "toy_data":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   }
                }
             },
-            "unfolding":{  
+            "discovery":{
                "type":"object",
-               "properties":{  
-                  "bbb_discouragement_awareness":{  
-                     "type":"string"
-                  },
-                  "event_weight_application":{  
+               "properties":{
+                  "lookelsewhere_effect":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "note_read":{  
+                  "twiki_read":{
                      "type":"string"
                   },
-                  "usage":{  
-                     "type":"string"
-                  },
-                  "software":{  
+                  "test_statistics":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "validation":{  
+                  "usage":{
                      "type":"string"
-                  },
-                  "technique":{  
+                  }
+               }
+            },
+            "confidence":{
+               "type":"object",
+               "properties":{
+                  "theory_error":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "support_awareness":{
+                     "type":"string"
+                  },
+                  "usage":{
+                     "type":"string"
+                  },
+                  "software":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "citation":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "test_stats":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        },
+                        "details":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "atlas_cms_agreement":{
+                     "type":"string"
+                  },
+                  "recommendation_awareness":{
+                     "type":"string"
+                  },
+                  "approaches":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "toy_data":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
                            "type":"string"
                         }
                      }
                   }
                }
             },
-            "other":{  
+            "unfolding":{
                "type":"object",
-               "properties":{  
-                  "blind_analysis":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "combined_measurements":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "correlation_treatment":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "faq_read":{  
-                     "type":"string"
-                  }
-               }
-            },
-            "content":{  
-               "type":"object",
-               "properties":{  
-                  "cadi":{  
+               "properties":{
+                  "bbb_discouragement_awareness":{
                      "type":"string"
                   },
-                  "email":{  
+                  "event_weight_application":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "note_read":{
                      "type":"string"
                   },
-                  "preapproval_date":{  
-                     "type":"object",
-                     "properties":{  
-                        "choice":{  
-                           "type":"string"
-                        },
-                        "date":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "abstract":{  
+                  "usage":{
                      "type":"string"
                   },
-                  "group":{  
+                  "software":{
                      "type":"object",
-                     "properties":{  
-                        "comments":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   },
-                  "name":{  
+                  "validation":{
                      "type":"string"
                   },
-                  "cadi_refs":{  
+                  "technique":{
                      "type":"object",
-                     "properties":{  
-                        "number":{  
+                     "properties":{
+                        "comments":{
                            "type":"string"
                         },
-                        "comment":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "opt_title":{  
-                     "type":"string"
-                  }
-               }
-            },
-            "multivariate":{  
-               "type":"object",
-               "properties":{  
-                  "overtraining_checks":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "input_selection":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "mva_output_usage":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "robustness_checks":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "null_pdf":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "correlation_studies":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "twiki_read":{  
-                     "type":"string"
-                  },
-                  "input_checks":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "software":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "type":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "multi_usage":{  
-                     "type":"string"
-                  },
-                  "background_mix":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
+                        "name":{
                            "type":"string"
                         }
                      }
                   }
                }
             },
-            "creator":{  
+            "other":{
+               "type":"object",
+               "properties":{
+                  "blind_analysis":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "combined_measurements":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "correlation_treatment":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "faq_read":{
+                     "type":"string"
+                  }
+               }
+            },
+            "content":{
+               "type":"object",
+               "properties":{
+                  "cadi":{
+                     "type":"string"
+                  },
+                  "email":{
+                     "type":"string"
+                  },
+                  "preapproval_date":{
+                     "type":"object",
+                     "properties":{
+                        "choice":{
+                           "type":"string"
+                        },
+                        "date":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "abstract":{
+                     "type":"string"
+                  },
+                  "group":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "name":{
+                     "type":"string"
+                  },
+                  "cadi_refs":{
+                     "type":"object",
+                     "properties":{
+                        "number":{
+                           "type":"string"
+                        },
+                        "comment":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "opt_title":{
+                     "type":"string"
+                  }
+               }
+            },
+            "multivariate":{
+               "type":"object",
+               "properties":{
+                  "overtraining_checks":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "input_selection":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "mva_output_usage":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "robustness_checks":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "null_pdf":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "correlation_studies":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "twiki_read":{
+                     "type":"string"
+                  },
+                  "input_checks":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "software":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "type":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  },
+                  "multi_usage":{
+                     "type":"string"
+                  },
+                  "background_mix":{
+                     "type":"object",
+                     "properties":{
+                        "comments":{
+                           "type":"string"
+                        },
+                        "name":{
+                           "type":"string"
+                        }
+                     }
+                  }
+               }
+            },
+            "creator":{
                "type":"integer"
             },
-            "created":{  
+            "created":{
                "type":"date"
             },
-            "updated":{  
+            "updated":{
                "type":"date"
             },
-            "_created":{  
+            "_created":{
                "type":"date",
                "copy_to":"created"
             },
-            "_updated":{  
+            "_updated":{
                "type":"date",
                "copy_to":"updated"
             }

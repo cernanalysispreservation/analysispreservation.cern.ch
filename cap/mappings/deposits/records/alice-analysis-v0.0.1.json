@@ -2,6 +2,9 @@
   "mappings": {
     "alice-analysis-v0.0.1": {
       "properties": {
+        "_experiment" : {
+          "type": "string"
+        },
         "main_analysis": {
           "type": "object",
           "properties": {

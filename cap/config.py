@@ -51,7 +51,7 @@ from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission,
                                              DeleteDepositPermission)
-from cap.modules.records.search import CapRecordSearch
+from cap.modules.records.search import cap_record_search_factory
 
 
 def _(x):
@@ -140,6 +140,34 @@ THEME_404_TEMPLATE = "cap_theme/404.html"
 #: Template for 500 page.
 THEME_500_TEMPLATE = "cap_theme/500.html"
 
+
+# CAP collaboration groups
+# ========================
+#: Configuration for collaborations
+CAP_COLLAB_EGROUPS = {
+    "CMS": [
+        RoleNeed("cms-members@cern.ch"),
+    ],
+    "ALICE": [
+        RoleNeed("alice-member@cern.ch"),
+    ],
+    "ATLAS": [
+        RoleNeed("atlas-active-members-all@cern.ch"),
+    ],
+    "LHCb": [
+        RoleNeed("lhcb-general@cern.ch"),
+    ]
+}
+
+#: E-Groups for superuser rights
+SUPERUSER_EGROUPS = [
+    RoleNeed('analysis-preservation-support@cern.ch'),
+    RoleNeed('data-preservation-admins@cern.ch'),
+]
+
+SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
+
+
 # Records
 # =======
 # #: Records base template
@@ -222,7 +250,10 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     # 'search_index': 'records',
     # 'record_class': "invenio_records_files.api:Record",
     # search_type=None,
-    'search_class': CapRecordSearch,
+    'search_class': cap_record_search_factory(
+        CAP_COLLAB_EGROUPS,
+        SUPERUSER_EGROUPS,
+    ),
     # 'search_factory_imp': 'invenio_records_rest.query.es_search_factory',
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
@@ -241,33 +272,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
 
 #: Default api endpoint for LHCb db
 GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
-
-# CAP collaboration groups
-# ========================
-#: Configuration for collaborations
-CAP_COLLAB_EGROUPS = {
-    "CMS": [
-        RoleNeed("cms-members@cern.ch"),
-    ],
-    "ALICE": [
-        RoleNeed("alice-member@cern.ch"),
-    ],
-    "ATLAS": [
-        RoleNeed("atlas-active-members-all@cern.ch"),
-    ],
-    "LHCb": [
-        RoleNeed("lhcb-general@cern.ch"),
-    ]
-}
-
-#: E-Groups for superuser rights
-SUPERUSER_EGROUPS = [
-    RoleNeed('analysis-preservation-support@cern.ch'),
-    RoleNeed('data-preservation-admins@cern.ch'),
-]
-
-SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
-
 
 #: Account-REST Configuration
 ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
@@ -434,6 +438,7 @@ DEPOSIT_FILES_API = '/api/files'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
+        "experiment": "LHCb",
         "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
@@ -449,6 +454,7 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-analysis": {
+        "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
@@ -465,6 +471,7 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-questionnaire": {
+        "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
@@ -480,6 +487,7 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-workflows": {
+        "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
         "schema_form":
             "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
@@ -496,6 +504,7 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-analysis": {
+        "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
@@ -511,6 +520,7 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "alice-analysis": {
+        "experiment": "ALICE",
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
         "name": "ALICE Analysis",

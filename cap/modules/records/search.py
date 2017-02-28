@@ -1,40 +1,65 @@
 """Configuration for record search."""
 
-from elasticsearch_dsl import Q, TermsFacet
-from flask import has_request_context
+from elasticsearch_dsl import Q
+from flask import abort
 from flask_login import current_user
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
 
-# from .permissions import admin_permission_factory
+# from cap.modules.access.views import get_user_experiments
+from flask_principal import Permission
+# from cap.config import CAP_COLLAB_EGROUPS, SUPERUSER_EGROUPS
+# from cap.modules.experiments.permissions import collaboration_permissions
 
 
-def records_filter():
+def records_filter(experiments_needs, admin_needs=None):
     """Filter list of deposits.
-    Permit to the user to see all if:
-    * The user is an admin (see
-        func:`invenio_deposit.permissions:admin_permission_factory`).
-    * It's called outside of a request.
-    Otherwise, it filters out any deposit where user is not the owner.
     """
+    if current_user.is_authenticated:
+        user_experiments = []
+        if admin_needs and Permission(*admin_needs).can():
+            return Q()
 
-    if not has_request_context(): # or admin_permission_factory().can():
-        return Q()
+        for exp in experiments_needs:
+            if Permission(*experiments_needs[exp]).can():
+                user_experiments.append(exp.lower())
+
+        q = {
+            "bool": {
+                "should": [
+                    {
+                        "terms": {
+                            "_experiment": user_experiments
+                        }
+                    }
+                ]
+            }
+        }
+
+        return Q(q)
     else:
-        return Q(
-            'match', **{'_deposit.owners': getattr(current_user, 'id', 0)}
-        )
+        abort(403)
 
 
-class CapRecordSearch(RecordsSearch):
-    """Default search class."""
+def cap_record_search_factory(needs, admin_needs):
 
-    class Meta:
-        """Configuration for record search."""
-        index = 'records'
-        doc_types = None
-        fields = ('*', )
-        facets = {}
+    class CapRecordSearch(RecordsSearch):
+        """Default search class."""
+        # exp_permissions = []
 
-        default_filter = None
-        # default_filter = DefaultFilter(records_filter)
+        def __init__(self, **kwargs):
+
+            # default_filter = DefaultFilter(records_filter(exp_permissions))
+
+            self.Meta.index = 'records'
+            self.Meta.doc_types = None
+            self.Meta.fields = ('*', )
+            # self.Meta.facets = {
+            #     'status': TermsFacet(field='_deposit.status'),
+            # }
+            self.Meta.default_filter = DefaultFilter(
+                records_filter(needs, admin_needs))
+
+            super(CapRecordSearch, self).__init__(**kwargs)
+
+    return CapRecordSearch

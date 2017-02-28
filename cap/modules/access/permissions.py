@@ -30,7 +30,7 @@ from invenio_access.permissions import DynamicPermission
 from flask import current_app
 
 
-def admin_permission_factory(admin_view):
+def admin_permission_factory():
     """Default factory for creating a permission for an admin.
     It tries to load a :class:`invenio_access.permissions.DynamicPermission`
     instance if `invenio_access` is installed.

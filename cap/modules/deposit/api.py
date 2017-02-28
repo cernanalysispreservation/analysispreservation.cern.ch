@@ -56,6 +56,7 @@ PRESERVE_FIELDS = (
     '_deposit',
     '_buckets',
     '_files',
+    '_experiment',
 )
 
 DEPOSIT_ACTIONS = [
@@ -225,6 +226,26 @@ class CAPDeposit(Deposit):
         bucket = Bucket.create(
             default_location=Location.get_default()
         )
+
+        try:
+            schema = data.get("$schema", None) \
+                .split('/schemas/', 1)[1]
+        except AttributeError:
+            return None
+
+        if schema:
+            _deposit_group = \
+                next(
+                    (depgroup
+                     for dg, depgroup
+                     in current_app.config.get('DEPOSIT_GROUPS').iteritems()
+                     if schema in depgroup['schema']
+                     ),
+                    None
+                )
+
+            data["_experiment"] = _deposit_group.get("experiment", "Unknown")
+
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
 
         add_owner_permissions(deposit.id)

@@ -1,239 +1,242 @@
-{  
-   "mappings":{  
-      "atlas-analysis-v0.0.1":{  
-         "properties":{  
-            "document_type_human":{  
+{
+   "mappings":{
+      "atlas-analysis-v0.0.1":{
+         "properties":{
+            "_experiment" : {
+               "type": "string"
+            },
+            "document_type_human":{
                "type":"string",
                "index":"not_analyzed"
             },
-            "$schema":{  
+            "$schema":{
                "type":"string",
                "index":"not_analyzed"
             },
-            "_deposit":{  
+            "_deposit":{
                "type":"object",
-               "properties":{  
-                  "id":{  
+               "properties":{
+                  "id":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "pid":{  
+                  "pid":{
                      "type":"object",
-                     "properties":{  
-                        "revision_id":{  
+                     "properties":{
+                        "revision_id":{
                            "type":"integer"
                         },
-                        "type":{  
+                        "type":{
                            "type":"string"
                         },
-                        "value":{  
+                        "value":{
                            "type":"string",
                            "index":"not_analyzed"
                         }
                      }
                   },
-                  "created_by":{  
+                  "created_by":{
                      "type":"integer"
                   },
-                  "owners":{  
+                  "owners":{
                      "type":"integer"
                   },
-                  "status":{  
+                  "status":{
                      "type":"string"
                   }
                }
             },
-            "_files":{  
+            "_files":{
                "type":"object",
-               "properties":{  
-                  "bucket":{  
+               "properties":{
+                  "bucket":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "key":{  
+                  "key":{
                      "type":"string",
                      "index":"not_analyzed",
                      "copy_to":"filename"
                   },
-                  "version_id":{  
+                  "version_id":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "size":{  
+                  "size":{
                      "type":"long"
                   },
-                  "checksum":{  
+                  "checksum":{
                      "type":"string",
                      "index":"not_analyzed"
                   },
-                  "type":{  
+                  "type":{
                      "type":"string",
                      "index":"not_analyzed"
                   }
                }
             },
-            "_metadata":{  
-               "properties":{  
-                  "basic_info":{  
+            "_metadata":{
+               "properties":{
+                  "basic_info":{
                      "type":"object",
-                     "properties":{  
-                        "title":{  
+                     "properties":{
+                        "title":{
                            "type":"string"
                         }
                      }
                   },
-                  "workflows":{  
+                  "workflows":{
                      "type":"object",
-                     "properties":{  
-                        "name":{  
+                     "properties":{
+                        "name":{
                            "type":"string"
                         },
-                        "workflow":{  
+                        "workflow":{
                            "type":"object",
-                           "properties":{  
-                              "stages":{  
-                                 "properties":{  
-                                    "dependencies":{  
-                                       "properties":{  
-                                          "expressions":{  
+                           "properties":{
+                              "stages":{
+                                 "properties":{
+                                    "dependencies":{
+                                       "properties":{
+                                          "expressions":{
                                              "type":"string"
                                           }
                                        }
                                     },
-                                    "name":{  
+                                    "name":{
                                        "type":"string"
                                     },
-                                    "scheduler":{  
+                                    "scheduler":{
                                        "type":"object",
                                        "enabled":false,
-                                       "properties":{  
-                                          "parameters":{  
+                                       "properties":{
+                                          "parameters":{
                                              "enabled":false,
                                              "type":"object",
-                                             "properties":{  
-                                                "value":{  
+                                             "properties":{
+                                                "value":{
                                                    "enabled":false,
                                                    "type":"object"
                                                 },
-                                                "key":{  
+                                                "key":{
                                                    "type":"string"
                                                 }
                                              }
                                           },
-                                          "zip":{  
+                                          "zip":{
                                              "type":"object",
-                                             "properties":{  
-                                                "zip_with":{  
+                                             "properties":{
+                                                "zip_with":{
                                                    "type":"string"
                                                 },
-                                                "outputs":{  
+                                                "outputs":{
                                                    "type":"string"
                                                 },
-                                                "from_stages":{  
+                                                "from_stages":{
                                                    "type":"string"
                                                 }
                                              }
                                           },
-                                          "outputs":{  
+                                          "outputs":{
                                              "type":"string"
                                           },
-                                          "to_input":{  
+                                          "to_input":{
                                              "type":"string"
                                           },
-                                          "map_parameter":{  
+                                          "map_parameter":{
                                              "type":"string"
                                           },
-                                          "from_stages":{  
+                                          "from_stages":{
                                              "type":"string"
                                           },
-                                          "step":{  
+                                          "step":{
                                              "type":"object",
-                                             "properties":{  
-                                                "environment":{  
+                                             "properties":{
+                                                "environment":{
                                                    "type":"object",
-                                                   "properties":{  
-                                                      "envscript":{  
+                                                   "properties":{
+                                                      "envscript":{
                                                          "type":"string"
                                                       },
-                                                      "image":{  
+                                                      "image":{
                                                          "type":"string"
                                                       },
-                                                      "imagetag":{  
+                                                      "imagetag":{
                                                          "type":"string"
                                                       },
-                                                      "environment_type":{  
+                                                      "environment_type":{
                                                          "type":"string"
                                                       },
-                                                      "env":{  
+                                                      "env":{
                                                          "type":"object",
-                                                         "properties":{  
+                                                         "properties":{
 
                                                          }
                                                       },
-                                                      "resources":{  
+                                                      "resources":{
                                                          "type":"string"
                                                       }
                                                    }
                                                 },
-                                                "process":{  
+                                                "process":{
                                                    "type":"object",
-                                                   "properties":{  
-                                                      "cmd":{  
+                                                   "properties":{
+                                                      "cmd":{
                                                          "type":"string"
                                                       },
-                                                      "process_type":{  
+                                                      "process_type":{
                                                          "type":"string"
                                                       }
                                                    }
                                                 },
-                                                "publisher":{  
+                                                "publisher":{
                                                    "type":"object",
-                                                   "properties":{  
-                                                      "outputkey":{  
+                                                   "properties":{
+                                                      "outputkey":{
                                                          "type":"string"
                                                       },
-                                                      "globexpression":{  
+                                                      "globexpression":{
                                                          "type":"string"
                                                       },
-                                                      "outputmap":{  
-                                                         "properties":{  
-                                                            "param_card":{  
+                                                      "outputmap":{
+                                                         "properties":{
+                                                            "param_card":{
                                                                "type":"string"
                                                             }
                                                          }
                                                       },
-                                                      "publish":{  
+                                                      "publish":{
                                                          "type":"object",
-                                                         "properties":{  
-                                                            "value":{  
+                                                         "properties":{
+                                                            "value":{
                                                                "type":"string"
                                                             }
                                                          }
                                                       },
-                                                      "publisher_type":{  
+                                                      "publisher_type":{
                                                          "type":"string"
                                                       },
-                                                      "yamlfile":{  
+                                                      "yamlfile":{
                                                          "type":"string"
                                                       }
                                                    }
                                                 }
                                              }
                                           },
-                                          "workflow":{  
+                                          "workflow":{
                                              "type":"string"
                                           },
-                                          "scheduler_type":{  
+                                          "scheduler_type":{
                                              "type":"string"
                                           }
                                        }
                                     }
                                  }
                               },
-                              "context":{  
+                              "context":{
                                  "type":"object",
-                                 "properties":{  
-                                    "value":{  
+                                 "properties":{
+                                    "value":{
                                        "type":"string"
                                     }
                                  }
