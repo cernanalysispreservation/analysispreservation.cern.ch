@@ -73,7 +73,7 @@ var capRecordsClient = function($http, $q) {
         });
         return deferred.promise;
       },
-      get_experiment_records: function(limit) {
+      get_experiment_records: function(limit, page) {
         var deferred = $q.defer();
         deferred.notify('started');
         var url = '/api/records/';
@@ -82,7 +82,7 @@ var capRecordsClient = function($http, $q) {
           url: url,
           params: {
             size: limit || 20,
-            page: 1
+            page: page || 1
           }
         }).then(function(response) {
             deferred.notify('finished');
@@ -93,7 +93,7 @@ var capRecordsClient = function($http, $q) {
         });
         return deferred.promise;
       },
-      get_deposits: function(limit, status) {
+      get_deposits: function(limit, status, page) {
         var deferred = $q.defer();
         deferred.notify('started');
         var url = '/api/deposits/';
@@ -102,7 +102,7 @@ var capRecordsClient = function($http, $q) {
           url: url,
           params: {
             size: limit || 20,
-            page: 1,
+            page: page || 1,
             status: status || ''
           }
         }).then(function(response) {

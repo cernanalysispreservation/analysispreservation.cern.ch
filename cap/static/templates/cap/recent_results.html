@@ -62,3 +62,8 @@
   </div>
 </div>
 
+<div ng-if="paginate && totalItems > 0">
+  <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged(currentPage)"></ul>  
+</div>
+
+

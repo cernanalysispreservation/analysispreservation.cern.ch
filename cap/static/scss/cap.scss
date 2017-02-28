@@ -41,6 +41,10 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 @import "utils";
 
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
 
 .push-footer {
   height: 100vh;

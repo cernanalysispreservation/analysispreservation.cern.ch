@@ -43,14 +43,15 @@ angular.module('cap.directives')
       scope: {
         limit: '@',
         status: '@',
-        type: '@'
+        type: '@',
+        paginate: '=paginate'
       },
       link: function(scope, element, attrs) {
-        
         if(attrs.type == 'records') {
           capRecordsClient.get_experiment_records(limit=attrs.limit)
           .then(function(response) {
             scope.results = response;
+            get_paginated_results(attrs.type);
           }, function(error) {
             scope.error = error;
           });  
@@ -58,10 +59,39 @@ angular.module('cap.directives')
           capRecordsClient.get_deposits(limit=attrs.limit, status=attrs.status)
           .then(function(response) {
             scope.results = response;
+            get_paginated_results(attrs.type);
           }, function(error) {
             scope.error = error;
           });  
         }
+
+        function get_paginated_results(type) {
+          scope.totalItems = scope.results.data.hits.total;
+          scope.currentPage = 1;
+          scope.maxSize = 5;
+          scope.setPage = function (pageNo) {
+            scope.currentPage = pageNo;
+          };
+
+          scope.pageChanged = function(currentPage) {
+            
+            if (type == 'records') {
+              capRecordsClient.get_experiment_records(limit=attrs.limit, page=currentPage)
+              .then(function(response){
+                scope.results = response;
+              }, function(error) {
+                scope.error = error;
+              })
+            } else {
+              capRecordsClient.get_deposits(limit=attrs.limit, status=attrs.status, page=currentPage)
+              .then(function(response){
+                scope.results = response;
+              }, function(error) {
+                scope.error = error;
+              })
+            }
+          };
+        };
       }
     }
   }])
