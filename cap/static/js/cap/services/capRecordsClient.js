@@ -113,6 +113,54 @@ var capRecordsClient = function($http, $q) {
             deferred.reject(response);
         });
         return deferred.promise;
+      },
+      get_experiment_menu: function(limit) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/app/experiment/'+'CMS'+'/menu';
+        $http({
+          method: 'GET',
+          url: url
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_deposit_index: function(limit) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/deposit';
+        $http({
+          method: 'GET',
+          url: url
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_files: function(bucket_id) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        var url = '/api/files/'+bucket_id;
+        $http({
+          method: 'GET',
+          url: url,
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response.data);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
       }
   }
 };

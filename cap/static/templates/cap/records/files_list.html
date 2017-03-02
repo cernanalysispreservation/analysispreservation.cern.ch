@@ -1,21 +1,35 @@
 <div class="container cap-container">
-  <div class="row">
-    <div class="col-md-12">
-      <div
-        id="invenio-records">
-        <invenio-files-uploader
-          method="PUT"
-          endpoint="/api/records"
-          action="{{record.meta_info.files.action}}"
-          files="{{record.meta_info.files.files}}"
-          links="{{record.links}}"
-          extra-params="{{record.meta_info.files.extra_params}}"
-        >
-          <invenio-files-list
-            template="/api/static/templates/cap_files_js/list.html"
-          ></invenio-files-list>
-        </invenio-files-uploader>
+  <div class="col-sm-12">
+    <div ng-show="record.meta_info.files.files.length > 0" class="panel panel-default cap-panel">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-sm-6">
+            <p ng-show="record.meta_info.files.files.length > 0" class="text-muted">
+            </p>
+          </div>
+          <div class="col-sm-offset-2 col-sm-4">
+            <div class="form-inline text-right">
+              <div class="form-group">
+                <span class="text-muted">{{ (filesVM.files | filter:fileSearch).length }} files </span>
+                <input type="text" class="input-sm form-control" placeholder="Search the files" ng-model="fileSearch" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <table class="table">
+        <tr>
+          <th>Filename</th>
+          <th>Size</th>
+        </tr>
+        <tr class="sel-file" ng-repeat="f in record.meta_info.files.files | filter:fileSearch">
+          <td><a target="_self" href="{{ f.key }}" download="{{ f.key }}">{{ f.key }} <i class="fa fa-download text-success" aria-hidden="true"></i></a></td> 
+          <td>{{ f.size | bytesToHumanReadable }}</td>
+        </tr>
+        <tr ng-show="(filesVM.files | filter:fileSearch).length == 0">
+          <td colspan="4" class="text-center text-muted"> No results.</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

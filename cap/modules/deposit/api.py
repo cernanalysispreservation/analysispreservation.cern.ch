@@ -32,6 +32,7 @@ from flask import current_app, request
 from flask_login import current_user
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
+from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, Location
 from invenio_records_files.models import RecordsBuckets
 
@@ -307,6 +308,15 @@ class CAPDeposit(Deposit):
         self.commit()
 
         return self
+
+    # @mark_as_action
+    # def publish(self, *args, **kwargs):
+    #     """Simple file check before publishing."""
+    #     for file_ in self.files:
+    #         if file_.data['checksum'] is None:
+    #             raise MultipartMissingParts()
+
+    #     return super(CAPDeposit, self).publish(*args, **kwargs)
 
     @index
     @mark_as_action
