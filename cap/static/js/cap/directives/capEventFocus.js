@@ -44,7 +44,9 @@ angular.module('cap.directives')
       // Removes bound events in the element itself
       // when the scope is destroyed
       scope.$on('$destroy', function() {
-        element.off(attr.eventFocus);
+        if (elem !== undefined) {
+          elem.off(attr.eventFocus);
+        }
       });
     };
   }])

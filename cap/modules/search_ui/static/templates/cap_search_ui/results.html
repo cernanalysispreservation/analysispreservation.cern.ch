@@ -2,7 +2,7 @@
   <div class="list-group">
     <a class="list-group-item"
         ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
-        ui-sref="app.deposit_item.overview( { depid: {{ record.metadata._deposit.id }} })">
+        ui-sref="app.deposit_item.overview( { depid: record.metadata._deposit.id })">
       <div class="pull-left">
         <div class="btn btn-sm btn-link">
           <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>

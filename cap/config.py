@@ -135,10 +135,6 @@ BASE_TEMPLATE = "cap_theme/page.html"
 COVER_TEMPLATE = "invenio_theme/page_cover.html"
 #: Settings template for entire site.
 SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
-#: Template for 404 page.
-THEME_404_TEMPLATE = "cap_theme/404.html"
-#: Template for 500 page.
-THEME_500_TEMPLATE = "cap_theme/500.html"
 
 
 # CAP collaboration groups

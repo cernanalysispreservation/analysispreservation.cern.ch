@@ -5,7 +5,7 @@
 function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locationProvider, $urlMatcherFactoryProvider, $httpProvider) {
 
   $urlMatcherFactoryProvider.strictMode(false);
-
+  $httpProvider.interceptors.push('httpInterceptor');
   // TOFIX: for intercepting incoming responses when user
   // is LOGGEDOUT and API returns '401'
   $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
@@ -28,6 +28,16 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
 
       }
     };
+  });
+
+  $urlRouterProvider.otherwise(function($injector) {
+    // Render 404 page when url doesn't exist
+    var $state = $injector.get('$state');
+
+    $state.go('app.404', null, {
+      location: false
+    });
+
   });
 
 
@@ -340,6 +350,33 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       },
       data: {
         requireLogin: true
+      }
+    })
+    .state({
+      name: 'app.404',
+      url: '/404',
+      views: {
+        'content': {
+          templateUrl: '/static/templates/cap/404.html'
+        }
+      }
+    })
+    .state({
+      name: 'app.403',
+      url: '/403',
+      views: {
+        'content': {
+          templateUrl: '/static/templates/cap/403.html'
+        }
+      }
+    })
+    .state({
+      name: 'app.500',
+      url: '/500',
+      views: {
+        'content': {
+          templateUrl: '/static/templates/cap/500.html'
+        }
       }
     });
 
