@@ -4,7 +4,7 @@ Frequently Asked Questions
 .. glossary::
 
 	Is the information or data I add open access?
-		No, access to your analysis is always restricted to your collaboration and by the permissions you assign (see the section on `Authorization and Access Control <project.html#authorisation-access-control>`_ for more details). Nothing is open access on CERN Analysis Preservation (except for the projects own source code). It is designed to be a save environment for CERN physicists to use from the very beginning of starting their analysis and at any given moment in its lifetime. It is also meant to increase this lifetime.
+		No, access to your analysis is always restricted to your collaboration and by the permissions you assign (see the section on `Authorization and Access Control <overview/project.html#authorisation-access-control>`_ for more details). Nothing is open access on CERN Analysis Preservation (except for the projects own source code). It is designed to be a safe environment for CERN physicists to use from the very beginning of starting their analysis and at any given moment in its lifetime. It is also meant to increase this lifetime.
 		
 		If you are searching for a service providing open access data or you have some data to share, you may want to check out `http://opendata.cern.ch/ <CERN Open Data>`_.
 
