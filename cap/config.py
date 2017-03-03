@@ -47,6 +47,12 @@ from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 
+from cap.modules.records.permissions import (CreateRecordPermission,
+                                             ReadRecordPermission,
+                                             UpdateRecordPermission,
+                                             DeleteRecordPermission,
+                                             record_read_permission_factory)
+
 from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission,
@@ -262,7 +268,11 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     # list_route='/records/',
     # item_route='/records/<pid(recid):pid_value>',
     # default_media_type='application/json',
-    # 'read_permission_factory_imp': deny_all
+    'read_permission_factory_imp': check_oauth2_scope(
+        lambda record: record_read_permission_factory(
+            CAP_COLLAB_EGROUPS,
+            SUPERUSER_EGROUPS)(record).can(),
+        write_scope.id),
 })
 
 

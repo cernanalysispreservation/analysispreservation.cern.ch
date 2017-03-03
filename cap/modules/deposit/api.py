@@ -231,7 +231,7 @@ class CAPDeposit(Deposit):
         try:
             schema = data.get("$schema", None) \
                 .split('/schemas/', 1)[1]
-        except AttributeError:
+        except (IndexError, AttributeError):
             return None
 
         if schema:

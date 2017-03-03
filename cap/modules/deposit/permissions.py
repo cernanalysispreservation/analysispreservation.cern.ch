@@ -106,7 +106,7 @@ class DepositPermission(DynamicPermission):
         try:
             schema = self.deposit.get("$schema", None) \
                                  .split('/schemas/', 1)[1]
-        except:
+        except (IndexError, AttributeError):
             return None
 
         _deposit_group = \
