@@ -97,14 +97,45 @@ var capRecordsClient = function($http, $q) {
         var deferred = $q.defer();
         deferred.notify('started');
         var url = '/api/deposits/';
+        var params = {
+          size: limit || 20,
+          page: page || 1
+        };
+        if (status) params["status"] = status;
         $http({
           method: 'GET',
           url: url,
-          params: {
-            size: limit || 20,
-            page: page || 1,
-            status: status || ''
-          }
+          params: params
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_schema: function(url) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        $http({
+          method: 'GET',
+          url: url
+        }).then(function(response) {
+            deferred.notify('finished');
+            deferred.resolve(response);
+          }, function (response) {
+            deferred.notify('error');
+            deferred.reject(response);
+        });
+        return deferred.promise;
+      },
+      get_schema_form: function(url) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+        $http({
+          method: 'GET',
+          url: url
         }).then(function(response) {
             deferred.notify('finished');
             deferred.resolve(response);

@@ -1,0 +1,18 @@
+<div ng-init="query={}; queryBy='$';" class="cap-deposit-sidebar">
+    <div id="cap-deposit-navigation-search">
+        <div class="col-md-12 forms-font-color search-fields">
+            <div id="search-bar-fixed-column">
+                <span class="fa fa-search forms-font-color"></span>
+                <input type="text" class="form-control filter-fields-searchbar" placeholder="Filter fields..." ng-model="query[queryBy]">
+            </div>
+        </div>
+    </div>
+    <div id="cap-deposit-navigation" ng-if="isFormRendered">
+        <cap-deposit-nav
+            immuatble="depositNavModel"
+            form="depositNavForm"
+            model="depositNavModel">
+        </cap-deposit-nav>
+        <span id="no-results" ng-show="(form | filter:query).length == 0">No results found. Please try again.</span>
+    </div>
+</div>

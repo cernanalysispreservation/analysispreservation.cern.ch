@@ -27,11 +27,12 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs) {
+var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs, capRecordsClient) {
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
   $scope.contentBarTabs = contentBarTabs;
   $scope.mi = deposit.meta_info;
+  $scope.modelll = Immutable.fromJS({});
 
   $scope.initDeposit = function() {
     $scope.progress = {};
@@ -39,14 +40,29 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
     $scope.req = {};
     $scope.current_key = '';
     $scope.depositionForm = {};
+    $scope.forms = [];
+    $scope.depositNavModel = {};
+    $scope.depositNavForm = [];
+
+    $scope.isFormRendered = false;
+  };
+
+  // $scope.$watch('recordsVM.invenioRecordsModel', function(new_, old){
+  //   // console.log("N::", new_);
+  //   // console.log("O::", old);
+  // });
+
+  $scope.modelChanged = function(value, key){
+    $scope.depositNavModel = $scope.depositNavModel.setIn(key.key, value);
+    $scope.recordsVM.removeValidationMessage(value,key)
   };
 
   $scope.$on('sf-render-finished', function(event){
-    watchAndUpdate({}, {});
-
-    $scope.$watch('depositionForm.$error', function(newValue, oldValue) {
-      watchAndUpdate(newValue, oldValue);
-    }, 'true');
+    if ($scope.recordsVM && $scope.recordsVM.invenioRecordsModel && $scope.recordsVM.invenioRecordsForm) {
+      $scope.depositNavModel = Immutable.fromJS($scope.recordsVM.invenioRecordsModel);
+      $scope.depositNavForm = $scope.recordsVM.invenioRecordsForm;
+      $scope.isFormRendered = true;
+    }
   });
 
   var watchAndUpdate =  function(newValue, oldValue) {
@@ -55,7 +71,7 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
       if ($scope.recordsVM && $scope.recordsVM.invenioRecordsSchema) {
 
         var props = $scope.recordsVM.invenioRecordsSchema.properties;
-        angular.forEach(props, function(value, key) {
+        angular.forEach(props, function(value, value) {
           if (key.indexOf("_") !== 0) {
             $scope.progress[key] = 0;
             $scope.type[key] = '';
@@ -134,7 +150,7 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
 
 
   // Request users for autosuggestions
-  // 
+  //
   $scope.getUsers = function (query) {
     return $http.get('/api/users', {
       params: {
@@ -199,15 +215,15 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs)
           };
 
           identity_permission["permissions"].push(_action);
-        }); 
+        });
 
-        permissions_update.push(identity_permission);    
+        permissions_update.push(identity_permission);
       }
 
     });
 
     return $http({
-        url: $scope.deposit.links.permissions, 
+        url: $scope.deposit.links.permissions,
         method: 'POST',
         data: {
           permissions: permissions_update
@@ -280,29 +296,11 @@ capDepositCtrl.$inject = [
   '$location',
   '$http',
   'deposit',
-  'contentBarTabs'
+  'contentBarTabs',
+  'capRecordsClient'
 ];
+
 
 angular.module('cap.controllers')
   .controller('DepositController', capDepositCtrl);
-
-
-var capKeyNavigation = function ($timeout) {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if (event.which === 38) {
-                var target = $(event.target).prev();
-                $(target).trigger('focus');
-            }
-            if (event.which === 40) {
-                var target = $(event.target).next();
-                $(target).trigger('focus');
-            }
-        });
-    };
-}
-
-
-angular.module('cap.controllers')
-  .directive('keyNavigation', capKeyNavigation);
 

@@ -1,0 +1,18 @@
+<div class="drodown">
+    <div ng-click="form.collapsed = !form.collapsed" ng-class="{'title-lev1': form.key.length == 1}">
+      <i class="fa fa-sitemap"></i>
+      <span class="forms-filter-fields-font-size fixed-column-link">
+        {{form.title}} |
+        <span class="progress-fields bg-primary">
+          {{ form.items.length }}
+          <span ng-if="form.schema.required">({{ form.schema.required.length }} req)</span>
+        </span>
+      </span>
+    </div>
+    <ul uib-collapse="form.collapsed" aria-labelledby="nav{{form.key[0]}}">
+      <li ng-repeat="formElement in form.items">
+        <cap-deposit-nav-item form="formElement" model="model.get(formElement.key[formElement.key.length-1])">
+        </cap-deposit-nav-item>
+      </li>
+    </ul>
+</div>

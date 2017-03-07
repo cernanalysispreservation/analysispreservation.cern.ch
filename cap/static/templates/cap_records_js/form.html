@@ -1,100 +1,31 @@
 <div class="row">
  <div class="cap-deposit">
-    <div ng-init="query={}; queryBy='$';" class="cap-deposit-sidebar">
-      <div class="panel panel-default cap-panel">
-       <div class="panel-heading">
-        <div class="row">
-          <div class="col-md-12">
-            <div ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams[recordsVM.invenioRecordsAlert.action].hide">
-             <div ng-show="recordsVM.invenioRecordsEndpoints.self">
-               <ul class="list-inline text-center sidebar-list-actions">
-                <li ng-hide='recordsVM.invenioRecordsModel["_deposit"]["status"] == "published"'>
-                  <button
-                    ng-disabled="depositionForm.$invalid || depositionForm.$pristine || recordsVM.invenioRecordsLoading"
-                    class="btn save-btn action-btn"
-                    ng-click="recordsVM.actionHandler(['self', 'PUT'])">
-                      Save as draft
-                  </button>
-                </li>
-                <li ng-hide="!recordsVM.invenioRecordsEndpoints.initialization ||recordsVM.invenioRecordsModel['_deposit']['status'] == 'published'">
-                  <button ng-disabled="recordsVM.invenioRecordsLoading || !recordsVM.invenioRecordsEndpoints.self"  class="btn delete-btn action-btn" ng-click="recordsVM.actionHandler(['self', 'DELETE'], '/deposit/draft')">Delete draft</button>
-                </li>
-                 <li ng-hide='recordsVM.invenioRecordsModel["_deposit"]["status"] == "published"'>
-                  <button  ng-disabled="depositionForm.$invalid || depositionForm.$dirty || recordsVM.invenioRecordsLoading" class="btn save-publish-btn action-btn" ng-click="recordsVM.actionHandler(['publish', 'POST'], '/deposit/published')">Share within collaboration</button>
-                </li>
-                <li ng-hide='recordsVM.invenioRecordsAlert.data.metadata["_deposit"]["status"] == "draft" || recordsVM.invenioRecordsModel["_deposit"]["status"]== "draft"' class="save-as-draft">
-                  <button  ng-disabled="depositionForm.$invalid || depositionForm.$pristine || recordsVM.invenioRecordsLoading" class="btn edit-save-btn action-btn" ng-click="recordsVM.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">Edit & Save</button>
-                </li>
-                <li ng-hide='recordsVM.invenioRecordsAlert.data.metadata["_deposit"]["status"] == "draft" || recordsVM.invenioRecordsModel["_deposit"]["status"]== "draft"' class="save-as-draft">
-                  <button class="btn save-publish-btn action-btn" ng-click="recordsVM.actionHandler(['clone', 'POST'], '/deposit/draft')">Clone analysis</button>
-                </li>
-               </ul>
-             </div>
-             <div ng-show="!recordsVM.invenioRecordsEndpoints.self" class="save-as-draft">
-               <ul class="list-inline text-center">
-                 <li><button ng-disabled="depositionForm.$invalid || recordsVM.invenioRecordsLoading" class="btn save-btn action-btn" ng-click="recordsVM.actionHandler(['self', 'PUT'])">Save as draft</button></li>
-               </ul>
-             </div>
+    <ng-include src="'/static/templates/cap/deposit/components/depositSidebar.html'"></ng-include>
+    <div class="cap-deposit-form">
+      <div class="cap-deposit-form-inner">
+        <div ng-if="false">
+          <h3>No section selected</h1>
+          <p>Please select one or multiple sections, from the Deposit Navigation on the left, to appear</p>
+        </div>
+
+        <div>
+          <div class="alert alert-danger" style="margin: 15px 0;">
+            <div class="progress">
+              <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
             </div>
+            WARNING: This is just a <strong>DEMO</strong>. Data saved is <strong>NOT</strong> backed-up at the moment and might be lost during any system upgrade
           </div>
         </div>
-        <hr id="custom-divider" />
-        <div class="row">
-          <div class="col-md-12 forms-font-color search-fields">
-            <div id="search-bar-fixed-column">
-              <span class="fa fa-search forms-font-color"></span>
-               <input
-                 type="text"
-                 class="form-control filter-fields-searchbar"
-                 placeholder="Filter fields..."
-                 ng-model="query[queryBy]"
-               >
-             </div>
-          </div>
-        </div>
-       </div>
-       <div class="panel-body">
-         <div id="cap-deposit-navigation">
-           <div ng-repeat="formElement in recordsVM.invenioRecordsForm | filter:query" ng-show="formElement.allowDisplay || formElement.condition"  class="panel-body  cursor-pointer" ng-click="updateContent( recordsVM.invenioRecordsForm.length, $index)">
-              <div class="dropdown" uib-dropdown auto-close="disabled" is-open="status.isopen">
-                <div uib-dropdown-toggle id="nav{{formElement.key[0]}}" >
-                  <span class="forms-filter-fields-font-size fixed-column-link" ng-if="formElement.title.indexOf('{{') !== -1">
-                    {{formElement.key[0] | uppercase}}
-                  </span>
-                  <span class="forms-filter-fields-font-size fixed-column-link" ng-if="formElement.title.indexOf('{{') == -1">
-                    {{formElement.title | uppercase}}
-                  </span>
-                  <i class="fa" ng-class="{'fa-caret-down':status.isopen, 'fa-caret-right':!status.isopen}" aria-hidden="true"></i>
-                  <span
-                    class="progress-bar progress-bar-{{type[formElement.key[0]]}} custom-progress-bar"
-                    role="progressbar">
-                      {{ progress[formElement.key[0]] }}
-                      <span ng-hide="progress[formElement.key[0]] == 'N/A'">%</span>
-                  </span>
-                </div>
-                <ul class="dropdown-menu" uib-dropdown-menu aria-labelledby="nav{{formElement.key[0]}}">
-                 <li ng-class="{{fontColor}}" class="list-subelement" ng-repeat="(key, value) in formElement.schema.properties || formElement.schema.items.properties" event-focus="click" event-focus-id="{{key}}" ng-click="$event.stopPropagation();"><i class="fa fa-circle-o"></i>
-                 {{value.title}}</li>
-                </ul>
-              </div>
-           </div>
-          <span id="no-results" ng-show="(recordsVM.invenioRecordsForm | filter:query).length == 0">No results found. Please try again.</span>
-        </div>
-       </div>
+
+        <form
+           name="depositionForm"
+           class="form-horizontal"
+           sf-schema="recordsVM.invenioRecordsSchema"
+           sf-form="recordsVM.invenioRecordsForm"
+           sf-model="recordsVM.invenioRecordsModel"
+           sf-options="{ validateOnRender: true, formDefaults: { feedback: true, onChange: 'modelChanged(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true}, allowDisplay: true } }">
+        </form>
       </div>
-   </div>
-   <div class="cap-deposit-form">
-    <div class="cap-deposit-form-inner">
-     <form
-     name="depositionForm"
-     class="form-horizontal"
-     ng-hide="recordsVM.invenioRecordsAlert.type == 'success' && recordsVM.invenioRecordsArgs.templateParams.responseParams[recordsVM.invenioRecordsAlert.action].hide"
-     sf-schema="recordsVM.invenioRecordsSchema"
-     sf-form="recordsVM.invenioRecordsForm"
-     sf-model="recordsVM.invenioRecordsModel"
-     sf-options="{ validateOnRender: true, formDefaults: { feedback: true, onChange: 'recordsVM.removeValidationMessage(modelValue,form)', ngModelOptions: { updateOn: 'default blur', allowInvalid: true}, allowDisplay: true } }"
-     ></form>
     </div>
-   </div>
- </div>
+  </div>
 </div>

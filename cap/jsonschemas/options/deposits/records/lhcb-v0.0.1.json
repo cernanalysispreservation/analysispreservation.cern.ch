@@ -1,9 +1,9 @@
-[  
-  {  
+[
+  {
     "key": "basic_info",
     "type": "fieldset",
     "htmlClass": "custom-panel",
-    "items":[  
+    "items":[
        {
         "key": "basic_info.analysis_name",
         "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
@@ -18,52 +18,52 @@
         "key": "basic_info.proponents",
         "placeholder": "E.g. John Doe; Jane Doe"
        },
-       {  
+       {
           "key": "basic_info.status",
           "type": "select",
           "title": "Status",
-          "titleMap":[  
-             {  
+          "titleMap":[
+             {
                 "value": "0 - planned / open topic",
                 "name": "0 - planned / open topic"
              },
-             {  
+             {
                 "value": "1 - in preparation",
                 "name": "1 - in preparation"
              },
-             {  
+             {
                 "value": "2 - ANA note released",
                 "name": "2 - ANA note released"
              },
-             {  
+             {
                 "value": "3 - review committee",
                 "name": "3 - review committee"
              },
-             {  
+             {
                 "value": "4 - collaboration review",
                 "name": "4 - collaboration review"
              },
-             {  
+             {
                 "value": "5 -",
                 "name": "5 -"
              },
-             {  
+             {
                 "value": "6 - CONF note published",
                 "name": "6 - CONF note published"
              },
-             {  
+             {
                 "value": "7 -",
                 "name": "7 -"
              },
-             {  
+             {
                 "value": "8 - journal review",
                 "name": "8 - journal review"
              },
-             {  
+             {
                 "value": "9 - PAPER published",
                 "name": "9 - PAPER published"
              },
-             {  
+             {
                 "value": "x - other",
                 "name": "x - other"
              }
@@ -71,54 +71,54 @@
        },
        {
         "key": "basic_info.reviewers",
-        "placeholder": "E.g. John Roe; Jane Roe"       
+        "placeholder": "E.g. John Roe; Jane Roe"
        },
        {
         "key": "basic_info.egroup",
         "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
        },
        {
-        "key": "basic_info.institutes",        
+        "key": "basic_info.institutes",
         "type": "select",
         "title": "Working Group",
-        "titleMap":[  
-           {  
+        "titleMap":[
+           {
               "value": "Ions and Fixed Target",
               "name": "Ions and Fixed Target"
            },
-           {  
+           {
               "value": "b-hadrons and Quarkonia",
               "name": "b-hadrons and Quarkonia"
            },
-           {  
+           {
               "value": "B Decays to Charmonium",
               "name": "B Decays to Charmonium"
            },
-           {  
+           {
               "value": "Detector Performance",
               "name": "Detector Performance"
            },
-           {  
+           {
               "value": "Charmless b-hadron Decays",
               "name": "Charmless b-hadron Decays"
            },
-           {  
+           {
               "value": "QCD Electroweak and Exotica",
               "name": "QCD Electroweak and Exotica"
            },
-           {  
+           {
               "value": "Rare Decays",
               "name": "Rare Decays"
            },
-           {  
+           {
               "value": "Charm Physics",
               "name": "Charm Physics"
            },
-           {  
+           {
               "value": "Semileptonic B decays",
               "name": "Semileptonic B decays"
            },
-           {  
+           {
               "value": "B Decays to Open Charm",
               "name": "B Decays to Open Charm"
            }
@@ -248,7 +248,7 @@
                   {
                     "key": "dst_selection.production_info.data[].trigger[].name",
                     "placeholder": "E.g. Trigger 1",
-                    "notitle": true 
+                    "notitle": true
                   }
                 ]
               },
@@ -269,7 +269,7 @@
                       {"value": "file_upload", "name": "File Upload"}
                     ]
                   },
-                  {            
+                  {
                     "key": "dst_selection.production_info.data[].davinci_script.source",
                     "condition": "model['dst_selection']['production_info']['data'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
                     "items": [
@@ -333,7 +333,7 @@
                     "title": "Version",
                     "placeholder": "E.g. 11"
                   }
-                ]              
+                ]
               },
               {
                 "key": "dst_selection.production_info.mc_data[].stripping_software",
@@ -350,7 +350,7 @@
                     "title": "Version",
                     "placeholder": "E.g. 16"
                   }
-                ]              
+                ]
               },
               {
                 "key": "dst_selection.production_info.mc_data[].trigger",
@@ -360,7 +360,7 @@
                   {
                     "key": "dst_selection.production_info.mc_data[].trigger[].name",
                     "placeholder": "E.g. Trigger 1",
-                    "notitle": true 
+                    "notitle": true
                   }
                 ]
               },
@@ -374,11 +374,11 @@
                 "type": "select",
                 "title": "Database Tags",
                 "titleMap": [
-                  {  
+                  {
                     "value": "DDDB",
                     "name": "DDDB"
                  },
-                 {  
+                 {
                     "value": "SIMCOND",
                     "name": "SIMCOND"
                  }
@@ -397,7 +397,7 @@
                       {"value": "file_upload", "name": "File Upload"}
                     ]
                   },
-                  {            
+                  {
                     "key": "dst_selection.production_info.mc_data[].davinci_script.source",
                     "condition": "model['dst_selection']['production_info']['mc_data'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
                     "items": [
@@ -529,7 +529,7 @@
     "key": "additional_resources",
     "type": "fieldset",
     "items": [
-      {  
+      {
         "key": "additional_resources.internal_discussions",
         "items": [
           {
@@ -599,7 +599,7 @@
           }
         ]
       },
-      {  
+      {
         "key": "additional_resources.documentations",
         "items": [
           {

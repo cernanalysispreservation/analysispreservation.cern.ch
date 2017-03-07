@@ -76,18 +76,19 @@
 }
 
 .search-fields {
-  height: 77px !important;
   position: relative;
+  padding: 10px;
+  border-bottom: 1px solid $light-blue-theme-color;
 }
 
 .search-fields input{
-  text-indent: 30px;
+  text-indent: 33px;
 }
 
 .search-fields .fa-search{
   position: absolute;
-  top: 35px;
-  left: 24px;
+  top: 20px;
+  left: 20px;
 }
 
 #tabarray-nav {
@@ -112,12 +113,12 @@
 .tabarray-search-fields .fa-search {
   position: absolute;
   top: 10px;
-  left: 10px; 
+  left: 10px;
 }
 
 
 .filter-fields {
-  margin-left: 10%; 
+  margin-left: 10%;
   font-size: x-large;
 }
 
@@ -132,7 +133,7 @@
 @media (min-width: 768px) {
   .col-sm-4.fixed-column {
     width: 375px;
-  }    
+  }
 }
 
 
@@ -257,29 +258,29 @@
 }
 
 #search-bar-fixed-column{
-  margin-top: 7%;
 }
 
 #no-results {
   margin-left: 3%;
 }
 
-$cap-deposit-sidebar-width: 300px;
-
 .cap-deposit {
   padding: 0;
   overflow: hidden;
   width: 100%;
   padding-left: $cap-deposit-sidebar-width;
+  padding-top: $content-bar-height;
   min-height: 100vh;
 }
+
 .cap-deposit-sidebar {
   width: $cap-deposit-sidebar-width + 2px;
-  position: absolute;
+  position: fixed;
+  top: $content-bar-height + $cap_header_height;
   left: 0;
   height: 100%;
   float: left;
-  border: 1px solid $light-blue-theme-color;
+  border-right: 1px solid $light-blue-theme-color;
   background-color: #fff;
   margin-right: 10px;
 
@@ -303,6 +304,13 @@ $cap-deposit-sidebar-width: 300px;
   .dropdown-menu {
     // z-index: 0;
   }
+}
+
+#cap-content.menu-opened {
+  .cap-deposit-sidebar {
+    left: $sidebar-width;
+  }
+
 }
 
 .cap-deposit-form {
@@ -358,12 +366,20 @@ $cap-deposit-sidebar-width: 300px;
   }
 }
 
+#cap-deposit-navigation-search {
+  z-index: 100;
+  position: relative;
+  background-color: #fff;
+  display: inline-block;
+  width: 100%;
+}
+
 #cap-deposit-navigation {
-  height: 100%;
-  //top: 2*$sidebar-navigation-height;
-  // height: 90%;
-  position: absolute;
-  //width: 100%;
+  height: 100vh;
+  width: $cap-deposit-sidebar-width;
+  position: fixed;
+  top: 0;
+  padding-top: $content-bar-height +$cap_header_height + 55;
   overflow: scroll;
   overflow-x: hidden;
 
@@ -563,7 +579,50 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
 }
 
 #custom-divider {
-  border:1px solid #3b97d3; 
-  margin-left: -11px; 
+  border:1px solid #3b97d3;
+  margin-left: -11px;
   width: 107%;
 }
+
+
+#cap-deposit-navigation {
+  /* Progress bar */
+  color: $dark-blue-theme-color;
+  ul {
+    list-style-type: none;
+    padding-left: 15px;
+  }
+
+  .fa {
+    width: 21px;
+    padding: 3px;
+  }
+  .progress-fields {
+    padding: 3px;
+    border-radius: 2px;
+    font-size: 11px;
+  }
+
+  .title-lev1 {
+    margin: -10px;
+    padding: 10px;
+    background-color: $light-grey-theme-color;
+
+    &+ ul {
+      margin-top: 10px;
+    }
+  }
+  .progress-bar-disabled {
+    background-color: $dark-grey-element-color;
+  }
+
+  .upload-zone {
+    width: 100%;
+  }
+
+  .deposit-navigation-root {
+    padding: 10px;
+    border-bottom: 1px solid $light-blue-theme-color;
+  }
+}
+

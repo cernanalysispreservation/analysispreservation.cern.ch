@@ -1,0 +1,12 @@
+<div ng-if="form.type == 'fieldset'">
+  <cap-deposit-nav-object form="form" model="model" collapsed=collapsed>
+  </cap-deposit-nav-object>
+</div>
+<div ng-if="(form.type == 'array' || form.type == 'tabarray')">
+  <cap-deposit-nav-array form="form" model="model" collapsed=collapsed>
+  </cap-deposit-nav-array>
+</div>
+<div ng-if="!(form.type == 'fieldset' || form.type == 'array' || form.type == 'tabarray')">
+  <cap-deposit-nav-default form="form" model="model" collapsed=collapsed>
+  </cap-deposit-nav-default>
+</div>

@@ -1,4 +1,10 @@
-<div sf-array="form" id="{{ form.key.slice(-1)[0] }}" class="schema-form-array {{form.htmlClass}}" ng-model="$$value$$" ng-model-options="form.ngModelOptions">
+<div
+  sf-array="form"
+  id="{{ form.key.slice(-1)[0] }}"
+  class="schema-form-array {{form.htmlClass}}"
+  ng-model="$$value$$"
+  ng-model-options="form.ngModelOptions"
+  ng-hide="form.collapsed">
     <div class="panel panel-default cap-panel">
       <div class="panel-heading">
             <div class="title">

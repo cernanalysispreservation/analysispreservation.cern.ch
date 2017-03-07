@@ -17,7 +17,7 @@ $pushmenu-bgc-active: $light-blue-theme-color;
     display: inline-block;
     width: 230px;
     top: $cap_header_height;
-    z-index: 10;
+    z-index: 101;
     border-right: 1px solid $light-blue-theme-color;
 
     &.menu-opened {
@@ -30,7 +30,7 @@ $pushmenu-bgc-active: $light-blue-theme-color;
 }
 
 /* Medium devices (desktops, 992px and up) */
-@media (max-width: 1400px) { 
+@media (max-width: 1400px) {
     #cap-sidebar-left {
         position: absolute;
         border:  1px solid $light-blue-theme-color;

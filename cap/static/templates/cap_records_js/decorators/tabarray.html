@@ -1,4 +1,8 @@
-<div id="{{ form.key.slice(-1)[0] }}" sf-array="form" ng-init="selected = { tab: 0 }"
+<div
+  ng-hide="form.collapsed"
+  id="{{ form.key.slice(-1)[0] }}"
+  sf-array="form"
+  ng-init="selected = { tab: 0 }"
      class="clearfix schema-form-tabarray schema-form-tabarray-{{form.tabType || 'left'}} {{form.htmlClass}}">
   <div class="panel panel-default cap-panel">
         <div class="panel-heading">
@@ -25,14 +29,14 @@
                       ng-model="queryFilter[queryByFilter]"
                      >
                   </div>
-                <ul class="nav no-bullets fixed-height-with-scroll" 
+                <ul class="nav no-bullets fixed-height-with-scroll"
                     ng-class="{ 'tabs-left': !form.tabType || form.tabType === 'left'}">
                   <li ng-repeat="item in modelArray | filter:queryFilter track by $index"
                       ng-click="$event.preventDefault() || (selected.tab = $index)"
                       ng-class="{active: selected.tab === $index}">
                       <a href="#">{{interp(form.title,{'$index':$index, value: item}) || $index}}
                         <i ng-hide="form.readonly"
-                            ng-click="selected.tab = deleteFromArray($index).length - 1" 
+                            ng-click="selected.tab = deleteFromArray($index).length - 1"
                             class="fa fa-times pull-right remove-element-from-list"></i>
                       </a>
                   </li>

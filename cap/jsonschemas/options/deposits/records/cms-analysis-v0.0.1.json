@@ -169,7 +169,7 @@
             "items": [
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].object",
-                "type": "select", 
+                "type": "select",
                 "titleMap": [
                   {"value": "", "name": ""},
                   {"value": "electron", "name": "electron"},
@@ -190,7 +190,7 @@
                 "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'electron'",
                 "titleMap": [
                   {"value": "GsfElectron", "name": "GsfElectron"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].tau_type",
@@ -198,7 +198,7 @@
                 "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'tau'",
                 "titleMap": [
                   {"value": "PFTau", "name": "PFTau"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].muon_type",
@@ -208,7 +208,7 @@
                   {"value": "PFMuon", "name": "PFMuon"},
                   {"value": "GlobalMuon", "name": "GlobalMuon"},
                   {"value": "TrackerMuon", "name": "TrackerMuon"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].met_type",
@@ -217,7 +217,7 @@
                 "titleMap": [
                   {"value": "PFMET", "name": "PFMET"},
                   {"value": "CaloMET", "name": "CaloMET"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].met_pf_corrections",
@@ -227,7 +227,7 @@
                   {"value": "Type0PFCorrections", "name": "Type0PFCorrections"},
                   {"value": "Type1PFCorrections", "name": "Type1PFCorrections"},
                   {"value": "Type2PFCorrections", "name": "Type2PFCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].met_calo_corrections",
@@ -237,7 +237,7 @@
                   {"value": "Type0CaloCorrections", "name": "Type0CaloCorrections"},
                   {"value": "Type1CaloCorrections", "name": "Type1CaloCorrections"},
                   {"value": "Type2CaloCorrections", "name": "Type2CaloCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].photon_type",
@@ -246,7 +246,7 @@
                 "titleMap": [
                   {"value": "Photon", "name": "Photon"},
                   {"value": "Conversion", "name": "Conversion"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].track_type",
@@ -255,7 +255,7 @@
                 "titleMap": [
                   {"value": "Heavy-Ion", "name": "Heavy-Ion"},
                   {"value": "pp", "name": "pp"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].jet_type",
@@ -282,7 +282,7 @@
                   {"value": "KT7PF", "name": "KT7PF"},
                   {"value": "KT8Calo", "name": "KT8Calo"},
                   {"value": "KT8PF", "name": "KT8PF"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].jet_corrections",
@@ -290,7 +290,7 @@
                 "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'jet' || model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'bjet'",
                 "titleMap": [
                   {"value": "JetCorrections", "name": "JetCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "main_measurements[].detector_final_state.final_state_particles[].number",
@@ -311,7 +311,7 @@
                   {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].number.number",
                     "placeholder": "E.g. 1"
-                  }    
+                  }
                 ]
               },
               {
@@ -329,7 +329,7 @@
                   {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].number_vertex.number",
                     "placeholder": "E.g. 1"
-                  }    
+                  }
                 ]
               },
               {
@@ -380,7 +380,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].electron_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['electron_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -403,7 +403,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].muon_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['muon_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -425,10 +425,10 @@
                     "titleMap": [
                       {"value": "AgainstElectronLooseMVA", "name": "AgainstElectronLooseMVA"},
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].tau_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['tau_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -449,10 +449,10 @@
                     "type": "select",
                     "titleMap": [
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].jet_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['jet_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -478,10 +478,10 @@
                       {"value": "combinedSecondaryVertexBJetTags", "name": "combinedSecondaryVertexBJetTags"},
                       {"value": "jetProbabilityBJetTags", "name": "jetProbabilityBJetTags"},
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].bjet_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['bjet_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -504,7 +504,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].photon_discriminator.custom_tag",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['photon_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -529,7 +529,7 @@
                       {"value": "<", "name": "<"}
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].pt_cut[].number"
                   }
                 ]
@@ -548,7 +548,7 @@
                       {"value": "<", "name": "<"}
                     ]
                   },
-                  { 
+                  {
                     "key": "main_measurements[].detector_final_state.final_state_particles[].eta_cut[].number",
                     "type": "select",
                     "titleMap": [
@@ -560,7 +560,7 @@
                     ]
                   },
                   {
-                    "key": "main_measurements[].detector_final_state.final_state_particles[].eta_cut[].other_number",  
+                    "key": "main_measurements[].detector_final_state.final_state_particles[].eta_cut[].other_number",
                     "placeholder": "E.g. 1.0",
                     "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['eta_cut'][arrayIndices[2]]['number'] == 'other'"
                   }
@@ -571,6 +571,7 @@
           {
             "key": "main_measurements[].detector_final_state.final_state_relations",
             "startEmpty": true,
+            "condition": "model['main_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'].length > 1",
             "items": [
               {
                 "key": "main_measurements[].detector_final_state.final_state_relations[].relation_type",
@@ -588,7 +589,7 @@
                 "type": "radios",
                 "titleMap": [
                   {"value": "same_sign", "name": "same sign"},
-                  {"value": "opposite_sign", "name": "opposite sign"} 
+                  {"value": "opposite_sign", "name": "opposite sign"}
                 ]
               },
               {
@@ -677,7 +678,7 @@
               {"value": "file_upload", "name": "File Upload"}
             ]
           },
-          {            
+          {
             "key": "main_measurements[].code_base.source",
             "condition": "model['main_measurements'][arrayIndices[0]]['code_base']['_type'] == 'external_url'",
             "items": [
@@ -732,7 +733,7 @@
                   {"value": "file_upload", "name": "File Upload"}
                 ]
               },
-              {            
+              {
                 "key": "main_measurements[].n_tuple[].user_code.source",
                 "condition": "model['main_measurements'][arrayIndices[0]]['n_tuple'][arrayIndices[1]]['user_code']['_type'] == 'external_url'",
                 "items": [
@@ -815,7 +816,7 @@
             "items": [
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].object",
-                "type": "select", 
+                "type": "select",
                 "titleMap": [
                   {"value": "electron", "name": "electron"},
                   {"value": "muon", "name": "muon"},
@@ -835,7 +836,7 @@
                 "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'electron'",
                 "titleMap": [
                   {"value": "GsfElectron", "name": "GsfElectron"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].tau_type",
@@ -843,7 +844,7 @@
                 "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][1]['object'] == 'tau'",
                 "titleMap": [
                   {"value": "PFTau", "name": "PFTau"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].muon_type",
@@ -853,7 +854,7 @@
                   {"value": "PFMuon", "name": "PFMuon"},
                   {"value": "GlobalMuon", "name": "GlobalMuon"},
                   {"value": "TrackerMuon", "name": "TrackerMuon"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].met_type",
@@ -862,7 +863,7 @@
                 "titleMap": [
                   {"value": "PFMET", "name": "PFMET"},
                   {"value": "CaloMET", "name": "CaloMET"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].met_pf_corrections",
@@ -872,7 +873,7 @@
                   {"value": "Type0PFCorrections", "name": "Type0PFCorrections"},
                   {"value": "Type1PFCorrections", "name": "Type1PFCorrections"},
                   {"value": "Type2PFCorrections", "name": "Type2PFCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].met_calo_corrections",
@@ -882,7 +883,7 @@
                   {"value": "Type0CaloCorrections", "name": "Type0CaloCorrections"},
                   {"value": "Type1CaloCorrections", "name": "Type1CaloCorrections"},
                   {"value": "Type2CaloCorrections", "name": "Type2CaloCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].photon_type",
@@ -891,7 +892,7 @@
                 "titleMap": [
                   {"value": "Photon", "name": "Photon"},
                   {"value": "Conversion", "name": "Conversion"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].track_type",
@@ -900,7 +901,7 @@
                 "titleMap": [
                   {"value": "Heavy-Ion", "name": "Heavy-Ion"},
                   {"value": "pp", "name": "pp"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].jet_type",
@@ -927,7 +928,7 @@
                   {"value": "KT7PF", "name": "KT7PF"},
                   {"value": "KT8Calo", "name": "KT8Calo"},
                   {"value": "KT8PF", "name": "KT8PF"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].jet_corrections",
@@ -935,7 +936,7 @@
                 "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'jet' || model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['object'] == 'bjet'",
                 "titleMap": [
                   {"value": "JetCorrections", "name": "JetCorrections"}
-                ]  
+                ]
               },
               {
                 "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].number",
@@ -956,7 +957,7 @@
                   {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].number.number",
                     "placeholder": "E.g. 1"
-                  }    
+                  }
                 ]
               },
               {
@@ -974,7 +975,7 @@
                   {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].number_vertex.number",
                     "placeholder": "E.g. 1"
-                  }    
+                  }
                 ]
               },
               {
@@ -1025,7 +1026,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].electron_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['electron_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1048,7 +1049,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].muon_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['muon_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1070,10 +1071,10 @@
                     "titleMap": [
                       {"value": "AgainstElectronLooseMVA", "name": "AgainstElectronLooseMVA"},
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].tau_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['tau_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1094,10 +1095,10 @@
                     "type": "select",
                     "titleMap": [
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].jet_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['jet_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1123,10 +1124,10 @@
                       {"value": "combinedSecondaryVertexBJetTags", "name": "combinedSecondaryVertexBJetTags"},
                       {"value": "jetProbabilityBJetTags", "name": "jetProbabilityBJetTags"},
                       {"value": "other", "name": "Other..."}
-                      
+
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].bjet_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['bjet_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1149,7 +1150,7 @@
                       {"value": "other", "name": "Other..."}
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].photon_discriminator.custom_tag",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['photon_discriminator']['tag'] == 'other'",
                     "placeholder": "E.g MyCustomDiscriminatorTag"
@@ -1174,7 +1175,7 @@
                       {"value": "<", "name": "<"}
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].pt_cut[].number"
                   }
                 ]
@@ -1193,7 +1194,7 @@
                       {"value": "<", "name": "<"}
                     ]
                   },
-                  { 
+                  {
                     "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].eta_cut[].number",
                     "type": "select",
                     "titleMap": [
@@ -1205,7 +1206,7 @@
                     ]
                   },
                   {
-                    "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].eta_cut[].other_number",  
+                    "key": "auxiliary_measurements[].detector_final_state.final_state_particles[].eta_cut[].other_number",
                     "placeholder": "E.g. 1.0",
                     "condition": "model['auxiliary_measurements'][arrayIndices[0]]['detector_final_state']['final_state_particles'][arrayIndices[1]]['eta_cut'][arrayIndices[2]]['number'] == 'other'"
                   }
@@ -1233,7 +1234,7 @@
                 "type": "radios",
                 "titleMap": [
                   {"value": "same_sign", "name": "same sign"},
-                  {"value": "opposite_sign", "name": "opposite sign"} 
+                  {"value": "opposite_sign", "name": "opposite sign"}
                 ]
               },
               {

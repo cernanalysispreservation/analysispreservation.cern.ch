@@ -1,0 +1,23 @@
+<div class="dropown">
+  <div ng-click="form.collapsed = !form.collapsed" ng-class="{'title-lev1': form.key.length == 1}">
+  <i class="fa fa-list" ></i>
+  <span
+    ng-if="form.schema.title"
+    class="forms-filter-fields-font-size fixed-column-link">
+      {{form.schema.title}}
+      |
+      <span class="progress-fields bg-primary">
+        {{ model.size ? model.size : 0 }} Items
+      </span>
+  </span>
+</div>
+    <ul uib-collapse="form.collapsed" class="dropdwn-menu">
+        <li
+          ng-repeat="item in [] | range: model.size"
+          ng-class="{{fontColor}}"
+          class="list-subelement">
+            <cap-deposit-nav-array-item form="form" model="model.get(item)">
+            </cap-deposit-nav-array-item>
+        </li>
+    </ul>
+</div>

@@ -39,8 +39,8 @@
                "items": {
                   "type": "object",
                   "properties": {
-                     "names": {
-                        "title": "Names",
+                     "name": {
+                        "title": "Name",
                         "type": "string"
                      },
                      "email": {

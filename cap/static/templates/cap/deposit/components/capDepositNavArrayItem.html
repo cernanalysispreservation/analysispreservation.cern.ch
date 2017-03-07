@@ -1,0 +1,15 @@
+<div id="nav{{form.key[0]}}">
+  <i class="fa fa-minus-square-o"></i>
+  <span
+    ng-if="form.schema.title"
+    class="forms-filter-fields-font-size fixed-column-link">
+      {{form.schema.title }} Item
+  </span>
+</div>
+<div
+  ng-repeat="formElement in form.items | filter:query" ng-show="formElement.allowDisplay || formElement.condition"
+  class="panel-body  cursor-pointer"
+  ng-click="updateContent( form.length, $index)">
+    <cap-deposit-nav-item form="formElement" model="model.get(formElement.key[formElement.key.length-1])">
+    </cap-deposit-nav-item>
+</div>

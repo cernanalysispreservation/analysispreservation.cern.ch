@@ -1,0 +1,7 @@
+<div class="deposit-navigation-root" ng-repeat="formElement in form">
+    <cap-deposit-nav-item
+      form="formElement"
+      model="model.get(formElement.key[formElement.key.length-1])"
+      collapsed="collapsed">
+    </cap-deposit-nav-item>
+</div>

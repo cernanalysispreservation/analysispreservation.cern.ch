@@ -1,0 +1,11 @@
+<div>
+    <div>
+        <i class="fa" ng-class="{ 'fa-circle-o': !model,'fa-circle': model}"></i>
+        <span
+          tooltip-placement="top"
+          uib-tooltip="{{model}}"
+          class="forms-filter-fields-font-size fixed-column-link">
+            {{form.title}}
+        </span> <code ng-if="model">{{model}}</code>
+    </div>
+</div>
