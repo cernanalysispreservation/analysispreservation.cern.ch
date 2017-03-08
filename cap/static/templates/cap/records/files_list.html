@@ -23,7 +23,7 @@
           <th>Size</th>
         </tr>
         <tr class="sel-file" ng-repeat="f in record.meta_info.files.files | filter:fileSearch">
-          <td><a target="_self" href="{{ f.key }}" download="{{ f.key }}">{{ f.key }} <i class="fa fa-download text-success" aria-hidden="true"></i></a></td> 
+          <td><a target="_self" href="/api/files/{{ f.bucket }}/{{f.key}}" download="{{ f.file_name }}">{{ f.key }} <i class="fa fa-download text-success" aria-hidden="true"></i></a></td> 
           <td>{{ f.size | bytesToHumanReadable }}</td>
         </tr>
         <tr ng-show="(record.meta_info.files.files | filter:fileSearch).length == 0">

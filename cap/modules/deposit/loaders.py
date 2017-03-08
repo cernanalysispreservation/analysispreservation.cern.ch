@@ -124,10 +124,11 @@ def extract_x_cap_files(data):
 def download_url(record_id, url):
     """Create new file object and assign it to object version."""
     record = CAPDeposit.get_record(record_id)
+    r = requests.get(url, stream=True).raw
+    r.decode_content = True
     record.files[url].file.set_contents(
-        requests.get(url, stream=True).raw,
-        default_location=record.files.bucket.location.uri,
-    )
+        r,
+        default_location=record.files.bucket.location.uri)
     db.session.commit()
 
 
@@ -184,6 +185,8 @@ def json_v1_loader(data=None):
         x_cap_files = extract_x_cap_files(data)
         urls = process_x_cap_files(record, x_cap_files)
         data['_files'] = record.files.dumps()
+        for file in data['_files']:
+            file['file_name'] = file['key'].split('/')[-1]
 
         @after_this_request
         def _preserve_files(response):

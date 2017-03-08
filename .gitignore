@@ -71,4 +71,4 @@ target/
 
 /cap/jsonschemas_gen/*
 
-/cap/test.db
+cap/test.db
