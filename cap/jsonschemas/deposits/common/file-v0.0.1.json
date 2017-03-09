@@ -21,9 +21,6 @@
         "type": "object",
         "description": "Describe information needed for files in records.",
         "properties": {
-          "checksum": {
-            "type": "string"
-          },
           "bucket": {
             "type": "string"
           },

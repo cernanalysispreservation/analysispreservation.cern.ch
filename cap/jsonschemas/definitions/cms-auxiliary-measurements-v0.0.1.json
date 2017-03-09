@@ -33,6 +33,7 @@
                 "title": "Object",
                 "type": "string",
                 "enum": [
+                  "",
                   "electron",
                   "muon",
                   "tau",
@@ -117,11 +118,6 @@
                   "CaloMET"
                 ]
               },
-              "sel_criteria": {
-                "type": "string",
-                "title": "Selection Criteria",
-                "enum": ["tight", "medium", "loose", "other"]
-              },
               "met_pf_corrections": {
                 "type": "string",
                 "title": "MET Corrections",
@@ -148,6 +144,11 @@
                   "pp"
                 ]
               },
+              "sel_criteria": {
+                "type": "string",
+                "title": "Selection Criteria",
+                "enum": ["tight", "medium", "loose", "other"]
+              },
               "isolation": {
                 "title": "Isolation",
                 "type": "object",
@@ -157,12 +158,14 @@
                     "type": "object",
                     "properties": {
                       "pTg": {
-                        "type": "number",
-                        "title": "pT >"
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title":"pT >"
                       },
                       "deltaRs": {
-                        "type": "number",
-                        "title": "ΔR <"
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title":"ΔR <"
                       }
                     }
                   },
@@ -171,12 +174,14 @@
                     "type": "object",
                     "properties": {
                       "pTs": {
-                        "type": "number",
-                        "title": "pT <"
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                         "title":"pT <"
                       },
                       "deltaRs": {
-                        "type": "number",
-                        "title": "ΔR <"
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title":"ΔR <"
                       }
                     }
                   }
@@ -199,8 +204,9 @@
                     "default": "="
                   },
                   "number": {
-                    "type": "number",
-                    "title": "Number"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Number"
                   }
                 }
               },
@@ -216,8 +222,9 @@
                     ]
                   },
                   "number": {
-                    "type": "number",
-                    "title": "Number"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Number"
                   }
                 }
               },
@@ -226,8 +233,9 @@
                 "type": "object",
                 "properties": {
                   "number": {
-                    "type": "number",
-                    "title": ">"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":">"
                   }
                 }
               },
@@ -238,8 +246,8 @@
                   "tag": {
                     "type": "string",
                     "title": "Tag",
-                    "enum": [
-                      "other..."
+                    "enum":[  
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -247,12 +255,10 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
-                    "title": "Value"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "muon_discriminator": {
@@ -263,7 +269,7 @@
                     "type": "string",
                     "title": "Tag",
                     "enum": [
-                      "other..."
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -271,12 +277,10 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
-                    "title": "Value"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "tau_discriminator": {
@@ -288,7 +292,7 @@
                     "title": "Tag",
                     "enum": [
                       "AgainstElectronLooseMVA",
-                      "other..."
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -296,12 +300,10 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
-                    "title": "Value"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "jet_discriminator": {
@@ -312,7 +314,7 @@
                     "type": "string",
                     "title": "Tag",
                     "enum": [
-                      "other..."
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -320,12 +322,10 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
-                    "title": "Value"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "bjet_discriminator": {
@@ -342,7 +342,7 @@
                       "simpleSecondaryVertexHighEffBJetTags",
                       "combinedSecondaryVertexBJetTags",
                       "jetProbabilityBJetTags",
-                      "other..."
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -350,12 +350,10 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
-                    "title": "Value"
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
+                    "title":"Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "photon_discriminator": {
@@ -366,7 +364,7 @@
                     "type": "string",
                     "title": "Tag",
                     "enum": [
-                      "other..."
+                      "other"
                     ]
                   },
                   "custom_tag": {
@@ -374,17 +372,16 @@
                     "title": " "
                   },
                   "value": {
-                    "type": "number",
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
                     "title": "Value"
                   }
-                },
-                "dependencies": {
-                  "custom_tag": ["tag"]
                 }
               },
               "pt_cut": {
                 "title": "pT Cuts",
                 "type": "array",
+                "default": [],
                 "items": {
                   "type": "object",
                   "properties": {
@@ -399,7 +396,8 @@
                       "default": ">"
                     },
                     "number": {
-                      "type": "number",
+                      "type":"string",
+                      "pattern": "^[\\d\\.]+$",
                       "title": "GeV"
                     }
                   }
@@ -408,6 +406,7 @@
               "eta_cut": {
                 "title": "|η| Cuts",
                 "type": "array",
+                "default": [],
                 "items": {
                   "type": "object",
                   "properties": {
@@ -433,41 +432,13 @@
                       ]
                     },
                     "other_number": {
-                      "type": "number",
+                      "type":"string",
+                      "pattern": "^[\\d\\.]+$",
                       "title": " "
                     }
-                  },
-                  "dependencies": {
-                    "other_number": ["number"]
                   }
                 }
               }
-            },
-            "dependencies": {
-              "electron_type": ["object"],
-              "muon_type": ["object"],
-              "tau_type": ["object"],
-              "jet_type": ["object"],
-              "jet_corrections": ["object"],
-              "photon_type": ["object"],
-              "met_type": ["object"],
-              "sel_criteria": ["object"],
-              "photon_type": ["object"],
-              "met_pf_corrections": ["met_type"],
-              "met_calo_corrections": ["met_type"],
-              "track_type": ["object"],
-              "isolation": ["sel_criteria"],
-              "number": ["object"],
-              "number_vertex": ["object"],
-              "number_tracks": ["object"],
-              "electron_discriminator": ["object"],
-              "muon_discriminator": ["object"],
-              "tau_discriminator": ["object"],
-              "jet_discriminator": ["object"],
-              "bjet_discriminator": ["object"],
-              "photon_discriminator": ["object"],
-              "pt_cut": ["object"],
-              "eta_cut": ["object"]
             }
           }
         },
@@ -480,15 +451,24 @@
               "relation_type": {
                 "type": "string",
                 "title": "Relation Type",
-                "enum": ["charge", "angle", "invariant mass", "transverse mass"]
+                "enum": [
+                  "charge",
+                  "angle",
+                  "invariant_mass",
+                  "transverse_mass"
+                ]
               },
               "charge_relation": {
                 "type": "string",
                 "title": "Charge",
-                "enum": ["same sign", "opposite sign"]
+                "enum":[
+                  "same_sign",
+                  "opposite_sign"
+                ]
               },
               "angle_relation": {
-                "type": "number",
+                "type":"string",
+                "pattern": "^[\\d\\.]+$",
                 "title": "Degrees"
               },
               "invariant_mass": {
@@ -500,7 +480,8 @@
                     "title": "<"
                   },
                   "upper_range": {
-                    "type": "number",
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
                     "title": ">"
                   }
                 }
@@ -510,11 +491,13 @@
                 "type": "object",
                 "properties": {
                   "lower_range": {
-                    "type": "number",
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
                     "title": "<"
                   },
                   "upper_range": {
-                    "type": "number",
+                    "type":"string",
+                    "pattern": "^[\\d\\.]+$",
                     "title": ">"
                   }
                 }
@@ -524,12 +507,6 @@
                 "title": "Physics Objects Available",
                 "enum": []
               }
-            },
-            "dependencies": {
-              "charge_relation": ["relation_type"],
-              "angle_relation": ["relation_type"],
-              "invariant_mass": ["relation_type"],
-              "transverse_mass": ["relation_type"]
             }
           }
         },
@@ -558,7 +535,8 @@
               },
               "number": {
                 "title": "Number",
-                "type": "integer"
+                "pattern": "^[\\d\\.]+$",
+                "type":"string"
               },
               "pt_cut": {
                 "title": "PT",
