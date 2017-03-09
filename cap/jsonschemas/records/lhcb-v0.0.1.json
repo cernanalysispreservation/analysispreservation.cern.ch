@@ -2,7 +2,19 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "description": "Describe information needed for deposit module.",
   "properties": {
+    "_cap_status": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
     "analysis_steps": {
+      "description": "Please provide information about the steps of the analysis",
       "default": [{
 
       }],
@@ -73,7 +85,7 @@
                 "type": "array"
               }
             },
-            "title": "Input Data",
+            "title": "Input data",
             "type": "object"
           },
           "output_data": {
@@ -115,10 +127,14 @@
     },
     "basic_info": {
       "id": "basic_info",
+      "description": "Please provide some information relevant for all parts of the Analysis here",
       "properties": {
         "analysis_name": {
-          "required": true,
           "title": "Analysis Name",
+          "type": "string"
+        },
+        "measurement": {
+          "title": "Measurement",
           "type": "string"
         },
         "egroup": {
@@ -127,16 +143,26 @@
         },
         "institutes": {
           "title": "Institutes Involved",
-          "type": "string"
+          "type": "string",
+          "enum": [
+            "Ions and Fixed Target",
+            "b-hadrons and Quarkonia",
+            "B Decays to Charmonium",
+            "Detector Performance",
+            "Charmless b-hadron Decays",
+            "QCD Electroweak and Exotica",
+            "Rare Decays",
+            "Charm Physics",
+            "Semileptonic B decays",
+            "B Decays to Open Charm"
+          ]
         },
         "keywords": {
-          "description": "Add keywords here",
           "id": "keywords",
           "title": "Keywords",
           "type": "string"
         },
         "proponents": {
-          "required": true,
           "title": "Proponents",
           "type": "string"
         },
@@ -158,9 +184,8 @@
             "9 - PAPER published",
             "x - other"
           ],
-          "required": true,
-          "title": "Status",
-          "type": "string"
+          "type": "string",
+          "title": "Status"
         },
         "status_notes": {
           "dependencies": [
@@ -170,33 +195,13 @@
           "type": "string"
         }
       },
+      "required": [
+        "analysis_name",
+        "proponents",
+        "reviewers"
+      ],
       "title": "Basic Information",
       "type": "object"
-    },
-    "documentations": {
-      "id": "documentations",
-      "items": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "description": "Add documentation",
-        "properties": {
-          "comment": {
-            "title": "Comment",
-            "type": "string"
-          },
-          "keyword": {
-            "title": "Keyword",
-            "type": "string"
-          },
-          "url": {
-            "title": "URL",
-            "type": "string"
-          }
-        },
-        "title": "Documentation",
-        "type": "object"
-      },
-      "title": "Documentations",
-      "type": "array"
     },
     "dst_selection": {
       "properties": {
@@ -235,13 +240,13 @@
           "title": "Code",
           "type": "object"
         },
-        "input_data": {
+        "production_info": {
           "properties": {
             "data": {
               "items": {
                 "properties": {
                   "location": {
-                    "title": "Sample",
+                    "title": "Bookkeeping path",
                     "type": "string"
                   },
                   "processing_pass": {
@@ -276,6 +281,22 @@
                     "title": "Stripping software",
                     "type": "object"
                   },
+                  "trigger": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "title": "Trigger",
+                    "type": "array"
+                  },
+                  "davinci_script": {
+                    "title": "DaVinci Script",
+                    "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+                  },
                   "year": {
                     "title": "Year",
                     "type": "string"
@@ -290,24 +311,26 @@
               "items": {
                 "properties": {
                   "db_tags": {
-                    "enum": [
-                      "DDDB",
-                      "SIMCOND"
-                    ],
-                    "title": "Database Tags",
-                    "type": "string"
+                    "type": {
+                      "enum": [
+                        "DDDB",
+                        "SIMCOND"
+                      ],
+                      "title": "Database Tags",
+                      "type": "string"
+                    }
                   },
                   "generator": {
                     "title": "Generator",
                     "type": "string"
                   },
                   "location": {
-                    "title": "Sample",
+                    "title": "Bookkeeping path",
                     "type": "string"
                   },
                   "mc_production": {
                     "title": "Production",
-                    "type": "number"
+                    "type": "string"
                   },
                   "reconstruction_software": {
                     "properties": {
@@ -337,6 +360,22 @@
                     "title": "Stripping software",
                     "type": "object"
                   },
+                  "trigger": {
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "title": "Trigger",
+                    "type": "array"
+                  },
+                  "davinci_script": {
+                    "title": "DaVinci Script",
+                    "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+                  },
                   "used_tools": {
                     "title": "Used Tools",
                     "type": "string"
@@ -348,164 +387,134 @@
               "type": "array"
             }
           },
-          "title": "Input Data",
+          "title": "Production information",
           "type": "object"
-        },
-        "output_data": {
-          "properties": {
-            "data": {
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "title": "Collision Data",
-              "type": "array"
-            },
-            "mc_data": {
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  }
-                }
-              },
-              "title": "MC Data",
-              "type": "array"
-            }
-          },
-          "title": "Output Data",
-          "type": "object"
-        },
-        "stripping_line": {
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              }
-            }
-          },
-          "title": "Stripping Line",
-          "type": "array"
-        },
-        "trigger": {
-          "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              }
-            }
-          },
-          "title": "Trigger",
-          "type": "array"
         }
       },
       "title": "DST selection",
       "type": "object"
     },
-    "extra_info": {
-      "id": "extra_info",
+    "additional_resources": {
+      "title": "Additional Resources",
+      "description": "Please provide information about the additional resources of the analysis",
+      "type": "object",
       "properties": {
-        "analysis_number": {
-          "title": "Analysis note (ANA) number",
-          "type": "string"
+        "internal_discussions": {
+          "id": "internal-discussions",
+          "items": {
+            "properties": {
+              "meeting": {
+                "title": "E-Group",
+                "type": "string"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Reports",
+            "type": "object"
+          },
+          "title": "Internal Discussions",
+          "type": "array"
         },
-        "arxiv": {
-          "title": "arXiv ID",
-          "type": "string"
+        "presentations": {
+          "id": "presentations",
+          "items": {
+            "properties": {
+              "meeting": {
+                "title": "Meeting (GROUP?)",
+                "type": "string"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Presentation",
+            "type": "object"
+          },
+          "title": "Presentations",
+          "type": "array"
         },
-        "conf_report": {
-          "title": "Conference Report (CONF)",
-          "type": "string"
+        "publications": {
+          "id": "publications",
+          "items": {
+            "properties": {
+              "analysis_number": {
+                "title": "Analysis note (ANA) number",
+                "type": "string"
+              },
+              "arxiv": {
+                "title": "arXiv ID",
+                "type": "string"
+              },
+              "conf_report": {
+                "title": "Conference Report (CONF)",
+                "type": "string"
+              },
+              "public_paper": {
+                "title": "Public Paper",
+                "type": "string"
+              },
+              "twiki": {
+                "title": "tWiki page",
+                "type": "string"
+              },
+              "reviewegroup": {
+                "title": "Review Group",
+                "type": "string"
+              },
+              "roles": {
+                "title": "Roles",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Publications",
+            "type": "object"
+          },
+          "title": "Publications",
+          "type": "array"
         },
-        "public_paper": {
-          "title": "Public Paper",
-          "type": "string"
-        },
-        "twiki": {
-          "title": "tWiki page",
-          "type": "string"
+        "documentations": {
+          "id": "documentations",
+          "items": {
+            "description": "Add documentation",
+            "properties": {
+              "comment": {
+                "title": "Comment",
+                "type": "string"
+              },
+              "keyword": {
+                "title": "Keyword",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Documentation",
+            "type": "object"
+          },
+          "title": "Documentations",
+          "type": "array"
         }
-      },
-      "title": "Extra Information",
-      "type": "object"
-    },
-    "internal_discussions": {
-      "id": "internal-discussions",
-      "items": {
-        "properties": {
-          "meeting": {
-            "title": "E-Group",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "url": {
-            "title": "URL",
-            "type": "string"
-          }
-        },
-        "title": "Reports",
-        "type": "object"
-      },
-      "title": "Internal Discussions",
-      "type": "array"
-    },
-    "presentations": {
-      "id": "presentations",
-      "items": {
-        "properties": {
-          "meeting": {
-            "title": "Meeting (GROUP?)",
-            "type": "string"
-          },
-          "title": {
-            "title": "Title",
-            "type": "string"
-          },
-          "url": {
-            "title": "URL",
-            "type": "string"
-          }
-        },
-        "title": "Presentation",
-        "type": "object"
-      },
-      "title": "Presentations",
-      "type": "array"
-    },
-    "publications": {
-      "id": "publications",
-      "items": {
-        "properties": {
-          "reviewegroup": {
-            "title": "Review Group",
-            "type": "string"
-          },
-          "roles": {
-            "title": "Roles",
-            "type": "string"
-          },
-          "url": {
-            "title": "URL",
-            "type": "string"
-          }
-        },
-        "title": "Publications",
-        "type": "object"
-      },
-      "title": "Publications",
-      "type": "array"
+      }
     }
   },
-  "title": "Deposit schema.",
+  "title": "LHCb Deposit Schema.",
   "type": "object"
 }

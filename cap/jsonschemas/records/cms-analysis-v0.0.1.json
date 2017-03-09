@@ -1,21 +1,237 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#", 
-  "description": "Describe information needed for deposit module.", 
-  "properties": {
-    "basic_info": {
-      "properties": {
-        "anal_name": {
-          "title": "Analysis Name", 
-          "type": "string"
-        }, 
-        "cadi": {
-          "title": "CADI #", 
-          "type": "string"
+   "$schema": "http://json-schema.org/draft-04/schema#",
+   "description": "Describe information needed for deposit module.",
+   "properties": {
+      "_cap_status": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
         }
-      }, 
-      "type": "object"
-    }
-  }, 
-  "title": "Deposit schema.", 
-  "type": "object"
+      },
+      "basic_info": {
+         "title": "Basic Information",
+         "description": "Please provide some information relevant for all parts of the Analysis here",
+         "propertyOrder": 10,
+         "type": "object",
+         "id": "basic_info",
+         "properties": {
+            "analysis_number": {
+               "title": "Analysis Number",
+               "type": "string"
+            },
+            "abstract": {
+               "title": "Abstract",
+               "type": "string"
+            },
+            "conclusion": {
+               "title": "Conclusion",
+               "type": "string"
+            },
+            "people_info": {
+               "title": "People Involved",
+               "description": "Please provide information about the people involved",
+               "type": "array",
+               "items": {
+                  "type": "object",
+                  "properties": {
+                     "names": {
+                        "title": "Names",
+                        "type": "string"
+                     },
+                     "email": {
+                        "title": "Email-Adresses",
+                        "type": "string"
+                     }
+                  }
+               }
+            },
+            "os": {
+               "title": "Operation System",
+               "description": "Please provide information about your operation system",
+               "type": "object",
+               "properties": {
+                  "name": {
+                     "title": "Name",
+                     "type": "string"
+                  },
+                  "version": {
+                     "title": "Version",
+                     "type": "string"
+                  }
+               }
+            },
+            "software": {
+               "title": "Analysis Software",
+               "description": "Please provide a software description",
+               "type": "object",
+               "properties": {
+                  "name": {
+                     "title": "Name",
+                     "type": "string"
+                  },
+                  "version": {
+                     "title": "Version",
+                     "type": "string"
+                  },
+                  "global_tag_data": {
+                     "title": "Global Tag Data",
+                     "type": "string"
+                  },
+                  "global_tag_MC": {
+                     "title": "Global Tag MC",
+                     "type": "string"
+                  }
+               }
+            }
+         }
+      },
+      "input_datasets": {
+         "_comment": "This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
+         "title": "Input Data",
+         "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
+         "type": "object",
+         "id": "input_datasets",
+         "properties": {
+            "primary_datasets": {
+               "title": "Primary Datasets",
+               "description": "Please list all primary datasets here",
+               "type": "string",
+               "id": "primary-datasets"
+            },
+            "mc_sig_dataset": {
+               "title": "Monte Carlo Signal Datasets",
+               "description": "Please list all Monte Carlo Signal datasets",
+               "type": "string",
+               "id": "mc_sig_dataset"
+            },
+            "mc_bg_dataset": {
+               "title": "Monte Carlo Background Datasets",
+               "description": "Please list all Monte Carlo Background datasets",
+               "type": "string",
+               "id": "mc_bg_dataset"
+            }
+         }
+      },
+      "input_code_output": {
+         "title": "n-tuple Production",
+         "description": "Please provide the n-tuples you used for your measurements",
+         "type": "array",
+         "default": [
+            {}
+         ],
+         "items": {
+            "type": "object",
+            "properties": {
+               "code_base": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-user-code-v0.0.1.json"
+               },
+               "n_tuple": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-input-code-output-v0.0.1.json"
+               }
+            }
+         }
+      },
+      "main_measurements": {
+         "title": "Main Measurement Workflow",
+         "description": "Please provide information about the main measurements of your analysis",
+         "type": "array",
+         "id": "main-measurements",
+         "default": [
+            {}
+         ],
+         "items": {
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-main-measurements-v0.0.1.json"
+         }
+      },
+      "auxiliary_measurements": {
+         "title": "Auxiliary Measurement Workflow",
+         "description": "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
+         "type": "array",
+         "id": "auxiliary-measurements",
+         "items": {
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-auxiliary-measurements-v0.0.1.json"
+         }
+      },
+      "post_n_tuple": {
+         "title": "Final Results",
+         "description": "Please provide information about the combination of measurements for the final results of your analysis ",
+         "type": "object",
+         "properties": {
+            "code_base": {
+               "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-user-code-v0.0.1.json"
+            },
+            "n_tuple": {
+               "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-final-input-code-output-v0.0.1.json"
+            }
+         }
+      },
+      "additional_resources": {
+         "title": "Additional Resources",
+         "description": "Please provide information about the additional resources of the analysis",
+         "type": "object",
+         "properties": {
+            "documentations": {
+               "title": "Additional Documentations",
+               "description": "Please provide all documentation",
+               "type": "array",
+               "id": "documentations",
+               "default": [
+                  {}
+               ],
+               "items": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/documentation-v0.0.1.json"
+               }
+            },
+            "internal_discussions": {
+               "title": "Internal Discussions",
+               "description": "Please add all internal discussions",
+               "type": "array",
+               "id": "internal-discussions",
+               "default": [
+                  {}
+               ],
+               "items": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/internal-discussion-v0.0.1.json"
+               }
+            },
+            "presentations": {
+               "title": "Presentations",
+               "description": "Please add all presentations",
+               "type": "array",
+               "id": "presentations",
+               "default": [
+                  {}
+               ],
+               "items": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/presentation-v0.0.1.json"
+               }
+            },
+            "publications": {
+               "title": "Publications",
+               "description": "Please add all publications",
+               "type": "array",
+               "id": "publications",
+               "default": [
+                  {}
+               ],
+               "items": {
+                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/publication-v0.0.1.json"
+               }
+            },
+            "keywords": {
+               "title": "Keywords",
+               "description": "Please add keywords here",
+               "type": "string",
+               "id": "keywords"
+            }
+         }
+      }
+   },
+   "title": "CMS Record Schema.",
+   "type": "object"
 }

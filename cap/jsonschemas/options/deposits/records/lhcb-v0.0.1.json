@@ -258,6 +258,7 @@
               },
               {
                 "key": "dst_selection.production_info.data[].davinci_script",
+                "title": "DaVinci Script",
                 "items": [
                   {
                     "key": "dst_selection.production_info.data[].davinci_script._type",
@@ -385,6 +386,7 @@
               },
               {
                 "key": "dst_selection.production_info.mc_data[].davinci_script",
+                "title": "DaVinci Script",
                 "items": [
                   {
                     "key": "dst_selection.production_info.mc_data[].davinci_script._type",

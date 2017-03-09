@@ -666,6 +666,7 @@
       },
       {
         "key": "main_measurements[].code_base",
+        "title": "User Code Base",
         "items": [
           {
             "key": "main_measurements[].code_base._type",
@@ -720,6 +721,7 @@
         "items": [
           {
             "key": "main_measurements[].n_tuple[].user_code",
+            "title": "Configuration File",
             "items": [
               {
                 "key": "main_measurements[].n_tuple[].user_code._type",

@@ -1,0 +1,31 @@
+{
+   "type": "object",
+   "x-cap-file": {
+      "fetch_from": "/source/url",
+      "file_key": "/key",
+      "condition": "/source/preserved"
+   },
+   "properties": {
+      "source": {
+         "title": "URL",
+         "type": "object",
+         "properties": {
+            "preserved": {
+               "title": "Preserve files from URL?",
+               "type": "boolean",
+               "default": true
+            },
+            "url": {
+               "type": "string",
+               "pattern": "^(http|https)://"
+            }
+         }
+      },
+      "key": {
+         "type": "string"
+      },
+      "version_id": {
+         "type": "string"
+      }
+   }  
+}

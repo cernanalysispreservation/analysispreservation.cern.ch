@@ -7,10 +7,10 @@
       "type": "string"
     },
     "main_analysis": {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/main-analysis-v0.0.1.json"    
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-main-analysis-v0.0.1.json"    
     },
     "mc_analysis": {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/mc-analysis-v0.0.1.json"   
+      "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-mc-analysis-v0.0.1.json"   
     }  
   }   
 }
