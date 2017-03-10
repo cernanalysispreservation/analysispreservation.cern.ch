@@ -1,15 +1,18 @@
-What It Does
+Project Features
 =====================================
 
 CERN Analysis Preservation provides a centralised platform for physicists to preserve, find and exchange information relevant for reproducibility of their analysis.
 
 .. image:: ../_static/cernanalysispreservation_user_stories.png
 
-- `1. Preserve`_
-- `2. Search and Retrieve`_
-- `3. Review and Compare`_
-- `4. Reproduce and Rerun`_
-- `5. Imagine...`_
+- :ref:`project-preserve`
+- :ref:`project-search`
+- :ref:`project-collaborate`
+- :ref:`project-reuse`
+- :ref:`project-imagine`
+
+
+.. _project-preserve:
 
 1. Preserve
 -----------
@@ -30,20 +33,26 @@ The flexibility provided allows to duplicate, delete, ignore and create content 
 
 Every schema change is versioned, ensuring that the schema can be adapted to work with new requirements at any moment in time without breaking older analysis records.
 
-Depending on the preference and work environment of the researcher, analysis information can be created and edited through a `Submission Form`_ on the web interface or via the `REST API`_.
+Depending on the preference and work environment of the researcher, analysis information can be created and edited through a :ref:`project-submission-form` on the web interface or via the :ref:`project-rest-api`.
+
+.. _project-submission-form:
 
 Submission Form
 ~~~~~~~~~~~~~~~
 
-Submission forms are the graphical representation of the JSON schemas described in the last section. They allow manual editing of each field as well as inserting JSON conforming to the JSON schema of this part of the analysis form. Auto-complete and auto-fill will support editing fields for which information exists in one of the connected databases. See the section on `Connectivity`_ for more information.
+Submission forms are the graphical representation of the JSON schemas described in the last section. They allow manual editing of each field as well as inserting JSON conforming to the JSON schema of this part of the analysis form. Information stored within connected databases is used to auto-complete and auto-fill the analysis description whenever possible. See the section on :ref:`project-connectivity` for more information.
 There are tutorials to help you :doc:`create an analysis <../tutorials/create>` using a submission form.
 
-Visit the :doc:`glossary <../reference-guide/schema-reference>` for more information on the terminologies used in the form.
+Visit the :doc:`JSON Schema Reference <../references/schema>` for more information on the terminologies used in the form.
+
+.. _project-rest-api:
 
 REST API
 ~~~~~~~~
 
-There will be an API to enable direct content upload without using the submission form. A prototype will be available in the near future. If you want to track development you can check it `here <../status.html#capture>`_. A tutorial on using the API will be provided :doc:`here <../tutorials/create-api>` and a reference guide will be found :doc:`here <../reference-guide/api>`.
+There will be an API to enable direct content upload without using the submission form. A prototype will be available in the near future. If you want to track development you can check :doc:`here <status>`. Help on using the API will be provided :doc:`here <../references/api>`.
+
+.. _project-connectivity:
 
 Connectivity
 ~~~~~~~~~~~~
@@ -52,7 +61,7 @@ To reduce user effort and ensure accuracy of added information, we are connectin
 
 Additionally, we offer a possibility for uploading files (e.g. configuration files) as well as providing a URL from which the files are copied and stored automatically.
 
-You can check the status of current connections `here <../status.html#capture>`_. For more details on how autofill works you can go to the tutorial for :doc:`creating an analysis <../tutorials/create>`.
+You can check the status of current connections in :ref:`status-capture`. For more details on how autofill works you can go to the tutorial for :doc:`creating an analysis <../tutorials/create>`.
 
 .. TODO link to file upload tutorial
 
@@ -61,8 +70,10 @@ Versioning
 
 Upon creation of an analysis on CAP it will be assigned a unique identifier. Every time the analysis is edited the new version will be stored as an update to the previous version of the analysis through the identifier system. This will enable references to intermediate analysis steps in the analysis notes, allow keeping track of the analysis and monitoring as well as undoing changes.
 
-Authorisation/Access Control
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _project-access:
+
+Authorisation and Access Control
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Authorization on CAP is managed by CERN Single Sign-On, therefore restricting login to CERN members and restricting collaboration access to the collaboration you a member of.
 
@@ -81,6 +92,9 @@ A draft version can be submitted any time. There is no drawback in keeping a dra
 	- only members granted specific rights can see or edit a draft version of an analysis
 	- only the creator can see or edit an analysis with default permission settings
 
+
+.. _project-search:
+
 2. Search and Retrieve
 ----------------------
 
@@ -92,7 +106,7 @@ Search capability
 Using the search bar at the top of the page or the dedicated search page that comes with it, users can search through their own and all shared analyses within their collaboration, past or on-going. Based on feedback by collaboration physicists filters will be created to enable search for specific content.
 
 .. note::
-	You have suggestions on what is needed to make the search more useful to you? Please :doc:`let us know <../support>`!
+	You have suggestions on what is needed to make the search more useful to you? Please :doc:`let us know <../community/support>`!
 
 Additionally, users can easily keep track of and find analyses they created and those that are shared with them through the navigation sidebar or the personal dashboard on their home page.
 
@@ -100,6 +114,9 @@ All analysis metadata are indexed, which means users can find analyses with spec
 
 .. Facets/ filter
 .. ~~~~~~~~~~~~~~
+
+
+.. _project-collaborate:
 
 3. Review and compare
 ---------------------
@@ -112,16 +129,21 @@ CAP aims to simplify combining analysis as well as the process of analysis revie
 .. Analysis information will be exportable from CAP to generate a status report or a framework for the analysis note. Exporting a record underlies the same restrictions as accessing the record.
 
 
+.. _project-reuse:
+
 4. Reproduce and Rerun
 ----------------------
 
-In CAP analyses information is preserved with the aim of reproducible research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST (see :doc:`this list <../reference-guide/terms>` for a short information on these projects).
+In CAP analyses information is preserved with the aim of reproducible research. Rerunning an analysis is one aspect of this we are addressing through links to related projects like REANA and RECAST (see :doc:`this list <../community/related-projects>` for a short information on these projects).
 
 .. Analysis Environment Preservation
 .. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. Analysis Take-over
 .. ~~~~~~~~~~~~~~~~~~
+
+
+.. _project-imagine:
 
 5. Imagine...
 -------------

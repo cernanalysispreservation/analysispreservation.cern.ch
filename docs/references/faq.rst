@@ -3,8 +3,11 @@ Frequently Asked Questions
 
 .. glossary::
 
+	How do you define an "analysis"?
+		From our point of view an analysis is a combination of data and metadata. For more details please see the :ref:`introduction-analysis`.
+
 	Is the information or data I add open access?
-		No, access to your analysis is always restricted to your collaboration and by the permissions you assign (see the section on `Authorization and Access Control <overview/project.html#authorisation-access-control>`_ for more details). Nothing is open access on CERN Analysis Preservation (except for the projects own source code). It is designed to be a safe environment for CERN physicists to use from the very beginning of starting their analysis and at any given moment in its lifetime. It is also meant to increase this lifetime.
+		No, access to your analysis is always restricted to your collaboration and by the permissions you assign (see the section on :ref:`project-access` for more details). Nothing is open access on CERN Analysis Preservation (except for the projects own source code). It is designed to be a safe environment for CERN physicists to use from the very beginning of starting their analysis and at any given moment in its lifetime. It is also meant to increase this lifetime.
 		
 		If you are searching for a service providing open access data or you have some data to share, you may want to check out `http://opendata.cern.ch/ <CERN Open Data>`_.
 
@@ -12,7 +15,7 @@ Frequently Asked Questions
 		No, we do not want nor can we do that. An analysis is an extremely complex research work which is precisely the reason why we care to preserve it. After all, if it were easy to automate the process of an analysis, why store it? What we are trying to do is to help you with repetitive tasks, help you find information you need and support your review and approval process so you can focus on the actual research.
 
 	I keep on hearing this word ... and I do not know what it means. Can you help me?
-		Sure, if you cannot find an explanation :doc:`here <reference-guide/terms>` simply ask us :doc:`directly <support>` and we will help you.
+		Sure, if you cannot find an explanation :doc:`here <glossary>` simply ask us :doc:`directly <../community/support>` and we will help you.
 
 	
 

@@ -13,40 +13,47 @@ We want to make it easier for physicists who are meant to have access to this an
 Taking Part
 -----------
 
-.. If you agree with us on the above maybe you want to help us grow.
-
 Do you want to help us grow? We are always happy to receive contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
 
-In case you are unsure what to do, you can contact us :doc:`directly <support>`.
-
-Issues
-~~~~~~
-
-If you find a bug or have a (feature) request, go ahead and add an issue for it or comment on an `existing issue <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch/issues>`_ in case this has already been addressed!
-
-Pull Requests
-~~~~~~~~~~~~~
-
-If you want to contribute directly to the project (e.g. code, JSON workflow files, documentation), you are welcome to create a pull request for your changes. If you want to know how to write good commit messages that will help us (now) and you (in a few weeks) to understand what you did, you may want to check out `this <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_.
-
-Thank you for helping us helping you!
-
+In case you are unsure what to do, you can contact us :doc:`directly <../community/support>`.
 
 Further Reading
 ---------------
 
 .. toctree::
-	:glob:
 	:maxdepth: 1
+	:caption: Overview
+	:name: sec-overview
 
-	overview
-	getting-started
-	tutorials
-	reference
+	overview/introduction
+	overview/project
+	overview/status
 
-	status
-	Support <support>
-	FAQ <faq>
+.. toctree::
+	:maxdepth: 1
+	:caption: Tutorials
+	:name: sec-tutorials
+
+	tutorials/getting-started
+	tutorials/tutorials
+
+.. toctree::
+	:maxdepth: 1
+	:caption: References
+	:name: sec-references
+
+	REST API <references/api>
+	references/glossary
+	JSON Schema <references/schema>
+	FAQ <references/faq>
+
+.. toctree::
+	:maxdepth: 1
+	:caption: Community
+	:name: sec-community
+
+	Support/Team <community/support>
+	community/related-projects
 
 
 .. toctree::

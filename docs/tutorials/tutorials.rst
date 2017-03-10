@@ -14,13 +14,13 @@ Tutorials
 .. toctree::
 	:maxdepth: 1
 	
-	tutorials/json
+	json
 
 .. toctree::
 	:hidden:
 	:maxdepth: 1
 
-	tutorials/create
-	tutorials/create-api
+	create
+	create-api
 	
 	
