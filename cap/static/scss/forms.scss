@@ -589,7 +589,6 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   width: 107%;
 }
 
-
 #cap-deposit-navigation {
   /* Progress bar */
   color: $dark-blue-theme-color;
@@ -631,3 +630,7 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   }
 }
 
+.modal-checkbox-element {
+  margin-top: -3%; 
+  color: #16a085;
+}

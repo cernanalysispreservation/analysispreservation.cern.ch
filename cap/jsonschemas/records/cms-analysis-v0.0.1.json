@@ -13,6 +13,16 @@
           }
         }
       },
+      "cms_questionnaire": {
+         "title": "CMS Questionnaire",
+         "type": "object",
+         "default": {},
+         "properties": {
+            "$ref": {
+               "type": "string"
+            }
+         }
+      },
       "basic_info": {
          "title": "Basic Information",
          "description": "Please provide some information relevant for all parts of the Analysis here",
@@ -152,9 +162,28 @@
          "title": "Auxiliary Measurement Workflow",
          "description": "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, Background Measurements, Systematic Uncertainties, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
          "type": "array",
-         "id": "auxiliary-measurements",
+         "default": [{}],
          "items": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-auxiliary-measurements-v0.0.1.json"
+            "type": "object",
+            "properties": {
+               "type": {
+                  "type": "string",
+                  "title": "Type",
+                  "enum": [
+                     "trigger_efficiencies",
+                     "background_measurements",
+                     "systematic_uncertainties",
+                     "mc_scale_factors",
+                     "object_efficiencies",
+                     "rates",
+                     "acceptance_corrections",
+                     "other"
+                  ]
+               },
+               "$ref": {
+                  "type": "string"
+               }
+            }
          }
       },
       "post_n_tuple": {

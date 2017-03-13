@@ -31,16 +31,24 @@
 angular.element(document).ready(function() {
 
   angular.module('capRecords').config(['schemaFormDecoratorsProvider', 'sfBuilderProvider', function(decoratorsProvider, sfBuilderProvider){
-    decoratorsProvider.addMapping(
+    decoratorsProvider.defineAddOn(
       'bootstrapDecorator',
       'file_selector',
-      '/static/templates/cap_records_js/decorators/file_selector.html'
-      );
+      '/static/templates/cap_records_js/decorators/file_selector.html',
+      sfBuilderProvider.stdBuilders
+    );
 
     decoratorsProvider.defineAddOn(
       'bootstrapDecorator',
       'cap:formAutofill',
       '/static/templates/cap_records_js/decorators/formAutofill.html',
+      sfBuilderProvider.stdBuilders
+    );
+
+    decoratorsProvider.defineAddOn(
+      'bootstrapDecorator',
+      'cap:formAssociateRecords',
+      '/static/templates/cap_records_js/decorators/formAssociateRecords.html',
       sfBuilderProvider.stdBuilders
     );
   }]);

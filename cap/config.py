@@ -540,6 +540,22 @@ DEPOSIT_GROUPS = {
         #     'cap.modules.deposit.permissions.read_permission_factory',
         # 'update_permission_factory_imp':
         #     'cap.modules.deposit.permissions.update_permission_factory',
+    },
+    "cms-auxiliary-measurement": {
+        "experiment": "CMS",
+        "schema": "schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
+        "schema_form": "/app/schemas/options/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
+        "name": "Auxiliary Measurement",
+        "description": "Create a CMS Auxiliary Measurement",
+        # "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "endpoint": "",
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.cms.cms_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
     }
 }
 
@@ -647,3 +663,8 @@ DATADIR = join(dirname(__file__), 'data')
 # TOFIX: Fix to check '$schema' permissions( like
 #        'UpdateDepositPermission') for file upload
 FILES_REST_PERMISSION_FACTORY = allow_all
+
+# Indexer
+# =======
+#: Flag for not replacing refs when creating deposit
+INDEXER_REPLACE_REFS = False

@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "CMS Auxiliary Measurements Deposit Schema.",
+    "type": "object",
+    "allOf": [
+        {
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/deposit-v0.0.1.json"
+        },
+        {
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/records/cms-auxiliary-measurements-v0.0.1.json"
+        },
+        {
+            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-v0.0.1.json"
+        }
+    ]
+}
