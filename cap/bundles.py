@@ -29,10 +29,12 @@ from invenio_assets import NpmBundle
 
 
 app_js = NpmBundle(
+    'node_modules/immutable/dist/immutable.js',
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
     "node_modules/angular-media-queries/match-media.js",
     "node_modules/angular-animate/angular-animate.js",
     "node_modules/angular-filter/dist/angular-filter.js",
+    'node_modules/angular-immutable/dist/immutable.js',
     'node_modules/angular-loading-bar/build/loading-bar.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
     'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js',
@@ -54,6 +56,7 @@ app_js = NpmBundle(
     "js/cap/controllers/capFormAutofillCtrl.js",
     "js/cap/controllers/capWGCtrl.js",
     "js/cap/controllers/capRecordCtrl.js",
+    "js/cap/directives/cap.deposit.progressBar.js",
     "js/cap/directives/capResults.js",
     "js/cap/directives/capEventFocus.js",
     "js/cap/cap.config.js",
@@ -68,6 +71,8 @@ app_js = NpmBundle(
         "angular-filter": "~0.5.14",
         "angular-hotkeys": "~1.7.0",
         "ng-jsoneditor": "~1.0.0",
+        "immutable": "~3.8.1",
+        "angular-immutable": "~0.1.2",
         "angular-media-queries": "~0.6.1",
         "jsoneditor": "~5.5.6"
     }

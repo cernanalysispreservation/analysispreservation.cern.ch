@@ -256,16 +256,23 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
                   .get_deposit($stateParams.depid);
         },
         contentBarTabs: function($stateParams){
-          return [{
-            "title": "Overview",
-            "link": "app.deposit_item.overview({depid:'"+$stateParams.depid+"'})"
-            },{
-            "title": "Files",
-            "link": "app.deposit_item.files({depid:'"+$stateParams.depid+"'})"
-            },{
-            "title": "Settings",
-            "link": "app.deposit_item.settings({depid:'"+$stateParams.depid+"'})"
-          }];
+          return {
+            "center": {
+              "tabs": [
+                {
+                "title": "Overview",
+                "link": "app.deposit_item.overview({depid:'"+$stateParams.depid+"'})"
+                },{
+                "title": "Files",
+                "link": "app.deposit_item.files({depid:'"+$stateParams.depid+"'})"
+                },{
+                "title": "Settings",
+                "link": "app.deposit_item.settings({depid:'"+$stateParams.depid+"'})"
+                }
+              ]
+            },
+            "right": {}
+          };
         }
       },
       data: {
@@ -345,7 +352,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
                   .get_new_deposit($stateParams.deposit_group);
         },
         contentBarTabs: function($stateParams){
-          return "";
+          return {};
         }
       },
       data: {

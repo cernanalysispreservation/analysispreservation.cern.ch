@@ -1,9 +1,69 @@
-<div id="cap-content-bar">
-    <div>
-        <ul ng-repeat="tab in tabs">
-            <li ui-sref-active="active" ui-sref="{{tab.link}}" >
+<div class="">
+
+
+
+    <div class="center">
+        <ul>
+            <li ng-repeat="tab in $ctrl.tabs.center.tabs" ui-sref-active="active" ui-sref="{{tab.link}}" >
                 <a >{{tab.title}}</a>
             </li>
         </ul>
     </div>
+      <div class="right">
+        <ul ng-repeat="tab in $ctrl.tabs.right.tabs">
+            <li ui-sref-active="active" ui-sref="{{tab.link}}" >
+                <a >{{tab.title}}</a>
+            </li>
+        </ul>
+
+        <div ng-if="$ctrl.vm " class="cap-content-bar-btns">
+          <div ng-hide="$ctrl.vm.invenioRecordsAlert.type == 'success' && $ctrl.vm.invenioRecordsArgs.templateParams[$ctrl.vm.invenioRecordsAlert.action].hide">
+            <div class="btn-group pull-right" role="group" ng-if="$ctrl.vm.invenioRecordsEndpoints && $ctrl.vm.invenioRecordsEndpoints.self">
+              <button
+                type="button"
+                class="btn btn-default btn-success"
+                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
+                ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">
+                Save as draft
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-danger"
+                ng-if="$ctrl.vm.invenioRecordsEndpoints.initialization || $ctrl.vm.invenioRecordsModel['_deposit']['status'] == 'draft'"
+                ng-disabled="$ctrl.vm.invenioRecordsLoading || !$ctrl.vm.invenioRecordsEndpoints.self"
+                ng-click="$ctrl.vm.actionHandler(['self', 'DELETE'], '/deposit?status=draft')">
+                  Delete draft
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-primary"
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "draft"'
+                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$dirty || $ctrl.vm.invenioRecordsLoading"
+                ng-click="$ctrl.vm.actionHandler(['publish', 'POST'], '/deposit?status=published')">
+                  Share within collaboration
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-success"
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "publish"'
+                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
+                ng-click="$ctrl.vm.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">
+                  Edit & Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-info"
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"]== "published"'
+                ng-click="$ctrl.vm.actionHandler(['clone', 'POST'], '/deposit?status=draft')">
+                  Clone analysis
+              </button>
+            </div>
+            <div class="btn-group pull-right" role="group" ng-if="!$ctrl.vm.invenioRecordsEndpoints.self" class="">
+              <button ng-disabled="$ctrl.form.$invalid" class="btn btn-default btn-success" ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">Save as draft</button>
+            </div>
+          </div>
+      </div>
+    </div>
+
 </div>
+

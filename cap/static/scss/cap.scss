@@ -215,7 +215,7 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
-@media (max-width: 1300px) { 
+@media (max-width: 1300px) {
   #cap-content {
 
     &.menu-opened {
@@ -231,30 +231,69 @@ body::-webkit-scrollbar-thumb {
   position: fixed;
   top: $cap_header_height;
   width: 100%;
-  background-color: #fff;
+  background-color: $light-blue-theme-color;
   z-index: 100;
+  overflow: hidden;
 
+
+  .left {
+    float: left;
+  }
+  .center {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .right {
+    padding-right: 10px;
+    float: right;
+  }
+
+  a,
+  a:hover,
+  a:focus {
+    color: #fff;
+  }
   ul {
     list-style: none;
     margin: 0;
+    float: left;
     padding: 0;
     height: $content-bar-height;
     display: inline-block;
 
     li {
       padding: 10px 30px;
+      padding-left: 0;
       float: left;
     }
 
     li.active {
-      border-bottom: 2px solid $light-blue-theme-color;
-      padding-bottom: 8px;
+      // border-bottom: 2px solid #fff;
+      // padding-bottom: 8px;
+      ::before {
+        content: "*"
+      }
+    }
+  }
+
+  .cap-content-bar-btns {
+    margin-top: 3px;
+    .btn {
+      float: left;
     }
   }
 }
 
+#cap-content.menu-opened {
+  #cap-content-bar, #cap-content-main {
+    margin-left: -$sidebar-width;
+    padding-left: $sidebar-width;
+  }
+
+}
+
 #cap-content-main {
-  margin-top: $content-bar-height; 
+  // margin-top: $content-bar-height;
   z-index: 10;
 }
 
@@ -332,7 +371,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .fixed-home-panel {
-  height: 204px; 
+  height: 204px;
   overflow-y: auto;
 }
 
