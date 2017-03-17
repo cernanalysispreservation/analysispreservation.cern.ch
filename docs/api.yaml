@@ -1,0 +1,84 @@
+swagger: '2.0'
+info:
+  title: CAP API
+  description: Access to your analysis.
+  version: "0.0.0"
+# the domain of the service
+host: analysispreservation.cern.ch
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api
+produces:
+  - application/json
+paths:
+  /records:
+    get:
+      summary: Record List
+      description: |
+        This will return a list of all records (upper limit 20) you shared with others and all records shared with you. It does not include drafts.
+      parameters:
+        - name: access_token
+          in: query
+          description: Your personal access token.
+          required: true
+          type: string
+      tags:
+        - Records
+      responses:
+        200:
+          description: An array of analysis records.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Records'
+  /records/<id>:
+    get:
+      summary: Record with ID <id>
+      description: |
+        This will return only the record with the given ID.
+      parameters:
+        - name: access_token
+          in: query
+          description: Your personal access token.
+          required: true
+          type: string
+      tags:
+        - Records
+      responses:
+        200:
+          description: An analysis record.
+          schema:
+            type: object
+            items:
+              $ref: '#/definitions/Records'
+definitions:
+  Records:
+    type: object
+    properties:
+      product_id:
+        type: string
+        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
+      description:
+        type: string
+        description: Description of product.
+      display_name:
+        type: string
+        description: Display name of product.
+      capacity:
+        type: string
+        description: Capacity of product. For example, 4 people.
+      image:
+        type: string
+        description: Image URL representing the product.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
