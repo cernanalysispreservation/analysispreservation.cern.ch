@@ -44,7 +44,7 @@
         }
       }
     },
-    "input_datasets": {
+    "input_data": {
       "title": "Input Data",
       "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
       "type": "array",
