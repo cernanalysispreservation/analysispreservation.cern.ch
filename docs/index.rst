@@ -62,7 +62,8 @@ Further Reading
 	README
 	style-guide
 	tableofcontent
-
+	backstage/docs-overview
+	backstage/swagger-overview
 
 License
 -------
