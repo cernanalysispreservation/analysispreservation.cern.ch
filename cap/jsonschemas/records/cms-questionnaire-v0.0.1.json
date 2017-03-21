@@ -5,7 +5,7 @@
   "title": "CMS Statistics Questionnaire",
   "description": "<p>The present questionnaire has the purpose of informing the Statistics Committee on the details of ongoing analyses, in the interest of a quicker and simpler path to approval of physics results. We recommend that you submit your answers at your earliest convenience, regardless of the status of your analysis (in progress, or in advanced stage, or about to be pre-approved). Changes in the statistical analysis after submission can be sent as a simplified \"update\", using a link you will receive via email after submitting this form.</p><p>Please note: each analysis with a separate CADI entry should fill out a separate entry. It is highly advisable that the questionnaire be filled by an author who knows the details of the full analysis, if necessary in consultation with colleagues.</p><p>The purpose of this questionnaire is two-fold:</p><ul><li>It points you to the relevant best practices and recommendations of the CMS Statistics Committee.</li><li>It provides the Statistics Committee with feedback about the statistical methods used at an early point of the analysis where potential issues can still be clarified or fixed.</li></ul><p>Note: There are multiple-choice answers for many questions. These will not always cover your case. If you are unsure about which answer to choose, just choose the answer you think decribes best what you do and use the text field \"Additional comments\" for clarification. Also note that many questions foresee that you choose more than one option, in this case choose <em>all</em> which apply.</p><p>We thank you for your patience and we encourage you to be as explicative as possible in the free-text boxes. Also, we do appreciate any feedback you may be willing to provide, through a text box at the end.</p>",
   "properties": {
-    "content": {
+    "analysis_context": {
       "title": "Analysis Context",
       "type": "object",
       "properties": {
@@ -43,12 +43,12 @@
             }
           }
         },
-        "cadi": {
+        "cadi_id": {
           "title": "CADI entry number, if available",
           "description": "e.g., HIG-11-032",
           "type": "string"
         },
-        "opt_title": {
+        "analysis_title": {
           "title": "If no CADI entry is available, please provide the title and applicable references",
           "description": "analysis note numbers, etc.",
           "type": "string"
@@ -117,7 +117,7 @@
           "description": "Have you read the TWiki mentioned above?",
           "type": "boolean"
         },
-        "multi_usage": {
+        "usage": {
           "title": "Usage of multi-variante descriminant",
           "description": "Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background? If the answer is \"No\", please proceed with the next section.",
           "type": "boolean"
@@ -149,7 +149,7 @@
             ]
           }
         },
-        "type": {
+        "discriminant_type": {
           "title": "Used Type",
           "type": "object",
           "properties": {
@@ -326,7 +326,7 @@
             "comments": "name"
           }
         },
-        "overtraining_checks": {
+        "overtraining": {
           "title": "Overtraining Checks",
           "type": "object",
           "properties": {
@@ -349,7 +349,7 @@
             "comments": "name"
           }
         },
-        "robustness_checks": {
+        "robustness": {
           "title": "Robustness Checks",
           "type": "object",
           "properties": {
@@ -504,7 +504,7 @@
             "comments": "name"
           }
         },
-        "toy_exp": {
+        "toy_pull_distribution": {
           "title": "Check of Pull Distributions in Toy Experiments ",
           "type": "object",
           "properties": {
@@ -529,7 +529,7 @@
             "comments": "name"
           }
         },
-        "cov_matrix": {
+        "covariance_matrix": {
           "title": "Covariance Matrix Check",
           "type": "object",
           "properties": {
@@ -549,7 +549,7 @@
             }
           }
         },
-        "bcgrnd_shape": {
+        "background_shape": {
           "title": "Background Shape Choice ",
           "type": "object",
           "properties": {
@@ -573,7 +573,7 @@
             "comments": "name"
           }
         },
-        "fit_func_params": {
+        "fit_function": {
           "title": "Fit Function: Choice of Number of Parameters ",
           "type": "object",
           "properties": {
@@ -599,7 +599,7 @@
             "comments": "name"
           }
         },
-        "param_bounds": {
+        "parameter_boundaries": {
           "title": "Parameter Boundaries",
           "type": "object",
           "properties": {
@@ -1085,7 +1085,7 @@
         }
       }
     },
-    "other": {
+    "other_stats": {
       "title": "Other Statistics Related Items",
       "description": "Take a second read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>",
       "type": "object",

@@ -4,7 +4,7 @@
   "description": "Add documentation",
   "type": "object",
   "properties": {
-    "CADI_ID": {
+    "cadi_id": {
       "title": "CADI ID",
       "type": "string"
     },
@@ -12,7 +12,7 @@
       "title": "URL",
       "type": "string"
     },
-    "keyword": {
+    "keywords": {
       "title": "Keyword",
       "type": "string"
     },

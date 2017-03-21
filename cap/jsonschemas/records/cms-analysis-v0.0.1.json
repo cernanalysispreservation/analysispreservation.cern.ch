@@ -100,14 +100,14 @@
             }
          }
       },
-      "input_datasets": {
+      "input_data": {
          "_comment": "This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
          "title": "Input Data",
          "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
          "type": "object",
          "id": "input_datasets",
          "properties": {
-            "primary_datasets": {
+            "primary_dataset": {
                "title": "Primary Datasets",
                "description": "Please list all primary datasets here",
                "type": "string",

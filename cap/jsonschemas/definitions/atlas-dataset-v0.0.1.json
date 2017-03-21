@@ -4,7 +4,7 @@
   "description": "Information concerning the ATLAS datasets used",
   "type": "object",
   "properties": {
-    "title": {
+    "dataset_title": {
       "type": "string",
       "title": "Title"
     },

@@ -10,17 +10,17 @@
       "type": "object",
       "id": "basic_info",
       "properties": {
-        "analysis_name": {
+        "analysis_title": {
           "title": "Analysis Name",
           "type": "string",
           "required": true
         },
-        "proponents": {
+        "analysis_proponents": {
           "title": "Proponents",
           "type": "string",
           "required": true
         },
-        "status": {
+        "analysis_status": {
           "title": "Status",
           "type": "string",
           "enum": [
@@ -38,7 +38,7 @@
           ],
           "required": true
         },
-        "status_notes": {
+        "analysis_status_notes": {
           "type": "string",
           "title": "Notes on Status",
           "dependencies": [
@@ -49,7 +49,7 @@
           "title": "Reviewers",
           "type": "string"
         },
-        "egroup": {
+        "review_egroup": {
           "title": "Review eGroup",
           "type": "string"
         },
@@ -65,7 +65,7 @@
         }
       }
     },
-    "extra_info": {
+    "additional_info": {
       "title": "Extra Information",
       "type": "object",
       "id": "extra_info",
@@ -78,7 +78,7 @@
           "title": "Public Paper",
           "type": "string"
         },
-        "conf_report": {
+        "conference_report": {
           "title": "Conference Report (CONF)",
           "type": "string"
         },
@@ -114,7 +114,7 @@
           "title": "Input Data",
           "type": "object",
           "properties": {
-            "data": {
+            "dataset": {
               "title": "Collision Data",
               "type": "array",
               "items": {
@@ -136,11 +136,11 @@
                     "title": "Reconstruction software",
                     "type": "object",
                     "properties": {
-                      "reconstruction_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "reconstruction_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -150,11 +150,11 @@
                     "title": "Stripping software",
                     "type": "object",
                     "properties": {
-                      "stripping_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "stripping_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -185,11 +185,11 @@
                     "title": "Reconstruction software",
                     "type": "object",
                     "properties": {
-                      "reconstruction_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "reconstruction_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -199,11 +199,11 @@
                     "title": "Stripping software",
                     "type": "object",
                     "properties": {
-                      "stripping_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "stripping_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -248,7 +248,7 @@
                     "title": "Description",
                     "type": "string"
                   },
-                  "link": {
+                  "url": {
                     "title": "URL",
                     "type": "string"
                   },
@@ -265,7 +265,7 @@
           "title": "Output Data",
           "type": "object",
           "properties": {
-            "data": {
+            "dataset": {
               "title": "Collision Data",
               "type": "array",
               "items": {
@@ -295,7 +295,7 @@
             "title": "Input Data",
             "type": "object",
             "properties": {
-              "data": {
+              "dataset": {
                 "title": "Collision Data",
                 "type": "array",
                 "items": {
@@ -334,7 +334,7 @@
                       "title": "Description",
                       "type": "string"
                     },
-                    "link": {
+                    "url": {
                       "title": "URL",
                       "type": "string"
                     },
@@ -351,7 +351,7 @@
             "title": "Output Data",
             "type": "object",
             "properties": {
-              "data": {
+              "dataset": {
                 "title": "Collision Data",
                 "type": "array",
                 "items": {
@@ -387,7 +387,7 @@
             "title": "URL",
             "type": "string"
           },
-          "keyword": {
+          "keywords": {
             "title": "Keyword",
             "type": "string"
           },
@@ -456,7 +456,7 @@
             "title": "URL",
             "type": "string"
           },
-          "reviewegroup": {
+          "review_egroup": {
             "title": "Review Group",
             "type": "string"
           },

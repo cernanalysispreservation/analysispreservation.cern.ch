@@ -24,7 +24,7 @@
       "title": "URL",
       "type": "string"
     },
-    "document_type": {
+    "type": {
       "title": "Document Type",
       "type": "string"
     },
