@@ -44,7 +44,7 @@
                       "title": "Instructions",
                       "type": "string"
                     },
-                    "link": {
+                    "url": {
                       "title": "URL",
                       "type": "string"
                     }
@@ -60,7 +60,7 @@
           },
           "input_data": {
             "properties": {
-              "data": {
+              "dataset": {
                 "items": {
                   "type": "object",
                   "properties": {
@@ -72,7 +72,7 @@
                 "title": "Collision Data",
                 "type": "array"
               },
-              "mc_data": {
+              "mc_dataset": {
                 "items": {
                   "type": "object",
                   "properties": {
@@ -90,7 +90,7 @@
           },
           "output_data": {
             "properties": {
-              "data": {
+              "dataset": {
                 "items": {
                   "type": "object",
                   "properties": {
@@ -129,7 +129,7 @@
       "id": "basic_info",
       "description": "Please provide some information relevant for all parts of the Analysis here",
       "properties": {
-        "analysis_name": {
+        "analysis_title": {
           "title": "Analysis Name",
           "type": "string"
         },
@@ -137,7 +137,7 @@
           "title": "Measurement",
           "type": "string"
         },
-        "egroup": {
+        "review_egroup": {
           "title": "Review eGroup",
           "type": "string"
         },
@@ -226,7 +226,7 @@
                     "title": "Instructions",
                     "type": "string"
                   },
-                  "link": {
+                  "url": {
                     "title": "URL",
                     "type": "string"
                   }
@@ -255,11 +255,11 @@
                   },
                   "reconstruction_software": {
                     "properties": {
-                      "reconstruction_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "reconstruction_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -269,11 +269,11 @@
                   },
                   "stripping_software": {
                     "properties": {
-                      "stripping_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "stripping_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -334,11 +334,11 @@
                   },
                   "reconstruction_software": {
                     "properties": {
-                      "reconstruction_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "reconstruction_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -348,11 +348,11 @@
                   },
                   "stripping_software": {
                     "properties": {
-                      "stripping_software_name": {
+                      "name": {
                         "title": "Name",
                         "type": "string"
                       },
-                      "stripping_software_version": {
+                      "version": {
                         "title": "Version",
                         "type": "string"
                       }
@@ -453,7 +453,7 @@
                 "title": "Analysis note (ANA) number",
                 "type": "string"
               },
-              "arxiv": {
+              "arxiv_id": {
                 "title": "arXiv ID",
                 "type": "string"
               },
@@ -469,7 +469,7 @@
                 "title": "tWiki page",
                 "type": "string"
               },
-              "reviewegroup": {
+              "review_egroup": {
                 "title": "Review Group",
                 "type": "string"
               },
@@ -497,7 +497,7 @@
                 "title": "Comment",
                 "type": "string"
               },
-              "keyword": {
+              "keywords": {
                 "title": "Keyword",
                 "type": "string"
               },

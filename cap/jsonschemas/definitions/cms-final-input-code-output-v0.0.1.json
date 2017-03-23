@@ -44,7 +44,7 @@
         "title": "Output",        
         "type": "object",
         "properties": {
-          "output_url": {
+          "url": {
             "title": "URL",
             "type": "string"
           }
