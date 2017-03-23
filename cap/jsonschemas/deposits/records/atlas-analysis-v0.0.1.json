@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "ATLAS Analysis (JSON schema)",
+  "title": "ATLAS Analysis",
   "description": "Schema describing properties of an ATLAS analysis",
   "type": "object",
   "properties": {
