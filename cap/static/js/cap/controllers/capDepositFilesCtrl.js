@@ -25,49 +25,16 @@
 
 ///////////////////////////////////////////
 ///////////////////////////////////////////
-// CAP app Deposit Controller
+// CAP app Deposit Files Controller
 
-var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs, capRecordsClient) {
+var capDepositFilesCtrl = function($scope, $location, $http, deposit, contentBarTabs, capRecordsClient) {
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
   $scope.contentBarTabs = contentBarTabs;
   $scope.mi = deposit.meta_info;
+};
 
-  $scope.initDeposit = function() {
-    $scope.progress = {};
-    $scope.type = {};
-    $scope.req = {};
-    $scope.current_key = '';
-    $scope.depositionForm = {};
-    $scope.forms = [];
-    $scope.depositNavModel = {};
-    $scope.depositNavForm = [];
-
-    $scope.isFormRendered = false;
-  };
-
-  $scope.modelChanged = function(value, key){
-    $scope.depositNavModel = $scope.depositNavModel.setIn(key.key, value);
-    $scope.recordsVM.removeValidationMessage(value,key)
-  };
-
-  $scope.$on('sf-render-finished', function(event){
-    if ($scope.recordsVM && $scope.recordsVM.invenioRecordsModel && $scope.recordsVM.invenioRecordsForm) {
-      $scope.depositNavModel = Immutable.fromJS($scope.recordsVM.invenioRecordsModel);
-      $scope.depositNavForm = $scope.recordsVM.invenioRecordsForm;
-      $scope.isFormRendered = true;
-
-      var now = new Date();
-      $scope.recordsVM.invenioRecordsModel.general_title =
-        $scope.recordsVM.invenioRecordsModel.general_title ?
-        $scope.recordsVM.invenioRecordsModel.general_title :
-        "Created " + now.toLocaleString();
-    }
-  });
-
-}
-
-capDepositCtrl.$inject = [
+capDepositFilesCtrl.$inject = [
   '$scope',
   '$location',
   '$http',
@@ -78,5 +45,5 @@ capDepositCtrl.$inject = [
 
 
 angular.module('cap.controllers')
-  .controller('DepositController', capDepositCtrl);
+  .controller('DepositFilesController', capDepositFilesCtrl);
 

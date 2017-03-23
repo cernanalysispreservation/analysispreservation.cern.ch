@@ -63,7 +63,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
       // },
       onItemClick: function(event, item) {
         if(screenSize.is('small')) {
-          $scope.menuContainerOpen = false;          
+          $scope.menuContainerOpen = false;
         }
       }//,
       // onTitleItemClick: function(event, menu) {
@@ -168,7 +168,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
       .then(function(response) {
         $scope.experiments = response;
       }, function(error) {
-        $scope.hello = "ERROR";
+        $scope.error = "ERROR";
       }, function(update){
         $scope.notification = $scope.notification + '<br />' + update;
       });

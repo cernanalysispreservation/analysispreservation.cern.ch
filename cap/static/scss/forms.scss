@@ -28,7 +28,7 @@
 /* Deposit forms general style */
 
 .forms-font-color {
-  color: $text-dark;
+  color: $dark-blue-theme-color;
 }
 
 .forms-filter-fields-font-size {
@@ -68,6 +68,12 @@
   }
 }
 
+#invenio-records {
+  .alert {
+    margin-bottom: 0;
+    text-align: center;
+  }
+}
 .form-control {
   background-color: #fff;
   border: 1px solid #3b97d3;
@@ -269,7 +275,6 @@
   overflow: hidden;
   width: 100%;
   padding-left: $cap-deposit-sidebar-width;
-  padding-top: $content-bar-height;
   min-height: 100vh;
 }
 
@@ -609,7 +614,7 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
     background-color: $light-grey-theme-color;
 
     &+ ul {
-      margin-top: 10px;
+      margin-top: 15px;
     }
   }
   .progress-bar-disabled {

@@ -1,38 +1,55 @@
 <div class="">
 
-
-
-    <div class="center">
-        <ul>
-            <li ng-repeat="tab in $ctrl.tabs.center.tabs" ui-sref-active="active" ui-sref="{{tab.link}}" >
+    {{ ::_general_title = $ctrl.vm.invenioRecordsModel.general_title ||  "None"; ""}}
+    {{general_title_edited = (_general_title | isNotEqualTo: $ctrl.vm.invenioRecordsModel.general_title);""}}
+    <div class="left col-sm-4">
+        <ul class="tabs-group">
+            <li ng-repeat="tab in $ctrl.tabs.left.tabs" ui-sref-active="active" ui-sref="{{tab.link}}" >
                 <a >{{tab.title}}</a>
             </li>
         </ul>
     </div>
-      <div class="right">
-        <ul ng-repeat="tab in $ctrl.tabs.right.tabs">
-            <li ui-sref-active="active" ui-sref="{{tab.link}}" >
+    <div class="center col-sm-4">
+        <ul class="tabs-group">
+            <li ng-repeat="tab in $ctrl.tabs.center.tabs" ui-sref-active="active" ui-sref="{{tab.link}}" >
+                <a >{{tab.title}}</a>
+            </li>
+        </ul>
+        <div class="center-block" ng-init="general_title_editable = false">
+          <div ng-if="$ctrl.vm.invenioRecordsModel"  ng-init="general_title_editable = false">
+            <span ng-if="$ctrl.form.$invalid" class="fa fa-circle text-warning"></span>
+            <span ng-if="!general_title_editable">{{$ctrl.vm.invenioRecordsModel.general_title}}</span>
+            <input
+            type="text"
+            class="title"
+            name="deposit_general_title"
+            ng-if="general_title_editable"
+            ng-model="$ctrl.vm.invenioRecordsModel.general_title">
+            <span ng-click="general_title_editable = !general_title_editable " class="fa fa-pencil"></span>
+            <small ng-if="!$ctrl.form.$pristine">-- Edited</small>
+          </div>
+          <div ng-if="!$ctrl.vm.invenioRecordsModel">
+            <span ng-if="!general_title_editable">{{$ctrl.vm.metadata.general_title}}</span>
+          </div>
+        </div>
+    </div>
+      <div class="right col-sm-4">
+        <ul class="tabs-group">
+            <li ng-repeat="tab in $ctrl.tabs.right.tabs" ui-sref-active="active" ui-sref="{{tab.link}}" >
                 <a >{{tab.title}}</a>
             </li>
         </ul>
 
-        <div ng-if="$ctrl.vm " class="cap-content-bar-btns">
+        <div ng-if="$ctrl.vm.invenioRecordsModel" class="cap-content-bar-btns">
           <div ng-hide="$ctrl.vm.invenioRecordsAlert.type == 'success' && $ctrl.vm.invenioRecordsArgs.templateParams[$ctrl.vm.invenioRecordsAlert.action].hide">
             <div class="btn-group pull-right" role="group" ng-if="$ctrl.vm.invenioRecordsEndpoints && $ctrl.vm.invenioRecordsEndpoints.self">
               <button
                 type="button"
                 class="btn btn-default btn-success"
-                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
+                ng-disabled="($ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading) && !general_title_edited"
                 ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">
-                Save as draft
-              </button>
-              <button
-                type="button"
-                class="btn btn-default btn-danger"
-                ng-if="$ctrl.vm.invenioRecordsEndpoints.initialization || $ctrl.vm.invenioRecordsModel['_deposit']['status'] == 'draft'"
-                ng-disabled="$ctrl.vm.invenioRecordsLoading || !$ctrl.vm.invenioRecordsEndpoints.self"
-                ng-click="$ctrl.vm.actionHandler(['self', 'DELETE'], '/deposit?status=draft')">
-                  Delete draft
+                  <i class="fa fa-floppy-o"></i>
+                  Save
               </button>
               <button
                 type="button"
@@ -40,7 +57,17 @@
                 ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "draft"'
                 ng-disabled="$ctrl.form.$invalid || $ctrl.form.$dirty || $ctrl.vm.invenioRecordsLoading"
                 ng-click="$ctrl.vm.actionHandler(['publish', 'POST'], '/deposit?status=published')">
-                  Share within collaboration
+                  <i class="fa fa-bullhorn"></i>
+                  Share
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-danger"
+                ng-if="$ctrl.vm.invenioRecordsEndpoints.initialization || $ctrl.vm.invenioRecordsModel['_deposit']['status'] == 'draft'"
+                ng-disabled="$ctrl.vm.invenioRecordsLoading || !$ctrl.vm.invenioRecordsEndpoints.self"
+                ng-click="$ctrl.vm.actionHandler(['self', 'DELETE'], '/deposit?status=draft')">
+                  <i class="fa fa-trash-o"></i>
+                  Delete
               </button>
               <button
                 type="button"
@@ -48,18 +75,26 @@
                 ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "publish"'
                 ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
                 ng-click="$ctrl.vm.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">
-                  Edit & Save
+                  <i class="fa fa-floppy-o"></i>
+                  Save
               </button>
               <button
                 type="button"
                 class="btn btn-default btn-info"
                 ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"]== "published"'
                 ng-click="$ctrl.vm.actionHandler(['clone', 'POST'], '/deposit?status=draft')">
-                  Clone analysis
+                  <i class="fa fa-clone"></i>
+                  Clone
               </button>
             </div>
             <div class="btn-group pull-right" role="group" ng-if="!$ctrl.vm.invenioRecordsEndpoints.self" class="">
-              <button ng-disabled="$ctrl.form.$invalid" class="btn btn-default btn-success" ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">Save as draft</button>
+              <button
+                ng-disabled="$ctrl.form.$invalid && !general_title_edited"
+                class="btn btn-default btn-success"
+                ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">
+                  <i class="fa fa-floppy-o"></i>
+                  Save
+              </button>
             </div>
           </div>
       </div>

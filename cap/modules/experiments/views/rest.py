@@ -54,7 +54,7 @@ def CAP_EXPERIMENT_MENU(experiment):
         for group in groups:
             res.append({
                 'name': group.get("name", group.get("deposit_group", "")),
-                'link': _l('app.deposit_new({deposit_group:"' + group.get("deposit_group", "") + '"})'),
+                'link': _l('app.deposit_new.index({deposit_group:"' + group.get("deposit_group", "") + '"})'),
                 'icon': ''
             })
 
@@ -74,7 +74,7 @@ def CAP_EXPERIMENT_MENU(experiment):
         {
             'name': 'My Deposits',
             'icon': 'fa fa-file-text',
-            'link': _l('app.deposit_general'),
+            'link': _l('app.deposit_list'),
             'menu': {
                 "title": 'My Deposits',
                 'icon': 'fa fa-file-text-o',

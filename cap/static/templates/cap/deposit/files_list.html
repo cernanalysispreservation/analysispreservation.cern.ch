@@ -1,22 +1,23 @@
+<div id="cap-content-bar">
+    <cap-content-bar tabs="contentBarTabs" vm="deposit" form="depositionForm"></cap-content-bar>
+</div>
 <div class="container cap-container">
   <div class="row">
     <div class="col-md-12">
-      <div
-        id="invenio-records">
+      <div id="invenio-records">
         <invenio-files-uploader
           method="PUT"
           endpoint="/api/deposits"
           action="{{deposit.meta_info.files.action}}"
           files="{{deposit.meta_info.files.files}}"
           links="{{deposit.links}}"
-          extra-params="{{deposit.meta_info.files.extra_params}}"
-        >
-          <invenio-files-list
-            template="/api/static/templates/cap_files_js/list.html"
-          ></invenio-files-list>
-          <invenio-files-upload-zone
-            template="/api/static/templates/cap_files_js/upload.html">
-          </invenio-files-upload-zone>
+          extra-params="{{deposit.meta_info.files.extra_params}}">
+            <invenio-files-list
+              template="/api/static/templates/cap_files_js/list.html"
+            ></invenio-files-list>
+            <invenio-files-upload-zone
+              template="/api/static/templates/cap_files_js/upload.html">
+            </invenio-files-upload-zone>
         </invenio-files-uploader>
       </div>
     </div>

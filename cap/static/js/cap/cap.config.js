@@ -228,7 +228,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
-      name: 'app.deposit_general',
+      name: 'app.deposit_list',
       url: '/deposit',
       views: {
         'content': {
@@ -247,17 +247,19 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       views: {
         'content': {
           templateUrl: '/static/templates/cap/content_with_bar.html',
-          controller: 'DepositController',
+          // controller: 'DepositController'
         }
       },
       resolve: {
         deposit: function(capRecordsClient, $stateParams){
-          return capRecordsClient
+          var _deposit = capRecordsClient
                   .get_deposit($stateParams.depid);
+
+          return _deposit;
         },
         contentBarTabs: function($stateParams){
           return {
-            "center": {
+            "left": {
               "tabs": [
                 {
                 "title": "Overview",
@@ -298,7 +300,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       views: {
         'contentMain': {
           templateUrl: "/static/templates/cap/deposit/files_list.html",
-          controller: 'DepositController',
+          controller: 'DepositFilesController'
         }
       },
       data: {
@@ -311,7 +313,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       views: {
         'contentMain': {
           templateUrl: '/static/templates/cap/deposit/settings.html',
-          controller: 'DepositController',
+          controller: 'DepositSettingsController',
         }
       },
       data: {
@@ -340,10 +342,11 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
     .state({
       name: 'app.deposit_new',
       url: '/deposit/new/{deposit_group}',
+      abstract: true,
       views: {
         'content': {
-          templateUrl: '/static/templates/cap/deposit/edit.html',
-          controller: 'DepositController',
+          templateUrl: '/static/templates/cap/content_with_bar.html',
+          // controller: 'DepositController'
         }
       },
       resolve: {
@@ -357,6 +360,16 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       },
       data: {
         requireLogin: true
+      }
+    })
+    .state({
+      name: 'app.deposit_new.index',
+      url: '',
+      views: {
+        'contentMain': {
+          templateUrl: '/static/templates/cap/deposit/edit.html',
+          controller: 'DepositController',
+        }
       }
     })
     .state({

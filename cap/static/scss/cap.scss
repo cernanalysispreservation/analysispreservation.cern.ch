@@ -56,7 +56,7 @@ html, body {
 }
 
 #cap-container {
-  padding-top: $cap_header_height;
+  padding-top: $cap_header_height+$content-bar-height;
 }
 
 header {
@@ -100,7 +100,9 @@ header {
   float: right;
   position: relative;
   border-radius: 50px;
-  // box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,0.2);
+
+
+
   &:after {
     content: 'No';
     color: white;
@@ -234,18 +236,29 @@ body::-webkit-scrollbar-thumb {
   background-color: $light-blue-theme-color;
   z-index: 100;
   overflow: hidden;
-
+  color: #fff;
 
   .left {
     float: left;
   }
   .center {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 10px;
   }
   .right {
     padding-right: 10px;
     float: right;
+
+    .title {
+      font-weight: 600;
+    }
+
+    button {
+      border: 1px solid $light-grey-theme-color;
+    }
+  }
+
+  small {
+    color: #e6e6e6;
   }
 
   a,
@@ -253,6 +266,7 @@ body::-webkit-scrollbar-thumb {
   a:focus {
     color: #fff;
   }
+
   ul {
     list-style: none;
     margin: 0;
@@ -261,18 +275,25 @@ body::-webkit-scrollbar-thumb {
     height: $content-bar-height;
     display: inline-block;
 
-    li {
-      padding: 10px 30px;
-      padding-left: 0;
-      float: left;
-    }
-
-    li.active {
-      // border-bottom: 2px solid #fff;
-      // padding-bottom: 8px;
-      ::before {
-        content: "*"
+    &.tabs-group {
+      li {
+        border-radius: 5px;
       }
+      li.active {
+        background-color: #fff;
+
+        a,
+        a:hover,
+        a:focus{
+          color: $light-blue-theme-color;
+        }
+      }
+    }
+    li {
+      padding: 5px;
+      margin-top: 5px;
+      margin-right: 5px;
+      float: left;
     }
   }
 
@@ -280,6 +301,25 @@ body::-webkit-scrollbar-thumb {
     margin-top: 3px;
     .btn {
       float: left;
+    }
+  }
+
+  .fa-pencil {
+    font-size: 10px;
+  }
+
+  input.title {
+    background: $light-grey-theme-color;
+    border: 0;
+    width: 225px;
+    color: $dark-blue-theme-color;
+    text-indent: 5px;
+    border-bottom: 2px solid #fff;
+
+    &[disabled] {
+      background: transparent;
+      color: inherit;
+      border-bottom: 0;
     }
   }
 }
