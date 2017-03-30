@@ -545,7 +545,7 @@ DEPOSIT_GROUPS = {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
         "schema_form": "/app/schemas/options/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
-        "name": "Auxiliary Measurement",
+        "name": "CMS Auxiliary Measurement",
         "description": "Create a CMS Auxiliary Measurement",
         # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",

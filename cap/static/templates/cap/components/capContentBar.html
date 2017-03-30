@@ -1,6 +1,6 @@
-<div class="">
 
-    {{ ::_general_title = $ctrl.vm.invenioRecordsModel.general_title ||  "None"; ""}}
+<div class="">
+    {{ ::_general_title = $ctrl.vm.invenioRecordsModel.general_title ||  ''; ""}}
     {{general_title_edited = (_general_title | isNotEqualTo: $ctrl.vm.invenioRecordsModel.general_title);""}}
     <div class="left col-sm-4">
         <ul class="tabs-group">
@@ -87,9 +87,9 @@
                   Clone
               </button>
             </div>
-            <div class="btn-group pull-right" role="group" ng-if="!$ctrl.vm.invenioRecordsEndpoints.self" class="">
+            <div class="btn-group pull-right" role="group" ng-if="!$ctrl.vm.invenioRecordsEndpoints.self" class="">              
               <button
-                ng-disabled="$ctrl.form.$invalid && !general_title_edited"
+                ng-disabled="$ctrl.form.$invalid || $ctrl.vm.invenioRecordsLoading || $ctrl.vm.invenioRecordsModel.general_title === ''"
                 class="btn btn-default btn-success"
                 ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">
                   <i class="fa fa-floppy-o"></i>

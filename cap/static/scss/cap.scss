@@ -59,6 +59,10 @@ html, body {
   padding-top: $cap_header_height+$content-bar-height;
 }
 
+.flex-display {
+  display: flex !important;
+}
+
 header {
   z-index: 999;
   nav.navbar-default {
@@ -454,4 +458,8 @@ body::-webkit-scrollbar-thumb {
   .home-login-button .login-button {
     margin-top:2%;
   }
+}
+
+.results-title-position {
+  margin-top: 5px; 
 }

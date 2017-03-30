@@ -2,7 +2,7 @@
     <ul ng-class="{invisible: inactive}">
         <li ng-repeat="item in menu.items">
             <div class="nav-item" ui-sref-active-eq="active" ng-class="{'has-child': item.menu}">
-                <a ui-sref="{{item.link}}" ng-click="onSubmenuClicked(item, $event)">
+                <a ui-sref="{{item.link}}" ng-click="onSubmenuClicked(item, $event)" class="flex-display">
                     <div ng-hide="item.menu" class="nav-icon">
                         <i class="" ng-class="item.icon ? item.icon: 'fa fa-square'"></i>
                     </div>
