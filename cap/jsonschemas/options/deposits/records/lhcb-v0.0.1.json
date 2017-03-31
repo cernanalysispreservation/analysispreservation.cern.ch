@@ -5,7 +5,7 @@
     "htmlClass": "custom-panel",
     "items":[
        {
-        "key": "basic_info.analysis_name",
+        "key": "basic_info.analysis_title",
         "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
 
        },
@@ -15,7 +15,7 @@
 
        },
        {
-        "key": "basic_info.proponents",
+        "key": "basic_info.analysis_proponents",
         "placeholder": "E.g. John Doe; Jane Doe"
        },
        {
@@ -74,7 +74,7 @@
         "placeholder": "E.g. John Roe; Jane Roe"
        },
        {
-        "key": "basic_info.egroup",
+        "key": "basic_info.review_egroup",
         "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
        },
        {
@@ -149,7 +149,7 @@
             "key": "dst_selection.code.user_code",
             "items": [
               {
-                "key": "dst_selection.code.user_code[].link",
+                "key": "dst_selection.code.user_code[].url",
                 "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
               },
               {
@@ -193,19 +193,19 @@
                     },
                     {
                         "s": ["reconstruction", "software"],
-                        "t": ["#", "reconstruction_software", "reconstruction_software_name"]
+                        "t": ["#", "reconstruction_software", "name"]
                     },
                     {
                         "s": ["reconstruction", "version"],
-                        "t": ["#", "reconstruction_software", "reconstruction_software_version"]
+                        "t": ["#", "reconstruction_software", "version"]
                     },
                     {
                         "s": ["stripping", "software"],
-                        "t": ["#", "stripping_software", "stripping_software_name"]
+                        "t": ["#", "stripping_software", "name"]
                     },
                     {
                         "s": ["stripping", "version"],
-                        "t": ["#", "stripping_software", "stripping_software_version"]
+                        "t": ["#", "stripping_software", "version"]
                     }
                     ]
                 }
@@ -218,11 +218,11 @@
                 "key": "dst_selection.production_info.data[].reconstruction_software",
                 "items": [
                   {
-                    "key": "dst_selection.production_info.data[].reconstruction_software.reconstruction_software_name",
+                    "key": "dst_selection.production_info.data[].reconstruction_software.name",
                     "placeholder": "E.g. Brunel Reco"
                   },
                   {
-                    "key": "dst_selection.production_info.data[].reconstruction_software.reconstruction_software_version",
+                    "key": "dst_selection.production_info.data[].reconstruction_software.version",
                     "placeholder": "E.g. 13"
                   }
                 ]
@@ -231,11 +231,11 @@
                 "key": "dst_selection.production_info.data[].stripping_software",
                 "items": [
                   {
-                    "key": "dst_selection.production_info.data[].stripping_software.stripping_software_name",
+                    "key": "dst_selection.production_info.data[].stripping_software.name",
                     "placeholder": "E.g. DaVinciStripping"
                   },
                   {
-                    "key": "dst_selection.production_info.data[].stripping_software.stripping_software_version",
+                    "key": "dst_selection.production_info.data[].stripping_software.version",
                     "placeholder": "E.g. 17"
                   }
                 ]
@@ -341,12 +341,12 @@
                 "title": "Stripping software",
                 "items": [
                   {
-                    "key": "dst_selection.production_info.mc_data[].stripping_software_name",
+                    "key": "dst_selection.production_info.mc_data[].name",
                     "title": "Name",
                     "placeholder": "E.g. MC Strip"
                   },
                   {
-                    "key": "dst_selection.production_info.mc_data[].stripping_software_version",
+                    "key": "dst_selection.production_info.mc_data[].version",
                     "title": "Version",
                     "placeholder": "E.g. 16"
                   }
@@ -450,7 +450,7 @@
             "key": "analysis_steps[].code[].user_code",
             "items": [
               {
-                "key": "analysis_steps[].code[].user_code.link",
+                "key": "analysis_steps[].code[].user_code.url",
                 "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
               },
               {
@@ -472,7 +472,7 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "analysis_steps[].input_data.data",
+            "key": "analysis_steps[].input_data.dataset",
             "startEmpty": true,
             "items": [
               {
@@ -483,7 +483,7 @@
             ]
           },
           {
-            "key": "analysis_steps[].input_data.mc_data",
+            "key": "analysis_steps[].input_data.mc_dataset",
             "startEmpty": true,
             "items": [
               {
@@ -500,7 +500,7 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "analysis_steps[].output_data.data",
+            "key": "analysis_steps[].output_data.dataset",
             "startEmpty": true,
             "items": [
               {
@@ -511,7 +511,7 @@
             ]
           },
           {
-            "key": "analysis_steps[].output_data.mc_data",
+            "key": "analysis_steps[].output_data.mc_dataset",
             "startEmpty": true,
             "items": [
               {
@@ -567,7 +567,7 @@
         "key": "additional_resources.publications",
         "items": [
           {
-            "key": "additional_resources.publications[].reviewegroup",
+            "key": "additional_resources.publications[].review_egroup",
             "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
           },
           {
@@ -582,7 +582,7 @@
             "placeholder": "E.g. LHCb-ANA-2015-002"
           },
           {
-            "key": "additional_resources.publications[].arxiv",
+            "key": "additional_resources.publications[].arxiv_id",
             "placeholder": "E.g. 1508.06087"
           },
           {
@@ -607,7 +607,7 @@
             "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
           },
           {
-            "key": "additional_resources.documentations[].keyword",
+            "key": "additional_resources.documentations[].keywords",
             "placeholder": "E.g. keyword1"
           },
           {

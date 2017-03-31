@@ -1,6 +1,6 @@
 [
   {
-    "key": "title",
+    "key": "analysis_title",
     "placeholder": "E.g 2+1 correlations"
   },
   {
@@ -45,7 +45,7 @@
         "title": "{{value.number || 'New item'}}",
         "items": [
           {
-            "key": "main_analysis.run_numbers[].number",
+            "key": "main_analysis.run_numbers[].run_number",
             "placeholder": "E.g 123456"
           }
         ]
@@ -97,7 +97,7 @@
             "title": "{{value.number || 'New item'}}",
             "items": [
               {
-                "key": "main_analysis.derived_dataset.run_numbers[].number",
+                "key": "main_analysis.derived_dataset.run_numbers[].run_number",
                 "placeholder": "E.g 123456"
               }
             ]

@@ -90,7 +90,7 @@
     ]
   },
   {
-    "key": "input_datasets"
+    "key": "input_data"
   },
   {
     "key": "input_code_output",
@@ -143,7 +143,7 @@
             ]
           },
           {
-            "key": "input_code_output[].n_tuple[].output_data.output_url",
+            "key": "input_code_output[].n_tuple[].output_data.url",
             "title": "Output",
             "placeholder": "E.g. root://eospublic.cern.ch/eos/mydir/../my-file-data.root"
           }
@@ -793,7 +793,7 @@
             ]
           },
           {
-            "key": "main_measurements[].n_tuple[].output_data.output_url",
+            "key": "main_measurements[].n_tuple[].output_data.url",
             "title": "Output",
             "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
           }
@@ -900,7 +900,7 @@
                 ]
               },
               {
-                "key": "post_n_tuple[].n_tuple[].output_data.output_url",
+                "key": "post_n_tuple[].n_tuple[].output_data.url",
                 "title": "Output",
                 "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root"
               }
@@ -926,7 +926,7 @@
             "placeholder": "E.g. https://twiki.cern.ch/twiki/.."
           },
           {
-            "key": "additional_resources.documentations[].keyword",
+            "key": "additional_resources.documentations[].keywords",
             "placeholder": "E.g. keyword1"
           },
           {

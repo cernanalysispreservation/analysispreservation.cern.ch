@@ -1,17 +1,17 @@
 [
   {
-    "key": "content",
+    "key": "analysis_context",
     "type": "fieldset",
     "htmlClass": "custom-panel",
     "items": [
       {
-        "key": "content.name"
+        "key": "analysis_context.name"
       },
       {
-        "key": "content.preapproval_date",
+        "key": "analysis_context.preapproval_date",
         "items": [
           {
-            "key": "content.preapproval_date.name",
+            "key": "analysis_context.preapproval_date.name",
             "title": "Name",
             "type": "select",
             "titleMap": [
@@ -34,19 +34,19 @@
             ]
           },
           {
-            "key": "content.preapproval_date.comments",
+            "key": "analysis_context.preapproval_date.comments",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "content.email"
+        "key": "analysis_context.email"
       },
       {
-        "key": "content.group",
+        "key": "analysis_context.group",
         "items": [
           {
-            "key": "content.group.name",
+            "key": "analysis_context.group.name",
             "title": "Name",
             "type": "select",
             "titleMap": [
@@ -93,16 +93,16 @@
             ]
           },
           {
-            "key": "content.group.comments",
+            "key": "analysis_context.group.comments",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "content.cadi"
+        "key": "analysis_context.cadi_id"
       },
       {
-        "key": "content.opt_title"
+        "key": "analysis_context.analysis_title"
       }
     ]
   },
@@ -165,7 +165,7 @@
         ]
       },
       {
-        "key": "multivariate.multi_usage",
+        "key": "multivariate.usage",
         "type": "radios",
         "titleMap": [
           { "value": false, "name": "No" },
@@ -193,11 +193,11 @@
         ]  
       },
       {
-        "key": "multivariate.type",
+        "key": "multivariate.discriminant_type",
         "type": "fieldset",
         "items": [
           {
-            "key": "multivariate.type.name",
+            "key": "multivariate.discriminant_type.name",
             "notitle": true,
             "type": "checkboxes",
             "titleMap": [
@@ -209,8 +209,8 @@
             ]
           },
           {
-            "key": "multivariate.type.comments",
-            "condition": "model['multivariate']['type']['name'].indexOf('other') !== -1",
+            "key": "multivariate.discriminant_type.comments",
+            "condition": "model['multivariate']['discriminant_type']['name'].indexOf('other') !== -1",
             "type": "textarea"
           }
         ]
@@ -345,11 +345,11 @@
         ]
       },
       {
-        "key": "multivariate.overtraining_checks",
+        "key": "multivariate.overtraining",
         "type": "fieldset",
         "items": [
           {
-            "key": "multivariate.overtraining_checks.name",
+            "key": "multivariate.overtraining.name",
             "type": "radios",
             "notitle": true,
             "titleMap": [
@@ -359,18 +359,18 @@
             ]
           },
           {
-            "key": "multivariate.overtraining_checks.comments",
-            "condition": "model['multivariate']['overtraining_checks']['name'] == 'other'",
+            "key": "multivariate.overtraining.comments",
+            "condition": "model['multivariate']['overtraining']['name'] == 'other'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "multivariate.robustness_checks",
+        "key": "multivariate.robustness",
         "type": "fieldset",
         "items": [
           {
-            "key": "multivariate.robustness_checks.name",
+            "key": "multivariate.robustness.name",
             "type": "radios",
             "notitle": true,
             "titleMap": [
@@ -380,8 +380,8 @@
             ]
           },
           {
-            "key": "multivariate.robustness_checks.comments",
-            "condition": "model['multivariate']['robustness_checks']['name'] == 'other'",
+            "key": "multivariate.robustness.comments",
+            "condition": "model['multivariate']['robustness']['name'] == 'other'",
             "type": "textarea"
           }
         ]
@@ -513,12 +513,12 @@
         ]
       },
       {
-        "key": "data_fitting.toy_exp",
+        "key": "data_fitting.toy_pull_distribution",
         "condition": "model['data_fitting']['usage'] !== 'no'",
         "type": "fieldset",
         "items": [
           {
-            "key": "data_fitting.toy_exp.name",
+            "key": "data_fitting.toy_pull_distribution.name",
             "notitle": true,
             "type": "radios",
             "titleMap": [
@@ -530,19 +530,19 @@
             ]
           },
           {
-            "key": "data_fitting.toy_exp.comments",
-            "condition": "model['data_fitting']['toy_exp']['name'] == 'other' || model['data_fitting']['toy_exp']['name'] == 'yes_found_something'",
+            "key": "data_fitting.toy_pull_distribution.comments",
+            "condition": "model['data_fitting']['toy_pull_distribution']['name'] == 'other' || model['data_fitting']['toy_pull_distribution']['name'] == 'yes_found_something'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "data_fitting.cov_matrix",
+        "key": "data_fitting.covariance_matrix",
         "condition": "model['data_fitting']['usage'] !== 'no'",
         "type": "fieldset",
         "items": [
           {
-            "key": "data_fitting.cov_matrix.name",
+            "key": "data_fitting.covariance_matrix.name",
             "notitle": true,
             "type": "radios",
             "titleMap": [
@@ -552,18 +552,18 @@
             ]
           },
           {
-            "key": "data_fitting.cov_matrix.comments",
+            "key": "data_fitting.covariance_matrix.comments",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "data_fitting.bcgrnd_shape",
+        "key": "data_fitting.background_shape",
         "condition": "model['data_fitting']['usage'] !== 'no'",
         "type": "fieldset",
         "items": [
           {
-            "key": "data_fitting.bcgrnd_shape.name",
+            "key": "data_fitting.background_shape.name",
             "notitle": true,
             "type": "radios",
             "titleMap": [
@@ -574,19 +574,19 @@
             ]
           },
           {
-            "key": "data_fitting.bcgrnd_shape.comments",
-            "condition": "model['data_fitting']['bcgrnd_shape']['name'] == 'other'",
+            "key": "data_fitting.background_shape.comments",
+            "condition": "model['data_fitting']['background_shape']['name'] == 'other'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "data_fitting.fit_func_params",
+        "key": "data_fitting.fit_function",
         "condition": "model['data_fitting']['usage'] !== 'no'",
         "type": "fieldset",
         "items": [
           {
-            "key": "data_fitting.fit_func_params.name",
+            "key": "data_fitting.fit_function.name",
             "notitle": true,
             "type": "radios",
             "titleMap": [
@@ -599,19 +599,19 @@
             ]
           },
           {
-            "key": "data_fitting.fit_func_params.comments",
-            "condition": "model['data_fitting']['fit_func_params']['name'] == 'other' || model['data_fitting']['fit_func_params']['name'] == 'formal'",
+            "key": "data_fitting.fit_function.comments",
+            "condition": "model['data_fitting']['fit_function']['name'] == 'other' || model['data_fitting']['fit_function']['name'] == 'formal'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "data_fitting.param_bounds",
+        "key": "data_fitting.parameter_boundaries",
         "condition": "model['data_fitting']['usage'] !== 'no'",
         "type": "fieldset",
         "items": [
           {
-            "key": "data_fitting.param_bounds.name",
+            "key": "data_fitting.parameter_boundaries.name",
             "notitle": true,
             "type": "radios",
             "titleMap": [
@@ -623,7 +623,7 @@
             ]
           },
           {
-            "key": "data_fitting.param_bounds.comments",
+            "key": "data_fitting.parameter_boundaries.comments",
             "type": "textarea"
           }
         ]
@@ -1079,11 +1079,11 @@
     ]
   },
   {
-    "key": "other",
+    "key": "other_stats",
     "type": "fieldset",
     "items": [
       {
-        "key": "other.faq_read",
+        "key": "other_stats.faq_read",
         "type": "radios",
         "titleMap": [
           { "value": false, "name": "No" },
@@ -1091,11 +1091,11 @@
         ]
       },
       {
-        "key": "other.blind_analysis",
+        "key": "other_stats.blind_analysis",
         "type": "fieldset",
         "items": [
           {
-            "key": "other.blind_analysis.name",
+            "key": "other_stats.blind_analysis.name",
             "type": "radios",
             "notitle": true,
             "titleMap": [
@@ -1105,18 +1105,18 @@
             ]
           },
           {
-            "key": "other.blind_analysis.comments",
-            "condition": "model['other']['blind_analysis']['name'] == 'yes'",
+            "key": "other_stats.blind_analysis.comments",
+            "condition": "model['other_stats']['blind_analysis']['name'] == 'yes'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "other.combined_measurements",
+        "key": "other_stats.combined_measurements",
         "type": "fieldset",
         "items": [
           {
-            "key": "other.combined_measurements.name",
+            "key": "other_stats.combined_measurements.name",
             "type": "radios",
             "notitle": true,
             "titleMap": [
@@ -1127,18 +1127,18 @@
             ]
           },
           {
-            "key": "other.combined_measurements.comments",
-            "condition": "model['other']['combined_measurements']['name'] == 'other'",
+            "key": "other_stats.combined_measurements.comments",
+            "condition": "model['other_stats']['combined_measurements']['name'] == 'other_stats'",
             "type": "textarea"
           }
         ]
       },
       {
-        "key": "other.correlation_treatment",
+        "key": "other_stats.correlation_treatment",
         "type": "fieldset",
         "items": [
           {
-            "key": "other.correlation_treatment.name",
+            "key": "other_stats.correlation_treatment.name",
             "type": "radios",
             "notitle": true,
             "titleMap": [
@@ -1147,8 +1147,8 @@
             ]
           },
           {
-            "key": "other.correlation_treatment.comments",
-            "condition": "model['other']['correlation_treatment']['name'] == 'yes'",
+            "key": "other_stats.correlation_treatment.comments",
+            "condition": "model['other_stats']['correlation_treatment']['name'] == 'yes'",
             "type": "textarea"
           }
         ]

@@ -35,11 +35,11 @@
       "title": "Dataset AOD",
       "type": "string"
     },
-    "run_number": {
+    "run_numbers": {
       "type": "array",
       "title": "Run Numbers",
       "items": {
-        "number": {
+        "run_number": {
           "title": "Run Number",
           "type": "string"
         }

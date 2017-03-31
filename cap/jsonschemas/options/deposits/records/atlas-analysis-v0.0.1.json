@@ -40,7 +40,7 @@
       "key": "input_datasets",
       "items": [
         {
-          "key": "input_datasets[].title",
+          "key": "input_datasets[].dataset_title",
           "placeholder": "E.g. group.phys-susy.data12_8TeV.periodA.physics_Muons.PhysCont.NTUP_SUSYSKIM.repro14_v01_p1542"
         },
         {
@@ -85,7 +85,7 @@
           "placeholder": "E.g. http://arxiv.org/abs/1403.5294"
         },
         {
-          "key": "publications[].document_type",
+          "key": "publications[].type",
           "placeholder": "E.g. preprint"
         },
         {

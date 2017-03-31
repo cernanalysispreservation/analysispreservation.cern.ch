@@ -102,7 +102,7 @@
                 "title": "Collision Data",
                 "type": "array"
               },
-              "mc_data": {
+              "mc_dataset": {
                 "items": {
                   "type": "object",
                   "properties": {
@@ -162,7 +162,7 @@
           "title": "Keywords",
           "type": "string"
         },
-        "proponents": {
+        "analysis_proponents": {
           "title": "Proponents",
           "type": "string"
         },
@@ -170,7 +170,7 @@
           "title": "Reviewers",
           "type": "string"
         },
-        "status": {
+        "analysis_status": {
           "enum": [
             "0 - planned / open topic",
             "1 - in preparation",
@@ -187,7 +187,7 @@
           "type": "string",
           "title": "Status"
         },
-        "status_notes": {
+        "analysis_status_notes": {
           "dependencies": [
             "status"
           ],
@@ -196,8 +196,8 @@
         }
       },
       "required": [
-        "analysis_name",
-        "proponents",
+        "analysis_title",
+        "analysis_proponents",
         "reviewers"
       ],
       "title": "Basic Information",
@@ -498,7 +498,7 @@
                 "type": "string"
               },
               "keywords": {
-                "title": "Keyword",
+                "title": "Keywords",
                 "type": "string"
               },
               "url": {

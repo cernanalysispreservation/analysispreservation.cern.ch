@@ -4,7 +4,7 @@
     "type": "tabarray",
     "items": [
         {
-            "key": "workflows[].name"
+            "key": "workflows[].analysis_title"
         },
         {
             "key": "workflows[].selectSubschema",

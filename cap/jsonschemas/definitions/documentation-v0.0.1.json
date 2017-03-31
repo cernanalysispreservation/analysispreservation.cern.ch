@@ -13,7 +13,7 @@
       "type": "string"
     },
     "keywords": {
-      "title": "Keyword",
+      "title": "Keywords",
       "type": "string"
     },
     "comment": {
