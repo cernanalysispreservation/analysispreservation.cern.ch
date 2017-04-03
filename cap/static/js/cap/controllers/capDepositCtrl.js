@@ -27,7 +27,7 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs, capRecordsClient) {
+var capDepositCtrl = function($scope, $state, $location, $http, deposit, contentBarTabs, capRecordsClient) {
   $scope.$on(
     'invenio.records.action.success', function(event) {
       var depid = $scope.recordsVM.invenioRecordsEndpoints['self'].split('/').pop();
@@ -75,6 +75,7 @@ var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs,
 
 capDepositCtrl.$inject = [
   '$scope',
+  '$state',
   '$location',
   '$http',
   'deposit',
