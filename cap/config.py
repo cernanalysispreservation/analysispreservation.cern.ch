@@ -560,7 +560,7 @@ DEPOSIT_GROUPS = {
 }
 
 # #: Endpoints for deposit.
-DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/deposit/{pid_value}'
+DEPOSIT_UI_ENDPOINT = None
 DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
 _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 

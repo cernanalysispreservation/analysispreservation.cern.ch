@@ -28,6 +28,12 @@
 // CAP app Deposit Controller
 
 var capDepositCtrl = function($scope, $location, $http, deposit, contentBarTabs, capRecordsClient) {
+  $scope.$on(
+    'invenio.records.action.success', function(event) {
+      var depid = $scope.recordsVM.invenioRecordsEndpoints['self'].split('/').pop();
+      $state.go('app.deposit_item.overview', {depid: depid});
+    }
+  );
   $scope.deposit = deposit;
   $scope.pid_value = deposit.id;
   $scope.contentBarTabs = contentBarTabs;
