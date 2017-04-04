@@ -53,6 +53,8 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
   };
 
   $scope.modelChanged = function(value, key){
+    // [TOFIX] Right now array model values are represented as objects
+    // with key "0", "1", "2", ...
     $scope.depositNavModel = $scope.depositNavModel.setIn(key.key, value);
     $scope.recordsVM.removeValidationMessage(value,key)
   };

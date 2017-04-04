@@ -419,14 +419,39 @@ body::-webkit-scrollbar-thumb {
   overflow-y: auto;
 }
 
-.link-color {
-  color: $link-color-default-blue !important;
-}
+// .link-color {
+//   color: $link-color-default-blue !important;
+// }
 
 .panel-default>.panel-heading .records-badge {
   background-color: $light-blue-theme-color;
 }
+.cap-panel, .panel.panel-default {
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  height: 100%;
+  overflow: hidden;
 
+
+  .panel-heading {
+    background-color: $light-blue-theme-color;;
+    border-radius: 0;
+    border: 0;
+    color: #fff;
+
+    a,
+    a:hover,
+    a:focus{
+      color: #fff;
+    }
+  }
+  .panel-body {
+    background-color: #eff6f9;
+    border-radius: 0;
+    border: 1px solid $light-blue-theme-color;
+  }
+}
 .list-group-item-position {
   margin-top: 1%;
 }
@@ -461,5 +486,5 @@ body::-webkit-scrollbar-thumb {
 }
 
 .results-title-position {
-  margin-top: 5px; 
+  margin-top: 5px;
 }

@@ -36,30 +36,37 @@
 }
 
 .cap-panel {
-  border: 1px solid $light-blue-theme-color;
   border-radius: 0;
 }
 
-.custom-panel .cap-panel {
-  // border:none;
-}
+.cap-deposit-form .panel-default.cap-panel {
+  .panel-heading {
+    background-color: $light-blue-theme-color;
+    color: #fff;
+    padding: 15px;
+    display: inline-block;
+    width: 100%;
+    float: left;
 
-/*
-.cap-fixed-height-col{
-  // TOFIX: calc() values and offset height should be calculated by components
-  // heigh (box-height, buttons-height, etc)
-  height: calc(100vh - 60px);
-  margin-top: -1px;
-  margin-left: -1px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-*/
+    .title {
+      float: left;
+    }
+    .description {
+      float: left;
+      color: $light-grey-theme-color;
+      margin-left: 10px;
 
-.panel-default>.panel-heading {
-  background-color: #eff6f9;;
-  border-bottom: 1px solid $light-blue-theme-color;
-  padding: 20px 10px;
+      a,
+      a:hover,
+      a:focus {
+        color: #fff;
+        text-decoration: underline;
+      }
+    }
+  }
+  .panel-body {
+    background-color: #fff;
+  }
 }
 
 @media (min-width: 768px) {
@@ -103,7 +110,7 @@
   /* background-color: #fff; */
   margin: -16px;
   margin-right: 15px;
-  margin-top: -45px;
+  margin-top: -40px;
 }
 
 .tabarray-search-fields {
@@ -322,34 +329,40 @@
   width: 100%;
   height: 100%;
   overflow: scroll;
-  padding: 20px;
+  padding: 0;
   margin: 0;
   background-color: #fff;
   border: 1px solid $light-blue-theme-color;
   border-top: 0;
   margin-bottom: $footer-height;
 
+  .cap-deposit-actions {
+    width: 100%;
+    height: 40px;
+    background-color: #eee;
+  }
   .cap-deposit-form-inner {
     max-width: 1000px;
     min-width: 400px;
     margin: 0 auto;
+    padding: 0 15px;
   }
-  .cap-panel {
-    border: 0;
-    background-color: transparent;
-    height: 100%;
-    overflow: hidden;
+  // .cap-panel {
+  //   border: 0;
+  //   background-color: transparent;
+  //   height: 100%;
+  //   overflow: hidden;
 
-    .panel-heading {
-      background-color: transparent;
-      padding: 15px 0;
-      border: 0;
-    }
-    .panel-body {
-      background-color: #eff6f9;
-      border: 1px solid $light-blue-theme-color;
-    }
-  }
+  //   .panel-heading {
+  //     background-color: transparent;
+  //     padding: 15px 0;
+  //     border: 0;
+  //   }
+  //   .panel-body {
+  //     background-color: #eff6f9;
+  //     border: 1px solid $light-blue-theme-color;
+  //   }
+  // }
 
   .tabs-container {
     .nav-pills {
@@ -631,6 +644,6 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
 }
 
 .modal-checkbox-element {
-  margin-top: -3%; 
+  margin-top: -3%;
   color: #16a085;
 }

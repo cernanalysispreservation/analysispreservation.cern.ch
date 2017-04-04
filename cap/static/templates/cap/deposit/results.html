@@ -1,14 +1,12 @@
 <div class="container cap-container">
-  <div class="panel panel-default cap-panel">
-    <div class="panel-heading" >
-      <h2 ng-if="current_state_params.status == 'draft'" class="forms-font-color">Drafts</h2>
-      <h2 ng-if="current_state_params.status == 'published'" class="forms-font-color">Shared</h2>
-      <h2 ng-if="!current_state_params.status" class="forms-font-color">All Deposits</h2>
-    </div>
-  </div>
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
+          <h2 ng-if="current_state_params.status == 'draft'" class="panel-title">Drafts</h2>
+          <h2 ng-if="current_state_params.status == 'published'" class="panel-title">Shared</h2>
+          <h2 ng-if="!current_state_params.status" class="panel-title">All Deposits</h2>
+        </div>
         <div class="panel-body">
           <cap-results  status="{{current_state_params.status}}" limit='10' type='deposits' paginate='true'></cap-results>
         </div>

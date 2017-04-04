@@ -6,8 +6,10 @@
      class="clearfix schema-form-tabarray schema-form-tabarray-{{form.tabType || 'left'}} {{form.htmlClass}}">
   <div class="panel panel-default cap-panel">
         <div class="panel-heading">
-            <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.schema.title | uppercase }}</strong></span>
-            <div class="help-block" ng-if="form.description"
+            <div class="description">
+              <strong>{{ form.schema.title | uppercase }}</strong>
+            </div>
+            <div class="description" ng-if="form.description"
                  ng-bind-html="form.description">
             </div>
         </div>

@@ -203,13 +203,12 @@ $pushmenu-bgc-active: $light-blue-theme-color;
                 }
             }
             .nav-icon {
-                margin-right: 10px;
-                float: left;
-                width: 20px;
+                flex: 1 20px;
             }
 
             .nav-title {
-                float: left;
+                flex: 1 100%;
+                text-align: left;
             }
         }
     }

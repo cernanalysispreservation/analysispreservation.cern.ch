@@ -8,7 +8,8 @@
     <div class="panel panel-default cap-panel">
       <div class="panel-heading">
             <div class="title">
-              <span class="forms-font-color forms-filter-fields-font-size"><strong>{{ form.title | uppercase }}</strong>
+              <span>
+                <strong>{{ form.title | uppercase }}</strong>
               </span>
             </div>
             <button ng-hide="form.readonly || form.add === null"
@@ -18,7 +19,7 @@
                 class="btn {{ form.style.add || 'add-btn' }} action-btn pull-right">
               {{ form.add || 'Add New'}}
             </button>
-            <div class="help-block" ng-if="form.description"
+            <div class="description" ng-if="form.description"
                  ng-bind-html="form.description"></div>
         </div>
         <div class="panel-body tabs-container" ng-hide="collapsed">

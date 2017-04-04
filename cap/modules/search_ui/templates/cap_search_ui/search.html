@@ -2,7 +2,6 @@
 
 {%- block body_inner %}
 <div id="cap-records-index" class="cap-container container">
-    <h2>Search results</h2>
     <div id="cap-search">
         <invenio-search
         search-endpoint="{{ config.SEARCH_UI_SEARCH_API }}"
@@ -15,7 +14,7 @@
     {%- endblock body_inner %}
 
     {%- block page_body %}
-    <div class="container search-page">
+    <div class="search-page">
         {% block search_error %}{{super()}}{% endblock search_error %}
         <div class="row">
             <div ng-class="{'col-md-9 col-md-push-3': vm.invenioSearchResults.hits.total != 0}">
@@ -48,9 +47,11 @@
                         {%- endblock search_sort %}
                     </div>
                     {%- block search_results %}
-                    <invenio-search-results
-                    template="{{ url_for('static', filename=config.SEARCH_UI_JSTEMPLATE_RESULTS) }}">
-                    </invenio-search-results>
+                    <div class="panel-body">
+                        <invenio-search-results
+                        template="{{ url_for('static', filename=config.SEARCH_UI_JSTEMPLATE_RESULTS) }}">
+                        </invenio-search-results>
+                    </div>
                     {%- endblock search_results %}
                 </div>
             </div>
