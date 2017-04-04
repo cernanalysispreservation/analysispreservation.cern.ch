@@ -30,15 +30,23 @@ from __future__ import absolute_import, print_function
 import os
 import shutil
 import tempfile
+from uuid import uuid4
+
 
 import pytest
 
 from cap.factory import create_app
+from cap.modules.deposit.api import CAPDeposit as Deposit
 from elasticsearch.exceptions import RequestError
 from flask_cli import ScriptInfo
+from flask_security import login_user
+from invenio_accounts.testutils import create_test_user
 from invenio_db import db as db_
+from invenio_deposit.minters import deposit_minter
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
+from invenio_files_rest.models import Location
+from six import BytesIO
 
 
 @pytest.yield_fixture(scope='session')
@@ -110,3 +118,70 @@ def es(app):
     current_search_client.indices.refresh()
     yield current_search_client
     list(current_search.delete(ignore=[404]))
+
+
+@pytest.fixture()
+def users(app, db):
+    """Create users."""
+    user1 = create_test_user(
+        email='cms@inveniosoftware.org', password='cmscms')
+
+    return [
+        {'email': user1.email, 'id': user1.id}
+    ]
+
+
+@pytest.yield_fixture()
+def location(db):
+    """File system location."""
+    tmppath = tempfile.mkdtemp()
+
+    loc = Location(
+        name='testloc',
+        uri=tmppath,
+        default=True
+    )
+    db.session.add(loc)
+    db.session.commit()
+
+    yield loc
+
+    shutil.rmtree(tmppath)
+
+
+@pytest.fixture()
+def deposit_metadata():
+    """Raw metadata of deposit."""
+    data = {
+        '$schema': 'https://analysispreservation.cern.ch/app/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        'basic_info': {
+            'analysis_number': 'dream_team',
+            'people_info': [
+                {}
+            ]
+        }
+    }
+    return data
+
+
+@pytest.fixture()
+def deposit_file(deposit, db):
+    """Deposit files."""
+    deposit.files['test.txt'] = BytesIO(b'test')
+    db.session.commit()
+    return deposit.files
+
+
+@pytest.fixture()
+def deposit(app, es, users, location, deposit_metadata):
+    """New deposit with files."""
+    with app.test_request_context():
+        datastore = app.extensions['security'].datastore
+        login_user(datastore.get_user(users[0]['email']))
+        id_ = uuid4()
+        deposit_minter(id_, deposit_metadata)
+        deposit = Deposit.create(deposit_metadata, id_=id_)
+        db_.session.commit()
+    current_search.flush_and_refresh(
+        index='deposits-records-cms-analysis-v0.0.1')
+    return deposit
