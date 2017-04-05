@@ -98,14 +98,6 @@ CELERY_IMPORTS = {
 }
 #: Scheduled tasks
 CELERYBEAT_SCHEDULE = {
-    'get_publications_files': {
-        'task': 'cap.modules.experiments.tasks.get_publications_files',
-        'schedule': crontab(minute=0, hour=1)
-    },
-    'get_working_groups_files': {
-        'task': 'cap.modules.experiments.tasks.get_working_groups_files',
-        'schedule': crontab(minute=10, hour=1)
-    },
     'dump_lhcb_analyses_to_json': {
         'task': 'cap.modules.experiments.tasks.dump_lhcb_analyses_to_json',
         'schedule': crontab(minute=20, hour=1)

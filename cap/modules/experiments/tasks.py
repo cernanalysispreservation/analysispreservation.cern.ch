@@ -33,19 +33,5 @@ from cap.modules.experiments.scripts.lhcb.lhcb import dump_analyses_to_json
 
 
 @shared_task
-def get_publications_files():
-    path_to_script = os.path.join(config.APP_ROOT,
-                                  'modules/experiments/scripts/lhcb/get_publications_files.sh')
-    subprocess.call(path_to_script, shell=True)
-
-
-@shared_task
-def get_working_groups_files():
-    path_to_script = os.path.join(config.APP_ROOT,
-                                  'modules/experiments/scripts/lhcb/get_working_groups_files.sh')
-    subprocess.call(path_to_script, shell=True)
-
-
-@shared_task
 def dump_lhcb_analyses_to_json():
     dump_analyses_to_json()
