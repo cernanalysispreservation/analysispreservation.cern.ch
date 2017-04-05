@@ -327,7 +327,7 @@ class CAPDeposit(Deposit):
         Adds snapshot of the files when deposit is cloned.
         """
         data = copy.deepcopy(self.dumps())
-        del data['_deposit']
+        del data['_deposit'], data['control_number']
         deposit = super(CAPDeposit, self).create(data, id_=id_)
         deposit['_deposit']['cloned_from'] = {
             'type': pid.pid_type,
