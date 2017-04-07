@@ -17,6 +17,7 @@
                 ng-disabled="form.schema.maxItems <= modelArray.length"
                 type="button"
                 class="btn {{ form.style.add || 'add-btn' }} action-btn pull-right">
+              <i class="fa fa-plus" aria-hidden="true"></i>
               {{ form.add || 'Add New'}}
             </button>
             <div class="description" ng-if="form.description"

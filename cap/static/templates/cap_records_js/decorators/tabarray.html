@@ -24,7 +24,6 @@
                   <div class="forms-font-color tabarray-search-fields">
                      <span class="fa fa-search forms-font-color tabarray-fields"></span>
                      <input
-                      ng-disabled="!modelArray[0]['name']"
                       type="text"
                       class="form-control filter-fields-searchbar-tabarray"
                       placeholder="Filter fields..."
@@ -45,6 +44,7 @@
                   <span ng-show="(modelArray | filter:queryFilter).length == 0">No items to filter</span>
                 </ul>
                   <button ng-hide="form.readonly" ng-click="$event.preventDefault() || (selected.tab = appendToArray().length - 1)" href="#" class="btn {{ form.style.add || 'add-btn' }} action-btn add-new-tabarray-btn">
+                   <i class="fa fa-plus" aria-hidden="true"></i>
                   {{ form.add || 'Add New'}}
                   </button>
               </div>

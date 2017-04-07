@@ -10,8 +10,11 @@
         </div>
       </div>
       <div class="pull-left">
-        <h5 class="list-group-item-heading results-title-position">
-          {{record.metadata.general_title}}
+        <h5 class="list-group-item-heading results-title-position" ng-if="record.metadata.general_title.indexOf('Created') == -1">
+          {{ record.metadata.general_title }}
+        </h5>
+        <h5 class="list-group-item-heading results-title-position" ng-if="record.metadata.general_title.indexOf('Created') !== -1">
+          {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_title || record.metadata.analysis_title || record.metadata.analysis_context.name}}
         </h5>
       </div>
       <small class="pull-right label label-success type-of-analysis results-title-position">
@@ -29,8 +32,12 @@
         </div>
       </div>
       <div class="pull-left">
-        <h5 class="list-group-item-heading results-title-position">
-          {{record.metadata.general_title}}
+        <h5 class="list-group-item-heading results-title-position" ng-if="record.metadata.general_title.indexOf('Created') == -1">
+          {{ record.metadata.general_title }}
+        </h5>
+        <h5 class="list-group-item-heading results-title-position" ng-if="record.metadata.general_title.indexOf('Created') !== -1">
+          {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_title || record.metadata.analysis_title ||
+          record.metadata.analysis_context.name}}
         </h5>
       </div>
       <small class="pull-right label label-success type-of-analysis results-title-position">

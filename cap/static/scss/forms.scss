@@ -397,7 +397,8 @@
   width: $cap-deposit-sidebar-width;
   position: fixed;
   top: 0;
-  padding-top: $content-bar-height +$cap_header_height + 55;
+  //padding-top: $content-bar-height +$cap_header_height + 55;
+  padding-top: $content-bar-height +$cap_header_height;
   overflow: scroll;
   overflow-x: hidden;
 

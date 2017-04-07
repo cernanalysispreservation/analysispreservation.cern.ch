@@ -42,7 +42,7 @@
       {
         "key": "main_analysis.run_numbers",
         "type": "tabarray",
-        "title": "{{value.number || 'New item'}}",
+        "title": "{{value.run_number || 'New item'}}",
         "items": [
           {
             "key": "main_analysis.run_numbers[].run_number",
@@ -94,7 +94,7 @@
           {
             "key": "main_analysis.derived_dataset.run_numbers",
             "type": "tabarray",
-            "title": "{{value.number || 'New item'}}",
+            "title": "{{value.run_number || 'New item'}}",
             "items": [
               {
                 "key": "main_analysis.derived_dataset.run_numbers[].run_number",
