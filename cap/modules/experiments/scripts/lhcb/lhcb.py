@@ -26,31 +26,30 @@ import json
 import os
 import shelve
 
+from flask import current_app
+
 filenames = [
-    "dbases/charm.shelve",
-    "dbases/b2cc.shelve",
-    "dbases/bandq.shelve",
-    # "dbases/citations_cache.shelve",
-    "dbases/qee.shelve",
-    "dbases/sl.shelve",
-    "dbases/b2oc.shelve",
-    "dbases/bnoc.shelve",
-    "dbases/hlt.shelve",
-    "dbases/rd.shelve"
+    "charm.shelve",
+    "b2cc.shelve",
+    "bandq.shelve",
+    # citations_cache.shelve",
+    "qee.shelve",
+    "sl.shelve",
+    "b2oc.shelve",
+    "bnoc.shelve",
+    "hlt.shelve",
+    "rd.shelve"
 ]
 
 def dump_analyses_to_json():
+    """ Parse shelve files with analyses to json. """
+
     base = {}
     tmp_title_list = []
-    home_dir = os.path.dirname(os.path.abspath(__file__))
+    lhcb_dbases_dir = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
-    os.chdir(home_dir)
+    os.chdir(lhcb_dbases_dir)
 
-    # Create dir for jsonschemas if doesnt exist
-    output_dir = '../../static/jsonschemas/fields'
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-    
     for filename in filenames:
         base_field = "analysis"
     
@@ -62,12 +61,6 @@ def dump_analyses_to_json():
         title_list = s.get('analysis').keys()
         for n in title_list:
             tmp_title_list.append({"value": n})
-    
-        working_group = filename.split("/")[1]
-        working_group = working_group.replace(".shelve", "")
-    
-        with open('../../static/jsonschemas/fields/lhcb_ana_titles_'+working_group+'.json', 'w') as fp:
-            json.dump(tmp_title_list, fp)
     
         def resolveObj(s, f, k):
             newk = {}
@@ -91,13 +84,9 @@ def dump_analyses_to_json():
                 base[k] = resolveObj(s,base_field, k)
     
         s.close()
-    
-    with open('../../static/jsonschemas/fields/lhcb_ana_titles.json', 'w') as fp:
+
+    with open('ana_titles.json', 'w') as fp:
         json.dump(tmp_title_list, fp)
     
-    with open('../../scripts/analyses.json', 'w') as fp:
+    with open('ana_details.json', 'w') as fp:
         json.dump(base, fp, ensure_ascii=False)
-
-
-if __name__=='__main__':
-    dump_analyses_to_json()
