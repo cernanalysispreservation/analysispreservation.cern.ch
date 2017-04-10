@@ -107,30 +107,24 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
 
         // Browser pointing at homepage [user NOT LOGGEDIN]
         // Take him to welcome page
-        if ($state.current.name === '' && !user){
+        if(user && user['collaborations'].length == 0) {
+          $state.go('app.experiments');
+        } 
+
+        if (!user){
           $state.go('welcome');
         }
         // Browser pointing at welcome [user LOGGEDIN]
         // Take him to home/app page
-        else if ($state.current.name === 'welcome' && user){
-          $state.go('app');
+        else if ($state.current.name === 'welcome'){
+          $state.go('app.index');
         }
 
         // If user current_experiment isn't set,
         // set the first one of the list
-        if (user){
-          if (user['current_experiment'] === ""){
-            if(user['collaborations'].length === 0) {
-              $state.go('app.experiments');
-            } else {
-              // Initialise shortcuts/hotkeys for quick navigation
-              initCapGlobalShortcuts(hotkeys, $scope, $state);
-              $scope.exp = user['collaborations'][0]
-            }
-          }
-          else {
-            $scope.exp = user["current_experiment"];
-          }
+        if(user) {
+          initCapGlobalShortcuts(hotkeys, $scope, $state);
+          $scope.exp = user["current_experiment"];
 
           if($scope.exp !== "" && user['collaborations'].length !== 0){
             $scope.menu = {
@@ -142,8 +136,6 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
             get_experiment_menu();
           }
         }
-
-
       }, function(error) {
         $scope.error = error;
       });

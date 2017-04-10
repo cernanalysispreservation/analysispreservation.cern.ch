@@ -44,12 +44,17 @@ access_blueprint = Blueprint('cap_access', __name__,
 @access_blueprint.route('/user')
 def get_user():
     if current_user.is_authenticated:
+        user_experiments = get_user_experiments()
+        deposit_groups = get_user_deposit_groups()
+        current_experiment = session.get('current_experiment', '')
+        if user_experiments and not current_experiment:
+            current_experiment = user_experiments[0]
         _user = {
             "id": current_user.id,
             "email": current_user.email,
-            "collaborations": get_user_experiments(),
-            "deposit_groups": get_user_deposit_groups(),
-            "current_experiment": session.get("current_experiment", ""),
+            "collaborations": user_experiments,
+            "deposit_groups": deposit_groups,
+            "current_experiment": current_experiment,
         }
 
         response = jsonify(_user)
