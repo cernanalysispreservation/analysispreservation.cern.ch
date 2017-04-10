@@ -1,0 +1,51 @@
+{
+    "Example Analysis1":
+    {
+        "status": "1 - in preparation",
+        "egroup": "lhcb-phys-B2CC-DGammad@cern.ch",
+        "name": "Example Analysis1",
+        "user": "antrzcin",
+        "ananote": "ANA-2015-070",
+        "sample": "Run I + Run II",
+        "measurement": "D(s)->h mu mu",
+        "paper": "PAPER-2011-032",
+        "twiki": "https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/ExampleAnalysis1"
+
+    },
+    "Example Analysis2":
+    {
+        "status": "0 - planned / open topic",
+        "egroup": "lhcb-review-CHARM-DXSECT5TEV",
+        "name": "Example Analysis2",
+        "user": "antrzcin2",
+        "ananote": "ANA-2012-071",
+        "sample": "3 fb-1 Run I",
+        "measurement": "Excited charm"
+    },
+    "Very Important Analysis":
+    {
+        "status": "6 - CONF note published",
+        "egroup": "lhcb-review-Charm-D0toKsKs@cern.ch",
+        "name": "Very Important Analysis",
+        "user": "pfokiano",
+        "ananote": "ANA-2009-070",
+        "sample": "Run I + Run II",
+        "measurement": "D(s)->h mu mu",
+        "paper": "PAPER-2009-002",
+        "twiki": "https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/VeryImportantAnalysis"
+
+    },
+    "Yet Another Example Analysis":
+    {
+        "status": "1 - in preparation",
+        "egroup": "lhcb-phys-B2CC-DGammad@cern.ch",
+        "name": "Yet Another Example Analysis",
+        "user": "pfokiano",
+        "ananote": "ANA-2012-070",
+        "sample": "Run I",
+        "measurement": "B -> phi phi TI",
+        "paper": "PAPER-2012-132",
+        "twiki": "https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/YetAnotherExampleAnalysis"
+
+    }
+}

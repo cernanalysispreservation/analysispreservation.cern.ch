@@ -1,0 +1,26 @@
+{
+    "Example Analysis1":
+    {
+        "status": "1 - in preparation",
+        "name": "Example Analysis1",
+        "user": "antrzcin"
+    },
+    "Example Analysis2":
+    {
+        "status": "0 - planned / open topic",
+        "name": "Example Analysis2",
+        "user": "antrzcin"
+    },
+    "Very Important Analysis":
+    {
+        "status": "6 - CONF not published",
+        "name": "Very Important Analysis",
+        "user": "pfokiano"
+    },
+    "Yet Another Example Analysis":
+    {
+        "status": "1 - in preparation",
+        "name": "Yet Another Example Analysis",
+        "user": "pfokiano"
+    }
+}

@@ -659,3 +659,8 @@ FILES_REST_PERMISSION_FACTORY = allow_all
 # =======
 #: Flag for not replacing refs when creating deposit
 INDEXER_REPLACE_REFS = False
+
+# LHCB DB files location
+# ======================
+LHCB_DB_FILES_LOCATION = os.path.join(APP_ROOT,
+                                    'modules/experiments/static/example_lhcb/')

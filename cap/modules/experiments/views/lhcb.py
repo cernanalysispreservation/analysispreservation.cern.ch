@@ -28,13 +28,12 @@ from __future__ import absolute_import, print_function
 
 import codecs
 import json
+import os
 import re
-
 from urllib import unquote
 
 import pkg_resources
 import requests
-
 from flask import Blueprint, current_app, g, jsonify, render_template, request
 from flask_security import login_required
 from invenio_collections.models import Collection
@@ -223,6 +222,39 @@ def lhcb_analysis():
         publications = get_lhcb_publications_by_ananote(ananote)
         if "ananote" in publications:
             wg = get_lhcb_WG_analysis_by_title(title)
+
+    return jsonify(results)
+
+
+@lhcb_bp.route('/api/analysis/titles', methods=['GET'])
+@lhcb_permission.require(403)
+def lhcb_get_analysis_titles():
+    location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
+
+    with codecs.open(os.path.join(location, 'ana_titles.json'),
+                     'r', encoding='utf8', errors='ignore') as fp:
+        res = json.load(fp)
+
+    return jsonify(res)
+
+
+@lhcb_bp.route('/api/analysis/data', methods=['GET'])
+@lhcb_permission.require(403)
+def lhcb_get_analysis_data():
+    title = unquote(request.args.get('title', ''))
+    location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
+
+    with codecs.open(os.path.join(location, 'publications.json'),
+                     'r', encoding='utf8', errors='ignore') as fp:
+        ana = json.load(fp)
+        res1 = ana.get(title, {})
+
+    with codecs.open(os.path.join(location, 'ana_details.json'),
+                     'r', encoding='utf8', errors='ignore') as fp:
+        ana = json.load(fp)
+        res2 = ana.get(title, {})
+
+    results = { key: value for (key, value) in (res1.items() + res2.items()) }
 
     return jsonify(results)
 

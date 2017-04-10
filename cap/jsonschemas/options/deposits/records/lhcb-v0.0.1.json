@@ -6,8 +6,47 @@
     "items":[
        {
         "key": "basic_info.analysis_title",
-        "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name."
-
+        "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name.",
+        "type": "cap:typeahead",
+        "url": "/app/LHCb/api/analysis/titles",
+        "ref": {
+            "url": "/app/LHCb/api/analysis/data",
+            "paramKey": "title",
+            "map": [
+            {
+                "s": ["measurement"],
+                "t": ["#", "measurement"]
+            },
+            {
+                "s": ["status"],
+                "t": ["#", "status"]
+            },
+            {
+                "s": ["egroup"],
+                "t": ["#", "review_egroup"]
+            },
+            {
+                "s": ["egroup"],
+                "t": ["additional_resources", "publications", "0", "review_egroup"]
+            },
+            {
+                "s": ["ananote"],
+                "t": ["additional_resources", "publications", "0", "analysis_number"]
+            },
+            {
+                "s": ["arxiv"],
+                "t": ["additional_resources", "publications", "0", "arxiv_id"]
+            },
+            {
+                "s": ["paper"],
+                "t": ["additional_resources", "publications", "0", "public_paper"]
+            },
+            {
+                "s": ["twiki"],
+                "t": ["additional_resources", "publications", "0", "twiki"]
+            }
+            ]
+        }
        },
        {
         "key": "basic_info.measurement",
