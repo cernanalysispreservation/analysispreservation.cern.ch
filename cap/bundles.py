@@ -27,7 +27,6 @@ from __future__ import absolute_import, print_function
 from flask_assets import Bundle
 from invenio_assets import NpmBundle
 
-
 app_js = NpmBundle(
     'node_modules/immutable/dist/immutable.js',
     "node_modules/angular-ui-router/release/angular-ui-router.min.js",
@@ -57,6 +56,7 @@ app_js = NpmBundle(
     "js/cap/controllers/capDepositSettingsCtrl.js",
     "js/cap/controllers/capFormAutofillCtrl.js",
     "js/cap/controllers/capFormAssociateRecords.js",
+    "js/cap/controllers/capTypeaheadCtrl.js",
     "js/cap/controllers/capWGCtrl.js",
     "js/cap/controllers/capRecordCtrl.js",
     "js/cap/directives/cap.deposit.progressBar.js",

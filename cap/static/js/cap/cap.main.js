@@ -47,6 +47,13 @@ angular.element(document).ready(function() {
 
     decoratorsProvider.defineAddOn(
       'bootstrapDecorator',
+      'cap:typeahead',
+      '/static/templates/cap_records_js/decorators/typeahead.html',
+      sfBuilderProvider.stdBuilders
+    );
+
+    decoratorsProvider.defineAddOn(
+      'bootstrapDecorator',
       'cap:formAssociateRecords',
       '/static/templates/cap_records_js/decorators/formAssociateRecords.html',
       sfBuilderProvider.stdBuilders
