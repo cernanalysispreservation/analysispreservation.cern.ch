@@ -46,8 +46,18 @@
               <button
                 type="button"
                 class="btn btn-default btn-success"
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "draft"'
                 ng-disabled="($ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading) && !general_title_edited"
                 ng-click="$ctrl.vm.actionHandler(['self', 'PUT'])">
+                  <i class="fa fa-floppy-o"></i>
+                  Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-default btn-success"
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "published"'
+                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
+                ng-click="$ctrl.vm.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">
                   <i class="fa fa-floppy-o"></i>
                   Save
               </button>
@@ -71,17 +81,8 @@
               </button>
               <button
                 type="button"
-                class="btn btn-default btn-success"
-                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "publish"'
-                ng-disabled="$ctrl.form.$invalid || $ctrl.form.$pristine || $ctrl.vm.invenioRecordsLoading"
-                ng-click="$ctrl.vm.actionHandler([['edit', 'POST'], ['self', 'PUT']], '/deposit')">
-                  <i class="fa fa-floppy-o"></i>
-                  Save
-              </button>
-              <button
-                type="button"
                 class="btn btn-default btn-info"
-                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"]== "published"'
+                ng-if='$ctrl.vm.invenioRecordsModel["_deposit"]["status"] == "published"'
                 ng-click="$ctrl.vm.actionHandler(['clone', 'POST'], '/deposit?status=draft')">
                   <i class="fa fa-clone"></i>
                   Clone
