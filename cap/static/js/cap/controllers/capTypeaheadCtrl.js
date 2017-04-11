@@ -28,15 +28,38 @@
 // CAP app Form Typeahead Controller
 
 var capTypeaheadCtrl = function( $scope, $interpolate , $http){
+
     // load static data if given url
     var _url = $scope.form.url;
 
     if (_url){
         $http.get(_url).success(function(data){
-            $scope.analyses = data;
+            $scope.typeaheadData = data;
         });
     }
 
+  // Needs to be specified with the following options to function
+  //
+  // "type": "cap:typeahead",
+  // "ref": {
+  //   "url": "//maps.googleapis.com/maps/api/geocode/json",
+  //   "paramKey": "address",
+  //   "displayKey": ["formatted_address"],
+  //   "map": [
+  //     {
+  //       "s": "place_id",
+  //       "t": ["basic_info", "abstract"]
+  //     },
+  //     {
+  //       "s": ["geometry", "location_type"],
+  //       "t": ["#", "conclusion"]
+  //     },
+  //     {
+  //       "s": ["geometry", "location", "lat"],
+  //       "t": ["#", "software", "name"]
+  //     }
+  //   ]
+  // }
     $scope.onSelect = function(_item, _model, _label, model, form) {
         var ref = form.ref;
         var _params = {};
@@ -78,15 +101,11 @@ var capTypeaheadCtrl = function( $scope, $interpolate , $http){
 
                         var m_length = _mapping.length;
                         angular.forEach(_mapping, function(key, index){
-                            if (model_ref[key]){
-                                model_ref = model_ref[key];
-                            }
-                            else if(index+1 !== m_length){
-                                model_ref = model_ref[key] = {};
-                            }
-                            else if(index+1 === m_length){
-                                model_ref = model_ref[key] = resp;
-                            }
+                                if(index+1 === m_length){
+                                    model_ref[key] = resp;
+                                }else{
+                                    model_ref = model_ref[key];
+                                }
                         });
                     }
                 });

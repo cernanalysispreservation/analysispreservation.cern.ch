@@ -595,6 +595,7 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   border-radius: 0;
   color: #fff;
   background-color: $light-blue-theme-color;
+  z-index: 10;
 }
 
 #custom-divider {

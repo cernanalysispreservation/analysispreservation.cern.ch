@@ -60,7 +60,7 @@ def dump_analyses_to_json():
         # Get list of "title" for Anal.Name Autocomplete
         title_list = s.get('analysis').keys()
         for n in title_list:
-            tmp_title_list.append({"value": n})
+            tmp_title_list.append()
     
         def resolveObj(s, f, k):
             newk = {}

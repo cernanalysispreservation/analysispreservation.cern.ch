@@ -259,9 +259,9 @@ def lhcb_get_analysis_data():
     return jsonify(results)
 
 
-@lhcb_bp.route('/api/collisiondata/', methods=['GET'])
+@lhcb_bp.route('/api/analysis/collisiondata/', methods=['GET'])
 @lhcb_permission.require(403)
-def lhcb_getcollisiondata():
+def lhcb_get_collision_data():
     stripping_line = request.args.get('stripping_line', '')
     params = parse_stripping_line(unquote(stripping_line))
     url = current_app.config.get('LHCB_GETCOLLISIONDATA_URL', '')
@@ -290,6 +290,6 @@ def lhcb_getcollisiondata():
     return jsonify(res)
 
 def parse_stripping_line(stripping_line):
-    regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco\w{3}).*(?P<stripping>Stripping\w{3})'
+    regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco[^/]*).*(?P<stripping>Stripping[^/]*)'
     res = re.search(regex, stripping_line)
     return res.groupdict() if res else None

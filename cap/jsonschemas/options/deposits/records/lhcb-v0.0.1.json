@@ -217,9 +217,8 @@
                 "key": "dst_selection.production_info.data[].location",
                 "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
                 "type": "cap:formAutofill",
-                "isAsync": "true",
                 "ref": {
-                    "url": "/app/LHCb/api/collisiondata",
+                    "url": "/app/LHCb/api/analysis/collisiondata",
                     "paramKey": "stripping_line",
                     "map": [
                     {

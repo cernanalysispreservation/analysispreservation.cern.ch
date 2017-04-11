@@ -1,17 +1,7 @@
 [ 
-    {
-        "value": "Example Analysis1"
-    }, 
-    {
-        "value": "Example Analysis2"
-    }, 
-    {
-        "value": "Very Important Analysis"
-    }, 
-    {
-        "value": "Some Not That Important Analysis"
-    }, 
-    {
-        "value": "Yet Another Example Analysis"
-    } 
+    "Example Analysis1",
+    "Example Analysis2",
+    "Very Important Analysis",
+    "Some Not That Important Analysis",
+    "Yet Another Example Analysis"
 ]
