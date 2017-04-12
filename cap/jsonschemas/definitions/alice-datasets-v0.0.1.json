@@ -37,9 +37,12 @@
       "type": "array",
       "title": "Run Numbers",
       "items": {
-        "run_number": {
-          "title": "Run Number",
-          "type": "string"
+        "type": "object",
+        "properties": {
+          "run_number": {
+            "title": "Run Number",
+            "type": "string"
+          }
         }
       }
     },
