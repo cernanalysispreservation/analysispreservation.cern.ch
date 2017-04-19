@@ -6,6 +6,7 @@
 var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient, capUserClient, $state, hotkeys, screenSize) {
   $scope.$location = $location;
   $scope.current_state_params = $state.params;
+  $scope.errors = [];
 
   $scope.init = function(){
     // Request user info to get application needed user metadata
@@ -80,70 +81,66 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
   };
 
   var initAppWithUser = function(){
+
+    // $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    //   $scope.currentState = toState.name;
+
+    //   var requireLogin = false;
+
+    //   if (toState.data && toState.data.requireLogin) {
+    //     requireLogin = toState.data.requireLogin;
+    //   }
+
+    //   if (requireLogin && !$rootScope.currentUser) {
+    //     event.preventDefault();
+    //     // redirect me to login page
+
+    //     // TO FIX when login popup/modal is ready
+    //     $state.go("welcome");
+    //   }
+    // });
+
     capUserClient.get_user()
       .then(function(response){
-
-        var user = response.data || false;
+        var user = response.data;
 
         assignCurrentUser(user);
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-          $scope.currentState = toState.name;
-
-          var requireLogin = false;
-
-          if (toState.data && toState.data.requireLogin) {
-            requireLogin = toState.data.requireLogin;
-          }
-
-          if (requireLogin && !$rootScope.currentUser) {
-            event.preventDefault();
-            // redirect me to login page
-
-            var pathname = $window.location.pathname;
-            $window.location.href = '/app/login?next='+pathname;
-          }
-        });
-
         // Browser pointing at homepage [user NOT LOGGEDIN]
         // Take him to welcome page
-        if(user && user['collaborations'].length == 0) {
+        if(user['collaborations'].length == 0) {
           $state.go('app.experiments');
-        } 
-
-        if (!user){
-          $state.go('welcome');
         }
         // Browser pointing at welcome [user LOGGEDIN]
         // Take him to home/app page
-        else if ($state.current.name === 'welcome'){
+        if ($state.current.name === 'welcome'){
           $state.go('app.index');
         }
 
+        initCapGlobalShortcuts(hotkeys, $scope, $state);
         // If user current_experiment isn't set,
         // set the first one of the list
-        if(user) {
-          initCapGlobalShortcuts(hotkeys, $scope, $state);
-          $scope.exp = user["current_experiment"];
+        $scope.exp = user["current_experiment"];
 
-          if($scope.exp !== "" && user['collaborations'].length !== 0){
-            $scope.menu = {
-              'title': $scope.exp,
-              'id': 'menuId',
-              'icon': 'fa fa-bars',
-              'items': []
-            };
-            get_experiment_menu();
-          }
+        if($scope.exp !== ""){
+          $scope.menu = {
+            'title': $scope.exp,
+            'id': 'menuId',
+            'icon': 'fa fa-bars',
+            'items': []
+          };
+          get_experiment_menu();
         }
       }, function(error) {
-        $scope.error = error;
+        $scope.errors.push(error);
+        $state.go("welcome");
       });
      };
 
   var get_experiment_menu = function(){
       capUserClient.get_experiment_menu()
         .then(function(response) {
+
           var _menu = [{
             'name': 'Home',
             'link': 'app.index',

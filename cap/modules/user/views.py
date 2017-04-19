@@ -22,26 +22,27 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Access blueprint in order to dispatch the login request."""
+"""User blueprint in order to dispatch the login request."""
 
 from __future__ import absolute_import, print_function
 
-from functools import wraps
-
-from flask import Blueprint, current_app, jsonify, redirect, session, url_for
+from flask import Blueprint, abort, current_app, jsonify, redirect, session
 from flask_login import current_user
 from flask_principal import Permission
+# from flask_security import login_required
 
+from cap.modules.experiments.permissions \
+    import collaboration_permissions_factory
+from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import collaboration_permissions
 from cap.utils import obj_or_import_string
 
-
-access_blueprint = Blueprint('cap_access', __name__,
-                             url_prefix='/access',
-                             template_folder='templates')
+user_blueprint = Blueprint('cap_user', __name__,
+                           template_folder='templates')
 
 
-@access_blueprint.route('/user')
+@user_blueprint.route('/me')
+@login_required
 def get_user():
     if current_user.is_authenticated:
         user_experiments = get_user_experiments()
@@ -61,27 +62,11 @@ def get_user():
         response.status_code = 200
         return response
     else:
-        response = jsonify(False)
-        # TOFIX Return status 401 and intercept from SPA
-        response.status_code = 200
-        return response
-
-
-# TO_REMOVE after deletion of endpoints
-def redirect_user_to_experiment(f):
-    """Decorator for redirecting users to their experiments."""
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        experiments = get_user_experiments()
-        collab_pages = current_app.config.get('CAP_COLLAB_PAGES', {})
-
-        # if user is in more than one experiment, he won't be redirected
-        if len(experiments) == 1:
-            return redirect(url_for(collab_pages[experiments[0]]))
-        else:
-            return f(*args, **kwargs)
-
-    return decorated_function
+        abort(401)
+        # response = jsonify(False)
+        # # TOFIX Return status 401 and intercept from SPA
+        # response.status_code = 200
+        # return response
 
 
 def get_user_experiments():
@@ -109,3 +94,83 @@ def get_user_deposit_groups():
             user_deposit_groups.append(group_data)
 
     return user_deposit_groups
+
+
+def CAP_EXPERIMENT_MENU():
+    def _l(str):
+        return str
+
+    def users_deposit_groups():
+        groups = get_user_deposit_groups()
+        res = []
+        for group in groups:
+            res.append({
+                'name': group.get("name", group.get("deposit_group", "")),
+                'link': _l('app.deposit_new.index({deposit_group:"' + group.get("deposit_group", "") + '"})'),
+                'icon': ''
+            })
+
+        return res
+
+    _menu = [
+        {
+            'name': 'Shared Records',
+            'link': _l('app.shared'),
+            'icon': 'fa fa-share-square'
+        },
+        {
+            'name': 'Search',
+            'link': _l('app.search'),
+            'icon': 'fa fa-search'
+        },
+        {
+            'name': 'My Deposits',
+            'icon': 'fa fa-file-text',
+            'link': _l('app.deposit_list'),
+            'menu': {
+                "title": 'My Deposits',
+                'icon': 'fa fa-file-text-o',
+                'items': [
+                    {
+                        'name': 'Shared',
+                        'link': _l('app.deposit({status: "published"})'),
+                        'icon': 'fa fa-share-square-o'
+
+                    }, {
+                        'name': 'Drafts',
+                        'link': _l('app.deposit({status: "draft"})'),
+                        'icon': 'fa fa-pencil-square'
+                    }
+                ]
+            }
+        },
+        {
+            'name': 'Create',
+            'icon': 'fa fa-file-text',
+            'link': _l('app.select_deposit_new'),
+            'menu': {
+                "title": 'Create',
+                'icon': 'fa fa-file-text-o',
+                'items': users_deposit_groups()
+            }
+        }
+    ]
+
+    return _menu
+
+
+@user_blueprint.route('/menu')
+@login_required
+def experiment_menu():
+    """Experiment menu."""
+    return jsonify(CAP_EXPERIMENT_MENU())
+
+
+# TOFIX: Add explicit experiments array
+@user_blueprint.route('/set/experiment/<experiment>')
+@login_required
+def set_global_experiment(experiment=None):
+    if experiment in collaboration_permissions_factory:
+        if collaboration_permissions_factory[experiment]().can():
+            session['current_experiment'] = experiment
+            return redirect('/')

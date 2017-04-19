@@ -63,12 +63,12 @@ DEPOSIT_DEFAULT_METAINFO = {
     },
     "initialization": "/api/deposits/",
     "loading_template": "/api/static/node_modules/invenio-records-js/dist/templates/loading.html",
-    "schema": "/schemas/records/cms-analysis-v0.0.1.json",
-    "schema_form": "/static/json/records/cms-analysis-v0.0.1.json",
+    # "schema": "/schemas/records/cms-analysis-v0.0.1.json",
+    # "schema_form": "/static/json/records/cms-analysis-v0.0.1.json",
     "template_params": {
         "messages": {
             "delete": {
-              "message": "Deleted succesfully."
+                "message": "Deleted succesfully."
             },
             "discard": {
                 "message": "Changes discarded succesfully."
@@ -194,8 +194,10 @@ class NewItemView(View):
                 "schema_form": self.schema_form,
             }
 
-            _url_root = request.url_root
-            self.schema = _url_root + self.schema
+            self.schema = '/'.join((
+                current_app.config['JSONSCHEMAS_URL_SCHEME'] + ":/",
+                current_app.config['JSONSCHEMAS_HOST'], self.schema
+            ))
             deposit["meta_info"]["schema"] = self.schema
             deposit["meta_info"]["schema_form"] = self.schema_form
             return jsonify(deposit)

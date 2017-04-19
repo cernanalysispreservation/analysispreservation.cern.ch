@@ -305,14 +305,6 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 """Default list users permission factory: reject any request."""
 
 
-# Start pages for experiments
-CAP_COLLAB_PAGES = {
-    'LHCb': 'cap_lhcb.lhcb_landing',
-    'ATLAS': 'cap_atlas.atlas_landing',
-    'CMS': 'cap_cms.cms_landing',
-    'ALICE': 'cap_alice.alice_landing',
-}
-
 # Search
 # ======
 #: Default API endpoint for search UI.
@@ -340,7 +332,7 @@ ADMIN_PERMISSION_FACTORY = 'cap.modules.access.permissions.admin_permission_fact
 # Accounts
 # ========
 #: Login registration template.
-OAUTHCLIENT_LOGIN_USER_TEMPLATE = "access/login_user.html"
+# OAUTHCLIENT_LOGIN_USER_TEMPLATE = "access/login_user.html"
 #: Login confirmation mail.
 SECURITY_SEND_REGISTER_EMAIL = False
 
@@ -437,7 +429,7 @@ DEPOSIT_GROUPS = {
     "lhcb": {
         "experiment": "LHCb",
         "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/lhcb-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
         "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
         # "list_template": "cap_deposit/index.html",
@@ -453,7 +445,7 @@ DEPOSIT_GROUPS = {
     "cms-analysis": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
         "description":
             "Create a CMS Analysis (analysis metadata, workflows, etc)",
@@ -470,7 +462,7 @@ DEPOSIT_GROUPS = {
     "cms-questionnaire": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
         "description": "Create a CMS Questionnaire",
         # "list_template": "cap_deposit/index.html",
@@ -487,7 +479,7 @@ DEPOSIT_GROUPS = {
         "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
         "schema_form":
-            "/app/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
+            "/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
         "description": "Create an ATLAS Workflow",
         # "list_template": "cap_deposit/index.html",
@@ -503,7 +495,7 @@ DEPOSIT_GROUPS = {
     "atlas-analysis": {
         "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
         "description": "Create an ATLAS Analysis",
         # "list_template": "cap_deposit/index.html",
@@ -519,7 +511,7 @@ DEPOSIT_GROUPS = {
     "alice-analysis": {
         "experiment": "ALICE",
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
         "name": "ALICE Analysis",
         "description": "Create an ALICE Analysis",
         # "list_template": "cap_deposit/index.html",
@@ -535,7 +527,7 @@ DEPOSIT_GROUPS = {
     "cms-auxiliary-measurement": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
-        "schema_form": "/app/schemas/options/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
+        "schema_form": "/schemas/options/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
         "name": "CMS Auxiliary Measurement",
         "description": "Create a CMS Auxiliary Measurement",
         # "list_template": "cap_deposit/index.html",
@@ -663,4 +655,4 @@ INDEXER_REPLACE_REFS = False
 # LHCB DB files location
 # ======================
 LHCB_DB_FILES_LOCATION = os.path.join(APP_ROOT,
-                                    'modules/experiments/static/example_lhcb/')
+                                      'modules/experiments/static/example_lhcb/')

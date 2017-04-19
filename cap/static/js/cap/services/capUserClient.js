@@ -28,24 +28,24 @@ var capUserClient = function($http, $q) {
     get_user: function() {
       var deferred = $q.defer();
       deferred.notify('started');
-      var url = '/app/access/user';
+      var url = '/api/me';
       $http({
         method: 'GET',
         url: url
       })
-        .then(function(response) {
-          deferred.notify('finished');
-          deferred.resolve(response);
-        }, function (response) {
-          deferred.notify('error');
-          deferred.reject(response);
+      .then(function(response) {
+        deferred.notify('finished');
+        deferred.resolve(response);
+      }, function (error) {
+        deferred.notify('error');
+        deferred.reject(error);
       });
       return deferred.promise;
     },
     get_experiment_menu: function(limit) {
       var deferred = $q.defer();
       deferred.notify('started');
-      var url = '/app/experiment/'+'CMS'+'/menu';
+      var url = '/api/menu';
       $http({
         method: 'GET',
         url: url

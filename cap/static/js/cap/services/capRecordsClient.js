@@ -60,7 +60,7 @@ var capRecordsClient = function($http, $q) {
       get_new_deposit: function(deposit_group) {
         var deferred = $q.defer();
         deferred.notify('started');
-        var url = '/app/deposit/'+deposit_group+'/new';
+        var url = '/api/deposit/'+deposit_group+'/new';
         $http({
           method: 'GET',
           url: url,

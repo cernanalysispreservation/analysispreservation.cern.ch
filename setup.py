@@ -135,7 +135,7 @@ setup(
             'cap = cap.cli:cli',
         ],
         'cap.apps': [
-            'invenio_theme = invenio_theme:InvenioTheme',
+            'invenio_jsonschemas = invenio_jsonschemas:InvenioJSONSchemas',
             'invenio_assets = invenio_assets:InvenioAssets',
             'invenio_i18n = invenio_i18n:InvenioI18N',
         ],
@@ -143,29 +143,34 @@ setup(
             'cap = cap.views:blueprint',
             'cap_theme = cap.modules.theme.views:blueprint',
         ],
-        'invenio_base.blueprints': [
-            'cap = cap.views:blueprint',
-            'cap_theme = cap.modules.theme.views:blueprint',
-            'cap_experiments = '
-            'cap.modules.experiments.views.rest:experiments_bp',
-            'cap_csm = cap.modules.experiments.views.cms:cms_bp',
-            'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
-            'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
-            'cap_alice = cap.modules.experiments.views.alice:alice_bp',
-            'cap_access = cap.modules.access.views:access_blueprint',
-            'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
-            'cap_search_ui = cap.modules.search_ui.views:blueprint',
-        ],
-        'invenio_base.apps': [
-            'cap_access = cap.modules.access.ext:CAPAccess',
-            'cap_cache = cap.modules.cache.ext:CAPCache',
-            'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
-            'cap_fixtures = cap.modules.fixtures:CAPFixtures',
-        ],
+        # 'invenio_base.blueprints': [
+        #     'cap = cap.views:blueprint',
+        #     'cap_theme = cap.modules.theme.views:blueprint',
+        #     'cap_experiments = '
+        #     'cap.modules.experiments.views.rest:experiments_bp',
+        #     'cap_csm = cap.modules.experiments.views.cms:cms_bp',
+        #     'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
+        #     'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
+        #     'cap_alice = cap.modules.experiments.views.alice:alice_bp',
+        #     'cap_access = cap.modules.access.views:access_blueprint',
+        #     'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
+        #     'cap_search_ui = cap.modules.search_ui.views:blueprint',
+        # ],
+        # 'invenio_base.apps': [
+        #     'cap_access = cap.modules.access.ext:CAPAccess',
+        #     'cap_cache = cap.modules.cache.ext:CAPCache',
+        #     'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
+        #     'cap_fixtures = cap.modules.fixtures:CAPFixtures',
+        # ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
+            'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
+        ],
+        'invenio_base.api_blueprints': [
+            'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
+            'cap_user = cap.modules.user.views:user_blueprint',
         ],
         'invenio_assets.bundles': [
             'cap_app_js = cap.bundles:app_js',
@@ -179,14 +184,10 @@ setup(
         'invenio_pidstore.minters': [
             'cap_record_minter = '
             'cap.modules.records.minters:cap_record_minter',
-            # 'cap_deposit_minter = '
-            # 'cap.modules.deposit.minters:cap_deposit_minter',
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
             'cap.modules.records.fetchers:cap_record_fetcher',
-            # 'cap_deposit_fetcher = '
-            # 'cap.modules.deposit.fetchers:cap_deposit_fetcher',
         ],
         'invenio_records.jsonresolver': [
             'cap = cap.modules.records.resolvers.cap',

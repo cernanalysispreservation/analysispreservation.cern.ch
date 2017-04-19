@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,12 +22,24 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""cap base Invenio configuration."""
+"""Access utils."""
 
-from __future__ import absolute_import, print_function
+from functools import wraps
 
-from invenio_base.app import create_cli
+from flask import (current_app, request, abort)
+from flask_login import current_user
 
-from .factory import create_api
+EXEMPT_METHODS = set(['OPTIONS'])
 
-cli = create_cli(create_app=create_api)
+
+def login_required(f):
+    @wraps(f)
+    def decorated_view(*args, **kwargs):
+        if request.method in EXEMPT_METHODS:
+            return f(*args, **kwargs)
+        elif current_app.login_manager._login_disabled:
+            return f(*args, **kwargs)
+        elif not current_user.is_authenticated:
+            abort(401)
+        return f(*args, **kwargs)
+    return decorated_view

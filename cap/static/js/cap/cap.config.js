@@ -8,27 +8,29 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
   $httpProvider.interceptors.push('httpInterceptor');
   // TOFIX: for intercepting incoming responses when user
   // is LOGGEDOUT and API returns '401'
-  $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
-    var $http, $state;
+  // $httpProvider.interceptors.push(function ($timeout, $q, $injector) {
+  //   var $http, $state;
 
-    // this trick must be done so that we don't receive
-    // `Uncaught Error: [$injector:cdep] Circular dependency found`
-    $timeout(function () {
-      $http = $injector.get('$http');
-      $state = $injector.get('$state');
-    });
+  //   // this trick must be done so that we don't receive
+  //   // `Uncaught Error: [$injector:cdep] Circular dependency found`
+  //   $timeout(function () {
+  //     $http = $injector.get('$http');
+  //     $state = $injector.get('$state');
+  //   });
 
-    return {
-      responseError: function (rejection) {
-        if (rejection.status !== 401) {
-          return rejection;
-        }
+  //   return {
+  //     responseError: function (rejection) {
+  //       if (rejection.status !== 401) {
+  //         return rejection;
+  //       }
 
-        $window.location.href = '/app/login?next='+pathname;
+  //       console.log("rejected:::;");
+  //       $state.go('welcome');
+  //       // $window.location.href = '/app/login?next='+pathname;
 
-      }
-    };
-  });
+  //     }
+  //   };
+  // });
 
   $urlRouterProvider.otherwise(function($injector) {
     // Render 404 page when url doesn't exist
