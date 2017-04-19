@@ -25,6 +25,7 @@
 
 {# -*- coding: utf-8 -*- -#}
 {%- extends "invenio_theme/page.html" %}
+{% from "cap_theme/general_macros.html" import mathjax %}
 
 {%- block css %}
 {% assets "cap_theme_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
@@ -40,6 +41,9 @@
 
 {%- block page_footer %}{% include "cap_theme/footer.html" %}{%- endblock page_footer %}
 
-{%- block javascript %}{% include "cap_theme/javascript.html" %}{% endblock javascript %}
+{%- block javascript %}
+{{ super() }}
+{{ mathjax() | safe }}
+{% include "cap_theme/javascript.html" %}{% endblock javascript %}
 
 {%- block trackingcode %}{% include "cap_theme/trackingcode.html" %}{% endblock %}
