@@ -40,6 +40,8 @@ $fa-font-path: "/static/node_modules/font-awesome/fonts";
 @import "record";
 @import "utils";
 
+//
+//
 
 html, body {
   max-width: 100%;
@@ -61,16 +63,6 @@ html, body {
 
 .flex-display {
   display: flex !important;
-}
-
-header {
-  z-index: 999;
-  nav.navbar-default {
-    background-color: transparent;
-  }
-  .navbar.navbar-inverse {
-    background-color: transparent;
-  }
 }
 
 .cap-box {
@@ -201,10 +193,6 @@ body::-webkit-scrollbar-thumb {
 
 .cursor-pointer {
   cursor: pointer;
-}
-
-#invenio-search {
-  padding-top: 15px;
 }
 
 .content {

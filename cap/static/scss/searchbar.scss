@@ -28,15 +28,123 @@
 
 $cap_searchbar_bgcolor: #fff;
 
-#cap-home-search {
-  width: 85%;
-  float: right;
-  height: $header_btn_height;
-  padding-top: 5px;
+.search {
+  flex:1;
+  display: flex;
+  z-index: 10000;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-right: 1px solid $light-blue-theme-color;
+  align-items: center;
 
-  > div, > span {
-    height: $header_btn_height;
-    line-height: $header_btn_height;
+  #cap-search-results {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: $cap_header_height;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(205, 231, 254, 0.56);
+    display: flex;
+    justify-content: center;
+    align-content: flex-start;
+    flex-wrap: wrap;
+
+    ul.result-items {
+      width: 100%;
+      max-width: 1000px;
+      padding: 15px 10px;
+    }
+  }
+
+  invenio-search {
+    flex: 1;
+
+    form {
+      flex: 1;
+      display: flex;
+      max-width: 700px;
+    }
+  }
+
+  invenio-search-error,
+  invenio-search-loading,
+  invenio-search-count,
+  invenio-search-results {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  invenio-search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    form {
+      z-index: 10010;
+    }
+  }
+
+  .search-alert {
+    height: 50px;
+  }
+  .search-count {
+    flex: 1 100%;
+  }
+
+  .loader {
+      border: 2px solid #f3f3f3; /* Light grey */
+      border-top: 2px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 2s linear infinite;
+      position: absolute;
+      right: 50px;
+      top: 10px;
+      z-index: 10020;
+  }
+
+  @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+  .search-input-main {
+    flex: 1;
+    display: flex;
+    position: relative;
+
+    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color: $dark-grey-element-color;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:  $dark-grey-element-color;
+       opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:  $dark-grey-element-color;
+       opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+       color:  $dark-grey-element-color;
+    }
+
+    i.fa {
+      // position: absolute;
+      // top: 0;
+      // left: 0;
+      margin-left: 15px;
+      line-height: $header_btn_height;
+      line-height: 100%;
+      color: $dark-grey-element-color;
+      font-size: 2em;
+      padding: 11px;
+    }
+
+    input {
+      padding-left: 10px;
+    }
   }
 
   .header-search-bar {
@@ -55,12 +163,11 @@ $cap_searchbar_bgcolor: #fff;
     font-size: 18px;
     font-weight: 400;
     color: $dark-grey-element-color;
-    width: 100%;
+    flex: 1;
   }
 
   .header-search-btn {
     background-color: $cap_btn_bg;
-    float: left;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     color: white;
@@ -69,51 +176,10 @@ $cap_searchbar_bgcolor: #fff;
     height: $header_btn_height;
     width: $header_btn_height;
     border: 0;
-    position: absolute;
-    right: 0;
     line-height: $header_btn_height;
     padding: 0 9px;
   }
-
-  .search-input-main {
-    //width: 75%;
-    float: left;
-
-    ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-      color: $dark-grey-element-color;
-    }
-    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-       color:  $dark-grey-element-color;
-       opacity:  1;
-    }
-    ::-moz-placeholder { /* Mozilla Firefox 19+ */
-       color:  $dark-grey-element-color;
-       opacity:  1;
-    }
-    :-ms-input-placeholder { /* Internet Explorer 10-11 */
-       color:  $dark-grey-element-color;
-    }
-
-    i.fa {
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin-left: 15px;
-      line-height: $header_btn_height;
-      line-height: 100%;
-      color: $dark-grey-element-color;
-      font-size: 2em;
-      padding: 11px;
-    }
-
-    input {
-      padding-left: 10px;
-    }
-  }
-
 }
-
-
 .result-item {
   header {
     display: inline-block;

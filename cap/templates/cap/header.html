@@ -35,8 +35,18 @@
         </div>
         {% block brand %}
         <a class="cap-home-logo" href="/">
-            <img src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" height="65px" class="visible-lg-inline-block"/>
-            <img src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}" height="65px;" onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;" alt="{{_(config.THEME_SITENAME)}}" class="hidden-lg"/>
+            <img
+              src="{{ url_for('static', filename='img/cap_logo_lrg.svg')}}"
+              onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;"
+              alt="{{_(config.THEME_SITENAME)}}"
+              height="65px"
+              class="visible-lg-inline-block"/>
+            <img
+              src="{{ url_for('static', filename='img/cap_logo_sm.svg')}}"
+              height="65px;"
+              onerror="this.src={{ url_for('static', filename='img/cap_logo_sm.png')}}; this.src=null;"
+              alt="{{_(config.THEME_SITENAME)}}"
+              class="hidden-lg"/>
         </a>
         <img src="{{ url_for('static', filename='img/demo.png') }}" alt="" style="position:absolute;top:0;right:300px;width:100px;pointer-events:none;">
         {% endblock %}
@@ -44,7 +54,7 @@
         <div ng-if="exp" id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
           <button id="cap-experiments-dropdown" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
             {{exp}}
-            <span class="caret"></span>
+            <span ng-if="currentUser.collaborations.length > 1" class="caret"></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-experiments-dropdown">
             <li class="header visible-lg-block" ng-repeat="experiment in currentUser.collaborations">

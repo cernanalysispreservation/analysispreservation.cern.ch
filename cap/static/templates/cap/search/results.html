@@ -1,6 +1,6 @@
-<ul ng-show="vm.userQuery && currentState != 'app.search'" class="list-unstyled">
+<ul class="result-items list-unstyled">
     <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index" class="result-item">
-    <div class="cap-box">                       
+    <div class="cap-box">
         <header>
         <div class="title">
             <a href="/deposit/{{record.id}}">

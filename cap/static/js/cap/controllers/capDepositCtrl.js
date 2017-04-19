@@ -65,11 +65,15 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
       $scope.depositNavForm = $scope.recordsVM.invenioRecordsForm;
       $scope.isFormRendered = true;
 
+      var title_prefix;
+      if ($scope.recordsVM.invenioRecordsSchema && $scope.recordsVM.invenioRecordsSchema.title) {
+        title_prefix = $scope.recordsVM.invenioRecordsSchema.title;
+      }
       var now = new Date();
       $scope.recordsVM.invenioRecordsModel.general_title =
         $scope.recordsVM.invenioRecordsModel.general_title ?
         $scope.recordsVM.invenioRecordsModel.general_title :
-        "Created " + now.toLocaleString();
+        title_prefix + " " + now.toLocaleString();
     }
   });
 

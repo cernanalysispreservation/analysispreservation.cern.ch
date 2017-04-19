@@ -401,6 +401,7 @@
   padding-top: $content-bar-height +$cap_header_height;
   overflow: scroll;
   overflow-x: hidden;
+  cursor: pointer;
 
   &::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
     background-color: $light-grey-theme-color;

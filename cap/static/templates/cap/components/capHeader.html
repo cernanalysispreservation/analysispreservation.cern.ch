@@ -1,0 +1,156 @@
+<header class="main-header">
+  <div class="left">
+    <!-- Header Top Level Navigation Button Toggle -->
+    <div id="cap-menu-toggle">
+      <a id="btn-append-to" class="btn" ng-click="$ctrl.menuToggle();">
+        <span class="fa fa-bars"></span>
+      </a>
+    </div>
+    <!-- Header Logo -->
+    <div id="cap-header-logo">
+      <a class="cap-home-logo" href="/">
+          <img
+            ng-src="/static/img/cap_logo_lrg.svg"
+            height="65px"
+            class="large-logo"/>
+          <img
+            ng-src="/static/img/cap_logo_sm.svg"
+            height="65px;"
+            class="small-logo"/>
+      </a>
+    </div>
+    <div id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
+      <a id="cap-experiments-dropdown" uib-dropdown-toggle class="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{$ctrl.user.current_experiment || "ALL"}}
+        <span ng-if="$ctrl.user.collaborations.length > 1" class="caret"></span>
+      </a>
+      <ul
+        ng-if="$ctrl.user.collaborations.length > 1"
+        class="dropdown-menu dropdown-menu-right"
+        uib-dropdown-menu aria-labelledby="cap-experiments-dropdown">
+        <li class="" ng-repeat="experiment in $ctrl.user.collaborations">
+          <a  ng-if="experiment" href="/app/experiment/set/{{experiment}}" target="_self">
+            <i class="fa">
+              <img width="20px" height="20px" ng-src="/static/img/{{experiment}}.svg"/>
+            </i>
+            {{experiment}}
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- <img ng-src="/static/img/demo.png" alt="" style="position:absolute;top:0;right:300px;width:100px;pointer-events:none;"> -->
+  </div>
+  <div class="right">
+    <div class="search">
+      <invenio-search search-endpoint="/api/records">
+        <invenio-search-bar
+          template="/static/templates/cap/search/searchbar.html"
+          placeholder="Search">
+        </invenio-search-bar>
+        <div id="cap-search-results" ng-show="vm.userQuery && currentState != 'app.search'">
+           <!-- ERROR -->
+          <invenio-search-error
+            template="/static/templates/cap/search/error.html"
+            message="Error">
+          </invenio-search-error>
+
+          <!-- COUNT -->
+          <div class="search-count">
+             <invenio-search-count
+                      template="/static/templates/cap/search/count.html">
+              </invenio-search-count>
+          </div>
+          <!-- RESULTS -->
+          <invenio-search-results
+            template="/static/templates/cap/search/results.html">
+          </invenio-search-results>
+        </div>
+      </invenio-search>
+    </div>
+    <div class="actions">
+      <div id="cap-user-deposit-menu">
+        <a ui-sref="app.select_deposit_new" class="btn" id="header-upload">
+          <i class="fa fa-cloud-upload"></i>
+          Create
+        </a>
+      </div>
+      <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
+        <button id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
+          <li class="header">
+            <span>Signed In As</br> <strong>{{$ctrl.user.email}}</strong></span>
+          </li>
+          <li role="separator" class="divider visible-lg-block"></li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-user"></i>
+              Your Profile
+            </a>
+          </li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-link"></i>
+              Your Settings
+            </a>
+          </li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-shield"></i>
+              Your Applications
+            </a>
+          </li>
+        </ul>
+        <a href="/app/logout" target="_self" class="btn visible-lg-inline-block visible-md-inline-block"><i class="fa fa-power-off" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="burger">
+      <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
+        <button id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
+          <li class="header">
+            <span>Signed In As</br> <strong>{{$ctrl.user.email}}</strong></span>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-user"></i>
+              Your Profile
+            </a>
+          </li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-link"></i>
+              Your Settings
+            </a>
+          </li>
+          <li class="">
+            <a href="#">
+              <i class="fa fa-shield"></i>
+              Your Applications
+            </a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li class="btn-item">
+            <a class="btn" ui-sref="app.select_deposit_new">
+              <i class="fa fa-cloud-upload"></i>
+              Create
+            </a>
+          </li>
+          <li role="separator" class="divider"></li>
+          <li class="">
+            <a href="/app/logout" target="_self">
+              <i class="fa fa-power-off"></i>
+              Sign Out
+            </a>
+          </li>
+        </ul>
+      </div>
+  </div>
+</header>

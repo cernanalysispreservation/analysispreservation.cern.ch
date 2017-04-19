@@ -44,6 +44,7 @@ body {
   height: $footer-height;
   // background-color: $footer-background-color2;
   color: darken($footer-background-color2, 40%);
+  z-index: -1;
 }
 
 .footer > .menu-wrapper {

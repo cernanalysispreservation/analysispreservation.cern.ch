@@ -1,7 +1,5 @@
+<cap-header user="currentUser" menu-toggle="menuToggle"></cap-header>
 <div id="cap-container">
-    <div ui-view="header">
-        {% include 'cap/header.html' %}
-    </div>
     <div id="cap-sidebar-left" ng-show="menuContainerOpen" ng-class="menuContainerOpen ? 'menu-opened' : 'menu-closed'">
         <cap-push-menu menu="menu" options="options"></cap-push-menu>
     </div>
