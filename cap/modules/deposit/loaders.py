@@ -194,4 +194,13 @@ def json_v1_loader(data=None):
                 download_url.delay(record_id, url)
             return response
 
-    return data
+    result = clean_empty_values(data)
+    return result
+
+
+def clean_empty_values(data):
+    if not isinstance(data, (dict, list)):
+        return data
+    if isinstance(data, list):
+        return [v for v in (clean_empty_values(v) for v in data) if v]
+    return {k: v for k, v in ((k, clean_empty_values(v)) for k, v in data.items()) if v}
