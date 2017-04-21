@@ -26,10 +26,9 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, abort, current_app, jsonify, redirect, session
+from flask import Blueprint, current_app, jsonify, redirect, session
 from flask_login import current_user
 from flask_principal import Permission
-# from flask_security import login_required
 
 from cap.modules.experiments.permissions \
     import collaboration_permissions_factory
@@ -44,29 +43,23 @@ user_blueprint = Blueprint('cap_user', __name__,
 @user_blueprint.route('/me')
 @login_required
 def get_user():
-    if current_user.is_authenticated:
-        user_experiments = get_user_experiments()
-        deposit_groups = get_user_deposit_groups()
-        current_experiment = session.get('current_experiment', '')
-        if user_experiments and not current_experiment:
-            current_experiment = user_experiments[0]
-        _user = {
-            "id": current_user.id,
-            "email": current_user.email,
-            "collaborations": user_experiments,
-            "deposit_groups": deposit_groups,
-            "current_experiment": current_experiment,
-        }
+    """Returns logged in user."""
+    user_experiments = get_user_experiments()
+    deposit_groups = get_user_deposit_groups()
+    current_experiment = session.get('current_experiment', '')
+    if user_experiments and not current_experiment:
+        current_experiment = user_experiments[0]
+    _user = {
+        "id": current_user.id,
+        "email": current_user.email,
+        "collaborations": user_experiments,
+        "deposit_groups": deposit_groups,
+        "current_experiment": current_experiment,
+    }
 
-        response = jsonify(_user)
-        response.status_code = 200
-        return response
-    else:
-        abort(401)
-        # response = jsonify(False)
-        # # TOFIX Return status 401 and intercept from SPA
-        # response.status_code = 200
-        # return response
+    response = jsonify(_user)
+    response.status_code = 200
+    return response
 
 
 def get_user_experiments():
