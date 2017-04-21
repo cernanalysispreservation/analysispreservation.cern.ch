@@ -59,7 +59,6 @@ create_api = create_app_factory(
     config_loader=conf_loader,
     blueprint_entry_points=['invenio_base.api_blueprints'],
     extension_entry_points=['invenio_base.api_apps'],
-
     converter_entry_points=['invenio_base.api_converters'],
     instance_path=instance_path,
     static_folder=static_folder,

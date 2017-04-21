@@ -11,6 +11,26 @@ blueprint = Blueprint(
     static_folder='static',
 )
 
+theme_blueprint = Blueprint(
+    'invenio_theme',
+    'invenio_theme',
+    template_folder='templates',
+    static_folder='static',
+)
+
+search_blueprint = Blueprint(
+    'invenio_search_ui',
+    'invenio_search_ui',
+    template_folder='templates',
+    static_folder='static',
+)
+
+deposit_blueprint = Blueprint(
+    'invenio_deposit_ui',
+    'invenio_deposit',
+    static_folder='static',
+)
+
 
 @blueprint.route('/', defaults={'path': ''})
 @blueprint.route('/<path:path>')

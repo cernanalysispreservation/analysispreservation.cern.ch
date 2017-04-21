@@ -69,6 +69,9 @@ DEBUG = True
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+REQUIREJS_CONFIG = 'js/build.js'
+SASS_BIN = 'node-sass'
+
 # Cache
 # =========
 #: Cache key prefix

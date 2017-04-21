@@ -96,7 +96,7 @@ install_requires = [
     'invenio-oauthclient>=1.0.0a11',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore>=1.0.0b1',
-    'invenio-previewer==1.0.0a6',
+    # 'invenio-previewer==1.0.0a6',
     'invenio-records[postgresql]>=1.0.0b1',
     'invenio-records-files>=1.0.0a8',
     'invenio-records-rest>=1.0.0a17',
@@ -141,7 +141,9 @@ setup(
         ],
         'cap.blueprints': [
             'cap = cap.views:blueprint',
-            'cap_theme = cap.modules.theme.views:blueprint',
+            'cap_theme = cap.views:theme_blueprint',
+            'cap_search = cap.views:search_blueprint',
+            'cap_deposit = cap.views:deposit_blueprint'
         ],
         # 'invenio_base.blueprints': [
         #     'cap = cap.views:blueprint',
@@ -167,16 +169,28 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
+            'invenio_i18n = invenio_i18n:InvenioI18N',
+            'invenio_assets = invenio_assets:InvenioAssets',
         ],
         'invenio_base.api_blueprints': [
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
+            'cap_theme = cap.views:theme_blueprint',
+            'cap_search = cap.views:search_blueprint',
+            'cap_deposit = cap.views:deposit_blueprint'
         ],
         'invenio_assets.bundles': [
             'cap_app_js = cap.bundles:app_js',
             'cap_app_css = cap.bundles:app_css',
-            'cap_forms_css = cap.modules.deposit.bundles:forms_css',
-            'cap_forms_js = cap.modules.deposit.bundles:forms_js',
+            'cap_forms_css = cap.bundles:forms_css',
+            'cap_forms_js = cap.bundles:forms_js',
+            'invenio_i18n_js = invenio_i18n.bundles:js',
+            'invenio_theme_css = invenio_theme.bundles:css',
+            'invenio_deposit_css = invenio_deposit.bundles:css',
+            'invenio_deposit_dependencies_js = invenio_deposit.bundles:'
+            'js_dependecies',
+            'invenio_search_ui_search_css = invenio_search_ui.bundles:css',
+            'invenio_search_ui_search_js = invenio_search_ui.bundles:js'
         ],
         'invenio_celery.tasks': [
             'cap_deposit = cap.modules.deposit.loaders',

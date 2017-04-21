@@ -30,12 +30,13 @@ from __future__ import absolute_import, print_function
 import os
 import shutil
 import tempfile
+
 from uuid import uuid4
 
 
 import pytest
 
-from cap.factory import create_app
+from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from elasticsearch.exceptions import RequestError
 from flask_cli import ScriptInfo
@@ -43,9 +44,9 @@ from flask_security import login_user
 from invenio_accounts.testutils import create_test_user
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
+from invenio_files_rest.models import Location
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
-from invenio_files_rest.models import Location
 
 
 @pytest.yield_fixture(scope='session')
@@ -83,7 +84,7 @@ def default_config():
 @pytest.yield_fixture(scope='session')
 def app(env_config, default_config):
     """Flask application fixture."""
-    app = create_app(**default_config)
+    app = create_api(**default_config)
 
     with app.app_context():
         yield app

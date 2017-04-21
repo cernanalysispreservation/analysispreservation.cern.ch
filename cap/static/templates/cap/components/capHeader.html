@@ -29,7 +29,7 @@
         class="dropdown-menu dropdown-menu-right"
         uib-dropdown-menu aria-labelledby="cap-experiments-dropdown">
         <li class="" ng-repeat="experiment in $ctrl.user.collaborations">
-          <a  ng-if="experiment" href="/app/experiment/set/{{experiment}}" target="_self">
+          <a  ng-if="experiment" href="/api/set/experiment/{{experiment}}" target="_self">
             <i class="fa">
               <img width="20px" height="20px" ng-src="/static/img/{{experiment}}.svg"/>
             </i>
