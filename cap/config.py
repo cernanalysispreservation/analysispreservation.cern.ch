@@ -161,6 +161,34 @@ SUPERUSER_EGROUPS = [
 SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
 
 
+
+# CAP collaboration groups
+# ========================
+#: Configuration for collaborations
+CAP_COLLAB_EGROUPS = {
+    "CMS": [
+        RoleNeed("cms-members@cern.ch"),
+    ],
+    "ALICE": [
+        RoleNeed("alice-member@cern.ch"),
+    ],
+    "ATLAS": [
+        RoleNeed("atlas-active-members-all@cern.ch"),
+    ],
+    "LHCb": [
+        RoleNeed("lhcb-general@cern.ch"),
+    ]
+}
+
+#: E-Groups for superuser rights
+SUPERUSER_EGROUPS = [
+    RoleNeed('analysis-preservation-support@cern.ch'),
+    RoleNeed('data-preservation-admins@cern.ch'),
+]
+
+SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
+
+
 # Records
 # =======
 # #: Records base template
