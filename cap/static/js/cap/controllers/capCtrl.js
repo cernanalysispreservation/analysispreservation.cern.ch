@@ -8,6 +8,10 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
   $scope.current_state_params = $state.params;
   $scope.errors = [];
 
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    $scope.currentState = toState.name;
+  });
+
   $scope.init = function(){
     // Request user info to get application needed user metadata
     initAppWithUser();

@@ -2,7 +2,8 @@ angular.module('cap.app').component('capHeader', {
     // isolated scope binding
     bindings: {
         user: '<',
-        menuToggle: '<'
+        menuToggle: '<',
+        currentState: '<'
     },
     templateUrl:'/static/templates/cap/components/capHeader.html',
 

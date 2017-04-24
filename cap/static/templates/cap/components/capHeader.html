@@ -47,7 +47,7 @@
           template="/static/templates/cap/search/searchbar.html"
           placeholder="Search">
         </invenio-search-bar>
-        <div id="cap-search-results" ng-show="vm.userQuery && currentState != 'app.search'">
+        <div id="cap-search-results" ng-if="vm.userQuery && $ctrl.currentState !== 'app.search'">
            <!-- ERROR -->
           <invenio-search-error
             template="/static/templates/cap/search/error.html"

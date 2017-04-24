@@ -55,7 +55,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       abstract: true,
       views: {
         '': {
-          templateUrl : '/templates/app',
+          templateUrl : '/static/templates/cap/app.html',
           controller: 'capCtrl'
         }
       }
@@ -74,35 +74,8 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '/search',
       views: {
         'content': {
-          templateUrl: '/app/search'
+          templateUrl: '/static/templates/cap/search/search_page.html'
         }
-      }
-    })
-    .state({
-      name: 'app.working_groups',
-      url: '/WG',
-      views: {
-        'content': {
-          template: '<div class="container cap-content"><h1>WORKING GROUPS (overview)</h1></div>',
-          controller: 'WGController',
-        },
-        'header': {}
-      },
-      data: {
-        requireLogin: true
-      }
-    })
-    .state({
-      name: 'app.working_group_item',
-      url: '/WG/{wg_name}',
-      views: {
-        'content': {
-          template: '<div class="container cap-container"><h1>WORKING GROUPS :: {{wg_name}}</h1></div>',
-          controller: 'WGController',
-        }
-      },
-      data: {
-        requireLogin: true
       }
     })
     .state({

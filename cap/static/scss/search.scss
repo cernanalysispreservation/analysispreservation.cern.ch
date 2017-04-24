@@ -1,0 +1,19 @@
+#search-page {
+
+  .search-content {
+    width: 100%;
+    display: flex;
+  }
+
+  .left, .right {
+
+  }
+
+  .left {
+    width: 25%;
+    padding-right: 15px;
+  }
+  .right {
+    flex: 1;
+  }
+}
