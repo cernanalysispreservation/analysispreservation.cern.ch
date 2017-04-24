@@ -173,6 +173,7 @@ setup(
             'invenio_assets = invenio_assets:InvenioAssets',
         ],
         'invenio_base.api_blueprints': [
+            'cap = cap.views:blueprint_static',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_theme = cap.views:theme_blueprint',
