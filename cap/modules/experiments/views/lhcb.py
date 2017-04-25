@@ -34,9 +34,8 @@ from urllib import unquote
 
 import pkg_resources
 import requests
-from flask import Blueprint, current_app, g, jsonify, render_template, request
-from flask_security import login_required
-from invenio_collections.models import Collection
+from flask import Blueprint, current_app, jsonify, request
+
 from py2neo import Graph
 
 from ..permissions.lhcb import lhcb_permission
@@ -48,6 +47,7 @@ lhcb_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
 
 @lhcb_bp.route('/analyses/short', methods=['GET', 'POST'])
 @lhcb_permission.require(403)
@@ -254,7 +254,7 @@ def lhcb_get_analysis_data():
         ana = json.load(fp)
         res2 = ana.get(title, {})
 
-    results = { key: value for (key, value) in (res1.items() + res2.items()) }
+    results = {key: value for (key, value) in (res1.items() + res2.items())}
 
     return jsonify(results)
 
@@ -271,8 +271,10 @@ def lhcb_get_collision_data():
         processing_pass = '{0}-{1}'.format(params.get('reco', ''),
                                            params.get('stripping', ''))
         year = '20{}'.format(params.get('year', ''))
-        rec_soft, rec_version = requests.get(url=url + params.get('reco', '')).json()[0].split(' ')
-        strip_soft, strip_version = requests.get(url=url + processing_pass).json()[0].split(' ')
+        rec_soft, rec_version = requests.get(
+            url=url + params.get('reco', '')).json()[0].split(' ')
+        strip_soft, strip_version = requests.get(
+            url=url + processing_pass).json()[0].split(' ')
 
         res = {
             'year': year,
@@ -288,6 +290,7 @@ def lhcb_get_collision_data():
         }
 
     return jsonify(res)
+
 
 def parse_stripping_line(stripping_line):
     regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco[^/]*).*(?P<stripping>Stripping[^/]*)'

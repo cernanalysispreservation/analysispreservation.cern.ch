@@ -20,6 +20,7 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
+
 /**
  * @ngdoc factory
  * @name focus
@@ -28,7 +29,6 @@
  *    Handles focus event to forms
  *
  */
-
 angular.module("cap.factories")
   .factory('focus', function($timeout, $window) {
     return function(id) {

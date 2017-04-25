@@ -116,6 +116,7 @@ app_js = NpmBundle(
     "js/cap/cap.config.js",
     "js/cap/components/contentBar.js",
     "js/cap/components/header.js",
+    "js/cap/components/footer.js",
     "js/cap/cap.main.js",
     output="gen/cap.app.%(version)s.js",
     npm={

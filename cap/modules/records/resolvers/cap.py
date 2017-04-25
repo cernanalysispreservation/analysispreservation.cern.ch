@@ -26,21 +26,20 @@
 
 from __future__ import absolute_import, print_function
 
-import os
 
 import pkg_resources
 
 import jsonresolver
 import simplejson as json
 
-from cap.config import JSONSCHEMAS_HOST
 
 @jsonresolver.route('/app/schemas/<path:path>',
                     host='analysispreservation.cern.ch')
 def resolve_cap_schemas(path):
     """Resolve CAP JSON schemas."""
 
-    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
+    _schema_path = pkg_resources.resource_filename(
+        'cap', 'jsonschemas/' + path)
 
     with open(_schema_path, 'r') as f:
         return json.load(f)

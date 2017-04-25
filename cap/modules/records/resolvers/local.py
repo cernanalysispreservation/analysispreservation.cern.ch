@@ -26,8 +26,6 @@
 
 from __future__ import absolute_import, print_function
 
-import os
-
 import pkg_resources
 
 import jsonresolver
@@ -41,7 +39,8 @@ from cap.config import JSONSCHEMAS_HOST
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
 
-    _schema_path = pkg_resources.resource_filename('cap', 'jsonschemas/'+path)
+    _schema_path = pkg_resources.resource_filename(
+        'cap', 'jsonschemas/' + path)
 
     with open(_schema_path, 'r') as f:
         return json.load(f)

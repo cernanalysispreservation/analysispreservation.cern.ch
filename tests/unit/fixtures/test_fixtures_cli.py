@@ -26,10 +26,10 @@
 
 from __future__ import absolute_import, print_function
 
-from click.testing import CliRunner
-from invenio_pages.models import Page
+# from click.testing import CliRunner
+# from invenio_pages.models import Page
 
-from cap.modules.fixtures.cli import loadpages_cli
+# from cap.modules.fixtures.cli import loadpages_cli
 
 
 def test_loadpages(script_info, db):

@@ -26,11 +26,7 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, g, jsonify, render_template
-from flask_security import login_required
-from invenio_collections.models import Collection
-
-from ..permissions.alice import alice_permission
+from flask import Blueprint
 
 alice_bp = Blueprint(
     'cap_alice',

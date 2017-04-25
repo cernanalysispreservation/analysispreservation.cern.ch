@@ -125,17 +125,8 @@ I18N_LANGUAGES = []
 # =====
 #: Default site name.
 THEME_SITENAME = _("CERN Analysis Preservation")
-#: Path to logo file.
-THEME_LOGO = "img/cap_logo_lrg.svg"
 #: Google Site Verification ids.
 THEME_GOOGLE_SITE_VERIFICATION = []
-#: Base template for entire site.
-BASE_TEMPLATE = "cap_theme/page.html"
-#: Cover template for entire site.
-COVER_TEMPLATE = "invenio_theme/page_cover.html"
-#: Settings template for entire site.
-SETTINGS_TEMPLATE = 'cap_theme/settings/base.html'
-
 
 # CAP collaboration groups
 # ========================
@@ -160,9 +151,6 @@ SUPERUSER_EGROUPS = [
     RoleNeed('analysis-preservation-support@cern.ch'),
     RoleNeed('data-preservation-admins@cern.ch'),
 ]
-
-SUPERUSER_ROLES = [RoleNeed(i) for i in CAP_COLLAB_EGROUPS.keys()]
-
 
 # Records
 # =======
@@ -416,7 +404,7 @@ LHCB_GETCOLLISIONDATA_URL = '{0}/{1}?{2}='.format(ANA_LHCB_DATABASE_URL,
 # ============
 #: Default base template for deposit
 #: -- removes <html>,<body>,etc unneeded tags
-DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
+#DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Default jsonschema for deposit
 DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
 #: Default schemanform for deposit
@@ -634,11 +622,6 @@ DEPOSIT_RESPONSE_MESSAGES = dict(
         message="Analysis cloned succesfully."
     ),
 )
-
-# Collections
-# ===========
-#: Remove signals (Only for debug mode)
-COLLECTIONS_REGISTER_RECORD_SIGNALS = False
 
 # Datadir
 # =======

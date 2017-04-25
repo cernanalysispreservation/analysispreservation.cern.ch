@@ -26,27 +26,16 @@
 
 /**
 * @ngdoc component
-* @name capHeader
+* @name capFooter
 * @description
-*    Returns page header
-* @namespace capHeader
+*    Returns page footer
+* @namespace capFooter
 * @example
 *    Usage:
-*     <cap-header user="currentUser" 
-*                 menu-toggle="menuToggle" 
-*                 current-state="currentState">
-*     </cap-header>
+*     <cap-footer></cap-footer>
 */
-angular.module('cap.app').component('capHeader', {
-    // isolated scope binding
-    bindings: {
-        user: '<',
-        menuToggle: '<',
-        currentState: '<'
-    },
-    templateUrl:'/static/templates/cap/components/capHeader.html',
-
-    // The controller that handles our component logic
+angular.module('cap.app').component('capFooter', {
+    templateUrl:'/static/templates/cap/components/capFooter.html',
     controller: function ($scope) {
     }
 });

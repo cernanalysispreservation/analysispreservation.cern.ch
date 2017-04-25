@@ -1,13 +1,10 @@
 <div id="search-page" class="cap-container container">
-
   <invenio-search
    search-endpoint="/api/deposits"
    search-extra-params=''
    search-hidden-params=''
    search-headers='{"Accept": "application/json"}'
   >
-
-
   <div class="search-content">
     <invenio-search-error
       template="/static/templates/invenio_search_ui/error.html"
@@ -15,13 +12,13 @@
     </invenio-search-error>
 
     <div class="left" ng-if="vm.invenioSearchResults.hits.total != 0">
-      <invenio-search-range
+      <!-- <invenio-search-range
        options="{'histogramId': '#year_hist',
                 'selectionId': '#year_select',
                 'name': 'years',
                 'width': 180}"
        template="/static/templates/invenio_search_ui/range.html">
-      </invenio-search-range>
+      </invenio-search-range> -->
       <invenio-search-facets
        template="/static/node_modules/invenio-search-js/dist/templates/facets.html">
       </invenio-search-facets>
@@ -70,6 +67,4 @@
     </div>
   </invenio-search>
   </div>
-
-
 </div>

@@ -23,12 +23,9 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 """Cern Analysis Preservation tasks for Celery."""
-import os
-import subprocess
 
 from celery import shared_task
 
-from cap import config
 from cap.modules.experiments.scripts.lhcb.lhcb import dump_analyses_to_json
 
 

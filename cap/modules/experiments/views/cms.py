@@ -30,10 +30,7 @@ import ssl
 import urllib
 import urllib2
 
-from flask import Blueprint, g, jsonify, render_template, request
-
-from flask_security import login_required
-from invenio_collections.models import Collection
+from flask import Blueprint
 
 from ..permissions.cms import cms_permission
 from ..scripts.cms import das

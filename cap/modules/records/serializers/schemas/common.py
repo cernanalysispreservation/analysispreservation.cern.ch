@@ -29,8 +29,6 @@ from werkzeug.routing import BuildError
 from invenio_search import current_search
 from invenio_search.utils import schema_to_index
 
-from cap.modules.deposit.views.ui import DEPOSIT_DEFAULT_METAINFO
-
 from invenio_access.models import ActionRoles, ActionUsers
 
 

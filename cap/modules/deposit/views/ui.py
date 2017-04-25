@@ -24,17 +24,13 @@
 
 
 """CAP deposit UI views"""
-from ..api import CAPDeposit
 from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, jsonify, render_template, request, url_for
+from flask import Blueprint, abort, current_app, jsonify, render_template
 from flask.views import View
 from flask_security import login_required
 
 from invenio_access import DynamicPermission
-from invenio_access.models import ActionRoles, ActionUsers
-from invenio_pidstore.resolver import Resolver
-from invenio_records import Record
 
 blueprint = Blueprint(
     'cap_deposit_ui',

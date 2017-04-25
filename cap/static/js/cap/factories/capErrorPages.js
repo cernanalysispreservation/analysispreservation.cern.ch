@@ -21,6 +21,15 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+
+/**
+ * @ngdoc factory
+ * @name httpInterceptor
+ * @namespace httpInterceptor
+ * @description
+ *    Handles error pages
+ *
+ */
 angular.module("cap.factories")
   .factory('httpInterceptor', ['$q','$location', '$injector',function ($q, $location, $injector) {
     return {

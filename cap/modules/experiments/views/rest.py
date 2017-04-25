@@ -28,10 +28,8 @@ from __future__ import absolute_import, print_function
 
 from flask import Blueprint, jsonify, redirect, session
 from flask_security import login_required
-from invenio_collections.models import Collection
 
-from cap.modules.access.views import (get_user_deposit_groups,
-                                      get_user_experiments)
+from cap.modules.access.views import get_user_deposit_groups
 from cap.modules.experiments.permissions \
     import collaboration_permissions_factory
 
@@ -92,29 +90,6 @@ def CAP_EXPERIMENT_MENU(experiment):
                 ]
             }
         },
-        # {
-        #     'name': 'Working Groups',
-        #     'id': 'itemId',
-        #     'icon': 'fa fa-users',
-        #     'link': _l('app.working_groups'),
-        #     'menu': {
-        #         'title': 'Working Groups',
-        #         'icon': 'fa fa-users',
-        #         'id': 'itemid',
-        #         'items': [
-        #             {
-        #                 'name': 'WG1',
-        #                 'link': _l('app.working_group_item({wg_name: "WG1"})')
-        #             }, {
-        #                 'name': 'WG2',
-        #                 'link': _l('app.working_group_item({wg_name: "WG2"})')
-        #             }, {
-        #                 'name': 'WG3',
-        #                 'link': _l('app.working_group_item({wg_name: "WG3"})')
-        #             }
-        #         ]
-        #     }
-        # },
         {
             'name': 'Create',
             'icon': 'fa fa-file-text',
