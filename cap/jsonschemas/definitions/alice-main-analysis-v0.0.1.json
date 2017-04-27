@@ -41,9 +41,17 @@
       "items": {
         "type": "object",
         "properties": {
-          "run_number": {
-            "title": "Run Number",
+          "name": {
+            "title": "Name",
             "type": "string"
+          },
+          "run_number": {
+            "type": "array",
+            "title": "Run Number",
+            "items": {
+              "type": "string",
+              "title": "Number"
+            }
           }
         }
       }

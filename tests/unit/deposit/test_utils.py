@@ -47,6 +47,9 @@ def test_cleaning_of_empty_values():
         ],
         "dream_team": '',
         "the_best_dream_team": "thor_team",
+        "testing": {
+            "test_inner": "hello"
+        },
         "additional_resources": {
             "documentations": [
                 {
@@ -84,3 +87,5 @@ def test_cleaning_of_empty_values():
     result = clean_empty_values(model)
     assert "additional_resources" not in result
     assert "cms_questionnaire" not in result
+    assert "the_best_dream_team" in result
+    assert "testing" in result

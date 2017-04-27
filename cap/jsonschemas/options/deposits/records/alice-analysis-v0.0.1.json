@@ -42,8 +42,12 @@
       {
         "key": "main_analysis.run_numbers",
         "type": "tabarray",
-        "title": "{{value.run_number || 'New item'}}",
+        "title": "{{value.name || 'New item'}}",
         "items": [
+          {
+            "key": "main_analysis.run_numbers[].name",
+            "placeholder": "E.g List1"
+          },
           {
             "key": "main_analysis.run_numbers[].run_number",
             "placeholder": "E.g 123456"
@@ -94,8 +98,12 @@
           {
             "key": "main_analysis.derived_dataset.run_numbers",
             "type": "tabarray",
-            "title": "{{value.run_number || 'New item'}}",
+            "title": "{{value.name || 'New item'}}",
             "items": [
+              {
+                "key": "main_analysis.derived_dataset.run_numbers[].name",
+                "placeholder": "E.g List1"
+              },
               {
                 "key": "main_analysis.derived_dataset.run_numbers[].run_number",
                 "placeholder": "E.g 123456"
