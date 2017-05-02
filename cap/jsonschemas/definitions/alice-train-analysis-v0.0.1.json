@@ -1,8 +1,14 @@
 {
+  "$schema": "http://json-schema.org/draft-04/schema#", 
+  "title": "Analysis",
   "type": "array",
   "items": {
     "type": "object",
     "properties": {
+      "analysis_title": {
+        "title": "Analysis Title",
+        "type": "string"
+      },
       "train_id": {
         "title": "Train ID",
         "type": "string"
@@ -59,6 +65,9 @@
       "ali_physics": {
         "title": "Ali Physics",
         "type": "string"
+      },
+      "derived_dataset": {
+        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-datasets-v0.0.1.json"  
       }
     }
   }

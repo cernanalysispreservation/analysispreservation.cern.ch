@@ -1,137 +1,121 @@
 [
   {
-    "key": "analysis_title",
-    "placeholder": "E.g 2+1 correlations"
-  },
-  {
-    "key": "main_analysis",
-    "type": "fieldset",
+    "key": "train_analysis",
+    "type": "tabarray",
+    "title": "{{value.analysis_title || 'New Analysis'}}",
     "items": [
       {
-        "key": "main_analysis.train_id",
+        "key": "train_analysis[].analysis_title",
+        "placeholder": "E.g 2+1 correlations"    
+      },
+      {
+        "key": "train_analysis[].train_id",
         "placeholder": "E.g 1"
       },
       {
-        "key": "main_analysis.run_id",
+        "key": "train_analysis[].run_id",
         "placeholder": "E.g 120"
       },
       {
-        "key": "main_analysis.configuration_files",
+        "key": "train_analysis[].configuration_files",
         "placeholder": "E.g PWGZZ/Devel_1/120_20160219-2029/config"
       },
       {
-        "key": "main_analysis.wagon_names",
+        "key": "train_analysis[].wagon_names",
         "placeholder": "E.g TwoPlusOneCorrelation"
       },
       {
-        "key": "main_analysis.wagon_paths",
+        "key": "train_analysis[].wagon_paths",
         "placeholder": "E.g PWGCF/Correlations/macros/twoplusone/AddTaskTwoPlusOne.C"
       },
       {
-        "key": "main_analysis.dataset",
+        "key": "train_analysis[].dataset",
         "placeholder": "E.g LHC11h_AOD145_nanoAOD"
       },
       {
-        "key": "main_analysis.reference_production",
+        "key": "train_analysis[].reference_production",
         "placeholder": "E.g Derived Data: Devel_1 (1), run 106 (26716)"
       },
       {
-        "key": "main_analysis.dataset_aod",
+        "key": "train_analysis[].dataset_aod",
         "placeholder": "E.g nano AOD"
       },
       {
-        "key": "main_analysis.run_numbers",
+        "key": "train_analysis[].run_numbers",
         "type": "tabarray",
         "title": "{{value.name || 'New item'}}",
         "items": [
           {
-            "key": "main_analysis.run_numbers[].name",
+            "key": "train_analysis[].run_numbers[].name",
             "placeholder": "E.g List1"
           },
           {
-            "key": "main_analysis.run_numbers[].run_number",
+            "key": "train_analysis[].run_numbers[].run_number",
             "placeholder": "E.g 123456"
           }
         ]
       },
       {
-        "key": "main_analysis.ali_physics",
+        "key": "train_analysis[].ali_physics",
         "placeholder": "E.g AliPhysics::vAN-20160219-1"
       },
       {
-        "key": "main_analysis.derived_dataset",
-        "type": "fieldset",
+        "key": "train_analysis[].derived_dataset",
+        "startEmpty": true,
         "title": "Derived Dataset",
         "items": [
           {
-            "key": "main_analysis.derived_dataset.train_id",
+            "key": "train_analysis[].derived_dataset[].train_id",
             "placeholder": "E.g 1"
           },
           {
-            "key": "main_analysis.derived_dataset.run_id",
+            "key": "train_analysis[].derived_dataset[].run_id",
             "placeholder": "E.g 120"
           },
           {
-            "key": "main_analysis.derived_dataset.configuration_files",
+            "key": "train_analysis[].derived_dataset[].configuration_files",
             "placeholder": "E.g PWGZZ/Devel_1/120_20160219-2029/config"
           },
           {
-            "key": "main_analysis.derived_dataset.wagon_names",
+            "key": "train_analysis[].derived_dataset[].wagon_names",
             "placeholder": "E.g TwoPlusOneCorrelation"
           },
           {
-            "key": "main_analysis.derived_dataset.wagon_paths",
+            "key": "train_analysis[].derived_dataset[].wagon_paths",
             "placeholder": "E.g PWGCF/Correlations/macros/twoplusone/AddTaskTwoPlusOne.C"
           },
           {
-            "key": "main_analysis.derived_dataset.dataset",
+            "key": "train_analysis[].derived_dataset[].dataset",
             "placeholder": "E.g LHC11h_AOD145_nanoAOD"
           },
           {
-            "key": "main_analysis.derived_dataset.reference_production",
+            "key": "train_analysis[].derived_dataset[].reference_production",
             "placeholder": "E.g Derived Data: Devel_1 (1), run 106 (26716)"
           },
           {
-            "key": "main_analysis.derived_dataset.dataset_aod",
+            "key": "train_analysis[].derived_dataset[].dataset_aod",
             "placeholder": "E.g nano AOD"
           },
           {
-            "key": "main_analysis.derived_dataset.run_numbers",
+            "key": "train_analysis[].derived_dataset[].run_numbers",
             "type": "tabarray",
             "title": "{{value.name || 'New item'}}",
             "items": [
               {
-                "key": "main_analysis.derived_dataset.run_numbers[].name",
+                "key": "train_analysis[].derived_dataset[].run_numbers[].name",
                 "placeholder": "E.g List1"
               },
               {
-                "key": "main_analysis.derived_dataset.run_numbers[].run_number",
+                "key": "train_analysis[].derived_dataset[].run_numbers[].run_number",
                 "placeholder": "E.g 123456"
               }
             ]
           },
           {
-            "key": "main_analysis.derived_dataset.ali_physics",
+            "key": "train_analysis[].derived_dataset[].ali_physics",
             "placeholder": "E.g AliPhysics::vAN-20160219-1"
           }
         ]
-      }
-    ]
-  },
-  {
-    "key": "mc_analysis",
-    "type": "fieldset",
-    "items": [
-      {
-        "key": "mc_analysis.train_id",
-        "placeholder": "E.g 0"
-      },
-      {
-        "key": "mc_analysis.run_id",
-        "placeholder": "E.g 0"
-      },
-      {
-        "key": "mc_analysis.wagon_names"
       }
     ]
   }
