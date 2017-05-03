@@ -178,7 +178,8 @@ setup(
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_theme = cap.views:theme_blueprint',
             'cap_search = cap.views:search_blueprint',
-            'cap_deposit = cap.views:deposit_blueprint'
+            'cap_deposit = cap.views:deposit_blueprint',
+            'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
         ],
         'invenio_assets.bundles': [
             'cap_app_js = cap.bundles:app_js',

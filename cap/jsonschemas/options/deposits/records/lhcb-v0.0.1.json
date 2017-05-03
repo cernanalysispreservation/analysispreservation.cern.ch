@@ -8,9 +8,9 @@
         "key": "basic_info.analysis_title",
         "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name.",
         "type": "cap:typeahead",
-        "url": "/app/LHCb/api/analysis/titles",
+        "url": "/api/lhcb/analysis/titles",
         "ref": {
-            "url": "/app/LHCb/api/analysis/data",
+            "url": "/api/lhcb/analysis/data",
             "paramKey": "title",
             "map": [
             {
@@ -218,7 +218,7 @@
                 "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
                 "type": "cap:formAutofill",
                 "ref": {
-                    "url": "/app/LHCb/api/analysis/collisiondata",
+                    "url": "/api/lhcb/analysis/collisiondata",
                     "paramKey": "stripping_line",
                     "map": [
                     {
