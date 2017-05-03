@@ -1,14 +1,24 @@
 <header class="main-header">
   <div class="left">
     <!-- Header Top Level Navigation Button Toggle -->
-    <div id="cap-menu-toggle">
+    <div id="cap-menu-toggle" ng-if="$ctrl.user.collaborations.length >= 1">
       <a id="btn-append-to" class="btn" ng-click="$ctrl.menuToggle();">
         <span class="fa fa-bars"></span>
       </a>
     </div>
     <!-- Header Logo -->
     <div id="cap-header-logo">
-      <a class="cap-home-logo" href="/">
+      <a class="cap-home-logo" ng-if="$ctrl.user.collaborations.length >= 1" ui-sref="app.index">
+          <img
+            ng-src="/static/img/cap_logo_lrg.svg"
+            height="65px"
+            class="large-logo"/>
+          <img
+            ng-src="/static/img/cap_logo_sm.svg"
+            height="65px;"
+            class="small-logo"/>
+      </a>
+      <a class="cap-home-logo" ng-if="$ctrl.user.collaborations.length == 0" ui-sref="app.experiments">
           <img
             ng-src="/static/img/cap_logo_lrg.svg"
             height="65px"
@@ -19,13 +29,12 @@
             class="small-logo"/>
       </a>
     </div>
-    <div id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
+    <div ng-if="$ctrl.user.collaborations.length >= 1" id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
       <a id="cap-experiments-dropdown" uib-dropdown-toggle class="dropdown" aria-haspopup="true" aria-expanded="false">
-        {{$ctrl.user.current_experiment || "ALL"}}
+        {{$ctrl.user.current_experiment}}
         <span ng-if="$ctrl.user.collaborations.length > 1" class="caret"></span>
       </a>
       <ul
-        ng-if="$ctrl.user.collaborations.length > 1"
         class="dropdown-menu dropdown-menu-right"
         uib-dropdown-menu aria-labelledby="cap-experiments-dropdown">
         <li class="" ng-repeat="experiment in $ctrl.user.collaborations">
@@ -40,8 +49,8 @@
     </div>
     <!-- <img ng-src="/static/img/demo.png" alt="" style="position:absolute;top:0;right:300px;width:100px;pointer-events:none;"> -->
   </div>
-  <div class="right">
-    <div class="search">
+  <div class="right" ng-class="{'push-right-align': $ctrl.user.collaborations.length == 0}">
+    <div class="search" ng-if="$ctrl.user.collaborations.length >= 1">
       <invenio-search search-endpoint="/api/records">
         <invenio-search-bar
           template="/static/templates/cap/search/searchbar.html"
@@ -68,14 +77,14 @@
       </invenio-search>
     </div>
     <div class="actions">
-      <div id="cap-user-deposit-menu">
+      <div id="cap-user-deposit-menu" ng-if="$ctrl.user.collaborations.length >= 1">
         <a ui-sref="app.select_deposit_new" class="btn" id="header-upload">
           <i class="fa fa-cloud-upload"></i>
           Create
         </a>
       </div>
       <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
-        <button id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
+        <button ng-if="$ctrl.user.collaborations.length >= 1" id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user"></i>
           <span class="caret"></span>
         </button>

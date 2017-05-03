@@ -15,7 +15,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
   $scope.init = function(){
     // Request user info to get application needed user metadata
     initAppWithUser();
-
+    
     screenSize.rules = {
       large: '(min-width: 1400px)',
       small: '(max-width: 1400px)'
@@ -107,21 +107,18 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
     capUserClient.get_user()
       .then(function(response){
         var user = response.data;
-
         assignCurrentUser(user);
 
-        // Browser pointing at homepage [user NOT LOGGEDIN]
-        // Take him to welcome page
         if(user['collaborations'].length == 0) {
+          $scope.menuContainerOpen = false;
           $state.go('app.experiments');
+        } else {
+          initCapGlobalShortcuts(hotkeys, $scope, $state);
         }
-        // Browser pointing at welcome [user LOGGEDIN]
-        // Take him to home/app page
+
         if ($state.current.name === 'welcome'){
           $state.go('app.index');
         }
-
-        initCapGlobalShortcuts(hotkeys, $scope, $state);
         // If user current_experiment isn't set,
         // set the first one of the list
         $scope.exp = user["current_experiment"];
