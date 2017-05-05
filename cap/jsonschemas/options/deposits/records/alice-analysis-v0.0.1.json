@@ -1,13 +1,13 @@
-[
+[ 
+  {
+    "key": "analysis_title",
+    "placeholder": "E.g 2+1 correlations"    
+  },
   {
     "key": "train_analysis",
     "type": "tabarray",
-    "title": "{{value.analysis_title || 'New Analysis'}}",
+    "title": "{{value.train_id|| 'New Analysis'}}",
     "items": [
-      {
-        "key": "train_analysis[].analysis_title",
-        "placeholder": "E.g 2+1 correlations"    
-      },
       {
         "key": "train_analysis[].train_id",
         "placeholder": "E.g 1"
@@ -25,10 +25,6 @@
         "placeholder": "E.g TwoPlusOneCorrelation"
       },
       {
-        "key": "train_analysis[].wagon_paths",
-        "placeholder": "E.g PWGCF/Correlations/macros/twoplusone/AddTaskTwoPlusOne.C"
-      },
-      {
         "key": "train_analysis[].dataset",
         "placeholder": "E.g LHC11h_AOD145_nanoAOD"
       },
@@ -41,16 +37,16 @@
         "placeholder": "E.g nano AOD"
       },
       {
-        "key": "train_analysis[].run_numbers",
+        "key": "train_analysis[].run",
         "type": "tabarray",
         "title": "{{value.name || 'New item'}}",
         "items": [
           {
-            "key": "train_analysis[].run_numbers[].name",
+            "key": "train_analysis[].run[].name",
             "placeholder": "E.g List1"
           },
           {
-            "key": "train_analysis[].run_numbers[].run_number",
+            "key": "train_analysis[].run[].run_numbers",
             "placeholder": "E.g 123456"
           }
         ]
@@ -97,16 +93,16 @@
             "placeholder": "E.g nano AOD"
           },
           {
-            "key": "train_analysis[].derived_dataset[].run_numbers",
+            "key": "train_analysis[].derived_dataset[].run",
             "type": "tabarray",
             "title": "{{value.name || 'New item'}}",
             "items": [
               {
-                "key": "train_analysis[].derived_dataset[].run_numbers[].name",
+                "key": "train_analysis[].derived_dataset[].run[].name",
                 "placeholder": "E.g List1"
               },
               {
-                "key": "train_analysis[].derived_dataset[].run_numbers[].run_number",
+                "key": "train_analysis[].derived_dataset[].run[].run_numbers",
                 "placeholder": "E.g 123456"
               }
             ]

@@ -2,6 +2,10 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
+  	"analysis_title": {
+      "title": "Analysis Title",
+      "type": "string"
+    },
     "train_analysis": {
       "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-train-analysis-v0.0.1.json"    
     }

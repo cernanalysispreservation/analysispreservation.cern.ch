@@ -41,9 +41,9 @@
         "title": "Dataset AOD",
         "type": "string"
       },
-      "run_numbers": {
+      "run": {
         "type": "array",
-        "title": "Run Numbers",
+        "title": "Run",
         "items": {
           "type": "object",
           "properties": {
@@ -51,7 +51,7 @@
               "title": "Name",
               "type": "string"
             },
-            "run_number": {
+            "run_numbers": {
               "type": "array",
               "title": "Run Number",
               "items": {
