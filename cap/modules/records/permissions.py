@@ -116,8 +116,17 @@ class RecordPermission(DynamicPermission):
         return _record_group
 
     def allows(self, identity):
-        owners = self.record.get('_deposit', {}).get('owners', [])
+        """Whether the identity can access this permission.
 
+        :param identity: The identity
+        """
+        owners = self.record.get('_deposit', {}).get('owners', [])
+        superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
+        # Check if the user is superuser
+        for superuser_egroup in superuser_egroups:
+            if superuser_egroup in identity.provides:
+                return True
+        # Check if the user is the owner of the record
         if identity.id in owners:
             return True
 
