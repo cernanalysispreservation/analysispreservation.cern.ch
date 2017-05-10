@@ -1,0 +1,78 @@
+<form
+  name="client_form"
+  method="POST">
+  <div class="alert alert-danger" ng-if="clientFormAlert.status == 400">{{clientFormAlert.message}} - {{clients_errors}}</div>
+  <div class="alert alert-success" ng-if="clientFormAlert.status == 200">{{clientFormAlert.message}}</div>
+  <div class="form-group ">
+    <label for="name">Name</label>
+    <input
+      class="form-control"
+      id="name"
+      name="name"
+      placeholder=""
+      type="text" value=""
+      ng-model="$ctrl.client.name">
+    <span class="help-block"><small>Name of application (displayed to users).</small></span>
+  </div>
+
+  <div class="form-group ">
+    <label for="description">Description</label>
+    <input
+      class="form-control"
+      id="description"
+      name="description"
+      placeholder=""
+      type="textarea" value=""
+      ng-model="$ctrl.client.description">
+    <span class="help-block"><small>Optional. Description of the application (displayed to users).</small></span>
+  </div>
+
+  <div class="form-group ">
+    <label for="website">Website URL</label>
+    <input
+      class="form-control"
+      id="website"
+      name="website"
+      placeholder=""
+      type="text" value=""
+      ng-model="$ctrl.client.website">
+    <span class="help-block"><small>URL of your application (displayed to users).</small></span>
+  </div>
+
+  <div class="form-group ">
+    <label for="redirect_uri">Redirect URIs</label>
+    <textarea
+      class="form-control"
+      id="redirect_uri"
+      name="redirect_uri"
+      placeholder=""
+      type="textarea"
+      ng-model="$ctrl.client.redirect_uris">
+    </textarea>
+    <span class="help-block"><small>One redirect URI per line. This is your application's authorization callback URLs. HTTPS must be used for all hosts except localhost (for testing purposes).</small></span>
+  </div>
+
+  <div class="form-group" ng-init="$ctrl.client.is_confidential =$ctrl.client.is_confidential ? 'True': 'False'">
+    <label for="is_confidential">Client type</label>
+    <select
+      class="form-control"
+      id="is_confidential"
+      name="is_confidential"
+      ng-model="$ctrl.client.is_confidential">
+        <option ng-selected="" value="True">Confidential</option>
+        <option>Public</option>
+    </select>
+    <span class="help-block"><small>Select confidential if your application is capable of keeping the issued client secret confidential (e.g. a web application), select public if your application cannot (e.g. a browser-based JavaScript application). If you select public, your application MUST validate the redirect URI.</small></span>
+  </div>
+
+  <div class="form-group">
+    <div class="">
+      <button
+        ng-repeat="action in $ctrl.actions"
+        class="btn {{action.class}}"
+        ng-click="formAction(action.action)">
+          <i class="fa {{action.icon}}"></i> {{action.name}}
+      </button>
+    </div>
+  </div>
+</form>

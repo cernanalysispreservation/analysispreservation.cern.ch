@@ -15,7 +15,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
   $scope.init = function(){
     // Request user info to get application needed user metadata
     initAppWithUser();
-    
+
     screenSize.rules = {
       large: '(min-width: 1400px)',
       small: '(max-width: 1400px)'
@@ -116,7 +116,7 @@ var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient
           initCapGlobalShortcuts(hotkeys, $scope, $state);
         }
 
-        if ($state.current.name === 'welcome'){
+        if ($state.currentState === 'welcome'){
           $state.go('app.index');
         }
         // If user current_experiment isn't set,

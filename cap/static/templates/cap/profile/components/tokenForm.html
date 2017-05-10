@@ -1,0 +1,41 @@
+<form name="tokenForm" method="POST" ng-init="prepareScopes();">
+  <div class="alert alert-danger" ng-if="tokenFormAlert.status == 400">{{tokenFormAlert.message}} - {{tokens_errors}}</div>
+  <div class="alert alert-success" ng-if="tokenFormAlert.status == 200">{{tokenFormAlert.message}}</div>
+  <div class="form-group ">
+    <label for="name">Name</label>
+    <input
+      class="form-control"
+      id="name"
+      name="name"
+      type="text"
+      ng-model="$ctrl._t.name">
+    <span class="help-block"><small>Name of personal access token.</small></span>
+  </div>
+
+  <div class="form-group ">
+    <label for="scopes">Scopes</label>
+    <div class="row">
+      <div class="col-md-3" ng-repeat="scope in $ctrl.scopeChoices">
+        <label for="scopes" class="checkbox-inline">
+        <input
+          class=" "
+          id="scopes-{{scope.id}}"
+          name="scopes[{{scope.id}}]"
+          ng-model="$ctrl._t.scopes[scope.id]"
+          type="checkbox"
+          value="{{scope.id}}"> {{scope.id}} <br><small class="text-muted">{{scope.help_text}}</small></label>
+      </div>
+    <span class="help-block"><small>Scopes assign permissions to your personal access token. A personal access token works just like a normal OAuth  access token for authentication against the API.</small></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="">
+      <button
+        ng-repeat="action in $ctrl.actions"
+        class="btn {{action.class}}"
+        ng-click="formAction(action.action)">
+          <i class="fa {{action.icon}}"></i> {{action.name}}
+      </button>
+    </div>
+  </div>
+</form>

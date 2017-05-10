@@ -143,7 +143,7 @@ setup(
             'cap = cap.views:blueprint',
             'cap_theme = cap.views:theme_blueprint',
             'cap_search = cap.views:search_blueprint',
-            'cap_deposit = cap.views:deposit_blueprint'
+            'cap_deposit = cap.views:deposit_blueprint',
         ],
         # 'invenio_base.blueprints': [
         #     'cap = cap.views:blueprint',
@@ -176,6 +176,10 @@ setup(
             'cap = cap.views:blueprint_static',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
+            'cap_oauth2server_settings = '
+            ' cap.modules.oauth2server.views.settings:blueprint',
+            'cap_oauth2server_server = '
+            ' cap.modules.oauth2server.views.server:blueprint',
             'cap_theme = cap.views:theme_blueprint',
             'cap_search = cap.views:search_blueprint',
             'cap_deposit = cap.views:deposit_blueprint',

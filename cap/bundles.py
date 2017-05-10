@@ -110,6 +110,7 @@ app_js = NpmBundle(
     "js/cap/controllers/capTypeaheadCtrl.js",
     "js/cap/controllers/capWGCtrl.js",
     "js/cap/controllers/capRecordCtrl.js",
+    "js/cap/controllers/capUserCtrl.js",
     "js/cap/directives/cap.deposit.progressBar.js",
     "js/cap/directives/capResults.js",
     "js/cap/directives/capEventFocus.js",
@@ -117,6 +118,9 @@ app_js = NpmBundle(
     "js/cap/components/contentBar.js",
     "js/cap/components/header.js",
     "js/cap/components/footer.js",
+    "js/cap/components/capModal.js",
+    "js/cap/components/capClientForm.js",
+    "js/cap/components/capTokenForm.js",
     "js/cap/cap.main.js",
     output="gen/cap.app.%(version)s.js",
     npm={

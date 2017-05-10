@@ -23,6 +23,9 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+
+var oAuth2ServerURI = '/api/applications';
+
 var capUserClient = function($http, $q) {
 	return {
     get_user: function() {
@@ -55,6 +58,128 @@ var capUserClient = function($http, $q) {
         }, function (response) {
           deferred.notify('error');
           deferred.reject(response);
+      });
+      return deferred.promise;
+    },
+    get_access_apps: function() {
+      var deferred = $q.defer();
+      deferred.notify('started');
+      var url = oAuth2ServerURI;
+      $http({
+        method: 'GET',
+        url: url
+      }).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    createToken: function(name, scopes) {
+      var deferred = $q.defer();
+      deferred.notify('started');
+      var url = oAuth2ServerURI+"/tokens/new/";
+      $http({
+        method: 'POST',
+        url: url,
+        data: {
+          name: name,
+          scopes: scopes
+        }
+      }).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    createClient: function(name, description, website, redirect_uris, is_confidential) {
+      var deferred = $q.defer();
+      deferred.notify('started');
+      var url = oAuth2ServerURI+"/clients/new/";
+      $http({
+        method: 'POST',
+        url: url,
+        data: {
+          name: name,
+          description: description,
+          website: website,
+          redirect_uris: redirect_uris,
+          is_confidential: is_confidential
+        }
+      }).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    revokeToken: function(token_id) {
+      var deferred = $q.defer();
+      deferred.notify('started');
+      var url = oAuth2ServerURI+"/tokens/"+token_id+"/revoke";
+      $http({
+        method: 'GET',
+        url: url
+      }).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    actionToken: function(token_id, action, payload=null) {
+      var url = oAuth2ServerURI+"/tokens/"+token_id+"/";
+      var req = {
+        method: action,
+        url: url,
+      };
+      if (payload)
+        req["data"] = {name: payload.name, scopes: payload.scopes};
+
+      var deferred = $q.defer();
+      deferred.notify('started');
+      $http(req).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
+      });
+      return deferred.promise;
+    },
+    actionClient: function(client_id, action, payload=null) {
+      var url = oAuth2ServerURI+"/clients/"+client_id+"/";
+      var req = {
+        method: action,
+        url: url,
+      };
+      if (payload) {
+        req["data"] = {
+          name: payload.name,
+          description: payload.description,
+          website: payload.website,
+          redirect_uris: payload.redirect_uris,
+          is_confidential: payload.is_confidential
+        };
+      }
+
+      var deferred = $q.defer();
+      deferred.notify('started');
+      $http(req).then(function(response) {
+          deferred.notify('finished');
+          deferred.resolve(response);
+        }, function (error) {
+          deferred.notify('error');
+          deferred.reject(error);
       });
       return deferred.promise;
     }

@@ -104,6 +104,41 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       }
     })
     .state({
+      name: 'app.profile',
+      url: '/profile',
+      abstract: true,
+      views: {
+        'content': {
+          templateUrl: '/static/templates/cap/profile/profile.html',
+          controller: 'UserController'
+        }
+      }
+    })
+    .state({
+      name: 'app.profile.overview',
+      url: '',
+      templateUrl: '/static/templates/cap/profile/profile.overview.html',
+      data: {
+        title: 'Overview'
+      }
+    })
+    .state({
+      name: 'app.profile.settings',
+      url: '/settings',
+      templateUrl: '/static/templates/cap/profile/profile.settings.html',
+      data: {
+        title: 'Settings'
+      }
+    })
+    .state({
+      name: 'app.profile.applications',
+      url: '/applications',
+      templateUrl: '/static/templates/cap/profile/profile.applications.html',
+      data: {
+        title: 'Applications'
+      }
+    })
+    .state({
       name: 'app.experiments',
       url: '/experiments',
       views: {

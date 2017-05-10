@@ -1,0 +1,90 @@
+<header>
+  <h1>Applications</h1>
+</header>
+<div id="account-settings" class="content" ng-controller="capModalCtrl as $modalCtrl">
+  <!-- Tokens -->
+  <div class="panel cap-panel">
+    <div class="panel-headeing">
+      <span class="title">Personal Access Tokens</span>
+      <a
+        ng-click="$modalCtrl.openModal({token: {},sc:access_apps, actions:['createToken']}, 'Create Token', 'token')"
+        class="btn">
+          <i class="fa fa-plus"></i> New Token
+      </a>
+    </div>
+    <div class="panel-body">
+      <div class="list-group">
+        <div class="list-group-item" ng-repeat="token in access_apps.tokens">
+          <div class="item-title">{{token.name}}</div>
+          <div class="item-body">
+            <div class="scopes">
+              <span ng-repeat="s in token.scopes">{{s}}<i ng-if="!$last">, </i></span>
+              <div ng-if="token.access_token">
+                <div>Do not share this personal access token. It gives full access to your account</div>
+                <code class="cap-box">{{token.access_token}}</code>
+              </div>
+            </div>
+            <div class="actions">
+              <button
+                ng-click="$modalCtrl.openModal({token:token, sc:access_apps, actions:['updateToken']}, 'Edit Token', 'token' )"
+                class="btn cap-btn-white">
+                  <i class="fa fa-pencil"></i>
+              </button>
+              <button
+                ng-click="deleteToken(token)"
+                class="btn cap-btn-white">
+                  <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="access_apps.tokens.length == 0">
+        You have not yet created any personal access tokens. Click the 'New token' button to create a personal access token.
+      </div>
+    </div>
+  </div>
+
+  <!-- Applications -->
+  <div class="panel cap-panel">
+    <div class="panel-headeing">
+      <span class="title">Developer Applications</span>
+      <a
+        ng-click="$modalCtrl.openModal({client: {}, clients: access_apps.clients, actions:['createClient']}, 'Create Client', 'client')"
+        class="btn">
+          <i class="fa fa-plus"></i> New Application
+      </a>
+    </div>
+    <div class="panel-body">
+      <div class="alert alert-danger" ng-if="clients_errors">{{clients_errors}}</div>
+      <div ng-if="access_apps.clients.length > 0">
+        <div class="list-group">
+          <div class="list-group-item" ng-repeat="client in access_apps.clients">
+            <div class="item-title">{{client.name}}</div>
+            <div class="item-body">
+              <div class="scopes">
+                <span ng-if="client.description">Description: {{client.description}} | </span>
+                <span ng-if="client.website">Website: {{client.website}}</span>
+              </div>
+              <div class="actions">
+                <button
+                  ng-click="$modalCtrl.openModal({client:client, clients: access_apps.clients, actions:['updateClient']}, 'Edit Client', 'client')"
+                  class="btn cap-btn-white">
+                    <i class="fa fa-pencil"></i>
+                </button>
+                <button
+                  ng-click="deleteClient(client)"
+                  class="btn cap-btn-white">
+                    <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ng-if="access_apps.clients.length == 0">
+        You have not yet registered any applications. Click the 'New application' button to create an application to access the API.
+      </div>
+    </div>
+  </div>
+</div>
