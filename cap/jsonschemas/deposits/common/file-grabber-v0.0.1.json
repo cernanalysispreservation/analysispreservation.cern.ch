@@ -17,7 +17,7 @@
             },
             "url": {
                "type": "string",
-               "pattern": "^(http|https)://"
+               "pattern": "^(http|https|root)://"
             }
          }
       },

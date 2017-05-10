@@ -33,7 +33,7 @@ import jsonpointer
 import requests
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.utils import clean_empty_values
+from cap.modules.deposit.utils import clean_empty_values, parse_github_url
 from flask import after_this_request, current_app, request
 from invenio_db import db
 from invenio_files_rest.models import FileInstance, ObjectVersion
@@ -125,11 +125,21 @@ def extract_x_cap_files(data):
 def download_url(record_id, url):
     """Create new file object and assign it to object version."""
     record = CAPDeposit.get_record(record_id)
-    r = requests.get(url, stream=True).raw
-    r.decode_content = True
+    if url.startswith("root://"):
+        from xrootdpyfs.xrdfile import XRootDPyFile
+        response = XRootDPyFile(url, mode='r-')
+        total = response.size
+    else:
+        parsed_url = url
+        if url.startswith("https://github"):
+            parsed_url = parse_github_url(url)
+        response = requests.get(parsed_url, stream=True).raw
+        total = int(response.getheader('Content-Length'))
     record.files[url].file.set_contents(
-        r,
-        default_location=record.files.bucket.location.uri)
+        response,
+        default_location=record.files.bucket.location.uri,
+        size=total
+    )
     db.session.commit()
 
 

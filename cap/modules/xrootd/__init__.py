@@ -22,27 +22,10 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
-"""CAP Deposit utils."""
+"""XRootD extension."""
 
 from __future__ import absolute_import, print_function
 
-from urlparse import urlparse
+from .ext import CapXRootD
 
-
-def clean_empty_values(data):
-    """Removes empty values from model"""
-    if not isinstance(data, (dict, list)):
-        return data
-    if isinstance(data, list):
-        return [v for v in (clean_empty_values(v) for v in data) if v]
-    return {k: v for k, v in (
-        (k, clean_empty_values(v)) for k, v in data.items()) if v}
-
-
-def parse_github_url(url):
-    """Constructs github raw url"""
-    netloc = 'raw.githubusercontent.com'
-    u = urlparse(url)
-    replaced = u._replace(netloc=netloc)
-    return replaced.geturl().replace('/blob', '')
+__all__ = ('CapXRootD', )

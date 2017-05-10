@@ -56,6 +56,12 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
+# No include in all(travis)
+extras_require['xrootd'] = [
+    'invenio-xrootd>=1.0.0a4',
+    'xrootdpyfs>=0.1.4',
+]
+
 setup_requires = [
     'Babel>=1.3',
     'pytest-runner>=2.9',
@@ -138,6 +144,7 @@ setup(
             'invenio_jsonschemas = invenio_jsonschemas:InvenioJSONSchemas',
             'invenio_assets = invenio_assets:InvenioAssets',
             'invenio_i18n = invenio_i18n:InvenioI18N',
+            'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
         ],
         'cap.blueprints': [
             'cap = cap.views:blueprint',
@@ -168,6 +175,7 @@ setup(
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
+            'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
             'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'invenio_i18n = invenio_i18n:InvenioI18N',
             'invenio_assets = invenio_assets:InvenioAssets',

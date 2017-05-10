@@ -22,27 +22,37 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
-"""CAP Deposit utils."""
+"""Initialization of XRootD."""
 
 from __future__ import absolute_import, print_function
 
-from urlparse import urlparse
+from pkg_resources import DistributionNotFound, get_distribution
+
+try:
+    # Import XRootDPyFS if available so opener gets registered on
+    # PyFilesystem.
+    get_distribution('xrootdpyfs')
+    import xrootdpyfs  # noqa
+    XROOTD_ENABLED = True
+except DistributionNotFound:
+    XROOTD_ENABLED = False
+    xrootdpyfs = None
 
 
-def clean_empty_values(data):
-    """Removes empty values from model"""
-    if not isinstance(data, (dict, list)):
-        return data
-    if isinstance(data, list):
-        return [v for v in (clean_empty_values(v) for v in data) if v]
-    return {k: v for k, v in (
-        (k, clean_empty_values(v)) for k, v in data.items()) if v}
+class CapXRootD(object):
+    """Cap xrootd extension."""
 
+    def __init__(self, app=None):
+        """Extension initialization."""
+        if app:
+            self.init_app(app)
 
-def parse_github_url(url):
-    """Constructs github raw url"""
-    netloc = 'raw.githubusercontent.com'
-    u = urlparse(url)
-    replaced = u._replace(netloc=netloc)
-    return replaced.geturl().replace('/blob', '')
+    def init_app(self, app):
+        """Flask application initialization."""
+        app.config['XROOTD_ENABLED'] = XROOTD_ENABLED
+        if XROOTD_ENABLED:
+            #: Overwrite reported checksum from CERN EOS (due to XRootD 3.3.6).
+            app.config['XROOTD_CHECKSUM_ALGO'] = 'md5'
+            app.config['FILES_REST_STORAGE_FACTORY'] = \
+                'invenio_xrootd:eos_storage_factory'
+        app.extensions['cap-xrootd'] = self
