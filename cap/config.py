@@ -32,17 +32,6 @@ import os
 from os.path import dirname, join
 
 from celery.schedules import crontab
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             DeleteDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
-from cap.modules.records.permissions import (CreateRecordPermission,
-                                             DeleteRecordPermission,
-                                             ReadRecordPermission,
-                                             UpdateRecordPermission,
-                                             record_read_permission_factory)
-from cap.modules.records.search import cap_record_search_factory
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
@@ -57,6 +46,17 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
+
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             DeleteDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
+from cap.modules.records.permissions import (CreateRecordPermission,
+                                             DeleteRecordPermission,
+                                             ReadRecordPermission,
+                                             UpdateRecordPermission,
+                                             record_read_permission_factory)
+from cap.modules.records.search import cap_record_search_factory
 
 
 def _(x):
@@ -102,7 +102,7 @@ CELERY_IMPORTS = {
 CELERYBEAT_SCHEDULE = {
     'dump_lhcb_analyses_to_json': {
         'task': 'cap.modules.experiments.tasks.dump_lhcb_analyses_to_json',
-        'schedule': crontab(minute=20, hour=1)
+        'schedule': crontab(minute=0, hour=2)
     },
 }
 

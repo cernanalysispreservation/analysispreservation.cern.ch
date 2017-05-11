@@ -64,17 +64,10 @@ def lhcb_get_analysis_data():
     title = unquote(request.args.get('title', ''))
     location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
-    with codecs.open(os.path.join(location, 'publications.json'),
-                     'r', encoding='utf8', errors='ignore') as fp:
-        ana = json.load(fp)
-        res1 = ana.get(title, {})
-
     with codecs.open(os.path.join(location, 'ana_details.json'),
                      'r', encoding='utf8', errors='ignore') as fp:
         ana = json.load(fp)
-        res2 = ana.get(title, {})
-
-    results = {key: value for (key, value) in (res1.items() + res2.items())}
+        results = ana.get(title, {})
 
     return jsonify(results)
 

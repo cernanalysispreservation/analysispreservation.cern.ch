@@ -32,7 +32,6 @@ filenames = [
     "charm.shelve",
     "b2cc.shelve",
     "bandq.shelve",
-    # citations_cache.shelve",
     "qee.shelve",
     "sl.shelve",
     "b2oc.shelve",
@@ -45,23 +44,19 @@ def dump_analyses_to_json():
     """ Parse shelve files with analyses to json. """
 
     base = {}
-    tmp_title_list = []
+    title_list = []
     lhcb_dbases_dir = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
     os.chdir(lhcb_dbases_dir)
 
     for filename in filenames:
         base_field = "analysis"
-    
-        title_list = []
-    
+
         s = shelve.open(filename)
-    
+
         # Get list of "title" for Anal.Name Autocomplete
-        title_list = s.get('analysis').keys()
-        for n in title_list:
-            tmp_title_list.append()
-    
+        title_list.extend(s.get('analysis').keys())
+
         def resolveObj(s, f, k):
             newk = {}
             for p in s[f][k]:
@@ -77,16 +72,19 @@ def dump_analyses_to_json():
                 else:
                     newk[p] = s[f][k][p]
             return newk
-    
-    
-        for k in s.get(base_field):
-            if not k in base:
-                base[k] = resolveObj(s,base_field, k)
-    
+
+        with open('publications.json', 'r') as fp:
+            publications = json.load(fp)
+
+            for k in s.get(base_field):
+                if not k in base:
+                    base[k] = resolveObj(s, base_field, k)
+                    base[k].update(publications.get(k, {}))
+
         s.close()
 
     with open('ana_titles.json', 'w') as fp:
-        json.dump(tmp_title_list, fp)
-    
+        json.dump(title_list, fp)
+
     with open('ana_details.json', 'w') as fp:
         json.dump(base, fp, ensure_ascii=False)
