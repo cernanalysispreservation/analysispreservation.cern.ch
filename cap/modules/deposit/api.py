@@ -193,7 +193,7 @@ class CAPDeposit(Deposit):
     def record_schema(self):
         """Convert deposit schema to a valid record schema."""
         schema_path = current_jsonschemas.url_to_path(
-            self['$schema'].replace('/app/schemas', '/schemas'))
+            self['$schema'])
         schema_prefix = current_app.config['DEPOSIT_JSONSCHEMAS_PREFIX']
         if schema_path and schema_path.startswith(schema_prefix):
             return current_jsonschemas.path_to_url(
@@ -210,7 +210,7 @@ class CAPDeposit(Deposit):
         if schema_path:
             return current_jsonschemas.path_to_url(
                 schema_prefix + schema_path
-            ).replace('/schemas/', '/app/schemas/')
+            )
 
     def commit(self, *args, **kwargs):
         """Synchronize files before commit."""

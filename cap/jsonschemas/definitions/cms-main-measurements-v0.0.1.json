@@ -17,7 +17,7 @@
       "type": "string"
     },
     "code_base": {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
     },
     "n_tuple": {
       "title": "Processing",
@@ -41,7 +41,7 @@
                }
             },
             "user_code": {
-              "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
             },
             "run_instructions": {
                "title": "Type",

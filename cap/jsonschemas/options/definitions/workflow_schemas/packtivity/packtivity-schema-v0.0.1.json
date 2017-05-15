@@ -21,7 +21,7 @@
         {
             "key": "workflows[].workflow.stages[].scheduler.step.process",
             "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['process_type'] == 0",
-            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json"}
         },
         {
             "key": "workflows[].workflow.stages[].scheduler.step.publisher.publisher_type",
@@ -54,22 +54,22 @@
         {
             "key": "workflows[].workflow.stages[].scheduler.step.publisher",
             "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'constant-pub'",
-            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema-v0.0.1.json"}
         },
         {
             "key": "workflows[].workflow.stages[].scheduler.step.publisher",
             "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'frompar-pub'",
-            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema-v0.0.1.json"}
         },
         {
             "key": "workflows[].workflow.stages[].scheduler.step.publisher",
             "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'fromyaml-pub'",
-            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json"}
         },
         {
             "key": "workflows[].workflow.stages[].scheduler.step.publisher",
             "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'fromglob-pub'",
-            "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json"}
+            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json"}
         }
     ]
 }

@@ -232,7 +232,7 @@ Start the web application locally in debug mode:
    gunicorn -b 127.0.0.1:5000 --certfile=ssl.crt --keyfile=ssl.key cap.wsgi:application --workers 9 --log-level debug
 
 Now you can log in locally in your browser by going to
-``https://localhost:5000/app/login`` and entering one of the user
+``https://localhost:5000/login`` and entering one of the user
 credentials created above, e.g. user ``info@inveniosoftware.org`` with
 password ``infoinfo``.
 

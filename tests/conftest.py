@@ -153,7 +153,7 @@ def location(db):
 def deposit_metadata():
     """Raw metadata of deposit."""
     data = {
-        '$schema': 'https://analysispreservation.cern.ch/app/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
         'basic_info': {
             'analysis_number': 'dream_team',
             'people_info': [

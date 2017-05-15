@@ -30,7 +30,7 @@
           "description": "",
           "type": "array",
           "items": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/identifiers-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/identifiers-v0.0.1.json"
           }
         },
         "date_issued": {

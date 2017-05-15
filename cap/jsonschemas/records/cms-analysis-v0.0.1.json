@@ -138,10 +138,10 @@
             "type": "object",
             "properties": {
                "code_base": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-user-code-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-user-code-v0.0.1.json"
                },
                "n_tuple": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-input-code-output-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-input-code-output-v0.0.1.json"
                }
             }
          }
@@ -155,7 +155,7 @@
             {}
          ],
          "items": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-main-measurements-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-main-measurements-v0.0.1.json"
          }
       },
       "auxiliary_measurements": {
@@ -192,10 +192,10 @@
          "type": "object",
          "properties": {
             "code_base": {
-               "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-user-code-v0.0.1.json"
+               "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-user-code-v0.0.1.json"
             },
             "n_tuple": {
-               "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/cms-final-input-code-output-v0.0.1.json"
+               "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-final-input-code-output-v0.0.1.json"
             }
          }
       },
@@ -213,7 +213,7 @@
                   {}
                ],
                "items": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/documentation-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/documentation-v0.0.1.json"
                }
             },
             "internal_discussions": {
@@ -225,7 +225,7 @@
                   {}
                ],
                "items": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/internal-discussion-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/internal-discussion-v0.0.1.json"
                }
             },
             "presentations": {
@@ -237,7 +237,7 @@
                   {}
                ],
                "items": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/presentation-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/presentation-v0.0.1.json"
                }
             },
             "publications": {
@@ -249,7 +249,7 @@
                   {}
                ],
                "items": {
-                  "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/publication-v0.0.1.json"
+                  "$ref": "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
                }
             },
             "keywords": {

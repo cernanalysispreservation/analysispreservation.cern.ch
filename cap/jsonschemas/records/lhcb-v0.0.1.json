@@ -295,7 +295,7 @@
                   },
                   "davinci_script": {
                     "title": "DaVinci Script",
-                    "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+                    "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
                   },
                   "year": {
                     "title": "Year",
@@ -374,7 +374,7 @@
                   },
                   "davinci_script": {
                     "title": "DaVinci Script",
-                    "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-grabber-v0.0.1.json"
+                    "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
                   },
                   "used_tools": {
                     "title": "Used Tools",

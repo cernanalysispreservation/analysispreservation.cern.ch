@@ -23,7 +23,7 @@
         "key": "workflows[].workflow.stages[].dependencies",
         "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['dependencies']['dependency_type'] == 'jsonpath_ready'",
         "type": "fieldset",
-        "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json"}
+        "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json"}
     },
     {
         "key": "workflows[].workflow.stages[].scheduler.scheduler_type",
@@ -49,7 +49,7 @@
         "key": "workflows[].workflow.stages[].scheduler",
         "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['scheduler_type'] == 'singlestep-stage'",
         "type": "fieldset",
-        "items": {"$ref": "https://analysispreservation.cern.ch/app/schemas/options/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json"}
+        "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json"}
     },
     {
         "key": "workflows[].workflow.stages[].scheduler",

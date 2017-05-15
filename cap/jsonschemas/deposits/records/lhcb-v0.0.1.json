@@ -4,13 +4,13 @@
     "type": "object",
     "allOf": [
         {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/deposit-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
         },
         {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/records/lhcb-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/records/lhcb-v0.0.1.json"
         },
         {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
         }
     ]
 }

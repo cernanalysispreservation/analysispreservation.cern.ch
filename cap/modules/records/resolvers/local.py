@@ -34,7 +34,7 @@ import simplejson as json
 from cap.config import JSONSCHEMAS_HOST
 
 
-@jsonresolver.route('/app/schemas/<path:path>',
+@jsonresolver.route('/schemas/<path:path>',
                     host=JSONSCHEMAS_HOST)
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""

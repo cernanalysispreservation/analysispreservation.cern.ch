@@ -15,7 +15,7 @@
             }
         },
         "workflows": {
-            "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
         }
     }
 }

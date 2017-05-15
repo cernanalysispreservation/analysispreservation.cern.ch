@@ -67,7 +67,7 @@
         "type": "string"
       },
       "derived_dataset": {
-        "$ref": "https://analysispreservation.cern.ch/app/schemas/definitions/alice-datasets-v0.0.1.json"  
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/alice-datasets-v0.0.1.json"  
       }
     }
   }

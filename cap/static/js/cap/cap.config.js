@@ -22,7 +22,7 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
- 
+
 ///////////////////////////////////////////
 ///////////////////////////////////////////
 //  CAP app configuration
@@ -51,7 +51,7 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
 
   //       console.log("rejected:::;");
   //       $state.go('welcome');
-  //       // $window.location.href = '/app/login?next='+pathname;
+  //       // $window.location.href = '/login?next='+pathname;
 
   //     }
   //   };

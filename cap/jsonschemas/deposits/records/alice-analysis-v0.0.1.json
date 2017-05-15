@@ -5,13 +5,13 @@
   "type": "object",
   "allOf": [
     {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/deposit-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
     },
     {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/records/alice-analysis-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/schemas/records/alice-analysis-v0.0.1.json"
     },
     {
-      "$ref": "https://analysispreservation.cern.ch/app/schemas/deposits/common/file-v0.0.1.json"
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
     }
   ]
 }

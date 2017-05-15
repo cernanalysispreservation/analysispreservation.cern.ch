@@ -33,7 +33,7 @@ import jsonresolver
 import simplejson as json
 
 
-@jsonresolver.route('/app/schemas/<path:path>',
+@jsonresolver.route('/schemas/<path:path>',
                     host='analysispreservation.cern.ch')
 def resolve_cap_schemas(path):
     """Resolve CAP JSON schemas."""

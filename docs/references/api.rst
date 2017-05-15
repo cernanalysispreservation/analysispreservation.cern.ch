@@ -14,7 +14,8 @@ If you want to gain access to CERN Analysis Preservation from your console or an
 .. warning ::
 	Your access token will allow you to use the service in the same way in which you may use it if you log in on the web portal. You will have the same permissions unless specified otherwise on creation of the token. This implies that anyone who has this token can log in as yourself to the service. Do not share your personal access token with anyone else, and only use it with HTTPS!
 
-To get an access token, you will need to log in on the web portal and `create one <https://analysispreservation.cern.ch/app/account/settings/applications/tokens/new/>`_.
+# TO FIX
+To get an access token, you will need to log in on the web portal and `create one <https://analysispreservation.cern.ch/profile/applications>`_.
 
 In this dialog, `scopes` lets you define permissions for the token which by default only includes read access to your drafts and records.
 
