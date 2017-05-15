@@ -107,7 +107,7 @@ var capUserCtrl = function($scope, $location, capUserClient) {
   };
 };
 
-capRecordCtrl.$inject = [
+capUserCtrl.$inject = [
   '$scope',
   '$location',
   'capUserClient'
