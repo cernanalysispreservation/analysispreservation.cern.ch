@@ -35,6 +35,7 @@ from cap.modules.experiments.permissions \
 from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import collaboration_permissions
 from cap.utils import obj_or_import_string
+from flask_security.views import logout
 
 user_blueprint = Blueprint('cap_user', __name__,
                            template_folder='templates')
@@ -167,3 +168,6 @@ def set_global_experiment(experiment=None):
         if collaboration_permissions_factory[experiment]().can():
             session['current_experiment'] = experiment
             return redirect('/')
+
+
+user_blueprint.route('/logout', endpoint='logout')(logout)
