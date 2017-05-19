@@ -423,9 +423,9 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
     'SQLALCHEMY_DATABASE_URI', "postgresql+psycopg2://localhost/cap")
 
 # Ana's database
-ANA_LHCB_DATABASE_URL = 'http://datadependency.cern.ch'
-LHCB_GETCOLLISIONDATA_URL = '{0}/{1}?{2}='.format(ANA_LHCB_DATABASE_URL,
-                                                  'getRecoStripSoft', 'propass')
+LHCB_ANA_DB = 'http://datadependency.cern.ch'
+LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
+LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 
 # Deposit
 # ============

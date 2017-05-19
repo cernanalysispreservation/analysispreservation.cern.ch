@@ -145,16 +145,16 @@
           "title": "Institutes Involved",
           "type": "string",
           "enum": [
-            "Ions and Fixed Target",
-            "b-hadrons and Quarkonia",
-            "B Decays to Charmonium",
-            "Detector Performance",
-            "Charmless b-hadron Decays",
-            "QCD Electroweak and Exotica",
-            "Rare Decays",
-            "Charm Physics",
-            "Semileptonic B decays",
-            "B Decays to Open Charm"
+            "IFT",
+            "B_Q",
+            "BDC",
+            "DP",
+            "CD",
+            "QEE",
+            "RD",
+            "Charm",
+            "SLB",
+            "B2OC"
           ]
         },
         "keywords": {

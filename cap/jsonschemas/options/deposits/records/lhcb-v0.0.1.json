@@ -26,6 +26,14 @@
                 "t": ["#", "review_egroup"]
             },
             {
+                "s": ["wg"],
+                "t": ["#", "institutes"]
+            },
+            {
+                "s": ["person"],
+                "t": ["#", "analysis_proponents"]
+            },
+            {
                 "s": ["egroup"],
                 "t": ["additional_resources", "publications", "0", "review_egroup"]
             },
@@ -122,43 +130,43 @@
         "title": "Working Group",
         "titleMap":[
            {
-              "value": "Ions and Fixed Target",
+              "value": "IFT",
               "name": "Ions and Fixed Target"
            },
            {
-              "value": "b-hadrons and Quarkonia",
+              "value": "B_Q",
               "name": "b-hadrons and Quarkonia"
            },
            {
-              "value": "B Decays to Charmonium",
+              "value": "BDC",
               "name": "B Decays to Charmonium"
            },
            {
-              "value": "Detector Performance",
+              "value": "DP",
               "name": "Detector Performance"
            },
            {
-              "value": "Charmless b-hadron Decays",
+              "value": "CD",
               "name": "Charmless b-hadron Decays"
            },
            {
-              "value": "QCD Electroweak and Exotica",
+              "value": "QEE",
               "name": "QCD Electroweak and Exotica"
            },
            {
-              "value": "Rare Decays",
+              "value": "RD",
               "name": "Rare Decays"
            },
            {
-              "value": "Charm Physics",
+              "value": "Charm",
               "name": "Charm Physics"
            },
            {
-              "value": "Semileptonic B decays",
+              "value": "SLB",
               "name": "Semileptonic B decays"
            },
            {
-              "value": "B Decays to Open Charm",
+              "value": "B2OC",
               "name": "B Decays to Open Charm"
            }
         ]
@@ -178,7 +186,18 @@
         "items": [
           {
             "key": "dst_selection.code.lhcb_code",
-            "placeholder": "E.g. DaVinci v33r6"
+            "placeholder": "E.g. DaVinci v33r6",
+            "type": "cap:formAutofill",
+            "ref": {
+                "url": "/api/lhcb/analysis/platforms",
+                "paramKey": "application",
+                "map": [
+                {
+                    "s": ["platforms"],
+                    "t": ["#", "platform"]
+                }
+                ]
+            }
           },
           {
             "key": "dst_selection.code.platform",
@@ -478,7 +497,18 @@
         "items": [
           {
             "key": "analysis_steps[].code[].lhcb_code",
-            "placeholder": "E.g. DaVinci v33r6"
+            "placeholder": "E.g. DaVinci v33r6",
+                "type": "cap:formAutofill",
+                "ref": {
+                    "url": "/api/lhcb/analysis/platforms",
+                    "paramKey": "application",
+                    "map": [
+                    {
+                        "s": ["platforms"],
+                        "t": ["#", "platform"]
+                    }
+                    ]
+                }
           },
           {
             "key": "analysis_steps[].code[].platform",

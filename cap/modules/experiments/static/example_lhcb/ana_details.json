@@ -3,24 +3,30 @@
     {
         "status": "1 - in preparation",
         "name": "Example Analysis1",
-        "user": "antrzcin"
+        "user": "antrzcin",
+        "wg": "IFT",
+        "person": ["Anna T", "Marek W"],
+        "egroup": {}
     },
     "Example Analysis2":
     {
         "status": "0 - planned / open topic",
         "name": "Example Analysis2",
-        "user": "antrzcin"
+        "user": "antrzcin",
+        "wg": "IFT"
     },
     "Very Important Analysis":
     {
-        "status": "6 - CONF not published",
+        "status": "6 - CONF note published",
         "name": "Very Important Analysis",
-        "user": "pfokiano"
+        "user": "pfokiano",
+        "wg": "RD"
     },
     "Yet Another Example Analysis":
     {
         "status": "1 - in preparation",
         "name": "Yet Another Example Analysis",
-        "user": "pfokiano"
+        "user": "pfokiano",
+        "wg": "Charm"
     }
 }

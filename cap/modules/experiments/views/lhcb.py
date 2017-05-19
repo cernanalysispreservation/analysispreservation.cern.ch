@@ -103,15 +103,33 @@ def lhcb_get_collision_data():
     return jsonify(res)
 
 
+@lhcb_bp.route('/analysis/platforms', methods=['GET'])
+@lhcb_permission.require(403)
+def lhcb_get_platforms():
+    app = request.args.get('application', '').replace(' ', '-')
+    url = current_app.config.get('LHCB_GETPLATFORM_URL', '') + app
+
+    try:
+        platforms = requests.get(url).json()
+    except ValueError:
+        platforms = []
+
+    res = {
+        'platforms': platforms,
+    }
+
+    return jsonify(res)
+
+
 def get_soft_info(url):
     soft = version = ''
 
     response = requests.get(url).json()
+
     if response:
         soft, version = response[0].split(' ')
 
     return soft, version
-
 
 
 def parse_stripping_line(stripping_line):
