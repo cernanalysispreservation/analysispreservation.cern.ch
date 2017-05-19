@@ -60,6 +60,7 @@ var capTypeaheadCtrl = function( $scope, $interpolate , $http){
   //     }
   //   ]
   // }
+
     $scope.onSelect = function(_item, _model, _label, model, form) {
         var ref = form.ref;
         var _params = {};
@@ -90,6 +91,14 @@ var capTypeaheadCtrl = function( $scope, $interpolate , $http){
                         }
                     }
 
+                    // format response if array or object
+                    if (angular.isArray(resp)){
+                        resp = resp.join("; ");
+                    }
+                    else if (angular.isObject(resp)){
+                        resp = "";
+                    }
+
                     if (mapping["t"]){
                         if (mapping["t"][0] === "#"){
                             _mapping = form.key.slice(0,-1);
@@ -103,6 +112,9 @@ var capTypeaheadCtrl = function( $scope, $interpolate , $http){
                         angular.forEach(_mapping, function(key, index){
                                 if(index+1 === m_length){
                                     model_ref[key] = resp;
+                                    $scope.$emit('fieldAutofilled', resp, {
+                                        "key": _mapping
+                                    });
                                 }else{
                                     model_ref = model_ref[key];
                                 }

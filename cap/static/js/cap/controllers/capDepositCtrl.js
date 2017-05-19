@@ -53,6 +53,11 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
     $scope.isFormRendered = false;
   };
 
+  $scope.$on('fieldAutofilled', function(event, val, key) {
+      $scope.modelChanged(val, key);
+  });
+    // another controller or even directive
+
   $scope.modelChanged = function(value, key){
     // [TOFIX] Right now array model values are represented as objects
     // with key "0", "1", "2", ...

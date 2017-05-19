@@ -84,10 +84,8 @@ def lhcb_get_collision_data():
         processing_pass = '{0}-{1}'.format(params.get('reco', ''),
                                            params.get('stripping', ''))
         year = '20{}'.format(params.get('year', ''))
-        rec_soft, rec_version = requests.get(
-            url=url + params.get('reco', '')).json()[0].split(' ')
-        strip_soft, strip_version = requests.get(
-            url=url + processing_pass).json()[0].split(' ')
+        rec_soft, rec_version = get_soft_info(url + params.get('reco', ''))
+        strip_soft, strip_version = get_soft_info(url + processing_pass)
 
         res = {
             'year': year,
@@ -105,7 +103,20 @@ def lhcb_get_collision_data():
     return jsonify(res)
 
 
+def get_soft_info(url):
+    soft = version = ''
+
+    response = requests.get(url).json()
+    if response:
+        soft, version = response[0].split(' ')
+
+    return soft, version
+
+
+
 def parse_stripping_line(stripping_line):
     regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco[^/]*).*(?P<stripping>Stripping[^/]*)'
+
     res = re.search(regex, stripping_line)
+
     return res.groupdict() if res else None

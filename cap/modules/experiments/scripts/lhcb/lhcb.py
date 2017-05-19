@@ -40,6 +40,7 @@ filenames = [
     "rd.shelve"
 ]
 
+
 def dump_analyses_to_json():
     """ Parse shelve files with analyses to json. """
 
@@ -49,37 +50,36 @@ def dump_analyses_to_json():
 
     os.chdir(lhcb_dbases_dir)
 
+    def update_not_overwrite(dict1, dict2):
+        return dict1.update({k:v for k,v in dict2.iteritems()
+                             if k not in dict1})
+
     for filename in filenames:
-        base_field = "analysis"
 
         s = shelve.open(filename)
+        analysis = s.get('analysis')
 
         # Get list of "title" for Anal.Name Autocomplete
-        title_list.extend(s.get('analysis').keys())
+        title_list.extend(analysis.keys())
 
-        def resolveObj(s, f, k):
-            newk = {}
-            for p in s[f][k]:
-                if (hasattr(s[f][k][p], '__iter__')):
-                    newp = {}
-                    for l in s[f][k][p]:
-                        try:
-                            newp[l] = s[p][l]
-                        except:
-                            newk[p] = s[f][k][p]
-                            break
-                    newk[p] = newp
-                else:
-                    newk[p] = s[f][k][p]
-            return newk
-
-        with open('publications.json', 'r') as fp:
+        with open('publications.json','r') as fp:
             publications = json.load(fp)
 
-            for k in s.get(base_field):
-                if not k in base:
-                    base[k] = resolveObj(s, base_field, k)
-                    base[k].update(publications.get(k, {}))
+            for title in analysis:
+                base[title] = analysis.get(title)
+
+                if title in publications:
+                    update_not_overwrite(base[title],
+                                         publications.get(title, {}))
+                elif 'ananote' in base[title]:
+                    ananote = base[title]['ananote']
+                    if isinstance(ananote, list):
+                        for ana in ananote:
+                            update_not_overwrite(base[title],
+                                                 publications.get(ana, {}))
+                    else:
+                        update_not_overwrite(base[title],
+                                             publications.get(ananote, {}))
 
         s.close()
 
