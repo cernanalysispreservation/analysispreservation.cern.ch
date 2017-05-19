@@ -327,7 +327,7 @@ ADMIN_PERMISSION_FACTORY = 'cap.modules.access.permissions.admin_permission_fact
 #: Login confirmation mail.
 SECURITY_SEND_REGISTER_EMAIL = False
 
-ACCOUNTS_REGISTER_BLUEPRINT = 'cap_theme'
+ACCOUNTS_REGISTER_BLUEPRINT = None
 SECURITY_RECOVERABLE = False
 SECURITY_REGISTERABLE = False
 SECURITY_CHANGEABLE = False
