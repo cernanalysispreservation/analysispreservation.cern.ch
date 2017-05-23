@@ -419,7 +419,8 @@ SECRET_KEY = "changeme"
 
 # Database
 # ============
-SQLALCHEMY_DATABASE_URI = "postgresql+psycopg2://localhost/cap"
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    'SQLALCHEMY_DATABASE_URI', "postgresql+psycopg2://localhost/cap")
 
 # Ana's database
 ANA_LHCB_DATABASE_URL = 'http://datadependency.cern.ch'

@@ -22,7 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
+addons:
+  postgresql: 9.4
 notifications:
   email: false
 
@@ -33,8 +34,13 @@ language: python
 python:
   - "2.7"
 
+services:
+- postgresql
+# - redis
+# - rabbitmq
+
 env:
-  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=2.3.1
   # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
   # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
 
@@ -66,7 +72,7 @@ before_install:
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[docs,tests]"
-  - "travis_retry pip install -r requirements.txt"
+  - "travis_retry pip install -r requirements.txt --upgrade"
 
 before_script:
   - travis_retry pip install kwalitee GitPython --pre
