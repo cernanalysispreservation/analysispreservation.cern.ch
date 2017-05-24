@@ -101,6 +101,14 @@ angular.module('cap.directives')
             },
             link: function(scope, element, attrs) {
                 scope.level = scope.form.key.length;
+                scope.collapseItem = function() {
+                    if (scope.level == 1) {
+                        angular.forEach(scope.$parent.$parent.$parent.form, function(el){
+                            el.collapsed = true;
+                        })
+                        scope.form.collapsed = false;
+                    }
+                }
             }
         }
     })
@@ -118,6 +126,14 @@ angular.module('cap.directives')
             },
             link: function(scope, element, attrs) {
                 scope.level = scope.form.key.length;
+                scope.collapseItem = function() {
+                    if (scope.level == 1) {
+                        angular.forEach(scope.$parent.$parent.$parent.form, function(el){
+                            el.collapsed = true;
+                        })
+                        scope.form.collapsed = false;
+                    }
+                }
             }
         }
     })
