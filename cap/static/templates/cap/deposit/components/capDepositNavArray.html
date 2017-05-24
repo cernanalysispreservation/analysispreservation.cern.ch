@@ -1,15 +1,9 @@
-<div class="dropown">
-  <div ng-click="collapseItem()" ng-class="{'title-lev1': form.key.length == 1}">
-  <i class="fa fa-list" ></i>
-  <span
-    ng-if="form.schema.title"
-    class="forms-filter-fields-font-size fixed-column-link cursor-pointer">
-      {{form.schema.title}}
-      |
+<div class="dropown nav-item">
+  <div class="nav-item-header" ng-click="collapseItem()" ng-class="{'title-lev1': form.key.length == 1}">
+      <span class="title"><i class="fa" ng-class="{'fa-chevron-down': !form.collapsed && form.key.length == 1, 'fa-chevron-right': form.collapsed && form.key.length == 1, 'fa-list': form.key.length != 1}"></i>{{form.schema.title}}</span>
       <span class="progress-fields bg-primary">
         {{ model.size ? model.size : 0 }} Items
       </span>
-  </span>
 </div>
     <ul uib-collapse="form.collapsed" class="dropdwn-menu">
         <li

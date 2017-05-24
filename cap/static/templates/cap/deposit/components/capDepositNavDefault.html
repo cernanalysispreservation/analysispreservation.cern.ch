@@ -1,5 +1,5 @@
 <div>
-    <div>
+    <div event-focus="click" event-focus-id="{{form.key.join('_')}}" ng-click="$event.stopPropagation();">
         <i class="fa" ng-class="{ 'fa-circle-o': !model,'fa-circle': model}"></i>
         <span
           tooltip-placement="top"

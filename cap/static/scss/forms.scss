@@ -296,7 +296,40 @@
   background-color: #fff;
   margin-right: 10px;
 
+  .nav-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
 
+    .nav-item-header {
+      flex:1;
+      justify-content: space-between;
+      display: flex;
+      min-width: 0;
+      flex-wrap: wrap;
+      padding-right: 10px;
+      padding-top: 5px;
+
+      &.title-lev1 {
+      height: 40px;
+      // pad
+        // height: auto;
+      }
+    }
+
+    .title {
+      flex:1;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+    .progress-fields{
+      width: 50px;
+      display: flex;
+      justify-content: center;
+    }
+  }
   .panel-heading {
     //height: $sidebar-navigation-height;
     // z-index: 1;
@@ -304,7 +337,8 @@
   }
   .panel-body {
     border-bottom: 1px solid $light-grey-theme-color;
-    padding: 0 10px;
+    padding: 0;
+    padding-left: 10px;
   }
   .cap-panel {
     border: 0;
@@ -624,13 +658,8 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   }
 
   .title-lev1 {
-    margin: -10px;
     padding: 10px;
     background-color: $light-grey-theme-color;
-
-    &+ ul {
-      margin-top: 15px;
-    }
   }
   .progress-bar-disabled {
     background-color: $dark-grey-element-color;
@@ -641,8 +670,14 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   }
 
   .deposit-navigation-root {
-    padding: 10px;
     border-bottom: 1px solid $light-blue-theme-color;
+
+    cap-deposit-nav-item,
+    cap-deposit-nav-object,
+    cap-deposit-nav-array {
+      flex: 1;
+      display: flex;
+    }
   }
 }
 

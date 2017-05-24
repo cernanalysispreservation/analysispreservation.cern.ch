@@ -1,12 +1,9 @@
-<div class="drodown">
-    <div ng-click="collapseItem()" ng-class="{'title-lev1': form.key.length == 1}">
-      <i class="fa fa-sitemap"></i>
-      <span class="forms-filter-fields-font-size fixed-column-link cursor-pointer">
-        {{form.title}} |
+<div class="drodown nav-item">
+    <div class="nav-item-header" ng-click="collapseItem()" ng-class="{'title-lev1': form.key.length == 1}">
+        <span class="title"><i class="fa" ng-class="{'fa-chevron-down': !form.collapsed && form.key.length == 1, 'fa-chevron-right': form.collapsed && form.key.length == 1, 'fa-sitemap': form.key.length != 1}"></i>{{form.title}}</span>
         <span class="progress-fields bg-primary">
           {{ form.items.length }}
           <span ng-if="form.schema.required">({{ form.schema.required.length }} req)</span>
-        </span>
       </span>
     </div>
     <ul uib-collapse="form.collapsed" aria-labelledby="nav{{form.key[0]}}">
