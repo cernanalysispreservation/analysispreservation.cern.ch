@@ -1,5 +1,5 @@
 <div class="dropown nav-item">
-  <div class="nav-item-header" ng-click="collapseItem()" ng-class="{'title-lev1': form.key.length == 1}">
+  <div class="nav-item-header" ng-click="switchNavItem(ii)" ng-class="{'title-lev1': form.key.length == 1}">
       <span class="title"><i class="fa" ng-class="{'fa-chevron-down': !form.collapsed && form.key.length == 1, 'fa-chevron-right': form.collapsed && form.key.length == 1, 'fa-list': form.key.length != 1}"></i>{{form.schema.title}}</span>
       <span class="progress-fields bg-primary">
         {{ model.size ? model.size : 0 }} Items

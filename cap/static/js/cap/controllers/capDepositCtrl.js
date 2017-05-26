@@ -48,7 +48,8 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
     $scope.forms = [];
     $scope.depositNavModel = {};
     $scope.depositNavForm = [];
-
+    $scope.displayNav = true;
+    $scope.currentNavItem = 0;
     $scope.isFormRendered = false;
   };
 
@@ -58,6 +59,12 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
     $scope.depositNavModel = $scope.depositNavModel.setIn(key.key, value);
     $scope.recordsVM.removeValidationMessage(value,key)
   };
+
+  // Deposit Navigation Actions
+  $scope.nextNavItem = function(){ if ($scope.currentNavItem+1 < $scope.depositNavForm.length) $scope.currentNavItem++; }
+  $scope.prevNavItem = function(){ if ($scope.currentNavItem > 0) $scope.currentNavItem--; }
+  $scope.switchNavItem = function(index){ $scope.currentNavItem = index; }
+  $scope.toggleSidebar = function(){  $scope.displayNav = !$scope.displayNav; }
 
   $scope.$on('sf-render-finished', function(event){
     if ($scope.recordsVM && $scope.recordsVM.invenioRecordsModel && $scope.recordsVM.invenioRecordsForm) {
@@ -76,7 +83,6 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
         title_prefix + " " + now.toLocaleString();
     }
   });
-
 }
 
 capDepositCtrl.$inject = [

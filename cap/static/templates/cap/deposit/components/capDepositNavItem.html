@@ -2,17 +2,22 @@
   ng-if="form.type == 'fieldset'"
   form="form"
   model="model"
-  collapsed=collapsed>
+  collapsed=collapsed
+  switch-nav-item="switchNavItem"
+  ii="ii">
 </cap-deposit-nav-object>
 <cap-deposit-nav-array
   ng-if="(form.type == 'array' || form.type == 'tabarray')"
   form="form"
   model="model"
-  collapsed=collapsed>
+  collapsed=collapsed
+  switch-nav-item="switchNavItem"
+  ii="ii">
 </cap-deposit-nav-array>
 <cap-deposit-nav-default
   ng-if="!(form.type == 'fieldset' || form.type == 'array' || form.type == 'tabarray')"
   form="form"
   model="model"
-  collapsed=collapsed>
+  collapsed=collapsed
+  ii="ii">
 </cap-deposit-nav-default>

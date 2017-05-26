@@ -283,6 +283,10 @@
   width: 100%;
   padding-left: $cap-deposit-sidebar-width;
   min-height: 100vh;
+
+  &.collapsed {
+    padding-left: 0;
+  }
 }
 
 .cap-deposit-sidebar {
@@ -365,11 +369,15 @@
   overflow: scroll;
   padding: 0;
   margin: 0;
-  background-color: #fff;
-  border: 1px solid $light-blue-theme-color;
+  // background-color: #fff;
+  // border: 1px solid $light-blue-theme-color;
   border-top: 0;
   margin-bottom: $footer-height;
 
+  .cap-deposit-form-top-nav {
+    background-color: #e1e1e1;
+    height: 40px;
+  }
   .cap-deposit-actions {
     width: 100%;
     height: 40px;

@@ -712,3 +712,56 @@ body::-webkit-scrollbar-thumb {
   color: $light-blue-theme-color;
   border-radius: 3px;
 }
+
+$sidebar-toggle-color: $light-blue-theme-color;
+.sidebar-toggle {
+  background-color: #f5f5f5;
+  border: 1px solid $light-blue-theme-color;
+  border-radius: 2px;
+  width: 24px;
+  display: flex;
+  height: 20px;
+
+  .sidebar-toggle-inner {
+    background-color: $light-blue-theme-color;
+    width: 33%;
+  }
+
+}
+
+.cap-deposit-form-top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+
+  .cap-deposit-nav-toggle {}
+  .cap-deposit-nav-component {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    > span {
+      width: 200px;
+      display: flex;
+      justify-content: center;
+    }
+
+    > button {
+      border: 0;
+      width: auto;
+      height: auto;
+      background: transparent;
+      color: $light-blue-theme-color;
+      padding: 0 10px;
+
+      &:disabled {
+        color:$alt-grey-element-color;
+      }
+    }
+    i {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+}

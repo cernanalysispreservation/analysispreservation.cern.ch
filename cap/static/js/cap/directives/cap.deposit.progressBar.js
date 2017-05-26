@@ -41,15 +41,20 @@ angular.module('cap.directives')
             scope: {
                 form: '=',
                 model: '=',
+                currentNavItem: '=',
+                switchNavItem: '=',
             },
             link: function(scope, element, attrs) {
-
-              angular.forEach(
-                  scope.form,
-                  function(item){
-                      item.collapsed = true;
-                  });
-              scope.form[0].collapsed = false;
+                scope.$watch('currentNavItem', function(newNav, oldNav) {
+                    scope.form[oldNav].collapsed = true;
+                    scope.form[newNav].collapsed = false;
+                });
+                angular.forEach(
+                    scope.form,
+                    function(item){
+                        item.collapsed = true;
+                });
+                scope.form[scope.currentNavItem].collapsed = false;
             }
         }
     })
@@ -63,7 +68,9 @@ angular.module('cap.directives')
                 form: '=',
                 collapsed: '=',
                 progress: '=',
-                model: '='
+                model: '=',
+                ii: '<',
+                switchNavItem: '='
             },
             link: function(scope, element, attrs) {
             }
@@ -97,18 +104,12 @@ angular.module('cap.directives')
                 form: '=',
                 collapsed: '=',
                 progress: '=',
-                model: '='
+                model: '=',
+                switchNavItem: '=',
+                ii: '<'
             },
             link: function(scope, element, attrs) {
                 scope.level = scope.form.key.length;
-                scope.collapseItem = function() {
-                    if (scope.level == 1) {
-                        angular.forEach(scope.$parent.$parent.$parent.form, function(el){
-                            el.collapsed = true;
-                        })
-                        scope.form.collapsed = false;
-                    }
-                }
             }
         }
     })
@@ -122,18 +123,12 @@ angular.module('cap.directives')
                 form: '=',
                 collapsed: '=',
                 progress: '=',
-                model: '='
+                model: '=',
+                switchNavItem: '=',
+                ii: '<'
             },
             link: function(scope, element, attrs) {
                 scope.level = scope.form.key.length;
-                scope.collapseItem = function() {
-                    if (scope.level == 1) {
-                        angular.forEach(scope.$parent.$parent.$parent.form, function(el){
-                            el.collapsed = true;
-                        })
-                        scope.form.collapsed = false;
-                    }
-                }
             }
         }
     })

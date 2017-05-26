@@ -1,4 +1,4 @@
-<div ng-init="query={}; queryBy='$';" class="cap-deposit-sidebar">
+<div class="cap-deposit-sidebar" ng-show="displayNav">
     <!-- <div id="cap-deposit-navigation-search">
         <div class="col-md-12 forms-font-color search-fields">
             <div id="search-bar-fixed-column">
@@ -11,7 +11,9 @@
         <cap-deposit-nav
             immutable="depositNavModel"
             form="depositNavForm"
-            model="depositNavModel">
+            model="depositNavModel"
+            current-nav-item="currentNavItem"
+            switch-nav-item="switchNavItem">
         </cap-deposit-nav>
         <span id="no-results" ng-show="(form | filter:query).length == 0">No results found. Please try again.</span>
     </div>
