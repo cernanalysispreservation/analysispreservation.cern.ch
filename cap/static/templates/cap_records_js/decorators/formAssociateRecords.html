@@ -1,6 +1,16 @@
 <div class="form-group schema-form-{{form.type}} {{form.htmlClass}}"
      ng-controller="formAssociateRecords as $ctrl"
      ng-class="{'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true && hasSuccess(), 'has-feedback': form.feedback !== false }" >
+    <div class="col-sm-12 cap-label">
+      <label
+        class="control-label {{ form.labelHtmlClass }}"
+        ng-class="{'sr-only': !showTitle(), 'field-required': form.required}"
+        for="{{form.key.slice(-1)[0]}}">
+          <span ng-if="!form.notitle">{{form.title}}</span>
+      </label>
+      <div ng-if="form.description" ><i class="fa fa-minus"></i><div class="help-block" show-more><div sf-message="form.description"></div></div></div >
+    </div>
+
   <div class="col-sm-12 {{ form.fieldWrapperHtmlClass }}">
 
   <input ng-if="!form.fieldAddonLeft && !form.fieldAddonRight"

@@ -1,6 +1,5 @@
 <div class="cap-deposit" ng-class="{'collapsed' : !displayNav}">
   <ng-include src="'/static/templates/cap/deposit/components/depositSidebar.html'"></ng-include>
-  <div class="cap-deposit-form">
     <div class="cap-deposit-form-top-nav">
       <div ng-click="toggleSidebar()" class="cap-deposit-nav-toggle"><i class="sidebar-toggle"><i class="sidebar-toggle-inner"></i></i></div>
       <div class="cap-deposit-nav-component">
@@ -8,7 +7,8 @@
           <span><strong>{{depositNavForm[currentNavItem].title}}</strong></span>
           <button ng-disabled="currentNavItem+1 == depositNavForm.length" ng-click="nextNavItem()" uib-tooltip="{{depositNavForm[currentNavItem+1].title}}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
       </div>
-    </div>
+    </div>  <div class="cap-deposit-form">
+
     <div class="cap-deposit-form-inner">
       <div>
         <div class="alert alert-danger" style="margin: 15px 0;">
@@ -29,4 +29,3 @@
     </div>
   </div>
 </div>
-

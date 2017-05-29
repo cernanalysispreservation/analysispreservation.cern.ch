@@ -1,11 +1,13 @@
 <div class="form-group {{form.htmlClass}}"
      ng-class="{ '{{'schema-form-' + form.type}}': true, 'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true && hasSuccess(), 'has-feedback': form.feedback !== false }">
-    <label class="col-sm-12 control-label {{ form.labelHtmlClass }}"
-            ng-if="!form.notitle"
-            ng-class="{'field-required': form.required}"
-            for="{{ form.key.slice(-1)[0] }}">
-      <span ng-if="form.fa_cls"><i ng-class="'fa fa-fw ' + form.fa_cls"></i></span>
-      {{ form.title }}</label>
+     <div class="col-sm-12 cap-label">
+       <label class="control-label {{ form.labelHtmlClass }}"
+              ng-class="{'sr-only': !showTitle(), 'field-required': form.required}"
+              for="{{form.key.slice(-1)[0]}}">
+           <span ng-if="!form.notitle">{{form.title}}</span>
+       </label>
+       <div ng-if="form.description" ><i class="fa fa-minus"></i><div class="help-block" show-more><div sf-message="form.description"></div></div></div >
+     </div>
   <div class="col-sm-12">
       <input
       ng-if="!form.fieldAddonLeft && !form.fieldAddonRight"
@@ -54,7 +56,5 @@
     <span ng-if="hasError() || hasSuccess()"
           id="{{ form.key.slice(-1)[0] + 'Status' }}"
           class="sr-only">{{ hasSuccess() ? '(success)' : '(error)' }}</span>
-
-    <div class="help-block" sf-message="form.description"></div>
   </div>
 </div>

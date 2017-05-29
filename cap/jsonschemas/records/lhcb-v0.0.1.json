@@ -131,11 +131,13 @@
       "properties": {
         "analysis_title": {
           "title": "Analysis Name",
-          "type": "string"
+          "type": "string",
+          "description": "Provide a name for your analysis. This will be displayed as an analysis title when shared."
         },
         "measurement": {
           "title": "Measurement",
-          "type": "string"
+          "type": "string",
+          "description": "Provide a name for your analysis. This will be displayed as an analysis title when shared."
         },
         "review_egroup": {
           "title": "Review eGroup",
@@ -184,7 +186,7 @@
             "9 - PAPER published",
             "x - other"
           ],
-          "type": "string",
+          "type": "select",
           "title": "Status"
         },
         "analysis_status_notes": {

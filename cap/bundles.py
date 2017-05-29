@@ -100,6 +100,7 @@ app_js = NpmBundle(
     "js/cap/services/capRecordsClient.js",
     "js/cap/cap.shortcuts.js",
     "js/cap/factories/capFocus.js",
+    "js/cap/directives/capShowMore.js",
     "js/cap/factories/capErrorPages.js",
     "js/cap/controllers/capCtrl.js",
     "js/cap/controllers/capDepositCtrl.js",

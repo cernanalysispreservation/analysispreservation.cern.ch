@@ -1,8 +1,13 @@
 <div class="form-group {{form.htmlClass}} schema-form-select"
      ng-class="{'has-error': form.disableErrorState !== true && hasError(), 'has-success': form.disableSuccessState !== true && hasSuccess(), 'has-feedback': form.feedback !== false}">
-  <label class="control-label col-sm-3 {{form.labelHtmlClass}}" ng-show="showTitle()" ng-class="{'field-required': form.required}">
-    {{form.title}}
-  </label>
+     <div class="col-sm-3 cap-label">
+       <label class="control-label {{ form.labelHtmlClass }}"
+              ng-class="{'sr-only': !showTitle(), 'field-required': form.required}"
+              for="{{form.key.slice(-1)[0]}}">
+           <span ng-if="!form.notitle">{{form.title}}</span>
+       </label>
+       <div ng-if="form.description" ><i class="fa fa-minus"></i><div class="help-block" show-more><div sf-message="form.description"></div></div></div >
+     </div>
     <div class="col-sm-9"><select ng-model="$$value$$"
                                   ng-model-options="form.ngModelOptions"
                                   ng-disabled="form.readonly"

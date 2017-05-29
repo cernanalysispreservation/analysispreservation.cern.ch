@@ -7,7 +7,7 @@
   <div class="panel panel-default cap-panel">
         <div class="panel-heading">
             <div class="description">
-              <strong>{{ form.schema.title | uppercase }}</strong>
+              <strong>{{ form.schema.title | uppercase }}</strong><i ng-if="form.description" class="fa fa-minus"></i>
             </div>
             <div class="description" ng-if="form.description"
                  ng-bind-html="form.description">
