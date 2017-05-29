@@ -86,11 +86,10 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
-    'Flask-Security==1.7.5',
-    'Flask-WTF==0.13.1',
+    'Flask-WTF==0.14.2',
     'invenio-access>=1.0.0a11',
-    'invenio-accounts>=1.0.0b1',
-    'invenio-accounts-rest>=1.0.0a1',
+    'invenio-accounts>=1.0.0b9',
+    'invenio-accounts-rest>=1.0.0a3',
     'invenio-assets>=1.0.0b6',
     'invenio-base>=1.0.0a14',
     'invenio-celery>=1.0.0b1',
@@ -101,7 +100,7 @@ install_requires = [
     'invenio-indexer>=1.0.0a9',
     'invenio-deposit>=1.0.0a8',
     'invenio-jsonschemas>=1.0.0a3',
-    'invenio-oauthclient>=1.0.0a11',
+    'invenio-oauthclient>=1.0.0b2',
     'invenio-pages>=1.0.0a3',
     'invenio-pidstore>=1.0.0b1',
     # 'invenio-previewer==1.0.0a6',
@@ -111,6 +110,7 @@ install_requires = [
     'invenio-rest[cors]>=1.0.0a10',
     'invenio-search-ui>=1.0.0a5',
     'invenio-search>=1.0.0a9',
+    'invenio-sse>=1.0.0a2',
     'invenio-theme>=1.0.0a14',
     'invenio-userprofiles>=1.0.0a8',
 ]
@@ -178,7 +178,7 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
-            'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
+            # 'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'invenio_i18n = invenio_i18n:InvenioI18N',
             'invenio_assets = invenio_assets:InvenioAssets',
         ],
@@ -218,6 +218,9 @@ setup(
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
             'cap.modules.records.fetchers:cap_record_fetcher',
+        ],
+        'invenio_sse.integrations': [
+            'deposit = invenio_sse.contrib.deposit.ext:InvenioSSEDeposit',
         ],
         'invenio_records.jsonresolver': [
             'cap = cap.modules.records.resolvers.cap',

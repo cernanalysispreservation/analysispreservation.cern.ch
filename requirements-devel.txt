@@ -1,1 +1,8 @@
 -e git+https://github.com/pamfilos/invenio-jsonschemas.git@add-allof-replace#egg=invenio-jsonschemas
+
+# (TOFIX) Remove this when #147 is merged
+-e git+https://github.com/inveniosoftware/invenio-files-rest.git@e88e0c4c215d19c9f71a90d6b825577f48053ff2#egg=invenio_files_rest
+
+
+# (TOFIX) Remove this when #29 is merged
+-e git+https://github.com/ioannistsanaktsidis/invenio-accounts-rest.git@a7b78e6c2d9a8110402a7e127d31fe61a70a2063#egg=invenio_accounts_rest
