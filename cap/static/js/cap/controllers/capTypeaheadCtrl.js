@@ -27,109 +27,43 @@
 ///////////////////////////////////////////
 // CAP app Form Typeahead Controller
 
-var capTypeaheadCtrl = function( $scope, $interpolate , $http){
+var capTypeaheadCtrl = function( $scope, $interpolate , $http, $filter, capAutofill){
 
     // load static data if given url
     var _url = $scope.form.url;
+    var _async = $scope.form.async;
 
-    if (_url){
+    if (!_async){
         $http.get(_url).success(function(data){
-            $scope.typeaheadData = data;
+            $scope.staticData = data;
         });
     }
 
-  // Needs to be specified with the following options to function
-  //
-  // "type": "cap:typeahead",
-  // "ref": {
-  //   "url": "//maps.googleapis.com/maps/api/geocode/json",
-  //   "paramKey": "address",
-  //   "displayKey": ["formatted_address"],
-  //   "map": [
-  //     {
-  //       "s": "place_id",
-  //       "t": ["basic_info", "abstract"]
-  //     },
-  //     {
-  //       "s": ["geometry", "location_type"],
-  //       "t": ["#", "conclusion"]
-  //     },
-  //     {
-  //       "s": ["geometry", "location", "lat"],
-  //       "t": ["#", "software", "name"]
-  //     }
-  //   ]
-  // }
+    var filterDataAsync = function(val) {
+        return $http.get(_url, {
+                      params: {
+                              query: val,
+                            }
+                                }).then(function(response){
+                return response.data;
+            });
+      };
 
-    $scope.onSelect = function(_item, _model, _label, model, form) {
-        var ref = form.ref;
-        var _params = {};
-        _params[ref.paramKey] = _item;
+    var filterStaticData = function(val){
+        return $filter('filter')($scope.staticData, val);
+    }
 
-        $http.get(ref.url, {
-            params: _params
-        }).then(function(response){
-            if( ref && ref.map){
-                angular.forEach(ref.map, function(mapping){
-                    var model_ref = model;
-                    var resp = {};
+    $scope.getData = _async ? filterDataAsync : filterStaticData
+    $scope.onSelect = capAutofill.autofill;
 
-                    if (mapping["s"]){
-                        if (angular.isArray(mapping["s"])){
-                            resp = response.data;
-                            angular.forEach(mapping["s"], function(key){
-                                if (key in resp)
-                                    resp = resp[key];
-                                else
-                                    resp = ""
-                            });
-                        }
-                        else{
-                            // [TOFIX] for now gets only first result
-                            if (response.data)
-                                resp = response.data[mapping["s"]];
-                        }
-                    }
-
-                    // format response if array or object
-                    if (angular.isArray(resp)){
-                        resp = resp.join("; ");
-                    }
-                    else if (angular.isObject(resp)){
-                        resp = "";
-                    }
-
-                    if (mapping["t"]){
-                        if (mapping["t"][0] === "#"){
-                            _mapping = form.key.slice(0,-1);
-                            _mapping = _mapping.concat((mapping["t"]).slice(1));
-                        }
-                        else{
-                            _mapping = mapping["t"];
-                        }
-
-                        var m_length = _mapping.length;
-                        angular.forEach(_mapping, function(key, index){
-                                if(index+1 === m_length){
-                                    model_ref[key] = resp;
-                                    $scope.$emit('fieldAutofilled', resp, {
-                                        "key": _mapping
-                                    });
-                                }else{
-                                    model_ref = model_ref[key];
-                                }
-                        });
-                    }
-                });
-            };
-        });
-    };
 };
 
 capTypeaheadCtrl.$inject = [
     '$scope',
     '$interpolate',
-    '$http'
+    '$http',
+    '$filter',
+    'capAutofill'
 ];
 
 angular.module('cap.controllers')

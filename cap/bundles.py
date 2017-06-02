@@ -25,17 +25,12 @@
 from __future__ import absolute_import, print_function
 
 from flask_assets import Bundle
-
 from invenio_assets import NpmBundle
-
-from invenio_deposit.bundles import (
-    js_dependencies_jquery,
-    js_dependencies_ui_sortable,
-    js_dependencies_ckeditor,
-    js_dependecies_autocomplete,
-    js_main,
-    js_dependecies_uploader
-)
+from invenio_deposit.bundles import (js_dependecies_autocomplete,
+                                     js_dependecies_uploader,
+                                     js_dependencies_ckeditor,
+                                     js_dependencies_jquery,
+                                     js_dependencies_ui_sortable, js_main)
 
 js_dependecies_schema_form = NpmBundle(
     'node_modules/objectpath/lib/ObjectPath.js',
@@ -98,6 +93,7 @@ app_js = NpmBundle(
     "js/cap/directives/cap.pushmenu.js",
     "js/cap/services/capUserClient.js",
     "js/cap/services/capRecordsClient.js",
+    "js/cap/services/capAutofill.js",
     "js/cap/cap.shortcuts.js",
     "js/cap/factories/capFocus.js",
     "js/cap/directives/capShowMore.js",

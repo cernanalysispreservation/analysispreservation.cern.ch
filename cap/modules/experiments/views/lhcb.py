@@ -67,9 +67,9 @@ def lhcb_get_analysis_data():
     with codecs.open(os.path.join(location, 'ana_details.json'),
                      'r', encoding='utf8', errors='ignore') as fp:
         ana = json.load(fp)
-        results = ana.get(title, {})
+        res = ana.get(title, {})
 
-    return jsonify(results)
+    return jsonify(res)
 
 
 @lhcb_bp.route('/analysis/collisiondata/', methods=['GET'])

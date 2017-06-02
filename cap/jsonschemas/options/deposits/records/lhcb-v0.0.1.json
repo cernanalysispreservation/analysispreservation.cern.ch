@@ -9,6 +9,7 @@
         "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name.",
         "type": "cap:typeahead",
         "url": "/api/lhcb/analysis/titles",
+        "async": false,
         "ref": {
             "url": "/api/lhcb/analysis/data",
             "paramKey": "title",
