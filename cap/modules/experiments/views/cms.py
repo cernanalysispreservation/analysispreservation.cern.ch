@@ -26,11 +26,17 @@
 
 from __future__ import absolute_import, print_function
 
+#@cms_bp.route('/das/autocomplete', methods=['GET'])
+#@cms_permission.require(403)
+#def das_autocomplete():
+import json
+import os
 import ssl
 import urllib
 import urllib2
 
-from flask import Blueprint
+from elasticsearch import Elasticsearch
+from flask import Blueprint, current_app, jsonify, request
 
 from ..permissions.cms import cms_permission
 from ..scripts.cms import das
@@ -38,7 +44,7 @@ from ..scripts.cms import das
 cms_bp = Blueprint(
     'cap_cms',
     __name__,
-    url_prefix='/CMS',
+    url_prefix='/cms',
     template_folder='../templates',
     static_folder='../static',
 )
@@ -85,3 +91,15 @@ def das_autocomplete():
     url += '?%s' % encoded_data
     response = urllib2.urlopen(url, context=ctx)
     return response.read()
+
+
+@cms_bp.route('/datasets/names', methods=['GET'])
+@cms_permission.require(403)
+def cms_get_datasets_names():
+    term = request.args.get('query', '')
+
+    es = Elasticsearch()
+    res_es = es.search(index="test_index", terminate_after=10, body={"query": {"match_phrase_prefix": {"name": term}}})
+    res = [ x['_source']['name'] for x in res_es['hits']['hits'] ]
+
+    return jsonify(res)
