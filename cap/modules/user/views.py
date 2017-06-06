@@ -26,15 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
+from cap.modules.access.utils import login_required
+from cap.modules.experiments.permissions import (collaboration_permissions,
+                                                 collaboration_permissions_factory)
+from cap.utils import obj_or_import_string
 from flask import Blueprint, current_app, jsonify, redirect, session
 from flask_login import current_user
 from flask_principal import Permission
-
-from cap.modules.experiments.permissions \
-    import collaboration_permissions_factory
-from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import collaboration_permissions
-from cap.utils import obj_or_import_string
 from flask_security.views import logout
 
 user_blueprint = Blueprint('cap_user', __name__,
@@ -59,6 +57,13 @@ def get_user():
     }
 
     response = jsonify(_user)
+    response.status_code = 200
+    return response
+
+
+@user_blueprint.route('/ping')
+def ping():
+    response = jsonify("Pong")
     response.status_code = 200
     return response
 
