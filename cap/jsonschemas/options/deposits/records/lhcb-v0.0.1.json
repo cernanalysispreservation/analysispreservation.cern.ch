@@ -178,417 +178,261 @@
     ]
   },
   {
-    "key": "dst_selection",
-    "type": "fieldset",
+    "key": "stripping_turbo_selection",
+    "type": "tabArrayTop",
     "items": [
       {
-        "key": "dst_selection.code",
-        "items": [
-          {
-            "key": "dst_selection.code.lhcb_code",
-            "placeholder": "E.g. DaVinci v33r6",
-            "type": "cap:formAutofill",
-            "ref": {
-                "url": "/api/lhcb/analysis/platforms",
-                "paramKey": "application",
-                "map": [
-                {
-                    "s": ["platforms"],
-                    "t": ["#", "platform"]
-                }
-                ]
-            }
-          },
-          {
-            "key": "dst_selection.code.platform",
-            "placeholder": "E.g. x86_64-slc5-gcc46-opt"
-          },
-          {
-            "key": "dst_selection.code.user_code",
-            "items": [
-              {
-                "key": "dst_selection.code.user_code[].url",
-                "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
-              },
-              {
-                "key": "dst_selection.code.user_code[].description",
-                "placeholder": "E.g. Please enter the user code description, location, etc"
-              },
-              {
-                "key": "dst_selection.code.user_code[].instructions",
-                "type": "textarea",
-                "fieldHtmlClass": "custom-textarea",
-                "placeholder": "E.g. Please enter the instructions for using the code, e.g. Open 'README' file"
-              }
-            ]
-          }
-        ]
+        "key": "stripping_turbo_selection[].name",
+        "placeholder": "Please provide a name for your dataset"
       },
       {
-        "key": "dst_selection.production_info",
-        "type": "fieldset",
-        "items": [
-          {
-            "key": "dst_selection.production_info.data",
-            "startEmpty": true,
-            "items": [
-              {
-                "key": "dst_selection.production_info.data[].location",
-                "placeholder": "E.g. sim://LHCb/Collision12/Beam4000GeV-VeloClosed-MagDown/RealData/Reco14/Stripping20/90000000 ( Full stream )/BHADR",
-                "type": "cap:formAutofill",
-                "ref": {
-                    "url": "/api/lhcb/analysis/collisiondata",
-                    "paramKey": "stripping_line",
-                    "map": [
-                    {
-                        "s": ["year"],
-                        "t": ["#", "year"]
-                    },
-                    {
-                        "s": ["processing_pass"],
-                        "t": ["#", "processing_pass"]
-                    },
-                    {
-                        "s": ["reconstruction", "software"],
-                        "t": ["#", "reconstruction_software", "name"]
-                    },
-                    {
-                        "s": ["reconstruction", "version"],
-                        "t": ["#", "reconstruction_software", "version"]
-                    },
-                    {
-                        "s": ["stripping", "software"],
-                        "t": ["#", "stripping_software", "name"]
-                    },
-                    {
-                        "s": ["stripping", "version"],
-                        "t": ["#", "stripping_software", "version"]
-                    }
-                    ]
-                }
-              },
-              {
-                "key": "dst_selection.production_info.data[].processing_pass",
-                "placeholder": "E.g. Reco15a-Stripping22b"
-              },
-              {
-                "key": "dst_selection.production_info.data[].reconstruction_software",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.data[].reconstruction_software.name",
-                    "placeholder": "E.g. Brunel Reco"
-                  },
-                  {
-                    "key": "dst_selection.production_info.data[].reconstruction_software.version",
-                    "placeholder": "E.g. 13"
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.data[].stripping_software",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.data[].stripping_software.name",
-                    "placeholder": "E.g. DaVinciStripping"
-                  },
-                  {
-                    "key": "dst_selection.production_info.data[].stripping_software.version",
-                    "placeholder": "E.g. 17"
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.data[].trigger",
-                "title": "Trigger",
-                "startEmpty": true,
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.data[].trigger[].name",
-                    "placeholder": "E.g. Trigger 1",
-                    "notitle": true
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.data[].year",
-                "placeholder": "E.g 2015"
-              },
-              {
-                "key": "dst_selection.production_info.data[].davinci_script",
-                "title": "DaVinci Script",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.data[].davinci_script._type",
-                    "title": "Please select the preferred way to upload a file",
-                    "type": "radios",
-                    "titleMap": [
-                      {"value": "external_url", "name": "External URL"},
-                      {"value": "file_upload", "name": "File Upload"}
-                    ]
-                  },
-                  {
-                    "key": "dst_selection.production_info.data[].davinci_script.source",
-                    "condition": "model['dst_selection']['production_info']['data'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
-                    "items": [
-                      {
-                        "key": "dst_selection.production_info.data[].davinci_script.source.preserved",
-                        "destroyStrategy": "retain",
-                        "type": "radios",
-                        "titleMap": [
-                          {"value": true, "name": "Yes"},
-                          {"value": false, "name": "No"}
-                        ]
-                      },
-                      {
-                        "key": "dst_selection.production_info.data[].davinci_script.source.url",
-                        "notitle": true,
-                        "destroyStrategy": "retain",
-                        "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "dst_selection.production_info.data[].davinci_script.key",
-                    "condition": "model['dst_selection']['production_info']['data'][arrayIndices[0]]['davinci_script']['_type'] == 'file_upload'",
-                    "type": "file_selector",
-                    "title": "Select file"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "key": "dst_selection.production_info.mc_data",
-            "startEmpty": true,
-            "items": [
-              {
-                "key": "dst_selection.production_info.mc_data[].location",
-                "placeholder": "E.g. sim://MC/MC11a/Beam3500GeV-2011-MagDown-Nu2-50ns-EmNoCuts/Sim05a/Trig0x40760037Flagged/Reco12a/Stripping17NoPrescalingFlagged/42"
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].mc_production",
-                "title": "Production",
-                "placeholder": "E.g. MC Prod"
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].generator",
-                "title": "Generator",
-                "placeholder": "E.g. MC Gen"
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].reconstruction_software",
-                "type": "fieldset",
-                "title": "Reconstruction software",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.mc_data[].reconstruction_software.reconstruction_software_name",
-                    "title": "Name",
-                    "placeholder": "E.g. MC Reco"
-                  },
-                  {
-                    "key": "dst_selection.production_info.mc_data[].reconstruction_software.reconstruction_software_version",
-                    "title": "Version",
-                    "placeholder": "E.g. 11"
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].stripping_software",
-                "type": "fieldset",
-                "title": "Stripping software",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.mc_data[].name",
-                    "title": "Name",
-                    "placeholder": "E.g. MC Strip"
-                  },
-                  {
-                    "key": "dst_selection.production_info.mc_data[].version",
-                    "title": "Version",
-                    "placeholder": "E.g. 16"
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].trigger",
-                "title": "Trigger",
-                "startEmpty": true,
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.mc_data[].trigger[].name",
-                    "placeholder": "E.g. Trigger 1",
-                    "notitle": true
-                  }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].used_tools",
-                "title": "Used Tools",
-                "placeholder": "E.g. TupleToolIsolation"
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].db_tags",
-                "type": "select",
-                "title": "Database Tags",
-                "titleMap": [
-                  {
-                    "value": "DDDB",
-                    "name": "DDDB"
-                 },
-                 {
-                    "value": "SIMCOND",
-                    "name": "SIMCOND"
-                 }
-                ]
-              },
-              {
-                "key": "dst_selection.production_info.mc_data[].davinci_script",
-                "title": "DaVinci Script",
-                "items": [
-                  {
-                    "key": "dst_selection.production_info.mc_data[].davinci_script._type",
-                    "title": "Please select the preferred way to upload a file",
-                    "type": "radios",
-                    "titleMap": [
-                      {"value": "external_url", "name": "External URL"},
-                      {"value": "file_upload", "name": "File Upload"}
-                    ]
-                  },
-                  {
-                    "key": "dst_selection.production_info.mc_data[].davinci_script.source",
-                    "condition": "model['dst_selection']['production_info']['mc_data'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
-                    "items": [
-                      {
-                        "key": "dst_selection.production_info.mc_data[].davinci_script.source.preserved",
-                        "destroyStrategy": "retain",
-                        "type": "radios",
-                        "titleMap": [
-                          {"value": true, "name": "Yes"},
-                          {"value": false, "name": "No"}
-                        ]
-                      },
-                      {
-                        "key": "dst_selection.production_info.mc_data[].davinci_script.source.url",
-                        "notitle": true,
-                        "destroyStrategy": "retain",
-                        "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-                      }
-                    ]
-                  },
-                  {
-                    "key": "dst_selection.production_info.mc_data[].davinci_script.key",
-                    "condition": "model['dst_selection']['production_info']['mc_data'][arrayIndices[0]]['davinci_script']['_type'] == 'file_upload'",
-                    "type": "file_selector",
-                    "title": "Select file"
-                  }
-                ]
-              }
-            ]
-          }
+        "key": "stripping_turbo_selection[].bookkeping_location",
+        "type": "cap:formAutofill",
+        "placeholder": "Please provide a bookkeeping path",
+        "ref": {    
+          "url": "/api/lhcb/analysis/collisiondata",    
+          "paramKey": "stripping_line",   
+          "map": [    
+            {   
+              "s": ["year"],    
+              "t": ["#", "year"]    
+            },    
+            {   
+              "s": ["processing_pass"],   
+              "t": ["#", "processing_pass"]   
+            },    
+            {   
+              "s": ["reconstruction", "software"],    
+              "t": ["#", "reconstruction_software", "name"]   
+            },     
+            {   
+              "s": ["reconstruction", "version"],   
+              "t": ["#", "reconstruction_software", "version"]    
+            },    
+            {   
+              "s": ["stripping", "software"],   
+              "t": ["#", "stripping_software", "name"]    
+            },    
+            {   
+              "s": ["stripping", "version"],   
+              "t": ["#", "stripping_software", "version"]   
+            }   
+          ]   
+        }
+      },
+      {
+        "key": "stripping_turbo_selection[].stripping_turbo_line",
+        "placeholder": "Please provide a stripping/turbo line"
+      },
+      {
+        "key": "stripping_turbo_selection[].dataset_type",
+        "type": "radios",
+        "titleMap": [
+          { "value": "mc_data", "name": "MC Data" },
+          { "value": "real_data", "name": "Real Data" }
         ]
       }
     ]
   },
   {
-    "key": "analysis_steps",
+    "key": "ntuple_userdst_production",
     "type": "tabArrayTop",
     "items": [
       {
-        "key": "analysis_steps[].code",
+        "key": "ntuple_userdst_production[].name",
+        "placeholder": "Please provide a name for your dataset"
+      },
+      {
+        "key": "ntuple_userdst_production[].input_dataset",
+        "placeholder": "Please select an input dataset from the previous step"
+      },
+      {
+        "key": "ntuple_userdst_production[].davinci_version",
+        "placeholder": "Please provide a davinci version that was used"
+      },
+      {
+        "key": "ntuple_userdst_production[].platform",
+        "placeholder": "Please provide a platform"
+      },
+      {
+        "key": "ntuple_userdst_production[].davinci_script",
+        "title": "Davinci script",
+        "type": "fieldset",
         "items": [
           {
-            "key": "analysis_steps[].code[].lhcb_code",
-            "placeholder": "E.g. DaVinci v33r6",
-                "type": "cap:formAutofill",
-                "ref": {
-                    "url": "/api/lhcb/analysis/platforms",
-                    "paramKey": "application",
-                    "map": [
-                    {
-                        "s": ["platforms"],
-                        "t": ["#", "platform"]
-                    }
-                    ]
-                }
+            "key": "ntuple_userdst_production[].davinci_script._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
           },
           {
-            "key": "analysis_steps[].code[].platform",
-            "placeholder": "E.g. x86_64-slc5-gcc46-opt"
-          },
-          {
-            "key": "analysis_steps[].code[].user_code",
+            "key": "ntuple_userdst_production[].davinci_script.source",
+            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
             "items": [
               {
-                "key": "analysis_steps[].code[].user_code.url",
-                "placeholder": "E.g. svn@svnweb.cern.ch/cern/wsvn/myrepo"
+                "key": "ntuple_userdst_production[].davinci_script.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
               },
               {
-                "key": "analysis_steps[].code[].user_code.description",
-                "placeholder": "Please enter the user code description, location, etc"
-              },
-              {
-                "key": "analysis_steps[].code[].user_code.instructions",
-                "type": "textarea",
-                "fieldHtmlClass": "custom-textarea",
-                "placeholder": "Please enter the instructions for using the code, e.g. Open 'README' file"
+                "key": "ntuple_userdst_production[].davinci_script.source.url",
+                "notitle": true,
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
               }
             ]
+          },
+          {
+            "key": "ntuple_userdst_production[].davinci_script.key",
+            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['davinci_script']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
           }
         ]
       },
       {
-        "key": "analysis_steps[].input_data",
+        "key": "ntuple_userdst_production[].ganga_script",
+        "title": "Ganga script",
         "type": "fieldset",
         "items": [
           {
-            "key": "analysis_steps[].input_data.dataset",
-            "startEmpty": true,
+            "key": "ntuple_userdst_production[].ganga_script._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
+          },
+          {
+            "key": "ntuple_userdst_production[].ganga_script.source",
+            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['ganga_script']['_type'] == 'external_url'",
             "items": [
               {
-                "key": "analysis_steps[].input_data.data[].name",
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
-                "notitle": true
+                "key": "ntuple_userdst_production[].ganga_script.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
+              },
+              {
+                "key": "ntuple_userdst_production[].ganga_script.source.url",
+                "notitle": true,
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
               }
             ]
           },
           {
-            "key": "analysis_steps[].input_data.mc_dataset",
-            "startEmpty": true,
-            "items": [
-              {
-                "key": "analysis_steps[].input_data.mc_data[].name",
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
-                "notitle": true
-              }
-            ]
+            "key": "ntuple_userdst_production[].ganga_script.key",
+            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['ganga_script']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
           }
         ]
       },
       {
-        "key": "analysis_steps[].output_data",
+        "key": "ntuple_userdst_production[].output_eos_location",
+        "placeholder": "Please provide an output eos location"
+      }
+    ]
+  },
+  {
+    "key": "user_analysis",
+    "type": "fieldset",
+    "items": [
+      {
+        "key": "user_analysis.gitlab_link",
+        "title": "Git repository link",
         "type": "fieldset",
         "items": [
           {
-            "key": "analysis_steps[].output_data.dataset",
-            "startEmpty": true,
+            "key": "user_analysis.gitlab_link._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
+          },
+          {
+            "key": "user_analysis.gitlab_link.source",
+            "condition": "model['user_analysis']['gitlab_link']['_type'] == 'external_url'",
             "items": [
               {
-                "key": "analysis_steps[].output_data.data[].name",
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
-                "notitle": true
+                "key": "user_analysis.gitlab_link.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
+              },
+              {
+                "key": "user_analysis.gitlab_link.source.url",
+                "title": "Gitlab repository of the analysis",
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
               }
             ]
           },
           {
-            "key": "analysis_steps[].output_data.mc_dataset",
-            "startEmpty": true,
+            "key": "user_analysis.gitlab_link.key",
+            "condition": "model['user_analysis']['gitlab_link']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
+          }
+        ]
+      },
+      {
+        "key": "user_analysis.basic_script",
+        "title": "Basic script",
+        "type": "fieldset",
+        "items": [
+          {
+            "key": "user_analysis.basic_script._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
+          },
+          {
+            "key": "user_analysis.basic_script.source",
+            "condition": "model['user_analysis']['basic_script']['_type'] == 'external_url'",
             "items": [
               {
-                "key": "analysis_steps[].output_data.mc_data[].name",
-                "placeholder": "E.g. root://eospublic.cern.ch//eos/mydir/.../myfile-data.root",
-                "notitle": true
+                "key": "user_analysis.basic_script.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
+              },
+              {
+                "key": "user_analysis.basic_script.source.url",
+                "title": "Basic script to start the analysis",
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
               }
             ]
+          },
+          {
+            "key": "user_analysis.basic_script.key",
+            "condition": "model['user_analysis']['basic_script']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
           }
         ]
       }

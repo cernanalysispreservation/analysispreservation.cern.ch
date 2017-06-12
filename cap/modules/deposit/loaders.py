@@ -85,7 +85,7 @@ class XCapFileValidationError(ValidationError):
                 self.instance
             )
             if data:
-                if part is not None:
+                if part is not None and part in data:
                     del data[part]
                 else:
                     del data
