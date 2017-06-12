@@ -877,6 +877,16 @@ angular.module('schemaForm').provider('schemaFormDecorators',
     }
   };
 
+  this.defineAddOn_with_replace_false = function(name, type, url, builder) {
+    if (decorators[name]) {
+      decorators[name][type] = {
+        template: url,
+        builder: builder,
+        replace: false
+      };
+    }
+  };
+
 
 
   //Service is just a getter for directive templates and rules
@@ -1410,7 +1420,7 @@ angular.module('schemaForm').provider('schemaForm',
         if (obj.type === 'checkbox' && angular.isUndefined(obj.schema['default'])) {
           obj.schema['default'] = false;
         }
-        
+
         // Special case: template type with tempplateUrl that's needs to be loaded before rendering
         // TODO: this is not a clean solution. Maybe something cleaner can be made when $ref support
         // is introduced since we need to go async then anyway
@@ -2845,8 +2855,8 @@ angular.module('schemaForm').directive('schemaValidate', ['sfValidator', '$parse
 
         // A bit ugly but useful.
         scope.validateField =  function(formName) {
-          
-          // If we have specified a form name, and this model is not within 
+
+          // If we have specified a form name, and this model is not within
           // that form, then leave things be.
           if(formName != undefined && ngModel.$$parentForm.$name !== formName) {
             return;

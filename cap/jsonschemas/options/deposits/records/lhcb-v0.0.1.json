@@ -491,6 +491,7 @@
   },
   {
     "key": "analysis_steps",
+    "type": "tabArrayTop",
     "items": [
       {
         "key": "analysis_steps[].code",

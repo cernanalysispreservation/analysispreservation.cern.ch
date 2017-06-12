@@ -812,7 +812,7 @@
       {
         "key": "auxiliary_measurements[].type",
         "type": "select",
-        "titleMap": [                     
+        "titleMap": [
           {
             "value": "trigger_efficiencies",
             "name": "Trigger Efficiencies"

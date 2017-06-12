@@ -15,9 +15,7 @@
     },
     "analysis_steps": {
       "description": "Please provide information about the steps of the analysis",
-      "default": [{
-
-      }],
+      "default": [{}],
       "items": {
         "properties": {
           "code": {
@@ -137,7 +135,7 @@
         "measurement": {
           "title": "Measurement",
           "type": "string",
-          "description": "Provide a name for your analysis. This will be displayed as an analysis title when shared."
+          "description": "Provide a Measurement type. This will be displayed as an analysis title when shared."
         },
         "review_egroup": {
           "title": "Review eGroup",

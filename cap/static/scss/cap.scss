@@ -505,6 +505,8 @@ body::-webkit-scrollbar-thumb {
   background-color: transparent;
   height: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
 
   .panel-heading {

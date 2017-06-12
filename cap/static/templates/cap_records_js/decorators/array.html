@@ -1,15 +1,17 @@
 <div
   sf-array="form"
-  id="{{ form.key.slice(-1)[0] }}"
+  ng-init="_id = form.key.join('_');accordionArray[_id]={}"
+  id="{{ _id }}"
   class="schema-form-array {{form.htmlClass}}"
   ng-model="$$value$$"
   ng-model-options="form.ngModelOptions"
+  ng-class="{ 'top-child': form.key.length == 1}"
   ng-hide="form.collapsed">
-    <div class="panel panel-default cap-panel">
+    <div class="panel deposit-panel panel-default cap-panel">
       <div class="panel-heading">
             <div class="title">
               <span>
-                <strong>{{ form.title | uppercase }}</strong><i ng-if="form.description" class="fa fa-minus"></i>
+                <strong>{{ form.title | uppercase }}</strong> ( {{modelArray.length}} Items) <i ng-if="form.description" class="fa fa-minus"></i>
               </span>
             </div>
             <button ng-hide="form.readonly || form.add === null"
@@ -27,23 +29,29 @@
           <uib-tabset type="pills">
             <uib-tab index="0">
               <uib-tab-heading>
-                <i class="fa fa-long-arrow-left"></i>
+                <i class="fa fa-long-arrow-left"> back to form</i>
               </uib-tab-heading>
-              <ol class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
-                  <li class="list-group-item {{ form.fieldHtmlClass }}"
+              <!-- <div class="deposit-array-info">{{modelArray.length}} Items</div> -->
+              <ol uib-accordion class="list-group" ng-model="modelArray" ui-sortable="form.sortOptions">
+                  <li uib-accordion-group
+                      class="list-group-item {{ form.fieldHtmlClass }}"
                       ng-class="{'deposit-inline': form.inline}"
-                      ng-repeat="item in modelArray track by $index">
-                      <div class="list-group-item-index">
-                        {{form.title}} #{{$index}}
-                        <div class="actions">
-                          <div class="close-container" ng-class="{'clear-form': !form.inline}">
-                              <button ng-hide="form.readonly || form.remove === null"
-                                      ng-click="deleteFromArray($index)"
-                                      ng-disabled="form.schema.minItems >= modelArray.length"
-                                      style="position: relative; z-index: 20;"
-                                      type="button" class="close pull-right">
-                                  <span aria-hidden="true"><i class="fa fa-trash"></i></span><span class="sr-only">Close</span>
-                              </button>
+                      ng-init="accordionArray[_id][$index] = true"
+                      ng-repeat="item in modelArray track by $index"
+                      is-open="accordionArray[_id][$index]">
+                      <div uib-accordion-heading>
+                        <div class="list-group-item-index">
+                          {{form.title}} #{{$index}}  <i class="fa" ng-class="{'fa-angle-down' : accordionArray[_id][$index], 'fa-angle-right' : !accordionArray[_id][$index]}"></i>
+                          <div class="actions">
+                            <div class="close-container" ng-class="{'clear-form': !form.inline}">
+                                <button ng-hide="form.readonly || form.remove === null"
+                                        ng-click="deleteFromArray($index)"
+                                        ng-disabled="form.schema.minItems >= modelArray.length"
+                                        style="position: relative; z-index: 20;"
+                                        type="button" class="close">
+                                    <span aria-hidden="true"><i class="fa fa-trash"></i></span><span class="sr-only">Close</span>
+                                </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -51,10 +59,9 @@
                   </li>
               </ol>
               </uib-tab>
-
               <uib-tab index="1">
                 <uib-tab-heading>
-                  <i class="fa fa-pencil"></i>
+                  <i class="fa fa-code"> JSON</i>
                 </uib-tab-heading>
                 <div ng-jsoneditor ng-model="$$value$$" options="{mode: 'code'}" style="width:100%;height:100%;"></div>
               </uib-tab>

@@ -3,7 +3,7 @@
   id="{{ form.key.slice(-1)[0] }}"
   sf-array="form"
   ng-init="selected = { tab: 0 }"
-     class="clearfix schema-form-tabarray schema-form-tabarray-{{form.tabType || 'left'}} {{form.htmlClass}}">
+  class="clearfix schema-form-tabarray schema-form-tabarray-{{form.tabType || 'left'}} {{form.htmlClass}}">
   <div class="panel panel-default cap-panel">
         <div class="panel-heading">
             <div class="description">
@@ -17,7 +17,7 @@
           <uib-tabset type="pills">
             <uib-tab index="0">
               <uib-tab-heading>
-                <i class="fa fa-long-arrow-left"></i>
+                <i class="fa fa-long-arrow-left"> back to <strong>form</strong></i>
               </uib-tab-heading>
               <div id="tabarray-nav" ng-if="!form.tabType || form.tabType !== 'right'"
                          ng-class="{'col-xs-3': !form.tabType || form.tabType === 'left'}">
@@ -62,7 +62,7 @@
 
             <uib-tab index="1">
               <uib-tab-heading>
-                <i class="fa fa-pencil"></i>
+                <i class="fa fa-code"> JSON</i>
               </uib-tab-heading>
               <div ng-jsoneditor ng-model="$$value$$" options="{mode: 'code'}" style="width:100%;height:100%;"></div>
             </uib-tab>
