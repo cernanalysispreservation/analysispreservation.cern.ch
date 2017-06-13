@@ -85,6 +85,7 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
+    'Flask-Security==1.7.5',
     'Flask-WTF==0.13.1',
     'invenio-access>=1.0.0a11',
     'invenio-accounts>=1.0.0b1',

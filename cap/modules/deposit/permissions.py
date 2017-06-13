@@ -126,7 +126,7 @@ class DepositPermission(DynamicPermission):
 
         :param identity: The identity
         """
-        owners = self.record.get('_deposit', {}).get('owners', [])
+        owners = self.deposit.get('_deposit', {}).get('owners', [])
         superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
         # Check if the user is superuser
         for superuser_egroup in superuser_egroups:
@@ -140,7 +140,6 @@ class DepositPermission(DynamicPermission):
 
     def can(self):
         owners = self.deposit.get('_deposit', {}).get('owners', [])
-
         superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
         # Check if the user is superuser
         for superuser_egroup in superuser_egroups:
@@ -165,6 +164,7 @@ class CreateDepositPermission(DepositPermission):
     def __init__(self, record):
         # Get payload and pass it as record to get the '$schema'
         record = request.get_json(force=True)
+
         super(CreateDepositPermission, self).__init__(record, 'create')
 
 
