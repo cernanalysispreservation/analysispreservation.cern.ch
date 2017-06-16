@@ -26,14 +26,17 @@
 
 from __future__ import absolute_import, print_function
 
+import ldap
+
 from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import (collaboration_permissions,
-                                                 collaboration_permissions_factory)
+from cap.modules.experiments.permissions import (
+    collaboration_permissions, collaboration_permissions_factory)
 from cap.utils import obj_or_import_string
 from flask import Blueprint, current_app, jsonify, redirect, session
 from flask_login import current_user
 from flask_principal import Permission
 from flask_security.views import logout
+
 
 user_blueprint = Blueprint('cap_user', __name__,
                            template_folder='templates')
@@ -156,6 +159,75 @@ def CAP_EXPERIMENT_MENU():
     ]
 
     return _menu
+
+
+LDAP_USER_RESP_FIELDS = [
+    'cn',
+    'displayName',
+    'mail',
+    'memberOf',
+    'company',
+    'department',
+    'cernAccountType',
+    'objectClass'
+]
+
+LDAP_EGROUP_RESP_FIELDS = [
+    'cn',
+    'displayName',
+    'description',
+    'mail',
+    'member',
+    'objectClass'
+]
+
+
+@user_blueprint.route('/ldap/user/username/<query>')
+@login_required
+def ldap_user_by_username(query=None):
+    """LDAP user by username query."""
+
+    lc = ldap.initialize('ldap://xldap.cern.ch')
+    lc.search(
+        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
+        ldap.SCOPE_SUBTREE,
+        'cn=*{}*'.format(query),
+        LDAP_USER_RESP_FIELDS
+    )
+    res = lc.result()
+    return jsonify(res)
+
+
+@user_blueprint.route('/ldap/user/name/<query>')
+@login_required
+def ldap_user_by_name(query=None):
+    """LDAP user by name query."""
+
+    lc = ldap.initialize('ldap://xldap.cern.ch')
+    lc.search(
+        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
+        ldap.SCOPE_SUBTREE,
+        'displayName=*{}*'.format(query),
+        LDAP_USER_RESP_FIELDS
+    )
+    res = lc.result()
+    return jsonify(res)
+
+
+@user_blueprint.route('/ldap/egroup/<query>')
+@login_required
+def ldap_egroup(query=None):
+    """LDAP egroup query."""
+
+    lc = ldap.initialize('ldap://xldap.cern.ch')
+    lc.search(
+        'OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
+        ldap.SCOPE_SUBTREE,
+        'cn=*{}*'.format(query),
+        LDAP_EGROUP_RESP_FIELDS
+    )
+    res = lc.result()
+    return jsonify(res)
 
 
 @user_blueprint.route('/menu')

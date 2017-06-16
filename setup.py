@@ -76,6 +76,7 @@ install_requires = [
     'setuptools>=20.6.7',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
+    'python-ldap>=2.4.39',
     'Flask>=0.11.1',
     'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
