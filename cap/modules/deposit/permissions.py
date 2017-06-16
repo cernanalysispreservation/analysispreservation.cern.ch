@@ -27,12 +27,11 @@
 
 from functools import partial
 
-from flask import current_app, request, g
+from flask import current_app, g, request
 
 from cap.utils import obj_or_import_string
-from invenio_access.permissions import (
-    DynamicPermission, ParameterizedActionNeed)
-
+from invenio_access.permissions import (DynamicPermission,
+                                        ParameterizedActionNeed)
 
 DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
 """Action need for reading a record."""
@@ -101,8 +100,26 @@ class DepositPermission(DynamicPermission):
             for _need in _permission_factory_imp:
                 self._needs.add(_need)
 
+    def _discover_schema(self):
+        """If schema url not passed directly, set it based on $ana_type field"""
+
+        if '$schema' not in self.deposit:
+            deposit_groups = current_app.config.get('DEPOSIT_GROUPS', None)
+
+            ana_type = self.deposit.get("$ana_type", None)
+            schema = deposit_groups.get(ana_type)['schema']
+
+            if schema:
+                host = current_app.config.get('JSONSCHEMAS_HOST', None)
+                self.deposit['$schema'] = "https://{host}/{schema}" \
+                    .format(host=host, schema=schema)
+
+
     def _get_deposit_group_info(self):
         """Retrieve deposit group information for specific schema"""
+
+        self._discover_schema()
+
         try:
             schema = self.deposit.get("$schema", None) \
                                  .split('/schemas/', 1)[1]
