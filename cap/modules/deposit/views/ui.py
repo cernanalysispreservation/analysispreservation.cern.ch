@@ -26,9 +26,11 @@
 """CAP deposit UI views"""
 from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
 from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, jsonify, render_template
+from flask import Blueprint, abort, current_app, jsonify, render_template, request
 from flask.views import View
 from flask_security import login_required
+
+from jsonschema.validators import Draft4Validator, RefResolutionError
 
 from invenio_access import DynamicPermission
 
@@ -39,6 +41,44 @@ blueprint = Blueprint(
     url_prefix='/deposit',
     static_folder='../static'
 )
+
+
+@blueprint.route('/validator', methods=['GET', 'POST'])
+def validator():
+    def _concat_deque(queue):
+        """Helper for joining dequeue object."""
+        result = ''
+        for i in queue:
+            if isinstance(i, int):
+                result += '[' + str(i) + ']'
+            else:
+                result += '/' + i
+        return result
+
+    data = request.get_json()
+    status = 200
+    result = {}
+    try:
+        schema = data['$schema']
+        if not isinstance(schema, dict):
+            schema = {'$ref': schema}
+        resolver = current_app.extensions[
+            'invenio-records'].ref_resolver_cls.from_schema(schema)
+
+        result['errors'] = [{_concat_deque(error.path): error.message} for error in Draft4Validator(
+            schema, resolver=resolver
+        ).iter_errors(data)]
+        if result['errors']:
+            status = 400
+    except RefResolutionError:
+        result['errors'] = 'Schema with given url not found'
+        status = 400
+    except KeyError:
+        result['errors'] = 'Schema field is required'
+        status = 400
+
+    return jsonify(result), status
+
 
 DEPOSIT_DEFAULT_METAINFO = {
     "alert_template": "/api/static/templates/cap_records_js/alert.html",
@@ -159,7 +199,6 @@ def to_files_js(deposit):
 
 
 class NewItemView(View):
-
     def __init__(self, template_name=None,
                  schema=None,
                  schema_form=None,
@@ -202,14 +241,12 @@ class NewItemView(View):
 
 
 class ListView(View):
-
     def __init__(self, template_name=None,
                  schema=None, schema_form=None,
                  read_permission_factory=None,
                  create_permission_factory=None,
                  update_permission_factory=None,
                  delete_permission_factory=None):
-
         self.template_name = template_name
         self.schema = schema
         self.schema_form = schema_form

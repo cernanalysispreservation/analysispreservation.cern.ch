@@ -245,8 +245,8 @@ class CAPDeposit(Deposit):
                      ),
                     None
                 )
-
-            data["_experiment"] = _deposit_group.get("experiment", "Unknown")
+            data["_experiment"] = _deposit_group.get(
+                "experiment", "Unknown")
 
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
 

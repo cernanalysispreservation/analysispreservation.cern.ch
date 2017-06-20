@@ -88,7 +88,11 @@ class DepositPermission(DynamicPermission):
         super(DepositPermission, self).__init__(*_needs)
 
     def _load_deposit_group_permissions(self):
+
         _deposit_group = self._get_deposit_group_info()
+
+        if not _deposit_group:
+            return {}
 
         _permission_factory_imp = \
             _deposit_group.get(self.action + '_permission_factory_imp', None)
@@ -113,7 +117,6 @@ class DepositPermission(DynamicPermission):
                 host = current_app.config.get('JSONSCHEMAS_HOST', None)
                 self.deposit['$schema'] = "https://{host}/{schema}" \
                     .format(host=host, schema=schema)
-
 
     def _get_deposit_group_info(self):
         """Retrieve deposit group information for specific schema"""
