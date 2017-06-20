@@ -113,7 +113,7 @@ def CAP_EXPERIMENT_MENU():
 
     _menu = [
         {
-            'name': 'Shared Records',
+            'name': 'Collaboration',
             'link': _l('app.shared'),
             'icon': 'fa fa-share-square'
         },
@@ -131,12 +131,12 @@ def CAP_EXPERIMENT_MENU():
                 'icon': 'fa fa-file-text-o',
                 'items': [
                     {
-                        'name': 'Shared',
+                        'name': 'My shared deposits',
                         'link': _l('app.deposit({status: "published"})'),
                         'icon': 'fa fa-share-square-o'
 
                     }, {
-                        'name': 'Drafts',
+                        'name': 'My drafts',
                         'link': _l('app.deposit({status: "draft"})'),
                         'icon': 'fa fa-pencil-square'
                     }

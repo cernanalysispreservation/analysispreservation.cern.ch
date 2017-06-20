@@ -29,7 +29,7 @@
             class="small-logo"/>
       </a>
     </div>
-    <div ng-if="$ctrl.user.collaborations.length >= 1" id="cap-experiments-toggle" class="dropdown" uib-dropdown is-open="status.isopen2">
+    <!-- <div ng-if="$ctrl.user.collaborations.length >= 1" id="cap-experiments-toggle" class="dropdown" uib-dropdown >
       <a id="cap-experiments-dropdown" uib-dropdown-toggle class="dropdown" aria-haspopup="true" aria-expanded="false">
         {{$ctrl.user.current_experiment}}
         <span ng-if="$ctrl.user.collaborations.length > 1" class="caret"></span>
@@ -46,7 +46,7 @@
           </a>
         </li>
       </ul>
-    </div>
+    </div> -->
     <!-- <img ng-src="/static/img/demo.png" alt="" style="position:absolute;top:0;right:300px;width:100px;pointer-events:none;"> -->
   </div>
   <div class="right" ng-class="{'push-right-align': $ctrl.user.collaborations.length == 0}">
@@ -78,16 +78,16 @@
     </div>
     <div class="actions">
       <div id="cap-user-deposit-menu" ng-if="$ctrl.user.collaborations.length >= 1">
-        <a ui-sref="app.select_deposit_new" class="btn" id="header-upload">
-          <i class="fa fa-cloud-upload"></i>
+        <a ui-sref="app.select_deposit_new" >
+          <i class="fa fa-upload" aria-hidden="true"></i>
           Create
         </a>
       </div>
-      <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
-        <button ng-if="$ctrl.user.collaborations.length >= 1" id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
+      <div id="cap-home-user-menu" class="dropdown cursor-pointer" uib-dropdown >
+        <a ng-if="$ctrl.user.collaborations.length >= 1" id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown" type="button"  aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user"></i>
           <span class="caret"></span>
-        </button>
+        </a>
         <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
           <li class="header">
             <span>Signed In As</br> <strong>{{$ctrl.user.email}}</strong></span>
@@ -111,47 +111,52 @@
               Your Applications
             </a>
           </li>
+          <li class="">
+            <a href="/api/logout" target="_self">
+              <i class="fa fa-power-off"></i>
+              Sign Out
+            </a>
+          </li>
         </ul>
-        <a href="/api/logout" target="_self" class="btn visible-lg-inline-block visible-md-inline-block"><i class="fa fa-power-off" aria-hidden="true"></i></a>
       </div>
     </div>
   </div>
   <div class="burger">
       <div id="cap-home-user-menu" class="dropdown" uib-dropdown is-open="status.isopen1">
-        <button id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown btn" type="button"  aria-haspopup="true" aria-expanded="false">
+        <a id="cap-home-user" uib-dropdown-toggle ng-disabled="disabled" class="dropdown cursor-pointer" type="button"  aria-haspopup="true" aria-expanded="false">
           <i class="fa fa-user"></i>
           <span class="caret"></span>
-        </button>
+        </a>
         <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu aria-labelledby="cap-home-user">
           <li class="header">
             <span>Signed In As</br> <strong>{{$ctrl.user.email}}</strong></span>
           </li>
           <li role="separator" class="divider"></li>
           <li class="">
-            <a href="#">
+            <a ui-sref="app.profile.overview">
               <i class="fa fa-user"></i>
               Your Profile
             </a>
           </li>
           <li class="">
-            <a href="#">
+            <a ui-sref="app.profile.settings">
               <i class="fa fa-link"></i>
               Your Settings
             </a>
           </li>
           <li class="">
-            <a href="#">
+            <a ui-sref="app.profile.applications">
               <i class="fa fa-shield"></i>
               Your Applications
             </a>
           </li>
           <li role="separator" class="divider"></li>
           <li class="btn-item">
-            <a class="btn" ui-sref="app.select_deposit_new">
-              <i class="fa fa-cloud-upload"></i>
+            <a ui-sref="app.select_deposit_new" >
+              <i class="fa fa-upload" aria-hidden="true"></i>
               Create
             </a>
-          </li>
+            </li>
           <li role="separator" class="divider"></li>
           <li class="">
             <a href="/api/logout" target="_self">
