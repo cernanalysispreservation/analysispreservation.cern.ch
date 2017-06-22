@@ -3,12 +3,13 @@
 ///////////////////////////////////////////
 // CAP app Controller
 
-var capCtrl = function ($rootScope, $scope, $window, $location, capRecordsClient, capUserClient, $state, hotkeys, screenSize) {
+var capCtrl = function ($rootScope, $scope, $window, $document, $location, capRecordsClient, capUserClient, $state, hotkeys, screenSize) {
   $scope.$location = $location;
   $scope.current_state_params = $state.params;
   $scope.errors = [];
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
     $scope.currentState = toState.name;
   });
 
@@ -182,6 +183,7 @@ capCtrl.$inject = [
   '$rootScope',
   '$scope',
   '$window',
+  '$document',
   '$location',
   'capRecordsClient',
   'capUserClient',

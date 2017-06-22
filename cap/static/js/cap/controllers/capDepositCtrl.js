@@ -27,7 +27,7 @@
 ///////////////////////////////////////////
 // CAP app Deposit Controller
 
-var capDepositCtrl = function($scope, $state, $location, $http, deposit, contentBarTabs, capRecordsClient) {
+var capDepositCtrl = function($scope, $state, $location, $document, $http, deposit, contentBarTabs, capRecordsClient) {
   $scope.$on(
     'invenio.records.action.success', function(event) {
       var depid = $scope.recordsVM.invenioRecordsEndpoints['self'].split('/').pop();
@@ -66,9 +66,26 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
   };
 
   // Deposit Navigation Actions
-  $scope.nextNavItem = function(){ if ($scope.currentNavItem+1 < $scope.depositNavForm.length) $scope.currentNavItem++; }
-  $scope.prevNavItem = function(){ if ($scope.currentNavItem > 0) $scope.currentNavItem--; }
-  $scope.switchNavItem = function(index){ $scope.currentNavItem = index; }
+  var scrollToTop = function() {
+    $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0;
+  }
+
+  $scope.nextNavItem = function() {
+    if ($scope.currentNavItem+1 < $scope.depositNavForm.length) {
+      $scope.currentNavItem++;
+      scrollToTop();
+    }
+  }
+  $scope.prevNavItem = function() {
+    if ($scope.currentNavItem > 0) {
+      $scope.currentNavItem--;
+      scrollToTop();
+    }
+  }
+  $scope.switchNavItem = function(index){
+    $scope.currentNavItem = index;
+    scrollToTop();
+  }
   $scope.toggleSidebar = function(){  $scope.displayNav = !$scope.displayNav; }
 
   $scope.$on('sf-render-finished', function(event){
@@ -88,12 +105,15 @@ var capDepositCtrl = function($scope, $state, $location, $http, deposit, content
         title_prefix + " " + now.toLocaleString();
     }
   });
+
+
 }
 
 capDepositCtrl.$inject = [
   '$scope',
   '$state',
   '$location',
+  '$document',
   '$http',
   'deposit',
   'contentBarTabs',
