@@ -6,6 +6,9 @@
       </span>
 </div>
     <ul uib-collapse="form.collapsed" class="dropdwn-menu">
+        <span ng-if="!model || model.length == 0">
+          No items created. Add item and contents to see overview
+        </span>
         <li
           ng-repeat="item in [] | range: model.size"
           ng-class="{{fontColor}}"
