@@ -103,6 +103,7 @@ app_js = NpmBundle(
     "js/cap/controllers/capDepositFilesCtrl.js",
     "js/cap/controllers/capDepositSettingsCtrl.js",
     "js/cap/controllers/capFormAutofillCtrl.js",
+    "js/cap/controllers/capDynamicSelectCtrl.js",
     "js/cap/controllers/capFormAssociateRecords.js",
     "js/cap/controllers/capTypeaheadCtrl.js",
     "js/cap/controllers/capWGCtrl.js",

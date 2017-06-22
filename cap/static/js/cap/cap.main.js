@@ -65,6 +65,13 @@ angular.element(document).ready(function() {
       '/static/templates/cap_records_js/decorators/tabArrayTop.html',
       sfBuilderProvider.stdBuilders
     );
+
+    decoratorsProvider.defineAddOn_with_replace_false(
+      'bootstrapDecorator',
+      'cap:dynamicSelect',
+      '/static/templates/cap_records_js/decorators/capDynamicSelect.html',
+      sfBuilderProvider.stdBuilders
+    );
   }]);
 
   angular.bootstrap(

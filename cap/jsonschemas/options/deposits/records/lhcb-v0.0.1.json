@@ -190,35 +190,35 @@
         "key": "stripping_turbo_selection[].bookkeping_location",
         "type": "cap:formAutofill",
         "placeholder": "Please provide a bookkeeping path",
-        "ref": {    
-          "url": "/api/lhcb/analysis/collisiondata",    
-          "paramKey": "stripping_line",   
-          "map": [    
-            {   
-              "s": ["year"],    
-              "t": ["#", "year"]    
-            },    
-            {   
-              "s": ["processing_pass"],   
-              "t": ["#", "processing_pass"]   
-            },    
-            {   
-              "s": ["reconstruction", "software"],    
-              "t": ["#", "reconstruction_software", "name"]   
-            },     
-            {   
-              "s": ["reconstruction", "version"],   
-              "t": ["#", "reconstruction_software", "version"]    
-            },    
-            {   
-              "s": ["stripping", "software"],   
-              "t": ["#", "stripping_software", "name"]    
-            },    
-            {   
-              "s": ["stripping", "version"],   
-              "t": ["#", "stripping_software", "version"]   
-            }   
-          ]   
+        "ref": {
+          "url": "/api/lhcb/analysis/collisiondata",
+          "paramKey": "stripping_line",
+          "map": [
+            {
+              "s": ["year"],
+              "t": ["#", "year"]
+            },
+            {
+              "s": ["processing_pass"],
+              "t": ["#", "processing_pass"]
+            },
+            {
+              "s": ["reconstruction", "software"],
+              "t": ["#", "reconstruction_software", "name"]
+            },
+            {
+              "s": ["reconstruction", "version"],
+              "t": ["#", "reconstruction_software", "version"]
+            },
+            {
+              "s": ["stripping", "software"],
+              "t": ["#", "stripping_software", "name"]
+            },
+            {
+              "s": ["stripping", "version"],
+              "t": ["#", "stripping_software", "version"]
+            }
+          ]
         }
       },
       {
@@ -245,7 +245,10 @@
       },
       {
         "key": "ntuple_userdst_production[].input_dataset",
-        "placeholder": "Please select an input dataset from the previous step"
+        "placeholder": "Please select an input dataset from the previous step",
+        "type": "cap:dynamicSelect",
+        "pathToArray": ["stripping_turbo_selection"],
+        "keyToObserve": "name"
       },
       {
         "key": "ntuple_userdst_production[].davinci_version",
