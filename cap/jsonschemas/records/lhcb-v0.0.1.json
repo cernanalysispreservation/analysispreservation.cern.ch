@@ -1,50 +1,46 @@
-{  
+{
    "$schema":"http://json-schema.org/draft-04/schema#",
    "description":"Describe information needed for deposit module.",
-   "properties":{  
-      "_cap_status":{  
+   "properties":{
+      "_cap_status":{
          "type":"object",
-         "properties":{  
-            "url":{  
+         "properties":{
+            "url":{
                "type":"string"
             },
-            "message":{  
+            "message":{
                "type":"string"
             }
          }
       },
-      "ntuple_userdst_production":{  
+      "ntuple_userdst_production":{
          "description":"Please provide information about the steps of the analysis",
-         "default":[  
-            {  
-
-            }
-         ],
-         "items":{  
-            "properties":{  
-               "name":{  
+         "default":[{}],
+         "items":{
+            "properties":{
+               "name":{
                   "title":"Custom name",
                   "type":"string"
                },
-               "input_dataset":{  
+               "input_dataset":{
                   "title":"Input dataset",
                   "type":"string"
                },
-               "davinci_version":{  
+               "davinci_version":{
                   "title":"Davinci version",
                   "type":"string"
                },
-               "platform":{  
+               "platform":{
                   "title":"Platform",
                   "type":"string"
                },
-               "davinci_script":{  
+               "davinci_script":{
                   "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
                },
-               "ganga_script":{  
+               "ganga_script":{
                   "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
                },
-               "output_eos_location":{  
+               "output_eos_location":{
                   "title":"Output eos location",
                   "type":"string"
                }
@@ -55,28 +51,28 @@
          "title":"ntuple/userDST-production",
          "type":"array"
       },
-      "basic_info":{  
+      "basic_info":{
          "id":"basic_info",
          "description":"Please provide some information relevant for all parts of the Analysis here",
-         "properties":{  
-            "analysis_title":{  
+         "properties":{
+            "analysis_title":{
                "title":"Analysis Name",
                "type":"string",
                "description":"Provide a name for your analysis. This will be displayed as an analysis title when shared."
             },
-            "measurement":{  
+            "measurement":{
                "title":"Measurement",
                "type":"string",
                "description":"Provide a Measurement type. This will be displayed as an analysis title when shared."
             },
-            "review_egroup":{  
+            "review_egroup":{
                "title":"Review eGroup",
                "type":"string"
             },
-            "institutes":{  
+            "institutes":{
                "title":"Institutes Involved",
                "type":"string",
-               "enum":[  
+               "enum":[
                   "IFT",
                   "B_Q",
                   "BDC",
@@ -89,21 +85,25 @@
                   "B2OC"
                ]
             },
-            "keywords":{  
+            "keywords":{
                "id":"keywords",
                "title":"Keywords",
                "type":"string"
             },
-            "analysis_proponents":{  
+            "analysis_proponents":{
                "title":"Proponents",
-               "type":"string"
+               "type": "array",
+               "items": {
+                  "type":"string",
+                  "title":"Proponents"
+               }
             },
-            "reviewers":{  
+            "reviewers":{
                "title":"Reviewers",
                "type":"string"
             },
-            "analysis_status":{  
-               "enum":[  
+            "analysis_status":{
+               "enum":[
                   "0 - planned / open topic",
                   "1 - in preparation",
                   "2 - ANA note released",
@@ -119,8 +119,8 @@
                "type":"select",
                "title":"Status"
             },
-            "analysis_status_notes":{  
-               "dependencies":[  
+            "analysis_status_notes":{
+               "dependencies":[
                   "status"
                ],
                "title":"Notes on Status",
@@ -130,43 +130,43 @@
          "title":"Basic Information",
          "type":"object"
       },
-      "stripping_turbo_selection":{  
+      "stripping_turbo_selection":{
          "title":"Stripping/Turbo selection",
          "type":"array",
-         "items":{  
+         "items":{
             "type":"object",
-            "properties":{  
-               "name":{  
+            "properties":{
+               "name":{
                   "title":"Custom name",
                   "type":"string"
                },
-               "bookkeping_location":{  
+               "bookkeping_location":{
                   "title":"Bookkeeping location",
                   "type":"string"
                },
-               "stripping_turbo_line":{  
+               "stripping_turbo_line":{
                   "title":"Stripping/TURBO line",
                   "type":"string"
                },
-               "dataset_type":{  
+               "dataset_type":{
                   "type":"string",
                   "title":"Choose type of dataset",
-                  "enum":[  
+                  "enum":[
                      "mc_data",
                      "real_data"
                   ]
                },
-               "processing_pass":{  
+               "processing_pass":{
                   "title":"Processing Pass",
                   "type":"string"
                },
-               "reconstruction_software":{  
-                  "properties":{  
-                     "name":{  
+               "reconstruction_software":{
+                  "properties":{
+                     "name":{
                         "title":"Name",
                         "type":"string"
                      },
-                     "version":{  
+                     "version":{
                         "title":"Version",
                         "type":"string"
                      }
@@ -174,13 +174,13 @@
                   "title":"Reconstruction software",
                   "type":"object"
                },
-               "stripping_software":{  
-                  "properties":{  
-                     "name":{  
+               "stripping_software":{
+                  "properties":{
+                     "name":{
                         "title":"Name",
                         "type":"string"
                      },
-                     "version":{  
+                     "version":{
                         "title":"Version",
                         "type":"string"
                      }
@@ -188,45 +188,45 @@
                   "title":"Stripping software",
                   "type":"object"
                },
-               "year":{  
+               "year":{
                   "title":"Year",
                   "type":"string"
                }
             }
          }
       },
-      "user_analysis":{  
+      "user_analysis":{
          "title":"User Analysis",
          "type":"object",
-         "properties":{  
-            "gitlab_link":{  
+         "properties":{
+            "gitlab_link":{
                "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
                "title":"Gitlab repository of the analysis"
             },
-            "basic_script":{  
+            "basic_script":{
                "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
                "title":"Basic script to start the analysis"
             }
          }
       },
-      "additional_resources":{  
+      "additional_resources":{
          "title":"Additional Resources",
          "description":"Please provide information about the additional resources of the analysis",
          "type":"object",
-         "properties":{  
-            "internal_discussions":{  
+         "properties":{
+            "internal_discussions":{
                "id":"internal-discussions",
-               "items":{  
-                  "properties":{  
-                     "meeting":{  
+               "items":{
+                  "properties":{
+                     "meeting":{
                         "title":"E-Group",
                         "type":"string"
                      },
-                     "title":{  
+                     "title":{
                         "title":"Title",
                         "type":"string"
                      },
-                     "url":{  
+                     "url":{
                         "title":"URL",
                         "type":"string"
                      }
@@ -237,19 +237,19 @@
                "title":"Internal Discussions",
                "type":"array"
             },
-            "presentations":{  
+            "presentations":{
                "id":"presentations",
-               "items":{  
-                  "properties":{  
-                     "meeting":{  
+               "items":{
+                  "properties":{
+                     "meeting":{
                         "title":"Meeting (GROUP?)",
                         "type":"string"
                      },
-                     "title":{  
+                     "title":{
                         "title":"Title",
                         "type":"string"
                      },
-                     "url":{  
+                     "url":{
                         "title":"URL",
                         "type":"string"
                      }
@@ -260,39 +260,39 @@
                "title":"Presentations",
                "type":"array"
             },
-            "publications":{  
+            "publications":{
                "id":"publications",
-               "items":{  
-                  "properties":{  
-                     "analysis_number":{  
+               "items":{
+                  "properties":{
+                     "analysis_number":{
                         "title":"Analysis note (ANA) number",
                         "type":"string"
                      },
-                     "arxiv_id":{  
+                     "arxiv_id":{
                         "title":"arXiv ID",
                         "type":"string"
                      },
-                     "conf_report":{  
+                     "conf_report":{
                         "title":"Conference Report (CONF)",
                         "type":"string"
                      },
-                     "public_paper":{  
+                     "public_paper":{
                         "title":"Public Paper",
                         "type":"string"
                      },
-                     "twiki":{  
+                     "twiki":{
                         "title":"tWiki page",
                         "type":"string"
                      },
-                     "review_egroup":{  
+                     "review_egroup":{
                         "title":"Review Group",
                         "type":"string"
                      },
-                     "roles":{  
+                     "roles":{
                         "title":"Roles",
                         "type":"string"
                      },
-                     "url":{  
+                     "url":{
                         "title":"URL",
                         "type":"string"
                      }
@@ -303,20 +303,20 @@
                "title":"Publications",
                "type":"array"
             },
-            "documentations":{  
+            "documentations":{
                "id":"documentations",
-               "items":{  
+               "items":{
                   "description":"Add documentation",
-                  "properties":{  
-                     "comment":{  
+                  "properties":{
+                     "comment":{
                         "title":"Comment",
                         "type":"string"
                      },
-                     "keywords":{  
+                     "keywords":{
                         "title":"Keywords",
                         "type":"string"
                      },
-                     "url":{  
+                     "url":{
                         "title":"URL",
                         "type":"string"
                      }
