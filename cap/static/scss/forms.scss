@@ -30,7 +30,7 @@ $cap_deposit_topnav_height: 40px;
 /* Deposit forms general style */
 
 .forms-font-color {
-  color: $dark-blue-theme-color;
+  color: black;
 }
 
 .forms-filter-fields-font-size {
@@ -41,9 +41,13 @@ $cap_deposit_topnav_height: 40px;
   border-radius: 0;
 }
 
+.btn {
+    font-weight: 300;
+}
+
 .cap-deposit-form .top-child > .panel-default.cap-panel >{
   .panel-heading {
-    background-color: $light-blue-theme-color;
+    background-color: $dark-blue-theme-color;
     color: #fff;
     padding: 15px;
     display: inline-block;
@@ -92,7 +96,7 @@ $cap_deposit_topnav_height: 40px;
 }
 .form-control {
   background-color: #fff;
-  border: 1px solid #3b97d3;
+  border: 1px solid $dark-grey-bg-border-color;
   border-radius: 0;
   box-shadow: none;
 }
@@ -100,7 +104,7 @@ $cap_deposit_topnav_height: 40px;
 .search-fields {
   position: relative;
   padding: 10px;
-  border-bottom: 1px solid $light-blue-theme-color;
+  border-bottom: 1px solid $dark-grey-bg-border-color;
 }
 
 .search-fields input{
@@ -114,7 +118,7 @@ $cap_deposit_topnav_height: 40px;
 }
 
 #tabarray-nav {
-  border: 1px solid $light-blue-theme-color;
+  border: 1px solid $dark-grey-bg-border-color;
   padding: 10px;
   /* background-color: #fff; */
   margin: -16px;
@@ -312,7 +316,7 @@ $cap_deposit_topnav_height: 40px;
   left: 0;
   height: 100%;
   float: left;
-  border-right: 1px solid $light-blue-theme-color;
+  border-right: 1px solid $dark-grey-bg-border-color;
   background-color: #fff;
   margin-right: 10px;
 
@@ -329,6 +333,10 @@ $cap_deposit_topnav_height: 40px;
       flex-wrap: wrap;
       padding-right: 10px;
       padding-top: 5px;
+
+      .bg-primary {
+          background-color: $dark-blue-theme-color;
+      }
 
       &.title-lev1 {
       height: 40px;
@@ -447,7 +455,7 @@ $cap_deposit_topnav_height: 40px;
 }
 
 .cap-deposit-form-top-nav {
-  background-color: #e1e1e1;
+  background-color: white;
   height: $cap_deposit_topnav_height;
   flex: 0 0 auto;
   width: 100%;
@@ -457,7 +465,7 @@ $cap_deposit_topnav_height: 40px;
   left: 0;
   padding-left: 240px;
   z-index: 100;
-  border-bottom: 1px solid $light-blue-theme-color;
+  border-bottom: 1px solid $dark-grey-bg-border-color;
 }
 
 .menu-closed .cap-deposit-form-top-nav {
@@ -700,7 +708,6 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
 
 #cap-deposit-navigation {
   /* Progress bar */
-  color: $dark-blue-theme-color;
   ul {
     list-style-type: none;
     padding-left: 15px;
@@ -729,7 +736,7 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   }
 
   .deposit-navigation-root {
-    border-bottom: 1px solid $light-blue-theme-color;
+    border-bottom: 1px solid $dark-grey-bg-border-color;
 
     cap-deposit-nav-item,
     cap-deposit-nav-object,
@@ -807,13 +814,13 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   .nav-tabs {
     margin: 0 -15px;
     background-color: $light-grey-theme-color;
-    border-bottom: 1px solid $light-blue-theme-color;
+    border-bottom: 1px solid $dark-grey-bg-border-color;
 
     li {
       margin-bottom: 0;
 
       a {
-        color: $light-blue-theme-color;
+        color: $middle-blue-theme-color;
         padding: 5px 10px;
         border-radius: 0;
       }

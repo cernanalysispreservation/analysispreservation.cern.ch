@@ -39,8 +39,10 @@ $content-bar-height: 40px;
 // brand colors
 
 $light-blue-theme-color: #3b97d3;   // logo color, please don't change
+$middle-blue-theme-color: #337ab7;
 $dark-blue-theme-color: #2c3e50;  // logo color, please don't change
 $light-grey-theme-color: #ecf0f1;   // logo color, please don't change
+$dark-grey-theme-color: #5B666E;
 
 // blue
 
@@ -101,6 +103,7 @@ $breakpoint-tablet: 892px;
 $brand-pill-radius: 3px;
 
 $header_btn_height: 40px;
+$header_btn_width: 100px;
 $cap_header_height: 60px;
 
 $cap_searchbar_bgcolor: $blue-light-color;
@@ -118,3 +121,7 @@ $cap-deposit-sidebar-width: 300px;
 
 //links
 $link-color-default-blue: #337ab7;
+
+
+// Searchbar
+$searchbar-width: 500px;

@@ -78,7 +78,7 @@ html, body {
 
       .panel-heading {
         background-color: #fff;
-        font-weight: 400;
+        font-weight: 300;
         color: inherit;
         padding-top: 20px;
         padding-bottom: 15px;
@@ -155,6 +155,7 @@ html, body {
   color: $dark-grey-element-color;
   padding: 20px;
   border: 1px solid $light-blue-theme-color;
+  width: 100%;
 
   > header {
     color: #fff;
@@ -164,7 +165,7 @@ html, body {
     padding-bottom: 15px;
     margin-bottom: 15px;
     text-indent: 0.1px;
-    border-bottom: 1px solid $grey-border-color;
+    border-bottom: 1px solid $dark-grey-bg-border-color;
   }
 
   ul {
@@ -304,16 +305,19 @@ body::-webkit-scrollbar-thumb {
 }
 
 #cap-content-bar {
-  border-bottom: 1px solid $light-blue-theme-color;
+//  border-bottom: 1px solid $dark-grey-bg-border-color;
   max-height: $content-bar-height;
   text-align: center;
   position: fixed;
   top: $cap_header_height;
   width: 100%;
-  background-color: $light-blue-theme-color;
+  background-color: $light-grey-theme-color;
   z-index: 100;
   overflow: hidden;
-  color: #fff;
+  color: black;
+  font-weight: 400;
+  font-size: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
 
   .left {
     float: left;
@@ -336,12 +340,6 @@ body::-webkit-scrollbar-thumb {
 
   small {
     color: #e6e6e6;
-  }
-
-  a,
-  a:hover,
-  a:focus {
-    color: #fff;
   }
 
   ul {
@@ -426,7 +424,7 @@ body::-webkit-scrollbar-thumb {
     background-color: $light-grey-theme-color;
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid $light-blue-theme-color;
+    border-bottom: 1px solid $dark-grey-bg-border-color;
   }
 
   .modal-body {
@@ -443,7 +441,7 @@ body::-webkit-scrollbar-thumb {
 
     .item {
       padding: 10px;
-      border-bottom: 1px solid $light-grey-theme-color;
+      border-bottom: 1px solid $dark-grey-bg-border-color;
 
       h4, h5 {
         color: #747474;
@@ -458,7 +456,7 @@ body::-webkit-scrollbar-thumb {
     // background-/color: $light-grey-theme-color;
     padding: 10px;
     // text-align: center;
-    border-top: 1px solid $light-blue-theme-color;
+    border-top: 1px solid $dark-grey-bg-border-color;
   }
 
 }
@@ -507,24 +505,37 @@ body::-webkit-scrollbar-thumb {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 
 
   .panel-heading {
-    background-color: $light-blue-theme-color;;
+    background-color: $dark-blue-theme-color;
     border-radius: 0;
     border: 0;
     color: #fff;
+    font-weight: 300;
 
     a,
     a:hover,
     a:focus{
       color: #fff;
     }
+
+    h2 {
+        font-weight: 300;
+        font-size: 18px;
+    }
+        
+    h3 {
+        font-weight: 300;
+        font-size: 16px;
+    }
   }
   .panel-body {
-    background-color: #eff6f9;
+    background-color: white;
     border-radius: 0;
-    border: 1px solid $light-blue-theme-color;
+    height: 100%;
+    // border: 1px solid $light-blue-theme-color;
   }
 }
 .list-group-item-position {
@@ -743,6 +754,8 @@ $sidebar-toggle-color: $light-blue-theme-color;
     flex: 1;
     display: flex;
     justify-content: center;
+    font-size: 16px;
+    font-weight: 200;
 
     > span {
       width: 200px;
@@ -767,4 +780,5 @@ $sidebar-toggle-color: $light-blue-theme-color;
       font-weight: 600;
     }
   }
-}
+}  
+

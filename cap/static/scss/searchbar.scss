@@ -41,11 +41,11 @@ $cap_searchbar_bgcolor: #fff;
     top: 0;
     left: 0;
     padding-top: $cap_header_height;
-    width: 100vw;
+    width: $searchbar-width;
     height: 100vh;
-    background-color: rgba(205, 231, 254, 0.56);
+//    background-color: rgba(205, 231, 254, 0.56);
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-content: flex-start;
     flex-wrap: wrap;
 
@@ -62,7 +62,7 @@ $cap_searchbar_bgcolor: #fff;
     form {
       flex: 1;
       display: flex;
-      max-width: 700px;
+      max-width: 500px;
     }
   }
 
@@ -78,7 +78,7 @@ $cap_searchbar_bgcolor: #fff;
   invenio-search-bar {
     flex: 1;
     display: flex;
-    justify-content: center;
+    justify-content: left;
 
     form {
       z-index: 10010;
@@ -138,20 +138,23 @@ $cap_searchbar_bgcolor: #fff;
       line-height: 100%;
       color: $dark-grey-element-color;
       font-size: 2em;
+      font-weight: 300;
       padding: 11px;
     }
 
     input {
       padding-left: 10px;
     }
+
   }
 
   .header-search-bar {
-    height: $header_btn_height;
+    height: 35px;
+    width: $searchbar-width;
     background-color: $cap_searchbar_bgcolor;
     box-shadow: none;
     border-radius: 2px;
-    border: 1px solid $light-blue-theme-color;
+    border: 1px solid $dark-grey-bg-border-color;
     float: left;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -159,21 +162,21 @@ $cap_searchbar_bgcolor: #fff;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     outline: 0;
-    font-size: 18px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 200;
     color: $dark-grey-element-color;
     flex: 1;
   }
 
   .header-search-btn {
-    background-color: $cap_btn_bg;
+    background-color: $dark-grey-bg-border-color;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     color: white;
     font-size: 25px;
     font-weight: 100;
     height: $header_btn_height;
-    width: $header_btn_height;
+    width: $header_btn_width;
     border: 0;
     line-height: $header_btn_height;
     padding: 0 9px;

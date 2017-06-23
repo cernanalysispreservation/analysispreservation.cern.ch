@@ -18,7 +18,7 @@ $pushmenu-bgc-active: $light-blue-theme-color;
     width: 230px;
     top: $cap_header_height;
     z-index: 101;
-    border-right: 1px solid $light-blue-theme-color;
+    border-right: 1px solid $dark-grey-bg-border-color;
 
     &.menu-opened {
         display: block;

@@ -36,13 +36,13 @@
   background-color: #fff;
   justify-content: space-between;
   z-index: 10000;
-  border-bottom: 1px solid $light-blue-theme-color;
+  border-bottom: 1px solid $dark-grey-bg-border-color;
 
   div {
     z-index: 10000;
   }
   .left {
-    width: 400px;
+    width: 300px;
     z-index: 10000;
     display: flex;
     align-items: center;
@@ -67,8 +67,8 @@
       margin-top: -5px;
       margin-bottom: -5px;
       display: flex;
-      border-right: 1px solid $light-blue-theme-color;
-      border-left: 1px solid $light-blue-theme-color;
+      border-right: 1px solid $dark-grey-bg-border-color;
+      border-left: 1px solid $dark-grey-bg-border-color;
       width: 100px;
       justify-content: center;
 
@@ -127,10 +127,11 @@
 
     .dropdown-menu {
       border-radius: 0;
-      border: 1px solid $light-blue-theme-color;
+      border: 1px solid $dark-grey-bg-border-color;
+      margin: 20px -10px 0px 0px;
 
       .divider {
-        background-color: $light-blue-theme-color;
+        background-color: $dark-grey-bg-border-color;
       }
 
       li.header{

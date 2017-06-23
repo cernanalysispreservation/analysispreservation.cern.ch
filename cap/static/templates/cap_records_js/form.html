@@ -4,7 +4,7 @@
       <div ng-click="toggleSidebar()" class="cap-deposit-nav-toggle"><i class="sidebar-toggle"><i class="sidebar-toggle-inner"></i></i></div>
       <div class="cap-deposit-nav-component">
           <button ng-disabled="currentNavItem == 0"  ng-click="prevNavItem()" uib-tooltip="{{depositNavForm[currentNavItem-1].title}}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-          <span><strong>{{depositNavForm[currentNavItem].title}}</strong></span>
+          <span>{{depositNavForm[currentNavItem].title}}</span>
           <button ng-disabled="currentNavItem+1 == depositNavForm.length" ng-click="nextNavItem()" uib-tooltip="{{depositNavForm[currentNavItem+1].title}}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
       </div>
     </div>  <div class="cap-deposit-form">
