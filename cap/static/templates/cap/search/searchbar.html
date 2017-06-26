@@ -4,7 +4,6 @@
         type="text"
         placeholder="{{ placeholder }}"
         ng-model="vm.userQuery"
-        ng-model-options="{ debounce: { 'default': 500, 'blur': 0 } }"
         ng-keydown="$event.keyCode === 13 && updateQuery()"
         class="header-search-bar"
         />

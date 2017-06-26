@@ -1,30 +1,26 @@
-<ul class="result-items list-unstyled">
-    <li ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index" class="result-item">
-    <div class="cap-box">
-        <header>
-        <div class="title">
-            <a href="/deposit/{{record.id}}">
-                {{record.id}}. {{ record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name || "example-without-a-name" }}
-            </a>
-        </div>
-        <div class="collection">
-            <div class="primary-collection label label-success type-of-analysis">
+<div class="search-results" ng-if="vm.invenioSearchResults.hits.total != 0">
+    <div class="list-group">
+        <a class="list-group-item"
+           ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
+           ui-sref="app.deposit_item.overview( { depid: record.metadata._deposit.id })">
+            <div class="pull-left">
+            </div>
+            <div class="pull-left">
+                <h5 class="list-group-item-heading">
+                    {{ record.metadata.title_statement.title }}
+                </h5>
+                <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_title || record.metadata.analysis_title || record.metadata.analysis_context.name)">
+                Created ({{record.created | date:'yyyy-MM-dd'}})
+                </p>
+                <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_title || record.metadata.analysis_title || record.metadata.analysis_context.name">
+                {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_title || record.metadata.analysis_title ||
+          record.metadata.analysis_context.name}}
+                </p>
+            </div>
+            <small class="pull-right label label-success type-of-analysis results-title-position ng-binding">
                 {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
-            </div>
-        </div>
-        </header>
-        <div class="collection">
-            <div class="primary-collection label label-default">
-                {{ record.metadata._deposit.status }}
-            </div>
-        </div>
-        <!--             <button class="btn btn-default show-more" type="button" data-toggle="collapse"
-            data-target="#result-{{ record.id }}" aria-expanded="false" aria-controls="collapseExample">
-            ...
-        </button>
-        <div id="result-{{ record.id }}" class="collapse">
-            <result-item content="record.metadata"></result-item>
-        </div> -->
+                  </small>
+            <div class="clearfix"></div>
+        </a>
     </div>
-    </li>
-</ul>
+</div>

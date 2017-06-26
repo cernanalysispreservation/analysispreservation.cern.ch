@@ -1,37 +1,33 @@
 <div ng-if="vm.invenioSearchResults.hits.total != 0">
-  <div class="list-group">
-    <a class="list-group-item"
-        ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
-        ui-sref="app.deposit_item.overview( { depid: record.metadata._deposit.id })">
-      <div class="pull-left">
-        <div class="btn btn-sm btn-link">
-          <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
-        </div>
-      </div>
-      <div class="pull-left">
-        <h5 class="list-group-item-heading">
-          {{ record.metadata.title_statement.title }}
-        </h5>
-          <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
-            Created ({{record.created | date:'yyyy-MM-dd'}})
-          </p>
-          <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
-            {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
-          </p>
-      </div>
-      <small class="pull-right label label-default">
-        #{{ record.metadata._deposit.id }}
-      </small>
-      <div class="clearfix"></div>
-    </a>
-  </div>
+    <div class="list-group">
+        <a class="list-group-item"
+           ng-repeat="record in vm.invenioSearchResults.hits.hits track by $index"
+           ui-sref="app.deposit_item.overview( { depid: record.metadata._deposit.id })">
+            <div class="pull-left">
+                <div class="btn btn-sm btn-link">
+                    <i class="glyphicon glyphicon-{{ record.metadata._deposit.status!=='R' && 'open' || 'saved' }} text-{{ record.metadata._deposit.status!=='R' && 'success' || 'danger' }}"></i>
+                </div>
+            </div>
+            <div class="pull-left">
+                <h5 class="list-group-item-heading">
+                    {{ record.metadata.title_statement.title }}
+                </h5>
+                <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
+                Created ({{record.created | date:'yyyy-MM-dd'}})
+                </p>
+                <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
+                {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
+                </p>
+            </div>
+            <small class="pull-right label label-success type-of-analysis results-title-position ng-binding">
+                {{record.metadata.$schema.split('/').pop().replace('.json', '')}}
+                  </small>
+            <div class="clearfix"></div>
+        </a>
+    </div>
+    <ul uib-pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged(currentPage)"></ul>  
 </div>
 <div ng-if="vm.invenioSearchResults.hits.total == 0">
-<div class="list-group">
-  <div class="list-group-item">
-    <div align="center">
-      <h1>No results</h1>
-    </div>
-  </div>
+    <h5>No Analyses Found</h5>
 </div>
-</div>
+

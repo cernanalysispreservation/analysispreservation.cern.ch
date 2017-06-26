@@ -88,7 +88,8 @@ html, body {
       .panel-body {
         background-color: #fff;
         border: 0;
-        flex: 1 100%;
+        flex: 1;
+        height: 100%;
       }
 
       ul.sidebar-menu {

@@ -37,13 +37,11 @@ $cap_searchbar_bgcolor: #fff;
   align-items: center;
 
   #cap-search-results {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    padding-top: $cap_header_height;
+    padding-top: 10px;
     width: $searchbar-width;
-    height: 100vh;
-//    background-color: rgba(205, 231, 254, 0.56);
     display: flex;
     justify-content: left;
     align-content: flex-start;
@@ -58,6 +56,7 @@ $cap_searchbar_bgcolor: #fff;
 
   invenio-search {
     flex: 1;
+    position: relative;
 
     form {
       flex: 1;
@@ -70,9 +69,13 @@ $cap_searchbar_bgcolor: #fff;
   invenio-search-loading,
   invenio-search-count,
   invenio-search-results {
-    width: 100%;
+    width: $searchbar-width;
     display: flex;
     justify-content: center;
+
+    .list-group {
+        box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    }
   }
 
   invenio-search-bar {
@@ -100,8 +103,8 @@ $cap_searchbar_bgcolor: #fff;
       height: 20px;
       animation: spin 2s linear infinite;
       position: absolute;
-      right: 50px;
-      top: 10px;
+      right: 20px;
+      top: 8px;
       z-index: 10020;
   }
 
@@ -195,4 +198,8 @@ $cap_searchbar_bgcolor: #fff;
       float: right;
     }
   }
+}
+
+.search-results {
+    width: 100%;
 }
