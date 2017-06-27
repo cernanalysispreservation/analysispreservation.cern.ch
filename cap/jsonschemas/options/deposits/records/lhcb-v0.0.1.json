@@ -64,14 +64,15 @@
        },
        {
         "key": "basic_info.analysis_proponents",
-        "type": "tabArrayTop",
+        "type": "cap:tagsInput",
+        "title": "Proponents",
+        "placeholder": "E.g. John Doe",
+        "url": "/api/ldap/user/name",
+        "async": true,
         "items": [
           {
             "key": "basic_info.analysis_proponents[]",
-            "placeholder": "E.g. John Doe",
-            "type": "cap:typeahead",
-            "url": "/api/ldap/user/name",
-            "async": true
+            "type": "hidden"
           }
         ]
        },
