@@ -95,7 +95,7 @@
                "type": "array",
                "items": {
                   "type":"string",
-                  "title":"Proponents"
+                  "title":"Proponent"
                }
             },
             "reviewers":{
