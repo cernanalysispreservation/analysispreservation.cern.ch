@@ -32,7 +32,7 @@ from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import (
     collaboration_permissions, collaboration_permissions_factory)
 from cap.utils import obj_or_import_string
-from flask import Blueprint, current_app, jsonify, redirect, session
+from flask import Blueprint, current_app, jsonify, redirect, session, request
 from flask_login import current_user
 from flask_principal import Permission
 from flask_security.views import logout
@@ -182,49 +182,78 @@ LDAP_EGROUP_RESP_FIELDS = [
 ]
 
 
-@user_blueprint.route('/ldap/user/username/<query>')
+@user_blueprint.route('/ldap/user/name')
 @login_required
-def ldap_user_by_username(query=None):
+def ldap_user_by_name():
     """LDAP user by username query."""
+    query = request.args.get('query', None)
+
+    if not query:
+        return jsonify([])
 
     lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search(
+    lc.search_ext(
         'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_SUBTREE,
-        'cn=*{}*'.format(query),
-        LDAP_USER_RESP_FIELDS
+        ldap.SCOPE_ONELEVEL,
+        '(&(cernAccountType=Primary)(displayName=*{}*))'.format(query),
+        ['displayName'],
+        serverctrls=[ldap.controls.SimplePagedResultsControl(
+            True, size=5, cookie='')]
     )
-    res = lc.result()
+    res = lc.result()[1]
+
+    res = [x[1]['displayName'][0] for x in res]
     return jsonify(res)
 
 
-@user_blueprint.route('/ldap/user/name/<query>')
+@user_blueprint.route('/ldap/user')
 @login_required
-def ldap_user_by_name(query=None):
+def ldap_user():
     """LDAP user by name query."""
+    query = request.args.get('query', None)
+    sf = request.args.get('sf', 'cn')
+    rf_all = request.args.get('all', 0)
+    rf = map(lambda x: x.encode('ascii', 'ignore'),
+             request.args.getlist('rf'))
+    if not rf:
+        rf = ['cn']
+    if rf_all:
+        rf = LDAP_USER_RESP_FIELDS
+
+    if not query:
+        return jsonify([])
 
     lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search(
+    lc.search_ext(
         'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_SUBTREE,
-        'displayName=*{}*'.format(query),
-        LDAP_USER_RESP_FIELDS
+        ldap.SCOPE_ONELEVEL,
+        '{}=*{}*'.format(sf, query),
+        rf,
+        serverctrls=[ldap.controls.SimplePagedResultsControl(
+            True, size=20, cookie='')]
     )
-    res = lc.result()
+    res = lc.result()[1]
     return jsonify(res)
 
 
-@user_blueprint.route('/ldap/egroup/<query>')
+@user_blueprint.route('/ldap/egroup')
 @login_required
-def ldap_egroup(query=None):
+def ldap_egroup():
     """LDAP egroup query."""
+    query = request.args.get('query', None)
+    sf = request.args.get('sf', 'cn')
+
+    if not query:
+        return jsonify([])
 
     lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search(
+    lc.search_ext(
         'OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
-        ldap.SCOPE_SUBTREE,
-        'cn=*{}*'.format(query),
-        LDAP_EGROUP_RESP_FIELDS
+        ldap.SCOPE_ONELEVEL,
+        '{}=*{}*'.format(sf, query),
+        LDAP_EGROUP_RESP_FIELDS,
+        serverctrls=[ldap.controls.SimplePagedResultsControl(
+            True, size=20, cookie='')]
     )
     res = lc.result()
     return jsonify(res)

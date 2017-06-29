@@ -39,7 +39,6 @@
                ng-class="{active: selected.tab === $index}">
                <sf-decorator ng-init="arrayIndex = $index" form="copyWithIndex($index)"></sf-decorator>
 
-
                <button ng-hide="form.readonly"
                        ng-click="selected.tab = deleteFromArray($index).length - 1"
                        type="button"

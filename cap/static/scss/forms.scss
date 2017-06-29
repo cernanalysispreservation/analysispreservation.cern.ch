@@ -830,6 +830,10 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   .tab-content {
     padding-top: 20px;
   }
+
+  [uib-typeahead-popup].dropdown-menu {
+    position: initial;
+  }
 }
 
 $list_group_item_index: 50px;
@@ -924,4 +928,9 @@ $list_group_item_index: 50px;
       }
     }
   }
+}
+
+tags-input .tags {
+  border-color: #ccc;
+  box-shadow: none;
 }

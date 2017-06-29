@@ -66,6 +66,13 @@ angular.element(document).ready(function() {
       sfBuilderProvider.stdBuilders
     );
 
+    decoratorsProvider.defineAddOn(
+      'bootstrapDecorator',
+      'cap:tagsInput',
+      '/static/templates/cap_records_js/decorators/capTagsInput.html',
+      sfBuilderProvider.stdBuilders
+    );
+
     decoratorsProvider.defineAddOn_with_replace_false(
       'bootstrapDecorator',
       'cap:dynamicSelect',
@@ -78,7 +85,7 @@ angular.element(document).ready(function() {
     document.getElementById("cap-main-container"),
     [
       'capRecords',
-      'mgcrea.ngStrap', 'schemaForm',
+      'mgcrea.ngStrap', 'schemaForm', 'ngTagsInput',
       'mgcrea.ngStrap.modal', 'pascalprecht.translate', 'ui.select',
       'mgcrea.ngStrap.select', 'invenioFiles',
       'angular-loading-bar',

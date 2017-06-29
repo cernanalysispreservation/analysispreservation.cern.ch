@@ -64,7 +64,17 @@
        },
        {
         "key": "basic_info.analysis_proponents",
-        "placeholder": "E.g. John Doe; Jane Doe"
+        "type": "cap:tagsInput",
+        "title": "Proponents",
+        "placeholder": "E.g. John Doe",
+        "url": "/api/ldap/user/name",
+        "async": true,
+        "items": [
+          {
+            "key": "basic_info.analysis_proponents[]",
+            "type": "hidden"
+          }
+        ]
        },
        {
           "key": "basic_info.status",
