@@ -69,6 +69,7 @@
         "placeholder": "E.g. John Doe",
         "url": "/api/ldap/user/name",
         "async": true,
+        "startEmpty": "true",
         "items": [
           {
             "key": "basic_info.analysis_proponents[]",

@@ -356,6 +356,13 @@ $cap_deposit_topnav_height: 40px;
       width: 50px;
       display: flex;
       justify-content: center;
+
+      &.progress-fields-array {
+        display: relative;
+        float: right;
+        margin-right: 10px;
+        padding:3px;
+      }
     }
   }
   .panel-heading {
@@ -489,7 +496,7 @@ $cap_deposit_topnav_height: 40px;
   padding-top: $content-bar-height +$cap_header_height + $cap_deposit_topnav_height;
   overflow: scroll;
   overflow-x: hidden;
-  cursor: pointer;
+  // cursor: pointer;
 
   &::-webkit-scrollbar-track, .scrollable::-webkit-scrollbar-track {
     background-color: $light-grey-theme-color;
@@ -738,6 +745,9 @@ div.jsoneditor-contextmenu div.jsoneditor-icon {
   .deposit-navigation-root {
     border-bottom: 1px solid $dark-grey-bg-border-color;
 
+    > ul {
+      padding: 0;
+    }
     cap-deposit-nav-item,
     cap-deposit-nav-object,
     cap-deposit-nav-array {

@@ -31,86 +31,28 @@
  * @namespace capResults
  * @example
  *    Usage:
- *     <cap-deposit-nav form='form' model='model'>
+ *     <cap-deposit-nav>
+ *    Should be able to read from the deposit scope
+ *    and have access to '$scope.recordsVM.invenioRecordsModel'
+ *    and '$scope.recordsVM.invenioRecordsForm'
  */
 angular.module('cap.directives')
     .directive('capDepositNav', function() {
         return {
             restrit: 'E',
             templateUrl: '/static/templates/cap/deposit/components/depositNav.html',
-            scope: {
-                form: '=',
-                model: '=',
-                currentNavItem: '=',
-                switchNavItem: '=',
-            },
-            link: function(scope, element, attrs) {
-                scope.$watch('currentNavItem', function(newNav, oldNav) {
-                    scope.form[oldNav].collapsed = true;
-                    scope.form[newNav].collapsed = false;
-                });
-                angular.forEach(
-                    scope.form,
-                    function(item){
-                        item.collapsed = true;
-                });
-                scope.form[scope.currentNavItem].collapsed = false;
-            }
+            scope: true,
+            link: function(scope, element, attrs) {}
         }
     })
-
-angular.module('cap.directives')
-    .directive('capDepositNavItem', function() {
-        return {
-            restrict: 'E',
-            templateUrl: '/static/templates/cap/deposit/components/capDepositNavItem.html',
-            scope: {
-                form: '=',
-                collapsed: '=',
-                progress: '=',
-                model: '=',
-                ii: '<',
-                switchNavItem: '='
-            },
-            link: function(scope, element, attrs) {
-            }
-        }
-    })
-
-angular.module('cap.directives')
-    .directive('capDepositNavArrayItem', function() {
-        return {
-            restrict: 'E',
-            templateUrl: '/static/templates/cap/deposit/components/capDepositNavArrayItem.html',
-            scope: {
-                form: '=',
-                collapsed: '=',
-                progress: '=',
-                model: '='
-            },
-            link: function(scope, element, attrs) {
-                scope.level = scope.form.key.length;
-            }
-        }
-    })
-
 
 angular.module('cap.directives')
     .directive('capDepositNavObject', function() {
         return {
             restrict: 'E',
             templateUrl: '/static/templates/cap/deposit/components/capDepositNavObject.html',
-            scope: {
-                form: '=',
-                collapsed: '=',
-                progress: '=',
-                model: '=',
-                switchNavItem: '=',
-                ii: '<'
-            },
-            link: function(scope, element, attrs) {
-                scope.level = scope.form.key.length;
-            }
+            scope: true,
+            link: function(scope, element, attrs) {}
         }
     })
 
@@ -119,33 +61,7 @@ angular.module('cap.directives')
         return {
             restrict: 'E',
             templateUrl: '/static/templates/cap/deposit/components/capDepositNavArray.html',
-            scope: {
-                form: '=',
-                collapsed: '=',
-                progress: '=',
-                model: '=',
-                switchNavItem: '=',
-                ii: '<'
-            },
-            link: function(scope, element, attrs) {
-                scope.level = scope.form.key.length;
-            }
-        }
-    })
-
-angular.module('cap.directives')
-    .directive('capDepositNavDefault', function() {
-        return {
-            restrict: 'E',
-            templateUrl: '/static/templates/cap/deposit/components/capDepositNavDefault.html',
-            scope: {
-                form: '=',
-                collapsed: '=',
-                progress: '=',
-                model: '='
-            },
-            link: function(scope, element, attrs) {
-                scope.level = scope.form.key.length;
-            }
+            scope: true,
+            link: function(scope, element, attrs) {}
         }
     })

@@ -1,17 +1,7 @@
 <div class="cap-deposit-sidebar" ng-show="displayNav">
-    <!-- <div id="cap-deposit-navigation-search">
-        <div class="col-md-12 forms-font-color search-fields">
-            <div id="search-bar-fixed-column">
-                <span class="fa fa-search forms-font-color"></span>
-                <input type="text" class="form-control filter-fields-searchbar" placeholder="Filter fields..." ng-model="query[queryBy]">
-            </div>
-        </div>
-    </div> -->
     <div id="cap-deposit-navigation" ng-if="isFormRendered">
         <cap-deposit-nav
-            immutable="depositNavModel"
             form="depositNavForm"
-            model="depositNavModel"
             current-nav-item="currentNavItem"
             switch-nav-item="switchNavItem">
         </cap-deposit-nav>

@@ -1,9 +1,12 @@
-<div class="deposit-navigation-root" ng-repeat="formElement in form">
-    <cap-deposit-nav-item
-      form="formElement"
-      model="model.get(formElement.key[formElement.key.length-1])"
-      collapsed="collapsed"
-      switch-nav-item="switchNavItem"
-      ii="$index">
-    </cap-deposit-nav-item>
+<div class="deposit-navigation-root">
+    <ul>
+        {{sections = recordsVM.invenioRecordsForm | map: 'title' ; ""}}
+        <!-- First Level -->
+        <li ng-repeat="section in sections">
+            <!-- IF item is 'array' -->
+            <cap-deposit-nav-array ng-if="['array', 'tabArray', 'tabArrayTop', 'cap:tagsInput'].indexOf(section.type) > -1 "></cap-deposit-nav-array >
+            <!-- IF item is 'object' -->
+            <cap-deposit-nav-object ng-if="['array', 'tabArray', 'tabArrayTop', 'cap:tagsInput'].indexOf(section.type) == -1 "></cap-deposit-nav-object >
+        </li>
+    </ul>
 </div>

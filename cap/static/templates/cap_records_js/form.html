@@ -3,9 +3,9 @@
     <div class="cap-deposit-form-top-nav">
       <div ng-click="toggleSidebar()" class="cap-deposit-nav-toggle"><i class="sidebar-toggle"><i class="sidebar-toggle-inner"></i></i></div>
       <div class="cap-deposit-nav-component">
-          <button ng-disabled="currentNavItem == 0"  ng-click="prevNavItem()" uib-tooltip="{{depositNavForm[currentNavItem-1].title}}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
-          <span>{{depositNavForm[currentNavItem].title}}</span>
-          <button ng-disabled="currentNavItem+1 == depositNavForm.length" ng-click="nextNavItem()" uib-tooltip="{{depositNavForm[currentNavItem+1].title}}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
+          <button ng-disabled="currentNavItem == 0"  ng-click="prevNavItem()" uib-tooltip="{{recordsVM.invenioRecordsForm[currentNavItem-1].title}}"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
+          <span>{{recordsVM.invenioRecordsForm[currentNavItem].title}}</span>
+          <button ng-disabled="currentNavItem+1 == recordsVM.invenioRecordsForm.length" ng-click="nextNavItem()" uib-tooltip="{{recordsVM.invenioRecordsForm[currentNavItem+1].title}}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
       </div>
     </div>  <div class="cap-deposit-form">
 

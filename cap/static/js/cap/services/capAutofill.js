@@ -55,7 +55,7 @@ var capAutofill = function($http, $rootScope) {
 
                     // format response if array or object
                     if (angular.isArray(resp)){
-                        resp = resp.join("; ");
+
                     }
                     else if (angular.isObject(resp)){
                         resp = "";

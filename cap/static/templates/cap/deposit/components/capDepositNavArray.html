@@ -1,20 +1,32 @@
+{{ _s_modelArray = getModelValue(section.key); ""}}
 <div class="dropown nav-item">
-  <div class="nav-item-header" ng-click="switchNavItem(ii)" ng-class="{'title-lev1': form.key.length == 1}">
-      <span class="title"><i class="fa" ng-class="{'fa-chevron-down': !form.collapsed && form.key.length == 1, 'fa-chevron-right': form.collapsed && form.key.length == 1, 'fa-list': form.key.length != 1}"></i>{{form.schema.title}}</span>
-      <span class="progress-fields bg-primary">
-        {{ model.size ? model.size : 0 }} Items
-      </span>
-</div>
-    <ul uib-collapse="form.collapsed" class="dropdwn-menu">
-        <span ng-if="!model || model.length == 0">
-          No items created. Add item and contents to see overview
+  <div class="nav-item-header" ng-click="switchNavItem($index)" ng-class="{'title-lev1': section.key.length == 1}">
+      <span class="title"><i class="fa" ng-class="{'fa-chevron-down': !section.collapsed && section.key.length == 1, 'fa-chevron-right': section.collapsed && section.key.length == 1, 'fa-list': section.key.length != 1}"></i>{{section.title}}</span>
+  </div>
+  <ul uib-collapse="currentNavItem != $index" class="dropdwn-menu">
+    <span ng-if="!_s_modelArray || _s_modelArray.length == 0">
+      No items created. Add item and contents to see overview
+    </span>
+    <li
+      ng-repeat="item in _s_modelArray"
+      ng-class="{{fontColor}}"
+      class="list-subelement">
+        <i class="fa fa-minus-square-o"></i>
+        {{section.title}} #{{$index}}
+        {{filled = item | pick: isEmptyEl | omit: omitNgDirt ; ""}}
+        {{ _req_filled =  getRequiredLength(section.schema.items.required, filled); ""}}
+
+        <span ng-if="section.schema.items.required" class="progress-fields progress-fields-array bg-primary">
+           {{ _req_filled}} / {{section.schema.items.required.length}} req
         </span>
-        <li
-          ng-repeat="item in [] | range: model.size"
-          ng-class="{{fontColor}}"
-          class="list-subelement">
-            <cap-deposit-nav-array-item form="form" model="model.get(item)">
-            </cap-deposit-nav-array-item>
-        </li>
-    </ul>
+        <ul>
+            <li ng-repeat="ss in section.items">
+                {{ value = getArrayModelValue(ss.key, $parent.$index);""}}
+                <i class="fa" ng-class="{'fa-circle': value, 'fa-circle-o': !value}"></i>
+                <i tooltip-placement="right" uib-tooltip="{{value}}">{{ss.title}}</i>
+                <span ng-if="section.schema.items.required.indexOf(ss.key[ss.key.length-1]) > -1">*</span>
+            </li>
+        </ul>
+    </li>
+  </ul>
 </div>
