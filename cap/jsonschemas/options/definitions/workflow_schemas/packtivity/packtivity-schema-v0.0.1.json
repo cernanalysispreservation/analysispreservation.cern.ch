@@ -1,5 +1,6 @@
 {
     "key": "workflows[].workflow.stages[].scheduler.step",
+    "title": "Step",
     "type": "fieldset",
     "items": [
         {

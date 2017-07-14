@@ -1,7 +1,7 @@
 {
     "key": "workflows",
-    "title": "{{value.name || 'New Workflow'}}",
-    "type": "tabarray",
+    "title": "Workflow",
+    "type": "tabArrayTop",
     "items": [
         {
             "key": "workflows[].analysis_title"
@@ -25,6 +25,7 @@
         {
             "key": "workflows[].workflow",
             "condition": "model['workflows'][arrayIndices[0]]['selectSubschema'] == 0",
+            "title": "Yadage Workflow",
             "type": "fieldset",
             "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"}
         }

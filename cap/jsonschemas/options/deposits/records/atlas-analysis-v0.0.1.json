@@ -20,7 +20,7 @@
           {
               "key": "basic_info.people_info",
               "type": "tabarray",
-              "title": "{{value.name || 'New item'}}",
+              "title": "People Info",
               "items": [
                 {
                   "key": "basic_info.people_info[].name",

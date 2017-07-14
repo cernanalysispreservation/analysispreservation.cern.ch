@@ -1,8 +1,13 @@
 {
     "key": "workflows[].workflow.stages[].scheduler.parameters",
     "type": "array",
+    "title": "Parameters",
     "items": [
-        "workflows[].workflow.stages[].scheduler.parameters[].key",
+        {
+            "key": "workflows[].workflow.stages[].scheduler.parameters[].key",
+            "type": "string",
+            "title": "Key"
+        },
         {
             "key": "workflows[].workflow.stages[].scheduler.parameters[].value_type",
             "type": "select",
