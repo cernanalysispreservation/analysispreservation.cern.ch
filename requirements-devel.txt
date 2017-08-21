@@ -1,1 +1,2 @@
 -e git+https://github.com/pamfilos/invenio-jsonschemas.git@add-allof-replace#egg=invenio-jsonschemas
+-e git+https://github.com/ioannistsanaktsidis/invenio-accounts-rest.git@26e06e3d8ce2d02c6bcba2d86fe46e2927a4c223#egg=invenio_accounts_rest
