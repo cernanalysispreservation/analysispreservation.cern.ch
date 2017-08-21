@@ -32,6 +32,7 @@ import os
 from os.path import dirname, join
 
 from celery.schedules import crontab
+from flask import request
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import (DEPOSIT_REST_FACETS,
@@ -573,6 +574,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'record_class': 'cap.modules.deposit.api:CAPDeposit',
     'record_loaders': {
         'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
+        'application/json-patch+json': lambda: request.get_json(force=True),
     },
     'record_serializers': {
         'application/json': (
