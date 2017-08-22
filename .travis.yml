@@ -36,7 +36,7 @@ python:
 
 services:
 - postgresql
-# - redis
+- redis
 # - rabbitmq
 
 env:

@@ -27,7 +27,7 @@
 
 from itertools import groupby
 
-from celery import shared_task
+from celery import Task, current_app as celery_app
 
 import jsonpointer
 import requests
@@ -36,11 +36,15 @@ from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.utils import clean_empty_values, parse_github_url
 from flask import after_this_request, current_app, request
 from invenio_db import db
-from invenio_files_rest.models import FileInstance, ObjectVersion
+from invenio_files_rest.models import (
+    FileInstance, ObjectVersion, as_object_version)
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import Draft4Validator, extend
 from operator import attrgetter
 from werkzeug.utils import cached_property
+
+from invenio_sse import current_sse
+from celery.states import (FAILURE, STARTED, SUCCESS)
 
 
 class XCapFileValidationError(ValidationError):
@@ -121,26 +125,127 @@ def extract_x_cap_files(data):
     ).iter_errors(data) if isinstance(error, XCapFileValidationError)]
 
 
-@shared_task
-def download_url(record_id, url):
-    """Create new file object and assign it to object version."""
-    record = CAPDeposit.get_record(record_id)
-    if url.startswith("root://"):
-        from xrootdpyfs.xrdfile import XRootDPyFile
-        response = XRootDPyFile(url, mode='r-')
-        total = response.size
-    else:
-        parsed_url = url
-        if url.startswith("https://github"):
-            parsed_url = parse_github_url(url)
-        response = requests.get(parsed_url, stream=True).raw
-        total = int(response.getheader('Content-Length'))
-    record.files[url].file.set_contents(
-        response,
-        default_location=record.files.bucket.location.uri,
-        size=total
-    )
-    db.session.commit()
+def sse_publish_event(channel, type_, state, meta):
+    """Publish a message on SSE channel."""
+    if channel:
+        data = {'state': state, 'meta': meta}
+        current_sse.publish(data=data, type_=type_, channel=channel)
+
+
+class _Task(Task):
+    abstract = True
+
+    def _extract_call_arguments(self, arg_list, **kwargs):
+        for name in arg_list:
+            setattr(self, name, kwargs.pop(name, None))
+        return kwargs
+
+    def __call__(self, *args, **kwargs):
+        """Extract SSE channel from keyword arguments.
+        .. note ::
+            the channel is extracted from the ``sse_channel`` keyword
+            argument.
+        """
+        arg_list = ['sse_channel', 'event_id', 'deposit_id', 'key']
+        kwargs = self._extract_call_arguments(arg_list, **kwargs)
+
+        with self.app.flask_app.app_context():
+            self.object = as_object_version(kwargs.pop('version_id', None))
+            if self.object:
+                self.obj_id = str(self.object.version_id)
+            self.set_base_payload()
+            return self.run(*args, **kwargs)
+
+    def set_base_payload(self, payload=None):
+        """Set default base payload."""
+        self._base_payload = {
+            'deposit_id': self.deposit_id,
+            'event_id': self.event_id,
+            'sse_channel': self.sse_channel,
+            'type': self._type,
+        }
+        if self.object:
+            self._base_payload.update(
+                tags=self.object.get_tags(),
+                version_id=str(self.object.version_id)
+            )
+        if payload:
+            self._base_payload.update(**payload)
+
+    def _meta_exception_envelope(self, exc):
+        """Create a envelope for exceptions.
+        NOTE: workaround to be able to save the payload in celery in case of
+        exceptions.
+        """
+        meta = dict(message=str(exc), payload=self._base_payload)
+        return dict(
+            exc_message=meta,
+            exc_type=exc.__class__.__name__
+        )
+
+    def update_state(self, task_id=None, state=None, meta=None):
+        """Updates state depending on task status"""
+        self._base_payload.update(meta.get('payload', {}))
+        meta['payload'] = self._base_payload
+        super(_Task, self).update_state(task_id, state, meta)
+        sse_publish_event(channel=self.sse_channel, type_=self._type,
+                          state=state, meta=meta)
+
+    def on_success(self, exc, task_id, *args, **kwargs):
+        """When end correctly, attach useful information to the state."""
+        with celery_app.flask_app.app_context():
+            meta = dict(message=str(exc), payload=self._base_payload)
+            self.update_state(task_id=task_id, state=SUCCESS, meta=meta)
+
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        """When an error occurs, attach useful information to the state."""
+        with celery_app.flask_app.app_context():
+            exception = self._meta_exception_envelope(exc=exc)
+            self.update_state(task_id=task_id, state=FAILURE, meta=exception)
+
+
+class DownloadTask(_Task):
+
+    def __init__(self):
+        """Init."""
+        self._type = 'file_download'
+
+    def run(self, url, recid=None, sse_channel=None, ** kwargs):
+        """Create new file object and assign it to object version."""
+        record = CAPDeposit.get_record(recid)
+        if url.startswith("root://"):
+            from xrootdpyfs.xrdfile import XRootDPyFile
+            response = XRootDPyFile(url, mode='r-')
+            headers_size = response.size
+        else:
+            parsed_url = url
+            if url.startswith("https://github"):
+                parsed_url = parse_github_url(url)
+            response = requests.get(parsed_url, stream=True).raw
+            headers_size = int(response.getheader('Content-Length'))
+
+        def progress_updater(size, total):
+            """Progress reporter."""
+            size = size or headers_size
+            if size is None:
+                    # FIXME decide on proper error-handling behaviour
+                raise RuntimeError('Cannot locate "Content-Length" header.')
+            meta = dict(
+                payload=dict(
+                    size=size,
+                    total=total,
+                    percentage=total * 100 / size, ),
+                message='Downloading {0} of {1}'.format(total, size), )
+
+            self.update_state(state=STARTED, meta=meta)
+
+        record.files[url].file.set_contents(
+            response,
+            default_location=record.files.bucket.location.uri,
+            size=headers_size,
+            progress_callback=progress_updater
+        )
+        db.session.commit()
 
 
 def process_x_cap_files(record, x_cap_files):
@@ -191,7 +296,7 @@ def json_v1_loader(data=None):
     data = deepcopy(data or request.json)
 
     if request and request.view_args.get('pid_value'):
-        _, record = request.view_args.get('pid_value').data
+        pid, record = request.view_args.get('pid_value').data
         record_id = str(record.id)
         x_cap_files = extract_x_cap_files(data)
         urls = process_x_cap_files(record, x_cap_files)
@@ -202,7 +307,10 @@ def json_v1_loader(data=None):
         @after_this_request
         def _preserve_files(response):
             for url in urls:
-                download_url.delay(record_id, url)
+                DownloadTask().delay(
+                    url,
+                    recid=record_id,
+                    sse_channel='/api/deposits/{}/sse'.format(pid.pid_value))
             return response
 
     result = clean_empty_values(data)

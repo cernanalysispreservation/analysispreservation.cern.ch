@@ -944,3 +944,63 @@ tags-input .tags {
   border-color: #ccc;
   box-shadow: none;
 }
+
+/* Traffic lights radios */
+#file-error-message {
+  margin-bottom: 2% !important;   
+}
+
+.traffic-light input[type=radio] {
+  -webkit-appearance: none;
+  background: #fff;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 50%;
+  border: 3px solid #d5d5d5;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-top;
+  padding: 0;
+}
+
+.traffic-light input[type=radio]:checked:after {
+  content:"\00a0";
+  display:block;
+  position:relative;
+  left:1px;
+  top:1px;
+  height:10px;
+  width:10px;
+  -webkit-border-radius:50%;
+}
+
+.traffic-light label { 
+  clear: both; 
+  height: 40px; 
+  pointer-events: none; 
+}
+
+.traffic-light input { 
+  float: left; 
+}
+
+.traffic-light div { 
+  float: left; 
+  margin-left: 10px; 
+}
+
+.traffic-light .green:checked:after { 
+  background: #50b848; 
+}
+
+.traffic-light .green { 
+  color: #50b848; 
+}
+
+.traffic-light .amber:checked:after {
+  background: #f38134; 
+}
+
+.traffic-light .amber { 
+  color: #f38134; 
+}

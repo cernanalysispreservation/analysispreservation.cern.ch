@@ -7,8 +7,8 @@
           <span>{{recordsVM.invenioRecordsForm[currentNavItem].title}}</span>
           <button ng-disabled="currentNavItem+1 == recordsVM.invenioRecordsForm.length" ng-click="nextNavItem()" uib-tooltip="{{recordsVM.invenioRecordsForm[currentNavItem+1].title}}"><i class="fa fa-angle-right" aria-hidden="true"></i></button>
       </div>
-    </div>  <div class="cap-deposit-form">
-
+    </div>  
+    <div class="cap-deposit-form">
     <div class="cap-deposit-form-inner">
       <div>
         <div class="alert alert-danger" style="margin: 15px 0;">
@@ -17,6 +17,25 @@
           </div>
           WARNING: This is just a <strong>DEMO</strong>. Data saved is <strong>NOT</strong> backed-up at the moment and might be lost during any system upgrade
         </div>
+      </div>      
+      <div ng-if="error" id="file-error-message" class="alert alert-danger" role="alert">
+        <span><strong>{{error}}</strong></span>
+      </div>
+      <div class="traffic-light" ng-if="!error && msg.state">
+        <label>
+          <input class="green" type="radio" ng-checked="isFinished">
+          <div>
+            <span class="green">All files are uploaded</span><br/>
+            <span>You can now proceed sharing your analysis</span>
+          </div>
+        </label>
+        <label>
+          <input class="amber" type="radio" ng-checked="!isFinished">
+          <div>
+            <span class="amber">We are grabbing your files...</span><br/>
+            <span>Downloading {{msg.meta.payload.percentage}} %</span>
+          </div>
+        </label>
       </div>
       <form
          name="depositionForm"

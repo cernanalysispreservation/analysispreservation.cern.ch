@@ -28,6 +28,27 @@
 // CAP app Deposit Controller
 
 var capDepositCtrl = function($scope, $state, $location, $document, $http, deposit, contentBarTabs, capRecordsClient) {
+  $scope.msg = {};
+
+  // handles the callback from the received event
+  var handleCallback = function (msg) {
+      $scope.$apply(function () {
+          $scope.msg = JSON.parse(msg.data)
+          if($scope.msg.state == 'STARTED') {
+            $scope.isFinished = false;
+          } else if($scope.msg.state == 'SUCCESS') {
+            $scope.isFinished = true;
+          } else if($scope.msg.state == 'FAILURE') {
+            $scope.error = $scope.msg.meta.exc_message.message;
+          }
+      });
+  }
+
+  if(deposit.metadata._deposit.id) {
+    var source = new EventSource('/api/deposits/'+deposit.metadata._deposit.id+'/sse');    
+    source.addEventListener('file_download', handleCallback, false);
+  }
+  
   $scope.$on(
     'invenio.records.action.success', function(event) {
       var depid = $scope.recordsVM.invenioRecordsEndpoints['self'].split('/').pop();
