@@ -673,3 +673,6 @@ INDEXER_REPLACE_REFS = False
 # ======================
 LHCB_DB_FILES_LOCATION = os.path.join(APP_ROOT,
                                       'modules/experiments/static/example_lhcb/')
+
+# Disable JWT token
+ACCOUNTS_JWT_ENABLE = False
