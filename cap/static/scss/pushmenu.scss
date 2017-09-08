@@ -168,16 +168,16 @@ $pushmenu-bgc-active: $light-blue-theme-color;
             > .nav-item {
 
                 &.active {
-                    background-color: $light-blue-theme-color;
+                    background-color: $light-grey-theme-color;
                     &:hover {
-                        background-color: $light-blue-theme-color;
+                        background-color: $light-grey-theme-color;
                         a {
-                            color: #fff;
+                            color: $dark-blue-theme-color;
                         }
                     }
 
                     a {
-                        color: #fff;
+                        color: $dark-blue-theme-color;
                     }
                 }
                 padding: 5px 10px;

@@ -5,8 +5,7 @@
   },
   {
     "key": "train_analysis",
-    "type": "tabarray",
-    "title": "{{value.train_id|| 'New Analysis'}}",
+    "type": "tabArrayTop",
     "items": [
       {
         "key": "train_analysis[].train_id",
@@ -38,8 +37,7 @@
       },
       {
         "key": "train_analysis[].run",
-        "type": "tabarray",
-        "title": "{{value.name || 'New item'}}",
+        "type": "tabArrayTop",
         "items": [
           {
             "key": "train_analysis[].run[].name",
@@ -94,8 +92,7 @@
           },
           {
             "key": "train_analysis[].derived_dataset[].run",
-            "type": "tabarray",
-            "title": "{{value.name || 'New item'}}",
+            "type": "tabArrayTop",
             "items": [
               {
                 "key": "train_analysis[].derived_dataset[].run[].name",
