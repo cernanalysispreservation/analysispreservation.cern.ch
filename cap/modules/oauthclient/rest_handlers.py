@@ -29,29 +29,23 @@ from __future__ import absolute_import, print_function
 from functools import partial, wraps
 
 import six
-
-from flask import (current_app, flash, redirect,
-                   render_template, request, session, url_for)
+from flask import current_app, flash, redirect, render_template, request, \
+    session, url_for
 from flask_babelex import gettext as _
 from flask_login import current_user
 from invenio_db import db
 from werkzeug.utils import import_string
 
-from invenio_oauthclient.errors import (AlreadyLinkedError, OAuthClientError,
-                                        OAuthError, OAuthRejectedRequestError)
-from invenio_oauthclient.models import RemoteAccount
+from invenio_oauthclient.errors import AlreadyLinkedError, OAuthClientError, OAuthError, \
+    OAuthRejectedRequestError, OAuthResponseError
+from invenio_oauthclient.models import RemoteAccount, RemoteToken
 from invenio_oauthclient.proxies import current_oauthclient
-from invenio_oauthclient.signals import (account_info_received,
-                                         account_setup_committed,
-                                         account_setup_received)
-from invenio_oauthclient.utils import (disable_csrf, fill_form,
-                                       oauth_authenticate, oauth_get_user,
-                                       oauth_register, registrationform_cls)
+from invenio_oauthclient.signals import account_info_received, account_setup_committed, \
+    account_setup_received
+from invenio_oauthclient.utils import create_csrf_disabled_registrationform, \
+    create_registrationform, fill_form, oauth_authenticate, oauth_get_user, \
+    oauth_register
 
-
-from invenio_oauthclient.handlers import (
-    get_session_next_url, response_token_setter,
-    token_session_key, token_setter, token_getter, token_delete)
 
 #
 # Error handling decorators
