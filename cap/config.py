@@ -345,33 +345,36 @@ CERN_APP_CREDENTIALS = {
 
 OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
 
-# OAUTHCLIENT_REMOTE_APPS = {
-#    'cern': dict(
-#        title='CERN',
-#        description='Connecting to CERN Organization.',
-#        icon='',
-#        authorized_handler='cap.modules.oauthclient.rest_handlers'
-#        ':authorized_signup_handler',
-#        disconnect_handler='cap.modules.oauthclient.contrib.cern'
-#        ':disconnect_handler',
-#        signup_handler=dict(
-#            info='cap.modules.oauthclient.contrib.cern:account_info',
-#            setup='cap.modules.oauthclient.contrib.cern:account_setup',
-#            view='cap.modules.oauthclient.rest_handlers:signup_handler',
-#        ),
-#        params=dict(
-#            base_url='https://oauth.web.cern.ch/',
-#            request_token_url=None,
-#            access_token_url='https://oauth.web.cern.ch/OAuth/Token',
-#            access_token_method='POST',
-#            authorize_url='https://oauth.web.cern.ch/OAuth/Authorize',
-#            app_key='CERN_APP_CREDENTIALS',
-#            content_type='application/json',
-#            request_token_params={'scope': 'Name Email Bio Groups',
-#                                  'show_login': 'true'}
-#        )
-#    )
-#}
+# from cap.modules.oauthclient.rest_handlers import authorized_signup_handler
+
+OAUTHCLIENT_REMOTE_APPS = {
+    'cern': dict(
+        title='CERN',
+        description='Connecting to CERN Organization.',
+        icon='',
+        authorized_handler='invenio_oauthclient.handlers'
+        ':authorized_signup_handler',
+        disconnect_handler='cap.modules.oauthclient.contrib.cern'
+        ':disconnect_handler',
+        signup_handler=dict(
+            info='cap.modules.oauthclient.contrib.cern:account_info',
+            setup='cap.modules.oauthclient.contrib.cern:account_setup',
+            view='invenio_oauthclient.handlers:signup_handler',
+
+        ),
+        params=dict(
+            base_url='https://oauth.web.cern.ch/',
+            request_token_url=None,
+            access_token_url='https://oauth.web.cern.ch/OAuth/Token',
+            access_token_method='POST',
+            authorize_url='https://oauth.web.cern.ch/OAuth/Authorize',
+            app_key='CERN_APP_CREDENTIALS',
+            content_type='application/json',
+            request_token_params={'scope': 'Name Email Bio Groups',
+                                  'show_login': 'true'}
+        )
+    )
+}
 #: OAuth login template.
 # OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
