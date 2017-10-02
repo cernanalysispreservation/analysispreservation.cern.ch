@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Yadage Stage",
+  "id": "yadage_stage",
+  "additionalProperties": false,
+  "properties": {
+    "data_inputfiles": {
+      "type": "array",
+      "title": "Name",
+      "items": {
+        "type": "string"
+      }
+    },
+    "signal_mcweight": {
+      "type": "string"
+    },
+    "signal_inputfiles": {
+      "type": "array",
+      "title": "Name",
+      "items": {
+        "type": "string"
+      }
+    },
+    "bkg_mcinfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "inputfiles": {
+            "type": "array",
+            "title": "Name",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
