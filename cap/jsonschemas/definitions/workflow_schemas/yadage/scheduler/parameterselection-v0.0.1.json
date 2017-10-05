@@ -15,10 +15,10 @@
         "title": "Value",
         "oneOf":[
           {"type":"string"},
+          {"type":"array"},
           {"type":"number"},
           {
             "type":"object",
-            "additionalProperties": false,
             "properties": {
               "expression_type": {
                 "type": "string",

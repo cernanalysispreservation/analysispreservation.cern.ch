@@ -12,6 +12,10 @@
     },
     "publish": {
       "type": "object"
+    },
+    "glob": {
+      "type": "boolean",
+      "default": false
     }
   },
   "required": [

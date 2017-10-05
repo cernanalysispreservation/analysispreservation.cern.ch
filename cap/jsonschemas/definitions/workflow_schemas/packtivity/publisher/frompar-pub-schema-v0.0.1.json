@@ -12,14 +12,7 @@
       ],
       "default": "frompar-pub"
     },
-    "outputmap": {
-      "type": "object",
-      "properties": {
-        "param_card": {
-          "type": "string"
-        }
-      }
-    }
+    "outputmap": { "type": "object" }
   },
   "required": [
     "publisher_type",

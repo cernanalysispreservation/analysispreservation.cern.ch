@@ -13,12 +13,6 @@
       ],
       "default": "jsonpath_ready"
     },
-    "expressions": {
-      "type":"array",
-      "title": "Expressions",
-      "items": {
-        "type": "string"
-      }
-    }
+    "expressions": {"type":"array"}
   }
 }

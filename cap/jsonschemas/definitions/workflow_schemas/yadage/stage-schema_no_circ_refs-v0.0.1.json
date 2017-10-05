@@ -21,7 +21,8 @@
       "title": "Scheduler",
       "oneOf":[
         {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema_no_circ_refs-v0.0.1.json#"},
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema_no_circ_refs-v0.0.1.json#"}
+        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema_no_circ_refs-v0.0.1.json#"},
+        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/jq-stage-schema_no_circ_refs-v0.0.1.json#"}
       ]
     }
   },

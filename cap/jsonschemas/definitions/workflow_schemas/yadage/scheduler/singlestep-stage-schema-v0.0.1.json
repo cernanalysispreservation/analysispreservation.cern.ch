@@ -14,6 +14,15 @@
     "step": { "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
     "workflow": {"$ref":"https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"}
   },
+  "oneOf": [{
+      "required": ["workflow"],
+      "not": {"required": ["step"]}
+  },
+  {
+      "required": ["step"],
+      "not": {"required": ["workflow"]}
+  }
+  ],
   "required": [
     "scheduler_type"
   ]

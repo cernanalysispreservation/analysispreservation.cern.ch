@@ -34,6 +34,18 @@
       "title": "Env Vars",
       "properties": {},
       "default":{}
+    },
+    "par_mounts": {
+      "type": "array",
+      "title": "Parameter Mounts",
+      "items": {
+        "type": "object",
+        "properties": {
+          "jqscript": {"type": "string"},
+          "mountpath": {"type": "string"}
+        }
+      },
+      "default": []
     }
   },
   "required": [

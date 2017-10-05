@@ -7,27 +7,9 @@
             "key": "workflows[].analysis_title"
         },
         {
-            "key": "workflows[].selectSubschema",
-            "type": "select",
-            "title": "Workflow Schema",
-            "placeholder": "Select sub-schema to use",
-            "titleMap": [
-              {
-                "value": "-1",
-                "name": "Select a Workflow Schema"
-              },
-              {
-                "value": "0",
-                "name": "yadage/workflow-schema-v0.0.1"
-              }
-            ]
-        },
-        {
             "key": "workflows[].workflow",
-            "condition": "model['workflows'][arrayIndices[0]]['selectSubschema'] == 0",
-            "title": "Yadage Workflow",
-            "type": "fieldset",
-            "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"}
+            "title": "Yadage Workflow ( add your JSON workflow here )",
+            "type": "cap:JSONEditor"
         }
     ]
 }

@@ -13,10 +13,7 @@
       "default": "constant-pub"
     },
     "publish": {
-      "type": "object",
-      "oneOf":[
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/utils/shallow-primitive-schema-v0.0.1.json#"}
-      ]
+      "type": "object"
     }
   },
   "required": [

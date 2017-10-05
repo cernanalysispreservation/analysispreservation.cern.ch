@@ -1,29 +1,31 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "title": "Yadage Stage",
+  "title": "Inputs",
   "id": "yadage_stage",
   "additionalProperties": false,
   "properties": {
     "data_inputfiles": {
       "type": "array",
-      "title": "Name",
+      "title": "Data Input Files",
       "items": {
         "type": "string"
       }
     },
     "signal_mcweight": {
-      "type": "string"
+      "type": "number",
+      "title": "Signal MC Weight"
     },
     "signal_inputfiles": {
       "type": "array",
-      "title": "Name",
+      "title": "Signal Input Files",
       "items": {
         "type": "string"
       }
     },
     "bkg_mcinfo": {
       "type": "array",
+      "title": "Background MC Info",
       "items": {
         "type": "object",
         "properties": {
@@ -31,11 +33,11 @@
             "type": "string"
           },
           "weight": {
-            "type": "string"
+            "type": "number"
           },
           "inputfiles": {
             "type": "array",
-            "title": "Name",
+            "title": "Background Input Files",
             "items": {
               "type": "string"
             }

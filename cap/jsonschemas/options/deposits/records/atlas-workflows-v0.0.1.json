@@ -2,5 +2,43 @@
     {
         "key": "basic_info"
     },
-    {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/atlas-workflows-v0.0.1.json"}
+    {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/atlas-workflows-v0.0.1.json"},
+    {
+        "key": "inputs",
+        "items": [
+          {
+            "key": "inputs.data_inputfiles",
+            "items": [
+              {
+                "key": "inputs.data_inputfiles[]",
+                "title": "File URI"
+              }
+            ]
+          },
+          {
+            "key": "inputs.signal_mcweight"
+          },
+          {
+            "key": "inputs.signal_inputfiles",
+            "items": [
+              {"key": "inputs.signal_inputfiles[]"}
+            ]
+          },
+          {
+            "key": "inputs.bkg_mcinfo",
+            "items": [
+              "inputs.bkg_mcinfo[].name",
+              "inputs.bkg_mcinfo[].weight",
+              {
+                "key": "inputs.bkg_mcinfo[].inputfiles",
+                "items": [
+                  {
+                    "key": "inputs.bkg_mcinfo[].inputfiles[]"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+    }
 ]
