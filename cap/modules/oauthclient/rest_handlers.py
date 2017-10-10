@@ -29,35 +29,206 @@ from __future__ import absolute_import, print_function
 from functools import partial, wraps
 
 import six
-
-from flask import (current_app, flash, redirect,
-                   render_template, request, session, url_for)
+from flask import current_app, flash, redirect, render_template, request, \
+    session, url_for
 from flask_babelex import gettext as _
 from flask_login import current_user
 from invenio_db import db
 from werkzeug.utils import import_string
 
-from invenio_oauthclient.errors import (AlreadyLinkedError, OAuthClientError,
-                                        OAuthError, OAuthRejectedRequestError)
-from invenio_oauthclient.models import RemoteAccount
+from invenio_oauthclient.errors import AlreadyLinkedError, OAuthClientError, OAuthError, \
+    OAuthRejectedRequestError, OAuthResponseError
+from invenio_oauthclient.models import RemoteAccount, RemoteToken
 from invenio_oauthclient.proxies import current_oauthclient
-from invenio_oauthclient.signals import (account_info_received,
-                                         account_setup_committed,
-                                         account_setup_received)
-from invenio_oauthclient.utils import (disable_csrf, fill_form,
-                                       oauth_authenticate, oauth_get_user,
-                                       oauth_register, registrationform_cls)
+from invenio_oauthclient.signals import account_info_received, account_setup_committed, \
+    account_setup_received
+from invenio_oauthclient.utils import create_csrf_disabled_registrationform, \
+    create_registrationform, fill_form, oauth_authenticate, oauth_get_user, \
+    oauth_register
 
 
-from invenio_oauthclient.handlers import (
-    get_session_next_url, response_token_setter,
-    token_session_key, token_setter, token_getter, token_delete)
+#
+# Token handling
+#
+def get_session_next_url(remote_app):
+    """Return redirect url stored in session.
+
+    :param remote_app: The remote application.
+    :returns: The redirect URL.
+    """
+    return session.get(
+        '%s_%s' % (token_session_key(remote_app), 'next_url')
+    )
+
+
+def set_session_next_url(remote_app, url):
+    """Store redirect url in session for security reasons.
+
+    :param remote_app: The remote application.
+    :param url: the redirect URL.
+    """
+    session['%s_%s' % (token_session_key(remote_app), 'next_url')] = \
+        url
+
+
+def token_session_key(remote_app):
+    """Generate a session key used to store the token for a remote app.
+
+    :param remote_app: The remote application.
+    :returns: The session key.
+    """
+    return '%s_%s' % (current_app.config['OAUTHCLIENT_SESSION_KEY_PREFIX'],
+                      remote_app)
+
+
+def response_token_setter(remote, resp):
+    """Extract token from response and set it for the user.
+
+    :param remote: The remote application.
+    :param resp: The response.
+    :raises invenio_oauthclient.errors.OAuthClientError: If authorization with
+        remote service failed.
+    :raises invenio_oauthclient.errors.OAuthResponseError: In case of bad
+        authorized request.
+    :returns: The token.
+    """
+    if resp is None:
+        raise OAuthRejectedRequestError('User rejected request.', remote, resp)
+    else:
+        if 'access_token' in resp:
+            return oauth2_token_setter(remote, resp)
+        elif 'oauth_token' in resp and 'oauth_token_secret' in resp:
+            return oauth1_token_setter(remote, resp)
+        elif 'error' in resp:
+            # Only OAuth2 specifies how to send error messages
+            raise OAuthClientError(
+                'Authorization with remote service failed.', remote, resp,
+            )
+    raise OAuthResponseError('Bad OAuth authorized request', remote, resp)
+
+
+def oauth1_token_setter(remote, resp, token_type='', extra_data=None):
+    """Set an OAuth1 token.
+
+    :param remote: The remote application.
+    :param resp: The response.
+    :param token_type: The token type. (Default: ``''``)
+    :param extra_data: Extra information. (Default: ``None``)
+    :returns: A :class:`invenio_oauthclient.models.RemoteToken` instance.
+    """
+    return token_setter(
+        remote,
+        resp['oauth_token'],
+        secret=resp['oauth_token_secret'],
+        extra_data=extra_data,
+        token_type=token_type,
+    )
+
+
+def oauth2_token_setter(remote, resp, token_type='', extra_data=None):
+    """Set an OAuth2 token.
+
+    The refresh_token can be used to obtain a new access_token after
+    the old one is expired. It is saved in the database for long term use.
+    A refresh_token will be present only if `access_type=offline` is included
+    in the authorization code request.
+
+    :param remote: The remote application.
+    :param resp: The response.
+    :param token_type: The token type. (Default: ``''``)
+    :param extra_data: Extra information. (Default: ``None``)
+    :returns: A :class:`invenio_oauthclient.models.RemoteToken` instance.
+    """
+    return token_setter(
+        remote,
+        resp['access_token'],
+        secret='',
+        token_type=token_type,
+        extra_data=extra_data,
+    )
+
+
+def token_setter(remote, token, secret='', token_type='', extra_data=None,
+                 user=None):
+    """Set token for user.
+
+    :param remote: The remote application.
+    :param token: The token to set.
+    :param token_type: The token type. (Default: ``''``)
+    :param extra_data: Extra information. (Default: ``None``)
+    :param user: The user owner of the remote token. If it's not defined,
+        the current user is used automatically. (Default: ``None``)
+    :returns: A :class:`invenio_oauthclient.models.RemoteToken` instance or
+        ``None``.
+    """
+    session[token_session_key(remote.name)] = (token, secret)
+    user = user or current_user
+
+    # Save token if user is not anonymous (user exists but can be not active at
+    # this moment)
+    if not user.is_anonymous:
+        uid = user.id
+        cid = remote.consumer_key
+
+        # Check for already existing token
+        t = RemoteToken.get(uid, cid, token_type=token_type)
+
+        if t:
+            t.update_token(token, secret)
+        else:
+            t = RemoteToken.create(
+                uid, cid, token, secret,
+                token_type=token_type, extra_data=extra_data
+            )
+        return t
+    return None
+
+
+def token_getter(remote, token=''):
+    """Retrieve OAuth access token.
+
+    Used by flask-oauthlib to get the access token when making requests.
+
+    :param remote: The remote application.
+    :param token: Type of token to get. Data passed from ``oauth.request()`` to
+        identify which token to retrieve. (Default: ``''``)
+    :returns: The token.
+    """
+    session_key = token_session_key(remote.name)
+
+    if session_key not in session and current_user.is_authenticated:
+        # Fetch key from token store if user is authenticated, and the key
+        # isn't already cached in the session.
+        remote_token = RemoteToken.get(
+            current_user.get_id(),
+            remote.consumer_key,
+            token_type=token,
+        )
+
+        if remote_token is None:
+            return None
+
+        # Store token and secret in session
+        session[session_key] = remote_token.token()
+
+    return session.get(session_key, None)
+
+
+def token_delete(remote, token=''):
+    """Remove OAuth access tokens from session.
+
+    :param remote: The remote application.
+    :param token: Type of token to get. Data passed from ``oauth.request()`` to
+        identify which token to retrieve. (Default: ``''``)
+    :returns: The token.
+    """
+    session_key = token_session_key(remote.name)
+    return session.pop(session_key, None)
+
 
 #
 # Error handling decorators
 #
-
-
 def oauth_error_handler(f):
     """Decorator to handle exceptions."""
     @wraps(f)
@@ -73,12 +244,10 @@ def oauth_error_handler(f):
                 e.remote, e.response, e.code, e.uri, e.description
             )
         except OAuthRejectedRequestError:
-            # TOFIX
             flash(_('You rejected the authentication request.'),
                   category='info')
             return redirect('/')
         except AlreadyLinkedError:
-            # TOFIX
             flash(_('External service is already linked to another account.'),
                   category='danger')
             return redirect('/')
@@ -100,7 +269,7 @@ def authorized_default_handler(resp, remote, *args, **kwargs):
     """
     response_token_setter(remote, resp)
     db.session.commit()
-    return redirect('/')
+    return redirect(url_for('invenio_oauthclient_settings.index'))
 
 
 @oauth_error_handler
@@ -137,9 +306,9 @@ def authorized_signup_handler(resp, remote, *args, **kwargs):
 
         if user is None:
             # Auto sign-up if user not found
-            form_cls = registrationform_cls()
+            form = create_csrf_disabled_registrationform()
             form = fill_form(
-                disable_csrf(form_cls()),
+                form,
                 account_info['user']
             )
             user = oauth_register(form)
@@ -158,10 +327,7 @@ def authorized_signup_handler(resp, remote, *args, **kwargs):
 
         # Authenticate user
         if not oauth_authenticate(remote.consumer_key, user,
-                                  require_existing_link=False,
-                                  remember=current_app.config[
-                                      'OAUTHCLIENT_REMOTE_APPS']
-                                  [remote.name].get('remember', False)):
+                                  require_existing_link=False):
             return current_app.login_manager.unauthorized()
 
         # Link account
@@ -235,7 +401,7 @@ def signup_handler(remote, *args, **kwargs):
     if not session.get(session_prefix + '_autoregister', False):
         return redirect(url_for('.login', remote_app=remote.name))
 
-    form = registrationform_cls()(request.form)
+    form = create_registrationform(request.form)
 
     if form.validate_on_submit():
         account_info = session.get(session_prefix + '_account_info')

@@ -68,12 +68,12 @@ setup_requires = [
 ]
 
 install_requires = [
-    'elasticsearch==2.4.1', # temporary fix
-    'elasticsearch-dsl==2.2.0', # temporary fix
+    'elasticsearch==2.4.1',  # temporary fix
+    'elasticsearch-dsl==2.2.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
     'cryptography>=1.6',  # temporary fix
     'gunicorn>=19.6.0',
-    'setuptools>=20.6.7',  # temporary fix
+    'setuptools>=30.1.0',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
@@ -176,7 +176,7 @@ setup(
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
-           # 'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
+            # 'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'invenio_i18n = invenio_i18n:InvenioI18N',
             'invenio_assets = invenio_assets:InvenioAssets',
         ],
