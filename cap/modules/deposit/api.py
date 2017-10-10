@@ -225,9 +225,7 @@ class CAPDeposit(Deposit):
 
         Adds bucket creation immediately on deposit creation.
         """
-        bucket = Bucket.create(
-            default_location=Location.get_default()
-        )
+        bucket = Bucket.create()
 
         try:
             schema = data.get("$schema", None) \
