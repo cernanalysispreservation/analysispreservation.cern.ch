@@ -619,6 +619,7 @@ DEPOSIT_FORM_TEMPLATES = {
     "array": "array.html",
     "button": "button.html",
     "default": "default.html",
+    "number": "default.html",
     "fieldset": "fieldset.html",
     "radios": "radios.html",
     "radios_inline": "radios_inline.html",

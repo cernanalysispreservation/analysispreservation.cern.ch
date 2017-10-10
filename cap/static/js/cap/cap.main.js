@@ -79,6 +79,13 @@ angular.element(document).ready(function() {
       '/static/templates/cap_records_js/decorators/capDynamicSelect.html',
       sfBuilderProvider.stdBuilders
     );
+
+    decoratorsProvider.defineAddOn_with_replace_false(
+      'bootstrapDecorator',
+      'cap:JSONEditor',
+      '/static/templates/cap_records_js/decorators/capJSONEditor.html',
+      sfBuilderProvider.stdBuilders
+    );
   }]);
 
   angular.bootstrap(
