@@ -27,7 +27,7 @@
 ///////////////////////////////////////////
 //  CAP app configuration
 
-function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locationProvider, $urlMatcherFactoryProvider, $httpProvider) {
+function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locationProvider, $urlMatcherFactoryProvider, $httpProvider, $templateRequest) {
 
   $urlMatcherFactoryProvider.strictMode(false);
   $httpProvider.interceptors.push('httpInterceptor');
@@ -179,6 +179,13 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
           return capRecordsClient
                   .get_record($stateParams.recid);
         },
+        childTemplates: function($stateParams, record){
+          console.log(record.metadata);
+          var r = record.metadata.$schema.split(".json")[0].split("/");
+          r = r[r.length -1];
+          console.log(r);
+          return [r];
+        },
         contentBarTabs: function($stateParams){
           return [{
             "title": "Overview",
@@ -193,7 +200,12 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
         }
       },
       data: {
-        requireLogin: true
+        requireLogin: true,
+        childTemplates: function($stateParams, record){
+          var r = record.metadata.$schema.split(".json")[0].split("/");
+          r = r[r.length - 1];
+          return [r];
+        }
       }
     })
     .state({
@@ -202,7 +214,17 @@ function capExperimentsConfiguration($stateProvider, $urlRouterProvider ,$locati
       url: '',
       views: {
         'contentMain': {
-          templateUrl: '/static/templates/cap/records/record_detail.html'
+          templateProvider: function ($stateParams, $templateRequest, childTemplates) {
+            return $templateRequest(
+                      '/static/templates/cap/records/record_detail_' +
+                      childTemplates[0] + '.html',
+                      true)
+              .then(
+                function(resp){ return resp; },
+                function(resp){
+                  return $templateRequest('/static/templates/cap/records/record_detail.html');
+                })
+          }
         }
       },
       data: {
@@ -448,7 +470,8 @@ capExperimentsConfiguration.$inject = [
     '$urlRouterProvider',
     '$locationProvider',
     '$urlMatcherFactoryProvider',
-    '$httpProvider'
+    '$httpProvider',
+    '$templateRequestProvider'
 ];
 
 angular.module('cap.app')

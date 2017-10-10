@@ -1,0 +1,89 @@
+<div class="cap-container container">
+  <div class="panel panel-default cap-panel">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-10">
+          <h3>{{record.metadata.basic_info.title}}</h3>
+          <span class="label label-success type-of-analysis">
+            {{record.metadata.$schema.split('/').pop().replace('-v0.0.1.json', '')}}
+          </span>
+        </div>
+        <div class="col-md-2">
+          <h3>
+          <a href="" disabled class="btn btn-default"><strong>Run</strong> in Yadage</a>
+          <a href="" disabled style="margin-top:5px;" class="btn btn-default"><strong class="fa fa-code-fork"> </strong> Fork Analysis</a>
+          </h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <p class="lead">{{record.metadata.basic_info.abstract}}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <strong>Created:</strong><span> {{record.created | date:'MMMM d, yyyy'}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
+          <h2 class="panel-title">Visualisation</h2>
+        </div>
+        <div class="panel-body fixed-home-panel" style="height:600px">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
+          <h2 class="panel-title">Input Files</h2>
+        </div>
+        <div class="panel-body">
+          <ul style="list-style-type: none;padding:0;">
+            <li><h3>Data Input Files</h3></li>
+            <li ng-repeat="f in record.metadata.inputs.data_inputfiles track by $index">
+              {{f}}
+            </li>
+          </ul>
+          <ul style="list-style-type: none;padding:0;">
+            <li><h3>Signal Input Files</h3></li>
+            <li ng-repeat="f in record.metadata.inputs.signal_inputfiles track by $index">
+              {{f}}
+            </li>
+          </ul>
+          <ul style="list-style-type: none;padding:0;">
+            <li><h3>Background MC Info</h3></li>
+            <li ng-repeat="mc in record.metadata.inputs.bkg_mcinfo track by $index">
+              <ul style="list-style-type: none;padding:0;">
+                <li><h5>Name: {{mc.name}} | <i>Weight: {{mc.weight}}</i></h5></li>
+                <li ng-repeat="f in mc.inputfiles track by $index">
+                  {{f}}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
+          <h2 class="panel-title">JSON</h2>
+        </div>
+        <div class="panel-body fixed-home-panel" style="height:600px">
+          <pre>
+            {{record.metadata | json}}
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
