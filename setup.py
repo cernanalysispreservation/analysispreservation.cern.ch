@@ -112,6 +112,8 @@ install_requires = [
     'invenio-search>=1.0.0a9',
     'invenio-theme>=1.0.0a14',
     'invenio-userprofiles>=1.0.0a8',
+    'PyGithub>=1.35',
+    'python-gitlab>=1.0.2',
 ]
 
 
