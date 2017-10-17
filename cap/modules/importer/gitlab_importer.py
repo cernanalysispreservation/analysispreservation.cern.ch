@@ -1,16 +1,6 @@
-import os
-import argparse
 import gitlab
 from importer import Importer
-
-
-def parse_args():
-    """ parse arguments """
-    parser = argparse.ArgumentParser()
-    parser.add_argument("url", help="The Gitlab URL")
-    parser.add_argument("token", help="The Gitlab API Token")
-    parser.add_argument("-d", "--destination", default=os.getcwd(), help="The destination directory.")
-    return parser.parse_args()
+import utils
 
 
 class GitlabImporter(Importer):
@@ -27,12 +17,5 @@ class GitlabImporter(Importer):
         with open("archive.tar.gz", "w") as f:
             f.write(tgz)
 
-
-def main():
-    args = parse_args()
-    gli = GitlabImporter(args.url, args.token)
-    gli.archive_repository()
-
-
-if __name__ == '__main__':
-    main()
+    def parse_url(self, url):
+        utils.parse_urls(url)

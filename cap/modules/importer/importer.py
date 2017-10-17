@@ -7,3 +7,7 @@ class Importer:
     @abstractmethod
     def archive_repository(self):
         pass
+
+    @abstractmethod
+    def parse_url(self, url):
+        pass
