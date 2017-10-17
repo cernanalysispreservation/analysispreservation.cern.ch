@@ -5,7 +5,7 @@ import utils
 
 class GitlabImporter(Importer):
 
-    def __init__(self, repo, token):
+    def __init__(self, repo, token=None):
         self.repo = repo
         self.token = token
 

@@ -13,14 +13,12 @@ class GithubImporter(Importer):
 
     def archive_repository(self):
         """ download and archive repo via PyGithub """
-        if self.token:
-            gh = Github(self.token)
-        else:
-            gh = Github()
+        gh = Github(self.token)
+
         # self.repo format: username/repository
         repo = gh.get_repo(self.repo)
         link = repo.get_archive_link("tarball")
-        urllib.urlretrieve(link, os.path.join(os.getcwd(), "archive.tar.gz"))
+        urllib.urlretrieve(link, os.path.join(os.getcwd(), "bla1.tar.gz"))
 
     def parse_url(self, url):
         utils.parse_urls(url)
