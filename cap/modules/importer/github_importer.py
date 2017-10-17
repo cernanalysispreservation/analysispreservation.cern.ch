@@ -7,14 +7,17 @@ from importer import Importer
 
 class GithubImporter(Importer):
 
-    def __init__(self, repo):
+    def __init__(self, repo, token=None):
         self.repo = repo
+        self.token = token
 
     def archive_repository(self):
         """ download and archive repo via PyGithub """
-        # Github token can be passed as: gh = Github(self.token)
-        gh = Github()
-        # self.repo format: username/reponame
+        if self.token:
+            gh = Github(self.token)
+        else:
+            gh = Github()
+        # self.repo format: username/repository
         repo = gh.get_repo(self.repo)
         link = repo.get_archive_link("tarball")
         urllib.urlretrieve(link, os.path.join(os.getcwd(), "archive.tar.gz"))
