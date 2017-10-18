@@ -74,7 +74,7 @@ install_requires = [
     'cryptography>=1.6',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
-    'simplekv==0.10.0', # temporary fix
+    'simplekv==0.10.0',  # temporary fix
     'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
@@ -87,7 +87,7 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
-    'Flask-WTF==0.13.1',
+    'Flask-WTF>=0.14.2',
     'invenio-access>=1.0.0a11',
     'invenio-accounts>=1.0.0b9',
     'invenio-assets>=1.0.0b6',
