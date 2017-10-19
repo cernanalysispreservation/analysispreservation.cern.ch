@@ -29,6 +29,8 @@ from __future__ import absolute_import, print_function
 
 from urlparse import urlparse
 
+from flask import current_app
+
 
 def clean_empty_values(data):
     """Removes empty values from model"""
@@ -46,3 +48,24 @@ def parse_github_url(url):
     u = urlparse(url)
     replaced = u._replace(netloc=netloc)
     return replaced.geturl().replace('/blob', '')
+
+
+def discover_schema(deposit):
+    """If schema url not passed directly, set it based on $ana_type field"""
+
+    if '$schema' not in deposit:
+        deposit_groups = current_app.config.get('DEPOSIT_GROUPS', None)
+
+        ana_type = deposit.get("$ana_type", None)
+        schema = deposit_groups.get(ana_type)['schema']
+
+        if schema:
+            host = current_app.config.get('JSONSCHEMAS_HOST', None)
+            protocol = current_app.config.get('JSONSCHEMAS_URL_SCHEME', 'https')
+            schema = "{protocol}://{host}/{schema}".format(host=host,
+                                                           schema=schema,
+                                                           protocol=protocol)
+    else:
+        schema = deposit['$schema']
+
+    return schema

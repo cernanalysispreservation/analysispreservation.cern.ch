@@ -24,15 +24,16 @@
 
 
 """CAP deposit UI views"""
-from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
-from cap.utils import obj_or_import_string
-from flask import Blueprint, abort, current_app, jsonify, render_template, request
+from flask import (Blueprint, abort, current_app, jsonify, render_template,
+                   request)
 from flask.views import View
+
+from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
+from cap.modules.deposit.utils import discover_schema
+from cap.utils import obj_or_import_string
 from flask_security import login_required
-
-from jsonschema.validators import Draft4Validator, RefResolutionError
-
 from invenio_access import DynamicPermission
+from jsonschema.validators import Draft4Validator, RefResolutionError
 
 blueprint = Blueprint(
     'cap_deposit_ui',
@@ -56,6 +57,7 @@ def validator():
         return result
 
     data = request.get_json()
+    data['$schema'] = discover_schema(data)
     status = 200
     result = {}
     try:
