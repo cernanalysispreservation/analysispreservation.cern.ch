@@ -75,7 +75,6 @@ install_requires = [
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
     'simplekv==0.10.0',  # temporary fix
-    'py2neo==2.0.8',
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'Flask>=0.11.1',
