@@ -15,6 +15,10 @@
             "anal_name": {
               "type": "string"
             },
+            "analysis_number": {
+              "type": "string",
+              "index" : "not_analyzed"
+            },
             "cadi": {
               "type": "string"
             }

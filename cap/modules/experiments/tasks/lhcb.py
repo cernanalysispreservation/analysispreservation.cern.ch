@@ -22,10 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""Cern Analysis Preservation LHCb tasks for Celery."""
+
 import json
 import os
 import shelve
 
+from celery import shared_task
 from flask import current_app
 
 filenames = [
@@ -41,7 +44,8 @@ filenames = [
 ]
 
 
-def dump_analyses_to_json():
+@shared_task
+def dump_lhcb_analyses_to_json():
     """ Parse shelve files with analyses to json. """
 
     base = {}
@@ -51,7 +55,7 @@ def dump_analyses_to_json():
     os.chdir(lhcb_dbases_dir)
 
     def update_not_overwrite(dict1, dict2):
-        return dict1.update({k:v for k,v in dict2.iteritems()
+        return dict1.update({k: v for k, v in dict2.iteritems()
                              if k not in dict1})
 
     for filename in filenames:
@@ -62,7 +66,7 @@ def dump_analyses_to_json():
         # Get list of "title" for Anal.Name Autocomplete
         title_list.extend(analysis.keys())
 
-        with open('publications.json','r') as fp:
+        with open('publications.json', 'r') as fp:
             publications = json.load(fp)
 
             for title in analysis:

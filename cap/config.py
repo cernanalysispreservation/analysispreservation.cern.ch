@@ -33,13 +33,22 @@ from os.path import dirname, join
 
 from celery.schedules import crontab
 from flask import request
+
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             DeleteDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
+from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
+                                                  disconnect_handler)
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import record_read_permission_factory
+from cap.modules.records.search import cap_record_search_factory
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
-from invenio_deposit.config import (DEPOSIT_REST_FACETS,
-                                    DEPOSIT_REST_SORT_OPTIONS)
+from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
 from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
-from invenio_oauthclient.contrib import cern
 from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
                                          RECORDS_REST_FACETS,
                                          RECORDS_REST_SORT_OPTIONS)
@@ -47,17 +56,6 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             DeleteDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
-from cap.modules.records.permissions import (CreateRecordPermission,
-                                             DeleteRecordPermission,
-                                             ReadRecordPermission,
-                                             UpdateRecordPermission,
-                                             record_read_permission_factory)
-from cap.modules.records.search import cap_record_search_factory
 
 
 def _(x):
@@ -97,14 +95,19 @@ ACCESS_CACHE = 'cap.modules.cache:current_cache'
 # ======
 #: Import modules
 CELERY_IMPORTS = {
-    'cap.modules.experiments.tasks',
+    'cap.modules.experiments.tasks.lhcb',
+    # 'cap.modules.experiments.tasks.cms',
 }
 #: Scheduled tasks
 CELERYBEAT_SCHEDULE = {
     'dump_lhcb_analyses_to_json': {
-        'task': 'cap.modules.experiments.tasks.dump_lhcb_analyses_to_json',
+        'task': 'cap.modules.experiments.tasks.lhcb.dump_lhcb_analyses_to_json',
         'schedule': crontab(minute=0, hour=2)
     },
+    # 'sync_cms_ana_with_cadi': {
+    #     'task': 'cap.modules.experiments.tasks.cms.sync_cms_ana_with_cadi',
+    #     'schedule': crontab(minute=30, hour=2)
+    # },
 }
 
 # Mail
@@ -345,8 +348,6 @@ CERN_APP_CREDENTIALS = {
 
 # OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
 
-from cap.modules.oauthclient.contrib.cern import account_info, account_setup, disconnect_handler
-from cap.modules.oauthclient.rest_handlers import signup_handler, authorized_signup_handler
 OAUTHCLIENT_REMOTE_APPS = {
     'cern': dict(
         title='CERN',
@@ -429,6 +430,11 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
 LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
 LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
+
+# CADI database
+# @TOFIX should this be public?
+CADI_API_URL = 'change_me'
+CADI_GET_CHANGES_URL = 'change_me'
 
 # Deposit
 # ============
