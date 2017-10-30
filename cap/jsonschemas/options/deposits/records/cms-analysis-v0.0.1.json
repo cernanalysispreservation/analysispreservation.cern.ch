@@ -90,7 +90,30 @@
     ]
   },
   {
-    "key": "input_data"
+    "key": "input_data",
+    "items": [
+        {
+            "key": "input_data.primary-datasets",
+            "title": "Primary Datasets",
+            "type": "cap:typeahead",
+            "async": true,
+            "url": "/api/cms/datasets/names"
+        },
+        {
+            "key": "input_data.mc_sig_dataset",
+            "title": "Monte Carlo Signal Datasets",
+            "type": "cap:typeahead",
+            "async": true,
+            "url": "/api/cms/datasets/names"
+        },
+        {
+            "key": "input_data.mc_bg_dataset",
+            "title": "Monte Carlo Background Datasets",
+            "type": "cap:typeahead",
+            "async": true,
+            "url": "/api/cms/datasets/names"
+        }
+    ]
   },
   {
     "key": "input_code_output",
