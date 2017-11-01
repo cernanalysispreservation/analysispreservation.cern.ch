@@ -40,3 +40,9 @@ class TestImporter(TestCase):
     def test_importer_factory_gitlab(self):
         gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
         assert isinstance(gh, GitlabImporter)
+
+    def test_get_gitlab_url(self):
+        gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
+        link = gh.get_url_of_repository_archive()
+        self.assertIn("tar", link)
+

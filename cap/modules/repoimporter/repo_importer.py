@@ -24,3 +24,7 @@ class RepoImporter:
     @abstractmethod
     def archive_repository(self):
         pass
+
+    @abstractmethod
+    def get_url_of_repository_archive(self):
+        pass
