@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 """CERN Analysis Preservation base configuration."""
 
 from __future__ import absolute_import, print_function
@@ -435,6 +434,7 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 # @TOFIX should this be public?
 CADI_API_URL = 'change_me'
 CADI_GET_CHANGES_URL = 'change_me'
+CADI_GET_RECORD_URL = 'change_me'
 
 # Deposit
 # ============
