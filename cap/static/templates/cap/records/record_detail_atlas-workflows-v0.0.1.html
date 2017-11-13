@@ -31,13 +31,31 @@
     <div class="col-md-12">
       <div class="panel panel-default cap-panel">
         <div class="panel-heading" >
+          <h2 class="panel-title">Workflows</h2>
+        </div>
+        <div class="panel-body fixed-home-panel" style="height:300px">
+
+          <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="$index" ng-repeat="i in record.metadata.workflows track by $index" heading="{{i.analysis_title}}">
+              <pre>{{i.workflow | json}}</pre>
+            </uib-tab>
+          </uib-tabset>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<!--   <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-default cap-panel">
+        <div class="panel-heading" >
           <h2 class="panel-title">Visualisation</h2>
         </div>
         <div class="panel-body fixed-home-panel" style="height:600px">
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default cap-panel">
@@ -45,29 +63,35 @@
           <h2 class="panel-title">Input Files</h2>
         </div>
         <div class="panel-body">
-          <ul style="list-style-type: none;padding:0;">
-            <li><h3>Data Input Files</h3></li>
-            <li ng-repeat="f in record.metadata.inputs.data_inputfiles track by $index">
-              {{f}}
-            </li>
-          </ul>
-          <ul style="list-style-type: none;padding:0;">
-            <li><h3>Signal Input Files</h3></li>
-            <li ng-repeat="f in record.metadata.inputs.signal_inputfiles track by $index">
-              {{f}}
-            </li>
-          </ul>
-          <ul style="list-style-type: none;padding:0;">
-            <li><h3>Background MC Info</h3></li>
-            <li ng-repeat="mc in record.metadata.inputs.bkg_mcinfo track by $index">
+          <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="$index" ng-repeat="i in record.metadata.inputs track by $index" heading="{{i.title}}">
+
+
               <ul style="list-style-type: none;padding:0;">
-                <li><h5>Name: {{mc.name}} | <i>Weight: {{mc.weight}}</i></h5></li>
-                <li ng-repeat="f in mc.inputfiles track by $index">
+                <li><h3>Data Input Files</h3></li>
+                <li ng-repeat="f in i.files.data_inputfiles track by $index">
                   {{f}}
                 </li>
               </ul>
-            </li>
-          </ul>
+              <ul style="list-style-type: none;padding:0;">
+                <li><h3>Signal Input Files</h3></li>
+                <li ng-repeat="f in i.files.signal_inputfiles track by $index">
+                  {{f}}
+                </li>
+              </ul>
+              <ul style="list-style-type: none;padding:0;">
+                <li><h3>Background MC Info</h3></li>
+                <li ng-repeat="mc in i.files.bkg_mcinfo track by $index">
+                  <ul style="list-style-type: none;padding:0;">
+                    <li><h5>Name: {{mc.name}} | <i>Weight: {{mc.weight}}</i></h5></li>
+                    <li ng-repeat="f in mc.inputfiles track by $index">
+                      {{f}}
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </uib-tab>
+          </uib-tabset>
         </div>
       </div>
     </div>

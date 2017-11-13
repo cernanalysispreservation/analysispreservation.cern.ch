@@ -5,35 +5,45 @@
     {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/atlas-workflows-v0.0.1.json"},
     {
         "key": "inputs",
+        "title": "Inputs",
+        "type": "tabArrayTop",
         "items": [
           {
-            "key": "inputs.data_inputfiles",
+            "key": "inputs[].title"
+          },
+          {
+            "key": "inputs[].files",
             "items": [
               {
-                "key": "inputs.data_inputfiles[]",
-                "title": "File URI"
-              }
-            ]
-          },
-          {
-            "key": "inputs.signal_mcweight"
-          },
-          {
-            "key": "inputs.signal_inputfiles",
-            "items": [
-              {"key": "inputs.signal_inputfiles[]"}
-            ]
-          },
-          {
-            "key": "inputs.bkg_mcinfo",
-            "items": [
-              "inputs.bkg_mcinfo[].name",
-              "inputs.bkg_mcinfo[].weight",
-              {
-                "key": "inputs.bkg_mcinfo[].inputfiles",
+                "key": "inputs[].files.data_inputfiles",
                 "items": [
                   {
-                    "key": "inputs.bkg_mcinfo[].inputfiles[]"
+                    "key": "inputs[].files.data_inputfiles[]",
+                    "title": "File URI"
+                  }
+                ]
+              },
+              {
+                "key": "inputs[].files.signal_mcweight"
+              },
+              {
+                "key": "inputs[].files.signal_inputfiles",
+                "items": [
+                  {"key": "inputs[].files.signal_inputfiles[]"}
+                ]
+              },
+              {
+                "key": "inputs[].files.bkg_mcinfo",
+                "items": [
+                  "inputs[].files.bkg_mcinfo[].name",
+                  "inputs[].files.bkg_mcinfo[].weight",
+                  {
+                    "key": "inputs[].files.bkg_mcinfo[].inputfiles",
+                    "items": [
+                      {
+                        "key": "inputs[].files.bkg_mcinfo[].inputfiles[]"
+                      }
+                    ]
                   }
                 ]
               }

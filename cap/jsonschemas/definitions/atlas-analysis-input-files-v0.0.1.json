@@ -1,45 +1,58 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
+  "type": "array",
   "title": "Inputs",
   "id": "yadage_stage",
   "additionalProperties": false,
-  "properties": {
-    "data_inputfiles": {
-      "type": "array",
-      "title": "Data Input Files",
-      "items": {
+  "items": {
+    "type": "object",
+    "properties": {
+      "title": {
+        "title": "Name",
         "type": "string"
-      }
-    },
-    "signal_mcweight": {
-      "type": "number",
-      "title": "Signal MC Weight"
-    },
-    "signal_inputfiles": {
-      "type": "array",
-      "title": "Signal Input Files",
-      "items": {
-        "type": "string"
-      }
-    },
-    "bkg_mcinfo": {
-      "type": "array",
-      "title": "Background MC Info",
-      "items": {
+      },
+      "files": {
+        "title": "Files",
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string"
-          },
-          "weight": {
-            "type": "number"
-          },
-          "inputfiles": {
+          "data_inputfiles": {
             "type": "array",
-            "title": "Background Input Files",
+            "title": "Data Input Files",
             "items": {
               "type": "string"
+            }
+          },
+          "signal_mcweight": {
+            "type": "number",
+            "title": "Signal MC Weight"
+          },
+          "signal_inputfiles": {
+            "type": "array",
+            "title": "Signal Input Files",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bkg_mcinfo": {
+            "type": "array",
+            "title": "Background MC Info",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "number"
+                },
+                "inputfiles": {
+                  "type": "array",
+                  "title": "Background Input Files",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         }
