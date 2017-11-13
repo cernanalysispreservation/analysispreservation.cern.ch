@@ -144,6 +144,25 @@ var capRecordsClient = function($http, $q) {
             deferred.reject(response);
         });
         return deferred.promise;
+      },
+      runYadageWorkflow: function(payload) {
+        var deferred = $q.defer();
+        deferred.notify('started');
+
+        $http.post(
+          "/api/ATLAS/yadage/workflow_submit",
+          payload
+        ).then(
+          function(res){
+            deferred.notify('finished');
+            deferred.resolve(res);
+          },
+          function(err){
+            deferred.notify('error');
+            deferred.reject(err);
+          }
+        )
+        return deferred.promise;
       }
   }
 };

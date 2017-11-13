@@ -119,6 +119,7 @@ app_js = NpmBundle(
     "js/cap/components/header.js",
     "js/cap/components/footer.js",
     "js/cap/components/capModal.js",
+    "js/cap/components/yadageModal.js",
     "js/cap/components/capClientForm.js",
     "js/cap/components/capTokenForm.js",
     "js/cap/cap.main.js",

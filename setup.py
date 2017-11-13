@@ -193,6 +193,7 @@ setup(
             'cap_theme = cap.views:theme_blueprint',
             'cap_search = cap.views:search_blueprint',
             'cap_deposit = cap.views:deposit_blueprint',
+            'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_cms = cap.modules.experiments.views.cms:cms_bp',
         ],

@@ -8,9 +8,12 @@
             {{record.metadata.$schema.split('/').pop().replace('-v0.0.1.json', '')}}
           </span>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2"  ng-controller="yadageModalCtrl as $modalCtrl">
           <h3>
-          <a href="" disabled class="btn btn-default"><strong>Run</strong> in Yadage</a>
+          <button
+            ng-click="$modalCtrl.openModal({'name': 'Yadage'}, record.metadata.workflows, record.metadata.inputs)"
+            type="button"
+            class="btn btn-default"><strong>Run</strong> in Yadage</button>
           <a href="" disabled style="margin-top:5px;" class="btn btn-default"><strong class="fa fa-code-fork"> </strong> Fork Analysis</a>
           </h3>
         </div>

@@ -1,0 +1,48 @@
+<div style="display: inline-block;width: 100%;">
+  <div class="modal-header">
+      <h3 class="modal-title" id="modal-title-{{$ctrl.name}}">Select {{$ctrl.name}} Enviroment</h3>
+  </div>
+  <div class="modal-body" id="modal-body-{{$ctrl.name}}">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm-12 form-group">
+          <form action="">
+            <label>Provide {{$ctrl.name}} Access Token:</label>
+            <input type="text" name="at" ng-model="$ctrl.at_to_use"> <br>
+            <label>Workflow:</label>
+            <select name="workflow" ng-model="$ctrl.selectedWorkflow">
+                <option value="" selected disabled>Select Workflow</option>
+                <option ng-repeat="w in $ctrl.workflows track by $index" value="{{$index}}">{{w.analysis_title}}</option>
+            </select> <br>
+            <label>Input:</label>
+            <select name="input"  ng-model="$ctrl.selectedInput">
+                <option value="" selected disabled>Select Input</option>
+                <option ng-repeat="i in $ctrl.inputs track by $index" value="{{$index}}">{{i.title}}</option>
+            </select> <br>
+            <label>Output:</label>
+            <input type="text" name="output_name" ng-model="$ctrl.output"> <br>
+            <button ng-click="$ctrl.run()" id="btn-append-to-body" type="button" class="btn btn-primary">
+              Run
+            </button>
+          </form>
+        </div>
+        <div class="row" ng-if="$ctrl.yadageResp">
+          <div class="col-sm-12">
+            <div class="col-sm-12">
+              <pre>
+                Your job was started succesfully!! <br>
+                Job GUID: {{$ctrl.yadageResp.jobguid}}
+                Job URL: <a target="_blank" href="https://yadage.cern.ch/monitor/{{$ctrl.yadageResp.jobguid}}">https://yadage.cern.ch/monitor/{{$ctrl.yadageResp.jobguid}}</a> <br>
+
+                * Please copy the information above.
+                  After this window is closed, they will be lost.
+                  You can retrieve them again from your
+                  profile in https://yadage.cern.ch/
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

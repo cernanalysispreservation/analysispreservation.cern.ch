@@ -26,7 +26,12 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint
+import requests
+import json
+
+from flask import Blueprint, jsonify, request
+
+from ..permissions.atlas import atlas_permission
 
 atlas_bp = Blueprint(
     'cap_atlas',
@@ -35,3 +40,30 @@ atlas_bp = Blueprint(
     template_folder='templates',
     static_folder='static',
 )
+
+
+@atlas_bp.route('/yadage/workflow_submit', methods=['POST'])
+@atlas_permission.require(403)
+def yadage_workflow_submit():
+    resp = request.get_json()
+
+    at = resp.get('at', None)
+    data = resp.get('data', {})
+    headers = {
+        "Authorization": "Bearer " + at,
+        "Content-Type": "application/json"
+    }
+
+    r = requests.post(
+        'https://yadage.cern.ch/workflow_submit',
+        data=json.dumps(data),
+        headers=headers,
+        verify=False)
+
+    if r.status_code == 200:
+        return jsonify(r.json()), 200
+    else:
+        return jsonify({
+            "error_msg": "An error occured in the request to Yadage Engine",
+            "error": r.text
+        }), 409
