@@ -74,7 +74,6 @@ install_requires = [
     'cryptography>=1.6',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
-    'simplekv==0.10.0',  # temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'Flask>=0.11.1',
@@ -113,6 +112,7 @@ install_requires = [
     'invenio-userprofiles>=1.0.0a8',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
+    'simplekv==0.10.0',  # temporary fix
 ]
 
 
