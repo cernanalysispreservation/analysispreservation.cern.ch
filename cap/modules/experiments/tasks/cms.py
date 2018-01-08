@@ -29,12 +29,19 @@ from datetime import datetime, timedelta
 
 import requests
 from celery import shared_task
-from flask import current_app
-
 from elasticsearch_dsl.query import Q
+from flask import current_app
 from invenio_db import db
 from invenio_records.api import Record
 from invenio_search.api import RecordsSearch
+
+cadi_fields_to_record = {
+    'description': ('basic_info', 'abstract'),
+    'URL': ('basic_info', 'twiki'),
+    'PAS': ('basic_info', 'pas'),
+    'Conference': ('additional_resources', 'conference', 'name'),
+    'conferenceStatus': ('additional_resources', 'conference', 'status'),
+}
 
 
 @shared_task
@@ -43,15 +50,14 @@ def sync_cms_ana_with_cadi():
     updated = get_updated_cadi_lines()
 
     for ana in updated:
-        code = ana.get('code', None)
-        code = re.sub('^d', '', code)  # remove artefact from code names
+        # remove artefact from code names
+        code = re.sub('^d', '', ana.get('code', None))
 
         res = rs.query(Q('term', basic_info__analysis_number=code)
                        ).execute()
         for hit in res:
             record = Record.get_record(hit.meta.id)
-            record['basic_info']['cadi_data'] = ana
-            record.commit()
+            update_fields_in_record(record, ana)
 
             print('Analysis number {} updated.'.format(code))
 
@@ -72,3 +78,19 @@ def get_updated_cadi_lines():
     data = resp.json().get('data', None)
 
     return data
+
+
+def update_fields_in_record(record, cadi_record):
+    def set(d, path, val):
+        """ 
+        Set nested field in dictionary
+        path as a tuple of keys e.g. ('outer', 'inner', 'field').
+        """
+        for key in path[:-1]:
+            d = d.setdefault(key, {})
+        d[path[-1]] = val
+
+    for cadi_key, record_key in cadi_fields_to_record.items():
+        set(record, record_key, cadi_record[cadi_key])
+
+    record.commit()

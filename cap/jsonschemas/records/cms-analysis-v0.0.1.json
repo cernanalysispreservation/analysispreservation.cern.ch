@@ -97,6 +97,15 @@
                      "type": "string"
                   }
                }
+            },
+            "pas": {
+               "title": "Physics Analysis Summary (PAS)",
+               "description": "URL from CADI",
+               "type": "string"
+            },
+            "twiki": {
+               "title": "Twiki",
+               "type": "string"
             }
          }
       },
@@ -250,6 +259,21 @@
                ],
                "items": {
                   "$ref": "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
+               }
+            },
+            "conference": {
+               "title": "Conference",
+               "description": "Please add conference details",
+               "type": "object",
+               "properties": {
+                     "name": {
+                        "title": "Name",
+                        "type": "string"
+                     },
+                     "status": {
+                        "title": "Status",
+                        "type": "string"
+                     }
                }
             },
             "keywords": {

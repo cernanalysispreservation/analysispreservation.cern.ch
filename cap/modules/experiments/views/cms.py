@@ -30,6 +30,7 @@ from urllib import unquote
 
 import requests
 from flask import Blueprint, current_app, jsonify, request
+from simplejson import JSONDecodeError
 
 from ..permissions.cms import cms_permission
 
@@ -46,10 +47,12 @@ def get_analysis_from_cadi():
     ana_number = unquote(request.args.get('ana_number', ''))
     url = current_app.config['CADI_GET_RECORD_URL'] + ana_number
 
-    resp = requests.get(url=url).json()
+    resp = requests.get(url=url)
 
     try:
-        data = resp['data'][0]
-    except IndexError:
+        data = resp.json()
+        data = data['data'][0]
+    except (JSONDecodeError, IndexError):
         data = {}
+
     return jsonify(data)

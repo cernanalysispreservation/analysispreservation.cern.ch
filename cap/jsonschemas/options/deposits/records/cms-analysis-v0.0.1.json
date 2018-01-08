@@ -25,6 +25,26 @@
                         {
                             "s": ["description"],
                             "t": ["#", "abstract"]
+                        },
+                        {
+                            "s": ["contact"],
+                            "t": ["#", "people_info", 0, "name"]
+                        },
+                        {
+                            "s": ["URL"],
+                            "t": ["#", "twiki"]
+                        },
+                        {
+                            "s": ["Conference"],
+                            "t": ["additional_resources", "conference", "name"]
+                        },
+                        {
+                            "s": ["conferenceStatus"],
+                            "t": ["additional_resources", "conference", "status"]
+                        },
+                        {
+                            "s": ["PAS"],
+                            "t": ["#", "pas"]
                         }
                     ]
                 }
@@ -97,6 +117,14 @@
                         "placeholder": "Monte Carlo Data Tag"
                     }
                 ]
+            },
+            {
+                "key": "basic_info.pas",
+                "title": "Physics Analysis Summary (PAS)"
+            },
+            {
+                "key": "basic_info.twiki",
+                "placeholder": "Please add a twiki page url"
             }
         ]
     },
@@ -1009,6 +1037,22 @@
                             }
                         ]
                     }
+                ]
+            },
+            {
+                "key": "additional_resources.conference",
+                "title": "Conference",
+                "items": [
+                {
+                    "key": "additional_resources.conference.name",
+                    "title": "Name",
+                    "placeholder": "E.g. "
+                },
+                {
+                    "key": "additional_resources.conference.status",
+                    "title": "Status",
+                    "placeholder": "E.g. "
+                }
                 ]
             },
             {

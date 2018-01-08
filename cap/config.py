@@ -95,18 +95,20 @@ ACCESS_CACHE = 'cap.modules.cache:current_cache'
 #: Import modules
 CELERY_IMPORTS = {
     'cap.modules.experiments.tasks.lhcb',
-    # 'cap.modules.experiments.tasks.cms',
+    'cap.modules.experiments.tasks.cms',
 }
 #: Scheduled tasks
 CELERYBEAT_SCHEDULE = {
     'dump_lhcb_analyses_to_json': {
-        'task': 'cap.modules.experiments.tasks.lhcb.dump_lhcb_analyses_to_json',
+        'task':
+            'cap.modules.experiments.tasks.lhcb.dump_lhcb_analyses_to_json',
         'schedule': crontab(minute=0, hour=2)
     },
-    # 'sync_cms_ana_with_cadi': {
-    #     'task': 'cap.modules.experiments.tasks.cms.sync_cms_ana_with_cadi',
-    #     'schedule': crontab(minute=30, hour=2)
-    # },
+    'sync_cms_ana_with_cadi': {
+        'task':
+            'cap.modules.experiments.tasks.cms.sync_cms_ana_with_cadi',
+        'schedule': crontab(minute=30, hour=2)
+     },
 }
 
 # Mail
