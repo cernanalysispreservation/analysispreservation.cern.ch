@@ -22,41 +22,59 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-web:
-  build: .
-  command: gunicorn -b :5000 --log-level debug cap.wsgi:application
-  ports:
-    - "80:5000"
-  environment:
-    - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
-    - APP_ACCESS_SESSION_REDIS_HOST=redis
-    - APP_CACHE_REDIS_URL=redis://redis:6379/0
-    - APP_CACHE_TYPE=redis
-    - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
-    - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgresql/cap
-    - ASSET_DEBUG=True
-    - DEBUG=True
-  links:
-    - elasticsearch
-    - redis
-    - postgresql
 
-redis:
-  image: redis
-  ports:
-    - "26379:6379"
+version: '2.1'
+services:
+  # Base services
+  redis:
+    extends:
+        file: docker-services.yml
+        service: redis
 
-postgresql:
-  image: postgres
-  environment:
-    - POSTGRES_USER=cap
-    - POSTGRES_PASSWORD=cap
-  ports:
-    - "25432:5432"
+  postgresql:
+    extends:
+        file: docker-services.yml
+        service: postgresql
 
-elasticsearch:
-  build: .
-  dockerfile: ./docker/elasticsearch/Dockerfile
-  ports:
-    - "29200:9200"
-    - "29300:9300"
+  elasticsearch:
+    extends:
+        file: docker-services.yml
+        service: elasticsearch
+
+  rabbitmq:
+      extends:
+        file: docker-services.yml
+        service: rabbitmq
+  # Application
+#  web:
+#    extends:
+#      file: docker-services.yml
+#      service: app
+#    depends_on:
+#      - postgresql
+#      - rabbitmq
+#      - elasticsearch
+#      - redis
+#    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+#    volumes:
+#      - "/usr/local/var/cap-instance/static"
+#      - ".:/code"
+#    ports:
+#      - "5000:5000"
+#
+#  worker:
+#    extends:
+#      file: docker-services.yml
+#      service: app
+#    restart: "always"
+#    command: "celery worker -A cap.celery --loglevel=INFO"
+#    volumes:
+#      - "/usr/local/var/cap-instance/static"
+#      - "/usr/local/lib/python3.5/site-packages"
+#      - "/usr/local/var/data"
+#      - ".:/code"
+#    depends_on:
+#      - redis
+#      - postgresql
+#      - rabbitmq
+#      - elasticsearch
