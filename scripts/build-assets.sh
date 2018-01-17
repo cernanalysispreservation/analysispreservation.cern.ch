@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2016, 2017, 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as

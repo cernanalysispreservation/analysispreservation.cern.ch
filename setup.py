@@ -71,7 +71,7 @@ install_requires = [
     'elasticsearch==2.4.1',  # temporary fix
     'elasticsearch-dsl==2.2.0',  # temporary fix
     'celery<4.0,>=3.1.19',  # temporary fix
-    'cryptography>=1.6',  # temporary fix
+    'cryptography>=2.1.4',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
     'simplejson>=3.8.2',

@@ -22,58 +22,63 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-nginx:
-  build: ./docker/nginx/
-  restart: "always"
-  ports:
-    - "80:80"
-    - "443:443"
-  links:
-    - web
-  volumes_from:
-    - static
 
-web:
-  build: .
-  command: gunicorn -b :5000 cap.wsgi:application
-  environment:
-    - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
-    - APP_CACHE_REDIS_URL=redis://redis:6379/0
-    - APP_CACHE_TYPE=redis
-    - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
-    - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgresql/cap
-    # - APP_CERN_APP_CREDENTIALS_KEY=REPLACEME
-    # - APP_CERN_APP_CREDENTIALS_SECRET=REPLACEME
-    - APP_WSGI_PROXIES=1
-  links:
-    - elasticsearch
-    - redis
-    - postgresql
+version: '2.1'
+services:
 
-redis:
-  image: redis
-  ports:
-    - "26379:6379"
+  # Web Application
+  web:
+    extends:
+      file: docker-services.yml
+      service: app
+    build: .
+    depends_on:
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+      - redis
+    # FIXME
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+    volumes:
+      - ".:/code"
+    ports:
+      - "5000:5000"
 
-postgresql:
-  image: postgres
-  environment:
-    - POSTGRES_USER=cap
-    - POSTGRES_PASSWORD=cap
-  ports:
-    - "25432:5432"
+  # Application Worker
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
+    build: .
+    # FIXME
+    command: 'celery worker -A cap.celery --loglevel=INFO'
+    volumes:
+      - ".:/code"
+    depends_on:
+      - redis
+      - postgresql
+      - rabbitmq
+      - elasticsearch
 
-elasticsearch:
-  build: .
-  dockerfile: ./docker/elasticsearch/Dockerfile
-  ports:
-    - "29200:9200"
-    - "29300:9300"
-
-static:
-  restart: "no"
-  build: .
-  command: /bin/true
-  volumes:
-    - "/usr/local/var/cap-instance/static"
-    - ".:/code"
+  # Base services
+  redis:
+    extends:
+        file: docker-services.yml
+        service: redis
+  postgresql:
+    extends:
+        file: docker-services.yml
+        service: postgresql
+    environment:
+      # FIXME
+      - POSTGRES_DB=cap
+      - POSTGRES_USER=cap
+      - POSTGRES_PASSWORD=cap
+  elasticsearch:
+    extends:
+        file: docker-services.yml
+        service: elasticsearch
+  rabbitmq:
+    extends:
+      file: docker-services.yml
+      service: rabbitmq

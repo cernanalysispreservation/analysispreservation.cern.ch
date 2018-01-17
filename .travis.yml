@@ -72,7 +72,7 @@ before_install:
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[docs,tests]"
-  - "travis_retry pip install -r requirements.txt --upgrade"
+  # - "travis_retry pip install -r requirements.txt --upgrade"
 
 before_script:
   - travis_retry pip install kwalitee GitPython --pre
