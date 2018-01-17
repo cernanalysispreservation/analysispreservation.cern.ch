@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2016, 2017, 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,28 +22,74 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Using Python 2.7:
-FROM python:2.7
+# Use CentOS7:
+FROM centos:7
 
-# Install dependencies
-RUN apt-get update \
-    && apt-get -qy upgrade --fix-missing --no-install-recommends \
-    # Node.js
-    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get clean autoclean
+# Install CERN Open Data Portal web node pre-requisites:
+RUN yum update -y && \
+    yum install -y \
+        curl \
+        git \
+        rlwrap \
+        screen \
+        vim \
+        emacs-nox && \
+    yum install -y \
+        epel-release && \
+    yum groupinstall -y "Development Tools" && \
+    yum install -y \
+        libffi-devel \
+        libxml2-devel \
+        libxslt-devel \
+        npm \
+        python-devel \
+        python-pip \
+        openldap-devel
 
-RUN npm install -g npm
-RUN npm install -g node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs bower
+# Install xrootd
+RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-WORKDIR /code/
+RUN yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd-python
 
-COPY . /code/
+# Print xrootd version
+RUN xrootd -v
 
-RUN pip install -r requirements.txt
+# Clean after ourselves:
+RUN yum clean -y all
+
+ENV APP_INSTANCE_PATH=/usr/local/var/cap-instance
+
+RUN pip install --upgrade pip setuptools wheel && \
+    npm install -g node-sass@3.8.0 clean-css@3.4.24 requirejs uglify-js
+
+# Install python modules and deps
+WORKDIR /code
+ADD setup.py setup.py
+ADD cap/version.py cap/version.py
+ADD requirements.txt requirements.txt
+
+# Debug off by default
+ARG DEBUG=False
+ENV DEBUG=${DEBUG}
+
+RUN if [ "$DEBUG" != "True" ]; then pip install -r requirements.txt; fi;
+RUN pip install .[all]
+
+ADD requirements-devel.txt requirements-devel.txt
+
+# Install Python packages needed for development
+RUN if [ "$DEBUG" = "True" ]; then pip install -e .[all]; pip install -r requirements-devel.txt; fi;
+
+# Add CAP sources to `code` and work there:
+WORKDIR /code
+ADD . /code
+
+RUN adduser --uid 1000 cap --gid 0 && \
+    chown -R cap:root /code
 
 RUN bash /code/scripts/build-assets.sh
+RUN chown -R cap:root /usr/local/var/cap-instance
 
-RUN python scripts/schemas.py
+USER 1000
 
 CMD ["cap", "run", "-h", "0.0.0.0"]

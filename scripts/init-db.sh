@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017, 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -60,15 +60,3 @@ cap roles add cms@inveniosoftware.org cms-members@cern.ch
 cap roles add alice@inveniosoftware.org alice-member@cern.ch
 cap roles add atlas@inveniosoftware.org atlas-active-members-all@cern.ch
 cap roles add lhcb@inveniosoftware.org lhcb-general@cern.ch
-
-# Create collections
-# cap collections create CERNAnalysisPreservation
-# cap collections create CMS -p CERNAnalysisPreservation
-# cap collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
-# cap collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
-# cap collections create LHCb -p CERNAnalysisPreservation
-# cap collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
-# cap collections create ATLAS -p CERNAnalysisPreservation
-# cap collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
-# cap collections create ATLASAnalysis -p ATLAS -q '_type:atlasanalysis'
-# cap collections create ALICE -p CERNAnalysisPreservation

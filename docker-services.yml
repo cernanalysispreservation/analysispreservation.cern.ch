@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-#
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
@@ -24,12 +22,52 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Create database and tables:
-cap db init
-cap db create
-
-# Create indexes:
-cap index init
-
-# Create location for files:
-cap files location local var/data --default
+version: '2.1'
+services:
+  app:
+    build: .
+    env_file:
+      - cap.env
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  postgresql:
+    image: postgres
+    environment:
+      - POSTGRES_DB=cap
+      - POSTGRES_USER=cap
+      - POSTGRES_PASSWORD=cap
+    ports:
+      - "5432:5432"
+  elasticsearch:
+    build: ./docker/elasticsearch/
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  rabbitmq:
+    image: rabbitmq
+    restart: "always"
+    ports:
+      - "4369:4369"
+      - "5672:5672"
+  redis-commander:
+    image: rediscommander/redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - 8081:8081
+  wdb:
+    image: kozea/wdb-server
+    ports:
+      - 1984:1984
+      - 19840:19840
+  flower:
+    restart: "always"
+    build:
+      context: .
+      args:
+        DEBUG: "True"
+    command: 'flower -A cap.celery --port=5555'
+    ports:
+      - "49555:5555"

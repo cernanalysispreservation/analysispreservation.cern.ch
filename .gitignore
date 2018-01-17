@@ -69,6 +69,8 @@ target/
 *.crt
 *.key
 
+cap.env
+
 /cap/jsonschemas_gen/*
 
 cap/test.db
