@@ -108,7 +108,7 @@ CELERYBEAT_SCHEDULE = {
         'task':
             'cap.modules.experiments.tasks.cms.sync_cms_ana_with_cadi',
         'schedule': crontab(minute=30, hour=2)
-     },
+    },
 }
 
 # Mail
@@ -385,8 +385,7 @@ JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
 
-JSONSCHEMAS_REPLACE_REFS = True
-JSONSCHEMAS_REPLACE_ALLOF = True
+JSONSCHEMAS_RESOLVE_SCHEMA = True
 
 JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     plugins=[
