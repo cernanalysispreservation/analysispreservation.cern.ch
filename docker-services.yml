@@ -22,30 +22,43 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Using Python 2.7:
-FROM python:2.7
+version: '2.1'
+services:
+  app:
+    build: .
+    environment:
+        - DEBUG=True
+        - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgresql:5432/cap
+        - APP_CACHE_REDIS_HOST=redis
+        - APP_CACHE_REDIS_URL=redis://redis:6379/0
+        - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
+        - APP_BROKER_URL=amqp://guest:guest@rabbitmq:5672/ # Celery 3
+        - APP_CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672/ # Celery 4
+        - APP_CELERY_RESULT_BACKEND=redis://redis:6379/2
+        - APP_SEARCH_ELASTIC_HOSTS=elasticsearch
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 
-# Install dependencies
-RUN apt-get update \
-    && apt-get -qy upgrade --fix-missing --no-install-recommends \
-    # Node.js
-    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
-    && apt-get install -y nodejs \
-    && apt-get clean autoclean \
-    && apt-get install -y libldap2-dev libsasl2-dev
+  postgresql:
+    image: postgres
+    environment:
+      - POSTGRES_DB=cap
+      - POSTGRES_USER=cap
+      - POSTGRES_PASSWORD=cap
+    ports:
+      - "5432:5432"
 
-RUN npm update && npm install -g node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs
+  elasticsearch:
+    build: ./docker/elasticsearch/
+    ports:
+      - "9200:9200"
+      - "9300:9300"
 
-ENV APP_INSTANCE_PATH=/usr/local/var/cap-instance
-
-WORKDIR /code
-
-COPY . /code
-
-RUN pip install -r requirements.txt
-
-RUN bash /code/scripts/build-assets.sh
-
-RUN python scripts/schemas.py
-
-CMD ["cap", "run", "-h", "0.0.0.0"]
+  rabbitmq:
+      restart: "always"
+      image: rabbitmq
+      ports:
+        - "4369:4369"
+        - "5672:5672"
