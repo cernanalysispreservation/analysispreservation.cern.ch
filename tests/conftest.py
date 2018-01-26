@@ -34,7 +34,12 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from uuid import uuid4
 
+from flask import current_app
+from werkzeug.local import LocalProxy
+
 import pytest
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
 from elasticsearch.exceptions import RequestError
 from flask_security import login_user
 from invenio_access.models import ActionUsers
@@ -49,9 +54,6 @@ from invenio_files_rest.models import Location
 from invenio_oauth2server.models import Client, Token
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
-
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
 
 
 @pytest.yield_fixture(scope='session')
@@ -95,7 +97,7 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='session')
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -106,7 +108,7 @@ def db(app):
     db_.drop_all()
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.yield_fixture(scope='function')
 def es(app):
     """Provide elasticsearch access."""
     try:
@@ -119,71 +121,103 @@ def es(app):
     list(current_search.delete(ignore=[404]))
 
 
-@pytest.fixture()
+def create_user_with_role(username, rolename):
+    _datastore = LocalProxy(
+        lambda: current_app.extensions['security'].datastore)
+
+    user, role = _datastore._prepare_role_modify_args(username, rolename)
+
+    if not user:
+        user = create_test_user(email=username, password='pass')
+    if not role:
+        role = _datastore.create_role(name=rolename)
+
+    _datastore.add_role_to_user(user, role)
+
+    return user
+
+
+@pytest.fixture(scope='session')
 def users(app, db):
     """Create users."""
-    user1 = create_test_user(
-        email='cms@inveniosoftware.org', password='cmscms')
-    superuser = create_test_user(
-        email='admin@inveniosoftware.org', password='adminadmin')
+    users = {
+        'cms_user': create_user_with_role('cms_user@cern.ch',
+                                          'cms-members@cern.ch'),
+        'cms_user2': create_user_with_role('cms_user2@cern.ch',
+                                           'cms-members@cern.ch'),
+        'alice_user': create_user_with_role('alice_user@cern.ch',
+                                            'alice-member@cern.ch'),
+        'alice_user2': create_user_with_role('alice_user2@cern.ch',
+                                             'alice-member@cern.ch'),
+        'atlas_user': create_user_with_role('atlas_user@cern.ch',
+                                            'atlas-active-members-all@cern.ch'),
+        'atlas_user2': create_user_with_role('atlas_user2@cern.ch',
+                                             'atlas-active-members-all@cern.ch'),
+        'lhcb_user': create_user_with_role('lhcb_user@cern.ch',
+                                           'lhcb-general@cern.ch'),
+        'lhcb_user2': create_user_with_role('lhcb_user2@cern.ch',
+                                            'lhcb-general@cern.ch'),
+        'superuser': create_user_with_role('superuser@cern.ch',
+                                           'analysis-preservation-support@cern.ch'),
+    }
 
-    with db.session.begin_nested():
-        # set admin permissions
-        db.session.add(ActionUsers(action=action_admin_access.value,
-                                   user=superuser))
-        db.session.add(ActionUsers(action=deposit_admin_access.value,
-                                   user=superuser))
-
-    db.session.commit()
-
-    return [
-        {'email': superuser.email, 'id': superuser.id}
-    ]
-
-
-@pytest.fixture
-def oauth2_client(app, db, users):
-    """Create client."""
-    with db.session.begin_nested():
-        # create resource_owner -> client_1
-        client_ = Client(
-            client_id='client_test_u1c1',
-            client_secret='client_test_u1c1',
-            name='client_test_u1c1',
-            description='',
-            is_confidential=False,
-            user_id=users[0]['id'],
-            _redirect_uris='',
-            _default_scopes='',
-        )
-        db.session.add(client_)
-
-    db.session.commit()
-    return client_.client_id
+    return users
 
 
 @pytest.fixture
-def write_token(app, db, oauth2_client, users):
-    """Create token."""
-    with db.session.begin_nested():
-        token_ = Token(
-            client_id=oauth2_client,
-            user_id=users[0]['id'],
-            access_token='dev_access_2',
-            refresh_token='dev_refresh_2',
-            expires=datetime.utcnow() + timedelta(hours=10),
-            is_personal=False,
-            is_internal=True,
-            _scopes=write_scope.id,
-        )
-        db.session.add(token_)
-    db.session.commit()
-    return dict(
-        token=token_,
-        auth_header=[
-            ('Authorization', 'Bearer {0}'.format(token_.access_token)),
-        ]
-    )
+def auth_headers_for_superuser(users, auth_headers_for_user):
+    return auth_headers_for_user(users['superuser'])
+
+
+@pytest.fixture()
+def auth_headers_for_user(app, db, es, json_headers):
+    """Return method to generate write token for user."""
+    def _write_token(user):
+        """Return json headers with write oauth token for given user."""
+        client_ = Client.query.filter_by(
+            user_id=user.id
+        ).first()
+
+        if not client_:
+            client_ = Client(
+                client_id=user.id,
+                client_secret='client_secret_{}'.format(user.id),
+                name='client_test_{}'.format(user.id),
+                description='',
+                is_confidential=False,
+                user_id=user.id,
+                _redirect_uris='',
+                _default_scopes='',
+            )
+            db.session.add(client_)
+
+        token_ = Token.query.filter_by(
+            user_id=user.id
+        ).first()
+
+        if not token_:
+            token_ = Token(
+                client_id=client_.client_id,
+                user_id=user.id,
+                access_token='dev_access_{}'.format(user.id),
+                refresh_token='dev_refresh_{}'.format(user.id),
+                expires=datetime.utcnow() + timedelta(hours=10),
+                is_personal=False,
+                is_internal=True,
+                _scopes=write_scope.id,
+            )
+            db.session.add(token_)
+
+        db.session.commit()
+
+        return bearer_auth(json_headers, dict(
+            token=token_,
+            auth_header=[
+                ('Authorization', 'Bearer {0}'.format(token_.access_token)),
+            ]
+        ))
+
+    return _write_token
 
 
 @pytest.fixture
@@ -193,23 +227,7 @@ def json_headers():
             ('Accept', 'application/json')]
 
 
-@pytest.fixture
-def json_auth_headers(json_headers, write_token):
-    """Authentication headers (with a valid oauth2 token).
-    It uses the token associated with the first user.
-    """
-    return bearer_auth(json_headers, write_token)
-
-
-@pytest.fixture
-def auth_headers(write_token):
-    """Authentication headers (with a valid oauth2 token).
-    It uses the token associated with the first user.
-    """
-    return bearer_auth([], write_token)
-
-
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='session')
 def location(db):
     """File system location."""
     tmppath = tempfile.mkdtemp()
@@ -227,34 +245,64 @@ def location(db):
     shutil.rmtree(tmppath)
 
 
-@pytest.fixture()
-def deposit(app, es, users, location, deposit_metadata):
-    """New deposit with files."""
-    with app.test_request_context():
-        datastore = app.extensions['security'].datastore
-        login_user(datastore.get_user(users[0]['email']))
-        id_ = uuid4()
-        deposit_minter(id_, deposit_metadata)
-        deposit = Deposit.create(deposit_metadata, id_=id_)
-        db_.session.commit()
-    current_search.flush_and_refresh(
-        index='deposits-records-cms-analysis-v0.0.1')
-    return deposit
-
-
-@pytest.fixture()
-def deposit_metadata():
-    """Raw metadata of deposit."""
-    data = {
-        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
-        'basic_info': {
-            'analysis_number': 'dream_team',
-            'people_info': [
-                {}
-            ]
+def minimal_deposits_metadata(schema_name):
+    """Returns minimal metadata for each type of schema."""
+    schema_name_to_metadata = {
+        'cms-analysis-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+            'basic_info': {
+                'analysis_number': 'dream_team',
+                'people_info': [
+                    {}
+                ]
+            }
+        },
+        'cms-questionnaire-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-questionnaire-v0.0.1.json',
+        },
+        'cms-auxiliary-measurements-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json',
+        },
+        'lhcb-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/lhcb-v0.0.1.json',
+        },
+        'alice-analysis-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/alice-analysis-v0.0.1.json',
+        },
+        'atlas-analysis-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-analysis-v0.0.1.json',
+        },
+        'atlas-workflows-v0.0.1': {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-workflows-v0.0.1.json',
         }
     }
-    return data
+
+    return schema_name_to_metadata[schema_name]
+
+
+@pytest.fixture(scope='function')
+def create_deposit(app, db, es, location):
+    """Returns function to create a new deposit."""
+    db_.session.begin_nested()
+
+    def _create_deposit(user, schema):
+        """
+        Create a new deposit for given user and schema name
+        e.g cms-analysis-v0.0.1,
+        with minimal metadata defined for this schema type.
+        """
+        db_.session.begin_nested()
+        with app.test_request_context():
+            metadata = minimal_deposits_metadata(schema)
+            login_user(user)
+            id_ = uuid4()
+            deposit_minter(id_, metadata)
+            deposit = Deposit.create(metadata, id_=id_)
+        current_search.flush_and_refresh('deposits-records-{}'.format(schema))
+        return deposit
+
+    yield _create_deposit
+    db_.session.rollback()
 
 
 def bearer_auth(headers, token):
