@@ -113,6 +113,7 @@ install_requires = [
     'invenio-userprofiles>=1.0.0b2',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
+    'docker==3.0.0',
     'simplekv==0.10.0',  # temporary fix
 ]
 
