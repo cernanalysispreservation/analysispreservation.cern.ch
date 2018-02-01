@@ -28,6 +28,7 @@
 from invenio_access.permissions import DynamicPermission
 
 from flask import current_app
+from flask_principal import RoleNeed
 
 
 def admin_permission_factory(view):
@@ -40,7 +41,7 @@ def admin_permission_factory(view):
     :returns: Permission instance.
     """
 
-    admin_needs = set([g for g in
-                       current_app.config['SUPERUSER_EGROUPS']])
+    admin_needs = set([RoleNeed('admin_superuser')]) | set([g for g in
+                                                          current_app.config['SUPERUSER_EGROUPS']])
 
     return DynamicPermission(*admin_needs)
