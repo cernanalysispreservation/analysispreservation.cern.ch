@@ -318,6 +318,7 @@ and if that does not work try:
    cap db init
 
 
+
 Docker Installation
 ===================
 
@@ -340,16 +341,35 @@ Fourth, create database and initialise default collections and users:
 
 .. code-block:: shell
 
-   docker exec -i -t analysispreservationcernch_web_1 /code/scripts/init.sh
-
-Fifth, populate the database with some example records (optional):
-
-.. code-block:: shell
-
-   docker exec -i -t analysispreservationcernch_web_1 cap fixtures records -f
+   docker-compose -f docker-compose-dev.yml run web sh scripts/init.sh
 
 Finally, see the site in action:
 
 .. code-block:: shell
 
-   firefox http://localhost/
+   firefox http://localhost:5000/
+
+Recipes
+=======
+
+More recipes exist to accomodate some of your use-cases:
+
+To run a recipe do:
+
+.. code-block:: shell
+   // Using local dev enviroment
+   sh scripts/<recipe-file.sh>
+
+   // Using docker enviroment
+   docker-compose -f docker-compose-dev.yml run web sh scripts/<recipe-file.sh>
+
+Existing recipes list:
+
+.. code-block:: shell
+
+    build-assets.sh // Collecting and Building Assets
+    clean-and-init.sh // Drop, detroy everything and re-init DB, ES, data location, redis
+    create-demo-users.sh  // Creates demo users for Admin, ALICE, ATLAS, CMS, LHCb
+    init.sh // Init DB, ES, data location, redis
+    init-db.sh // clean-and-init.sh + create-demo-users.sh
+

@@ -22,41 +22,97 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-web:
-  build: .
-  command: gunicorn -b :5000 --log-level debug cap.wsgi:application
-  ports:
-    - "80:5000"
-  environment:
-    - APP_ACCOUNTS_SESSION_REDIS_URL=redis://redis:6379/1
-    - APP_ACCESS_SESSION_REDIS_HOST=redis
-    - APP_CACHE_REDIS_URL=redis://redis:6379/0
-    - APP_CACHE_TYPE=redis
-    - APP_SEARCH_ELASTIC_HOSTS=['elasticsearch']
-    - APP_SQLALCHEMY_DATABASE_URI=postgresql://cap:cap@postgresql/cap
-    - ASSET_DEBUG=True
-    - DEBUG=True
-  links:
-    - elasticsearch
-    - redis
-    - postgresql
 
-redis:
-  image: redis
-  ports:
-    - "26379:6379"
+version: '2.1'
+services:
+  # Web Application
+  web:
+    extends:
+      file: docker-services.yml
+      service: app
+    build:
+      context: .
+      args:
+        DEBUG: "True"
+    depends_on:
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+      - redis
+      - wdb
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+    volumes:
+      - ".:/code"
+    ports:
+      - "5000:5000"
 
-postgresql:
-  image: postgres
-  environment:
-    - POSTGRES_USER=cap
-    - POSTGRES_PASSWORD=cap
-  ports:
-    - "25432:5432"
+  # Application Worker
+  worker:
+    extends:
+      file: docker-services.yml
+      service: app
+    build:
+      context: .
+      args:
+        DEBUG: "True"
+    command: 'celery worker -A cap.celery --loglevel=INFO'
+    volumes:
+      - ".:/code"
+    depends_on:
+      - redis
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+      - wdb
+  # Base services
+  redis:
+    extends:
+        file: docker-services.yml
+        service: redis
 
-elasticsearch:
-  build: .
-  dockerfile: ./docker/elasticsearch/Dockerfile
-  ports:
-    - "29200:9200"
-    - "29300:9300"
+  postgresql:
+    extends:
+        file: docker-services.yml
+        service: postgresql
+    environment:
+      - POSTGRES_DB=cap
+      - POSTGRES_USER=cap
+      - POSTGRES_PASSWORD=cap
+  elasticsearch:
+    extends:
+        file: docker-services.yml
+        service: elasticsearch
+
+  rabbitmq:
+    extends:
+      file: docker-services.yml
+      service: rabbitmq
+
+
+  # DevTools (wdb, redis-commander, flower)
+  wdb:
+    extends:
+      file: docker-services.yml
+      service: wdb
+  redis-commander:
+    extends:
+      file: docker-services.yml
+      service: redis-commander
+  flower:
+    extends:
+      file: docker-services.yml
+      service: app
+    build:
+      context: .
+      args:
+        DEBUG: "True"
+    command: 'flower -A cap.celery --port=5555'
+    volumes:
+      - ".:/code"
+    depends_on:
+      - redis
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+    ports:
+      - "49555:5555"
