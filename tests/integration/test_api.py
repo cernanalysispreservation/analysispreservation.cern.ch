@@ -28,17 +28,12 @@
 from __future__ import absolute_import, print_function
 
 
-def test_example(app, db, users, write_token, es):
+def test_test_example(app, users, auth_headers_for_user):
     """ Example test to show how to set up tests for API calls."""
-    auth = write_token['auth_header']
-    headers = [
-        ('Content-Type', 'application/json'),
-        ('Accept', 'application/json')
-    ]
-    auth_headers = headers + auth
-
     with app.test_client() as client:
-        resp = client.get('/ping', headers=auth_headers)
+        json_auth_headers = auth_headers_for_user(users['superuser'])
+        resp = client.get('/ping', headers=json_auth_headers)
 
         assert resp.status_code == 200
+
         assert "Pong" in resp.data
