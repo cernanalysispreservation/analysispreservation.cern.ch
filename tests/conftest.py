@@ -34,13 +34,9 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import current_app
-from werkzeug.local import LocalProxy
-
 import pytest
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
 from elasticsearch.exceptions import RequestError
+from flask import current_app
 from flask_security import login_user
 from invenio_access.models import ActionUsers
 from invenio_accounts.testutils import create_test_user
@@ -54,6 +50,10 @@ from invenio_files_rest.models import Location
 from invenio_oauth2server.models import Client, Token
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
+from werkzeug.local import LocalProxy
+
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
 
 
 @pytest.yield_fixture(scope='session')
@@ -82,6 +82,10 @@ def default_config():
     """Default configuration."""
     return dict(
         DEBUG_TB_ENABLED=False,
+        CELERY_ALWAYS_EAGER=True,
+        CELERY_CACHE_BACKEND='memory',
+        CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
+        CELERY_RESULT_BACKEND='cache',
         SQLALCHEMY_DATABASE_URI=os.environ.get(
             'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
         TESTING=True,
@@ -92,6 +96,8 @@ def default_config():
 def app(env_config, default_config):
     """Flask application fixture."""
     app = create_api(**default_config)
+    from flask_celeryext import FlaskCeleryExt
+    FlaskCeleryExt(app)
 
     with app.app_context():
         yield app
@@ -312,3 +318,19 @@ def bearer_auth(headers, token):
         ('Authorization', 'Bearer {0}'.format(token['token'].access_token))
     )
     return headers
+
+
+@pytest.fixture()
+def deposit(app, es, users, location):
+    """New deposit with files."""
+    with app.test_request_context():
+        datastore = app.extensions['security'].datastore
+        login_user(datastore.get_user(users['superuser'].email))
+        id_ = uuid4()
+        metadata = minimal_deposits_metadata('cms-analysis-v0.0.1')
+        deposit_minter(id_, metadata)
+        deposit = Deposit.create(metadata, id_=id_)
+        db_.session.commit()
+    current_search.flush_and_refresh(
+        index='deposits-records-cms-analysis-v0.0.1')
+    return deposit

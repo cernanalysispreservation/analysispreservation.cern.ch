@@ -86,7 +86,8 @@ CACHE_REDIS_URL = "redis://{0}:{1}/{2}".format(
 #: Default cache type.
 CACHE_TYPE = "redis"
 #: Default cache URL for sessions.
-ACCESS_SESSION_REDIS_HOST = 'redis'
+ACCESS_SESSION_REDIS_HOST = os.environ.get('APP_ACCESS_SESSION_REDIS_HOST',
+                                           'localhost')
 ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
