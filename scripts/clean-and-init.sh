@@ -27,7 +27,8 @@
 
 # Destroy db and indexes
 cap db destroy --yes-i-know
-curl -XDELETE 'http://localhost:9200/_all/'
+cap index destroy --force --yes-i-know
+#curl -XDELETE 'http://localhost:9200/_all/'
 
 # Flush redis cache
 redis-cli flushall

@@ -88,6 +88,7 @@ install_requires = [
     'Flask-WTF>=0.14.2',
     'invenio-access>=1.0.0b1',
     'invenio-accounts>=1.0.0b12',
+    'invenio-accounts-rest>=1.0.0a4',
     'invenio-assets>=1.0.0b7',
     'invenio-base>=1.0.0b1',
     'invenio-celery>=1.0.0b3',

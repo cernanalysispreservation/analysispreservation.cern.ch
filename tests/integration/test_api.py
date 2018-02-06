@@ -32,17 +32,18 @@ import json
 from invenio_search import current_search
 
 
-def test_example(app, users, auth_headers_for_user):
+def test_example(app, users, auth_headers_for_user, json_headers):
     """ Example test to show how to set up tests for API calls."""
     with app.test_client() as client:
-        headers = auth_headers_for_user(users['superuser'])
+        auth_headers = auth_headers_for_user(users['superuser'])
+        headers = auth_headers + json_headers
         resp = client.get('/ping', headers=headers)
 
         assert resp.status_code == 200
         assert "Pong" in resp.data
 
 
-def test_get_deposits_when_user_not_logged_in_returns_403(app, users, json_headers):
+def test_get_deposits_when_user_not_logged_in_returns_403(app, json_headers):
     with app.test_client() as client:
         resp = client.get('/deposits/', headers=json_headers)
 
@@ -72,7 +73,9 @@ def test_get_deposits_when_superuser_returns_all_deposits(app, users,
 
 def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
                                                                  auth_headers_for_user,
-                                                                 create_deposit):
+                                                                 json_headers,
+                                                                 create_deposit
+                                                                 ):
     with app.test_client() as client:
         user_deposits_ids = [x['_deposit']['id'] for x in [
             create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
@@ -83,8 +86,8 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
         create_deposit(users['cms_user2'], 'cms-analysis-v0.0.1'),
         create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
         create_deposit(users['alice_user'], 'alice-analysis-v0.0.1'),
-
-        resp = client.get('/deposits/', headers=auth_headers_for_user(users['cms_user']))
+        headers = auth_headers_for_user(users['cms_user']) + json_headers
+        resp = client.get('/deposits/', headers=headers)
         hits = json.loads(resp.data)['hits']['hits']
 
         assert resp.status_code == 200
@@ -93,7 +96,33 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
             assert x['metadata']['_deposit']['id'] in user_deposits_ids
 
 
-#def test_get_deposits_when_published_other_member_can_see_it(app, users,
+def test_get_deposits_with_basic_json_serializer(app, users, auth_headers_for_user, deposit):
+    basic_json_headers = [('Accept', 'application/basic+json'),
+                          ('Content-Type', 'application/json')]
+    auth_headers = auth_headers_for_user(users['superuser'])
+    headers = basic_json_headers + auth_headers
+    pid = deposit['_deposit']['id']
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(pid), headers=headers)
+        data = json.loads(resp.data)
+        assert resp.status_code == 200
+        assert '_deposit' not in data
+
+
+def test_get_deposits_with_permissions_json_serializer(app, users, auth_headers_for_user, deposit):
+    basic_json_headers = [('Accept', 'application/permissions+json'),
+                          ('Content-Type', 'application/json')]
+    auth_headers = auth_headers_for_user(users['superuser'])
+    headers = basic_json_headers + auth_headers
+    pid = deposit['_deposit']['id']
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(pid), headers=headers)
+        data = json.loads(resp.data)
+        assert resp.status_code == 200
+        assert 'atlas_user2@cern.ch' in data['metadata']['deposit-read']['user'][0]
+        assert 'atlas_user2@cern.ch' in data['metadata']['deposit-update']['user'][0]
+
+# def test_get_deposits_when_published_other_member_can_see_it(app, users,
 #                                                             auth_headers_for_user,
 #                                                             create_deposit):
 #    with app.test_client() as client:

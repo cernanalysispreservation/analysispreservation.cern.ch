@@ -176,8 +176,9 @@ def auth_headers_for_superuser(users, auth_headers_for_user):
 
 
 @pytest.fixture()
-def auth_headers_for_user(app, db, es, json_headers):
+def auth_headers_for_user(app, db, es):
     """Return method to generate write token for user."""
+
     def _write_token(user):
         """Return json headers with write oauth token for given user."""
         client_ = Client.query.filter_by(
@@ -216,7 +217,7 @@ def auth_headers_for_user(app, db, es, json_headers):
 
         db.session.commit()
 
-        return bearer_auth(json_headers, dict(
+        return bearer_auth(dict(
             token=token_,
             auth_header=[
                 ('Authorization', 'Bearer {0}'.format(token_.access_token)),
@@ -256,6 +257,24 @@ def minimal_deposits_metadata(schema_name):
     schema_name_to_metadata = {
         'cms-analysis-v0.0.1': {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+            "_access": {
+                "deposit-admin": {
+                    "roles": [],
+                    "user": []
+                },
+                "deposit-read": {
+                    "roles": [],
+                    "user": [
+                        6
+                    ]
+                },
+                "deposit-update": {
+                    "roles": [],
+                    "user": [
+                        6
+                    ]
+                }
+            },
             'basic_info': {
                 'analysis_number': 'dream_team',
                 'people_info': [
@@ -311,13 +330,9 @@ def create_deposit(app, db, es, location):
     db_.session.rollback()
 
 
-def bearer_auth(headers, token):
+def bearer_auth(token):
     """Create authentication headers (with a valid oauth2 token)."""
-    headers = deepcopy(headers)
-    headers.append(
-        ('Authorization', 'Bearer {0}'.format(token['token'].access_token))
-    )
-    return headers
+    return [('Authorization', 'Bearer {0}'.format(token['token'].access_token))]
 
 
 @pytest.fixture()

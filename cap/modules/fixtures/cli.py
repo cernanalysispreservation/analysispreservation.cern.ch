@@ -43,15 +43,12 @@ from invenio_indexer.utils import RecordIndexer
 # TOFIX: To be updated when records view_.py is removed
 from cap.modules.records.views_ import construct_record
 from cap.modules.records.permissions import (RecordReadActionNeed,
-                                             RecordUpdateActionNeed,)
+                                             RecordUpdateActionNeed, )
 
 from invenio_records_files.api import Record, RecordsBuckets
 from jsonschema.exceptions import ValidationError
 
-from .pages import loadpages
-
 RecordIndexActionNeed = partial(ParameterizedActionNeed, 'records-index')
-
 
 try:
     from urlparse import urljoin
@@ -69,15 +66,6 @@ def fixtures():
 def init():
     """Load basic data."""
     loadpages()
-
-
-@fixtures.command('loadpages')
-@click.option('--force', '-f', is_flag=True, default=False)
-@with_appcontext
-def loadpages_cli(force):
-    """Load pages."""
-    loadpages(force=force)
-    click.secho('Created pages', fg='green')
 
 
 @fixtures.command()

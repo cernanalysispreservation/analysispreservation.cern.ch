@@ -24,10 +24,9 @@
 
 from __future__ import absolute_import, print_function
 
-from marshmallow import fields
+from marshmallow import Schema, fields
 
 from . import common
-
 
 CAP_RECORD_MAPPINGS = dict(
     LHCbAnalysis=dict(
@@ -67,3 +66,18 @@ class RecordSchemaJSONV1(common.CommonRecordSchemaV1):
         fields.Integer, attribute='metadata.owners', dump_only=True)
     revision = fields.Integer(dump_only=True)
     updated = fields.Str(dump_only=True)
+
+
+class BasicDepositSchema(Schema):
+    """Schema for deposit in JSON."""
+
+    metadata = fields.Raw()
+    created = fields.Str(dump_only=True)
+    updated = fields.Str(dump_only=True)
+
+
+class FileSchemaV1(Schema):
+    """Schema for files in deposit."""
+
+    pass
+

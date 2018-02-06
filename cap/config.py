@@ -249,6 +249,8 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
                              ':json_v1_response'),
+        'application/basic+json': ('cap.modules.records.serializers'
+                                   ':basic_json_v1_response')
     },
     # 'search_serializers': {
     #     'application/json': ('cap.modules.records.serializers'
@@ -263,7 +265,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
             SUPERUSER_EGROUPS)(record).can(),
         write_scope.id),
 })
-
 
 #: Default api endpoint for LHCb db
 GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
@@ -302,7 +303,6 @@ ACCOUNTS_REST_UPDATE_USER_PROPERTIES_PERMISSION_FACTORY = deny_all
 ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 """Default list users permission factory: reject any request."""
 
-
 # Search
 # ======
 #: Default API endpoint for search UI.
@@ -311,7 +311,7 @@ SEARCH_UI_SEARCH_API = '/api/deposits/'
 #: Templates
 SEARCH_UI_SEARCH_TEMPLATE = "cap_search_ui/search.html"
 SEARCH_UI_JSTEMPLATE_RESULTS = 'templates/cap_search_ui/results.html'
-#SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
+# SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
 
 #: Default ElasticSearch hosts
 SEARCH_ELASTIC_HOSTS = ["localhost:9200"]
@@ -321,11 +321,9 @@ SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
 ]
 
-
 # Admin
 # ========
 ADMIN_PERMISSION_FACTORY = 'cap.modules.access.permissions.admin_permission_factory'
-
 
 # Accounts
 # ========
@@ -422,7 +420,6 @@ CAP_COLLECTION_TO_DOCUMENT_TYPE = {
 # version control.
 SECRET_KEY = "changeme"
 
-
 # Database
 # ============
 SQLALCHEMY_DATABASE_URI = "postgresql://cap:cap@localhost:5432/cap"
@@ -442,7 +439,7 @@ CADI_GET_RECORD_URL = 'change_me'
 # ============
 #: Default base template for deposit
 #: -- removes <html>,<body>,etc unneeded tags
-#DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
+# DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Default jsonschema for deposit
 DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
 #: Default schemanform for deposit
@@ -589,14 +586,26 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'record_serializers': {
         'application/json': (
             'cap.modules.records.serializers'
-            ':json_v1_response')
+            ':json_v1_response'),
+        'application/basic+json': (
+            'cap.modules.records.serializers'
+            ':basic_json_v1_response'),
+        'application/permissions+json': (
+            'cap.modules.records.serializers'
+            ':permissions_json_v1_response'
+        )
+    },
+    'files_serializers': {
+        'application/json': (
+            'cap.modules.records.serializers'
+            ':deposit_v1_files_response'),
     },
     'search_class': 'cap.modules.deposit.search:DepositSearch',
     # 'search_factory_imp': 'cap.modules.deposit.query.search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
     'file_item_route':
-    '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
+        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
     'create_permission_factory_imp': check_oauth2_scope(
         lambda record: CreateDepositPermission(record).can(),
         write_scope.id),
@@ -612,7 +621,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         write_scope.id),
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
-#DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
+# DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
 # TODO Resolve when '/deposit/new/' is removed
 DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
     deposit_config.DEPOSIT_RECORDS_UI_ENDPOINTS)
