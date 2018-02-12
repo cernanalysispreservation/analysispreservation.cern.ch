@@ -19,7 +19,16 @@
       },
       "configuration_files": {
         "title": "Configuration Files",
-        "type": "string"
+        "type": "array",
+        "default":[{}],
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
+            }
+          }
+        }
       },
       "wagon_names": {
         "title": "Wagon Names",

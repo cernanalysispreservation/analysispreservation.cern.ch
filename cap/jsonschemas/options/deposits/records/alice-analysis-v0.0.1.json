@@ -17,7 +17,46 @@
       },
       {
         "key": "train_analysis[].configuration_files",
-        "placeholder": "E.g PWGZZ/Devel_1/120_20160219-2029/config"
+        "placeholder": "E.g PWGZZ/Devel_1/120_20160219-2029/config",
+        "type": "tabArrayTop",
+        "items": [
+          {
+            "key": "train_analysis[].configuration_files[].name._type",
+            "title": "Please select the preferred way to upload a file",
+            "type": "radios",
+            "titleMap": [
+              {"value": "external_url", "name": "External URL"},
+              {"value": "file_upload", "name": "File Upload"}
+            ]
+          },
+          {
+            "key": "train_analysis[].configuration_files[].name.source",
+            "condition": "model['train_analysis'][arrayIndices[0]]['configuration_files'][arrayIndices[0]]['name']['_type'] == 'external_url'",
+            "items": [
+              {
+                "key": "train_analysis[].configuration_files[].name.source.preserved",
+                "destroyStrategy": "retain",
+                "type": "radios",
+                "titleMap": [
+                  {"value": true, "name": "Yes"},
+                  {"value": false, "name": "No"}
+                ]
+              },
+              {
+                "key": "train_analysis[].configuration_files[].name.source.url",
+                "notitle": true,
+                "destroyStrategy": "retain",
+                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
+              }
+            ]
+          },
+          {
+            "key": "train_analysis[].configuration_files[].name.key",
+            "condition": "model['train_analysis'][arrayIndices[0]]['configuration_files'][arrayIndices[0]]['name']['_type'] == 'file_upload'",
+            "type": "file_selector",
+            "title": "Select file"
+          }
+        ]
       },
       {
         "key": "train_analysis[].wagon_names",
