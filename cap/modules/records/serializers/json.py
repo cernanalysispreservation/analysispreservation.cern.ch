@@ -26,8 +26,8 @@
 from __future__ import absolute_import, print_function
 
 from invenio_accounts.models import User
-from invenio_records_rest.serializers.json import JSONSerializer
 from invenio_records_files.api import Record
+from invenio_records_rest.serializers.json import JSONSerializer
 
 
 class CAPSchemaSerializer(JSONSerializer):

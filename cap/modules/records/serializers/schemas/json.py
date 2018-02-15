@@ -71,6 +71,7 @@ class RecordSchemaJSONV1(common.CommonRecordSchemaV1):
 class BasicDepositSchema(Schema):
     """Schema for deposit in JSON."""
 
+    pid = fields.Str(attribute='pid.pid_value', dump_only=True)
     metadata = fields.Raw()
     created = fields.Str(dump_only=True)
     updated = fields.Str(dump_only=True)
@@ -80,4 +81,3 @@ class FileSchemaV1(Schema):
     """Schema for files in deposit."""
 
     pass
-
