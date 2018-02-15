@@ -47,7 +47,6 @@ from .permissions import (DepositReadActionNeed,
                           DepositUpdateActionNeed,
                           DepositAdminActionNeed)
 
-
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 current_jsonschemas = LocalProxy(
@@ -81,7 +80,7 @@ def add_owner_permissions(uuid):
         set_user_permissions(
             current_user,
             [{"op": "add", "action": action}
-                for action in DEPOSIT_ACTIONS],
+             for action in DEPOSIT_ACTIONS],
             uuid,
             db.session,
             {}  # TOFIX : Need to pass access object to update user
@@ -95,7 +94,12 @@ def set_user_permissions(user, permissions, id, session, access):
 
     for permission in _permissions:
 
-        if (permission.get("op", "") == "add"):
+        if permission.get("op", "") == "add":
+            if ActionUsers.query.filter_by(
+                    action=permission['action'],
+                    user_id=user.id
+            ).all():
+                return
             try:
                 session.add(ActionUsers.allow(
                     DEPOSIT_ACTIONS_NEEDS(id).get(
@@ -109,7 +113,12 @@ def set_user_permissions(user, permissions, id, session, access):
             access.get(permission["action"], {}).get(
                 'user', []).append(user.id)
 
-        elif (permission.get("op", "") == "remove"):
+        elif permission.get("op", "") == "remove":
+            if not ActionUsers.query.filter_by(
+                    action=permission['action'],
+                    user_id=user.id
+            ).all():
+                return
             try:
                 au = ActionUsers.query.filter(
                     ActionUsers.action == permission.get("action", ""),
@@ -134,7 +143,7 @@ def set_egroup_permissions(role, permissions, id, session, access):
 
     for permission in _permissions:
 
-        if (permission.get("op", "") == "add"):
+        if permission.get("op", "") == "add":
             try:
                 session.add(ActionRoles.allow(
                     DEPOSIT_ACTIONS_NEEDS(id).get(
@@ -148,7 +157,7 @@ def set_egroup_permissions(role, permissions, id, session, access):
             access.get(permission["action"], {}).get(
                 'roles', []).append(role.id)
 
-        elif (permission.get("op", "") == "remove"):
+        elif permission.get("op", "") == "remove":
             try:
                 au = ActionRoles.query.filter(
                     ActionRoles.action == permission.get("action", ""),
@@ -261,7 +270,7 @@ class CAPDeposit(Deposit):
     def permissions(self, pid=None):
         data = request.get_json()
 
-        if self.get('_access', None) is None:
+        if self.get('_access') is None:
             _access = construct_access()
         else:
             _access = self.get('_access')
@@ -300,11 +309,11 @@ class CAPDeposit(Deposit):
                             db.session,
                             _access
                         )
+        if _access:
+            db.session.commit()
 
-        db.session.commit()
-
-        self["_access"] = _access
-        self.commit()
+            self["_access"] = _access
+            self.commit()
 
         return self
 
