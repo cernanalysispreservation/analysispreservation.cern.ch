@@ -1,6 +1,7 @@
 from urllib2 import urlopen
 from github import Github
 import repo_importer
+import sys
 
 
 class GithubImporter(repo_importer.RepoImporter):
@@ -19,4 +20,5 @@ class GithubImporter(repo_importer.RepoImporter):
             link = repo.get_archive_link("tarball", ref=self.ref)
         else:
             link = repo.get_archive_link("tarball")
-        return urlopen(link).read()
+        tgz = urlopen(link).read()
+        return sys.getsizeof(tgz), tgz

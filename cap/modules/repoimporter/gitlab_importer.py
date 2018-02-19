@@ -1,4 +1,5 @@
 import gitlab
+import sys
 import repo_importer
 
 
@@ -14,4 +15,4 @@ class GitlabImporter(repo_importer.RepoImporter):
         gl = gitlab.Gitlab('https://gitlab.cern.ch', self.token, api_version=4)
         repo = gl.projects.get(self.repo)
         tgz = repo.repository_archive(self.ref)
-        return tgz
+        return sys.getsizeof(tgz), tgz
