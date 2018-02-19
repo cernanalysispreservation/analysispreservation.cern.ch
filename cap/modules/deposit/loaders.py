@@ -46,13 +46,13 @@ from werkzeug.utils import cached_property
 class XCapFileValidationError(ValidationError):
     """Handle x-cap-file schema property."""
 
-    @cached_property
-    def condition(self):
-        """Return condition value."""
-        return jsonpointer.resolve_pointer(
-            # TODO get default value from schema
-            self.instance, self.validator_value['condition'], True
-        )
+    # @cached_property
+    # def condition(self):
+    #     """Return condition value."""
+    #     return jsonpointer.resolve_pointer(
+    #         # TODO get default value from schema
+    #         self.instance, self.validator_value['condition'], True
+    #     )
 
     @cached_property
     def url(self):
@@ -75,20 +75,20 @@ class XCapFileValidationError(ValidationError):
 
     def update_file_key(self, key):
         """Update file key if condition is valid."""
-        if self.condition:
-            jsonpointer.set_pointer(
-                self.instance, self.validator_value['file_key'], key)
-        else:
-            data, part = jsonpointer.JsonPointer(
-                self.validator_value['file_key']
-            ).to_last(
-                self.instance
-            )
-            if data:
-                if part is not None and part in data:
-                    del data[part]
-                else:
-                    del data
+        # if self.condition:
+        jsonpointer.set_pointer(
+            self.instance, self.validator_value['file_key'], key)
+        # else:
+        #     data, part = jsonpointer.JsonPointer(
+        #         self.validator_value['file_key']
+        #     ).to_last(
+        #         self.instance
+        #     )
+        #     if data:
+        #         if part is not None and part in data:
+        #             del data[part]
+        #         else:
+        #             del data
 
 
 def x_cap_file(validator, config, instance, schema):
@@ -103,7 +103,7 @@ XCapFileDraft4Validator = extend(Draft4Validator, validators={
 
 def extract_refs_from_errors(errors):
     """Return list with extracted references from errors."""
-    return [error.ref for error in errors if error.condition]
+    return [error.ref for error in errors]
 
 
 def extract_x_cap_files(data):
@@ -121,7 +121,7 @@ def extract_x_cap_files(data):
     ).iter_errors(data) if isinstance(error, XCapFileValidationError)]
 
 
-@shared_task
+@shared_task(max_retries=2)
 def download_url(record_id, url):
     """Create new file object and assign it to object version."""
     record = CAPDeposit.get_record(record_id)
@@ -130,11 +130,13 @@ def download_url(record_id, url):
         response = XRootDPyFile(url, mode='r-')
         total = response.size
     else:
-        parsed_url = url
-        if url.startswith("https://github"):
-            parsed_url = parse_github_url(url)
-        response = requests.get(parsed_url, stream=True).raw
-        total = int(response.getheader('Content-Length'))
+        try:
+            from cap.modules.repoimporter.repo_importer import RepoImporter
+            link = RepoImporter.create(url).archive_repository()
+            response = requests.get(link, stream=True).raw
+            total = int(response.headers.get('Content-Length'))
+        except TypeError as exc:
+            download_url.retry(exc=exc)
     record.files[url].file.set_contents(
         response,
         default_location=record.files.bucket.location.uri,
@@ -150,7 +152,7 @@ def process_x_cap_files(record, x_cap_files):
     used_keys = set()
 
     # Download new files.
-    urls = {error.url for error in x_cap_files if error.condition and error.url}
+    urls = {error.url for error in x_cap_files if error.url}
     for url in urls:
         if url not in record.files:
             result.append(url)

@@ -698,3 +698,8 @@ LHCB_DB_FILES_LOCATION = os.path.join(APP_ROOT,
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False
+
+# Github and Gitlab oauth tokens
+# ==============================
+GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITHUB_OAUTH_ACCESS_TOKEN', None)
+GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITLAB_OAUTH_ACCESS_TOKEN', None)

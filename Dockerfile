@@ -78,7 +78,7 @@ RUN pip install .[all]
 ADD requirements-devel.txt requirements-devel.txt
 
 # Install Python packages needed for development
-RUN if [ "$DEBUG" = "True" ]; then pip install -e .[all]; pip install -r requirements-devel.txt; fi;
+RUN if [ "$DEBUG" = "True" ]; then pip install -e .[all]; pip install -e.[xrootd]; pip install -r requirements-devel.txt; fi;
 
 # Add CAP sources to `code` and work there:
 WORKDIR /code

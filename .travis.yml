@@ -40,7 +40,7 @@ services:
 # - rabbitmq
 
 env:
-  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=2.3.1
+  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=2.3.1 APP_GITLAB_OAUTH_ACCESS_TOKEN="testtoken"
   # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
   # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
 

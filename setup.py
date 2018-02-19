@@ -74,7 +74,6 @@ install_requires = [
     'cryptography>=2.1.4',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
-    'SQLAlchemy-Utils==0.32.19',  # temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'Flask>=0.11.1',
@@ -100,7 +99,7 @@ install_requires = [
     'invenio-indexer>=1.0.0a1',
     'invenio-deposit>=1.0.0a9',
     'invenio-jsonschemas>=1.0.0a7',
-    'invenio-oauthclient>=1.0.0b3',
+    'invenio-oauthclient>=1.0.0b5',
     'invenio-pages>=1.0.0a4',
     'invenio-pidstore>=1.0.0b2',
     # 'invenio-previewer==1.0.0a6',

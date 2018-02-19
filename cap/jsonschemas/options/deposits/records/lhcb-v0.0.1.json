@@ -275,40 +275,9 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "ntuple_userdst_production[].davinci_script._type",
-            "title": "Please select the preferred way to upload a file",
-            "type": "radios",
-            "titleMap": [
-              {"value": "external_url", "name": "External URL"},
-              {"value": "file_upload", "name": "File Upload"}
-            ]
-          },
-          {
-            "key": "ntuple_userdst_production[].davinci_script.source",
-            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['davinci_script']['_type'] == 'external_url'",
-            "items": [
-              {
-                "key": "ntuple_userdst_production[].davinci_script.source.preserved",
-                "destroyStrategy": "retain",
-                "type": "radios",
-                "titleMap": [
-                  {"value": true, "name": "Yes"},
-                  {"value": false, "name": "No"}
-                ]
-              },
-              {
-                "key": "ntuple_userdst_production[].davinci_script.source.url",
-                "notitle": true,
-                "destroyStrategy": "retain",
-                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-              }
-            ]
-          },
-          {
-            "key": "ntuple_userdst_production[].davinci_script.key",
-            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['davinci_script']['_type'] == 'file_upload'",
-            "type": "file_selector",
-            "title": "Select file"
+            "key": "ntuple_userdst_production[].davinci_script.url",
+            "notitle": true,
+            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
           }
         ]
       },
@@ -318,40 +287,9 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "ntuple_userdst_production[].ganga_script._type",
-            "title": "Please select the preferred way to upload a file",
-            "type": "radios",
-            "titleMap": [
-              {"value": "external_url", "name": "External URL"},
-              {"value": "file_upload", "name": "File Upload"}
-            ]
-          },
-          {
-            "key": "ntuple_userdst_production[].ganga_script.source",
-            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['ganga_script']['_type'] == 'external_url'",
-            "items": [
-              {
-                "key": "ntuple_userdst_production[].ganga_script.source.preserved",
-                "destroyStrategy": "retain",
-                "type": "radios",
-                "titleMap": [
-                  {"value": true, "name": "Yes"},
-                  {"value": false, "name": "No"}
-                ]
-              },
-              {
-                "key": "ntuple_userdst_production[].ganga_script.source.url",
-                "notitle": true,
-                "destroyStrategy": "retain",
-                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-              }
-            ]
-          },
-          {
-            "key": "ntuple_userdst_production[].ganga_script.key",
-            "condition": "model['ntuple_userdst_production'][arrayIndices[0]]['ganga_script']['_type'] == 'file_upload'",
-            "type": "file_selector",
-            "title": "Select file"
+            "key": "ntuple_userdst_production[].ganga_script.url",
+            "notitle": true,
+            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
           }
         ]
       },
@@ -371,40 +309,9 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "user_analysis.gitlab_link._type",
-            "title": "Please select the preferred way to upload a file",
-            "type": "radios",
-            "titleMap": [
-              {"value": "external_url", "name": "External URL"},
-              {"value": "file_upload", "name": "File Upload"}
-            ]
-          },
-          {
-            "key": "user_analysis.gitlab_link.source",
-            "condition": "model['user_analysis']['gitlab_link']['_type'] == 'external_url'",
-            "items": [
-              {
-                "key": "user_analysis.gitlab_link.source.preserved",
-                "destroyStrategy": "retain",
-                "type": "radios",
-                "titleMap": [
-                  {"value": true, "name": "Yes"},
-                  {"value": false, "name": "No"}
-                ]
-              },
-              {
-                "key": "user_analysis.gitlab_link.source.url",
-                "title": "Gitlab repository of the analysis",
-                "destroyStrategy": "retain",
-                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-              }
-            ]
-          },
-          {
-            "key": "user_analysis.gitlab_link.key",
-            "condition": "model['user_analysis']['gitlab_link']['_type'] == 'file_upload'",
-            "type": "file_selector",
-            "title": "Select file"
+            "key": "user_analysis.gitlab_link.url",
+            "notitle": true,
+            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
           }
         ]
       },
@@ -414,40 +321,9 @@
         "type": "fieldset",
         "items": [
           {
-            "key": "user_analysis.basic_script._type",
-            "title": "Please select the preferred way to upload a file",
-            "type": "radios",
-            "titleMap": [
-              {"value": "external_url", "name": "External URL"},
-              {"value": "file_upload", "name": "File Upload"}
-            ]
-          },
-          {
-            "key": "user_analysis.basic_script.source",
-            "condition": "model['user_analysis']['basic_script']['_type'] == 'external_url'",
-            "items": [
-              {
-                "key": "user_analysis.basic_script.source.preserved",
-                "destroyStrategy": "retain",
-                "type": "radios",
-                "titleMap": [
-                  {"value": true, "name": "Yes"},
-                  {"value": false, "name": "No"}
-                ]
-              },
-              {
-                "key": "user_analysis.basic_script.source.url",
-                "title": "Basic script to start the analysis",
-                "destroyStrategy": "retain",
-                "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-              }
-            ]
-          },
-          {
-            "key": "user_analysis.basic_script.key",
-            "condition": "model['user_analysis']['basic_script']['_type'] == 'file_upload'",
-            "type": "file_selector",
-            "title": "Select file"
+            "key": "user_analysis.basic_script.url",
+            "notitle": true,
+            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
           }
         ]
       }

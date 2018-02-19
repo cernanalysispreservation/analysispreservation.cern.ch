@@ -58,6 +58,7 @@ services:
     command: 'celery worker -A cap.celery --loglevel=INFO'
     volumes:
       - ".:/code"
+      - "/usr/local/var/data"
     depends_on:
       - redis
       - postgresql
