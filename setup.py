@@ -74,6 +74,7 @@ install_requires = [
     'cryptography>=2.1.4',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
+    'SQLAlchemy-Utils==0.32.19',  # temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'Flask>=0.11.1',

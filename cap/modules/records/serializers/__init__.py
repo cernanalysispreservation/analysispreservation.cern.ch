@@ -53,3 +53,4 @@ deposit_v1_files_response = json_file_response
 
 #: JSON record serializer for search results.
 json_v1_search = search_responsify(json_v1, 'application/json')
+basic_json_v1_search = search_responsify(basic_json_v1, 'application/basic+json')

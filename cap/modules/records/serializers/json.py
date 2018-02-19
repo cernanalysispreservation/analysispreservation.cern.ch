@@ -50,22 +50,33 @@ class CAPSchemaSerializer(JSONSerializer):
 
 class BasicJSONSerializer(JSONSerializer):
     """Serializer for deposit client in JSON."""
+    def _filter_record_fields(self, record):
+        metadata = record.get('metadata', {})
+
+        record['metadata'] = {k: v for k, v in metadata.items()
+                              if not k.startswith('_')}
+
+        return record
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
         """Remove unnecessary values for client"""
         result = super(BasicJSONSerializer, self).preprocess_record(
             pid, record, links_factory=links_factory
         )
+        return self._filter_record_fields(result)
 
-        result['metadata'] = {k: v for k, v in result.get(
-            'metadata', {}).items() if not k.startswith('_')}
+    def preprocess_search_hit(self, pid, record_hit, links_factory=None):
+        """."""
+        result = super(BasicJSONSerializer, self).preprocess_search_hit(
+            pid, record_hit, links_factory=links_factory
+        )
 
-        return result
+        return self._filter_record_fields(result)
 
 
 class PermissionsJSONSerializer(JSONSerializer):
     """Serializer for returning deposit
-        permissions in JSON"""
+    permissions in JSON"""
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
         """Remove unnecessary values for client"""

@@ -30,6 +30,16 @@ import copy
 import os
 from os.path import dirname, join
 
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             DeleteDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
+from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
+                                                  disconnect_handler)
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import record_read_permission_factory
+from cap.modules.records.search import cap_record_search_factory
 from celery.schedules import crontab
 from flask import request
 from flask_principal import RoleNeed
@@ -44,17 +54,6 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             DeleteDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
-from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
-                                                  disconnect_handler)
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import record_read_permission_factory
-from cap.modules.records.search import cap_record_search_factory
 
 
 def _(x):
@@ -252,13 +251,12 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_response')
     },
-    # 'search_serializers': {
-    #     'application/json': ('cap.modules.records.serializers'
-    #                          ':json_v1_search'),
-    # },
-    # list_route='/records/',
-    # item_route='/records/<pid(recid):pid_value>',
-    # default_media_type='application/json',
+    'search_serializers': {
+        'application/json': ('cap.modules.records.serializers'
+                             ':json_v1_search'),
+        'application/basic+json': ('cap.modules.records.serializers'
+                                   ':basic_json_v1_search'),
+    },
     'read_permission_factory_imp': check_oauth2_scope(
         lambda record: record_read_permission_factory(
             CAP_COLLAB_EGROUPS,
@@ -594,6 +592,12 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
             'cap.modules.records.serializers'
             ':permissions_json_v1_response'
         )
+    },
+    'search_serializers': {
+        'application/json': ('cap.modules.records.serializers'
+                             ':json_v1_search'),
+        'application/basic+json': ('cap.modules.records.serializers'
+                                   ':basic_json_v1_search')
     },
     'files_serializers': {
         'application/json': (
