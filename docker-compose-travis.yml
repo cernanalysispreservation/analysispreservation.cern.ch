@@ -22,56 +22,67 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+
 version: '2.1'
 services:
-  app:
-    build: .
-    env_file:
-      - cap.env
-  travis_app:
-    build: .
-    env_file:
-      - cap.travis.env
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-  postgresql:
-    image: postgres
-    environment:
-      - POSTGRES_DB=cap
-      - POSTGRES_USER=cap
-      - POSTGRES_PASSWORD=cap
-    ports:
-      - "5432"
-  elasticsearch:
-    build: ./docker/elasticsearch/
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-  rabbitmq:
-    image: rabbitmq
-    restart: "always"
-    ports:
-      - "4369:4369"
-      - "5672:5672"
-  redis-commander:
-    image: rediscommander/redis-commander
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-    ports:
-      - 8081:8081
-  wdb:
-    image: kozea/wdb-server
-    ports:
-      - 1984:1984
-      - 19840:19840
-  flower:
-    restart: "always"
+  # Web Application
+  web:
+    extends:
+      file: docker-services.yml
+      service: travis_app
     build:
       context: .
       args:
         DEBUG: "True"
-    command: 'flower -A cap.celery --port=5555'
+    depends_on:
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+      - redis
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+    volumes:
+      - ".:/code"
     ports:
-      - "49555:5555"
+      - "5000:5000"
+
+  # Application Worker
+  worker:
+    extends:
+      file: docker-services.yml
+      service: travis_app
+    build:
+      context: .
+      args:
+        DEBUG: "True"
+    command: 'celery worker -A cap.celery --loglevel=INFO'
+    volumes:
+      - ".:/code"
+      - "/usr/local/var/data"
+    depends_on:
+      - redis
+      - postgresql
+      - rabbitmq
+      - elasticsearch
+  # Base services
+  redis:
+    extends:
+        file: docker-services.yml
+        service: redis
+
+  postgresql:
+    extends:
+        file: docker-services.yml
+        service: postgresql
+    environment:
+      - POSTGRES_DB=cap
+      - POSTGRES_USER=cap
+      - POSTGRES_PASSWORD=cap
+  elasticsearch:
+    extends:
+        file: docker-services.yml
+        service: elasticsearch
+
+  rabbitmq:
+    extends:
+      file: docker-services.yml
+      service: rabbitmq
