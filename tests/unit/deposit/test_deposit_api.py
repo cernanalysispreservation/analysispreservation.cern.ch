@@ -29,22 +29,14 @@ from __future__ import absolute_import, print_function
 
 from cap.modules.deposit.api import CAPDeposit as Deposit
 
-
-def publish_and_expunge(db, deposit):
-    """Publish the deposit and expunge the session.
-    Use this if you want to be safe that session is synced with the DB after
-    the deposit publishing.
-    """
-    deposit.publish()
-    dep_uuid = deposit.id
-    db.session.commit()
-    db.session.expunge_all()
-    deposit = Deposit.get_record(dep_uuid)
-    return deposit
-
-
-def test_deposit_status_when_publishing(app, db, deposit):
-    """Test simple deposit publishing."""
-    deposit = publish_and_expunge(db, deposit)
-    pid, record = deposit.fetch_published()
-    assert record['_deposit']['status'] == 'published'
+#def test_deposit_publish_changes_status_of_deposit_to_published(app, db, users, create_deposit, auth_headers_for_user):
+#    with app.test_client() as client:
+#        deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')              headers = auth_headers_for_user(users['cms_user'])
+#
+#        # before publishing status of deposit is draft
+#        assert deposit['_deposit']['status'] == 'draft'
+#
+#        client.post('/deposits/{}/actions/publish'.format(deposit['_deposit']['id']), headers=[('Content-Type', 'application/json')] + headers
+#
+#        # after publishing status of deposit is draft
+#        assert deposit['_deposit']['status'] == 'published'

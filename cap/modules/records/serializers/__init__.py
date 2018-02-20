@@ -30,7 +30,7 @@ from invenio_records_rest.serializers.response import record_responsify, \
     search_responsify
 
 from .json import CAPSchemaSerializer as JSONSerializer, BasicJSONSerializer, PermissionsJSONSerializer
-from .schemas.json import RecordSchemaJSONV1, BasicDepositSchema
+from .schemas.json import RecordSchemaJSONV1, BasicDepositSchema, PermissionsDepositSchema
 from invenio_deposit.serializers import json_file_response
 
 # Serializers
@@ -38,7 +38,7 @@ from invenio_deposit.serializers import json_file_response
 #: CAP JSON serializer version 1.0.0
 json_v1 = JSONSerializer(RecordSchemaJSONV1)
 basic_json_v1 = BasicJSONSerializer(BasicDepositSchema)
-permissions_json_v1 = PermissionsJSONSerializer(BasicDepositSchema)
+permissions_json_v1 = PermissionsJSONSerializer(PermissionsDepositSchema)
 
 # Records-REST serializers
 # ========================

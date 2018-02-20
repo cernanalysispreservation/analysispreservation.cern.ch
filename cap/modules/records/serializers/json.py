@@ -84,9 +84,9 @@ class PermissionsJSONSerializer(JSONSerializer):
             pid, record, links_factory=links_factory
         )
 
-        result['metadata'] = result.get('metadata', {}).get('_access', {})
+        result['permissions'] = result.get('metadata', {}).get('_access', {})
 
-        for k, v in result['metadata'].items():
+        for k, v in result['permissions'].items():
             if v['user']:
                 for index, user_id in enumerate(v['user']):
                     user = User.query.filter_by(id=user_id).one()

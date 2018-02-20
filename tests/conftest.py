@@ -37,6 +37,7 @@ from uuid import uuid4
 import pytest
 from elasticsearch.exceptions import RequestError
 from flask import current_app
+from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
 from invenio_access.models import ActionUsers
 from invenio_accounts.testutils import create_test_user
@@ -48,6 +49,8 @@ from invenio_deposit.permissions import \
 from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
 from invenio_oauth2server.models import Client, Token
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
@@ -93,11 +96,14 @@ def default_config():
     )
 
 
+def get_jsonschemas_host():
+    return current_app.config.get('JSONSCHEMAS_HOST')
+
+
 @pytest.yield_fixture(scope='session')
 def app(env_config, default_config):
     """Flask application fixture."""
     app = create_api(**default_config)
-    from flask_celeryext import FlaskCeleryExt
     FlaskCeleryExt(app)
 
     with app.app_context():
@@ -255,9 +261,10 @@ def location(db):
 
 def minimal_deposits_metadata(schema_name):
     """Returns minimal metadata for each type of schema."""
+    schema_host = get_jsonschemas_host()
     schema_name_to_metadata = {
         'cms-analysis-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(schema_host),
             "_access": {
                 "deposit-admin": {
                     "roles": [],
@@ -266,13 +273,13 @@ def minimal_deposits_metadata(schema_name):
                 "deposit-read": {
                     "roles": [],
                     "user": [
-                        6
+                        2
                     ]
                 },
                 "deposit-update": {
                     "roles": [],
                     "user": [
-                        6
+                        1
                     ]
                 }
             },
@@ -284,22 +291,22 @@ def minimal_deposits_metadata(schema_name):
             }
         },
         'cms-questionnaire-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-questionnaire-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/cms-questionnaire-v0.0.1.json'.format(schema_host),
         },
         'cms-auxiliary-measurements-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json'.format(schema_host),
         },
         'lhcb-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/lhcb-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/lhcb-v0.0.1.json'.format(schema_host),
         },
         'alice-analysis-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/alice-analysis-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/alice-analysis-v0.0.1.json'.format(schema_host),
         },
         'atlas-analysis-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-analysis-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/atlas-analysis-v0.0.1.json'.format(schema_host),
         },
         'atlas-workflows-v0.0.1': {
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-workflows-v0.0.1.json',
+            '$schema': 'https://{}/schemas/deposits/records/atlas-workflows-v0.0.1.json'.format(schema_host),
         }
     }
 
@@ -333,20 +340,65 @@ def create_deposit(app, db, es, location):
 
 def bearer_auth(token):
     """Create authentication headers (with a valid oauth2 token)."""
-    return [('Authorization', 'Bearer {0}'.format(token['token'].access_token))]
+    return [('Authorization',
+             'Bearer {0}'.format(token['token'].access_token))]
+
+
+@pytest.fixture(scope='function')
+def deposit(users, create_deposit):
+    """New deposit with files."""
+    return create_deposit(users['superuser'], 'cms-analysis-v0.0.1')
 
 
 @pytest.fixture()
-def deposit(app, es, users, location):
-    """New deposit with files."""
-    with app.test_request_context():
-        datastore = app.extensions['security'].datastore
-        login_user(datastore.get_user(users['superuser'].email))
-        id_ = uuid4()
-        metadata = minimal_deposits_metadata('cms-analysis-v0.0.1')
-        deposit_minter(id_, metadata)
-        deposit = Deposit.create(metadata, id_=id_)
-        db_.session.commit()
-    current_search.flush_and_refresh(
-        index='deposits-records-cms-analysis-v0.0.1')
+def permissions_serialized_deposit(users):
+    deposit = {
+        "permissions": {
+            "deposit-admin": {
+                "roles": [],
+                "user": []
+            },
+            "deposit-read": {
+                "roles": [],
+                "user": [
+                    users['cms_user2'].email
+                ]
+            },
+            "deposit-update": {
+                "roles": [],
+                "user": [
+                    users['cms_user'].email
+                ]
+            }
+        }
+    }
+
     return deposit
+
+
+def get_metadata(deposit):
+    return RecordMetadata.query.filter_by(id=deposit.id).one_or_none()
+
+
+def get_basic_json_serialized_deposit(deposit, schema):
+    date_format = '%Y-%m-%dT%H:%M:%S.%f+00:00'
+    pid = deposit['_deposit']['id']
+    metadata = get_metadata(deposit)
+    schema_host = get_jsonschemas_host()
+
+    schema_to_serialized_deposit = {
+        'cms-analysis-v0.0.1': {
+            'created': metadata.created.strftime(date_format),
+            'metadata': {
+                '$schema': u'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(schema_host),
+                'basic_info': {
+                    'people_info': [{}],
+                    'analysis_number': 'dream_team'
+                }
+            },
+            'pid': pid,
+            'updated': metadata.updated.strftime(date_format),
+        }
+    }
+
+    return schema_to_serialized_deposit[schema]

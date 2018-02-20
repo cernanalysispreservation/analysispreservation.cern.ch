@@ -77,6 +77,11 @@ class BasicDepositSchema(Schema):
     updated = fields.Str(dump_only=True)
 
 
+class PermissionsDepositSchema(Schema):
+    """Schema for files in deposit."""
+    permissions = fields.Raw()
+
+
 class FileSchemaV1(Schema):
     """Schema for files in deposit."""
 
