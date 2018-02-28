@@ -30,7 +30,6 @@ from __future__ import absolute_import, print_function
 import os
 import shutil
 import tempfile
-from copy import deepcopy
 from datetime import datetime, timedelta
 from uuid import uuid4
 
@@ -39,17 +38,12 @@ from elasticsearch.exceptions import RequestError
 from flask import current_app
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
-from invenio_access.models import ActionUsers
 from invenio_accounts.testutils import create_test_user
-from invenio_admin.permissions import action_admin_access
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
-from invenio_deposit.permissions import \
-    action_admin_access as deposit_admin_access
 from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
 from invenio_oauth2server.models import Client, Token
-from invenio_pidstore.models import PersistentIdentifier
 from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
@@ -89,8 +83,7 @@ def default_config():
         CELERY_CACHE_BACKEND='memory',
         CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
         CELERY_RESULT_BACKEND='cache',
-        SQLALCHEMY_DATABASE_URI=os.environ.get(
-            'SQLALCHEMY_DATABASE_URI', 'sqlite:///test.db'),
+        SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
         TESTING=True,
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
@@ -110,7 +103,7 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.yield_fixture()
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -150,7 +143,7 @@ def create_user_with_role(username, rolename):
     return user
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def users(app, db):
     """Create users."""
     users = {
@@ -221,7 +214,6 @@ def auth_headers_for_user(app, db, es):
                 _scopes=write_scope.id,
             )
             db.session.add(token_)
-
         db.session.commit()
 
         return bearer_auth(dict(
@@ -241,7 +233,7 @@ def json_headers():
             ('Accept', 'application/json')]
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.yield_fixture()
 def location(db):
     """File system location."""
     tmppath = tempfile.mkdtemp()
@@ -313,7 +305,7 @@ def minimal_deposits_metadata(schema_name):
     return schema_name_to_metadata[schema_name]
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def create_deposit(app, db, es, location):
     """Returns function to create a new deposit."""
     db_.session.begin_nested()
@@ -344,7 +336,7 @@ def bearer_auth(token):
              'Bearer {0}'.format(token['token'].access_token))]
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture
 def deposit(users, create_deposit):
     """New deposit with files."""
     return create_deposit(users['superuser'], 'cms-analysis-v0.0.1')
