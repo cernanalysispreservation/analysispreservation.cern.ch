@@ -30,7 +30,6 @@ from __future__ import absolute_import, print_function
 import json
 
 import pytest
-
 from conftest import get_basic_json_serialized_deposit
 
 
@@ -287,44 +286,44 @@ def test_delete_deposit_when_superuser_can_delete_others_deposit(app, db,
         assert resp.status_code == 204
 
 
-########################################
-## api/deposits/{pid}/actions/publish
-########################################
-#def test_get_deposits_when_published_other_member_can_see_it(app, db, es, users,
-#                                                             auth_headers_for_user,
-#                                                             create_deposit):
-#
-#    with app.test_client() as client:
-#            user_headers = auth_headers_for_user(users['lhcb_user'])
-#            other_user_headers = auth_headers_for_user(users['lhcb_user2'])
-#            deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
-#            pid = deposit['_deposit']['id']
-#
-#            # creator can see it
-#            resp = client.get('/deposits/{}'.format(pid),
-#                              headers=user_headers)
-#
-#            assert resp.status_code == 200
-#
-#            # other members of collaboration cant see it
-#            resp = client.get('/deposits/{}'.format(pid),
-#                              headers=other_user_headers)
-#
-#            assert resp.status_code == 403
-#
-#            # publish
-#            pid = deposit['_deposit']['id']
-#            resp = client.post('/deposits/{}/actions/publish'.format(pid),
-#                               headers=[('Content-Type', 'application/json')] + user_headers)
-#
-#            # creator can see published one under api/records
-#            resp = client.get('/records/{}'.format(deposit),
-#                              headers=user_headers)
-#
-#            assert resp.status_code == 200
-#
-#            # once deposit has been published other members can see it as well
-#            resp = client.get('/records/{}'.format(deposit.pid.id),
-#                              headers=other_user_headers)
-#
-#            assert resp.status_code == 200
+#######################################
+# api/deposits/{pid}/actions/publish
+#######################################
+def test_get_deposits_when_published_other_member_can_see_it(app, db, es, users,
+                                                             auth_headers_for_user,
+                                                             create_deposit):
+
+    with app.test_client() as client:
+            user_headers = auth_headers_for_user(users['lhcb_user'])
+            other_user_headers = auth_headers_for_user(users['lhcb_user2'])
+            deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+            pid = deposit['_deposit']['id']
+
+            # creator can see it
+            resp = client.get('/deposits/{}'.format(pid),
+                              headers=user_headers)
+
+            assert resp.status_code == 200
+
+            # other members of collaboration cant see it
+            resp = client.get('/deposits/{}'.format(pid),
+                              headers=other_user_headers)
+
+            assert resp.status_code == 403
+
+            # publish
+            pid = deposit['_deposit']['id']
+            resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                               headers=[('Content-Type', 'application/json')] + user_headers)
+
+            # creator can see published one under api/records
+            resp = client.get('/records/{}'.format(deposit['_deposit']['pid']['value']),
+                              headers=user_headers)
+
+            assert resp.status_code == 200
+
+            # once deposit has been published other members can see it as well
+            resp = client.get('/records/{}'.format(deposit.pid.id),
+                              headers=other_user_headers)
+
+            assert resp.status_code == 200
