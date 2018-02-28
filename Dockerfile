@@ -87,6 +87,11 @@ ADD . /code
 RUN adduser --uid 1000 cap --gid 0 && \
     chown -R cap:root /code
 
+ARG APP_GITHUB_OAUTH_ACCESS_TOKEN
+ENV APP_GITHUB_OAUTH_ACCESS_TOKEN=${APP_GITHUB_OAUTH_ACCESS_TOKEN}
+ARG APP_GITLAB_OAUTH_ACCESS_TOKEN
+ENV APP_GITLAB_OAUTH_ACCESS_TOKEN=${APP_GITLAB_OAUTH_ACCESS_TOKEN}
+
 RUN bash /code/scripts/build-assets.sh
 RUN chown -R cap:root /usr/local/var/cap-instance
 
