@@ -1,0 +1,32 @@
+[
+    {
+        "key": "basic_info",
+        "htmlClass": "custom-panel",
+        "items": [
+            "basic_info.analysis_title",
+            "basic_info.cadi_id",
+            "basic_info.analysis_note",
+            "basic_info.software",
+            {
+                "key": "basic_info.input_data",
+                "placeholder": "Please add a twiki page url",
+                "items": [
+                    "basic_info.input_data.primary_dataset",
+                    "basic_info.input_data.mc_sig_dataset",
+                    "basic_info.input_data.mc_bg_dataset"
+                ]
+            },
+            "basic_info.json_file",
+            "basic_info.twiki",
+            {
+                "key": "basic_info.selection_triggers",
+                "placeholder": "Please add a twiki page url",
+                "items": [
+                    "basic_info.selection_triggers[].trigger",
+                    "basic_info.selection_triggers[].ranges"
+                ]
+            },
+            "basic_info.links"
+        ]
+    }
+]
