@@ -38,3 +38,6 @@ def get_superuser_needs():
         return SUPERUSER_EGROUPS
     else:
         return []
+
+superuser_needs = set([g for g in
+                       get_superuser_needs()])

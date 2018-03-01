@@ -497,7 +497,7 @@ DEPOSIT_GROUPS = {
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
         'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.cms.cms_group_need',
+            'cap.modules.experiments.permissions.common.superuser_needs',
         # 'read_permission_factory_imp':
         #     'cap.modules.deposit.permissions.read_permission_factory',
         # 'update_permission_factory_imp':
