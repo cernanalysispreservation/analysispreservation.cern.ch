@@ -29,8 +29,7 @@ from __future__ import absolute_import, print_function
 
 import json
 
-from invenio_search import current_search
-
+import pytest
 from conftest import get_basic_json_serialized_deposit
 
 
@@ -200,45 +199,131 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
 
         assert res == permissions_serialized_deposit
 
-#
-########################################
-## api/deposits/{pid}/actions/publish
-########################################
-#def test_get_deposits_when_published_other_member_can_see_it(app, db, users,
-#                                                             auth_headers_for_user,
-#                                                             create_deposit):
-#
-#    with app.test_client() as client:
-#            user_headers = auth_headers_for_user(users['lhcb_user'])
-#            other_user_headers = auth_headers_for_user(users['lhcb_user2'])
-#            deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
-#            pid = deposit['_deposit']['id']
-#
-#            # creator can see it
-#            resp = client.get('/deposits/{}'.format(pid),
-#                              headers=user_headers)
-#
-#            assert resp.status_code == 200
-#
-#            # other members of collaboration cant see it
-#            resp = client.get('/deposits/{}'.format(pid),
-#                              headers=other_user_headers)
-#
-#            assert resp.status_code == 403
-#
-#            # publish
-#            pid = deposit['_deposit']['id']
-#            resp = client.post('/deposits/{}/actions/publish'.format(pid),
-#                               headers=[('Content-Type', 'application/json')] + user_headers)
-#
-#            # creator can see published one under api/records
-#            resp = client.get('/records/{}'.format(recid_pid),
-#                              headers=user_headers)
-#
-#            assert resp.status_code == 200
-#
-#            # once deposit has been published other members can see it as well
-#            resp = client.get('/records/{}'.format(deposit.pid.id),
-#                              headers=other_user_headers)
-#
-#            assert resp.status_code == 200
+
+#######################################
+# api/deposits/{pid}  [DELETE]
+#######################################
+
+
+def test_delete_deposit_with_non_existing_pid_returns_404(app,
+                                                          auth_headers_for_superuser):
+    with app.test_client() as client:
+        resp = client.delete('/deposits/{}'.format('non-existing-pid'),
+                          headers=auth_headers_for_superuser)
+
+        assert resp.status_code == 404
+
+
+@pytest.mark.xfail
+def test_delete_deposit_when_user_has_no_permission_returns_403(app,
+                                                                users,
+                                                                create_deposit,
+                                                                auth_headers_for_user):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+    other_user_headers = auth_headers_for_user(users['lhcb_user2'])
+
+    with app.test_client() as client:
+        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=other_user_headers)
+
+        assert resp.status_code == 403
+
+
+def test_delete_deposit_when_user_is_owner_can_delete_his_deposit(app,
+                                                                  users,
+                                                                  create_deposit,
+                                                                  auth_headers_for_user):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+    user_headers = auth_headers_for_user(users['lhcb_user'])
+
+    with app.test_client() as client:
+        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=user_headers)
+
+        assert resp.status_code == 204
+
+        # deposit not existing anymore
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=user_headers)
+
+        assert resp.status_code == 410
+
+
+def test_delete_deposit_when_deposit_published_already_cant_be_deleted(app, db,
+                                                                       users,
+                                                                       create_deposit,
+                                                                       auth_headers_for_user):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+    user_headers = auth_headers_for_user(users['lhcb_user'])
+    pid = deposit['_deposit']['id']
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                           headers=[('Content-Type', 'application/json')] + user_headers)
+
+        resp = client.delete('/deposits/{}'.format(pid),
+                             headers=user_headers)
+
+        assert resp.status_code == 403
+
+        # deposit not removed
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=user_headers)
+
+        assert resp.status_code == 200
+
+
+def test_delete_deposit_when_superuser_can_delete_others_deposit(app, db,
+                                                                 users,
+                                                                 create_deposit,
+                                                                 auth_headers_for_superuser):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+
+    with app.test_client() as client:
+        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_superuser)
+
+        assert resp.status_code == 204
+
+
+#######################################
+# api/deposits/{pid}/actions/publish
+#######################################
+def test_get_deposits_when_published_other_member_can_see_it(app, db, es, users,
+                                                             auth_headers_for_user,
+                                                             create_deposit):
+
+    with app.test_client() as client:
+            user_headers = auth_headers_for_user(users['lhcb_user'])
+            other_user_headers = auth_headers_for_user(users['lhcb_user2'])
+            deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+            pid = deposit['_deposit']['id']
+
+            # creator can see it
+            resp = client.get('/deposits/{}'.format(pid),
+                              headers=user_headers)
+
+            assert resp.status_code == 200
+
+            # other members of collaboration cant see it
+            resp = client.get('/deposits/{}'.format(pid),
+                              headers=other_user_headers)
+
+            assert resp.status_code == 403
+
+            # publish
+            pid = deposit['_deposit']['id']
+            resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                               headers=[('Content-Type', 'application/json')] + user_headers)
+
+            # creator can see published one under api/records
+            resp = client.get('/records/{}'.format(deposit['_deposit']['pid']['value']),
+                              headers=user_headers)
+
+            assert resp.status_code == 200
+
+            # once deposit has been published other members can see it as well
+            resp = client.get('/records/{}'.format(deposit.pid.id),
+                              headers=other_user_headers)
+
+            assert resp.status_code == 200
