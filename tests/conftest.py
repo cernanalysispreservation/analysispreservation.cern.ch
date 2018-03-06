@@ -152,6 +152,8 @@ def users(app, db):
                                           'cms-members@cern.ch'),
         'cms_user2': create_user_with_role('cms_user2@cern.ch',
                                            'cms-members@cern.ch'),
+        'cms_user3': create_user_with_role('cms_user3@cern.ch',
+                                           'cms-members@cern.ch'),
         'alice_user': create_user_with_role('alice_user@cern.ch',
                                             'alice-member@cern.ch'),
         'alice_user2': create_user_with_role('alice_user2@cern.ch',
@@ -360,6 +362,38 @@ def create_owner_permissions():
         return owner_permissions
 
     yield _create_owner_permissions
+
+
+@pytest.fixture(scope='function')
+def prepare_user_permissions_for_request():
+    """Returns function to create deposit owner permissions."""
+
+    def _prepare_user_permissions_for_request(permissions):
+        """
+        Create deposit owner permissions List for given user.
+        """
+        data = {"permissions": []}
+        for permission in permissions:
+            email = permission[0]
+            _ops = permission[1]
+
+            obj = {
+                "identity": email,
+                "type": "user",
+                "permissions": []
+            }
+
+            for op in _ops:
+                obj["permissions"].append({
+                    "op": op[0],
+                    "action": op[1]
+                })
+
+            data["permissions"].append(obj)
+
+        return data
+
+    yield _prepare_user_permissions_for_request
 
 
 def bearer_auth(token):

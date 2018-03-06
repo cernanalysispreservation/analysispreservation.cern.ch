@@ -374,6 +374,263 @@ def test_owner_deposit_permissions_on_create(app,
 
         assert len(data.get('access')) == 3
 
+
+########################################
+# api/deposits/{pid}/actions/permissions [POST]
+########################################
+
+
+def test_permissions_assign_permission_to_user(app,
+                                               users,
+                                               auth_headers_for_user,
+                                               create_deposit,
+                                               prepare_user_permissions_for_request,
+                                               json_headers):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    cms_user2_headers = auth_headers_for_user(
+        users['cms_user2']) + json_headers
+    cms_user3_headers = auth_headers_for_user(
+        users['cms_user3']) + json_headers
+
+    test_data = {
+        "$schema": deposit.get('$schema', ''),
+        "general_title": "Updated field with wrong data"
+    }
+
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user2_headers)
+
+        assert resp.status_code == 403
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + cms_user2_headers))
+
+        assert resp.status_code == 403
+
+        permissions = prepare_user_permissions_for_request([
+            (
+                users['cms_user2'].email,
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            )
+        ])
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user2_headers)
+
+        assert resp.status_code == 200
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + cms_user2_headers))
+
+        assert resp.status_code == 200
+
+        # Test for user X
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + cms_user3_headers))
+
+        assert resp.status_code == 403
+
+
+def test_permissions_remove_permission_from_user(app,
+                                                 users,
+                                                 auth_headers_for_user,
+                                                 create_deposit,
+                                                 prepare_user_permissions_for_request,
+                                                 json_headers):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    cms_user2_headers = auth_headers_for_user(
+        users['cms_user2']) + json_headers
+    cms_user3_headers = auth_headers_for_user(
+        users['cms_user3']) + json_headers
+
+    test_data = {
+        "$schema": deposit.get('$schema', ''),
+        "general_title": "Updated field with wrong data"
+    }
+
+    with app.test_client() as client:
+        permissions = prepare_user_permissions_for_request([
+            (
+                users['cms_user2'].email,
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            )
+        ])
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        permissions = prepare_user_permissions_for_request([
+            (
+                users['cms_user2'].email,
+                [("remove", "deposit-update")]
+            )
+        ])
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user2_headers)
+
+        assert resp.status_code == 200
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + cms_user2_headers))
+
+        assert resp.status_code == 403
+
+        # Test for user X
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + cms_user3_headers))
+
+        assert resp.status_code == 403
+
+
+def test_permissions_post_permission_from_random_user(app,
+                                                      users,
+                                                      auth_headers_for_user,
+                                                      create_deposit,
+                                                      prepare_user_permissions_for_request,
+                                                      json_headers):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    cms_user2_headers = auth_headers_for_user(
+        users['cms_user2']) + json_headers
+
+    with app.test_client() as client:
+        permissions = prepare_user_permissions_for_request([
+            (
+                users['cms_user2'].email,
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            )
+        ])
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user2_headers, data=json.dumps(permissions))
+
+        assert resp.status_code == 403
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        assert resp.status_code == 201
+
+
+def test_permissions_post_permission_for_registered_and_random_user(app,
+                                                                    users,
+                                                                    auth_headers_for_user,
+                                                                    create_deposit,
+                                                                    prepare_user_permissions_for_request,
+                                                                    json_headers):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    cms_user2_headers = auth_headers_for_user(
+        users['cms_user2']) + json_headers
+    cms_user3_headers = auth_headers_for_user(
+        users['cms_user3']) + json_headers
+    lhcb_user_headers = auth_headers_for_user(
+        users['lhcb_user']) + json_headers
+
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user2_headers)
+
+        assert resp.status_code == 403
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user3_headers)
+
+        assert resp.status_code == 403
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=lhcb_user_headers)
+
+        assert resp.status_code == 403
+
+        permissions = prepare_user_permissions_for_request([
+            (
+                users['cms_user2'].email,
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            ),
+            (
+                "fake@email.com",
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            ),
+            (
+                users['cms_user3'].email,
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            )
+        ])
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user_headers)
+        data = json.loads(resp.data)
+        assert len(data['access']) == 7
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user2_headers)
+
+        assert resp.status_code == 200
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user3_headers)
+
+        assert resp.status_code == 200
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=lhcb_user_headers)
+
+        assert resp.status_code == 403
+
+
+def test_permissions_post_permission_with_fake_user(app,
+                                                    users,
+                                                    auth_headers_for_user,
+                                                    create_deposit,
+                                                    prepare_user_permissions_for_request,
+                                                    json_headers):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    cms_user2_headers = auth_headers_for_user(
+        users['cms_user2']) + json_headers
+
+    with app.test_client() as client:
+        permissions = prepare_user_permissions_for_request([
+            (
+                "fake@email.com",
+                [("add", "deposit-read"), ("add", "deposit-update")]
+            )
+        ])
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user_headers)
+        data = json.loads(resp.data)
+        assert len(data['access']) == 3
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
+
+        assert resp.status_code == 201
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=cms_user_headers)
+        data = json.loads(resp.data)
+        assert len(data['access']) == 3
+
 ########################################
 # api/deposits/{pid}/actions/publish
 ########################################
