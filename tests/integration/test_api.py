@@ -38,6 +38,7 @@ from cap.modules.deposit.api import CAPDeposit as Deposit
 
 from conftest import get_basic_json_serialized_deposit
 from invenio_search import current_search
+from jsonschema.exceptions import ValidationError
 
 
 #############
@@ -144,6 +145,22 @@ def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,
         login_user(users['superuser'])
         id_ = uuid4()
         with pytest.raises(WrongJSONSchemaError):
+            Deposit.create(metadata, id_=id_)
+
+
+def test_post_deposit_with_wrong_data_returns_validation_error(app,
+                                                               users,
+                                                               location,
+                                                               get_jsonschemas_host
+                                                               ):
+    with app.test_request_context():
+        metadata = {
+            '$schema': 'https://{}/schemas/deposits/records/lhcb-v0.0.1.json'.format(get_jsonschemas_host),
+            'general_title': ['I am an array, not a string']
+        }
+        login_user(users['superuser'])
+        id_ = uuid4()
+        with pytest.raises(ValidationError):
             Deposit.create(metadata, id_=id_)
 
 
