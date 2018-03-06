@@ -38,6 +38,7 @@ from cap.modules.deposit.api import CAPDeposit as Deposit
 
 from conftest import get_basic_json_serialized_deposit
 from invenio_search import current_search
+from invenio_records_rest.errors import JSONSchemaValidationError
 from jsonschema.exceptions import ValidationError
 
 
@@ -56,9 +57,9 @@ def test_example(app, users, auth_headers_for_user, json_headers):
         assert "Pong" in resp.data
 
 
-# #################
-# # api/deposits/
-# #################
+# # #################
+# # # api/deposits/
+# # #################
 def test_get_deposits_when_user_not_logged_in_returns_403(app, users, json_headers):
     with app.test_client() as client:
         resp = client.get('/deposits/', headers=json_headers)
@@ -164,9 +165,9 @@ def test_post_deposit_with_wrong_data_returns_validation_error(app,
             Deposit.create(metadata, id_=id_)
 
 
-# #######################
-# # api/deposits/{pid}
-# #######################
+# # #######################
+# # # api/deposits/{pid}
+# # #######################
 def test_get_deposits_with_given_id_superuser_can_see_deposits_created_by_others(app,
                                                                                  users,
                                                                                  auth_headers_for_superuser,
@@ -237,11 +238,11 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
         assert res == permissions_serialized_deposit
 
 
-# #######################################
-# # api/deposits/{pid}  [DELETE]
-# #######################################
-#
-#
+# # #######################################
+# # # api/deposits/{pid}  [DELETE]
+# # #######################################
+# #
+# #
 def test_delete_deposit_with_non_existing_pid_returns_404(app,
                                                           auth_headers_for_superuser):
     with app.test_client() as client:
@@ -321,6 +322,29 @@ def test_delete_deposit_when_superuser_can_delete_others_deposit(app,
                              headers=auth_headers_for_superuser)
 
         assert resp.status_code == 204
+
+
+# #######################################
+# # api/deposits/{pid}  [PUT]
+# #######################################
+
+def test_put_deposit_throws_validation_error(app,
+                                             users,
+                                             create_deposit,
+                                             get_jsonschemas_host,
+                                             auth_headers_for_superuser):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+
+    test_data = {
+        "$schema": deposit.get('$schema', ''),
+        "general_title": ["Updated field with wrong data"]
+    }
+
+    with app.test_client() as client:
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                          data=json.dumps(test_data),
+                          headers=([('Content-Type', 'application/json')] + auth_headers_for_superuser))
+        assert resp.status_code == 400
 
 ########################################
 ## api/deposits/{pid}/actions/publish
