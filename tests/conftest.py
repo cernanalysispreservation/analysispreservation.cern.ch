@@ -88,6 +88,7 @@ def default_config():
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
 
+
 @pytest.fixture()
 def get_jsonschemas_host():
     return current_app.config.get('JSONSCHEMAS_HOST')
@@ -328,6 +329,37 @@ def create_deposit(app, db, es, location):
 
     yield _create_deposit
     db_.session.rollback()
+
+
+@pytest.fixture(scope='function')
+def create_owner_permissions():
+    """Returns function to create deposit owner permissions."""
+
+    def _create_owner_permissions(user):
+        """
+        Create deposit owner permissions List for given user.
+        """
+        owner_permissions = [
+            {
+                "action": "deposit-admin",
+                "identity": user.email,
+                "type": "user"
+            },
+            {
+                "action": "deposit-update",
+                "identity": user.email,
+                "type": "user"
+            },
+            {
+                "action": "deposit-read",
+                "identity": user.email,
+                "type": "user"
+            }
+        ]
+
+        return owner_permissions
+
+    yield _create_owner_permissions
 
 
 def bearer_auth(token):

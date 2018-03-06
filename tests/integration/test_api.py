@@ -74,7 +74,8 @@ def test_get_deposits_when_superuser_returns_all_deposits(app, users,
         deposits = [
             create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
             create_deposit(users['cms_user2'], 'cms-questionnaire-v0.0.1'),
-            create_deposit(users['cms_user'], 'cms-auxiliary-measurements-v0.0.1'),
+            create_deposit(users['cms_user'],
+                           'cms-auxiliary-measurements-v0.0.1'),
             create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
             create_deposit(users['alice_user'], 'alice-analysis-v0.0.1'),
             create_deposit(users['atlas_user'], 'atlas-analysis-v0.0.1'),
@@ -97,7 +98,8 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
         user_deposits_ids = [x['_deposit']['id'] for x in [
             create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
             create_deposit(users['cms_user'], 'cms-questionnaire-v0.0.1'),
-            create_deposit(users['cms_user'], 'cms-auxiliary-measurements-v0.0.1'),
+            create_deposit(users['cms_user'],
+                           'cms-auxiliary-measurements-v0.0.1'),
         ]]
 
         create_deposit(users['cms_user2'], 'cms-analysis-v0.0.1'),
@@ -127,14 +129,15 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
     with app.test_client() as client:
         resp = client.get('/deposits/',
                           headers=[('Accept', 'application/basic+json')] +
-                                  auth_headers_for_superuser)
+                          auth_headers_for_superuser)
 
         hits = json.loads(resp.data)['hits']['hits']
 
         assert resp.status_code == 200
         assert len(hits) == len(deposits)
         for deposit in deposits:
-            assert get_basic_json_serialized_deposit(deposit, 'cms-analysis-v0.0.1') in hits
+            assert get_basic_json_serialized_deposit(
+                deposit, 'cms-analysis-v0.0.1') in hits
 
 
 def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,
@@ -142,7 +145,8 @@ def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,
                                                                    location,
                                                                    get_jsonschemas_host):
     with app.test_request_context():
-        metadata = {'$schema': 'https://{}/schemas/deposits/records/lhcb-wrong.json'.format(get_jsonschemas_host)}
+        metadata = {
+            '$schema': 'https://{}/schemas/deposits/records/lhcb-wrong.json'.format(get_jsonschemas_host)}
         login_user(users['superuser'])
         id_ = uuid4()
         with pytest.raises(WrongJSONSchemaError):
@@ -217,11 +221,12 @@ def test_get_deposits_with_given_id_with_basic_json_serializer_returns_all_corre
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/basic+json')] +
-                                  auth_headers_for_superuser)
+                          auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
-        assert res == get_basic_json_serialized_deposit(deposit, 'cms-analysis-v0.0.1')
+        assert res == get_basic_json_serialized_deposit(
+            deposit, 'cms-analysis-v0.0.1')
 
 
 def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all_correct_fields(app,
@@ -231,7 +236,7 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/permissions+json')] +
-                                  auth_headers_for_superuser)
+                          auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
@@ -346,8 +351,30 @@ def test_put_deposit_throws_validation_error(app,
                           headers=([('Content-Type', 'application/json')] + auth_headers_for_superuser))
         assert resp.status_code == 400
 
+
+# #######################################
+# # api/deposits  [POST]
+# #######################################
+
+def test_owner_deposit_permissions_on_create(app,
+                                             users,
+                                             create_deposit,
+                                             create_owner_permissions,
+                                             auth_headers_for_user):
+    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
+    user_headers = auth_headers_for_user(users['lhcb_user'])
+    pid = deposit['_deposit']['id']
+
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=[('Content-Type', 'application/json')] + user_headers)
+
+        data = json.loads(resp.data)
+
+        assert len(data.get('access')) == 3
+
 ########################################
-## api/deposits/{pid}/actions/publish
+# api/deposits/{pid}/actions/publish
 ########################################
 # def test_get_deposits_when_published_other_member_can_see_it(app, db, users,
 #                                                             auth_headers_for_user,

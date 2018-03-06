@@ -78,28 +78,30 @@ def DEPOSIT_ACTIONS_NEEDS(id):
 
 def add_owner_permissions(uuid):
     with db.session.begin_nested():
+
         set_user_permissions(
             current_user,
             [{"op": "add", "action": action}
              for action in DEPOSIT_ACTIONS],
             uuid,
             db.session,
-            {}  # TOFIX : Need to pass access object to update user
+            {},  # TOFIX : Need to pass access object to update user
+            force=True
         )
     db.session.commit()
 
 
-def set_user_permissions(user, permissions, id, session, access):
+def set_user_permissions(user, permissions, id, session, access, force=False):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
     for permission in _permissions:
 
         if permission.get("op", "") == "add":
-            if ActionUsers.query.filter_by(
+            if (not force and ActionUsers.query.filter_by(
                     action=permission['action'],
                     user_id=user.id
-            ).all():
+            ).all()):
                 return
             try:
                 session.add(ActionUsers.allow(
@@ -115,10 +117,10 @@ def set_user_permissions(user, permissions, id, session, access):
                 'user', []).append(user.id)
 
         elif permission.get("op", "") == "remove":
-            if not ActionUsers.query.filter_by(
+            if (not force and not ActionUsers.query.filter_by(
                     action=permission['action'],
                     user_id=user.id
-            ).all():
+            ).all()):
                 return
             try:
                 au = ActionUsers.query.filter(
