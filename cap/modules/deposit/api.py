@@ -46,6 +46,7 @@ from werkzeug.local import LocalProxy
 from .permissions import (DepositReadActionNeed,
                           DepositUpdateActionNeed,
                           DepositAdminActionNeed)
+from .errors import WrongJSONSchemaError
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -236,11 +237,17 @@ class CAPDeposit(Deposit):
         """
         bucket = Bucket.create()
 
+        avalaible_schemas = [x.get('schema').split('schemas/')[-1] for x in
+                             current_app.config.get('DEPOSIT_GROUPS', {}).values()]
+
         try:
             schema = data.get("$schema", None) \
                 .split('/schemas/', 1)[1]
         except (IndexError, AttributeError):
             return None
+
+        if schema not in avalaible_schemas:
+            raise WrongJSONSchemaError()
 
         if schema:
             _deposit_group = \

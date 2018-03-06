@@ -30,6 +30,12 @@ from __future__ import absolute_import, print_function
 import json
 
 import pytest
+from uuid import uuid4
+from flask_security import login_user
+from invenio_search import current_search
+from cap.modules.deposit.errors import WrongJSONSchemaError
+from cap.modules.deposit.api import CAPDeposit as Deposit
+
 from conftest import get_basic_json_serialized_deposit
 from invenio_search import current_search
 
@@ -49,9 +55,9 @@ def test_example(app, users, auth_headers_for_user, json_headers):
         assert "Pong" in resp.data
 
 
-#################
-# api/deposits/
-#################
+# #################
+# # api/deposits/
+# #################
 def test_get_deposits_when_user_not_logged_in_returns_403(app, users, json_headers):
     with app.test_client() as client:
         resp = client.get('/deposits/', headers=json_headers)
@@ -112,14 +118,14 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
                                                                                          auth_headers_for_superuser,
                                                                                          create_deposit):
     deposits = [
-            create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
-            create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
+        create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
+        create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
     ]
 
     with app.test_client() as client:
         resp = client.get('/deposits/',
                           headers=[('Accept', 'application/basic+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         hits = json.loads(resp.data)['hits']['hits']
 
@@ -129,9 +135,21 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
             assert get_basic_json_serialized_deposit(deposit, 'cms-analysis-v0.0.1') in hits
 
 
-#######################
-# api/deposits/{pid}
-#######################
+def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,
+                                                                   users,
+                                                                   location,
+                                                                   get_jsonschemas_host):
+    with app.test_request_context():
+        metadata = {'$schema': 'https://{}/schemas/deposits/records/lhcb-wrong.json'.format(get_jsonschemas_host)}
+        login_user(users['superuser'])
+        id_ = uuid4()
+        with pytest.raises(WrongJSONSchemaError):
+            Deposit.create(metadata, id_=id_)
+
+
+# #######################
+# # api/deposits/{pid}
+# #######################
 def test_get_deposits_with_given_id_superuser_can_see_deposits_created_by_others(app,
                                                                                  users,
                                                                                  auth_headers_for_superuser,
@@ -178,39 +196,40 @@ def test_get_deposits_with_given_id_other_member_of_collaboration_cant_see_depos
 def test_get_deposits_with_given_id_with_basic_json_serializer_returns_all_correct_fields(app,
                                                                                           auth_headers_for_superuser,
                                                                                           deposit):
-
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/basic+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
         assert res == get_basic_json_serialized_deposit(deposit, 'cms-analysis-v0.0.1')
 
 
-def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all_correct_fields(app, auth_headers_for_superuser, deposit, permissions_serialized_deposit):
-
+def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all_correct_fields(app,
+                                                                                                auth_headers_for_superuser,
+                                                                                                deposit,
+                                                                                                permissions_serialized_deposit):
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/permissions+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
         assert res == permissions_serialized_deposit
 
 
-#######################################
-# api/deposits/{pid}  [DELETE]
-#######################################
-
-
+# #######################################
+# # api/deposits/{pid}  [DELETE]
+# #######################################
+#
+#
 def test_delete_deposit_with_non_existing_pid_returns_404(app,
                                                           auth_headers_for_superuser):
     with app.test_client() as client:
         resp = client.delete('/deposits/{}'.format('non-existing-pid'),
-                          headers=auth_headers_for_superuser)
+                             headers=auth_headers_for_superuser)
 
         assert resp.status_code == 404
 
@@ -286,11 +305,10 @@ def test_delete_deposit_when_superuser_can_delete_others_deposit(app,
 
         assert resp.status_code == 204
 
-
 ########################################
 ## api/deposits/{pid}/actions/publish
 ########################################
-#def test_get_deposits_when_published_other_member_can_see_it(app, users,
+# def test_get_deposits_when_published_other_member_can_see_it(app, db, users,
 #                                                             auth_headers_for_user,
 #                                                             create_deposit):
 #

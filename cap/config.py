@@ -395,13 +395,13 @@ JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     ],
 ))
 
-JSONSCHEMAS_VERSIONS = {
-    "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
-    "ATLASWorkflows": "ATLASWorkflows-v0.0.1",
-    "CMSAnalysis": "CMSAnalysis-v0.0.1",
-    "CMSQuestionnaire": "CMSQuestionnaire-v0.0.1",
-    "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
-}
+# JSONSCHEMAS_VERSIONS = {
+#     "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
+#     "ATLASWorkflows": "ATLASWorkflows-v0.0.1",
+#     "CMSAnalysis": "CMSAnalysis-v0.0.1",
+#     "CMSQuestionnaire": "CMSQuestionnaire-v0.0.1",
+#     "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
+# }
 
 JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
 

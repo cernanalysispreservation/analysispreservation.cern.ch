@@ -88,7 +88,7 @@ def default_config():
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
 
-
+@pytest.fixture()
 def get_jsonschemas_host():
     return current_app.config.get('JSONSCHEMAS_HOST')
 
