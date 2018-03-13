@@ -31,6 +31,8 @@ from urlparse import urlparse
 
 from flask import current_app
 
+from .errors import WrongJSONSchemaError
+
 
 def clean_empty_values(data):
     """Removes empty values from model"""
@@ -57,11 +59,16 @@ def discover_schema(deposit):
         deposit_groups = current_app.config.get('DEPOSIT_GROUPS', None)
 
         ana_type = deposit.get("$ana_type", None)
+
+        if ana_type is None:
+            raise WrongJSONSchemaError()
+
         schema = deposit_groups.get(ana_type)['schema']
 
         if schema:
             host = current_app.config.get('JSONSCHEMAS_HOST', None)
-            protocol = current_app.config.get('JSONSCHEMAS_URL_SCHEME', 'https')
+            protocol = current_app.config.get(
+                'JSONSCHEMAS_URL_SCHEME', 'https')
             schema = "{protocol}://{host}/{schema}".format(host=host,
                                                            schema=schema,
                                                            protocol=protocol)

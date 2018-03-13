@@ -31,4 +31,12 @@ class WrongJSONSchemaError(RESTValidationError):
 
     code = 400
 
-    description = "The provided JSON schema doesn't exist"
+    description = "The provided JSON schema or 'ana_type' field doesn't exist"
+
+
+class EmptyDepositError(RESTValidationError):
+    """JSONSchema wrong schema error exception."""
+
+    code = 400
+
+    description = "Empty content({}) was send. Try again with valid data"

@@ -33,7 +33,7 @@ import pytest
 from uuid import uuid4
 from flask_security import login_user
 from invenio_search import current_search
-from cap.modules.deposit.errors import WrongJSONSchemaError
+from cap.modules.deposit.errors import WrongJSONSchemaError, EmptyDepositError
 from cap.modules.deposit.api import CAPDeposit as Deposit
 
 from conftest import get_basic_json_serialized_deposit
@@ -138,6 +138,42 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
         for deposit in deposits:
             assert get_basic_json_serialized_deposit(
                 deposit, 'cms-analysis-v0.0.1') in hits
+
+
+def test_post_deposit_with_non_object_data_returns_wrong_schema_error(app,
+                                                                      users,
+                                                                      location,
+                                                                      get_jsonschemas_host):
+    with app.test_request_context():
+        metadata = 5
+        login_user(users['superuser'])
+        id_ = uuid4()
+        with pytest.raises(EmptyDepositError):
+            Deposit.create(metadata, id_=id_)
+
+
+def test_post_deposit_with_empty_data_returns_wrong_schema_error(app,
+                                                                 users,
+                                                                 location,
+                                                                 get_jsonschemas_host):
+    with app.test_request_context():
+        metadata = {}
+        login_user(users['superuser'])
+        id_ = uuid4()
+        with pytest.raises(EmptyDepositError):
+            Deposit.create(metadata, id_=id_)
+
+
+def test_post_deposit_with_empty_schema_returns_wrong_schema_error(app,
+                                                                   users,
+                                                                   location,
+                                                                   get_jsonschemas_host):
+    with app.test_request_context():
+        metadata = {'$schema': ''}
+        login_user(users['superuser'])
+        id_ = uuid4()
+        with pytest.raises(WrongJSONSchemaError):
+            Deposit.create(metadata, id_=id_)
 
 
 def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,

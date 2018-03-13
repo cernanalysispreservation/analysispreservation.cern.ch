@@ -34,6 +34,7 @@ from invenio_access.permissions import (DynamicPermission,
                                         ParameterizedActionNeed)
 
 from .utils import discover_schema
+from .errors import WrongJSONSchemaError, EmptyDepositError
 
 DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
 """Action need for reading a record."""
@@ -77,6 +78,9 @@ class DepositPermission(DynamicPermission):
         Args:
             deposit: deposit to which access is requested.
         """
+        if action == 'create' and record == {}:
+            raise EmptyDepositError()
+
         _needs = set()
         self.deposit = record
         self.action = action
@@ -94,7 +98,7 @@ class DepositPermission(DynamicPermission):
         _deposit_group = self._get_deposit_group_info()
 
         if not _deposit_group:
-            return {}
+            raise WrongJSONSchemaError()
 
         _permission_factory_imp = \
             _deposit_group.get(self.action + '_permission_factory_imp', None)
@@ -115,7 +119,7 @@ class DepositPermission(DynamicPermission):
             schema = self.deposit.get("$schema", None) \
                                  .split('/schemas/', 1)[1]
         except (IndexError, AttributeError):
-            return None
+            raise WrongJSONSchemaError()
 
         _deposit_group = \
             next(
