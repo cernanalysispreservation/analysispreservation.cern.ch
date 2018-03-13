@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "properties": {
+    "record": {
+      "type": "string",
+      "description": "Record bucket ID."
+    },
+    "deposit": {
+      "type": "string",
+      "description": "Deposit bucket ID."
+    }
+  }
+}

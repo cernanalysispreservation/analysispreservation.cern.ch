@@ -285,6 +285,9 @@ def minimal_deposits_metadata(schema_name):
                 ]
             }
         },
+        'cms-cadi-v0.0.1': {
+            '$schema': 'https://{}/schemas/deposits/records/cms-cadi-v0.0.1.json'.format(schema_host),
+        },
         'cms-questionnaire-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/cms-questionnaire-v0.0.1.json'.format(schema_host),
         },
@@ -302,6 +305,11 @@ def minimal_deposits_metadata(schema_name):
         },
         'atlas-workflows-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/atlas-workflows-v0.0.1.json'.format(schema_host),
+            'workflows': [{'analysis_title': 'test_workflow'}]
+        },
+        'test-schema-v0.0.1': {
+            '$schema': 'https://{}/schemas/deposits/records/test-schema-v0.0.1.json'.format(schema_host),
+            "wrong_title": "testing additional properties"
         }
     }
 

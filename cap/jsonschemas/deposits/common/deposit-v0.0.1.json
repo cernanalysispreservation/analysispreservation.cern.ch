@@ -1,59 +1,49 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Deposit",
-    "type": "object",
-    "properties": {
-        "_deposit": {
-            "type": "object",
-            "name": "_deposit",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "name": "id"
-                },
-                "pid": {
-                    "type": "object",
-                    "name": "pid",
-                    "properties": {
-                        "revision_id": {
-                            "type": "integer"
-                        },
-                        "type": {
-                            "type": "string"
-                        },
-                        "value": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "created_by": {
-                    "type": "integer",
-                    "name": "created_by"
-                },
-                "owners": {
-                    "type": "array",
-                    "name": "owners",
-                    "items": [
-                        {
-                            "type": "integer"
-                        }
-                    ]
-                },
-                "status": {
-                    "type": "string",
-                    "name": "status",
-                    "enum": [
-                        "draft",
-                        "published"
-                    ]
-                }
-            },
-            "required": [
-                "id"
-            ]
+  "type": "object",
+  "name": "_deposit",
+  "properties": {
+    "id": {
+      "type": "string",
+      "name": "id"
+    },
+    "pid": {
+      "type": "object",
+      "name": "pid",
+      "properties": {
+        "revision_id": {
+          "type": "integer"
         },
-        "general_title": {
-            "type": "string"
+        "type": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
         }
+      }
+    },
+    "created_by": {
+      "type": "integer",
+      "name": "created_by"
+    },
+    "owners": {
+      "type": "array",
+      "name": "owners",
+      "items": [
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "status": {
+      "type": "string",
+      "name": "status",
+      "enum": [
+        "draft",
+        "published"
+      ]
     }
+  },
+  "required": [
+    "id"
+  ]
 }

@@ -134,7 +134,6 @@ THEME_SITENAME = _("CERN Analysis Preservation")
 #: Google Site Verification ids.
 THEME_GOOGLE_SITE_VERIFICATION = []
 
-
 #: E-Groups for superuser rights
 SUPERUSER_EGROUPS = [
     RoleNeed('analysis-preservation-support@cern.ch'),
@@ -159,7 +158,6 @@ CAP_COLLAB_EGROUPS = {
     ],
     "ADMIN": SUPERUSER_EGROUPS
 }
-
 
 # Records
 # =======
@@ -503,7 +501,6 @@ DEPOSIT_GROUPS = {
         # 'update_permission_factory_imp':
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },
-
     "cms-questionnaire": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
@@ -580,6 +577,23 @@ DEPOSIT_GROUPS = {
         "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.cms.cms_group_need',
+        # 'read_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.read_permission_factory',
+        # 'update_permission_factory_imp':
+        #     'cap.modules.deposit.permissions.update_permission_factory',
+    },
+    "test-schema": {
+        "experiment": "TEST",
+        "schema": "schemas/deposits/records/test-schema-v0.0.1.json",
+        "schema_form": "",
+        "name": "Test schema",
+        "description":
+            "Create a CMS CADI Entry",
+        # "list_template": "cap_deposit/index.html",
+        "item_new_template": "cap_deposit/edit.html",
+        "endpoint": "",
+        'create_permission_factory_imp':
+            'cap.modules.experiments.permissions.common.superuser_needs',
         # 'read_permission_factory_imp':
         #     'cap.modules.deposit.permissions.read_permission_factory',
         # 'update_permission_factory_imp':

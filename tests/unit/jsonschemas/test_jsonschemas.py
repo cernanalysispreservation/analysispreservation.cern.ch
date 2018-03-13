@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2017 CERN.
+# Copyright (C) 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -23,20 +23,35 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 
-"""Unit tests Cap Deposit api."""
+import pytest
 
-from __future__ import absolute_import, print_function
+from uuid import uuid4
 
+from conftest import minimal_deposits_metadata
+from invenio_deposit.minters import deposit_minter
 from cap.modules.deposit.api import CAPDeposit as Deposit
+from jsonschema.exceptions import ValidationError
 
-#def test_deposit_publish_changes_status_of_deposit_to_published(app, db, users, create_deposit, auth_headers_for_user):
-#    with app.test_client() as client:
-#        deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')              headers = auth_headers_for_user(users['cms_user'])
-#
-#        # before publishing status of deposit is draft
-#        assert deposit['_deposit']['status'] == 'draft'
-#
-#        client.post('/deposits/{}/actions/publish'.format(deposit['_deposit']['id']), headers=[('Content-Type', 'application/json')] + headers
-#
-#        # after publishing status of deposit is draft
-#        assert deposit['_deposit']['status'] == 'published'
+
+@pytest.mark.parametrize("user, schema", [
+    ('alice_user', 'alice-analysis-v0.0.1'),
+    ('atlas_user', 'atlas-analysis-v0.0.1'),
+    ('atlas_user', 'atlas-workflows-v0.0.1'),
+    ('cms_user', 'cms-analysis-v0.0.1'),
+    ('cms_user', 'cms-questionnaire-v0.0.1'),
+    ('cms_user', 'cms-auxiliary-measurements-v0.0.1'),
+    ('cms_user', 'cms-cadi-v0.0.1'),
+    ('lhcb_user', 'lhcb-v0.0.1'),
+])
+def test_jsonschemas_with_no_additional_properties_is_success(user, schema, users, create_deposit):
+    deposit = create_deposit(users[user], schema)
+    assert 'id' in deposit['_deposit']
+
+
+def test_jsonschemas_with_additional_properties_fails(app, db, location):
+    with app.test_request_context():
+        metadata = minimal_deposits_metadata('test-schema-v0.0.1')
+        id_ = uuid4()
+        deposit_minter(id_, metadata)
+        with pytest.raises(ValidationError):
+            Deposit.create(metadata, id_=id_)

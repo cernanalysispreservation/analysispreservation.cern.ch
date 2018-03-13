@@ -5,79 +5,31 @@
   "type": "object",
   "properties": {
     "_deposit": {
-      "name": "_deposit",
-      "properties": {
-        "created_by": {
-          "name": "created_by",
-          "type": "integer"
-        },
-        "id": {
-          "name": "id",
-          "type":"string"
-        },
-        "owners": {
-          "items": [{
-            "type": "integer"
-          }],
-          "name": "owners",
-          "type": "array"
-        },
-        "pid": {
-          "name": "pid",
-          "properties": {
-            "revision_id": {
-              "type": "integer"
-            },
-            "type": {
-              "type": "string"
-            },
-            "value": {
-              "type": "string"
-            }
-          },
-          "type": "object"
-        },
-        "status": {
-          "enum": [
-            "draft",
-            "published"
-          ],
-          "name": "status",
-          "type": "string"
-        }
-      },
-      "required": [
-        "id"
-      ],
-      "type": "object"
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+    },
+    "_buckets": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
     },
     "_files": {
-      "items": {
-        "description": "Describe information needed for files in records.",
-        "properties": {
-          "bucket": {
-            "type": "string"
-          },
-          "checksum": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "size": {
-            "type": "integer"
-          },
-          "type": {
-            "description": "File type extension.",
-            "type": "string"
-          },
-          "version_id": {
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
-      "type": "array"
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+    },
+    "_access": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+    },
+    "_experiment": {
+      "type": "string"
+    },
+    "$ana_type": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    },
+    "general_title": {
+      "type": "string"
+    },
+    "control_number": {
+      "type": "string"
     },
     "basic_info": {
       "title": "Basic Information",
@@ -126,7 +78,9 @@
       "type": "array",
       "id": "input_datasets",
       "additionalProperties": false,
-      "default": [{}],
+      "default": [
+        {}
+      ],
       "items": {
         "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
       }
@@ -140,7 +94,9 @@
       "type": "array",
       "id": "publications",
       "additionalProperties": false,
-      "default": [{}],
+      "default": [
+        {}
+      ],
       "items": {
         "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
       }

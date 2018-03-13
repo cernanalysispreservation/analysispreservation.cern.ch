@@ -1,16 +1,353 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "LHCb Analysis",
-    "type": "object",
-    "allOf": [
-        {
-            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "LHCb Analysis",
+  "additionalProperties": false,
+  "type": "object",
+  "properties": {
+    "_deposit": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+    },
+    "_buckets": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+    },
+    "_files": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+    },
+    "_access": {
+      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+    },
+    "_experiment": {
+      "type": "string"
+    },
+    "$ana_type": {
+      "type": "string"
+    },
+    "$schema": {
+      "type": "string"
+    },
+    "general_title": {
+      "type": "string"
+    },
+    "control_number": {
+      "type": "string"
+    },
+    "ntuple_userdst_production": {
+      "description": "Please provide information about the steps of the analysis",
+      "default": [
+        {}
+      ],
+      "items": {
+        "properties": {
+          "name": {
+            "title": "Custom name",
+            "type": "string"
+          },
+          "input_dataset": {
+            "title": "Input dataset",
+            "type": "string"
+          },
+          "davinci_version": {
+            "title": "Davinci version",
+            "type": "string"
+          },
+          "platform": {
+            "title": "Platform",
+            "type": "string"
+          },
+          "davinci_script": {
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
+          },
+          "ganga_script": {
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
+          },
+          "output_eos_location": {
+            "title": "Output eos location",
+            "type": "string"
+          }
         },
-        {
-            "$ref": "https://analysispreservation.cern.ch/schemas/records/lhcb-v0.0.1.json"
+        "title": "ntuple/userDST-production",
+        "type": "object"
+      },
+      "title": "ntuple/userDST-production",
+      "type": "array"
+    },
+    "basic_info": {
+      "id": "basic_info",
+      "description": "Please provide some information relevant for all parts of the Analysis here",
+      "properties": {
+        "analysis_title": {
+          "title": "Analysis Name",
+          "type": "string",
+          "description": "Provide a name for your analysis. This will be displayed as an analysis title when shared."
         },
-        {
-            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+        "measurement": {
+          "title": "Measurement",
+          "type": "string",
+          "description": "Provide a Measurement type. This will be displayed as an analysis title when shared."
+        },
+        "review_egroup": {
+          "title": "Review eGroup",
+          "type": "string"
+        },
+        "institutes": {
+          "title": "Institutes Involved",
+          "type": "string",
+          "enum": [
+            "IFT",
+            "B_Q",
+            "BDC",
+            "DP",
+            "CD",
+            "QEE",
+            "RD",
+            "Charm",
+            "SLB",
+            "B2OC"
+          ]
+        },
+        "keywords": {
+          "id": "keywords",
+          "title": "Keywords",
+          "type": "string"
+        },
+        "analysis_proponents": {
+          "title": "Proponents",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "title": "Proponent"
+          }
+        },
+        "reviewers": {
+          "title": "Reviewers",
+          "type": "string"
+        },
+        "analysis_status": {
+          "enum": [
+            "0 - planned / open topic",
+            "1 - in preparation",
+            "2 - ANA note released",
+            "3 - review committee",
+            "4 - collaboration review",
+            "5 -",
+            "6 - CONF note published",
+            "7 -",
+            "8 - journal review",
+            "9 - PAPER published",
+            "x - other"
+          ],
+          "type": "select",
+          "title": "Status"
+        },
+        "analysis_status_notes": {
+          "dependencies": [
+            "status"
+          ],
+          "title": "Notes on Status",
+          "type": "string"
         }
-    ]
+      },
+      "title": "Basic Information",
+      "type": "object"
+    },
+    "stripping_turbo_selection": {
+      "title": "Stripping/Turbo selection",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "Custom name",
+            "type": "string"
+          },
+          "bookkeping_location": {
+            "title": "Bookkeeping location",
+            "type": "string"
+          },
+          "stripping_turbo_line": {
+            "title": "Stripping/TURBO line",
+            "type": "string"
+          },
+          "dataset_type": {
+            "type": "string",
+            "title": "Choose type of dataset",
+            "enum": [
+              "mc_data",
+              "real_data"
+            ]
+          },
+          "processing_pass": {
+            "title": "Processing Pass",
+            "type": "string"
+          },
+          "reconstruction_software": {
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "version": {
+                "title": "Version",
+                "type": "string"
+              }
+            },
+            "title": "Reconstruction software",
+            "type": "object"
+          },
+          "stripping_software": {
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              },
+              "version": {
+                "title": "Version",
+                "type": "string"
+              }
+            },
+            "title": "Stripping software",
+            "type": "object"
+          },
+          "year": {
+            "title": "Year",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "user_analysis": {
+      "title": "User Analysis",
+      "type": "object",
+      "properties": {
+        "gitlab_link": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
+          "title": "Gitlab repository of the analysis"
+        },
+        "basic_script": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
+          "title": "Basic script to start the analysis"
+        }
+      }
+    },
+    "additional_resources": {
+      "title": "Additional Resources",
+      "description": "Please provide information about the additional resources of the analysis",
+      "type": "object",
+      "properties": {
+        "internal_discussions": {
+          "id": "internal-discussions",
+          "items": {
+            "properties": {
+              "meeting": {
+                "title": "E-Group",
+                "type": "string"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Reports",
+            "type": "object"
+          },
+          "title": "Internal Discussions",
+          "type": "array"
+        },
+        "presentations": {
+          "id": "presentations",
+          "items": {
+            "properties": {
+              "meeting": {
+                "title": "Meeting (GROUP?)",
+                "type": "string"
+              },
+              "title": {
+                "title": "Title",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Presentation",
+            "type": "object"
+          },
+          "title": "Presentations",
+          "type": "array"
+        },
+        "publications": {
+          "id": "publications",
+          "items": {
+            "properties": {
+              "analysis_number": {
+                "title": "Analysis note (ANA) number",
+                "type": "string"
+              },
+              "arxiv_id": {
+                "title": "arXiv ID",
+                "type": "string"
+              },
+              "conf_report": {
+                "title": "Conference Report (CONF)",
+                "type": "string"
+              },
+              "public_paper": {
+                "title": "Public Paper",
+                "type": "string"
+              },
+              "twiki": {
+                "title": "tWiki page",
+                "type": "string"
+              },
+              "review_egroup": {
+                "title": "Review Group",
+                "type": "string"
+              },
+              "roles": {
+                "title": "Roles",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Publications",
+            "type": "object"
+          },
+          "title": "Publications",
+          "type": "array"
+        },
+        "documentations": {
+          "id": "documentations",
+          "items": {
+            "description": "Add documentation",
+            "properties": {
+              "comment": {
+                "title": "Comment",
+                "type": "string"
+              },
+              "keywords": {
+                "title": "Keywords",
+                "type": "string"
+              },
+              "url": {
+                "title": "URL",
+                "type": "string"
+              }
+            },
+            "title": "Documentation",
+            "type": "object"
+          },
+          "title": "Documentations",
+          "type": "array"
+        }
+      }
+    }
+  }
 }

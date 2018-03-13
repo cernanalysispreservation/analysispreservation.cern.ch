@@ -1,45 +1,25 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "CAP Files Schema v0.0.1",
-  "type": "object",
-  "properties": {
-    "_buckets": {
-      "type": "object",
-      "properties": {
-        "record": {
-          "type": "string",
-          "description": "Record bucket ID."
-        },
-        "deposit": {
-          "type": "string",
-          "description": "Deposit bucket ID."
-        }
-      }
-    },
-    "_files": {
-      "items": {
-        "type": "object",
-        "description": "Describe information needed for files in records.",
-        "properties": {
-          "bucket": {
-            "type": "string"
-          },
-          "version_id": {
-            "type": "string"
-          },
-          "key": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string",
-            "description": "File type extension."
-          },
-          "size": {
-            "type": "integer"
-          }
-        }
+  "type": "array",
+  "items": {
+    "type": "object",
+    "description": "Describe information needed for files in records.",
+    "properties": {
+      "bucket": {
+        "type": "string"
       },
-      "type": "array"
+      "version_id": {
+        "type": "string"
+      },
+      "key": {
+        "type": "string"
+      },
+      "type": {
+        "type": "string",
+        "description": "File type extension."
+      },
+      "size": {
+        "type": "integer"
+      }
     }
   }
 }
