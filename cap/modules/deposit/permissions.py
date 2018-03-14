@@ -28,10 +28,9 @@
 from functools import partial
 
 from flask import current_app, g, request
+from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from cap.utils import obj_or_import_string
-from invenio_access.permissions import (DynamicPermission,
-                                        ParameterizedActionNeed)
 
 from .utils import discover_schema
 from .errors import WrongJSONSchemaError, EmptyDepositError
@@ -65,7 +64,7 @@ def deposit_delete_need(record):
     return DepositDeleteActionNeed(str(record.id))
 
 
-class DepositPermission(DynamicPermission):
+class DepositPermission(Permission):
     """Generic deposit permission."""
     actions = {
         "read": deposit_read_need,
@@ -195,16 +194,16 @@ class DeleteDepositPermission(DepositPermission):
 
 
 def read_permission_factory(record):
-    return DynamicPermission(deposit_read_need(record.id))
+    return Permission(deposit_read_need(record.id))
 
 
 def admin_permission_factory(record):
-    return DynamicPermission(deposit_admin_need(record.id))
+    return Permission(deposit_admin_need(record.id))
 
 
 def update_permission_factory(record):
-    return DynamicPermission(deposit_update_need(record.id))
+    return Permission(deposit_update_need(record.id))
 
 
 def delete_permission_factory(record):
-    return DynamicPermission(deposit_delete_need(record.id))
+    return Permission(deposit_delete_need(record.id))

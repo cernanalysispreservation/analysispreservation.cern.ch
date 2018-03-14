@@ -28,17 +28,13 @@
 from __future__ import absolute_import, print_function
 
 import json
+from uuid import uuid4
 
 import pytest
-from uuid import uuid4
-from flask_security import login_user
-from invenio_search import current_search
-from cap.modules.deposit.errors import WrongJSONSchemaError, EmptyDepositError
 from cap.modules.deposit.api import CAPDeposit as Deposit
-
+from cap.modules.deposit.errors import EmptyDepositError, WrongJSONSchemaError
 from conftest import get_basic_json_serialized_deposit
-from invenio_search import current_search
-from invenio_records_rest.errors import JSONSchemaValidationError
+from flask_security import login_user
 from jsonschema.exceptions import ValidationError
 
 
@@ -282,8 +278,7 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
 # # #######################################
 # # # api/deposits/{pid}  [DELETE]
 # # #######################################
-# #
-# #
+
 def test_delete_deposit_with_non_existing_pid_returns_404(app,
                                                           auth_headers_for_superuser):
     with app.test_client() as client:
@@ -293,7 +288,6 @@ def test_delete_deposit_with_non_existing_pid_returns_404(app,
         assert resp.status_code == 404
 
 
-@pytest.mark.xfail
 def test_delete_deposit_when_user_has_no_permission_returns_403(app,
                                                                 users,
                                                                 create_deposit,
