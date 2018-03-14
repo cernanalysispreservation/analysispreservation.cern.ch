@@ -173,7 +173,6 @@ setup(
         #     'cap_access = cap.modules.access.ext:CAPAccess',
         #     'cap_cache = cap.modules.cache.ext:CAPCache',
         #     'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
-        #     'cap_fixtures = cap.modules.fixtures:CAPFixtures',
         # ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
