@@ -33,7 +33,7 @@ import jsonpointer
 import requests
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.utils import clean_empty_values, parse_github_url
+from cap.modules.deposit.utils import clean_empty_values
 from flask import after_this_request, current_app, request
 from invenio_db import db
 from invenio_files_rest.models import FileInstance, ObjectVersion

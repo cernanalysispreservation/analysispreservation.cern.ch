@@ -27,8 +27,6 @@
 
 from __future__ import absolute_import, print_function
 
-from urlparse import urlparse
-
 from flask import current_app
 
 from .errors import WrongJSONSchemaError
@@ -42,14 +40,6 @@ def clean_empty_values(data):
         return [v for v in (clean_empty_values(v) for v in data) if v]
     return {k: v for k, v in (
         (k, clean_empty_values(v)) for k, v in data.items()) if v}
-
-
-def parse_github_url(url):
-    """Constructs github raw url"""
-    netloc = 'raw.githubusercontent.com'
-    u = urlparse(url)
-    replaced = u._replace(netloc=netloc)
-    return replaced.geturl().replace('/blob', '')
 
 
 def discover_schema(deposit):
