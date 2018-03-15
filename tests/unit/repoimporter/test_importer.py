@@ -25,24 +25,22 @@
 
 from __future__ import absolute_import, print_function
 
-from unittest import TestCase
-from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.repoimporter.github_importer import GithubImporter
 from cap.modules.repoimporter.gitlab_importer import GitlabImporter
+from cap.modules.repoimporter.repo_importer import RepoImporter
 
 
-class TestImporter(TestCase):
+def test_importer_factory_github():
+    gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")  
+    assert isinstance(gh, GithubImporter)
 
-    def test_importer_factory_github(self):
-        gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")
-        assert isinstance(gh, GithubImporter)
 
-    def test_importer_factory_gitlab(self):
-        gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
-        assert isinstance(gh, GitlabImporter)
+def test_importer_factory_gitlab():
+    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
+    assert isinstance(gh, GitlabImporter)
 
-    def test_get_gitlab_url(self):
-        gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
-        link = gh.get_url_of_repository_archive()
-        self.assertIn("tar", link)
 
+def test_get_gitlab_url():
+    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
+    link = gh.get_url_of_repository_archive()
+    assert "tar" in link

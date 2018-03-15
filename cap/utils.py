@@ -32,16 +32,16 @@ from flask import current_app
 from werkzeug.local import LocalProxy
 from werkzeug.utils import import_string
 
-
 _records_state = LocalProxy(lambda: current_app.extensions['invenio-records'])
 
 
 def obj_or_import_string(value, default=None):
     """Import string or return object.
     :params value: Import path or class object to instantiate.
-    :params default: Default object to return if the import fails.
+    :params default: Default object to return if passed value is None.
     :returns: The imported object.
     """
+
     if isinstance(value, six.string_types):
         return import_string(value)
     elif value:

@@ -35,62 +35,62 @@ from invenio_db import db
 from invenio_records.api import Record
 from invenio_search.api import RecordsSearch
 
-cadi_fields_to_record = {
-    'description': ('basic_info', 'abstract'),
-    'URL': ('basic_info', 'twiki'),
-    'PAS': ('basic_info', 'pas'),
-    'Conference': ('additional_resources', 'conference', 'name'),
-    'conferenceStatus': ('additional_resources', 'conference', 'status'),
-}
-
-
-@shared_task
-def sync_cms_ana_with_cadi():
-    rs = RecordsSearch(index='deposits-records-cms-analysis-v0.0.1')
-    updated = get_updated_cadi_lines()
-
-    for ana in updated:
-        # remove artefact from code names
-        code = re.sub('^d', '', ana.get('code', None))
-
-        res = rs.query(Q('term', basic_info__analysis_number=code)
-                       ).execute()
-        for hit in res:
-            record = Record.get_record(hit.meta.id)
-            update_fields_in_record(record, ana)
-
-            print('Analysis number {} updated.'.format(code))
-
-    db.session.commit()
-
-
-def get_updated_cadi_lines():
-    """Get CADI lines updated since yesterday."""
-    url = current_app.config.get('CADI_GET_CHANGES_URL', None)
-    now = datetime.today()
-    yesterday = now - timedelta(days=1)
-
-    resp = requests.post(url=url, params={
-        'fromDate': yesterday.strftime("%d/%m/%Y"),
-        'toDate': now.strftime("%d/%m/%Y")
-    })
-
-    data = resp.json().get('data', None)
-
-    return data
-
-
-def update_fields_in_record(record, cadi_record):
-    def set(d, path, val):
-        """ 
-        Set nested field in dictionary
-        path as a tuple of keys e.g. ('outer', 'inner', 'field').
-        """
-        for key in path[:-1]:
-            d = d.setdefault(key, {})
-        d[path[-1]] = val
-
-    for cadi_key, record_key in cadi_fields_to_record.items():
-        set(record, record_key, cadi_record[cadi_key])
-
-    record.commit()
+#cadi_fields_to_record = {
+#    'description': ('basic_info', 'abstract'),
+#    'URL': ('basic_info', 'twiki'),
+#    'PAS': ('basic_info', 'pas'),
+#    'Conference': ('additional_resources', 'conference', 'name'),
+#    'conferenceStatus': ('additional_resources', 'conference', 'status'),
+#}
+#
+#
+#@shared_task
+#def sync_cms_ana_with_cadi():
+#    rs = RecordsSearch(index='deposits-records-cms-analysis-v0.0.1')
+#    updated = get_updated_cadi_lines()
+#
+#    for ana in updated:
+#        # remove artefact from code names
+#        code = re.sub('^d', '', ana.get('code', None))
+#
+#        res = rs.query(Q('term', basic_info__analysis_number=code)
+#                       ).execute()
+#        for hit in res:
+#            record = Record.get_record(hit.meta.id)
+#            update_fields_in_record(record, ana)
+#
+#            print('Analysis number {} updated.'.format(code))
+#
+#    db.session.commit()
+#
+#
+#def get_updated_cadi_lines():
+#    """Get CADI lines updated since yesterday."""
+#    url = current_app.config.get('CADI_GET_CHANGES_URL', None)
+#    now = datetime.today()
+#    yesterday = now - timedelta(days=1)
+#
+#    resp = requests.post(url=url, params={
+#        'fromDate': yesterday.strftime("%d/%m/%Y"),
+#        'toDate': now.strftime("%d/%m/%Y")
+#    })
+#
+#    data = resp.json().get('data', None)
+#
+#    return data
+#
+#
+#def update_fields_in_record(record, cadi_record):
+#    def set(d, path, val):
+#        """ 
+#        Set nested field in dictionary
+#        path as a tuple of keys e.g. ('outer', 'inner', 'field').
+#        """
+#        for key in path[:-1]:
+#            d = d.setdefault(key, {})
+#        d[path[-1]] = val
+#
+#    for cadi_key, record_key in cadi_fields_to_record.items():
+#        set(record, record_key, cadi_record[cadi_key])
+#
+#    record.commit()

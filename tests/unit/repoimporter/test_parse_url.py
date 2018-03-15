@@ -24,33 +24,38 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, print_function
-from unittest import TestCase
+
+from pytest import mark, raises
 
 from cap.modules.repoimporter.utils import parse_url
 
 
-class TestParseUrl(TestCase):
+@mark.parametrize("url,result", [
+    ("https://gitlab.cern.ch/atrisovi/my-internal-project.git",
+     ("gitlab.cern.ch", "atrisovi", "my-internal-project")),
+    ("https://gitlab.cern.ch/atrisovi/root-examples",
+     ("gitlab.cern.ch", "atrisovi", "root-examples")),
+    ("gitlab.cern.ch/atrisovi/root-examples",
+     ("gitlab.cern.ch", "atrisovi", "root-examples")),
+    ("https://GitHub.com/enaVerse/enaVerse.github.io.git",
+     ("github.com", "enaverse", "enaverse.github.io")),
+    ("https://github.com/tiborsimko/myrepo",
+     ("github.com", "tiborsimko", "myrepo")),
+    ("git@github.com:tiborsimko/myrepo",
+     ("github.com", "tiborsimko", "myrepo")),
+    ("https://github.com/atrisovic/cap-import.git",
+     ("github.com", "atrisovic", "cap-import")),
+])
+def test_parse_url_when_parsed_correctly(url, result):
+    assert parse_url(url) == result
 
-    def test_parse_url_success(self):
 
-        self.assertEqual(parse_url("https://gitlab.cern.ch/atrisovi/my-internal-project.git"),
-                         ("gitlab.cern.ch", "atrisovi", "my-internal-project"))
-        self.assertEqual(parse_url("https://gitlab.cern.ch/atrisovi/root-examples"),
-                         ("gitlab.cern.ch", "atrisovi", "root-examples"))
-        self.assertEqual(parse_url("gitlab.cern.ch/atrisovi/root-examples"),
-                         ("gitlab.cern.ch", "atrisovi", "root-examples"))
-        self.assertEqual(parse_url("https://GitHub.com/enaVerse/enaVerse.github.io.git"),
-                         ("github.com", "enaverse", "enaverse.github.io"))
-        self.assertEqual(parse_url("https://github.com/tiborsimko/myrepo"),
-                         ("github.com", "tiborsimko", "myrepo"))
-        self.assertEqual(parse_url("git@github.com:tiborsimko/myrepo"),
-                         ("github.com", "tiborsimko", "myrepo"))
-        self.assertEqual(parse_url("https://github.com/atrisovic/cap-import.git"),
-                         ("github.com", "atrisovic", "cap-import"))
+@mark.parametrize("url", [
+    ("ssh://git@gitlab.cern.ch:7999/atrisovi/root-examples.git"),
+    ("https://github.com/"),
+    ("gitgub.com/enaVerse")
+])
+def test_parse_url_when_url_incorrect_raises_ValueError(url):
 
-    def test_parse_url_failed(self):
-
-        with self.assertRaises(ValueError):
-            parse_url("ssh://git@gitlab.cern.ch:7999/atrisovi/root-examples.git")
-            parse_url("https://github.com/")
-            parse_url("gitgub.com/enaVerse")
+    with raises(ValueError):
+        parse_url(url)

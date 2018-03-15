@@ -33,9 +33,13 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
-from elasticsearch.exceptions import RequestError
 from flask import current_app
+from werkzeug.local import LocalProxy
+
+import pytest
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from elasticsearch.exceptions import RequestError
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user
@@ -47,10 +51,6 @@ from invenio_oauth2server.models import Client, Token
 from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
-from werkzeug.local import LocalProxy
-
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
 
 
 @pytest.yield_fixture(scope='session')
@@ -468,3 +468,94 @@ def get_basic_json_serialized_deposit(deposit, schema):
     }
 
     return schema_to_serialized_deposit[schema]
+
+
+@pytest.fixture
+def superuser_me_data(users):
+    return {
+        "collaborations": [
+            "ATLAS",
+            "LHCb",
+            "CMS",
+            "ALICE"
+        ],
+        "current_experiment": "ATLAS",
+        "deposit_groups": [
+            {
+                "deposit_group": "cms-auxiliary-measurement",
+                "description": "Create a CMS Auxiliary Measurement",
+                "name": "CMS Auxiliary Measurement"
+            },
+            {
+                "deposit_group": "lhcb",
+                "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
+                "name": "LHCb Analysis"
+            },
+            {
+                "deposit_group": "cms-cadi",
+                "description": "Create a CMS CADI Entry",
+                "name": "CMS CADI Entries"
+            },
+            {
+                "deposit_group": "cms-questionnaire",
+                "description": "Create a CMS Questionnaire",
+                "name": "CMS Questionnaire"
+            },
+            {
+                "deposit_group": "atlas-workflows",
+                "description": "Create an ATLAS Workflow",
+                "name": "ATLAS Workflow"
+            },
+            {
+                "deposit_group": "cms-analysis",
+                "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+                "name": "CMS Analysis"
+            },
+            {
+                "deposit_group": "test-schema",
+                "description": "Create a CMS CADI Entry",
+                "name": "Test schema"
+            },
+            {
+                "deposit_group": "atlas-analysis",
+                "description": "Create an ATLAS Analysis",
+                "name": "ATLAS Analysis"
+            },
+            {
+                "deposit_group": "alice-analysis",
+                "description": "Create an ALICE Analysis",
+                "name": "ALICE Analysis"
+            }
+        ],
+        "email": users['superuser'].email,
+        "id": users['superuser'].id
+    }
+
+
+@pytest.fixture
+def cms_user_me_data(users):
+    return {
+        "collaborations": [
+            "CMS",
+        ],
+        "current_experiment": "CMS",
+        "deposit_groups": [
+            {
+                "deposit_group": "cms-auxiliary-measurement",
+                "description": "Create a CMS Auxiliary Measurement",
+                "name": "CMS Auxiliary Measurement"
+            },
+            {
+                "deposit_group": "cms-questionnaire",
+                "description": "Create a CMS Questionnaire",
+                "name": "CMS Questionnaire"
+            },
+            {
+                "deposit_group": "cms-analysis",
+                "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+                "name": "CMS Analysis"
+            }
+        ],
+        "email": users['cms_user'].email,
+        "id": users['cms_user'].id
+    }

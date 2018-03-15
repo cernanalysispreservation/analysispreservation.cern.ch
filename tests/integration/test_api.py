@@ -30,12 +30,15 @@ from __future__ import absolute_import, print_function
 import json
 from uuid import uuid4
 
+from flask import current_app
+
 import pytest
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import EmptyDepositError, WrongJSONSchemaError
 from conftest import get_basic_json_serialized_deposit
 from flask_security import login_user
 from jsonschema.exceptions import ValidationError
+from mock import Mock, patch
 
 
 #############
@@ -56,9 +59,9 @@ def test_example(app, users, auth_headers_for_user, json_headers):
 # # #################
 # # # api/deposits/
 # # #################
-def test_get_deposits_when_user_not_logged_in_returns_403(app, users, json_headers):
+def test_get_deposits_when_user_not_logged_in_returns_403(app, users):
     with app.test_client() as client:
-        resp = client.get('/deposits/', headers=json_headers)
+        resp = client.get('/deposits/')
 
         assert resp.status_code == 403
 
@@ -725,3 +728,100 @@ def test_deposit_when_published_status_changed_and_record_created(app, db, users
         assert 'control_number' in res['metadata']
 
         assert 'published' in res['metadata']['_deposit']['status']
+
+
+################
+# api/cms/cadi
+################
+def test_get_cms_cadi_when_user_from_outside_cms_returns_403(app, users,
+                                                             auth_headers_for_user):
+    with app.test_client() as client:
+        user_headers = auth_headers_for_user(users['lhcb_user'])
+        resp = client.get('/cms/cadi?ana_number=EXO-17-023',
+                          headers=user_headers)
+
+        assert resp.status_code == 403
+
+
+@patch('requests.get')
+def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_requests, app,
+                                                                         auth_headers_for_superuser):
+    class MockedResp:
+        def json(self):
+            return {
+                'data': []
+            }
+
+    with app.test_client() as client:
+        mock_requests.return_value = MockedResp()
+        resp = client.get('/cms/cadi?ana_number=non-existing',
+                          headers=auth_headers_for_superuser)
+
+        assert json.loads(resp.data) == {}
+
+
+@patch('requests.get')
+def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_ana_data(mock_requests, app,
+                                                                             auth_headers_for_superuser):
+    ana_data = {
+        'code': 'dAna-Num',
+        'conferences': []
+    }
+
+    class MockedResp:
+        def json(self):
+            return {
+                'data': [ana_data]
+            }
+
+    with app.test_client() as client:
+        mock_requests.return_value = MockedResp()
+        resp = client.get('/cms/cadi?ana_number=Ana-Num',
+                          headers=auth_headers_for_superuser)
+
+        assert json.loads(resp.data) == ana_data
+
+
+@patch('requests.get')
+def test_get_cms_cadi_calls_cadi_api_with_correct_url(mock_requests, app,
+                                                      auth_headers_for_superuser):
+    api_url = current_app.config['CADI_GET_RECORD_URL']
+    ana_num = 'Ana-Num'
+    with app.test_client() as client:
+        client.get('/cms/cadi?ana_number={}'.format(ana_num),
+                   headers=auth_headers_for_superuser)
+
+        mock_requests.assert_called_with(url=api_url + ana_num)
+
+
+##########
+# api/me
+##########
+def test_me_when_user_not_logged_in_returns_401(app):
+    with app.test_client() as client:
+        resp = client.get('/me')
+
+        assert resp.status_code == 401
+
+
+def test_me_when_superuser_returns_correct_user_data(app,
+                                                     auth_headers_for_superuser,
+                                                     superuser_me_data):
+    with app.test_client() as client:
+        resp = client.get('/me',
+                          headers=auth_headers_for_superuser)
+
+        assert resp.status_code == 200
+        assert json.loads(resp.data) == superuser_me_data
+
+
+def test_me_when_cms_user_returns_correct_user_data(app, users,
+                                                    auth_headers_for_user,
+                                                    cms_user_me_data):
+
+    with app.test_client() as client:
+        user_headers = auth_headers_for_user(users['cms_user'])
+        resp = client.get('/me',
+                          headers=user_headers)
+
+        assert json.loads(resp.data) == cms_user_me_data
