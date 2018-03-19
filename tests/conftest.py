@@ -90,7 +90,7 @@ def default_config():
 
 
 @pytest.fixture()
-def get_jsonschemas_host():
+def jsonschemas_host():
     return current_app.config.get('JSONSCHEMAS_HOST')
 
 
@@ -256,7 +256,7 @@ def location(db):
 
 def minimal_deposits_metadata(schema_name):
     """Returns minimal metadata for each type of schema."""
-    schema_host = get_jsonschemas_host()
+    schema_host = jsonschemas_host()
     schema_name_to_metadata = {
         'cms-analysis-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(schema_host),
@@ -450,7 +450,7 @@ def get_basic_json_serialized_deposit(deposit, schema):
     date_format = '%Y-%m-%dT%H:%M:%S.%f+00:00'
     pid = deposit['_deposit']['id']
     metadata = get_metadata(deposit)
-    schema_host = get_jsonschemas_host()
+    schema_host = jsonschemas_host()
 
     schema_to_serialized_deposit = {
         'cms-analysis-v0.0.1': {

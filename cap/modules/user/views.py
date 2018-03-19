@@ -26,17 +26,16 @@
 
 from __future__ import absolute_import, print_function
 
-import ldap
+from flask import Blueprint, current_app, jsonify, redirect, request, session
 
+import ldap
 from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import (
-    collaboration_permissions, collaboration_permissions_factory)
+from cap.modules.experiments.permissions import (collaboration_permissions,
+                                                 collaboration_permissions_factory)
 from cap.utils import obj_or_import_string
-from flask import Blueprint, current_app, jsonify, redirect, session, request
 from flask_login import current_user
 from flask_principal import Permission
 from flask_security.views import logout
-
 
 user_blueprint = Blueprint('cap_user', __name__,
                            template_folder='templates')

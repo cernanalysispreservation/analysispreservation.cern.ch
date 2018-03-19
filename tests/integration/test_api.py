@@ -23,22 +23,16 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 
-"""Unit tests Cap Deposit api."""
+"""Integration tests for CAP api."""
 
 from __future__ import absolute_import, print_function
 
 import json
-from uuid import uuid4
 
 from flask import current_app
 
-import pytest
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.deposit.errors import EmptyDepositError, WrongJSONSchemaError
 from conftest import get_basic_json_serialized_deposit
-from flask_security import login_user
-from jsonschema.exceptions import ValidationError
-from mock import Mock, patch
+from mock import patch
 
 
 #############
@@ -137,71 +131,6 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
         for deposit in deposits:
             assert get_basic_json_serialized_deposit(
                 deposit, 'cms-analysis-v0.0.1') in hits
-
-
-def test_post_deposit_with_non_object_data_returns_wrong_schema_error(app,
-                                                                      users,
-                                                                      location,
-                                                                      get_jsonschemas_host):
-    with app.test_request_context():
-        metadata = 5
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with pytest.raises(EmptyDepositError):
-            Deposit.create(metadata, id_=id_)
-
-
-def test_post_deposit_with_empty_data_returns_wrong_schema_error(app,
-                                                                 users,
-                                                                 location,
-                                                                 get_jsonschemas_host):
-    with app.test_request_context():
-        metadata = {}
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with pytest.raises(EmptyDepositError):
-            Deposit.create(metadata, id_=id_)
-
-
-def test_post_deposit_with_empty_schema_returns_wrong_schema_error(app,
-                                                                   users,
-                                                                   location,
-                                                                   get_jsonschemas_host):
-    with app.test_request_context():
-        metadata = {'$schema': ''}
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with pytest.raises(WrongJSONSchemaError):
-            Deposit.create(metadata, id_=id_)
-
-
-def test_post_deposit_with_wrong_schema_returns_wrong_schema_error(app,
-                                                                   users,
-                                                                   location,
-                                                                   get_jsonschemas_host):
-    with app.test_request_context():
-        metadata = {
-            '$schema': 'https://{}/schemas/deposits/records/lhcb-wrong.json'.format(get_jsonschemas_host)}
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with pytest.raises(WrongJSONSchemaError):
-            Deposit.create(metadata, id_=id_)
-
-
-def test_post_deposit_with_wrong_data_returns_validation_error(app,
-                                                               users,
-                                                               location,
-                                                               get_jsonschemas_host
-                                                               ):
-    with app.test_request_context():
-        metadata = {
-            '$schema': 'https://{}/schemas/deposits/records/lhcb-v0.0.1.json'.format(get_jsonschemas_host),
-            'general_title': ['I am an array, not a string']
-        }
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with pytest.raises(ValidationError):
-            Deposit.create(metadata, id_=id_)
 
 
 # # #######################
@@ -388,7 +317,7 @@ def test_delete_deposit_when_superuser_can_delete_others_deposit(app,
 def test_put_deposit_throws_validation_error(app,
                                              users,
                                              create_deposit,
-                                             get_jsonschemas_host,
+                                             jsonschemas_host,
                                              auth_headers_for_superuser):
     deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
 
@@ -656,8 +585,6 @@ def test_permissions_post_permission_with_fake_user(app,
                                                     json_headers):
     deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
     cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-    cms_user2_headers = auth_headers_for_user(
-        users['cms_user2']) + json_headers
 
     with app.test_client() as client:
         permissions = prepare_user_permissions_for_request([
