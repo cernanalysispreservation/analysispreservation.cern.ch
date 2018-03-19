@@ -24,16 +24,16 @@
 
 """Cern Analysis Preservation CMS tasks for Celery."""
 
-import re
-from datetime import datetime, timedelta
-
-import requests
-from celery import shared_task
-from elasticsearch_dsl.query import Q
-from flask import current_app
-from invenio_db import db
-from invenio_records.api import Record
-from invenio_search.api import RecordsSearch
+# import re
+# from datetime import datetime, timedelta
+#
+# import requests
+# from celery import shared_task
+# from elasticsearch_dsl.query import Q
+# from flask import current_app
+# from invenio_db import db
+# from invenio_records.api import Record
+# from invenio_search.api import RecordsSearch
 
 #cadi_fields_to_record = {
 #    'description': ('basic_info', 'abstract'),

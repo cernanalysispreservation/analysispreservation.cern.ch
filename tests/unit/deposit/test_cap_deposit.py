@@ -25,9 +25,11 @@
 
 """Unit tests for Cap Deposit class."""
 
+import pytest
+
 from uuid import uuid4
 
-from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.deposit.api import construct_access, CAPDeposit as Deposit
 from cap.modules.deposit.errors import EmptyDepositError, WrongJSONSchemaError
 from flask_security import login_user
 from jsonschema.exceptions import ValidationError
@@ -97,3 +99,27 @@ def test_create_deposit_with_wrong_data_returns_validation_error(app,
         id_ = uuid4()
         with raises(ValidationError):
             Deposit.create(metadata, id_=id_)
+
+
+def test_deposit_class_is_published_method(app,
+                                           users,
+                                           location,
+                                           jsonschemas_host,
+                                           create_deposit):
+    deposit = create_deposit(users['alice_user'], 'alice-analysis-v0.0.1')
+    with app.test_request_context():
+        assert deposit.is_published() is False
+
+
+@pytest.mark.parametrize("action", [
+    'deposit-read',
+    'deposit-update',
+    'deposit-admin',
+])
+def test_deposit_class_construct_access_method(action,
+                                               app,
+                                               users,
+                                               location,
+                                               jsonschemas_host):
+    access = construct_access()
+    assert action in access
