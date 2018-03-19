@@ -128,7 +128,7 @@ def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_
     with app.test_client() as client:
         resp = client.get('/deposits/',
                           headers=[('Accept', 'application/basic+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         hits = json.loads(resp.data)['hits']['hits']
 
@@ -256,7 +256,7 @@ def test_get_deposits_with_given_id_with_basic_json_serializer_returns_all_corre
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/basic+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
@@ -271,16 +271,35 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/permissions+json')] +
-                          auth_headers_for_superuser)
+                                  auth_headers_for_superuser)
 
         res = json.loads(resp.data)
 
         assert res == permissions_serialized_deposit
 
 
-# # #######################################
-# # # api/deposits/{pid}  [DELETE]
-# # #######################################
+def test_deposit_clone(app, db, users,
+                       auth_headers_for_user,
+                       create_deposit):
+    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
+    user_headers = auth_headers_for_user(users['cms_user'])
+    pid = deposit['_deposit']['id']
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                           headers=[('Content-Type', 'application/json')] + user_headers)
+
+        cloned_deposit = client.post('/deposits/{}/actions/clone'.format(pid),
+                                     headers=[('Content-Type', 'application/json')] + user_headers)
+        res = json.loads(cloned_deposit.data)
+
+        assert 201 == cloned_deposit.status_code
+        assert 'cloned_from' in res['metadata']['_deposit']
+        assert pid == res['metadata']['_deposit']['cloned_from']['value']
+
+# #######################################
+# # api/deposits/{pid}  [DELETE]
+# #######################################
 
 def test_delete_deposit_with_non_existing_pid_returns_404(app,
                                                           auth_headers_for_superuser):
@@ -383,7 +402,6 @@ def test_put_deposit_throws_validation_error(app,
                           data=json.dumps(test_data),
                           headers=([('Content-Type', 'application/json')] + auth_headers_for_superuser))
         assert resp.status_code == 400
-
 
 
 # #######################################
@@ -664,6 +682,7 @@ def test_permissions_post_permission_with_fake_user(app,
         data = json.loads(resp.data)
         assert len(data['access']) == 3
 
+
 ########################################
 # api/deposits/{pid}/actions/publish
 ########################################
@@ -818,7 +837,6 @@ def test_me_when_superuser_returns_correct_user_data(app,
 def test_me_when_cms_user_returns_correct_user_data(app, users,
                                                     auth_headers_for_user,
                                                     cms_user_me_data):
-
     with app.test_client() as client:
         user_headers = auth_headers_for_user(users['cms_user'])
         resp = client.get('/me',
