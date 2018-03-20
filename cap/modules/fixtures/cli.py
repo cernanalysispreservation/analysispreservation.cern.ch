@@ -22,14 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 """CAP Cli."""
+
+import json
+import os
+import re
 
 import click
 
-from cap.modules.experiments.utils.cms import \
-    cache_das_datasets_in_es_from_file, synchronize_cadi_entries
+from cap.modules.experiments.utils.cms import (
+    cache_das_datasets_in_es_from_file,
+    synchronize_cadi_entries)
+from cap.modules.schemas.models import Schema
+from cap.modules.schemas.utils import add_or_update_schema
 from flask_cli import with_appcontext
+from invenio_db import db
 
 from .utils import add_drafts_from_file
 
@@ -69,3 +76,25 @@ def sync_with_cadi_database(limit):
 def index_datasets(file):
     """Load datasets from file and index in ES."""
     cache_das_datasets_in_es_from_file(file)
+
+
+@fixtures.command()
+@with_appcontext
+@click.option('--dir', '-d',
+              type=click.Path(exists=True),
+              default='cap/jsonschemas')
+def schemas(dir):
+    """Load default schemas."""
+    for root, dirs, files in os.walk(dir):
+        for file in files:
+            if file.endswith(".json"):
+                fullpath = os.path.join(root, file)
+                with open(fullpath, 'r') as f:
+                    try:
+                        json_content = json.load(f)
+                    except ValueError:
+                        print("Not valid json in {} file".format(fullpath))
+                        continue
+
+                add_or_update_schema(fullpath=fullpath.replace(dir, ''),
+                                     json=json_content)

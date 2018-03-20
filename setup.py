@@ -152,6 +152,7 @@ setup(
         ],
         'invenio_db.models': [
             'cap_reana_model = cap.modules.reana.models',
+            'analysis_schema_model = cap.modules.schemas.models',
         ],
         'invenio_config.module': [
             'cap = cap.config',
