@@ -70,12 +70,14 @@ setup_requires = [
 install_requires = [
     'elasticsearch==2.4.1',  # temporary fix
     'elasticsearch-dsl==2.2.0',  # temporary fix
-    'celery<4.0,>=3.1.19',  # temporary fix
-    'cryptography>=2.1.4',  # temporary fix
+    'docker==3.0.0',
+    'celery>=4.0',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
+    'PyGithub>=1.35',
+    'python-gitlab>=1.0.2',
     'Flask>=0.11.1',
     'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
@@ -86,35 +88,30 @@ install_requires = [
     'Flask-KVSession>=0.6.2',
     'Flask-Login==0.3.2',
     'Flask-WTF>=0.14.2',
-    'invenio-access>=1.0.0b1',
-    'invenio-accounts>=1.0.0b12',
+    'invenio-access>=1.0.0',
+    'invenio-accounts>=1.0.0',
     'invenio-accounts-rest>=1.0.0a4',
-    'invenio-assets>=1.0.0b7',
-    'invenio-base>=1.0.0b1',
-    'invenio-celery>=1.0.0b3',
-    'invenio-collections>=1.0.0a4',
-    'invenio-config>=1.0.0b3',
-    'invenio-db[postgresql,versioning]>=1.0.0b9',
+    'invenio-assets>=1.0.0',
+    'invenio-base>=1.0.0',
+    'invenio-celery>=1.0.0',
+    'invenio-config>=1.0.0',
+    'invenio-db[postgresql,versioning]>=1.0.0',
     'invenio-files-rest>=1.0.0a22',
-    'invenio-indexer>=1.0.0a1',
+    'invenio-indexer>=1.0.0',
     'invenio-deposit>=1.0.0a9',
-    'invenio-jsonschemas>=1.0.0a7',
-    'invenio-oauthclient>=1.0.0b5',
-    'invenio-pages>=1.0.0a4',
-    'invenio-pidstore>=1.0.0b2',
+    'invenio-jsonschemas>=1.0.0',
+    'invenio-oauthclient>=1.0.0',
+    'invenio-pidstore>=1.0.0',
     # 'invenio-previewer==1.0.0a6',
-    'invenio-records[postgresql]>=1.0.0b4',
+    'invenio-records[postgresql]>=1.0.0',
     'invenio-records-files>=1.0.0a10',
-    'invenio-records-rest>=1.0.0b5',
-    'invenio-rest[cors]>=1.0.0b2',
-    'invenio-search-ui>=1.0.0a9',
-    'invenio-search>=1.0.0b4',
-    'invenio-theme>=1.0.0b4',
-    'invenio-userprofiles>=1.0.0b2',
-    'PyGithub>=1.35',
-    'python-gitlab>=1.0.2',
-    'docker==3.0.0',
-    'simplekv==0.10.0',  # temporary fix
+    'invenio-records-rest>=1.0.0',
+    'invenio-rest[cors]>=1.0.0',
+    'invenio-search-ui>=1.0.1',
+    'invenio-search>=1.0.0',
+    'invenio-theme>=1.0.0',
+    'invenio-userprofiles>=1.0.0',
+    'invenio-query-parser>=0.3.0'
 ]
 
 
