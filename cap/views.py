@@ -27,38 +27,12 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, render_template
-
-blueprint_static = Blueprint(
-    'cap_static',
-    __name__,
-    template_folder='templates',
-    static_folder='static',
-)
+from flask_login import login_user, current_user, UserMixin
 
 blueprint = Blueprint(
     'cap',
     __name__,
     template_folder='templates',
-    static_folder='static',
-)
-
-theme_blueprint = Blueprint(
-    'invenio_theme',
-    'invenio_theme',
-    template_folder='templates',
-    static_folder='static',
-)
-
-search_blueprint = Blueprint(
-    'invenio_search_ui',
-    'invenio_search_ui',
-    template_folder='templates',
-    static_folder='static',
-)
-
-deposit_blueprint = Blueprint(
-    'invenio_deposit_ui',
-    'invenio_deposit',
     static_folder='static',
 )
 
@@ -69,6 +43,26 @@ def index(path):
     return render_template('cap/app_base.html')
 
 
-@blueprint.route('/templates/app')
-def templates():
-    return render_template('cap/app.html')
+class User(UserMixin):
+    """Class for creating a test user."""
+
+    def __init__(self, id, email, password, active=True):
+        self.id = id
+        self.password = password
+        self.email = email
+        self.active = active
+
+    def get_id(self):
+        return self.id
+
+    @property
+    def is_active(self):
+        return self.active
+
+
+# (TODO) Remove this when REACT module is completed
+@blueprint.route('/login_app', methods=['POST'])
+def login():
+    user = User(id=1, email='cms@inveniosoftware.org', password='cmscms')
+    login_user(user)
+    return current_user.email

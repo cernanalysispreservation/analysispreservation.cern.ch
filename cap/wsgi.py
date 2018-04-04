@@ -26,6 +26,6 @@
 
 from __future__ import absolute_import, print_function
 
-from .factory import create_front
+from .factory import create_api
 
-application = create_front()
+application = create_api()
