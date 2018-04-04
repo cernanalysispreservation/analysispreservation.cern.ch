@@ -1,13 +1,8 @@
 {%- extends "cap/page.html" %}
 
-{% block css %}
-    {{ super() }}
-    {% assets "cap_app_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-    {% assets "cap_forms_css" %}<link href="{{ ASSET_URL }}" rel="stylesheet">{% endassets %}
-{% endblock css %}
+{%- block css %}
+{%- endblock css %}
 
-
-{# <meta tags> #}
 
 {%- block page_body %}
 <ui-view id="experiment-land">
@@ -20,11 +15,3 @@
     </div>
 </ui-view>
 {%- endblock %}
-
-
-{% block javascript %}
-    {% assets "cap_forms_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-    {{ super() }}
-
-    {% assets "cap_app_js" %}<script src="{{ ASSET_URL }}"></script>{% endassets %}
-{% endblock %}
