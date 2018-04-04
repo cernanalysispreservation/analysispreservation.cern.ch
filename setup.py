@@ -93,7 +93,7 @@ install_requires = [
     'invenio-access>=1.0.0',
     'invenio-accounts>=1.0.0',
     'invenio-accounts-rest>=1.0.0a4',
-    'invenio-assets>=1.0.0',
+    # 'invenio-assets>=1.0.0',
     'invenio-base>=1.0.0',
     'invenio-celery>=1.0.0',
     'invenio-config>=1.0.0',
@@ -104,25 +104,21 @@ install_requires = [
     'invenio-jsonschemas>=1.0.0',
     'invenio-oauthclient>=1.0.0',
     'invenio-pidstore>=1.0.0',
-    # 'invenio-previewer==1.0.0a6',
     'invenio-records[postgresql]>=1.0.0',
     'invenio-records-files>=1.0.0a10',
     'invenio-records-rest>=1.0.0',
     'invenio-rest[cors]>=1.0.0',
-    'invenio-search-ui>=1.0.1',
     'invenio-search>=1.0.0',
-    'invenio-theme>=1.0.0',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0'
 ]
-
 
 packages = find_packages()
 
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
+    exec (fp.read(), g)
     version = g['__version__']
 
 setup(
@@ -143,73 +139,24 @@ setup(
         'console_scripts': [
             'cap = cap.cli:cli',
         ],
-        'cap.apps': [
-            'invenio_jsonschemas = invenio_jsonschemas:InvenioJSONSchemas',
-            'invenio_assets = invenio_assets:InvenioAssets',
-            'invenio_i18n = invenio_i18n:InvenioI18N',
-            'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
-        ],
-        'cap.blueprints': [
-            'cap = cap.views:blueprint',
-            'cap_theme = cap.views:theme_blueprint',
-            'cap_search = cap.views:search_blueprint',
-            'cap_deposit = cap.views:deposit_blueprint',
-        ],
-        # 'invenio_base.blueprints': [
-        #     'cap = cap.views:blueprint',
-        #     'cap_theme = cap.modules.theme.views:blueprint',
-        #     'cap_experiments = '
-        #     'cap.modules.experiments.views.rest:experiments_bp',
-        #     'cap_csm = cap.modules.experiments.views.cms:cms_bp',
-        #     'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
-        #     'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
-        #     'cap_alice = cap.modules.experiments.views.alice:alice_bp',
-        #     'cap_access = cap.modules.access.views:access_blueprint',
-        #     'cap_deposit_ui = cap.modules.deposit.views.ui:blueprint',
-        #     'cap_search_ui = cap.modules.search_ui.views:blueprint',
-        # ],
-        # 'invenio_base.apps': [
-        #     'cap_access = cap.modules.access.ext:CAPAccess',
-        #     'cap_cache = cap.modules.cache.ext:CAPCache',
-        #     'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
-        # ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_fixtures = cap.modules.fixtures.ext:CAPFixtures',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
-            # 'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
-            'invenio_i18n = invenio_i18n:InvenioI18N',
-            'invenio_assets = invenio_assets:InvenioAssets',
         ],
         'invenio_base.api_blueprints': [
-            'cap = cap.views:blueprint_static',
-            'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
+            'cap = cap.views:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_oauth2server_settings = '
             ' cap.modules.oauth2server.views.settings:blueprint',
             'cap_oauth2server_server = '
             ' cap.modules.oauth2server.views.server:blueprint',
-            'cap_theme = cap.views:theme_blueprint',
-            'cap_search = cap.views:search_blueprint',
-            'cap_deposit = cap.views:deposit_blueprint',
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_cms = cap.modules.experiments.views.cms:cms_bp',
-        ],
-        'invenio_assets.bundles': [
-            'cap_app_js = cap.bundles:app_js',
-            'cap_app_css = cap.bundles:app_css',
-            'cap_forms_css = cap.bundles:forms_css',
-            'cap_forms_js = cap.bundles:forms_js',
-            'invenio_i18n_js = invenio_i18n.bundles:js',
-            'invenio_theme_css = invenio_theme.bundles:css',
-            'invenio_deposit_css = invenio_deposit.bundles:css',
-            'invenio_deposit_dependencies_js = invenio_deposit.bundles:'
-            'js_dependecies',
-            'invenio_search_ui_search_css = invenio_search_ui.bundles:css',
-            'invenio_search_ui_search_js = invenio_search_ui.bundles:js'
+            'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
             'cap_deposit = cap.modules.deposit.loaders',

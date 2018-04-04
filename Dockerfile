@@ -59,8 +59,7 @@ RUN yum clean -y all
 
 ENV APP_INSTANCE_PATH=/usr/local/var/cap-instance
 
-RUN pip install --upgrade pip setuptools wheel && \
-    npm install -g node-sass@3.8.0 clean-css@3.4.24 requirejs uglify-js
+RUN pip install --upgrade pip setuptools wheel
 
 # Install python modules and deps
 WORKDIR /code
@@ -92,7 +91,8 @@ ENV APP_GITHUB_OAUTH_ACCESS_TOKEN=${APP_GITHUB_OAUTH_ACCESS_TOKEN}
 ARG APP_GITLAB_OAUTH_ACCESS_TOKEN
 ENV APP_GITLAB_OAUTH_ACCESS_TOKEN=${APP_GITLAB_OAUTH_ACCESS_TOKEN}
 
-RUN bash /code/scripts/build-assets.sh
+#RUN bash /code/scripts/build-assets.sh
+RUN mkdir -p ${APP_INSTANCE_PATH}
 RUN chown -R cap:root /usr/local/var/cap-instance
 
 USER 1000
