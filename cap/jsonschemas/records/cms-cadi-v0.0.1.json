@@ -1,214 +1,342 @@
 {
-   "$schema": "http://json-schema.org/draft-04/schema#",
-   "description": "Describe information needed for deposit module.",
-   "properties": {
-      "_cap_status": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      },
-      "basic_info": {
-         "title": "Basic Information",
-         "description": "Please provide some information relevant for all parts of the Analysis here",
-         "propertyOrder": 10,
-         "type": "object",
-         "id": "basic_info",
-         "properties": {
-            "analysis_title": {
-               "title": "Analysis Title",
-               "type": "string"
-            },
-            "cadi_id": {
-               "title": "CADI ID",
-               "type": "string"
-            },
-            "analysis_note": {
-               "title": "ANANOTE",
-               "type": "array",
-               "items": {
-                  "type": "object",
-                  "properties": {
-                     "name": {
-                        "title": "Name",
-                        "type": "string"
-                     },
-                     "link": {
-                        "title": "URL",
-                        "type": "string"
-                     }
-                  }
-               }
-            },
-            "json_file": {
-               "title": "JSON File",
-               "type": "string"
-            },
-            "software": {
-               "title": "Analysis Software",
-               "description": "Please provide a software description",
-               "type": "array",
-               "items": {
-                  "type": "object",
-                  "properties": {
-                     "full_name": {
-                        "title": "Full Name",
-                        "type": "string"
-                     },
-                     "name": {
-                        "title": "Name",
-                        "type": "string"
-                     },
-                     "version": {
-                        "title": "Version",
-                        "type": "string"
-                     }
-                  }
-               }
-            },
-            "twiki": {
-               "title": "Twiki",
-               "type": "string"
-            },
-            "input_data": {
-               "_comment": "This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
-               "title": "Input Data",
-               "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
-               "type": "object",
-               "id": "input_datasets",
-               "properties": {
-                  "primary_dataset": {
-                     "title": "Primary Datasets",
-                     "description": "Please list all primary datasets here",
-                     "type": "array",
-                     "items": {
-                        "type": "object",
-                        "properties": {
-                           "path": {
-                              "title": "Path",
-                              "type": "string"
-                           },
-                           "ranges": {
-                             "type": "object",
-                             "properties": {
-                                 "min": {
-                                    "type": "string"
-                                 },
-                                 "max": {
-                                    "type": "string"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "id": "primary-datasets"
-                  },
-                  "mc_sig_dataset": {
-                     "title": "Monte Carlo Signal Datasets",
-                     "description": "Please list all Monte Carlo Signal datasets",
-                     "type": "array",
-                     "items": {
-                        "type": "object",
-                        "properties": {
-                           "path": {
-                              "title": "Path",
-                              "type": "string"
-                           },
-                           "ranges": {
-                             "type": "object",
-                             "properties": {
-                                 "min": {
-                                    "type": "string"
-                                 },
-                                 "max": {
-                                    "type": "string"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "id": "mc_sig_dataset"
-                  },
-                  "mc_bg_dataset": {
-                     "title": "Monte Carlo Background Datasets",
-                     "description": "Please list all Monte Carlo Background datasets",
-                     "type": "array",
-                     "items": {
-                        "type": "object",
-                        "properties": {
-                           "path": {
-                              "title": "Path",
-                              "type": "string"
-                           },
-                           "ranges": {
-                             "type": "object",
-                             "properties": {
-                                 "min": {
-                                    "type": "string"
-                                 },
-                                 "max": {
-                                    "type": "string"
-                                 }
-                              }
-                           }
-                        }
-                     },
-                     "id": "mc_bg_dataset"
-                  }
-               }
-            },
-            "selection_triggers": {
-               "title": "Selection Triggers",
-               "description": "Add triggers here",
-               "type": "array",
-               "items": {
-                 "title": "Trigger",
-                 "type": "object",
-                 "id": "trigger",
-                 "properties": {
-                     "trigger": {
-                        "title": "Trigger",
-                        "type": "string"
-                     },
-                     "ranges": {
-                       "type": "object",
-                       "properties": {
-                           "min": {
-                              "type": "string"
-                           },
-                           "max": {
-                              "type": "string"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "links": {
-               "title": "Other Links",
-               "type": "array",
-               "items": {
-                  "type": "object",
-                  "properties": {
-                     "name": {
-                        "title": "Name",
-                        "type": "string"
-                     },
-                     "link": {
-                        "title": "URL",
-                        "type": "string"
-                     }
-                  }
-               }
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Describe information needed for deposit module.",
+    "properties": {
+        "_cap_status": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
             }
-         }
-      }
-   },
-   "title": "CMS Cadi Entry Schema.",
-   "type": "object"
+        },
+        "cadi_id": {
+            "title": "CADI ID",
+            "type": "string"
+        },
+        "cadi_info": {
+            "title": "CADI info",
+            "description": "Info ingested from CADI database, not editable through CAP",
+            "type": "object",
+            "id": "cadi_info",
+            "properties": {
+                "conference": {
+                    "title": "Conference",
+                    "type": "string"
+                },
+                "paper": {
+                    "title": "Paper",
+                    "type": "string"
+                },
+                "papertar": {
+                    "title": "Paper Tar",
+                    "type": "string"
+                },
+                "pas": {
+                    "title": "PAS",
+                    "type": "string"
+                },
+                "url": {
+                    "title": "Twiki",
+                    "type": "string"
+                },
+                "app_date": {
+                    "title": "App Date",
+                    "type": "string"
+                },
+                "approval_talk": {
+                    "title": "Approval Talk",
+                    "type": "string"
+                },
+                "awg": {
+                    "title": "Awg",
+                    "type": "number"
+                },
+                "committee": {
+                    "title": "Comittee",
+                    "type": "number"
+                },
+                "contact": {
+                    "title": "Contact Person",
+                    "type": "string"
+                },
+                "updater_date": {
+                    "title": "Last Update Date",
+                    "type": "string"
+                },
+                "updater_name": {
+                    "title": "Last Updated By",
+                    "type": "string"
+                },
+                "creator_date": {
+                    "title": "Creation Date",
+                    "type": "string"
+                },
+                "creator_name": {
+                    "title": "Created By",
+                    "type": "string"
+                },
+                "description": {
+                    "title": "Description",
+                    "type": "string"
+                },
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "pre_approval_talk": {
+                    "title": "Pre Approval Talk",
+                    "type": "string"
+                },
+                "publi": {
+                    "title": "Publi",
+                    "type": "string"
+                },
+                "publication_status": {
+                    "title": "Publication Status",
+                    "type": "string"
+                },
+                "remarks": {
+                    "title": "Remarks",
+                    "type": "string"
+                },
+                "target_conference": {
+                    "title": "Target Conference",
+                    "type": "string"
+                },
+                "target_date_phy_app": {
+                    "title": "Target Date Phy App",
+                    "type": "string"
+                },
+                "target_date_pre_app": {
+                    "title": "Target Date Pre App",
+                    "type": "string"
+                },
+                "target_date_pub": {
+                    "title": "Target Date Pub",
+                    "type": "string"
+                },
+                "target_journal": {
+                    "title": "Target Journal",
+                    "type": "string"
+                },
+                "target_pub_period": {
+                    "title": "Target Pub Period",
+                    "type": "string"
+                },
+                "sources": {
+                    "title": "Sources",
+                    "type": "string"
+                },
+                "samples": {
+                    "title": "Samples",
+                    "type": "string"
+                },
+                "status": {
+                    "title": "Status",
+                    "type": "string"
+                },
+                "status_web": {
+                    "title": "Status Web",
+                    "type": "string"
+                }
+            }
+        },
+        "basic_info": {
+            "title": "Basic Information",
+            "description": "Please provide some information relevant for all parts of the Analysis here",
+            "propertyOrder": 10,
+            "type": "object",
+            "id": "basic_info",
+            "properties": {
+                "analysis_title": {
+                    "title": "Analysis Title",
+                    "type": "string"
+                },
+                "analysis_note": {
+                    "title": "ANANOTE",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "link": {
+                                "title": "URL",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "json_file": {
+                    "title": "JSON File",
+                    "type": "string"
+                },
+                "software": {
+                    "title": "Analysis Software",
+                    "description": "Please provide a software description",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "full_name": {
+                                "title": "Full Name",
+                                "type": "string"
+                            },
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "version": {
+                                "title": "Version",
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "twiki": {
+                    "title": "Twiki",
+                    "type": "string"
+                },
+                "input_data": {
+                    "_comment": "This will change when the fields are available from other dbs. For now I change them to string so as to display the fields",
+                    "title": "Input Data",
+                    "description": "Please list all datasets relevant for the Analysis here (including all datasets for all main and auxiliary measurements)",
+                    "type": "object",
+                    "id": "input_datasets",
+                    "properties": {
+                        "primary_dataset": {
+                            "title": "Primary Datasets",
+                            "description": "Please list all primary datasets here",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "title": "Path",
+                                        "type": "string"
+                                    },
+                                    "ranges": {
+                                        "type": "object",
+                                        "properties": {
+                                            "min": {
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "id": "primary-datasets"
+                        },
+                        "mc_sig_dataset": {
+                            "title": "Monte Carlo Signal Datasets",
+                            "description": "Please list all Monte Carlo Signal datasets",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "title": "Path",
+                                        "type": "string"
+                                    },
+                                    "ranges": {
+                                        "type": "object",
+                                        "properties": {
+                                            "min": {
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "id": "mc_sig_dataset"
+                        },
+                        "mc_bg_dataset": {
+                            "title": "Monte Carlo Background Datasets",
+                            "description": "Please list all Monte Carlo Background datasets",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "path": {
+                                        "title": "Path",
+                                        "type": "string"
+                                    },
+                                    "ranges": {
+                                        "type": "object",
+                                        "properties": {
+                                            "min": {
+                                                "type": "string"
+                                            },
+                                            "max": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "id": "mc_bg_dataset"
+                        }
+                    }
+                },
+                "selection_triggers": {
+                    "title": "Selection Triggers",
+                    "description": "Add triggers here",
+                    "type": "array",
+                    "items": {
+                        "title": "Trigger",
+                        "type": "object",
+                        "id": "trigger",
+                        "properties": {
+                            "trigger": {
+                                "title": "Trigger",
+                                "type": "string"
+                            },
+                            "ranges": {
+                                "type": "object",
+                                "properties": {
+                                    "min": {
+                                        "type": "string"
+                                    },
+                                    "max": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "links": {
+                    "title": "Other Links",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "link": {
+                                "title": "URL",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "title": "CMS Cadi Entry Schema.",
+    "type": "object"
 }

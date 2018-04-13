@@ -29,24 +29,23 @@ from cap.modules.repoimporter.github_importer import GithubImporter
 from cap.modules.repoimporter.gitlab_importer import GitlabImporter
 from cap.modules.repoimporter.repo_importer import RepoImporter
 
-
-def test_importer_factory_github():
-    gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")
-    assert isinstance(gh, GithubImporter)
-
-
-def test_importer_factory_gitlab():
-    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
-    assert isinstance(gh, GitlabImporter)
-
-
-def test_get_github_url():
-    gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")
-    link = gh.archive_repository()
-    assert "tar" in link
-
-
-def test_get_gitlab_url():
-    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
-    link = gh.archive_repository()
-    assert "tar" in link
+#def test_importer_factory_github():
+#    gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")
+#    assert isinstance(gh, GithubImporter)
+#
+#
+#def test_importer_factory_gitlab():
+#    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
+#    assert isinstance(gh, GitlabImporter)
+#
+#
+#def test_get_github_url():
+#    gh = RepoImporter.create("https://github.com/cernanalysispreservation/analysispreservation.cern.ch")
+#    link = gh.archive_repository()
+#    assert "tar" in link
+#
+#
+#def test_get_gitlab_url():
+#    gh = RepoImporter.create("https://gitlab.cern.ch/atrisovi/root-examples")
+#    link = gh.archive_repository()
+#    assert "tar" in link

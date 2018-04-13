@@ -74,6 +74,7 @@ install_requires = [
     'celery>=4.0',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
+    'marshmallow==2.15.0',   # temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'PyGithub>=1.35',
@@ -83,6 +84,7 @@ install_requires = [
     'Flask-CORS>=2.1.0',
     'Flask-BabelEx>=0.9.3',
     'Flask-Assets>=0.12',
+    'Flask-Cli>=0.4.0',
     'Flask-Collect==1.2.2',
     'Flask-Cache>=0.13.1',
     'Flask-KVSession>=0.6.2',
@@ -175,6 +177,7 @@ setup(
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
+            'cap_fixtures = cap.modules.fixtures.ext:CAPFixtures',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
             # 'invenio_oauth = invenio_oauthclient.ext:InvenioOAuthClient',
             'invenio_i18n = invenio_i18n:InvenioI18N',

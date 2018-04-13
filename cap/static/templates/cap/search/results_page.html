@@ -10,13 +10,10 @@
             </div>
             <div class="pull-left">
                 <h5 class="list-group-item-heading">
-                    {{ record.metadata.title_statement.title }}
+                    {{ record.metadata.general_title }}
                 </h5>
-                <p class="list-group-item-text" ng-if="!(record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name)">
-                Created ({{record.created | date:'yyyy-MM-dd'}})
-                </p>
-                <p class="list-group-item-text" ng-if="record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name">
-                {{record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name}}
+                <p class="list-group-item-text">
+                {{record.metadata.basic_info.analysis_title || record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name || record.created | date:'yyyy-MM-dd'}} 
                 </p>
             </div>
             <small class="pull-right label label-success type-of-analysis results-title-position ng-binding">

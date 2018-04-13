@@ -24,73 +24,69 @@
 
 """Cern Analysis Preservation CMS tasks for Celery."""
 
-# import re
-# from datetime import datetime, timedelta
-#
-# import requests
-# from celery import shared_task
-# from elasticsearch_dsl.query import Q
-# from flask import current_app
-# from invenio_db import db
-# from invenio_records.api import Record
-# from invenio_search.api import RecordsSearch
 
-#cadi_fields_to_record = {
-#    'description': ('basic_info', 'abstract'),
-#    'URL': ('basic_info', 'twiki'),
-#    'PAS': ('basic_info', 'pas'),
-#    'Conference': ('additional_resources', 'conference', 'name'),
-#    'conferenceStatus': ('additional_resources', 'conference', 'status'),
-#}
-#
-#
-#@shared_task
-#def sync_cms_ana_with_cadi():
-#    rs = RecordsSearch(index='deposits-records-cms-analysis-v0.0.1')
-#    updated = get_updated_cadi_lines()
-#
-#    for ana in updated:
-#        # remove artefact from code names
-#        code = re.sub('^d', '', ana.get('code', None))
-#
-#        res = rs.query(Q('term', basic_info__analysis_number=code)
-#                       ).execute()
-#        for hit in res:
-#            record = Record.get_record(hit.meta.id)
-#            update_fields_in_record(record, ana)
-#
-#            print('Analysis number {} updated.'.format(code))
-#
-#    db.session.commit()
-#
-#
-#def get_updated_cadi_lines():
-#    """Get CADI lines updated since yesterday."""
-#    url = current_app.config.get('CADI_GET_CHANGES_URL', None)
-#    now = datetime.today()
-#    yesterday = now - timedelta(days=1)
-#
-#    resp = requests.post(url=url, params={
-#        'fromDate': yesterday.strftime("%d/%m/%Y"),
-#        'toDate': now.strftime("%d/%m/%Y")
-#    })
-#
-#    data = resp.json().get('data', None)
-#
-#    return data
-#
-#
-#def update_fields_in_record(record, cadi_record):
-#    def set(d, path, val):
-#        """ 
-#        Set nested field in dictionary
-#        path as a tuple of keys e.g. ('outer', 'inner', 'field').
-#        """
-#        for key in path[:-1]:
-#            d = d.setdefault(key, {})
-#        d[path[-1]] = val
-#
-#    for cadi_key, record_key in cadi_fields_to_record.items():
-#        set(record, record_key, cadi_record[cadi_key])
-#
-#    record.commit()
+import json
+import re
+
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.experiments.utils.cms import (CADI_FIELD_TO_CAP_MAP,
+                                               add_read_permission_for_cms_members,
+                                               construct_cadi_entry,
+                                               get_cadi_entry_uuid,
+                                               get_entries_from_cadi_db)
+
+
+def add_cadi_entries_from_file(file_path):
+    with open(file_path, 'r') as fp:
+        entries = json.load(fp)
+        for entry in entries:
+            cadi_id = entry['cadi_id']
+            try:  # update if already exists
+                uuid = get_cadi_entry_uuid(cadi_id)
+
+                deposit = CAPDeposit.get_record(uuid)
+                deposit.update(entry)
+                deposit.commit()
+
+                print('Cadi entry {} updated.'.format(cadi_id))
+
+            except DepositDoesNotExist:
+                deposit = CAPDeposit.create(construct_cadi_entry(cadi_id,
+                                                                 entry))
+                add_read_permission_for_cms_members(deposit)
+
+                print('Cadi entry {} added.'.format(cadi_id))
+
+
+def synchronize_cadi_entries():
+    """Add/update all CADI entries connecting with CADI database."""
+
+    entries = get_entries_from_cadi_db()
+    for entry in entries:
+        # remove artefact from code names
+        cadi_id = re.sub('^d', '', entry.get('code', None))
+
+        try:  # update if already exists
+            uuid = get_cadi_entry_uuid(cadi_id)
+
+            deposit = CAPDeposit.get_record(uuid)
+
+            if 'cadi_info' not in deposit:
+                deposit['cadi_info'] = {}
+            for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
+                deposit['cadi_info'][cap_key] = entry.get(cadi_key, '') or ''
+            deposit.commit()
+
+            print('Cadi entry {} updated.'.format(cadi_id))
+
+        except DepositDoesNotExist:  # or create new cadi entry
+            data = construct_cadi_entry(cadi_id, {
+                'cadi_info': {v: entry.get(k, '') or ''
+                              for k, v in CADI_FIELD_TO_CAP_MAP.items()}
+            })
+
+            deposit = CAPDeposit.create(data=data)
+            add_read_permission_for_cms_members(deposit)
+
+            print('Cadi entry {} added.'.format(cadi_id))

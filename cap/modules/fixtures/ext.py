@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2016 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,27 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""CAP Fixtures."""
 
-from invenio_rest.errors import RESTValidationError
+from __future__ import absolute_import, print_function
 
-
-class DepositDoesNotExist(Exception):
-    """Deposit with given key does not exist exception."""
-
-    pass
+from .cli import fixtures
 
 
-class WrongJSONSchemaError(RESTValidationError):
-    """JSONSchema wrong schema error exception."""
+class CAPFixtures(object):
+    """CAP fixtures extension."""
 
-    code = 400
+    def __init__(self, app=None):
+        """Extension initialization."""
+        if app:
+            self.init_app(app)
 
-    description = "The provided JSON schema or 'ana_type' field doesn't exist"
-
-
-class EmptyDepositError(RESTValidationError):
-    """JSONSchema wrong schema error exception."""
-
-    code = 400
-
-    description = "Empty content({}) was send. Try again with valid data"
+    def init_app(self, app):
+        """Flask application initialization."""
+        app.cli.add_command(fixtures)

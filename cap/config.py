@@ -427,6 +427,7 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 # @TOFIX should this be public?
 CADI_API_URL = 'http://vocms0190.cern.ch/tools/api'
 CADI_GET_CHANGES_URL = '{0}/updatedCadiLines/'.format(CADI_API_URL)
+CADI_GET_ALL_URL = '{0}/viewCadiLines'.format(CADI_API_URL)
 CADI_GET_RECORD_URL = '{0}/cadiLine/'.format(CADI_API_URL)
 
 # Deposit
