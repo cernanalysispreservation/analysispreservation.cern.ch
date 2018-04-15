@@ -1,12 +1,10 @@
-<form>
+<form class="navbar-form navbar-left navbar-search" action="/search" role="search">
     <div class="search-input-main">
         <input
-        type="text"
-        placeholder="{{ placeholder }}"
-        ng-model="vm.userQuery"
-        ng-keydown="$event.keyCode === 13 && updateQuery()"
-        class="header-search-bar"
-        />
+         class="header-search-bar ng-pristine ng-valid ng-touched"
+         ng-keyup="$event.keyCode !== 13 && updateQuery()"
+         ng-model="vm.userQuery"
+         name="q" placeholder="Search" type="text">
         <div class="loader" ng-show='vm.invenioSearchLoading'></div>
     </div>
 </form>
