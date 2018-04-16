@@ -2,6 +2,9 @@
     "mappings": {
         "atlas-workflows-v0.0.1": {
             "properties": {
+                "created": {
+                    "type": "date"
+                },
                 "basic_info": {
                     "type": "object",
                     "properties": {
@@ -169,21 +172,21 @@
                     }
                 },
                 "title": {
-                  "type": "string"
+                    "type": "string"
                 },
                 "control_number": {
-                  "type": "string"
+                    "type": "string"
                 },
                 "creator": {
-                  "type": "integer"
+                    "type": "integer"
                 },
                 "_created": {
-                  "type": "date",
-                  "copy_to": "created"
+                    "type": "date",
+                    "copy_to": "created"
                 },
                 "_updated": {
-                  "type": "date",
-                  "copy_to": "updated"
+                    "type": "date",
+                    "copy_to": "updated"
                 }
             }
         }
