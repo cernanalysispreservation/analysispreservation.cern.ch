@@ -182,6 +182,13 @@ RECORDS_REST_SORT_OPTIONS = dict(
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.
+
+# TODO: potential facets
+# cadi_info.conference, cadi_info.publication_status, cadi_info.status
+# basic_info.software.name, basic_info.input_data.path,
+# basic_info.selection_triggers.trigger
+#
+
 RECORDS_REST_FACETS = {
     'deposits': {
         'aggs': {
