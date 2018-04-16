@@ -41,8 +41,8 @@ tests_require = [
     'pytest-cache>=1.0',
     'pytest-cov>=1.8.0',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
     'mock>=2.0.0',
+    'pytest>=3.0.4',
 ]
 
 extras_require = {
@@ -64,7 +64,7 @@ extras_require['xrootd'] = [
 
 setup_requires = [
     'Babel>=1.3',
-    'pytest-runner>=2.9',
+    'pytest-runner',
 ]
 
 install_requires = [

@@ -2,6 +2,9 @@
     "mappings": {
         "atlas-workflows-v0.0.1": {
             "properties": {
+                "created": {
+                    "type": "date"
+                },
                 "_experiment" : {
                     "type": "string"
                 },
@@ -10,74 +13,74 @@
                     "index": "not_analyzed"
                 },
                 "_deposit": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type":"string",
-                      "index": "not_analyzed"
-                    },
-                    "pid": {
-                      "type": "object",
-                      "properties": {
-                        "revision_id": {
-                          "type": "integer"
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type":"string",
+                            "index": "not_analyzed"
                         },
-                        "type": {
-                          "type": "string"
+                        "pid": {
+                            "type": "object",
+                            "properties": {
+                                "revision_id": {
+                                    "type": "integer"
+                                },
+                                "type": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "index": "not_analyzed"
+                                }
+                            }
                         },
-                        "value": {
-                          "type": "string",
-                          "index": "not_analyzed"
+                        "created_by": {
+                            "type": "integer"
+                        },
+                        "owners": {
+                            "type": "integer"
+                        },
+                        "status": {
+                            "type": "string"
                         }
-                      }
-                    },
-                    "created_by": {
-                      "type": "integer"
-                    },
-                    "owners": {
-                        "type": "integer"
-                    },
-                    "status": {
-                      "type": "string"
                     }
-                  }
                 },
                 "_files": {
-                  "type": "object",
-                  "properties": {
-                    "key": {
-                      "type": "string",
-                      "index": "not_analyzed"
-                    },
-                    "bucket": {
-                      "type": "string",
-                      "index": "not_analyzed"
-                    },
-                    "size": {
-                      "type": "long"
-                    },
-                    "version_id": {
-                      "type": "string",
-                      "index": "not_analyzed"
+                    "type": "object",
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "bucket": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        },
+                        "size": {
+                            "type": "long"
+                        },
+                        "version_id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        }
                     }
-                  }
                 },
                 "title": {
-                  "type": "string"
+                    "type": "string"
                 },
                 "control_number": {
-                  "type": "string"
+                    "type": "string"
                 },
                 "creator": {
-                  "type": "integer"
+                    "type": "integer"
                 },
                 "_created": {
-                  "type": "date",
-                  "copy_to": "created"
+                    "type": "date",
+                    "copy_to": "created"
                 },
                 "_updated": {
-                  "type": "date",
-                  "copy_to": "updated"
+                    "type": "date",
+                    "copy_to": "updated"
                 },
                 "basic_info": {
                     "type": "object",
