@@ -64,6 +64,9 @@ def _(x):
 
 DEBUG = True
 
+if DEBUG:
+    REST_ENABLE_CORS = True
+
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
