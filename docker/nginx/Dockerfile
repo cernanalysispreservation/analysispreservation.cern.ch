@@ -24,7 +24,14 @@
 
 FROM nginx
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY conf.d/* /etc/nginx/conf.d/
+#RUN rm /etc/nginx/conf.d/default.conf
+
+COPY default.conf /etc/nginx/conf.d/
+#COPY conf.d/* /etc/nginx/conf.d/
+
 COPY ssl.key /etc/ssl/private/ssl.key
 COPY ssl.crt /etc/ssl/certs/ssl.crt
+
+
+CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx","-c", "/etc/nginx/nginx.conf", "-g", "daemon off;"]

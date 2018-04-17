@@ -40,7 +40,7 @@ services:
       - elasticsearch
       - redis
       - wdb
-    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug  cap.wsgi:application --reload
     volumes:
       - ".:/code"
     ports:
@@ -89,6 +89,14 @@ services:
       file: docker-services.yml
       service: rabbitmq
 
+  nginx:
+      restart: "always"
+      build: ./docker/nginx
+      image: cap/nginx
+      ports:
+        - "80:80"
+      links:
+        - web
 
   # DevTools (wdb, redis-commander, flower)
   wdb:
