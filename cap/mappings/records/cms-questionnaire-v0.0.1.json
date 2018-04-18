@@ -1,67 +1,70 @@
 {  
-   "mappings":{  
-      "cms-questionnaire-v0.0.1":{  
-         "properties":{  
-            "uncertainties":{  
-               "type":"object",
-               "properties":{  
-                  "consideration":{  
-                     "type":"string"
-                  },
-                  "twiki_read":{  
-                     "type":"string"
-                  },
-                  "template_morphing":{  
-                     "type":"object",
-                     "properties":{  
-                        "comments":{  
-                           "type":"string"
+    "mappings":{  
+        "cms-questionnaire-v0.0.1":{  
+            "properties":{  
+                "created": {
+                    "type": "date"
+                },
+                "uncertainties":{  
+                    "type":"object",
+                    "properties":{  
+                        "consideration":{  
+                            "type":"string"
                         },
-                        "name":{  
-                           "type":"string"
+                        "twiki_read":{  
+                            "type":"string"
+                        },
+                        "template_morphing":{  
+                            "type":"object",
+                            "properties":{  
+                                "comments":{  
+                                    "type":"string"
+                                },
+                                "name":{  
+                                    "type":"string"
+                                }
+                            }
+                        },
+                        "crosschecks":{  
+                            "type":"object",
+                            "properties":{  
+                                "failure_procedure":{  
+                                    "type":"string"
+                                },
+                                "deriving":{  
+                                    "type":"string"
+                                },
+                                "comments":{  
+                                    "type":"string"
+                                },
+                                "name":{  
+                                    "type":"string"
+                                }
+                            }
+                        },
+                        "recommendations_awareness":{  
+                            "type":"string"
                         }
-                     }
-                  },
-                  "crosschecks":{  
-                     "type":"object",
-                     "properties":{  
-                        "failure_procedure":{  
-                           "type":"string"
-                        },
-                        "deriving":{  
-                           "type":"string"
-                        },
-                        "comments":{  
-                           "type":"string"
-                        },
-                        "name":{  
-                           "type":"string"
-                        }
-                     }
-                  },
-                  "recommendations_awareness":{  
-                     "type":"string"
-                  }
-               }
-            },
-            "title": {
-               "type": "string"
-            },
-            "control_number": {
-               "type": "string"
-            },
-            "creator": {
-               "type": "integer"
-            },
-            "_created": {
-               "type": "date",
-               "copy_to": "created"
-            },
-            "_updated": {
-               "type": "date",
-               "copy_to": "updated"
+                    }
+                },
+                "title": {
+                    "type": "string"
+                },
+                "control_number": {
+                    "type": "string"
+                },
+                "creator": {
+                    "type": "integer"
+                },
+                "_created": {
+                    "type": "date",
+                    "copy_to": "created"
+                },
+                "_updated": {
+                    "type": "date",
+                    "copy_to": "updated"
+                }
             }
-         }
-      }
-   }
+        }
+    }
 }

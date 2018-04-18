@@ -1,7 +1,10 @@
 {
   "mappings": {
-    "cms-analysis-v0.0.1": {
+    "cms-cadi-v0.0.1": {
       "properties": {
+        "created":{
+           "type":"date"
+        },
         "_experiment" : {
             "type": "string"
         },
@@ -9,8 +12,131 @@
           "type": "string",
           "index": "not_analyzed"
         },
+        "cadi_id": {
+          "type":"string",
+          "index": "not_analyzed"
+        },
         "basic_info": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "analysis_title": {
+              "type": "string"
+            },
+            "analysis_note": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              }
+            },
+            "software": {
+              "type": "object",
+              "properties": {
+                "full_name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "name": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                },
+                "version": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            },
+            "twiki": {
+              "type": "string",
+              "index": "not_analyzed"
+            },
+            "input_data": {
+              "type": "object",
+              "properties": {
+                "primary_dataset": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "mc_sig_dataset": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "mc_bg_dataset": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "selection_triggers": {
+                "type": "object",
+                "properties": {
+                  "trigger": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                  }
+                }
+              }
+            }
+        },
+        "cadi_info": {
+            "type": "object",
+            "properties": {
+                "conference": {
+                    "type": "string"
+                },
+                "paper": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "committee": {
+                    "type": "integer"
+                },
+                "contact": {
+                    "type": "string"
+                },
+                "updater_name": {
+                    "type": "string"
+                },
+                "creator_name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "publication_status": {
+                    "type": "string"
+                },
+                "sources": {
+                    "type": "string"
+                },
+                "samples": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
         },
         "$schema": {
             "type": "string",

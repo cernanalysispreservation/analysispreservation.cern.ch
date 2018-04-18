@@ -2,6 +2,9 @@
   "mappings": {
     "cms-analysis-v0.0.1": {
       "properties": {
+        "created":{
+           "type":"date"
+        },
         "_experiment" : {
             "type": "string"
         },
