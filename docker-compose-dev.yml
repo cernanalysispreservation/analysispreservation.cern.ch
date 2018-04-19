@@ -65,8 +65,7 @@ services:
       - rabbitmq
       - elasticsearch
       - wdb
-
-  uireact:
+  ui:
     build: ./docker/ui
     image: cap/ui
     volumes:
@@ -74,7 +73,6 @@ services:
       - '/usr/src/app/node_modules'
     ports:
       - '3000:3000'
-
 
   # Base services
   redis:
@@ -106,8 +104,10 @@ services:
       image: cap/nginx
       ports:
         - "80:80"
-      links:
+        - "443:443"
+      depends_on:
         - web
+        - ui
 
   # DevTools (wdb, redis-commander, flower)
   wdb:
