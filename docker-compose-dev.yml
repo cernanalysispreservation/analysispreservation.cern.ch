@@ -65,6 +65,17 @@ services:
       - rabbitmq
       - elasticsearch
       - wdb
+
+  uireact:
+    build: ./docker/ui
+    image: cap/ui
+    volumes:
+      - './docker/ui:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '3000:3000'
+
+
   # Base services
   redis:
     extends:
