@@ -71,6 +71,8 @@ ADD requirements.txt requirements.txt
 ARG DEBUG=False
 ENV DEBUG=${DEBUG}
 
+RUN echo $DEBUG
+
 RUN if [ "$DEBUG" != "True" ]; then pip install -r requirements.txt; fi;
 RUN pip install .[all]
 
