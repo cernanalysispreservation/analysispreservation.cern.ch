@@ -10,10 +10,10 @@
             </div>
             <div class="pull-left">
                 <h5 class="list-group-item-heading">
-                    {{ record.metadata.general_title }}
+                    {{ record.metadata.basic_info.analysis_number || record.metadata.general_title }} 
                 </h5>
                 <p class="list-group-item-text">
-                {{record.metadata.basic_info.analysis_title || record.metadata.basic_info.analysis_number || record.metadata.basic_info.analysis_name || record.created | date:'yyyy-MM-dd'}} 
+                {{((record.metadata.cadi_info.description || record.metadata.basic_info.abstract) | limitTo:100) || (record.created | date:'yyyy-MM-dd')}} 
                 </p>
             </div>
             <small class="pull-right label label-success type-of-analysis results-title-position ng-binding">
