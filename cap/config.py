@@ -765,5 +765,7 @@ ACCOUNTS_JWT_ENABLE = False
 
 # Github and Gitlab oauth tokens
 # ==============================
-GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITHUB_OAUTH_ACCESS_TOKEN', None)
-GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITLAB_OAUTH_ACCESS_TOKEN', None)
+GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get(
+    'APP_GITHUB_OAUTH_ACCESS_TOKEN', None)
+GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get(
+    'APP_GITLAB_OAUTH_ACCESS_TOKEN', None)

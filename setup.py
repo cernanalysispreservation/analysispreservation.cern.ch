@@ -118,7 +118,7 @@ packages = find_packages()
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec (fp.read(), g)
+    exec(fp.read(), g)
     version = g['__version__']
 
 setup(
