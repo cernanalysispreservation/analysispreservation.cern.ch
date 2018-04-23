@@ -65,7 +65,6 @@ RUN pip install --upgrade pip setuptools wheel
 WORKDIR /code
 ADD setup.py setup.py
 ADD cap/version.py cap/version.py
-ADD requirements.txt requirements.txt
 
 # Debug off by default
 ARG DEBUG=False
@@ -73,17 +72,17 @@ ENV DEBUG=${DEBUG}
 
 RUN echo $DEBUG
 
-RUN if [ "$DEBUG" != "True" ]; then pip install -r requirements.txt; fi;
-RUN pip install .[all]
-
-ADD requirements-devel.txt requirements-devel.txt
-
-# Install Python packages needed for development
-RUN if [ "$DEBUG" = "True" ]; then pip install -e .[all]; pip install -e.[xrootd]; pip install -r requirements-devel.txt; fi;
-
 # Add CAP sources to `code` and work there:
 WORKDIR /code
 ADD . /code
+
+RUN pip install -r requirements-local-forks.txt
+RUN if [ "$DEBUG" != "True" ]; then pip install -r requirements.txt; fi;
+
+# Install Python packages needed for development
+RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
+
+RUN pip install .
 
 RUN adduser --uid 1000 cap --gid 0 && \
     chown -R cap:root /code

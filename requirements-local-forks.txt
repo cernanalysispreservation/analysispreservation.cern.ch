@@ -1,0 +1,1 @@
+git+git://github.com/annatrz/invenio-deposit.git#egg=invenio-deposit

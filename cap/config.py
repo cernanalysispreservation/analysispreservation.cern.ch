@@ -195,43 +195,43 @@ RECORDS_REST_FACETS = {
             },
             'status': {
                 'terms': {
-                    'field': '_deposit.status',
+                    'field': '_deposit.status.keyword',
                 },
             },
-            'cadi_status': {
-                'terms': {
-                    'field': 'cadi_info.status',
-                },
-            },
-            'sources': {
-                'terms': {
-                    'field': 'cadi_info.sources',
-                },
-            },
-            'conference': {
-                'terms': {
-                    'field': 'cadi_info.conference',
-                },
-            },
-            'software': {
-                'terms': {
-                    'field': 'basic_info.software.name',
-                },
-            },
-            'triggers': {
-                'terms': {
-                    'field': 'selection_triggers.trigger',
-                },
-            },
+#            'cadi_status': {
+#                'terms': {
+#                    'field': 'cadi_info.status',
+#                },
+#            },
+#            'sources': {
+#                'terms': {
+#                    'field': 'cadi_info.sources',
+#                },
+#            },
+#            'conference': {
+#                'terms': {
+#                    'field': 'cadi_info.conference',
+#                },
+#            },
+#            'software': {
+#                'terms': {
+#                    'field': 'basic_info.software.name',
+#                },
+#            },
+#            'triggers': {
+#                'terms': {
+#                    'field': 'selection_triggers.trigger',
+#                },
+#            },
         },
         'post_filters': {
             'type': terms_filter('_type'),
-            'status': terms_filter('_deposit.status'),
-            'cadi_status': terms_filter('cadi_info.status'),
-            'sources': terms_filter('cadi_info.sources'),
-            'conference': terms_filter('cadi_info.conference'),
-            'software': terms_filter('basic_info.software.name'),
-            'triggers': terms_filter('selection_triggers.trigger')
+            'status': terms_filter('_deposit.status.keyword'),
+#            'cadi_status': terms_filter('cadi_info.status'),
+#            'sources': terms_filter('cadi_info.sources'),
+#            'conference': terms_filter('cadi_info.conference'),
+#            'software': terms_filter('basic_info.software.name'),
+#            'triggers': terms_filter('selection_triggers.trigger')
         },
     },
 }

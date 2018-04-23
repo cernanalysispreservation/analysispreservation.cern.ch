@@ -28,8 +28,8 @@ cryptography==2.1.4
 decorator==4.2.1
 dictdiffer==0.7.0
 docutils==0.14
-elasticsearch==2.4.1
-elasticsearch-dsl==2.2.0
+elasticsearch==5.0.0
+elasticsearch-dsl==5.0.0
 enum34==1.1.6
 execnet==1.5.0
 Flask==0.12.2
@@ -72,7 +72,7 @@ invenio-celery==1.0.0b3
 invenio-collections==1.0.0a4
 invenio-config==1.0.0b3
 invenio-db==1.0.0b9
-invenio-deposit==1.0.0a9
+git+git://github.com/annatrz/invenio-deposit.git#egg=invenio-deposit
 invenio-files-rest==1.0.0a22
 invenio-i18n==1.0.0b4
 invenio-indexer==1.0.0b1
@@ -89,8 +89,6 @@ invenio-records-rest==1.0.0b5
 invenio-records-ui==1.0.0b2
 invenio-rest==1.0.0b2
 invenio-search==1.0.0b4
-invenio-search-ui==1.0.0a9
-invenio-theme==1.0.0b4
 invenio-userprofiles==1.0.0b2
 ipaddr==2.2.0
 ipaddress==1.0.19
