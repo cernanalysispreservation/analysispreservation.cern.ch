@@ -1,0 +1,18 @@
+{
+    "mappings": {
+        "lhcb-v0.0.1": {
+            "properties": {
+                "_experiment" : {
+                    "type": "text"
+                },
+                "_created": {
+                    "type": "date",
+                    "copy_to": "created"
+                },
+                "created": {
+                    "type": "date"
+                }
+            }
+        }
+    }
+}

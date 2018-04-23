@@ -1,0 +1,21 @@
+{
+    "mappings": {
+        "cms-cadi-v0.0.1": {
+            "properties": {
+                "_experiment" : {
+                    "type": "text"
+                },
+                "_created": {
+                    "type": "date",
+                    "copy_to": "created"
+                },
+                "cadi_id": {
+                    "type": "keyword"
+                },
+                "created":{
+                    "type":"date"
+                }
+            }
+        }
+    }
+}

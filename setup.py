@@ -68,8 +68,8 @@ setup_requires = [
 ]
 
 install_requires = [
-    'elasticsearch==2.4.1',  # temporary fix
-    'elasticsearch-dsl==2.2.0',  # temporary fix
+    'elasticsearch>=5.1.0,<6.0.0',
+    'elasticsearch-dsl>=5.1.0,<6.0.0',
     'docker==3.0.0',
     'celery>=4.0',  # temporary fix
     'gunicorn>=19.6.0',
@@ -100,7 +100,6 @@ install_requires = [
     'invenio-db[postgresql,versioning]>=1.0.0',
     'invenio-files-rest>=1.0.0a22',
     'invenio-indexer>=1.0.0',
-    'invenio-deposit>=1.0.0a9',
     'invenio-jsonschemas>=1.0.0',
     'invenio-oauthclient>=1.0.0',
     'invenio-pidstore>=1.0.0',
@@ -108,7 +107,7 @@ install_requires = [
     'invenio-records-files>=1.0.0a10',
     'invenio-records-rest>=1.0.0',
     'invenio-rest[cors]>=1.0.0',
-    'invenio-search>=1.0.0',
+    'invenio-search>=1.0.0a9',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0'
 ]
