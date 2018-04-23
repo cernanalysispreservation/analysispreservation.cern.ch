@@ -20,8 +20,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-# Use Elasticsearch 2:
-FROM elasticsearch:2
+# Use Elasticsearch 5:
+FROM elasticsearch:5
 
 # Install Elasticsarch plugins:
-RUN plugin install -b mapper-attachments
+RUN elasticsearch-plugin install -b ingest-attachment
