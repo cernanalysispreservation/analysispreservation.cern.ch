@@ -2,7 +2,6 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Processing",
   "type": "array",
-  "default": [{}],
   "items": {
     "title": "Input",
     "type": "object",
@@ -13,8 +12,7 @@
         "properties": {
           "dataset": {
             "title": "Dataset",
-            "type": "string",
-            "enum": []
+            "type": "string"
           }
         }
       },
