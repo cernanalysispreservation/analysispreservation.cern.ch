@@ -35,8 +35,7 @@
                "properties": {
                   "dataset": {
                      "title": "Dataset",
-                     "type": "string",
-                     "enum": []
+                     "type": "string"
                   }
                }
             },
@@ -387,7 +386,6 @@
                       "trackCountingHighPurBJetTags",
                       "trackCountingHighEffBJetTags",
                       "simpleSecondaryVertexHighEffBJetTags",
-                      "simpleSecondaryVertexHighEffBJetTags",
                       "combinedSecondaryVertexBJetTags",
                       "jetProbabilityBJetTags",
                       "other"
@@ -552,8 +550,7 @@
               },
               "physics_objects": {
                 "type": "string",
-                "title": "Physics Objects Available",
-                "enum": []
+                "title": "Physics Objects Available"
               }
             }
           }
