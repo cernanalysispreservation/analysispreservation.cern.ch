@@ -1,3 +1,0 @@
-[submodule "docker/ui"]
-	path = docker/ui
-	url = https://github.com/cernanalysispreservation/cap-ui.git
