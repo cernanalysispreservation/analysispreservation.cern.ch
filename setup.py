@@ -79,7 +79,7 @@ install_requires = [
     'python-ldap>=2.4.39',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
-    'Flask>=0.11.1',
+    'Flask==0.12.4',
     'Shelves>=0.3.8',
     'Flask-CORS>=2.1.0',
     'Flask-BabelEx>=0.9.3',
@@ -147,7 +147,7 @@ setup(
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
         ],
         'invenio_base.api_blueprints': [
-            'cap = cap.views:blueprint',
+            # 'cap = cap.views:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_oauth2server_settings = '
             ' cap.modules.oauth2server.views.settings:blueprint',
