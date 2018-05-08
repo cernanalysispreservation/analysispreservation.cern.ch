@@ -44,7 +44,13 @@ RUN yum update -y && \
         npm \
         python-devel \
         python-pip \
-        openldap-devel
+        openldap-devel \
+        gpgme-devel \
+        libassuan-devel \
+        btrfs-progs-devel \
+        device-mapper-devel \
+        ostree-devel \
+        go-md2man
 
 # Install xrootd
 RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
@@ -54,8 +60,23 @@ RUN yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd
 # Print xrootd version
 RUN xrootd -v
 
+ENV GO_VERSION=1.9.1 \
+    GOROOT=/goroot \
+    GOPATH=/gopath 
+
+ENV PATH $PATH:$GOROOT/bin:$GOPATH/bin
+
+RUN yum update -y && \
+    yum install -y -q curl build-essential ca-certificates git mercurial bzr && \
+    mkdir /goroot && curl https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz | tar xvzf - -C /goroot --strip-components=1 && \
+    mkdir /gopath 
+
 # Clean after ourselves:
 RUN yum clean -y all
+
+RUN git clone https://github.com/projectatomic/skopeo $GOPATH/src/github.com/projectatomic/skopeo
+
+RUN cd $GOPATH/src/github.com/projectatomic/skopeo && make binary-local && make docs && make install
 
 ENV APP_INSTANCE_PATH=/usr/local/var/cap-instance
 
@@ -69,8 +90,6 @@ ADD cap/version.py cap/version.py
 # Debug off by default
 ARG DEBUG=False
 ENV DEBUG=${DEBUG}
-
-RUN echo $DEBUG
 
 # Add CAP sources to `code` and work there:
 WORKDIR /code
