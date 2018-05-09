@@ -27,8 +27,7 @@ Further Reading
 
 	overview/introduction
 	overview/project
-	overview/status
-
+	
 .. toctree::
 	:maxdepth: 1
 	:caption: Tutorials
