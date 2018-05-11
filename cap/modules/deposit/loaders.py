@@ -29,6 +29,9 @@ from itertools import groupby
 
 from celery import shared_task
 
+import os
+from shutil import rmtree
+
 import jsonpointer
 import requests
 
@@ -129,6 +132,22 @@ def download_url(record_id, url):
         from xrootdpyfs.xrdfile import XRootDPyFile
         response = XRootDPyFile(url, mode='r-')
         total = response.size
+    elif ['registry', 'dockerhub'] in url:
+        dir_name = "skopeo-docker-image"
+        if not os.path.exists(dir_name):
+            os.makedirs(dir_name)  # create temp dir
+        from cap.modules.repoimporter.image_importer import ImageImporter
+        ImageImporter.archive_image(url, dir_name)  # save file
+        import tarfile
+        tar = tarfile.open(dir_name+".tar.gz", "w:gz")
+        tar.add(dir_name, arcname=dir_name)
+        tar.close()  # save image as tarball
+        total = os.path.getsize(dir_name+".tar.gz")  # get size
+        input_tar = tarfile.open(dir_name+".tar.gz", 'r')
+        tarinfo = input_tar.next()
+        response = input_tar.extractfile(tarinfo)  # open as stream
+        input_tar_open = True
+        rmtree(dir_name)  # remove temp dir
     else:
         try:
             from cap.modules.repoimporter.repo_importer import RepoImporter
@@ -143,6 +162,9 @@ def download_url(record_id, url):
         size=total
     )
     db.session.commit()
+    if input_tar_open:
+        input_tar.close()
+        os.remove(dir_name+".tar.gz")  # remove leftovers
 
 
 def process_x_cap_files(record, x_cap_files):
