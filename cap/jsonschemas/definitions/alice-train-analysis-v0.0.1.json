@@ -5,10 +5,6 @@
   "items": {
     "type": "object",
     "properties": {
-      "analysis_title": {
-        "title": "Analysis Title",
-        "type": "string"
-      },
       "train_id": {
         "title": "Train ID",
         "type": "string"
@@ -32,10 +28,6 @@
       },
       "wagon_names": {
         "title": "Wagon Names",
-        "type": "string"
-      },
-      "wagon_paths": {
-        "title": "Wagon Paths",
         "type": "string"
       },
       "dataset": {

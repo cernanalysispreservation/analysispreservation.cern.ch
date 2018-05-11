@@ -165,8 +165,7 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
@@ -195,12 +194,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "mva_output_usage": {
@@ -221,12 +219,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "input_checks": {
@@ -246,12 +243,12 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
+              
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "correlation_studies": {
@@ -272,12 +269,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "input_selection": {
@@ -295,12 +291,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "null_pdf": {
@@ -320,12 +315,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "background_mix": {
@@ -344,12 +338,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "overtraining": {
@@ -367,12 +360,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"              
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "robustness": {
@@ -427,12 +419,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "fitting_model_choice": {
@@ -455,12 +446,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "test_stats": {
@@ -485,12 +475,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "goodness_test": {
@@ -516,18 +505,16 @@
                 "0050-0990",
                 "0990-0999",
                 "0999-1000"
-              ],
-              "dependencies": "name"
+              ]
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "p-value": "name",
-            "comments": "name"
+            "p-value": ["name"],
+            "comments": ["name"]
           }
         },
         "toy_pull_distribution": {
@@ -547,12 +534,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "covariance_matrix": {
@@ -570,8 +556,10 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
+            },
+            "dependencies": {
+              "comments": ["name"]
             }
           }
         },
@@ -591,12 +579,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "fit_function": {
@@ -617,12 +604,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "parameter_boundaries": {
@@ -642,12 +628,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }
@@ -684,12 +669,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "atlas_cms_agreement": {
@@ -745,12 +729,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "software": {
@@ -772,12 +755,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "test_stats": {
@@ -797,8 +779,7 @@
             },
             "details": {
               "type": "string",
-              "title": "Details",
-              "dependencies": "name"
+              "title": "Details"
             },
             "comments": {
               "title": "Additional comments",
@@ -806,7 +787,7 @@
             }
           },
           "dependencies": {
-            "details": "name"
+            "details": ["name"]
           }
         },
         "toy_data": {
@@ -826,12 +807,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "theory_error": {
@@ -852,12 +832,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }
@@ -897,12 +876,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "lookelsewhere_effect": {
@@ -920,12 +898,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"              
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }
@@ -974,12 +951,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "software": {
@@ -999,18 +975,16 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "validation": {
           "title": "How do you validate the unfolding procedure (e.g., comparison with other techniques, toy studies, etc.)?",
-          "type": "string",
-          "format": "textarea"
+          "type": "string"
         },
         "event_weight_application": {
           "title": "Event Weight Application",
@@ -1027,12 +1001,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }
@@ -1075,8 +1048,7 @@
                 "undecided",
                 "yes",
                 "no"
-              ],
-              "dependencies": "name"
+              ]
             },
             "failure_procedure": {
               "title": "Procedure in case of cross-check failure",
@@ -1088,7 +1060,7 @@
             }
           },
           "dependencies": {
-            "deriving": "name"
+            "deriving": ["name"]
           }
         },
         "template_morphing": {
@@ -1101,12 +1073,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }
@@ -1136,12 +1107,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "combined_measurements": {
@@ -1160,12 +1130,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         },
         "correlation_treatment": {
@@ -1182,12 +1151,11 @@
             },
             "comments": {
               "title": "Additional comments",
-              "type": "string",
-              "dependencies": "name"
+              "type": "string"
             }
           },
           "dependencies": {
-            "comments": "name"
+            "comments": ["name"]
           }
         }
       }

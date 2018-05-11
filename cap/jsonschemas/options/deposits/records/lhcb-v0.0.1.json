@@ -1,425 +1,53 @@
-[
-  {
-    "key": "basic_info",
-    "type": "fieldset",
-    "htmlClass": "custom-panel",
-    "items":[
-       {
-        "key": "basic_info.analysis_title",
-        "placeholder": "Start typing an Analysis Name (e.g. CPV in D0 -> KS KS) to import metadata or insert a new analysis name.",
-        "type": "cap:typeahead",
-        "url": "/api/lhcb/analysis/titles",
-        "async": false,
-        "ref": {
-            "url": "/api/lhcb/analysis/data",
-            "paramKey": "title",
-            "map": [
-            {
-                "s": ["measurement"],
-                "t": ["#", "measurement"]
-            },
-            {
-                "s": ["status"],
-                "t": ["#", "status"]
-            },
-            {
-                "s": ["egroup"],
-                "t": ["#", "review_egroup"]
-            },
-            {
-                "s": ["wg"],
-                "t": ["#", "institutes"]
-            },
-            {
-                "s": ["person"],
-                "t": ["#", "analysis_proponents"]
-            },
-            {
-                "s": ["egroup"],
-                "t": ["additional_resources", "publications", "0", "review_egroup"]
-            },
-            {
-                "s": ["ananote"],
-                "t": ["additional_resources", "publications", "0", "analysis_number"]
-            },
-            {
-                "s": ["arxiv"],
-                "t": ["additional_resources", "publications", "0", "arxiv_id"]
-            },
-            {
-                "s": ["paper"],
-                "t": ["additional_resources", "publications", "0", "public_paper"]
-            },
-            {
-                "s": ["twiki"],
-                "t": ["additional_resources", "publications", "0", "twiki"]
-            }
-            ]
-        }
-       },
-       {
-        "key": "basic_info.measurement",
-        "placeholder": "E.g. CPV in D0 -> KS KS"
-
-       },
-       {
-        "key": "basic_info.analysis_proponents",
-        "type": "cap:tagsInput",
-        "title": "Proponents",
-        "placeholder": "E.g. John Doe",
-        "url": "/api/ldap/user/name",
-        "async": true,
-        "startEmpty": "true",
-        "items": [
-          {
-            "key": "basic_info.analysis_proponents[]",
-            "type": "hidden"
-          }
-        ]
-       },
-       {
-          "key": "basic_info.status",
-          "type": "select",
-          "title": "Status",
-          "titleMap":[
-             {
-                "value": "0 - planned / open topic",
-                "name": "0 - planned / open topic"
-             },
-             {
-                "value": "1 - in preparation",
-                "name": "1 - in preparation"
-             },
-             {
-                "value": "2 - ANA note released",
-                "name": "2 - ANA note released"
-             },
-             {
-                "value": "3 - review committee",
-                "name": "3 - review committee"
-             },
-             {
-                "value": "4 - collaboration review",
-                "name": "4 - collaboration review"
-             },
-             {
-                "value": "5 -",
-                "name": "5 -"
-             },
-             {
-                "value": "6 - CONF note published",
-                "name": "6 - CONF note published"
-             },
-             {
-                "value": "7 -",
-                "name": "7 -"
-             },
-             {
-                "value": "8 - journal review",
-                "name": "8 - journal review"
-             },
-             {
-                "value": "9 - PAPER published",
-                "name": "9 - PAPER published"
-             },
-             {
-                "value": "x - other",
-                "name": "x - other"
-             }
-          ]
-       },
-       {
-        "key": "basic_info.reviewers",
-        "placeholder": "E.g. John Roe; Jane Roe"
-       },
-       {
-        "key": "basic_info.review_egroup",
-        "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
-       },
-       {
-        "key": "basic_info.institutes",
-        "type": "select",
-        "title": "Working Group",
-        "titleMap":[
-           {
-              "value": "IFT",
-              "name": "Ions and Fixed Target"
-           },
-           {
-              "value": "B_Q",
-              "name": "b-hadrons and Quarkonia"
-           },
-           {
-              "value": "BDC",
-              "name": "B Decays to Charmonium"
-           },
-           {
-              "value": "DP",
-              "name": "Detector Performance"
-           },
-           {
-              "value": "CD",
-              "name": "Charmless b-hadron Decays"
-           },
-           {
-              "value": "QEE",
-              "name": "QCD Electroweak and Exotica"
-           },
-           {
-              "value": "RD",
-              "name": "Rare Decays"
-           },
-           {
-              "value": "Charm",
-              "name": "Charm Physics"
-           },
-           {
-              "value": "SLB",
-              "name": "Semileptonic B decays"
-           },
-           {
-              "value": "B2OC",
-              "name": "B Decays to Open Charm"
-           }
-        ]
-       },
-       {
-        "key": "basic_info.keywords",
-        "placeholder": "E.g. keyword1, keyword2"
-       }
-    ]
+{
+  "ui:order": ["basic_info", "stripping_turbo_selection", "ntuple_userdst_production", "user_analysis", "additional_resources"],
+  "basic_info": {
+    "ui:order": [
+      "analysis_title", 
+      "measurement",
+      "analysis_proponents", 
+      "analysis_status", 
+      "reviewers", 
+      "review_egroup", 
+      "institutes", 
+      "keywords"
+    ],
+    "ui:object": "accordionObjectField"
   },
-  {
-    "key": "stripping_turbo_selection",
-    "type": "tabArrayTop",
-    "items": [
-      {
-        "key": "stripping_turbo_selection[].name",
-        "placeholder": "Please provide a name for your dataset"
-      },
-      {
-        "key": "stripping_turbo_selection[].bookkeping_location",
-        "type": "cap:formAutofill",
-        "placeholder": "Please provide a bookkeeping path",
-        "ref": {
-          "url": "/api/lhcb/analysis/collisiondata",
-          "paramKey": "stripping_line",
-          "map": [
-            {
-              "s": ["year"],
-              "t": ["#", "year"]
-            },
-            {
-              "s": ["processing_pass"],
-              "t": ["#", "processing_pass"]
-            },
-            {
-              "s": ["reconstruction", "software"],
-              "t": ["#", "reconstruction_software", "name"]
-            },
-            {
-              "s": ["reconstruction", "version"],
-              "t": ["#", "reconstruction_software", "version"]
-            },
-            {
-              "s": ["stripping", "software"],
-              "t": ["#", "stripping_software", "name"]
-            },
-            {
-              "s": ["stripping", "version"],
-              "t": ["#", "stripping_software", "version"]
-            }
-          ]
-        }
-      },
-      {
-        "key": "stripping_turbo_selection[].stripping_turbo_line",
-        "placeholder": "Please provide a stripping/turbo line"
-      },
-      {
-        "key": "stripping_turbo_selection[].dataset_type",
-        "type": "radios",
-        "titleMap": [
-          { "value": "mc_data", "name": "MC Data" },
-          { "value": "real_data", "name": "Real Data" }
-        ]
-      }
-    ]
+  "stripping_turbo_selection": {
+    "items": {
+      "ui:order": [
+          "name", 
+          "bookkeping_location",
+          "stripping_turbo_line",
+          "dataset_type"
+      ]
+    },
+    "ui:array": "AccordionArrayField"
   },
-  {
-    "key": "ntuple_userdst_production",
-    "type": "tabArrayTop",
-    "items": [
-      {
-        "key": "ntuple_userdst_production[].name",
-        "placeholder": "Please provide a name for your dataset"
-      },
-      {
-        "key": "ntuple_userdst_production[].input_dataset",
-        "placeholder": "Please select an input dataset from the previous step",
-        "type": "cap:dynamicSelect",
-        "pathToArray": ["stripping_turbo_selection"],
-        "keyToObserve": "name"
-      },
-      {
-        "key": "ntuple_userdst_production[].davinci_version",
-        "placeholder": "Please provide a davinci version that was used"
-      },
-      {
-        "key": "ntuple_userdst_production[].platform",
-        "placeholder": "Please provide a platform"
-      },
-      {
-        "key": "ntuple_userdst_production[].davinci_script",
-        "title": "Davinci script",
-        "type": "fieldset",
-        "items": [
-          {
-            "key": "ntuple_userdst_production[].davinci_script.url",
-            "notitle": true,
-            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-          }
-        ]
-      },
-      {
-        "key": "ntuple_userdst_production[].ganga_script",
-        "title": "Ganga script",
-        "type": "fieldset",
-        "items": [
-          {
-            "key": "ntuple_userdst_production[].ganga_script.url",
-            "notitle": true,
-            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-          }
-        ]
-      },
-      {
-        "key": "ntuple_userdst_production[].output_eos_location",
-        "placeholder": "Please provide an output eos location"
-      }
-    ]
+  "ntuple_userdst_production": {
+    "items": {
+      "ui:order": [
+          "name", 
+          "input_dataset",
+          "davinci_version",
+          "platform",
+          "davinci_script",
+          "ganga_script",
+          "output_eos_location"
+      ]
+    },
+    "ui:array": "AccordionArrayField"
   },
-  {
-    "key": "user_analysis",
-    "type": "fieldset",
-    "items": [
-      {
-        "key": "user_analysis.gitlab_link",
-        "title": "Git repository link",
-        "type": "fieldset",
-        "items": [
-          {
-            "key": "user_analysis.gitlab_link.url",
-            "notitle": true,
-            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-          }
-        ]
-      },
-      {
-        "key": "user_analysis.basic_script",
-        "title": "Basic script",
-        "type": "fieldset",
-        "items": [
-          {
-            "key": "user_analysis.basic_script.url",
-            "notitle": true,
-            "placeholder": "E.g. https://git@github.com:johndoe/myrepo.git"
-          }
-        ]
-      }
-    ]
+  "user_analysis": {
+    "ui:object": "accordionObjectField"
   },
-  {
-    "key": "additional_resources",
-    "type": "fieldset",
-    "items": [
-      {
-        "key": "additional_resources.internal_discussions",
-        "items": [
-          {
-            "key": "additional_resources.internal_discussions[].meeting",
-            "placeholder": "E.g. lhcb-general"
-          },
-          {
-            "key": "additional_resources.internal_discussions[].title",
-            "placeholder": "E.g. Update on D0-KS KS"
-          },
-          {
-            "key": "additional_resources.internal_discussions[].url",
-            "placeholder": "E.g. https://indico.cern.ch/event/.../contribution/.../material/slides/discussion-slides.pdf"
-          }
-        ]
-      },
-      {
-        "key": "additional_resources.presentations",
-        "items": [
-          {
-            "key": "additional_resources.presentations[].meeting",
-            "placeholder": "E.g. CERN-LHC Seminar"
-          },
-          {
-            "key": "additional_resources.presentations[].title",
-            "placeholder": "E.g. CP violation searches in the charm sector at LHCb"
-          },
-          {
-            "key": "additional_resources.presentations[].url",
-            "placeholder": "E.g. https://indico.cern.ch/event/473187/"
-          }
-        ]
-      },
-      {
-        "key": "additional_resources.publications",
-        "items": [
-          {
-            "key": "additional_resources.publications[].review_egroup",
-            "placeholder": "E.g. lhcb-review-Charm-D0toKsKs"
-          },
-          {
-            "key": "additional_resources.publications[].roles"
-          },
-          {
-            "key": "additional_resources.publications[].url",
-            "placeholder": "E.g. https://cds.cern.ch/record/2030613"
-          },
-          {
-            "key": "additional_resources.publications[].analysis_number",
-            "placeholder": "E.g. LHCb-ANA-2015-002"
-          },
-          {
-            "key": "additional_resources.publications[].arxiv_id",
-            "placeholder": "E.g. 1508.06087"
-          },
-          {
-            "key": "additional_resources.publications[].conf_report",
-            "placeholder": "E.g. CONF"
-          },
-          {
-            "key": "additional_resources.publications[].public_paper",
-            "placeholder": "E.g. LHCb-PAPER-2015-039"
-          },
-          {
-            "key": "additional_resources.publications[].twiki",
-            "placeholder": "E.g. https://twiki.cern.ch/twiki/bin/view/LHCbPhysics/D0KSKS"
-          }
-        ]
-      },
-      {
-        "key": "additional_resources.documentations",
-        "items": [
-          {
-            "key": "additional_resources.documentations[].url",
-            "placeholder": "E.g. https://twiki.cern.ch/twiki/..."
-          },
-          {
-            "key": "additional_resources.documentations[].keywords",
-            "placeholder": "E.g. keyword1"
-          },
-          {
-            "key": "additional_resources.documentations[].comment",
-            "placeholder": "E.g. Shows more detail concerning this analysis"
-          }
-        ]
-      }
-    ]
+  "additional_resources": {
+    "ui:order": [
+          "internal_discussions", 
+          "presentations",
+          "publications",
+          "documentations"
+      ],
+    "ui:object": "accordionObjectField"
   }
-]
+}

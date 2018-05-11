@@ -53,7 +53,7 @@ RUN yum update -y && \
         go-md2man
 
 # Install xrootd
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 RUN yum install -y xrootd xrootd-server xrootd-client xrootd-client-devel xrootd-python
 
