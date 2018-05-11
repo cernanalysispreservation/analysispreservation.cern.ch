@@ -150,14 +150,14 @@ def index():
         Client.is_internal == False,
     ).all()
 
-    scope_choices = [
-        {
-            "id": scope[1].id,
-            "help_text": scope[1].help_text,
-        } for scope in current_oauth2server.scope_choices()
-    ]
+    # scope_choices = [
+    #     {
+    #         "id": scope[1].id,
+    #         "help_text": scope[1].help_text,
+    #     } for scope in current_oauth2server.scope_choices()
+    # ]
 
-    _tokens = [{"name": t.client.name, "t_id": t.id, "scopes": t.scopes, }
+    _tokens = [{"name": t.client.name, "t_id": t.id, "scopes": t.scopes, "access_token": t.access_token}
                for t in tokens]
 
     _clients = [
@@ -182,9 +182,10 @@ def index():
     response = {
         "clients": _clients,
         "tokens": _tokens,
-        "authorized_apps": authorized_apps,
-        "scope_choices": scope_choices,
+        # "authorized_apps": authorized_apps,
+        # "scope_choices": scope_choices,
     }
+
     return jsonify(response), 200
 
 
@@ -358,7 +359,7 @@ def token_view(token):
 
 @blueprint.route("/tokens/<string:token_id>/revoke/", methods=['GET', ])
 @login_required
-@token_getter(is_personal=False, is_internal=False)
+@token_getter(is_personal=True, is_internal=False)
 def token_revoke(token):
     """Revoke Authorized Application token."""
     db.session.delete(token)
