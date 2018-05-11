@@ -33,9 +33,6 @@
     },
     "ntuple_userdst_production": {
       "description": "Please provide information about the steps of the analysis",
-      "default": [
-        {}
-      ],
       "items": {
         "properties": {
           "name": {
@@ -136,15 +133,8 @@
             "9 - PAPER published",
             "x - other"
           ],
-          "type": "select",
+          "type": "string",
           "title": "Status"
-        },
-        "analysis_status_notes": {
-          "dependencies": [
-            "status"
-          ],
-          "title": "Notes on Status",
-          "type": "string"
         }
       },
       "title": "Basic Information",
@@ -175,42 +165,6 @@
               "mc_data",
               "real_data"
             ]
-          },
-          "processing_pass": {
-            "title": "Processing Pass",
-            "type": "string"
-          },
-          "reconstruction_software": {
-            "properties": {
-              "name": {
-                "title": "Name",
-                "type": "string"
-              },
-              "version": {
-                "title": "Version",
-                "type": "string"
-              }
-            },
-            "title": "Reconstruction software",
-            "type": "object"
-          },
-          "stripping_software": {
-            "properties": {
-              "name": {
-                "title": "Name",
-                "type": "string"
-              },
-              "version": {
-                "title": "Version",
-                "type": "string"
-              }
-            },
-            "title": "Stripping software",
-            "type": "object"
-          },
-          "year": {
-            "title": "Year",
-            "type": "string"
           }
         }
       }
