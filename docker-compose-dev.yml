@@ -40,11 +40,13 @@ services:
       - elasticsearch
       - redis
       - wdb
-    command: gunicorn -b 0.0.0.0:5000 --log-level debug  cap.wsgi:application --reload
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug  cap.wsgi:application --reload --timeout 3600
     volumes:
       - ".:/code"
     ports:
       - "5000:5000"
+    stdin_open: true
+    tty: true
 
   # Application Worker
   worker:
