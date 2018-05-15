@@ -108,7 +108,10 @@ def extract_refs_from_errors(errors):
 
 def extract_x_cap_files(data):
     """Extract urls and references from data."""
-    schema = data['$schema']
+    schema = data.get('$schema', None)
+
+    if not schema:
+        return []
 
     if not isinstance(schema, dict):
         schema = {'$ref': schema}
