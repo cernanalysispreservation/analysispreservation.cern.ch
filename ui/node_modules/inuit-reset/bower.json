@@ -1,0 +1,16 @@
+{
+  "name": "inuit-reset",
+  "version": "0.1.1",
+  "homepage": "https://github.com/inuitcss/generic.reset",
+  "authors": [
+    "Harry Roberts <harry@csswizardry.com>"
+  ],
+  "description": "A small, considered reset for the inuitcss framework",
+  "main": "_generic.reset.scss",
+  "keywords": [
+    "inuitcss",
+    "oocss",
+    "css"
+  ],
+  "license": "Apache"
+}

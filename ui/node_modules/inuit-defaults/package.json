@@ -1,0 +1,21 @@
+{
+  "name": "inuit-defaults",
+  "version": "0.2.3",
+  "description": "Global, default settings for the inuitcss framework",
+  "main": "_settings.defaults.scss",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inuitcss/settings.defaults.git"
+  },
+  "author": "Harry Roberts <harry@csswizardry.com>",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/inuitcss/settings.defaults/issues"
+  },
+  "homepage": "https://github.com/inuitcss/settings.defaults",
+  "keywords": [
+    "inuitcss",
+    "oocss",
+    "css"
+  ]
+}

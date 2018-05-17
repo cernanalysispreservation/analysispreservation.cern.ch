@@ -1,0 +1,27 @@
+{
+    "name": "@types/inline-style-prefixer",
+    "version": "3.0.1",
+    "description": "TypeScript definitions for inline-style-prefixer",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Andrej Hazucha",
+            "url": "https://github.com/ahz",
+            "githubUsername": "ahz"
+        },
+        {
+            "name": "dpetrezselyova",
+            "url": "https://github.com/dpetrezselyova",
+            "githubUsername": "dpetrezselyova"
+        }
+    ],
+    "main": "",
+    "repository": {
+        "type": "git",
+        "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {},
+    "typesPublisherContentHash": "2db8fb95300fe77a7500026faf0047e054d41d34c3319f8e7207ad6d84322855",
+    "typeScriptVersion": "2.0"
+}
