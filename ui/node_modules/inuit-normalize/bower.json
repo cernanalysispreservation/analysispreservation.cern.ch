@@ -1,0 +1,19 @@
+{
+  "name": "inuit-normalize.css",
+  "version": "4.1.1",
+  "homepage": "https://github.com/inuitcss/generic.normalize",
+  "authors": [
+    "Harry Roberts <harry@csswizardry.com>",
+    "Jonathan Neal <jonathantneal@hotmail.com> (http://jonathantneal.com/)",
+    "Nicolas Gallagher <nicolas@nicolasgallagher.com> (http://nicolasgallagher.com/)"
+  ],
+  "description": "Nicolas Gallagher’s Normalize.css used in the inuitcss framework",
+  "main": "_generic.normalize.scss",
+  "keywords": [
+    "inuitcss",
+    "oocss",
+    "css",
+    "normalize"
+  ],
+  "license": "MIT"
+}

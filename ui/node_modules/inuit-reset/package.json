@@ -1,0 +1,21 @@
+{
+  "name": "inuit-reset",
+  "version": "0.1.1",
+  "description": "A small, considered reset for the inuitcss framework",
+  "main": "_generic.reset.scss",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inuitcss/generic.reset.git"
+  },
+  "author": "Harry Roberts <harry@csswizardry.com>",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/inuitcss/generic.reset/issues"
+  },
+  "homepage": "https://github.com/inuitcss/generic.reset",
+  "keywords": [
+    "inuitcss",
+    "oocss",
+    "css"
+  ]
+}

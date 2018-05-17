@@ -65,14 +65,15 @@ before_install:
   # - echo ${TRAVIS_COMMIT_RANGE}
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
-  - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
+  - "requirements-builder --level=min server/setup.py > .travis-lowest-requirements.txt"
   # - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
-  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
+  - "requirements-builder --level=dev --req server/requirements-devel.txt setup.py > .travis-devel-requirements.txt"
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
-  - "travis_retry pip install -r requirements-local-forks.txt"
+  - "travis_retry pip install -r server/requirements-local-forks.txt"
   - "travis_retry pip install -e .[docs,tests]"
+  - "yarn install"
   # - "travis_retry pip install -r requirements.txt --upgrade"
 
 before_script:
@@ -80,7 +81,7 @@ before_script:
   # - kwalitee check message -s ${TRAVIS_COMMIT_RANGE/.../..}
 
 script:
-  - "./run-tests.sh"
+  - "./server/run-tests.sh"
 
 after_success:
   - coveralls

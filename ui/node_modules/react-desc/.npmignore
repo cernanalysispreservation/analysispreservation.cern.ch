@@ -1,0 +1,9 @@
+src
+__tests__
+coverage
+.codeclimate.yml
+.eslintrc
+.babelrc
+.gitignore
+.editorconfig
+.travis.yml

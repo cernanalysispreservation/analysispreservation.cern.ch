@@ -1,0 +1,24 @@
+{
+  "name": "inuit-responsive-tools",
+  "version": "0.1.3",
+  "description": "Responsive tooling for the inuitcss framework",
+  "main": "_tools.responsive.scss",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inuitcss/tools.responsive.git"
+  },
+  "author": "Harry Roberts <harry@csswizardry.com>",
+  "license": "Apache 2",
+  "bugs": {
+    "url": "https://github.com/inuitcss/tools.responsive/issues"
+  },
+  "homepage": "https://github.com/inuitcss/tools.responsive",
+  "keywords": [
+    "inuitcss",
+    "oocss",
+    "css"
+  ],
+  "dependencies": {
+    "inuit-responsive-settings": "~0.1.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "inuit-responsive-settings",
+  "version": "0.1.5",
+  "homepage": "https://github.com/inuitcss/settings.responsive",
+  "authors": [
+    "Harry Roberts <harry@csswizardry.com>"
+  ],
+  "description": "Responsive settings for the inuitcss framework",
+  "main": "_settings.responsive.scss",
+  "keywords": [
+    "css",
+    "oocss",
+    "inuitcss"
+  ],
+  "license": "Apache"
+}
