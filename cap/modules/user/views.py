@@ -29,13 +29,19 @@ from __future__ import absolute_import, print_function
 from flask import Blueprint, current_app, jsonify, redirect, request, session
 
 import ldap
+from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import (collaboration_permissions,
                                                  collaboration_permissions_factory)
 from cap.utils import obj_or_import_string
-from flask_login import current_user
+from flask_login import login_user, current_user
 from flask_principal import Permission
 from flask_security.views import logout
+from flask_security.utils import verify_password
+
+from werkzeug.local import LocalProxy
+
+_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 user_blueprint = Blueprint('cap_user', __name__,
                            template_folder='templates')
@@ -276,3 +282,23 @@ def set_global_experiment(experiment=None):
 
 
 user_blueprint.route('/logout', endpoint='logout')(logout)
+
+
+# Registered only on DEBUG mode
+def login():
+    login_form_data = request.get_json()
+    username = login_form_data.get('username')
+    password = login_form_data.get('password')
+    # Fetch user from db
+    user = _datastore.get_user(username)
+
+    if user and verify_password(password, user.password):
+        login_user(user)
+        return current_user.email
+
+    return 400
+
+
+if DEBUG:
+    user_blueprint.add_url_rule(
+        '/login/local', 'local_login', login, methods=['POST'])
