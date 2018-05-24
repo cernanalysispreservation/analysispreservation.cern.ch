@@ -11,7 +11,52 @@
                 "_created": {
                     "type": "date",
                     "copy_to": "created"
-                }       
+                },
+                "main_measurements": {
+                    "type": "nested",
+                    "properties": {
+                        "detector_final_state": {
+                            "type": "object",
+                            "properties": {
+                                "final_state_particles": {
+                                    "type": "nested",
+                                    "properties": {
+                                        "object": {
+                                            "type": "keyword"
+                                        },
+                                        "electron_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                        },
+                                        "muon_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                        },
+                                        "tau_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                        },
+                                        "jet_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                        },
+                                        "number": {
+                                            "type": "object",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

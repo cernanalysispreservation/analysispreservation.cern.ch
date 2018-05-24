@@ -9,11 +9,47 @@
                     "type": "date",
                     "copy_to": "created"
                 },
+                "_deposit": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            },
+                            "copy_to": "status"
+                        }
+                    }
+                },
                 "cadi_id": {
                     "type": "keyword"
                 },
-                "created":{
-                    "type":"date"
+                "cadi_info": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            },
+                            "copy_to": "cadi_status"
+                        },
+                        "conference": {
+                            "type": "keyword",
+                            "copy_to": "conference"
+                        },
+                        "target_conference": {
+                            "type": "keyword",
+                            "copy_to": "conference"
+                        }
+                    }
+                },
+                "cadi_status": {
+                    "type": "keyword"
                 }
             }
         }

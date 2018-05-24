@@ -32,6 +32,18 @@ from os.path import dirname, join
 
 from celery.schedules import crontab
 from flask import request
+
+from cap.modules.deposit.permissions import (CreateDepositPermission,
+                                             DeleteDepositPermission,
+                                             ReadDepositPermission,
+                                             UpdateDepositPermission)
+from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
+                                                  disconnect_handler)
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import record_read_permission_factory
+from cap.modules.records.search import cap_record_search_factory
+from cap.modules.search.facets import nested_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -44,17 +56,6 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             DeleteDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
-from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
-                                                  disconnect_handler)
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import record_read_permission_factory
-from cap.modules.records.search import cap_record_search_factory
 
 
 def _(x):
@@ -185,80 +186,70 @@ RECORDS_REST_SORT_OPTIONS = dict(
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.
+# for aggregations, only ones starting with facet_ will be displayed on a page
 RECORDS_REST_FACETS = {
     'deposits': {
         'aggs': {
-            'type': {
+            'facet_status': {
                 'terms': {
-                    'field': '_type',
-                },
+                    'field': 'status.keyword'
+                }
             },
-            'status': {
+            'facet_type': {
                 'terms': {
-                    'field': '_deposit.status.keyword',
-                },
+                    'field': '_type'
+                }
             },
-#            'cadi_status': {
-#                'terms': {
-#                    'field': 'cadi_info.status',
-#                },
-#            },
-#            'sources': {
-#                'terms': {
-#                    'field': 'cadi_info.sources',
-#                },
-#            },
-#            'conference': {
-#                'terms': {
-#                    'field': 'cadi_info.conference',
-#                },
-#            },
-#            'software': {
-#                'terms': {
-#                    'field': 'basic_info.software.name',
-#                },
-#            },
-#            'triggers': {
-#                'terms': {
-#                    'field': 'selection_triggers.trigger',
-#                },
-#            },
+            'facet_cadi_status': {
+                'terms': {
+                    'field': 'cadi_status'
+                }
+            },
+            'facet_conference': {
+                'terms': {
+                    'field': 'conference.keyword',
+                    'exclude': ''
+                }
+            },
+            'final_state_particles': {
+                'nested': {
+                    'path': 'main_measurements.detector_final_state.final_state_particles'
+                },
+                'aggs': {
+                    'facet_particles': {
+                        'terms': {
+                            'field': 'main_measurements.detector_final_state.final_state_particles.object'
+                        },
+                        'aggs': {
+                            'doc_count': {  # use this doc_count instead of normal one (shows count for deposits)
+                                'reverse_nested': {},
+                            },
+                            'facet_particles_object': {
+                                'terms': {
+                                    'field': 'main_measurements.detector_final_state.final_state_particles.object_type.keyword'
+                                },
+                                'aggs': {
+                                    'doc_count': {  # use this doc_count instead of normal one (shows count for deposits)
+                                        'reverse_nested': {},
+                                    },
+                                }
+                            }
+                        }
+                    }
+                }
+            },
         },
-        'post_filters': {
-            'type': terms_filter('_type'),
-            'status': terms_filter('_deposit.status.keyword'),
-#            'cadi_status': terms_filter('cadi_info.status'),
-#            'sources': terms_filter('cadi_info.sources'),
-#            'conference': terms_filter('cadi_info.conference'),
-#            'software': terms_filter('basic_info.software.name'),
-#            'triggers': terms_filter('selection_triggers.trigger')
-        },
-    },
+    'post_filters': {
+        'status': terms_filter('status.keyword'),
+        'type': terms_filter('_type'),
+        'status': terms_filter('_deposit.status.keyword'),
+        'particles': nested_filter('main_measurements.detector_final_state.final_state_particles', 'main_measurements.detector_final_state.final_state_particles.object'),
+        'particles_object': nested_filter('main_measurements.detector_final_state.final_state_particles', 'main_measurements.detector_final_state.final_state_particles.object_type.keyword'),
+        'cadi_status': terms_filter('cadi_status'),
+        'conference': terms_filter('conference'),
+    }
 }
-
-# RECORDS_REST_FACETS.update(DEPOSIT_REST_FACETS)
-
-# #: Endpoints for displaying records.
-# RECORDS_UI_ENDPOINTS = dict(
-#     recid=dict(
-#         pid_type='recid',
-#         route='/records/<pid_value>',
-#         template='invenio_records_ui/detail.html',
-#         record_class='invenio_records_files.api:Record'
-#     ),
-#     recid_preview=dict(
-#         pid_type='recid',
-#         route='/records/<pid_value>/preview/<path:filename>',
-#         view_imp='invenio_previewer.views.preview',
-#         record_class='invenio_records_files.api:Record',
-#     ),
-#     recid_files=dict(
-#         pid_type='recid',
-#         route='/records/<pid_value>/files/<path:filename>',
-#         view_imp='invenio_records_files.utils.file_download_ui',
-#         record_class='invenio_records_files.api:Record',
-#     ),
-# )
+}
 
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
@@ -273,7 +264,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         CAP_COLLAB_EGROUPS,
         SUPERUSER_EGROUPS,
     ),
-    # 'search_factory_imp': 'invenio_records_rest.query.es_search_factory',
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
                              ':json_v1_response'),
@@ -635,6 +625,8 @@ DEPOSIT_UI_ENDPOINT = None
 DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
 _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 
+DEPOSIT_UI_SEARCH_INDEX = '*'
+
 # DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
 DEPOSIT_REST_ENDPOINTS['depid'].update({
     # 'pid_type': 'depid',
@@ -669,11 +661,12 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
             ':deposit_v1_files_response'),
     },
     'search_class': 'cap.modules.deposit.search:DepositSearch',
-    # 'search_factory_imp': 'cap.modules.deposit.query.search_factory',
+    'search_factory_imp': 'cap.modules.search.query'
+    ':cap_search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
     'file_item_route':
-        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
+    '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
     'create_permission_factory_imp': check_oauth2_scope(
         lambda record: CreateDepositPermission(record).can(),
         write_scope.id),
