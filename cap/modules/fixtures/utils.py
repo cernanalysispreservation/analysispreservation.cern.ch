@@ -32,7 +32,7 @@ def add_read_permission_for_egroup(deposit, egroup):
             'type': 'egroup'
         }]
 
-        access = set_egroup_permissions(role, permissions, deposit.id,
+        access = set_egroup_permissions(role, permissions, deposit,
                                         db.session, construct_access())
     db.session.commit()
 

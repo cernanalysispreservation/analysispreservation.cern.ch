@@ -39,7 +39,7 @@ from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 # from invenio_files_rest.errors import MultipartMissingParts
-from invenio_files_rest.models import Bucket, Location
+from invenio_files_rest.models import Bucket
 from invenio_records_files.models import RecordsBuckets
 
 from .errors import EmptyDepositError, WrongJSONSchemaError
@@ -74,22 +74,22 @@ def DEPOSIT_ACTIONS_NEEDS(id):
     }
 
 
-def add_owner_permissions(uuid):
+def add_owner_permissions(deposit):
     with db.session.begin_nested():
 
-        set_user_permissions(
+        access = set_user_permissions(
             current_user,
             [{"op": "add", "action": action}
              for action in DEPOSIT_ACTIONS],
-            uuid,
+            deposit,
             db.session,
-            {},  # TOFIX : Need to pass access object to update user
+            construct_access(),  # TOFIX : Need to pass access object to update user
             force=True
         )
     db.session.commit()
+    return access
 
-
-def set_user_permissions(user, permissions, id, session, access, force=False):
+def set_user_permissions(user, permissions, deposit, session, access, force=False):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -98,12 +98,13 @@ def set_user_permissions(user, permissions, id, session, access, force=False):
         if permission.get("op", "") == "add":
             if (not force and ActionUsers.query.filter_by(
                     action=permission['action'],
-                    user_id=user.id
+                    user_id=user.id,
+                    argument=str(deposit.id)
             ).all()):
                 return
             try:
                 session.add(ActionUsers.allow(
-                    DEPOSIT_ACTIONS_NEEDS(id).get(
+                    DEPOSIT_ACTIONS_NEEDS(deposit.id).get(
                         permission.get("action", ""),
                         ""),
                     user=user
@@ -117,15 +118,15 @@ def set_user_permissions(user, permissions, id, session, access, force=False):
         elif permission.get("op", "") == "remove":
             if (not force and not ActionUsers.query.filter_by(
                     action=permission['action'],
-                    user_id=user.id
+                    user_id=user.id,
+                    argument=str(deposit.id)
             ).all()):
                 return
             try:
                 au = ActionUsers.query.filter(
                     ActionUsers.action == permission.get("action", ""),
-                    ActionUsers.argument == str(id),
+                    ActionUsers.argument == str(deposit.id),
                     ActionUsers.user_id == user.id).first()
-
                 if au:
                     session.delete(au)
 
@@ -134,11 +135,10 @@ def set_user_permissions(user, permissions, id, session, access, force=False):
 
             access.get(permission["action"], {}).get(
                 'user', []).remove(user.id)
-
     return access
 
 
-def set_egroup_permissions(role, permissions, id, session, access):
+def set_egroup_permissions(role, permissions, deposit, session, access):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -147,7 +147,7 @@ def set_egroup_permissions(role, permissions, id, session, access):
         if permission.get("op", "") == "add":
             try:
                 session.add(ActionRoles.allow(
-                    DEPOSIT_ACTIONS_NEEDS(id).get(
+                    DEPOSIT_ACTIONS_NEEDS(deposit.id).get(
                         permission.get("action", ""),
                         ""),
                     role=role
@@ -162,7 +162,7 @@ def set_egroup_permissions(role, permissions, id, session, access):
             try:
                 au = ActionRoles.query.filter(
                     ActionRoles.action == permission.get("action", ""),
-                    ActionRoles.argument == str(id),
+                    ActionRoles.argument == str(deposit.id),
                     ActionRoles.role_id == role.id).first()
 
                 if au:
@@ -267,8 +267,11 @@ class CAPDeposit(Deposit):
 
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
 
-        add_owner_permissions(deposit.id)
+        _access = add_owner_permissions(deposit)
         RecordsBuckets.create(record=deposit.model, bucket=bucket)
+        if _access:
+            deposit["_access"] = _access
+            deposit.commit()
         return deposit
 
     @preserve(result=False, fields=PRESERVE_FIELDS)
@@ -294,7 +297,7 @@ class CAPDeposit(Deposit):
                         _access = set_user_permissions(
                             user,
                             identity.get("permissions"),
-                            self.id,
+                            self,
                             db.session,
                             _access
                         )
@@ -305,7 +308,7 @@ class CAPDeposit(Deposit):
                         _access = set_egroup_permissions(
                             role,
                             identity.get("permissions"),
-                            self.id,
+                            self,
                             db.session,
                             _access
                         )
@@ -315,7 +318,7 @@ class CAPDeposit(Deposit):
                         _access = set_egroup_permissions(
                             role,
                             identity.get("permissions"),
-                            self.id,
+                            self,
                             db.session,
                             _access
                         )

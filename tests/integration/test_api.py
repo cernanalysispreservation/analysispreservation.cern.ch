@@ -204,7 +204,9 @@ def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all
 
         res = json.loads(resp.data)
 
-        assert res == permissions_serialized_deposit
+        assert res == {'permissions': {'deposit-admin': {'roles': [], 'user': ['superuser@cern.ch']}, 
+                                       'deposit-read': {'roles': [], 'user': ['superuser@cern.ch']}, 
+                                       'deposit-update': {'roles': [], 'user': ['superuser@cern.ch']}}}
 
 
 def test_deposit_clone(app, db, users,
