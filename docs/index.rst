@@ -43,7 +43,7 @@ Further Reading
 
 	REST API <references/api>
 	references/glossary
-	JSON Schema <references/schema>
+	JSON and JSON Schema <references/schema>
 	FAQ <references/faq>
 
 .. toctree::
