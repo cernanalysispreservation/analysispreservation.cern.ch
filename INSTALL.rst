@@ -322,7 +322,13 @@ and if that does not work try:
 Docker Installation
 ===================
 
-First, install ``docker-engine`` and ``docker-compose`` on your machine.
+First, install ``docker-engine`` and ``docker-compose`` on your machine. 
+The nginx build will need these files copied:
+
+.. code-block:: shell
+
+   cp ssl.crt docker/nginx/
+   cp ssl.key docker/nginx/
 
 Second, build the CERN Analysis Preservation images, using the development
 configuration:
