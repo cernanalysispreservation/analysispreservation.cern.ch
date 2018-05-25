@@ -37,10 +37,10 @@ from cap.modules.experiments.utils.cms import (CADI_FIELD_TO_CAP_MAP,
                                                get_entries_from_cadi_db)
 
 
-def add_cadi_entries_from_file(file_path):
+def add_cadi_entries_from_file(file_path, limit=None):
     with open(file_path, 'r') as fp:
         entries = json.load(fp)
-        for entry in entries:
+        for entry in entries[0:limit]:
             cadi_id = entry['cadi_id']
             try:  # update if already exists
                 uuid = get_cadi_entry_uuid(cadi_id)
@@ -59,11 +59,11 @@ def add_cadi_entries_from_file(file_path):
                 print('Cadi entry {} added.'.format(cadi_id))
 
 
-def synchronize_cadi_entries():
+def synchronize_cadi_entries(limit=None):
     """Add/update all CADI entries connecting with CADI database."""
 
     entries = get_entries_from_cadi_db()
-    for entry in entries:
+    for entry in entries[0:limit]:
         # remove artefact from code names
         cadi_id = re.sub('^d', '', entry.get('code', None))
 

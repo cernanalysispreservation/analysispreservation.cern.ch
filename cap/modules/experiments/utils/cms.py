@@ -30,11 +30,11 @@ import re
 from datetime import datetime, timedelta
 
 import requests
-from flask import current_app
-
 from cap.modules.deposit.api import construct_access, set_egroup_permissions
 from cap.modules.deposit.errors import DepositDoesNotExist
 from elasticsearch_dsl import Q
+from flask import current_app
+
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_search import RecordsSearch

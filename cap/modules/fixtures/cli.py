@@ -22,16 +22,30 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+
 import click
-from flask_cli import with_appcontext
 
 from cap.modules.experiments.tasks.cms import (add_cadi_entries_from_file,
                                                synchronize_cadi_entries)
+from flask_cli import with_appcontext
+
+from .utils import add_drafts_from_file
 
 
 @click.group()
 def fixtures():
     """Create fixtures."""
+
+
+@fixtures.command('add')
+@click.option('--user', '-u', default='analysis-preservation-support@cern.ch')
+@click.option('--schema', '-s')
+@click.option('--file', '-f', type=click.Path(exists=True))
+@click.option('--limit', '-n', type=int)
+@with_appcontext
+def add(file, schema, user, limit):
+    """Create drafts with metadata from file."""
+    add_drafts_from_file(file, schema, user, limit)
 
 
 @fixtures.group()
@@ -40,15 +54,17 @@ def cadi():
 
 
 @cadi.command('sync')
+@click.option('--limit', '-n', type=int)
 @with_appcontext
-def sync_with_cadi_database():
-    """Add/update all CADI entries connecting with CADI database."""
-    synchronize_cadi_entries()
+def sync_with_cadi_database(limit):
+    """Add/update CADI entries connecting with CADI database."""
+    synchronize_cadi_entries(limit)
 
 
 @cadi.command('add')
+@click.option('--limit', '-n', type=int)
 @click.option('--file', '-f', type=click.Path(exists=True))
 @with_appcontext
-def add_cadi_entry(file):
+def add_cadi_entry(file, limit):
     """Add/update CADI entry from file."""
-    add_cadi_entries_from_file(file)
+    add_cadi_entries_from_file(file, limit)
