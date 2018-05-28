@@ -12,15 +12,8 @@ Tutorials
 
 
 .. toctree::
-	:maxdepth: 1
-	
-	json
-
-.. toctree::
 	:hidden:
 	:maxdepth: 1
 
-	create
-	create-api
 	
 	

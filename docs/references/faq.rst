@@ -22,7 +22,7 @@ If you are searching for a service providing open access data or you have some d
         No. Physics analyses are incredibly complex research work, which is precisely the reason why they are invaluable for preservation. What we are trying to do is help you with repetitive tasks, help you find the information you need, and support your review and approval process so that you can focus on the actual research.
 
 **Do I have to use this rather long form or what other options do I have?**
-        You can use your shell and our "CAP-client" to submit, update or find an analysis. That way, you can entirely circumvent the long submission form. Also, by using collaborative tools like GitLab, submitting your analysis becomes much more comfortable. You can automatically connect your repository to CAP and preserve different versions of the code. These can be for example the tagged versions like "v1.0".
+        You can use your shell and our "CAP-client" to submit, update or find an analysis. That way, you can entirely circumvent the long submission form. Also, by using collaborative tools like GitLab, submitting your analysis becomes much more comfortable. You can automatically connect your repository to CAP and preserve different versions of the code. For information on how to use the CAP client, please consult the client's documentation: https://cap-client.readthedocs.io/en/latest/
         
 **What is the ID for the analysis?**
         We use a unique ID for your analysis to distinguish it from the other analyses available on CAP. You can use it to update your analysis or find information about it via the CAP client. Once you submit your analysis, you will see the ID in the URL of your analysis page on CAP. 
