@@ -192,7 +192,7 @@ RECORDS_REST_FACETS = {
         'aggs': {
             'facet_status': {
                 'terms': {
-                    'field': 'status.keyword'
+                    'field': 'status'
                 }
             },
             'facet_type': {
@@ -205,50 +205,50 @@ RECORDS_REST_FACETS = {
                     'field': 'cadi_status'
                 }
             },
-            'facet_conference': {
+            'facet_publication_status': {
                 'terms': {
-                    'field': 'conference.keyword',
-                    'exclude': ''
+                    'field': 'publication_status.keyword'
                 }
             },
-            'final_state_particles': {
-                'nested': {
-                    'path': 'main_measurements.detector_final_state.final_state_particles'
+            "particles": {
+                "nested": {
+                    "path": "main_measurements.signal_event_election.physics_objects"
                 },
-                'aggs': {
-                    'facet_particles': {
-                        'terms': {
-                            'field': 'main_measurements.detector_final_state.final_state_particles.object'
+                "aggs": {
+                    "facet_physics_objects": {
+                        "terms": {
+                            "field": "main_measurements.signal_event_election.physics_objects.object",
+                            "exclude": ""
                         },
-                        'aggs': {
-                            'doc_count': {  # use this doc_count instead of normal one (shows count for deposits)
-                                'reverse_nested': {},
+                        "aggs": {
+                            "doc_count": {
+                                "reverse_nested": {}
                             },
-                            'facet_particles_object': {
-                                'terms': {
-                                    'field': 'main_measurements.detector_final_state.final_state_particles.object_type.keyword'
+                            "facet_physics_objects_type": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_election.physics_objects.object_type.keyword"
                                 },
-                                'aggs': {
-                                    'doc_count': {  # use this doc_count instead of normal one (shows count for deposits)
-                                        'reverse_nested': {},
-                                    },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            },
+            }
         },
-    'post_filters': {
-        'status': terms_filter('status.keyword'),
-        'type': terms_filter('_type'),
-        'status': terms_filter('_deposit.status.keyword'),
-        'particles': nested_filter('main_measurements.detector_final_state.final_state_particles', 'main_measurements.detector_final_state.final_state_particles.object'),
-        'particles_object': nested_filter('main_measurements.detector_final_state.final_state_particles', 'main_measurements.detector_final_state.final_state_particles.object_type.keyword'),
-        'cadi_status': terms_filter('cadi_status'),
-        'conference': terms_filter('conference'),
+        'post_filters': {
+            'type': terms_filter('_type'),
+            'status': terms_filter('status'),
+            'cadi_status': terms_filter('cadi_status'),
+            'publication_status': terms_filter('publication_status.keyword'),
+            'conference': terms_filter('conference'),
+            'physics_objects': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object'),
+            'physics_objects_type': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object_type.keyword'),
+        }
     }
-}
 }
 
 #: Records REST API endpoints.

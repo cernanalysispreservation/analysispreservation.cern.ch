@@ -1,0 +1,68 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Relations",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "relation_type": {
+                "type": "string",
+                "title": "Relation Type",
+                "enum": [
+                    "charge",
+                    "angle",
+                    "invariant_mass",
+                    "transverse_mass"
+                ]
+            },
+            "charge_relation": {
+                "type": "string",
+                "title": "Charge",
+                "enum":[
+                    "same_sign",
+                    "opposite_sign"
+                ]
+            },
+            "angle_relation": {
+                "type":"string",
+                "pattern": "^[\\d\\.]+$",
+                "title": "Degrees"
+            },
+            "invariant_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                    "lower_range": {
+                        "type": "number",
+                        "title": "<"
+                    },
+                    "upper_range": {
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title": ">"
+                    }
+                }
+            },
+            "transverse_mass": {
+                "title": "GeV",
+                "type": "object",
+                "properties": {
+                    "lower_range": {
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title": "<"
+                    },
+                    "upper_range": {
+                        "type":"string",
+                        "pattern": "^[\\d\\.]+$",
+                        "title": ">"
+                    }
+                }
+            },
+            "physics_objects": {
+                "type": "string",
+                "title": "Physics Objects Available"
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Information from CADI database",
+    "description": "CADI info",
+    "type": "object",
+    "id": "cadi_info",
+    "properties": {
+        "created": {
+            "title": "Created",
+            "type": "string"
+        },
+        "paper": {
+            "title": "Paper",
+            "type": "string"
+        },
+        "pas": {
+            "title": "PAS",
+            "type": "string"
+        },
+        "twiki": {
+            "title": "Twiki",
+            "type": "string"
+        },
+        "contact": {
+            "title": "Contact Person",
+            "type": "string"
+        },
+        "description": {
+            "title": "Description",
+            "type": "string"
+        },
+        "name": {
+            "title": "Name",
+            "type": "string"
+        },
+        "publication_status": {
+            "title": "Publication Status",
+            "type": "string"
+        },
+        "status": {
+            "title": "Status",
+            "type": "string"
+        }
+    }         
+}

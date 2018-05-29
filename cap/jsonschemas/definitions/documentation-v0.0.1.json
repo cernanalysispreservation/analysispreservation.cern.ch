@@ -4,10 +4,6 @@
   "description": "Add documentation",
   "type": "object",
   "properties": {
-    "cadi_id": {
-      "title": "CADI ID",
-      "type": "string"
-    },
     "url": {
       "title": "URL",
       "type": "string"

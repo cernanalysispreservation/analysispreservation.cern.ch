@@ -12,13 +12,72 @@
                     "type": "date",
                     "copy_to": "created"
                 },
+                "_deposit": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            },
+                            "copy_to": "status"
+                        }
+                    }
+                },
+                "basic_info": {
+                    "type": "object",
+                    "properties": {
+                        "cadi_id": {
+                            "type": "keyword",
+                            "copy_to": "cadi_id"
+                        },
+                        "ana_notes": {
+                            "type": "keyword",
+                            "copy_to": "ana_note"
+                        },
+                        "created": {
+                            "type": "date"
+                        }
+                    }
+                },
+                "cadi_status": {
+                    "type": "keyword"
+                },
+                "status": {
+                    "type": "keyword"
+                },
+                "cadi_info": {
+                    "type": "object",
+                    "properties": {
+                        "status": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            },
+                            "copy_to": "cadi_status"
+                        },
+                        "publication_status": {
+                            "type": "text",
+                            "fields": {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            },
+                            "copy_to": "publication_status"
+                        }
+                    }
+                },
                 "main_measurements": {
                     "type": "nested",
                     "properties": {
-                        "detector_final_state": {
+                        "signal_event_election": {
                             "type": "object",
                             "properties": {
-                                "final_state_particles": {
+                                "physics_objects": {
                                     "type": "nested",
                                     "properties": {
                                         "object": {
@@ -26,19 +85,54 @@
                                         },
                                         "electron_type": {
                                             "type": "keyword",
-                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
                                         },
                                         "muon_type": {
                                             "type": "keyword",
-                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
                                         },
                                         "tau_type": {
                                             "type": "keyword",
-                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
                                         },
                                         "jet_type": {
                                             "type": "keyword",
-                                            "copy_to": "main_measurements.detector_final_state.final_state_particles.object_type"
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                                        },
+                                        "number": {
+                                            "type": "object",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "veto": {
+                                    "type": "nested",
+                                    "properties": {
+                                        "object": {
+                                            "type": "keyword"
+                                        },
+                                        "electron_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                                        },
+                                        "muon_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                                        },
+                                        "tau_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                                        },
+                                        "jet_type": {
+                                            "type": "keyword",
+                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
                                         },
                                         "number": {
                                             "type": "object",

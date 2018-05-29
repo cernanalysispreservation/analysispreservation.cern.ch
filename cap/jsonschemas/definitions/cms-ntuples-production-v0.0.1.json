@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "required": ["code_base", "processing_steps"],
+    "properties": {
+        "code_base": {
+            "title": "Your Code",
+            "type": "string",
+            "x-cap-file": {}
+        },
+        "processing_steps": {
+            "title": "Processing Steps",
+            "type": "array",
+            "required": ["configuration_file", "run_instructions", "output_data"],
+            "items": {
+                "title": "Step",
+                "type": "object",
+                "properties": {
+                    "configuration_file": {
+                        "title": "Configuration File",
+                        "placeholder": "E.g. my_job_config.py",
+                        "type": "string",
+                        "x-cap-file": {}
+                    },
+                    "run_instructions": {
+                        "title": "Run Instructions",
+                        "description": "Provide run instructions",
+                        "placeholder": "E.g. README.md",
+                        "type": "string",
+                        "x-cap-file": {}
+                    },
+                    "output_data": {
+                        "title": "Output",        
+                        "placeholder": "E.g. myfile-data.root",
+                        "type": "string",
+                        "x-cap-file": {}
+                    }
+                }
+            }
+        }
+    }
+}

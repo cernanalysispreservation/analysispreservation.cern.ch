@@ -1,32 +1,129 @@
 {
-  "ui:order": ["cms_questionnaire", "basic_info", "main_measurements","additional_resources","*"],
-  "cms_questionnaire": {
-    "ui:field": "importDataField"
-  },
-  "basic_info": {
-    "ui:object": "accordionObjectField",
-    "os": {
+    "ui:order": ["basic_info", "cadi_info", "input_data", "ntuples_production", "main_measurements", "auxiliary_measurements", "background_estimations", "systematic_uncertainties", "final_results", "additional_resources", "statistical_treatment", "*"],
+    "basic_info": {
+        "ui:object": "accordionObjectField",
+        "ui:order": ["cadi_id", "abstract", "conclusion", "*"]
+    },
+    "cadi_info": {
+        "ui:object": "accordionObjectField",
+        "ui:order": ["name", "description", "contact", "twiki", "created", "paper", "pas", "publication_status", "status"],
+        "ui:disabled": "true"
+    },
+    "input_data": {
+        "ui:object": "accordionObjectField",
+        "ui:order": ["primary_datasets", "mc_sig_datasets", "mc_bg_datasets", "triggers", "json_files", "*"],
+        "primary_datasets": {
+            "items": {
+                "ui:order": ["path", "ranges"],
+                "path":{
+                    "ui:widget":"autocomplete",
+                    "ui:options": {
+                        "url": "api/cms/datasets"
+                    }
+                }
+            }
+        },
+        "triggers": {
+            "items": {
+                "ui:order": ["trigger", "prescale"]
+            }
+        },
+        "mc_sig_datasets": {
+            "items": {
+                "path":{
+                    "ui:widget":"autocomplete",
+                    "ui:options": {
+                        "url": "api/cms/datasets"
+                    }
+                }
+            }
+        },
+        "mc_bg_datasets": {
+            "items": {
+                "path":{
+                    "ui:widget":"autocomplete",
+                    "ui:options": {
+                        "url": "api/cms/datasets"
+                    }
+                }
+            }
+        }
+    },
+    "ntuples_production": {
+        "ui:array": "AccordionArrayField",
+        "items": {
+            "ui:order": ["code_base", "processing_steps"],
+            "processing_steps": {
+                "items": {
+                    "ui:order": ["configuration_file", "run_instructions", "output_data"]
+                }
+            }
+        }
+    },
+    "statistical_treatment": {
+        "statistics_questionnare": {
+            "ui:field": "importDataField"
+        }
+    },
+    "main_measurements": {
+        "ui:array": "AccordionArrayField",
+        "items": {
+            "ui:order": ["description", "detailed_desciption", "signal_event_election", "processing_steps", "analysis_code", "*"],
+            "processing_steps": {
+                "items": {
+                    "ui:order": ["configuration_file", "run_instructions", "output_data"]
+                }
+            },
+            "signal_event_election": {
+                "physics_objects": {
+                    "items": {
+                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                    }
+                },
+                "veto": {
+                    "items": {
+                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                    }
+                }
+            }
+        }
+    },
+    "auxiliary_measurements": {
+        "ui:array": "AccordionArrayField",
+        "items": {
+            "ui:order": ["type", "links"]
+        }
+    },
+    "systematic_uncertainties": {
+        "ui:array": "AccordionArrayField",
+        "items": {
+            "ui:order": ["type", "physics_object"]
+        }
+    },
+    "background_estimations": {
+        "ui:array": "AccordionArrayField",
+        "items": {
+            "ui:order": ["type", "samples", "method", "control_regions"],
+            "control_regions": {
+                "items": {
+                    "physics_objects": {
+                        "items": {
+                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                        }
+                    },
+                    "veto": {
+                        "items": {
+                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "additional_resources": {
+        "ui:object": "accordionObjectField"
+    },
+    "final_results": {
+        "ui:object": "accordionObjectField"
     }
-  },
-  "main_measurements": {
-    "ui:array": "AccordionArrayField"
-  },
-  "additional_resources": {
-    "ui:object": "accordionObjectField",
-    "os": {
-    }
-  },
-  "auxiliary_measurements": {
-    "ui:array": "AccordionArrayField"
-
-  },
-  "input_code_output": {
-    "ui:array": "AccordionArrayField"
-  },
-  "input_data": {
-    "ui:object": "accordionObjectField"
-  },
-  "post_n_tuple": {
-    "ui:object": "accordionObjectField"
-  }
 }
