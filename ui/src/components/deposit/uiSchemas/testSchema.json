@@ -1,0 +1,22 @@
+{
+  "ui:order": ["simple_number", "*"],
+  "object_with_nested_objects": {
+    "nested_object": {
+      "ui:object": "accordionObjectField"
+    }
+  },
+  "basic_object": {
+    "simple_number": {
+      "ui:widget": "updown"
+    }
+  },
+  "simple_number": {
+    "ui:widget": "updown"
+  },
+  "enum_of_strings": {
+    "ui:widget": "radio"
+  },
+  "enum_of_strings_multiple": {
+    "ui:widget": "checkboxes"
+  }
+}

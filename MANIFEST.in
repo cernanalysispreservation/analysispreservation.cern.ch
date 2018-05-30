@@ -25,3 +25,6 @@ recursive-include scripts *.py
 recursive-include scripts *.sh
 recursive-include tests *.py
 recursive-include docs *
+
+exclude ui
+recursive-exclude ui *

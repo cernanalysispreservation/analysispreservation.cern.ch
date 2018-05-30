@@ -39,7 +39,7 @@ services:
       - rabbitmq
       - elasticsearch
       - redis
-      - wdb
+      # - wdb
     command: gunicorn -b 0.0.0.0:5000 --log-level debug  cap.wsgi:application --reload --timeout 3600
     volumes:
       - ".:/code"
@@ -66,12 +66,12 @@ services:
       - postgresql
       - rabbitmq
       - elasticsearch
-      - wdb
+      # - wdb
   ui:
-    build: ./docker/ui
+    build: ./ui
     image: cap/ui
     volumes:
-      - './docker/ui:/usr/src/app'
+      - './ui:/usr/src/app'
       - '/usr/src/app/node_modules'
     ports:
       - '3000:3000'
@@ -111,30 +111,30 @@ services:
         - web
         - ui
 
-  # DevTools (wdb, redis-commander, flower)
-  wdb:
-    extends:
-      file: docker-services.yml
-      service: wdb
-  redis-commander:
-    extends:
-      file: docker-services.yml
-      service: redis-commander
-  flower:
-    extends:
-      file: docker-services.yml
-      service: app
-    build:
-      context: .
-      args:
-        DEBUG: "True"
-    command: 'flower -A cap.celery --port=5555'
-    volumes:
-      - ".:/code"
-    depends_on:
-      - redis
-      - postgresql
-      - rabbitmq
-      - elasticsearch
-    ports:
-      - "49555:5555"
+  # # DevTools (wdb, redis-commander, flower)
+  # wdb:
+  #   extends:
+  #     file: docker-services.yml
+  #     service: wdb
+  # redis-commander:
+  #   extends:
+  #     file: docker-services.yml
+  #     service: redis-commander
+  # flower:
+  #   extends:
+  #     file: docker-services.yml
+  #     service: app
+  #   build:
+  #     context: .
+  #     args:
+  #       DEBUG: "True"
+  #   command: 'flower -A cap.celery --port=5555'
+  #   volumes:
+  #     - ".:/code"
+  #   depends_on:
+  #     - redis
+  #     - postgresql
+  #     - rabbitmq
+  #     - elasticsearch
+  #   ports:
+  #     - "49555:5555"

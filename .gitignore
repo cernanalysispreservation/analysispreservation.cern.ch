@@ -74,3 +74,6 @@ cap.env
 /cap/jsonschemas_gen/*
 
 cap/test.db
+
+# UI npn modules
+ui/node_modules/*
