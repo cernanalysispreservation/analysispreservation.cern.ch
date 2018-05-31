@@ -73,11 +73,11 @@ export class CreateDeposit extends React.Component {
 
   _saveData() {
     if (this.props.draft_id && !this.props.published_id)
-      this.props.updateDraft({ ...this.props.formData, $search: this.props.draft.$search }, this.props.draft_id, this.props.formData.schema || null);
+      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);
     else if (this.props.match.params.schema_id)
       this.props.createDraft(this.props.formData, this.props.match.params.schema_id);
     else if (this.props.published_id && this.props.draft_id)
-      this.props.editPublished({ ...this.props.formData, $search: this.props.draft.$search }, this.props.match.params.schema_id, this.props.draft_id);
+      this.props.editPublished({ ...this.props.formData, $schema: this.props.draft.$schema }, this.props.match.params.schema_id, this.props.draft_id);
   }
 
   _publishData() {

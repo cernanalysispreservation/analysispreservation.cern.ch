@@ -138,7 +138,8 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'message'], { status: "ok" , msg: "Created!"})
         .setIn(['current_item', 'error'], null)
         .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'data'], action.draft)
+        .setIn(['current_item', 'data'], action.draft.metadata)
+        .setIn(['current_item', 'formData'], action.draft.metadata)
         .setIn(['current_item', 'links'], Map(action.draft.links));
     case CREATE_DRAFT_ERROR:
       return state

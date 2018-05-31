@@ -27,7 +27,9 @@
 from __future__ import absolute_import, print_function
 
 import copy
+import requests
 
+from celery import shared_task
 from flask import current_app, request
 from werkzeug.local import LocalProxy
 
@@ -39,7 +41,7 @@ from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 # from invenio_files_rest.errors import MultipartMissingParts
-from invenio_files_rest.models import Bucket
+from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records_files.models import RecordsBuckets
 
 from .errors import EmptyDepositError, WrongJSONSchemaError
@@ -76,7 +78,6 @@ def DEPOSIT_ACTIONS_NEEDS(id):
 
 def add_owner_permissions(deposit):
     with db.session.begin_nested():
-
         access = set_user_permissions(
             current_user,
             [{"op": "add", "action": action}
@@ -88,6 +89,7 @@ def add_owner_permissions(deposit):
         )
     db.session.commit()
     return access
+
 
 def set_user_permissions(user, permissions, deposit, session, access, force=False):
     _permissions = (p for p in permissions if p.get(
@@ -183,6 +185,31 @@ def construct_access():
         access[a] = {"user": [], "roles": []}
 
     return access
+
+
+@shared_task(max_retries=2)
+def download_url(pid, url, filename):
+    """Task for fetching external files/repos."""
+    record = CAPDeposit.get_record(pid)
+
+    if url.startswith("root://"):
+        from xrootdpyfs.xrdfile import XRootDPyFile
+        response = XRootDPyFile(url, mode='r-')
+        total = response.size
+    else:
+        try:
+            from cap.modules.repoimporter.repo_importer import RepoImporter
+            link = RepoImporter.create(url).archive_repository()
+            response = requests.get(link, stream=True).raw
+            total = int(response.headers.get('Content-Length'))
+        except TypeError as exc:
+            download_url.retry(exc=exc, countdown=10)
+    record.files[filename].file.set_contents(
+        response,
+        default_location=record.files.bucket.location.uri,
+        size=total
+    )
+    db.session.commit()
 
 
 class CAPDeposit(Deposit):
@@ -338,6 +365,27 @@ class CAPDeposit(Deposit):
                 raise MultipartMissingParts()
 
         return super(CAPDeposit, self).publish(*args, **kwargs)
+
+    @mark_as_action
+    def upload(self, pid=None, *args, **kwargs):
+        data = request.get_json()
+        filename = self.constructFileName(data['url'])
+        if request:
+            _, record = request.view_args.get('pid_value').data
+            record_id = str(record.id)
+            obj = ObjectVersion.create(
+                bucket=record.files.bucket, key=filename
+            )
+            obj.file = FileInstance.create()
+            record.files.flush()
+            record.files[filename]['source_url'] = data['url']
+
+            download_url.delay(record_id, data['url'], filename)
+
+        return self
+
+    def constructFileName(self, file):
+        return file.split('/')[-1]
 
     @index
     @mark_as_action

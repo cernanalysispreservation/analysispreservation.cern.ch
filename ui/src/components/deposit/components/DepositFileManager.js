@@ -23,12 +23,26 @@ import {
   Toast
 } from 'grommet';
 
-import { toggleFilemanagerLayer, initDraft, uploadFile } from '../../../actions/drafts';
+import { toggleFilemanagerLayer, initDraft, uploadFile, uploadViaUrl } from '../../../actions/drafts';
 import LinkIcon from 'grommet/components/icons/base/Link';
 
 import FileList from './FileList';
 
+import CleanForm from '../form/CleanForm';
+
 import Dropzone from 'react-dropzone';
+
+const schema = {
+  type: "string"
+};
+
+const uiSchema = {
+  "ui:placeholder": "Please provide a valid file url"
+};
+
+const uiSchemaRepoUpload = {
+  "ui:placeholder": "Please provide a valid repository url"
+};
 
 class FileManager extends React.Component {
   constructor(props) {
@@ -36,12 +50,6 @@ class FileManager extends React.Component {
     this.state = {
       selected: null
     }
-  }
-
-  _onSubmit = (schema, data) => {
-    event.preventDefault();
-
-    this.props.initDraft(schema, data.formData )
   }
 
   actionWithFile = (key) => {
@@ -108,10 +116,20 @@ class FileManager extends React.Component {
                       </Box>
                       <Heading tag="h5" strong={true}>Upload from URL</Heading>
                       <Box>
-                        <FormField
-                          label="URL to upload">
-                          <TextInput />
-                        </FormField>
+                        <CleanForm
+                          schema={schema}
+                          uiSchema={uiSchema}
+                          onSubmit={(data) => {
+                            this.props.uploadViaUrl(this.props.draft_id, data.formData)
+                          }}
+                        >
+                          <Box margin={{top:'small'}}>
+                            <Button label='Upload'
+                              type='submit'
+                              primary={true}
+                            />
+                          </Box>
+                        </CleanForm>
                       </Box>
                     </Box>
                   </Tab>
@@ -119,56 +137,20 @@ class FileManager extends React.Component {
                     <Box pad="medium">
                       <Heading tag="h5" strong={true}>Upload from Gitlab CERN/Github</Heading>
                       <Box direction="row">
-                        <Form>
-                        <FormField
-                          label="Location">
-                          <Select
-                            placeHolder="None"
-                            options={["CERN Gitlab", "Github"]}
-                            value={undefined}
-                          />
-                        </FormField>
-                        <Box direction="row">
-                          <FormField
-                            label="User/Organisation"
-                            >
-                            <TextInput placeHolder="johndoe"/>
-                          </FormField>
-                          <FormField
-                            label="Repo">
-                            <TextInput placeHolder="myanalysis"/>
-                          </FormField>
-                        </Box>
-                        </Form>
-
-                      </Box>
-                    </Box>
-                  </Tab>
-                  <Tab title="Image Upload">
-                    <Box pad="medium">
-                      <Heading tag="h5" strong={true}>Upload your image container from CERN Gitlab</Heading>
-                      <Box direction="row">
-                        <Form>
-                        <FormField
-                          label="Location">
-                          <Select
-                            placeHolder="None"
-                            options={["CERN Gitlab", "Github"]}
-                            value={undefined}
-                          />
-                        </FormField>
-                        <Box direction="row">
-                          <FormField
-                            label="User/Organisation"
-                            >
-                            <TextInput placeHolder="johndoe"/>
-                          </FormField>
-                          <FormField
-                            label="Repo">
-                            <TextInput placeHolder="myanalysis"/>
-                          </FormField>
-                        </Box>
-                        </Form>
+                          <CleanForm
+                            schema={schema}
+                            uiSchema={uiSchemaRepoUpload}
+                            onSubmit={(data) => {
+                              this.props.uploadViaUrl(this.props.draft_id, data.formData)
+                            }}
+                          >
+                          <Box margin={{top:'small'}}>
+                            <Button label='Upload'
+                              type='submit'
+                              primary={true}
+                            />
+                          </Box>
+                        </CleanForm>
                       </Box>
                     </Box>
                   </Tab>
@@ -203,7 +185,8 @@ function mapStateToProps(state) {
     activeLayer: state.drafts.get("fileManagerActiveLayer"),
     selectableLayer: state.drafts.get("fileManagerLayerSelectable"),
     selectableActionLayer: state.drafts.get("fileManagerLayerSelectableAction"),
-    links: state.drafts.getIn(['current_item','links'])
+    links: state.drafts.getIn(['current_item','links']),
+    draft_id: state.drafts.getIn(['current_item', 'id'])
   };
 }
 
@@ -211,7 +194,8 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     initDraft: (schema, title) => dispatch(initDraft(schema, title)),
-    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file))
+    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
+    uploadViaUrl: (draft_id, url) => dispatch(uploadViaUrl(draft_id, url))
   };
 }
 

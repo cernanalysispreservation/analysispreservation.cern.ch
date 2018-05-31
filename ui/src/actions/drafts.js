@@ -323,7 +323,6 @@ export function createDraft(data={}, schema) {
     dispatch(createDraftRequest());
 
     let uri = '/api/deposits/';
-
     data['$ana_type'] = schema;
 
     axios.post(uri, data)
@@ -346,9 +345,9 @@ export function createDraft(data={}, schema) {
 export function editPublished(data={}, schema, draft_id) {
   return dispatch => {
     dispatch(editPublishedRequest());
-
+    
     let uri = `/api/deposits/${draft_id}/actions/edit`;
-
+    
     axios.post(uri)
       .then((response) => {
         data["$schema"] = schema;
@@ -364,12 +363,12 @@ export function editPublished(data={}, schema, draft_id) {
   };
 }
 
-export function updateDraft(data, draft_id, schema) {
+export function updateDraft(data, draft_id) {
   return dispatch => {
     dispatch(updateDraftRequest());
-
+    
     let uri = `/api/deposits/${draft_id}`;
-    data["$schema"] = schema;
+    
     axios.put(uri, data)
       .then(function(response){
         dispatch(updateDraftSuccess(draft_id, response.data));
@@ -503,6 +502,22 @@ export function uploadFile(bucket_link, file) {
     });
 
     oReq.send(file);
+  };
+}
+
+export function uploadViaUrl(draft_id, urlToGrab) {
+  return dispatch => {
+    dispatch(uploadFileRequest(urlToGrab));
+
+    let uri = `/api/deposits/${draft_id}/actions/upload`;
+    let data = { url: urlToGrab}
+    axios.post(uri, data)
+      .then(function(response){
+        dispatch(uploadFileSuccess(urlToGrab, response.data));
+      })
+      .catch(function(error) {
+        dispatch(uploadFileError(urlToGrab, error.message));
+      });
   };
 }
 
