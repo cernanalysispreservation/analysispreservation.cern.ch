@@ -60,6 +60,10 @@
           "output_eos_location": {
             "title": "Output eos location",
             "type": "string"
+          },
+          "wg_production_bk_path": {
+            "title": "WG Production Bookkeeping path",
+            "type": "string"
           }
         },
         "title": "ntuple/userDST-production",
@@ -141,18 +145,22 @@
       "type": "object"
     },
     "stripping_turbo_selection": {
-      "title": "Stripping/Turbo selection",
+      "title": "Stripping/Turbo selections",
       "type": "array",
       "items": {
+        "title": "Selection",
         "type": "object",
         "properties": {
           "name": {
             "title": "Custom name",
             "type": "string"
           },
-          "bookkeping_location": {
-            "title": "Bookkeeping location",
-            "type": "string"
+          "bookkeping_locations": {
+            "title": "Bookkeeping locations",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "stripping_turbo_line": {
             "title": "Stripping/TURBO line",
@@ -174,12 +182,36 @@
       "type": "object",
       "properties": {
         "gitlab_link": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
+          "type": "string",
+          "x-cap-file": {},
           "title": "Gitlab repository of the analysis"
         },
+        "docker_registry": {
+          "type": "string",
+          "x-cap-file": {},
+          "title": "Docker registry link of the analysis"
+        },
         "basic_script": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
-          "title": "Basic script to start the analysis"
+          "type": "object",
+          "title": "Basic script",
+          "properties": {
+            "script": {
+              "type": "string",
+              "x-cap-file": {},
+              "title": "File/Script"
+            },
+            "command": {
+              "type": "string",
+              "title": "Command to execute the analysis"
+            }
+          }
+        },
+        "additional_repos": {
+          "type": "array",
+          "title": "Additional Repositories",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

@@ -2,13 +2,13 @@
   "ui:order": ["basic_info", "stripping_turbo_selection", "ntuple_userdst_production", "user_analysis", "additional_resources"],
   "basic_info": {
     "ui:order": [
-      "analysis_title", 
+      "analysis_title",
       "measurement",
-      "analysis_proponents", 
-      "analysis_status", 
-      "reviewers", 
-      "review_egroup", 
-      "institutes", 
+      "analysis_proponents",
+      "analysis_status",
+      "reviewers",
+      "review_egroup",
+      "institutes",
       "keywords"
     ],
     "ui:object": "accordionObjectField"
@@ -16,10 +16,10 @@
   "stripping_turbo_selection": {
     "items": {
       "ui:order": [
-          "name", 
-          "bookkeping_location",
-          "stripping_turbo_line",
-          "dataset_type"
+          "dataset_type",
+          "name",
+          "bookkeping_locations",
+          "stripping_turbo_line"
       ]
     },
     "ui:array": "AccordionArrayField"
@@ -27,13 +27,14 @@
   "ntuple_userdst_production": {
     "items": {
       "ui:order": [
-          "name", 
+          "name",
           "input_dataset",
           "davinci_version",
           "platform",
           "davinci_script",
           "ganga_script",
-          "output_eos_location"
+          "output_eos_location",
+          "wg_production_bk_path"
       ]
     },
     "ui:array": "AccordionArrayField"
@@ -43,7 +44,7 @@
   },
   "additional_resources": {
     "ui:order": [
-          "internal_discussions", 
+          "internal_discussions",
           "presentations",
           "publications",
           "documentations"
