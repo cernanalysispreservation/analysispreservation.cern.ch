@@ -29,7 +29,11 @@ from __future__ import absolute_import, print_function
 from urllib import unquote
 
 import requests
+from elasticsearch import Elasticsearch
 from flask import Blueprint, current_app, jsonify, request
+
+from invenio_search import RecordsSearch
+from invenio_search.proxies import current_search_client as es
 
 from ..permissions.cms import cms_permission
 
@@ -55,3 +59,27 @@ def get_analysis_from_cadi():
         response = {}
 
     return jsonify(response)
+
+
+@cms_bp.route('/datasets', methods=['GET'])
+@cms_permission.require(403)
+def get_datasets_names():
+    term = request.args.get('query', '')
+    query = {
+        "suggest": {
+            "name-suggest": {
+                "prefix": term,
+                "completion": {
+                    "field": "name"
+                }
+            }
+        }
+    }
+
+    res = es.search(index="das-datasets",
+                    terminate_after=10,
+                    body=query)
+
+    suggestions = res['suggest']['name-suggest'][0]['options']
+    res = [x['_source']['name'] for x in suggestions]
+    return jsonify(res)
