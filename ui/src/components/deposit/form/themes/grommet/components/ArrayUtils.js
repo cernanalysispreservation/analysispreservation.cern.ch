@@ -21,12 +21,17 @@ let ArrayUtils = function (props) {
       margin="none" pad="none"
         onClick={hasRemove ? onDropIndexClick(index) : null}
         icon={<FormTrashIcon margin="none" pad="none" />} />
-      <Button
-        onClick={hasMoveDown ? onReorderClick(index, index+1) : null}
-        icon={<FormDownIcon margin="none" pad="none" />} />
-      <Button
-        onClick={hasMoveUp ? onReorderClick(index, index-1) : null}
-        icon={<FormUpIcon margin="none" pad="none" />} />
+      {
+        this.props.reorder ?
+        [
+          <Button
+            onClick={hasMoveDown ? onReorderClick(index, index+1) : null}
+            icon={<FormDownIcon margin="none" pad="none" />} />,
+          <Button
+            onClick={hasMoveUp ? onReorderClick(index, index-1) : null}
+            icon={<FormUpIcon margin="none" pad="none" />} />
+        ] : null
+      }
     </Box>
   );
 };

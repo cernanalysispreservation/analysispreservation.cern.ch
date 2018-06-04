@@ -10,6 +10,7 @@ import {
 
 
 import FormLayer from '../components/FormLayer';
+import ItemBrief from '../components/ItemBrief';
 
 import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
 import FormUpIcon from 'grommet/components/icons/base/FormUp';
@@ -45,7 +46,7 @@ class ArrayFieldTemplate extends React.Component {
   render() {
     return (
         <Box flex={false} size={{"height": {"max": "small"} }}>
-          <List >
+          <List>
             { this.props.items.length > 0 ?
               this.props.items.map(element => (
                 <ListItem key={element.index} separator="none" flex={true} margin="none" pad="none" justify="between">
@@ -56,8 +57,8 @@ class ArrayFieldTemplate extends React.Component {
                     remove={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                   />
                   <Box flex={true} direction="row" wrap={false}>
-                    <Box onClick={this._showLayer.bind(this, element.index)}  flex={true} pad="small">
-                      {JSON.stringify(element.children.props.formData)}
+                    <Box  onClick={this._showLayer.bind(this, element.index)} flex={true} pad="small">
+                      <ItemBrief index={element.index} item={element.children.props.formData} label={this.props.uiSchema.label || (this.props.title || Item)} />
                     </Box>
                     <Box direction="row" justify="between">
                       <Button
@@ -66,12 +67,17 @@ class ArrayFieldTemplate extends React.Component {
                       <Button
                         onClick={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                         icon={<FormTrashIcon />} />
-                      <Button
-                        onClick={element.hasMoveDown ? element.onReorderClick(element.index, element.index+1) : null}
-                        icon={<FormDownIcon />} />
-                      <Button
-                        onClick={element.hasMoveUp ? element.onReorderClick(element.index, element.index-1) : null}
-                        icon={<FormUpIcon />} />
+                        {
+                          this.props.reorder ?
+                          [
+                            <Button
+                              onClick={element.hasMoveDown ? element.onReorderClick(element.index, element.index+1) : null}
+                              icon={<FormDownIcon margin="none" pad="none" />} />,
+                            <Button
+                              onClick={element.hasMoveUp ? element.onReorderClick(element.index, element.index-1) : null}
+                              icon={<FormUpIcon margin="none" pad="none" />} />
+                          ] : null
+                        }
                     </Box>
                   </Box>
                 </ListItem>
