@@ -1,0 +1,162 @@
+[
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/example/dataset/number/1"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/example/dataset/number/2"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/another_example/dataset/number/12/12"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/another_example/dataset/number/1"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/another_example/dataset/number/2"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/another_example_more_complex/dataset/some_number/1"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/another_example_more_complex/dataset/some_numbers_here/1"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/more_examples/dataset/number/2"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "/more_examples/dataset/number/2"
+            }
+        ]
+    },
+    {
+        "das": {
+            "expire": 1496418568,
+            "instance": "some_instance",
+            "primary_key": "dataset.name",
+            "record": 1,
+            "services": [
+                "service"
+            ]
+        },
+        "dataset": [
+            {
+                "name": "1/even_more_examples/dataset/number/2"
+            }
+        ]
+    }
+]

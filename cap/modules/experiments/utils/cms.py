@@ -30,14 +30,17 @@ import re
 from datetime import datetime, timedelta
 
 import requests
-from cap.modules.deposit.api import construct_access, set_egroup_permissions
-from cap.modules.deposit.errors import DepositDoesNotExist
+from elasticsearch import helpers
 from elasticsearch_dsl import Q
 from flask import current_app
 
+from cap.modules.deposit.api import construct_access, set_egroup_permissions
+from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.fixtures.utils import bulk_index_from_source
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_search import RecordsSearch
+from invenio_search.proxies import current_search_client as es
 
 CADI_FIELD_TO_CAP_MAP = {
     "name": "name",
@@ -51,6 +54,19 @@ CADI_FIELD_TO_CAP_MAP = {
     "status": "status",
 }
 
+
+DAS_DATASETS_MAPPING = {
+    "mappings": {
+        "doc": {
+            "properties": {
+                "name": {
+                    "type": "completion",
+                    "analyzer": "standard"
+                }
+            }
+        }
+    }
+}
 
 def add_read_permission_for_cms_members(deposit):
     with db.session.begin_nested():
@@ -136,3 +152,43 @@ def get_updated_cadi_lines(from_date=None, until_date=None):
     data = resp.json().get('data', None)
 
     return data
+
+
+def cache_das_datasets_in_es_from_file(file):
+    """
+    Cache datasets names from DAS in ES,
+    so can be used for autocompletion.
+
+    As change has to be tranparent
+    * put everything under index with a different name
+    * redirect alias to point to newly created index
+    * remove old index
+    """
+    if es.indices.exists('das-datasets-v1'):
+        old_index, new_index = ('das-datasets-v1',
+                                'das-datasets-v2')
+    else:
+        old_index, new_index = ('das-datasets-v2',
+                                'das-datasets-v1')
+
+    # create new index
+    es.indices.create(index=new_index, body=DAS_DATASETS_MAPPING)
+
+    # index datasets from file under new index
+    try:
+        with open(file, 'r') as fp:
+            res = json.load(fp)
+            source = [x['dataset'][0] for x in res]
+            bulk_index_from_source(new_index, 'doc', source)
+    except:
+        # delete index if sth went wrong
+        es.indices.delete(index=old_index)
+        raise
+
+    # add newly created index under das-datasets alias
+    es.indices.put_alias(index=new_index, name='das-datasets')
+
+    # remove old index
+    es.indices.delete(index=old_index)
+
+    print("Datasets are safe in ES.")
