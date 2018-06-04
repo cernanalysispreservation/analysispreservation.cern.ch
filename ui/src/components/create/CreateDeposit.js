@@ -93,7 +93,7 @@ export class CreateDeposit extends React.Component {
   }
 
   render() {
-    let _schema = this.props.schema ? transformSchema(this.props.schema):null; 
+    let _schema = this.props.schema ? transformSchema(this.props.schema):null;
     return (
       <Box id="deposit-page"  flex={true}>
         {
@@ -102,12 +102,13 @@ export class CreateDeposit extends React.Component {
             {this.props.error.message}
           </Toast> : null
         }
-        <DepositHeader  draftId={this.props.draft_id}
-                        saveData={this._saveData.bind(this)}
-                        publishData={this._publishData.bind(this)}
-                        deleteDraft={this._deleteDraft.bind(this)}
-                        discardData={this._discardData.bind(this)}
-                      />
+        <DepositHeader
+          draftId={this.props.draft_id}
+          saveData={this._saveData.bind(this)}
+          publishData={this._publishData.bind(this)}
+          deleteDraft={this._deleteDraft.bind(this)}
+          discardData={this._discardData.bind(this)}
+        />
           <Box direction="row" justify="between" flex={true} wrap={false}>
             <Sidebar draftId={this.props.draft_id} />
             {

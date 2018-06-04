@@ -44,7 +44,7 @@ class AccordionArrayField extends React.Component {
         <AccordionPanel heading={this.props.header}>
           {
             this.props.items.length > 0 ?
-            <Box colorIndex="light-2">
+            <Box pad="medium" colorIndex="light-2">
               {this.props.items.map(element => element.children)}
             </Box>:
             <ListPlaceholder

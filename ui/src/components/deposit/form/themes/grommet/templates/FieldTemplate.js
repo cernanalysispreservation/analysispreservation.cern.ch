@@ -18,8 +18,12 @@ let FieldTemplate = function (props) {
 
   return (
     <FormField
-      help={rawDescription ? rawDescription : null}
-      label={label ? label : null }
+      label={
+        <span>
+          <span style={{color: "#000"}}>{label}</span>
+          { rawDescription ? <i>- {rawDescription}</i> : null }
+        </span>
+      }
       key={id+label}
       error={_errors}>
       {children}

@@ -35,7 +35,7 @@ class AccordionObjectField extends React.Component {
     }
     else {
       return (
-        <Accordion animate={false} openMulti={true}>
+        <Accordion animate={false} openMulti={false}>
           <AccordionPanel
             heading={
               <FieldHeader
@@ -45,7 +45,7 @@ class AccordionObjectField extends React.Component {
                 />
               }
           >
-            <Box pad="small" colorIndex="light-2">
+            <Box pad="medium" colorIndex="light-2">
               {this.props.properties.map(prop => prop.content )}
             </Box>
           </AccordionPanel>

@@ -29,9 +29,6 @@ class FormLayer extends React.Component {
         >
         <Box justify="center" align="center" pad="large" >
           <Box pad="large" size="large" >
-            <Header>
-              <Heading tag="h2" strong={true} align="start" margin="none">{this.props.properties.props.schema ? this.props.properties.props.schema.title : null}</Heading>
-            </Header>
             <Box>{this.props.properties}</Box>
 
             <Box direction="row" justify="between" pad={{vertical: "small"}}>

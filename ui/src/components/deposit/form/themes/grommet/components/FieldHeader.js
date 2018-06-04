@@ -13,13 +13,14 @@ import AddIcon from 'grommet/components/icons/base/Add';
 let FieldHeader = function (props) {
   const {title, required, description} = props;
   return (
-    <Box flex={true} margin={props.margin ? props.margin : {vertical: "small"}}>
-          <Box direction="row" align="center" justify="between">
-          <Box>
-      <Heading tag="h4" margin="none" strong={false}>
-        {title}{required ? "*" : null}
-      </Heading>
-      </Box>
+    <Box margin={props.margin ? props.margin : {vertical: "small"}}>
+      <Box direction="row" align="center" justify="between">
+        {
+          title ?
+          <Heading tag="h4" margin="none" strong={false}>
+            {title}{required ? "*" : null}
+          </Heading>: null
+        }
         {
           props.onArrayAddClick ?
           <Box>

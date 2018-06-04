@@ -48,7 +48,7 @@ class ArrayFieldTemplate extends React.Component {
           <List >
             { this.props.items.length > 0 ?
               this.props.items.map(element => (
-                <ListItem key={element.index} flex={true} margin="none" pad="none" justify="between">
+                <ListItem key={element.index} separator="none" flex={true} margin="none" pad="none" justify="between">
                   <FormLayer
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}

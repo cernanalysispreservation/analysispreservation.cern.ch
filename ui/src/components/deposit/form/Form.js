@@ -37,10 +37,11 @@ class DepositForm extends React.Component {
     return (
       <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
         <SectionHeader label="Submission Form" />
-        <Box alignContent="center" justify="center" align="center" flex={true} wrap={false}>
-          <Box size="xlarge"  pad="large" flex={false} wrap={false}>
+        <Box align="center" flex={true} wrap={false}>
+          <Box size={{width: "xlarge"}} pad="large" flex={false} wrap={false}>
               <Form
                 ref={(form) => {this.form=form;}}
+                style={{marginBottom: "1em"}}
                 schema={this.props.schema}
                 FieldTemplate={FieldTemplate}
                 ObjectFieldTemplate={ObjectFieldTemplate}
@@ -50,7 +51,6 @@ class DepositForm extends React.Component {
                 widgets={widgets}
                 fields={fields}
                 uiSchema={this.props.uiSchema}
-                liveValidate={this.props.liveValidate}
                 noValidate={!this.props.validate}
                 validate={this.props.customValidation ? this._validate : null}
                 onError={({e}) => console.log("onError::::", e)}

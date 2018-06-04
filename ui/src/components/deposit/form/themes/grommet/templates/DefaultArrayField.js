@@ -9,7 +9,7 @@ import {
 
 import ArrayUtils from '../components/ArrayUtils';
 
-class AccordionArrayField extends React.Component {
+class DefaultArrayField extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -20,18 +20,21 @@ class AccordionArrayField extends React.Component {
         <List>
           { this.props.items.length > 0 ?
             this.props.items.map(element => (
-              <ListItem key={element.index} margin="none" pad="none">
+              <ListItem key={element.index} separator="none" margin="none" pad="none">
                 <Box flex={true}>
                   {element.children}
                 </Box>
-                <ArrayUtils
-                  hasRemove={element.hasRemove}
-                  hasMoveDown={element.hasMoveDown}
-                  hasMoveUp={element.hasMoveUp}
-                  onDropIndexClick={element.onDropIndexClick}
-                  onReorderClick={element.onReorderClick}
-                  index={element.index}
-                />
+                {
+                  this.props.options && this.props.options.enableArrayUtils ?
+                  <ArrayUtils
+                    hasRemove={element.hasRemove}
+                    hasMoveDown={element.hasMoveDown}
+                    hasMoveUp={element.hasMoveUp}
+                    onDropIndexClick={element.onDropIndexClick}
+                    onReorderClick={element.onReorderClick}
+                    index={element.index}
+                  /> : null
+                }
               </ListItem>
             )) : null
           }
@@ -41,8 +44,8 @@ class AccordionArrayField extends React.Component {
   }
 }
 
-AccordionArrayField.propTypes = {
-  items: PropTypes.object
+DefaultArrayField.propTypes = {
+  items: PropTypes.array
 };
 
-export default AccordionArrayField;
+export default DefaultArrayField;

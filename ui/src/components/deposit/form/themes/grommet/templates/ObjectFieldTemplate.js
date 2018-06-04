@@ -19,12 +19,15 @@ let ObjectFieldTemplate = function (props) {
 
   if ( !('ui:object' in props.uiSchema) ) {
     return (
-      <Box className="grommetux-form-field">
-        <FieldHeader
-          title={props.title}
-          required={props.required}
-          description={props.description}
-          />
+      <Box margin="none" pad="none">
+        {
+          props.title ?
+          <FieldHeader
+            title={props.title}
+            required={props.required}
+            description={props.description ? props.description : null}
+            /> : null
+        }
         {props.properties.map(prop => prop.content )}
       </Box>
     );
