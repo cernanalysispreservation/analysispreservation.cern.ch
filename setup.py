@@ -75,6 +75,7 @@ install_requires = [
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
     'marshmallow==2.15.0',   # temporary fix
+    'SQLAlchemy-Continuum==1.3.4',  #temporary fix
     'simplejson>=3.8.2',
     'python-ldap>=2.4.39',
     'PyGithub>=1.35',

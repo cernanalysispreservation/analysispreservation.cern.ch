@@ -312,27 +312,6 @@ export function fetchSchema(schema) {
   };
 }
 
-
-export function initDraft(schema, project_name) {
-  return function (dispatch) {
-    dispatch(createDraftRequest());
-    let data = {
-      "general_title": project_name,
-      "$ana_type": schema,
-      // "$schema": `https://analysispreservation.cern.ch/schemas/deposits/records/${schema}-v0.0.1.json`
-    };
-
-    axios.post('/api/deposits/', data)
-      .then((response) => {
-        const draft_id = response.data.links.self.split('/deposits/')[1];
-        dispatch(initDraftSuccess(draft_id, response.data));
-        dispatch(replace(`/drafts/${draft_id}`));
-      })
-      .catch((error) => dispatch(initDraftError(error)) )
-  };
-}
-
-// [TOFIX] : Split create draft and combine it with initDraft
 export function createDraft(data={}, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
@@ -346,7 +325,6 @@ export function createDraft(data={}, schema) {
         const draft_id = response.data.links.self.split('/deposits/')[1];
         dispatch(initDraftSuccess(draft_id, response.data));
         dispatch(replace(`/drafts/${draft_id}`));
-        delete response.data.metadata['$ana_type'];
         axios.put(uri + draft_id, response.data.metadata)
           .then(function(response){
             dispatch(createDraftSuccess(draft_id, response.data));

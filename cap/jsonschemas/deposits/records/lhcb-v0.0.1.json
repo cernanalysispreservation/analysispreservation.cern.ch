@@ -309,29 +309,25 @@
           "title": "Publications",
           "type": "array"
         },
-        "documentations": {
-          "id": "documentations",
-          "items": {
-            "description": "Add documentation",
-            "properties": {
-              "comment": {
-                "title": "Comment",
-                "type": "string"
+        "documentations":{
+           "id":"documentations",
+           "items":{
+              "description":"Add documentation",
+              "properties":{
+                 "title":{
+                    "title":"Title",
+                    "type":"string"
+                 },
+                 "url":{
+                    "title":"URL",
+                    "type":"string"
+                 }
               },
-              "keywords": {
-                "title": "Keywords",
-                "type": "string"
-              },
-              "url": {
-                "title": "URL",
-                "type": "string"
-              }
-            },
-            "title": "Documentation",
-            "type": "object"
-          },
-          "title": "Documentations",
-          "type": "array"
+              "title":"Documentation",
+              "type":"object"
+           },
+           "title":"Documentations",
+           "type":"array"
         }
       }
     }

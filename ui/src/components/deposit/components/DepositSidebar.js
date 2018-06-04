@@ -18,7 +18,7 @@ import AddIcon from 'grommet/components/icons/base/Add';
 
 import {
   toggleFilemanagerLayer,
-  initDraft
+  createDraft
 } from '../../../actions/drafts';
 
 import {withRouter} from 'react-router';
@@ -34,8 +34,9 @@ class DepositSidebar extends React.Component {
 
   _onSubmit(schema, data) {
     event.preventDefault();
-
-    this.props.initDraft(schema, data.formData )
+    let initialData = {general_title: data.formData};
+    this.props.createDraft(initialData, schema);
+    //this.props.initDraft(schema, data.formData )
   }
 
   render() {
@@ -98,7 +99,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    initDraft: (schema, title) => dispatch(initDraft(schema, title))
+    createDraft: (schema, title) => dispatch(createDraft(schema, title))
   };
 }
 

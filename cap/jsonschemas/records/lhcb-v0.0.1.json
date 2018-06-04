@@ -308,12 +308,8 @@
                "items":{
                   "description":"Add documentation",
                   "properties":{
-                     "comment":{
-                        "title":"Comment",
-                        "type":"string"
-                     },
-                     "keywords":{
-                        "title":"Keywords",
+                     "title":{
+                        "title":"Title",
                         "type":"string"
                      },
                      "url":{

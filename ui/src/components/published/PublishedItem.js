@@ -5,12 +5,18 @@ import {connect} from 'react-redux';
 import {
   Box,
   Heading,
-  Section
+  Section,
+  Sidebar,
+  Header,
+  Title
 } from 'grommet';
 
 import {getPublishedItem} from '../../actions/published';
+import DefaultPublished from './components/Default';
+//import CmsAnalysis from './components/CmsAnalysis';
+import LhcbPublished from './components/LhcbAnalysis';
 
-export class IndexPage extends React.Component {
+export class Published extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -22,41 +28,28 @@ export class IndexPage extends React.Component {
 
   render() {
     let item = this.props.item ? this.props.item.metadata:null;
-    let created = this.props.item ? this.props.item.created:null;
-    return (
-        <Box colorIndex="neutral-1-a" flex={true}  align="center">
-          <Section >
-           {item?
-            <Box size="large">
-              <Heading tag="h2">{item.general_title ? item.general_title : item.basic_info.title}</Heading>
-              <hr/>
-              {
-                this.props.error ?
-                <Box>
-                  <Heading tag="h5">Errors</Heading>
-                  <div>{JSON.stringify(this.props.error)}</div>
-                </Box>: null
-              }
-              {
-                item ?
-                <Box>
-                  <Heading tag="h5">Description</Heading>
-                  <Heading tag="h5">Started</Heading>
-                  <div>{created}</div>
-                  <Heading tag="h5">Members</Heading>
-                  <Heading tag="h5">Files</Heading>
-                  <Heading tag="h5">JSON</Heading>
-                  <pre>{JSON.stringify(item, null, 2)}</pre>
-                </Box>: null
-              }
-            </Box>:null}
-          </Section>
-        </Box>
-    );
+    if (item) {
+      switch (item.$ana_type) {
+        case 'cms-analysis':
+          return (
+            <DefaultPublished item={item} />
+          );
+        case 'lhcb':
+          return (
+            <LhcbPublished item={item} />
+          );
+        default:
+          return (
+            <DefaultPublished item={item} />
+          )
+      }
+    } else {
+      return null;
+    }
   }
 }
 
-IndexPage.propTypes = {
+Published.propTypes = {
   error: PropTypes.object.required,
   getPublishedItem: PropTypes.func,
   item: PropTypes.object.required,
@@ -65,8 +58,7 @@ IndexPage.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    item: state.published.getIn(['current_item', 'data']),
-    error: state.published.getIn(['current_item', 'error']),
+    item: state.published.getIn(['current_item', 'data'])
   };
 }
 
@@ -79,4 +71,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(IndexPage);
+)(Published);
