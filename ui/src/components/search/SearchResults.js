@@ -51,7 +51,7 @@ class SearchResults extends React.Component {
                                             onClick={() => this.props.history.push(`/drafts/${draft_id}`)}>
                                             <Box basis="1/4" align="start">
                                                 <Title>
-                                                    {title || item.metadata.general_title}
+                                                    {title || item.metadata.general_title || "Analysis"}
                                                 </Title>
                                             </Box>
                                             <Box basis="3/4">
