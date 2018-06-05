@@ -1,7 +1,9 @@
 import importDataField from './importDataField';
+import capFiles from './capFiles';
 
 const fields = {
-  importDataField: importDataField
+  importDataField: importDataField,
+  capFiles: capFiles
 };
 
 export default fields;

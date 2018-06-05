@@ -54,6 +54,8 @@ const initialState = Map({
   data: {},
   selectedSchema: null,
   fileManagerActiveLayer: false,
+  fileManagerLayerSelectable: false,
+  fileManagerLayerSelectableAction: null,
   showPreviewer: true,
   showSidebar: true,
   liveValidate: true,
@@ -80,7 +82,10 @@ const initialState = Map({
 export default function depositReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_FILEMANAGER_LAYER:
-      return state.set('fileManagerActiveLayer', !state.get('fileManagerActiveLayer'));
+      return state
+        .set('fileManagerActiveLayer', !state.get('fileManagerActiveLayer'))
+        .set('fileManagerLayerSelectable', action.selectable)
+        .set('fileManagerLayerSelectableAction', action.action);
     case TOGGLE_PREVIEWER:
       return state.set('showPreviewer', !state.get('showPreviewer'));
     case TOGGLE_SIDEBAR:
@@ -250,15 +255,15 @@ export default function depositReducer(state = initialState, action) {
     case USERS_ITEM_REQUEST:
       return state
         .set('loading', true)
-        .set('error', null); ; 
+        .set('error', null);
     case USERS_ITEM_SUCCESS:
       return state
         .set('loading', false)
-        .set('users', action.users); 
+        .set('users', action.users);
     case USERS_ITEM_ERROR:
       return state
         .set('loading', false)
-        .set('error', action.error); 
+        .set('error', action.error);
     case FORM_DATA_CHANGE:
       return state
         .setIn(['current_item', 'formData'], action.data)

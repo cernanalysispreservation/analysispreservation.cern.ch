@@ -93,7 +93,13 @@ export function publishDraftRequest() { return { type: PUBLISH_DRAFT_REQUEST }; 
 export function publishDraftSuccess(published_id, published_record) { return { type: PUBLISH_DRAFT_SUCCESS, published_id, published_record }; }
 export function publishDraftError(error) { return { type: PUBLISH_DRAFT_ERROR, error}; }
 
-export function toggleFilemanagerLayer() { return { type: TOGGLE_FILEMANAGER_LAYER }; }
+export function toggleFilemanagerLayer(selectable=false, action=null) {
+  return {
+    type: TOGGLE_FILEMANAGER_LAYER,
+    selectable,
+    action
+  };
+}
 
 export function initForm() { return { type: INIT_FORM }; }
 

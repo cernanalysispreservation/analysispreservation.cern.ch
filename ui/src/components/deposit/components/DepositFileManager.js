@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
+  Anchor,
   Box,
   Button,
   Paragraph,
@@ -23,6 +24,7 @@ import {
 } from 'grommet';
 
 import { toggleFilemanagerLayer, initDraft, uploadFile } from '../../../actions/drafts';
+import LinkIcon from 'grommet/components/icons/base/Link';
 
 import FileList from './FileList';
 
@@ -31,13 +33,23 @@ import Dropzone from 'react-dropzone';
 class FileManager extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selected: null
+    }
   }
 
-  _onSubmit(schema, data) {
+  _onSubmit = (schema, data) => {
     event.preventDefault();
 
     this.props.initDraft(schema, data.formData )
   }
+
+  actionWithFile = (key) => {
+    this.props.selectableActionLayer(key);
+    this.props.toggleFilemanagerLayer();
+  }
+
+  setSelected = (key) => this.setState({selected: key})
 
   render() {
     return (
@@ -47,120 +59,133 @@ class FileManager extends React.Component {
         align="center"
         flush={true}
         overlayClose={true}
-        onClose={this.props.toggleFilemanagerLayer}
-        >
-        <Box size={{height: {min: "xxlarge"} , width: "xxlarge"}}>
-          <Box direction="row" size="xlarge" flex={true} wrap={false}>
-            <Sidebar size="small" full={false} colorIndex="light-2">
-              <Header>
-                <Box pad={{horizontal: "small"}}>
-                  <Title>File Manager</Title>
-                  {this.props.links.get('bucket')}
-                </Box>
-              </Header>
-              <Box pad="small" colorIndex="light-2">
-                <FileList files={this.props.files}/>
-              </Box>
-            </Sidebar>
-
-            <Box size="large" flex={true}>
-              <Tabs>
-                <Tab title="Upload File">
-                  <Box pad="medium">
-                    <Heading tag="h5" strong={true}>Upload from Local</Heading>
-                    <Box margin={{bottom: "small"}}>
-                      <Box flex={true} >
-                        <Dropzone
-                          style={{
-                            display: "flex",
-                            flex: 1,
-                            height: "100px",
-                            border: "2px dashed rgba(0, 0, 0, 0.25)",
-                            borderRadius: "4px",
-                            justifyContent: "center",
-                            alignContent: "center",
-                            alignItems: "center"
-                          }}
-                          onDrop={(acceptedFiles, rejectedFiles) => {
-                            let bucket_url = this.props.links.get('bucket');
-                            bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
-                            // console.log("acceptedFiles", acceptedFiles);
-                            // console.log(rejectedFiles);
-
-                            if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
-                          }}>
-                          Try dropping some files here, or click to select files to upload.
-                        </Dropzone>
-                      </Box>
-                    </Box>
-                    <Heading tag="h5" strong={true}>Upload from URL</Heading>
-                    <Box>
-                      <FormField
-                        label="URL to upload">
-                        <TextInput />
-                      </FormField>
-                    </Box>
-                  </Box>
-                </Tab>
-                <Tab title="Repo Upload">
-                  <Box pad="medium">
-                    <Heading tag="h5" strong={true}>Upload from Gitlab CERN/Github</Heading>
-                    <Box direction="row">
-                      <Form>
-                      <FormField
-                        label="Location">
-                        <Select
-                          placeHolder="None"
-                          options={["CERN Gitlab", "Github"]}
-                          value={undefined}
-                        />
-                      </FormField>
-                      <Box direction="row">
-                        <FormField
-                          label="User/Organisation"
-                          >
-                          <TextInput placeHolder="johndoe"/>
-                        </FormField>
-                        <FormField
-                          label="Repo">
-                          <TextInput placeHolder="myanalysis"/>
-                        </FormField>
-                      </Box>
-                      </Form>
-
-                    </Box>
-                  </Box>
-                </Tab>
-                <Tab title="Image Upload">
-                  <Box pad="medium">
-                    <Heading tag="h5" strong={true}>Upload your image container from CERN Gitlab</Heading>
-                    <Box direction="row">
-                      <Form>
-                      <FormField
-                        label="Location">
-                        <Select
-                          placeHolder="None"
-                          options={["CERN Gitlab", "Github"]}
-                          value={undefined}
-                        />
-                      </FormField>
-                      <Box direction="row">
-                        <FormField
-                          label="User/Organisation"
-                          >
-                          <TextInput placeHolder="johndoe"/>
-                        </FormField>
-                        <FormField
-                          label="Repo">
-                          <TextInput placeHolder="myanalysis"/>
-                        </FormField>
-                      </Box>
-                      </Form>
-                    </Box>
-                  </Box>
-                </Tab>
-              </Tabs>
+        onClose={this.props.toggleFilemanagerLayer}>
+        <Box size={{height: "large" , width: "xxlarge"}}>
+          <Box flex={true}>
+            <Box flex={false}  pad="small" colorIndex="light-2">
+              <Title>File Manager (<Anchor label="bucket" icon={<LinkIcon size="xsmall"/>} href={this.props.links.get('bucket')} size="small"/>)</Title>
             </Box>
+            <Box flex={false} justify="center" pad="small" pp={{horizontal:"small"}} colorIndex="grey-2">
+              {
+                this.props.selectableActionLayer ?
+                "Select or upload a file to be added to the project" :
+                "Upload and manage project files"
+              }
+            </Box>
+            <Box flex={true} direction="row">
+              <Box flex={true}>
+                <FileList action={this.setSelected.bind(this)} files={this.props.files}/>
+              </Box>
+              <Box flex={true} pad="small" colorIndex="grey-4-a">
+                <Tabs justify="start">
+                  <Tab title="Upload File">
+                    <Box >
+                      <Heading tag="h5" strong={true}>Upload from Local</Heading>
+                      <Box margin={{bottom: "small"}}>
+                        <Box flex={true} >
+                          <Dropzone
+                            style={{
+                              display: "flex",
+                              flex: 1,
+                              height: "100px",
+                              border: "2px dashed rgba(0, 0, 0, 0.25)",
+                              borderRadius: "4px",
+                              justifyContent: "center",
+                              alignContent: "center",
+                              alignItems: "center"
+                            }}
+                            onDrop={(acceptedFiles, rejectedFiles) => {
+                              let bucket_url = this.props.links.get('bucket');
+                              bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
+                              // console.log("acceptedFiles", acceptedFiles);
+                              // console.log(rejectedFiles);
+
+                              if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
+                            }}>
+                            Try dropping some files here, or click to select files to upload.
+                          </Dropzone>
+                        </Box>
+                      </Box>
+                      <Heading tag="h5" strong={true}>Upload from URL</Heading>
+                      <Box>
+                        <FormField
+                          label="URL to upload">
+                          <TextInput />
+                        </FormField>
+                      </Box>
+                    </Box>
+                  </Tab>
+                  <Tab title="Repo Upload">
+                    <Box pad="medium">
+                      <Heading tag="h5" strong={true}>Upload from Gitlab CERN/Github</Heading>
+                      <Box direction="row">
+                        <Form>
+                        <FormField
+                          label="Location">
+                          <Select
+                            placeHolder="None"
+                            options={["CERN Gitlab", "Github"]}
+                            value={undefined}
+                          />
+                        </FormField>
+                        <Box direction="row">
+                          <FormField
+                            label="User/Organisation"
+                            >
+                            <TextInput placeHolder="johndoe"/>
+                          </FormField>
+                          <FormField
+                            label="Repo">
+                            <TextInput placeHolder="myanalysis"/>
+                          </FormField>
+                        </Box>
+                        </Form>
+
+                      </Box>
+                    </Box>
+                  </Tab>
+                  <Tab title="Image Upload">
+                    <Box pad="medium">
+                      <Heading tag="h5" strong={true}>Upload your image container from CERN Gitlab</Heading>
+                      <Box direction="row">
+                        <Form>
+                        <FormField
+                          label="Location">
+                          <Select
+                            placeHolder="None"
+                            options={["CERN Gitlab", "Github"]}
+                            value={undefined}
+                          />
+                        </FormField>
+                        <Box direction="row">
+                          <FormField
+                            label="User/Organisation"
+                            >
+                            <TextInput placeHolder="johndoe"/>
+                          </FormField>
+                          <FormField
+                            label="Repo">
+                            <TextInput placeHolder="myanalysis"/>
+                          </FormField>
+                        </Box>
+                        </Form>
+                      </Box>
+                    </Box>
+                  </Tab>
+                </Tabs>
+              </Box>
+            </Box>
+            {
+              this.props.selectableActionLayer ?
+              <Box colorIndex="light-2" direction="row" flex={false}>
+                <Box colorIndex="light-2" pad="small" direction="row" flex={false}>
+                  <Button primary={true} label="Select File" onClick={this.state.selected ? () => this.actionWithFile(this.state.selected ) : null} />
+                </Box>
+                <Box colorIndex="light-2" pad="small" direction="row" flex={false}>
+                  <Button label="Cancel" onClick={this.props.toggleFilemanagerLayer} />
+                </Box>
+              </Box> : null
+            }
           </Box>
         </Box>
       </Layer> : null
@@ -176,6 +201,8 @@ FileManager.propTypes = {
 function mapStateToProps(state) {
   return {
     activeLayer: state.drafts.get("fileManagerActiveLayer"),
+    selectableLayer: state.drafts.get("fileManagerLayerSelectable"),
+    selectableActionLayer: state.drafts.get("fileManagerLayerSelectableAction"),
     links: state.drafts.getIn(['current_item','links'])
   };
 }
