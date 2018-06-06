@@ -26,7 +26,7 @@ export class AvailableDeposits extends React.Component {
 
   render() {
     return (
-      <Box flex={true} justify="center">
+      <Box flex={true} justify="center" colorIndex="neutral-1-a" justify="center" align="center">
         <Heading align="center" tag="h3">Choose a schema to start</Heading>
         <Tiles flush={false} fill={false} size="large" justify="center">
           {
