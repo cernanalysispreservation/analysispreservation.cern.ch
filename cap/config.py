@@ -235,6 +235,62 @@ RECORDS_REST_FACETS = {
                                 }
                             }
                         }
+                    },
+                    "pt_cut": {
+                        "nested": {
+                            "path": "main_measurements.signal_event_selection.physics_objects.pt_cut"
+                        },
+                        "aggs": {
+                            "facet_pt_cut": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_selection.physics_objects.pt_cut.sign",
+                                    "exclude": ""
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    },
+                                    "facet_pt_cut_number": {
+                                        "terms": {
+                                            "field": "main_measurements.signal_event_selection.physics_objects.pt_cut.number"
+                                        },
+                                        "aggs": {
+                                            "doc_count": {
+                                                "reverse_nested": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "eta_cut": {
+                        "nested": {
+                            "path": "main_measurements.signal_event_selection.physics_objects.eta_cut"
+                        },
+                        "aggs": {
+                            "facet_eta_cut": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_selection.physics_objects.eta_cut.sign",
+                                    "exclude": ""
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    },
+                                    "facet_eta_cut_number": {
+                                        "terms": {
+                                            "field": "main_measurements.signal_event_selection.physics_objects.eta_cut.number"
+                                        },
+                                        "aggs": {
+                                            "doc_count": {
+                                                "reverse_nested": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -263,9 +319,65 @@ RECORDS_REST_FACETS = {
                                 }
                             }
                         }
+                    },
+                    "veto_pt_cut": {
+                        "nested": {
+                            "path": "main_measurements.signal_event_selection.veto.pt_cut"
+                        },
+                        "aggs": {
+                            "facet_veto_pt_cut": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_selection.veto.pt_cut.sign",
+                                    "exclude": ""
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    },
+                                    "facet_veto_pt_cut_number": {
+                                        "terms": {
+                                            "field": "main_measurements.signal_event_selection.veto.pt_cut.number"
+                                        },
+                                        "aggs": {
+                                            "doc_count": {
+                                                "reverse_nested": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "veto_eta_cut": {
+                        "nested": {
+                            "path": "main_measurements.signal_event_selection.veto.eta_cut"
+                        },
+                        "aggs": {
+                            "facet_veto_eta_cut": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_selection.veto.eta_cut.sign",
+                                    "exclude": ""
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    },
+                                    "facet_veto_eta_cut_number": {
+                                        "terms": {
+                                            "field": "main_measurements.signal_event_selection.veto.eta_cut.number"
+                                        },
+                                        "aggs": {
+                                            "doc_count": {
+                                                "reverse_nested": {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
+            },
         },
         'post_filters': {
             'type': terms_filter('_type'),
@@ -277,6 +389,14 @@ RECORDS_REST_FACETS = {
             'physics_objects_type': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object_type.keyword'),
             'veto': nested_filter('main_measurements.signal_event_selection.veto', 'main_measurements.signal_event_selection.veto.object'),
             'veto_type': nested_filter('main_measurements.signal_event_selection.veto', 'main_measurements.signal_event_selection.veto.object_type.keyword'),
+            'pt_cut': nested_filter('main_measurements.signal_event_selection.physics_objects.pt_cut', 'main_measurements.signal_event_selection.physics_objects.pt_cut.sign'),
+            'pt_cut_number': nested_filter('main_measurements.signal_event_selection.physics_objects.pt_cut', 'main_measurements.signal_event_selection.physics_objects.pt_cut.number'),
+            'eta_cut': nested_filter('main_measurements.signal_event_selection.physics_objects.eta_cut', 'main_measurements.signal_event_selection.physics_objects.eta_cut.sign'),
+            'eta_cut_number': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.eta_cut.number'),
+            'veto_pt_cut': nested_filter('main_measurements.signal_event_selection.veto.pt_cut', 'main_measurements.signal_event_selection.veto.pt_cut.sign'),
+            'veto_pt_cut_number': nested_filter('main_measurements.signal_event_selection.veto.pt_cut', 'main_measurements.signal_event_selection.veto.pt_cut.number'),
+            'veto_eta_cut': nested_filter('main_measurements.signal_event_selection.veto.eta_cut', 'main_measurements.signal_event_selection.veto.eta_cut.sign'),
+            'veto_eta_cut_number': nested_filter('main_measurements.signal_event_selection.veto', 'main_measurements.signal_event_selection.veto.eta_cut.number'),
         }
     }
 }
@@ -530,23 +650,6 @@ DEPOSIT_GROUPS = {
             'cap.modules.experiments.permissions.cms.cms_group_need',
         # 'read_permission_factory_imp':
         #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
-    },
-    "cms-cadi": {
-        "experiment": "CMS",
-        "schema": "schemas/deposits/records/cms-cadi-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/cms-cadi-v0.0.1.json",
-        "name": "CMS CADI Entries",
-        "description":
-            "Create a CMS CADI Entry",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.common.superuser_needs',
-        'read_permission_factory_imp':
-             'cap.modules.experiments.permissions.cms.cms_group_need',
         # 'update_permission_factory_imp':
         #     'cap.modules.deposit.permissions.update_permission_factory',
     },

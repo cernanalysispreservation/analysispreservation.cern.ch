@@ -285,9 +285,6 @@ def minimal_deposits_metadata(schema_name):
                 ]
             }
         },
-        'cms-cadi-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/cms-cadi-v0.0.1.json'.format(schema_host),
-        },
         'cms-questionnaire-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/cms-questionnaire-v0.0.1.json'.format(schema_host),
         },
@@ -492,9 +489,9 @@ def superuser_me_data(users):
                 "name": "LHCb Analysis"
             },
             {
-                "deposit_group": "cms-cadi",
-                "description": "Create a CMS CADI Entry",
-                "name": "CMS CADI Entries"
+                "deposit_group": "alice-analysis",
+                "description": "Create an ALICE Analysis",
+                "name": "ALICE Analysis"
             },
             {
                 "deposit_group": "cms-questionnaire",
@@ -512,19 +509,14 @@ def superuser_me_data(users):
                 "name": "CMS Analysis"
             },
             {
-                "deposit_group": "test-schema",
-                "description": "Create a CMS CADI Entry",
-                "name": "Test schema"
-            },
-            {
                 "deposit_group": "atlas-analysis",
                 "description": "Create an ATLAS Analysis",
                 "name": "ATLAS Analysis"
             },
             {
-                "deposit_group": "alice-analysis",
-                "description": "Create an ALICE Analysis",
-                "name": "ALICE Analysis"
+                "deposit_group": "test-schema",
+                "description": "Create a CMS CADI Entry",
+                "name": "Test schema"
             }
         ],
         "email": users['superuser'].email,

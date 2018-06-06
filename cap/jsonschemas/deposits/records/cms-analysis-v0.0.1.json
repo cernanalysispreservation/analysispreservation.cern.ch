@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "CMS Analysis",
+    "title": "CMS Analysis - Draft",
     "type": "object",
     "additionalProperties": false,
     "properties": {
