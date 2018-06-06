@@ -25,8 +25,7 @@
 
 import click
 
-from cap.modules.experiments.tasks.cms import (add_cadi_entries_from_file,
-                                               synchronize_cadi_entries)
+from cap.modules.experiments.tasks.cms import synchronize_cadi_entries
 from cap.modules.experiments.utils.cms import \
     cache_das_datasets_in_es_from_file
 from flask_cli import with_appcontext
@@ -41,8 +40,8 @@ def fixtures():
 
 @fixtures.command('add')
 @click.option('--user', '-u', default='analysis-preservation-support@cern.ch')
-@click.option('--schema', '-s')
-@click.option('--file', '-f', type=click.Path(exists=True))
+@click.option('--schema', '-s', required=True)
+@click.option('--file', '-f', required=True, type=click.Path(exists=True))
 @click.option('--limit', '-n', type=int)
 @with_appcontext
 def add(file, schema, user, limit):
@@ -64,15 +63,6 @@ def cms():
 def sync_with_cadi_database(limit):
     """Add/update CADI entries connecting with CADI database."""
     synchronize_cadi_entries(limit)
-
-
-@cms.command('add-cadi')
-@click.option('--limit', '-n', type=int)
-@click.option('--file', '-f', type=click.Path(exists=True))
-@with_appcontext
-def add_cadi_entry(file, limit):
-    """Add/update CADI entry from file."""
-    add_cadi_entries_from_file(file, limit)
 
 
 @cms.command('index-datasets')

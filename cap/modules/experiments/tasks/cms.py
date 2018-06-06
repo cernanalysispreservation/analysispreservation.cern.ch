@@ -31,32 +31,10 @@ import re
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.utils.cms import (CADI_FIELD_TO_CAP_MAP,
-                                               add_read_permission_for_cms_members,
                                                construct_cadi_entry,
-                                               get_cadi_entry_uuid,
                                                get_entries_from_cadi_db)
-
-
-def add_cadi_entries_from_file(file_path, limit=None):
-    with open(file_path, 'r') as fp:
-        entries = json.load(fp)
-        for entry in entries[0:limit]:
-            cadi_id = entry['cadi_id']
-            try:  # update if already exists
-                uuid = get_cadi_entry_uuid(cadi_id)
-
-                deposit = CAPDeposit.get_record(uuid)
-                deposit.update(entry)
-                deposit.commit()
-
-                print('Cadi entry {} updated.'.format(cadi_id))
-
-            except DepositDoesNotExist:
-                deposit = CAPDeposit.create(construct_cadi_entry(cadi_id,
-                                                                 entry))
-                add_read_permission_for_cms_members(deposit)
-
-                print('Cadi entry {} added.'.format(cadi_id))
+from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
+                                        get_entry_uuid_by_unique_field)
 
 
 def synchronize_cadi_entries(limit=None):
@@ -68,7 +46,8 @@ def synchronize_cadi_entries(limit=None):
         cadi_id = re.sub('^d', '', entry.get('code', None))
 
         try:  # update if already exists
-            uuid = get_cadi_entry_uuid(cadi_id)
+            uuid = get_entry_uuid_by_unique_field('deposits-records-cms-analysis-v0.0.1',
+                                                  {'basic_info__cadi_id': cadi_id})
 
             deposit = CAPDeposit.get_record(uuid)
 
@@ -87,6 +66,6 @@ def synchronize_cadi_entries(limit=None):
             })
 
             deposit = CAPDeposit.create(data=data)
-            add_read_permission_for_cms_members(deposit)
+            add_read_permission_for_egroup(deposit, 'cms-members@cern.ch')
 
             print('Cadi entry {} added.'.format(cadi_id))

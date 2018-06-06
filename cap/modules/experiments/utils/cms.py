@@ -68,31 +68,16 @@ DAS_DATASETS_MAPPING = {
     }
 }
 
-def add_read_permission_for_cms_members(deposit):
-    with db.session.begin_nested():
-        role = Role.query.filter_by(name='cms-members@cern.ch').one()
-        permissions = [{
-            'action': 'deposit-read',
-            'identity': 'cms-members@cern.ch',
-            'op': 'add',
-            'type': 'egroup'
-        }]
-
-        access = set_egroup_permissions(role, permissions, deposit,
-                                        db.session, construct_access())
-    db.session.commit()
-
-    deposit['_access'] = access
-    deposit.commit()
-
 
 def construct_cadi_entry(cadi_id, data):
-    schema = 'https://{}/schemas/deposits/records/cms-cadi-v0.0.1.json'.format(
+    schema = 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(
         current_app.config.get('JSONSCHEMAS_HOST'))
 
     entry = {
         '$schema': schema,
-        'cadi_id': cadi_id,
+        'basic_info': {
+            'cadi_id': cadi_id
+        },
         'general_title': cadi_id
     }
 
@@ -101,29 +86,9 @@ def construct_cadi_entry(cadi_id, data):
     return entry
 
 
-def get_cadi_entry_uuid(cadi_id):
-    rs = RecordsSearch(index='deposits-records-cms-cadi-v0.0.1')
-    res = rs.query(Q('match', cadi_id=cadi_id)).execute().hits.hits
-
-    if res:
-        return res[0]['_id']
-    else:
-        raise DepositDoesNotExist
-
-
-def get_keys_mappings(keys):
-    def _convert_from_camel_case(name):
-        s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-        return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
-
-    return {x: _convert_from_camel_case(x) for x in keys}
-
-
 def get_entries_from_cadi_db():
     url = current_app.config.get('CADI_GET_ALL_URL')
-    data = {
-        "selWGs": "all"
-    }
+    data = { "selWGs": "all" }
 
     resp = requests.post(url=url, data=json.dumps(data), headers={
         'Content-Type': 'application/json'})

@@ -4,24 +4,36 @@ from flask import current_app
 
 from cap.modules.deposit.api import (CAPDeposit, construct_access,
                                      set_egroup_permissions)
+from cap.modules.deposit.errors import DepositDoesNotExist
 from elasticsearch import helpers
+from elasticsearch_dsl import Q
 from invenio_accounts.models import Role
 from invenio_db import db
+from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
 
 
 def construct_draft_obj(schema, data):
-    schema = 'https://{}/schemas/deposits/records/{}.json'.format(
-        current_app.config.get('JSONSCHEMAS_HOST'),
-        schema)
-
     entry = {
-        '$schema': schema,
+        '$schema': 'https://{}/schemas/deposits/records/{}.json'.format(
+                    current_app.config.get('JSONSCHEMAS_HOST'),
+                    schema)
     }
 
     entry.update(data)
 
     return entry
+
+
+def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
+    rs = RecordsSearch(index=index)
+    res = rs.query(Q('match',
+                     **dict_unique_field_value)).execute().hits.hits
+
+    if not res:
+        raise DepositDoesNotExist
+    else:
+        return res[0]['_id']
 
 
 def add_read_permission_for_egroup(deposit, egroup):
