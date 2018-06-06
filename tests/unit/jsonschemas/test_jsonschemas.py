@@ -40,7 +40,6 @@ from jsonschema.exceptions import ValidationError
     ('cms_user', 'cms-analysis-v0.0.1'),
     ('cms_user', 'cms-questionnaire-v0.0.1'),
     ('cms_user', 'cms-auxiliary-measurements-v0.0.1'),
-    ('cms_user', 'cms-cadi-v0.0.1'),
     ('lhcb_user', 'lhcb-v0.0.1'),
 ])
 def test_jsonschemas_with_no_additional_properties_is_success(user, schema, users, create_deposit):

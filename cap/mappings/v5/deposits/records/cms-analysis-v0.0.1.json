@@ -2,9 +2,6 @@
     "mappings": {
         "cms-analysis-v0.0.1": {
             "properties": {
-                "created":{
-                    "type":"date"
-                },
                 "_experiment" : {
                     "type": "text"
                 },   
@@ -26,6 +23,12 @@
                         }
                     }
                 },
+                "created":{
+                    "type": "date"
+                },
+                "status": {
+                    "type": "keyword"
+                },
                 "basic_info": {
                     "type": "object",
                     "properties": {
@@ -43,9 +46,6 @@
                     }
                 },
                 "cadi_status": {
-                    "type": "keyword"
-                },
-                "status": {
                     "type": "keyword"
                 },
                 "cadi_info": {
@@ -83,6 +83,28 @@
                                         "object": {
                                             "type": "keyword"
                                         },
+                                        "pt_cut": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        },
+                                        "eta_cut": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        },
                                         "electron_type": {
                                             "type": "keyword",
                                             "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
@@ -117,6 +139,28 @@
                                     "properties": {
                                         "object": {
                                             "type": "keyword"
+                                        },
+                                        "pt_cut": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
+                                        },
+                                        "eta_cut": {
+                                            "type": "nested",
+                                            "properties": {
+                                                "sign": {
+                                                    "type": "keyword"
+                                                },
+                                                "number": {
+                                                    "type": "keyword"
+                                                }
+                                            }
                                         },
                                         "electron_type": {
                                             "type": "keyword",
