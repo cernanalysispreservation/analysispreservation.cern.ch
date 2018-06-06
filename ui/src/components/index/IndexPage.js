@@ -41,7 +41,7 @@ class IndexPage extends React.Component {
       <Box flex={true}>
         <Header />
         <Switch>
-          <Route exact path="/" component={AboutPage} />
+          <Route exact path="/" component={CreateIndex} />
           <Route path="/search" component={SearchPage} />
           <Route path="/published/:id" component={PublishedItem} />
           <Route path="/drafts" component={DraftsIndex} />

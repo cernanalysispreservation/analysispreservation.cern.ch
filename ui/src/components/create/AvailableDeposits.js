@@ -14,11 +14,11 @@ const CustomTile = withRouter(({ history, props=props, group=group, name=name}) 
       <Tile key={group}
             size="small"
             pad="small"
-            colorIndex="light-2"
+            colorIndex="neutral-1"
             onClick={() => (
               history.push(`/drafts/create/${group}`)
               )}>
-        <Paragraph align="center">{name}</Paragraph>
+        <Paragraph align="center"><strong>{name}</strong></Paragraph>
       </Tile>
     ))
 
@@ -27,7 +27,7 @@ export class AvailableDeposits extends React.Component {
   render() {
     return (
       <Box flex={true} justify="center">
-        <Heading align="center" tag="h6">Choose a schema to start</Heading>
+        <Heading align="center" tag="h3">Choose a schema to start</Heading>
         <Tiles flush={false} fill={false} size="large" justify="center">
           {
             this.props.groups ?

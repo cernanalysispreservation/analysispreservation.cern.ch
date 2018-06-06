@@ -43,7 +43,6 @@ class Header extends React.Component {
   }
 
   render() {
-
     return (
       <GrommetHeader fixed={false}  size="small" colorIndex="neutral-1" >
         <Box
@@ -72,6 +71,11 @@ class Header extends React.Component {
                 href="#"
                 animateIcon={true}
                 path="/settings" />
+              <Anchor
+                label="About"
+                href="#"
+                animateIcon={true}
+                path="/about" />
           </Menu>
         </Menu>
         </Box>
