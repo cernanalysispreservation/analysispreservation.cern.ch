@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import { Box } from 'grommet';
-
 class TextAreaWidget extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +31,7 @@ class TextAreaWidget extends Component {
   }
 
   render() {
-    return (          
+    return (
         <textarea
             rows="5"
             type="text"

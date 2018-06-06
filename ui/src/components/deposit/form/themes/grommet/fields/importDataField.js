@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Box from 'grommet/components/Box';
 import Button from 'grommet/components/Button';
-import Heading from 'grommet/components/Heading';
 import Anchor from 'grommet/components/Anchor';
 import Layer from 'grommet/components/Layer';
 import Label from 'grommet/components/Label';
@@ -12,22 +11,33 @@ import ListItem from 'grommet/components/ListItem';
 
 import FieldHeader from '../components/FieldHeader';
 import Edit from 'grommet/components/icons/base/Edit';
+import Link from 'grommet/components/icons/base/Link';
+
+import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
+
+import axios from 'axios';
 
 class ImportDataField extends React.Component {
   constructor(props) {
     super(props);
 
-    this._userRecords = [
-      { "title": "XXXXX CMS Questionnaire 11/03/18" , "$ref": "recid:54323"},
-      { "title": "CMS Questionnaire 02/02/18" , "$ref": "recid:1234"},
-      { "title": "XXXXX CMS Questionnaire 14/01/18" , "$ref": "recid:9876"},
-      { "title": "NNN CMS Questionnaire 23/12/17" , "$ref": "recid:777777"},
-    ];
-
     this.state = {
       layerActive: false,
+      data: null,
       selected: {}
     };
+  }
+
+  componentDidMount() {
+    const q = this.props.uiSchema["ui:options"].query || undefined;
+    if (q) {
+      axios.get(q)
+        .then((res) => {
+          if (res.data && res.data.hits) {
+            this.setState({data: res.data.hits.hits})
+          }
+        })
+    }
   }
 
   _toggleLayer() {
@@ -47,7 +57,7 @@ class ImportDataField extends React.Component {
 
   render() {
     return (
-      <Box flex={true} pad="small">
+      <Box flex={true}>
       {
         this.state.layerActive ?
         <Layer
@@ -61,15 +71,18 @@ class ImportDataField extends React.Component {
             </Label>
             <List>
             {
-              this._userRecords.map((r, index) => (
+              this.state.data ? this.state.data.map((r, index) => (
                 <ListItem key={index} onClick={this._selectItem.bind(this, r)}>
-                  <span>{r.title}</span>
+                  <span>{r.metadata.general_title || r.metadata.$ana_type || "-----"}</span>
                 </ListItem>
-              ))
+              )) :
+              <ListPlaceholder
+                emptyMessage='No results where found for this query.'
+                unfilteredTotal={0}/>
             }
             </List>
              <Label>
-              <span>You have selected {this.props.schema.title}: <strong>{this.state.selected.title}</strong>, with reference to </span>
+              <span>You have selected {this.props.schema.title}: <strong>{this.state.selected ? this.state.selected.metadata ? this.state.selected.metadata.general_title : "" : "---"}</strong></span>
                <Anchor
                 href="#"
                 target="_blank"
@@ -89,19 +102,17 @@ class ImportDataField extends React.Component {
           </Box>
         </Layer> : null
       }
-      <Box direction="row">
+      <Box>
         <FieldHeader
           title={this.props.schema.title}
           required={this.props.schema.required}
-          description={this.props.schema.description}
-          />
-          {
-            this.state.selected.$ref ?
+          description={
+
+            this.state.selected && this.state.selected.links ?
             <Box flex={true} direction="row">
-              <Box flex={true} direction="row" colorIndex="light-2" pad="small">
-                <Heading tag="h5" strong={true} >
-                  {this.state.selected.title}, {this.state.selected.$ref}
-                </Heading>
+              <Box flex={true} direction="row" align="center" colorIndex="light-2" pad={{horizontal: "small"}}>
+                {this.state.selected ? this.state.selected.metadata ? this.state.selected.metadata.general_title : "" : "---"}
+                <Anchor href={this.state.selected.links.self} icon={<Link size="xsmall"/>}/>
               </Box>
               <Button
                 icon={<Edit/>}
@@ -113,6 +124,7 @@ class ImportDataField extends React.Component {
               onClick={this._toggleLayer.bind(this)}
             />
           }
+          />
       </Box>
       </Box>
     );

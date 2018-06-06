@@ -62,7 +62,10 @@
     },
     "statistical_treatment": {
         "statistics_questionnare": {
-            "ui:field": "importDataField"
+            "ui:field": "importDataField",
+            "ui:options": {
+                "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
+            }
         }
     },
     "main_measurements": {
