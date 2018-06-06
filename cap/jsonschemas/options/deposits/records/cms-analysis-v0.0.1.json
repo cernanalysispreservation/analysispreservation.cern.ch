@@ -68,13 +68,13 @@
     "main_measurements": {
         "ui:array": "AccordionArrayField",
         "items": {
-            "ui:order": ["description", "detailed_desciption", "signal_event_election", "processing_steps", "analysis_code", "*"],
+            "ui:order": ["description", "detailed_desciption", "signal_event_selection", "processing_steps", "analysis_code", "*"],
             "processing_steps": {
                 "items": {
                     "ui:order": ["configuration_file", "run_instructions", "output_data"]
                 }
             },
-            "signal_event_election": {
+            "signal_event_selection": {
                 "physics_objects": {
                     "items": {
                         "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]

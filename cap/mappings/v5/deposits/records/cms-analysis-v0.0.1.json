@@ -74,7 +74,7 @@
                 "main_measurements": {
                     "type": "nested",
                     "properties": {
-                        "signal_event_election": {
+                        "signal_event_selection": {
                             "type": "object",
                             "properties": {
                                 "physics_objects": {

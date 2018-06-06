@@ -212,12 +212,12 @@ RECORDS_REST_FACETS = {
             },
             "particles": {
                 "nested": {
-                    "path": "main_measurements.signal_event_election.physics_objects"
+                    "path": "main_measurements.signal_event_selection.physics_objects"
                 },
                 "aggs": {
                     "facet_physics_objects": {
                         "terms": {
-                            "field": "main_measurements.signal_event_election.physics_objects.object",
+                            "field": "main_measurements.signal_event_selection.physics_objects.object",
                             "exclude": ""
                         },
                         "aggs": {
@@ -226,7 +226,35 @@ RECORDS_REST_FACETS = {
                             },
                             "facet_physics_objects_type": {
                                 "terms": {
-                                    "field": "main_measurements.signal_event_election.physics_objects.object_type.keyword"
+                                    "field": "main_measurements.signal_event_selection.physics_objects.object_type.keyword"
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "vetos": {
+                "nested": {
+                    "path": "main_measurements.signal_event_selection.veto"
+                },
+                "aggs": {
+                    "facet_veto": {
+                        "terms": {
+                            "field": "main_measurements.signal_event_selection.veto.object",
+                            "exclude": ""
+                        },
+                        "aggs": {
+                            "doc_count": {
+                                "reverse_nested": {}
+                            },
+                            "facet_veto_type": {
+                                "terms": {
+                                    "field": "main_measurements.signal_event_selection.veto.object_type.keyword"
                                 },
                                 "aggs": {
                                     "doc_count": {
@@ -247,6 +275,8 @@ RECORDS_REST_FACETS = {
             'conference': terms_filter('conference'),
             'physics_objects': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object'),
             'physics_objects_type': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object_type.keyword'),
+            'veto': nested_filter('main_measurements.signal_event_selection.veto', 'main_measurements.signal_event_selection.veto.object'),
+            'veto_type': nested_filter('main_measurements.signal_event_selection.veto', 'main_measurements.signal_event_selection.veto.object_type.keyword'),
         }
     }
 }

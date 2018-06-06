@@ -24,7 +24,7 @@
                 "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
             }
         },
-        "signal_event_election": {
+        "signal_event_selection": {
             "title": "Signal Event Selection",
             "type": "object",
             "properties": {
