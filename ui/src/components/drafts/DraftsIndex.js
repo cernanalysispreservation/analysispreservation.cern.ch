@@ -20,7 +20,7 @@ class DraftsIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true}>
+      <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
         <Switch>
           <Route exact path="/drafts/create" component={AvailableDeposits}  />
           <Route path={`/drafts/create/:schema_id`} component={CreateDeposit} />
