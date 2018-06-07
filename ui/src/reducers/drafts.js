@@ -18,8 +18,6 @@ import {
   CREATE_DRAFT_REQUEST,
   CREATE_DRAFT_SUCCESS,
   CREATE_DRAFT_ERROR,
-  INIT_DRAFT_SUCCESS,
-  INIT_DRAFT_ERROR,
   UPLOAD_FILE_REQUEST,
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
@@ -157,20 +155,6 @@ export default function depositReducer(state = initialState, action) {
       return state
         .setIn(['current_item', 'loading'], false)
         .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while updating.."});
-    case INIT_DRAFT_SUCCESS:
-      return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "ok" , msg: "Created!"})
-        .setIn(['current_item', 'error'], null)
-        .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'data'], action.draft)
-        // .setIn(['current_item', 'formData'], action.draft)
-        .setIn(['current_item', 'links'], Map(action.draft.links));
-    case INIT_DRAFT_ERROR:
-      return state
-        .setIn(['current_item', 'error'], action.error)
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while creating.."});
     case INIT_FORM:
       return state
         .set('current_item', Map({

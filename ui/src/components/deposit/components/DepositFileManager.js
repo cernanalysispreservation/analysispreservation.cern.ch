@@ -37,11 +37,13 @@ const schema = {
 };
 
 const uiSchema = {
-  "ui:placeholder": "Please provide a valid file url"
+  "ui:placeholder": "Please provide a valid file url",
+  "ui:widget": "textarea"
 };
 
 const uiSchemaRepoUpload = {
-  "ui:placeholder": "Please provide a valid repository url"
+  "ui:placeholder": "Please provide a valid repository url",
+  "ui:widget": "textarea"
 };
 
 class FileManager extends React.Component {
@@ -116,20 +118,22 @@ class FileManager extends React.Component {
                       </Box>
                       <Heading tag="h5" strong={true}>Upload from URL</Heading>
                       <Box>
-                        <CleanForm
-                          schema={schema}
-                          uiSchema={uiSchema}
-                          onSubmit={(data) => {
-                            this.props.uploadViaUrl(this.props.draft_id, data.formData)
-                          }}
-                        >
-                          <Box margin={{top:'small'}}>
-                            <Button label='Upload'
-                              type='submit'
-                              primary={true}
-                            />
-                          </Box>
-                        </CleanForm>
+                        <Box flex={true}>
+                          <CleanForm
+                              schema={schema}
+                              uiSchema={uiSchema}
+                              onSubmit={(data) => {
+                                this.props.uploadViaUrl(this.props.draft_id, data.formData, 'url')
+                              }}
+                            >
+                            <Box margin={{top:'small'}}>
+                              <Button label='Upload'
+                                type='submit'
+                                primary={true}
+                              />
+                            </Box>
+                          </CleanForm>
+                        </Box>
                       </Box>
                     </Box>
                   </Tab>
@@ -141,7 +145,7 @@ class FileManager extends React.Component {
                             schema={schema}
                             uiSchema={uiSchemaRepoUpload}
                             onSubmit={(data) => {
-                              this.props.uploadViaUrl(this.props.draft_id, data.formData)
+                              this.props.uploadViaUrl(this.props.draft_id, data.formData, 'repo')
                             }}
                           >
                           <Box margin={{top:'small'}}>
@@ -195,7 +199,7 @@ function mapDispatchToProps(dispatch) {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     initDraft: (schema, title) => dispatch(initDraft(schema, title)),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (draft_id, url) => dispatch(uploadViaUrl(draft_id, url))
+    uploadViaUrl: (draft_id, url, type) => dispatch(uploadViaUrl(draft_id, url, type))
   };
 }
 

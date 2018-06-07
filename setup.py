@@ -71,7 +71,7 @@ install_requires = [
     'elasticsearch>=5.1.0,<6.0.0',
     'elasticsearch-dsl>=5.1.0,<6.0.0',
     'docker==3.0.0',
-    'celery>=4.0',  # temporary fix
+    'celery>=4.1.1',  # temporary fix
     'gunicorn>=19.6.0',
     'setuptools>=30.1.0',  # temporary fix
     'marshmallow==2.15.0',   # temporary fix

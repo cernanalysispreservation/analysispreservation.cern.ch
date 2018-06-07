@@ -33,23 +33,15 @@ export class TextAreaWidget extends Component {
   }
 
   render() {
-    return (
-          <Box margin={{horizontal: "medium"}} flex={true}>
-            {
-              this.maxChars ?
-              <Box justify="end" align="end">
-                Count: {this.state.count} / {this.maxChars}
-              </Box> : null
-            }
-            <textarea
-              rows="5"
-              type="text"
-              id={this.props.id}
-              name={this.props.id}
-              onBlur={this.props.onBlur}
-              value={this.props.value ? this.props.value : ""}
-              onChange={this._onChange.bind(this)} />
-          </Box>
+    return (          
+        <textarea
+            rows="5"
+            type="text"
+            id={this.props.id}
+            name={this.props.id}
+            onBlur={this.props.onBlur}
+            value={this.props.value ? this.props.value : ""}
+            onChange={this._onChange.bind(this)} />
     );
   }
 }

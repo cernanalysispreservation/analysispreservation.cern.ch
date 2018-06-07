@@ -44,6 +44,9 @@ class GitlabImporter(repo_importer.RepoImporter):
         """Download and archive repo via python-gitlab."""
         return self.get_url_of_repository_archive()
 
+    def archive_file(self, file):
+        pass
+
     def get_url_of_repository_archive(self):
         """Retrieve repository archive URL."""
         if self.ref:

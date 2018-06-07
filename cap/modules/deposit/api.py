@@ -34,6 +34,7 @@ from flask import current_app, request
 from werkzeug.local import LocalProxy
 
 from flask_login import current_user
+from cap.modules.repoimporter.repo_importer import RepoImporter
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
@@ -187,23 +188,41 @@ def construct_access():
     return access
 
 
-@shared_task(max_retries=2)
+@shared_task(max_retries=5)
 def download_url(pid, url, filename):
     """Task for fetching external files/repos."""
     record = CAPDeposit.get_record(pid)
-
+    size = None
     if url.startswith("root://"):
         from xrootdpyfs.xrdfile import XRootDPyFile
         response = XRootDPyFile(url, mode='r-')
         total = response.size
     else:
         try:
-            from cap.modules.repoimporter.repo_importer import RepoImporter
-            link = RepoImporter.create(url).archive_repository()
-            response = requests.get(link, stream=True).raw
-            total = int(response.headers.get('Content-Length'))
+            if any(u in url for u in ['github', 'gitlab']):
+                url, size = RepoImporter.create(url).archive_file(filename)
+            response = requests.get(url, stream=True).raw
+            response.decode_content = True
+            total = size or int(response.headers.get('Content-Length'))
         except TypeError as exc:
             download_url.retry(exc=exc, countdown=10)
+    task_commit(record, response, filename, total)
+
+
+@shared_task(max_retries=5)
+def download_repo(pid, url, filename):
+    """Task for fetching external files/repos."""
+    record = CAPDeposit.get_record(pid)
+    try:
+        link = RepoImporter.create(url).archive_repository()
+        response = requests.get(link, stream=True).raw
+        total = int(response.headers.get('Content-Length'))
+    except TypeError as exc:
+        download_repo.retry(exc=exc, countdown=10)
+    task_commit(record, response, filename, total)
+
+
+def task_commit(record, response, filename, total):
     record.files[filename].file.set_contents(
         response,
         default_location=record.files.bucket.location.uri,
@@ -249,6 +268,12 @@ class CAPDeposit(Deposit):
             return current_jsonschemas.path_to_url(
                 schema_prefix + schema_path
             )
+
+    def _constructFileName(self, url, type):
+        """Constructs repo name  or file name."""
+        filename = url.split('/')[-1] + '.tar.gz' \
+            if type == 'repo' else url.split('/')[-1]
+        return filename
 
     def commit(self, *args, **kwargs):
         """Synchronize files before commit."""
@@ -368,8 +393,10 @@ class CAPDeposit(Deposit):
 
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
+        """Upload action for file/repository."""
         data = request.get_json()
-        filename = self.constructFileName(data['url'])
+        url_type = data['type']
+        filename = self._constructFileName(data['url'], url_type)
         if request:
             _, record = request.view_args.get('pid_value').data
             record_id = str(record.id)
@@ -380,12 +407,12 @@ class CAPDeposit(Deposit):
             record.files.flush()
             record.files[filename]['source_url'] = data['url']
 
-            download_url.delay(record_id, data['url'], filename)
+            if url_type == 'url':
+                download_url.delay(record_id, data['url'], filename)
+            else:
+                download_repo.delay(record_id, data['url'], filename)
 
         return self
-
-    def constructFileName(self, file):
-        return file.split('/')[-1]
 
     @index
     @mark_as_action

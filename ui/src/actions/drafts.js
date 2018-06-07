@@ -18,10 +18,6 @@ export const DRAFTS_ERROR = 'DRAFTS_ERROR';
 
 export const INIT_FORM = 'INIT_FORM';
 
-export const INIT_DRAFT_REQUEST = 'INIT_DRAFT_REQUEST';
-export const INIT_DRAFT_SUCCESS = 'INIT_DRAFT_SUCCESS';
-export const INIT_DRAFT_ERROR = 'INIT_DRAFT_ERROR';
-
 export const DRAFTS_ITEM_REQUEST = 'DRAFTS_ITEM_REQUEST';
 export const DRAFTS_ITEM_SUCCESS = 'DRAFTS_ITEM_SUCCESS';
 export const DRAFTS_ITEM_ERROR = 'DRAFTS_ITEM_ERROR';
@@ -72,10 +68,6 @@ export const FORM_DATA_CHANGE = 'FORM_DATA_CHANGE';
 export function draftsRequest(){ return { type: DRAFTS_REQUEST }; }
 export function draftsSuccess(drafts) { return { type: DRAFTS_SUCCESS, drafts }; }
 export function draftsError(error) { return { type: DRAFTS_ERROR, error }; }
-
-export function initDraftRequest(){ return { type: INIT_DRAFT_REQUEST }; }
-export function initDraftSuccess(draft_id, draft) { return { type: INIT_DRAFT_SUCCESS, draft_id, draft }; }
-export function initDraftError(error) { return { type: INIT_DRAFT_ERROR, error }; }
 
 export function draftsItemRequest(){ return { type: DRAFTS_ITEM_REQUEST }; }
 export function draftsItemSuccess(draft_id, draft) { return { type: DRAFTS_ITEM_SUCCESS, draft_id, draft }; }
@@ -328,7 +320,6 @@ export function createDraft(data={}, schema) {
     axios.post(uri, data)
       .then((response) => {
         const draft_id = response.data.links.self.split('/deposits/')[1];
-        dispatch(initDraftSuccess(draft_id, response.data));
         dispatch(replace(`/drafts/${draft_id}`));
         axios.put(uri + draft_id, response.data.metadata)
           .then(function(response){
@@ -338,7 +329,7 @@ export function createDraft(data={}, schema) {
             dispatch(createDraftError(error));
           });
       })
-      .catch((error) => dispatch(initDraftError(error)) )
+      .catch((error) => dispatch(createDraftError(error)) )
   };
 }
 
@@ -505,12 +496,12 @@ export function uploadFile(bucket_link, file) {
   };
 }
 
-export function uploadViaUrl(draft_id, urlToGrab) {
+export function uploadViaUrl(draft_id, urlToGrab, type) {
   return dispatch => {
     dispatch(uploadFileRequest(urlToGrab));
 
     let uri = `/api/deposits/${draft_id}/actions/upload`;
-    let data = { url: urlToGrab}
+    let data = { url: urlToGrab, type: type}
     axios.post(uri, data)
       .then(function(response){
         dispatch(uploadFileSuccess(urlToGrab, response.data));
