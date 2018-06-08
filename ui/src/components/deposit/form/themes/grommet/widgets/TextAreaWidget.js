@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { Box } from 'grommet';
 
-export class TextAreaWidget extends Component {
+class TextAreaWidget extends Component {
   constructor(props) {
     super(props);
 

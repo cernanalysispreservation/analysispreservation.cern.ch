@@ -2,15 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import {
-  Box,
-  Heading,
-  Section,
-  Sidebar,
-  Header,
-  Title
-} from 'grommet';
-
 import {getPublishedItem} from '../../actions/published';
 import DefaultPublished from './components/Default';
 //import CmsAnalysis from './components/CmsAnalysis';
@@ -41,7 +32,7 @@ export class Published extends React.Component {
         default:
           return (
             <DefaultPublished item={item} />
-          )
+          );
       }
     } else {
       return null;

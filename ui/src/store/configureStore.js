@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 // import { browserHistory } from 'history';
 
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 // 'routerMiddleware': the new way of storing route changes with redux middleware since rrV4.
 import { routerMiddleware } from 'react-router-redux';
 

@@ -102,8 +102,8 @@ SearchPage.propTypes = {
   fetchSearch: PropTypes.func,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  selectedAggs: PropTypes.array.isRequired,
-  results: PropTypes.array.isRequired,
+  selectedAggs: PropTypes.object.isRequired,
+  results: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {

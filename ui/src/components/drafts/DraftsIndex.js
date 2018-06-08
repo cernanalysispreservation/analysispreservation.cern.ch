@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 
 import React from 'react';
@@ -42,9 +41,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default withRouter(connect(

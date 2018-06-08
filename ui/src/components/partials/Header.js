@@ -4,7 +4,6 @@ import GrommetHeader from 'grommet/components/Header';
 import Title from 'grommet/components/Title';
 import Box from 'grommet/components/Box';
 import Menu from 'grommet/components/Menu';
-import Search from 'grommet/components/Search';
 import Anchor from 'grommet/components/Anchor';
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -85,7 +84,9 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {

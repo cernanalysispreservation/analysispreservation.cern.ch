@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, TextInput} from 'grommet';
+import { TextInput} from 'grommet';
 
 class AutocompleteWidget extends React.Component{
     constructor(){
@@ -18,8 +18,8 @@ class AutocompleteWidget extends React.Component{
             .then(({ data }) => {
                 this.setState({
                     suggestions: data
-                })
-            })
+                });
+            });
 
         return this.props.onChange(event.target.value);
     }
@@ -41,10 +41,11 @@ class AutocompleteWidget extends React.Component{
             />
         );
     }
-};
+}
 
 AutocompleteWidget.propTypes = {
     onDOMChange: PropTypes.func,
+    onChange: PropTypes.func,
     id: PropTypes.string,
     value: PropTypes.string,
 };

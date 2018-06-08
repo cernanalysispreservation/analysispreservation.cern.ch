@@ -138,7 +138,7 @@ export function revokeToken(token_id, key) {
   return function (dispatch) {
     // dispatch(apiKeyListRequest());
     axios.get(`/api/applications/tokens/${token_id}/revoke/`)
-      .then(function (response) {
+      .then(function () {
         dispatch(revokeTokenSuccess(key));
       })
       .catch(function (error) {
