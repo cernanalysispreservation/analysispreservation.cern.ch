@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   Box,
-  Header,
-  Heading,
   Layer,
   Button,
 } from 'grommet';

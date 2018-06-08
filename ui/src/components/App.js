@@ -8,15 +8,12 @@ import AboutPage from './about/AboutPage';
 import IndexPage from './index/IndexPage';
 import NotFoundPage from './NotFoundPage';
 
-import requireAuth from './auth/AuthorizationRequired';
 import noRequireAuth from './auth/NoAuthorizationRequired';
 
 import GrommetApp from 'grommet/components/App';
 
 import {initCurrentUser} from '../actions/auth';
 import {connect} from 'react-redux';
-
-import _isEqual from 'lodash/isEqual';
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -32,7 +29,6 @@ class App extends React.Component {
   }
 
   render() {
-    const RequireAuthIndexPage = requireAuth(IndexPage);
     return (
       <GrommetApp centered={false} id="app-main">
         <div id="main-container">

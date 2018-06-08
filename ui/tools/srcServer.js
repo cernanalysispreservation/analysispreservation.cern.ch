@@ -18,19 +18,19 @@ const bundler = webpack(config);
 // **** DEV non-Docker - proxy to backend   ****
 // *********************************************
 //
-var httpProxy = require('http-proxy');
-var proxy = httpProxy.createProxyServer({
-   target: 'http://localhost:5000/'
- });
+// let httpProxy = require('http-proxy');
+// let proxy = httpProxy.createProxyServer({
+//    target: 'http://localhost:5000/'
+//  });
 
-var proxyMiddleware = function(req, res, next) {
-   if (req.url.indexOf('api') != -1) {
-     req.url = req.url.replace('/api/', '/');
-     proxy.web(req, res);
-   } else {
-     next();
-   }
-};
+// let proxyMiddleware = function(req, res, next) {
+//    if (req.url.indexOf('api') != -1) {
+//      req.url = req.url.replace('/api/', '/');
+//      proxy.web(req, res);
+//    } else {
+//      next();
+//    }
+// };
 
 // Run Browsersync and use middleware for Hot Module Replacement
 browserSync({
@@ -76,7 +76,7 @@ browserSync({
       // *********************************************
       // **** DEV non-Docker - proxy to backend   ****
       // *********************************************
-      process.env['ENABLE_BACKEND_PROXY'] == 'False' ?  (req, res, next) => next() : proxyMiddleware
+      // process.env['ENABLE_BACKEND_PROXY'] == 'False' ?  (req, res, next) => next() : proxyMiddleware
     ],
     cors: true
   },

@@ -5,17 +5,9 @@ import {connect} from 'react-redux';
 
 import {
   Box,
-  Select
+  Anchor
 } from 'grommet';
-import Button from 'grommet/components/Button';
-import Heading from 'grommet/components/Heading';
-import Anchor from 'grommet/components/Anchor';
-import Layer from 'grommet/components/Layer';
-import Label from 'grommet/components/Label';
-import List from 'grommet/components/List';
-import ListItem from 'grommet/components/ListItem';
 
-import FieldHeader from '../components/FieldHeader';
 import Edit from 'grommet/components/icons/base/FormEdit';
 import { toggleFilemanagerLayer } from '../../../../../../actions/drafts';
 
@@ -40,12 +32,11 @@ class ImportDataField extends React.Component {
     );
   }
 
-  _onChange ({target, option, value}) { this.props.onChange(value) }
+  _onChange ({value}) { this.props.onChange(value) }
 
   _toggleFileManager() { this.props.toggleFilemanagerLayer(true, this.props.onChange) }
 
   render() {
-    const files_list = Object.keys(this.props.files.toJS());
 
     return (
       <Box pad={{horizontal: "medium", vertical: "small"}} flex={true} direction="row" justify="between" wrap={false}>
@@ -77,9 +68,9 @@ ImportDataField.propTypes = {
   properties: PropTypes.object,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {
-    files: state.drafts.getIn(['current_item', 'files'])
+    // files: state.drafts.getIn(['current_item', 'files'])
   };
 }
 

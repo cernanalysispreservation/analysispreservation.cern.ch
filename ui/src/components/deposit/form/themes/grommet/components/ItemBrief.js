@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import {
-  Box,
-  Button
+  Box
 } from 'grommet';
-
-import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
-import FormUpIcon from 'grommet/components/icons/base/FormUp';
-import FormDownIcon from 'grommet/components/icons/base/FormDown';
 
 let ItemBrief = function (props) {
   const {

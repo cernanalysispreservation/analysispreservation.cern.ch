@@ -1,28 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {connect} from 'react-redux';
-
-import {
-  Box
-} from 'grommet';
-
-import {toggleFilemanagerLayer} from '../../../actions/drafts';
-
 // Customized RJSF component ( Grommet )
 import FieldTemplate from './themes/grommet/templates/FieldTemplate';
 import ObjectFieldTemplate from './themes/grommet/templates/ObjectFieldTemplate';
 import ArrayFieldTemplate from './themes/grommet/templates/ArrayFieldTemplate';
 import ErrorListTemplate from './themes/grommet/templates/ErrorListTemplate';
 
-import SectionHeader from '../components/SectionHeader';
-
 import widgets from './themes/grommet/widgets';
 import fields from './themes/grommet/fields';
 
 import Form from "react-jsonschema-form";
-
-import AvailableDeposits from '../components/AvailableDeposits';
 
 class GrommetForm extends React.Component {
   constructor(props) {

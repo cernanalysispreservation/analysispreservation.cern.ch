@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Box from 'grommet/components/Box';
 import Search from 'grommet/components/Search';
 import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
@@ -51,6 +50,7 @@ class SearchBar extends React.Component {
 
 SearchBar.propTypes = {
   fetchSearch: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
@@ -67,6 +67,6 @@ function mapDispatchToProps(dispatch) {
 
 export default withRouter(
   connect(
-    () => ({}),
+    mapStateToProps,
     mapDispatchToProps
   )(SearchBar));

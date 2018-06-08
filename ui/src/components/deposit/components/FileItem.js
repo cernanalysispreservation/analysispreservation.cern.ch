@@ -2,16 +2,12 @@ import React from 'react';
 
 import {
   Box,
-  Button,
   Label,
   Menu,
   Anchor,
-  List,
   ListItem
 } from 'grommet';
 
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
-import AddIcon from 'grommet/components/icons/base/Add';
 import Status from 'grommet/components/icons/Status';
 
 import ArchiveIcon from 'grommet/components/icons/base/Archive';

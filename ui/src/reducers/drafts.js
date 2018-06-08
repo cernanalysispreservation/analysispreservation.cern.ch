@@ -1,4 +1,4 @@
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 
 import {
   TOGGLE_FILEMANAGER_LAYER,
@@ -10,8 +10,6 @@ import {
   FETCH_SCHEMA_REQUEST,
   FETCH_SCHEMA_SUCCESS,
   FETCH_SCHEMA_ERROR,
-  SELECT_SCHEMA,
-  UPDATE_FORM_DATA,
   DRAFTS_ITEM_REQUEST,
   DRAFTS_ITEM_SUCCESS,
   DRAFTS_ITEM_ERROR,
@@ -97,7 +95,7 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_REQUEST:
       return state
         .set('loading', true)
-        .set('error', null)
+        .set('error', null);
     case FETCH_SCHEMA_SUCCESS:
       return state
         .set('loading', false)
@@ -106,9 +104,7 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_ERROR:
       return state
         .set('loading', false)
-        .set('error', action.error)
-    case UPDATE_FORM_DATA:
-      return state.set('data', action.data);
+        .set('error', action.error);
     case DRAFTS_ITEM_REQUEST:
       return state
         .setIn(['current_item', 'loading'], true)
@@ -164,16 +160,16 @@ export default function depositReducer(state = initialState, action) {
           error: null,
           links: null,
           files: Map({})
-        }))
+        }));
     case UPLOAD_FILE_REQUEST:
       return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'uploading' })
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'uploading' });
     case UPLOAD_FILE_SUCCESS:
       return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'done' })
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'done' });
     case UPLOAD_FILE_ERROR:
       return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'error', error: action.error })
+        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'error', error: action.error });
     case PUBLISH_DRAFT_REQUEST:
       return state
         .setIn(['current_item', 'loading'], true)
@@ -181,7 +177,7 @@ export default function depositReducer(state = initialState, action) {
     case PUBLISH_DRAFT_SUCCESS:
       return state
         .setIn(['current_item', 'published_id'], action.published_id)
-        .setIn(['current_item', 'data'], action.published_record)
+        .setIn(['current_item', 'data'], action.published_record);
     case PUBLISH_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
@@ -207,7 +203,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'published_id'], null)
         .setIn(['current_item', 'data'], action.data)
-        .setIn(['current_item', 'formData'], action.data.metadata)
+        .setIn(['current_item', 'formData'], action.data.metadata);
     case DISCARD_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
@@ -220,7 +216,7 @@ export default function depositReducer(state = initialState, action) {
       return state
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'published_id'], null)
-        .setIn(['current_item', 'data'], action.draft)
+        .setIn(['current_item', 'data'], action.draft);
     case EDIT_PUBLISHED_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
@@ -231,7 +227,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'error'], false);
     case PERMISSIONS_ITEM_SUCCESS:
       return state
-        .setIn(['current_item', 'permissions'], action.permissions)
+        .setIn(['current_item', 'permissions'], action.permissions);
     case PERMISSIONS_ITEM_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)
@@ -251,7 +247,7 @@ export default function depositReducer(state = initialState, action) {
         .set('error', action.error);
     case FORM_DATA_CHANGE:
       return state
-        .setIn(['current_item', 'formData'], action.data)
+        .setIn(['current_item', 'formData'], action.data);
     default:
       return state;
   }

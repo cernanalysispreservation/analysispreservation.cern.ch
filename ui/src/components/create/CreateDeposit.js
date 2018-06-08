@@ -3,9 +3,7 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 
-import {Box, Heading, Tiles, Tile, Toast, Paragraph} from 'grommet';
-
-import _isEqual from 'lodash/isEqual';
+import {Box, Toast} from 'grommet';
 
 import {
   fetchSchema,
@@ -62,7 +60,7 @@ export class CreateDeposit extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (nextProps.match.params.draft_id) {
       if (nextProps.match.params.draft_id !== nextProps.draft_id) {
         // nextProps.getDraftById(nextProps.match.params.draft_id, true);

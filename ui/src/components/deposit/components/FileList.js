@@ -1,18 +1,7 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Label,
-  Menu,
-  Anchor,
-  List,
-  ListItem
-} from 'grommet';
-
+import { List } from 'grommet';
 import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
-import AddIcon from 'grommet/components/icons/base/Add';
-import Status from 'grommet/components/icons/Status';
 
 import FileItem from './FileItem';
 
@@ -21,17 +10,8 @@ import DocumentConfigIcon from 'grommet/components/icons/base/DocumentConfig';
 import PieChartIcon from 'grommet/components/icons/base/PieChart';
 import BookIcon from 'grommet/components/icons/base/Book';
 import NoteIcon from 'grommet/components/icons/base/Note';
-import MoreIcon from 'grommet/components/icons/base/More';
-
-import prettyBytes from 'pretty-bytes';
 
 import {connect} from 'react-redux';
-
-const uploadStatusMap = {
-  "uploading": "disabled",
-  "error": "critical",
-  "done": "ok"
-};
 
 class FileList extends React.Component {
   constructor(props) {
@@ -80,10 +60,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(

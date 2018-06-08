@@ -22,8 +22,6 @@ import fields from './themes/grommet/fields';
 
 import Form from "react-jsonschema-form";
 
-import AvailableDeposits from '../components/AvailableDeposits';
-
 class DepositForm extends React.Component {
   constructor(props) {
     super(props);

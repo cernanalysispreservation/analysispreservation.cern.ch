@@ -58,7 +58,7 @@ class ArrayFieldTemplate extends React.Component {
                   />
                   <Box flex={true} direction="row" wrap={false}>
                     <Box  onClick={this._showLayer.bind(this, element.index)} flex={true} pad="small">
-                      <ItemBrief index={element.index} item={element.children.props.formData} label={this.props.uiSchema.label || (this.props.title || Item)} />
+                      <ItemBrief index={element.index} item={element.children.props.formData} label={this.props.uiSchema.label || (this.props.title || "Item")} />
                     </Box>
                     <Box direction="row" justify="between">
                       <Button
@@ -71,9 +71,11 @@ class ArrayFieldTemplate extends React.Component {
                           this.props.reorder ?
                           [
                             <Button
+                              key="down"
                               onClick={element.hasMoveDown ? element.onReorderClick(element.index, element.index+1) : null}
                               icon={<FormDownIcon margin="none" pad="none" />} />,
                             <Button
+                              key="up"
                               onClick={element.hasMoveUp ? element.onReorderClick(element.index, element.index-1) : null}
                               icon={<FormUpIcon margin="none" pad="none" />} />
                           ] : null

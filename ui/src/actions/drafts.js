@@ -105,70 +105,73 @@ export function formDataChange(data) {
   return {
     type: FORM_DATA_CHANGE,
     data
-  }
-};
+  };
+}
 
 export function fetchSchemaRequest() {
   return {
     type: FETCH_SCHEMA_REQUEST
-  }
-};
+  };
+}
 
 export function fetchSchemaSuccess (schema) {
   return {
     type: FETCH_SCHEMA_SUCCESS,
     schema
-  }
-};
+  };
+}
 
 export function fetchSchemaError(error) {
-  type: FETCH_SCHEMA_ERROR,
-  error
-};
+  return {
+    type: FETCH_SCHEMA_ERROR,
+    error
+  };
+}
 
 export function createDraftRequest() {
   return {
     type: CREATE_DRAFT_REQUEST
-  }
-};
+  };
+}
 
 export function createDraftSuccess(draft_id, draft) {
   return {
     type: CREATE_DRAFT_SUCCESS,
     draft_id,
     draft
-  }
-};
+  };
+}
 
 export function createDraftError(error) {
   return {
     type: CREATE_DRAFT_ERROR,
     error
-  }
-};
+  };
+}
 
 export function deleteDraftRequest() {
   return {
     type: DELETE_DRAFT_REQUEST
-  }
-};
+  };
+}
 
 export function deleteDraftSuccess() {
   return {
     type: DELETE_DRAFT_SUCCESS
-  }
-};
+  };
+}
 
 export function deleteDraftError(error) {
   return {
-    type: DELETE_DRAFT_ERROR
-  }
-};
+    type: DELETE_DRAFT_ERROR,
+    error
+  };
+}
 
 export function updateDraftRequest() {
   return {
     type: UPDATE_DRAFT_REQUEST
-  }
+  };
 }
 
 export function updateDraftSuccess(draft_id, draft) {
@@ -176,20 +179,20 @@ export function updateDraftSuccess(draft_id, draft) {
     type: UPDATE_DRAFT_SUCCESS,
     draft_id,
     draft
-  }
+  };
 }
 
 export function updateDraftError(error) {
   return {
     type: UPDATE_DRAFT_ERROR,
     error
-    }
+  };
 }
 
 export function discardDraftRequest() {
   return {
     type: DISCARD_DRAFT_REQUEST
-  }
+  };
 }
 
 export function discardDraftSuccess(draft_id, data) {
@@ -197,20 +200,20 @@ export function discardDraftSuccess(draft_id, data) {
     type: DISCARD_DRAFT_SUCCESS,
     draft_id,
     data
-  }
+  };
 }
 
 export function discardDraftError(error) {
   return {
     type: DISCARD_DRAFT_ERROR,
     error
-  }
+  };
 }
 
 export function editPublishedRequest() {
   return {
     type: EDIT_PUBLISHED_REQUEST
-  }
+  };
 }
 
 export function editPublishedSuccess(draft_id, draft) {
@@ -218,72 +221,72 @@ export function editPublishedSuccess(draft_id, draft) {
     type: EDIT_PUBLISHED_SUCCESS,
     draft_id,
     draft
-  }
+  };
 }
 
 export function editPublishedError(error) {
   return {
     type: EDIT_PUBLISHED_ERROR,
     error
-  }
+  };
 }
 
 export function permissionsItemRequest() {
   return {
     type: PERMISSIONS_ITEM_REQUEST
-  }
+  };
 }
 
 export function permissionsItemSuccess(permissions) {
   return {
     type: PERMISSIONS_ITEM_SUCCESS,
     permissions
-  }
+  };
 }
 
 export function permissionsItemError(error) {
   return {
     type: PERMISSIONS_ITEM_ERROR,
     error
-  }
+  };
 }
 
 export function usersItemRequest() {
   return {
     type: USERS_ITEM_REQUEST
-  }
+  };
 }
 
 export function usersItemSuccess(users) {
   return {
     type: USERS_ITEM_SUCCESS,
     users
-  }
+  };
 }
 
 export function usersItemError(error) {
   return {
     type: USERS_ITEM_ERROR,
     error
-  }
+  };
 }
 
 // [TOFIX] Plug validation action if needed.
-export function validate(data, schema) {
-  return dispatch => {
-    dispatch(validateRequest());
+// export function validate(data, schema) {
+//   return dispatch => {
+//     dispatch(validateRequest());
 
-    data['$ana_type'] = schema;
+//     data['$ana_type'] = schema;
 
-    axios.post('/api/deposit/validator', data)
-      .then(function(response) {
-        dispatch(validateSuccess(respose.data));
-      })
-      .catch(function(error) {
-        dispatch(validateError());
-      })
-  };
-}
+//     axios.post('/api/deposit/validator', data)
+//       .then(function(response) {
+//         dispatch(validateSuccess(response.data));
+//       })
+//       .catch(function(error) {
+//         dispatch(validateError(error));
+//       })
+//   };
+// }
 
 // [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
@@ -301,11 +304,11 @@ export function fetchSchema(schema) {
               dispatch(fetchSchemaSuccess({schema:schema, uiSchema:uiSchema}));
             })
             .catch(function(error) {
-              dispatch(fetchSchemaError());
+              dispatch(fetchSchemaError(error));
             })
         })
       .catch(function(error) {
-        dispatch(fetchSchemaError());
+        dispatch(fetchSchemaError(error));
       })
   };
 }
@@ -336,11 +339,11 @@ export function createDraft(data={}, schema) {
 export function editPublished(data={}, schema, draft_id) {
   return dispatch => {
     dispatch(editPublishedRequest());
-    
+
     let uri = `/api/deposits/${draft_id}/actions/edit`;
-    
+
     axios.post(uri)
-      .then((response) => {
+      .then(() => {
         data["$schema"] = schema;
         axios.put(`/api/deposits/${draft_id}`, data)
           .then(function(response){
@@ -350,16 +353,16 @@ export function editPublished(data={}, schema, draft_id) {
             dispatch(editPublishedError(error));
           });
       })
-      .catch((error) => dispatch(editPublishedError(error)) )
+      .catch((error) => dispatch(editPublishedError(error)) );
   };
 }
 
 export function updateDraft(data, draft_id) {
   return dispatch => {
     dispatch(updateDraftRequest());
-    
+
     let uri = `/api/deposits/${draft_id}`;
-    
+
     axios.put(uri, data)
       .then(function(response){
         dispatch(updateDraftSuccess(draft_id, response.data));
@@ -395,7 +398,7 @@ export function deleteDraft(draft_id) {
     let uri = `/api/deposits/${draft_id}`;
 
     axios.delete(uri)
-      .then(function(response){
+      .then(function(){
         dispatch(deleteDraftSuccess());
         dispatch(replace('/drafts'));
       })
@@ -435,9 +438,9 @@ export function getDraftById(draft_id, fetchSchemaFlag=false) {
         let url;
         if (fetchSchemaFlag && response.data.metadata.$schema) {
           url = response.data.metadata.$schema;
-          url = url.split('/')
+          url = url.split('/');
           let schema = url[url.length-1].split("-v")[0];
-          dispatch(fetchSchema(schema))
+          dispatch(fetchSchema(schema));
         }
         dispatch(draftsItemSuccess(draft_id, response.data));
       })
@@ -474,7 +477,7 @@ export function uploadFile(bucket_link, file) {
     oReq.onload = function (oEvent) {
       try {
         let data = oEvent.target.response;
-        data = JSON.parse(data)
+        data = JSON.parse(data);
         dispatch(uploadFileSuccess(file.name, data));
       }
       catch (err) {
@@ -486,9 +489,9 @@ export function uploadFile(bucket_link, file) {
         if(oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
             // Request finished. Do processing here.
         }
-    }
+    };
 
-    oReq.addEventListener('error', function(event) {
+    oReq.addEventListener('error', function() {
       dispatch(uploadFileError(file.name, {message: "Error in uploading"} ));
     });
 
@@ -501,7 +504,7 @@ export function uploadViaUrl(draft_id, urlToGrab, type) {
     dispatch(uploadFileRequest(urlToGrab));
 
     let uri = `/api/deposits/${draft_id}/actions/upload`;
-    let data = { url: urlToGrab, type: type}
+    let data = { url: urlToGrab, type: type };
     axios.post(uri, data)
       .then(function(response){
         dispatch(uploadFileSuccess(urlToGrab, response.data));
@@ -525,13 +528,13 @@ export function getPermissions(draft_id) {
       .catch(function (error) {
         dispatch(permissionsItemError(error));
       });
-  }
+  };
 }
 
 export function removePermissions(draft_id, email, action) {
   return function (dispatch) {
     dispatch(permissionsItemRequest);
-    let data = _get_permissions_data(action, email, 'remove')
+    let data = _get_permissions_data(action, email, 'remove');
     let uri = `/api/deposits/${draft_id}/actions/permissions`;
     axios.post(uri, data)
       .then(function(response) {
@@ -540,13 +543,13 @@ export function removePermissions(draft_id, email, action) {
       .catch(function (error) {
         dispatch(permissionsItemError(error));
       });
-  }
+  };
 }
 
 export function addPermissions(draft_id, email, action) {
   return function (dispatch) {
     dispatch(permissionsItemRequest);
-    let data = _get_permissions_data(action, email, 'add')
+    let data = _get_permissions_data(action, email, 'add');
     let uri = `/api/deposits/${draft_id}/actions/permissions`;
     axios.post(uri, data)
       .then(function(response) {
@@ -555,7 +558,7 @@ export function addPermissions(draft_id, email, action) {
       .catch(function (error) {
         dispatch(permissionsItemError(error));
       });
-  }
+  };
 }
 
 function _get_permissions_data(action, email,  operation) {
@@ -568,8 +571,8 @@ function _get_permissions_data(action, email,  operation) {
                                 'op': `${operation}`}]
           }
       ]
-  }
-};
+  };
+}
 
 
 export function getUsers() {
@@ -583,8 +586,8 @@ export function getUsers() {
     .catch(function (error) {
       dispatch(usersItemError(error));
     });
-  }
-};
+  };
+}
 
 
 

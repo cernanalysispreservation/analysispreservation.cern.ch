@@ -5,12 +5,9 @@ import {connect} from 'react-redux';
 import {
   Box,
   Button,
-  FormField,
   Anchor,
-  CheckBox,
   Paragraph,
   Sidebar,
-  Select,
   Title
 } from 'grommet';
 

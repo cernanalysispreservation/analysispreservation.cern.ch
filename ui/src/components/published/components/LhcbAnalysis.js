@@ -1,21 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 
 import {
   Box,
-  Heading,
-  Section,
   Sidebar,
   Header,
   Title,
-  Label,
-  Paragraph
+  Label
 } from 'grommet';
 
 import DepositFilesList from '../../deposit/components/DepositFilesList';
 
-export class LhcbPublished extends React.Component {
+class LhcbPublished extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -39,21 +35,26 @@ export class LhcbPublished extends React.Component {
             <Box size="xlarge" pad="large" flex={false} wrap={false}>
               <Box flex={true}>
                 <Title>Proponents</Title>
-                  {item && item.basic_info ? 
+                  {item && item.basic_info ?
                       item.basic_info.analysis_proponents.map(i => i)
                                                          .reduce((prev, curr) => [prev, ', ', curr]):
                                                          <Label>No available proponents.</Label>}
                 <Title>Reviewers</Title>
-                {item && item.basic_info ? 
+                {item && item.basic_info ?
                                     item.basic_info.reviewers:
                                     <Label>No available reviewers.</Label>}
                 <Title>Documentations</Title>
-                {item && item.additional_resources ? 
-                                    item.additional_resources.documentations.map((i) => 
-                                      {return <Box>
-                                          <Label>{i.title}</Label>
-                                          <a href={i.url}>{i.url}</a>
-                                        </Box>}):<Label>No available documentations.</Label>}
+                {
+                  item && item.additional_resources ?
+                  item.additional_resources.documentations.map((i) => {
+                    return (
+                      <Box>
+                        <Label>{i.title}</Label>
+                        <a href={i.url}>{i.url}</a>
+                      </Box>
+                    );
+                  }) : <Label>No available documentations.</Label>
+                }
               </Box>
             </Box>
           </Box>
@@ -63,7 +64,9 @@ export class LhcbPublished extends React.Component {
   }
 }
 
-LhcbPublished.propTypes = {};
+LhcbPublished.propTypes = {
+  item: PropTypes.object
+};
 
 export default LhcbPublished;
 
