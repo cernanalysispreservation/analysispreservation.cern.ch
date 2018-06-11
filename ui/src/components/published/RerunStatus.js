@@ -1,0 +1,99 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+
+import {
+  Box,
+  Title,
+  Button,
+  Label,
+  Paragraph,
+  Value,
+  Meter
+} from 'grommet';
+
+import {getAnalysisStatus} from '../../actions/published';
+import RerunOutputs from './RerunOutputs';
+
+export class RerunStatus extends React.Component {
+
+  componentDidMount() {
+    this.props.getAnalysisStatus();
+  }
+
+  render() {
+    let data = this.props.run_results;
+
+    let constructSeries = () => {
+      let series = [];
+      for (var i=1; i <= data.progress.current_step; i++) {
+        let obj = {};
+        obj['label'] = `${i}`
+        obj['value'] = 1
+        obj['colorIndex'] = "graph-1"
+        series.push(obj)
+      }
+      return series;
+    }
+    return (
+      <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
+        <Box align="center" justify="center">
+          {data && data.status === "finished" ? 
+          <Title>...Analysis finished!</Title>:<Title>Analysis in progress...</Title>
+          }
+        </Box>
+        {data &&
+        <Box  align="center">
+          <Meter series={constructSeries()}
+                stacked={true}
+                size="large"
+                max={data.progress.total_steps}
+                onActive={()=>{}} />
+        </Box>}
+        {data && 
+        <Box align="center" flex={true} wrap={false}>
+          <Box size={{width: "xlarge"}} pad="large" flex={false} wrap={false}>
+            {data && data.status === "finished" ? null:
+                <Label>Running: Step {data.progress.current_step} out of {data.progress.total_steps}</Label>
+            }
+            {data && data.status === "finished" ? null:
+              <Label>Command: {data.progress.current_command}</Label>
+            }
+            {data && data.status === "finished" ?  <Label>See logs:</Label>:
+              <Label>Logs:</Label>
+            }
+            <Box flex={true}  colorIndex="grey-1">
+              <pre style={{color:"#fff"}}>{data.logs}</pre>
+            </Box>
+            {data && data.status === "finished" ?  <Label>Visualise outputs:</Label>:
+              null
+            }
+            {data && data.status === "finished" ?
+              <RerunOutputs />:null
+            }
+          </Box>
+        </Box>}
+      </Box>
+    )
+  }
+}
+
+RerunStatus.propTypes = {};
+
+function mapStateToProps(state) {
+  return {
+    run_results: state.published.getIn(['current_run', 'data'])
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getAnalysisStatus: (id) => dispatch(getAnalysisStatus(id)),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RerunStatus);
+
