@@ -6,10 +6,23 @@ import {
   Heading,
   Sidebar,
   Header,
-  Title
+  Title,
+  Button
 } from 'grommet';
 
+import {withRouter} from 'react-router';
+
 import DepositFilesList from '../../deposit/components/DepositFilesList';
+import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay';
+
+const RerunButton = withRouter(({ history, record_id=record_id }) => (
+        <Button
+          icon={<CirclePlayIcon/>}
+          label="Rerun"
+          onClick={() => history.push(`/published/${record_id}/rerun`)} 
+        />
+    ))
+
 
 class DefaultPublished extends React.Component {
   constructor(props) {
@@ -44,6 +57,12 @@ class DefaultPublished extends React.Component {
             </Box>
           </Box>
         </Box>
+        <Sidebar full={false} size="small">
+        <Header pad='medium'
+                  justify='between'>
+          <RerunButton record_id={this.props.item.control_number} />
+          </Header>
+        </Sidebar>
       </Box>
     );
   }

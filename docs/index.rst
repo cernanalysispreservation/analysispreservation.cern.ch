@@ -1,6 +1,11 @@
 Welcome to the Documentation for CERN Analysis Preservation
 ============================================================
 
+.. image:: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch.png
+   :target: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :target: https://gitter.im/cernanalysispreservation/analysispreservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+
 `CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service run at CERN currently targeted at preserving analysis information from the four largest LHC experiments.
 It is an open source project licensed under the `GNU Public License 2.0 <https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html>`_, yet the information stored will be private.
 
@@ -15,55 +20,26 @@ Taking Part
 
 Do you want to help us grow? We are always happy to receive contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
 
-In case you are unsure what to do, you can contact us :doc:`directly <../community/support>`.
+In case you are unsure what to do, you can contact us at analysis-preservation-support@cern.ch.
 
 Further Reading
 ---------------
 
 .. toctree::
 	:maxdepth: 1
-	:caption: Overview
-	:name: sec-overview
+	:numbered:
 
-	overview/introduction
-	overview/project
+	introduction
+	project
+	tutorials 
+	schema 
+	api 
+	terms 
+	faq 
+	glossary 
+	support 
+	related-projects
 	
-.. toctree::
-	:maxdepth: 1
-	:caption: Tutorials
-	:name: sec-tutorials
-
-	tutorials/getting-started
-	tutorials/tutorials
-
-.. toctree::
-	:maxdepth: 1
-	:caption: References
-	:name: sec-references
-
-	REST API <references/api>
-	references/glossary
-	JSON and JSON Schema <references/schema>
-	FAQ <references/faq>
-
-.. toctree::
-	:maxdepth: 1
-	:caption: Community
-	:name: sec-community
-
-	Support/Team <community/support>
-	community/related-projects
-
-
-.. toctree::
-	:hidden:
-
-	README
-	style-guide
-	tableofcontent
-	backstage/docs-overview
-	backstage/swagger-overview
-
 License
 -------
 
