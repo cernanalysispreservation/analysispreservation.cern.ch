@@ -39,6 +39,7 @@ from werkzeug.local import LocalProxy
 import pytest
 from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.reana.models import ReanaJob
 from elasticsearch.exceptions import RequestError
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
@@ -413,6 +414,11 @@ def deposit(users, create_deposit):
     return create_deposit(users['superuser'], 'cms-analysis-v0.0.1')
 
 
+@pytest.fixture
+def record_metadata(deposit):
+    return deposit.get_record_metadata()
+
+
 @pytest.fixture()
 def permissions_serialized_deposit(users):
     deposit = {
@@ -439,14 +445,10 @@ def permissions_serialized_deposit(users):
     return deposit
 
 
-def get_metadata(deposit):
-    return RecordMetadata.query.filter_by(id=deposit.id).one_or_none()
-
-
 def get_basic_json_serialized_deposit(deposit, schema):
     date_format = '%Y-%m-%dT%H:%M:%S.%f+00:00'
     pid = deposit['_deposit']['id']
-    metadata = get_metadata(deposit)
+    metadata = deposit.get_record_metadata()
     schema_host = jsonschemas_host()
 
     schema_to_serialized_deposit = {
@@ -551,3 +553,19 @@ def cms_user_me_data(users):
         "email": users['cms_user'].email,
         "id": users['cms_user'].id
     }
+
+
+@pytest.fixture(scope='function')
+def reana_job(db, users, record_metadata):
+    reana_job = ReanaJob(
+        user=users['superuser'],
+        record=record_metadata,
+        name='my_workflow_run',
+        params={
+            'param_1': 1,
+            'param_2': 2
+    })
+    db.session.add(reana_job)
+    db.session.commit()
+
+    yield reana_job

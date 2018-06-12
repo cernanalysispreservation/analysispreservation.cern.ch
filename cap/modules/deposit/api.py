@@ -27,8 +27,8 @@
 from __future__ import absolute_import, print_function
 
 import copy
-import requests
 
+import requests
 from celery import shared_task
 from flask import current_app, request
 from werkzeug.local import LocalProxy
@@ -43,6 +43,7 @@ from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 # from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
+from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 
 from .errors import EmptyDepositError, WrongJSONSchemaError
@@ -237,6 +238,10 @@ class CAPDeposit(Deposit):
     def is_published(self):
         """Check if deposit is published."""
         return self['_deposit'].get('pid') is not None
+
+    def get_record_metadata(self):
+        """Get Record Metadata instance for deposit."""
+        return RecordMetadata.query.filter_by(id=self.id).one_or_none()
 
     @classmethod
     def get_record(cls, id_, with_deleted=False):
