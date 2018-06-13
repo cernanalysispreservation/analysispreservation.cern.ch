@@ -6,19 +6,15 @@ import {connect} from 'react-redux';
 import {
   Anchor,
   Box,
-  Button,
   Header,
   Label,
   Menu
 } from 'grommet';
 
-import SplitIcon from 'grommet/components/icons/base/Split';
-import SplitsIcon from 'grommet/components/icons/base/Splits';
 import SaveIcon from 'grommet/components/icons/base/Save';
 import ShareIcon from 'grommet/components/icons/base/Share';
 import TrashIcon from 'grommet/components/icons/base/Trash';
 import RefreshIcon from 'grommet/components/icons/base/Refresh';
-import ViewIcon from 'grommet/components/icons/base/View';
 import MoreIcon from 'grommet/components/icons/base/More';
 import Spinning from 'grommet/components/icons/Spinning';
 import Status from 'grommet/components/icons/Status';
@@ -33,7 +29,7 @@ const SettingsAnchor = withRouter(({ history, draft_id=draft_id }) => (
           plain={true}
           secondary={true}
           label="Settings"
-          onClick={() => history.push(`/drafts/${draft_id}/settings`)} 
+          onClick={() => history.push(`/drafts/${draft_id}/settings`)}
         />
     ))
 

@@ -55,7 +55,7 @@ class WelcomePage extends React.Component {
                 <hr/>
                 {
                   process.env.NODE_ENV === 'development' ?
-                  <LoginForm usernameType="email" defaultValues={{username: "info@inveniosoftware.org"}} onSubmit={this.props.loginLocalUser.bind(this) } /> : null
+                  <LoginForm usernameType="email" defaultValues={{username: "info@inveniosoftware.org"}} onSubmit={this.props.loginLocalUser.bind(this)} /> : null
                 }
               </Box>
             </Box>

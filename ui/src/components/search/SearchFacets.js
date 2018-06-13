@@ -11,7 +11,7 @@ import Box from 'grommet/components/Box';
 import Menu from 'grommet/components/Menu';
 import CheckBox from 'grommet/components/CheckBox';
 
-import FiltersPreview from './components/FiltersPreview';
+// import FiltersPreview from './components/FiltersPreview';
 
 class SearchFacets extends React.Component {
     constructor(props) {
@@ -71,10 +71,10 @@ class SearchFacets extends React.Component {
                 let facets = {};
                 let keys = Object.keys(aggs).filter(key => {
                     return typeof aggs[key] === 'object';
-                })
+                });
 
                 for(let key of keys){
-                    var obj = {};
+                    let obj = {};
                     if(key.startsWith('facet_')){
                         obj[key.replace('facet_','')] = 'filtered' in aggs[key] ? aggs[key]['filtered'] : aggs[key];
                     }else{
@@ -84,7 +84,7 @@ class SearchFacets extends React.Component {
                 }
 
                 return facets;
-            }
+            };
 
             let facets = constructFacets(this.props.aggs);
             let categories = Object.keys(facets);
@@ -96,7 +96,7 @@ class SearchFacets extends React.Component {
                             {
                                 categories.map((category) => {
                                     return (
-                                        <Box>
+                                        <Box key={category}>
                                             { facets[category].buckets.length > 0 &&
                                             <Box pad="small" key={category}>
                                                 <Heading
@@ -117,8 +117,8 @@ class SearchFacets extends React.Component {
                                                     {
                                                         facets[category].buckets
                                                             .map((field) => (
-                                                                <Box>
-                                                                    <Box size="medium" key={String(field.key)} direction="row" justify="between" align="left">
+                                                                <Box key={String(field.key)} >
+                                                                    <Box size="medium" direction="row" justify="between" align="left">
                                                                         <CheckBox
                                                                             label={field.key}
                                                                             key={field.key}
@@ -140,7 +140,7 @@ class SearchFacets extends React.Component {
                                                                                             onChange={this._onChange.bind(this, key.replace('facet_',''))}/>
                                                                                         <Box align="end">{typeof nested_field.doc_count === 'object' ? nested_field.doc_count.doc_count : nested_field.doc_count}</Box>
                                                                                     </Box>
-                                                                                )) 
+                                                                                ));
                                                                             })
                                                                         }
                                                                     </Box>

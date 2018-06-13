@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import {
@@ -9,16 +9,12 @@ import {
   Button,
   Label,
   Menu,
-  List,
   Table,
   TableRow,
-  ListItem,
 } from 'grommet';
 
 import {getPermissions, addPermissions, removePermissions, getUsers} from '../../../actions/drafts';
 import CheckBox from 'grommet/components/CheckBox';
-import Search from 'grommet/components/Search';
-import queryString from 'query-string';
 
 import Autosuggest from 'react-autosuggest';
 
@@ -35,7 +31,7 @@ const renderSuggestion = suggestion => {
 }
 
 const theme = {
-  input: { 
+  input: {
     width: 350,
     padding: '10px 20px',
     fontWeight: 300,
@@ -121,7 +117,7 @@ class DepositSettings extends React.Component {
     let permissions = this.props.permissions;
     var grouped = _.groupBy(permissions, function(permission) {
       return permission.identity;
-    }); 
+    });
 
     const { value, suggestions } = this.state;
     const inputProps = {
@@ -182,40 +178,40 @@ class DepositSettings extends React.Component {
                       {key}
                     </td>
                     <td>
-                    {this.permissionExists(grouped[key], 'deposit-read') ? 
-                      <CheckBox toggle={true} 
-                                checked={true} 
+                    {this.permissionExists(grouped[key], 'deposit-read') ?
+                      <CheckBox toggle={true}
+                                checked={true}
                                 onClick={() => this.props.removePermissions(this.props.draft_id, key, 'deposit-read')} />:
-                      <CheckBox toggle={true} 
-                                checked={false} 
-                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-read')} /> 
+                      <CheckBox toggle={true}
+                                checked={false}
+                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-read')} />
                     }
                     </td>
                     <td>
-                    {this.permissionExists(grouped[key], 'deposit-update') ? 
-                      <CheckBox toggle={true} 
-                                checked={true} 
+                    {this.permissionExists(grouped[key], 'deposit-update') ?
+                      <CheckBox toggle={true}
+                                checked={true}
                                 onClick={() => this.props.removePermissions(this.props.draft_id, key, 'deposit-update')} />:
-                      <CheckBox toggle={true} 
-                                checked={false} 
-                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-update')} /> 
+                      <CheckBox toggle={true}
+                                checked={false}
+                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-update')} />
                     }
                     </td>
                     <td>
-                    {this.permissionExists(grouped[key], 'deposit-admin') ? 
-                      <CheckBox toggle={true} 
-                                checked={true} 
+                    {this.permissionExists(grouped[key], 'deposit-admin') ?
+                      <CheckBox toggle={true}
+                                checked={true}
                                 onClick={() => this.props.removePermissions(this.props.draft_id, key, 'deposit-admin')} />:
-                      <CheckBox toggle={true} 
-                                checked={false} 
-                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-admin')} /> 
+                      <CheckBox toggle={true}
+                                checked={false}
+                                onClick={() => this.props.addPermissions(this.props.draft_id, key, 'deposit-admin')} />
                     }
                     </td>
-                  </TableRow> 
+                  </TableRow>
                   ))
                 }
             </tbody>
-          </Table> 
+          </Table>
         </Box>
       </Box>
     );

@@ -7,23 +7,14 @@ import {
   Anchor,
   Box,
   Button,
-  Paragraph,
   Tabs,
   Title,
   Tab,
-  Header,
   Layer,
-  Sidebar,
-  Form,
-  FormField,
-  TextInput,
-  Article,
-  Heading,
-  Select,
-  Toast
+  Heading
 } from 'grommet';
 
-import { toggleFilemanagerLayer, initDraft, uploadFile, uploadViaUrl } from '../../../actions/drafts';
+import { toggleFilemanagerLayer, uploadFile, uploadViaUrl } from '../../../actions/drafts';
 import LinkIcon from 'grommet/components/icons/base/Link';
 
 import FileList from './FileList';
@@ -104,7 +95,7 @@ class FileManager extends React.Component {
                               alignContent: "center",
                               alignItems: "center"
                             }}
-                            onDrop={(acceptedFiles, rejectedFiles) => {
+                            onDrop={(acceptedFiles) => {
                               let bucket_url = this.props.links.get('bucket');
                               bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
                               // console.log("acceptedFiles", acceptedFiles);
@@ -197,7 +188,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    initDraft: (schema, title) => dispatch(initDraft(schema, title)),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
     uploadViaUrl: (draft_id, url, type) => dispatch(uploadViaUrl(draft_id, url, type))
   };

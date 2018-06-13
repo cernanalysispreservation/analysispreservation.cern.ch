@@ -1,13 +1,9 @@
-import _ from 'lodash';
 import React from 'react';
 
 import {connect} from 'react-redux';
 
 import {Box, Heading, Tiles, Tile, Paragraph} from 'grommet';
 
-import _isEqual from 'lodash/isEqual';
-
-import {selectSchema} from '../../actions/drafts';
 import {withRouter} from 'react-router-dom';
 
 const CustomTile = withRouter(({ history, props=props, group=group, name=name}) => (
@@ -50,7 +46,7 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps() {
   return {};
 }
 

@@ -59,15 +59,17 @@ class ArrayFieldTemplate extends React.Component {
       );
     }
     else if (this.formRenderType == 'AccordionArrayField') {
-      return <AccordionArrayField
-                header={<FieldHeader
-                          title={<span>{this.props.title} <i> [{this.props.items.length} items] </i> </span>}
-                          required={this.props.required}
-                          description={this.props.description}
-                          margin="none" />
-                }
-                _onAddClick={this._onAddClick.bind(this)}
-                {...this.props} />;
+      return (
+        <AccordionArrayField
+          header={<FieldHeader
+                    title={<span>{this.props.title} <i> [{this.props.items.length} items] </i> </span>}
+                    required={this.props.required}
+                    description={this.props.description}
+                    margin="none" />
+          }
+          _onAddClick={this._onAddClick.bind(this)}
+          {...this.props} />
+      );
     }
     else {
       return <div>{this.props.schema.items.type}</div>;

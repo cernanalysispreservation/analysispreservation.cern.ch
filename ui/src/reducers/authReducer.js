@@ -13,8 +13,7 @@ import {
   API_KEY_LIST_ERROR,
   CREATE_TOKEN_SUCCESS,
   CREATE_TOKEN_ERROR,
-  REVOKE_TOKEN_SUCCESS,
-  REVOKE_TOKEN_ERROR
+  REVOKE_TOKEN_SUCCESS
 } from '../actions/auth';
 
 const initialState = Map({
@@ -40,31 +39,31 @@ export default function authReducer(state = initialState, action) {
       return state.set('loading', true);
     case LOGIN_SUCCESS:
       return state
-              .set('isLoggedIn', true)
-              .set('currentUser', fromJS(action.user))
-              .set('loading', false);
+        .set('isLoggedIn', true)
+        .set('currentUser', fromJS(action.user))
+        .set('loading', false);
     case LOGOUT_REQUEST:
       return state.set('loading', true);
     case LOGOUT_SUCCESS:
       return state
-              .set('isLoggedIn', false)
-              .set('currentUser', null)
-              .set('loading', false);
+        .set('isLoggedIn', false)
+        .set('currentUser', null)
+        .set('loading', false);
     case LOGIN_ERROR:
       return state;
     case API_KEY_LIST_SUCCESS:
       return state
-                .set('tokens', List(action.applications.tokens))
+        .set('tokens', List(action.applications.tokens));
     case API_KEY_LIST_ERROR:
     case CREATE_TOKEN_SUCCESS:
       return state
-                .setIn(['tokens', action.token.t_id], action.token)
+        .setIn(['tokens', action.token.t_id], action.token);
     case CREATE_TOKEN_ERROR:
       return state
-                .setIn(['tokens', 'error'], action.error)
+        .setIn(['tokens', 'error'], action.error);
     case REVOKE_TOKEN_SUCCESS:
       return state
-                .deleteIn(['tokens', action.token])
+        .deleteIn(['tokens', action.token]);
     // case REVOKE_TOKEN_ERROR:
     //   return state
     default:

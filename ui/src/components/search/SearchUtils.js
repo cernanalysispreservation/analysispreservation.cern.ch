@@ -5,12 +5,8 @@ import PropTypes from 'prop-types';
 import Button from 'grommet/components/Button';
 import Box from 'grommet/components/Box';
 
-import Spinning from 'grommet/components/icons/Spinning';
-
-
 import NextIcon from 'grommet/components/icons/base/Next';
 import PreviousIcon from 'grommet/components/icons/base/Previous';
-import Sort from 'grommet-addons/components/Sort';
 
 export default class SearchUtils extends React.Component {
   constructor(props) {
