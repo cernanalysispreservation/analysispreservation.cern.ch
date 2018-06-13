@@ -685,7 +685,7 @@ def test_get_cms_cadi_when_user_from_outside_cms_returns_403(app, users,
                                                              auth_headers_for_user):
     with app.test_client() as client:
         user_headers = auth_headers_for_user(users['lhcb_user'])
-        resp = client.get('/cms/cadi?ana_number=EXO-17-023',
+        resp = client.get('/cms/cadi/EXO-17-023',
                           headers=user_headers)
 
         assert resp.status_code == 403
@@ -702,7 +702,7 @@ def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_re
 
     with app.test_client() as client:
         mock_requests.return_value = MockedResp()
-        resp = client.get('/cms/cadi?ana_number=non-existing',
+        resp = client.get('/cms/cadi/non-existing',
                           headers=auth_headers_for_superuser)
 
         assert json.loads(resp.data) == {}
@@ -724,7 +724,7 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_ana_data(moc
 
     with app.test_client() as client:
         mock_requests.return_value = MockedResp()
-        resp = client.get('/cms/cadi?ana_number=Ana-Num',
+        resp = client.get('/cms/cadi/Ana-Num',
                           headers=auth_headers_for_superuser)
 
         assert json.loads(resp.data) == ana_data
@@ -736,7 +736,7 @@ def test_get_cms_cadi_calls_cadi_api_with_correct_url(mock_requests, app,
     api_url = current_app.config['CADI_GET_RECORD_URL']
     ana_num = 'Ana-Num'
     with app.test_client() as client:
-        client.get('/cms/cadi?ana_number={}'.format(ana_num),
+        client.get('/cms/cadi/{}'.format(ana_num),
                    headers=auth_headers_for_superuser)
 
         mock_requests.assert_called_with(url=api_url + ana_num)

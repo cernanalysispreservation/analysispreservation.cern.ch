@@ -30,13 +30,15 @@ import re
 from datetime import datetime, timedelta
 
 import requests
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
 from flask import current_app
 
 from cap.modules.deposit.api import construct_access, set_egroup_permissions
 from cap.modules.deposit.errors import DepositDoesNotExist
-from cap.modules.fixtures.utils import bulk_index_from_source
+from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
+                                        bulk_index_from_source,
+                                        get_entry_uuid_by_unique_field)
+from elasticsearch import helpers
+from elasticsearch_dsl import Q
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_search import RecordsSearch
@@ -117,6 +119,41 @@ def get_updated_cadi_lines(from_date=None, until_date=None):
     data = resp.json().get('data', None)
 
     return data
+
+
+def synchronize_cadi_entries(limit=None):
+    """Add/update all CADI entries connecting with CADI database."""
+
+    entries = get_entries_from_cadi_db()
+    for entry in entries[0:limit]:
+        # remove artefact from code names
+        cadi_id = re.sub('^d', '', entry.get('code', None))
+
+        try:  # update if already exists
+            uuid = get_entry_uuid_by_unique_field('deposits-records-cms-analysis-v0.0.1',
+                                                  {'basic_info__cadi_id': cadi_id})
+
+            deposit = CAPDeposit.get_record(uuid)
+
+            if 'cadi_info' not in deposit:
+                deposit['cadi_info'] = {}
+            for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
+                deposit['cadi_info'][cap_key] = entry.get(cadi_key, '') or ''
+            deposit.commit()
+
+            print('Cadi entry {} updated.'.format(cadi_id))
+
+        except DepositDoesNotExist:  # or create new cadi entry
+            data = construct_cadi_entry(cadi_id, {
+                'cadi_info': {v: entry.get(k, '') or ''
+                              for k, v in CADI_FIELD_TO_CAP_MAP.items()}
+            })
+
+            deposit = CAPDeposit.create(data=data)
+            add_read_permission_for_egroup(deposit, 'cms-members@cern.ch')
+
+            print('Cadi entry {} added.'.format(cadi_id))
+
 
 
 def cache_das_datasets_in_es_from_file(file):

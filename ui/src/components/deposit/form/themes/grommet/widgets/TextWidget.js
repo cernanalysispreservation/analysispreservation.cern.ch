@@ -16,6 +16,7 @@ const TextWidget = function(props) {
         id={props.id}
         name={props.id}
         placeHolder={props.placeholder}
+        {...(props.readonly ? {readOnly: 'true'} : {})}
         onDOMChange={_onChange}
         onBlur={props.onBlur}
         value={props.value ? props.value : ""}/>

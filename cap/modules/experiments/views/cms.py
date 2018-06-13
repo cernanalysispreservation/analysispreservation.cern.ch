@@ -29,9 +29,9 @@ from __future__ import absolute_import, print_function
 from urllib import unquote
 
 import requests
-from elasticsearch import Elasticsearch
 from flask import Blueprint, current_app, jsonify, request
 
+from elasticsearch import Elasticsearch
 from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
 
@@ -44,11 +44,11 @@ cms_bp = Blueprint(
 )
 
 
-@cms_bp.route('/cadi', methods=['GET'])
+@cms_bp.route('/cadi/<cadi_id>', methods=['GET'])
 @cms_permission.require(403)
-def get_analysis_from_cadi():
-    ana_number = unquote(request.args.get('ana_number', ''))
-    url = current_app.config['CADI_GET_RECORD_URL'] + ana_number
+def get_analysis_from_cadi(cadi_id):
+    cadi_id = unquote(cadi_id)
+    url = current_app.config['CADI_GET_RECORD_URL'] + cadi_id
 
     resp = requests.get(url=url)
 

@@ -38,7 +38,7 @@ services:
       - elasticsearch
       - redis
     # FIXME
-    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload
+    command: gunicorn -b 0.0.0.0:5000 --log-level debug --certfile=/code/ssl.crt --keyfile=/code/ssl.key cap.wsgi:application --reload --reload-extra-file=*.json
     volumes:
       - ".:/code"
     ports:

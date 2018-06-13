@@ -2,12 +2,55 @@
     "ui:order": ["basic_info", "cadi_info", "input_data", "ntuples_production", "main_measurements", "auxiliary_measurements", "background_estimations", "systematic_uncertainties", "final_results", "additional_resources", "statistical_treatment", "*"],
     "basic_info": {
         "ui:object": "accordionObjectField",
-        "ui:order": ["cadi_id", "abstract", "conclusion", "*"]
+        "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
+        "cadi_id": {
+            "ui:widget": "autofill",
+            "ui:options":{
+                "url": "/api/cms/cadi/",
+                "fields_map": [
+                    [["PAPER"], ["cadi_info", "paper"]],
+                    [["name"], ["cadi_info", "name"]],
+                    [["description"], ["cadi_info", "description"]],
+                    [["contact"], ["cadi_info", "contact"]],
+                    [["creatorDate"], ["cadi_info", "created"]],
+                    [["URL"], ["cadi_info", "twiki"]],
+                    [["PAS"], ["cadi_info", "pas"]],
+                    [["publicationStatus"], ["cadi_info", "publication_status"]],
+                    [["status"], ["cadi_info", "status"]]
+                ]
+            }
+        }
     },
     "cadi_info": {
         "ui:object": "accordionObjectField",
         "ui:order": ["name", "description", "contact", "twiki", "created", "paper", "pas", "publication_status", "status"],
-        "ui:disabled": "true"
+        "name": {
+            "ui:readonly": true
+        },
+        "description": {
+            "ui:readonly": true
+        },
+        "contact": {
+            "ui:readonly": true
+        },
+        "twiki": {
+            "ui:readonly": true
+        },
+        "created": {
+            "ui:readonly": true
+        },
+        "paper": {
+            "ui:readonly": true
+        },
+        "pas": {
+            "ui:readonly": true
+        },
+        "publication_status": {
+            "ui:readonly": true
+        },
+        "status": {
+            "ui:readonly": true
+        }
     },
     "input_data": {
         "ui:object": "accordionObjectField",
@@ -30,21 +73,17 @@
         },
         "mc_sig_datasets": {
             "items": {
-                "path":{
-                    "ui:widget":"autocomplete",
-                    "ui:options": {
-                        "url": "api/cms/datasets"
-                    }
+                "ui:widget":"autocomplete",
+                "ui:options": {
+                    "url": "api/cms/datasets"
                 }
             }
         },
         "mc_bg_datasets": {
             "items": {
-                "path":{
-                    "ui:widget":"autocomplete",
-                    "ui:options": {
-                        "url": "api/cms/datasets"
-                    }
+                "ui:widget":"autocomplete",
+                "ui:options": {
+                    "url": "api/cms/datasets"
                 }
             }
         }
@@ -111,12 +150,12 @@
                 "items": {
                     "physics_objects": {
                         "items": {
-                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                            "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
                         }
                     },
                     "veto": {
                         "items": {
-                        "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                            "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
                         }
                     }
                 }

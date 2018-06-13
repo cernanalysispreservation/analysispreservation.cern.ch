@@ -25,9 +25,8 @@
 
 import click
 
-from cap.modules.experiments.tasks.cms import synchronize_cadi_entries
-from cap.modules.experiments.utils.cms import \
-    cache_das_datasets_in_es_from_file
+from cap.modules.experiments.utils.cms import (cache_das_datasets_in_es_from_file,
+                                               synchronize_cadi_entries)
 from flask_cli import with_appcontext
 
 from .utils import add_drafts_from_file

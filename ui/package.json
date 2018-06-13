@@ -10,7 +10,7 @@
     "remove-demo": "babel-node tools/removeDemo.js",
     "start-message": "babel-node tools/startMessage.js",
     "prestart": "npm run start-message",
-    "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run open:src\" \"npm run lint:watch\"",
+    "start": "concurrently -k -r -s first \"npm run test:watch\" \"npm run open:src\"",
     "open:src": "babel-node tools/srcServer.js",
     "open:dist": "babel-node tools/distServer.js",
     "lint": "esw webpack.config.* src tools --color",
@@ -49,6 +49,8 @@
     "react-split-pane": "0.1.74",
     "redux": "3.6.0",
     "redux-logger": "^3.0.6",
+    "redux-promise": "0.6.0",
+    "redux-promises": "1.0.0",
     "redux-thunk": "2.1.0",
     "reselect": "^3.0.1",
     "searchkit": "2.3.0"

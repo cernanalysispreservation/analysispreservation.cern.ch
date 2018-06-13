@@ -4,6 +4,7 @@ import UpDownWidget from './UpDownWidget';
 import RadioWidget from './RadioWidget';
 import CheckboxWidget from './CheckboxWidget';
 import AutocompleteWidget from './AutocompleteWidget';
+import AutoFillWidget from './AutoFillWidget';
 import TextAreaWidget from './TextAreaWidget';
 
 const widgets = {
@@ -13,7 +14,8 @@ const widgets = {
   radio: RadioWidget,
   checkboxes: CheckboxWidget,
   textarea: TextAreaWidget,
-  autocomplete: AutocompleteWidget
+  autocomplete: AutocompleteWidget,
+  autofill: AutoFillWidget
 };
 
 export default widgets;
