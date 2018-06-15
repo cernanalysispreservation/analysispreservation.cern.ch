@@ -15,56 +15,35 @@ Taking Part
 
 Do you want to help us grow? We are always happy to receive contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
 
-In case you are unsure what to do, you can contact us :doc:`directly <../community/support>`.
+In case you are unsure what to do, you can contact us at analysis-preservation-support@cern.ch.
 
 Further Reading
 ---------------
 
 .. toctree::
 	:maxdepth: 1
-	:caption: Overview
-	:name: sec-overview
+	:numbered:
 
-	overview/introduction
-	overview/project
+	introduction
+	project
+	tutorials 
+	schema 
+	api 
+	terms 
+	faq 
+	glossary 
+	support 
+	related-projects
+
+
+.. toctree::
+       :hidden:
+			 README
+			 style-guide
+			 tableofcontent
+			 backstage/docs-overview
+			 backstage/swagger-overview
 	
-.. toctree::
-	:maxdepth: 1
-	:caption: Tutorials
-	:name: sec-tutorials
-
-	tutorials/getting-started
-	tutorials/tutorials
-
-.. toctree::
-	:maxdepth: 1
-	:caption: References
-	:name: sec-references
-
-	REST API <references/api>
-	references/glossary
-	JSON and JSON Schema <references/schema>
-	Terms of Use <references/terms>
-	FAQ <references/faq>
-
-.. toctree::
-	:maxdepth: 1
-	:caption: Community
-	:name: sec-community
-
-	Support/Team <community/support>
-	community/related-projects
-
-
-.. toctree::
-	:hidden:
-
-	README
-	style-guide
-	tableofcontent
-	backstage/docs-overview
-	backstage/swagger-overview
-
 License
 -------
 
