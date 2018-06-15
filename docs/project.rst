@@ -29,7 +29,7 @@ Submission Form
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The submission forms are there to help you submit the different materials you create(d) while doing your analysis. They are a graphical representation of the JSON schemas. Information stored within connected databases is used to auto-complete and auto-fill the analysis description whenever possible. See the section on :ref:`project-connectivity` for more information.
-There are tutorials to help you :doc:`create an analysis <../tutorials/create>` submitting your analysis details.
+There are tutorials to help you :doc:`create an analysis <../tutorials>` submitting your analysis details.
 While we have taken steps to sure that the JSON schemas work for most people in a collaboration, we acknowledge that there may be differences in the way different people conduct an analysis. If you don't see that your analysis "matches" the schema provided, please get in touch with us. The forms also allow manual editing of each field, as well as the ability to input JSON directly.
 
 .. _project-rest-api:
@@ -44,7 +44,7 @@ Using your shell, you can use the CAP-client to submit, update, retrieve an anal
 REST API
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-There is an API to enable direct interaction with the content, provided you have the right access permission. Help on using the API will be provided :doc:`here. <../references/api>`.
+There is an API to enable direct interaction with the content, provided you have the right access permission. Help on using the API will be provided :doc:`here. <../api>`.
 
 
 
@@ -57,9 +57,7 @@ To save time when submitting and to ensure accuracy of added information, we are
 
 Additionally, we offer the possibility to uploading files (e.g. configuration files), as well as providing a URL, from which the files are copied and stored automatically.
 
-For more details on how these integrations work, you can go to the tutorial for :doc:`creating an analysis <../tutorials/create>`.
-
-.. TODO link to file upload tutorial
+For more details on how these integrations work, you can go to the :doc:`tutorial section <../tutorials>`.
 
 Versioning
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +102,7 @@ Using the search bar at the top of the page or the dedicated search page that co
 All analysis metadata are indexed, which means users can find analyses with specific parameters, processed with a specific algorithm, or using a specific dataset or simulation to name a few examples. Information that is not explicitly added to the schema and instead stored in an uploaded file are not indexed for search right now.
 
 .. note::
-	You have suggestions on what is needed to make the search more useful to you? Please :doc:`let us know <../community/support>`!
+	You have suggestions on what is needed to make the search more useful to you? Please :doc:`let us know <../support>`!
 
 
 .. _project-collaborate:
@@ -120,7 +118,7 @@ CAP aims to support reviewing analyses and with that the process of analysis app
 4. Reuse
 ---------------------------------
 
-In CAP analyses information is preserved with the aim of reusing it - now or in the long term. We are working on making that easy as well! In the REANA project we build a framework to enable easy reinstantiation of an analysis. See :doc:`this list <../community/related-projects>` for a short description of these related projects.
+In CAP analyses information is preserved with the aim of reusing it - now or in the long term. We are working on making that easy as well! In the REANA project we build a framework to enable easy reinstantiation of an analysis. See :doc:`this list <../related-projects>` for a short description of these related projects.
 
 
 
