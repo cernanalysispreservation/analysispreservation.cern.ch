@@ -44,6 +44,7 @@ Further Reading
 	REST API <references/api>
 	references/glossary
 	JSON and JSON Schema <references/schema>
+	Terms of Use <references/terms>
 	FAQ <references/faq>
 
 .. toctree::
