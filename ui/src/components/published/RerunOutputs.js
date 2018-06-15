@@ -19,7 +19,7 @@ import {getAnalysisOutputs} from '../../actions/published';
 export class RerunOutputs extends React.Component {
 
   componentDidMount() {
-    this.props.getAnalysisOutputs();
+    this.props.getAnalysisOutputs(this.props.workflow_id);
   }
 
   render() {
@@ -41,8 +41,8 @@ export class RerunOutputs extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data && data.map((item) => 
-                <TableRow>
+            {data && data.map((item, i) => 
+                <TableRow key={`item-${i}`}>
                   <td>
                     {item.name}
                   </td>
@@ -50,7 +50,7 @@ export class RerunOutputs extends React.Component {
                     {item.size}
                   </td>
                   <td>
-                    <a href={`http://reana-dev.cern.ch:32338/api/analyses/workflow.1/workspace/outputs/${item.name}?token=vesr7dxygvUR4AM8TAIz0RUmELJC197cqD1Fu_xqfdI&organization=default`}>
+                    <a href={`http://reana-qa.cern.ch/api/analyses/${this.props.workflow_id}/workspace/outputs/${item.name}?token=BPIfQ93pAGRLv0FiQI0UE4S7Qvfb2NabH81m1o82cLg&organization=default`}>
                     <DownloadIcon /></a>
                   </td>
                 </TableRow>

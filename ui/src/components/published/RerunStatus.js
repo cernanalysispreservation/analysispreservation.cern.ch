@@ -15,18 +15,47 @@ import {
 import {getAnalysisStatus} from '../../actions/published';
 import RerunOutputs from './RerunOutputs';
 
+import Spinning from 'grommet/components/icons/Spinning';
+
 export class RerunStatus extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
-    this.props.getAnalysisStatus();
+    let that = this;
+    let intervalId = setInterval(that.fetchData.bind(that), 5000);
+    this.setState({intervalId: intervalId});
   }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+
+  fetchData() {
+    let {workflow_id} = this.props.match.params;
+    if (this.props.run_results) {
+      if(this.props.run_results.status !== "finished") {
+        this.props.getAnalysisStatus(workflow_id);
+      }
+      else {
+        clearInterval(this.state.intervalId);
+      }
+    }
+    else {
+      this.props.getAnalysisStatus(workflow_id);
+    }
+
+  }
+
 
   render() {
     let data = this.props.run_results;
-
+    console.log("data are", data);
     let constructSeries = () => {
       let series = [];
-      for (var i=1; i <= data.progress.current_step; i++) {
+      for (var i=1; i <= data.progress.succeeded; i++) {
         let obj = {};
         obj['label'] = `${i}`
         obj['value'] = 1
@@ -42,22 +71,27 @@ export class RerunStatus extends React.Component {
           <Title>...Analysis finished!</Title>:<Title>Analysis in progress...</Title>
           }
         </Box>
-        {data &&
+
+        {data && data.progress ?
         <Box  align="center">
           <Meter series={constructSeries()}
                 stacked={true}
                 size="large"
-                max={data.progress.total_steps}
+                max={data.progress.total_jobs}
                 onActive={()=>{}} />
-        </Box>}
-        {data && 
+        </Box>:null}
+        {data && data.progress?
         <Box align="center" flex={true} wrap={false}>
           <Box size={{width: "xlarge"}} pad="large" flex={false} wrap={false}>
             {data && data.status === "finished" ? null:
-                <Label>Running: Step {data.progress.current_step} out of {data.progress.total_steps}</Label>
+              <Label>Succeeded {data.progress.succeeded} out of 8</Label>
             }
             {data && data.status === "finished" ? null:
               <Label>Command: {data.progress.current_command}</Label>
+            }
+            {
+              data && data.status === "finished" ? null:
+                <Label>Started: {data.progress.run_started_at}</Label>
             }
             {data && data.status === "finished" ?  <Label>See logs:</Label>:
               <Label>Logs:</Label>
@@ -69,10 +103,10 @@ export class RerunStatus extends React.Component {
               null
             }
             {data && data.status === "finished" ?
-              <RerunOutputs />:null
+              <RerunOutputs workflow_id={this.props.match.params.workflow_id}/>:null
             }
           </Box>
-        </Box>}
+        </Box> : <Box justify="center" align="center" pad="large"><Spinning size="large" /></Box>}
       </Box>
     )
   }

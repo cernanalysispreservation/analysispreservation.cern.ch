@@ -151,16 +151,16 @@ export function getPublishedItem(id) {
   };
 }
 
-export function rerunPublished(draft_id, pid) {
+export function rerunPublished(workflow_id, pid) {
   return function (dispatch) {
     dispatch(rerunPublishedRequest());
 
-    let uri = `/api/deposits/${draft_id}/actions/rerun`;
+    let uri = `/api/reana/start/${workflow_id}`;
     
-    axios.post(uri)
+    axios.get(uri)
       .then(function (response) {
         dispatch(rerunPublishedSuccess(response.data));
-        dispatch(replace(`/published/${pid}/status`));
+        dispatch(replace(`/published/${pid}/status/${workflow_id}`));
       })
       .catch(function (error) {
         dispatch(rerunPublishedSuccess(error));
@@ -169,7 +169,7 @@ export function rerunPublished(draft_id, pid) {
 }
 
 
-export function getAnalysisStatus(workflow_id='workflow.1') {
+export function getAnalysisStatus(workflow_id) {
   return function (dispatch) {
     dispatch(rerunStatusRequest());
 
@@ -185,7 +185,7 @@ export function getAnalysisStatus(workflow_id='workflow.1') {
   };
 }
 
-export function getAnalysisOutputs(workflow_id='workflow.1') {
+export function getAnalysisOutputs(workflow_id) {
   return function (dispatch) {
     dispatch(rerunOutputsRequest());
 

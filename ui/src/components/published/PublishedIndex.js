@@ -24,7 +24,7 @@ class DraftsIndex extends React.Component {
         <Switch>
           <Route exact path={`/published/:id`} component={PublishedItem}  />
           <Route path={`/published/:id/rerun`} component={RerunPublished} />
-          <Route path={`/published/:id/status`} component={RerunStatus} />
+          <Route path={`/published/:id/status/:workflow_id`} component={RerunStatus} />
         </Switch>
       </Box>
     );

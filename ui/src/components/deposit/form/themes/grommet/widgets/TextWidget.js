@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { formDataChange } from '../../../../../../actions/drafts';
 import { fromJS } from 'immutable';
 
-<<<<<<< HEAD
 class TextWidget extends React.Component{
     /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -96,28 +95,6 @@ class TextWidget extends React.Component{
             </Box>
         );
     }
-=======
-const TextWidget = function(props) {
-  // TOFIX onBlur, onFocus
-  let _onChange = function _onChange(_ref) {
-    let value = _ref.target.value;
-    return props.onChange(value === "" ? props.options.emptyValue : value);
-  };
-
-  return (
-    <Box flex={true} pad={{"horizontal": "medium"}}>
-      <TextInput
-        id={props.id}
-        name={props.id}
-        disabled={props.readonly}
-        placeHolder={props.placeholder}
-        {...(props.readonly ? {readOnly: 'true'} : {})}
-        onDOMChange={_onChange}
-        onBlur={props.onBlur}
-        value={props.value ? props.value : ""}/>
-    </Box>
-  );
->>>>>>> reuse: initialises reana component
 };
 
 TextWidget.propTypes = {

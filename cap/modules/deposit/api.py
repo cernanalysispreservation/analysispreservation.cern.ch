@@ -397,14 +397,6 @@ class CAPDeposit(Deposit):
         return super(CAPDeposit, self).publish(*args, **kwargs)
 
     @mark_as_action
-    def rerun(self, *args, **kwargs):
-        from reana_client.api.client import Client
-        server_url = current_app.config.get('REANA_SERVER_URL')
-        Client(server_url).start_analysis(
-            '00000000-0000-0000-0000-000000000000', 'default', 'workflow.9')
-        return self
-
-    @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
         """Upload action for file/repository."""
         data = request.get_json()

@@ -15,20 +15,12 @@ import CleanForm from '../deposit/form/CleanForm';
 const schema = {
   type: "object",
   properties: {
-      analysis: {
-        title: "Analysis",
-        type: "string"
-      },
       input_parameters: {
         title: "Input Parameters",
         type: "object",
         properties: {
-          n_events: {
-            title: "nevents",
-            type: "string"
-          },
-          mc_weight: {
-            title: "MC Weight",
+          "workflow_id": {
+            title: "Workflow Id",
             type: "string"
           },
           ali_physics: {
@@ -41,27 +33,22 @@ const schema = {
 };
 
 const uiSchema = {
-  "analysis": {
-    "ui:readonly": true
-  },
   "input_parameters": {
-    "ui:readonly": true
+    "ali_physics":{
+      "ui:readonly": true
+    }
   }
 };
 
 const formData = {
-  "analysis": "JetSpectrum"
+  "input_parameters": {
+    "ali_physics": "vAN-20180614-1"
+  } 
 }
 
 export class RerunPublished extends React.Component {
 
-  componentDidMount() {
-    let {id} = this.props.match.params;
-    this.props.getPublishedItem(id);
-  }
-
   render() {
-    let depid = this.props.published.metadata._deposit.id;
     let {id} = this.props.match.params;
     return (
       <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
@@ -74,13 +61,13 @@ export class RerunPublished extends React.Component {
                 schema={schema}
                 uiSchema={uiSchema}
                 onSubmit={(data) => {
-                  this.props.rerunPublished(depid, id);
+                  this.props.rerunPublished(data.formData.input_parameters.workflow_id, id);
                 }}
                 formData={formData}
               >
               <Box margin={{top:'small'}}>
                 <Button
-                  label='Run On Reana'
+                  label='Run On REANA'
                   type='submit'
                   primary={true}
                 />
@@ -103,8 +90,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    rerunPublished: (draft_id, id) => dispatch(rerunPublished(draft_id, id)),
-    getPublishedItem: (id) => dispatch(getPublishedItem(id))
+    rerunPublished: (workflow_id, id) => dispatch(rerunPublished(workflow_id, id))
   };
 }
 
