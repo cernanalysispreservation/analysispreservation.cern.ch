@@ -9,7 +9,7 @@ In case direct contact is not what you are looking for, you can comment on or ad
 Team and Community
 ------------------
 
-Our core team is based at CERN, in CERN IT and in the Scientific Information Service. We are computer engineers and information scientists, and we work closely together with preservation and outreach representatives from the LHC collaborations as well as related projects like REANA, RECAST, DPHEP. You can find brief descriptions on these projects in :doc:`this list <../community/related-projects>`.
+Our core team is based at CERN, in CERN IT and in the Scientific Information Service. We are computer engineers and information scientists, and we work closely together with preservation and outreach representatives from the LHC collaborations as well as related projects like REANA, RECAST, DPHEP. You can find brief descriptions on these projects in :doc:`this list <../related-projects>`.
 
 Many contributions are made by or facilitated through the help and support from collaborators from the LHC collaborations.
 
