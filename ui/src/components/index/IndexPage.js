@@ -10,6 +10,7 @@ import SearchPage from '../search/SearchPage';
 import PublishedItem from '../published/PublishedItem';
 import Header from '../partials/Header';
 import CreateIndex from '../create/CreateIndex';
+import Dashboard from '../dashboard/Dashboard';
 import SettingsIndex from '../settings/SettingsIndex';
 import DraftsIndex from '../drafts/DraftsIndex';
 
@@ -38,7 +39,7 @@ class IndexPage extends React.Component {
       <Box flex={true}>
         <Header />
         <Switch>
-          <Route exact path="/" component={CreateIndex} />
+          <Route exact path="/" component={Dashboard} />
           <Route path="/search" component={SearchPage} />
           <Route path="/published/:id" component={PublishedItem} />
           <Route path="/drafts" component={DraftsIndex} />

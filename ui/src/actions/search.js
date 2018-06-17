@@ -11,6 +11,9 @@ export const SEARCH_REQUEST = 'SEARCH_REQUEST';
 export const SEARCH_SUCCESS = 'SEARCH_SUCCESS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 
+export const SEARCH_MINE_SUCCESS = 'SEARCH_MINE_SUCCESS';
+export const SEARCH_MINE_ERROR = 'SEARCH_MINE_ERROR';
+
 export function searchRequest(){
   return {
     type: SEARCH_REQUEST
@@ -31,6 +34,20 @@ export function searchError(error) {
   };
 }
 
+export function searchMineSuccess(results) {
+  return {
+    type: SEARCH_MINE_SUCCESS,
+    results
+  };
+}
+
+export function searchMineError(error) {
+  return {
+    type: SEARCH_MINE_ERROR,
+    error
+  };
+}
+
 export function fetchSearch () {
   return function (dispatch, getState) {
     let searchApiUrl = '/api/deposits/';
@@ -46,6 +63,25 @@ export function fetchSearch () {
       .then((response) => {
         let results = response.data;
         dispatch(searchSuccess(results));
+      });
+  };
+}
+
+export function fetchMine (id) {
+  return function (dispatch, getState) {
+    let searchApiUrl = '/api/deposits/';
+    let location_search = `?q=_deposit.created_by:${id}`;
+    const searchUrl = `${searchApiUrl}/${location_search}`;
+    let params = queryString.parse(location_search);
+
+    dispatch(toggleAggs(params));
+    dispatch(searchRequest());
+
+    axios
+      .get(searchUrl)
+      .then((response) => {
+        let results = response.data;
+        dispatch(searchMineSuccess(results));
       });
   };
 }

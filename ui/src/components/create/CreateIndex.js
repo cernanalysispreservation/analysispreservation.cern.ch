@@ -18,7 +18,7 @@ class CreateIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
+      <Box flex={true} justify="center" align="center">
         <Route  path="/" component={AvailableDeposits}  />
         <Route path={`/create/:schema_id`} component={CreateDeposit} />
       </Box>

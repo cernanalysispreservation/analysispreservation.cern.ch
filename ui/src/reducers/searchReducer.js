@@ -8,7 +8,9 @@ import {
   PAGE_CHANGE,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
-  SEARCH_ERROR
+  SEARCH_ERROR,
+  SEARCH_MINE_SUCCESS,
+  SEARCH_MINE_ERROR
 } from '../actions/search';
 
 const initialState = Map({
@@ -16,6 +18,10 @@ const initialState = Map({
   aggs: Map({}),
   selectedAggs: Map({}),
   results: Map({
+    hits: [],
+    total: 0
+  }),
+  mine: Map({
     hits: [],
     total: 0
   }),
@@ -49,6 +55,12 @@ export default function searchReducer(state = initialState, action) {
         .set('loading', false);
         // .set('aggs', fromJS(action.results.aggregations))
     case SEARCH_ERROR:
+      return state;
+    case SEARCH_MINE_SUCCESS:
+      return state
+        .set('mine', fromJS(action.results))
+        .set('loading', false);
+    case SEARCH_MINE_ERROR:
       return state;
     default:
       return state;
