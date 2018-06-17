@@ -46,10 +46,10 @@ class ArrayFieldTemplate extends React.Component {
   render() {
     return (
         <Box flex={false} size={{"height": {"max": "small"} }}>
-          <List>
+          <List selectable={false}>
             { this.props.items.length > 0 ?
               this.props.items.map(element => (
-                <ListItem key={element.index} separator="none" flex={true} margin="none" pad="none" justify="between">
+                <ListItem key={element.index} onClick={this._showLayer.bind(this, element.index)} separator="none" flex={true} margin="none" pad="none" justify="between">
                   <FormLayer
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}
@@ -57,13 +57,10 @@ class ArrayFieldTemplate extends React.Component {
                     remove={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                   />
                   <Box flex={true} direction="row" wrap={false}>
-                    <Box  onClick={this._showLayer.bind(this, element.index)} flex={true} pad="small">
+                    <Box flex={true} pad="small">
                       <ItemBrief index={element.index} item={element.children.props.formData} label={this.props.uiSchema.label || (this.props.title || "Item")} />
                     </Box>
                     <Box direction="row" justify="between">
-                      <Button
-                        onClick={this._showLayer.bind(this)}
-                        icon={<FormEditIcon />} />
                       <Button
                         onClick={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                         icon={<FormTrashIcon />} />
