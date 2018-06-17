@@ -68,7 +68,7 @@ export function fetchSearch () {
 }
 
 export function fetchMine (id) {
-  return function (dispatch, getState) {
+  return function (dispatch) {
     let searchApiUrl = '/api/deposits/';
     let location_search = `?q=_deposit.created_by:${id}`;
     const searchUrl = `${searchApiUrl}/${location_search}`;

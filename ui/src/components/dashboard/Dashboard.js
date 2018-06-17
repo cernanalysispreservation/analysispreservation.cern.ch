@@ -12,7 +12,6 @@ import {
   Tile,
   List,
   ListItem,
-  Paragraph,
   Value
 } from 'grommet';
 

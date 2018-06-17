@@ -4,15 +4,14 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
-  Box,
-  Sidebar
+  Box
 } from 'grommet';
 
-import UploadIcon from 'grommet/components/icons/base/Upload';
+import View from 'grommet/components/icons/base/View';
 
 import ReactJson from 'react-json-view';
 
-import {toggleFilemanagerLayer} from '../../../actions/drafts';
+import {togglePreviewer} from '../../../actions/drafts';
 
 import SectionHeader from './SectionHeader';
 
@@ -23,14 +22,15 @@ class DepositPreviewer extends React.Component {
 
   render() {
     return this.props.showPreviewer ?
-      <Sidebar full={false} size="large" colorIndex="light-2">
-        <Box flex={true}>
-          <SectionHeader label="Previewer" icon={<UploadIcon />} />
-          <Box pad="small" flex={true}>
-            <ReactJson src={this.props.data} />
-          </Box>
+      <Box flex={true} colorIndex="light-2">
+        <SectionHeader label="Previewer" icon={<View onClick={() => this.props.togglePreviewer()}/>} />
+        <Box pad="small" flex={true}>
+          <ReactJson src={this.props.data} />
         </Box>
-      </Sidebar> : null;
+      </Box> :
+      <Box flex={false} pad="small" colorIndex="light-2" onClick={() => this.props.togglePreviewer()}>
+        <View size="small"/>
+      </Box>;
   }
 }
 
@@ -47,7 +47,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
+    togglePreviewer: () => dispatch(togglePreviewer())
   };
 }
 

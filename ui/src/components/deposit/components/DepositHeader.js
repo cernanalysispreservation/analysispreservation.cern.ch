@@ -21,8 +21,6 @@ import Status from 'grommet/components/icons/Status';
 import SettingsOptionIcon from 'grommet/components/icons/base/SettingsOption';
 import {withRouter} from 'react-router';
 
-import { togglePreviewer, toggleSidebar } from '../../../actions/drafts';
-
 const SettingsAnchor = withRouter(({ history, draft_id=draft_id }) => (
         <Anchor
           icon={<SettingsOptionIcon/>}
@@ -59,14 +57,6 @@ class DepositHeader extends React.Component {
     return (
       <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
         <Box flex={true}  direction="row" justify="between" align="center">
-          <Box justify="start" align="center" direction="row">
-            <Menu responsive={false}
-              label="Layout"
-              inline={false}>
-              <Anchor label="Files" onClick={this.props.showPreviewer} />
-              <Anchor label="Previewer" onClick={this.props.showSidebar} />
-            </Menu>
-          </Box>
           <Box pad="small" flex={true} align="center" justify="center" direction="row" wrap={false}>
             {this.props.draftId} - {this.props.selectedSchema}
             {
@@ -135,10 +125,8 @@ class DepositHeader extends React.Component {
 
 DepositHeader.propTypes = {
   selectedSchema: PropTypes.string,
-  showPreviewer: PropTypes.func,
   saveData: PropTypes.func,
-  publishData: PropTypes.func,
-  showSidebar: PropTypes.func
+  publishData: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -150,11 +138,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    showPreviewer: () => dispatch(togglePreviewer()),
-    showSidebar: () => dispatch(toggleSidebar())
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(

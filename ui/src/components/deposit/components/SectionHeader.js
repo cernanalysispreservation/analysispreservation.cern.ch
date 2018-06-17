@@ -23,7 +23,9 @@ export default function SectionHeader(props) {
         responsive={false}>
         <span>{props.label}</span>
       </Box>
+      <Box flex={false} margin={{horizontal: "small"}}>
       { props.icon ? props.icon : null}
+      </Box>
     </Header>
   );
 }
