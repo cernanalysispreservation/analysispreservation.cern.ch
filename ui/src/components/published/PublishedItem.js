@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import {getPublishedItem} from '../../actions/published';
 import DefaultPublished from './components/Default';
-//import CmsAnalysis from './components/CmsAnalysis';
+import CmsPublished from './components/CmsAnalysis';
 import LhcbPublished from './components/LhcbAnalysis';
 
 export class Published extends React.Component {
@@ -17,13 +17,23 @@ export class Published extends React.Component {
     this.props.getPublishedItem(id);
   }
 
+  _discoverSchema = (item) => {
+      let type;
+      return item.$ana_type ? item.$ana_type: (
+        type = item.$schema.split('/'),
+        type[type.length-1].replace('-v0.0.1.json', '')
+        )        
+  }
+
   render() {
     let item = this.props.item ? this.props.item.metadata:null;
     if (item) {
-      switch (item.$ana_type) {
+      let type = this._discoverSchema(item);
+      console.log("type is ", type);
+      switch (type) {
         case 'cms-analysis':
           return (
-            <DefaultPublished item={item} />
+            <CmsPublished item={item} />
           );
         case 'lhcb':
           return (
