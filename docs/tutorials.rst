@@ -3,7 +3,7 @@ Tutorials
 
 The CAP form
 ----------------
-There are four main section to document a physics analysis on the CAP form, they are basic information, data provenance, analysis software and documentation. However, each form is tailored to the needs of its experiment. In the following examples we use form snippets from different experiments to demonstrate their flexibility and use.
+There are four main sections to document a physics analysis on the CAP form: basic information, data provenance, analysis software and documentation. However, each form is tailored to the needs of each experiment. In the following examples, we use form snippets from different experiments to demonstrate their flexibility and use.
 
 Basic information
 ~~~~~~~~~~~~~~~~~~~
@@ -26,14 +26,14 @@ The CAP form implements the links to the existing experimental databases. In the
 Analysis software
 ~~~~~~~~~~~~~~~~~~~
 
-Analysis software can be captured directly from git repositories. Special attention has been taken to ensure analysis automation and creating analysis workflow which can also be captured using the form.
+Analysis software can be captured directly from git repositories. Analysis workflows which facilitate analysis automation can also be documented with the form.
 
 .. image:: _static/fig4.png
 
-Additional documentation
+Additional resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Additional documentation section captures resources such as presentation, publications and other internal documentation.
+The additional resources section captures presentations, publications and other internal documentation.
 
 .. image:: _static/fig5.png
 
@@ -41,12 +41,20 @@ Additional documentation section captures resources such as presentation, public
 CAP-client
 -------------
 
-CAP-client is a command-line tool for preserving analyses.
+The CAP-client is a command-line tool for preserving analyses.
 It is implemented as a python package and its documentation can be found `here <https://cap-client.readthedocs.io>`_.
+
+Setting up the cap-client configuration:
+
+.. image:: _static/cap-client-config.gif
 
 The basic communication with the server can be seen here:
 
 .. image:: _static/cap-client.gif
+
+Editing analysis metadata:
+
+.. image:: _static/cap-client-metadata.gif
 
 
 Reusable Analyses REANA
