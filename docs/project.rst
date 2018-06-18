@@ -3,7 +3,7 @@ Project Features
 
 CERN Analysis Preservation is a centralised platform for physicists to preserve and document information relevant to their analysis so that it remains understandable and reusable in the future.
 
-.. image:: ../_static/cernanalysispreservation_user_stories.png
+.. image:: _static/cernanalysispreservation_user_stories.png
 
 - :ref:`project-preserve`
 - :ref:`project-search`

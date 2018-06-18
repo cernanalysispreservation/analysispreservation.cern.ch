@@ -1,6 +1,11 @@
 Welcome to the Documentation for CERN Analysis Preservation
 ============================================================
 
+.. image:: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch.png
+   :target: https://travis-ci.org/cernanalysispreservation/analysispreservation.cern.ch
+.. image:: https://badges.gitter.im/Join%20Chat.svg
+   :target: https://gitter.im/cernanalysispreservation/analysispreservation.cern.ch?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+
 `CERN Analysis Preservation <https://analysispreservation.cern.ch>`_ is a data preservation service run at CERN currently targeted at preserving analysis information from the four largest LHC experiments.
 It is an open source project licensed under the `GNU Public License 2.0 <https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html>`_, yet the information stored will be private.
 
@@ -34,15 +39,6 @@ Further Reading
 	glossary 
 	support 
 	related-projects
-
-
-.. toctree::
-       :hidden:
-			 README
-			 style-guide
-			 tableofcontent
-			 backstage/docs-overview
-			 backstage/swagger-overview
 	
 License
 -------
