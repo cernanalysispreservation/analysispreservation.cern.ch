@@ -1,10 +1,7 @@
 API Reference
 =============
 
-.. todo::
-	list functions/swagger
-
-CERN Analysis Preservation offers a REST API to access the service independent from the web interface. If you want to automate specific tasks or create your own data interface, you can use the API to do so.
+CERN Analysis Preservation offers a REST API to access the service independently from the web interface. If you want to automate specific tasks or create your own data interface, you can use the API to do so.
 
 Aquiring an Access Token
 ------------------------
@@ -14,20 +11,13 @@ If you want to gain access to CERN Analysis Preservation from your console or an
 .. warning ::
 	Your access token will allow you to use the service in the same way in which you may use it if you log in on the web portal. You will have the same permissions unless specified otherwise on creation of the token. This implies that anyone who has this token can log in as yourself to the service. Do not share your personal access token with anyone else, and only use it with HTTPS!
 
-# TO FIX
-To get an access token, you will need to log in on the web portal and `create one <https://analysispreservation.cern.ch/profile/applications>`_.
+To get an access token, you will need to log in on the web portal and `create one <https://analysispreservation.cern.ch/settings>`_, as shown below.
 
-In this dialog, `scopes` lets you define permissions for the token which by default only includes read access to your drafts and records.
+In this dialog, `scopes` lets you define permissions for the token which by default only include read access to your drafts and records.
 
-.. glossary::
+.. image:: _static/fig_token.png
 
-	create
-		Adds write access to your token.
-
-	actions
-		Adds permissions to perform additional actions like sharing and cloning a record to your token.
-
-Clicking `create` will generate and show your personal token in the browser. Please copy it to a safe place on your computer, as it is not stored on the portal and you will not be able to retrieve the same token again in the future.
+Clicking `submit` will generate and show your personal token in the browser. Please copy it to a safe place on your computer, as it is not stored on the portal and you will not be able to retrieve the same token again in the future.
 
 Accessing the API
 -----------------
