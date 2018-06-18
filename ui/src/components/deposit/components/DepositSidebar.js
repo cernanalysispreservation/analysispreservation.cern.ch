@@ -56,7 +56,6 @@ class DepositSidebar extends React.Component {
           <Box pad="medium">
             <Title>Start Your Project</Title>
             <Paragraph>Give a name to your project..This way you can recognise it between your drafts</Paragraph>
-            <Paragraph>{this.props.match.params.schema_id}</Paragraph>
             <Form schema={{type: "string", title: "Project Name"}} onSubmit={this._onSubmit.bind(this, this.props.match.params.schema_id)} >
               <Box flex={true} margin={{vertical: "medium"}}>
                 <Button label='Start Project'

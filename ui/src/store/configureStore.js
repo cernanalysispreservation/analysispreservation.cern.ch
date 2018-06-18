@@ -10,7 +10,6 @@ import { routerMiddleware } from 'react-router-redux';
 import {createLogger} from 'redux-logger';
 
 import rootReducer from '../reducers';
-import promiseMiddleware from 'redux-promise';
 
 export const history = createHistory();
 
@@ -47,7 +46,6 @@ function configureStoreDev(initialState) {
 
         // thunk middleware can also accept an extra argument to be passed to each thunk action
         // https://github.com/gaearon/redux-thunk#injecting-a-custom-argument
-        promiseMiddleware,
         reactRouterMiddleware,
         thunk,
         loggerMiddleware,
