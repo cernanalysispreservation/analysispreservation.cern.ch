@@ -15,7 +15,7 @@ Analysis Definition
 ------------------------------------
 
 To us, an analysis consists of both data (e.g. datasets, code, results) and metadata (e.g. analysis name, contact persons, publication) the combination of which we call analysis information. While we structure this information on CAP in a way that represents the analysis workflow steps, we do not require or ask for any change in the physicists' individual workflow or the terminologies used in different collaborations and working groups.
-To accommodate for any changes in content and workflow of an analysis, we keep versions of both the analysis record itself and the underlying JSON schema (for more information see the tutorial on :doc:`JSON and JSON Schema <../tutorials/tutorials>`).
+To accommodate for any changes in content and workflow of an analysis, we keep versions of both the analysis record itself and the underlying JSON schema (for more information see :doc:`JSON Schema <../schema>`).
 
 Access Control
 ------------------------------------
