@@ -24,8 +24,7 @@ import {withRouter} from 'react-router';
 const SettingsAnchor = withRouter(({ history, draft_id=draft_id }) => (
         <Anchor
           icon={<SettingsOptionIcon/>}
-          plain={true}
-          secondary={true}
+          plain="true"
           label="Settings"
           onClick={() => history.push(`/drafts/${draft_id}/settings`)}
         />
@@ -76,7 +75,6 @@ class DepositHeader extends React.Component {
               fill={true}
               label="Layout"
               direction="row"
-
               justify="center"
               align="center"
               inline={true}>
@@ -84,14 +82,11 @@ class DepositHeader extends React.Component {
                 <SettingsAnchor draft_id={this.props.draft_id} />:null}
               <Anchor
                 icon={<ShareIcon/>}
-                plain={true}
-                secondary={true}
                 label="Share"
                 onClick={this.props.draft_id ? this.props.publishData: null}
               />
               <Anchor
                 icon={<SaveIcon/>}
-                plain={true}
                 label="Save"
                 onClick={this.props.saveData}
               />
@@ -108,8 +103,6 @@ class DepositHeader extends React.Component {
                   />
                   <Anchor
                     icon={<RefreshIcon/>}
-                    plain={true}
-                    secondary={true}
                     label="Discard"
                     onClick={this.props.discardData}
                   />

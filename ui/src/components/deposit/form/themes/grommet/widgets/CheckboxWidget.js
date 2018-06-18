@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CheckBox, FormField } from 'grommet';
+import { CheckBox, Box } from 'grommet';
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);
@@ -31,10 +31,7 @@ const CheckBoxWidget = function(props) {
     _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
 
   return (
-    <FormField
-      help={props.schema.description ? props.schema.description : null}
-      label={props.schema.title}
-      error={_errors}>
+    <Box pad="medium">
       {
         props.options.enumOptions.length > 0 ?
         props.options.enumOptions.map( item => (
@@ -47,7 +44,7 @@ const CheckBoxWidget = function(props) {
             onChange={_onChange} />
         )) : null
       }
-    </FormField>
+    </Box>
   );
 };
 

@@ -67,7 +67,16 @@ class SettingsIndex extends React.Component {
         <Box flex={true} pad="medium" size="large">
           <Heading align="start" margin={{vertical: "medium"}} tag="h3">New OAuth Application</Heading>
           <Paragraph align="start" margin="none" />
-          <Form schema={this.state.layer.type == "token" ? tokenSchema : applicationSchema} onSubmit={this._onSubmit.bind(this, this.state.layer.type)}>
+          <Form
+            schema={this.state.layer.type == "token" ? tokenSchema : applicationSchema}
+            uiSchema={{
+              scopes: {
+                "ui:options": {
+                  inline: true
+                }
+              }
+            }}
+            onSubmit={this._onSubmit.bind(this, this.state.layer.type)}>
             <Box flex={true} margin={{vertical: "medium"}}>
               <Button label="Submit"
                 type="submit"

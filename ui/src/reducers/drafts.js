@@ -52,7 +52,7 @@ const initialState = Map({
   fileManagerActiveLayer: false,
   fileManagerLayerSelectable: false,
   fileManagerLayerSelectableAction: null,
-  showPreviewer: true,
+  showPreviewer: false,
   showSidebar: true,
   liveValidate: true,
   validate: true,
