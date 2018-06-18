@@ -37,13 +37,13 @@ from flask import current_app
 from werkzeug.local import LocalProxy
 
 import pytest
-from invenio_app.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.reana.models import ReanaJob
 from elasticsearch.exceptions import RequestError
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user
+from invenio_app.factory import create_api
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
@@ -289,9 +289,6 @@ def minimal_deposits_metadata(schema_name):
         'cms-questionnaire-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/cms-questionnaire-v0.0.1.json'.format(schema_host),
         },
-        'cms-auxiliary-measurements-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json'.format(schema_host),
-        },
         'lhcb-v0.0.1': {
             '$schema': 'https://{}/schemas/deposits/records/lhcb-v0.0.1.json'.format(schema_host),
         },
@@ -481,11 +478,6 @@ def superuser_me_data(users):
         "current_experiment": "ATLAS",
         "deposit_groups": [
             {
-                "deposit_group": "cms-auxiliary-measurement",
-                "description": "Create a CMS Auxiliary Measurement",
-                "name": "CMS Auxiliary Measurement"
-            },
-            {
                 "deposit_group": "lhcb",
                 "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
                 "name": "LHCb Analysis"
@@ -534,11 +526,6 @@ def cms_user_me_data(users):
         ],
         "current_experiment": "CMS",
         "deposit_groups": [
-            {
-                "deposit_group": "cms-auxiliary-measurement",
-                "description": "Create a CMS Auxiliary Measurement",
-                "name": "CMS Auxiliary Measurement"
-            },
             {
                 "deposit_group": "cms-questionnaire",
                 "description": "Create a CMS Questionnaire",

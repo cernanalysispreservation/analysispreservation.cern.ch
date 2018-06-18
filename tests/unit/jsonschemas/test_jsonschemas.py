@@ -23,13 +23,13 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 
-import pytest
-
 from uuid import uuid4
 
-from conftest import minimal_deposits_metadata
+import pytest
 from invenio_deposit.minters import deposit_minter
+
 from cap.modules.deposit.api import CAPDeposit as Deposit
+from conftest import minimal_deposits_metadata
 from jsonschema.exceptions import ValidationError
 
 
@@ -39,7 +39,6 @@ from jsonschema.exceptions import ValidationError
     ('atlas_user', 'atlas-workflows-v0.0.1'),
     ('cms_user', 'cms-analysis-v0.0.1'),
     ('cms_user', 'cms-questionnaire-v0.0.1'),
-    ('cms_user', 'cms-auxiliary-measurements-v0.0.1'),
     ('lhcb_user', 'lhcb-v0.0.1'),
 ])
 def test_jsonschemas_with_no_additional_properties_is_success(user, schema, users, create_deposit):

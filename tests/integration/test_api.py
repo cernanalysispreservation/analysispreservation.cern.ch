@@ -30,9 +30,9 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app
-from mock import patch
 
 from conftest import get_basic_json_serialized_deposit
+from mock import patch
 
 
 #############
@@ -67,12 +67,10 @@ def test_get_deposits_when_superuser_returns_all_deposits(app, users,
         deposits = [
             create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
             create_deposit(users['cms_user2'], 'cms-questionnaire-v0.0.1'),
-            create_deposit(users['cms_user'],
-                           'cms-auxiliary-measurements-v0.0.1'),
             create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
             create_deposit(users['alice_user'], 'alice-analysis-v0.0.1'),
             create_deposit(users['atlas_user'], 'atlas-analysis-v0.0.1'),
-            create_deposit(users['atlas_user2'], 'atlas-workflows-v0.0.1'),
+            create_deposit(users['atlas_user2'], 'atlas-workflows-v0.0.1')
         ]
 
         resp = client.get('/deposits/', headers=auth_headers_for_superuser)
@@ -91,8 +89,6 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
         user_deposits_ids = [x['_deposit']['id'] for x in [
             create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
             create_deposit(users['cms_user'], 'cms-questionnaire-v0.0.1'),
-            create_deposit(users['cms_user'],
-                           'cms-auxiliary-measurements-v0.0.1'),
         ]]
 
         create_deposit(users['cms_user2'], 'cms-analysis-v0.0.1'),
