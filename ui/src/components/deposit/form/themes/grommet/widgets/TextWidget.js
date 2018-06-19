@@ -15,8 +15,8 @@ class TextWidget extends React.Component{
      *        }
      * }
      * input value will be appended to url
-     * 
-     * To autofill other fields, specify url and fields map,    
+     *
+     * To autofill other fields, specify url and fields map,
      * as an array of pairs [from, to], where both are arrays with full paths to fields, e.g
      * "my_field": {
      *       "ui:options":{
@@ -95,7 +95,7 @@ class TextWidget extends React.Component{
             </Box>
         );
     }
-};
+}
 
 TextWidget.propTypes = {
     onChange: PropTypes.func,

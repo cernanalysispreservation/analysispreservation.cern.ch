@@ -5,11 +5,8 @@ import { fromJS } from 'immutable';
 
 import {
     Box,
-    Button,
     Headline,
     Label,
-    Paragraph,
-    Title,
     List,
     ListItem
 } from 'grommet';
@@ -32,7 +29,7 @@ class SearchResults extends React.Component {
                             this.props.results.map(item => {
                                 let metadata = fromJS(item.metadata);
                                 let objects = new Set();
-                                let physics_objects = metadata.getIn(["main_measurements"],[]).map(item => {
+                                metadata.getIn(["main_measurements"],[]).map(item => {
                                     return item.getIn(["signal_event_selection","physics_objects"], []).map(item =>{
                                         if(item.get('object'))
                                             objects.add(item.get('object'));
@@ -64,7 +61,7 @@ class SearchResults extends React.Component {
                                                     Array.from(objects).map(object => {
                                                         return(
                                                             <Label size="small" align="center" margin="medium" uppercase="true">
-                                                                {object} &nbsp; 
+                                                                {object} &nbsp;
                                                             </Label>
                                                         )
                                                     })
@@ -75,10 +72,10 @@ class SearchResults extends React.Component {
                                                 <Label margin="none">
                                                     {
                                                         metadata.getIn(["cadi_info","name"]) ||
-                                                            metadata.getIn(["basic_info","measurement"]) 
+                                                            metadata.getIn(["basic_info","measurement"])
                                                     }
                                                 </Label>
-                                                { metadata.getIn(["basic_info","abstract"])} 
+                                                { metadata.getIn(["basic_info","abstract"])}
                                                 </Box>
                                             </Box>
                                         </ListItem>

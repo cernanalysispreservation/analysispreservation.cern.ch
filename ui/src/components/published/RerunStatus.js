@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
   Box,
   Title,
-  Button,
   Label,
-  Paragraph,
-  Value,
   Meter
 } from 'grommet';
 
@@ -67,7 +64,7 @@ export class RerunStatus extends React.Component {
     return (
       <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
         <Box align="center" justify="center">
-          {data && data.status === "finished" ? 
+          {data && data.status === "finished" ?
           <Title>...Analysis finished!</Title>:<Title>Analysis in progress...</Title>
           }
         </Box>

@@ -1,30 +1,30 @@
-include *.py
-include *.rst
-include *.sh
-include *.txt
-include *.yml
-include *.env
-include .coveragerc
-include COPYING
-include Dockerfile
-include pytest.ini
-recursive-include cap *.db
-recursive-include cap *.gif
-recursive-include cap *.html
-recursive-include cap *.ico
-recursive-include cap *.ipynb
-recursive-include cap *.js
-recursive-include cap *.json
-recursive-include cap *.png
-recursive-include cap *.scss
-recursive-include cap *.svg
-recursive-include cap *.sh
-recursive-include docker Dockerfile
-recursive-include docker *.conf
-recursive-include scripts *.py
-recursive-include scripts *.sh
-recursive-include tests *.py
-recursive-include docs *
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2018 CERN.
+#
+# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
 
-exclude ui
-recursive-exclude ui *
+# TODO: Generate this manifest file by running the following commands:
+#
+#  git init
+#  git add -A
+#  pip install -e .[all]
+#  check-manifest -u
+
+# Check manifest will not automatically add these two files:
+include .dockerignore
+include .editorconfig
+include .tx/config
+include docker/haproxy/Dockerfile
+include docker/nginx/Dockerfile
+include docker/postgres/Dockerfile
+include Dockerfile
+include scripts/bootstrap
+include scripts/console
+include scripts/server
+include scripts/setup
+include scripts/update
+prune docs/_build
+recursive-include cap *.po *.pot *.mo
+recursive-include docker *.cfg *.conf *.crt *.ini *.key *.pem *.sh

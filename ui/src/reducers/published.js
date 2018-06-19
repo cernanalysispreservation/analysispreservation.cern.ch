@@ -62,7 +62,7 @@ export default function publishedReducer(state = initialState, action) {
               .setIn(['current_item', 'error'], action.error);
     case RERUN_PUBLISHED_REQUEST:
       return state.setIn(['current_run', 'loading'], true);
-      return state.setIn(['current_run', 'error'], false);
+      // return state.setIn(['current_run', 'error'], false);
     case RERUN_PUBLISHED_SUCCESS:
       return state
               .setIn(['current_run', 'loading'], false)
@@ -73,7 +73,7 @@ export default function publishedReducer(state = initialState, action) {
               .setIn(['current_run', 'error'], action.error);
     case RERUN_STATUS_REQUEST:
       return state.setIn(['current_run', 'loading'], true);
-      return state.setIn(['current_run', 'error'], false);
+      // return state.setIn(['current_run', 'error'], false);
     case RERUN_STATUS_SUCCESS:
       return state
               .setIn(['current_run', 'loading'], false)
@@ -84,7 +84,7 @@ export default function publishedReducer(state = initialState, action) {
               .setIn(['current_run', 'error'], action.error);
     case RERUN_OUTPUTS_REQUEST:
       return state.setIn(['current_run', 'loading'], true);
-      return state.setIn(['current_run', 'error'], false);
+      // return state.setIn(['current_run', 'error'], false);
     case RERUN_OUTPUTS_SUCCESS:
       return state
               .setIn(['current_run', 'loading'], false)

@@ -5,7 +5,6 @@ import {
   Sidebar,
   Header,
   Title,
-  Label,
   Heading
 } from 'grommet';
 
@@ -74,7 +73,7 @@ class CmsPublished extends React.Component {
                     {item.cadi_info.pas}
                   </Box>
                 }
-                {item && item.cadi_info && item.cadi_info.publication_status && 
+                {item && item.cadi_info && item.cadi_info.publication_status &&
                   <Box>
                     <Title>Publication Status</Title>
                     {item.cadi_info.publication_status}

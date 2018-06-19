@@ -15,7 +15,6 @@ import ItemBrief from '../components/ItemBrief';
 import FormTrashIcon from 'grommet/components/icons/base/FormTrash';
 import FormUpIcon from 'grommet/components/icons/base/FormUp';
 import FormDownIcon from 'grommet/components/icons/base/FormDown';
-import FormEditIcon from 'grommet/components/icons/base/FormEdit';
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {

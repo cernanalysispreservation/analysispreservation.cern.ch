@@ -5,11 +5,9 @@ import {connect} from 'react-redux';
 
 import {
   Box,
-  Heading,
   Sidebar,
   Header,
   Title,
-  Label,
   Button
 } from 'grommet';
 
@@ -21,7 +19,7 @@ const RerunButton = withRouter(({ history, record_id=record_id }) => (
         <Button
           icon={<CirclePlayIcon/>}
           label="Rerun"
-          onClick={() => history.push(`/published/${record_id}/rerun`)} 
+          onClick={() => history.push(`/published/${record_id}/rerun`)}
         />
     ))
 
@@ -33,7 +31,6 @@ class AlicePublished extends React.Component {
 
   render() {
     let item = this.props.item;
-    let created = item ? item.created : null;
     return (
       <Box colorIndex="neutral-1-a" direction="row" justify="between" flex={true} wrap={false}>
         <Sidebar full={false} size="small">
@@ -85,7 +82,7 @@ AlicePublished.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    files: state.drafts.getIn(['current_item', 'files'])   
+    files: state.drafts.getIn(['current_item', 'files'])
   };
 }
 

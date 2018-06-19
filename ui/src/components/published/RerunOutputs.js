@@ -1,14 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
   Box,
-  Title,
-  Button,
-  Label,
-  Paragraph,
-  Value,
   Table,
   TableRow
 } from 'grommet';
@@ -41,7 +36,7 @@ export class RerunOutputs extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {data && data.map((item, i) => 
+            {data && data.map((item, i) =>
                 <TableRow key={`item-${i}`}>
                   <td>
                     {item.name}

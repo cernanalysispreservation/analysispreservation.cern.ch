@@ -7,7 +7,6 @@ import {Switch, Route} from 'react-router-dom';
 import Box from 'grommet/components/Box';
 
 import SearchPage from '../search/SearchPage';
-import PublishedItem from '../published/PublishedItem';
 import Header from '../partials/Header';
 import CreateIndex from '../create/CreateIndex';
 import Dashboard from '../dashboard/Dashboard';
@@ -42,7 +41,7 @@ class IndexPage extends React.Component {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/search" component={SearchPage} />
-          <Route path="/published" component={PublishedIndex} /> 
+          <Route path="/published" component={PublishedIndex} />
           <Route path="/drafts" component={DraftsIndex} />
           <Route path="/create" component={CreateIndex}/>
           <Route path="/settings" component={SettingsIndex}/>

@@ -1,73 +1,88 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2018 CERN.
 #
-# CERN Analysis Preservation Framework is free software; you can redistribute
-# it and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# CERN Analysis Preservation Framework is distributed in the hope that it will
-# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with CERN Analysis Preservation Framework; if not, write to the
-# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-# MA 02111-1307, USA.
-#
-# In applying this license, CERN does not
-# waive the privileges and immunities granted to it by virtue of its status
-# as an Intergovernmental Organization or submit itself to any jurisdiction.
+# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
 
-version: '2.1'
+version: '2.3'
 services:
   app:
-    build: .
-    env_file:
-      - cap.env
-  redis:
+    build:
+      context: ./
+      args:
+        - ENVIRONMENT=DEV
+    image: cap
+    environment:
+      - "INVENIO_ACCOUNTS_SESSION_REDIS_URL=redis://cache:6379/1"
+      - "INVENIO_BROKER_URL=amqp://guest:guest@mq:5672/"
+      - "INVENIO_CACHE_REDIS_URL=redis://cache:6379/0"
+      - "INVENIO_CACHE_TYPE=redis"
+      - "INVENIO_CELERY_BROKER_URL=amqp://guest:guest@mq:5672/"
+      - "INVENIO_CELERY_RESULT_BACKEND=redis://cache:6379/2"
+      - "INVENIO_SEARCH_ELASTIC_HOSTS=['es:9200']"
+      - "INVENIO_SECRET_KEY=CHANGE_ME"
+      - "INVENIO_SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://cap:cap@db/cap"
+      - "INVENIO_WSGI_PROXIES=2"
+      - "INVENIO_RATELIMIT_STORAGE_URL=redis://cache:6379/3"
+  lb:
+    build: ./docker/haproxy/
+    image: cap-lb
+    restart: "always"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+  frontend:
+    build: ./docker/nginx/
+    image: cap-frontend
+    restart: "always"
+    ports:
+      - "80"
+      - "443"
+  cache:
     image: redis
+    restart: "always"
+    read_only: true
     ports:
       - "6379:6379"
-  postgresql:
-    image: postgres
+  db:
+    image: postgres:9.6
+    restart: "always"
     environment:
-      - POSTGRES_DB=cap
-      - POSTGRES_USER=cap
-      - POSTGRES_PASSWORD=cap
+      - "POSTGRES_USER=cap"
+      - "POSTGRES_PASSWORD=cap"
+      - "POSTGRES_DB=cap"
     ports:
       - "5432:5432"
-  elasticsearch:
-    build: ./docker/elasticsearch/
+  mq:
+    image: rabbitmq:3-management
+    restart: "always"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+  es:
+    image: elasticsearch:5.6.4
+    restart: "always"
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 1g
     ports:
       - "9200:9200"
       - "9300:9300"
-  rabbitmq:
-    image: rabbitmq
-    restart: "always"
-    ports:
-      - "4369:4369"
-      - "5672:5672"
-  redis-commander:
-    image: rediscommander/redis-commander
+  kibana:
+    image: kibana:5.6.4
     environment:
-      - REDIS_HOSTS=local:redis:6379
-    ports:
-      - 8081:8081
-  wdb:
-    image: kozea/wdb-server
-    ports:
-      - 1984:1984
-      - 19840:19840
+      - "ELASTICSEARCH_URL=http://es:9200"
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports: ['5601:5601']
   flower:
-    restart: "always"
-    build:
-      context: .
-      args:
-        DEBUG: "True"
-    command: 'flower -A cap.celery --port=5555'
+    image: mher/flower
+    command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
     ports:
-      - "49555:5555"
+      - "5555:5555"

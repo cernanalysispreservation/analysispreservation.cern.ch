@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import {
@@ -8,7 +8,7 @@ import {
   Button
 } from 'grommet';
 
-import {getPublishedItem, rerunPublished} from '../../actions/published';
+import {rerunPublished} from '../../actions/published';
 
 import CleanForm from '../deposit/form/CleanForm';
 
@@ -43,7 +43,7 @@ const uiSchema = {
 const formData = {
   "input_parameters": {
     "ali_physics": "vAN-20180614-1"
-  } 
+  }
 }
 
 export class RerunPublished extends React.Component {

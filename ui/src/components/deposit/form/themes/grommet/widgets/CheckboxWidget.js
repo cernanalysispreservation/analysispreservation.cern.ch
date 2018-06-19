@@ -26,9 +26,9 @@ const CheckBoxWidget = function(props) {
     }
   };
 
-  let _errors = null;
-  if (props.rawErrors && props.rawErrors.length > 0)
-    _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
+  // let _errors = null;
+  // if (props.rawErrors && props.rawErrors.length > 0)
+  //   _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
 
   return (
     <Box pad="medium">

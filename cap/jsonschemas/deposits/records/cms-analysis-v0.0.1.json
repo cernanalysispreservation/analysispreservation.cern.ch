@@ -122,7 +122,7 @@
             "type": "string"
         },
         "analysis_reuse_mode": {
-            "type": "boolean",
+            "type": "string",
             "title": "Full reproducibility mode",
             "description": "please turn this mode on if you want to capture additional information about main and auxiliary measurements, systematic uncertainties, background estimates, final state particles"
         },

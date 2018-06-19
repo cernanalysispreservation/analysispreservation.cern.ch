@@ -56,7 +56,7 @@ export class Dashboard extends React.Component {
 
   getFacetTypes() {
     let _types = {};
-    this.props.results ? this.props.results.getIn(['aggregations', 'facet_type', 'buckets']).map( item => { _types[item.get('key')] = item.get('doc_count') }) : null;
+    this.props.results.getIn(['aggregations', 'facet_type', 'buckets']) ? this.props.results.getIn(['aggregations', 'facet_type', 'buckets']).map( item => { _types[item.get('key')] = item.get('doc_count') }) : null;
 
     return _types;
   }

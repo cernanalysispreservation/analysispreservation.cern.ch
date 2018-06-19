@@ -1,53 +1,39 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2018 CERN.
 #
-# CERN Analysis Preservation Framework is free software; you can redistribute
-# it and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# CERN Analysis Preservation Framework is distributed in the hope that it will
-# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with CERN Analysis Preservation Framework; if not, write to the
-# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-# MA 02111-1307, USA.
-#
-# In applying this license, CERN does not
-# waive the privileges and immunities granted to it by virtue of its status
-# as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-"""CERN Analysis Preservation Framework overlay repository for Invenio."""
+# CERN Analysis Preservation is free software; you can redistribute it
+# and/or modify it under the terms of the MIT License; see LICENSE file
+# for more details.
 
 import os
-import sys
 
 from setuptools import find_packages, setup
 
-# readme = open('README.rst').read()
-readme = ""
-# history = open('CHANGES.rst').read()
-history = ""
+readme = open('README.rst').read()
+
+DATABASE = "postgresql"
+ELASTICSEARCH = "elasticsearch5"
+INVENIO_VERSION = "3.0.0rc2"
+
 tests_require = [
-    'check-manifest>=0.25',
-    'coverage>=4.0',
-    'isort>=4.2.2',
-    'pydocstyle>=1.0.0',
-    'pytest-cache>=1.0',
-    'pytest-cov>=1.8.0',
-    'pytest-pep8>=1.0.6',
+    'check-manifest>=0.35',
+    'coverage>=4.4.1',
+    'isort>=4.3',
     'mock>=2.0.0',
-    'pytest>=3.0.4',
+    'pydocstyle>=2.0.0',
+    'pytest-cov>=2.5.1',
+    'pytest-invenio>=1.0.2,<1.1.0',
+    'pytest-mock>=1.6.0',
+    'pytest-pep8>=1.0.6',
+    'pytest-random-order>=0.5.4',
+    'pytest>=3.3.1',
+    'selenium>=3.4.3',
 ]
 
 extras_require = {
     'docs': [
-        'Sphinx>=1.3',
+        'Sphinx>=1.5.1',
     ],
     'tests': tests_require,
 }
@@ -56,64 +42,44 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-# No include in all(travis)
-extras_require['xrootd'] = [
-    'invenio-xrootd>=1.0.0a4',
-    'xrootdpyfs>=0.1.4',
-]
-
 setup_requires = [
-    'Babel>=1.3',
-    'pytest-runner',
+    'Babel>=2.4.0',
+    'pytest-runner>=3.0.0,<5',
 ]
 
 install_requires = [
-    'elasticsearch>=5.1.0,<6.0.0',
-    'elasticsearch-dsl>=5.1.0,<6.0.0',
-    'docker==3.0.0',
-    'celery==4.1.1',  # temporary fix
-    'gunicorn>=19.6.0',
-    'setuptools>=30.1.0',  # temporary fix
-    'marshmallow==2.15.0',   # temporary fix
-    'SQLAlchemy-Continuum==1.3.4',  # temporary fix
-    'simplejson>=3.8.2',
+    'Flask==0.12.4',
+    'Flask-Cli>=0.4.0',
+    'Flask-Cache>=0.13.1',
+    'Flask-Debugtoolbar>=0.10.1',
+    # CAP specific libraries
     'python-ldap>=2.4.39',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
-    'Flask==0.12.4',
-    'Shelves>=0.3.8',
-    'Flask-CORS>=2.1.0',
-    'Flask-BabelEx>=0.9.3',
-    'Flask-Assets>=0.12',
-    'Flask-Cli>=0.4.0',
-    'Flask-Collect==1.2.2',
-    'Flask-Cache>=0.13.1',
-    'Flask-KVSession>=0.6.2',
-    'Flask-Login==0.3.2',
-    'Flask-WTF>=0.14.2',
-    'invenio-access>=1.0.0',
-    'invenio-accounts>=1.0.0',
+
+    # Pinned libraries
+    'celery==4.1.1',  # temporary fix
+    # temporary pinned since there are 'connection closed' issues
+    # on production server
+    'urllib3[secure]==1.22',
+    'SQLAlchemy-Continuum==1.3.4',
+    # temporary pinned since there are 'fs' conslicts between
+    # 'reana-commons' and 'invenio-files-rest'
+    'fs==0.5.4',
     'invenio-accounts-rest>=1.0.0a4',
-    # 'invenio-assets>=1.0.0',
-    'invenio-base>=1.0.0',
-    'invenio-celery>=1.0.0',
-    'invenio-config>=1.0.0',
-    'invenio-db[postgresql,versioning]>=1.0.0',
-    'invenio-files-rest>=1.0.0a22',
-    'invenio-indexer>=1.0.0',
-    'invenio-jsonschemas>=1.0.0',
     'invenio-oauthclient>=1.0.0',
-    'invenio-pidstore>=1.0.0',
-    'invenio-records[postgresql]>=1.0.0',
-    'invenio-records-files>=1.0.0a10',
-    'invenio-records-rest>=1.0.0',
-    'invenio-rest[cors]>=1.0.0',
-    'invenio-search>=1.0.0a9',
     'invenio-userprofiles>=1.0.0',
-    'invenio-query-parser>=0.3.0'
+    'invenio-query-parser>=0.3.0',
+    'invenio[{db},{es},base,auth,metadata]~={version}'.format(
+        db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION),
+
+    'uWSGI==2.0.17',
+    'uwsgi-tools==1.1.1',
+    'uwsgitop==0.10',
 ]
 
 packages = find_packages()
+
 
 # Get the version string. Cannot be done with import!
 g = {}
@@ -125,12 +91,12 @@ setup(
     name='cap',
     version=version,
     description=__doc__,
-    long_description=readme + '\n\n' + history,
+    long_description=readme,
     keywords='cap cern analysis preservation',
-    license='GPLv2+',
+    license='MIT',
     author='CERN',
-    author_email='info@inveniosoftware.org',
-    url='https://github.com/analysispreservationcernch',
+    author_email='analysis-preservation-support@cern.ch',
+    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
     packages=packages,
     zip_safe=False,
     include_package_data=True,
@@ -147,7 +113,7 @@ setup(
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
         ],
         'invenio_base.api_blueprints': [
-            # 'cap = cap.views:blueprint',
+            'cap = cap.views:blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_oauth2server_settings = '
             ' cap.modules.oauth2server.views.settings:blueprint',
@@ -184,6 +150,12 @@ setup(
         'invenio_db.models': [
             'cap_reana_model = cap.modules.reana.models',
         ],
+        'invenio_config.module': [
+            'cap = cap.config',
+        ],
+        # 'invenio_i18n.translations': [
+        #     'messages = cap',
+        # ]
     },
     extras_require=extras_require,
     install_requires=install_requires,
@@ -192,18 +164,12 @@ setup(
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: GNU General Public License v2 or later'
-        '(GPLv2+)',
+        'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
-        'Topic :: Software Development :: Libraries :: Python Modules',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
-        'Development Status :: 1 - Planning',
+        'Development Status :: 3 - Alpha',
     ],
 )

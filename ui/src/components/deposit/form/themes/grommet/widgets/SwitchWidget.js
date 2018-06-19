@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CheckBox, Box } from 'grommet';
+import { CheckBox } from 'grommet';
 
 const SwitchWidget = function(props) {
   // TOFIX onBlur, onFocus
@@ -13,9 +13,9 @@ const SwitchWidget = function(props) {
     }
   };
 
-  let _errors = null;
-  if (props.rawErrors && props.rawErrors.length > 0)
-    _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
+  // let _errors = null;
+  // if (props.rawErrors && props.rawErrors.length > 0)
+  //   _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
 
   return (
     <CheckBox

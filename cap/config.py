@@ -1,30 +1,15 @@
 # -*- coding: utf-8 -*-
 #
-# This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2018 CERN.
 #
-# CERN Analysis Preservation Framework is free software; you can redistribute
-# it and/or modify it under the terms of the GNU General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# CERN Analysis Preservation Framework is distributed in the hope that it will
-# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with CERN Analysis Preservation Framework; if not, write to the
-# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-# MA 02111-1307, USA.
-#
-# In applying this license, CERN does not
-# waive the privileges and immunities granted to it by virtue of its status
-# as an Intergovernmental Organization or submit itself to any jurisdiction.
+# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
+# under the terms of the MIT License; see LICENSE file for more details.
 
-"""CERN Analysis Preservation base configuration."""
+"""Default configuration for CERN Analysis Preservation."""
 
 from __future__ import absolute_import, print_function
+
+from datetime import timedelta
 
 import copy
 import os
@@ -59,8 +44,144 @@ from jsonresolver.contrib.jsonref import json_loader_factory
 
 
 def _(x):
-    """Identity function for string extraction"""
+    """Identity function used to trigger string extraction."""
     return x
+
+
+# Rate limiting
+# =============
+#: Storage for ratelimiter.
+RATELIMIT_STORAGE_URL = 'redis://localhost:6379/3'
+
+# I18N
+# ====
+#: Default language
+BABEL_DEFAULT_LANGUAGE = 'en'
+#: Default time zone
+BABEL_DEFAULT_TIMEZONE = 'Europe/Zurich'
+#: Other supported languages (do not include the default language in list).
+I18N_LANGUAGES = [
+    ('fr', _('French'))
+]
+
+# Base templates
+# ==============
+#: Global base template.
+# BASE_TEMPLATE = 'invenio_theme/page.html'
+# #: Cover page base template (used for e.g. login/sign-up).
+# COVER_TEMPLATE = 'invenio_theme/page_cover.html'
+# #: Footer base template.
+# FOOTER_TEMPLATE = 'invenio_theme/footer.html'
+# #: Header base template.
+# HEADER_TEMPLATE = 'invenio_theme/header.html'
+# #: Settings base template.
+# SETTINGS_TEMPLATE = 'invenio_theme/page_settings.html'
+
+# Theme configuration
+# ===================
+#: Site name
+THEME_SITENAME = _('CERN Analysis Preservation')
+#: Use default frontpage.
+THEME_FRONTPAGE = True
+#: Frontpage title.
+THEME_FRONTPAGE_TITLE = _('CERN Analysis Preservation')
+#: Frontpage template.
+# THEME_FRONTPAGE_TEMPLATE = 'cap/frontpage.html'
+
+# Email configuration
+# ===================
+#: Email address for support.
+SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
+#: Disable email sending by default.
+MAIL_SUPPRESS_SEND = True
+
+# Assets
+# ======
+#: Static files collection method (defaults to copying files).
+# COLLECT_STORAGE = 'flask_collect.storage.file'
+
+# Accounts
+# ========
+#: Email address used as sender of account registration emails.
+SECURITY_EMAIL_SENDER = SUPPORT_EMAIL
+#: Email subject for account registration emails.
+SECURITY_EMAIL_SUBJECT_REGISTER = _(
+    "Welcome to CERN Analysis Preservation!")
+#: Redis session storage URL.
+ACCOUNTS_SESSION_REDIS_URL = 'redis://localhost:6379/1'
+
+# Celery configuration
+# ====================
+
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+#: URL of message broker for Celery (default is RabbitMQ).
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+#: URL of backend for result storage (default is Redis).
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
+#: Scheduled tasks configuration (aka cronjobs).
+CELERY_BEAT_SCHEDULE = {
+    'indexer': {
+        'task': 'invenio_indexer.tasks.process_bulk_queue',
+        'schedule': timedelta(minutes=5),
+    },
+    'accounts': {
+        'task': 'invenio_accounts.tasks.clean_session_table',
+        'schedule': timedelta(minutes=60),
+    },
+}
+
+# Database
+# ========
+#: Database URI including user and password
+SQLALCHEMY_DATABASE_URI = \
+    'postgresql+psycopg2://cap:cap@localhost/cap'
+
+# JSONSchemas
+# ===========
+#: Hostname used in URLs for local JSONSchemas.
+JSONSCHEMAS_HOST = 'analysispreservation.cern.ch'
+
+# Flask configuration
+# ===================
+# See details on
+# http://flask.pocoo.org/docs/0.12/config/#builtin-configuration-values
+
+#: Secret key - each installation (dev, production, ...) needs a separate key.
+#: It should be changed before deploying.
+SECRET_KEY = 'CHANGE_ME'
+#: Max upload size for form data via application/mulitpart-formdata.
+MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MiB
+#: Sets cookie with the secure flag by default
+SESSION_COOKIE_SECURE = False
+#: Since HAProxy and Nginx route all requests no matter the host header
+#: provided, the allowed hosts variable is set to localhost. In production it
+#: should be set to the correct host and it is strongly recommended to only
+#: route correct hosts to the application.
+APP_ALLOWED_HOSTS = [
+    'localhost',
+    'analysispreservation.cern.ch',
+    'analysispreservation-dev.web.cern.ch',
+    'analysispreservation-qa.web.cern.ch',
+    'analysispreservation.web.cern.ch',
+]
+
+# OAI-PMH
+# =======
+OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
+
+# Debug
+# =====
+# Flask-DebugToolbar is by default enabled when the application is running in
+# debug mode. More configuration options are available at
+# https://flask-debugtoolbar.readthedocs.io/en/latest/#configuration
+
+#: Switches off incept of redirects by Flask-DebugToolbar.
+DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+
+# =======================================================================
+# =======================================================================
+# =======================================================================
 
 
 DEBUG = True
@@ -331,7 +452,27 @@ SEARCH_UI_JSTEMPLATE_RESULTS = 'templates/cap_search_ui/results.html'
 # SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
 
 #: Default ElasticSearch hosts
-SEARCH_ELASTIC_HOSTS = ["localhost:9200"]
+es_user = os.environ.get('ELASTICSEARCH_USER')
+es_password = os.environ.get('ELASTICSEARCH_PASSWORD')
+if es_user and es_password:
+    es_params = dict(
+        http_auth=(es_user, es_password),
+        use_ssl=str(os.environ.get('ELASTICSEARCH_USE_SSL')).lower() == 'true',
+        verify_certs=str(
+            os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower() == 'true',
+        url_prefix=os.environ.get('ELASTICSEARCH_URL_PREFIX', ''),
+    )
+else:
+    es_params = {}
+
+SEARCH_ELASTIC_HOSTS = [
+    dict(
+        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
+        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
+        **es_params
+    )
+]
+
 
 #: Search query enhancers
 SEARCH_QUERY_ENHANCERS = [
@@ -360,8 +501,8 @@ BLUEPRINT_NAME = 'cap_theme'
 # =======
 #: CERN OAuth configuration
 CERN_APP_CREDENTIALS = {
-    'consumer_key': os.environ.get('APP_CERN_APP_CREDENTIALS_KEY'),
-    'consumer_secret': os.environ.get('APP_CERN_APP_CREDENTIALS_SECRET')
+    'consumer_key': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_KEY'),
+    'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET')
 }
 
 # OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
@@ -397,7 +538,7 @@ OAUTHCLIENT_REMOTE_APPS = {
 # JSON Schemas
 # ============
 #: Hostname for JSON Schemas.
-JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
+# JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
@@ -439,7 +580,7 @@ SECRET_KEY = "changeme"
 
 # Database
 # ============
-SQLALCHEMY_DATABASE_URI = "postgresql://cap:cap@localhost:5432/cap"
+# SQLALCHEMY_DATABASE_URI = "postgresql://cap:cap@localhost:5432/cap"
 
 # Ana's database
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
@@ -750,5 +891,44 @@ GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get(
 # ================
 REANA_SERVER_URL = os.environ.get(
     'APP_REANA_SERVER_URL', 'http://reana.cern.ch')
+
 REANA_CLIENT_TOKEN = os.environ.get(
     'APP_REANA_CLIENT_TOKEN', None)
+
+
+APP_ENABLE_SECURE_HEADERS = False
+
+# APP_DEFAULT_SECURE_HEADERS = {
+#     'force_https': False,
+#     'force_https_permanent': False,
+#     'force_file_save': False,
+#     'frame_options': 'allow',
+#     'frame_options_allow_from': None,
+#     'strict_transport_security': False,
+#     'strict_transport_security_preload': False,
+#     'strict_transport_security_max_age': 31556926,  # One year in seconds
+#     'strict_transport_security_include_subdomains': True,
+#     'content_security_policy': {
+#         'default-src': '\'self\'',
+#     },
+#     'content_security_policy_report_uri': None,
+#     'content_security_policy_report_only': False,
+#     'session_cookie_secure': True,
+#     'session_cookie_http_only': True
+#     # 'force_https': True,
+#     # 'force_https_permanent': False,
+#     # 'force_file_save': False,
+#     # 'frame_options': 'sameorigin',
+#     # 'frame_options_allow_from': None,
+#     # 'strict_transport_security': True,
+#     # 'strict_transport_security_preload': False,
+#     # 'strict_transport_security_max_age': 31556926,  # One year in seconds
+#     # 'strict_transport_security_include_subdomains': True,
+#     # 'content_security_policy': {
+#     #     'default-src': '\'self\'',
+#     # },
+#     # 'content_security_policy_report_uri': None,
+#     # 'content_security_policy_report_only': False,
+#     # 'session_cookie_secure': True,
+#     # 'session_cookie_http_only': True
+# }
