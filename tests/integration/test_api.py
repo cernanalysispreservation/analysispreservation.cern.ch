@@ -30,9 +30,9 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app
+from mock import patch
 
 from conftest import get_basic_json_serialized_deposit
-from mock import patch
 
 
 #############
@@ -739,7 +739,7 @@ def test_get_cms_cadi_calls_cadi_api_with_correct_url(mock_requests, app,
         client.get('/cms/cadi/{}'.format(ana_num),
                    headers=auth_headers_for_superuser)
 
-        mock_requests.assert_called_with(url=api_url + ana_num)
+        mock_requests.assert_called_with(url=api_url + ana_num.upper())
 
 
 ##########

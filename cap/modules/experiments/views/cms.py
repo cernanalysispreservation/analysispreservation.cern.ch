@@ -29,9 +29,9 @@ from __future__ import absolute_import, print_function
 from urllib import unquote
 
 import requests
+from elasticsearch import Elasticsearch
 from flask import Blueprint, current_app, jsonify, request
 
-from elasticsearch import Elasticsearch
 from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
 
@@ -47,7 +47,7 @@ cms_bp = Blueprint(
 @cms_bp.route('/cadi/<cadi_id>', methods=['GET'])
 @cms_permission.require(403)
 def get_analysis_from_cadi(cadi_id):
-    cadi_id = unquote(cadi_id)
+    cadi_id = unquote(cadi_id).upper()
     url = current_app.config['CADI_GET_RECORD_URL'] + cadi_id
 
     resp = requests.get(url=url)
@@ -64,7 +64,7 @@ def get_analysis_from_cadi(cadi_id):
 @cms_bp.route('/datasets', methods=['GET'])
 @cms_permission.require(403)
 def get_datasets_names():
-    term = request.args.get('query', '')
+    term = unquote(request.args.get('query', ''))
     query = {
         "suggest": {
             "name-suggest": {

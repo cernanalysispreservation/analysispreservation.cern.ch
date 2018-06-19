@@ -30,15 +30,16 @@ import re
 from datetime import datetime, timedelta
 
 import requests
+from elasticsearch import helpers
+from elasticsearch_dsl import Q
 from flask import current_app
 
-from cap.modules.deposit.api import construct_access, set_egroup_permissions
+from cap.modules.deposit.api import (CAPDeposit, construct_access,
+                                     set_egroup_permissions)
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
                                         bulk_index_from_source,
                                         get_entry_uuid_by_unique_field)
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_search import RecordsSearch
@@ -190,7 +191,8 @@ def cache_das_datasets_in_es_from_file(file):
     # add newly created index under das-datasets alias
     es.indices.put_alias(index=new_index, name='das-datasets')
 
-    # remove old index
-    es.indices.delete(index=old_index)
+    # remove old index 
+    if es.indices.exists(old_index):
+        es.indices.delete(index=old_index)
 
     print("Datasets are safe in ES.")

@@ -4,10 +4,9 @@
         "ui:object": "accordionObjectField",
         "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
         "cadi_id": {
-            "ui:widget": "autofill",
             "ui:options":{
-                "url": "/api/cms/cadi/",
-                "fields_map": [
+                "autofill_from": "/api/cms/cadi/",
+                "autofill_fields": [
                     [["PAPER"], ["cadi_info", "paper"]],
                     [["name"], ["cadi_info", "name"]],
                     [["description"], ["cadi_info", "description"]],
@@ -59,9 +58,8 @@
             "items": {
                 "ui:order": ["path", "ranges"],
                 "path":{
-                    "ui:widget":"autocomplete",
                     "ui:options": {
-                        "url": "api/cms/datasets"
+                        "suggestions": "api/cms/datasets?query="
                     }
                 }
             }
@@ -73,17 +71,15 @@
         },
         "mc_sig_datasets": {
             "items": {
-                "ui:widget":"autocomplete",
                 "ui:options": {
-                    "url": "api/cms/datasets"
+                    "suggestions": "api/cms/datasets?query="
                 }
             }
         },
         "mc_bg_datasets": {
             "items": {
-                "ui:widget":"autocomplete",
                 "ui:options": {
-                    "url": "api/cms/datasets"
+                    "suggestions": "api/cms/datasets?query="
                 }
             }
         }

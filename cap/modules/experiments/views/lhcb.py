@@ -46,19 +46,22 @@ lhcb_bp = Blueprint(
 )
 
 
-@lhcb_bp.route('/analysis/titles', methods=['GET'])
+@lhcb_bp.route('/analysis', methods=['GET'])
 @lhcb_permission.require(403)
-def lhcb_get_analysis_titles():
+def lhcb_get_analysis():
+    query = unquote(request.args.get('query', ''))
     location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
     with codecs.open(os.path.join(location, 'ana_titles.json'),
                      'r', encoding='utf8', errors='ignore') as fp:
-        res = json.load(fp)
+        titles = json.load(fp)
 
-    return jsonify(res)
+    results = [x for x in titles if query.lower() in x.lower()]
+
+    return jsonify(results[:10])
 
 
-@lhcb_bp.route('/analysis/data', methods=['GET'])
+@lhcb_bp.route('/analysis/details', methods=['GET'])
 @lhcb_permission.require(403)
 def lhcb_get_analysis_data():
     title = unquote(request.args.get('title', ''))
