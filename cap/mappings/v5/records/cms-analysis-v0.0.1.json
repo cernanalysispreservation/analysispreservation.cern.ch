@@ -45,6 +45,37 @@
                         }
                     }
                 },
+                "input_data": {
+                    "type": "object",
+                    "properties": {
+                        "primary_datasets": {
+                            "type": "object",
+                            "properties": {
+                                "path": {
+                                   "type": "keyword",
+                                   "copy_to": "primary_dataset"
+                                }
+                            }
+                        },
+                        "triggers": {
+                            "type": "object",
+                            "properties": {
+                                "trigger": {
+                                   "type": "keyword",
+                                   "copy_to": "trigger"
+                                }
+                            }
+                        },
+                        "mc_sig_datasets": {
+                            "type": "keyword",
+                            "copy_to": "mc_sig_dataset"
+                        },
+                        "mc_bg_datasets": {
+                            "type": "keyword",
+                            "copy_to": "mc_sig_dataset"
+                        }
+                    }
+                },
                 "cadi_status": {
                     "type": "keyword"
                 },
@@ -81,7 +112,8 @@
                                     "type": "nested",
                                     "properties": {
                                         "object": {
-                                            "type": "keyword"
+                                            "type": "keyword",
+                                            "copy_to": "object" 
                                         },
                                         "pt_cut": {
                                             "type": "nested",
@@ -120,6 +152,10 @@
                                         "jet_type": {
                                             "type": "keyword",
                                             "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                                        },
+                                        "object_type": {
+                                            "type": "keyword",
+                                            "copy_to": "object_type"
                                         },
                                         "number": {
                                             "type": "object",

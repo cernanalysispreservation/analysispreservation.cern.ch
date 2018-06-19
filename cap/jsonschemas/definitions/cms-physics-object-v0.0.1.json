@@ -178,8 +178,7 @@
                     "default": "="
                 },
                 "number": {
-                    "type":"string",
-                    "pattern": "^[\\d\\.]+$",
+                    "type":"number",
                     "title":"Number"
                 }
             }
@@ -196,8 +195,7 @@
                     ]
                 },
                 "number": {
-                    "type":"string",
-                    "pattern": "^[\\d\\.]+$",
+                    "type":"number",
                     "title":"Number"
                 }
             }
@@ -207,8 +205,7 @@
             "type": "object",
             "properties": {
                 "number": {
-                    "type":"string",
-                    "pattern": "^[\\d\\.]+$",
+                    "type":"number",
                     "title":">"
                 }
             }
@@ -352,58 +349,28 @@
             }
         },
         "pt_cut": {
-            "title": "pT Cuts",
-            "type": "array",
-            "default": [],
-            "items": {
-                "type": "object",
-                "properties": {
-                    "sign": {
-                        "type": "string",
-                        "title": "<, >, =",
-                        "enum": [
-                            ">",
-                            "=",
-                            "<"
-                        ],
-                        "default": ">"
-                    },
-                    "number": {
-                        "type":"string",
-                        "pattern": "^[\\d\\.]+$",
-                        "title": "GeV"
-                    }
-                }
-            }
+            "type":"number",
+            "title": "pt cut"
+        },
+        "pt_cut_min": {
+            "type":"number",
+            "title": "pt cut min"
+        },
+        "pt_cut_max": {
+            "type":"number",
+            "title": "pt cut max"
         },
         "eta_cut": {
-            "title": "|Î·| Cuts",
-            "type": "array",
-            "default": [],
-            "items": {
-                "type": "object",
-                "properties": {
-                    "sign": {
-                        "type": "string",
-                        "title": "<, >, =",
-                        "enum": [
-                            ">",
-                            "=",
-                            "<"
-                        ],
-                        "default": ">"
-                    },
-                    "number": {
-                        "type": "string",
-                        "title": " "
-                    },
-                    "other_number": {
-                        "type":"string",
-                        "pattern": "^[\\d\\.]+$",
-                        "title": " "
-                    }
-                }
-            }
+            "type":"number",
+            "title": "eta cut"
+        },
+        "eta_cut_min": {
+            "type":"number",
+            "title": "eta cut min"
+        },
+        "eta_cut_max": {
+            "type":"number",
+            "title": "eta cut max"
         }
     }
 }

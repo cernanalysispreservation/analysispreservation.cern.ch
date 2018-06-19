@@ -26,12 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
+from HTMLParser import HTMLParser
 from urllib import unquote
 
 import requests
-from elasticsearch import Elasticsearch
 from flask import Blueprint, current_app, jsonify, request
 
+from elasticsearch import Elasticsearch
 from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
 
@@ -57,6 +58,10 @@ def get_analysis_from_cadi(cadi_id):
         response = data['data'][0]
     except IndexError:
         response = {}
+        
+    parser = HTMLParser()
+    response = { k: (parser.unescape(v) if isinstance(v, str) else v)
+                 for k,v in response.items() }
 
     return jsonify(response)
 

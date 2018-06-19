@@ -28,10 +28,9 @@
 import json
 import re
 from datetime import datetime, timedelta
+from HTMLParser import HTMLParser
 
 import requests
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
 from flask import current_app
 
 from cap.modules.deposit.api import (CAPDeposit, construct_access,
@@ -40,6 +39,8 @@ from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
                                         bulk_index_from_source,
                                         get_entry_uuid_by_unique_field)
+from elasticsearch import helpers
+from elasticsearch_dsl import Q
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_search import RecordsSearch
@@ -131,6 +132,7 @@ def synchronize_cadi_entries(limit=None):
         cadi_id = re.sub('^d', '', entry.get('code', None))
 
         try:  # update if already exists
+            parser = HTMLParser()
             uuid = get_entry_uuid_by_unique_field('deposits-records-cms-analysis-v0.0.1',
                                                   {'basic_info__cadi_id': cadi_id})
 
@@ -139,14 +141,15 @@ def synchronize_cadi_entries(limit=None):
             if 'cadi_info' not in deposit:
                 deposit['cadi_info'] = {}
             for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
-                deposit['cadi_info'][cap_key] = entry.get(cadi_key, '') or ''
+                # sometimes they store data in HTML format.. need to escape chars
+                deposit['cadi_info'][cap_key] = parser.unescape(entry.get(cadi_key, '')) or ''
             deposit.commit()
 
             print('Cadi entry {} updated.'.format(cadi_id))
 
         except DepositDoesNotExist:  # or create new cadi entry
             data = construct_cadi_entry(cadi_id, {
-                'cadi_info': {v: entry.get(k, '') or ''
+                'cadi_info': {v: parser.unescape(entry.get(k, '')) or ''
                               for k, v in CADI_FIELD_TO_CAP_MAP.items()}
             })
 

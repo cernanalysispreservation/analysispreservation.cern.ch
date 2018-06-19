@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
+import { fromJS } from 'immutable';
 
 import {
     Box,
+    Button,
+    Headline,
+    Label,
+    Paragraph,
     Title,
     List,
     ListItem
@@ -25,33 +30,58 @@ class SearchResults extends React.Component {
                     <List >
                         {
                             this.props.results.map(item => {
-                                let draft_id = item.metadata._deposit.id;
-                                // let published_id = item.metadata.control_number;
-                                let abstract = '';
-                                let title = '';
+                                let metadata = fromJS(item.metadata);
+                                let objects = new Set();
+                                let physics_objects = metadata.getIn(["main_measurements"],[]).map(item => {
+                                    return item.getIn(["signal_event_selection","physics_objects"], []).map(item =>{
+                                        if(item.get('object'))
+                                            objects.add(item.get('object'));
+                                    })
+                                })
 
-                                if (item.metadata.basic_info){
-                                    abstract = item.metadata.basic_info.abstract;
-                                    title = item.metadata.basic_info.analysis_number;
-                                }
+                                let draft_id = item.metadata._deposit.id;
 
                                 return (
                                     <ListItem key={item.created} pad="medium">
                                         <Box flex={true}
-                                            wrap={false}
+                                            wrap={true}
                                             direction="row"
                                             size={{height: "xsmall"}}
                                             onClick={() => this.props.history.push(`/drafts/${draft_id}`)}>
                                             <Box basis="1/4" align="start">
-                                                <Title>
-                                                    {title || item.metadata.general_title || "Analysis"}
-                                                </Title>
+                                                <Headline size="small">
+                                                    {
+                                                        metadata.general_title ||
+                                                            metadata.getIn(["basic_info","analysis_title"]) ||
+                                                            metadata.getIn(["basic_info","analysis_number"]) ||
+                                                            metadata.getIn(["basic_info","cadi_id"]) ||
+                                                            metadata.getIn(["basic_info", "ana_notes", 0]) ||
+                                                            "Analysis"
+                                                    }
+                                                </Headline>
+                                                <Box direction="row" align="bottom">
+                                                {
+                                                    Array.from(objects).map(object => {
+                                                        return(
+                                                            <Label size="small" align="center" margin="medium" uppercase="true">
+                                                                {object} &nbsp; 
+                                                            </Label>
+                                                        )
+                                                    })
+                                                }
+                                                </Box>
                                             </Box>
                                             <Box basis="3/4">
-                                                {abstract}
+                                                <Label margin="none">
+                                                    {
+                                                        metadata.getIn(["cadi_info","name"]) ||
+                                                            metadata.getIn(["basic_info","measurement"]) 
+                                                    }
+                                                </Label>
+                                                { metadata.getIn(["basic_info","abstract"])} 
+                                                </Box>
                                             </Box>
-                                        </Box>
-                                    </ListItem>
+                                        </ListItem>
                                 );
                             })
                         }

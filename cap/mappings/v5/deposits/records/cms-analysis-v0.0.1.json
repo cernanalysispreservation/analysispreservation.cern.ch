@@ -45,6 +45,37 @@
                         }
                     }
                 },
+                "input_data": {
+                    "type": "object",
+                    "properties": {
+                        "primary_datasets": {
+                            "type": "object",
+                            "properties": {
+                                "path": {
+                                   "type": "keyword",
+                                   "copy_to": "primary_dataset"
+                                }
+                            }
+                        },
+                        "triggers": {
+                            "type": "object",
+                            "properties": {
+                                "trigger": {
+                                   "type": "keyword",
+                                   "copy_to": "trigger"
+                                }
+                            }
+                        },
+                        "mc_sig_datasets": {
+                            "type": "keyword",
+                            "copy_to": "mc_sig_dataset"
+                        },
+                        "mc_bg_datasets": {
+                            "type": "keyword",
+                            "copy_to": "mc_sig_dataset"
+                        }
+                    }
+                },
                 "cadi_status": {
                     "type": "keyword"
                 },
@@ -81,29 +112,32 @@
                                     "type": "nested",
                                     "properties": {
                                         "object": {
-                                            "type": "keyword"
+                                            "type": "keyword",
+                                            "copy_to": "object"
                                         },
                                         "pt_cut": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
+                                            "type": "keyword",
+                                            "copy_to": "pt"
+                                        },
+                                        "pt_cut_min": {
+                                            "type": "keyword",
+                                            "copy_to": "pt_min"
+                                        },
+                                        "pt_cut_max": {
+                                            "type": "keyword",
+                                            "copy_to": "pt_max"
                                         },
                                         "eta_cut": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
+                                            "type": "keyword",
+                                            "copy_to": "eta"
+                                        },
+                                        "eta_cut_min": {
+                                            "type": "keyword",
+                                            "copy_to": "eta_min"
+                                        },
+                                        "eta_cut_max": {
+                                            "type": "keyword",
+                                            "copy_to": "eta_max"
                                         },
                                         "electron_type": {
                                             "type": "keyword",
@@ -138,29 +172,32 @@
                                     "type": "nested",
                                     "properties": {
                                         "object": {
-                                            "type": "keyword"
+                                            "type": "keyword",
+                                            "copy_to": "veto"
                                         },
                                         "pt_cut": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
+                                            "type": "keyword",
+                                            "copy_to": "veto_pt"
+                                        },
+                                        "pt_cut_min": {
+                                            "type": "keyword",
+                                            "copy_to": "veto_pt_min"
+                                        },
+                                        "pt_cut_max": {
+                                            "type": "keyword",
+                                            "copy_to": "veto_pt_max"
                                         },
                                         "eta_cut": {
-                                            "type": "nested",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
+                                            "type": "keyword",
+                                            "copy_to": "veto_eta"
+                                        },
+                                        "eta_cut_min": {
+                                            "type": "keyword",
+                                            "copy_to": "veto_eta_min"
+                                        },
+                                        "eta_cut_max": {
+                                            "type": "keyword",
+                                            "copy_to": "veto_eta_max"
                                         },
                                         "electron_type": {
                                             "type": "keyword",

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Box, TextInput } from 'grommet';
 import { connect } from 'react-redux';
 import { formDataChange } from '../../../../../../actions/drafts';
-import { Map, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
 class TextWidget extends React.Component{
     /* To use suggestions, add in options file for your schema, e.g
