@@ -62,7 +62,7 @@
                 "ui:order": ["path", "ranges"],
                 "path":{
                     "ui:options": {
-                        "suggestions": "api/cms/datasets?query="
+                        "suggestions": "/api/cms/datasets?query="
                     }
                 }
             }
@@ -75,14 +75,14 @@
         "mc_sig_datasets": {
             "items": {
                 "ui:options": {
-                    "suggestions": "api/cms/datasets?query="
+                    "suggestions": "/api/cms/datasets?query="
                 }
             }
         },
         "mc_bg_datasets": {
             "items": {
                 "ui:options": {
-                    "suggestions": "api/cms/datasets?query="
+                    "suggestions": "/api/cms/datasets?query="
                 }
             }
         }
