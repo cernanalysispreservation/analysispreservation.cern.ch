@@ -109,7 +109,7 @@ class ImportDataField extends React.Component {
           description={
 
             this.state.selected && this.state.selected.links ?
-            <Box flex={true} direction="row">
+            <Box margin={{horizontal: "medium"}} flex={true} direction="row">
               <Box flex={true} direction="row" align="center" colorIndex="light-2" pad={{horizontal: "small"}}>
                 {this.state.selected ? this.state.selected.metadata ? this.state.selected.metadata.general_title : "" : "---"}
                 <Anchor href={this.state.selected.links.self} icon={<Link size="xsmall"/>}/>
@@ -119,10 +119,12 @@ class ImportDataField extends React.Component {
                 onClick={this._toggleLayer.bind(this)}
               />
             </Box> :
-            <Button
-              label="Import"
-              onClick={this._toggleLayer.bind(this)}
-            />
+            <Box margin={{horizontal: "medium"}} direction="row">
+              <Button
+                label="Import"
+                onClick={this._toggleLayer.bind(this)}
+              />
+            </Box>
           }
           />
       </Box>

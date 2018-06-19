@@ -1,5 +1,8 @@
 {
-    "ui:order": ["basic_info", "cadi_info", "input_data", "ntuples_production", "main_measurements", "auxiliary_measurements", "background_estimations", "systematic_uncertainties", "final_results", "additional_resources", "statistical_treatment", "*"],
+    "ui:order": ["analysis_reuse_mode", "basic_info", "cadi_info", "input_data", "ntuples_production", "*", "additional_resources", "statistical_treatment"],
+    "analysis_reuse_mode": {
+        "ui:widget": "switch"
+    },
     "basic_info": {
         "ui:object": "accordionObjectField",
         "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
@@ -96,7 +99,7 @@
         }
     },
     "statistical_treatment": {
-        "statistics_questionnare": {
+        "statistics_questionnaire": {
             "ui:field": "importDataField",
             "ui:options": {
                 "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"

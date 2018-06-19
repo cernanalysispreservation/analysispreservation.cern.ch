@@ -38,7 +38,7 @@ const transformSchema = (schema) => {
   ];
 
   schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
-  schema = { type: schema.type, properties: schema.properties };
+  schema = { type: schema.type, properties: schema.properties,  dependencies: schema.dependencies,  };
   return schema;
 };
 
