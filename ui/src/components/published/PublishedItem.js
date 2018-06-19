@@ -6,6 +6,7 @@ import {getPublishedItem} from '../../actions/published';
 import DefaultPublished from './components/Default';
 import CmsPublished from './components/CmsAnalysis';
 import LhcbPublished from './components/LhcbAnalysis';
+import AlicePublished from './components/AliceAnalysis';
 
 export class Published extends React.Component {
   constructor(props) {
@@ -38,6 +39,10 @@ export class Published extends React.Component {
         case 'lhcb':
           return (
             <LhcbPublished item={item} />
+          );
+        case 'alice-analysis':
+          return (
+            <AlicePublished item={item} />
           );
         default:
           return (
