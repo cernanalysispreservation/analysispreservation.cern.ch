@@ -103,7 +103,7 @@ class FileManager extends React.Component {
 
                               if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
                             }}>
-                            Try dropping some files here, or click to select files to upload.
+                            Drop your files here, or click to select files to upload.
                           </Dropzone>
                         </Box>
                       </Box>

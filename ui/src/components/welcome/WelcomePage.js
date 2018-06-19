@@ -9,7 +9,9 @@ import {
   Heading,
   Header,
   Section,
-  LoginForm
+  LoginForm,
+  Anchor,
+  Paragraph
 } from 'grommet';
 
 import Spinning from 'grommet/components/icons/Spinning';
@@ -34,10 +36,11 @@ class WelcomePage extends React.Component {
                   Analysis Preservation Portal.
                 </Heading>
                 <Heading tag="h3">
-                  Our mission is to preserve the analyses
-                  across all CERN experiments for years
-                  to come...
+                  Our mission is to preserve physics analyses to facilitate their future reuse
                 </Heading>
+                <Paragraph>
+                    <Anchor path="/about">Do you want to know more? Check out what the service is about</Anchor>
+                </Paragraph>
               </Box>
             </Section>
           </Box>

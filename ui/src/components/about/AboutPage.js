@@ -52,11 +52,8 @@ class AboutPage extends React.Component {
                 These services are being developed and operated by the CERN IT and the Scientific Information Service.
               </Paragraph>
               <Paragraph>
-                The documentation for the service can be found at
-                <a style={{"textDecoration": "underline"}} href="https://cernanalysispreservation.readthedocs.io/en/latest/index.html" target="_blank">
-                cernanalysispreservation.readthedocs.io/en/latest/</a>
-                and the documentation for the CAP client at
-                <a style={{"textDecoration": "underline"}} href="http://cap-client-test.readthedocs.io/en/latest" target="_blank">
+                The documentation for the service can be found at <a style={{"textDecoration": "underline"}} href="https://cernanalysispreservation.readthedocs.io/en/latest/index.html" target="_blank">
+                cernanalysispreservation.readthedocs.io/en/latest/</a> and the documentation for the CAP client at <a style={{"textDecoration": "underline"}} href="http://cap-client-test.readthedocs.io/en/latest" target="_blank">
                 cap-client-test.readthedocs.io/en/latest</a>.
               </Paragraph>
               <Paragraph>

@@ -57,7 +57,7 @@ class DepositHeader extends React.Component {
       <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
         <Box flex={true}  direction="row" justify="between" align="center">
           <Box pad="small" flex={true} align="center" justify="center" direction="row" wrap={false}>
-            {this.props.draftId} - {this.props.selectedSchema}
+            Analysis Identifier: {this.props.draftId} - {this.props.selectedSchema}
             {
               this.props.message &&
               <Box direction="row" pad={{horizontal: "small"}} align="center" justify="between">

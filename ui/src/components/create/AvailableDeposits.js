@@ -23,7 +23,7 @@ export class AvailableDeposits extends React.Component {
   render() {
     return (
       <Box flex={true} justify="center">
-        <Heading align="center" tag="h3">Choose a schema to start</Heading>
+        <Heading align="center" tag="h3">Choose which analysis you would like to preserve</Heading>
         <Tiles flush={false} fill={false} size="large" justify="center">
           {
             this.props.groups ?

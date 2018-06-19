@@ -54,11 +54,11 @@ class DepositSidebar extends React.Component {
             <DepositFilesList files={this.props.files || []} draftId={this.props.draftId}/>
           </Box> :
           <Box pad="medium">
-            <Title>Start Your Project</Title>
-            <Paragraph>Give a name to your project..This way you can recognise it between your drafts</Paragraph>
-            <Form schema={{type: "string", title: "Project Name"}} onSubmit={this._onSubmit.bind(this, this.props.match.params.schema_id)} >
+            <Title>Preserve your analysis</Title>
+            <Paragraph>Name it to distinguish it from your other drafts</Paragraph>
+            <Form schema={{type: "string", title: "Analysis Name"}} onSubmit={this._onSubmit.bind(this, this.props.match.params.schema_id)} >
               <Box flex={true} margin={{vertical: "medium"}}>
-                <Button label='Start Project'
+                <Button label='Start Preserving'
                   type='submit'
                   primary={true} />
               </Box>
