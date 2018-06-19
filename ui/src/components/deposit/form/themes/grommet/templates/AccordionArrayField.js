@@ -46,6 +46,9 @@ class AccordionArrayField extends React.Component {
             this.props.items.length > 0 ?
             <Box pad="medium" colorIndex="light-2">
               {this.props.items.map(element => element.children)}
+              <Box justify="center" align="center">
+                <Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />
+              </Box>
             </Box>:
             <ListPlaceholder
               addControl={<Button onClick={this._onAddClick.bind(this)} icon={<AddIcon />} />}

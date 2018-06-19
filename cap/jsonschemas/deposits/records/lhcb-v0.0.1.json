@@ -52,10 +52,14 @@
             "type": "string"
           },
           "davinci_script": {
-            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
+            "title": "Davinci script",
+            "type": "string",
+            "x-cap-file": {}
           },
           "ganga_script": {
-            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json"
+            "title": "Ganga script",
+            "type": "string",
+             "x-cap-file": {}
           },
           "output_eos_location": {
             "title": "Output eos location",
