@@ -10,6 +10,7 @@ import {
 } from 'grommet';
 
 import DepositFilesList from '../../deposit/components/DepositFilesList';
+import {connect} from 'react-redux';
 
 class LhcbPublished extends React.Component {
   constructor(props) {
@@ -68,5 +69,20 @@ LhcbPublished.propTypes = {
   item: PropTypes.object
 };
 
-export default LhcbPublished;
+function mapStateToProps(state) {
+  return {
+    files: state.drafts.getIn(['current_item', 'files'])   
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LhcbPublished);
 

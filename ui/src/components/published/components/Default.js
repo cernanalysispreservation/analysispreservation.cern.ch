@@ -6,10 +6,24 @@ import {
   Heading,
   Sidebar,
   Header,
-  Title
+  Title,
+  Button
 } from 'grommet';
 
+import {withRouter} from 'react-router';
+
 import DepositFilesList from '../../deposit/components/DepositFilesList';
+import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay';
+import {connect} from 'react-redux';
+
+const RerunButton = withRouter(({ history, record_id=record_id }) => (
+        <Button
+          icon={<CirclePlayIcon/>}
+          label="Rerun"
+          onClick={() => history.push(`/published/${record_id}/rerun`)} 
+        />
+    ))
+
 
 class DefaultPublished extends React.Component {
   constructor(props) {
@@ -44,6 +58,12 @@ class DefaultPublished extends React.Component {
             </Box>
           </Box>
         </Box>
+        <Sidebar full={false} size="small">
+        <Header pad='medium'
+                  justify='between'>
+          <RerunButton record_id={this.props.item.control_number} />
+          </Header>
+        </Sidebar>
       </Box>
     );
   }
@@ -54,4 +74,18 @@ DefaultPublished.propTypes = {
 };
 
 
-export default DefaultPublished;
+function mapStateToProps(state) {
+  return {
+    files: state.drafts.getIn(['current_item', 'files'])   
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DefaultPublished);

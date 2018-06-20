@@ -13,6 +13,7 @@ import CreateIndex from '../create/CreateIndex';
 import Dashboard from '../dashboard/Dashboard';
 import SettingsIndex from '../settings/SettingsIndex';
 import DraftsIndex from '../drafts/DraftsIndex';
+import PublishedIndex from '../published/PublishedIndex';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class IndexPage extends React.Component {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/search" component={SearchPage} />
-          <Route path="/published/:id" component={PublishedItem} />
+          <Route path="/published" component={PublishedIndex} /> 
           <Route path="/drafts" component={DraftsIndex} />
           <Route path="/create" component={CreateIndex}/>
           <Route path="/settings" component={SettingsIndex}/>
