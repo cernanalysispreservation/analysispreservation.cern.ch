@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import {connect} from 'react-redux';
+
 import {
   Box,
   Heading,
@@ -81,5 +83,19 @@ AlicePublished.propTypes = {
   item: PropTypes.object
 };
 
+function mapStateToProps(state) {
+  return {
+    files: state.drafts.getIn(['current_item', 'files'])   
+  };
+}
 
-export default AlicePublished;
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AlicePublished);

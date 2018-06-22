@@ -14,6 +14,7 @@ import {withRouter} from 'react-router';
 
 import DepositFilesList from '../../deposit/components/DepositFilesList';
 import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay';
+import {connect} from 'react-redux';
 
 const RerunButton = withRouter(({ history, record_id=record_id }) => (
         <Button
@@ -73,4 +74,18 @@ DefaultPublished.propTypes = {
 };
 
 
-export default DefaultPublished;
+function mapStateToProps(state) {
+  return {
+    files: state.drafts.getIn(['current_item', 'files'])   
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DefaultPublished);
