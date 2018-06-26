@@ -27,6 +27,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, current_app, jsonify, redirect, request, session
+from werkzeug.local import LocalProxy
 
 import ldap
 from cap.config import DEBUG
@@ -34,12 +35,11 @@ from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import (collaboration_permissions,
                                                  collaboration_permissions_factory)
 from cap.utils import obj_or_import_string
-from flask_login import login_user, current_user
+from flask_login import current_user, login_user
 from flask_principal import Permission
-from flask_security.views import logout
 from flask_security.utils import verify_password
-
-from werkzeug.local import LocalProxy
+from flask_security.views import logout
+from invenio_accounts.models import Role
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -63,6 +63,14 @@ def get_user():
         "deposit_groups": deposit_groups,
         "current_experiment": current_experiment,
     }
+
+    roles = Role.query.filter(
+        Role.name.in_(
+            session.get(
+                'cern_resource', {}).get(
+                    'Group',[])
+        )).all()
+    session['roles'] = [ x.id for x in roles ]
 
     response = jsonify(_user)
     response.status_code = 200
