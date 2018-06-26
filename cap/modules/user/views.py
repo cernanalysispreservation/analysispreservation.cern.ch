@@ -66,9 +66,9 @@ def get_user():
 
     roles = Role.query.filter(
         Role.name.in_(
-            session.get(
+            [x + '@cern.ch' for x in session.get(
                 'cern_resource', {}).get(
-                    'Group',[])
+                    'Group',[])]
         )).all()
     session['roles'] = [ x.id for x in roles ]
 
