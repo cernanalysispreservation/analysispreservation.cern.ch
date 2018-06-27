@@ -27,8 +27,6 @@
 
 from abc import ABCMeta, abstractmethod
 
-from flask import current_app
-
 from utils import parse_url
 
 
@@ -42,13 +40,13 @@ class RepoImporter:
 
         if "gitlab" in host:
             from gitlab_importer import GitlabImporter
-            #token = current_app.config.get('GITLAB_OAUTH_ACCESS_TOKEN')
+            # token = current_app.config.get('GITLAB_OAUTH_ACCESS_TOKEN')
             gli = GitlabImporter(repo_name, ref, token=None)
             return gli
 
         if "github" in host:
             from github_importer import GithubImporter
-            #token = current_app.config.get('GITHUB_OAUTH_ACCESS_TOKEN')
+            # token = current_app.config.get('GITHUB_OAUTH_ACCESS_TOKEN')
             ghi = GithubImporter(repo_name, ref, token=None)
             return ghi
 

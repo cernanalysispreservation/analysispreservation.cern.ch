@@ -16,8 +16,8 @@ from invenio_search.proxies import current_search_client as es
 def construct_draft_obj(schema, data):
     entry = {
         '$schema': 'https://{}/schemas/deposits/records/{}.json'.format(
-                    current_app.config.get('JSONSCHEMAS_HOST'),
-                    schema)
+            current_app.config.get('JSONSCHEMAS_HOST'),
+            schema)
     }
 
     entry.update(data)
@@ -68,7 +68,7 @@ def add_drafts_from_file(file_path, schema, egroup, limit=None):
 def bulk_index_from_source(index_name, doc_type, source):
     actions = [{
         "_index": index_name,
-        "_type": doc_type, 
+        "_type": doc_type,
         "_id": idx,
         "_source": obj
     } for idx, obj in enumerate(source)]

@@ -22,8 +22,8 @@ def get_current_user_jobs(pid=None):
         abort(401)
 
     try:
-        uuid = PersistentIdentifier.get('depid', pid).object_uuid   
-    except PIDDoesNotExistError: 
+        uuid = PersistentIdentifier.get('depid', pid).object_uuid
+    except PIDDoesNotExistError:
         abort(404)
 
     jobs = ReanaJob.get_jobs(user_id=current_user.id,

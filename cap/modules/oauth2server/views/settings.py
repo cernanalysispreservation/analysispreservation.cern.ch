@@ -157,8 +157,14 @@ def index():
     #     } for scope in current_oauth2server.scope_choices()
     # ]
 
-    _tokens = [{"name": t.client.name, "t_id": t.id, "scopes": t.scopes, "access_token": t.access_token}
-               for t in tokens]
+    _tokens = [
+        {
+            "name": t.client.name,
+            "t_id": t.id,
+            "scopes": t.scopes,
+            "access_token": t.access_token
+        } for t in tokens
+    ]
 
     _clients = [
         {

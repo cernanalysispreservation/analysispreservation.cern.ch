@@ -32,8 +32,8 @@ from werkzeug.local import LocalProxy
 import ldap
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import (collaboration_permissions,
-                                                 collaboration_permissions_factory)
+from cap.modules.experiments.permissions import \
+    collaboration_permissions, collaboration_permissions_factory
 from cap.utils import obj_or_import_string
 from flask_login import current_user, login_user
 from flask_principal import Permission
@@ -68,9 +68,9 @@ def get_user():
         Role.name.in_(
             [x + '@cern.ch' for x in session.get(
                 'cern_resource', {}).get(
-                    'Group',[])]
+                    'Group', [])]
         )).all()
-    session['roles'] = [ x.id for x in roles ]
+    session['roles'] = [x.id for x in roles]
 
     response = jsonify(_user)
     response.status_code = 200
@@ -121,7 +121,11 @@ def CAP_EXPERIMENT_MENU():
         for group in groups:
             res.append({
                 'name': group.get("name", group.get("deposit_group", "")),
-                'link': _l('app.deposit_new.index({deposit_group:"' + group.get("deposit_group", "") + '"})'),
+                'link': _l(
+                    'app.deposit_new.index({deposit_group:"' +
+                    group.get("deposit_group", "") +
+                    '"})'
+                ),
                 'icon': ''
             })
 

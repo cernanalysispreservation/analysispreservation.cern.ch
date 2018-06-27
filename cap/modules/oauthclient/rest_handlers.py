@@ -36,12 +36,12 @@ from flask_login import current_user
 from invenio_db import db
 from werkzeug.utils import import_string
 
-from invenio_oauthclient.errors import AlreadyLinkedError, OAuthClientError, OAuthError, \
-    OAuthRejectedRequestError, OAuthResponseError
+from invenio_oauthclient.errors import AlreadyLinkedError, OAuthClientError, \
+    OAuthError, OAuthRejectedRequestError, OAuthResponseError
 from invenio_oauthclient.models import RemoteAccount, RemoteToken
 from invenio_oauthclient.proxies import current_oauthclient
-from invenio_oauthclient.signals import account_info_received, account_setup_committed, \
-    account_setup_received
+from invenio_oauthclient.signals import account_info_received, \
+    account_setup_committed, account_setup_received
 from invenio_oauthclient.utils import create_csrf_disabled_registrationform, \
     create_registrationform, fill_form, oauth_authenticate, oauth_get_user, \
     oauth_register

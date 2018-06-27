@@ -74,8 +74,9 @@ DAS_DATASETS_MAPPING = {
 
 
 def construct_cadi_entry(cadi_id, data):
-    schema = 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(
-        current_app.config.get('JSONSCHEMAS_HOST'))
+    schema = \
+        'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(
+            current_app.config.get('JSONSCHEMAS_HOST'))
 
     entry = {
         '$schema': schema,
@@ -92,7 +93,7 @@ def construct_cadi_entry(cadi_id, data):
 
 def get_entries_from_cadi_db():
     url = current_app.config.get('CADI_GET_ALL_URL')
-    data = { "selWGs": "all" }
+    data = {"selWGs": "all"}
 
     resp = requests.post(url=url, data=json.dumps(data), headers={
         'Content-Type': 'application/json'})
@@ -133,16 +134,20 @@ def synchronize_cadi_entries(limit=None):
 
         try:  # update if already exists
             parser = HTMLParser()
-            uuid = get_entry_uuid_by_unique_field('deposits-records-cms-analysis-v0.0.1',
-                                                  {'basic_info__cadi_id': cadi_id})
+            uuid = get_entry_uuid_by_unique_field(
+                'deposits-records-cms-analysis-v0.0.1',
+                {'basic_info__cadi_id': cadi_id}
+            )
 
             deposit = CAPDeposit.get_record(uuid)
 
             if 'cadi_info' not in deposit:
                 deposit['cadi_info'] = {}
             for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
-                # sometimes they store data in HTML format.. need to escape chars
-                deposit['cadi_info'][cap_key] = parser.unescape(entry.get(cadi_key, '')) or ''
+                # sometimes they store data in HTML format.. need to escape
+                # chars
+                deposit['cadi_info'][cap_key] = parser.unescape(
+                    entry.get(cadi_key, '')) or ''
             deposit.commit()
 
             print('Cadi entry {} updated.'.format(cadi_id))
@@ -157,7 +162,6 @@ def synchronize_cadi_entries(limit=None):
             add_read_permission_for_egroup(deposit, 'cms-members@cern.ch')
 
             print('Cadi entry {} added.'.format(cadi_id))
-
 
 
 def cache_das_datasets_in_es_from_file(file):
@@ -194,7 +198,7 @@ def cache_das_datasets_in_es_from_file(file):
     # add newly created index under das-datasets alias
     es.indices.put_alias(index=new_index, name='das-datasets')
 
-    # remove old index 
+    # remove old index
     if es.indices.exists(old_index):
         es.indices.delete(index=old_index)
 

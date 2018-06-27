@@ -136,7 +136,9 @@ def get_soft_info(url):
 
 
 def parse_stripping_line(stripping_line):
-    regex = r'Collision(?P<year>\d{2}).*(?P<reco>Reco[^/]*).*(?P<stripping>Stripping[^/]*)'
+    regex = r'Collision(?P<year>\d{2})' + \
+        r'.*(?P<reco>Reco[^/]*)' + \
+        r'.*(?P<stripping>Stripping[^/]*)'
 
     res = re.search(regex, stripping_line)
 

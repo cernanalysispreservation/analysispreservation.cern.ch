@@ -2,8 +2,9 @@
 #
 # Copyright (C) 2018 CERN.
 #
-# CERN Analysis Preservation is free software; you can redistribute it and/or modify it
-# under the terms of the MIT License; see LICENSE file for more details.
+# CERN Analysis Preservation is free software; you can redistribute it
+# and/or modify it under the terms of the MIT License; see LICENSE file
+# for more details.
 
 """Default configuration for CERN Analysis Preservation."""
 
@@ -333,12 +334,14 @@ RECORDS_REST_FACETS = {
             },
             "particles": {
                 "nested": {
-                    "path": "main_measurements.signal_event_selection.physics_objects"
+                    "path": "main_measurements.signal_event_selection"
+                            ".physics_objects"
                 },
                 "aggs": {
                     "facet_physics_objects": {
                         "terms": {
-                            "field": "main_measurements.signal_event_selection.physics_objects.object",
+                            "field": "main_measurements.signal_event_selection"
+                                     ".physics_objects.object",
                             "exclude": ""
                         },
                         "aggs": {
@@ -347,7 +350,10 @@ RECORDS_REST_FACETS = {
                             },
                             "facet_physics_objects_type": {
                                 "terms": {
-                                    "field": "main_measurements.signal_event_selection.physics_objects.object_type.keyword"
+                                    "field": "main_measurements"
+                                             ".signal_event_selection"
+                                             ".physics_objects"
+                                             ".object_type.keyword"
                                 },
                                 "aggs": {
                                     "doc_count": {
@@ -366,8 +372,15 @@ RECORDS_REST_FACETS = {
             'cadi_status': terms_filter('cadi_status'),
             'publication_status': terms_filter('publication_status.keyword'),
             'conference': terms_filter('conference'),
-            'physics_objects': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object'),
-            'physics_objects_type': nested_filter('main_measurements.signal_event_selection.physics_objects', 'main_measurements.signal_event_selection.physics_objects.object_type.keyword'),
+            'physics_objects': nested_filter(
+                'main_measurements.signal_event_selection.physics_objects',
+                'main_measurements.signal_event_selection'
+                '.physics_objects.object'
+            ),
+            'physics_objects_type': nested_filter(
+                'main_measurements.signal_event_selection.physics_objects',
+                'main_measurements.signal_event_selection.physics_objects'
+                '.object_type.keyword'),
         }
     }
 }
@@ -481,7 +494,8 @@ SEARCH_QUERY_ENHANCERS = [
 
 # Admin
 # ========
-ADMIN_PERMISSION_FACTORY = 'cap.modules.access.permissions.admin_permission_factory'
+ADMIN_PERMISSION_FACTORY =  \
+    'cap.modules.access.permissions.admin_permission_factory'
 
 # Accounts
 # ========
@@ -616,7 +630,8 @@ DEPOSIT_GROUPS = {
         "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
         "schema_form": "/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
-        "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
+        "description":
+            "Create an LHCb Analysis (analysis metadata, workflows, etc)",
         # "list_template": "cap_deposit/index.html",
         "item_new_template": "cap_deposit/edit.html",
         "endpoint": "",
@@ -630,7 +645,8 @@ DEPOSIT_GROUPS = {
     "cms-analysis": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
+        "schema_form":
+            "/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
         "description":
             "Create a CMS Analysis (analysis metadata, workflows, etc)",
@@ -647,7 +663,8 @@ DEPOSIT_GROUPS = {
     "cms-questionnaire": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
+        "schema_form":
+            "/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
         "description": "Create a CMS Questionnaire",
         # "list_template": "cap_deposit/index.html",
@@ -680,7 +697,8 @@ DEPOSIT_GROUPS = {
     "atlas-analysis": {
         "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
+        "schema_form":
+            "/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
         "description": "Create an ATLAS Analysis",
         # "list_template": "cap_deposit/index.html",
@@ -696,7 +714,8 @@ DEPOSIT_GROUPS = {
     "alice-analysis": {
         "experiment": "ALICE",
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
+        "schema_form":
+            "/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
         "name": "ALICE Analysis",
         "description": "Create an ALICE Analysis",
         # "list_template": "cap_deposit/index.html",
@@ -711,8 +730,11 @@ DEPOSIT_GROUPS = {
     },
     "cms-auxiliary-measurement": {
         "experiment": "CMS",
-        "schema": "schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
+        "schema":
+            "schemas/deposits/records/cms-auxiliary-measurements-v0.0.1.json",
+        "schema_form":
+            "/schemas/options/deposits/records/"
+            "cms-auxiliary-measurements-v0.0.1.json",
         "name": "CMS Auxiliary Measurement",
         "description": "Create a CMS Auxiliary Measurement",
         # "list_template": "cap_deposit/index.html",
@@ -813,7 +835,8 @@ DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
 
 DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'template': 'cap_deposit/edit.html',
-    'permission_factory_imp': "cap.modules.deposit.permissions:ReadDepositPermission",
+    'permission_factory_imp':
+        "cap.modules.deposit.permissions:ReadDepositPermission",
 })
 
 #: Template for <invenio-records-form>
@@ -874,8 +897,10 @@ INDEXER_REPLACE_REFS = False
 
 # LHCB DB files location
 # ======================
-LHCB_DB_FILES_LOCATION = os.path.join(APP_ROOT,
-                                      'modules/experiments/static/example_lhcb/')
+LHCB_DB_FILES_LOCATION = os.path.join(
+    APP_ROOT,
+    'modules/experiments/static/example_lhcb/'
+)
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False

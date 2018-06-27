@@ -54,7 +54,10 @@ class GitlabImporter(repo_importer.RepoImporter):
         else:
             self.ref = "master"
         host = "https://gitlab.cern.ch"
-        url = '{}/{}/repository/{}/archive.tar.gz'.format(host, self.repo, self.ref)
+        url = '{}/{}/repository/{}/archive.tar.gz'.format(
+            host,
+            self.repo,
+            self.ref)
         if self.token:
             url = url + "?private_token=" + self.token
         return url

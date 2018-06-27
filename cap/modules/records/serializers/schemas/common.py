@@ -110,8 +110,8 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                 # html_key = 'html'
 
                 # Constructing links
-                self_url = current_app.config[
-                    'SEARCH_UI_SEARCH_API'] + '{pid_value}'.format(pid_value=_id)
+                self_url = current_app.config['SEARCH_UI_SEARCH_API'] + \
+                    '{pid_value}'.format(pid_value=_id)
 
                 links['self'] = self_url
 

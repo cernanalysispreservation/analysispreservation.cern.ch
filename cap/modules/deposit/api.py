@@ -86,14 +86,21 @@ def add_owner_permissions(deposit):
              for action in DEPOSIT_ACTIONS],
             deposit,
             db.session,
-            construct_access(),  # TOFIX : Need to pass access object to update user
+            # TOFIX : Need to pass access object to update user
+            construct_access(),
             force=True
         )
     db.session.commit()
     return access
 
 
-def set_user_permissions(user, permissions, deposit, session, access, force=False):
+def set_user_permissions(
+        user,
+        permissions,
+        deposit,
+        session,
+        access,
+        force=False):
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -297,8 +304,11 @@ class CAPDeposit(Deposit):
 
         bucket = Bucket.create()
 
-        avalaible_schemas = [x.get('schema').split('schemas/')[-1] for x in
-                             current_app.config.get('DEPOSIT_GROUPS', {}).values()]
+        avalaible_schemas = [
+            x.get('schema').split('schemas/')[-1]
+            for x in
+            current_app.config.get('DEPOSIT_GROUPS', {}).values()
+        ]
 
         try:
             schema = data.get("$schema", None) \

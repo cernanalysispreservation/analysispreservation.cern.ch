@@ -69,7 +69,7 @@ def _aggregations(search, definitions, urlkwargs, filters):
             for key in aggs.keys():
                 if key.startswith('facet_'):
                     names.extend(get_facets_names(key, aggs))
-                             
+
         return names
 
     if definitions:

@@ -37,7 +37,7 @@ from flask import current_app
 from werkzeug.local import LocalProxy
 
 import pytest
-from cap.factory import create_api
+from invenio_app.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.reana.models import ReanaJob
 from elasticsearch.exceptions import RequestError
@@ -564,7 +564,7 @@ def reana_job(db, users, record_metadata):
         params={
             'param_1': 1,
             'param_2': 2
-    })
+        })
     db.session.add(reana_job)
     db.session.commit()
 

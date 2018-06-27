@@ -57,9 +57,9 @@ def deposits_filter():
         q1 = Q('match',
                **{'_deposit.owners': getattr(current_user, 'id', 0)})
         q2 = Q('match',
-            **{'_access.deposit-read.user': getattr(current_user, 'id', 0)})
-        q3 =  Q('terms',
-            **{'_access.deposit-read.roles': session.get('roles', [])})
+               **{'_access.deposit-read.user': getattr(current_user, 'id', 0)})
+        q3 = Q('terms',
+               **{'_access.deposit-read.roles': session.get('roles', [])})
 
         q = q1 | q2 | q3
 

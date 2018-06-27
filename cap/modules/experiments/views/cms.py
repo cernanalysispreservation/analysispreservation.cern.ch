@@ -58,10 +58,10 @@ def get_analysis_from_cadi(cadi_id):
         response = data['data'][0]
     except IndexError:
         response = {}
-        
+
     parser = HTMLParser()
-    response = { k: (parser.unescape(v) if isinstance(v, str) else v)
-                 for k,v in response.items() }
+    response = {k: (parser.unescape(v) if isinstance(v, str) else v)
+                for k, v in response.items()}
 
     return jsonify(response)
 

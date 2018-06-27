@@ -25,8 +25,8 @@
 
 """CAP CMS permissions"""
 
-
-from cap.modules.experiments.permissions.common import get_collaboration_group_needs, get_superuser_needs
+from cap.modules.experiments.permissions.common import \
+    get_collaboration_group_needs, get_superuser_needs
 from invenio_access import DynamicPermission
 
 

@@ -29,28 +29,33 @@ from __future__ import absolute_import, print_function
 from invenio_records_rest.serializers.response import record_responsify, \
     search_responsify
 
-from .json import CAPSchemaSerializer as JSONSerializer, BasicJSONSerializer, PermissionsJSONSerializer
-from .schemas.json import RecordSchemaJSONV1, BasicDepositSchema, PermissionsDepositSchema
+from .json import CAPSchemaSerializer as JSONSerializer, \
+    BasicJSONSerializer, PermissionsJSONSerializer
+from .schemas.json import RecordSchemaJSONV1, BasicDepositSchema, \
+    PermissionsDepositSchema
 from invenio_deposit.serializers import json_file_response
 
 # Serializers
 # ===========
-#: CAP JSON serializer version 1.0.0
+# CAP JSON serializer version 1.0.0
 json_v1 = JSONSerializer(RecordSchemaJSONV1)
 basic_json_v1 = BasicJSONSerializer(BasicDepositSchema)
 permissions_json_v1 = PermissionsJSONSerializer(PermissionsDepositSchema)
 
 # Records-REST serializers
 # ========================
-#: JSON record serializer for individual records.
+# JSON record serializer for individual records.
 json_v1_response = record_responsify(json_v1, 'application/json')
-basic_json_v1_response = record_responsify(basic_json_v1, 'application/basic+json')
-permissions_json_v1_response = record_responsify(permissions_json_v1, 'application/permissions+json')
+basic_json_v1_response = record_responsify(
+    basic_json_v1, 'application/basic+json')
+permissions_json_v1_response = record_responsify(
+    permissions_json_v1, 'application/permissions+json')
 
 # Files-REST serializers
-#:JSON Files serializers for deposit files
+# JSON Files serializers for deposit files
 deposit_v1_files_response = json_file_response
 
-#: JSON record serializer for search results.
+# JSON record serializer for search results.
 json_v1_search = search_responsify(json_v1, 'application/json')
-basic_json_v1_search = search_responsify(basic_json_v1, 'application/basic+json')
+basic_json_v1_search = search_responsify(
+    basic_json_v1, 'application/basic+json')

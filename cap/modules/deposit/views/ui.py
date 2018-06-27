@@ -67,9 +67,11 @@ def validator():
         resolver = current_app.extensions[
             'invenio-records'].ref_resolver_cls.from_schema(schema)
 
-        result['errors'] = [{_concat_deque(error.path): error.message} for error in Draft4Validator(
-            schema, resolver=resolver
-        ).iter_errors(data)]
+        result['errors'] = [
+            {_concat_deque(error.path): error.message}
+            for error in
+            Draft4Validator(schema, resolver=resolver).iter_errors(data)
+        ]
         if result['errors']:
             status = 400
     except RefResolutionError:
@@ -80,49 +82,6 @@ def validator():
         status = 400
 
     return jsonify(result), status
-
-
-DEPOSIT_DEFAULT_METAINFO = {
-    "alert_template": "/api/static/templates/cap_records_js/alert.html",
-    "extra_params": {
-        "headers": {
-            "Content-Type": "application/json"
-        }
-    },
-    "files": {
-        "files": [],
-        "list_template": "/api/static/templates/cap_files_js/list.html",
-        "upload_zone_template": "/api/static/templates/cap_files_js/upload.html"
-    },
-    "form_template": {
-        "form_templates": DEPOSIT_FORM_TEMPLATES,
-        "form_templates_base": "/api/static/templates/cap_records_js/decorators",
-        "template": "/api/static/templates/cap_records_js/form.html"
-    },
-    "initialization": "/api/deposits/",
-    "loading_template": "/api/static/node_modules/invenio-records-js/dist/templates/loading.html",
-    # "schema": "/schemas/records/cms-analysis-v0.0.1.json",
-    # "schema_form": "/static/json/records/cms-analysis-v0.0.1.json",
-    "template_params": {
-        "messages": {
-            "delete": {
-                "message": "Deleted succesfully."
-            },
-            "discard": {
-                "message": "Changes discarded succesfully."
-            },
-            "edit": {
-                "message": "Edited succesfully."
-            },
-            "publish": {
-                "message": "Published succesfully."
-            },
-            "self": {
-                "message": "Saved successfully."
-            }
-        }
-    }
-}
 
 
 def create_blueprint():
@@ -154,53 +113,8 @@ def create_blueprint():
     return blueprint
 
 
-@blueprint.app_template_filter('tolinksjs')
-def to_links_js(pid, deposit=None):
-    """Get API links."""
-    self_url = current_app.config['DEPOSIT_RECORDS_API'].format(
-        pid_value=pid.pid_value)
-
-    return {
-        'self': self_url,
-        # [TO FIX] create a coneverter to format `html` link
-        'html': '/deposit/{}/'.format(pid.pid_value),
-        'bucket': current_app.config['DEPOSIT_FILES_API'] + '/{0}'.format(
-            str(deposit.files.bucket.id)),
-        'discard': self_url + '/actions/discard',
-        'edit': self_url + '/actions/edit',
-        'publish': self_url + '/actions/publish',
-        'files': self_url + '/files',
-    }
-
-
-@blueprint.app_template_filter('tofilesjs')
-def to_files_js(deposit):
-    """List files in a deposit."""
-    res = []
-
-    for f in deposit.files:
-        res.append({
-            'key': f.key,
-            'version_id': f.version_id,
-            'checksum': f.file.checksum,
-            'size': f.file.size,
-            'completed': True,
-            'progress': 100,
-            'links': {
-                'self': (
-                    current_app.config['DEPOSIT_FILES_API'] +
-                    u'/{bucket}/{key}?versionId={version_id}'.format(
-                        bucket=f.bucket_id,
-                        key=f.key,
-                        version_id=f.version_id,
-                    )),
-            }
-        })
-
-    return res
-
-
 class NewItemView(View):
+
     def __init__(self, template_name=None,
                  schema=None,
                  schema_form=None,
@@ -225,7 +139,6 @@ class NewItemView(View):
         if self._create_deposit_permission.can():
             deposit = {
                 "metadata": {'_deposit': {'id': None}},
-                "meta_info": DEPOSIT_DEFAULT_METAINFO,
                 "record": {'_deposit': {'id': None}},
                 "schema": self.schema,
                 "schema_form": self.schema_form,
@@ -243,6 +156,7 @@ class NewItemView(View):
 
 
 class ListView(View):
+
     def __init__(self, template_name=None,
                  schema=None, schema_form=None,
                  read_permission_factory=None,

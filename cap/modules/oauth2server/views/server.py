@@ -28,7 +28,8 @@ from __future__ import absolute_import, print_function
 
 from functools import wraps
 
-from flask import Blueprint, _request_ctx_stack, abort, current_app, jsonify, redirect, render_template, request
+from flask import Blueprint, _request_ctx_stack, abort, \
+    current_app, jsonify, redirect, render_template, request
 from flask_babelex import lazy_gettext as _
 from flask_login import login_required
 from flask_principal import Identity, identity_changed
