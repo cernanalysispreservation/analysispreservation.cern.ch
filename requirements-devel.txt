@@ -1,3 +1,6 @@
+-r requirements-local-forks.txt
+-e .
+
 wdb
 ipdb
 flower
