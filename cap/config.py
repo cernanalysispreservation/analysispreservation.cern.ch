@@ -188,6 +188,10 @@ DEBUG = True
 
 if DEBUG:
     REST_ENABLE_CORS = True
+    APP_ENABLE_SECURE_HEADERS = False
+else:
+    APP_ENABLE_SECURE_HEADERS = True
+
 
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -901,7 +905,6 @@ REANA_CLIENT_TOKEN = os.environ.get(
     'APP_REANA_CLIENT_TOKEN', None)
 
 
-APP_ENABLE_SECURE_HEADERS = False
 
 # APP_DEFAULT_SECURE_HEADERS = {
 #     'force_https': False,
