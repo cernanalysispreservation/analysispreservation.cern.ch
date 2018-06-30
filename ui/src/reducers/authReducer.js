@@ -36,11 +36,17 @@ export default function authReducer(state = initialState, action) {
     case UNAUTHENTICATED:
       return state.set('isLoggedIn', false);
     case LOGIN_REQUEST:
-      return state.set('loading', true);
+      return state
+        .set('error', null)
+        .set('loading', true);
     case LOGIN_SUCCESS:
       return state
         .set('isLoggedIn', true)
         .set('currentUser', fromJS(action.user))
+        .set('loading', false);
+    case LOGIN_ERROR:
+      return state
+        .set('error', action.error)
         .set('loading', false);
     case LOGOUT_REQUEST:
       return state.set('loading', true);

@@ -30,17 +30,19 @@ class WelcomePage extends React.Component {
       <Box flex={true} direction="row">
           <Box flex={true} colorIndex="neutral-1-a" justify="center" align="center">
             <Section>
-              <Box size="large">
-                <Heading tag="h2">
-                  Welcome to the CERN
-                  Analysis Preservation Portal.
-                </Heading>
-                <Heading tag="h3">
-                  Our mission is to preserve physics analyses to facilitate their future reuse
-                </Heading>
-                <Paragraph>
-                    <Anchor path="/about">Do you want to know more? Check out what the service is about</Anchor>
-                </Paragraph>
+              <Box flex={true} >
+                <Box flex={true} wrap={true} pad="small" size="large">
+                  <Heading tag="h2">
+                    Welcome to the CERN
+                    Analysis Preservation Portal.
+                  </Heading>
+                  <Heading tag="h3">
+                    Our mission is to preserve physics analyses to facilitate their future reuse
+                  </Heading>
+                  <Paragraph>
+                      <Anchor path="/about">Do you want to know more? Check out what the service is about</Anchor>
+                  </Paragraph>
+                </Box>
               </Box>
             </Section>
           </Box>
@@ -55,6 +57,15 @@ class WelcomePage extends React.Component {
                   label="Log in with CERN"
                   href="/api/oauth/login/cern"
                 />
+                {
+                  this.props.authError ?
+                  <Box 
+                    colorIndex="critical"
+                    margin={{top: "small"}}
+                    pad="small">
+                    {this.props.authError}
+                  </Box> : null
+                }
                 <hr/>
                 {
                   process.env.NODE_ENV === 'development' ?
@@ -78,6 +89,7 @@ function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.get('isLoggedIn'),
     authLoading: state.auth.get('loading'),
+    authError: state.auth.get('error')
   };
 }
 

@@ -58,7 +58,7 @@ export function loginLocalUser(data) {
         }));
       })
       .catch(function (error) {
-        dispatch(loginError(error));
+        dispatch(loginError(error.response.data.error || "Something went wrong with the login. Please try again-"));
       });
   };
 }

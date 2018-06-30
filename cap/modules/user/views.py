@@ -305,10 +305,17 @@ def login():
     user = _datastore.get_user(username)
 
     if user and verify_password(password, user.password):
-        login_user(user)
-        return current_user.email
-
-    return 400
+        try:
+            login_user(user)
+            return current_user.email
+        except Exception as e:
+            return jsonify({
+                "error": "Something went wrong with the login. Please try again"
+            }), 400
+    else:
+        return jsonify({
+            "error": "The credentials you enter are not correct. Please try again.."
+        }), 403
 
 
 if DEBUG:
