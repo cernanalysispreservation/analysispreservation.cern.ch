@@ -11,7 +11,7 @@ import {
 import Edit from 'grommet/components/icons/base/FormEdit';
 import { toggleFilemanagerLayer } from '../../../../../../actions/drafts';
 
-class ImportDataField extends React.Component {
+class CapFile extends React.Component {
   constructor(props) {
     super(props);
 
@@ -39,8 +39,7 @@ class ImportDataField extends React.Component {
   render() {
 
     return (
-      <Box pad={{horizontal: "medium", vertical: "small"}} flex={true} direction="row" justify="between" wrap={false}>
-        <Box colorIndex="light-2" pad="small" flex={true} direction="row" alignContent="center" align="center" justify="center" wrap={false}>
+        <Box pad="small" flex={true} direction="row" alignContent="center" align="center" justify="center" wrap={false}>
           {
             this.props.formData ?
             [
@@ -54,12 +53,11 @@ class ImportDataField extends React.Component {
             ]
           }
         </Box>
-      </Box>
     );
   }
 }
 
-ImportDataField.propTypes = {
+CapFile.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   required: PropTypes.bool,
@@ -83,4 +81,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ImportDataField);
+)(CapFile);

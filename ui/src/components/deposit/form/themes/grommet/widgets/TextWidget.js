@@ -39,7 +39,7 @@ class TextWidget extends React.Component{
     // TOFIX onBlur, onFocus
     _onChange = (_ref) => {
         let value = _ref.target.value;
-        return this.props.onChange(value === '' ? this.props.options.emptyValue : value);
+        return this.props.onChange(value);
     };
 
     updateSuggestions = (event) => {
@@ -74,7 +74,7 @@ class TextWidget extends React.Component{
 
     render(){
         return (
-            <Box flex={true} pad={{'horizontal': 'medium'}}>
+            <Box flex={true} pad={this.props.pad || {'horizontal': 'medium'}}>
                 <TextInput
                     id={this.props.id}
                     name={this.props.id}
@@ -83,14 +83,18 @@ class TextWidget extends React.Component{
                     {...(this.props.readonly ? {
                         readOnly: 'true'
                     } : {})}
-                    {...(this.props.options.suggestions ? {
+                    {...(this.props.autofocus ? {
+                        autoFocus: 'true'
+                    } : {})}
+                    {...(this.props.options && this.props.options.suggestions ? {
                         suggestions: this.state.suggestions,
                         onDOMChange: this.updateSuggestions,
                         onSelect: this.updateValueOnSuggestion
                     } : {})}
-                    {...(this.props.options.autofill_from ? {
+                    {...(this.props.options && this.props.options.autofill_from ? {
                         onBlur: this.autoFillOtherFields
                     } : {})}
+                    onKeyDown={this.props.onKeyDown}
                     value={this.props.value || ''}/>
             </Box>
         );

@@ -36,7 +36,7 @@ class AccordionObjectField extends React.Component {
     else {
       return (
         <Accordion animate={false} openMulti={false}>
-          <AccordionPanel
+          <AccordionPanel            
             heading={
               <FieldHeader
                 title={this.props.title}

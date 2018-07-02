@@ -11,7 +11,7 @@ const SelectWidget = function(props) {
   };
 
   return (
-    <Box flex={true} margin={{"horizontal": "medium"}}>
+      <Box flex={true} pad={{vertical: "small"}} margin={{"bottom": "small", left:"medium"}}>
       <Select
         placeHolder={props.placeholder}
         inline={props.options.inline ? true : false}

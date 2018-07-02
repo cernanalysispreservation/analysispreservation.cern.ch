@@ -102,9 +102,8 @@ class ImportDataField extends React.Component {
           </Box>
         </Layer> : null
       }
-      <Box>
+      <Box pad="small" flex={true} direction="row" alignContent="center" align="center" justify="center" wrap={false}>
         <FieldHeader
-          title={this.props.schema.title}
           required={this.props.schema.required}
           description={
 
@@ -119,12 +118,7 @@ class ImportDataField extends React.Component {
                 onClick={this._toggleLayer.bind(this)}
               />
             </Box> :
-            <Box margin={{horizontal: "medium"}} direction="row">
-              <Button
-                label="Import"
-                onClick={this._toggleLayer.bind(this)}
-              />
-            </Box>
+              <Anchor label="Import" onClick={this._toggleLayer.bind(this)}/>
           }
           />
       </Box>

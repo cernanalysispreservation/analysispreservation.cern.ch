@@ -96,10 +96,10 @@
             "wg_production_bk_path"
          ],
          "davinci_script":{  
-            "ui:field":"capFiles"
+            "ui:field":"CapFiles"
          },
          "ganga_script":{  
-            "ui:field":"capFiles"
+            "ui:field":"CapFiles"
          }
       },
       "ui:array":"AccordionArrayField"

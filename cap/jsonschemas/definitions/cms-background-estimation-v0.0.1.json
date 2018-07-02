@@ -3,9 +3,11 @@
     "type": "object",
     "properties": {
         "type": {
+            "title": "Type",
             "type": "string"
         },
         "samples": {
+            "title": "Samples",
             "type": "array",
             "description": "Provide all necessary samples from DAS",
             "items": {
@@ -22,6 +24,7 @@
             ]
         },
         "control_regions": {
+            "title": "Control Regions",
             "type": "array",
             "items": {
                 "title": "Event Selection",

@@ -14,7 +14,7 @@ export default function ErrorListTemplate(props) {
   return (
     <Box flex={true}>
       <Notification state={null}
-        message="Data provided are not correct"
+        message="Please correct the marked fields below."
         timestamp={null}
         status="critical"
         closer={true} />

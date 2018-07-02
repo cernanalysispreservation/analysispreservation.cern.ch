@@ -8,6 +8,7 @@ import FieldHeader from '../components/FieldHeader';
 import LayerArrayField from './LayerArrayField';
 import AccordionArrayField from './AccordionArrayField';
 import DefaultArrayField from './DefaultArrayField';
+import StringArrayField from './StringArrayField';
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -47,6 +48,14 @@ class ArrayFieldTemplate extends React.Component {
       <Box className="grommetux-form-field">
         {_label}
         <DefaultArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
+      </Box>
+      );
+    }
+    else if (this.formRenderType == 'StringArrayField') {
+      return (
+      <Box className="grommetux-form-field">
+        {_label}
+        <StringArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
       </Box>
       );
     }

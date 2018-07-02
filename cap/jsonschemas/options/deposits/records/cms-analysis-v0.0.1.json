@@ -21,6 +21,9 @@
                     [["status"], ["cadi_info", "status"]]
                 ]
             }
+        },
+        "ana_notes": {
+            "ui:array": "StringArrayField"
         }
     },
     "cadi_info": {
@@ -73,6 +76,7 @@
             }
         },
         "mc_sig_datasets": {
+            "ui:array": "StringArrayField",
             "items": {
                 "ui:options": {
                     "suggestions": "/api/cms/datasets?query="
@@ -80,10 +84,16 @@
             }
         },
         "mc_bg_datasets": {
+            "ui:array": "StringArrayField",
             "items": {
                 "ui:options": {
                     "suggestions": "/api/cms/datasets?query="
                 }
+            }
+        },
+        "json_files": {
+            "items": {
+                "ui:field": "CapFiles"
             }
         }
     },
@@ -99,8 +109,9 @@
         }
     },
     "statistical_treatment": {
+        "ui:object": "accordionObjectField",
         "statistics_questionnaire": {
-            "ui:field": "importDataField",
+            "ui:field": "ImportDataField",
             "ui:options": {
                 "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
             }
@@ -109,7 +120,7 @@
     "main_measurements": {
         "ui:array": "AccordionArrayField",
         "items": {
-            "ui:order": ["description", "detailed_desciption", "signal_event_selection", "processing_steps", "analysis_code", "*"],
+            "ui:order": ["description", "detailed_desciption", "analysis_code", "signal_event_selection", "processing_steps", "*"],
             "processing_steps": {
                 "items": {
                     "ui:order": ["configuration_file", "run_instructions", "output_data"]
@@ -132,7 +143,10 @@
     "auxiliary_measurements": {
         "ui:array": "AccordionArrayField",
         "items": {
-            "ui:order": ["type", "links"]
+            "ui:order": ["type", "links"],
+            "links": {
+                "ui:array": "StringArrayField"
+            }
         }
     },
     "systematic_uncertainties": {
@@ -144,7 +158,7 @@
     "background_estimations": {
         "ui:array": "AccordionArrayField",
         "items": {
-            "ui:order": ["type", "samples", "method", "control_regions"],
+            "ui:order": ["type","method", "control_regions", "samples"],
             "control_regions": {
                 "items": {
                     "physics_objects": {
@@ -158,13 +172,27 @@
                         }
                     }
                 }
+            },
+            "samples": {
+                "ui:array": "StringArrayField"
             }
         }
     },
     "additional_resources": {
-        "ui:object": "accordionObjectField"
+        "ui:object": "accordionObjectField",
+        "ui:order": ["conferences", "presentations", "internal_discussions", "documentations", "publications", "keywords", "*"],
+        "conferences": {
+            "ui:array": "StringArrayField"
+        },
+        "presentations": {
+            "ui:array": "StringArrayField"
+        },
+        "internal_discussions": {
+            "ui:array": "StringArrayField"
+        }
     },
     "final_results": {
+        "ui:order": ["description", "*"],
         "ui:object": "accordionObjectField"
     }
 }

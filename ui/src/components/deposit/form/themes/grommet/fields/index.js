@@ -1,10 +1,10 @@
 import importDataField from './importDataField';
-import capFiles from './capFiles';
+import CapFiles from './capFiles';
 
 
 const fields = {
-  importDataField: importDataField,
-  capFiles: capFiles,
+  ImportDataField: importDataField,
+  CapFiles: CapFiles,
 };
 
 export default fields;

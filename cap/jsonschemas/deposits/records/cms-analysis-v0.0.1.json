@@ -54,7 +54,7 @@
                     "type": "object",
                     "properties": {
                         "type": {
-                            "title": "type",
+                            "title": "Type",
                             "type": "string",
                             "enum": [
                                 "associated_to_obj",
@@ -65,7 +65,7 @@
                             ]
                         },
                         "physics_object": {
-                            "title": "Physics object",
+                            "title": "Physics Object",
                             "description": "Choose from objects defined in main measurements",
                             "type": "string"
                         }
@@ -85,6 +85,10 @@
                 "description": "Please provide information necessary to generate final plots and tables for your analysis.",
                 "type": "object",
                 "properties": {
+                    "description": {
+                        "title": "Description",
+                        "type": "string"
+                    },
                     "processing": {
                         "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
                     }
@@ -256,6 +260,7 @@
             "type": "object",
             "properties":{
                 "statistics_questionnaire": {
+                    "title": "Statistics Questionnare",
                     "default": {},
                     "properties": {
                         "$ref": {
@@ -289,26 +294,24 @@
                 },
                 "internal_discussions": {
                     "title": "Internal Discussions",
-                    "description": "Please add all internal discussions",
+                    "description": "Please add links to internal discussions",
                     "type": "array",
                     "id": "internal-discussions",
-                    "default": [
-                        {}
-                    ],
+                    "default": [],
                     "items": {
-                        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/internal-discussion-v0.0.1.json"
+                      "title": "URL",
+                      "type": "string"
                     }
                 },
                 "presentations": {
                     "title": "Presentations",
-                    "description": "Please add all presentations",
+                    "description": "Please add links to presentations",
                     "type": "array",
                     "id": "presentations",
-                    "default": [
-                        {}
-                    ],
+                    "default": [],
                     "items": {
-                        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/presentation-v0.0.1.json"
+                      "title": "URL",
+                      "type": "string"
                     }
                 },
                 "publications": {
@@ -323,24 +326,21 @@
                         "$ref": "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
                     }
                 },
-                "conference": {
-                    "title": "Conference",
-                    "description": "Please add conference details",
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "title": "Name",
-                            "type": "string"
-                        },
-                        "status": {
-                            "title": "Status",
-                            "type": "string"
+                "conferences": {
+                    "title": "Conferences",
+                    "description": "Please list conferences",
+                    "type": "array",
+                    "items": {
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            }
                         }
                     }
                 },
                 "keywords": {
                     "title": "Keywords",
-                    "description": "Please add keywords here",
                     "type": "string",
                     "id": "keywords"
                 }
