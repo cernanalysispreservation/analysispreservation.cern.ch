@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import {Switch, Route} from 'react-router-dom';
 
-import Box from 'grommet/components/Box';
+import {Box} from 'grommet';
 
 import SearchPage from '../search/SearchPage';
 import Header from '../partials/Header';
@@ -13,6 +13,7 @@ import Dashboard from '../dashboard/Dashboard';
 import SettingsIndex from '../settings/SettingsIndex';
 import DraftsIndex from '../drafts/DraftsIndex';
 import PublishedIndex from '../published/PublishedIndex';
+import GrommetFooter from '../footer/Footer';
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ class IndexPage extends React.Component {
           <Route path="/create" component={CreateIndex}/>
           <Route path="/settings" component={SettingsIndex}/>
         </Switch>
+       <GrommetFooter/>
       </Box>
     );
   }

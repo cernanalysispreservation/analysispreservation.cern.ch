@@ -70,11 +70,6 @@ class Header extends React.Component {
                 href="#"
                 animateIcon={true}
                 path="/settings" />
-              <Anchor
-                label="About"
-                href="#"
-                animateIcon={true}
-                path="/about" />
           </Menu>
         </Menu>
         </Box>
