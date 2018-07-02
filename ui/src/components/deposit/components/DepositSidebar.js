@@ -60,7 +60,8 @@ class DepositSidebar extends React.Component {
               <Box flex={true} margin={{vertical: "medium"}}>
                 <Button label='Start Preserving'
                   type='submit'
-                  primary={true} />
+                  primary={true}
+                  color="neutral-1" />
               </Box>
             </Form>
           </Box>

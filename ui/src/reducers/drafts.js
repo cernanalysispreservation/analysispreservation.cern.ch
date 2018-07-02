@@ -7,6 +7,7 @@ import {
   TOGGLE_CUSTOM_VALIDATION,
   TOGGLE_VALIDATE,
   TOGGLE_SIDEBAR,
+  TOGGLE_ACTIONS_LAYER,
   FETCH_SCHEMA_REQUEST,
   FETCH_SCHEMA_SUCCESS,
   FETCH_SCHEMA_ERROR,
@@ -52,6 +53,7 @@ const initialState = Map({
   fileManagerActiveLayer: false,
   fileManagerLayerSelectable: false,
   fileManagerLayerSelectableAction: null,
+  actionsLayer: false,
   showPreviewer: false,
   showSidebar: true,
   liveValidate: true,
@@ -82,6 +84,9 @@ export default function depositReducer(state = initialState, action) {
         .set('fileManagerActiveLayer', !state.get('fileManagerActiveLayer'))
         .set('fileManagerLayerSelectable', action.selectable)
         .set('fileManagerLayerSelectableAction', action.action);
+    case TOGGLE_ACTIONS_LAYER: 
+      return state
+        .set('actionsLayer', !state.get('actionsLayer'));
     case TOGGLE_PREVIEWER:
       return state.set('showPreviewer', !state.get('showPreviewer'));
     case TOGGLE_SIDEBAR:

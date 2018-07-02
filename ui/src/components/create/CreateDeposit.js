@@ -3,7 +3,7 @@ import React from 'react';
 
 import {connect} from 'react-redux';
 
-import {Box, Toast} from 'grommet';
+import {Box, Toast, Layer, Paragraph, Button} from 'grommet';
 
 import {
   fetchSchema,
@@ -15,7 +15,8 @@ import {
   deleteDraft,
   updateDraft,
   discardDraft,
-  editPublished
+  editPublished,
+  toggleActionsLayer
 } from '../../actions/drafts';
 
 import DepositForm from '../deposit/form/Form';
@@ -66,7 +67,7 @@ export class CreateDeposit extends React.Component {
         // nextProps.getDraftById(nextProps.match.params.draft_id, true);
       }
     }
-    return true
+    return true;
   }
 
   _saveData() {
@@ -90,6 +91,46 @@ export class CreateDeposit extends React.Component {
     this.props.discardDraft(this.props.draft_id);
   }
 
+  _actionHandler = (type) => () => {
+    this.props.toggleActionsLayer();
+    this.setState({actionType: type});
+  }
+
+  renderAction(action) {
+    switch(action) {
+      case "save":
+        this._saveData();
+        this.props.toggleActionsLayer();
+        break;
+      case "publish":
+        this._publishData();
+        this.props.toggleActionsLayer();
+        break;
+      case "delete":
+        this._deleteDraft();
+        this.props.toggleActionsLayer();
+        break;
+      case "discard":
+        this._discardData();
+        this.props.toggleActionsLayer();
+        break;
+    }
+  }
+
+  renderMessage(action){
+     switch(action) {
+      case "save":
+        return <Paragraph>Are you sure you want to save your changes?</Paragraph>;
+      case "publish":
+        return <Paragraph>Your analysis will now be visible to all members of collaboration. Proceed?</Paragraph>;
+      case "delete":
+        return <Paragraph>Are you sure you want to delete this draft?</Paragraph>;
+      case "discard":
+        return <Paragraph>Discard changes to the previous published version?</Paragraph>;
+    }
+  }
+
+
   render() {
     let _schema = this.props.schema ? transformSchema(this.props.schema):null;
     return (
@@ -102,11 +143,45 @@ export class CreateDeposit extends React.Component {
         }
         <DepositHeader
           draftId={this.props.draft_id}
-          saveData={this._saveData.bind(this)}
-          publishData={this._publishData.bind(this)}
-          deleteDraft={this._deleteDraft.bind(this)}
-          discardData={this._discardData.bind(this)}
+          saveData={this._actionHandler('save')}
+          publishData={this._actionHandler('publish')}
+          deleteDraft={this._actionHandler('delete')}
+          discardData={this._actionHandler('discard')}
         />
+        {this.props.actionsLayer ?
+          <Layer
+            closer={true}
+            align="center"
+            flush={true}
+            overlayClose={true}
+            onClose={this.props.toggleActionsLayer}
+          >
+            <Box justify="center" 
+                 flex={true} 
+                 wrap={false} 
+                 pad="medium"
+                 size="medium">
+              {this.renderMessage(this.state.actionType)}
+              <Box direction="row" justify="center" align="center">
+                <Box colorIndex='neutral-1'>
+                  <Button
+                    label="Yes"
+                    plain={true}
+                    //primary={true}
+                    onClick={()=>this.renderAction(this.state.actionType)}
+                  />
+                </Box>
+                <Box colorIndex='grey-4-a' margin="small">
+                  <Button
+                    label="Cancel"
+                    plain={true}
+                    onClick={()=>this.props.toggleActionsLayer()}
+                  />  
+                </Box>
+              </Box>
+            </Box>
+          </Layer>:null
+          }
           <Box direction="row" justify="between" flex={true} wrap={false}>
             <Sidebar draftId={this.props.draft_id} />
             {
@@ -138,7 +213,8 @@ function mapStateToProps(state) {
     draft_id: state.drafts.getIn(['current_item', 'id']),
     draft: state.drafts.getIn(['current_item', 'data']),
     published_id: state.drafts.getIn(['current_item', 'published_id']),
-    formData: state.drafts.getIn(['current_item', 'formData'])
+    formData: state.drafts.getIn(['current_item', 'formData']),
+    actionsLayer: state.drafts.get('actionsLayer')
   };
 }
 
@@ -153,7 +229,8 @@ function mapDispatchToProps(dispatch) {
     deleteDraft: (draft_id) => dispatch(deleteDraft(draft_id)),
     discardDraft: (draft_id) => dispatch(discardDraft(draft_id)),
     editPublished: (data, schema, draft_id) => dispatch(editPublished(data, schema, draft_id)),
-    formDataChange: (data) => dispatch(formDataChange(data))
+    formDataChange: (data) => dispatch(formDataChange(data)),
+    toggleActionsLayer: () => dispatch(toggleActionsLayer())    
   };
 }
 

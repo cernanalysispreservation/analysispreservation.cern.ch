@@ -7,6 +7,7 @@ export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 export const TOGGLE_LIVE_VALIDATE = 'TOGGLE_LIVE_VALIDATE';
 export const TOGGLE_CUSTOM_VALIDATION = 'TOGGLE_CUSTOM_VALIDATION';
 export const TOGGLE_VALIDATE = 'TOGGLE_VALIDATE';
+export const TOGGLE_ACTIONS_LAYER = 'TOGGLE_ACTIONS_LAYER';
 
 export const FETCH_SCHEMA_REQUEST = 'FETCH_SCHEMA_REQUEST';
 export const FETCH_SCHEMA_SUCCESS = 'FETCH_SCHEMA_SUCCESS';
@@ -90,6 +91,12 @@ export function toggleFilemanagerLayer(selectable=false, action=null) {
     type: TOGGLE_FILEMANAGER_LAYER,
     selectable,
     action
+  };
+}
+
+export function toggleActionsLayer() {
+  return {
+    type: TOGGLE_ACTIONS_LAYER
   };
 }
 
