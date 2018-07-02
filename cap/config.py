@@ -417,9 +417,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         write_scope.id),
 })
 
-#: Default api endpoint for LHCb db
-GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
-
 #: Account-REST Configuration
 ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
 """Default get role permission factory: reject any request."""
@@ -596,10 +593,9 @@ SECRET_KEY = "changeme"
 # ============
 # SQLALCHEMY_DATABASE_URI = "postgresql://cap:cap@localhost:5432/cap"
 
-# Ana's database
-LHCB_ANA_DB = 'http://datadependency.cern.ch'
-LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
-LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
+# LHCb Software configuration database (SoftConfDB)
+LHCB_ANA_DB = 'https://ariadne-lhcb.cern.ch/db/data'
+LHCB_GETPLATFORM_URL = '{0}/listPlatforms?project= &version='.format(LHCB_ANA_DB)
 
 # CADI database
 # @TOFIX should this be public?
