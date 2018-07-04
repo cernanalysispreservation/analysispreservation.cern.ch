@@ -53,6 +53,7 @@ class DepositHeader extends React.Component {
   // }
 
   render() {
+    let status = this.props.draft && this.props.draft._deposit? this.props.draft._deposit.status: null;
     return (
       <Header flex={true} size="small" pad="none" colorIndex="neutral-1-a">
         <Box flex={true}  direction="row" justify="between" align="center">
@@ -70,9 +71,8 @@ class DepositHeader extends React.Component {
               </Box>
             }
           </Box>
-          <Box flex={false} >
+          <Box flex={false}  margin={{right:"small"}} pad={{horizontal: "small"}}>
             <Menu responsive={true}
-              fill={true}
               label="Layout"
               direction="row"
               justify="center"
@@ -80,34 +80,33 @@ class DepositHeader extends React.Component {
               inline={true}>
               {this.props.draft_id ?
                 <SettingsAnchor draft_id={this.props.draft_id} />:null}
-              <Anchor
-                icon={<ShareIcon/>}
-                label="Share"
-                onClick={this.props.draft_id ? this.props.publishData: null}
-              />
+              {status == "draft" ?
+                <Anchor
+                  icon={<ShareIcon/>}
+                  label="Share"
+                  onClick={this.props.draft_id ? this.props.publishData: null}
+                />:null
+              }
               <Anchor
                 icon={<SaveIcon/>}
                 label="Save"
                 onClick={this.props.saveData}
               />
-              <Menu responsive={true}
-                icon={<MoreIcon />}
-
-                justify="center"
-                inline={false}>
-                  <Anchor
-                    label="Delete"
-                    icon={<TrashIcon/>}
-                    onClick={this.props.draft_id ? this.props.deleteDraft: null}
-                    primary={true}
-                  />
-                  <Anchor
-                    icon={<RefreshIcon/>}
-                    label="Discard"
-                    onClick={this.props.discardData}
-                  />
-
-              </Menu>
+              {status == "draft" ?
+                <Anchor
+                  label="Delete"
+                  icon={<TrashIcon/>}
+                  onClick={this.props.draft_id ? this.props.deleteDraft: null}
+                  primary={true}
+                />:null
+              }
+              {status == "draft" && this.props.draft._deposit.pid ?
+                <Anchor
+                  icon={<RefreshIcon/>}
+                  label="Discard"
+                  onClick={this.props.discardData}
+                />:null
+              }
             </Menu>
         </Box>
         </Box>
@@ -128,6 +127,7 @@ function mapStateToProps(state) {
     draft_id: state.drafts.getIn(['current_item', 'id']),
     loading: state.drafts.getIn(['current_item', 'loading']),
     message: state.drafts.getIn(['current_item', 'message']),
+    draft: state.drafts.getIn(['current_item', 'data'])
   };
 }
 

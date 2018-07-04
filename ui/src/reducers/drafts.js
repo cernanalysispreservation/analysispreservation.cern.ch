@@ -208,7 +208,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(['current_item', 'id'], action.draft_id)
         .setIn(['current_item', 'published_id'], null)
         .setIn(['current_item', 'data'], action.data)
-        .setIn(['current_item', 'formData'], action.data.metadata);
+        .setIn(['current_item', 'formData'], action.data);
     case DISCARD_DRAFT_ERROR:
       return state
         .setIn(['current_item', 'loading'], false)

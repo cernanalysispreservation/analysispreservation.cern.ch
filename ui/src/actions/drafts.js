@@ -354,13 +354,29 @@ export function editPublished(data={}, schema, draft_id) {
         data["$schema"] = schema;
         axios.put(`/api/deposits/${draft_id}`, data)
           .then(function(response){
-            dispatch(editPublishedSuccess(draft_id, response.data));
+            dispatch(editPublishedSuccess(draft_id, response.data.metadata));
           })
           .catch(function(error) {
             dispatch(editPublishedError(error));
           });
       })
       .catch((error) => dispatch(editPublishedError(error)) );
+  };
+}
+
+export function discardDraft(draft_id) {
+  return dispatch => {
+    dispatch(discardDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}/actions/discard`;
+
+    axios.post(uri)
+      .then((response) => {
+        dispatch(discardDraftSuccess(draft_id, response.data.metadata));
+      })
+      .catch(function(error) {
+        dispatch(discardDraftError(error));
+      });
   };
 }
 
@@ -407,26 +423,10 @@ export function deleteDraft(draft_id) {
     axios.delete(uri)
       .then(function(){
         dispatch(deleteDraftSuccess());
-        dispatch(replace('/drafts'));
+        dispatch(replace('/'));
       })
       .catch(function(error) {
         dispatch(deleteDraftError(error));
-      });
-  };
-}
-
-export function discardDraft(draft_id) {
-  return dispatch => {
-    dispatch(discardDraftRequest());
-
-    let uri = `/api/deposits/${draft_id}/actions/discard`;
-
-    axios.post(uri)
-      .then(function(response){
-        dispatch(discardDraftSuccess(draft_id, response.data));
-      })
-      .catch(function(error) {
-        dispatch(discardDraftError(error));
       });
   };
 }

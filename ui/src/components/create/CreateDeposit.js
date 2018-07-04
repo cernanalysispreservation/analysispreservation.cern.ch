@@ -71,11 +71,12 @@ export class CreateDeposit extends React.Component {
   }
 
   _saveData() {
-    if (this.props.draft_id && !this.props.published_id)
-      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);
-    else if (this.props.match.params.schema_id)
+    let status = this.props.draft? this.props.draft._deposit.status: null;
+    if(this.props.match.params.schema_id)
       this.props.createDraft(this.props.formData, this.props.match.params.schema_id);
-    else if (this.props.published_id && this.props.draft_id)
+    else if (status !== "published")
+      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);      
+    else if (status == "published")
       this.props.editPublished({ ...this.props.formData, $schema: this.props.draft.$schema }, this.props.match.params.schema_id, this.props.draft_id);
   }
 
@@ -230,7 +231,7 @@ function mapDispatchToProps(dispatch) {
     discardDraft: (draft_id) => dispatch(discardDraft(draft_id)),
     editPublished: (data, schema, draft_id) => dispatch(editPublished(data, schema, draft_id)),
     formDataChange: (data) => dispatch(formDataChange(data)),
-    toggleActionsLayer: () => dispatch(toggleActionsLayer())    
+    toggleActionsLayer: () => dispatch(toggleActionsLayer())
   };
 }
 
