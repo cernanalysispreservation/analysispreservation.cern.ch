@@ -17,6 +17,7 @@ import {
 
 import {withRouter} from 'react-router-dom';
 import {fetchSearch, fetchMine} from '../../actions/search';
+import SearchResults from '../search/SearchResults';
 import AddIcon from 'grommet/components/icons/base/Add';
 import Home from 'grommet/components/icons/base/Home';
 import SearchIcon from 'grommet/components/icons/base/Search';
@@ -39,9 +40,9 @@ const CustomTile = withRouter(({ history, props=props, group=group, name=name, c
             </Box>
           </Header>
           <Box flex={true} direction="row" justify="between" align="center" pad="medium">
-            <Value label="Drafts" value={count} onClick={() => history.push(`/search`)} />
-            <Value label="Published" value={count} onClick={() => history.push(`/search`)}/>
-            <Value label="Yours" value={count} onClick={() => history.push(`/search`)}/>
+            <Value label="Drafts" value={count} onClick={() => history.push(`/search?status=draft&type=${group.get("deposit_group")}-v0.0.1`)} />
+            <Value label="Published" value={count} onClick={() => history.push(`/search?status=published&type=${group.get("deposit_group")}-v0.0.1`)} />
+            <Value label="Yours" value={count} onClick={() => history.push(`/search?type=${group.get("deposit_group")}-v0.0.1`)} />
           </Box>
         </Box>
       </Tile>
@@ -103,19 +104,11 @@ export class Dashboard extends React.Component {
             <Heading align="start" tag="h3">My Drafts</Heading>
           </Box>
           <Box pad="medium" colorIndex="light-2" size={{height: "medium"}}>
-          <List selectable={true} >
-            {
-              this.props.mine.getIn(['hits', 'hits']) ?
-              this.props.mine.getIn(['hits', 'hits']).map(item =>
-                <ListItem pad={{horizontal: "small"}}>
-                  <Box direction="row" pad="none">
-                    <Label pad="none">{item.general_title || item.general_title || "Untitled" }</Label>
-                    <span>{item.metadata && item.metadata.$ana_type }</span>
-                  </Box>
-                </ListItem>
-              ) : null
-            }
-          </List>
+              {
+                this.props.mine.getIn(['hits', 'hits']) ?
+                <SearchResults size="small" results={this.props.mine.getIn(['hits', 'hits']).toJS() || {}} /> :
+                null
+              }
           </Box>
         </Section>
       </Box>

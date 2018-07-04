@@ -118,7 +118,7 @@ class SearchFacets extends React.Component {
                                                         facets[category].buckets
                                                             .map((field) => (
                                                                 <Box key={String(field.key)} >
-                                                                    <Box size="medium" direction="row" justify="between" align="left">
+                                                                    <Box size="medium" direction="row" justify="between" align="start">
                                                                         <CheckBox
                                                                             label={field.key}
                                                                             key={field.key}

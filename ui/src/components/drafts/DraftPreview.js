@@ -1,104 +1,121 @@
+import _ from 'lodash';
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import {connect} from 'react-redux';
 
-import Box from 'grommet/components/Box';
-import Header from 'grommet/components/Header';
-import Heading from 'grommet/components/Heading';
-import Section from 'grommet/components/Section';
+import {Box, Toast} from 'grommet';
 
-import {getDraftById} from '../../actions/drafts';
+import {
+  fetchSchema,
+  createDraft,
+  initForm,
+  formDataChange,
+  getDraftById,
+  publishDraft,
+  deleteDraft,
+  updateDraft,
+  discardDraft,
+  editPublished
+} from '../../actions/drafts';
 
-import ReactJson from 'react-json-view';
+import JSONSchemaPreviewer from '../deposit/form/JSONSchemaPreviewer';
+import DepositHeader from '../deposit/components/DepositHeader';
+import Sidebar from '../deposit/components/DepositSidebar';
 
-class DraftsItem extends React.Component {
+const transformSchema = (schema) => {
+  const schemaFieldsToRemove = [
+    "_access",
+    "_deposit",
+    "_cap_status",
+    "_buckets",
+    "_files",
+    "$ana_type",
+    "$schema",
+    "general_title",
+    "_experiment",
+    "control_number"
+  ];
+
+  schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
+  schema = { type: schema.type, properties: schema.properties,  dependencies: schema.dependencies,  };
+  return schema;
+};
+
+
+export class DraftPreview extends React.Component {
   constructor(props) {
     super(props);
   }
 
   componentDidMount() {
-    let {id} = this.props.match.params;
-    this.props.getDraftById(id);
+    if (this.props.match.params.draft_id) {
+      if (this.props.match.params.draft_id !== this.props.draft_id) {
+        this.props.getDraftById(this.props.match.params.draft_id, true);
+      }
+    }
   }
 
   render() {
+    let _schema = this.props.schema ? transformSchema(this.props.schema):null;
     return (
-      <Box flex={true} pad="small" colorIndex="neutral-1-a">
+      <Box id="deposit-page"  flex={true}>
         {
-          this.props.error ?
-          <Box>
-            <Heading tag="h5">Errors</Heading>
-            <div>{JSON.stringify(this.props.error)}</div>
-          </Box>: null
+          this.props.error?
+          <Toast status="critical">
+            {this.props.error.message}
+          </Toast> : null
         }
-        {
-          this.props.item ?
-          <Section pad="none">
-              <Header tag="h2" marign="none" separator="bottom">
-                <Heading tag="h2" marign="none">
-                  {this.props.item.metadata.general_title}
-                </Heading>
-                <Heading tag="h5" marign="none">
-                  {this.props.match.params.id}
-                </Heading>
-              </Header>
-              {
-                this.props.item ?
-                <Box>
-                  <Box flex={true} direction="row">
-                    <Box flex={true}>
-                      <Box flex={true}>
-                        <Box pad="small" flex={true}>
-                          <Heading tag="h5">Data</Heading>
-                          <Box pad="small" flex={true} colorIndex="light-2">
-                            {JSON.stringify(this.props.item)}
-                          </Box>
-                        </Box>
-                        <Box pad="small" flex={true}>
-                          <Heading tag="h5">Permissions</Heading>
-                          <Box pad="small" flex={true} colorIndex="light-2">
-                            {JSON.stringify(this.props.item.metadata._access)}
-                          </Box>
-                        </Box>
-                      </Box>
-                    </Box>
-                      <Box pad="small" flex={true}>
-                        <Heading tag="h5">JSON</Heading>
-                        <Box pad="small" flex={true} colorIndex="light-2">
-                          <ReactJson src={this.props.item} />
-                        </Box>
-                      </Box>
-                  </Box>
-                </Box>: null
-              }
-          </Section> : null
-        }
+        <DepositHeader
+          draftId={this.props.draft_id}
+        />
+          <Box direction="row" flex={true} wrap={false}>
+            <Sidebar draftId={this.props.draft_id} />
+            {
+              this.props.schema ?
+              <Box flex={true}>
+                <Box pad="medium" colorIndex="light-2">
+
+                </Box>
+                <Box flex={true} size="xlarge"  pad="medium" colorIndex="light-1">
+                  <JSONSchemaPreviewer
+                    formData={this.props.formData}
+                    schema={_schema}
+                    uiSchema={this.props.uiSchema || {}}
+                    onChange={(change) => {
+                      // console.log("CHANGE::",change);
+                      this.props.formDataChange(change.formData);
+                    }}
+                  >
+                    <span></span>
+                  </JSONSchemaPreviewer>
+                </Box>
+              </Box> : null
+            }
+          </Box>
       </Box>
     );
   }
 }
 
-DraftsItem.propTypes = {
-  error: PropTypes.object.required,
-  getDraftById: PropTypes.func,
-  item: PropTypes.object.required,
-  match: PropTypes.object.required,
-};
+DraftPreview.propTypes = {};
 
 function mapStateToProps(state) {
   return {
-    item: state.drafts.getIn(['current_item', 'data']),
-    error: state.drafts.getIn(['current_item', 'error']),
+    schema: state.drafts.get('schema'),
+    uiSchema: state.drafts.get('uiSchema'),
+    published_id: state.drafts.getIn(['current_item', 'published_id']),
+    formData: state.drafts.getIn(['current_item', 'formData'])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDraftById: (id) => dispatch(getDraftById(id))
+    fetchSchema: (schema) => dispatch(fetchSchema(schema)),
+    getDraftById: (id, fet) => dispatch(getDraftById(id, fet))
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DraftsItem);
+)(DraftPreview);

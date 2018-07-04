@@ -330,7 +330,7 @@ export function createDraft(data={}, schema) {
     axios.post(uri, data)
       .then((response) => {
         const draft_id = response.data.links.self.split('/deposits/')[1];
-        dispatch(replace(`/drafts/${draft_id}`));
+        dispatch(replace(`/drafts/${draft_id}/edit`));
         axios.put(uri + draft_id, response.data.metadata)
           .then(function(response){
             dispatch(createDraftSuccess(draft_id, response.data));

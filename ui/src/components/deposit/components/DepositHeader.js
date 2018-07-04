@@ -18,6 +18,7 @@ import RefreshIcon from 'grommet/components/icons/base/Refresh';
 import MoreIcon from 'grommet/components/icons/base/More';
 import Spinning from 'grommet/components/icons/Spinning';
 import Status from 'grommet/components/icons/Status';
+import Edit from 'grommet/components/icons/base/Edit';
 import SettingsOptionIcon from 'grommet/components/icons/base/SettingsOption';
 import {withRouter} from 'react-router';
 
@@ -27,6 +28,16 @@ const SettingsAnchor = withRouter(({ history, draft_id=draft_id }) => (
           plain="true"
           label="Settings"
           onClick={() => history.push(`/drafts/${draft_id}/settings`)}
+        />
+    ))
+
+const EditAnchor = withRouter(({ history, draft_id=draft_id }) => (
+        <Anchor
+          icon={<Edit/>}
+          plain="true"
+          primary={true}
+          label="Edit"
+          onClick={() => history.push(`/drafts/${draft_id}/edit`)}
         />
     ))
 
@@ -77,35 +88,51 @@ class DepositHeader extends React.Component {
               direction="row"
               justify="center"
               align="center"
-              inline={true}>
-              {this.props.draft_id ?
-                <SettingsAnchor draft_id={this.props.draft_id} />:null}
-              {status == "draft" ?
+              inline={true}
+              >
+              {
+                ! this.props.saveData && this.props.draft_id ?
+                <Box pad={{horizontal: "small"}}>
+                <EditAnchor draft_id={this.props.draft_id} />
+                </Box>
+                :null
+              }
+              {
+                this.props.saveData && this.props.draft_id ?
+                <SettingsAnchor draft_id={this.props.draft_id} />:null
+              }
+              { this.props.publishData ?
                 <Anchor
                   icon={<ShareIcon/>}
                   label="Share"
                   onClick={this.props.draft_id ? this.props.publishData: null}
-                />:null
+                /> : null
               }
-              <Anchor
-                icon={<SaveIcon/>}
-                label="Save"
-                onClick={this.props.saveData}
-              />
-              {status == "draft" ?
+              { this.props.saveData ?
                 <Anchor
-                  label="Delete"
-                  icon={<TrashIcon/>}
-                  onClick={this.props.draft_id ? this.props.deleteDraft: null}
-                  primary={true}
-                />:null
+                  icon={<SaveIcon/>}
+                  label="Save"
+                  onClick={this.props.saveData}
+                /> : null
               }
-              {status == "draft" && this.props.draft._deposit.pid ?
-                <Anchor
-                  icon={<RefreshIcon/>}
-                  label="Discard"
-                  onClick={this.props.discardData}
-                />:null
+              { this.props.saveData ?
+              <Menu responsive={true}
+                icon={<MoreIcon />}
+
+                justify="center"
+                inline={false}>
+                  <Anchor
+                    label="Delete"
+                    icon={<TrashIcon/>}
+                    onClick={this.props.draft_id ? this.props.deleteDraft: null}
+                    primary={true}
+                  />
+                  <Anchor
+                    icon={<RefreshIcon/>}
+                    label="Discard"
+                    onClick={this.props.discardData}
+                  />
+              </Menu> : null
               }
             </Menu>
         </Box>

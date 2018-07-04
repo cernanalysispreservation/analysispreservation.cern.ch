@@ -9,6 +9,8 @@ import Box from 'grommet/components/Box';
 import AvailableDeposits from '../create/AvailableDeposits';
 import CreateDeposit from '../create/CreateDeposit';
 import DepositSettings from '../deposit/components/DepositSettings';
+import DraftPreview from './DraftPreview';
+
 import {Switch, Route} from 'react-router-dom';
 import {withRouter} from 'react-router';
 
@@ -23,8 +25,9 @@ class DraftsIndex extends React.Component {
         <Switch>
           <Route exact path="/drafts/create" component={AvailableDeposits}  />
           <Route path={`/drafts/create/:schema_id`} component={CreateDeposit} />
+          <Route exact path={`/drafts/:draft_id`} component={DraftPreview} />
+          <Route path={`/drafts/:draft_id/edit`} component={CreateDeposit} />
           <Route exact path={`/drafts/:draft_id/settings`} component={DepositSettings} />
-          <Route path={`/drafts/:draft_id`} component={CreateDeposit} />
         </Switch>
       </Box>
     );
