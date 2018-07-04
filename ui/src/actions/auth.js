@@ -49,13 +49,7 @@ export function loginLocalUser(data) {
 
         localStorage.setItem('token', token);
 
-        dispatch(loginSuccess({
-          userId: response.data,
-          token: token,
-          profile: {
-            email: response.data
-          }
-        }));
+        dispatch(initCurrentUser());
       })
       .catch(function (error) {
         dispatch(loginError(error.response.data.error || "Something went wrong with the login. Please try again-"));
