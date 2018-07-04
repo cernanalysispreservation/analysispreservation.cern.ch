@@ -595,10 +595,6 @@ CAP_COLLECTION_TO_DOCUMENT_TYPE = {
 # version control.
 SECRET_KEY = "changeme"
 
-# Database
-# ============
-# SQLALCHEMY_DATABASE_URI = "postgresql://cap:cap@localhost:5432/cap"
-
 # Ana's database
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
 LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
@@ -822,25 +818,6 @@ DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
     'permission_factory_imp':
         "cap.modules.deposit.permissions:ReadDepositPermission",
 })
-
-#: Template for <invenio-records-form>
-DEPOSIT_FORM_TEMPLATES = {
-    "array": "array.html",
-    "button": "button.html",
-    "default": "default.html",
-    "number": "default.html",
-    "fieldset": "fieldset.html",
-    "radios": "radios.html",
-    "radios_inline": "radios_inline.html",
-    "select": "select.html",
-    "textarea": "textarea.html",
-    "tabarray": "tabarray.html",
-    "checkboxes": "checkboxes.html"
-}
-
-DEPOSIT_UI_JSTEMPLATE_FORM = 'templates/cap_records_js/form.html'
-
-DEPOSIT_FORM_TEMPLATES_BASE = 'templates/cap_records_js/decorators'
 
 #: Response messages for deposit
 DEPOSIT_RESPONSE_MESSAGES = dict(

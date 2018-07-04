@@ -28,7 +28,7 @@ from flask import (Blueprint, abort, current_app, jsonify, render_template,
                    request)
 from flask.views import View
 
-from cap.config import DEPOSIT_FORM_TEMPLATES, DEPOSIT_GROUPS
+from cap.config import DEPOSIT_GROUPS
 from cap.modules.deposit.utils import discover_schema
 from cap.utils import obj_or_import_string
 from flask_security import login_required
