@@ -45,10 +45,10 @@ class DepositSidebar extends React.Component {
             <SectionHeader
               label="Files | Data | Source Code"
               icon={
-                  <Anchor
+                  this.props.addAction ? <Anchor
                     onClick={this.props.toggleFilemanagerLayer}
                     size="xsmall"
-                    icon={<AddIcon />} />
+                    icon={<AddIcon />} /> : null
                   }
             />
             <DepositFilesList files={this.props.files || []} draftId={this.props.draftId}/>

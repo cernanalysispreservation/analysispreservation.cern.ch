@@ -881,8 +881,6 @@ REANA_SERVER_URL = os.environ.get(
 REANA_CLIENT_TOKEN = os.environ.get(
     'APP_REANA_CLIENT_TOKEN', None)
 
-
-
 # APP_DEFAULT_SECURE_HEADERS = {
 #     'force_https': False,
 #     'force_https_permanent': False,

@@ -24,19 +24,11 @@ class DefaultArrayField extends React.Component {
                 <Box flex={true}>
                   {element.children}
                 </Box>
-                {
-                  this.props.options && this.props.options.enableArrayUtils ?
-                  <ArrayUtils
-                    hasRemove={element.hasRemove}
-                    hasMoveDown={element.hasMoveDown}
-                    hasMoveUp={element.hasMoveUp}
-                    onDropIndexClick={element.onDropIndexClick}
-                    onReorderClick={element.onReorderClick}
-                    index={element.index}
-                  /> : null
-                }
               </ListItem>
-            )) : null
+            )) : 
+            <Box colorIndex="light-2" pad="small" margin={{top:"small"}}>
+              No {this.props.title}.
+            </Box>
           }
         </List>
       </Box>

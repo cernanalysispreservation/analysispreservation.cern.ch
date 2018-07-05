@@ -310,11 +310,13 @@ def login():
             return current_user.email
         except Exception as e:
             return jsonify({
-                "error": "Something went wrong with the login. Please try again"
+                "error":
+                    "Something went wrong with the login. Please try again"
             }), 400
     else:
         return jsonify({
-            "error": "The credentials you enter are not correct. Please try again.."
+            "error":
+                "The credentials you enter are not correct. Please try again"
         }), 403
 
 

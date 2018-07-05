@@ -184,7 +184,7 @@ export class CreateDeposit extends React.Component {
           </Layer>:null
           }
           <Box direction="row" justify="between" flex={true} wrap={false}>
-            <Sidebar draftId={this.props.draft_id} />
+            <Sidebar draftId={this.props.draft_id} addAction={true}/>
             {
               this.props.schema ?
               <DepositForm

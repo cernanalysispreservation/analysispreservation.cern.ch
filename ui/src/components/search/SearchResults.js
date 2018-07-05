@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 import { fromJS } from 'immutable';
+import {connect} from 'react-redux';
 
 import {
     Box,
@@ -42,6 +43,9 @@ class SearchResults extends React.Component {
                                 })
 
                                 let draft_id = item.metadata._deposit.id;
+
+                                let is_owner = item.metadata._deposit.owners.indexOf(this.props.user_id) > -1;
+                                let can_update = item.metadata._access["deposit-update"].user.indexOf(this.props.user_id) > -1;
 
                                 return (
                                     <ListItem key={item.created} pad={ this.props.size == "small" ? {vertical: "none", horizontal:"small"} : "medium" }>
@@ -87,8 +91,8 @@ class SearchResults extends React.Component {
                                                 </Box>
                                             </Box>
                                             <Box>
-                                                <Anchor path={`/drafts/${draft_id}`} icon={<Preview/>}/>
-                                                <Anchor path={`/drafts/${draft_id}/edit`} icon={<Edit/>}/>
+                                                { is_owner ? <Box key="owner"><span>Owner</span></Box> :null }
+                                                { can_update ?  <Anchor key="edit" path={`/drafts/${draft_id}/edit`} icon={<Edit/>}/> :null }
                                             </Box>
                                         </ListItem>
                                 );
@@ -109,19 +113,20 @@ SearchResults.propTypes = {
     history: PropTypes.object.isRequired,
 };
 
-// function mapStateToProps(state) {
-//   return {};
-// }
+function mapStateToProps(state) {
+  return {
+    user_id : state.auth.getIn(['currentUser', 'userId'])
+  };
+}
 
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     // actions: bindActionCreators(actions, dispatch)
-//   };
-// }
+function mapDispatchToProps(dispatch) {
+  return {
+    // actions: bindActionCreators(actions, dispatch)
+  };
+}
 
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SearchResults);
 
-export default withRouter(SearchResults);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(SearchResults));

@@ -29,7 +29,7 @@ class JSONShemaPreviewer extends React.Component {
 
   render() {
     return (
-          <Box flex={true} wrap={false}>
+          <Box size="xlarge" flex={true} wrap={false}>
             {
               this.props.schema ?
               <Form

@@ -97,42 +97,35 @@ class DepositHeader extends React.Component {
                 </Box>
                 :null
               }
-              {
-                this.props.saveData && this.props.draft_id ?
-                <SettingsAnchor draft_id={this.props.draft_id} />:null
-              }
-              { this.props.publishData ?
-                <Anchor
-                  icon={<ShareIcon/>}
-                  label="Share"
-                  onClick={this.props.draft_id ? this.props.publishData: null}
-                /> : null
-              }
               { this.props.saveData ?
-                <Anchor
-                  icon={<SaveIcon/>}
-                  label="Save"
-                  onClick={this.props.saveData}
-                /> : null
-              }
-              { this.props.saveData ?
-              <Menu responsive={true}
-                icon={<MoreIcon />}
+                [
+                  this.props.draft_id ? <SettingsAnchor draft_id={this.props.draft_id} />:null,
+                  status == "draft" ?
+                    <Anchor
+                      icon={<ShareIcon/>}
+                      label="Share"
+                      onClick={this.props.draft_id ? this.props.publishData: null}
+                    /> : null,
+                  <Anchor
+                    icon={<SaveIcon/>}
+                    label="Save"
+                    onClick={this.props.saveData}
+                  />,
+                  status == "draft" ?
+                    <Anchor
+                      label="Delete"
+                      icon={<TrashIcon/>}
+                      onClick={this.props.draft_id ? this.props.deleteDraft: null}
+                      primary={true}
+                    /> : null,
+                  status == "draft" && this.props.draft._deposit.pid ?
+                    <Anchor
+                      icon={<RefreshIcon/>}
+                      label="Discard"
+                      onClick={this.props.discardData}
+                    />:null
 
-                justify="center"
-                inline={false}>
-                  <Anchor
-                    label="Delete"
-                    icon={<TrashIcon/>}
-                    onClick={this.props.draft_id ? this.props.deleteDraft: null}
-                    primary={true}
-                  />
-                  <Anchor
-                    icon={<RefreshIcon/>}
-                    label="Discard"
-                    onClick={this.props.discardData}
-                  />
-              </Menu> : null
+                ] : null
               }
             </Menu>
         </Box>

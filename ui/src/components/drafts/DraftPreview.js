@@ -73,21 +73,21 @@ export class DraftPreview extends React.Component {
             {
               this.props.schema ?
               <Box flex={true}>
-                <Box pad="medium" colorIndex="light-2">
-
-                </Box>
-                <Box flex={true} size="xlarge"  pad="medium" colorIndex="light-1">
+                <Box pad="medium" colorIndex="light-2"></Box>
+              <Box flex={true}>
+                <Box flex={false} pad="medium">
                   <JSONSchemaPreviewer
                     formData={this.props.formData}
                     schema={_schema}
                     uiSchema={this.props.uiSchema || {}}
                     onChange={(change) => {
                       // console.log("CHANGE::",change);
-                      this.props.formDataChange(change.formData);
+                      // this.props.formDataChange(change.formData);
                     }}
                   >
                     <span></span>
                   </JSONSchemaPreviewer>
+                </Box>
                 </Box>
               </Box> : null
             }
@@ -103,6 +103,8 @@ function mapStateToProps(state) {
   return {
     schema: state.drafts.get('schema'),
     uiSchema: state.drafts.get('uiSchema'),
+    draft_id: state.drafts.getIn(['current_item', 'id']),
+    draft: state.drafts.getIn(['current_item', 'data']),
     published_id: state.drafts.getIn(['current_item', 'published_id']),
     formData: state.drafts.getIn(['current_item', 'formData'])
   };

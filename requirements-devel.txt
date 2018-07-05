@@ -1,7 +1,6 @@
--r requirements-local-forks.txt
--e .
-
 wdb
 ipdb
 flower
 flask-shell-ipython
+
+-r requirements-local-forks.txt

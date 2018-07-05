@@ -53,7 +53,6 @@ class ArrayFieldTemplate extends React.Component {
                     layerActive={this.state.layers[element.index]}
                     onClose={this._onFormLayerClose.bind(this, element.index)}
                     properties={element.children}
-                    remove={element.hasRemove ? element.onDropIndexClick(element.index) : null}
                   />
                   <Box flex={true} direction="row" wrap={false}>
                     <Box flex={true} pad="small">
@@ -62,9 +61,10 @@ class ArrayFieldTemplate extends React.Component {
                   </Box>
                 </ListItem>
               )) :
-              null
+              <Box colorIndex="light-2" pad="small" margin={{top:"small"}}>
+                No {this.props.title}.
+              </Box>
               // <ListPlaceholder
-              //   addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
               //   emptyMessage='You do not have any items at the moment.'
               //   unfilteredTotal={0}/>
             }

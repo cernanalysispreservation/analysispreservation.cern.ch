@@ -44,31 +44,37 @@ class ArrayFieldTemplate extends React.Component {
   _getArrayField(_label) {
     if (this.formRenderType == 'default') {
       return (
-      <Box>
+      <Box margin={{top: "small"}}>
         {_label}
-        <DefaultArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
+        <DefaultArrayField {...this.props} />
       </Box>
       );
     }
     else if (this.formRenderType == 'LayerArrayField') {
       return (
-        <Box>
+        <Box margin={{top: "small"}}>
           {_label}
-          <LayerArrayField _onAddClick={this._onAddClick.bind(this)} {...this.props} />
+          <LayerArrayField {...this.props} />
         </Box>
       );
     }
     else if (this.formRenderType == 'AccordionArrayField') {
+      // return (
+      //   <AccordionArrayField
+      //     header={<FieldHeader
+      //               title={<span>{this.props.title} <i> [{this.props.items.length} items] </i> </span>}
+      //               required={this.props.required}
+      //               description={this.props.description}
+      //               margin="none" />
+      //     }
+      //     _onAddClick={this._onAddClick.bind(this)}
+      //     {...this.props} />
+      // );
       return (
-        <AccordionArrayField
-          header={<FieldHeader
-                    title={<span>{this.props.title} <i> [{this.props.items.length} items] </i> </span>}
-                    required={this.props.required}
-                    description={this.props.description}
-                    margin="none" />
-          }
-          _onAddClick={this._onAddClick.bind(this)}
-          {...this.props} />
+        <Box margin={{top: "small"}}>
+          {_label}
+          <DefaultArrayField {...this.props} />
+        </Box>
       );
     }
     else {
@@ -82,7 +88,6 @@ class ArrayFieldTemplate extends React.Component {
         title={this.props.title}
         required={this.props.required}
         description={this.props.description}
-        onArrayAddClick={this._onAddClick.bind(this)}
         margin="none" />
     );
 
