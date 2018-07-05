@@ -7,7 +7,7 @@ const SwitchWidget = function(props) {
   // TOFIX onBlur, onFocus
   let _onChange = event => {
     if (event.target.checked) {
-      props.onChange(true);
+      props.onChange(props.schema.type == "string" ? "true" : true);
     } else {
       props.onChange(undefined);
     }
