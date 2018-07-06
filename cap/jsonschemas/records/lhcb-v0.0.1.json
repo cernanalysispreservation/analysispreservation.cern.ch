@@ -195,20 +195,53 @@
             }
          }
       },
-      "user_analysis":{
-         "title":"User Analysis",
-         "type":"object",
-         "properties":{
-            "gitlab_link":{
-               "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
-               "title":"Gitlab repository of the analysis"
-            },
-            "basic_script":{
-               "$ref":"https://analysispreservation.cern.ch/schemas/deposits/common/file-grabber-v0.0.1.json",
-               "title":"Basic script to start the analysis"
+        "user_analysis": {
+            "title": "User Analysis",
+            "type": "object",
+            "properties": {
+                "gitlab_links": {
+                    "title": "Gitlab repositories of the analysis",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "x-cap-file": {}
+                    }
+                },
+                "docker_registries": {
+                    "title": "Docker images of the analysis",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "x-cap-file": {}
+                    }
+                },
+                "basic_scripts": {
+                    "title": "Basic scripts",
+                    "type": "object",
+                    "properties": {
+                        "scripts": {
+                            "title": "Files/Scripts",
+                            "type": "array",
+                            "items":{
+                                "type": "string",
+                                "x-cap-file": {}
+                            }
+                        },
+                        "command": {
+                            "type": "string",
+                            "title": "Command to execute code"
+                        }
+                    }
+                },
+                "additional_repos": {
+                    "type": "array",
+                    "title": "Additional Repositories",
+                    "items": {
+                        "type": "string"
+                    }
+                } 
             }
-         }
-      },
+        },
       "additional_resources":{
          "title":"Additional Resources",
          "description":"Please provide information about the additional resources of the analysis",
