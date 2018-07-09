@@ -33,6 +33,7 @@ EXEMPT_METHODS = set(['OPTIONS'])
 
 
 def login_required(f):
+    """Login required decorator."""
     @wraps(f)
     def decorated_view(*args, **kwargs):
         if request.method in EXEMPT_METHODS:

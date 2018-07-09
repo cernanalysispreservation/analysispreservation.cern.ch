@@ -36,6 +36,7 @@ from invenio_records_rest.facets import (_create_filter_dsl, _post_filter,
 
 def nested_filter(path, field):
     """Create a nested filter.
+
     :param path:  Path to nested object.
     :param field: Field name.
     :returns: Function that returns Nested query.
@@ -48,7 +49,6 @@ def nested_filter(path, field):
 
 def _aggregations(search, definitions, urlkwargs, filters):
     """Add aggregations to query."""
-
     def without(d, keys):
         """Remove keys from dict."""
         new_d = d.copy()

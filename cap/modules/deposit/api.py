@@ -71,6 +71,7 @@ DEPOSIT_ACTIONS = [
 
 
 def DEPOSIT_ACTIONS_NEEDS(id):
+    """Method to construct action needs."""
     return {
         "deposit-read": DepositReadActionNeed(str(id)),
         "deposit-update": DepositUpdateActionNeed(str(id)),
@@ -79,6 +80,7 @@ def DEPOSIT_ACTIONS_NEEDS(id):
 
 
 def add_owner_permissions(deposit):
+    """Adds permissions for deposit owner."""
     with db.session.begin_nested():
         access = set_user_permissions(
             current_user,
@@ -101,6 +103,7 @@ def set_user_permissions(
         session,
         access,
         force=False):
+    """Adds/Removes permissions for user for a deposit."""
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -150,6 +153,7 @@ def set_user_permissions(
 
 
 def set_egroup_permissions(role, permissions, deposit, session, access):
+    """Adds/Removes permissions for e-group for a deposit."""
     _permissions = (p for p in permissions if p.get(
         "action", "") in DEPOSIT_ACTIONS)
 
@@ -189,6 +193,7 @@ def set_egroup_permissions(role, permissions, deposit, session, access):
 
 
 def construct_access():
+    """Constructs access object for deposit."""
     access = {}
     for a in DEPOSIT_ACTIONS:
         access[a] = {"user": [], "roles": []}
@@ -231,6 +236,7 @@ def download_repo(pid, url, filename):
 
 
 def task_commit(record, response, filename, total):
+    """Commits file to the record."""
     record.files[filename].file.set_contents(
         response,
         default_location=record.files.bucket.location.uri,
@@ -271,6 +277,7 @@ class CAPDeposit(Deposit):
 
     def build_deposit_schema(self, record):
         """Convert record schema to a valid deposit schema.
+
         :param record: The record used to build deposit schema.
         :returns: The absolute URL to the schema or `None`.
         """
@@ -348,6 +355,7 @@ class CAPDeposit(Deposit):
 
     @mark_as_action
     def permissions(self, pid=None):
+        """Permissions action."""
         data = request.get_json()
 
         if self.get('_access') is None:

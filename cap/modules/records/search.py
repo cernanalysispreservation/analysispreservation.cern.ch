@@ -13,8 +13,7 @@ from flask_principal import Permission
 
 
 def records_filter(experiments_needs, admin_needs=None):
-    """Filter list of deposits.
-    """
+    """Filter list of deposits."""
     if current_user.is_authenticated:
         user_experiments = []
         if admin_needs and Permission(*admin_needs).can():
@@ -42,9 +41,10 @@ def records_filter(experiments_needs, admin_needs=None):
 
 
 def cap_record_search_factory(needs, admin_needs):
-
+    """Search factory wrapper."""
     class CapRecordSearch(RecordsSearch):
         """Default search class."""
+
         # exp_permissions = []
 
         def __init__(self, **kwargs):

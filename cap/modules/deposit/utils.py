@@ -33,7 +33,7 @@ from .errors import WrongJSONSchemaError
 
 
 def clean_empty_values(data):
-    """Removes empty values from model"""
+    """Removes empty values from model."""
     if not isinstance(data, (dict, list)):
         return data
     if isinstance(data, list):
@@ -43,8 +43,7 @@ def clean_empty_values(data):
 
 
 def discover_schema(deposit):
-    """If schema url not passed directly, set it based on $ana_type field"""
-
+    """If schema url not passed directly, set it based on $ana_type field."""
     if '$schema' not in deposit:
         deposit_groups = current_app.config.get('DEPOSIT_GROUPS', None)
 

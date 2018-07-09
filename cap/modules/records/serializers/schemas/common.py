@@ -22,6 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""CAP Marshmallow Schemas."""
+
 from flask import current_app, has_request_context, url_for
 from marshmallow import Schema, ValidationError, fields, validates_schema
 from werkzeug.routing import BuildError
@@ -145,6 +147,7 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
         return links
 
     def get_access(self, obj):
+        """Returns access object."""
         _uuid = obj.get('pid', None)
         if _uuid is not None:
             _uuid = _uuid.object_uuid

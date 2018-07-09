@@ -31,10 +31,13 @@ from utils import parse_url
 
 
 class RepoImporter:
+    """Repo Importer class."""
+
     __metaclass__ = ABCMeta
 
     @staticmethod
     def create(url, ref=None):
+        """Create github or gitalb repo."""
         host, user, repo = parse_url(url)
         repo_name = "/".join([user, repo])
 
@@ -52,12 +55,15 @@ class RepoImporter:
 
     @abstractmethod
     def archive_repository(self):
+        """Abstract method for achiving repo."""
         pass
 
     @abstractmethod
     def archive_file(self, file):
+        """Abstract method for achiving file."""
         pass
 
     @abstractmethod
     def get_url_of_repository_archive(self):
+        """Abstract method for fetching archive url."""
         pass

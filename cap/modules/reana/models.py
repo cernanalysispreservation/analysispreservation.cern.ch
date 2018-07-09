@@ -35,6 +35,7 @@ from sqlalchemy_utils.types import JSONType, UUIDType
 
 class ReanaJob(db.Model):
     """Model defining REANA job."""
+
     __tablename__ = 'reana'
 
     id = db.Column(UUIDType,

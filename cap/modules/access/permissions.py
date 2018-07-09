@@ -33,6 +33,7 @@ from flask_principal import RoleNeed
 
 def admin_permission_factory(view):
     """Default factory for creating a permission for an admin.
+
     It tries to load a :class:`invenio_access.permissions.DynamicPermission`
     instance if `invenio_access` is installed.
     Otherwise, it loads a :class:`flask_principal.Permission` instance.
@@ -40,7 +41,6 @@ def admin_permission_factory(view):
         protected.
     :returns: Permission instance.
     """
-
     admin_needs = set([RoleNeed('admin_superuser')]) | \
         set([g for g in current_app.config['SUPERUSER_EGROUPS']])
 

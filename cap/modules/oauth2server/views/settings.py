@@ -74,6 +74,7 @@ def client_getter():
 
 def token_getter(is_personal=True, is_internal=False):
     """Decorator to retrieve Token object and check user permission.
+
     :param is_personal: Search for a personal token. (Default: ``True``)
     :param is_internal: Search for a internal token. (Default: ``False``)
     """
@@ -104,6 +105,7 @@ def token_getter(is_personal=True, is_internal=False):
 #
 
 def validate_scope(scope):
+    """Scope validation."""
     scopes_choices = current_oauth2server.scope_choices()
     sc = [s[0] for s in scopes_choices]
     if scope not in sc:
@@ -111,11 +113,15 @@ def validate_scope(scope):
 
 
 class TokenSchema(Schema):
+    """Schema class for Token."""
+
     name = fields.Str(required=True, validate=[validate.Length(min=1,)])
     scopes = fields.List(fields.Str(validate=validate_scope))
 
 
 class ClientSchema(Schema):
+    """Schema class for Client."""
+
     name = fields.Str(required=True, validate=[validate.Length(min=1,)])
     description = fields.Str(default='')
     website = fields.Url(required=True)

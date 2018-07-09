@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP ALICE permissions"""
+"""CAP ALICE permissions."""
 
 from cap.modules.experiments.permissions.common import \
     get_collaboration_group_needs, get_superuser_needs
@@ -40,4 +40,5 @@ alice_permission = DynamicPermission(*alice_group_need)
 
 
 def alice_permission_factory(*args):
+    """ALICE permission factory."""
     return DynamicPermission(*alice_group_need)

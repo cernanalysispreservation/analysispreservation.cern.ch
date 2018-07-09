@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP deposit permissions"""
+"""CAP deposit permissions."""
 
 from alice import alice_permission, alice_permission_factory
 from atlas import atlas_permission, atlas_permission_factory

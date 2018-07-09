@@ -46,8 +46,7 @@ filenames = [
 
 @shared_task
 def dump_lhcb_analyses_to_json():
-    """ Parse shelve files with analyses to json. """
-
+    """Parse shelve files with analyses to json."""
     base = {}
     title_list = []
     lhcb_dbases_dir = current_app.config.get('LHCB_DB_FILES_LOCATION', '')

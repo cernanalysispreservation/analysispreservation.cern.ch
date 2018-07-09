@@ -33,17 +33,11 @@ from HTMLParser import HTMLParser
 import requests
 from flask import current_app
 
-from cap.modules.deposit.api import (CAPDeposit, construct_access,
-                                     set_egroup_permissions)
+from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
                                         bulk_index_from_source,
                                         get_entry_uuid_by_unique_field)
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
-from invenio_accounts.models import Role
-from invenio_db import db
-from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
 
 CADI_FIELD_TO_CAP_MAP = {
@@ -74,6 +68,7 @@ DAS_DATASETS_MAPPING = {
 
 
 def construct_cadi_entry(cadi_id, data):
+    """Cosntructs CADI entry."""
     schema = \
         'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(
             current_app.config.get('JSONSCHEMAS_HOST'))
@@ -92,6 +87,7 @@ def construct_cadi_entry(cadi_id, data):
 
 
 def get_entries_from_cadi_db():
+    """Retrieves entries from CADI database."""
     url = current_app.config.get('CADI_GET_ALL_URL')
     data = {"selWGs": "all"}
 
@@ -126,7 +122,6 @@ def get_updated_cadi_lines(from_date=None, until_date=None):
 
 def synchronize_cadi_entries(limit=None):
     """Add/update all CADI entries connecting with CADI database."""
-
     entries = get_entries_from_cadi_db()
     for entry in entries[0:limit]:
         # remove artefact from code names
@@ -166,8 +161,7 @@ def synchronize_cadi_entries(limit=None):
 
 def cache_das_datasets_in_es_from_file(file):
     """
-    Cache datasets names from DAS in ES,
-    so can be used for autocompletion.
+    Cache datasets names from DAS in ES, so can be used for autocompletion.
 
     As change has to be tranparent
     * put everything under index with a different name

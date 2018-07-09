@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP ATLAS permissions"""
+"""CAP ATLAS permissions."""
 
 from cap.modules.experiments.permissions.common import \
     get_collaboration_group_needs, get_superuser_needs
@@ -40,4 +40,5 @@ atlas_permission = DynamicPermission(*atlas_group_need)
 
 
 def atlas_permission_factory(*args):
+    """ATLAS Permission factory."""
     return DynamicPermission(*atlas_group_need)

@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP LHCb permissions"""
+"""CAP LHCb permissions."""
 
 from cap.modules.experiments.permissions.common import \
     get_collaboration_group_needs, get_superuser_needs
@@ -40,4 +40,5 @@ lhcb_permission = DynamicPermission(*lhcb_group_need)
 
 
 def lhcb_permission_factory(*args):
+    """LHCB Permission factory."""
     return DynamicPermission(*lhcb_group_need)

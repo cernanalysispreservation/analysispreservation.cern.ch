@@ -23,6 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
+"""CAP Cli."""
+
 import click
 
 from cap.modules.experiments.utils.cms import \

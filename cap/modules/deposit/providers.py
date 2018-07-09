@@ -26,6 +26,7 @@ class DepositUUIDProvider(BaseProvider):
     @classmethod
     def create(cls, object_type=None, object_uuid=None, **kwargs):
         """Create a new record identifier.
+
         Note: if the object_type and object_uuid values are passed, then the
         PID status will be automatically setted to
         :attr:`invenio_pidstore.models.PIDStatus.REGISTERED`.

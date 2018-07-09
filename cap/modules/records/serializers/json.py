@@ -23,6 +23,8 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
+"""CAP Basic Serializers."""
+
 from __future__ import absolute_import, print_function
 
 from invenio_accounts.models import User
@@ -50,6 +52,7 @@ class CAPSchemaSerializer(JSONSerializer):
 
 class BasicJSONSerializer(JSONSerializer):
     """Serializer for deposit client in JSON."""
+
     def _filter_record_fields(self, record):
         metadata = record.get('metadata', {})
 
@@ -59,7 +62,7 @@ class BasicJSONSerializer(JSONSerializer):
         return record
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
-        """Remove unnecessary values for client"""
+        """Remove unnecessary values for client."""
         result = super(BasicJSONSerializer, self).preprocess_record(
             pid, record, links_factory=links_factory
         )
@@ -75,11 +78,10 @@ class BasicJSONSerializer(JSONSerializer):
 
 
 class PermissionsJSONSerializer(JSONSerializer):
-    """Serializer for returning deposit
-    permissions in JSON"""
+    """Serializer for returning deposit permissions in JSON."""
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
-        """Remove unnecessary values for client"""
+        """Remove unnecessary values for client."""
         result = super(PermissionsJSONSerializer, self).preprocess_record(
             pid, record, links_factory=links_factory
         )

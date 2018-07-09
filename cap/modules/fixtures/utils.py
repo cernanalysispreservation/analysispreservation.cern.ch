@@ -1,3 +1,29 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2018 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+"""Util methods for fixtures."""
+
 import json
 
 from flask import current_app
@@ -14,6 +40,7 @@ from invenio_search.proxies import current_search_client as es
 
 
 def construct_draft_obj(schema, data):
+    """Contructs a draft object."""
     entry = {
         '$schema': 'https://{}/schemas/deposits/records/{}.json'.format(
             current_app.config.get('JSONSCHEMAS_HOST'),
@@ -26,6 +53,7 @@ def construct_draft_obj(schema, data):
 
 
 def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
+    """Returns record by uuid."""
     rs = RecordsSearch(index=index)
     res = rs.query(Q('match',
                      **dict_unique_field_value)).execute().hits.hits
@@ -37,6 +65,7 @@ def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
 
 
 def add_read_permission_for_egroup(deposit, egroup):
+    """Adds read permission for egroup."""
     with db.session.begin_nested():
         role = Role.query.filter_by(name=egroup).one()
         permissions = [{
@@ -55,6 +84,7 @@ def add_read_permission_for_egroup(deposit, egroup):
 
 
 def add_drafts_from_file(file_path, schema, egroup, limit=None):
+    """Adds drafts from a specified file."""
     with open(file_path, 'r') as fp:
         entries = json.load(fp)
         for entry in entries[0:limit]:
@@ -66,6 +96,7 @@ def add_drafts_from_file(file_path, schema, egroup, limit=None):
 
 
 def bulk_index_from_source(index_name, doc_type, source):
+    """Indexes from source."""
     actions = [{
         "_index": index_name,
         "_type": doc_type,

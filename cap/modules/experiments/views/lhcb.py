@@ -49,6 +49,7 @@ lhcb_bp = Blueprint(
 @lhcb_bp.route('/analysis', methods=['GET'])
 @lhcb_permission.require(403)
 def lhcb_get_analysis():
+    """Retrieves lhcb analysis."""
     query = unquote(request.args.get('query', ''))
     location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
@@ -64,6 +65,7 @@ def lhcb_get_analysis():
 @lhcb_bp.route('/analysis/details', methods=['GET'])
 @lhcb_permission.require(403)
 def lhcb_get_analysis_data():
+    """Retrieves lhcb analysis data."""
     title = unquote(request.args.get('title', ''))
     location = current_app.config.get('LHCB_DB_FILES_LOCATION', '')
 
@@ -78,6 +80,7 @@ def lhcb_get_analysis_data():
 @lhcb_bp.route('/analysis/collisiondata/', methods=['GET'])
 @lhcb_permission.require(403)
 def lhcb_get_collision_data():
+    """Retrieves lhcb analysis collision data."""
     stripping_line = request.args.get('stripping_line', '')
     params = parse_stripping_line(unquote(stripping_line))
     url = current_app.config.get('LHCB_GETCOLLISIONDATA_URL', '')
@@ -109,6 +112,7 @@ def lhcb_get_collision_data():
 @lhcb_bp.route('/analysis/platforms', methods=['GET'])
 @lhcb_permission.require(403)
 def lhcb_get_platforms():
+    """Retrieves lhcb analysis platforms."""
     app = request.args.get('application', '').replace(' ', '-')
     url = current_app.config.get('LHCB_GETPLATFORM_URL', '') + app
 
@@ -125,6 +129,7 @@ def lhcb_get_platforms():
 
 
 def get_soft_info(url):
+    """Retrieves lhcb analysis soft info."""
     soft = version = ''
 
     response = requests.get(url).json()
@@ -136,6 +141,7 @@ def get_soft_info(url):
 
 
 def parse_stripping_line(stripping_line):
+    """Parses stripping line."""
     regex = r'Collision(?P<year>\d{2})' + \
         r'.*(?P<reco>Reco[^/]*)' + \
         r'.*(?P<stripping>Stripping[^/]*)'

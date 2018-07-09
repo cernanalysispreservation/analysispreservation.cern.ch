@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-"""CAP CMS permissions"""
+"""CAP CMS permissions."""
 
 from cap.modules.experiments.permissions.common import \
     get_collaboration_group_needs, get_superuser_needs
@@ -40,4 +40,5 @@ cms_permission = DynamicPermission(*cms_group_need)
 
 
 def cms_permission_factory(*args):
+    """CMS permission factory."""
     return DynamicPermission(*cms_group_need)

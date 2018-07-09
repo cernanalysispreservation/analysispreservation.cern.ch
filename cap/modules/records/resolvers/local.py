@@ -38,7 +38,6 @@ from cap.config import JSONSCHEMAS_HOST
                     host=JSONSCHEMAS_HOST)
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
-
     _schema_path = pkg_resources.resource_filename(
         'cap', 'jsonschemas/' + path)
 

@@ -30,8 +30,10 @@ import repo_importer
 
 
 class GithubImporter(repo_importer.RepoImporter):
+    """Github importer class."""
 
     def __init__(self, repo, ref=None, token=None):
+        """Initialize repo."""
         if repo.count('/') > 1:
             _host, _user, _repo = parse_url(repo)
             self.repo = '{}/{}'.format(_user, _repo)

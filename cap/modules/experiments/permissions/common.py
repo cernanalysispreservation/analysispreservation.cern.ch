@@ -22,11 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""Permissions common methods."""
 
 from cap.config import CAP_COLLAB_EGROUPS, SUPERUSER_EGROUPS
 
 
 def get_collaboration_group_needs(collaboration_name=None):
+    """Retrieve collaboration group needs."""
     if collaboration_name in CAP_COLLAB_EGROUPS:
         return CAP_COLLAB_EGROUPS[collaboration_name]
     else:
@@ -34,6 +36,7 @@ def get_collaboration_group_needs(collaboration_name=None):
 
 
 def get_superuser_needs():
+    """Retrieve superuser needs."""
     if SUPERUSER_EGROUPS:
         return SUPERUSER_EGROUPS
     else:

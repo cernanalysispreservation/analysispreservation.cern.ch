@@ -49,23 +49,28 @@ DepositDeleteActionNeed = partial(ParameterizedActionNeed, 'deposit-delete')
 
 
 def deposit_read_need(record):
+    """Deposit read action need."""
     return DepositReadActionNeed(str(record.id))
 
 
 def deposit_admin_need(record):
+    """Deposit admin action need."""
     return DepositAdminActionNeed(str(record.id))
 
 
 def deposit_update_need(record):
+    """Deposit update action need."""
     return DepositUpdateActionNeed(str(record.id))
 
 
 def deposit_delete_need(record):
+    """Deposit delete action need."""
     return DepositDeleteActionNeed(str(record.id))
 
 
 class DepositPermission(Permission):
     """Generic deposit permission."""
+
     actions = {
         "read": deposit_read_need,
         "update": deposit_update_need,
@@ -74,6 +79,7 @@ class DepositPermission(Permission):
 
     def __init__(self, record, action):
         """Constructor.
+
         Args:
             deposit: deposit to which access is requested.
         """
@@ -93,7 +99,7 @@ class DepositPermission(Permission):
         super(DepositPermission, self).__init__(*_needs)
 
     def _load_deposit_group_permissions(self):
-
+        """Load deposit group permissions."""
         _deposit_group = self._get_deposit_group_info()
 
         if not _deposit_group:
@@ -110,8 +116,7 @@ class DepositPermission(Permission):
                 self._needs.add(_need)
 
     def _get_deposit_group_info(self):
-        """Retrieve deposit group information for specific schema"""
-
+        """Retrieve deposit group information for specific schema."""
         self.deposit['$schema'] = discover_schema(self.deposit)
 
         try:
@@ -150,6 +155,7 @@ class DepositPermission(Permission):
         return super(DepositPermission, self).allows(identity)
 
     def can(self):
+        """Check if user can access deposit."""
         owners = self.deposit.get('_deposit', {}).get('owners', [])
         superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
         # Check if the user is superuser
@@ -163,16 +169,18 @@ class DepositPermission(Permission):
 
 
 class UpdateDepositPermission(DepositPermission):
-    """Deposit update permission"""
+    """Deposit update permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(UpdateDepositPermission, self).__init__(record, 'update')
 
 
 class CreateDepositPermission(DepositPermission):
-    """Deposit update permission"""
+    """Deposit update permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         # Get payload and pass it as record to get the '$schema'
         record = request.get_json(force=True)
 
@@ -180,30 +188,36 @@ class CreateDepositPermission(DepositPermission):
 
 
 class ReadDepositPermission(DepositPermission):
-    """Deposit read permission"""
+    """Deposit read permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(ReadDepositPermission, self).__init__(record, 'read')
 
 
 class DeleteDepositPermission(DepositPermission):
-    """Deposit delete permission"""
+    """Deposit delete permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(DeleteDepositPermission, self).__init__(record, 'delete')
 
 
 def read_permission_factory(record):
+    """Deposit read permission factory."""
     return Permission(deposit_read_need(record.id))
 
 
 def admin_permission_factory(record):
+    """Deposit admin permission factory."""
     return Permission(deposit_admin_need(record.id))
 
 
 def update_permission_factory(record):
+    """Deposit update permission factory."""
     return Permission(deposit_update_need(record.id))
 
 
 def delete_permission_factory(record):
+    """Deposit delete permission factory."""
     return Permission(deposit_delete_need(record.id))

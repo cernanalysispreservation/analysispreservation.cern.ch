@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-""" CAP Record permissions. """
+"""CAP Record permissions."""
 
 from functools import partial
 
@@ -45,23 +45,28 @@ RecordDeleteActionNeed = partial(ParameterizedActionNeed, 'record-delete')
 
 
 def record_read_need(record):
+    """Record read action."""
     return RecordReadActionNeed(str(record.id))
 
 
 def record_admin_need(record):
+    """Record admin action."""
     return RecordAdminActionNeed(str(record.id))
 
 
 def record_update_need(record):
+    """Record update action."""
     return RecordUpdateActionNeed(str(record.id))
 
 
 def record_delete_need(record):
+    """Record delete action."""
     return RecordDeleteActionNeed(str(record.id))
 
 
 class RecordPermission(DynamicPermission):
     """Generic deposit permission."""
+
     actions = {
         "read": record_read_need,
         "update": record_update_need,
@@ -70,6 +75,7 @@ class RecordPermission(DynamicPermission):
 
     def __init__(self, record, action, exp_needs=None, admin_needs=None):
         """Constructor.
+
         Args:
             deposit: deposit to which access is requested.
         """
@@ -96,7 +102,7 @@ class RecordPermission(DynamicPermission):
             abort(403)
 
     def _get_record_group_info(self):
-        """Retrieve deposit group information for specific schema"""
+        """Retrieve deposit group information for specific schema."""
         try:
             schema = self.record \
                 .get("$schema", None).split('/schemas/', 1)[1]
@@ -133,6 +139,7 @@ class RecordPermission(DynamicPermission):
         return super(RecordPermission, self).allows(identity)
 
     def can(self):
+        """Whether user is in the owners of the deposit."""
         owners = self.record.get('_deposit', {}).get('owners', [])
 
         if g.identity.id in owners:
@@ -142,28 +149,30 @@ class RecordPermission(DynamicPermission):
 
 
 class UpdateRecordPermission(RecordPermission):
-    """Deposit update permission"""
+    """Deposit update permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(UpdateRecordPermission, self).__init__(record, 'update')
 
 
 class CreateRecordPermission(RecordPermission):
-    """Deposit update permission"""
+    """Deposit create permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         # Get payload and pass it as record to get the '$schema'
         record = request.get_json(force=True)
         super(CreateRecordPermission, self).__init__(record, 'create')
 
 
 def record_read_permission_factory(exp_needs, admin_needs):
-
+    """Record permission factory method."""
     class ReadRecordPermission(RecordPermission):
-        """Deposit read permission"""
+        """Deposit read permission."""
 
         def __init__(self, record):
-            # if
+            """Initialize state."""
             super(ReadRecordPermission, self).__init__(
                 record, 'read', exp_needs, admin_needs)
 
@@ -171,30 +180,36 @@ def record_read_permission_factory(exp_needs, admin_needs):
 
 
 class ReadRecordPermission(RecordPermission):
-    """Deposit read permission"""
+    """Deposit read permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(ReadRecordPermission, self).__init__(record, 'read')
 
 
 class DeleteRecordPermission(RecordPermission):
-    """Deposit delete permission"""
+    """Deposit delete permission."""
 
     def __init__(self, record):
+        """Initialize state."""
         super(DeleteRecordPermission, self).__init__(record, 'delete')
 
 
 def read_permission_factory(record):
+    """Read permission factory."""
     return DynamicPermission(record_read_need(record.id))
 
 
 def admin_permission_factory(record):
+    """Admin permission factory."""
     return DynamicPermission(record_admin_need(record.id))
 
 
 def update_permission_factory(record):
+    """Update permission factory."""
     return DynamicPermission(record_update_need(record.id))
 
 
 def delete_permission_factory(record):
+    """Delete permission factory."""
     return DynamicPermission(record_delete_need(record.id))

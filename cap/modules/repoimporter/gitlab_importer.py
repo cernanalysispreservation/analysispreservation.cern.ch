@@ -30,8 +30,10 @@ from utils import parse_url
 
 
 class GitlabImporter(repo_importer.RepoImporter):
+    """Gitlab importer class."""
 
     def __init__(self, repo, ref=None, token=None):
+        """Initialize repo."""
         if repo.count('/') > 1:
             _host, _user, _repo = parse_url(repo)
             self.repo = '{}/{}'.format(_user, _repo)
@@ -45,6 +47,7 @@ class GitlabImporter(repo_importer.RepoImporter):
         return self.get_url_of_repository_archive()
 
     def archive_file(self, file):
+        """Retrieve file URL via python-gitlab."""
         pass
 
     def get_url_of_repository_archive(self):

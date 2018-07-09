@@ -54,7 +54,6 @@ class CAPAccess(object):
 
 def authenticated_query(query, **kwargs):
     """Enhance query with user authentication rules."""
-
     collaborations_dictionary = {
         'ALICE': [],
         'ATLAS': [

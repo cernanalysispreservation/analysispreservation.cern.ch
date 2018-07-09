@@ -37,7 +37,6 @@ import simplejson as json
                     host='analysispreservation.cern.ch')
 def resolve_cap_schemas(path):
     """Resolve CAP JSON schemas."""
-
     _schema_path = pkg_resources.resource_filename(
         'cap', 'jsonschemas/' + path)
 

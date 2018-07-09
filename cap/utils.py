@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""CAP general utils"""
+"""CAP general utils."""
 
 
 from __future__ import absolute_import, print_function
@@ -37,11 +37,11 @@ _records_state = LocalProxy(lambda: current_app.extensions['invenio-records'])
 
 def obj_or_import_string(value, default=None):
     """Import string or return object.
+
     :params value: Import path or class object to instantiate.
     :params default: Default object to return if passed value is None.
     :returns: The imported object.
     """
-
     if isinstance(value, six.string_types):
         return import_string(value)
     elif value:

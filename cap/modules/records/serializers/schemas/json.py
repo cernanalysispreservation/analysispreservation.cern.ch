@@ -22,6 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""CAP Basic Schemas."""
+
 from __future__ import absolute_import, print_function
 
 from marshmallow import Schema, fields
@@ -79,6 +81,7 @@ class BasicDepositSchema(Schema):
 
 class PermissionsDepositSchema(Schema):
     """Schema for files in deposit."""
+
     permissions = fields.Raw()
 
 
