@@ -42,6 +42,10 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
+extras_require['ldap'] = [
+    'python-ldap>=2.4.39'
+]
+
 setup_requires = [
     'Babel>=2.4.0',
     'pytest-runner>=3.0.0,<5',
@@ -53,7 +57,6 @@ install_requires = [
     'Flask-Cache>=0.13.1',
     'Flask-Debugtoolbar>=0.10.1',
     # CAP specific libraries
-    'python-ldap>=2.4.39',
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
 

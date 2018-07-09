@@ -39,6 +39,7 @@ Further Reading
 	glossary 
 	support 
 	related-projects
+	README
 	
 License
 -------

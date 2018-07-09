@@ -42,7 +42,7 @@ CAP-client
 -------------
 
 The CAP-client is a command-line tool for preserving analyses.
-It is implemented as a python package and its documentation can be found `here <https://cap-client.readthedocs.io>`_.
+It is implemented as a python package and its documentation can be found in the `CAP Client docs <https://cap-client.readthedocs.io>`_.
 
 Setting up the cap-client configuration:
 
@@ -60,4 +60,4 @@ Editing analysis metadata:
 Reusable Analyses REANA
 ---------------------------
 
-REANA is a reusable and reproducible research data analysis platform. It helps researchers to structure their input data, analysis code, containerised environments and computational workflows so that the analysis can be instantiated and run on remote compute clouds. REANA was born to target the use case of particle physics analyses, but is applicable to any scientific discipline. The system paves the way towards reusing and reinterpreting preserved data analyses even several years after the original publication. Find comprehensive documentation about the REANA project `here <https://reana.readthedocs.io/en/latest/>`_.
+REANA is a reusable and reproducible research data analysis platform. It helps researchers to structure their input data, analysis code, containerised environments and computational workflows so that the analysis can be instantiated and run on remote compute clouds. REANA was born to target the use case of particle physics analyses, but is applicable to any scientific discipline. The system paves the way towards reusing and reinterpreting preserved data analyses even several years after the original publication. Find comprehensive documentation about `the REANA project <https://reana.readthedocs.io/en/latest/>`_.
