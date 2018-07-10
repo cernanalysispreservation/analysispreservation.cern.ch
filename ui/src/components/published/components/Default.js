@@ -1,29 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import {
-  Box,
-  Heading,
-  Sidebar,
-  Header,
-  Title,
-  Button
-} from 'grommet';
+import { Box, Heading, Sidebar, Header, Title, Button } from "grommet";
 
-import {withRouter} from 'react-router';
+import { withRouter } from "react-router";
 
-import DepositFilesList from '../../deposit/components/DepositFilesList';
-import CirclePlayIcon from 'grommet/components/icons/base/CirclePlay';
-import {connect} from 'react-redux';
+import DepositFilesList from "../../deposit/components/DepositFilesList";
+import CirclePlayIcon from "grommet/components/icons/base/CirclePlay";
+import { connect } from "react-redux";
 
-const RerunButton = withRouter(({ history, record_id=record_id }) => (
-        <Button
-          icon={<CirclePlayIcon/>}
-          label="Rerun"
-          onClick={() => history.push(`/published/${record_id}/rerun`)} 
-        />
-    ))
-
+const RerunButton = withRouter(({ history, record_id = record_id }) => (
+  <Button
+    icon={<CirclePlayIcon />}
+    label="Rerun"
+    onClick={() => history.push(`/published/${record_id}/rerun`)}
+  />
+));
 
 class DefaultPublished extends React.Component {
   constructor(props) {
@@ -34,17 +26,28 @@ class DefaultPublished extends React.Component {
     let item = this.props.item;
     let created = item ? item.created : null;
     return (
-      <Box colorIndex="neutral-1-a" direction="row" justify="between" flex={true} wrap={false}>
+      <Box
+        colorIndex="neutral-1-a"
+        direction="row"
+        justify="between"
+        flex={true}
+        wrap={false}
+      >
         <Sidebar full={false} size="small">
-          <Header pad="medium"
-                  justify="between">
-            <Title>
-              Files
-            </Title>
+          <Header pad="medium" justify="between">
+            <Title>Files</Title>
           </Header>
-          <DepositFilesList files={this.props.files || []} draftId={this.props.draftId}/>
+          <DepositFilesList
+            files={this.props.files || []}
+            draftId={this.props.draftId}
+          />
         </Sidebar>
-        <Box size={{width: {min: "large"}}} flex={true} pad="medium" wrap={false}>
+        <Box
+          size={{ width: { min: "large" } }}
+          flex={true}
+          pad="medium"
+          wrap={false}
+        >
           <Box alignContent="center" align="center" flex={true} wrap={false}>
             <Title>{item.general_title}</Title>
             <Box size="xlarge" pad="large" flex={false} wrap={false}>
@@ -59,9 +62,8 @@ class DefaultPublished extends React.Component {
           </Box>
         </Box>
         <Sidebar full={false} size="small">
-        <Header pad='medium'
-                  justify='between'>
-          <RerunButton record_id={this.props.item.control_number} />
+          <Header pad="medium" justify="between">
+            <RerunButton record_id={this.props.item.control_number} />
           </Header>
         </Sidebar>
       </Box>
@@ -73,19 +75,17 @@ DefaultPublished.propTypes = {
   item: PropTypes.object
 };
 
-
 function mapStateToProps(state) {
   return {
-    files: state.drafts.getIn(['current_item', 'files'])   
+    files: state.drafts.getIn(["current_item", "files"])
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(DefaultPublished);

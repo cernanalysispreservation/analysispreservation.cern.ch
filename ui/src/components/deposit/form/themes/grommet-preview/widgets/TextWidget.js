@@ -1,14 +1,14 @@
-import axios from 'axios';
-import React from 'react';
-import PropTypes from 'prop-types';
+import axios from "axios";
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Box, Label, Paragraph } from 'grommet';
-import { connect } from 'react-redux';
-import { formDataChange } from '../../../../../../actions/drafts';
-import { fromJS } from 'immutable';
+import { Box, Paragraph } from "grommet";
+import { connect } from "react-redux";
+import { formDataChange } from "../../../../../../actions/drafts";
+import { fromJS } from "immutable";
 
-class TextWidget extends React.Component{
-    /* To use suggestions, add in options file for your schema, e.g
+class TextWidget extends React.Component {
+  /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
      *       "ui:options":{
      *           "suggestions": "/api/lhcb/analysis?query="
@@ -29,80 +29,84 @@ class TextWidget extends React.Component{
      * }
      * input value will be appended to url
      */
-    constructor(){
-        super();
-        this.state = {
-            suggestions: []
-        };
-    }
-
-    // TOFIX onBlur, onFocus
-    _onChange = (_ref) => {
-        let value = _ref.target.value;
-        return this.props.onChange(value === '' ? this.props.options.emptyValue : value);
+  constructor() {
+    super();
+    this.state = {
+      suggestions: []
     };
+  }
 
-    updateSuggestions = (event) => {
-        axios.get(`${this.props.options.suggestions}${event.target.value}`)
-            .then(({ data }) => {
-                this.setState({
-                    suggestions: data
-                });
-            });
+  // TOFIX onBlur, onFocus
+  _onChange = _ref => {
+    let value = _ref.target.value;
+    return this.props.onChange(
+      value === "" ? this.props.options.emptyValue : value
+    );
+  };
 
-        return this.props.onChange(event.target.value);
-    }
+  updateSuggestions = event => {
+    axios
+      .get(`${this.props.options.suggestions}${event.target.value}`)
+      .then(({ data }) => {
+        this.setState({
+          suggestions: data
+        });
+      });
 
-    updateValueOnSuggestion = ({ suggestion }) => {
-        return this.props.onChange(suggestion);
-    }
+    return this.props.onChange(event.target.value);
+  };
 
-    autoFillOtherFields = (event) => {
-        var url = this.props.options.autofill_from,
-            fieldsMap = this.props.options.autofill_fields,
-            formData = fromJS(this.props.formData);
+  updateValueOnSuggestion = ({ suggestion }) => {
+    return this.props.onChange(suggestion);
+  };
 
-        axios.get(`${url}${event.target.value}`)
-            .then(({ data }) => {
-                var _data = fromJS(data);
-                fieldsMap.map((el) => {
-                    formData = formData.setIn(el[1], _data.getIn(el[0]));
-                });
-                this.props.formDataChange(formData.toJS());
-            });
-    };
+  autoFillOtherFields = event => {
+    var url = this.props.options.autofill_from,
+      fieldsMap = this.props.options.autofill_fields,
+      formData = fromJS(this.props.formData);
 
-    render(){
-        return (
-            <Box key={this.props.id} flex={true} pad="none">
-                <Paragraph margin="small" size="small">{this.props.value || ''}</Paragraph>
-            </Box>
-        );
-    }
+    axios.get(`${url}${event.target.value}`).then(({ data }) => {
+      var _data = fromJS(data);
+      fieldsMap.map(el => {
+        formData = formData.setIn(el[1], _data.getIn(el[0]));
+      });
+      this.props.formDataChange(formData.toJS());
+    });
+  };
+
+  render() {
+    return (
+      <Box key={this.props.id} flex={true} pad="none">
+        <Paragraph margin="small" size="small">
+          {this.props.value || ""}
+        </Paragraph>
+      </Box>
+    );
+  }
 }
 
 TextWidget.propTypes = {
-    onChange: PropTypes.func,
-    onBlur: PropTypes.func,
-    id: PropTypes.string,
-    value: PropTypes.string,
-    options: PropTypes.object,
-    placeholder: PropTypes.string
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
+  id: PropTypes.string,
+  value: PropTypes.string,
+  options: PropTypes.object,
+  placeholder: PropTypes.string
 };
 
 function mapStateToProps(state) {
-    return {
-        formData: state.drafts.getIn(['current_item', 'formData'])
-    };
+  return {
+    formData: state.drafts.getIn(["current_item", "formData"])
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        formDataChange: (data) => dispatch(formDataChange(data))
-    };
+  return {
+    formDataChange: data => dispatch(formDataChange(data))
+  };
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TextWidget);

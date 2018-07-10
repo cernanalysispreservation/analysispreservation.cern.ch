@@ -1,60 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Box, Label } from 'grommet';
+import { Box } from "grommet";
 
-import AccordionFieldTemplate from './AccordionObjectField';
-import LayerObjectFieldTemplate from './LayerObjectFieldTemplate';
-import FieldHeader from '../components/FieldHeader';
+import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
+import FieldHeader from "../components/FieldHeader";
 
-let ObjectFieldTemplate = function (props) {
-  console.log("ObjectFieldTemplate::", props)
-  if ( props.idSchema.$id == "root" ) {
-    return (
-      <Box>
-        {props.properties.map(prop => prop.content )}
-      </Box>
-    );
+let ObjectFieldTemplate = function(props) {
+  if (props.idSchema.$id == "root") {
+    return <Box>{props.properties.map(prop => prop.content)}</Box>;
   }
 
-
-  if ( !('ui:object' in props.uiSchema) ) {
+  if (!("ui:object" in props.uiSchema)) {
     return (
       <Box margin="none" pad="none">
-        {
-          props.title ?
+        {props.title ? (
           <FieldHeader
             title={props.title}
             required={props.required}
             description={props.description ? props.description : null}
-            /> : null
-        }
-        {props.properties.map(prop => prop.content )}
+          />
+        ) : null}
+        {props.properties.map(prop => prop.content)}
       </Box>
     );
-  }
-  else {
-    if (props.uiSchema['ui:object'] == 'layerObjectField'){
+  } else {
+    if (props.uiSchema["ui:object"] == "layerObjectField") {
       return <LayerObjectFieldTemplate {...props} />;
-    }
-    else if (props.uiSchema['ui:object'] == 'accordionObjectField'){
+    } else if (props.uiSchema["ui:object"] == "accordionObjectField") {
       // return <AccordionFieldTemplate {...props} />;
       return (
         <Box margin="none" pad="none">
-          {
-            props.title ?
+          {props.title ? (
             <FieldHeader
               title={props.title}
               required={props.required}
               description={props.description ? props.description : null}
-              /> : null
-          }
-          {props.properties.map(prop => prop.content )}
+            />
+          ) : null}
+          {props.properties.map(prop => prop.content)}
         </Box>
       );
-    }
-    else {
-      return <div {...props}>This object( <i>{props.title}</i>) can NOT be rendered.. Check implementaion</div>;
+    } else {
+      return (
+        <div {...props}>
+          This object( <i>{props.title}</i>) can NOT be rendered.. Check
+          implementaion
+        </div>
+      );
     }
   }
 };
