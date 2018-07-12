@@ -26,20 +26,24 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, current_app, jsonify, redirect, request, session
-from werkzeug.local import LocalProxy
+import re
 
 import ldap
-from cap.config import DEBUG
-from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import \
-    collaboration_permissions, collaboration_permissions_factory
-from cap.utils import obj_or_import_string
+import requests
+from flask import Blueprint, current_app, jsonify, redirect, request, session
 from flask_login import current_user, login_user
 from flask_principal import Permission
 from flask_security.utils import verify_password
 from flask_security.views import logout
 from invenio_accounts.models import Role
+from werkzeug.local import LocalProxy
+
+from cap.config import DEBUG
+from cap.modules.access.utils import login_required
+from cap.modules.experiments.permissions import \
+    collaboration_permissions_factory  # noqa
+from cap.modules.experiments.permissions import collaboration_permissions
+from cap.utils import obj_or_import_string
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -206,6 +210,33 @@ def ldap_egroup():
             True, size=20, cookie='')]
     )
     res = lc.result()
+    return jsonify(res)
+
+
+@user_blueprint.route('/orcid')
+@login_required
+def get_orcid():
+    """Get ORCID identifier registered for given name."""
+    name = request.args.get('name', None)
+    res = {}
+
+    if not name:
+        return jsonify(res)
+
+    names = name.split()
+    url = "https://pub.orcid.org/v2.1/search/?" \
+        "q=given-names:{}+AND+family-name:{}" \
+        .format(names[0], names[-1])
+
+    resp = requests.get(url=url, headers={
+        'Content-Type': 'application/json'
+    })
+    data = resp.json().get('result', [])
+
+    # return only if one result
+    if len(data) == 1:
+        res['orcid'] = data[0]['orcid-identifier']['path']
+
     return jsonify(res)
 
 

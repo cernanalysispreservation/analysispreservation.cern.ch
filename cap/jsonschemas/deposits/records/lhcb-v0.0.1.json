@@ -31,54 +31,11 @@
         "control_number": {
             "type": "string"
         },
-        "ntuple_userdst_production": {
-            "description": "Please provide information about the steps of the analysis",
-            "items": {
-                "properties": {
-                    "name": {
-                        "title": "Custom name",
-                        "type": "string"
-                    },
-                    "input_dataset": {
-                        "title": "Input dataset",
-                        "type": "string"
-                    },
-                    "davinci_version": {
-                        "title": "Davinci version",
-                        "type": "string"
-                    },
-                    "platform": {
-                        "title": "Platform",
-                        "type": "string"
-                    },
-                    "davinci_script": {
-                        "title": "Davinci script",
-                        "type": "string",
-                        "x-cap-file": {}
-                    },
-                    "ganga_script": {
-                        "title": "Ganga script",
-                        "type": "string",
-                        "x-cap-file": {}
-                    },
-                    "output_eos_location": {
-                        "title": "Output eos location",
-                        "type": "string"
-                    },
-                    "wg_production_bk_path": {
-                        "title": "WG Production Bookkeeping path",
-                        "type": "string"
-                    }
-                },
-                "title": "ntuple/userDST-production",
-                "type": "object"
-            },
-            "title": "ntuple/userDST-production",
-            "type": "array"
-        },
         "basic_info": {
             "id": "basic_info",
+            "title": "Basic Information",
             "description": "Please provide some information relevant for all parts of the Analysis here",
+            "type": "object" ,
             "properties": {
                 "analysis_title": {
                     "title": "Analysis Name",
@@ -87,12 +44,66 @@
                 },
                 "measurement": {
                     "title": "Measurement",
-                    "type": "string",
-                    "description": "Provide a Measurement type. This will be displayed as an analysis title when shared."
+                    "type": "string"
+                },
+                "analysis_proponents": {
+                    "title": "Proponents",
+                    "type": "array",
+                    "items": {
+                        "title": "Proponent",
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "orcid": {
+                                "title": "ORCID",
+                                "type": "string",
+                                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
+                            }
+                        }
+                    }
+                },
+                "reviewers": {
+                    "title": "Reviewers",
+                    "type": "array",
+                    "items": {
+                        "title": "Reviewer",
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "title": "Name",
+                                "type": "string"
+                            },
+                            "orcid": {
+                                "title": "ORCID",
+                                "type": "string",
+                                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
+                            }
+                        }
+                    }
                 },
                 "review_egroup": {
                     "title": "Review eGroup",
                     "type": "string"
+                },
+                "analysis_status": {
+                    "enum": [
+                        "0 - planned / open topic",
+                        "1 - in preparation",
+                        "2 - ANA note released",
+                        "3 - review committee",
+                        "4 - collaboration review",
+                        "5 -",
+                        "6 - CONF note published",
+                        "7 -",
+                        "8 - journal review",
+                        "9 - PAPER published",
+                        "x - other"
+                    ],
+                    "type": "string",
+                    "title": "Status"
                 },
                 "institutes": {
                     "title": "Institutes Involved",
@@ -114,65 +125,83 @@
                     "id": "keywords",
                     "title": "Keywords",
                     "type": "string"
-                },
-                "analysis_proponents": {
-                    "title": "Proponents",
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "title": "Proponent"
-                    }
-                },
-                "reviewers": {
-                    "title": "Reviewers",
-                    "type": "string"
-                },
-                "analysis_status": {
-                    "enum": [
-                        "0 - planned / open topic",
-                        "1 - in preparation",
-                        "2 - ANA note released",
-                        "3 - review committee",
-                        "4 - collaboration review",
-                        "5 -",
-                        "6 - CONF note published",
-                        "7 -",
-                        "8 - journal review",
-                        "9 - PAPER published",
-                        "x - other"
-                    ],
-                    "type": "string",
-                    "title": "Status"
                 }
-            },
-            "title": "Basic Information",
-            "type": "object"
+            }
         },
-        "stripping_turbo_selection": {
-            "title": "Stripping/Turbo selections",
+        "ntuple_userdst_production": {
+            "title": "ntuple/userDST-production",
+            "description": "Please provide information about the steps of the analysis",
             "type": "array",
             "items": {
-                "title": "Selection",
                 "type": "object",
                 "properties": {
                     "name": {
                         "title": "Custom name",
                         "type": "string"
                     },
+                    "input_dataset": {
+                        "title": "Input Dataset",
+                        "type": "string"
+                    },
+                    "davinci_version": {
+                        "title": "DaVinci Version",
+                        "type": "string"
+                    },
+                    "platform": {
+                        "title": "Platform",
+                        "type": "string"
+                    },
+                    "davinci_scripts": {
+                        "title": "DaVinci Scripts",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-cap-file": {}
+                        }
+                    },
+                    "ganga_scripts": {
+                        "title": "Ganga Scripts",
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "x-cap-file": {}
+                        }
+                    },
+                    "output_eos_location": {
+                        "title": "Output EOS Location",
+                        "type": "string"
+                    },
+                    "wg_production_bk_path": {
+                        "title": "WG Production Bookkeeping Path",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "stripping_turbo_selection": {
+            "title": "Stripping/Turbo Selections",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "title": "Custom Name",
+                        "type": "string"
+                    },
                     "bookkeping_locations": {
-                        "title": "Bookkeeping locations",
+                        "title": "Bookkeeping Locations",
                         "type": "array",
                         "items": {
                             "type": "string"
                         }
                     },
                     "stripping_turbo_line": {
-                        "title": "Stripping/TURBO line",
+                        "title": "Stripping/TURBO Line",
                         "type": "string"
                     },
                     "dataset_type": {
                         "type": "string",
-                        "title": "Choose type of dataset",
+                        "title": "Type of Dataset",
                         "enum": [
                             "mc_data",
                             "real_data"
@@ -235,10 +264,12 @@
             "properties": {
                 "internal_discussions": {
                     "id": "internal-discussions",
+                    "title": "Internal Discussions",
+                    "type": "array",
                     "items": {
                         "properties": {
                             "meeting": {
-                                "title": "E-Group",
+                                "title": "eGroup",
                                 "type": "string"
                             },
                             "title": {
@@ -252,16 +283,16 @@
                         },
                         "title": "Reports",
                         "type": "object"
-                    },
-                    "title": "Internal Discussions",
-                    "type": "array"
+                    }
                 },
                 "presentations": {
                     "id": "presentations",
+                    "title": "Presentation",
+                    "type": "array",
                     "items": {
                         "properties": {
                             "meeting": {
-                                "title": "Meeting (GROUP?)",
+                                "title": "Meeting (GROUP)",
                                 "type": "string"
                             },
                             "title": {
@@ -272,23 +303,25 @@
                                 "title": "URL",
                                 "type": "string"
                             }
-                        },
-                        "title": "Presentation",
-                        "type": "object"
+                        }
                     },
                     "title": "Presentations",
                     "type": "array"
                 },
                 "publications": {
                     "id": "publications",
+                    "title": "Publications",
+                    "type": "array",
                     "items": {
+                        "title": "Publications",
+                        "type": "object",
                         "properties": {
                             "analysis_number": {
-                                "title": "Analysis note (ANA) number",
+                                "title": "Analysis Note (ANA)",
                                 "type": "string"
                             },
                             "arxiv_id": {
-                                "title": "arXiv ID",
+                                "title": "ArXiv ID",
                                 "type": "string"
                             },
                             "conf_report": {
@@ -300,7 +333,7 @@
                                 "type": "string"
                             },
                             "twiki": {
-                                "title": "tWiki page",
+                                "title": "TWiki Page",
                                 "type": "string"
                             },
                             "review_egroup": {
@@ -315,15 +348,13 @@
                                 "title": "URL",
                                 "type": "string"
                             }
-                        },
-                        "title": "Publications",
-                        "type": "object"
-                    },
-                    "title": "Publications",
-                    "type": "array"
+                        }
+                    }
                 },
                 "documentations":{
                     "id":"documentations",
+                    "title":"Documentations",
+                    "type":"array", 
                     "items":{
                         "description":"Add documentation",
                         "properties":{
@@ -338,9 +369,7 @@
                         },
                         "title":"Documentation",
                         "type":"object"
-                    },
-                    "title":"Documentations",
-                    "type":"array"
+                    }
                 }
             }
         }

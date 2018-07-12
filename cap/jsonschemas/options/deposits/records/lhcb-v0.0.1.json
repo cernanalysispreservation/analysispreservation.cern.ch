@@ -7,17 +7,17 @@
         "additional_resources"
     ],
     "basic_info":{  
+        "ui:object":"accordionObjectField",
         "ui:order":[  
             "analysis_title",
             "measurement",
             "analysis_proponents",
-            "analysis_status",
             "reviewers",
             "review_egroup",
+            "analysis_status",
             "institutes",
             "keywords"
         ],
-        "ui:object":"accordionObjectField",
         "analysis_title":{  
             "ui:options":{  
                 "suggestions":"/api/lhcb/analysis?query=",
@@ -58,17 +58,52 @@
                             "basic_info",
                             "institutes"
                         ]
-                    ],
-                    [  
-                        [  
-                            "person"
-                        ],
-                        [  
-                            "basic_info",
-                            "analysis_proponents"
-                        ]
                     ]
                 ]
+            }
+        },
+        "analysis_proponents": {
+            "items": {
+                "name": {
+                    "ui:options": {
+                        "autofill_from": "/api/orcid?name=",
+                        "autofill_fields": [
+                            [
+                                [
+                                    "orcid"
+                                ],
+                                [ 
+                                    "basic_info",
+                                    "analysis_proponents",
+                                    "#",
+                                    "orcid"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            }
+        },
+        "reviewers": {
+            "items": {
+                "name": {
+                    "ui:options": {
+                        "autofill_from": "/api/orcid?name=",
+                        "autofill_fields": [
+                            [
+                                [
+                                    "orcid"
+                                ],
+                                [ 
+                                    "basic_info",
+                                    "reviewers",
+                                    "#",
+                                    "orcid"
+                                ]
+                            ]
+                        ]
+                    }
+                }
             }
         }
     },
@@ -77,9 +112,12 @@
             "ui:order":[  
                 "dataset_type",
                 "name",
-                "bookkeping_locations",
-                "stripping_turbo_line"
-            ]
+                "stripping_turbo_line",
+                "bookkeping_locations"
+            ],
+            "bookkeping_locations": {
+                "ui:array": "StringArrayField"
+            }
         },
         "ui:array":"AccordionArrayField"
     },
@@ -88,18 +126,22 @@
             "ui:order":[  
                 "name",
                 "input_dataset",
-                "davinci_version",
                 "platform",
-                "davinci_script",
-                "ganga_script",
+                "davinci_version",
                 "output_eos_location",
-                "wg_production_bk_path"
+                "wg_production_bk_path",
+                "davinci_scripts",
+                "ganga_scripts"
             ],
-            "davinci_script":{  
-                "ui:field":"CapFiles"
+            "davinci_scripts":{  
+                "items":{
+                    "ui:field":"CapFiles"
+                }
             },
-            "ganga_script":{  
-                "ui:field":"CapFiles"
+            "ganga_scripts":{  
+                "items":{
+                    "ui:field":"CapFiles"
+                }
             }
         },
         "ui:array":"AccordionArrayField"
@@ -131,12 +173,26 @@
         }
     },
     "additional_resources":{  
+        "ui:object":"accordionObjectField",
         "ui:order":[  
             "internal_discussions",
             "presentations",
             "publications",
             "documentations"
         ],
-        "ui:object":"accordionObjectField"
+        "internal_discussions": {
+            "ui:order": [
+                "title",
+                "URL",
+                "meeting"
+            ]
+        },
+        "presentations": {
+            "ui:order": [
+                "title",
+                "URL",
+                "meeting"
+            ]
+        }
     }
 }

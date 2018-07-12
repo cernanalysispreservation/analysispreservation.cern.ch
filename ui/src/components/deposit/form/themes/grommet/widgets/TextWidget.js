@@ -28,6 +28,12 @@ class TextWidget extends React.Component{
      *     }
      * }
      * input value will be appended to url
+     *
+     * IMPORTANT !
+     * if you want to refer to the same element of array, that input is in, refer to it by "#", e.g
+     * input is basic_info.analysis_proponents[2].name
+     * if you want to add orcid for the same object in analysis_proponents you refer to it by
+     * ["basic_info", "analysis_proponents", "#", "orcid"]
      */
     constructor(){
         super();
@@ -60,15 +66,22 @@ class TextWidget extends React.Component{
     autoFillOtherFields = (event) => {
         var url = this.props.options.autofill_from,
             fieldsMap = this.props.options.autofill_fields,
-            formData = fromJS(this.props.formData);
+            formData = fromJS(this.props.formData),
+            indexes = this.props.id.split('_').filter((item) => !isNaN(item));
 
         axios.get(`${url}${event.target.value}`)
             .then(({ data }) => {
-                var _data = fromJS(data);
-                fieldsMap.map((el) => {
-                    formData = formData.setIn(el[1], _data.getIn(el[0]));
-                });
-                this.props.formDataChange(formData.toJS());
+                if(Object.keys(data).length !== 0){
+                    var _data = fromJS(data);
+                    fieldsMap.map((el) => {
+                        let source = el[0],
+                            destination = el[1];
+                        // autofill indexes to match current input path
+                        destination = destination.map((item) => item === '#' ? indexes.pop() : item);
+                        formData = formData.setIn(destination, _data.getIn(source));
+                    });
+                    this.props.formDataChange(formData.toJS());
+                }
             });
     };
 
