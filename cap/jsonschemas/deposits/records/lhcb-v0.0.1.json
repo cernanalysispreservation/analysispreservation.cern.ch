@@ -266,7 +266,9 @@
                     "id": "internal-discussions",
                     "title": "Internal Discussions",
                     "type": "array",
-                    "items": {
+                    "items": {  
+                        "title": "Internal Discussion",
+                        "type": "object",
                         "properties": {
                             "meeting": {
                                 "title": "eGroup",
@@ -280,16 +282,16 @@
                                 "title": "URL",
                                 "type": "string"
                             }
-                        },
-                        "title": "Reports",
-                        "type": "object"
+                        }
                     }
                 },
                 "presentations": {
                     "id": "presentations",
-                    "title": "Presentation",
+                    "title": "Presentations",
                     "type": "array",
                     "items": {
+                        "title": "Reports",
+                        "type": "object",
                         "properties": {
                             "meeting": {
                                 "title": "Meeting (GROUP)",
@@ -304,9 +306,7 @@
                                 "type": "string"
                             }
                         }
-                    },
-                    "title": "Presentations",
-                    "type": "array"
+                    }
                 },
                 "publications": {
                     "id": "publications",

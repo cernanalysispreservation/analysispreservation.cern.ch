@@ -32,6 +32,18 @@
                 "cadi_id": {
                     "type": "keyword"
                 },
+                "primary_dataset": {
+                    "type": "keyword",
+                    "copy_to": "dataset"
+                },
+                "mc_bg_dataset": {
+                    "type": "keyword",
+                    "copy_to": "dataset"
+                },
+                "mc_sig_dataset": {
+                    "type": "keyword",
+                    "copy_to": "dataset"
+                },
                 "basic_info": {
                     "type": "object",
                     "properties": {
@@ -51,7 +63,7 @@
                                     "type": "keyword"
                                 }
                             },
-                            "copy_to": "ana_note"
+                            "copy_to": "ananote"
                         },
                         "created": {
                             "type": "date"
@@ -107,6 +119,10 @@
                             },
                             "copy_to": "cadi_status"
                         },
+                        "contact_person": {
+                            "type": "text",
+                            "copy_to": "researcher"
+                        },
                         "publication_status": {
                             "type": "text",
                             "fields": {
@@ -126,13 +142,13 @@
                             "properties": {
                                 "keywords": {
                                     "type": "string",
-                                    "copy_to": "keywords"
+                                    "copy_to": "keyword"
                                 }
                             }
                         },
                         "keywords": {
                             "type": "keyword",
-                            "copy_to": "keywords"
+                            "copy_to": "keyword"
                         }
                     }
                 },
