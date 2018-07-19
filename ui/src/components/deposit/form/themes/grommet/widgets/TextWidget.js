@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/drafts";
 import { fromJS } from "immutable";
 
+import Spinning from "grommet/components/icons/Spinning";
+
 class TextWidget extends React.Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -38,7 +40,8 @@ class TextWidget extends React.Component {
   constructor() {
     super();
     this.state = {
-      suggestions: []
+      suggestions: [],
+      showSpinner: false
     };
   }
 
@@ -70,7 +73,14 @@ class TextWidget extends React.Component {
       formData = fromJS(this.props.formData),
       indexes = this.props.id.split("_").filter(item => !isNaN(item));
 
+    this.setState({
+      showSpinner: true
+    });
+
     axios.get(`${url}${event.target.value}`).then(({ data }) => {
+      this.setState({
+        showSpinner: false
+      });
       if (Object.keys(data).length !== 0) {
         let _data = fromJS(data);
         fieldsMap.map(el => {
@@ -90,36 +100,45 @@ class TextWidget extends React.Component {
   render() {
     return (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
-        <TextInput
-          id={this.props.id}
-          name={this.props.id}
-          placeHolder={this.props.placeholder}
-          onDOMChange={this._onChange}
-          {...(this.props.readonly
-            ? {
-                readOnly: "true"
-              }
-            : {})}
-          {...(this.props.autofocus
-            ? {
-                autoFocus: "true"
-              }
-            : {})}
-          {...(this.props.options && this.props.options.suggestions
-            ? {
-                suggestions: this.state.suggestions,
-                onDOMChange: this.updateSuggestions,
-                onSelect: this.updateValueOnSuggestion
-              }
-            : {})}
-          {...(this.props.options && this.props.options.autofill_from
-            ? {
-                onBlur: this.autoFillOtherFields
-              }
-            : {})}
-          onKeyDown={this.props.onKeyDown}
-          value={this.props.value || ""}
-        />
+        <Box flex={true} direction="row">
+          <Box full={{ horizontal: true }}>
+            <TextInput
+              id={this.props.id}
+              name={this.props.id}
+              placeHolder={this.props.placeholder}
+              onDOMChange={this._onChange}
+              {...(this.props.readonly
+                ? {
+                    readOnly: "true"
+                  }
+                : {})}
+              {...(this.props.autofocus
+                ? {
+                    autoFocus: "true"
+                  }
+                : {})}
+              {...(this.props.options && this.props.options.suggestions
+                ? {
+                    suggestions: this.state.suggestions,
+                    onDOMChange: this.updateSuggestions,
+                    onSelect: this.updateValueOnSuggestion
+                  }
+                : {})}
+              {...(this.props.options && this.props.options.autofill_from
+                ? {
+                    onBlur: this.autoFillOtherFields
+                  }
+                : {})}
+              onKeyDown={this.props.onKeyDown}
+              value={this.props.value || ""}
+            />
+          </Box>
+          {this.state.showSpinner ? (
+            <Box align="end">
+              <Spinning size="xsmall" />
+            </Box>
+          ) : null}
+        </Box>
       </Box>
     );
   }

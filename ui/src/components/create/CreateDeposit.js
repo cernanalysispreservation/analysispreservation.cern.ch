@@ -186,18 +186,16 @@ class CreateDeposit extends React.Component {
             >
               {this.renderMessage(this.state.actionType)}
               <Box direction="row" justify="center" align="center">
-                <Box colorIndex="neutral-1">
+                <Box>
                   <Button
                     label="Yes"
-                    plain={true}
-                    //primary={true}
+                    primary={true}
                     onClick={() => this.renderAction(this.state.actionType)}
                   />
                 </Box>
                 <Box colorIndex="grey-4-a" margin="small">
                   <Button
                     label="Cancel"
-                    plain={true}
                     onClick={() => this.props.toggleActionsLayer()}
                   />
                 </Box>
