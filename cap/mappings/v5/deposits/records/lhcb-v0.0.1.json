@@ -12,7 +12,7 @@
                 "created": {
                     "type": "date"
                 },
-                "keywords": {
+                "keyword": {
                     "type": "keyword"
                 },
                 "basic_info": {

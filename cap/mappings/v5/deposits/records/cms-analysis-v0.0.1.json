@@ -29,21 +29,6 @@
                 "status": {
                     "type": "keyword"
                 },
-                "cadi_id": {
-                    "type": "keyword"
-                },
-                "primary_dataset": {
-                    "type": "keyword",
-                    "copy_to": "dataset"
-                },
-                "mc_bg_dataset": {
-                    "type": "keyword",
-                    "copy_to": "dataset"
-                },
-                "mc_sig_dataset": {
-                    "type": "keyword",
-                    "copy_to": "dataset"
-                },
                 "basic_info": {
                     "type": "object",
                     "properties": {
@@ -78,7 +63,7 @@
                             "properties": {
                                 "path": {
                                     "type": "keyword",
-                                    "copy_to": "primary_dataset"
+                                    "copy_to": "dataset"
                                 }
                             }
                         },
@@ -93,11 +78,11 @@
                         },
                         "mc_sig_datasets": {
                             "type": "keyword",
-                            "copy_to": "mc_sig_dataset"
+                            "copy_to": "dataset"
                         },
                         "mc_bg_datasets": {
                             "type": "keyword",
-                            "copy_to": "mc_bg_dataset"
+                            "copy_to": "dataset"
                         },
                         "json_files": {
                             "type": "keyword"
