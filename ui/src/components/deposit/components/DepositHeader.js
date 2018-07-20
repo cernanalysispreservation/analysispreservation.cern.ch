@@ -82,7 +82,7 @@ class DepositHeader extends React.Component {
               >
                 {[
                   this.props.loading ? (
-                    <Spinning colorIndex="neutral-1" />
+                    <Spinning />
                   ) : (
                     <Status value={this.props.message.status} />
                   ),
@@ -113,44 +113,44 @@ class DepositHeader extends React.Component {
                   <EditAnchor draft_id={this.props.draft_id} />
                 </Box>
               ) : null}
-              {this.props.saveData
-                ? [
-                    this.props.draft_id ? (
-                      <SettingsAnchor draft_id={this.props.draft_id} />
-                    ) : null,
-                    status == "draft" ? (
-                      <Anchor
-                        icon={<ShareIcon />}
-                        label="Share"
-                        onClick={
-                          this.props.draft_id ? this.props.publishData : null
-                        }
-                      />
-                    ) : null,
+              {this.props.saveData ? (
+                <React.Fragment>
+                  {this.props.draft_id ? (
+                    <SettingsAnchor draft_id={this.props.draft_id} />
+                  ) : null}
+                  {status == "draft" ? (
                     <Anchor
-                      icon={<SaveIcon />}
-                      label="Save"
-                      onClick={this.props.saveData}
-                    />,
-                    status == "draft" ? (
-                      <Anchor
-                        label="Delete"
-                        icon={<TrashIcon />}
-                        onClick={
-                          this.props.draft_id ? this.props.deleteDraft : null
-                        }
-                        primary={true}
-                      />
-                    ) : null,
-                    status == "draft" && this.props.draft._deposit.pid ? (
-                      <Anchor
-                        icon={<RefreshIcon />}
-                        label="Discard"
-                        onClick={this.props.discardData}
-                      />
-                    ) : null
-                  ]
-                : null}
+                      icon={<ShareIcon />}
+                      label="Share"
+                      onClick={
+                        this.props.draft_id ? this.props.publishData : null
+                      }
+                    />
+                  ) : null}
+                  <Anchor
+                    icon={<SaveIcon />}
+                    label="Save"
+                    onClick={this.props.saveData}
+                  />
+                  {status == "draft" ? (
+                    <Anchor
+                      label="Delete"
+                      icon={<TrashIcon />}
+                      onClick={
+                        this.props.draft_id ? this.props.deleteDraft : null
+                      }
+                      primary={true}
+                    />
+                  ) : null}
+                  {status == "draft" && this.props.draft._deposit.pid ? (
+                    <Anchor
+                      icon={<RefreshIcon />}
+                      label="Discard"
+                      onClick={this.props.discardData}
+                    />
+                  ) : null}
+                </React.Fragment>
+              ) : null}
             </Menu>
           </Box>
         </Box>
@@ -162,7 +162,14 @@ class DepositHeader extends React.Component {
 DepositHeader.propTypes = {
   selectedSchema: PropTypes.string,
   saveData: PropTypes.func,
-  publishData: PropTypes.func
+  publishData: PropTypes.func,
+  draft: PropTypes.object,
+  draftId: PropTypes.string,
+  message: PropTypes.object,
+  loading: PropTypes.bool,
+  draft_id: PropTypes.string,
+  deleteDraft: PropTypes.func,
+  discardData: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -175,11 +182,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps() {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DepositHeader);
+export default connect(mapStateToProps)(DepositHeader);

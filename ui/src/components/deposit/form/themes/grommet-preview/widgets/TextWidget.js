@@ -61,12 +61,12 @@ class TextWidget extends React.Component {
   };
 
   autoFillOtherFields = event => {
-    var url = this.props.options.autofill_from,
+    let url = this.props.options.autofill_from,
       fieldsMap = this.props.options.autofill_fields,
       formData = fromJS(this.props.formData);
 
     axios.get(`${url}${event.target.value}`).then(({ data }) => {
-      var _data = fromJS(data);
+      let _data = fromJS(data);
       fieldsMap.map(el => {
         formData = formData.setIn(el[1], _data.getIn(el[0]));
       });
@@ -91,7 +91,9 @@ TextWidget.propTypes = {
   id: PropTypes.string,
   value: PropTypes.string,
   options: PropTypes.object,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  formData: PropTypes.object,
+  formDataChange: PropTypes.func
 };
 
 function mapStateToProps(state) {

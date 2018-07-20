@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 // Customized RJSF component ( Grommet )
-import FieldTemplate from './themes/grommet/templates/FieldTemplate';
-import ObjectFieldTemplate from './themes/grommet/templates/ObjectFieldTemplate';
-import ArrayFieldTemplate from './themes/grommet/templates/ArrayFieldTemplate';
-import ErrorListTemplate from './themes/grommet/templates/ErrorListTemplate';
+import FieldTemplate from "./themes/grommet/templates/FieldTemplate";
+import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
+import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
+import ErrorListTemplate from "./themes/grommet/templates/ErrorListTemplate";
 
-import widgets from './themes/grommet/widgets';
-import fields from './themes/grommet/fields';
+import widgets from "./themes/grommet/widgets";
+import fields from "./themes/grommet/fields";
 
 import Form from "react-jsonschema-form";
 
@@ -28,7 +28,9 @@ class GrommetForm extends React.Component {
   render() {
     return (
       <Form
-        ref={(form) => {this.form=form;}}
+        ref={form => {
+          this.form = form;
+        }}
         schema={this.props.schema}
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
@@ -41,11 +43,12 @@ class GrommetForm extends React.Component {
         liveValidate={this.props.liveValidate}
         noValidate={!this.props.validate}
         validate={this.props.customValidation ? this._validate : null}
-        onError={({e}) => console.log("onError::::", e)}
+        onError={() => {}}
         formData={this.props.formData}
-        onBlur={({type}) => console.log("onBlur::::", type)}
+        onBlur={() => {}}
         onChange={this.props.onChange}
-        onSubmit={this.props.onSubmit}>
+        onSubmit={this.props.onSubmit}
+      >
         {this.props.children || <span />}
       </Form>
     );
@@ -60,7 +63,9 @@ GrommetForm.propTypes = {
   uiSchema: PropTypes.object,
   formData: PropTypes.object,
   customValidation: PropTypes.bool,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
+  children: PropTypes.node
 };
 
 export default GrommetForm;

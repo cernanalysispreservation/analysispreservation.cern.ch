@@ -1,27 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
+
+import { Anchor, Box, Button, Tabs, Title, Tab, Layer, Heading } from "grommet";
 
 import {
-  Anchor,
-  Box,
-  Button,
-  Tabs,
-  Title,
-  Tab,
-  Layer,
-  Heading
-} from 'grommet';
+  toggleFilemanagerLayer,
+  uploadFile,
+  uploadViaUrl
+} from "../../../actions/drafts";
+import LinkIcon from "grommet/components/icons/base/Link";
 
-import { toggleFilemanagerLayer, uploadFile, uploadViaUrl } from '../../../actions/drafts';
-import LinkIcon from 'grommet/components/icons/base/Link';
+import FileList from "./FileList";
 
-import FileList from './FileList';
+import CleanForm from "../form/CleanForm";
 
-import CleanForm from '../form/CleanForm';
-
-import Dropzone from 'react-dropzone';
+import Dropzone from "react-dropzone";
 
 const schema = {
   type: "string"
@@ -42,48 +37,64 @@ class FileManager extends React.Component {
     super(props);
     this.state = {
       selected: null
-    }
+    };
   }
 
-  actionWithFile = (key) => {
+  actionWithFile = key => {
     this.props.selectableActionLayer(key);
     this.props.toggleFilemanagerLayer();
-  }
+  };
 
-  setSelected = (key) => this.setState({selected: key})
+  setSelected = key => this.setState({ selected: key });
 
   render() {
-    return (
-      this.props.activeLayer && this.props.links ?
+    return this.props.activeLayer && this.props.links ? (
       <Layer
         closer={true}
         align="center"
         flush={true}
         overlayClose={true}
-        onClose={this.props.toggleFilemanagerLayer}>
-        <Box size={{height: "large" , width: "xxlarge"}}>
+        onClose={this.props.toggleFilemanagerLayer}
+      >
+        <Box size={{ height: "large", width: "xxlarge" }}>
           <Box flex={true}>
-            <Box flex={false}  pad="small" colorIndex="light-2">
-              <Title>File Manager (<Anchor label="bucket" icon={<LinkIcon size="xsmall"/>} href={this.props.links.get('bucket')} size="small"/>)</Title>
+            <Box flex={false} pad="small" colorIndex="light-2">
+              <Title>
+                File Manager (<Anchor
+                  label="bucket"
+                  icon={<LinkIcon size="xsmall" />}
+                  href={this.props.links.get("bucket")}
+                  size="small"
+                />)
+              </Title>
             </Box>
-            <Box flex={false} justify="center" pad="small" pp={{horizontal:"small"}} colorIndex="grey-2">
-              {
-                this.props.selectableActionLayer ?
-                "Select or upload a file to be added to the project" :
-                "Upload and manage project files"
-              }
+            <Box
+              flex={false}
+              justify="center"
+              pad="small"
+              pp={{ horizontal: "small" }}
+              colorIndex="grey-2"
+            >
+              {this.props.selectableActionLayer
+                ? "Select or upload a file to be added to the project"
+                : "Upload and manage project files"}
             </Box>
             <Box flex={true} direction="row">
               <Box flex={true}>
-                <FileList action={this.setSelected.bind(this)} files={this.props.files}/>
+                <FileList
+                  action={this.setSelected.bind(this)}
+                  files={this.props.files}
+                />
               </Box>
               <Box flex={true} pad="small" colorIndex="grey-4-a">
                 <Tabs justify="start">
                   <Tab title="Upload File">
-                    <Box >
-                      <Heading tag="h5" strong={true}>Upload from Local</Heading>
-                      <Box margin={{bottom: "small"}}>
-                        <Box flex={true} >
+                    <Box>
+                      <Heading tag="h5" strong={true}>
+                        Upload from Local
+                      </Heading>
+                      <Box margin={{ bottom: "small" }}>
+                        <Box flex={true}>
                           <Dropzone
                             style={{
                               display: "flex",
@@ -95,31 +106,47 @@ class FileManager extends React.Component {
                               alignContent: "center",
                               alignItems: "center"
                             }}
-                            onDrop={(acceptedFiles) => {
-                              let bucket_url = this.props.links.get('bucket');
-                              bucket_url = bucket_url.replace('.cern.ch/', '.cern.ch/api/')
+                            onDrop={acceptedFiles => {
+                              let bucket_url = this.props.links.get("bucket");
+                              bucket_url = bucket_url.replace(
+                                ".cern.ch/",
+                                ".cern.ch/api/"
+                              );
                               // console.log("acceptedFiles", acceptedFiles);
                               // console.log(rejectedFiles);
 
-                              if (acceptedFiles.length > 0) this.props.uploadFile(bucket_url, acceptedFiles[0]);
-                            }}>
-                            Drop your files here, or click to select files to upload.
+                              if (acceptedFiles.length > 0)
+                                this.props.uploadFile(
+                                  bucket_url,
+                                  acceptedFiles[0]
+                                );
+                            }}
+                          >
+                            Drop your files here, or click to select files to
+                            upload.
                           </Dropzone>
                         </Box>
                       </Box>
-                      <Heading tag="h5" strong={true}>Upload from URL</Heading>
+                      <Heading tag="h5" strong={true}>
+                        Upload from URL
+                      </Heading>
                       <Box>
                         <Box flex={true}>
                           <CleanForm
-                              schema={schema}
-                              uiSchema={uiSchema}
-                              onSubmit={(data) => {
-                                this.props.uploadViaUrl(this.props.draft_id, data.formData, 'url')
-                              }}
-                            >
-                            <Box margin={{top:'small'}}>
-                              <Button label='Upload'
-                                type='submit'
+                            schema={schema}
+                            uiSchema={uiSchema}
+                            onSubmit={data => {
+                              this.props.uploadViaUrl(
+                                this.props.draft_id,
+                                data.formData,
+                                "url"
+                              );
+                            }}
+                          >
+                            <Box margin={{ top: "small" }}>
+                              <Button
+                                label="Upload"
+                                type="submit"
                                 primary={true}
                               />
                             </Box>
@@ -130,18 +157,25 @@ class FileManager extends React.Component {
                   </Tab>
                   <Tab title="Repo Upload">
                     <Box pad="medium">
-                      <Heading tag="h5" strong={true}>Upload from Gitlab CERN/Github</Heading>
+                      <Heading tag="h5" strong={true}>
+                        Upload from Gitlab CERN/Github
+                      </Heading>
                       <Box direction="row">
-                          <CleanForm
-                            schema={schema}
-                            uiSchema={uiSchemaRepoUpload}
-                            onSubmit={(data) => {
-                              this.props.uploadViaUrl(this.props.draft_id, data.formData, 'repo')
-                            }}
-                          >
-                          <Box margin={{top:'small'}}>
-                            <Button label='Upload'
-                              type='submit'
+                        <CleanForm
+                          schema={schema}
+                          uiSchema={uiSchemaRepoUpload}
+                          onSubmit={data => {
+                            this.props.uploadViaUrl(
+                              this.props.draft_id,
+                              data.formData,
+                              "repo"
+                            );
+                          }}
+                        >
+                          <Box margin={{ top: "small" }}>
+                            <Button
+                              label="Upload"
+                              type="submit"
                               primary={true}
                             />
                           </Box>
@@ -152,27 +186,53 @@ class FileManager extends React.Component {
                 </Tabs>
               </Box>
             </Box>
-            {
-              this.props.selectableActionLayer ?
+            {this.props.selectableActionLayer ? (
               <Box colorIndex="light-2" direction="row" flex={false}>
-                <Box colorIndex="light-2" pad="small" direction="row" flex={false}>
-                  <Button primary={true} label="Select File" onClick={this.state.selected ? () => this.actionWithFile(this.state.selected ) : null} />
+                <Box
+                  colorIndex="light-2"
+                  pad="small"
+                  direction="row"
+                  flex={false}
+                >
+                  <Button
+                    primary={true}
+                    label="Select File"
+                    onClick={
+                      this.state.selected
+                        ? () => this.actionWithFile(this.state.selected)
+                        : null
+                    }
+                  />
                 </Box>
-                <Box colorIndex="light-2" pad="small" direction="row" flex={false}>
-                  <Button label="Cancel" onClick={this.props.toggleFilemanagerLayer} />
+                <Box
+                  colorIndex="light-2"
+                  pad="small"
+                  direction="row"
+                  flex={false}
+                >
+                  <Button
+                    label="Cancel"
+                    onClick={this.props.toggleFilemanagerLayer}
+                  />
                 </Box>
-              </Box> : null
-            }
+              </Box>
+            ) : null}
           </Box>
         </Box>
-      </Layer> : null
-    );
+      </Layer>
+    ) : null;
   }
 }
 
 FileManager.propTypes = {
   activeLayer: PropTypes.bool,
-  toggleFilemanagerLayer: PropTypes.func
+  toggleFilemanagerLayer: PropTypes.func,
+  selectableActionLayer: PropTypes.func,
+  links: PropTypes.object,
+  files: PropTypes.object,
+  uploadFile: PropTypes.func,
+  uploadViaUrl: PropTypes.func,
+  draft_id: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -180,8 +240,8 @@ function mapStateToProps(state) {
     activeLayer: state.drafts.get("fileManagerActiveLayer"),
     selectableLayer: state.drafts.get("fileManagerLayerSelectable"),
     selectableActionLayer: state.drafts.get("fileManagerLayerSelectableAction"),
-    links: state.drafts.getIn(['current_item','links']),
-    draft_id: state.drafts.getIn(['current_item', 'id'])
+    links: state.drafts.getIn(["current_item", "links"]),
+    draft_id: state.drafts.getIn(["current_item", "id"])
   };
 }
 
@@ -189,7 +249,8 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (draft_id, url, type) => dispatch(uploadViaUrl(draft_id, url, type))
+    uploadViaUrl: (draft_id, url, type) =>
+      dispatch(uploadViaUrl(draft_id, url, type))
   };
 }
 

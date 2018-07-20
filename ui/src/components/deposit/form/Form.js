@@ -1,24 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 
-import {
-  Box
-} from 'grommet';
+import { Box } from "grommet";
 
-import {toggleFilemanagerLayer} from '../../../actions/drafts';
+import { toggleFilemanagerLayer } from "../../../actions/drafts";
 
 // Customized RJSF component ( Grommet )
-import FieldTemplate from './themes/grommet/templates/FieldTemplate';
-import ObjectFieldTemplate from './themes/grommet/templates/ObjectFieldTemplate';
-import ArrayFieldTemplate from './themes/grommet/templates/ArrayFieldTemplate';
-import ErrorListTemplate from './themes/grommet/templates/ErrorListTemplate';
+import FieldTemplate from "./themes/grommet/templates/FieldTemplate";
+import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
+import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
+import ErrorListTemplate from "./themes/grommet/templates/ErrorListTemplate";
 
-import SectionHeader from '../components/SectionHeader';
+import SectionHeader from "../components/SectionHeader";
 
-import widgets from './themes/grommet/widgets';
-import fields from './themes/grommet/fields';
+import widgets from "./themes/grommet/widgets";
+import fields from "./themes/grommet/fields";
 
 import Form from "react-jsonschema-form";
 
@@ -33,30 +31,33 @@ class DepositForm extends React.Component {
 
   render() {
     return (
-      <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
+      <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
         <SectionHeader label="Submission Form" />
         <Box align="center" flex={true} wrap={false}>
-          <Box size={{width: "xlarge"}} pad="large" flex={false} wrap={false}>
-              <Form
-                ref={(form) => {this.form=form;}}
-                style={{marginBottom: "1em"}}
-                schema={this.props.schema}
-                FieldTemplate={FieldTemplate}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                ArrayFieldTemplate={ArrayFieldTemplate}
-                showErrorList={true}
-                ErrorList={ErrorListTemplate}
-                widgets={widgets}
-                fields={fields}
-                uiSchema={this.props.uiSchema}
-                noValidate={!this.props.validate}
-                validate={this.props.customValidation ? this._validate : null}
-                onError={({e}) => console.log("onError::::", e)}
-                formData={this.props.formData}
-                onBlur={({type}) => console.log("onBlur::::", type)}
-                onChange={this.props.onChange}>
-                <span />
-              </Form>
+          <Box size={{ width: "xlarge" }} pad="large" flex={false} wrap={false}>
+            <Form
+              ref={form => {
+                this.form = form;
+              }}
+              style={{ marginBottom: "1em" }}
+              schema={this.props.schema}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              ArrayFieldTemplate={ArrayFieldTemplate}
+              showErrorList={true}
+              ErrorList={ErrorListTemplate}
+              widgets={widgets}
+              fields={fields}
+              uiSchema={this.props.uiSchema}
+              noValidate={!this.props.validate}
+              validate={this.props.customValidation ? this._validate : null}
+              onError={() => {}}
+              formData={this.props.formData}
+              onBlur={() => {}}
+              onChange={this.props.onChange}
+            >
+              <span />
+            </Form>
           </Box>
         </Box>
       </Box>
@@ -82,11 +83,11 @@ DepositForm.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.drafts.get('showSidebar'),
-    customValidation: state.drafts.get('customValidation'),
-    liveValidate: state.drafts.get('liveValidate'),
-    validate: state.drafts.get('validate'),
-    data: state.drafts.get('data'),
+    showSidebar: state.drafts.get("showSidebar"),
+    customValidation: state.drafts.get("customValidation"),
+    liveValidate: state.drafts.get("liveValidate"),
+    validate: state.drafts.get("validate"),
+    data: state.drafts.get("data")
   };
 }
 

@@ -1,19 +1,19 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router';
-import {Switch, Route} from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Switch, Route } from "react-router-dom";
 
-import {Box} from 'grommet';
+import { Box } from "grommet";
 
-import SearchPage from '../search/SearchPage';
-import Header from '../partials/Header';
-import CreateIndex from '../create/CreateIndex';
-import Dashboard from '../dashboard/Dashboard';
-import SettingsIndex from '../settings/SettingsIndex';
-import DraftsIndex from '../drafts/DraftsIndex';
-import PublishedIndex from '../published/PublishedIndex';
-import GrommetFooter from '../footer/Footer';
+import SearchPage from "../search/SearchPage";
+import Header from "../partials/Header";
+import CreateIndex from "../create/CreateIndex";
+import Dashboard from "../dashboard/Dashboard";
+import SettingsIndex from "../settings/SettingsIndex";
+import DraftsIndex from "../drafts/DraftsIndex";
+import PublishedIndex from "../published/PublishedIndex";
+import GrommetFooter from "../footer/Footer";
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class IndexPage extends React.Component {
   componentWillMount() {
     if (!this.props.isLoggedIn) {
       this.props.history.push({
-        pathname: '/login',
+        pathname: "/login",
         from: this.props.match.path
       });
     }
@@ -31,7 +31,7 @@ class IndexPage extends React.Component {
 
   componentWillUpdate(nextProps) {
     if (!nextProps.isLoggedIn) {
-      this.props.history.push('/login');
+      this.props.history.push("/login");
     }
   }
 
@@ -44,18 +44,24 @@ class IndexPage extends React.Component {
           <Route path="/search" component={SearchPage} />
           <Route path="/published" component={PublishedIndex} />
           <Route path="/drafts" component={DraftsIndex} />
-          <Route path="/create" component={CreateIndex}/>
-          <Route path="/settings" component={SettingsIndex}/>
+          <Route path="/create" component={CreateIndex} />
+          <Route path="/settings" component={SettingsIndex} />
         </Switch>
-       <GrommetFooter/>
+        <GrommetFooter />
       </Box>
     );
   }
 }
 
+IndexPage.propTypes = {
+  isLoggedIn: PropTypes.bool,
+  history: PropTypes.object,
+  match: PropTypes.object
+};
+
 function mapStateToProps(state) {
   return {
-    isLoggedIn: state.auth.get('isLoggedIn')
+    isLoggedIn: state.auth.get("isLoggedIn")
   };
 }
 

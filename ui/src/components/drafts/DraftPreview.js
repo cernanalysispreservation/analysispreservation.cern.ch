@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React from "react";
+import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
@@ -34,7 +35,7 @@ const transformSchema = schema => {
   return schema;
 };
 
-export class DraftPreview extends React.Component {
+class DraftPreview extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -83,7 +84,15 @@ export class DraftPreview extends React.Component {
   }
 }
 
-DraftPreview.propTypes = {};
+DraftPreview.propTypes = {
+  match: PropTypes.object,
+  draft_id: PropTypes.string,
+  getDraftById: PropTypes.func,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  error: PropTypes.object,
+  formData: PropTypes.object
+};
 
 function mapStateToProps(state) {
   return {

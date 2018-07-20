@@ -92,7 +92,9 @@ class AlicePublished extends React.Component {
 }
 
 AlicePublished.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
+  files: PropTypes.object,
+  draftId: PropTypes.string
 };
 
 function mapStateToProps(state) {

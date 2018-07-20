@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import {
@@ -85,7 +85,7 @@ const CustomTile = withRouter(
   )
 );
 
-export class Dashboard extends React.Component {
+class Dashboard extends React.Component {
   componentDidMount() {
     this.props.fetchSearch();
     this.props.fetchMine(this.props.currentUser.get("token"));
@@ -185,7 +185,14 @@ export class Dashboard extends React.Component {
   }
 }
 
-Dashboard.propTypes = {};
+Dashboard.propTypes = {
+  fetchSearch: PropTypes.func,
+  fetchMine: PropTypes.func,
+  currentUser: PropTypes.object,
+  results: PropTypes.object,
+  mine: PropTypes.object,
+  history: PropTypes.object
+};
 
 function mapStateToProps(state) {
   return {

@@ -1,28 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import {
-  Box,
-  Button,
-  Anchor,
-  Paragraph,
-  Sidebar,
-  Title
-} from 'grommet';
+import { Box, Button, Anchor, Paragraph, Sidebar, Title } from "grommet";
 
-import AddIcon from 'grommet/components/icons/base/Add';
+import AddIcon from "grommet/components/icons/base/Add";
 
-import {
-  toggleFilemanagerLayer,
-  createDraft
-} from '../../../actions/drafts';
+import { toggleFilemanagerLayer, createDraft } from "../../../actions/drafts";
 
-import {withRouter} from 'react-router';
+import { withRouter } from "react-router";
 
-import Form from '../form/GrommetForm';
-import SectionHeader from './SectionHeader';
-import DepositFilesList from './DepositFilesList';
+import Form from "../form/GrommetForm";
+import SectionHeader from "./SectionHeader";
+import DepositFilesList from "./DepositFilesList";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -31,7 +21,7 @@ class DepositSidebar extends React.Component {
 
   _onSubmit(schema, data) {
     event.preventDefault();
-    let initialData = {general_title: data.formData};
+    let initialData = { general_title: data.formData };
     this.props.createDraft(initialData, schema);
     //this.props.initDraft(schema, data.formData )
   }
@@ -39,33 +29,49 @@ class DepositSidebar extends React.Component {
   render() {
     return (
       <Sidebar full={false} size="medium" colorIndex="light-2">
-        {
-          this.props.draftId ?
+        {this.props.draftId ? (
           <Box flex={true}>
             <SectionHeader
               label="Files | Data | Source Code"
               icon={
-                  this.props.addAction ? <Anchor
+                this.props.addAction ? (
+                  <Anchor
                     onClick={this.props.toggleFilemanagerLayer}
                     size="xsmall"
-                    icon={<AddIcon />} /> : null
-                  }
+                    icon={<AddIcon />}
+                  />
+                ) : null
+              }
             />
-            <DepositFilesList files={this.props.files || []} draftId={this.props.draftId}/>
-          </Box> :
+            <DepositFilesList
+              files={this.props.files || []}
+              draftId={this.props.draftId}
+            />
+          </Box>
+        ) : (
           <Box pad="medium">
             <Title>Preserve your analysis</Title>
-            <Paragraph>Name it to distinguish it from your other drafts</Paragraph>
-            <Form schema={{type: "string", title: "Analysis Name"}} onSubmit={this._onSubmit.bind(this, this.props.match.params.schema_id)} >
-              <Box flex={true} margin={{vertical: "medium"}}>
-                <Button label='Start Preserving'
-                  type='submit'
+            <Paragraph>
+              Name it to distinguish it from your other drafts
+            </Paragraph>
+            <Form
+              schema={{ type: "string", title: "Analysis Name" }}
+              onSubmit={this._onSubmit.bind(
+                this,
+                this.props.match.params.schema_id
+              )}
+            >
+              <Box flex={true} margin={{ vertical: "medium" }}>
+                <Button
+                  label="Start Preserving"
+                  type="submit"
                   primary={true}
-                  color="neutral-1" />
+                  color="neutral-1"
+                />
               </Box>
             </Form>
           </Box>
-        }
+        )}
       </Sidebar>
     );
   }
@@ -82,14 +88,19 @@ DepositSidebar.propTypes = {
   liveValidate: PropTypes.bool,
   toggleLiveValidate: PropTypes.func,
   customValidation: PropTypes.bool,
-  toggleCustomValidation: PropTypes.func
+  toggleCustomValidation: PropTypes.func,
+  createDraft: PropTypes.func,
+  draftId: PropTypes.string,
+  addAction: PropTypes.bool,
+  match: PropTypes.object,
+  files: PropTypes.object
 };
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.drafts.get('showSidebar'),
-    schema: state.drafts.get('schema'),
-    files: state.drafts.getIn(['current_item', 'files']),
+    showSidebar: state.drafts.get("showSidebar"),
+    schema: state.drafts.get("schema"),
+    files: state.drafts.getIn(["current_item", "files"])
   };
 }
 
@@ -100,7 +111,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DepositSidebar));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DepositSidebar)
+);

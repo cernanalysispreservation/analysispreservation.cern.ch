@@ -60,9 +60,9 @@ class LhcbPublished extends React.Component {
                 )}
                 <Title>Documentations</Title>
                 {item && item.additional_resources ? (
-                  item.additional_resources.documentations.map(i => {
+                  item.additional_resources.documentations.map((i, index) => {
                     return (
-                      <Box>
+                      <Box key={`${i.title}-${index}`}>
                         <Label>{i.title}</Label>
                         <a href={i.url}>{i.url}</a>
                       </Box>
@@ -81,7 +81,9 @@ class LhcbPublished extends React.Component {
 }
 
 LhcbPublished.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
+  files: PropTypes.array,
+  draftId: PropTypes.string
 };
 
 function mapStateToProps(state) {

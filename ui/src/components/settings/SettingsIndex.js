@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import {
   Box,
@@ -12,18 +12,18 @@ import {
   Heading,
   Table,
   TableRow
-} from 'grommet';
+} from "grommet";
 
-import AddIcon from 'grommet/components/icons/base/Add';
-import CloseIcon from 'grommet/components/icons/base/Close';
+import AddIcon from "grommet/components/icons/base/Add";
+import CloseIcon from "grommet/components/icons/base/Close";
 
-import ListPlaceholder from 'grommet-addons/components/ListPlaceholder';
+import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 
-import Form from '../deposit/form/GrommetForm';
+import Form from "../deposit/form/GrommetForm";
 
-import { getUsersAPIKeys, createToken, revokeToken } from '../../actions/auth';
+import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 
-import {applicationSchema, tokenSchema} from './utils';
+import { applicationSchema, tokenSchema } from "./utils";
 
 class SettingsIndex extends React.Component {
   constructor(props) {
@@ -63,12 +63,23 @@ class SettingsIndex extends React.Component {
 
   getLayer() {
     return (
-      <Layer overlayClose={true} closer={true} onClose={()=>{this.setState({layer: {active: false}});}} align="right">
+      <Layer
+        overlayClose={true}
+        closer={true}
+        onClose={() => {
+          this.setState({ layer: { active: false } });
+        }}
+        align="right"
+      >
         <Box flex={true} pad="medium" size="large">
-          <Heading align="start" margin={{vertical: "medium"}} tag="h3">New OAuth Application</Heading>
+          <Heading align="start" margin={{ vertical: "medium" }} tag="h3">
+            New OAuth Application
+          </Heading>
           <Paragraph align="start" margin="none" />
           <Form
-            schema={this.state.layer.type == "token" ? tokenSchema : applicationSchema}
+            schema={
+              this.state.layer.type == "token" ? tokenSchema : applicationSchema
+            }
             uiSchema={{
               scopes: {
                 "ui:options": {
@@ -76,11 +87,10 @@ class SettingsIndex extends React.Component {
                 }
               }
             }}
-            onSubmit={this._onSubmit.bind(this, this.state.layer.type)}>
-            <Box flex={true} margin={{vertical: "medium"}}>
-              <Button label="Submit"
-                type="submit"
-                primary={true} />
+            onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
+          >
+            <Box flex={true} margin={{ vertical: "medium" }}>
+              <Button label="Submit" type="submit" primary={true} />
             </Box>
           </Form>
         </Box>
@@ -97,56 +107,67 @@ class SettingsIndex extends React.Component {
       <Box flex={true} pad="medium">
         {this.state.layer.active ? this.getLayer() : null}
         <Box>
-          <Box pad="small" direction="row" colorIndex="neutral-1-a" justify="between">
-              <Title>Tokens</Title>
-              <Button label="Add Token"
-                icon={<AddIcon/>}
-                onClick={(this.activateLayer.bind(this, "token"))} />
+          <Box
+            pad="small"
+            direction="row"
+            colorIndex="neutral-1-a"
+            justify="between"
+          >
+            <Title>Tokens</Title>
+            <Button
+              label="Add Token"
+              icon={<AddIcon />}
+              onClick={this.activateLayer.bind(this, "token")}
+            />
           </Box>
 
-          {
-            !this.props.tokens.isEmpty() ?
-
+          {!this.props.tokens.isEmpty() ? (
             <Box colorIndex="light-2">
-            <Table colorIndex="light-2">
-              <thead key="token_header">
-                <tr>
-                  <th>id</th>
-                  <th>Name</th>
-                  <th>Scopes</th>
-                  <th>API key</th>
-                  <th>Revoke</th>
-                </tr>
-              </thead>
-              <tbody>
-
-                {
-                  this.props.tokens.map((token, keyy) =>
-                  {
-                    return token && token.t_id ?
-                    <TableRow key={token.t_id}>
-                      {
-                        [
+              <Table colorIndex="light-2">
+                <thead key="token_header">
+                  <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Scopes</th>
+                    <th>API key</th>
+                    <th>Revoke</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.props.tokens.map((token, keyy) => {
+                    return token && token.t_id ? (
+                      <TableRow key={token.t_id}>
+                        {[
                           <td key="id">{token.t_id}</td>,
                           <td key="name">{token.name}</td>,
                           <td key="scopes">{token.scopes}</td>,
                           <td key="access_token">{token.access_token}</td>,
-                          <td key="action"><Anchor icon={<CloseIcon/>} onClick={this._revokeToken.bind(this, token.t_id, keyy)} /></td>
-                        ]
-                      }
-                    </TableRow> : null
-                  })
-                }
-              </tbody>
-            </Table>
-            </Box> :
+                          <td key="action">
+                            <Anchor
+                              icon={<CloseIcon />}
+                              onClick={this._revokeToken.bind(
+                                this,
+                                token.t_id,
+                                keyy
+                              )}
+                            />
+                          </td>
+                        ]}
+                      </TableRow>
+                    ) : null;
+                  })}
+                </tbody>
+              </Table>
+            </Box>
+          ) : (
             <ListPlaceholder
               label="Add token"
               primary={true}
               a11yTitle="Add item"
               emptyMessage="You do not have any items at the moment."
-              unfilteredTotal={0} />
-          }
+              unfilteredTotal={0}
+            />
+          )}
         </Box>
       </Box>
     );
@@ -154,12 +175,15 @@ class SettingsIndex extends React.Component {
 }
 
 SettingsIndex.propTypes = {
-  tokens: PropTypes.object
+  tokens: PropTypes.object,
+  getUsersAPIKeys: PropTypes.func,
+  createToken: PropTypes.func,
+  revokeToken: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
-    tokens: state.auth.get("tokens"),
+    tokens: state.auth.get("tokens")
     // clients: state.auth.get("clients"),
   };
 }
@@ -167,7 +191,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getUsersAPIKeys: () => dispatch(getUsersAPIKeys()),
-    createToken: (data) => dispatch(createToken(data)),
+    createToken: data => dispatch(createToken(data)),
     revokeToken: (t_id, key) => dispatch(revokeToken(t_id, key))
   };
 }

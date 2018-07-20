@@ -13,10 +13,6 @@ class SearchResults extends React.Component {
     super(props);
   }
 
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   render() {
     if (this.props.results) {
       return (
@@ -81,9 +77,10 @@ class SearchResults extends React.Component {
                           {draft_id}
                         </Label>
                         <Box direction="row" align="end">
-                          {Array.from(objects).map(object => {
+                          {Array.from(objects).map((object, index) => {
                             return (
                               <Label
+                                key={`${object}-${index}`}
                                 size="small"
                                 align="center"
                                 margin="medium"
@@ -134,7 +131,10 @@ class SearchResults extends React.Component {
 
 SearchResults.propTypes = {
   results: PropTypes.array.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  userId: PropTypes.string,
+  size: PropTypes.string,
+  user_id: PropTypes.number
 };
 
 function mapStateToProps(state) {

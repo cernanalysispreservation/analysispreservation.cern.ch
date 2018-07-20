@@ -35,7 +35,8 @@ class DefaultArrayField extends React.Component {
 }
 
 DefaultArrayField.propTypes = {
-  items: PropTypes.array
+  items: PropTypes.array,
+  title: PropTypes.string
 };
 
 export default DefaultArrayField;

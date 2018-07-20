@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import Box from 'grommet/components/Box';
+import Box from "grommet/components/Box";
 
-import SearchFacets from './SearchFacets';
-import SearchUtils from './SearchUtils';
-import SearchResults from './SearchResults';
+import SearchFacets from "./SearchFacets";
+import SearchUtils from "./SearchUtils";
+import SearchResults from "./SearchResults";
 
-import {fetchSearch} from '../../actions/search';
-import queryString from 'query-string';
+import { fetchSearch } from "../../actions/search";
+import queryString from "query-string";
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -20,31 +20,35 @@ class SearchPage extends React.Component {
     this.props.fetchSearch();
   }
 
-  _changePage(page){
-    let currentParams = queryString.parse(this.props.location.search);
-
-    const location = {
-      search: `${queryString.stringify(Object.assign(currentParams,{page: page}))}`
-    };
-
-    this.props.history.push(location);
-    this.props.fetchSearch();
-  }
-
-  _changePageSize(size){
-    let currentParams = queryString.parse(this.props.location.search);
-    const location = {
-      search: `${queryString.stringify(Object.assign(currentParams,{size: size}))}`
-    };
-
-    this.props.history.push(location);
-    this.props.fetchSearch();
-  }
-
   componentWillReceiveProps(nextProps) {
-    if ( this.props.location.search !== nextProps.location.search ) {
-      this.props.fetchSearch()
+    if (this.props.location.search !== nextProps.location.search) {
+      this.props.fetchSearch();
     }
+  }
+
+  _changePageSize(size) {
+    let currentParams = queryString.parse(this.props.location.search);
+    const location = {
+      search: `${queryString.stringify(
+        Object.assign(currentParams, { size: size })
+      )}`
+    };
+
+    this.props.history.push(location);
+    this.props.fetchSearch();
+  }
+
+  _changePage(page) {
+    let currentParams = queryString.parse(this.props.location.search);
+
+    const location = {
+      search: `${queryString.stringify(
+        Object.assign(currentParams, { page: page })
+      )}`
+    };
+
+    this.props.history.push(location);
+    this.props.fetchSearch();
   }
 
   render() {
@@ -66,7 +70,8 @@ class SearchPage extends React.Component {
         <SearchFacets
           aggs={_aggs}
           selectedAggs={this.props.selectedAggs}
-          onChange={this._toggleAggs}/>
+          onChange={this._toggleAggs}
+        />
       );
     }
 
@@ -75,18 +80,26 @@ class SearchPage extends React.Component {
       utils = (
         <SearchUtils
           loading={this.props.loading}
-          currentPage={this.props.selectedAggs.page ? parseInt(this.props.selectedAggs.page) : 1}
-          size={this.props.selectedAggs.size ? parseInt(this.props.selectedAggs.size) : 10}
+          currentPage={
+            this.props.selectedAggs.page
+              ? parseInt(this.props.selectedAggs.page)
+              : 1
+          }
+          size={
+            this.props.selectedAggs.size
+              ? parseInt(this.props.selectedAggs.size)
+              : 10
+          }
           total={total || 0}
           onPageChange={this._changePage.bind(this)}
           onPageSizeChange={this._changePageSize.bind(this)}
         />
       );
-      results = (<SearchResults results={_results.hits.hits || []} />);
+      results = <SearchResults results={_results.hits.hits || []} />;
     }
 
     return (
-      <Box  flex={true}>
+      <Box flex={true}>
         {utils}
         <Box flex={true} direction="row">
           {aggs}
@@ -103,20 +116,20 @@ SearchPage.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
-  results: PropTypes.object.isRequired,
+  results: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    results: state.search.getIn(['results']),
-    loading: state.search.getIn(['loading']),
-    selectedAggs: state.search.getIn(['selectedAggs'])
+    results: state.search.getIn(["results"]),
+    loading: state.search.getIn(["loading"]),
+    selectedAggs: state.search.getIn(["selectedAggs"])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: () => dispatch(fetchSearch()),
+    fetchSearch: () => dispatch(fetchSearch())
   };
 }
 

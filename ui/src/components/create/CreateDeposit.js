@@ -1,9 +1,10 @@
-import _ from 'lodash';
-import React from 'react';
+import _ from "lodash";
+import React from "react";
+import PropTypes from "prop-types";
 
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 
-import {Box, Toast, Layer, Paragraph, Button} from 'grommet';
+import { Box, Toast, Layer, Paragraph, Button } from "grommet";
 
 import {
   fetchSchema,
@@ -17,14 +18,14 @@ import {
   discardDraft,
   editPublished,
   toggleActionsLayer
-} from '../../actions/drafts';
+} from "../../actions/drafts";
 
-import DepositForm from '../deposit/form/Form';
-import DepositHeader from '../deposit/components/DepositHeader';
-import Sidebar from '../deposit/components/DepositSidebar';
-import Previewer from '../deposit/components/DepositPreviewer';
+import DepositForm from "../deposit/form/Form";
+import DepositHeader from "../deposit/components/DepositHeader";
+import Sidebar from "../deposit/components/DepositSidebar";
+import Previewer from "../deposit/components/DepositPreviewer";
 
-const transformSchema = (schema) => {
+const transformSchema = schema => {
   const schemaFieldsToRemove = [
     "_access",
     "_deposit",
@@ -39,12 +40,15 @@ const transformSchema = (schema) => {
   ];
 
   schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
-  schema = { type: schema.type, properties: schema.properties,  dependencies: schema.dependencies,  };
+  schema = {
+    type: schema.type,
+    properties: schema.properties,
+    dependencies: schema.dependencies
+  };
   return schema;
 };
 
-
-export class CreateDeposit extends React.Component {
+class CreateDeposit extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -71,13 +75,20 @@ export class CreateDeposit extends React.Component {
   }
 
   _saveData() {
-    let status = this.props.draft? this.props.draft._deposit.status: null;
-    if(this.props.match.params.schema_id)
-      this.props.createDraft(this.props.formData, this.props.match.params.schema_id);
+    let status = this.props.draft ? this.props.draft._deposit.status : null;
+    if (this.props.match.params.schema_id)
+      this.props.createDraft(
+        this.props.formData,
+        this.props.match.params.schema_id
+      );
     else if (status !== "published")
-      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);      
+      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);
     else if (status == "published")
-      this.props.editPublished({ ...this.props.formData, $schema: this.props.draft.$schema }, this.props.match.params.schema_id, this.props.draft_id);
+      this.props.editPublished(
+        { ...this.props.formData, $schema: this.props.draft.$schema },
+        this.props.match.params.schema_id,
+        this.props.draft_id
+      );
   }
 
   _publishData() {
@@ -92,13 +103,13 @@ export class CreateDeposit extends React.Component {
     this.props.discardDraft(this.props.draft_id);
   }
 
-  _actionHandler = (type) => () => {
+  _actionHandler = type => () => {
     this.props.toggleActionsLayer();
-    this.setState({actionType: type});
-  }
+    this.setState({ actionType: type });
+  };
 
   renderAction(action) {
-    switch(action) {
+    switch (action) {
       case "save":
         this._saveData();
         this.props.toggleActionsLayer();
@@ -118,38 +129,47 @@ export class CreateDeposit extends React.Component {
     }
   }
 
-  renderMessage(action){
-     switch(action) {
+  renderMessage(action) {
+    switch (action) {
       case "save":
-        return <Paragraph>Are you sure you want to save your changes?</Paragraph>;
+        return (
+          <Paragraph>Are you sure you want to save your changes?</Paragraph>
+        );
       case "publish":
-        return <Paragraph>Your analysis will now be visible to all members of collaboration. Proceed?</Paragraph>;
+        return (
+          <Paragraph>
+            Your analysis will now be visible to all members of collaboration.
+            Proceed?
+          </Paragraph>
+        );
       case "delete":
-        return <Paragraph>Are you sure you want to delete this draft?</Paragraph>;
+        return (
+          <Paragraph>Are you sure you want to delete this draft?</Paragraph>
+        );
       case "discard":
-        return <Paragraph>Discard changes to the previous published version?</Paragraph>;
+        return (
+          <Paragraph>
+            Discard changes to the previous published version?
+          </Paragraph>
+        );
     }
   }
 
-
   render() {
-    let _schema = this.props.schema ? transformSchema(this.props.schema):null;
+    let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
     return (
-      <Box id="deposit-page"  flex={true}>
-        {
-          this.props.error?
-          <Toast status="critical">
-            {this.props.error.message}
-          </Toast> : null
-        }
+      <Box id="deposit-page" flex={true}>
+        {this.props.error ? (
+          <Toast status="critical">{this.props.error.message}</Toast>
+        ) : null}
         <DepositHeader
           draftId={this.props.draft_id}
-          saveData={this._actionHandler('save')}
-          publishData={this._actionHandler('publish')}
-          deleteDraft={this._actionHandler('delete')}
-          discardData={this._actionHandler('discard')}
+          saveData={this._actionHandler("save")}
+          publishData={this._actionHandler("publish")}
+          deleteDraft={this._actionHandler("delete")}
+          discardData={this._actionHandler("discard")}
         />
-        {this.props.actionsLayer ?
+        {this.props.actionsLayer ? (
           <Layer
             closer={true}
             align="center"
@@ -157,80 +177,102 @@ export class CreateDeposit extends React.Component {
             overlayClose={true}
             onClose={this.props.toggleActionsLayer}
           >
-            <Box justify="center" 
-                 flex={true} 
-                 wrap={false} 
-                 pad="medium"
-                 size="medium">
+            <Box
+              justify="center"
+              flex={true}
+              wrap={false}
+              pad="medium"
+              size="medium"
+            >
               {this.renderMessage(this.state.actionType)}
               <Box direction="row" justify="center" align="center">
-                <Box colorIndex='neutral-1'>
+                <Box colorIndex="neutral-1">
                   <Button
                     label="Yes"
                     plain={true}
                     //primary={true}
-                    onClick={()=>this.renderAction(this.state.actionType)}
+                    onClick={() => this.renderAction(this.state.actionType)}
                   />
                 </Box>
-                <Box colorIndex='grey-4-a' margin="small">
+                <Box colorIndex="grey-4-a" margin="small">
                   <Button
                     label="Cancel"
                     plain={true}
-                    onClick={()=>this.props.toggleActionsLayer()}
-                  />  
+                    onClick={() => this.props.toggleActionsLayer()}
+                  />
                 </Box>
               </Box>
             </Box>
-          </Layer>:null
-          }
-          <Box direction="row" justify="between" flex={true} wrap={false}>
-            <Sidebar draftId={this.props.draft_id} addAction={true}/>
-            {
-              this.props.schema ?
-              <DepositForm
-                formData={this.props.formData}
-                schema={_schema}
-                uiSchema={this.props.uiSchema || {}}
-                onChange={(change) => {
-                  // console.log("CHANGE::",change);
-                  this.props.formDataChange(change.formData);
-                }}
-              /> : null
-            }
-            <Previewer data={this.props.formData || {}}/>
-          </Box>
+          </Layer>
+        ) : null}
+        <Box direction="row" justify="between" flex={true} wrap={false}>
+          <Sidebar draftId={this.props.draft_id} addAction={true} />
+          {this.props.schema ? (
+            <DepositForm
+              formData={this.props.formData}
+              schema={_schema}
+              uiSchema={this.props.uiSchema || {}}
+              onChange={change => {
+                // console.log("CHANGE::",change);
+                this.props.formDataChange(change.formData);
+              }}
+            />
+          ) : null}
+          <Previewer data={this.props.formData || {}} />
+        </Box>
       </Box>
     );
   }
 }
 
-CreateDeposit.propTypes = {};
+CreateDeposit.propTypes = {
+  match: PropTypes.object,
+  draft_id: PropTypes.string,
+  getDraftById: PropTypes.func,
+  initForm: PropTypes.func,
+  fetchSchema: PropTypes.func,
+  deleteDraft: PropTypes.func,
+  publishDraft: PropTypes.func,
+  discardDraft: PropTypes.func,
+  updateDraft: PropTypes.func,
+  createDraft: PropTypes.func,
+  formDataChange: PropTypes.func,
+  editPublished: PropTypes.func,
+  draft: PropTypes.object,
+  formData: PropTypes.object,
+  toggleActionsLayer: PropTypes.func,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  error: PropTypes.bool,
+  actionsLayer: PropTypes.bool
+};
 
 function mapStateToProps(state) {
   return {
-    schema: state.drafts.get('schema'),
-    uiSchema: state.drafts.get('uiSchema'),
-    error: state.drafts.getIn(['current_item', 'error']),
-    draft_id: state.drafts.getIn(['current_item', 'id']),
-    draft: state.drafts.getIn(['current_item', 'data']),
-    published_id: state.drafts.getIn(['current_item', 'published_id']),
-    formData: state.drafts.getIn(['current_item', 'formData']),
-    actionsLayer: state.drafts.get('actionsLayer')
+    schema: state.drafts.get("schema"),
+    uiSchema: state.drafts.get("uiSchema"),
+    error: state.drafts.getIn(["current_item", "error"]),
+    draft_id: state.drafts.getIn(["current_item", "id"]),
+    draft: state.drafts.getIn(["current_item", "data"]),
+    published_id: state.drafts.getIn(["current_item", "published_id"]),
+    formData: state.drafts.getIn(["current_item", "formData"]),
+    actionsLayer: state.drafts.get("actionsLayer")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSchema: (schema) => dispatch(fetchSchema(schema)),
+    fetchSchema: schema => dispatch(fetchSchema(schema)),
     createDraft: (data, schema) => dispatch(createDraft(data, schema)),
     updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
     getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
     initForm: () => dispatch(initForm()),
-    publishDraft: (draft_id) => dispatch(publishDraft(draft_id)),
-    deleteDraft: (draft_id) => dispatch(deleteDraft(draft_id)),
-    discardDraft: (draft_id) => dispatch(discardDraft(draft_id)),
-    editPublished: (data, schema, draft_id) => dispatch(editPublished(data, schema, draft_id)),
-    formDataChange: (data) => dispatch(formDataChange(data)),
+    publishDraft: draft_id => dispatch(publishDraft(draft_id)),
+    deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
+    discardDraft: draft_id => dispatch(discardDraft(draft_id)),
+    editPublished: (data, schema, draft_id) =>
+      dispatch(editPublished(data, schema, draft_id)),
+    formDataChange: data => dispatch(formDataChange(data)),
     toggleActionsLayer: () => dispatch(toggleActionsLayer())
   };
 }

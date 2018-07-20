@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { Box, List, ListItem } from "grommet";
 
-import TextWidget from "../widgets/TextWidget.js";
+import TextWidget from "../widgets/TextWidget";
 
 class StringArrayField extends React.Component {
   constructor(props) {
@@ -49,7 +49,8 @@ class StringArrayField extends React.Component {
 }
 
 StringArrayField.propTypes = {
-  items: PropTypes.array
+  items: PropTypes.array,
+  onAddClick: PropTypes.func
 };
 
 export default StringArrayField;

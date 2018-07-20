@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class TextAreaWidget extends Component {
   constructor(props) {
@@ -10,8 +11,8 @@ class TextAreaWidget extends Component {
 
     this.state = {
       activeLayer: false,
-      count: (props.value || '').length
-    }
+      count: (props.value || "").length
+    };
   }
 
   // TOFIX onBlur, onFocus
@@ -21,29 +22,39 @@ class TextAreaWidget extends Component {
 
     if (this.maxChars) {
       if (length <= this.maxChars) {
-        this.setState({ count: value.length})
-        return this.props.onChange(value === "" ? this.props.options.emptyValue : value);
+        this.setState({ count: value.length });
+        return this.props.onChange(
+          value === "" ? this.props.options.emptyValue : value
+        );
       }
-    }
-    else {
-      return this.props.onChange(value === "" ? this.props.options.emptyValue : value);
+    } else {
+      return this.props.onChange(
+        value === "" ? this.props.options.emptyValue : value
+      );
     }
   }
 
   render() {
     return (
-        <textarea
-            rows="5"
-            type="text"
-            id={this.props.id}
-            name={this.props.id}
-            onBlur={this.props.onBlur}
-            value={this.props.value ? this.props.value : ""}
-            onChange={this._onChange.bind(this)} />
+      <textarea
+        rows="5"
+        type="text"
+        id={this.props.id}
+        name={this.props.id}
+        onBlur={this.props.onBlur}
+        value={this.props.value ? this.props.value : ""}
+        onChange={this._onChange.bind(this)}
+      />
     );
   }
 }
 
-
+TextAreaWidget.propTypes = {
+  options: PropTypes.object,
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+  id: PropTypes.string,
+  onBlur: PropTypes.func
+};
 
 export default TextAreaWidget;

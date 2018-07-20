@@ -1,96 +1,94 @@
-import React from 'react';
-// import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import {
-  Box,
-  Title,
-  Button
-} from 'grommet';
+import { Box, Title, Button } from "grommet";
 
-import {rerunPublished} from '../../actions/published';
+import { rerunPublished } from "../../actions/published";
 
-import CleanForm from '../deposit/form/CleanForm';
+import CleanForm from "../deposit/form/CleanForm";
 
 const schema = {
   type: "object",
   properties: {
-      input_parameters: {
-        title: "Input Parameters",
-        type: "object",
-        properties: {
-          "workflow_id": {
-            title: "Workflow Id",
-            type: "string"
-          },
-          ali_physics: {
-            title: "AliPhysics",
-            type: "string"
-          }
+    input_parameters: {
+      title: "Input Parameters",
+      type: "object",
+      properties: {
+        workflow_id: {
+          title: "Workflow Id",
+          type: "string"
+        },
+        ali_physics: {
+          title: "AliPhysics",
+          type: "string"
+        }
       }
     }
   }
 };
 
 const uiSchema = {
-  "input_parameters": {
-    "ali_physics":{
+  input_parameters: {
+    ali_physics: {
       "ui:readonly": true
     }
   }
 };
 
 const formData = {
-  "input_parameters": {
-    "ali_physics": "vAN-20180614-1"
+  input_parameters: {
+    ali_physics: "vAN-20180614-1"
   }
-}
+};
 
-export class RerunPublished extends React.Component {
-
+class RerunPublished extends React.Component {
   render() {
-    let {id} = this.props.match.params;
+    let { id } = this.props.match.params;
     return (
-      <Box size={{width: {min: "large"}}} flex={true}  wrap={false}>
+      <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
         <Box align="center" justify="center">
           <Title>Rerun your analysis</Title>
         </Box>
         <Box align="center" flex={true} wrap={false}>
-          <Box size={{width: "xlarge"}} pad="large" flex={false} wrap={false}>
-              <CleanForm
-                schema={schema}
-                uiSchema={uiSchema}
-                onSubmit={(data) => {
-                  this.props.rerunPublished(data.formData.input_parameters.workflow_id, id);
-                }}
-                formData={formData}
-              >
-              <Box margin={{top:'small'}}>
-                <Button
-                  label='Run On REANA'
-                  type='submit'
-                  primary={true}
-                />
+          <Box size={{ width: "xlarge" }} pad="large" flex={false} wrap={false}>
+            <CleanForm
+              schema={schema}
+              uiSchema={uiSchema}
+              onSubmit={data => {
+                this.props.rerunPublished(
+                  data.formData.input_parameters.workflow_id,
+                  id
+                );
+              }}
+              formData={formData}
+            >
+              <Box margin={{ top: "small" }}>
+                <Button label="Run On REANA" type="submit" primary={true} />
               </Box>
             </CleanForm>
           </Box>
         </Box>
       </Box>
-    )
+    );
   }
 }
 
-RerunPublished.propTypes = {};
+RerunPublished.propTypes = {
+  match: PropTypes.object,
+  rerunPublished: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {
-    published: state.published.getIn(['current_item', 'data'])
+    published: state.published.getIn(["current_item", "data"])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    rerunPublished: (workflow_id, id) => dispatch(rerunPublished(workflow_id, id))
+    rerunPublished: (workflow_id, id) =>
+      dispatch(rerunPublished(workflow_id, id))
   };
 }
 

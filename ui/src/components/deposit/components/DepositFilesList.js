@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import FileManager from './DepositFileManager';
-import FileList from './FileList';
+import FileManager from "./DepositFileManager";
+import FileList from "./FileList";
 
-import ArchiveIcon from 'grommet/components/icons/base/Archive';
-import DocumentConfigIcon from 'grommet/components/icons/base/DocumentConfig';
-import PieChartIcon from 'grommet/components/icons/base/PieChart';
-import BookIcon from 'grommet/components/icons/base/Book';
-import NoteIcon from 'grommet/components/icons/base/Note';
+import ArchiveIcon from "grommet/components/icons/base/Archive";
+import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
+import PieChartIcon from "grommet/components/icons/base/PieChart";
+import BookIcon from "grommet/components/icons/base/Book";
+import NoteIcon from "grommet/components/icons/base/Note";
 
 class DepositFilesList extends React.Component {
   constructor(props) {
@@ -17,25 +17,30 @@ class DepositFilesList extends React.Component {
 
   _getIcon(type) {
     const catToIcon = {
-      archive: <ArchiveIcon type="status" size="xsmall"/>,
-      configuration: <DocumentConfigIcon type="status" size="xsmall"/>,
-      dataset: <PieChartIcon type="status" size="xsmall"/>,
-      publication: <BookIcon type="status" size="xsmall"/>,
-      plot: <PieChartIcon type="status" size="xsmall"/>,
+      archive: <ArchiveIcon type="status" size="xsmall" />,
+      configuration: <DocumentConfigIcon type="status" size="xsmall" />,
+      dataset: <PieChartIcon type="status" size="xsmall" />,
+      publication: <BookIcon type="status" size="xsmall" />,
+      plot: <PieChartIcon type="status" size="xsmall" />
     };
 
-    return catToIcon[type] ? catToIcon[type] : <NoteIcon type="status" size="xsmall" />;
+    return catToIcon[type] ? (
+      catToIcon[type]
+    ) : (
+      <NoteIcon type="status" size="xsmall" />
+    );
   }
 
   render() {
     return (
       <span>
-      <FileManager
-        item_id={this.props.item_id}
-        files={this.props.files}
-        bucket={this.props.bucket}
-        activeLayer={this.props.fileManagerLayerActive}
-        key="_file_manager"/>
+        <FileManager
+          item_id={this.props.item_id}
+          files={this.props.files}
+          bucket={this.props.bucket}
+          activeLayer={this.props.fileManagerLayerActive}
+          key="_file_manager"
+        />
 
         <FileList files={this.props.files} />
       </span>
@@ -44,7 +49,10 @@ class DepositFilesList extends React.Component {
 }
 
 DepositFilesList.propTypes = {
-  fileManagerLayerActive: PropTypes.bool
+  fileManagerLayerActive: PropTypes.bool,
+  item_id: PropTypes.string,
+  files: PropTypes.object,
+  bucket: PropTypes.object
 };
 
 export default DepositFilesList;

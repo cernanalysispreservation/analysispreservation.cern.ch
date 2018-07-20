@@ -129,7 +129,9 @@ class CmsPublished extends React.Component {
 }
 
 CmsPublished.propTypes = {
-  item: PropTypes.object
+  item: PropTypes.object,
+  files: PropTypes.array,
+  draftId: PropTypes.string
 };
 
 function mapStateToProps(state) {
