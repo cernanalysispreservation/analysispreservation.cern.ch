@@ -16,7 +16,7 @@ class SearchResults extends React.Component {
   render() {
     if (this.props.results) {
       return (
-        <Box flex={true} colorIndex="light-2">
+        <Box flex={true} colorIndex="light-1">
           <List>
             {this.props.results.map(item => {
               let metadata = fromJS(item.metadata);

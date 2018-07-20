@@ -90,7 +90,7 @@ class SearchFacets extends React.Component {
             let categories = Object.keys(facets);
 
             return (
-                <Sidebar full={false} colorIndex="neutral-1-t">
+                <Sidebar full={false} colorIndex="light-2">
                     <Box flex={true} justify="start">
                         <Menu flex={true} primary={true}>
                             {

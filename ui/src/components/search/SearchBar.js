@@ -18,6 +18,7 @@ class SearchBar extends React.Component {
         let query = event.target.value;
         let q = queryString.parse(this.props.history.location.search);
         q["q"] = query;
+        delete q["page"];
 
         const search_location = {
             pathname: `/search`,
