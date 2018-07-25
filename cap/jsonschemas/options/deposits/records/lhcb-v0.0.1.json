@@ -64,6 +64,9 @@
         },
         "analysis_proponents": {
             "items": {
+                "ui:options": {
+                    "stringify": ["name"]
+                },
                 "name": {
                     "ui:options": {
                         "autofill_from": "/api/orcid?name=",
@@ -86,6 +89,9 @@
         },
         "reviewers": {
             "items": {
+                "ui:options": {
+                    "stringify": ["name"]
+                },
                 "name": {
                     "ui:options": {
                         "autofill_from": "/api/orcid?name=",
@@ -181,18 +187,42 @@
             "documentations"
         ],
         "internal_discussions": {
-            "ui:order": [
-                "title",
-                "URL",
-                "meeting"
-            ]
+            "items":{
+                "ui:options": {
+                    "stringify": ["title"]
+                },
+                "ui:order": [
+                    "title",
+                    "url",
+                    "meeting"
+                ]
+            }
+        },
+        "documentations": {
+            "items":{
+                "ui:options": {
+                    "stringify": ["title"]
+                }
+            }
         },
         "presentations": {
-            "ui:order": [
-                "title",
-                "URL",
-                "meeting"
-            ]
+            "items":{
+                "ui:options": {
+                    "stringify": ["title"]
+                },
+                "ui:order": [
+                    "title",
+                    "url",
+                    "meeting"
+                ]
+            }
+        },
+        "publications": {
+            "items":{
+                "ui:options": {
+                    "stringify": ["analysis_number"]
+                }
+            }
         }
     }
 }

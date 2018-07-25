@@ -63,6 +63,9 @@
         "primary_datasets": {
             "items": {
                 "ui:order": ["path", "ranges"],
+                "ui:options": {
+                    "stringify": ["path"]
+                },
                 "path":{
                     "ui:options": {
                         "suggestions": "/api/cms/datasets?query="
@@ -72,7 +75,10 @@
         },
         "triggers": {
             "items": {
-                "ui:order": ["trigger", "prescale"]
+                "ui:order": ["trigger", "prescale"],
+                "ui:options": {
+                    "stringify": ["trigger"]
+                }
             }
         },
         "mc_sig_datasets": {
@@ -180,15 +186,28 @@
     },
     "additional_resources": {
         "ui:object": "accordionObjectField",
-        "ui:order": ["conferences", "presentations", "internal_discussions", "documentations", "publications", "keywords", "*"],
-        "conferences": {
-            "ui:array": "StringArrayField"
-        },
+        "ui:order": ["presentations", "internal_discussions", "documentations", "publications", "keywords", "*"],
         "presentations": {
-            "ui:array": "StringArrayField"
+            "items":{
+                "ui:options": {
+                    "stringify": ["conference"]
+                }
+            }
         },
         "internal_discussions": {
             "ui:array": "StringArrayField"
+        },
+        "documentations": {
+            "items": {
+                "ui:field": "CapFiles"
+            }
+        },
+        "publications": {
+            "items": {
+                "ui:options": {
+                    "stringify": ["journal_title"]
+                }
+            }
         }
     },
     "final_results": {

@@ -5,18 +5,18 @@ import _ from "lodash";
 import { Box } from "grommet";
 
 let ItemBrief = function(props) {
-  const { index, item, label } = props;
+  const { item, label } = props;
 
   let preview = [];
 
-  if (!label || typeof label === "string") {
-    preview = `${label || "--"} #${index}`;
-  } else {
+  if (Array.isArray(label)) {
     label.map(prop => {
       preview.push(
         `${prop.title}${prop.separator || ":"} ${_.get(item, prop.path) || "-"}`
       );
     });
+  } else {
+      preview = label ;
   }
 
   return (
@@ -32,7 +32,6 @@ ItemBrief.propTypes = {
   hasMoveUp: PropTypes.bool,
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
-  index: PropTypes.string,
   label: PropTypes.string,
   item: PropTypes.object
 };

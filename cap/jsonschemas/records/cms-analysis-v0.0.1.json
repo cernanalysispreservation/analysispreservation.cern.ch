@@ -265,11 +265,9 @@
                     "description": "Please provide all documentation",
                     "type": "array",
                     "id": "documentations",
-                    "default": [
-                        {}
-                    ],
                     "items": {
-                        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/documentation-v0.0.1.json"
+                        "type": "string",
+                        "x-cap-file": {}
                     }
                 },
                 "internal_discussions": {
@@ -277,7 +275,6 @@
                     "description": "Please add links to internal discussions",
                     "type": "array",
                     "id": "internal-discussions",
-                    "default": [],
                     "items": {
                       "title": "URL",
                       "type": "string"
@@ -288,10 +285,17 @@
                     "description": "Please add links to presentations",
                     "type": "array",
                     "id": "presentations",
-                    "default": [],
                     "items": {
-                      "title": "URL",
-                      "type": "string"
+                        "properties": {
+                            "conference": {
+                                "title": "Conference/meeting",
+                                "type": "string"
+                            },
+                            "url": {
+                                  "title": "URL",
+                                  "type": "string"
+                            }
+                        }
                     }
                 },
                 "publications": {
@@ -299,24 +303,8 @@
                     "description": "Please add all publications",
                     "type": "array",
                     "id": "publications",
-                    "default": [
-                        {}
-                    ],
                     "items": {
                         "$ref": "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
-                    }
-                },
-                "conferences": {
-                    "title": "Conferences",
-                    "description": "Please list conferences",
-                    "type": "array",
-                    "items": {
-                        "properties": {
-                            "name": {
-                                "title": "Name",
-                                "type": "string"
-                            }
-                        }
                     }
                 },
                 "keywords": {
