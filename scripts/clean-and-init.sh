@@ -26,7 +26,7 @@
 
 
 # Destroy db and indexes
-cap db destroy --yes-i-know
+cap db drop
 cap index destroy --force --yes-i-know
 #curl -XDELETE 'http://localhost:9200/_all/'
 
@@ -36,7 +36,12 @@ redis-cli flushall
 # Init and create db and indexes
 cap db init
 cap db create
+cap fixtures schemas
 cap index init
 
 # Create location for files
-cap files location local var/data --default
+if [[ -z "${DEBUG}" ]]; then
+  cap files location local var/data --default 
+else
+  cap files location local /var/data --default 
+fi

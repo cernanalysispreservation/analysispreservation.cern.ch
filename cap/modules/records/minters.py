@@ -26,13 +26,18 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_pidstore.providers.recordid import RecordIdProvider
+from .providers import RecordUUIDProvider
+from .utils import generate_recid
 
 
 def cap_record_minter(record_uuid, data):
     """Mint record identifiers."""
-    assert 'recid' not in data
-    provider = RecordIdProvider.create(
-        object_type='rec', object_uuid=record_uuid)
-    data['recid'] = int(provider.pid.pid_value)
+    assert 'control_number' not in data
+    pid_value = generate_recid(data['_experiment'])
+    provider = RecordUUIDProvider.create(
+        pid_type='recid',
+        pid_value=pid_value,
+        object_type='rec',
+        object_uuid=record_uuid)
+    data['control_number'] = provider.pid.pid_value
     return provider.pid

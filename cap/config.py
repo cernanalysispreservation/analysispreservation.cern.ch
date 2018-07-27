@@ -391,8 +391,8 @@ RECORDS_REST_FACETS = {
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
 RECORDS_REST_ENDPOINTS['recid'].update({
-    # pid_type='recid',
-    'pid_minter': 'cap_record_minter',
+    # 'pid_type': 'recid',
+    # 'pid_minter': 'cap_record_minter',
     'pid_fetcher': 'cap_record_fetcher',
     # 'search_index': 'records',
     # 'record_class': "invenio_records_files.api:Record",
@@ -748,6 +748,9 @@ DEPOSIT_GROUPS = {
 
 # #: Endpoints for deposit.
 DEPOSIT_UI_ENDPOINT = None
+
+DEPOSIT_PID_MINTER = 'cap_record_minter'
+
 DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
 _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 
