@@ -45,7 +45,7 @@ services:
     restart: "always"
     read_only: true
     ports:
-      - "6379:6379"
+      - "6379"
   db:
     image: postgres:9.6
     restart: "always"
@@ -54,7 +54,7 @@ services:
       - "POSTGRES_PASSWORD=cap"
       - "POSTGRES_DB=cap"
     ports:
-      - "5432:5432"
+      - "5432"
   mq:
     image: rabbitmq:3-management
     restart: "always"

@@ -21,9 +21,71 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+#
+#addons:
+#  postgresql: 9.4
+#notifications:
+#  email: false
+#
+#sudo: false
+#
+#language: python
+#
+#python:
+#  - "2.7"
+#
+#services:
+#- postgresql
+#- redis
+## - rabbitmq
+#
+#env:
+#  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=2.3.1
+#  # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+#  # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+#
+#before_install:
+#  - mkdir /tmp/elasticsearch
+#  - wget -O - https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/${ES_VERSION}/elasticsearch-${ES_VERSION}.tar.gz | tar xz --directory=/tmp/elasticsearch --strip-components=1
+#  - "/tmp/elasticsearch/bin/plugin install -b mapper-attachments"
+#  - /tmp/elasticsearch/bin/elasticsearch &
+#  - sleep 30
+#  - travis_retry pip install coveralls
+#  - travis_retry pip install kwalitee --pre
+#  - echo ${TRAVIS_COMMIT_RANGE}
+#  # Comments out workaround because of Travis CI issues
+#  # - |
+#  #      # inspiration from https://github.com/trevp/tlslite/blob/master/.travis.yml
+#  #      # workaround for https://github.com/travis-ci/travis-ci/issues/2666
+#  #      if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+#  #        URL="https://github.com/${TRAVIS_REPO_SLUG}/pull/${TRAVIS_PULL_REQUEST}.patch"
+#  #        PR_FIRST=$(curl --silent --show-error --location $URL | head -1 | grep -o -E '\b[0-9a-f]{40}\b' | tr -d '\n')
+#  #        TRAVIS_COMMIT_RANGE=$PR_FIRST^..$TRAVIS_COMMIT
+#  #      fi
+#  # - echo ${TRAVIS_COMMIT_RANGE}
+#  - "travis_retry pip install --upgrade pip setuptools py"
+#  - "travis_retry pip install twine wheel coveralls requirements-builder"
+#  - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
+#  # - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
+#  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
+#
+#install:
+#  - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+#  - "travis_retry pip install -e .[docs,tests]"
+#  # - "travis_retry pip install -r requirements.txt --upgrade"
+#
+#before_script:
+#  - travis_retry pip install kwalitee GitPython --pre
+#  # - kwalitee check message -s ${TRAVIS_COMMIT_RANGE/.../..}
+#
+#script:
+#  - "./run-tests.sh"
+#
+#after_success:
+#  - coveralls
+#
 
-addons:
-  postgresql: 9.4
+
 notifications:
   email: false
 
@@ -31,56 +93,45 @@ sudo: false
 
 language: python
 
+env:
+  global:
+    # Latest available version of Docker-Compose at the time of commit.
+    # To download latest available version, one needs to do some (JSON) parsing
+    # as Github doesn't provide an easy way to download the latest release.
+    - DOCKER_COMPOSE_VERSION=1.18.0
+
+
+matrix:
+  fast_finish: true
+
+cache:
+  - pip
+
 python:
   - "2.7"
 
 services:
-- postgresql
-- redis
-- rabbitmq
+  - docker
 
-env:
-  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.0.1 APP_GITLAB_OAUTH_ACCESS_TOKEN="testtoken"
-  # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
-  # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
+addons:
+  apt:
+    packages:
+      - docker-ce # Use latest available Docker-CE from official repo
 
 before_install:
-  - mkdir /tmp/elasticsearch
-  - wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz  | tar xz --directory=/tmp/elasticsearch --strip-components=1
-  - "/tmp/elasticsearch/bin/elasticsearch-plugin install -b ingest-attachment"
-  - /tmp/elasticsearch/bin/elasticsearch &
-  - sleep 30
-  - travis_retry pip install coveralls
-  - travis_retry pip install kwalitee --pre
-  - echo ${TRAVIS_COMMIT_RANGE}
-  # Comments out workaround because of Travis CI issues
-  # - |
-  #      # inspiration from https://github.com/trevp/tlslite/blob/master/.travis.yml
-  #      # workaround for https://github.com/travis-ci/travis-ci/issues/2666
-  #      if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-  #        URL="https://github.com/${TRAVIS_REPO_SLUG}/pull/${TRAVIS_PULL_REQUEST}.patch"
-  #        PR_FIRST=$(curl --silent --show-error --location $URL | head -1 | grep -o -E '\b[0-9a-f]{40}\b' | tr -d '\n')
-  #        TRAVIS_COMMIT_RANGE=$PR_FIRST^..$TRAVIS_COMMIT
-  #      fi
-  # - echo ${TRAVIS_COMMIT_RANGE}
-  - "travis_retry pip install --upgrade pip setuptools py"
-  - "travis_retry pip install twine wheel coveralls requirements-builder"
-  - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
-  # - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
-  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
+  # Docker-Compose update
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
 
 install:
-  - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
-  - "travis_retry pip install -r requirements-local-forks.txt"
-  - "travis_retry pip install -e .[docs,tests,ldap]"
-  # - "travis_retry pip install -r requirements.txt --upgrade"
-
-before_script:
-  - travis_retry pip install kwalitee GitPython --pre
-  # - kwalitee check message -s ${TRAVIS_COMMIT_RANGE/.../..}
+  - "docker version"
+  - "docker-compose version"
+  - "docker-compose -f docker-compose.travis.yml build"
 
 script:
-  - "./run-tests.sh"
+  - "docker-compose -f docker-compose.travis.yml  run --rm app pytest tests"
 
-after_success:
-  - coveralls
+#after_success:
+#  - coveralls
