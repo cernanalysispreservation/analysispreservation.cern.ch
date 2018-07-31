@@ -32,6 +32,7 @@ from invenio_pidstore.providers.recordid import RecordIdProvider
 def cap_record_minter(record_uuid, data):
     """Mint record identifiers."""
     assert 'recid' not in data
+
     provider = RecordIdProvider.create(
         object_type='rec', object_uuid=record_uuid)
     data['recid'] = int(provider.pid.pid_value)
