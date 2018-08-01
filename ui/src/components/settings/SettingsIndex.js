@@ -19,7 +19,7 @@ import CloseIcon from "grommet/components/icons/base/Close";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 
-import Form from "../deposit/form/GrommetForm";
+import Form from "../drafts/form/GrommetForm";
 
 import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 

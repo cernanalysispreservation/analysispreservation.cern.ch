@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { Box, Sidebar, Header, Title, Label } from "grommet";
 
-import DepositFilesList from "../../deposit/components/DepositFilesList";
+import DepositFilesList from "../../drafts/components/DepositFilesList";
 import { connect } from "react-redux";
 
 class LhcbPublished extends React.Component {

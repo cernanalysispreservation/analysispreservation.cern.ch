@@ -6,7 +6,7 @@ import { Box, Title, Button } from "grommet";
 
 import { rerunPublished } from "../../actions/published";
 
-import CleanForm from "../deposit/form/CleanForm";
+import CleanForm from "../drafts/form/CleanForm";
 
 const schema = {
   type: "object",

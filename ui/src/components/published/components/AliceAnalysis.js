@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import { Box, Sidebar, Header, Title, Button } from "grommet";
 
-import DepositFilesList from "../../deposit/components/DepositFilesList";
+import DepositFilesList from "../../drafts/components/DepositFilesList";
 import { withRouter } from "react-router";
 import CirclePlayIcon from "grommet/components/icons/base/CirclePlay";
 

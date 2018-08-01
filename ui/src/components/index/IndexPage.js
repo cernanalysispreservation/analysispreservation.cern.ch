@@ -8,7 +8,7 @@ import { Box } from "grommet";
 
 import SearchPage from "../search/SearchPage";
 import Header from "../partials/Header";
-import CreateIndex from "../create/CreateIndex";
+import CreateIndex from "../drafts/CreateIndex";
 import Dashboard from "../dashboard/Dashboard";
 import SettingsIndex from "../settings/SettingsIndex";
 import DraftsIndex from "../drafts/DraftsIndex";

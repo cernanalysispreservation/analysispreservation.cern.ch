@@ -8,9 +8,9 @@ import { Box, Toast } from "grommet";
 
 import { fetchSchema, getDraftById } from "../../actions/drafts";
 
-import JSONSchemaPreviewer from "../deposit/form/JSONSchemaPreviewer";
-import DepositHeader from "../deposit/components/DepositHeader";
-import Sidebar from "../deposit/components/DepositSidebar";
+import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
+import DepositHeader from "./components/DepositHeader";
+import Sidebar from "./components/DepositSidebar";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [

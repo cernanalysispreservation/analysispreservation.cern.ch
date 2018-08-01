@@ -59,10 +59,6 @@ export const PERMISSIONS_ITEM_REQUEST = "PERMISSIONS_ITEM_REQUEST";
 export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
 export const PERMISSIONS_ITEM_ERROR = "PERMISSIONS_ITEM_ERROR";
 
-export const USERS_ITEM_REQUEST = "USERS_ITEM_REQUEST";
-export const USERS_ITEM_SUCCESS = "USERS_ITEM_SUCCESS";
-export const USERS_ITEM_ERROR = "USERS_ITEM_ERROR";
-
 export const FORM_DATA_CHANGE = "FORM_DATA_CHANGE";
 
 export function draftsRequest() {
@@ -295,26 +291,6 @@ export function permissionsItemSuccess(permissions) {
 export function permissionsItemError(error) {
   return {
     type: PERMISSIONS_ITEM_ERROR,
-    error
-  };
-}
-
-export function usersItemRequest() {
-  return {
-    type: USERS_ITEM_REQUEST
-  };
-}
-
-export function usersItemSuccess(users) {
-  return {
-    type: USERS_ITEM_SUCCESS,
-    users
-  };
-}
-
-export function usersItemError(error) {
-  return {
-    type: USERS_ITEM_ERROR,
     error
   };
 }
@@ -642,23 +618,6 @@ function _get_permissions_data(action, email, operation) {
         ]
       }
     ]
-  };
-}
-
-export function getUsers() {
-  return function(dispatch) {
-    dispatch(usersItemRequest);
-    axios
-      .get("/api/users")
-      .then(function(response) {
-        let users = response.data.hits.hits.map(item => ({
-          email: item.email
-        }));
-        dispatch(usersItemSuccess(users));
-      })
-      .catch(function(error) {
-        dispatch(usersItemError(error));
-      });
   };
 }
 

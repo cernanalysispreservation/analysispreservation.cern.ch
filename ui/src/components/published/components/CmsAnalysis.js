@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Box, Sidebar, Header, Title, Heading } from "grommet";
 
-import DepositFilesList from "../../deposit/components/DepositFilesList";
+import DepositFilesList from "../../drafts/components/DepositFilesList";
 import { connect } from "react-redux";
 
 class CmsPublished extends React.Component {

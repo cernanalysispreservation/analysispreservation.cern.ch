@@ -27,7 +27,7 @@ tests_require = [
     'pytest-mock>=1.6.0',
     'pytest-pep8>=1.0.6',
     'pytest-random-order>=0.5.4',
-    'pytest>=3.3.1',
+    'pytest==3.6.3',
     'selenium>=3.4.3',
 ]
 

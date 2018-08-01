@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map } from "immutable";
 
 import {
   TOGGLE_FILEMANAGER_LAYER,
@@ -39,11 +39,8 @@ import {
   PERMISSIONS_ITEM_REQUEST,
   PERMISSIONS_ITEM_SUCCESS,
   PERMISSIONS_ITEM_ERROR,
-  USERS_ITEM_REQUEST,
-  USERS_ITEM_SUCCESS,
-  USERS_ITEM_ERROR,
   FORM_DATA_CHANGE
-} from '../actions/drafts';
+} from "../actions/drafts";
 
 const initialState = Map({
   schema: null,
@@ -69,7 +66,7 @@ const initialState = Map({
     message: null,
     error: null,
     links: null,
-    permissions: {},
+    permissions: {}
   })
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -81,178 +78,178 @@ export default function depositReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_FILEMANAGER_LAYER:
       return state
-        .set('fileManagerActiveLayer', !state.get('fileManagerActiveLayer'))
-        .set('fileManagerLayerSelectable', action.selectable)
-        .set('fileManagerLayerSelectableAction', action.action);
-    case TOGGLE_ACTIONS_LAYER: 
-      return state
-        .set('actionsLayer', !state.get('actionsLayer'));
+        .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
+        .set("fileManagerLayerSelectable", action.selectable)
+        .set("fileManagerLayerSelectableAction", action.action);
+    case TOGGLE_ACTIONS_LAYER:
+      return state.set("actionsLayer", !state.get("actionsLayer"));
     case TOGGLE_PREVIEWER:
-      return state.set('showPreviewer', !state.get('showPreviewer'));
+      return state.set("showPreviewer", !state.get("showPreviewer"));
     case TOGGLE_SIDEBAR:
-      return state.set('showSidebar', !state.get('showSidebar'));
+      return state.set("showSidebar", !state.get("showSidebar"));
     case TOGGLE_LIVE_VALIDATE:
-      return state.set('liveValidate', !state.get('liveValidate'));
+      return state.set("liveValidate", !state.get("liveValidate"));
     case TOGGLE_CUSTOM_VALIDATION:
-      return state.set('customValidation', !state.get('customValidation'));
+      return state.set("customValidation", !state.get("customValidation"));
     case TOGGLE_VALIDATE:
-      return state.set('validate', !state.get('validate'));
+      return state.set("validate", !state.get("validate"));
     case FETCH_SCHEMA_REQUEST:
-      return state
-        .set('loading', true)
-        .set('error', null);
+      return state.set("loading", true).set("error", null);
     case FETCH_SCHEMA_SUCCESS:
       return state
-        .set('loading', false)
-        .set('schema', action.schema.schema)
-        .set('uiSchema', action.schema.uiSchema);
+        .set("loading", false)
+        .set("schema", action.schema.schema)
+        .set("uiSchema", action.schema.uiSchema);
     case FETCH_SCHEMA_ERROR:
-      return state
-        .set('loading', false)
-        .set('error', action.error);
+      return state.set("loading", false).set("error", action.error);
     case DRAFTS_ITEM_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], null);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], null);
     case DRAFTS_ITEM_SUCCESS:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'data'], action.draft.metadata)
-        .setIn(['current_item', 'formData'], action.draft.metadata)
-        .setIn(['current_item', 'files'], action.draft.files ? Map(action.draft.files.map(item => ([item.key, item]) ) ) : Map({}))
-        .setIn(['current_item', 'links'], Map(action.draft.links));
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "id"], action.draft_id)
+        .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(["current_item", "formData"], action.draft.metadata)
+        .setIn(
+          ["current_item", "files"],
+          action.draft.files
+            ? Map(action.draft.files.map(item => [item.key, item]))
+            : Map({})
+        )
+        .setIn(["current_item", "links"], Map(action.draft.links));
     case DRAFTS_ITEM_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case CREATE_DRAFT_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'message'], { msg: "Creating.."})
-        .setIn(['current_item', 'error'], null);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "message"], { msg: "Creating.." })
+        .setIn(["current_item", "error"], null);
     case CREATE_DRAFT_SUCCESS:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "ok" , msg: "Created!"})
-        .setIn(['current_item', 'error'], null)
-        .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'data'], action.draft.metadata)
-        .setIn(['current_item', 'formData'], action.draft.metadata)
-        .setIn(['current_item', 'links'], Map(action.draft.links));
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "message"], { status: "ok", msg: "Created!" })
+        .setIn(["current_item", "error"], null)
+        .setIn(["current_item", "id"], action.draft_id)
+        .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(["current_item", "formData"], action.draft.metadata)
+        .setIn(["current_item", "links"], Map(action.draft.links));
     case CREATE_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while creating.."});
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "message"], {
+          status: "critical",
+          msg: "Error while creating.."
+        });
     case UPDATE_DRAFT_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'message'], { msg: "Updating.."});
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "message"], { msg: "Updating.." });
     case UPDATE_DRAFT_SUCCESS:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "ok" , msg: "Saved!"});
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "message"], { status: "ok", msg: "Saved!" });
     case UPDATE_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'message'], { status: "critical" , msg: "Error while updating.."});
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "message"], {
+          status: "critical",
+          msg: "Error while updating.."
+        });
     case INIT_FORM:
-      return state
-        .set('current_item', Map({
+      return state.set(
+        "current_item",
+        Map({
           id: null,
           data: null,
           loading: false,
           error: null,
           links: null,
           files: Map({})
-        }));
+        })
+      );
     case UPLOAD_FILE_REQUEST:
-      return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'uploading' });
+      return state.setIn(["current_item", "files", action.filename], {
+        key: action.filename,
+        status: "uploading"
+      });
     case UPLOAD_FILE_SUCCESS:
-      return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'done' });
+      return state.setIn(["current_item", "files", action.filename], {
+        key: action.filename,
+        status: "done"
+      });
     case UPLOAD_FILE_ERROR:
-      return state
-        .setIn(['current_item', 'files', action.filename], { key: action.filename, status: 'error', error: action.error });
+      return state.setIn(["current_item", "files", action.filename], {
+        key: action.filename,
+        status: "error",
+        error: action.error
+      });
     case PUBLISH_DRAFT_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], false);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case PUBLISH_DRAFT_SUCCESS:
       return state
-        .setIn(['current_item', 'published_id'], action.published_id)
-        .setIn(['current_item', 'data'], action.published_record);
+        .setIn(["current_item", "published_id"], action.published_id)
+        .setIn(["current_item", "data"], action.published_record);
     case PUBLISH_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case DELETE_DRAFT_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], false);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case DELETE_DRAFT_SUCCESS:
       return state
-        .setIn(['current_item', 'id'], null)
-        .setIn(['current_item', 'data'], null);
+        .setIn(["current_item", "id"], null)
+        .setIn(["current_item", "data"], null);
     case DELETE_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case DISCARD_DRAFT_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], false);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case DISCARD_DRAFT_SUCCESS:
       return state
-        .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'published_id'], null)
-        .setIn(['current_item', 'data'], action.data)
-        .setIn(['current_item', 'formData'], action.data);
+        .setIn(["current_item", "id"], action.draft_id)
+        .setIn(["current_item", "published_id"], null)
+        .setIn(["current_item", "data"], action.data)
+        .setIn(["current_item", "formData"], action.data);
     case DISCARD_DRAFT_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case EDIT_PUBLISHED_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], false);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case EDIT_PUBLISHED_SUCCESS:
       return state
-        .setIn(['current_item', 'id'], action.draft_id)
-        .setIn(['current_item', 'published_id'], null)
-        .setIn(['current_item', 'data'], action.draft);
+        .setIn(["current_item", "id"], action.draft_id)
+        .setIn(["current_item", "published_id"], null)
+        .setIn(["current_item", "data"], action.draft);
     case EDIT_PUBLISHED_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case PERMISSIONS_ITEM_REQUEST:
       return state
-        .setIn(['current_item', 'loading'], true)
-        .setIn(['current_item', 'error'], false);
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case PERMISSIONS_ITEM_SUCCESS:
-      return state
-        .setIn(['current_item', 'permissions'], action.permissions);
+      return state.setIn(["current_item", "permissions"], action.permissions);
     case PERMISSIONS_ITEM_ERROR:
       return state
-        .setIn(['current_item', 'loading'], false)
-        .setIn(['current_item', 'error'], action.error);
-    // CONSIDER MOVING TO ANOTHER COMPONENT
-    case USERS_ITEM_REQUEST:
-      return state
-        .set('loading', true)
-        .set('error', null);
-    case USERS_ITEM_SUCCESS:
-      return state
-        .set('loading', false)
-        .set('users', action.users);
-    case USERS_ITEM_ERROR:
-      return state
-        .set('loading', false)
-        .set('error', action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case FORM_DATA_CHANGE:
-      return state
-        .setIn(['current_item', 'formData'], action.data);
+      return state.setIn(["current_item", "formData"], action.data);
     default:
       return state;
   }
