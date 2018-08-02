@@ -48,15 +48,12 @@ class Schema(db.Model):
     patch = db.Column(db.Integer, unique=False, nullable=False)
 
     json = db.Column(
-        db.JSON().with_variant(
+        JSONType().with_variant(
             postgresql.JSONB(none_as_null=True),
             'postgresql',
         ).with_variant(
             JSONType(),
             'sqlite',
-        ).with_variant(
-            JSONType(),
-            'mysql',
         ),
         default=lambda: dict(),
         nullable=True

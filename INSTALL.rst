@@ -203,6 +203,27 @@ If you want to populate the database with example records simply run:
    # For creating demo records without validation ( --force )
    cap fixtures records -f
 
+Database Migrations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We use `Alembic <http://alembic.zzzcomputing.com>`_  as a migration tool. Alembic stores all the changes, as a revisions under a specific branches. Changes for CERN Analysis Preservation are under *cap* branch.
+
+To make sure, that your database is up to date with all the changes, run:
+
+.. code-block:: shell
+
+   cap alembic upgrade heads               
+
+If you made some changes in one of the CAP models, Alembic can generate migration file for you. Keep in mind, that you need to specify parent revision for each of the revision (should be the latest revision for cap branch). 
+
+.. code-block:: shell
+
+   # To check parent revision
+   cap alembic heads | grep cap
+
+   # To create a new revision in cap branch
+   cap alembic revision "Add some field" -b cap -p <parent-revision>
+
 Prerequisites for Running the Server
 ------------------------------------
 

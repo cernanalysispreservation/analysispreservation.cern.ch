@@ -5,6 +5,7 @@
 # CERN Analysis Preservation is free software; you can redistribute it
 # and/or modify it under the terms of the MIT License; see LICENSE file
 # for more details.
+"""CAP config."""
 
 import os
 
@@ -99,7 +100,7 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
+    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
@@ -153,6 +154,9 @@ setup(
         'invenio_db.models': [
             'cap_reana_model = cap.modules.reana.models',
             'analysis_schema_model = cap.modules.schemas.models',
+        ],
+        'invenio_db.alembic': [
+            'cap = cap:alembic',
         ],
         'invenio_config.module': [
             'cap = cap.config',

@@ -58,30 +58,24 @@ class ReanaJob(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
 
     params = db.Column(
-        db.JSON().with_variant(
+        JSONType().with_variant(
             postgresql.JSONB(none_as_null=True),
             'postgresql',
         ).with_variant(
             JSONType(),
             'sqlite',
-        ).with_variant(
-            JSONType(),
-            'mysql',
         ),
         default=lambda: dict(),
         nullable=True
     )
 
     output = db.Column(
-        db.JSON().with_variant(
+        JSONType().with_variant(
             postgresql.JSONB(none_as_null=True),
             'postgresql',
         ).with_variant(
             JSONType(),
             'sqlite',
-        ).with_variant(
-            JSONType(),
-            'mysql',
         ),
         default=lambda: dict(),
         nullable=True
