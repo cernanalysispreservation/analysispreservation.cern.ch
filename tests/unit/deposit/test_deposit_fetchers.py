@@ -22,12 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
+"""Tests for PID minters for drafts."""
 
 
 import uuid
 
-from cap.modules.deposit.minters import cap_deposit_minter
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
+from cap.modules.deposit.minters import cap_deposit_minter
 
 
 def test_deposit_fetcher(app, db):
@@ -39,6 +40,6 @@ def test_deposit_fetcher(app, db):
         minter_pid = cap_deposit_minter(rec_uuid, test_data)
         fetcher_pid = cap_deposit_fetcher(rec_uuid, test_data)
 
-        assert int(minter_pid.pid_value) == fetcher_pid.pid_value
-        assert fetcher_pid.pid_type == fetcher_pid.provider.pid_type
+        assert minter_pid.pid_value == fetcher_pid.pid_value
+        assert fetcher_pid.provider is None
         assert fetcher_pid.pid_type == 'depid'

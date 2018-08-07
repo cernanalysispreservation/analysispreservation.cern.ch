@@ -25,12 +25,14 @@
 """Util methods for fixtures."""
 
 import json
+import uuid
 
 from flask import current_app
 
 from cap.modules.deposit.api import (CAPDeposit, construct_access,
                                      set_egroup_permissions)
 from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.deposit.minters import cap_deposit_minter
 from elasticsearch import helpers
 from elasticsearch_dsl import Q
 from invenio_accounts.models import Role

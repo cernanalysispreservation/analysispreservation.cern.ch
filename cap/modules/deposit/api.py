@@ -31,10 +31,7 @@ import copy
 import requests
 from celery import shared_task
 from flask import current_app, request
-from werkzeug.local import LocalProxy
-
 from flask_login import current_user
-from cap.modules.repoimporter.repo_importer import RepoImporter
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
@@ -45,8 +42,13 @@ from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
+from werkzeug.local import LocalProxy
+
+from cap.modules.repoimporter.repo_importer import RepoImporter
 
 from .errors import EmptyDepositError, WrongJSONSchemaError
+from .fetchers import cap_deposit_fetcher
+from .minters import cap_deposit_minter
 from .permissions import (DepositAdminActionNeed, DepositReadActionNeed,
                           DepositUpdateActionNeed)
 
@@ -247,6 +249,10 @@ def task_commit(record, response, filename, total):
 
 class CAPDeposit(Deposit):
     """Define API for changing deposit state."""
+
+    deposit_fetcher = staticmethod(cap_deposit_fetcher)
+
+    deposit_minter = staticmethod(cap_deposit_minter)
 
     def is_published(self):
         """Check if deposit is published."""

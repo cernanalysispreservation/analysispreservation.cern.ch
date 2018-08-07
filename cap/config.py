@@ -756,11 +756,13 @@ _PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
 
 DEPOSIT_UI_SEARCH_INDEX = '*'
 
-# DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
+# DEPOSIT_PID_MINTER is used on publish method in deposit class
+
+DEPOSIT_PID = 'pid(dep,record_class="cap.modules.deposit.api:CapDeposit")'
 DEPOSIT_REST_ENDPOINTS['depid'].update({
-    # 'pid_type': 'depid',
-    # 'pid_minter': 'cap_deposit_minter',
-    # 'pid_fetcher': 'cap_deposit_fetcher',
+    'pid_type': 'depid',
+    'pid_minter': 'cap_deposit_minter',
+    'pid_fetcher': 'cap_deposit_fetcher',
     'record_class': 'cap.modules.deposit.api:CAPDeposit',
     'record_loaders': {
         'application/json': 'cap.modules.deposit.loaders:json_v1_loader',

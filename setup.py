@@ -135,10 +135,15 @@ setup(
         'invenio_pidstore.minters': [
             'cap_record_minter = '
             'cap.modules.records.minters:cap_record_minter',
+            'cap_deposit_minter = '
+            'cap.modules.deposit.minters:cap_deposit_minter',
+
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
             'cap.modules.records.fetchers:cap_record_fetcher',
+            'cap_deposit_fetcher = '
+            'cap.modules.deposit.fetchers:cap_deposit_fetcher',
         ],
         'invenio_records.jsonresolver': [
             'cap = cap.modules.records.resolvers.cap',

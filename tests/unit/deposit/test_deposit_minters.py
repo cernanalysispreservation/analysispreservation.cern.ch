@@ -22,22 +22,44 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
+"""Tests for PID minters for drafts."""
 
 
 import uuid
 
+from invenio_pidstore.models import PIDStatus
+
 from cap.modules.deposit.minters import cap_deposit_minter
 
 
-def test_deposit_minter(app, db):
+def test_deposit_minter_when_no_pid_in_data_mints_one(app, db):
     with app.app_context():
         test_data = {}
+        record_uuid = uuid.uuid4()
 
-        rec_uuid = uuid.uuid4()
-
-        pid = cap_deposit_minter(rec_uuid, test_data)
+        pid = cap_deposit_minter(record_uuid, test_data)
 
         assert pid
-        assert test_data['_deposit']['id'] == int(pid.pid_value)
+        assert test_data['_deposit']['id'] == pid.pid_value
         assert pid.object_type == 'rec'
-        assert pid.object_uuid == rec_uuid
+        assert pid.object_uuid == record_uuid
+        assert pid.status == PIDStatus.REGISTERED
+
+
+def test_deposit_minter_when_pid_specified_registers_deposit_with_it(app, db):
+    with app.app_context():
+        pid_value = '1234123412341234'
+        test_data = {
+            '_deposit': {
+                'id': pid_value
+            }
+        }
+        record_uuid = uuid.uuid4()
+
+        pid = cap_deposit_minter(record_uuid, test_data)
+
+        assert pid
+        assert pid.pid_value == pid_value
+        assert pid.object_type == 'rec'
+        assert pid.object_uuid == record_uuid
+        assert pid.status == PIDStatus.REGISTERED
