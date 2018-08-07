@@ -27,18 +27,21 @@
 import json
 import uuid
 
+from elasticsearch import helpers
+from elasticsearch_dsl import Q
 from flask import current_app
+from invenio_accounts.models import Role
+from invenio_db import db
+from invenio_pidstore.errors import PIDDoesNotExistError
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_search import RecordsSearch
+from invenio_search.proxies import current_search_client as es
 
 from cap.modules.deposit.api import (CAPDeposit, construct_access,
                                      set_egroup_permissions)
 from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.minters import cap_deposit_minter
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
-from invenio_accounts.models import Role
-from invenio_db import db
-from invenio_search import RecordsSearch
-from invenio_search.proxies import current_search_client as es
 
 
 def construct_draft_obj(schema, data):
@@ -86,15 +89,31 @@ def add_read_permission_for_egroup(deposit, egroup):
 
 
 def add_drafts_from_file(file_path, schema, egroup, limit=None):
-    """Adds drafts from a specified file."""
+    """Adds drafts from a specified file.
+
+    Drafts with specified pid will be registered under those.
+    For drafts without pid, new pids will be minted.
+    """
     with open(file_path, 'r') as fp:
         entries = json.load(fp)
-        for entry in entries[0:limit]:
-            deposit = CAPDeposit.create(construct_draft_obj(schema,
-                                                            entry))
-            add_read_permission_for_egroup(deposit, egroup)
 
-            print('Draft {} added.'.format(deposit.id))
+        for entry in entries[0:limit]:
+            data = construct_draft_obj(schema, entry)
+            pid = cap_deposit_fetcher(None, data)
+            pid_value = pid.pid_value if pid else None
+
+            try:
+                PersistentIdentifier.get('depid', pid_value)
+
+                print('Draft with id {} already exist!'.format(pid_value))
+
+            except PIDDoesNotExistError:
+                record_uuid = uuid.uuid4()
+                pid = cap_deposit_minter(record_uuid, data)
+                deposit = CAPDeposit.create(data, record_uuid)
+                add_read_permission_for_egroup(deposit, egroup)
+
+                print('Draft {} added.'.format(pid.pid_value))
 
 
 def bulk_index_from_source(index_name, doc_type, source):
