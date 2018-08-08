@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 
 import copy
 import re
+
 from copy import deepcopy
 
 import requests
@@ -51,6 +52,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 from .errors import DepositValidationError, UpdateDepositPermissionsError
+
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (DepositAdminActionNeed, DepositReadActionNeed,

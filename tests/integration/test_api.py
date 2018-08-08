@@ -30,6 +30,7 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app
+from mock import patch
 
 from conftest import get_basic_json_serialized_deposit
 
