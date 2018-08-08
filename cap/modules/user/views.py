@@ -28,22 +28,22 @@ from __future__ import absolute_import, print_function
 
 import re
 
-import ldap
 import requests
 from flask import Blueprint, current_app, jsonify, redirect, request, session
-from flask_login import current_user, login_user
-from flask_principal import Permission
-from flask_security.utils import verify_password
-from flask_security.views import logout
-from invenio_accounts.models import Role
 from werkzeug.local import LocalProxy
 
+import ldap
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import \
     collaboration_permissions_factory  # noqa
 from cap.modules.experiments.permissions import collaboration_permissions
 from cap.utils import obj_or_import_string
+from flask_login import current_user, login_user
+from flask_principal import Permission
+from flask_security.utils import verify_password
+from flask_security.views import logout
+from invenio_accounts.models import Role
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 

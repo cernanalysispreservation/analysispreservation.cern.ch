@@ -29,7 +29,7 @@ class AvailableDeposits extends React.Component {
     return (
       <Box flex={true} justify="center">
         <Heading align="center" tag="h3">
-          Choose which analysis you would like to preserve
+          Which analysis you would like to preserve
         </Heading>
         <Tiles flush={false} fill={false} size="large" justify="center">
           {this.props.groups ? (

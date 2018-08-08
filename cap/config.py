@@ -746,6 +746,9 @@ DEPOSIT_GROUPS = {
     }
 }
 
+SCHEMAS_LIST = [x.get('schema').replace('schemas/', '')
+                for x in DEPOSIT_GROUPS.values()]
+
 # #: Endpoints for deposit.
 DEPOSIT_UI_ENDPOINT = None
 

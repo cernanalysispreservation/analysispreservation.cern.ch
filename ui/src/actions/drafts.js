@@ -605,20 +605,14 @@ export function addPermissions(draft_id, email, action) {
 }
 
 function _get_permissions_data(action, email, operation) {
-  return {
-    permissions: [
-      {
-        type: "user",
-        identity: `${email}`,
-        permissions: [
-          {
-            action: `${action}`,
-            op: `${operation}`
-          }
-        ]
-      }
-    ]
-  };
+  return [
+    {
+      type: "user",
+      email: `${email}`,
+      op: `${operation}`,
+      action: `${action}`
+    }
+  ];
 }
 
 // export function uploadFile(bucket_link, file) {

@@ -28,4 +28,4 @@ blueprint = Blueprint(
 @blueprint.route('/ping', methods=['HEAD', 'GET'])
 def ping():
     """Load balancer ping view."""
-    return 'OK'
+    return 'Pong'
