@@ -13,8 +13,8 @@ const CustomTile = withRouter(
     <Tile
       key={group}
       size="small"
-      pad="small"
-      colorIndex="neutral-1"
+      pad="medium"
+      colorIndex="light-2"
       onClick={() => history.push(`/drafts/create/${group}`)}
     >
       <Paragraph align="center">

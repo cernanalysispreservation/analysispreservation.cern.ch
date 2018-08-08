@@ -12,8 +12,11 @@ import {
 } from "../../../actions/drafts";
 import { getUsers } from "../../../actions/users";
 import CheckBox from "grommet/components/CheckBox";
+import AddIcon from "grommet/components/icons/base/Add";
 
 import Autosuggest from "react-autosuggest";
+import DepositHeader from "./DepositHeader";
+import SectionHeader from "./SectionHeader";
 
 const renderSuggestion = suggestion => {
   return (
@@ -116,149 +119,160 @@ class DepositSettings extends React.Component {
 
     const { value, suggestions } = this.state;
     const inputProps = {
-      placeholder: "Type email to FILTER or ADD access rights",
+      placeholder: "Type email to ADD access rights",
       onChange: this.onChange,
       value
     };
 
     return (
       <Box>
-        <Box
-          flex={true}
-          pad="small"
-          size="large"
-          justify="center"
-          direction="row"
-        >
-          <Autosuggest
-            suggestions={suggestions}
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={this.getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            inputProps={inputProps}
-            theme={theme}
-          />
-          <Button
-            label="Add rights"
-            primary={true}
-            plain={false}
-            onClick={() => {
-              this.props.addPermissions(
-                this.props.draft_id,
-                this.state.selected,
-                "deposit-read"
-              );
-            }}
-          />
-        </Box>
-        <Box flex={true}>
-          <Table>
-            <thead>
-              <tr>
-                <th>
-                  <Label>User/Role</Label>
-                </th>
-                <th>
-                  <Label>Read</Label>
-                </th>
-                <th>
-                  <Label>Write</Label>
-                </th>
-                <th>
-                  <Label>Admin</Label>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(grouped).map((key, index) => (
-                <TableRow key={`${key}-${index}`}>
-                  <td>{key}</td>
-                  <td>
-                    {this.permissionExists(grouped[key], "deposit-read") ? (
-                      <CheckBox
-                        toggle={true}
-                        checked={true}
-                        onClick={() =>
-                          this.props.removePermissions(
+        <DepositHeader draftId={this.props.draft_id} />
+        <SectionHeader label="Access" />
+        <Box flex={true} align="center">
+          <Box size="xxlarge">
+            <Table>
+              <thead>
+                <tr>
+                  <th>
+                    <Label>User/Role</Label>
+                  </th>
+                  <th>
+                    <Label>Read</Label>
+                  </th>
+                  <th>
+                    <Label>Write</Label>
+                  </th>
+                  <th>
+                    <Label>Admin</Label>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.keys(grouped).map((key, index) => (
+                  <TableRow key={`${key}-${index}`}>
+                    <td>{key}</td>
+                    <td>
+                      {this.permissionExists(grouped[key], "deposit-read") ? (
+                        <CheckBox
+                          toggle={true}
+                          checked={true}
+                          onClick={() =>
+                            this.props.removePermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-read"
+                            )
+                          }
+                        />
+                      ) : (
+                        <CheckBox
+                          toggle={true}
+                          checked={false}
+                          onClick={() =>
+                            this.props.addPermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-read"
+                            )
+                          }
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {this.permissionExists(grouped[key], "deposit-update") ? (
+                        <CheckBox
+                          toggle={true}
+                          checked={true}
+                          onClick={() =>
+                            this.props.removePermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-update"
+                            )
+                          }
+                        />
+                      ) : (
+                        <CheckBox
+                          toggle={true}
+                          checked={false}
+                          onClick={() =>
+                            this.props.addPermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-update"
+                            )
+                          }
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {this.permissionExists(grouped[key], "deposit-admin") ? (
+                        <CheckBox
+                          toggle={true}
+                          checked={true}
+                          onClick={() =>
+                            this.props.removePermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-admin"
+                            )
+                          }
+                        />
+                      ) : (
+                        <CheckBox
+                          toggle={true}
+                          checked={false}
+                          onClick={() =>
+                            this.props.addPermissions(
+                              this.props.draft_id,
+                              key,
+                              "deposit-admin"
+                            )
+                          }
+                        />
+                      )}
+                    </td>
+                  </TableRow>
+                ))}
+                <TableRow>
+                  <td style={{ padding: 0 }}>
+                    <Box
+                      margin={{ top: "small" }}
+                      flex={true}
+                      alignSelf="start"
+                      size="large"
+                      direction="row"
+                    >
+                      <Autosuggest
+                        suggestions={suggestions}
+                        onSuggestionsFetchRequested={
+                          this.onSuggestionsFetchRequested
+                        }
+                        onSuggestionsClearRequested={
+                          this.onSuggestionsClearRequested
+                        }
+                        getSuggestionValue={this.getSuggestionValue}
+                        renderSuggestion={renderSuggestion}
+                        inputProps={inputProps}
+                        theme={theme}
+                      />
+                      <Button
+                        icon={<AddIcon />}
+                        onClick={() => {
+                          this.props.addPermissions(
                             this.props.draft_id,
-                            key,
+                            this.state.selected,
                             "deposit-read"
-                          )
-                        }
+                          );
+                        }}
                       />
-                    ) : (
-                      <CheckBox
-                        toggle={true}
-                        checked={false}
-                        onClick={() =>
-                          this.props.addPermissions(
-                            this.props.draft_id,
-                            key,
-                            "deposit-read"
-                          )
-                        }
-                      />
-                    )}
+                    </Box>
                   </td>
-                  <td>
-                    {this.permissionExists(grouped[key], "deposit-update") ? (
-                      <CheckBox
-                        toggle={true}
-                        checked={true}
-                        onClick={() =>
-                          this.props.removePermissions(
-                            this.props.draft_id,
-                            key,
-                            "deposit-update"
-                          )
-                        }
-                      />
-                    ) : (
-                      <CheckBox
-                        toggle={true}
-                        checked={false}
-                        onClick={() =>
-                          this.props.addPermissions(
-                            this.props.draft_id,
-                            key,
-                            "deposit-update"
-                          )
-                        }
-                      />
-                    )}
-                  </td>
-                  <td>
-                    {this.permissionExists(grouped[key], "deposit-admin") ? (
-                      <CheckBox
-                        toggle={true}
-                        checked={true}
-                        onClick={() =>
-                          this.props.removePermissions(
-                            this.props.draft_id,
-                            key,
-                            "deposit-admin"
-                          )
-                        }
-                      />
-                    ) : (
-                      <CheckBox
-                        toggle={true}
-                        checked={false}
-                        onClick={() =>
-                          this.props.addPermissions(
-                            this.props.draft_id,
-                            key,
-                            "deposit-admin"
-                          )
-                        }
-                      />
-                    )}
-                  </td>
+                  <td colSpan="3" />
                 </TableRow>
-              ))}
-            </tbody>
-          </Table>
+              </tbody>
+            </Table>
+          </Box>
         </Box>
       </Box>
     );

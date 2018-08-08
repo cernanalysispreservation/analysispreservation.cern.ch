@@ -19,7 +19,7 @@ const SettingsAnchor = withRouter(({ history, draft_id = draft_id }) => (
   <Anchor
     icon={<SettingsOptionIcon />}
     plain="true"
-    label="Settings"
+    label="Access"
     onClick={() => history.push(`/drafts/${draft_id}/settings`)}
   />
 ));
