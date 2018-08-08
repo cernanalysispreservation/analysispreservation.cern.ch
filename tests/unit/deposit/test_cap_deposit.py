@@ -116,43 +116,43 @@ def test_deposit_class_is_published_method(app,
 
 
 def test_add_user_permissions_set_access_object_properly(app, db, users, create_deposit):
-        owner, user = users['cms_user'], users['cms_user2']
-        deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
-        assert deposit['_access'] == {
-            'deposit-read': {
-                'users': [owner.id],
-                'roles': []
-            },
-            'deposit-update': {
-                'users': [owner.id],
-                'roles': []        
-            },
-            'deposit-admin': {
-                'users': [owner.id],
-                'roles': []        
-            }
+    owner, user = users['cms_user'], users['cms_user2']
+    deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-update': {
+            'users': [owner.id],
+            'roles': []        
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []        
         }
+    }
 
-        deposit._add_user_permissions(user,
-                                      ['deposit-read',
-                                       'deposit-update'],
-                                      db.session)
+    deposit._add_user_permissions(user,
+                                  ['deposit-read',
+                                   'deposit-update'],
+                                  db.session)
 
-        deposit = Deposit.get_record(deposit.id)
-        assert deposit['_access'] == {
-            'deposit-read': {
-                'users': [owner.id, user.id],
-                'roles': []        
-            },
-            'deposit-update': {
-                'users': [owner.id, user.id],
-                'roles': []        
-            },
-            'deposit-admin': {
-                'users': [owner.id],
-                'roles': []        
-            }
+    deposit = Deposit.get_record(deposit.id)
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id, user.id],
+            'roles': []        
+        },
+        'deposit-update': {
+            'users': [owner.id, user.id],
+            'roles': []        
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []        
         }
+    }
 
 
 def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):

@@ -24,14 +24,14 @@
 
 """Configuration for deposit search."""
 
+from elasticsearch_dsl import Q, TermsFacet
 from flask import abort  # has_request_context
 from flask import session
-
-from cap.modules.access.permissions import admin_permission_factory
-from elasticsearch_dsl import Q, TermsFacet
 from flask_login import current_user
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
+
+from cap.modules.access.permissions import admin_permission_factory
 
 
 def deposits_filter():
