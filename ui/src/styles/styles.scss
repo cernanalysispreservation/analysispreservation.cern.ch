@@ -6,14 +6,15 @@ $vin-red: #ff0000;
 //@import '~grommet/scss/vanilla/index';
 
 /* Styles */
-html, body {
+html,
+body {
   height: 100vh;
   width: 100vw;
 }
 
 body {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-family: 'Work Sans', 'Open Sans', sans-serif;
+  font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Work Sans", "Open Sans", sans-serif;
   font-size: 13px;
   line-height: 1.1;
   line-height: 1.4em;
@@ -24,7 +25,7 @@ body {
   font-smoothing: antialiased;
   // font-weight: 300;
   overflow: hidden;
-  margin: 0px;  /*removes default style*/
+  margin: 0px; /*removes default style*/
   // display: flex;  /*enables flex content for its children*/
   box-sizing: border-box;
 }
@@ -33,24 +34,24 @@ body {
   height: 100vh;
 }
 #app-main {
-  height: 100%;  /*allows both columns to span the full height of the browser window*/
+  height: 100%; /*allows both columns to span the full height of the browser window*/
   display: flex;
   flex-direction: column;
 }
 
 #header {
   height: 55.97px;
-    flex-shrink: 0;
-    display: inline-flex;
+  flex-shrink: 0;
+  display: inline-flex;
 }
 
 label {
-  margin-bottom: 0;
+  margin-bottom: 0.15em;
 }
 
 #main-container {
-  flex-grow: 1;  /*ensures that the container will take up the full height of the parent container*/
-  overflow-y: auto;  /*adds scroll to this container*/
+  flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: auto; /*adds scroll to this container*/
   height: 100%;
   display: flex;
 }
