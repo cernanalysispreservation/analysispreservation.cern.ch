@@ -102,6 +102,15 @@ class CAPDeposit(Deposit):
         """Schema property."""
         return re.search('schemas/(.*)', self['$schema']).group(1)
 
+    # @TOFIX UNCOMMENT WHEN REFACTORED IS DONE
+    # def available_schemas(self):
+    #     available_schemas = Schema.query.filter(
+    #         Schema.name.startswith('records')).all()
+
+    #     return ["{}-v{}.{}.{}.json".format(
+    #         i.name, i.major, i.minor, i.patch).replace('records/', '')
+    #         for i in available_schemas]
+
     @mark_as_action
     def permissions(self, pid=None):
         """Permissions action.

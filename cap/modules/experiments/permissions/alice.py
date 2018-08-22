@@ -37,8 +37,3 @@ alice_group_need |= set([g for g in
 
 
 alice_permission = DynamicPermission(*alice_group_need)
-
-
-def alice_permission_factory(*args):
-    """ALICE permission factory."""
-    return DynamicPermission(*alice_group_need)

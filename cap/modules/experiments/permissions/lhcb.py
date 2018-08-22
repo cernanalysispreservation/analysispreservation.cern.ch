@@ -37,8 +37,3 @@ lhcb_group_need |= set([g for g in
 
 
 lhcb_permission = DynamicPermission(*lhcb_group_need)
-
-
-def lhcb_permission_factory(*args):
-    """LHCB Permission factory."""
-    return DynamicPermission(*lhcb_group_need)
