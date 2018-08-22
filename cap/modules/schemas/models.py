@@ -42,6 +42,10 @@ class Schema(db.Model):
 
     name = db.Column(db.String(128), unique=False, nullable=False)
 
+    experiment = db.Column(db.String(128), unique=False, nullable=True)
+
+    permission = db.Column(db.String(128), unique=False, nullable=True)
+
     # version
     major = db.Column(db.Integer, unique=False, nullable=False)
     minor = db.Column(db.Integer, unique=False, nullable=False)

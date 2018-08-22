@@ -37,8 +37,3 @@ cms_group_need |= set([g for g in
 
 
 cms_permission = DynamicPermission(*cms_group_need)
-
-
-def cms_permission_factory(*args):
-    """CMS permission factory."""
-    return DynamicPermission(*cms_group_need)

@@ -64,41 +64,12 @@ I18N_LANGUAGES = [
     ('fr', _('French'))
 ]
 
-# Base templates
-# ==============
-#: Global base template.
-# BASE_TEMPLATE = 'invenio_theme/page.html'
-# #: Cover page base template (used for e.g. login/sign-up).
-# COVER_TEMPLATE = 'invenio_theme/page_cover.html'
-# #: Footer base template.
-# FOOTER_TEMPLATE = 'invenio_theme/footer.html'
-# #: Header base template.
-# HEADER_TEMPLATE = 'invenio_theme/header.html'
-# #: Settings base template.
-# SETTINGS_TEMPLATE = 'invenio_theme/page_settings.html'
-
-# Theme configuration
-# ===================
-#: Site name
-THEME_SITENAME = _('CERN Analysis Preservation')
-#: Use default frontpage.
-THEME_FRONTPAGE = True
-#: Frontpage title.
-THEME_FRONTPAGE_TITLE = _('CERN Analysis Preservation')
-#: Frontpage template.
-# THEME_FRONTPAGE_TEMPLATE = 'cap/frontpage.html'
-
 # Email configuration
 # ===================
 #: Email address for support.
 SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 #: Disable email sending by default.
 MAIL_SUPPRESS_SEND = True
-
-# Assets
-# ======
-#: Static files collection method (defaults to copying files).
-# COLLECT_STORAGE = 'flask_collect.storage.file'
 
 # Accounts
 # ========
@@ -112,7 +83,6 @@ ACCOUNTS_SESSION_REDIS_URL = 'redis://localhost:6379/1'
 
 # Celery configuration
 # ====================
-
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 #: URL of message broker for Celery (default is RabbitMQ).
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
@@ -198,9 +168,6 @@ else:
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-REQUIREJS_CONFIG = 'js/build.js'
-SASS_BIN = 'node-sass'
-
 # Cache
 # =========
 #: Cache key prefix
@@ -238,28 +205,6 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-# Mail
-# ====
-#: Regex for email
-EMAIL_REGEX = '[^@]+@[^@]+\.[^@]+'
-MAIL_SUPPRESS_SEND = True
-
-# Language
-# ========
-#: Default language
-BABEL_DEFAULT_LANGUAGE = 'en'
-#: Default timezone
-BABEL_DEFAULT_TIMEZONE = 'Europe/Zurich'
-#: Other supported languages.
-I18N_LANGUAGES = []
-
-# Theme
-# =====
-#: Default site name.
-THEME_SITENAME = _("CERN Analysis Preservation")
-#: Google Site Verification ids.
-THEME_GOOGLE_SITE_VERIFICATION = []
-
 #: E-Groups for superuser rights
 SUPERUSER_EGROUPS = [
     RoleNeed('analysis-preservation-support@cern.ch'),
@@ -287,12 +232,6 @@ CAP_COLLAB_EGROUPS = {
 
 # Records
 # =======
-# #: Records base template
-# RECORDS_UI_BASE_TEMPLATE = 'invenio_deposit/base.html'
-# #: Records configuration
-# RECORDS_UI_DEFAULT_PERMISSION_FACTORY = "cap.modules.theme.permissions:" \
-#     "read_permission_factory"
-
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS = dict(
     records=dict(
@@ -464,11 +403,6 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = '/api/deposits/'
 
-#: Templates
-SEARCH_UI_SEARCH_TEMPLATE = "cap_search_ui/search.html"
-SEARCH_UI_JSTEMPLATE_RESULTS = 'templates/cap_search_ui/results.html'
-# SEARCH_UI_JSTEMPLATE_FACETS = "templates/cap_search_ui/facets.html"
-
 #: Default ElasticSearch hosts
 es_user = os.environ.get('ELASTICSEARCH_USER')
 es_password = os.environ.get('ELASTICSEARCH_PASSWORD')
@@ -491,7 +425,6 @@ SEARCH_ELASTIC_HOSTS = [
     )
 ]
 
-
 #: Search query enhancers
 SEARCH_QUERY_ENHANCERS = [
     'cap.modules.access.ext:authenticated_query'
@@ -501,20 +434,6 @@ SEARCH_QUERY_ENHANCERS = [
 # ========
 ADMIN_PERMISSION_FACTORY =  \
     'cap.modules.access.permissions.admin_permission_factory'
-
-# Accounts
-# ========
-#: Login registration template.
-# OAUTHCLIENT_LOGIN_USER_TEMPLATE = "access/login_user.html"
-#: Login confirmation mail.
-SECURITY_SEND_REGISTER_EMAIL = False
-
-ACCOUNTS_REGISTER_BLUEPRINT = None
-SECURITY_RECOVERABLE = False
-SECURITY_REGISTERABLE = False
-SECURITY_CHANGEABLE = False
-SECURITY_CONFIRMABLE = False
-BLUEPRINT_NAME = 'cap_theme'
 
 # Logging
 # =======
@@ -551,13 +470,9 @@ OAUTHCLIENT_REMOTE_APPS = {
         )
     )
 }
-#: OAuth login template.
-# OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
 # JSON Schemas
 # ============
-#: Hostname for JSON Schemas.
-# JSONSCHEMAS_HOST = os.environ.get('APP_JSONSCHEMAS_HOST', 'localhost:5000')
 #: Path to where JSON metadata exist
 JSON_METADATA_PATH = "/_metadata"
 JSONSCHEMAS_ENDPOINT = '/schemas'
@@ -571,31 +486,11 @@ JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     ],
 ))
 
-# JSONSCHEMAS_VERSIONS = {
-#     "ATLASAnalysis": "ATLASAnalysis-v0.0.1",
-#     "ATLASWorkflows": "ATLASWorkflows-v0.0.1",
-#     "CMSAnalysis": "CMSAnalysis-v0.0.1",
-#     "CMSQuestionnaire": "CMSQuestionnaire-v0.0.1",
-#     "LHCbAnalysis": "LHCbAnalysis-v0.0.1",
-# }
-
 JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
 
 # directories with jsonschemas
 JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
 JSONSCHEMAS_RECORDS_DIR = 'records/'
-
-CAP_COLLECTION_TO_DOCUMENT_TYPE = {
-    'ATLASAnalysis': 'ATLAS Analysis',
-    'ATLASWorkflows': 'ATLAS Workflows',
-    'CMSAnalysis': 'CMS Analysis',
-    'CMSQuestionnaire': 'CMS Questionnaire',
-    'LHCbAnalysis': "LHCb Analysis",
-}
-
-# WARNING: Do not share the secret key - especially do not commit it to
-# version control.
-SECRET_KEY = "changeme"
 
 # Ana's database
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
@@ -611,9 +506,6 @@ CADI_GET_RECORD_URL = '{0}/cadiLine/'.format(CADI_API_URL)
 
 # Deposit
 # ============
-#: Default base template for deposit
-#: -- removes <html>,<body>,etc unneeded tags
-# DEPOSIT_BASE_TEMPLATE = 'invenio_deposit/base.html'
 #: Default jsonschema for deposit
 DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
 #: Default schemanform for deposit
@@ -622,137 +514,54 @@ DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v0.0.1.json'
 DEPOSIT_SEARCH_API = '/api/deposits/'
 #: Files api url for deposit
 DEPOSIT_FILES_API = '/api/files'
-#: Template for deposit records API.
-# DEPOSIT_RECORDS_API = '/api/deposit/depositions/{pid_value}'
 
 DEPOSIT_GROUPS = {
     "lhcb": {
         "experiment": "LHCb",
         "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
-        "schema_form": "/schemas/options/deposits/records/lhcb-v0.0.1.json",
         "name": "LHCb Analysis",
-        "description":
-            "Create an LHCb Analysis (analysis metadata, workflows, etc)",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.lhcb.lhcb_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-analysis": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
-        "schema_form":
-            "/schemas/options/deposits/records/cms-analysis-v0.0.1.json",
         "name": "CMS Analysis",
-        "description":
-            "Create a CMS Analysis (analysis metadata, workflows, etc)",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.cms.cms_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "cms-questionnaire": {
         "experiment": "CMS",
         "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
-        "schema_form":
-            "/schemas/options/deposits/records/cms-questionnaire-v0.0.1.json",
         "name": "CMS Questionnaire",
-        "description": "Create a CMS Questionnaire",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.cms.cms_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-workflows": {
         "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
-        "schema_form":
-            "/schemas/options/deposits/records/atlas-workflows-v0.0.1.json",
         "name": "ATLAS Workflow",
-        "description": "Create an ATLAS Workflow",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.atlas.atlas_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "atlas-analysis": {
         "experiment": "ATLAS",
         "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
-        "schema_form":
-            "/schemas/options/deposits/records/atlas-analysis-v0.0.1.json",
         "name": "ATLAS Analysis",
-        "description": "Create an ATLAS Analysis",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.atlas.atlas_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     },
     "alice-analysis": {
         "experiment": "ALICE",
         "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
-        "schema_form":
-            "/schemas/options/deposits/records/alice-analysis-v0.0.1.json",
         "name": "ALICE Analysis",
-        "description": "Create an ALICE Analysis",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
         'create_permission_factory_imp':
             'cap.modules.experiments.permissions.alice.alice_group_need',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
-    },
-    "test-schema": {
-        "experiment": "TEST",
-        "schema": "schemas/deposits/records/test-schema-v0.0.1.json",
-        "schema_form": "",
-        "name": "Test schema",
-        "description":
-            "Create a CMS CADI Entry",
-        # "list_template": "cap_deposit/index.html",
-        "item_new_template": "cap_deposit/edit.html",
-        "endpoint": "",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.common.superuser_needs',
-        # 'read_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.read_permission_factory',
-        # 'update_permission_factory_imp':
-        #     'cap.modules.deposit.permissions.update_permission_factory',
     }
 }
 
 SCHEMAS_LIST = [x.get('schema').replace('schemas/', '')
                 for x in DEPOSIT_GROUPS.values()]
-
-# #: Endpoints for deposit.
-DEPOSIT_UI_ENDPOINT = None
 
 DEPOSIT_PID_MINTER = 'cap_record_minter'
 
@@ -816,38 +625,6 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         write_scope.id),
     'links_factory_imp': 'cap.modules.deposit.links:links_factory',
 })
-# DEPOSIT_UI_INDEX_TEMPLATE = "cap_deposit/index.html"
-# TODO Resolve when '/deposit/new/' is removed
-DEPOSIT_RECORDS_UI_ENDPOINTS = copy.deepcopy(
-    deposit_config.DEPOSIT_RECORDS_UI_ENDPOINTS)
-
-DEPOSIT_RECORDS_UI_ENDPOINTS['depid'].update({
-    'template': 'cap_deposit/edit.html',
-    'permission_factory_imp':
-        "cap.modules.deposit.permissions:ReadDepositPermission",
-})
-
-#: Response messages for deposit
-DEPOSIT_RESPONSE_MESSAGES = dict(
-    self=dict(
-        message="Saved successfully."
-    ),
-    delete=dict(
-        message="Deleted succesfully."
-    ),
-    discard=dict(
-        message="Changes discarded succesfully."
-    ),
-    publish=dict(
-        message="Record shared succesfully."
-    ),
-    edit=dict(
-        message="Edited succesfully."
-    ),
-    clone=dict(
-        message="Analysis cloned succesfully."
-    ),
-)
 
 # Datadir
 # =======
@@ -888,38 +665,3 @@ REANA_SERVER_URL = os.environ.get(
 
 REANA_CLIENT_TOKEN = os.environ.get(
     'APP_REANA_CLIENT_TOKEN', None)
-
-# APP_DEFAULT_SECURE_HEADERS = {
-#     'force_https': False,
-#     'force_https_permanent': False,
-#     'force_file_save': False,
-#     'frame_options': 'allow',
-#     'frame_options_allow_from': None,
-#     'strict_transport_security': False,
-#     'strict_transport_security_preload': False,
-#     'strict_transport_security_max_age': 31556926,  # One year in seconds
-#     'strict_transport_security_include_subdomains': True,
-#     'content_security_policy': {
-#         'default-src': '\'self\'',
-#     },
-#     'content_security_policy_report_uri': None,
-#     'content_security_policy_report_only': False,
-#     'session_cookie_secure': True,
-#     'session_cookie_http_only': True
-#     # 'force_https': True,
-#     # 'force_https_permanent': False,
-#     # 'force_file_save': False,
-#     # 'frame_options': 'sameorigin',
-#     # 'frame_options_allow_from': None,
-#     # 'strict_transport_security': True,
-#     # 'strict_transport_security_preload': False,
-#     # 'strict_transport_security_max_age': 31556926,  # One year in seconds
-#     # 'strict_transport_security_include_subdomains': True,
-#     # 'content_security_policy': {
-#     #     'default-src': '\'self\'',
-#     # },
-#     # 'content_security_policy_report_uri': None,
-#     # 'content_security_policy_report_only': False,
-#     # 'session_cookie_secure': True,
-#     # 'session_cookie_http_only': True
-# }

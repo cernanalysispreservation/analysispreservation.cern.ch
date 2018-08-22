@@ -26,17 +26,13 @@
 
 import json
 import os
-import re
-
 import click
 
 from cap.modules.experiments.utils.cms import (
     cache_das_datasets_in_es_from_file,
     synchronize_cadi_entries)
-from cap.modules.schemas.models import Schema
 from cap.modules.schemas.utils import add_or_update_schema
 from flask_cli import with_appcontext
-from invenio_db import db
 
 from .utils import add_drafts_from_file
 

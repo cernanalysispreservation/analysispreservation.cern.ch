@@ -26,24 +26,22 @@
 
 from __future__ import absolute_import, print_function
 
-import re
-
-import requests
-from flask import Blueprint, current_app, jsonify, redirect, request, session
-from werkzeug.local import LocalProxy
 
 import ldap
-from cap.config import DEBUG
-from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import \
-    collaboration_permissions_factory  # noqa
-from cap.modules.experiments.permissions import collaboration_permissions
-from cap.utils import obj_or_import_string
+import requests
+from flask import Blueprint, current_app, jsonify, request, session
 from flask_login import current_user, login_user
 from flask_principal import Permission
 from flask_security.utils import verify_password
 from flask_security.views import logout
 from invenio_accounts.models import Role
+
+from werkzeug.local import LocalProxy
+
+from cap.config import DEBUG
+from cap.modules.access.utils import login_required
+from cap.modules.experiments.permissions import collaboration_permissions
+from cap.utils import obj_or_import_string
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -109,7 +107,6 @@ def get_user_deposit_groups():
             group_data = {}
             group_data['name'] = obj.get('name', '')
             group_data['deposit_group'] = group
-            group_data['description'] = obj.get('description', '')
             user_deposit_groups.append(group_data)
 
     return user_deposit_groups

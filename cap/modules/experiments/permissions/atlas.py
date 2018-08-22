@@ -37,8 +37,3 @@ atlas_group_need |= set([g for g in
 
 
 atlas_permission = DynamicPermission(*atlas_group_need)
-
-
-def atlas_permission_factory(*args):
-    """ATLAS Permission factory."""
-    return DynamicPermission(*atlas_group_need)

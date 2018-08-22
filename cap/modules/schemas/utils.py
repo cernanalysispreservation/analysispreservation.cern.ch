@@ -49,7 +49,28 @@ def add_or_update_schema(fullpath=None, json=None):
                            )
         name, major, minor, patch = re.search(regex, fullpath).groups()
 
-        schema = Schema(name=name, major=major, minor=minor,
+        experiment = None
+        permission = None
+
+        if name == 'records/lhcb':
+            permission = 'cap.modules.experiments.permissions' + \
+                '.lhcb.lhcb_group_need'
+            experiment = 'LHCb'
+        elif name in ('records/atlas-analysis', 'records/atlas-workflows'):
+            permission = 'cap.modules.experiments.permissions' + \
+                '.atlas.atlas_group_need'
+            experiment = 'ATLAS'
+        elif name in ('records/cms-analysis', 'records/cms-questionnaire'):
+            permission = 'cap.modules.experiments.permissions' + \
+                '.cms.cms_group_need'
+            experiment = 'CMS'
+        elif name == 'records/alice-analysis':
+            permission = 'cap.modules.experiments.permissions' + \
+                '.alice.alice_group_need'
+            experiment = 'ALICE'
+
+        schema = Schema(name=name, experiment=experiment,
+                        permission=permission, major=major, minor=minor,
                         patch=patch, json=json)
         db.session.add(schema)
 
