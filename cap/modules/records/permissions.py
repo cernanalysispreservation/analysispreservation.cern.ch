@@ -28,6 +28,9 @@ from functools import partial
 
 from flask import current_app, request, g, abort
 
+from cap.utils import obj_or_import_string
+from cap.modules.schemas.models import Schema
+
 from invenio_access.permissions import (
     DynamicPermission, ParameterizedActionNeed)
 
@@ -84,8 +87,7 @@ class RecordPermission(DynamicPermission):
         self.exp_needs = exp_needs
         self._needs = set()
 
-        if self.exp_needs:
-            self._load_record_group_permissions()
+        self._load_record_group_permissions()
 
         super(RecordPermission, self).__init__(*self._needs)
 
@@ -93,11 +95,12 @@ class RecordPermission(DynamicPermission):
         _record_group = self._get_record_group_info()
 
         if _record_group:
-            experiment = _record_group.get('experiment', '')
+            _permission_factory_imp = \
+                obj_or_import_string(_record_group)
 
-            if experiment in self.exp_needs:
-                self.exp_needs[experiment]
-                self._needs.add(*self.exp_needs[experiment])
+            if _permission_factory_imp:
+                for _need in _permission_factory_imp:
+                    self._needs.add(_need)
         else:
             abort(403)
 
@@ -109,15 +112,10 @@ class RecordPermission(DynamicPermission):
         except (IndexError, AttributeError):
             return None
 
-        _record_group = \
-            next(
-                (depgroup
-                 for dg, depgroup
-                 in current_app.config.get('DEPOSIT_GROUPS').iteritems()
-                 if schema in depgroup['schema']
-                 ),
-                None
-            )
+        obj = Schema.get_by_fullstring(schema)
+
+        _record_group = current_app.config.get(
+            'EXPERIMENT_PERMISSION', {})[obj.experiment]
 
         return _record_group
 

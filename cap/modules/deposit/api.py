@@ -37,6 +37,7 @@ from flask import current_app, request
 from werkzeug.local import LocalProxy
 
 from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.models import Schema
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
@@ -103,15 +104,6 @@ class CAPDeposit(Deposit):
     def schema(self):
         """Schema property."""
         return re.search('schemas/(.*)', self['$schema']).group(1)
-
-    # @TOFIX UNCOMMENT WHEN REFACTORED IS DONE
-    # def available_schemas(self):
-    #     available_schemas = Schema.query.filter(
-    #         Schema.name.startswith('records')).all()
-
-    #     return ["{}-v{}.{}.{}.json".format(
-    #         i.name, i.major, i.minor, i.patch).replace('records/', '')
-    #         for i in available_schemas]
 
     @mark_as_action
     def permissions(self, pid=None):
@@ -347,11 +339,12 @@ class CAPDeposit(Deposit):
         return filename
 
     def _set_experiment(self):
-        depgroups = current_app.config['DEPOSIT_GROUPS']
+        schemas = Schema.get_schemas()
 
-        # return first found or Unknown
-        experiment = next((group['experiment'] for group in depgroups.values()
-                           if self.schema in group['schema']), 'Unknown')
+        schema = (schema for schema in schemas if self.schema == schema)
+
+        experiment = Schema.get_by_fullstring(
+            schema.next()).experiment
 
         self['_experiment'] = experiment
         self.commit()
@@ -399,7 +392,7 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema_fullstring))
 
-        if schema not in current_app.config['SCHEMAS_LIST']:
+        if schema not in Schema.get_schemas():
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema))
 

@@ -29,17 +29,14 @@
 from uuid import uuid4
 
 from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.deposit.errors import (DepositValidationError,
-                                        WrongJSONSchemaError)
+from cap.modules.deposit.errors import DepositValidationError
+
 
 from flask_security import login_user
 from invenio_access.models import ActionUsers
 from jsonschema.exceptions import ValidationError
 from pytest import raises
 from sqlalchemy.exc import IntegrityError
-
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.deposit.errors import DepositValidationError,
 
 
 def test_create_deposit_with_non_object_data_raises_DepositValidationError(app,

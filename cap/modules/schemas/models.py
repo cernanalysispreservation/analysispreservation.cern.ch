@@ -44,7 +44,8 @@ class Schema(db.Model):
 
     experiment = db.Column(db.String(128), unique=False, nullable=True)
 
-    permission = db.Column(db.String(128), unique=False, nullable=True)
+    experiment_full_name = db.Column(
+        db.String(128), unique=False, nullable=True)
 
     # version
     major = db.Column(db.Integer, unique=False, nullable=False)
@@ -104,3 +105,27 @@ class Schema(db.Model):
                 .one()
         except NoResultFound:
             raise SchemaDoesNotExist
+
+    @classmethod
+    def get_schemas(cls):
+        """Get available schemas."""
+        available_schemas = cls.query.filter(cls.experiment.isnot(
+            None), cls.name.startswith('deposits/records')).all()
+
+        return ["{}-v{}.{}.{}.json".format(
+            i.name, i.major, i.minor, i.patch)
+            for i in available_schemas]
+
+    @classmethod
+    def get_experiments(cls):
+        """Get available experiments."""
+        experiments = cls.query.filter(cls.experiment.isnot(
+            None), cls.name.startswith('deposits/records')).all()
+
+        return [exp.experiment for exp in experiments]
+
+    @classmethod
+    def get_results(cls):
+        """Return all rows with schemas."""
+        return cls.query.filter(cls.experiment.isnot(None),
+                                cls.name.startswith('deposits/records')).all()

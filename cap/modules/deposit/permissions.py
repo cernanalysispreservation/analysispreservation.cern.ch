@@ -30,6 +30,7 @@ from functools import partial
 from flask import current_app, g, request
 
 from cap.utils import obj_or_import_string
+from cap.modules.schemas.models import Schema
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from .errors import DepositValidationError, WrongJSONSchemaError
@@ -106,10 +107,7 @@ class DepositPermission(Permission):
             raise WrongJSONSchemaError()
 
         _permission_factory_imp = \
-            _deposit_group.get(self.action + '_permission_factory_imp', None)
-
-        _permission_factory_imp = \
-            obj_or_import_string(_permission_factory_imp)
+            obj_or_import_string(_deposit_group)
 
         if _permission_factory_imp:
             for _need in _permission_factory_imp:
@@ -125,15 +123,10 @@ class DepositPermission(Permission):
         except (IndexError, AttributeError):
             raise WrongJSONSchemaError()
 
-        _deposit_group = \
-            next(
-                (depgroup
-                 for dg, depgroup
-                 in current_app.config.get('DEPOSIT_GROUPS').iteritems()
-                 if schema in depgroup['schema']
-                 ),
-                None
-            )
+        obj = Schema.get_by_fullstring(schema)
+
+        _deposit_group = current_app.config.get(
+            'EXPERIMENT_PERMISSION', {})[obj.experiment]
 
         return _deposit_group
 
