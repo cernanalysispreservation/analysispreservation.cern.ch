@@ -41,6 +41,7 @@ from werkzeug.local import LocalProxy
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import collaboration_permissions
+from cap.modules.schemas.models import Schema
 from cap.utils import obj_or_import_string
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -89,16 +90,17 @@ def get_user_experiments():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    deposit_groups = current_app.config.get('DEPOSIT_GROUPS', {})
+    deposit_groups = Schema.get_results()
     user_deposit_groups = []
-    for group, obj in deposit_groups.iteritems():
-        # Check if user has permission for this deposit group
-        needs = obj_or_import_string(
-            obj['create_permission_factory_imp'])
+    for obj in deposit_groups:
+        permission = current_app.config.get(
+            'EXPERIMENT_PERMISSION', {})[obj.experiment]
+        needs = obj_or_import_string(permission)
         if Permission(*needs).can():
             group_data = {}
-            group_data['name'] = obj.get('name', '')
-            group_data['deposit_group'] = group
+            group_data['name'] = obj.experiment_full_name
+            group_data['deposit_group'] = obj.name.replace(
+                'deposits/records/', '')
             user_deposit_groups.append(group_data)
 
     return user_deposit_groups

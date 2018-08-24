@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 
 from flask import current_app
 
+from cap.modules.schemas.models import Schema
 from .errors import WrongJSONSchemaError
 
 
@@ -45,22 +46,23 @@ def clean_empty_values(data):
 def discover_schema(deposit):
     """If schema url not passed directly, set it based on $ana_type field."""
     if '$schema' not in deposit:
-        deposit_groups = current_app.config.get('DEPOSIT_GROUPS', None)
+        schemas = Schema.get_schemas()
 
         ana_type = deposit.get("$ana_type", None)
 
         if ana_type is None:
             raise WrongJSONSchemaError()
 
-        schema = deposit_groups.get(ana_type)['schema']
+        schema = (s for s in schemas if ana_type in s)
 
         if schema:
             host = current_app.config.get('JSONSCHEMAS_HOST', None)
             protocol = current_app.config.get(
                 'JSONSCHEMAS_URL_SCHEME', 'https')
-            schema = "{protocol}://{host}/{schema}".format(host=host,
-                                                           schema=schema,
-                                                           protocol=protocol)
+            schema = "{protocol}://{host}/schemas/{schema}".format(
+                host=host,
+                schema=schema.next(),
+                protocol=protocol)
     else:
         schema = deposit['$schema']
 

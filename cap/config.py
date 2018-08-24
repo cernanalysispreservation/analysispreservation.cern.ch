@@ -38,7 +38,7 @@ from cap.modules.deposit.permissions import (CreateDepositPermission,
 from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
-from cap.modules.records.permissions import record_read_permission_factory
+from cap.modules.records.permissions import ReadRecordPermission
 from cap.modules.records.search import cap_record_search_factory
 from cap.modules.search.facets import nested_filter
 
@@ -235,6 +235,13 @@ CAP_COLLAB_EGROUPS = {
     "ADMIN": SUPERUSER_EGROUPS
 }
 
+EXPERIMENT_PERMISSION = {
+    "CMS": "cap.modules.experiments.permissions.cms.cms_group_need",
+    "ALICE": "cap.modules.experiments.permissions.alice.alice_group_need",
+    "ATLAS": "cap.modules.experiments.permissions.atlas.atlas_group_need",
+    "LHCb": "cap.modules.experiments.permissions.lhcb.lhcb_group_need",
+}
+
 # Records
 # =======
 #: Records sort/facets options
@@ -359,10 +366,13 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_search'),
     },
+    # 'read_permission_factory_imp': check_oauth2_scope(
+    #     lambda record: record_read_permission_factory(
+    #         CAP_COLLAB_EGROUPS,
+    #         SUPERUSER_EGROUPS)(record).can(),
+    #     write_scope.id),
     'read_permission_factory_imp': check_oauth2_scope(
-        lambda record: record_read_permission_factory(
-            CAP_COLLAB_EGROUPS,
-            SUPERUSER_EGROUPS)(record).can(),
+        lambda record: ReadRecordPermission(record).can(),
         write_scope.id),
 })
 
@@ -507,54 +517,6 @@ DEPOSIT_SEARCH_API = '/api/deposits/'
 #: Files api url for deposit
 DEPOSIT_FILES_API = '/api/files'
 
-DEPOSIT_GROUPS = {
-    "lhcb": {
-        "experiment": "LHCb",
-        "schema": "schemas/deposits/records/lhcb-v0.0.1.json",
-        "name": "LHCb Analysis",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.lhcb.lhcb_group_need',
-    },
-    "cms-analysis": {
-        "experiment": "CMS",
-        "schema": "schemas/deposits/records/cms-analysis-v0.0.1.json",
-        "name": "CMS Analysis",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.cms.cms_group_need',
-    },
-    "cms-questionnaire": {
-        "experiment": "CMS",
-        "schema": "schemas/deposits/records/cms-questionnaire-v0.0.1.json",
-        "name": "CMS Questionnaire",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.cms.cms_group_need',
-    },
-    "atlas-workflows": {
-        "experiment": "ATLAS",
-        "schema": "schemas/deposits/records/atlas-workflows-v0.0.1.json",
-        "name": "ATLAS Workflow",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.atlas.atlas_group_need',
-    },
-    "atlas-analysis": {
-        "experiment": "ATLAS",
-        "schema": "schemas/deposits/records/atlas-analysis-v0.0.1.json",
-        "name": "ATLAS Analysis",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.atlas.atlas_group_need',
-    },
-    "alice-analysis": {
-        "experiment": "ALICE",
-        "schema": "schemas/deposits/records/alice-analysis-v0.0.1.json",
-        "name": "ALICE Analysis",
-        'create_permission_factory_imp':
-            'cap.modules.experiments.permissions.alice.alice_group_need',
-    }
-}
-
-SCHEMAS_LIST = [x.get('schema').replace('schemas/', '')
-                for x in DEPOSIT_GROUPS.values()]
-
 DEPOSIT_PID_MINTER = 'cap_record_minter'
 
 DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
@@ -611,7 +573,6 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'update_permission_factory_imp': check_oauth2_scope(
         lambda record: UpdateDepositPermission(record).can(),
         write_scope.id),
-    # TODO update delete permission when 'discard'/'delete' is ready
     'delete_permission_factory_imp': check_oauth2_scope(
         lambda record: DeleteDepositPermission(record).can(),
         write_scope.id),
