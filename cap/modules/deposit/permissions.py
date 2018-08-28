@@ -28,12 +28,12 @@
 from functools import partial
 
 from flask import current_app, g, request
-from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from cap.utils import obj_or_import_string
+from invenio_access.permissions import ParameterizedActionNeed, Permission
 
+from .errors import DepositValidationError, WrongJSONSchemaError
 from .utils import discover_schema
-from .errors import WrongJSONSchemaError, EmptyDepositError
 
 DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
 """Action need for reading a record."""
@@ -84,7 +84,7 @@ class DepositPermission(Permission):
             deposit: deposit to which access is requested.
         """
         if action == 'create' and record == {}:
-            raise EmptyDepositError()
+            raise DepositValidationError('Empty deposit data.')
 
         _needs = set()
         self.deposit = record

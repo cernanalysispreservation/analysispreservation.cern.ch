@@ -27,21 +27,20 @@
 import json
 import uuid
 
+from flask import current_app
+
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.deposit.fetchers import cap_deposit_fetcher
+from cap.modules.deposit.minters import cap_deposit_minter
 from elasticsearch import helpers
 from elasticsearch_dsl import Q
-from flask import current_app
 from invenio_accounts.models import Role
 from invenio_db import db
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
-
-from cap.modules.deposit.api import (CAPDeposit, construct_access,
-                                     set_egroup_permissions)
-from cap.modules.deposit.errors import DepositDoesNotExist
-from cap.modules.deposit.fetchers import cap_deposit_fetcher
-from cap.modules.deposit.minters import cap_deposit_minter
 
 
 def construct_draft_obj(schema, data):
@@ -71,21 +70,12 @@ def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
 
 def add_read_permission_for_egroup(deposit, egroup):
     """Adds read permission for egroup."""
-    with db.session.begin_nested():
-        role = Role.query.filter_by(name=egroup).one()
-        permissions = [{
-            'action': 'deposit-read',
-            'identity': egroup,
-            'op': 'add',
-            'type': 'egroup'
-        }]
-
-        access = set_egroup_permissions(role, permissions, deposit,
-                                        db.session, construct_access())
-    db.session.commit()
-
-    deposit['_access'] = access
-    deposit.commit()
+    deposit.edit_permissions([{
+        'email': 'cms-members@cern.ch',
+        'type': 'egroup',
+        'op': 'add',
+        'action': 'deposit-read'
+    }])
 
 
 def add_drafts_from_file(file_path, schema, egroup, limit=None):

@@ -34,16 +34,34 @@ class DepositDoesNotExist(Exception):
 
 
 class WrongJSONSchemaError(RESTValidationError):
-    """JSONSchema wrong schema error exception."""
+    """Wrong JSONSchema error exception."""
 
     code = 400
 
     description = "The provided JSON schema or 'ana_type' field doesn't exist"
 
 
-class EmptyDepositError(RESTValidationError):
-    """JSONSchema wrong schema error exception."""
+class UpdateDepositPermissionsError(RESTValidationError):
+    """Exception during updating deposit's permissions."""
 
     code = 400
 
-    description = "Empty content({}) was send. Try again with valid data"
+    description = "Error occured during updating deposit permissions."
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(UpdateDepositPermissionsError, self).__init__(**kwargs)
+        self.description = description or self.description
+
+
+class DepositValidationError(RESTValidationError):
+    """Deposit validation error exception."""
+
+    code = 400
+
+    description = "Validation error. Try again with valid data"
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(DepositValidationError, self).__init__(**kwargs)
+        self.description = description or self.description

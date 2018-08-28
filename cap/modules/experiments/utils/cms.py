@@ -184,7 +184,7 @@ def cache_das_datasets_in_es_from_file(file):
             res = json.load(fp)
             source = [x['dataset'][0] for x in res]
             bulk_index_from_source(new_index, 'doc', source)
-    except:
+    except Exception:
         # delete index if sth went wrong
         es.indices.delete(index=old_index)
         raise

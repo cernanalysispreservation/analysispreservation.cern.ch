@@ -34,7 +34,7 @@ class SearchResults extends React.Component {
               let is_owner =
                 item.metadata._deposit.owners.indexOf(this.props.user_id) > -1;
               let can_update =
-                item.metadata._access["deposit-update"].user.indexOf(
+                item.metadata._access["deposit-update"].users.indexOf(
                   this.props.user_id
                 ) > -1;
 

@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 
 import pytest
 from cap.modules.deposit.api import CAPDeposit as Deposit
+from flask_security import login_user
 from invenio_search import current_search
 
 
@@ -38,80 +39,86 @@ def deposit_index():
     return deposit_index_name_prefix
 
 
-def test_create_deposit_lhcb_index(db, es, location, deposit_index):
+def test_create_deposit_lhcb_index(db, es, users, location, deposit_index):
     """Test if deposit lhcb index is created."""
     deposit_index_name = deposit_index + '-' + 'lhcb-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/lhcb-v0.0.1.json'
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
 
 
-def test_create_deposit_cms_analysis_index(db, es, location, deposit_index):
+def test_create_deposit_cms_analysis_index(db, es, users, location, deposit_index):
     """Test if deposit cms analysis index is created."""
     deposit_index_name = deposit_index + '-' + 'cms-analysis-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json'
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
 
 
-def test_create_deposit_cms_questionnaire_index(db, es, location, deposit_index):
+def test_create_deposit_cms_questionnaire_index(db, es, users, location, deposit_index):
     """Test if deposit cms questionnaire index is created."""
     deposit_index_name = deposit_index + '-' + 'cms-questionnaire-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-questionnaire-v0.0.1.json'
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
 
 
-def test_create_deposit_atlas_analysis_index(db, es, location, deposit_index):
+def test_create_deposit_atlas_analysis_index(db, es, users, location, deposit_index):
     """Test if deposit atlas analysis index is created."""
     deposit_index_name = deposit_index + '-' + 'atlas-analysis-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-analysis-v0.0.1.json'
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
 
 
-def test_create_deposit_atlas_workflow_index(db, es, location, deposit_index):
+def test_create_deposit_atlas_workflow_index(db, es, users, location, deposit_index):
     """Test if deposit atlas workflows index is created."""
     deposit_index_name = deposit_index + '-' + 'atlas-workflows-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/atlas-workflows-v0.0.1.json',
         'workflows': [{'analysis_title': 'test_workflow'}]
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']
 
 
-def test_create_deposit_alice_index(db, es, location, deposit_index):
+def test_create_deposit_alice_index(db, es, users, location, deposit_index):
     """Test if deposit alice analysis index is created."""
     deposit_index_name = deposit_index + '-' + 'alice-analysis-v0.0.1'
+    login_user(users['superuser'])
 
     Deposit.create({
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/alice-analysis-v0.0.1.json'
     })
-    db.session.commit()
     current_search.flush_and_refresh(deposit_index_name)
+
     res = current_search.client.search(index=deposit_index_name)
     assert 'id' in res['hits']['hits'][0]['_source']['_deposit']

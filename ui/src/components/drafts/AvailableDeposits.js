@@ -13,8 +13,8 @@ const CustomTile = withRouter(
     <Tile
       key={group}
       size="small"
-      pad="small"
-      colorIndex="neutral-1"
+      pad="medium"
+      colorIndex="light-2"
       onClick={() => history.push(`/drafts/create/${group}`)}
     >
       <Paragraph align="center">
@@ -29,7 +29,7 @@ class AvailableDeposits extends React.Component {
     return (
       <Box flex={true} justify="center">
         <Heading align="center" tag="h3">
-          Choose which analysis you would like to preserve
+          Which analysis you would like to preserve
         </Heading>
         <Tiles flush={false} fill={false} size="large" justify="center">
           {this.props.groups ? (

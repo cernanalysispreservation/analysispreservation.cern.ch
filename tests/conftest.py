@@ -33,13 +33,9 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import current_app
-from werkzeug.local import LocalProxy
-
 import pytest
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.reana.models import ReanaJob
 from elasticsearch.exceptions import RequestError
+from flask import current_app
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
 from invenio_accounts.testutils import create_test_user
@@ -52,6 +48,10 @@ from invenio_oauth2server.models import Client, Token
 from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
+from werkzeug.local import LocalProxy
+
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.reana.models import ReanaJob
 
 
 @pytest.yield_fixture(scope='session')
@@ -105,7 +105,7 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='function')
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -264,17 +264,17 @@ def minimal_deposits_metadata(schema_name):
             "_access": {
                 "deposit-admin": {
                     "roles": [],
-                    "user": []
+                    "users": []
                 },
                 "deposit-read": {
                     "roles": [],
-                    "user": [
+                    "users": [
                         2
                     ]
                 },
                 "deposit-update": {
                     "roles": [],
-                    "user": [
+                    "users": [
                         1
                     ]
                 }
@@ -314,26 +314,26 @@ def minimal_deposits_metadata(schema_name):
 @pytest.fixture
 def create_deposit(app, db, es, location):
     """Returns function to create a new deposit."""
-    db_.session.begin_nested()
+    with db_.session.begin_nested():
 
-    def _create_deposit(user, schema):
-        """
-        Create a new deposit for given user and schema name
-        e.g cms-analysis-v0.0.1,
-        with minimal metadata defined for this schema type.
-        """
-        db_.session.begin_nested()
-        with app.test_request_context():
-            metadata = minimal_deposits_metadata(schema)
-            login_user(user)
-            id_ = uuid4()
-            deposit_minter(id_, metadata)
-            deposit = Deposit.create(metadata, id_=id_)
-        current_search.flush_and_refresh('deposits-records-{}'.format(schema))
-        return deposit
+        def _create_deposit(user, schema):
+            """
+            Create a new deposit for given user and schema name
+            e.g cms-analysis-v0.0.1,
+            with minimal metadata defined for this schema type.
+            """
+            with app.test_request_context():
+                metadata = minimal_deposits_metadata(schema)
+                login_user(user)
+                id_ = uuid4()
+                deposit_minter(id_, metadata)
+                deposit = Deposit.create(metadata, id_=id_)
+
+            current_search.flush_and_refresh('deposits-records-{}'.format(schema))
+
+            return deposit
 
     yield _create_deposit
-    db_.session.rollback()
 
 
 @pytest.fixture(scope='function')
@@ -422,17 +422,17 @@ def permissions_serialized_deposit(users):
         "permissions": {
             "deposit-admin": {
                 "roles": [],
-                "user": []
+                "users": []
             },
             "deposit-read": {
                 "roles": [],
-                "user": [
+                "users": [
                     users['cms_user2'].email
                 ]
             },
             "deposit-update": {
                 "roles": [],
-                "user": [
+                "users": [
                     users['cms_user'].email
                 ]
             }

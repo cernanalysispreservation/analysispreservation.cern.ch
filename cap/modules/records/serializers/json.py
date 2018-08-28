@@ -89,9 +89,9 @@ class PermissionsJSONSerializer(JSONSerializer):
         result['permissions'] = result.get('metadata', {}).get('_access', {})
 
         for k, v in result['permissions'].items():
-            if v['user']:
-                for index, user_id in enumerate(v['user']):
+            if v['users']:
+                for index, user_id in enumerate(v['users']):
                     user = User.query.filter_by(id=user_id).one()
-                    v['user'][index] = user.email
+                    v['users'][index] = user.email
 
         return result
