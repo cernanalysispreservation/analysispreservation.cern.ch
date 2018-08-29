@@ -159,11 +159,14 @@ SESSION_COOKIE_SECURE = False
 #: route correct hosts to the application.
 APP_ALLOWED_HOSTS = [
     'localhost',
+    'analysispreservation.web.cern.ch',
     'analysispreservation.cern.ch',
     'analysispreservation-dev.web.cern.ch',
+    'analysispreservation-dev.cern.ch',
     'analysispreservation-qa.web.cern.ch',
-    'analysispreservation.web.cern.ch',
+    'analysispreservation-qa.cern.ch'
 ]
+
 
 # OAI-PMH
 # =======
