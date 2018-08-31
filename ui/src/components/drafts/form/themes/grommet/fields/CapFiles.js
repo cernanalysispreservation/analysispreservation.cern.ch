@@ -93,4 +93,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapDispatchToProps)(CapFile);
+export default connect(
+  null,
+  mapDispatchToProps
+)(CapFile);
