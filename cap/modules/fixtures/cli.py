@@ -26,17 +26,13 @@
 
 import json
 import os
-import re
 
 import click
-
-from cap.modules.experiments.utils.cms import (
-    cache_das_datasets_in_es_from_file,
-    synchronize_cadi_entries)
-from cap.modules.schemas.models import Schema
-from cap.modules.schemas.utils import add_or_update_schema
 from flask_cli import with_appcontext
-from invenio_db import db
+
+from cap.modules.experiments.utils.cms import (cache_das_datasets_in_es_from_file,
+                                               synchronize_cadi_entries)
+from cap.modules.schemas.utils import add_or_update_schema
 
 from .utils import add_drafts_from_file
 
@@ -47,14 +43,16 @@ def fixtures():
 
 
 @fixtures.command('add')
-@click.option('--user', '-u', default='analysis-preservation-support@cern.ch')
+@click.option('--egroup', '-e',
+              default='analysis-preservation-support@cern.ch')
 @click.option('--schema', '-s', required=True)
 @click.option('--file', '-f', required=True, type=click.Path(exists=True))
+@click.option('--user', '-u', required=False)
 @click.option('--limit', '-n', type=int)
 @with_appcontext
-def add(file, schema, user, limit):
+def add(file, schema, egroup, user, limit):
     """Load drafts with metadata from file."""
-    add_drafts_from_file(file, schema, user, limit)
+    add_drafts_from_file(file, schema, egroup, user, limit)
 
 
 @fixtures.group()

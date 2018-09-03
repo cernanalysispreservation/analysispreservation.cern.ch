@@ -39,6 +39,7 @@ from cap.modules.fixtures.utils import (add_read_permission_for_egroup,
                                         bulk_index_from_source,
                                         get_entry_uuid_by_unique_field)
 from invenio_search.proxies import current_search_client as es
+from sqlalchemy.orm.exc import NoResultFound
 
 CADI_FIELD_TO_CAP_MAP = {
     "name": "name",
@@ -123,7 +124,7 @@ def get_updated_cadi_lines(from_date=None, until_date=None):
 def synchronize_cadi_entries(limit=None):
     """Add/update all CADI entries connecting with CADI database."""
     entries = get_entries_from_cadi_db()
-    for entry in entries[0:limit]:
+    for entry in entries[:limit]:
         # remove artefact from code names
         cadi_id = re.sub('^d', '', entry.get('code', None))
 
@@ -131,7 +132,7 @@ def synchronize_cadi_entries(limit=None):
             parser = HTMLParser()
             uuid = get_entry_uuid_by_unique_field(
                 'deposits-records-cms-analysis-v0.0.1',
-                {'basic_info__cadi_id': cadi_id}
+                {'basic_info__cadi_id__keyword': cadi_id}
             )
 
             deposit = CAPDeposit.get_record(uuid)
@@ -142,14 +143,14 @@ def synchronize_cadi_entries(limit=None):
                 # sometimes they store data in HTML format.. need to escape
                 # chars
                 deposit['cadi_info'][cap_key] = parser.unescape(
-                    entry.get(cadi_key, '')) or ''
+                    entry.get(cadi_key, '') or '') or ''
             deposit.commit()
 
             print('Cadi entry {} updated.'.format(cadi_id))
 
-        except DepositDoesNotExist:  # or create new cadi entry
+        except (DepositDoesNotExist, NoResultFound):  # or create new cadi entry
             data = construct_cadi_entry(cadi_id, {
-                'cadi_info': {v: parser.unescape(entry.get(k, '')) or ''
+                'cadi_info': {v: parser.unescape(entry.get(k, '') or '') or ''
                               for k, v in CADI_FIELD_TO_CAP_MAP.items()}
             })
 
