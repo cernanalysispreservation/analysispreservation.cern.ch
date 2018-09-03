@@ -26,21 +26,20 @@
 """CAP Deposit loaders."""
 
 from itertools import groupby
+from operator import attrgetter
 
+import requests
 from celery import shared_task
+from flask import after_this_request, current_app, request
+from werkzeug.utils import cached_property
 
 import jsonpointer
-import requests
-
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.utils import clean_empty_values
-from flask import after_this_request, current_app, request
 from invenio_db import db
 from invenio_files_rest.models import FileInstance, ObjectVersion
 from jsonschema.exceptions import ValidationError
 from jsonschema.validators import Draft4Validator, extend
-from operator import attrgetter
-from werkzeug.utils import cached_property
 
 
 class XCapFileValidationError(ValidationError):

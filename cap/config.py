@@ -103,8 +103,10 @@ CELERY_BEAT_SCHEDULE = {
 # Database
 # ========
 #: Database URI including user and password
-SQLALCHEMY_DATABASE_URI = \
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    'APP_SQLALCHEMY_DATABASE_URI',
     'postgresql+psycopg2://cap:cap@localhost/cap'
+)
 
 # JSONSchemas
 # ===========

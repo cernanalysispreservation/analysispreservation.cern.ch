@@ -234,6 +234,7 @@ class CAPDeposit(Deposit):
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
                                 'Permission does not exist.')
+
         self.commit()
 
         return self
@@ -321,13 +322,18 @@ class CAPDeposit(Deposit):
 
             self['_access'][permission]['roles'].remove(egroup.id)
 
-    def _init_owner_permissions(self):
+    def _init_owner_permissions(self, owner=current_user):
         self['_access'] = deepcopy(EMPTY_ACCESS_OBJECT)
 
-        with db.session.begin_nested():
-            self._add_user_permissions(current_user,
-                                       DEPOSIT_ACTIONS,
-                                       db.session)
+        if owner:
+            with db.session.begin_nested():
+                self._add_user_permissions(owner,
+                                           DEPOSIT_ACTIONS,
+                                           db.session)
+
+            self['_deposit']['created_by'] = owner.id
+            self['_deposit']['owners'] = [owner.id]
+
         self.commit()
 
     def _construct_filename(self, url, type):
@@ -360,7 +366,7 @@ class CAPDeposit(Deposit):
         return deposit
 
     @classmethod
-    def create(cls, data, id_=None):
+    def create(cls, data, id_=None, owner=current_user):
         """Create a deposit.
 
         Adds bucket creation immediately on deposit creation.
@@ -370,7 +376,7 @@ class CAPDeposit(Deposit):
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
         deposit._create_buckets()
         deposit._set_experiment()
-        deposit._init_owner_permissions()
+        deposit._init_owner_permissions(owner)
 
         return deposit
 
