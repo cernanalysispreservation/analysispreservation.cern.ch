@@ -42,9 +42,8 @@ cap index init
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
   cap files location local var/data --default 
-else
-  cap files location local /var/data --default 
 fi
+
 
 # install schemas in db
 cap fixtures schemas

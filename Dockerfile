@@ -35,7 +35,7 @@ RUN pip install --upgrade pip==9.0.1
 # RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
 RUN pip install -r requirements-local-forks.txt
 RUN pip install -r requirements.txt
-RUN pip install -e .[all]
+RUN pip install -e .[all,xrootd]
 
 # copy uwsgi config files
 COPY ./docker/uwsgi/ ${INVENIO_INSTANCE_PATH}

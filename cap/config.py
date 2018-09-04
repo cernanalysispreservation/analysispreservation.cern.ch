@@ -167,7 +167,6 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-qa.cern.ch'
 ]
 
-
 # OAI-PMH
 # =======
 OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
