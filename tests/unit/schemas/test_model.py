@@ -23,11 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-from pytest import raises
-from sqlalchemy.exc import IntegrityError
-
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
+from invenio_search import current_search
+from pytest import mark, raises
+from sqlalchemy.exc import IntegrityError
 
 
 def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
@@ -63,7 +63,7 @@ def test_get_by_fullstring(db):
                        'major': 1,
                        'minor': 0,
                        'patch': 1})
-    schema2 = Schema(**{'name': 'records/ana2',
+    schema2 = Schema(**{'name': 'deposits/records/ana2',
                         'major': 2,
                         'minor': 1,
                         'patch': 1})
@@ -71,10 +71,12 @@ def test_get_by_fullstring(db):
     db.session.add(schema2)
     db.session.commit()
 
+    assert Schema.get_by_fullstring('https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
     assert Schema.get_by_fullstring('records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullstring('records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullstring('/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullstring('/records/ana2-v2.1.1') == schema2
+    assert Schema.get_by_fullstring('https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
+    assert Schema.get_by_fullstring('deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullstring('/deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullstring('/deposits/records/ana2-v2.1.1') == schema2
 
 
 def test_get_by_fullstring_when_non_existing_raise_SchemaDoesNotExist(db):
@@ -97,3 +99,22 @@ def test_get_latest_version_of_schema(db):
     latest = Schema.get_latest(name='name')
 
     assert latest.version == "2.4.3"
+
+
+@mark.parametrize("schema_params,index_name", [
+    ({'name': 'records/ana1', 'major': 1, 'minor': 0, 'patch': 1}, 'records-ana1-v1.0.1'),
+    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1, 'patch': 0}, 'deposits-records-ana1-v2.1.0'),
+])
+def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(schema_params, index_name, db, es):
+    schema = Schema(**schema_params)
+    db.session.add(schema)
+    db.session.commit()
+
+    assert index_name in current_search.mappings.keys()
+    assert es.indices.exists(index_name)
+
+    db.session.delete(schema)
+    db.session.commit()
+
+    assert not es.indices.exists(index_name)
+    assert not schema.name in current_search.mappings.keys()

@@ -26,13 +26,17 @@
 
 import re
 
+from invenio_access.models import ActionRoles
 from invenio_db import db
-from sqlalchemy import UniqueConstraint
+from invenio_search import current_search
+from invenio_search import current_search_client as es
+from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import JSONType
 
 from .errors import SchemaDoesNotExist
+from .permissions import SchemaReadAction
 
 
 class Schema(db.Model):
@@ -41,6 +45,7 @@ class Schema(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(128), unique=False, nullable=False)
+    full_name = db.Column(db.String(128), unique=False, nullable=True)
 
     experiment = db.Column(db.String(128), unique=False, nullable=True)
 
@@ -49,8 +54,12 @@ class Schema(db.Model):
 
     # version
     major = db.Column(db.Integer, unique=False, nullable=False)
-    minor = db.Column(db.Integer, unique=False, nullable=False)
-    patch = db.Column(db.Integer, unique=False, nullable=False)
+    minor = db.Column(db.Integer, unique=False, nullable=False, default=0)
+    patch = db.Column(db.Integer, unique=False, nullable=False, default=0)
+
+    partial = db.Column(db.Boolean(create_constraint=False),
+                        unique=False,
+                        default=False)
 
     json = db.Column(
         JSONType().with_variant(
@@ -68,10 +77,38 @@ class Schema(db.Model):
     __table_args__ = (UniqueConstraint('name', 'major', 'minor', 'patch',
                                        name='unique_schema_version'),)
 
+    def __init__(self, **kwargs):
+        super(Schema, self).__init__(**kwargs)
+
     @property
     def version(self):
         """Return stringified version."""
         return "{}.{}.{}".format(self.major, self.minor, self.patch)
+
+    @property
+    def index_name(self):
+        return "{}-v{}".format(self.name.replace('/', '-'), self.version)
+
+    @property
+    def aliases(self):
+        aliases = []
+        if self.name.startswith('deposits'):
+            aliases = ['deposits', 'deposits-records']
+        elif self.name.startswith('records'):
+            aliases = ['records']
+        return aliases
+
+    def is_record(self):
+        return self.name.startswith('records')
+
+    def add_read_access(self, role):
+        db.session.add(
+            ActionRoles.allow(
+                SchemaReadAction(self.id),
+                role=role
+            )
+        )
+        db.session.commit()
 
     @classmethod
     def get_latest(cls, name):
@@ -89,7 +126,8 @@ class Schema(db.Model):
     @classmethod
     def get_by_fullstring(cls, string):
         """Get schema by fullstring, e.g. record/schema-v0.0.1.json."""
-        regex = re.compile('/?(?P<name>\S+)'
+        regex = re.compile('(?:.*schemas)?'
+                           '/?(?P<name>\S+)'
                            '-v(?P<major>\d+).'
                            '(?P<minor>\d+).'
                            '(?P<patch>\d+)'
@@ -129,3 +167,32 @@ class Schema(db.Model):
         """Return all rows with schemas."""
         return cls.query.filter(cls.experiment.isnot(None),
                                 cls.name.startswith('deposits/records')).all()
+
+@event.listens_for(Schema, 'after_insert')
+def after_insert_schema(target, value, initiator):
+    if not initiator.partial:
+        # invenio search needs it
+        current_search.mappings[initiator.index_name] = {}
+
+        if not es.indices.exists(initiator.index_name):
+            es.indices.create(
+                index=initiator.index_name,
+                body={},
+                ignore=False
+            )
+
+            for alias in initiator.aliases:
+                es.indices.update_aliases({
+                    "actions": [
+                        {"add": {"index": initiator.index_name, "alias": alias}}
+                    ]
+                })
+
+
+@event.listens_for(Schema, 'after_delete')
+def before_delete_schema(mapper, connect, target):
+    if es.indices.exists(target.index_name):
+        es.indices.delete(target.index_name)
+
+    # invenio search needs it
+    current_search.mappings.pop(target.index_name)

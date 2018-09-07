@@ -27,17 +27,25 @@
 
 from __future__ import absolute_import, print_function
 
+import json
 import os
 import shutil
 import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
-from elasticsearch.exceptions import RequestError
 from flask import current_app
+from werkzeug.local import LocalProxy
+
+import pytest
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.reana.models import ReanaJob
+from cap.modules.schemas.models import Schema
+from elasticsearch.exceptions import RequestError
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
+from invenio_access.models import ActionUsers
+from invenio_access.permissions import superuser_access
 from invenio_accounts.testutils import create_test_user
 from invenio_app.factory import create_api
 from invenio_db import db as db_
@@ -47,11 +55,9 @@ from invenio_files_rest.models import Location
 from invenio_oauth2server.models import Client, Token
 from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
+from jsonresolver import JSONResolver
+from jsonresolver.contrib.jsonref import json_loader_factory
 from sqlalchemy_utils.functions import create_database, database_exists
-from werkzeug.local import LocalProxy
-
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.reana.models import ReanaJob
 
 
 @pytest.yield_fixture(scope='session')
@@ -93,6 +99,22 @@ def default_config():
 @pytest.fixture()
 def jsonschemas_host():
     return current_app.config.get('JSONSCHEMAS_HOST')
+
+
+@pytest.fixture()
+def schema(db, es):
+    schema = Schema(
+        name='deposits/records/test-schema',
+        full_name='Test Schema',
+        json=json.dumps({
+            'title': 'string'
+        }),
+        major=1
+    )
+    db.session.add(schema)
+    db.session.commit()
+
+    yield schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -170,6 +192,8 @@ def users(app, db):
         'superuser': create_user_with_role('superuser@cern.ch',
                                            'analysis-preservation-support@cern.ch'),
     }
+    db.session.add(ActionUsers.allow(superuser_access, user=users['superuser']))
+    db.session.commit()
 
     return users
 
@@ -302,9 +326,9 @@ def minimal_deposits_metadata(schema_name):
             '$schema': 'https://{}/schemas/deposits/records/atlas-workflows-v0.0.1.json'.format(schema_host),
             'workflows': [{'analysis_title': 'test_workflow'}]
         },
-        'test-schema-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/test-schema-v0.0.1.json'.format(schema_host),
-            "wrong_title": "testing additional properties"
+        'test-schema-v1.0.0': {
+            '$schema': 'https://{}/schemas/deposits/records/test-schema-v1.0.0.json'.format(schema_host),
+            "title": "testing additional properties"
         }
     }
 
