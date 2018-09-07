@@ -81,14 +81,6 @@ def get_user():
     return response
 
 
-@user_blueprint.route('/ping')
-def ping():
-    """Server Health status."""
-    response = jsonify("Pong")
-    response.status_code = 200
-    return response
-
-
 def get_user_experiments():
     """Return an array with user's experiments."""
     experiments = [collab for collab, needs in
@@ -136,9 +128,9 @@ LDAP_EGROUP_RESP_FIELDS = [
 ]
 
 
-@user_blueprint.route('/ldap/user/name')
+@user_blueprint.route('/ldap/user/mail')
 @login_required
-def ldap_user_by_name():
+def ldap_user_by_mail():
     """LDAP user by username query."""
     query = request.args.get('query', None)
 
@@ -149,50 +141,20 @@ def ldap_user_by_name():
     lc.search_ext(
         'OU=Users,OU=Organic Units,DC=cern,DC=ch',
         ldap.SCOPE_ONELEVEL,
-        '(&(cernAccountType=Primary)(displayName=*{}*))'.format(query),
-        ['displayName'],
+        '(&(cernAccountType=Primary)(mail=*{}*))'.format(query),
+        ['mail'],
         serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=5, cookie='')]
+            True, size=7, cookie='')]
     )
     res = lc.result()[1]
 
-    res = [x[1]['displayName'][0] for x in res]
+    res = [x[1]['mail'][0] for x in res]
     return jsonify(res)
 
 
-@user_blueprint.route('/ldap/user')
+@user_blueprint.route('/ldap/egroup/mail')
 @login_required
-def ldap_user():
-    """LDAP user by name query."""
-    query = request.args.get('query', None)
-    sf = request.args.get('sf', 'cn')
-    rf_all = request.args.get('all', 0)
-    rf = map(lambda x: x.encode('ascii', 'ignore'),
-             request.args.getlist('rf'))
-    if not rf:
-        rf = ['cn']
-    if rf_all:
-        rf = LDAP_USER_RESP_FIELDS
-
-    if not query:
-        return jsonify([])
-
-    lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '{}=*{}*'.format(sf, query),
-        rf,
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=20, cookie='')]
-    )
-    res = lc.result()[1]
-    return jsonify(res)
-
-
-@user_blueprint.route('/ldap/egroup')
-@login_required
-def ldap_egroup():
+def ldap_egroup_mail():
     """LDAP egroup query."""
     query = request.args.get('query', None)
     sf = request.args.get('sf', 'cn')
@@ -207,9 +169,11 @@ def ldap_egroup():
         '{}=*{}*'.format(sf, query),
         LDAP_EGROUP_RESP_FIELDS,
         serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=20, cookie='')]
+            True, size=7, cookie='')]
     )
-    res = lc.result()
+    res = lc.result()[1]
+
+    res = [x[1]['mail'][0] for x in res]
     return jsonify(res)
 
 

@@ -35,17 +35,36 @@ from invenio_records_rest.serializers.json import JSONSerializer
 class CAPSchemaSerializer(JSONSerializer):
     """Serializer for records v1 in JSON."""
 
+    def _transform_record_owners(self, result):
+        """Replaces owners id with email."""
+        owner = User.query.filter_by(id=result['metadata']['_deposit'][
+                                     'owners'][0]).one_or_none()
+        if owner:
+            result['metadata']['_deposit']['owners'][0] = owner.email
+        return result
+
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
         """Include files for single record retrievals."""
         result = super(CAPSchemaSerializer, self).preprocess_record(
             pid, record, links_factory=links_factory
         )
 
-        # Add/remove files depending on access right.
+        result.get('metadata', {}).pop('_access', None)
+
         if isinstance(record, Record) and record.files:
-            #     if not has_request_context() or has_read_files_permission(
-            #             current_user, record):
             result['files'] = record['_files']
+
+        result = self._transform_record_owners(result)
+
+        return result
+
+    def preprocess_search_hit(self, pid, record_hit, links_factory=None):
+        """."""
+        result = super(CAPSchemaSerializer, self).preprocess_search_hit(
+            pid, record_hit, links_factory=links_factory
+        )
+
+        result = self._transform_record_owners(result)
 
         return result
 

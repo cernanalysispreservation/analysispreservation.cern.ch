@@ -55,7 +55,7 @@ def deposits_filter():
 
     if current_user.is_authenticated:
         q1 = Q('match',
-               **{'_deposit.owners': getattr(current_user, 'id', 0)})
+               **{'_deposit.owners': getattr(current_user, 'email', None)})
         q2 = Q('match',
                **{'_access.deposit-read.users': getattr(current_user,
                                                         'id', 0)})

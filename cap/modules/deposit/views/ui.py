@@ -30,7 +30,7 @@ from flask import (Blueprint, current_app, jsonify, request)
 from cap.modules.deposit.utils import discover_schema
 from jsonschema.validators import Draft4Validator, RefResolutionError
 
-blueprint = Blueprint(
+deposit_blueprint = Blueprint(
     'cap_deposit_ui',
     __name__,
     template_folder='../templates',
@@ -39,7 +39,7 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route('/validator', methods=['GET', 'POST'])
+@deposit_blueprint.route('/validator', methods=['GET', 'POST'])
 def validator():
     """JSON Schema validator endpoint."""
     def _concat_deque(queue):

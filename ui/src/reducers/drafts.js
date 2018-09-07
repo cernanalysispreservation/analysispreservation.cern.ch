@@ -39,6 +39,7 @@ import {
   PERMISSIONS_ITEM_REQUEST,
   PERMISSIONS_ITEM_SUCCESS,
   PERMISSIONS_ITEM_ERROR,
+  CLEAR_ERROR_SUCCESS,
   FORM_DATA_CHANGE
 } from "../actions/drafts";
 
@@ -243,11 +244,15 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "loading"], true)
         .setIn(["current_item", "error"], false);
     case PERMISSIONS_ITEM_SUCCESS:
-      return state.setIn(["current_item", "permissions"], action.permissions);
+      return state
+        .setIn(["current_item", "permissions"], action.permissions)
+        .setIn(["current_item", "loading"], false);
     case PERMISSIONS_ITEM_ERROR:
       return state
         .setIn(["current_item", "loading"], false)
-        .setIn(["current_item", "error"], action.error);
+        .setIn(["current_item", "error"], action.error.response.data);
+    case CLEAR_ERROR_SUCCESS:
+      return state.setIn(["current_item", "error"], null);
     case FORM_DATA_CHANGE:
       return state.setIn(["current_item", "formData"], action.data);
     default:

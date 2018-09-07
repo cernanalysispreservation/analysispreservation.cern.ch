@@ -124,6 +124,7 @@ setup(
         ],
         'invenio_base.api_blueprints': [
             'cap = cap.views:blueprint',
+            'cap_deposit_ui = cap.modules.deposit.views.ui:deposit_blueprint',
             'cap_user = cap.modules.user.views:user_blueprint',
             'cap_oauth2server_settings = '
             ' cap.modules.oauth2server.views.settings:blueprint',

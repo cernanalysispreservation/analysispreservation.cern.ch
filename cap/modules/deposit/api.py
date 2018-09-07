@@ -270,8 +270,6 @@ class CAPDeposit(Deposit):
 
             session.flush()
 
-            self['_access'][permission]['users'].append(user.id)
-
     def _remove_user_permissions(self,
                                  user,
                                  permissions,

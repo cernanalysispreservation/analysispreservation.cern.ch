@@ -59,6 +59,9 @@ export const PERMISSIONS_ITEM_REQUEST = "PERMISSIONS_ITEM_REQUEST";
 export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
 export const PERMISSIONS_ITEM_ERROR = "PERMISSIONS_ITEM_ERROR";
 
+// TOFIX Consider using a HOC for error handling
+export const CLEAR_ERROR_SUCCESS = "CLEAR_ERROR_SUCCESS";
+
 export const FORM_DATA_CHANGE = "FORM_DATA_CHANGE";
 
 export function draftsRequest() {
@@ -295,6 +298,12 @@ export function permissionsItemError(error) {
   };
 }
 
+export function clearErrorSuccess() {
+  return {
+    type: CLEAR_ERROR_SUCCESS
+  };
+}
+
 // [TOFIX] Plug validation action if needed.
 // export function validate(data, schema) {
 //   return dispatch => {
@@ -322,23 +331,29 @@ export function fetchSchema(schema) {
     dispatch(fetchSchemaRequest());
     axios
       .get(schemaUrl)
-      .then(function(response) {
+      .then(response => {
         let schema = response.data;
         axios
           .get(uiSchemaUrl)
-          .then(function(response) {
+          .then(response => {
             let uiSchema = response.data;
             dispatch(
               fetchSchemaSuccess({ schema: schema, uiSchema: uiSchema })
             );
           })
-          .catch(function(error) {
+          .catch(error => {
             dispatch(fetchSchemaError(error));
           });
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(fetchSchemaError(error));
       });
+  };
+}
+
+export function clearError() {
+  return dispatch => {
+    dispatch(clearErrorSuccess());
   };
 }
 
@@ -356,10 +371,10 @@ export function createDraft(data = {}, schema) {
         dispatch(replace(`/drafts/${draft_id}/edit`));
         axios
           .put(uri + draft_id, response.data.metadata)
-          .then(function(response) {
+          .then(response => {
             dispatch(createDraftSuccess(draft_id, response.data));
           })
-          .catch(function(error) {
+          .catch(error => {
             dispatch(createDraftError(error));
           });
       })
@@ -379,10 +394,10 @@ export function editPublished(data = {}, schema, draft_id) {
         data["$schema"] = schema;
         axios
           .put(`/api/deposits/${draft_id}`, data)
-          .then(function(response) {
+          .then(response => {
             dispatch(editPublishedSuccess(draft_id, response.data.metadata));
           })
-          .catch(function(error) {
+          .catch(error => {
             dispatch(editPublishedError(error));
           });
       })
@@ -401,7 +416,7 @@ export function discardDraft(draft_id) {
       .then(response => {
         dispatch(discardDraftSuccess(draft_id, response.data.metadata));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(discardDraftError(error));
       });
   };
@@ -415,10 +430,10 @@ export function updateDraft(data, draft_id) {
 
     axios
       .put(uri, data)
-      .then(function(response) {
+      .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(updateDraftError(error));
       });
   };
@@ -432,12 +447,12 @@ export function publishDraft(draft_id) {
 
     axios
       .post(uri)
-      .then(function(response) {
+      .then(response => {
         let pid = response.data.metadata._deposit.pid.value;
         dispatch(publishDraftSuccess(pid, response.data));
         dispatch(replace(`/published/${pid}`));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(publishDraftError(error));
       });
   };
@@ -451,18 +466,18 @@ export function deleteDraft(draft_id) {
 
     axios
       .delete(uri)
-      .then(function() {
+      .then(() => {
         dispatch(deleteDraftSuccess());
         dispatch(replace("/"));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(deleteDraftError(error));
       });
   };
 }
 
 export function getDraftById(draft_id, fetchSchemaFlag = false) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
@@ -472,7 +487,7 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
           "Content-Type": "application/json"
         }
       })
-      .then(function(response) {
+      .then(response => {
         let url;
         if (fetchSchemaFlag && response.data.metadata.$schema) {
           url = response.data.metadata.$schema;
@@ -482,23 +497,23 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         }
         dispatch(draftsItemSuccess(draft_id, response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(draftsItemError(error));
       });
   };
 }
 
 export function getBucketById(bucket_id) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(bucketItemRequest());
 
     let uri = `/api/files/${bucket_id}`;
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(bucketItemSuccess(bucket_id, response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(bucketItemError(error));
       });
   };
@@ -506,7 +521,7 @@ export function getBucketById(bucket_id) {
 
 // Semi - working file upload
 export function uploadFile(bucket_link, file) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(uploadFileRequest(file.name));
     bucket_link = "/api/files/" + bucket_link.split("/files/")[1];
     let uri = `${bucket_link}/${file.name}`;
@@ -546,68 +561,52 @@ export function uploadViaUrl(draft_id, urlToGrab, type) {
     let data = { url: urlToGrab, type: type };
     axios
       .post(uri, data)
-      .then(function(response) {
+      .then(response => {
         dispatch(uploadFileSuccess(urlToGrab, response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(uploadFileError(urlToGrab, error.message));
       });
   };
 }
 
 export function getPermissions(draft_id) {
-  return function(dispatch) {
-    dispatch(permissionsItemRequest);
+  return dispatch => {
+    dispatch(permissionsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
 
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(permissionsItemSuccess(response.data.access));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(permissionsItemError(error));
       });
   };
 }
 
-export function removePermissions(draft_id, email, action) {
-  return function(dispatch) {
-    dispatch(permissionsItemRequest);
-    let data = _get_permissions_data(action, email, "remove");
+export function handlePermissions(draft_id, type, email, action, operation) {
+  return dispatch => {
+    dispatch(permissionsItemRequest());
+    let data = _get_permissions_data(type, email, action, operation);
     let uri = `/api/deposits/${draft_id}/actions/permissions`;
     axios
       .post(uri, data)
-      .then(function(response) {
+      .then(response => {
         dispatch(permissionsItemSuccess(response.data.access));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(permissionsItemError(error));
       });
   };
 }
 
-export function addPermissions(draft_id, email, action) {
-  return function(dispatch) {
-    dispatch(permissionsItemRequest);
-    let data = _get_permissions_data(action, email, "add");
-    let uri = `/api/deposits/${draft_id}/actions/permissions`;
-    axios
-      .post(uri, data)
-      .then(function(response) {
-        dispatch(permissionsItemSuccess(response.data.access));
-      })
-      .catch(function(error) {
-        dispatch(permissionsItemError(error));
-      });
-  };
-}
-
-function _get_permissions_data(action, email, operation) {
+function _get_permissions_data(type, email, action, operation) {
   return [
     {
-      type: "user",
+      type: `${type}`,
       email: `${email}`,
       op: `${operation}`,
       action: `${action}`

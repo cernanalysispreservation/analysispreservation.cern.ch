@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import { Box, Anchor, Label, List, ListItem } from "grommet";
 
-import Edit from "grommet/components/icons/base/Edit";
+// import Edit from "grommet/components/icons/base/Edit";
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -31,12 +31,12 @@ class SearchResults extends React.Component {
 
               let draft_id = item.metadata._deposit.id;
 
-              let is_owner =
-                item.metadata._deposit.owners.indexOf(this.props.user_id) > -1;
-              let can_update =
-                item.metadata._access["deposit-update"].users.indexOf(
-                  this.props.user_id
-                ) > -1;
+              // let is_owner =
+              //   item.metadata._deposit.owners.indexOf(this.props.user_id) > -1;
+              // let can_update =
+              //   item.metadata._access["deposit-update"].users.indexOf(
+              //     this.props.user_id
+              //   ) > -1;
 
               return (
                 <ListItem
@@ -103,6 +103,7 @@ class SearchResults extends React.Component {
                       </Box>
                     </Box>
                   </Box>
+                  {/* 
                   <Box>
                     {is_owner ? (
                       <Box key="owner">
@@ -117,6 +118,7 @@ class SearchResults extends React.Component {
                       />
                     ) : null}
                   </Box>
+                  */}
                 </ListItem>
               );
             })}

@@ -1,110 +1,75 @@
 import React from "react";
 import { connect } from "react-redux";
+import axios from "axios";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import { Anchor, Box, Button, Label, Menu, Table, TableRow } from "grommet";
+import {
+  Box,
+  Button,
+  Label,
+  Table,
+  TableRow,
+  CheckBox,
+  RadioButton,
+  FormField,
+  TextInput,
+  Toast
+} from "grommet";
 
 import {
   getPermissions,
-  addPermissions,
-  removePermissions
+  handlePermissions,
+  clearError
 } from "../../../actions/drafts";
-import { getUsers } from "../../../actions/users";
-import CheckBox from "grommet/components/CheckBox";
 import AddIcon from "grommet/components/icons/base/Add";
+import Spinning from "grommet/components/icons/Spinning";
 
-import Autosuggest from "react-autosuggest";
 import DepositHeader from "./DepositHeader";
 import SectionHeader from "./SectionHeader";
-
-const renderSuggestion = suggestion => {
-  return (
-    <Menu responsive={true} inline={true} size="small" primary={false}>
-      <Anchor href="#" className="active">
-        {suggestion.email}
-      </Anchor>
-    </Menu>
-  );
-};
-
-const theme = {
-  input: {
-    width: 350,
-    padding: "10px 20px",
-    fontWeight: 300,
-    fontSize: 16,
-    borderTopLeftRadius: 4,
-    borderTopRightRadius: 4,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4
-  },
-  suggestionsContainer: {
-    display: "none"
-  },
-  suggestionsContainerOpen: {
-    display: "block",
-    position: "absolute",
-    width: 350,
-    border: "1px solid #aaa",
-    backgroundColor: "#fff",
-    fontWeight: 300,
-    fontSize: 16,
-    borderBottomLeftRadius: 4,
-    borderBottomRightRadius: 4,
-    zIndex: 2
-  },
-  suggestionsList: {
-    margin: 0,
-    padding: 0,
-    listStyleType: "none"
-  },
-  suggestion: {
-    cursor: "pointer",
-    padding: "10px 20px"
-  },
-  suggestionHighlighted: {
-    backgroundColor: "#ddd"
-  }
-};
 
 class DepositSettings extends React.Component {
   constructor() {
     super();
     this.state = {
-      value: "",
       suggestions: [],
-      selected: ""
+      type: "user",
+      inputValue: ""
     };
   }
 
   componentDidMount() {
-    this.props.getPermissions(this.props.draft_id);
-    this.props.getUsers();
+    this.props.getPermissions(this.props.match.params.draft_id);
   }
 
-  getSuggestions = value => {
-    const inputValue = value.trim().toLowerCase();
-    const inputLength = inputValue.length;
+  onSuggestionsFetchRequested = event => {
+    let value = event.target.value;
+    this.setState({
+      inputValue: value
+    });
 
-    return inputLength === 0
-      ? []
-      : this.props.users.filter(
-          item => item.email.toLowerCase().slice(0, inputLength) === inputValue
-        );
+    let url =
+      this.state.type === "user"
+        ? `/api/ldap/user/mail?query=${value}`
+        : `/api/ldap/egroup/mail?query=${value}&sf=mail`;
+    axios.get(url).then(({ data }) => {
+      this.setState({
+        suggestions: data
+      });
+    });
   };
 
-  getSuggestionValue = suggestion => {
-    this.setState({ selected: suggestion.email });
-    return suggestion.email;
+  handleChange = event => {
+    this.setState({
+      type: event.target.value
+    });
   };
 
-  onChange = (event, { newValue }) => this.setState({ value: newValue });
-
-  onSuggestionsFetchRequested = ({ value }) =>
-    this.setState({ suggestions: this.getSuggestions(value) });
-
-  onSuggestionsClearRequested = () => this.setState({ suggestions: [] });
+  onSuggestionSelect = selected => {
+    this.setState({
+      inputValue: selected.suggestion
+    });
+  };
 
   permissionExists(grouped, action) {
     let actionExists = _.filter(grouped, ["action", action]);
@@ -117,19 +82,79 @@ class DepositSettings extends React.Component {
       return permission.identity;
     });
 
-    const { value, suggestions } = this.state;
-    const inputProps = {
-      placeholder: "Type email to ADD access rights",
-      onChange: this.onChange,
-      value
-    };
+    let error = this.props.error ? this.props.error.message : null;
+    let owner = this.props.draft ? this.props.draft._deposit.owners[0] : null;
 
     return (
       <Box>
+        {error ? (
+          <Toast status="critical" onClose={() => this.props.clearError()}>
+            {error}
+          </Toast>
+        ) : null}
         <DepositHeader draftId={this.props.draft_id} />
         <SectionHeader label="Access" />
         <Box flex={true} align="center">
           <Box size="xxlarge">
+            <Box
+              margin={{ top: "small" }}
+              flex={true}
+              alignSelf="start"
+              direction="row"
+            >
+              <Box direction="row" align="start" pad="small">
+                <RadioButton
+                  id="user"
+                  name="user"
+                  label="User"
+                  value="user"
+                  checked={this.state.type === "user"}
+                  onChange={this.handleChange}
+                />
+                <RadioButton
+                  id="egroup"
+                  name="egroup"
+                  label="Egroup"
+                  value="egroup"
+                  checked={this.state.type === "egroup"}
+                  onChange={this.handleChange}
+                />
+              </Box>
+              <Box direction="row" flex={true} align="start">
+                <Box size="medium">
+                  <FormField>
+                    <TextInput
+                      placeHolder={`Type ${
+                        this.state.type
+                      } email to  ADD access rights`}
+                      value={this.state.inputValue}
+                      onDOMChange={this.onSuggestionsFetchRequested}
+                      onSelect={this.onSuggestionSelect}
+                      suggestions={this.state.suggestions}
+                    />
+                  </FormField>
+                </Box>
+                {this.props.loading ? (
+                  <Box pad="small">
+                    <Spinning />
+                  </Box>
+                ) : (
+                  <Button
+                    icon={<AddIcon />}
+                    size="small"
+                    onClick={() => {
+                      this.props.handlePermissions(
+                        this.props.draft_id,
+                        this.state.type,
+                        this.state.inputValue,
+                        "deposit-read",
+                        "add"
+                      );
+                    }}
+                  />
+                )}
+              </Box>
+            </Box>
             <Table>
               <thead>
                 <tr>
@@ -156,11 +181,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={true}
-                          onClick={() =>
-                            this.props.removePermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-read"
+                              "deposit-read",
+                              "remove"
                             )
                           }
                         />
@@ -168,11 +196,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={false}
-                          onClick={() =>
-                            this.props.addPermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-read"
+                              "deposit-read",
+                              "add"
                             )
                           }
                         />
@@ -183,11 +214,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={true}
-                          onClick={() =>
-                            this.props.removePermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-update"
+                              "deposit-update",
+                              "remove"
                             )
                           }
                         />
@@ -195,11 +229,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={false}
-                          onClick={() =>
-                            this.props.addPermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-update"
+                              "deposit-update",
+                              "add"
                             )
                           }
                         />
@@ -210,11 +247,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={true}
-                          onClick={() =>
-                            this.props.removePermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-admin"
+                              "deposit-admin",
+                              "remove"
                             )
                           }
                         />
@@ -222,11 +262,14 @@ class DepositSettings extends React.Component {
                         <CheckBox
                           toggle={true}
                           checked={false}
-                          onClick={() =>
-                            this.props.addPermissions(
+                          disabled={owner && owner === key}
+                          onChange={() =>
+                            this.props.handlePermissions(
                               this.props.draft_id,
+                              this.state.type,
                               key,
-                              "deposit-admin"
+                              "deposit-admin",
+                              "add"
                             )
                           }
                         />
@@ -234,42 +277,6 @@ class DepositSettings extends React.Component {
                     </td>
                   </TableRow>
                 ))}
-                <TableRow>
-                  <td style={{ padding: 0 }}>
-                    <Box
-                      margin={{ top: "small" }}
-                      flex={true}
-                      alignSelf="start"
-                      size="large"
-                      direction="row"
-                    >
-                      <Autosuggest
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={
-                          this.onSuggestionsFetchRequested
-                        }
-                        onSuggestionsClearRequested={
-                          this.onSuggestionsClearRequested
-                        }
-                        getSuggestionValue={this.getSuggestionValue}
-                        renderSuggestion={renderSuggestion}
-                        inputProps={inputProps}
-                        theme={theme}
-                      />
-                      <Button
-                        icon={<AddIcon />}
-                        onClick={() => {
-                          this.props.addPermissions(
-                            this.props.draft_id,
-                            this.state.selected,
-                            "deposit-read"
-                          );
-                        }}
-                      />
-                    </Box>
-                  </td>
-                  <td colSpan="3" />
-                </TableRow>
               </tbody>
             </Table>
           </Box>
@@ -280,31 +287,34 @@ class DepositSettings extends React.Component {
 }
 
 DepositSettings.propTypes = {
+  match: PropTypes.object,
+  error: PropTypes.object,
   getPermissions: PropTypes.func,
+  loading: PropTypes.bool,
+  clearError: PropTypes.func,
   draft_id: PropTypes.string,
+  draft: PropTypes.object,
   getUsers: PropTypes.func,
-  users: PropTypes.array,
   permissions: PropTypes.array,
-  addPermissions: PropTypes.func,
-  removePermissions: PropTypes.func
+  handlePermissions: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
     draft_id: state.drafts.getIn(["current_item", "id"]),
+    draft: state.drafts.getIn(["current_item", "data"]),
     permissions: state.drafts.getIn(["current_item", "permissions"]),
-    users: state.users.get("users")
+    error: state.drafts.getIn(["current_item", "error"]),
+    loading: state.drafts.getIn(["current_item", "loading"])
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     getPermissions: draft_id => dispatch(getPermissions(draft_id)),
-    removePermissions: (draft_id, email, action) =>
-      dispatch(removePermissions(draft_id, email, action)),
-    addPermissions: (draft_id, email, action) =>
-      dispatch(addPermissions(draft_id, email, action)),
-    getUsers: () => dispatch(getUsers())
+    handlePermissions: (draft_id, type, email, action, operation) =>
+      dispatch(handlePermissions(draft_id, type, email, action, operation)),
+    clearError: () => dispatch(clearError())
   };
 }
 

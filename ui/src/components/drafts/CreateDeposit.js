@@ -65,15 +65,6 @@ class CreateDeposit extends React.Component {
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (nextProps.match.params.draft_id) {
-      if (nextProps.match.params.draft_id !== nextProps.draft_id) {
-        // nextProps.getDraftById(nextProps.match.params.draft_id, true);
-      }
-    }
-    return true;
-  }
-
   _saveData() {
     let status = this.props.draft ? this.props.draft._deposit.status : null;
     if (this.props.match.params.schema_id)

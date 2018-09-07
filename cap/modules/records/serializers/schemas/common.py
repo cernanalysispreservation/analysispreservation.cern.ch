@@ -24,9 +24,7 @@
 
 """CAP Marshmallow Schemas."""
 
-from flask import current_app, has_request_context, url_for
 from marshmallow import Schema, ValidationError, fields, validates_schema
-from werkzeug.routing import BuildError
 
 from invenio_search import current_search
 from invenio_search.utils import schema_to_index
@@ -80,71 +78,6 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
     access = fields.Method('get_access', dump_only=True)
     links = fields.Raw()
     files = fields.Raw(dump_only=True)
-
-    def dump_links(self, obj):
-        """Dump links."""
-        links = obj.get('links', {})
-        m = obj.get('metadata', {})
-        _id = obj.get('pid', {}).pid_value
-
-        if has_request_context():
-            if is_deposit(m):
-                bucket_id = m.get('_buckets', {}).get('deposit')
-                recid = m.get('recid') if m.get('_deposit', {}).get('pid') \
-                    else None
-
-                # Constructing links
-                self_url = current_app.config[
-                    'DEPOSIT_RECORDS_API'].format(pid_value=_id)
-
-                links['self'] = self_url
-                # [TO FIX] create a coneverter to format `html` link
-                links['html'] = '/deposit/{}/'.format(_id)
-                links['discard'] = self_url + '/actions/discard'
-                links['edit'] = self_url + '/actions/edit'
-                links['publish'] = self_url + '/actions/publish'
-                links['files'] = self_url + '/files'
-
-            else:
-                bucket_id = m.get('_buckets', {}).get('record')
-                recid = m.get('recid')
-                # api_key = None
-                # html_key = 'html'
-
-                # Constructing links
-                self_url = current_app.config['SEARCH_UI_SEARCH_API'] + \
-                    '{pid_value}'.format(pid_value=_id)
-
-                links['self'] = self_url
-
-            if bucket_id:
-                try:
-                    links['bucket'] = url_for(
-                        'invenio_files_rest.bucket_api',
-                        bucket_id=bucket_id,
-                        _external=True,
-                    )
-                except BuildError:
-                    pass
-
-            # if recid:
-            #     try:
-            #         if api_key:
-            #             links[api_key] = url_for(
-            #                 'invenio_records_rest.recid_item',
-            #                 pid_value=recid,
-            #                 _external=True,
-            #             )
-            #         if html_key:
-            #             links[html_key] = \
-            #                 current_app.config['RECORDS_UI_ENDPOINT'].format(
-            #                 host=request.host,
-            #                 scheme=request.scheme,
-            #                 pid_value=recid,
-            #             )
-            #     except BuildError:
-            #         pass
-        return links
 
     def get_access(self, obj):
         """Returns access object."""
