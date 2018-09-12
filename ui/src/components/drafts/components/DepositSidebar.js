@@ -29,49 +29,26 @@ class DepositSidebar extends React.Component {
   render() {
     return (
       <Sidebar full={false} size="medium" colorIndex="light-2">
-        {this.props.draftId ? (
-          <Box flex={true}>
-            <SectionHeader
-              label="Files | Data | Source Code"
-              icon={
-                this.props.addAction ? (
-                  <Anchor
-                    onClick={this.props.toggleFilemanagerLayer}
-                    size="xsmall"
-                    icon={<AddIcon />}
-                  />
-                ) : null
-              }
-            />
-            <DepositFilesList
-              files={this.props.files || []}
-              draftId={this.props.draftId}
-            />
-          </Box>
-        ) : (
-          <Box pad="medium">
-            <Title>Preserve your analysis</Title>
-            <Paragraph>
-              Name it to distinguish it from your other drafts
-            </Paragraph>
-            <Form
-              schema={{ type: "string", title: "Analysis Name" }}
-              onSubmit={this._onSubmit.bind(
-                this,
-                this.props.match.params.schema_id
-              )}
-            >
-              <Box flex={true} margin={{ vertical: "medium" }}>
-                <Button
-                  label="Start Preserving"
-                  type="submit"
-                  primary={true}
-                  color="neutral-1"
+        <Box flex={true}>
+          <SectionHeader
+            label="Files | Data | Source Code"
+            icon={
+              this.props.addAction ? (
+                <Anchor
+                  onClick={this.props.toggleFilemanagerLayer}
+                  size="xsmall"
+                  disabled={this.props.draftId ? false : true}
+                  icon={<AddIcon />}
                 />
-              </Box>
-            </Form>
-          </Box>
-        )}
+              ) : null
+            }
+          />
+          <DepositFilesList
+            files={this.props.files || []}
+            draftId={this.props.draftId}
+          />
+        </Box>
+        )
       </Sidebar>
     );
   }

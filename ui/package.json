@@ -33,7 +33,7 @@
   "dependencies": {
     "grommet": "^1.0.0",
     "grommet-addons": "^0.6.0",
-    "lodash": "4.17.4",
+    "lodash": "4.17.5",
     "node-sass": "4.8.3",
     "object-assign": "4.1.0",
     "pretty-bytes": "^4.0.2",
