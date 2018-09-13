@@ -28,25 +28,23 @@
 from functools import partial
 
 from flask import current_app, g, request
-
-from cap.utils import obj_or_import_string
-from cap.modules.schemas.models import Schema
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 
-from .errors import DepositValidationError, WrongJSONSchemaError
-from .utils import discover_schema
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
+from cap.modules.schemas.permissions import SchemaReadActionNeed
+from cap.utils import obj_or_import_string
+
+from .errors import WrongJSONSchemaError
 
 DepositReadActionNeed = partial(ParameterizedActionNeed, 'deposit-read')
 """Action need for reading a record."""
 
-DepositAdminActionNeed = partial(ParameterizedActionNeed, 'deposit-admin')
-"""Action need for creating a record."""
-
 DepositUpdateActionNeed = partial(ParameterizedActionNeed, 'deposit-update')
 """Action need for updating a record."""
 
-DepositDeleteActionNeed = partial(ParameterizedActionNeed, 'deposit-delete')
-"""Action need for deleting a record."""
+DepositAdminActionNeed = partial(ParameterizedActionNeed, 'deposit-admin')
+"""Action need for administrating a record."""
 
 
 def deposit_read_need(record):
@@ -54,19 +52,29 @@ def deposit_read_need(record):
     return DepositReadActionNeed(str(record.id))
 
 
-def deposit_admin_need(record):
-    """Deposit admin action need."""
-    return DepositAdminActionNeed(str(record.id))
-
-
 def deposit_update_need(record):
     """Deposit update action need."""
     return DepositUpdateActionNeed(str(record.id))
 
 
-def deposit_delete_need(record):
-    """Deposit delete action need."""
-    return DepositDeleteActionNeed(str(record.id))
+def deposit_admin_need(record):
+    """Deposit admin action need."""
+    return DepositAdminActionNeed(str(record.id))
+
+
+def read_permission_factory(record):
+    """Deposit read permission factory."""
+    return Permission(deposit_read_need(record.id))
+
+
+def update_permission_factory(record):
+    """Deposit update permission factory."""
+    return Permission(deposit_update_need(record.id))
+
+
+def admin_permission_factory(record):
+    """Deposit admin permission factory."""
+    return Permission(deposit_admin_need(record.id))
 
 
 class DepositPermission(Permission):
@@ -78,106 +86,59 @@ class DepositPermission(Permission):
         "admin": deposit_admin_need,
     }
 
-    def __init__(self, record, action):
+    def __init__(self, deposit, action):
         """Constructor.
 
         Args:
             deposit: deposit to which access is requested.
         """
-        if action == 'create' and record == {}:
-            raise DepositValidationError('Empty deposit data.')
-
         _needs = set()
-        self.deposit = record
-        self.action = action
+        _needs.add(self.actions['admin'](deposit))
+
         if action in self.actions:
-            _needs.add(self.actions[action](record))
+            _needs.add(self.actions[action](deposit))
 
         self._needs = _needs
 
-        self._load_deposit_group_permissions()
-
         super(DepositPermission, self).__init__(*_needs)
 
-    def _load_deposit_group_permissions(self):
-        """Load deposit group permissions."""
-        _deposit_group = self._get_deposit_group_info()
 
-        if not _deposit_group:
-            raise WrongJSONSchemaError()
-
-        _permission_factory_imp = \
-            obj_or_import_string(_deposit_group)
-
-        if _permission_factory_imp:
-            for _need in _permission_factory_imp:
-                self._needs.add(_need)
-
-    def _get_deposit_group_info(self):
-        """Retrieve deposit group information for specific schema."""
-        self.deposit['$schema'] = discover_schema(self.deposit)
-
-        try:
-            schema = self.deposit.get("$schema", None) \
-                                 .split('/schemas/', 1)[1]
-        except (IndexError, AttributeError):
-            raise WrongJSONSchemaError()
-
-        obj = Schema.get_by_fullstring(schema)
-
-        _deposit_group = current_app.config.get(
-            'EXPERIMENT_PERMISSION', {})[obj.experiment]
-
-        return _deposit_group
-
-    def allows(self, identity):
-        """Whether the identity can access this permission.
-
-        :param identity: The identity
-        """
-        owners = self.deposit.get('_deposit', {}).get('owners', [])
-        superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
-        # Check if the user is superuser
-        for superuser_egroup in superuser_egroups:
-            if superuser_egroup in identity.provides:
-                return True
-        # Check if the user is the owner of the record
-        if identity.id in owners:
-            return True
-
-        return super(DepositPermission, self).allows(identity)
-
-    def can(self):
-        """Check if user can access deposit."""
-        owners = self.deposit.get('_deposit', {}).get('owners', [])
-        superuser_egroups = current_app.config.get('SUPERUSER_EGROUPS', [])
-        # Check if the user is superuser
-        for superuser_egroup in superuser_egroups:
-            if superuser_egroup in g.identity.provides:
-                return True
-        if g.identity.id in owners:
-            return True
-
-        return super(DepositPermission, self).can()
-
-
-class UpdateDepositPermission(DepositPermission):
-    """Deposit update permission."""
-
-    def __init__(self, record):
-        """Initialize state."""
-        super(UpdateDepositPermission, self).__init__(record, 'update')
-
-
-class CreateDepositPermission(DepositPermission):
-    """Deposit update permission."""
+class CreateDepositPermission(Permission):
+    """Deposit create permission."""
 
     def __init__(self, record):
         """Initialize state."""
         # Get payload and pass it as record to get the '$schema'
         record = request.get_json(force=True)
 
-        super(CreateDepositPermission, self).__init__(record, 'create')
+        _needs = set()
+        _needs.add(self._get_schema_needs(record))
+
+        self._needs = _needs
+
+        super(CreateDepositPermission, self).__init__(*_needs)
+
+    def _get_schema_needs(self, deposit):
+        if '$schema' in deposit:
+            try:
+                schema = Schema.get_by_fullstring(deposit['$schema'])
+            except SchemaDoesNotExist:
+                raise WrongJSONSchemaError('Schema {} doesnt exist.'.
+                                           format(deposit['$schema']))
+
+        elif '$ana_type' in deposit:
+            try:
+                schema = Schema.get_latest('deposits/records/{}'.format(
+                    deposit['$ana_type']))
+            except SchemaDoesNotExist:
+                raise WrongJSONSchemaError('Schema with name {} doesnt exist.'.
+                                           format(deposit['$ana_type']))
+
+        else:
+            raise WrongJSONSchemaError(
+                'You have to specify either $schema or $ana_type')
+
+        return SchemaReadActionNeed(schema.id)
 
 
 class ReadDepositPermission(DepositPermission):
@@ -188,29 +149,17 @@ class ReadDepositPermission(DepositPermission):
         super(ReadDepositPermission, self).__init__(record, 'read')
 
 
-class DeleteDepositPermission(DepositPermission):
-    """Deposit delete permission."""
+class UpdateDepositPermission(DepositPermission):
+    """Deposit update permission."""
 
     def __init__(self, record):
         """Initialize state."""
-        super(DeleteDepositPermission, self).__init__(record, 'delete')
+        super(UpdateDepositPermission, self).__init__(record, 'update')
 
 
-def read_permission_factory(record):
-    """Deposit read permission factory."""
-    return Permission(deposit_read_need(record.id))
+class AdminDepositPermission(DepositPermission):
+    """Deposit admin permission."""
 
-
-def admin_permission_factory(record):
-    """Deposit admin permission factory."""
-    return Permission(deposit_admin_need(record.id))
-
-
-def update_permission_factory(record):
-    """Deposit update permission factory."""
-    return Permission(deposit_update_need(record.id))
-
-
-def delete_permission_factory(record):
-    """Deposit delete permission factory."""
-    return Permission(deposit_delete_need(record.id))
+    def __init__(self, record):
+        """Initialize state."""
+        super(AdminDepositPermission, self).__init__(record, 'admin')

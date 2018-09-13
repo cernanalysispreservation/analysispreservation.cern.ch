@@ -38,12 +38,13 @@ from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_deposit.api import Deposit, index, preserve
-from invenio_deposit.utils import mark_as_action
+from invenio_deposit.scopes import write_scope
+from invenio_deposit.utils import check_oauth2_scope, mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
-# from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
+from invenio_records_rest.views import need_record_permission
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
@@ -54,8 +55,8 @@ from cap.modules.schemas.models import Schema
 from .errors import DepositValidationError, UpdateDepositPermissionsError
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
-from .permissions import (DepositAdminActionNeed, DepositReadActionNeed,
-                          DepositUpdateActionNeed)
+from .permissions import (AdminDepositPermission, DepositAdminActionNeed,
+                          DepositReadActionNeed, DepositUpdateActionNeed)
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
