@@ -24,8 +24,9 @@ const CustomTile = withRouter(
   ({ history, props = props, group = group, name = name, count = count }) => (
     <Tile key={group} colorIndex="light-2">
       <Box size="medium" direction="column" wrap={true} flex={true}>
-        <Header>
+        <Header size="small">
           <Box
+            alignSelf="start"
             colorIndex="grey-2"
             flex={true}
             direction="row"
