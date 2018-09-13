@@ -98,9 +98,6 @@ class Schema(db.Model):
             aliases = ['records']
         return aliases
 
-    def is_record(self):
-        return self.name.startswith('records')
-
     def add_read_access(self, role):
         db.session.add(
             ActionRoles.allow(

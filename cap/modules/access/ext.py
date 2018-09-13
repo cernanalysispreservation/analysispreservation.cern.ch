@@ -52,53 +52,6 @@ class CAPAccess(object):
         app.extensions['cap-access'] = self
 
 
-def authenticated_query(query, **kwargs):
-    """Enhance query with user authentication rules."""
-    collaborations_dictionary = {
-        'ALICE': [],
-        'ATLAS': [
-            KeywordOp(
-                Keyword('collections'),
-                DoubleQuotedValue('atlasworkflows'))
-        ],
-        'CMS': [
-            KeywordOp(
-                Keyword('collections'),
-                DoubleQuotedValue('cmsanalysis')),
-            KeywordOp(
-                Keyword('collections'),
-                DoubleQuotedValue('cmsquestionnaire'))
-        ],
-        'LHCb': [
-            KeywordOp(
-                Keyword('collections'),
-                DoubleQuotedValue('lhcbanalysis'))
-        ]
-    }
-
-    if 'identity.provides' in session:
-        ast_expressions = []
-        for need in session['identity.provides']:
-            if need.method == 'role':
-                if need.value in collaborations_dictionary:
-                    for item in collaborations_dictionary[need.value]:
-                        ast_expressions.append(item)
-
-        if len(ast_expressions) >= 1:
-            query.query = AndOp(
-                generate_query_ast(ast_expressions, 0, len(ast_expressions)),
-                query.query
-            )
-            return
-
-    query.query = AndOp(
-        query.query,
-        KeywordOp(
-            Keyword('collections'),
-            DoubleQuotedValue('public')),
-    )
-
-
 def generate_query_ast(items, begin, end):
     """Generate the AST of an Or query with the list of items."""
     if end - begin == 1:

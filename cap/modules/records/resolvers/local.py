@@ -27,9 +27,6 @@
 from __future__ import absolute_import, print_function
 
 import jsonresolver
-import pkg_resources
-import simplejson as json
-
 from cap.config import JSONSCHEMAS_HOST
 from cap.modules.schemas.models import Schema
 

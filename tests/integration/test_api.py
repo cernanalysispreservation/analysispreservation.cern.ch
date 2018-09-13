@@ -30,9 +30,8 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app
+from invenio_search import current_search
 from mock import patch
-
-from conftest import get_basic_json_serialized_deposit
 
 
 #############
@@ -50,9 +49,9 @@ def test_example(app, users, auth_headers_for_user, json_headers):
         assert resp.data == 'Pong'
 
 
-# # #################
-# # # api/deposits/
-# # #################
+######################
+# api/deposits/  [GET]
+######################
 def test_get_deposits_when_user_not_logged_in_returns_403(app, users):
     with app.test_client() as client:
         resp = client.get('/deposits/')
@@ -65,12 +64,10 @@ def test_get_deposits_when_superuser_returns_all_deposits(app, users,
                                                           create_deposit):
     with app.test_client() as client:
         deposits = [
-            create_deposit(users['cms_user'], 'cms-analysis-v0.0.1'),
-            create_deposit(users['cms_user2'], 'cms-questionnaire-v0.0.1'),
-            create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
-            create_deposit(users['alice_user'], 'alice-analysis-v0.0.1'),
-            create_deposit(users['atlas_user'], 'atlas-analysis-v0.0.1'),
-            create_deposit(users['atlas_user2'], 'atlas-workflows-v0.0.1')
+            create_deposit(users['cms_user'], 'cms-analysis-v1.0.0'),
+            create_deposit(users['lhcb_user'], 'lhcb-v0.2.0'),
+            create_deposit(users['alice_user'], 'alice-analysis-v1.0.1'),
+            create_deposit(users['atlas_user'], 'atlas-analysis-v0.0.3'),
         ]
 
         resp = client.get('/deposits/', headers=auth_headers_for_superuser)
@@ -82,7 +79,6 @@ def test_get_deposits_when_superuser_returns_all_deposits(app, users,
 
 def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
                                                                  auth_headers_for_user,
-                                                                 json_headers,
                                                                  create_deposit
                                                                  ):
     with app.test_client() as client:
@@ -94,7 +90,7 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
         create_deposit(users['cms_user2'], 'cms-analysis-v0.0.1'),
         create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
         create_deposit(users['alice_user'], 'alice-analysis-v0.0.1'),
-        headers = auth_headers_for_user(users['cms_user']) + json_headers
+        headers = auth_headers_for_user(users['cms_user'])
 
         resp = client.get('/deposits/', headers=headers)
 
@@ -106,32 +102,84 @@ def test_get_deposits_when_normal_user_returns_only_his_deposits(app, db, users,
             assert x['metadata']['_deposit']['id'] in user_deposits_ids
 
 
+def test_get_deposits_user_see_deposits_that_has_read_access_to(app, db, users,
+                                                                auth_headers_for_user,
+                                                                json_headers,
+                                                                create_deposit
+                                                                ):
+    user = users['cms_user']
+    other_user = users['cms_user2']
+    with app.test_client() as client:
+        deposits = [
+            create_deposit(user, 'cms-analysis-v0.0.1'),
+            create_deposit(user, 'cms-questionnaire-v0.0.1'),
+        ]
+
+        # other user cant see any deposits
+        resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
+        hits = json.loads(resp.data)['hits']['hits']
+        assert len(hits) == 0
+
+        permissions = [{
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-read'
+        }]
+
+        for deposit in deposits:
+            resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                               headers=auth_headers_for_user(user) + json_headers,
+                               data=json.dumps(permissions))
+
+
+            assert resp.status_code == 201
+
+        # sometimes es nees refresh
+        current_search.flush_and_refresh('deposits')
+        resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
+        hits = json.loads(resp.data)['hits']['hits']
+        assert len(hits) == 2
+
+
 def test_get_deposits_with_basic_json_serializer_returns_correct_fields_for_all_deposits(app,
                                                                                          users,
+                                                                                         jsonschemas_host,
                                                                                          auth_headers_for_superuser,
                                                                                          create_deposit):
-    deposits = [
-        create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
-        create_deposit(users['superuser'], 'cms-analysis-v0.0.1'),
-    ]
+    deposit = create_deposit(users['superuser'], 'cms-analysis-v0.0.1', {
+        '$schema': 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(jsonschemas_host),
+        'basic_info': {
+            'analysis_number': 'dream_team',
+            'people_info': [{}]
+        }
+    })
+    metadata = deposit.get_record_metadata()
 
     with app.test_client() as client:
         resp = client.get('/deposits/',
                           headers=[('Accept', 'application/basic+json')] +
                                   auth_headers_for_superuser)
 
-        hits = json.loads(resp.data)['hits']['hits']
+        res = json.loads(resp.data)['hits']['hits'][0]
 
         assert resp.status_code == 200
-        assert len(hits) == len(deposits)
-        for deposit in deposits:
-            assert get_basic_json_serialized_deposit(
-                deposit, 'cms-analysis-v0.0.1') in hits
+        assert res == {
+            'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'metadata': {
+                '$schema': deposit['$schema'],
+                'basic_info': {
+                    'people_info': [{}],
+                    'analysis_number': 'dream_team'
+                }
+            },
+            'pid': deposit['_deposit']['id'],
+            'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        }
 
-
-# # #######################
-# # # api/deposits/{pid}
-# # #######################
+###########################
+# api/deposits/{pid}  [GET]
+###########################
 def test_get_deposits_with_given_id_superuser_can_see_deposits_created_by_others(app,
                                                                                  users,
                                                                                  auth_headers_for_superuser,
@@ -148,14 +196,13 @@ def test_get_deposits_with_given_id_superuser_can_see_deposits_created_by_others
 def test_get_deposits_with_given_id_creator_can_see_his_deposit(app,
                                                                 users,
                                                                 auth_headers_for_user,
-                                                                create_deposit,
-                                                                json_headers):
-    deposit = create_deposit(users['alice_user'], 'alice-analysis-v0.0.1')
-    headers = auth_headers_for_user(users['alice_user']) + json_headers
+                                                                create_deposit):
+    user = users['alice_user']
+    deposit = create_deposit(user, 'alice-analysis-v0.0.1')
 
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=headers)
+                          headers=auth_headers_for_user(user))
 
         assert resp.status_code == 200
 
@@ -163,21 +210,54 @@ def test_get_deposits_with_given_id_creator_can_see_his_deposit(app,
 def test_get_deposits_with_given_id_other_member_of_collaboration_cant_see_deposit(app,
                                                                                    users,
                                                                                    auth_headers_for_user,
-                                                                                   create_deposit,
-                                                                                   json_headers):
-    deposit = create_deposit(users['alice_user'], 'alice-analysis-v0.0.1')
-    headers = auth_headers_for_user(users['alice_user2']) + json_headers
+                                                                                   create_deposit):
+    user, other_user = users['alice_user'], users['alice_user2'] 
+    deposit = create_deposit(user, 'alice-analysis-v0.0.1')
 
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=headers)
+                          headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
+        
+def test_get_deposits_other_user_with_read_acces_can_see_deposit(app,
+                                                                 users,
+                                                                 auth_headers_for_user,
+                                                                 json_headers,
+                                                                 create_deposit):
+    user, other_user = users['alice_user'], users['alice_user2'] 
+    deposit = create_deposit(user, 'alice-analysis-v0.0.1')
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }] 
+
+    with app.test_client() as client:
+        client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                    headers=auth_headers_for_user(user) + json_headers, data=json.dumps(permissions))
+
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                          headers=auth_headers_for_user(other_user))
+
+        assert resp.status_code == 200
 
 
 def test_get_deposits_with_given_id_with_basic_json_serializer_returns_all_correct_fields(app,
+                                                                                          users,
+                                                                                          jsonschemas_host,
                                                                                           auth_headers_for_superuser,
-                                                                                          deposit):
+                                                                                          create_deposit):
+    deposit = create_deposit(users['superuser'], 'cms-analysis-v0.0.1', {
+        '$schema': 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(jsonschemas_host),
+        'basic_info': {
+            'analysis_number': 'dream_team',
+            'people_info': [{}]
+        }
+    })
+    metadata = deposit.get_record_metadata()      
+
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/basic+json')] +
@@ -185,14 +265,24 @@ def test_get_deposits_with_given_id_with_basic_json_serializer_returns_all_corre
 
         res = json.loads(resp.data)
 
-        assert res == get_basic_json_serialized_deposit(
-            deposit, 'cms-analysis-v0.0.1')
+        assert resp.status_code == 200
+        assert res == {
+            'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+            'metadata': {
+                '$schema': deposit['$schema'],
+                'basic_info': {
+                    'people_info': [{}],
+                    'analysis_number': 'dream_team'
+                }
+            },
+            'pid': deposit['_deposit']['id'],
+            'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        }                       
 
 
-def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_all_correct_fields(app,
-                                                                                                auth_headers_for_superuser,
-                                                                                                deposit,
-                                                                                                permissions_serialized_deposit):
+def test_get_deposits_with_given_id_with_permissions_json_serializer_returns_correct_data(app,
+                                                                                          auth_headers_for_superuser,
+                                                                                          deposit):
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                           headers=[('Accept', 'application/permissions+json')] +
@@ -261,8 +351,9 @@ def test_delete_deposit_when_user_is_owner_can_delete_his_deposit(app,
                                                                   create_deposit,
                                                                   json_headers,
                                                                   auth_headers_for_user):
-    deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
-    headers = auth_headers_for_user(users['lhcb_user']) + json_headers
+    owner = users['lhcb_user']
+    deposit = create_deposit(owner, 'lhcb-v0.0.1')
+    headers = auth_headers_for_user(owner) + json_headers
 
     with app.test_client() as client:
         resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),

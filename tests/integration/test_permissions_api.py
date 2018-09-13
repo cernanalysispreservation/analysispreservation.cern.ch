@@ -347,7 +347,6 @@ def test_permissions_remove_egroup_permissions(app,
                                                users,
                                                auth_headers_for_user,
                                                create_deposit,
-                                               prepare_user_permissions_for_request,
                                                json_headers):
     deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
     cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers

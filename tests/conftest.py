@@ -34,18 +34,14 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import current_app
-from werkzeug.local import LocalProxy
-
 import pytest
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.reana.models import ReanaJob
-from cap.modules.schemas.models import Schema
 from elasticsearch.exceptions import RequestError
+from flask import current_app
 from flask_celeryext import FlaskCeleryExt
 from flask_security import login_user
 from invenio_access.models import ActionUsers
 from invenio_access.permissions import superuser_access
+from invenio_accounts.models import Role
 from invenio_accounts.testutils import create_test_user
 from invenio_app.factory import create_api
 from invenio_db import db as db_
@@ -58,6 +54,13 @@ from invenio_search import current_search, current_search_client
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 from sqlalchemy_utils.functions import create_database, database_exists
+from werkzeug.local import LocalProxy
+
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.reana.models import ReanaJob
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
+from cap.modules.schemas.utils import add_or_update_schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -96,25 +99,6 @@ def default_config():
     )
 
 
-@pytest.fixture()
-def jsonschemas_host():
-    return current_app.config.get('JSONSCHEMAS_HOST')
-
-
-@pytest.fixture()
-def schema(db, es):
-    schema = Schema(
-        name='deposits/records/test-schema',
-        full_name='Test Schema',
-        json=json.dumps({
-            'title': 'string'
-        }),
-        major=1
-    )
-    db.session.add(schema)
-    db.session.commit()
-
-    yield schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -127,7 +111,7 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.yield_fixture
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -138,17 +122,17 @@ def db(app):
     db_.drop_all()
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.yield_fixture
 def es(app):
     """Provide elasticsearch access."""
-    try:
-        list(current_search.create())
-    except RequestError:
-        list(current_search.delete(ignore=[400, 404]))
-        list(current_search.create())
+    list(current_search.delete(ignore=[400, 404]))
+    current_search_client.indices.delete(index='*')
+    list(current_search.create())
     current_search_client.indices.refresh()
-    yield current_search_client
-    list(current_search.delete(ignore=[404]))
+    try:
+        yield current_search_client
+    finally:
+        current_search_client.indices.delete(index='*')
 
 
 def create_user_with_role(username, rolename):
@@ -175,8 +159,6 @@ def users(app, db):
                                           'cms-members@cern.ch'),
         'cms_user2': create_user_with_role('cms_user2@cern.ch',
                                            'cms-members@cern.ch'),
-        'cms_user3': create_user_with_role('cms_user3@cern.ch',
-                                           'cms-members@cern.ch'),
         'alice_user': create_user_with_role('alice_user@cern.ch',
                                             'alice-member@cern.ch'),
         'alice_user2': create_user_with_role('alice_user2@cern.ch',
@@ -196,6 +178,41 @@ def users(app, db):
     db.session.commit()
 
     return users
+
+
+@pytest.fixture
+def jsonschemas_host():
+    return current_app.config.get('JSONSCHEMAS_HOST')
+
+
+@pytest.fixture
+def create_schema(db, es):
+    """Returns function to add a schema to db."""
+
+    def _add_schema(schema, roles=None):
+        """
+        Add new schema into db
+        """
+        try:
+            schema = Schema.get_by_fullstring(schema)
+        except SchemaDoesNotExist:
+            schema = Schema(
+                fullstring=schema,
+                json=json.dumps({
+                    'title': 'string'
+                })
+            )
+            db.session.add(schema)
+            db.session.commit()
+
+        if roles:
+            roles = Role.query.filter(Role.name.in_(roles)).all()
+            for role in roles:
+                schema.add_read_access(role)
+
+        return schema
+
+    yield _add_schema
 
 
 @pytest.fixture
@@ -249,7 +266,7 @@ def auth_headers_for_user(app, db, es):
             auth_header=[
                 ('Authorization', 'Bearer {0}'.format(token_.access_token)),
             ]
-        ))
+        )) 
 
     return _write_token
 
@@ -279,148 +296,41 @@ def location(db):
     shutil.rmtree(tmppath)
 
 
-def minimal_deposits_metadata(schema_name):
-    """Returns minimal metadata for each type of schema."""
-    schema_host = jsonschemas_host()
-    schema_name_to_metadata = {
-        'cms-analysis-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(schema_host),
-            "_access": {
-                "deposit-admin": {
-                    "roles": [],
-                    "users": []
-                },
-                "deposit-read": {
-                    "roles": [],
-                    "users": [
-                        2
-                    ]
-                },
-                "deposit-update": {
-                    "roles": [],
-                    "users": [
-                        1
-                    ]
-                }
-            },
-            'basic_info': {
-                'analysis_number': 'dream_team',
-                'people_info': [
-                    {}
-                ]
-            }
-        },
-        'cms-questionnaire-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/cms-questionnaire-v0.0.1.json'.format(schema_host),
-        },
-        'lhcb-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/lhcb-v0.0.1.json'.format(schema_host),
-        },
-        'alice-analysis-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/alice-analysis-v0.0.1.json'.format(schema_host),
-        },
-        'atlas-analysis-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/atlas-analysis-v0.0.1.json'.format(schema_host),
-        },
-        'atlas-workflows-v0.0.1': {
-            '$schema': 'https://{}/schemas/deposits/records/atlas-workflows-v0.0.1.json'.format(schema_host),
-            'workflows': [{'analysis_title': 'test_workflow'}]
-        },
-        'test-schema-v1.0.0': {
-            '$schema': 'https://{}/schemas/deposits/records/test-schema-v1.0.0.json'.format(schema_host),
-            "title": "testing additional properties"
-        }
-    }
-
-    return schema_name_to_metadata[schema_name]
-
 
 @pytest.fixture
-def create_deposit(app, db, es, location):
+def create_deposit(app, db, es, location, jsonschemas_host,
+                   create_schema):
     """Returns function to create a new deposit."""
+    minimal_metadata = lambda host,schema: {
+        '$schema': 'https://{}/schemas/{}.json'.format(host, schema)
+    }
+
     with db_.session.begin_nested():
 
-        def _create_deposit(user, schema):
+        def _create_deposit(user, schema_fullstring, metadata=None):
             """
             Create a new deposit for given user and schema name
             e.g cms-analysis-v0.0.1,
             with minimal metadata defined for this schema type.
             """
             with app.test_request_context():
-                metadata = minimal_deposits_metadata(schema)
+                # create schema for record
+                create_schema('records/{}'.format(schema_fullstring))
+
+                # create schema for deposit
+                schema = create_schema('deposits/records/{}'.format(schema_fullstring))
+                metadata = metadata or minimal_metadata(jsonschemas_host,
+                                                        'deposits/records/{}'.format(schema_fullstring))
                 login_user(user)
                 id_ = uuid4()
                 deposit_minter(id_, metadata)
                 deposit = Deposit.create(metadata, id_=id_)
 
-            current_search.flush_and_refresh('deposits-records-{}'.format(schema))
+            current_search.flush_and_refresh(schema.index_name)
 
             return deposit
 
     yield _create_deposit
-
-
-@pytest.fixture(scope='function')
-def create_owner_permissions():
-    """Returns function to create deposit owner permissions."""
-
-    def _create_owner_permissions(user):
-        """
-        Create deposit owner permissions List for given user.
-        """
-        owner_permissions = [
-            {
-                "action": "deposit-admin",
-                "identity": user.email,
-                "type": "user"
-            },
-            {
-                "action": "deposit-update",
-                "identity": user.email,
-                "type": "user"
-            },
-            {
-                "action": "deposit-read",
-                "identity": user.email,
-                "type": "user"
-            }
-        ]
-
-        return owner_permissions
-
-    yield _create_owner_permissions
-
-
-@pytest.fixture(scope='function')
-def prepare_user_permissions_for_request():
-    """Returns function to create deposit owner permissions."""
-
-    def _prepare_user_permissions_for_request(permissions):
-        """
-        Create deposit owner permissions List for given user.
-        """
-        data = {"permissions": []}
-        for permission in permissions:
-            email = permission[0]
-            _ops = permission[1]
-
-            obj = {
-                "identity": email,
-                "type": "user",
-                "permissions": []
-            }
-
-            for op in _ops:
-                obj["permissions"].append({
-                    "op": op[0],
-                    "action": op[1]
-                })
-
-            data["permissions"].append(obj)
-
-        return data
-
-    yield _prepare_user_permissions_for_request
 
 
 def bearer_auth(token):
@@ -438,56 +348,6 @@ def deposit(users, create_deposit):
 @pytest.fixture
 def record_metadata(deposit):
     return deposit.get_record_metadata()
-
-
-@pytest.fixture()
-def permissions_serialized_deposit(users):
-    deposit = {
-        "permissions": {
-            "deposit-admin": {
-                "roles": [],
-                "users": []
-            },
-            "deposit-read": {
-                "roles": [],
-                "users": [
-                    users['cms_user2'].email
-                ]
-            },
-            "deposit-update": {
-                "roles": [],
-                "users": [
-                    users['cms_user'].email
-                ]
-            }
-        }
-    }
-
-    return deposit
-
-
-def get_basic_json_serialized_deposit(deposit, schema):
-    date_format = '%Y-%m-%dT%H:%M:%S.%f+00:00'
-    pid = deposit['_deposit']['id']
-    metadata = deposit.get_record_metadata()
-    schema_host = jsonschemas_host()
-
-    schema_to_serialized_deposit = {
-        'cms-analysis-v0.0.1': {
-            'created': metadata.created.strftime(date_format),
-            'metadata': {
-                '$schema': u'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(schema_host),
-                'basic_info': {
-                    'people_info': [{}],
-                    'analysis_number': 'dream_team'
-                }
-            },
-            'pid': pid,
-            'updated': metadata.updated.strftime(date_format),
-        }
-    }
-
-    return schema_to_serialized_deposit[schema]
 
 
 @pytest.fixture

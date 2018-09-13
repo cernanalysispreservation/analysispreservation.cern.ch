@@ -40,6 +40,12 @@ class WrongJSONSchemaError(RESTValidationError):
 
     description = "The provided JSON schema or 'ana_type' field doesn't exist"
 
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(WrongJSONSchemaError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+
 
 class UpdateDepositPermissionsError(RESTValidationError):
     """Exception during updating deposit's permissions."""
@@ -51,6 +57,7 @@ class UpdateDepositPermissionsError(RESTValidationError):
     def __init__(self, description, **kwargs):
         """Initialize exception."""
         super(UpdateDepositPermissionsError, self).__init__(**kwargs)
+
         self.description = description or self.description
 
 
@@ -64,4 +71,5 @@ class DepositValidationError(RESTValidationError):
     def __init__(self, description, **kwargs):
         """Initialize exception."""
         super(DepositValidationError, self).__init__(**kwargs)
+
         self.description = description or self.description

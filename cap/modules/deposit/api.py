@@ -343,14 +343,8 @@ class CAPDeposit(Deposit):
         return filename
 
     def _set_experiment(self):
-        schemas = Schema.get_schemas()
-
-        schema = (schema for schema in schemas if self.schema == schema)
-
-        experiment = Schema.get_by_fullstring(
-            schema.next()).experiment
-
-        self['_experiment'] = experiment
+        schema = Schema.get_by_fullstring(self['$schema'])
+        self['_experiment'] = schema.experiment or 'None'
         self.commit()
 
     def _create_buckets(self):
@@ -391,14 +385,10 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Schema not specified.')
 
         try:
-            schema = re.search('schemas/(.*)', schema_fullstring).group(1)
+            Schema.get_by_fullstring(schema_fullstring)
         except AttributeError:
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema_fullstring))
-
-        if schema not in Schema.get_schemas():
-            raise DepositValidationError('Schema {} is not a valid option.'
-                                         .format(schema))
 
 
 @shared_task(max_retries=5)

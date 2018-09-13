@@ -442,11 +442,6 @@ SEARCH_ELASTIC_HOSTS = [
     )
 ]
 
-#: Search query enhancers
-SEARCH_QUERY_ENHANCERS = [
-    'cap.modules.access.ext:authenticated_query'
-]
-
 # Admin
 # ========
 ADMIN_PERMISSION_FACTORY =  \
@@ -495,6 +490,10 @@ JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
 # directories with jsonschemas
 JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
 JSONSCHEMAS_RECORDS_DIR = 'records/'
+
+# WARNING: Do not share the secret key - especially do not commit it to
+# version control.
+SECRET_KEY = "changeme"
 
 # Ana's database
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
