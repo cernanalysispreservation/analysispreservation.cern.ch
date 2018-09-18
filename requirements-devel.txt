@@ -1,4 +1,3 @@
-wdb
 ipdb
 flower
 flask-shell-ipython
