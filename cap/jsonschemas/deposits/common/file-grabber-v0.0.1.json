@@ -1,19 +1,24 @@
 {
-   "type": "object",
-   "x-cap-file": {
-      "fetch_from": "/url",
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "x-cap-file": {
+      "fetch_from": "/url", 
       "file_key": "/key"
-   },
-   "properties": {
+    }, 
+    "type": "object", 
+    "properties": {
       "url": {
-         "type": "string",
-         "pattern": "^(http|https|root)://"
-      },
-      "key": {
-         "type": "string"
-      },
+        "pattern": "^(http|https|root)://", 
+        "type": "string"
+      }, 
       "version_id": {
-         "type": "string"
+        "type": "string"
+      }, 
+      "key": {
+        "type": "string"
       }
-   }  
+    }
+  }
 }

@@ -112,7 +112,7 @@ class RecordPermission(DynamicPermission):
         except (IndexError, AttributeError):
             return None
 
-        obj = Schema.get_by_fullstring(schema)
+        obj = Schema.get_by_fullpath(schema)
 
         _record_group = current_app.config.get(
             'EXPERIMENT_PERMISSION', {})[obj.experiment]

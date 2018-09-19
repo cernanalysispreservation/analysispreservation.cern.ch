@@ -1,35 +1,40 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Internal Publication",
-  "description": "Add publications",
-  "type": "object",
-  "properties": {
-    "persistent_identifiers": {
-      "title": "Identifiers",
-      "type": "array",
-      "items": {
+  "fullname": "Internal Publication", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Add publications", 
+    "properties": {
+      "journal_title": {
+        "type": "string", 
+        "title": "Journal Title"
+      }, 
+      "persistent_identifiers": {
+        "items": {
           "type": "string"
+        }, 
+        "type": "array", 
+        "title": "Identifiers"
+      }, 
+      "journal_volume": {
+        "type": "integer", 
+        "title": "Journal Volume"
+      }, 
+      "journal_year": {
+        "type": "integer", 
+        "title": "Journal Year"
+      }, 
+      "journal_issue": {
+        "type": "integer", 
+        "title": "Journal Issue"
+      }, 
+      "journal_page": {
+        "type": "integer", 
+        "title": "Journal Page"
       }
-    },
-    "journal_title": {
-      "title": "Journal Title",
-      "type": "string"
-    },
-    "journal_year": {
-      "title": "Journal Year",
-      "type": "integer"
-    },
-    "journal_volume": {
-      "title": "Journal Volume",
-      "type": "integer"
-    },
-    "journal_issue": {
-      "title": "Journal Issue",
-      "type": "integer"
-    },
-    "journal_page": {
-      "title": "Journal Page",
-      "type": "integer"
-    }
+    }, 
+    "title": "Internal Publication"
   }
 }

@@ -1,52 +1,56 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
+  "fullname": null, 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
     "properties": {
-        "type": {
-            "title": "Type",
-            "type": "string"
-        },
-        "samples": {
-            "title": "Samples",
-            "type": "array",
-            "description": "Provide all necessary samples from DAS",
-            "items": {
-                "type": "string"
+      "control_regions": {
+        "items": {
+          "type": "object", 
+          "properties": {
+            "veto": {
+              "items": {
+                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              }, 
+              "type": "array", 
+              "title": "Vetos"
+            }, 
+            "physics_objects": {
+              "items": {
+                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              }, 
+              "type": "array", 
+              "title": "Physics Objects"
             }
-        },
-        "method": {
-            "title": "Estimation Method",
-            "type": "string",
-            "enum": [
-                "directly_from_mc_simulation",
-                "shape_from_mc_simulation_and_normalization_from_control_regions",
-                "shape_and_normalization_from_control_regions"
-            ]
-        },
-        "control_regions": {
-            "title": "Control Regions",
-            "type": "array",
-            "items": {
-                "title": "Event Selection",
-                "type": "object",
-                "properties": {
-                    "physics_objects": {
-                        "title": "Physics Objects",
-                        "type": "array",
-                        "items": {
-                            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-                        }
-                    },
-                    "veto": {
-                        "title": "Vetos",
-                        "type": "array",
-                        "items": {
-                            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-                        }
-                    }
-                }
-            }
-        }
-
+          }, 
+          "title": "Event Selection"
+        }, 
+        "type": "array", 
+        "title": "Control Regions"
+      }, 
+      "type": {
+        "type": "string", 
+        "title": "Type"
+      }, 
+      "method": {
+        "enum": [
+          "directly_from_mc_simulation", 
+          "shape_from_mc_simulation_and_normalization_from_control_regions", 
+          "shape_and_normalization_from_control_regions"
+        ], 
+        "type": "string", 
+        "title": "Estimation Method"
+      }, 
+      "samples": {
+        "items": {
+          "type": "string"
+        }, 
+        "type": "array", 
+        "description": "Provide all necessary samples from DAS", 
+        "title": "Samples"
+      }
     }
+  }
 }

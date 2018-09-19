@@ -1,89 +1,69 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "description": "Describe information needed for deposit module.",
-  "title": "Test schema.",
-  "additionalProperties":false,
-  "type": "object",
-  "properties": {
-    "_deposit": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
-    },
-    "_buckets": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-    },
-    "_files": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
-    },
-    "_access": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
-    },
-    "_experiment": {
-      "type": "string"
-    },
-    "$ana_type": {
-      "type": "string"
-    },
-    "$schema": {
-      "type": "string"
-    },
-    "general_title": {
-      "type": "string"
-    },
-    "basic_object": {
-      "description": "Object",
-      "additionalProperties": false,
-      "properties": {
-        "simple_string": {
-          "title": "Simple string",
-          "type": "string"
-        },
-        "enum_of_strings": {
-          "title": "Enum of strings",
-          "type": "string",
-          "enum": [
-            "1",
-            "2",
-            "3",
-            "4"
-          ]
-        },
-        "array_of_strings": {
-          "title": "Array of strings",
-          "type": "array",
-          "items": {
-            "type": "string"
+  "fullname": "Test schema.",
+  "experiment": "CMS",
+  "partial": true,
+  "jsonschema": {
+    "description": "Describe information needed for deposit module.",
+    "title": "Test schema.",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "basic_object": {
+        "additionalProperties": false,
+        "title": "Basic Object with multiple types",
+        "type": "object",
+        "description": "Object",
+        "properties": {
+          "select_option": {
+            "enum": ["0", "1", "2", "3"],
+            "type": "select",
+            "title": "Select"
+          },
+          "_buckets": {
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+          }, 
+          "array_of_strings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Array of strings"
+          },
+          "simple_string": {
+            "type": "string",
+            "title": "Simple string"
+          },
+          "enum_of_strings": {
+            "enum": ["1", "2", "3", "4"],
+            "type": "string",
+            "title": "Enum of strings"
           }
-        },
-        "select_option": {
-          "enum": [
-            "0",
-            "1",
-            "2",
-            "3"
-          ],
-          "type": "select",
-          "title": "Select"
         }
       },
-      "title": "Basic Object with multiple types",
-      "type": "object"
-    },
-    "array_of_objects": {
-      "title": "Array of objects",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "first_object": {
-            "title": "First object",
-            "type": "string"
-          },
-          "second_object": {
-            "title": "Second object",
-            "type": "string"
+      "$schema": {
+        "type": "string"
+      },
+      "array_of_objects": {
+        "items": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "first_object": {
+              "type": "string",
+              "title": "First object"
+            },
+            "second_object": {
+              "type": "string",
+              "title": "Second object"
+            }
           }
-        }
+        },
+        "type": "array",
+        "title": "Array of objects"
+      },
+      "general_title": {
+        "type": "string"
       }
     }
   }

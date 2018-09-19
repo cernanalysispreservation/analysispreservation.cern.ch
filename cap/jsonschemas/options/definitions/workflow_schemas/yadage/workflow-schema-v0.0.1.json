@@ -1,8 +1,15 @@
-[
+{
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": [
     {
-        "key": "workflows[].workflow.stages",
-        "title": "Stages",
-        "type": "tabArrayTop",
-        "items": {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json"}
+      "items": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json"
+      }, 
+      "type": "tabArrayTop", 
+      "key": "workflows[].workflow.stages", 
+      "title": "Stages"
     }
-]
+  ]
+}

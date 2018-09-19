@@ -1,11 +1,16 @@
-[
+{
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": [
     {
-        "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap",
-        "items": [
-            {
-                "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card",
-                "type": "string"
-            }
-        ]
+      "items": [
+        {
+          "type": "string", 
+          "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card"
+        }
+      ], 
+      "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap"
     }
-]
+  ]
+}

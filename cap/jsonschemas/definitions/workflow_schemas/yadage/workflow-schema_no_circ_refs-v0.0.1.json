@@ -1,16 +1,21 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "id": "yadage_workflow",
-  "title": "Yadage Workflow",
-  "additionalProperties": false,
-  "properties": {
-    "stages": {
-      "type": "array",
-      "title": "Stages",
-      "items": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/stage-schema_no_circ_refs-v0.0.1.json#"
+  "fullname": "Yadage Workflow", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Yadage Workflow", 
+    "properties": {
+      "stages": {
+        "items": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/stage-schema_no_circ_refs-v0.0.1.json#"
+        }, 
+        "type": "array", 
+        "title": "Stages"
       }
-    }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "yadage_workflow"
   }
 }

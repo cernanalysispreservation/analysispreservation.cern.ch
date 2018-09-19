@@ -1,29 +1,55 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Single Step Scheduler",
-  "id": "singlestep-stage",
-  "additionalProperties": false,
-  "properties": {
-    "scheduler_type": {
-      "type": "string",
-      "enum": ["singlestep-stage"],
-      "default": "singlestep-stage"
-    },
-    "parameters": { "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#" },
-    "step": { "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
-    "workflow": {"$ref":"https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"}
-  },
-  "oneOf": [{
-      "required": ["workflow"],
-      "not": {"required": ["step"]}
-  },
-  {
-      "required": ["step"],
-      "not": {"required": ["workflow"]}
+  "fullname": "Single Step Scheduler", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "oneOf": [
+      {
+        "not": {
+          "required": [
+            "step"
+          ]
+        }, 
+        "required": [
+          "workflow"
+        ]
+      }, 
+      {
+        "not": {
+          "required": [
+            "workflow"
+          ]
+        }, 
+        "required": [
+          "step"
+        ]
+      }
+    ], 
+    "title": "Single Step Scheduler", 
+    "required": [
+      "scheduler_type"
+    ], 
+    "properties": {
+      "step": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
+      }, 
+      "scheduler_type": {
+        "default": "singlestep-stage", 
+        "enum": [
+          "singlestep-stage"
+        ], 
+        "type": "string"
+      }, 
+      "parameters": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
+      }, 
+      "workflow": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"
+      }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "singlestep-stage"
   }
-  ],
-  "required": [
-    "scheduler_type"
-  ]
 }

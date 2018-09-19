@@ -34,4 +34,4 @@ from cap.modules.schemas.models import Schema
                     host='analysispreservation.cern.ch')
 def resolve_cap_schemas(path):
     """Resolve CAP JSON schemas."""
-    return Schema.get_by_fullstring(path).json
+    return Schema.get_by_fullpath(path).json

@@ -25,10 +25,10 @@
 
 """CAP deposit UI views."""
 
-from flask import (Blueprint, current_app, jsonify, request)
+from flask import Blueprint, current_app, jsonify, request
+from jsonschema.validators import Draft4Validator, RefResolutionError
 
 from cap.modules.deposit.utils import discover_schema
-from jsonschema.validators import Draft4Validator, RefResolutionError
 
 deposit_blueprint = Blueprint(
     'cap_deposit_ui',

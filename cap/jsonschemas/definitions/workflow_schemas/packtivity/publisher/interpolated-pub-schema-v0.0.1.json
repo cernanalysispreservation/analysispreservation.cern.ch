@@ -1,25 +1,30 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Simple Interpolated Publisher",
-  "additionalProperties": false,
-  "properties": {
-    "publisher_type": {
-      "type": "string",
-      "enum": [
-        "interpolated-pub"
-      ]
-    },
-    "publish": {
-      "type": "object"
-    },
-    "glob": {
-      "type": "boolean",
-      "default": false
+  "fullname": "Simple Interpolated Publisher", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Simple Interpolated Publisher", 
+    "required": [
+      "publisher_type", 
+      "publish"
+    ], 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "publisher_type": {
+        "enum": [
+          "interpolated-pub"
+        ], 
+        "type": "string"
+      }, 
+      "glob": {
+        "default": false, 
+        "type": "boolean"
+      }, 
+      "publish": {
+        "type": "object"
+      }
     }
-  },
-  "required": [
-    "publisher_type",
-    "publish"
-  ]
+  }
 }

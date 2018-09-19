@@ -1,42 +1,51 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "",
-    "type": "object",
+  "fullname": "", 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
     "properties": {
-        "code_base": {
-            "title": "Your Code",
-            "type": "string",
-            "x-cap-file": {}
-        },
-        "processing_steps": {
-            "title": "Processing Steps",
-            "type": "array",
-            "required": ["configuration_file", "run_instructions", "output_data"],
-            "items": {
-                "title": "Step",
-                "type": "object",
-                "properties": {
-                    "configuration_file": {
-                        "title": "Configuration File",
-                        "placeholder": "E.g. my_job_config.py",
-                        "type": "string",
-                        "x-cap-file": {}
-                    },
-                    "run_instructions": {
-                        "title": "Run Instructions",
-                        "description": "Provide run instructions",
-                        "placeholder": "E.g. README.md",
-                        "type": "string",
-                        "x-cap-file": {}
-                    },
-                    "output_data": {
-                        "title": "Output",        
-                        "placeholder": "E.g. myfile-data.root",
-                        "type": "string",
-                        "x-cap-file": {}
-                    }
-                }
+      "code_base": {
+        "x-cap-file": {}, 
+        "type": "string", 
+        "title": "Your Code"
+      }, 
+      "processing_steps": {
+        "items": {
+          "type": "object", 
+          "properties": {
+            "configuration_file": {
+              "x-cap-file": {}, 
+              "type": "string", 
+              "placeholder": "E.g. my_job_config.py", 
+              "title": "Configuration File"
+            }, 
+            "output_data": {
+              "x-cap-file": {}, 
+              "type": "string", 
+              "placeholder": "E.g. myfile-data.root", 
+              "title": "Output"
+            }, 
+            "run_instructions": {
+              "x-cap-file": {}, 
+              "type": "string", 
+              "placeholder": "E.g. README.md", 
+              "description": "Provide run instructions", 
+              "title": "Run Instructions"
             }
-        }
-    }
+          }, 
+          "title": "Step"
+        }, 
+        "required": [
+          "configuration_file", 
+          "run_instructions", 
+          "output_data"
+        ], 
+        "type": "array", 
+        "title": "Processing Steps"
+      }
+    }, 
+    "title": ""
+  }
 }

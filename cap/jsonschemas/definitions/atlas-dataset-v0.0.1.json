@@ -1,20 +1,25 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "ATLAS Dataset",
-  "description": "Information concerning the ATLAS datasets used",
-  "type": "object",
-  "properties": {
-    "dataset_title": {
-      "type": "string",
-      "title": "Title"
-    },
-    "type": {
-      "title": "Data Type",
-      "type": "string"
-    },
-    "format": {
-      "title": "Data Format",
-      "type": "string"
-    }
+  "fullname": "ATLAS Dataset", 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Information concerning the ATLAS datasets used", 
+    "properties": {
+      "type": {
+        "type": "string", 
+        "title": "Data Type"
+      }, 
+      "dataset_title": {
+        "type": "string", 
+        "title": "Title"
+      }, 
+      "format": {
+        "type": "string", 
+        "title": "Data Format"
+      }
+    }, 
+    "title": "ATLAS Dataset"
   }
 }

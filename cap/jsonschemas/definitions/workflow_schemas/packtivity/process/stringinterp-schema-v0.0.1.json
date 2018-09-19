@@ -1,23 +1,30 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "String Interpolated Command",
-  "id": "string_interpolated",
-  "additionalProperties": false,
-  "properties": {
-    "process_type": {
-      "type": "string",
-      "title": "Process Type",
-      "enum": ["string-interpolated-cmd"],
-      "default":"string-interpolated-cmd"
-    },
-    "cmd": {
-      "type": "string",
-      "title": "Command"
-    }
-  },
-  "required": [
-    "process_type",
-    "cmd"
-  ]
+  "fullname": "String Interpolated Command", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "String Interpolated Command", 
+    "required": [
+      "process_type", 
+      "cmd"
+    ], 
+    "properties": {
+      "cmd": {
+        "type": "string", 
+        "title": "Command"
+      }, 
+      "process_type": {
+        "default": "string-interpolated-cmd", 
+        "enum": [
+          "string-interpolated-cmd"
+        ], 
+        "type": "string", 
+        "title": "Process Type"
+      }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "string_interpolated"
+  }
 }

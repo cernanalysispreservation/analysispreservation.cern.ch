@@ -1,37 +1,50 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Yadage Stage",
-  "id": "yadage_stage",
-  "additionalProperties": false,
-  "properties": {
-    "name": {
-      "type": "string",
-      "title": "Name"
-    },
-    "dependencies": {
-      "type": "object",
-      "title": "Dependencies",
-      "oneOf": [
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"}
-      ],
-      "default": {
-        "dependency_type": "jsonpath_ready",
-        "expressions": []
+  "fullname": "Yadage Stage", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Yadage Stage", 
+    "required": [
+      "name", 
+      "scheduler"
+    ], 
+    "properties": {
+      "dependencies": {
+        "default": {
+          "dependency_type": "jsonpath_ready", 
+          "expressions": []
+        }, 
+        "oneOf": [
+          {
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"
+          }
+        ], 
+        "type": "object", 
+        "title": "Dependencies"
+      }, 
+      "name": {
+        "type": "string", 
+        "title": "Name"
+      }, 
+      "scheduler": {
+        "oneOf": [
+          {
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json#"
+          }, 
+          {
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema-v0.0.1.json#"
+          }, 
+          {
+            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/jq-stage-schema-v0.0.1.json#"
+          }
+        ], 
+        "type": "object", 
+        "title": "Scheduler"
       }
-    },
-    "scheduler": {
-      "type": "object",
-      "title": "Scheduler",
-      "oneOf":[
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json#"},
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/multistep-stage-schema-v0.0.1.json#"},
-        {"$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/jq-stage-schema-v0.0.1.json#"}
-      ]
-    }
-  },
-  "required": [
-    "name",
-    "scheduler"
-  ]
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "yadage_stage"
+  }
 }

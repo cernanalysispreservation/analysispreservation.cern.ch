@@ -98,7 +98,7 @@ def get_user_deposit_groups():
         needs = obj_or_import_string(permission)
         if Permission(*needs).can():
             group_data = {}
-            group_data['name'] = obj.experiment_full_name
+            group_data['name'] = obj.fullname
             group_data['deposit_group'] = obj.name.replace(
                 'deposits/records/', '')
             user_deposit_groups.append(group_data)

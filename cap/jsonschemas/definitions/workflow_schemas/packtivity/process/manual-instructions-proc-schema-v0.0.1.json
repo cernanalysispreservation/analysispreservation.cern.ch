@@ -1,22 +1,29 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Manual Instructions Process",
-  "additionalProperties": false,
-  "properties": {
-    "process_type": {
-      "type": "string",
-      "title": "Process Type",
-      "enum": ["manual-instructions-proc"],
-      "default":"manual-instructions-proc"
-    },
-    "instructions": {
-      "type": "string",
-      "title": "Instructions"
+  "fullname": "Manual Instructions Process", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Manual Instructions Process", 
+    "required": [
+      "process_type", 
+      "instructions"
+    ], 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "process_type": {
+        "default": "manual-instructions-proc", 
+        "enum": [
+          "manual-instructions-proc"
+        ], 
+        "type": "string", 
+        "title": "Process Type"
+      }, 
+      "instructions": {
+        "type": "string", 
+        "title": "Instructions"
+      }
     }
-  },
-  "required": [
-    "process_type",
-    "instructions"
-  ]
+  }
 }

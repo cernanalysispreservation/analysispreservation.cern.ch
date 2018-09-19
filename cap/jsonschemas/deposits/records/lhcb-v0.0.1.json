@@ -1,380 +1,381 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "LHCb Analysis",
-  "additionalProperties": false,
-  "type": "object",
-  "properties": {
-    "_deposit": {
-      "$ref":
-        "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
-    },
-    "_buckets": {
-      "$ref":
-        "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-    },
-    "_files": {
-      "$ref":
-        "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
-    },
-    "_access": {
-      "$ref":
-        "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
-    },
-    "_experiment": {
-      "type": "string"
-    },
-    "$ana_type": {
-      "type": "string"
-    },
-    "$schema": {
-      "type": "string"
-    },
-    "general_title": {
-      "type": "string"
-    },
-    "control_number": {
-      "type": "string"
-    },
-    "basic_info": {
-      "id": "basic_info",
-      "title": "Basic Information",
-      "description":
-        "Please provide some information relevant for all parts of the Analysis here",
-      "type": "object",
-      "properties": {
-        "analysis_title": {
-          "title": "Analysis Name",
-          "type": "string"
-        },
-        "measurement": {
-          "title": "Measurement",
-          "type": "string"
-        },
-        "analysis_proponents": {
-          "title": "Proponents",
-          "type": "array",
-          "items": {
-            "title": "Proponent",
-            "type": "object",
-            "properties": {
-              "name": {
-                "title": "Name",
+  "fullname": "LHCb Analysis", 
+  "experiment": "LHCb", 
+  "partial": true, 
+  "jsonschema": {
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "_buckets": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+      }, 
+      "stripping_turbo_selection": {
+        "items": {
+          "type": "object", 
+          "properties": {
+            "dataset_type": {
+              "enum": [
+                "mc_data", 
+                "real_data"
+              ], 
+              "type": "string", 
+              "title": "Type of Dataset"
+            }, 
+            "stripping_turbo_line": {
+              "type": "string", 
+              "title": "Stripping/TURBO Line"
+            }, 
+            "name": {
+              "type": "string", 
+              "title": "Custom Name"
+            }, 
+            "bookkeping_locations": {
+              "items": {
                 "type": "string"
-              },
-              "orcid": {
-                "title": "ORCID",
-                "type": "string",
-                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
-              }
+              }, 
+              "type": "array", 
+              "title": "Bookkeeping Locations"
             }
           }
-        },
-        "reviewers": {
-          "title": "Reviewers",
-          "type": "array",
-          "items": {
-            "title": "Reviewer",
-            "type": "object",
-            "properties": {
-              "name": {
-                "title": "Name",
+        }, 
+        "type": "array", 
+        "title": "Stripping/Turbo Selections"
+      }, 
+      "control_number": {
+        "type": "string"
+      }, 
+      "ntuple_userdst_production": {
+        "items": {
+          "type": "object", 
+          "properties": {
+            "output_eos_location": {
+              "type": "string", 
+              "title": "Output EOS Location"
+            }, 
+            "name": {
+              "type": "string", 
+              "title": "Custom name"
+            }, 
+            "wg_production_bk_path": {
+              "type": "string", 
+              "title": "WG Production Bookkeeping Path"
+            }, 
+            "davinci_version": {
+              "type": "string", 
+              "title": "DaVinci Version"
+            }, 
+            "davinci_scripts": {
+              "items": {
+                "x-cap-file": {}, 
                 "type": "string"
-              },
-              "orcid": {
-                "title": "ORCID",
-                "type": "string",
-                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
+              }, 
+              "type": "array", 
+              "title": "DaVinci Scripts"
+            }, 
+            "input_dataset": {
+              "type": "string", 
+              "title": "Input Dataset"
+            }, 
+            "platform": {
+              "type": "string", 
+              "title": "Platform"
+            }, 
+            "ganga_scripts": {
+              "items": {
+                "x-cap-file": {}, 
+                "type": "string"
+              }, 
+              "type": "array", 
+              "title": "Ganga Scripts"
+            }
+          }
+        }, 
+        "type": "array", 
+        "description": "Please provide information about the steps of the analysis", 
+        "title": "ntuple/userDST-production"
+      }, 
+      "_files": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+      }, 
+      "basic_info": {
+        "description": "Please provide some information relevant for all parts of the Analysis here", 
+        "type": "object", 
+        "id": "basic_info", 
+        "properties": {
+          "analysis_proponents": {
+            "items": {
+              "type": "object", 
+              "properties": {
+                "orcid": {
+                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", 
+                  "type": "string", 
+                  "title": "ORCID"
+                }, 
+                "name": {
+                  "type": "string", 
+                  "title": "Name"
+                }
+              }, 
+              "title": "Proponent"
+            }, 
+            "type": "array", 
+            "title": "Proponents"
+          }, 
+          "analysis_status": {
+            "enum": [
+              "0 - planned / open topic", 
+              "1 - in preparation", 
+              "2 - ANA note released", 
+              "3 - review committee", 
+              "4 - collaboration review", 
+              "5 -", 
+              "6 - CONF note published", 
+              "7 -", 
+              "8 - journal review", 
+              "9 - PAPER published", 
+              "x - other"
+            ], 
+            "type": "string", 
+            "title": "Status"
+          }, 
+          "review_egroup": {
+            "type": "string", 
+            "title": "Review eGroup"
+          }, 
+          "reviewers": {
+            "items": {
+              "type": "object", 
+              "properties": {
+                "orcid": {
+                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", 
+                  "type": "string", 
+                  "title": "ORCID"
+                }, 
+                "name": {
+                  "type": "string", 
+                  "title": "Name"
+                }
+              }, 
+              "title": "Reviewer"
+            }, 
+            "type": "array", 
+            "title": "Reviewers"
+          }, 
+          "analysis_title": {
+            "type": "string", 
+            "title": "Analysis Name"
+          }, 
+          "measurement": {
+            "type": "string", 
+            "title": "Measurement"
+          }, 
+          "keywords": {
+            "type": "string", 
+            "id": "keywords", 
+            "title": "Keywords"
+          }, 
+          "institutes": {
+            "enum": [
+              "IFT", 
+              "B_Q", 
+              "BDC", 
+              "DP", 
+              "CD", 
+              "QEE", 
+              "RD", 
+              "Charm", 
+              "SLB", 
+              "B2OC"
+            ], 
+            "type": "string", 
+            "title": "Institutes Involved"
+          }
+        }, 
+        "title": "Basic Information"
+      }, 
+      "$ana_type": {
+        "type": "string"
+      }, 
+      "_experiment": {
+        "type": "string"
+      }, 
+      "_access": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+      }, 
+      "_deposit": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+      }, 
+      "additional_resources": {
+        "properties": {
+          "documentations": {
+            "items": {
+              "title": "Documentation", 
+              "type": "object", 
+              "description": "Add documentation", 
+              "properties": {
+                "url": {
+                  "type": "string", 
+                  "title": "URL"
+                }, 
+                "title": {
+                  "type": "string", 
+                  "title": "Title"
+                }
               }
-            }
-          }
-        },
-        "review_egroup": {
-          "title": "Review eGroup",
-          "type": "string"
-        },
-        "analysis_status": {
-          "enum": [
-            "0 - planned / open topic",
-            "1 - in preparation",
-            "2 - ANA note released",
-            "3 - review committee",
-            "4 - collaboration review",
-            "5 -",
-            "6 - CONF note published",
-            "7 -",
-            "8 - journal review",
-            "9 - PAPER published",
-            "x - other"
-          ],
-          "type": "string",
-          "title": "Status"
-        },
-        "institutes": {
-          "title": "Institutes Involved",
-          "type": "string",
-          "enum": [
-            "IFT",
-            "B_Q",
-            "BDC",
-            "DP",
-            "CD",
-            "QEE",
-            "RD",
-            "Charm",
-            "SLB",
-            "B2OC"
-          ]
-        },
-        "keywords": {
-          "id": "keywords",
-          "title": "Keywords",
-          "type": "string"
-        }
-      }
-    },
-    "ntuple_userdst_production": {
-      "title": "ntuple/userDST-production",
-      "description":
-        "Please provide information about the steps of the analysis",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "title": "Custom name",
-            "type": "string"
-          },
-          "input_dataset": {
-            "title": "Input Dataset",
-            "type": "string"
-          },
-          "davinci_version": {
-            "title": "DaVinci Version",
-            "type": "string"
-          },
-          "platform": {
-            "title": "Platform",
-            "type": "string"
-          },
-          "davinci_scripts": {
-            "title": "DaVinci Scripts",
-            "type": "array",
+            }, 
+            "type": "array", 
+            "id": "documentations", 
+            "title": "Documentations"
+          }, 
+          "internal_discussions": {
             "items": {
-              "type": "string",
-              "x-cap-file": {}
-            }
-          },
-          "ganga_scripts": {
-            "title": "Ganga Scripts",
-            "type": "array",
+              "type": "object", 
+              "properties": {
+                "url": {
+                  "type": "string", 
+                  "title": "URL"
+                }, 
+                "meeting": {
+                  "type": "string", 
+                  "title": "eGroup"
+                }, 
+                "title": {
+                  "type": "string", 
+                  "title": "Title"
+                }
+              }, 
+              "title": "Internal Discussion"
+            }, 
+            "type": "array", 
+            "id": "internal-discussions", 
+            "title": "Internal Discussions"
+          }, 
+          "presentations": {
             "items": {
-              "type": "string",
-              "x-cap-file": {}
-            }
-          },
-          "output_eos_location": {
-            "title": "Output EOS Location",
-            "type": "string"
-          },
-          "wg_production_bk_path": {
-            "title": "WG Production Bookkeeping Path",
-            "type": "string"
+              "type": "object", 
+              "properties": {
+                "url": {
+                  "type": "string", 
+                  "title": "URL"
+                }, 
+                "meeting": {
+                  "type": "string", 
+                  "title": "Meeting (GROUP)"
+                }, 
+                "title": {
+                  "type": "string", 
+                  "title": "Title"
+                }
+              }, 
+              "title": "Reports"
+            }, 
+            "type": "array", 
+            "id": "presentations", 
+            "title": "Presentations"
+          }, 
+          "publications": {
+            "items": {
+              "type": "object", 
+              "properties": {
+                "roles": {
+                  "type": "string", 
+                  "title": "Roles"
+                }, 
+                "public_paper": {
+                  "type": "string", 
+                  "title": "Public Paper"
+                }, 
+                "arxiv_id": {
+                  "type": "string", 
+                  "title": "ArXiv ID"
+                }, 
+                "review_egroup": {
+                  "type": "string", 
+                  "title": "Review Group"
+                }, 
+                "twiki": {
+                  "type": "string", 
+                  "title": "TWiki Page"
+                }, 
+                "url": {
+                  "type": "string", 
+                  "title": "URL"
+                }, 
+                "conf_report": {
+                  "type": "string", 
+                  "title": "Conference Report (CONF)"
+                }, 
+                "analysis_number": {
+                  "type": "string", 
+                  "title": "Analysis Note (ANA)"
+                }
+              }, 
+              "title": "Publications"
+            }, 
+            "type": "array", 
+            "id": "publications", 
+            "title": "Publications"
           }
-        }
-      }
-    },
-    "stripping_turbo_selection": {
-      "title": "Stripping/Turbo Selections",
-      "type": "array",
-      "items": {
-        "type": "object",
+        }, 
+        "type": "object", 
+        "description": "Please provide information about the additional resources of the analysis", 
+        "title": "Additional Resources"
+      }, 
+      "$schema": {
+        "type": "string"
+      }, 
+      "user_analysis": {
+        "type": "object", 
         "properties": {
-          "name": {
-            "title": "Custom Name",
-            "type": "string"
-          },
-          "bookkeping_locations": {
-            "title": "Bookkeeping Locations",
-            "type": "array",
+          "additional_repos": {
             "items": {
               "type": "string"
-            }
-          },
-          "stripping_turbo_line": {
-            "title": "Stripping/TURBO Line",
-            "type": "string"
-          },
-          "dataset_type": {
-            "type": "string",
-            "title": "Type of Dataset",
-            "enum": ["mc_data", "real_data"]
+            }, 
+            "type": "array", 
+            "title": "Additional Repositories"
+          }, 
+          "basic_scripts": {
+            "type": "object", 
+            "properties": {
+              "command": {
+                "type": "string", 
+                "title": "Command to execute code"
+              }, 
+              "scripts": {
+                "items": {
+                  "x-cap-file": {}, 
+                  "type": "string"
+                }, 
+                "type": "array", 
+                "title": "Files/Scripts"
+              }
+            }, 
+            "title": "Basic scripts"
+          }, 
+          "docker_registries": {
+            "items": {
+              "x-cap-file": {}, 
+              "type": "string"
+            }, 
+            "type": "array", 
+            "title": "Docker images of the analysis"
+          }, 
+          "gitlab_links": {
+            "items": {
+              "x-cap-file": {}, 
+              "type": "string"
+            }, 
+            "type": "array", 
+            "title": "Gitlab repositories of the analysis"
           }
-        }
+        }, 
+        "title": "User Analysis"
+      }, 
+      "general_title": {
+        "type": "string"
       }
-    },
-    "user_analysis": {
-      "title": "User Analysis",
-      "type": "object",
-      "properties": {
-        "gitlab_links": {
-          "title": "Gitlab repositories of the analysis",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "x-cap-file": {}
-          }
-        },
-        "docker_registries": {
-          "title": "Docker images of the analysis",
-          "type": "array",
-          "items": {
-            "type": "string",
-            "x-cap-file": {}
-          }
-        },
-        "basic_scripts": {
-          "title": "Basic scripts",
-          "type": "object",
-          "properties": {
-            "scripts": {
-              "title": "Files/Scripts",
-              "type": "array",
-              "items": {
-                "type": "string",
-                "x-cap-file": {}
-              }
-            },
-            "command": {
-              "type": "string",
-              "title": "Command to execute code"
-            }
-          }
-        },
-        "additional_repos": {
-          "type": "array",
-          "title": "Additional Repositories",
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "additional_resources": {
-      "title": "Additional Resources",
-      "description":
-        "Please provide information about the additional resources of the analysis",
-      "type": "object",
-      "properties": {
-        "internal_discussions": {
-          "id": "internal-discussions",
-          "title": "Internal Discussions",
-          "type": "array",
-          "items": {
-            "title": "Internal Discussion",
-            "type": "object",
-            "properties": {
-              "meeting": {
-                "title": "eGroup",
-                "type": "string"
-              },
-              "title": {
-                "title": "Title",
-                "type": "string"
-              },
-              "url": {
-                "title": "URL",
-                "type": "string"
-              }
-            }
-          }
-        },
-        "presentations": {
-          "id": "presentations",
-          "title": "Presentations",
-          "type": "array",
-          "items": {
-            "title": "Reports",
-            "type": "object",
-            "properties": {
-              "meeting": {
-                "title": "Meeting (GROUP)",
-                "type": "string"
-              },
-              "title": {
-                "title": "Title",
-                "type": "string"
-              },
-              "url": {
-                "title": "URL",
-                "type": "string"
-              }
-            }
-          }
-        },
-        "publications": {
-          "id": "publications",
-          "title": "Publications",
-          "type": "array",
-          "items": {
-            "title": "Publications",
-            "type": "object",
-            "properties": {
-              "analysis_number": {
-                "title": "Analysis Note (ANA)",
-                "type": "string"
-              },
-              "arxiv_id": {
-                "title": "ArXiv ID",
-                "type": "string"
-              },
-              "conf_report": {
-                "title": "Conference Report (CONF)",
-                "type": "string"
-              },
-              "public_paper": {
-                "title": "Public Paper",
-                "type": "string"
-              },
-              "twiki": {
-                "title": "TWiki Page",
-                "type": "string"
-              },
-              "review_egroup": {
-                "title": "Review Group",
-                "type": "string"
-              },
-              "roles": {
-                "title": "Roles",
-                "type": "string"
-              },
-              "url": {
-                "title": "URL",
-                "type": "string"
-              }
-            }
-          }
-        },
-        "documentations": {
-          "id": "documentations",
-          "title": "Documentations",
-          "type": "array",
-          "items": {
-            "description": "Add documentation",
-            "properties": {
-              "title": {
-                "title": "Title",
-                "type": "string"
-              },
-              "url": {
-                "title": "URL",
-                "type": "string"
-              }
-            },
-            "title": "Documentation",
-            "type": "object"
-          }
-        }
-      }
-    }
+    }, 
+    "title": "LHCb Analysis"
   }
 }

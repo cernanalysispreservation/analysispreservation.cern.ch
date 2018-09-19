@@ -1,78 +1,87 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "ATLAS Analysis (JSON schema)",
-    "description": "Schema describing properties of an ATLAS analysis",
-    "type": "object",
+  "fullname": "ATLAS Analysis (JSON schema)", 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Schema describing properties of an ATLAS analysis", 
     "properties": {
-        "basic_info": {
-            "title": "Basic Information",
-            "propertyOrder": 10,
-            "type": "object",
-            "id": "basic_info",
-            "properties": {
-                "analysis_title": {
-                    "description": "Title of the analysis",
-                    "title": "Analysis Title",
-                    "type": "string"
-                },
-                "glance_id": {
-                    "description": "ID of related glance record",
-                    "title": "Glance ID",
-                    "type": "string"
-                },
-                "abstract": {
-                    "title": "Abstract",
-                    "type": "string"
-                },
-                "people_info": {
-                    "title": "People Involved",
-                    "description": "Information about the people involved in this analysis",
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "name": {
-                                "title": "Name",
-                                "type": "string"
-                            },
-                            "email": {
-                                "title": "Email-Adress",
-                                "type": "string"
-                            },
-                            "orcid": {
-                                "title": "ORCID",
-                                "type": "string",
-                                "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$"
-                            }
-                        }
-                    }
+      "input_data": {
+        "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)", 
+        "title": "Input Data", 
+        "default": [
+          {}
+        ], 
+        "items": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
+        }, 
+        "additionalProperties": false, 
+        "type": "array", 
+        "id": "input_datasets"
+      }, 
+      "workflows": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
+      }, 
+      "publications": {
+        "description": "Publications related to the analysis", 
+        "title": "Publications", 
+        "default": [
+          {}
+        ], 
+        "items": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
+        }, 
+        "additionalProperties": false, 
+        "type": "array", 
+        "id": "publications"
+      }, 
+      "basic_info": {
+        "type": "object", 
+        "properties": {
+          "people_info": {
+            "items": {
+              "type": "object", 
+              "properties": {
+                "orcid": {
+                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", 
+                  "type": "string", 
+                  "title": "ORCID"
+                }, 
+                "name": {
+                  "type": "string", 
+                  "title": "Name"
+                }, 
+                "email": {
+                  "type": "string", 
+                  "title": "Email-Adress"
                 }
-            }
-        },
-        "input_data": {
-            "title": "Input Data",
-            "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
-            "type": "array",
-            "id": "input_datasets",
-            "additionalProperties": false,
-            "default": [{}],
-            "items": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
-            }
-        },
-        "workflows": {
-            "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
-        },
-        "publications": {
-            "title": "Publications",
-            "description": "Publications related to the analysis",
-            "type": "array",
-            "id": "publications",
-            "additionalProperties": false,
-            "default": [{}],
-            "items": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
-            }
-        }
-    }
+              }
+            }, 
+            "type": "array", 
+            "description": "Information about the people involved in this analysis", 
+            "title": "People Involved"
+          }, 
+          "abstract": {
+            "type": "string", 
+            "title": "Abstract"
+          }, 
+          "analysis_title": {
+            "type": "string", 
+            "description": "Title of the analysis", 
+            "title": "Analysis Title"
+          }, 
+          "glance_id": {
+            "type": "string", 
+            "description": "ID of related glance record", 
+            "title": "Glance ID"
+          }
+        }, 
+        "propertyOrder": 10, 
+        "id": "basic_info", 
+        "title": "Basic Information"
+      }
+    }, 
+    "title": "ATLAS Analysis (JSON schema)"
+  }
 }

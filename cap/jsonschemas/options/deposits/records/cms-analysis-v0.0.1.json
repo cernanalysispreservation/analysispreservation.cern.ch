@@ -1,277 +1,416 @@
 {
-  "ui:order": [
-    "analysis_reuse_mode",
-    "basic_info",
-    "cadi_info",
-    "input_data",
-    "ntuples_production",
-    "*",
-    "additional_resources",
-    "statistical_treatment"
-  ],
-  "analysis_reuse_mode": {
-    "ui:widget": "switch"
-  },
-  "basic_info": {
-    "ui:object": "accordionObjectField",
-    "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
-    "cadi_id": {
-      "ui:options": {
-        "autofill_from": "/api/cms/cadi/",
-        "autofill_fields": [
-          [["PAPER"], ["cadi_info", "paper"]],
-          [["name"], ["cadi_info", "name"]],
-          [["description"], ["cadi_info", "description"]],
-          [["contact"], ["cadi_info", "contact"]],
-          [["creatorDate"], ["cadi_info", "created"]],
-          [["URL"], ["cadi_info", "twiki"]],
-          [["PAS"], ["cadi_info", "pas"]],
-          [["publicationStatus"], ["cadi_info", "publication_status"]],
-          [["status"], ["cadi_info", "status"]]
-        ]
-      }
-    },
-    "ana_notes": {
-      "ui:array": "StringArrayField"
-    }
-  },
-  "cadi_info": {
-    "ui:object": "accordionObjectField",
-    "ui:order": [
-      "name",
-      "description",
-      "contact",
-      "twiki",
-      "created",
-      "paper",
-      "pas",
-      "publication_status",
-      "status"
-    ],
-    "name": {
-      "ui:readonly": true
-    },
-    "description": {
-      "ui:readonly": true
-    },
-    "contact": {
-      "ui:readonly": true
-    },
-    "twiki": {
-      "ui:readonly": true
-    },
-    "created": {
-      "ui:readonly": true
-    },
-    "paper": {
-      "ui:readonly": true
-    },
-    "pas": {
-      "ui:readonly": true
-    },
-    "publication_status": {
-      "ui:readonly": true
-    },
-    "status": {
-      "ui:readonly": true
-    }
-  },
-  "input_data": {
-    "ui:object": "accordionObjectField",
-    "ui:order": [
-      "primary_datasets",
-      "mc_sig_datasets",
-      "mc_bg_datasets",
-      "triggers",
-      "json_files",
-      "*"
-    ],
-    "primary_datasets": {
-      "items": {
-        "ui:order": ["path", "ranges"],
+  "fullname": null, 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
+    "statistical_treatment": {
+      "combine_datacard": {
+        "ui:field": "CapFiles"
+      }, 
+      "statistics_questionnaire": {
         "ui:options": {
-          "stringify": ["path"]
-        },
-        "path": {
+          "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
+        }, 
+        "ui:field": "ImportDataField"
+      }, 
+      "ui:object": "accordionObjectField"
+    }, 
+    "auxiliary_measurements": {
+      "items": {
+        "ui:order": [
+          "type", 
+          "links"
+        ], 
+        "links": {
+          "ui:array": "StringArrayField"
+        }
+      }, 
+      "ui:array": "AccordionArrayField"
+    }, 
+    "main_measurements": {
+      "items": {
+        "ui:order": [
+          "description", 
+          "detailed_desciption", 
+          "analysis_code", 
+          "signal_event_selection", 
+          "processing_steps", 
+          "*"
+        ], 
+        "signal_event_selection": {
+          "veto": {
+            "items": {
+              "ui:order": [
+                "object", 
+                "number", 
+                "pt_cut", 
+                "eta_cut", 
+                "*"
+              ]
+            }
+          }, 
+          "physics_objects": {
+            "items": {
+              "ui:order": [
+                "number", 
+                "object", 
+                "sel_criteria", 
+                "pt_cut", 
+                "pt_cut_min", 
+                "pt_cut_max", 
+                "eta_cut", 
+                "eta_cut_min", 
+                "eta_cut_max", 
+                "*"
+              ], 
+              "object": {
+                "ui:widget": "select"
+              }
+            }
+          }
+        }, 
+        "processing_steps": {
+          "items": {
+            "ui:order": [
+              "configuration_file", 
+              "run_instructions", 
+              "output_data"
+            ]
+          }
+        }
+      }, 
+      "ui:array": "AccordionArrayField"
+    }, 
+    "systematic_uncertainties": {
+      "items": {
+        "ui:order": [
+          "type", 
+          "physics_object"
+        ]
+      }, 
+      "ui:array": "AccordionArrayField"
+    }, 
+    "basic_info": {
+      "ui:order": [
+        "cadi_id", 
+        "abstract", 
+        "conclusion", 
+        "*"
+      ], 
+      "cadi_id": {
+        "ui:options": {
+          "autofill_from": "/api/cms/cadi/", 
+          "autofill_fields": [
+            [
+              [
+                "PAPER"
+              ], 
+              [
+                "cadi_info", 
+                "paper"
+              ]
+            ], 
+            [
+              [
+                "name"
+              ], 
+              [
+                "cadi_info", 
+                "name"
+              ]
+            ], 
+            [
+              [
+                "description"
+              ], 
+              [
+                "cadi_info", 
+                "description"
+              ]
+            ], 
+            [
+              [
+                "contact"
+              ], 
+              [
+                "cadi_info", 
+                "contact"
+              ]
+            ], 
+            [
+              [
+                "creatorDate"
+              ], 
+              [
+                "cadi_info", 
+                "created"
+              ]
+            ], 
+            [
+              [
+                "URL"
+              ], 
+              [
+                "cadi_info", 
+                "twiki"
+              ]
+            ], 
+            [
+              [
+                "PAS"
+              ], 
+              [
+                "cadi_info", 
+                "pas"
+              ]
+            ], 
+            [
+              [
+                "publicationStatus"
+              ], 
+              [
+                "cadi_info", 
+                "publication_status"
+              ]
+            ], 
+            [
+              [
+                "status"
+              ], 
+              [
+                "cadi_info", 
+                "status"
+              ]
+            ]
+          ]
+        }
+      }, 
+      "ui:object": "accordionObjectField", 
+      "ana_notes": {
+        "ui:array": "StringArrayField"
+      }
+    }, 
+    "analysis_reuse_mode": {
+      "ui:widget": "switch"
+    }, 
+    "input_data": {
+      "triggers": {
+        "items": {
+          "ui:order": [
+            "trigger", 
+            "prescale"
+          ], 
+          "ui:options": {
+            "stringify": [
+              "trigger"
+            ]
+          }
+        }
+      }, 
+      "ui:object": "accordionObjectField", 
+      "mc_sig_datasets": {
+        "items": {
           "ui:options": {
             "suggestions": "/api/cms/datasets?query="
           }
-        }
-      }
-    },
-    "triggers": {
-      "items": {
-        "ui:order": ["trigger", "prescale"],
-        "ui:options": {
-          "stringify": ["trigger"]
-        }
-      }
-    },
-    "mc_sig_datasets": {
-      "ui:array": "StringArrayField",
-      "items": {
-        "ui:options": {
-          "suggestions": "/api/cms/datasets?query="
-        }
-      }
-    },
-    "mc_bg_datasets": {
-      "ui:array": "StringArrayField",
-      "items": {
-        "ui:options": {
-          "suggestions": "/api/cms/datasets?query="
-        }
-      }
-    },
-    "json_files": {
-      "items": {
-        "ui:field": "CapFiles"
-      }
-    }
-  },
-  "ntuples_production": {
-    "ui:array": "AccordionArrayField",
-    "items": {
-      "ui:order": ["code_base", "processing_steps"],
-      "processing_steps": {
+        }, 
+        "ui:array": "StringArrayField"
+      }, 
+      "json_files": {
         "items": {
-          "ui:order": ["configuration_file", "run_instructions", "output_data"]
+          "ui:field": "CapFiles"
         }
-      }
-    }
-  },
-  "statistical_treatment": {
-    "ui:object": "accordionObjectField",
-    "statistics_questionnaire": {
-      "ui:field": "ImportDataField",
-      "ui:options": {
-        "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
-      }
-    },
-    "combine_datacard": {
-      "ui:field": "CapFiles"
-    }
-  },
-  "main_measurements": {
-    "ui:array": "AccordionArrayField",
-    "items": {
+      }, 
+      "mc_bg_datasets": {
+        "items": {
+          "ui:options": {
+            "suggestions": "/api/cms/datasets?query="
+          }
+        }, 
+        "ui:array": "StringArrayField"
+      }, 
       "ui:order": [
-        "description",
-        "detailed_desciption",
-        "analysis_code",
-        "signal_event_selection",
-        "processing_steps",
+        "primary_datasets", 
+        "mc_sig_datasets", 
+        "mc_bg_datasets", 
+        "triggers", 
+        "json_files", 
         "*"
-      ],
-      "processing_steps": {
+      ], 
+      "primary_datasets": {
         "items": {
-          "ui:order": ["configuration_file", "run_instructions", "output_data"]
+          "ui:order": [
+            "path", 
+            "ranges"
+          ], 
+          "ui:options": {
+            "stringify": [
+              "path"
+            ]
+          }, 
+          "path": {
+            "ui:options": {
+              "suggestions": "/api/cms/datasets?query="
+            }
+          }
         }
-      },
-      "signal_event_selection": {
-        "physics_objects": {
+      }
+    }, 
+    "ntuples_production": {
+      "items": {
+        "ui:order": [
+          "code_base", 
+          "processing_steps"
+        ], 
+        "processing_steps": {
           "items": {
             "ui:order": [
-              "number",
-              "object",
-              "sel_criteria",
-              "pt_cut",
-              "pt_cut_min",
-              "pt_cut_max",
-              "eta_cut",
-              "eta_cut_min",
-              "eta_cut_max",
-              "*"
-            ],
-            "object": {
-              "ui:widget": "select"
-            }
-          }
-        },
-        "veto": {
-          "items": {
-            "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+              "configuration_file", 
+              "run_instructions", 
+              "output_data"
+            ]
           }
         }
-      }
-    }
-  },
-  "auxiliary_measurements": {
-    "ui:array": "AccordionArrayField",
-    "items": {
-      "ui:order": ["type", "links"],
-      "links": {
-        "ui:array": "StringArrayField"
-      }
-    }
-  },
-  "systematic_uncertainties": {
-    "ui:array": "AccordionArrayField",
-    "items": {
-      "ui:order": ["type", "physics_object"]
-    }
-  },
-  "background_estimations": {
-    "ui:array": "AccordionArrayField",
-    "items": {
-      "ui:order": ["type", "method", "control_regions", "samples"],
-      "control_regions": {
-        "items": {
-          "physics_objects": {
-            "items": {
-              "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
-            }
-          },
-          "veto": {
-            "items": {
-              "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
-            }
-          }
-        }
-      },
-      "samples": {
-        "ui:array": "StringArrayField"
-      }
-    }
-  },
-  "additional_resources": {
-    "ui:object": "accordionObjectField",
+      }, 
+      "ui:array": "AccordionArrayField"
+    }, 
     "ui:order": [
-      "presentations",
-      "internal_discussions",
-      "documentations",
-      "publications",
-      "keywords",
-      "*"
-    ],
-    "presentations": {
-      "items": {
-        "ui:options": {
-          "stringify": ["conference"]
+      "analysis_reuse_mode", 
+      "basic_info", 
+      "cadi_info", 
+      "input_data", 
+      "ntuples_production", 
+      "*", 
+      "additional_resources", 
+      "statistical_treatment"
+    ], 
+    "additional_resources": {
+      "ui:object": "accordionObjectField", 
+      "presentations": {
+        "items": {
+          "ui:options": {
+            "stringify": [
+              "conference"
+            ]
+          }
         }
+      }, 
+      "documentations": {
+        "items": {
+          "ui:field": "CapFiles"
+        }
+      }, 
+      "publications": {
+        "items": {
+          "ui:options": {
+            "stringify": [
+              "journal_title"
+            ]
+          }, 
+          "persistent_identifiers": {
+            "ui:array": "StringArrayField"
+          }
+        }
+      }, 
+      "ui:order": [
+        "presentations", 
+        "internal_discussions", 
+        "documentations", 
+        "publications", 
+        "keywords", 
+        "*"
+      ], 
+      "internal_discussions": {
+        "ui:array": "StringArrayField"
       }
-    },
-    "internal_discussions": {
-      "ui:array": "StringArrayField"
-    },
-    "documentations": {
+    }, 
+    "final_results": {
+      "ui:order": [
+        "description", 
+        "*"
+      ], 
+      "ui:object": "accordionObjectField"
+    }, 
+    "background_estimations": {
       "items": {
-        "ui:field": "CapFiles"
-      }
-    },
-    "publications": {
-      "items": {
-        "ui:options": {
-          "stringify": ["journal_title"]
-        },
-        "persistent_identifiers": {
+        "ui:order": [
+          "type", 
+          "method", 
+          "control_regions", 
+          "samples"
+        ], 
+        "samples": {
           "ui:array": "StringArrayField"
+        }, 
+        "control_regions": {
+          "items": {
+            "veto": {
+              "items": {
+                "ui:order": [
+                  "object", 
+                  "number", 
+                  "pt_cut", 
+                  "eta_cut", 
+                  "*"
+                ]
+              }
+            }, 
+            "physics_objects": {
+              "items": {
+                "ui:order": [
+                  "object", 
+                  "number", 
+                  "pt_cut", 
+                  "eta_cut", 
+                  "*"
+                ]
+              }
+            }
+          }
         }
+      }, 
+      "ui:array": "AccordionArrayField"
+    }, 
+    "cadi_info": {
+      "status": {
+        "ui:readonly": true
+      }, 
+      "publication_status": {
+        "ui:readonly": true
+      }, 
+      "pas": {
+        "ui:readonly": true
+      }, 
+      "name": {
+        "ui:readonly": true
+      }, 
+      "created": {
+        "ui:readonly": true
+      }, 
+      "ui:object": "accordionObjectField", 
+      "paper": {
+        "ui:readonly": true
+      }, 
+      "contact": {
+        "ui:readonly": true
+      }, 
+      "twiki": {
+        "ui:readonly": true
+      }, 
+      "ui:order": [
+        "name", 
+        "description", 
+        "contact", 
+        "twiki", 
+        "created", 
+        "paper", 
+        "pas", 
+        "publication_status", 
+        "status"
+      ], 
+      "description": {
+        "ui:readonly": true
       }
     }
-  },
-  "final_results": {
-    "ui:order": ["description", "*"],
-    "ui:object": "accordionObjectField"
   }
 }

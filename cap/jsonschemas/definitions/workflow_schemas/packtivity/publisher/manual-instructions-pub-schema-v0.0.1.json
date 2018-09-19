@@ -1,22 +1,29 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Manual Instructions Publisher",
-  "additionalProperties": false,
-  "properties": {
-    "publisher_type": {
-      "type": "string",
-      "title": "Process Type",
-      "enum": ["manual-instructions-pub"],
-      "default":"manual-instructions-pub"
-    },
-    "instructions": {
-      "type": "string",
-      "title": "Instructions"
+  "fullname": "Manual Instructions Publisher", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Manual Instructions Publisher", 
+    "required": [
+      "publisher_type", 
+      "instructions"
+    ], 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "publisher_type": {
+        "default": "manual-instructions-pub", 
+        "enum": [
+          "manual-instructions-pub"
+        ], 
+        "type": "string", 
+        "title": "Process Type"
+      }, 
+      "instructions": {
+        "type": "string", 
+        "title": "Instructions"
+      }
     }
-  },
-  "required": [
-    "publisher_type",
-    "instructions"
-  ]
+  }
 }

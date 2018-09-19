@@ -1,11 +1,16 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Presentation",
-  "properties": {
-    "url": {
-      "title": "URL",
-      "type": "string"
-    }
+  "fullname": "Presentation", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "url": {
+        "type": "string", 
+        "title": "URL"
+      }
+    }, 
+    "title": "Presentation"
   }
 }

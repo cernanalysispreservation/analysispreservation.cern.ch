@@ -189,18 +189,19 @@ def jsonschemas_host():
 def create_schema(db, es):
     """Returns function to add a schema to db."""
 
-    def _add_schema(schema, roles=None):
+    def _add_schema(schema, experiment=None, json=None, roles=None):
         """
         Add new schema into db
         """
         try:
-            schema = Schema.get_by_fullstring(schema)
+            schema = Schema.get_by_fullpath(schema)
         except SchemaDoesNotExist:
             schema = Schema(
-                fullstring=schema,
-                json=json.dumps({
+                fullpath=schema,
+                experiment=experiment,
+                json=json or {
                     'title': 'string'
-                })
+                }
             )
             db.session.add(schema)
             db.session.commit()
@@ -307,7 +308,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
 
     with db_.session.begin_nested():
 
-        def _create_deposit(user, schema_fullstring, metadata=None):
+        def _create_deposit(user, schema_fullpath, metadata=None):
             """
             Create a new deposit for given user and schema name
             e.g cms-analysis-v0.0.1,
@@ -315,12 +316,12 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             """
             with app.test_request_context():
                 # create schema for record
-                create_schema('records/{}'.format(schema_fullstring))
+                create_schema('records/{}'.format(schema_fullpath))
 
                 # create schema for deposit
-                schema = create_schema('deposits/records/{}'.format(schema_fullstring))
+                schema = create_schema('deposits/records/{}'.format(schema_fullpath))
                 metadata = metadata or minimal_metadata(jsonschemas_host,
-                                                        'deposits/records/{}'.format(schema_fullstring))
+                                                        'deposits/records/{}'.format(schema_fullpath))
                 login_user(user)
                 id_ = uuid4()
                 deposit_minter(id_, metadata)

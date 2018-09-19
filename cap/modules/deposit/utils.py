@@ -46,7 +46,7 @@ def clean_empty_values(data):
 def discover_schema(deposit):
     """If schema url not passed directly, set it based on $ana_type field."""
     if '$schema' not in deposit:
-        schemas = Schema.get_schemas()
+        schemas = Schema.get_user_deposit_schemas()
 
         ana_type = deposit.get("$ana_type", None)
 

@@ -1,68 +1,73 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Relations",
-    "type": "array",
+  "fullname": "Relations", 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
     "items": {
-        "type": "object",
-        "properties": {
-            "relation_type": {
-                "type": "string",
-                "title": "Relation Type",
-                "enum": [
-                    "charge",
-                    "angle",
-                    "invariant_mass",
-                    "transverse_mass"
-                ]
-            },
-            "charge_relation": {
-                "type": "string",
-                "title": "Charge",
-                "enum":[
-                    "same_sign",
-                    "opposite_sign"
-                ]
-            },
-            "angle_relation": {
-                "type":"string",
-                "pattern": "^[\\d\\.]+$",
-                "title": "Degrees"
-            },
-            "invariant_mass": {
-                "title": "GeV",
-                "type": "object",
-                "properties": {
-                    "lower_range": {
-                        "type": "number",
-                        "title": "<"
-                    },
-                    "upper_range": {
-                        "type":"string",
-                        "pattern": "^[\\d\\.]+$",
-                        "title": ">"
-                    }
-                }
-            },
-            "transverse_mass": {
-                "title": "GeV",
-                "type": "object",
-                "properties": {
-                    "lower_range": {
-                        "type":"string",
-                        "pattern": "^[\\d\\.]+$",
-                        "title": "<"
-                    },
-                    "upper_range": {
-                        "type":"string",
-                        "pattern": "^[\\d\\.]+$",
-                        "title": ">"
-                    }
-                }
-            },
-            "physics_objects": {
-                "type": "string",
-                "title": "Physics Objects Available"
+      "type": "object", 
+      "properties": {
+        "physics_objects": {
+          "type": "string", 
+          "title": "Physics Objects Available"
+        }, 
+        "angle_relation": {
+          "pattern": "^[\\d\\.]+$", 
+          "type": "string", 
+          "title": "Degrees"
+        }, 
+        "transverse_mass": {
+          "type": "object", 
+          "properties": {
+            "upper_range": {
+              "pattern": "^[\\d\\.]+$", 
+              "type": "string", 
+              "title": ">"
+            }, 
+            "lower_range": {
+              "pattern": "^[\\d\\.]+$", 
+              "type": "string", 
+              "title": "<"
             }
+          }, 
+          "title": "GeV"
+        }, 
+        "charge_relation": {
+          "enum": [
+            "same_sign", 
+            "opposite_sign"
+          ], 
+          "type": "string", 
+          "title": "Charge"
+        }, 
+        "relation_type": {
+          "enum": [
+            "charge", 
+            "angle", 
+            "invariant_mass", 
+            "transverse_mass"
+          ], 
+          "type": "string", 
+          "title": "Relation Type"
+        }, 
+        "invariant_mass": {
+          "type": "object", 
+          "properties": {
+            "upper_range": {
+              "pattern": "^[\\d\\.]+$", 
+              "type": "string", 
+              "title": ">"
+            }, 
+            "lower_range": {
+              "type": "number", 
+              "title": "<"
+            }
+          }, 
+          "title": "GeV"
         }
-    }
+      }
+    }, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "array", 
+    "title": "Relations"
+  }
 }

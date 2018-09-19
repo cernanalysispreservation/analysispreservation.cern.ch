@@ -1,3 +1,8 @@
-[
+{
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": [
     "workflows[].workflow.stages[].scheduler.step.publisher.yamlfile"
-]
+  ]
+}

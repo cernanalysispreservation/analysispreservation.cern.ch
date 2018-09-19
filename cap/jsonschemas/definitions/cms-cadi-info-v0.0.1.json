@@ -1,45 +1,50 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Information from CADI database",
-    "description": "CADI info",
-    "type": "object",
-    "id": "cadi_info",
+  "fullname": "Information from CADI database", 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
+    "description": "CADI info", 
+    "title": "Information from CADI database", 
     "properties": {
-        "created": {
-            "title": "Created",
-            "type": "string"
-        },
-        "paper": {
-            "title": "Paper",
-            "type": "string"
-        },
-        "pas": {
-            "title": "PAS",
-            "type": "string"
-        },
-        "twiki": {
-            "title": "Twiki",
-            "type": "string"
-        },
-        "contact": {
-            "title": "Contact Person",
-            "type": "string"
-        },
-        "description": {
-            "title": "Description",
-            "type": "string"
-        },
-        "name": {
-            "title": "Name",
-            "type": "string"
-        },
-        "publication_status": {
-            "title": "Publication Status",
-            "type": "string"
-        },
-        "status": {
-            "title": "Status",
-            "type": "string"
-        }
-    }         
+      "status": {
+        "type": "string", 
+        "title": "Status"
+      }, 
+      "publication_status": {
+        "type": "string", 
+        "title": "Publication Status"
+      }, 
+      "pas": {
+        "type": "string", 
+        "title": "PAS"
+      }, 
+      "description": {
+        "type": "string", 
+        "title": "Description"
+      }, 
+      "created": {
+        "type": "string", 
+        "title": "Created"
+      }, 
+      "contact": {
+        "type": "string", 
+        "title": "Contact Person"
+      }, 
+      "paper": {
+        "type": "string", 
+        "title": "Paper"
+      }, 
+      "twiki": {
+        "type": "string", 
+        "title": "Twiki"
+      }, 
+      "name": {
+        "type": "string", 
+        "title": "Name"
+      }
+    }, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "cadi_info"
+  }
 }

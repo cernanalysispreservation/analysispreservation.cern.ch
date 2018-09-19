@@ -344,7 +344,7 @@ class CAPDeposit(Deposit):
         return filename
 
     def _set_experiment(self):
-        schema = Schema.get_by_fullstring(self['$schema'])
+        schema = Schema.get_by_fullpath(self['$schema'])
         self['_experiment'] = schema.experiment or 'None'
         self.commit()
 
@@ -381,15 +381,15 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Empty deposit data.')
 
         try:
-            schema_fullstring = data['$schema']
+            schema_fullpath = data['$schema']
         except KeyError:
             raise DepositValidationError('Schema not specified.')
 
         try:
-            Schema.get_by_fullstring(schema_fullstring)
+            Schema.get_by_fullpath(schema_fullpath)
         except AttributeError:
             raise DepositValidationError('Schema {} is not a valid option.'
-                                         .format(schema_fullstring))
+                                         .format(schema_fullpath))
 
 
 @shared_task(max_retries=5)

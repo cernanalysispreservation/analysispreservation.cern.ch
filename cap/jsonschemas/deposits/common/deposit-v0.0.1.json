@@ -1,49 +1,54 @@
 {
-  "type": "object",
-  "name": "_deposit",
-  "properties": {
-    "id": {
-      "type": "string",
-      "name": "id"
-    },
-    "pid": {
-      "type": "object",
-      "name": "pid",
-      "properties": {
-        "revision_id": {
-          "type": "integer"
-        },
-        "type": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string"
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "required": [
+      "id"
+    ], 
+    "type": "object", 
+    "name": "_deposit", 
+    "properties": {
+      "status": {
+        "enum": [
+          "draft", 
+          "published"
+        ], 
+        "type": "string", 
+        "name": "status"
+      }, 
+      "owners": {
+        "items": [
+          {
+            "type": "integer"
+          }
+        ], 
+        "type": "array", 
+        "name": "owners"
+      }, 
+      "pid": {
+        "type": "object", 
+        "name": "pid", 
+        "properties": {
+          "revision_id": {
+            "type": "integer"
+          }, 
+          "type": {
+            "type": "string"
+          }, 
+          "value": {
+            "type": "string"
+          }
         }
+      }, 
+      "id": {
+        "type": "string", 
+        "name": "id"
+      }, 
+      "created_by": {
+        "type": "integer", 
+        "name": "created_by"
       }
-    },
-    "created_by": {
-      "type": "integer",
-      "name": "created_by"
-    },
-    "owners": {
-      "type": "array",
-      "name": "owners",
-      "items": [
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "status": {
-      "type": "string",
-      "name": "status",
-      "enum": [
-        "draft",
-        "published"
-      ]
     }
-  },
-  "required": [
-    "id"
-  ]
+  }
 }

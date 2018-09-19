@@ -1,54 +1,63 @@
-[
+{
+  "fullname": null, 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": [
     {
-        "key": "basic_info"
-    },
-    {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/atlas-workflows-v0.0.1.json"},
+      "key": "basic_info"
+    }, 
     {
-        "key": "inputs",
-        "title": "Inputs",
-        "type": "tabArrayTop",
-        "items": [
-          {
-            "key": "inputs[].title"
-          },
-          {
-            "key": "inputs[].files",
-            "items": [
-              {
-                "key": "inputs[].files.data_inputfiles",
-                "items": [
-                  {
-                    "key": "inputs[].files.data_inputfiles[]",
-                    "title": "File URI"
-                  }
-                ]
-              },
-              {
-                "key": "inputs[].files.signal_mcweight"
-              },
-              {
-                "key": "inputs[].files.signal_inputfiles",
-                "items": [
-                  {"key": "inputs[].files.signal_inputfiles[]"}
-                ]
-              },
-              {
-                "key": "inputs[].files.bkg_mcinfo",
-                "items": [
-                  "inputs[].files.bkg_mcinfo[].name",
-                  "inputs[].files.bkg_mcinfo[].weight",
-                  {
-                    "key": "inputs[].files.bkg_mcinfo[].inputfiles",
-                    "items": [
-                      {
-                        "key": "inputs[].files.bkg_mcinfo[].inputfiles[]"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+      "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/atlas-workflows-v0.0.1.json"
+    }, 
+    {
+      "items": [
+        {
+          "key": "inputs[].title"
+        }, 
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "key": "inputs[].files.data_inputfiles[]", 
+                  "title": "File URI"
+                }
+              ], 
+              "key": "inputs[].files.data_inputfiles"
+            }, 
+            {
+              "key": "inputs[].files.signal_mcweight"
+            }, 
+            {
+              "items": [
+                {
+                  "key": "inputs[].files.signal_inputfiles[]"
+                }
+              ], 
+              "key": "inputs[].files.signal_inputfiles"
+            }, 
+            {
+              "items": [
+                "inputs[].files.bkg_mcinfo[].name", 
+                "inputs[].files.bkg_mcinfo[].weight", 
+                {
+                  "items": [
+                    {
+                      "key": "inputs[].files.bkg_mcinfo[].inputfiles[]"
+                    }
+                  ], 
+                  "key": "inputs[].files.bkg_mcinfo[].inputfiles"
+                }
+              ], 
+              "key": "inputs[].files.bkg_mcinfo"
+            }
+          ], 
+          "key": "inputs[].files"
+        }
+      ], 
+      "type": "tabArrayTop", 
+      "key": "inputs", 
+      "title": "Inputs"
     }
-]
+  ]
+}

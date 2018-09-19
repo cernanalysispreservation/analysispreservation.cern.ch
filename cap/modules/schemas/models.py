@@ -26,6 +26,7 @@
 
 import re
 
+from flask import current_app
 from invenio_access.models import ActionRoles
 from invenio_db import db
 from invenio_search import current_search
@@ -45,17 +46,14 @@ class Schema(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(128), unique=False, nullable=False)
-    full_name = db.Column(db.String(128), unique=False, nullable=True)
-
-    experiment = db.Column(db.String(128), unique=False, nullable=True)
-
-    experiment_full_name = db.Column(
-        db.String(128), unique=False, nullable=True)
+    fullname = db.Column(db.String(128), unique=False, nullable=True)
 
     # version
-    major = db.Column(db.Integer, unique=False, nullable=False)
+    major = db.Column(db.Integer, unique=False, nullable=False, default=0)
     minor = db.Column(db.Integer, unique=False, nullable=False, default=0)
     patch = db.Column(db.Integer, unique=False, nullable=False, default=0)
+
+    experiment = db.Column(db.String(128), unique=False, nullable=True)
 
     partial = db.Column(db.Boolean(create_constraint=False),
                         unique=False,
@@ -77,7 +75,12 @@ class Schema(db.Model):
     __table_args__ = (UniqueConstraint('name', 'major', 'minor', 'patch',
                                        name='unique_schema_version'),)
 
-    def __init__(self, **kwargs):
+    def __init__(self, fullpath=None, **kwargs):
+        """."""
+        if fullpath:
+            self.name, self.major, self.minor, self.patch = \
+                self._parse_fullpath(fullpath)
+
         super(Schema, self).__init__(**kwargs)
 
     @property
@@ -86,11 +89,20 @@ class Schema(db.Model):
         return "{}.{}.{}".format(self.major, self.minor, self.patch)
 
     @property
+    def fullpath(self):
+        """Return full path eg. https://host.com/schemas/schema-v0.0.1.json."""
+        host = current_app.config['JSONSCHEMAS_HOST']
+        return "https://{}/schemas/{}-v{}.json".format(
+            host, self.name, self.version)
+
+    @property
     def index_name(self):
+        """."""
         return "{}-v{}".format(self.name.replace('/', '-'), self.version)
 
     @property
     def aliases(self):
+        """."""
         aliases = []
         if self.name.startswith('deposits'):
             aliases = ['deposits', 'deposits-records']
@@ -99,6 +111,7 @@ class Schema(db.Model):
         return aliases
 
     def add_read_access(self, role):
+        """."""
         db.session.add(
             ActionRoles.allow(
                 SchemaReadAction(self.id),
@@ -110,26 +123,22 @@ class Schema(db.Model):
     @classmethod
     def get_latest(cls, name):
         """Get the latest version of schema with given name."""
-        try:
-            return cls.query \
-                .filter_by(name=name) \
-                .order_by(cls.major.desc(),
-                          cls.minor.desc(),
-                          cls.patch.desc())\
-                .first()
-        except NoResultFound:
+        latest = cls.query \
+            .filter_by(name=name) \
+            .order_by(cls.major.desc(),
+                      cls.minor.desc(),
+                      cls.patch.desc())\
+            .first()
+
+        if latest:
+            return latest
+        else:
             raise SchemaDoesNotExist
 
     @classmethod
-    def get_by_fullstring(cls, string):
-        """Get schema by fullstring, e.g. record/schema-v0.0.1.json."""
-        regex = re.compile('(?:.*schemas)?'
-                           '/?(?P<name>\S+)'
-                           '-v(?P<major>\d+).'
-                           '(?P<minor>\d+).'
-                           '(?P<patch>\d+)'
-                           '(?:.json)?')
-        name, major, minor, patch = re.search(regex, string).groups()
+    def get_by_fullpath(cls, string):
+        """Get schema by full path, e.g. record/schema-v0.0.1.json."""
+        name, major, minor, patch = cls._parse_fullpath(string)
 
         try:
             return cls.query \
@@ -165,8 +174,21 @@ class Schema(db.Model):
         return cls.query.filter(cls.experiment.isnot(None),
                                 cls.name.startswith('deposits/records')).all()
 
+    @staticmethod
+    def _parse_fullpath(string):
+        regex = re.compile('(?:.*schemas)?'
+                           '/?(?P<name>\S+)'
+                           '-v(?P<major>\d+).'
+                           '(?P<minor>\d+).'
+                           '(?P<patch>\d+)'
+                           '(?:.json)?')
+
+        return re.search(regex, string).groups()
+
+
 @event.listens_for(Schema, 'after_insert')
 def after_insert_schema(target, value, initiator):
+    """."""
     if not initiator.partial:
         # invenio search needs it
         current_search.mappings[initiator.index_name] = {}
@@ -181,13 +203,17 @@ def after_insert_schema(target, value, initiator):
             for alias in initiator.aliases:
                 es.indices.update_aliases({
                     "actions": [
-                        {"add": {"index": initiator.index_name, "alias": alias}}
+                        {"add": {
+                            "index": initiator.index_name,
+                            "alias": alias
+                        }}
                     ]
                 })
 
 
 @event.listens_for(Schema, 'after_delete')
 def before_delete_schema(mapper, connect, target):
+    """."""
     if es.indices.exists(target.index_name):
         es.indices.delete(target.index_name)
 

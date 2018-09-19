@@ -1,13 +1,18 @@
 {
-  "type": "object",
-  "properties": {
-    "record": {
-      "type": "string",
-      "description": "Record bucket ID."
-    },
-    "deposit": {
-      "type": "string",
-      "description": "Deposit bucket ID."
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "type": "object", 
+    "properties": {
+      "record": {
+        "type": "string", 
+        "description": "Record bucket ID."
+      }, 
+      "deposit": {
+        "type": "string", 
+        "description": "Deposit bucket ID."
+      }
     }
   }
 }

@@ -1,65 +1,70 @@
 {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "train_id": {
-        "title": "Train ID",
-        "type": "string"
-      },
-      "run_id": {
-        "title": "Run ID",
-        "type": "string"
-      },
-      "configuration_files": {
-        "title": "Configuration Files",
-        "type": "string"
-      },
-      "wagon_names": {
-        "title": "Wagon Names",
-        "type": "string"
-      },
-      "wagon_paths": {
-        "title": "Wagon Paths",
-        "type": "string"
-      },
-      "dataset": {
-        "title": "Dataset",
-        "type": "string"
-      },
-      "reference_production": {
-        "title": "Reference Production",
-        "type": "string"
-      },
-      "dataset_aod": {
-        "title": "Dataset AOD",
-        "type": "string"
-      },
-      "run": {
-        "type": "array",
-        "title": "Run",
-        "items": {
-          "type": "object",
-          "properties": {
-            "name": {
-              "title": "Name",
-              "type": "string"
-            },
-            "run_numbers": {
-              "type": "array",
-              "title": "Run Number",
-              "items": {
-                "type": "string",
-                "title": "Number"
+  "fullname": null, 
+  "experiment": "ALICE", 
+  "partial": true, 
+  "jsonschema": {
+    "items": {
+      "type": "object", 
+      "properties": {
+        "ali_physics": {
+          "type": "string", 
+          "title": "Ali Physics"
+        }, 
+        "run": {
+          "items": {
+            "type": "object", 
+            "properties": {
+              "run_numbers": {
+                "items": {
+                  "type": "string", 
+                  "title": "Number"
+                }, 
+                "type": "array", 
+                "title": "Run Number"
+              }, 
+              "name": {
+                "type": "string", 
+                "title": "Name"
               }
             }
-          }
+          }, 
+          "type": "array", 
+          "title": "Run"
+        }, 
+        "dataset_aod": {
+          "type": "string", 
+          "title": "Dataset AOD"
+        }, 
+        "run_id": {
+          "type": "string", 
+          "title": "Run ID"
+        }, 
+        "configuration_files": {
+          "type": "string", 
+          "title": "Configuration Files"
+        }, 
+        "wagon_names": {
+          "type": "string", 
+          "title": "Wagon Names"
+        }, 
+        "dataset": {
+          "type": "string", 
+          "title": "Dataset"
+        }, 
+        "reference_production": {
+          "type": "string", 
+          "title": "Reference Production"
+        }, 
+        "train_id": {
+          "type": "string", 
+          "title": "Train ID"
+        }, 
+        "wagon_paths": {
+          "type": "string", 
+          "title": "Wagon Paths"
         }
-      },
-      "ali_physics": {
-        "title": "Ali Physics",
-        "type": "string"
       }
-    }
+    }, 
+    "type": "array"
   }
 }

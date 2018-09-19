@@ -96,4 +96,4 @@ def schemas(dir):
                         continue
 
                 add_or_update_schema(fullpath=fullpath.replace(dir, ''),
-                                     json=json_content)
+                                     data=json_content)

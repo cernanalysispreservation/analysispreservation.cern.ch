@@ -1,27 +1,32 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Glob Publisher",
-  "id": "glob_publisher",
-  "additionalProperties": false,
-  "properties": {
-    "publisher_type": {
-      "type": "string",
-      "enum": [
-        "fromglob-pub"
-      ],
-      "default": "fromglob-pub"
-    },
-    "globexpression": {
-      "type": "string"
-    },
-    "outputkey":{
-      "type": "string"
-    }
-  },
-  "required": [
-    "publisher_type",
-    "globexpression",
-    "outputkey"
-  ]
+  "fullname": "Glob Publisher", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Glob Publisher", 
+    "required": [
+      "publisher_type", 
+      "globexpression", 
+      "outputkey"
+    ], 
+    "properties": {
+      "publisher_type": {
+        "default": "fromglob-pub", 
+        "enum": [
+          "fromglob-pub"
+        ], 
+        "type": "string"
+      }, 
+      "outputkey": {
+        "type": "string"
+      }, 
+      "globexpression": {
+        "type": "string"
+      }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "glob_publisher"
+  }
 }

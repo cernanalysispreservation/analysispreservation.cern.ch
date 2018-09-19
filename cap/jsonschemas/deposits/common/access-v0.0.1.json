@@ -1,53 +1,58 @@
 {
-  "type": "object",
-  "properties": {
-    "deposit-read": {
-      "type": "object",
-      "properties": {
-        "roles": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      }
-    },
-    "deposit-admin": {
-      "type": "object",
-      "properties": {
-        "roles": {
-          "type": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "number"
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "type": "object", 
+    "properties": {
+      "deposit-admin": {
+        "type": "object", 
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
+          }, 
+          "roles": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
           }
         }
-      }
-    },
-    "deposit-update": {
-      "type": "object",
-      "properties": {
-        "roles": {
-          "type": "array",
-          "items": {
-            "type": "number"
+      }, 
+      "deposit-update": {
+        "type": "object", 
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
+          }, 
+          "roles": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
           }
-        },
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "number"
+        }
+      }, 
+      "deposit-read": {
+        "type": "object", 
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
+          }, 
+          "roles": {
+            "items": {
+              "type": "number"
+            }, 
+            "type": "array"
           }
         }
       }

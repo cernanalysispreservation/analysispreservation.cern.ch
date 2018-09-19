@@ -35,4 +35,4 @@ from cap.modules.schemas.models import Schema
                     host=JSONSCHEMAS_HOST)
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
-    return Schema.get_by_fullstring(path).json
+    return Schema.get_by_fullpath(path).json

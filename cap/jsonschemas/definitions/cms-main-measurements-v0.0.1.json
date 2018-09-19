@@ -1,48 +1,53 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Detector State",
-    "description": "Information concerning the state of the detector",
-    "type": "object",
+  "fullname": "Detector State", 
+  "experiment": "CMS", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Information concerning the state of the detector", 
     "properties": {
-        "description": {
-            "title": "Measurement Description",
-            "type": "string"
-        },
-        "detailed_desciption": {
-            "title": "Detailed Description",
-            "type": "string"
-        },
-        "analysis_code": {
-            "title": "Analysis Code",
-            "type": "string",
-            "x-cap-file": {}
-        },
-        "processing_steps": {
-            "title": "Processing Steps",
-            "type": "array",
+      "signal_event_selection": {
+        "type": "object", 
+        "properties": {
+          "veto": {
             "items": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
-            }
-        },
-        "signal_event_selection": {
-            "title": "Signal Event Selection",
-            "type": "object",
-            "properties": {
-                "physics_objects": {
-                    "title": "Physics Objects",
-                    "type": "array",
-                    "items": {
-                        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-                    }
-                },
-                "veto": {
-                    "title": "Vetos",
-                    "type": "array",
-                    "items": {
-                        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-                    }
-                }
-            }
-        }
-    }
+              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+            }, 
+            "type": "array", 
+            "title": "Vetos"
+          }, 
+          "physics_objects": {
+            "items": {
+              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+            }, 
+            "type": "array", 
+            "title": "Physics Objects"
+          }
+        }, 
+        "title": "Signal Event Selection"
+      }, 
+      "detailed_desciption": {
+        "type": "string", 
+        "title": "Detailed Description"
+      }, 
+      "description": {
+        "type": "string", 
+        "title": "Measurement Description"
+      }, 
+      "processing_steps": {
+        "items": {
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+        }, 
+        "type": "array", 
+        "title": "Processing Steps"
+      }, 
+      "analysis_code": {
+        "x-cap-file": {}, 
+        "type": "string", 
+        "title": "Analysis Code"
+      }
+    }, 
+    "title": "Detector State"
+  }
 }

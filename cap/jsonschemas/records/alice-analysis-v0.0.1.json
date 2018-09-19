@@ -1,13 +1,18 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "properties": {
-  	"analysis_title": {
-      "title": "Analysis Title",
-      "type": "string"
-    },
-    "train_analysis": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/definitions/alice-train-analysis-v0.0.1.json"    
+  "fullname": null, 
+  "experiment": "ALICE", 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "analysis_title": {
+        "type": "string", 
+        "title": "Analysis Title"
+      }, 
+      "train_analysis": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/alice-train-analysis-v0.0.1.json"
+      }
     }
-  }   
+  }
 }

@@ -1,28 +1,41 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "jq Scheduler",
-  "id": "jq-stage",
-  "additionalProperties": true,
-  "properties": {
-    "scheduler_type": {
-      "type": "string",
-      "enum": [
-        "jq-stage"
-      ],
-      "default": "jq-stage"
-    },
-    "bindings": {"type": "object"},
-    "stepscript": {
-      "type": "string",
-      "default": "[.]"
-    },
-    "postscript": {
-      "type": "string",
-      "default": "."
-    },
-    "step": { "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#" },
-    "workflow": {"$ref":"https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"}
-  },
-  "required": ["scheduler_type"]
+  "fullname": "jq Scheduler", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "jq Scheduler", 
+    "required": [
+      "scheduler_type"
+    ], 
+    "properties": {
+      "workflow": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"
+      }, 
+      "stepscript": {
+        "default": "[.]", 
+        "type": "string"
+      }, 
+      "postscript": {
+        "default": ".", 
+        "type": "string"
+      }, 
+      "step": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
+      }, 
+      "bindings": {
+        "type": "object"
+      }, 
+      "scheduler_type": {
+        "default": "jq-stage", 
+        "enum": [
+          "jq-stage"
+        ], 
+        "type": "string"
+      }
+    }, 
+    "additionalProperties": true, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "jq-stage"
+  }
 }

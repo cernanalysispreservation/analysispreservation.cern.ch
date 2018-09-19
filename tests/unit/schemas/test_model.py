@@ -59,7 +59,18 @@ def test_create_newer_version_of_existing_schema(db):
     assert Schema.query.count() == 2
 
 
-def test_get_by_fullstring(db):
+def test_create_schema_by_fullpath(db):
+    schema = Schema('records/ana1-v1.3.2')
+    db.session.add(schema)
+    db.session.commit()
+
+    assert schema.name == 'records/ana1'
+    assert schema.major == 1 
+    assert schema.minor == 3
+    assert schema.patch == 2
+
+
+def test_get_by_fullpath(db):
     schema = Schema(**{'name': 'records/ana1',
                        'major': 1,
                        'minor': 0,
@@ -72,17 +83,17 @@ def test_get_by_fullstring(db):
     db.session.add(schema2)
     db.session.commit()
 
-    assert Schema.get_by_fullstring('https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullstring('records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullstring('https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
-    assert Schema.get_by_fullstring('deposits/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullstring('/deposits/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullstring('/deposits/records/ana2-v2.1.1') == schema2
+    assert Schema.get_by_fullpath('https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
+    assert Schema.get_by_fullpath('records/ana1-v1.0.1.json') == schema
+    assert Schema.get_by_fullpath('https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
+    assert Schema.get_by_fullpath('deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullpath('/deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullpath('/deposits/records/ana2-v2.1.1') == schema2
 
 
-def test_get_by_fullstring_when_non_existing_raise_SchemaDoesNotExist(db):
+def test_get_by_fullpath_when_non_existing_raise_SchemaDoesNotExist(db):
     with raises(SchemaDoesNotExist):
-        Schema.get_by_fullstring('/non-existing/schema/ana2-v2.1.1')
+        Schema.get_by_fullpath('/non-existing/schema/ana2-v2.1.1')
 
 
 def test_get_latest_version_of_schema(db):
@@ -100,6 +111,11 @@ def test_get_latest_version_of_schema(db):
     latest = Schema.get_latest(name='name')
 
     assert latest.version == "2.4.3"
+
+
+def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_SchemaDoesNotExist(db):
+    with raises(SchemaDoesNotExist):
+        Schema.get_latest(name='non-existing')
 
 
 @mark.parametrize("schema_params,index_name", [

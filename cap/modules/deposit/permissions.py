@@ -121,7 +121,7 @@ class CreateDepositPermission(Permission):
     def _get_schema_needs(self, deposit):
         if '$schema' in deposit:
             try:
-                schema = Schema.get_by_fullstring(deposit['$schema'])
+                schema = Schema.get_by_fullpath(deposit['$schema'])
             except SchemaDoesNotExist:
                 raise WrongJSONSchemaError('Schema {} doesnt exist.'.
                                            format(deposit['$schema']))

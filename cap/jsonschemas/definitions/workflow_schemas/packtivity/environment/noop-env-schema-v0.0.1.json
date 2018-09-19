@@ -1,17 +1,24 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Noop Environment for Testing",
-  "id": "noop-env",
-  "properties": {
-    "environment_type": {
-      "type": "string",
-      "enum":["noop-env"],
-      "default":"noop-env"
-    }
-  },
-  "additionalProperties": false,
-  "required": [
-    "environment_type"
-  ]
+  "fullname": "Noop Environment for Testing", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Noop Environment for Testing", 
+    "required": [
+      "environment_type"
+    ], 
+    "properties": {
+      "environment_type": {
+        "default": "noop-env", 
+        "enum": [
+          "noop-env"
+        ], 
+        "type": "string"
+      }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "noop-env"
+  }
 }

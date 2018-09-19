@@ -1,39 +1,44 @@
 {
-    "basic_info": {
-        "ui:object": "accordionObjectField",
-        "ui:order": [
-            "analysis_title",
-            "glance_id",
-            "abstract",
-            "people_info"
-        ],
-        "people_info": {
-            "items":{
-                "name":{
-                    "ui:options": {
-                        "autofill_from": "/api/orcid?name=",
-                        "autofill_fields": [
-                            [
-                                [
-                                    "orcid"
-                                ],
-                                [ 
-                                    "basic_info",
-                                    "people_info",
-                                    "#",
-                                    "orcid"
-                                ]
-                            ]
-                        ]
-                    }
-                }
-            }
-        }
-    },
+  "fullname": null, 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": {
     "input_datasets": {
-        "ui:array": "AccordionArrayField"
-    },
+      "ui:array": "AccordionArrayField"
+    }, 
     "publications": {
-        "ui:array": "AccordionArrayField"
+      "ui:array": "AccordionArrayField"
+    }, 
+    "basic_info": {
+      "ui:order": [
+        "analysis_title", 
+        "glance_id", 
+        "abstract", 
+        "people_info"
+      ], 
+      "people_info": {
+        "items": {
+          "name": {
+            "ui:options": {
+              "autofill_from": "/api/orcid?name=", 
+              "autofill_fields": [
+                [
+                  [
+                    "orcid"
+                  ], 
+                  [
+                    "basic_info", 
+                    "people_info", 
+                    "#", 
+                    "orcid"
+                  ]
+                ]
+              ]
+            }
+          }
+        }
+      }, 
+      "ui:object": "accordionObjectField"
     }
+  }
 }

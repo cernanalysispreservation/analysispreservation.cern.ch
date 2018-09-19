@@ -1,11 +1,16 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "object",
-  "title": "Internal Discussion",
-  "properties": {
-    "url": {
-      "title": "URL",
-      "type": "string"
-    }
+  "fullname": "Internal Discussion", 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "url": {
+        "type": "string", 
+        "title": "URL"
+      }
+    }, 
+    "title": "Internal Discussion"
   }
 }

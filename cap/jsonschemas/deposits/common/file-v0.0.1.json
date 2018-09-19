@@ -1,25 +1,30 @@
 {
-  "type": "array",
-  "items": {
-    "type": "object",
-    "description": "Describe information needed for files in records.",
-    "properties": {
-      "bucket": {
-        "type": "string"
-      },
-      "version_id": {
-        "type": "string"
-      },
-      "key": {
-        "type": "string"
-      },
-      "type": {
-        "type": "string",
-        "description": "File type extension."
-      },
-      "size": {
-        "type": "integer"
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": {
+    "items": {
+      "type": "object", 
+      "description": "Describe information needed for files in records.", 
+      "properties": {
+        "type": {
+          "type": "string", 
+          "description": "File type extension."
+        }, 
+        "bucket": {
+          "type": "string"
+        }, 
+        "key": {
+          "type": "string"
+        }, 
+        "version_id": {
+          "type": "string"
+        }, 
+        "size": {
+          "type": "integer"
+        }
       }
-    }
+    }, 
+    "type": "array"
   }
 }

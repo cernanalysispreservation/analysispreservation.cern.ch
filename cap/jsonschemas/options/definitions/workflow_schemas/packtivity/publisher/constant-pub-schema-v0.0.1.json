@@ -1,29 +1,34 @@
-[
+{
+  "fullname": null, 
+  "experiment": null, 
+  "partial": true, 
+  "jsonschema": [
     {
-        "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish.publish_type",
-        "type": "select",
-        "title": "Process Type",
-        "placeholder": "Select sub-schema to use",
-        "titleMap": [
-          {
-            "value": "-1",
-            "name": "Select a Process Type"
-          },
-          {
-            "value": "0",
-            "name": "shallow-primitive-schema-v0.0.1.json"
-          }
-        ]
-    },
+      "titleMap": [
+        {
+          "name": "Select a Process Type", 
+          "value": "-1"
+        }, 
+        {
+          "name": "shallow-primitive-schema-v0.0.1.json", 
+          "value": "0"
+        }
+      ], 
+      "placeholder": "Select sub-schema to use", 
+      "type": "select", 
+      "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish.publish_type", 
+      "title": "Process Type"
+    }, 
     {
-        "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish",
-        "type": "fieldset",
-        "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publish']['publish_type'] == 0",
-        "items": [
-            {
-                "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish.value",
-                "type": "string"
-            }
-        ]
+      "items": [
+        {
+          "type": "string", 
+          "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish.value"
+        }
+      ], 
+      "type": "fieldset", 
+      "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publish']['publish_type'] == 0", 
+      "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish"
     }
-]
+  ]
+}

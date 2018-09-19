@@ -1,51 +1,56 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "ATLAS Workflows",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "_deposit": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
-    },
-    "_buckets": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-    },
-    "_files": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
-    },
-    "_access": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
-    },
-    "$ana_type": {
-      "type": "string"
-    },
-    "_experiment": {
-      "type": "string"
-    },
-    "$schema": {
-      "type": "string"
-    },
-    "general_title": {
-      "type": "string"
-    },
-    "control_number": {
-      "type": "string"
-    },
-    "basic_info": {
-      "type": "object",
-      "title": "Basic Info",
-      "properties": {
-        "analysis_title": {
-          "title": "Analysis Title",
-          "type": "string"
-        }
+  "fullname": "ATLAS Workflows", 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": {
+    "title": "ATLAS Workflows", 
+    "required": [
+      "workflows"
+    ], 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "properties": {
+      "_buckets": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+      }, 
+      "control_number": {
+        "type": "string"
+      }, 
+      "workflows": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
+      }, 
+      "_files": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+      }, 
+      "basic_info": {
+        "type": "object", 
+        "properties": {
+          "analysis_title": {
+            "type": "string", 
+            "title": "Analysis Title"
+          }
+        }, 
+        "title": "Basic Info"
+      }, 
+      "$ana_type": {
+        "type": "string"
+      }, 
+      "_experiment": {
+        "type": "string"
+      }, 
+      "_access": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+      }, 
+      "_deposit": {
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+      }, 
+      "$schema": {
+        "type": "string"
+      }, 
+      "general_title": {
+        "type": "string"
       }
-    },
-    "workflows": {
-      "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
     }
-  },
-  "required": [
-    "workflows"
-  ]
+  }
 }

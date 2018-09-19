@@ -1,62 +1,67 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "type": "array",
-  "title": "Inputs",
-  "id": "yadage_stage",
-  "additionalProperties": false,
-  "items": {
-    "type": "object",
-    "properties": {
-      "title": {
-        "title": "Name",
-        "type": "string"
-      },
-      "files": {
-        "title": "Files",
-        "type": "object",
-        "properties": {
-          "data_inputfiles": {
-            "type": "array",
-            "title": "Data Input Files",
-            "items": {
-              "type": "string"
-            }
-          },
-          "signal_mcweight": {
-            "type": "number",
-            "title": "Signal MC Weight"
-          },
-          "signal_inputfiles": {
-            "type": "array",
-            "title": "Signal Input Files",
-            "items": {
-              "type": "string"
-            }
-          },
-          "bkg_mcinfo": {
-            "type": "array",
-            "title": "Background MC Info",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "weight": {
-                  "type": "number"
-                },
-                "inputfiles": {
-                  "type": "array",
-                  "title": "Background Input Files",
-                  "items": {
+  "fullname": "Inputs", 
+  "experiment": "ATLAS", 
+  "partial": true, 
+  "jsonschema": {
+    "title": "Inputs", 
+    "items": {
+      "type": "object", 
+      "properties": {
+        "files": {
+          "type": "object", 
+          "properties": {
+            "data_inputfiles": {
+              "items": {
+                "type": "string"
+              }, 
+              "type": "array", 
+              "title": "Data Input Files"
+            }, 
+            "signal_inputfiles": {
+              "items": {
+                "type": "string"
+              }, 
+              "type": "array", 
+              "title": "Signal Input Files"
+            }, 
+            "signal_mcweight": {
+              "type": "number", 
+              "title": "Signal MC Weight"
+            }, 
+            "bkg_mcinfo": {
+              "items": {
+                "type": "object", 
+                "properties": {
+                  "inputfiles": {
+                    "items": {
+                      "type": "string"
+                    }, 
+                    "type": "array", 
+                    "title": "Background Input Files"
+                  }, 
+                  "name": {
                     "type": "string"
+                  }, 
+                  "weight": {
+                    "type": "number"
                   }
                 }
-              }
+              }, 
+              "type": "array", 
+              "title": "Background MC Info"
             }
-          }
+          }, 
+          "title": "Files"
+        }, 
+        "title": {
+          "type": "string", 
+          "title": "Name"
         }
       }
-    }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "array", 
+    "id": "yadage_stage"
   }
 }
