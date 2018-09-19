@@ -34,13 +34,15 @@ from cap.modules.deposit.permissions import (CreateDepositPermission,
                                              DeleteDepositPermission,
                                              ReadDepositPermission,
                                              UpdateDepositPermission)
-from cap.modules.oauthclient.contrib.cern import (account_info, account_setup,
-                                                  disconnect_handler)
+
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
 from cap.modules.records.permissions import record_read_permission_factory
 from cap.modules.records.search import cap_record_search_factory
 from cap.modules.search.facets import nested_filter
+
+from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 
 
 def _(x):
@@ -166,6 +168,11 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-qa.web.cern.ch',
     'analysispreservation-qa.cern.ch'
 ]
+
+
+if os.environ.get('DEV_HOST', False):
+    APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
+
 
 # OAI-PMH
 # =======
@@ -524,33 +531,21 @@ CERN_APP_CREDENTIALS = {
     'consumer_secret': os.environ.get('INVENIO_CERN_APP_CREDENTIALS_SECRET')
 }
 
-# OAUTHCLIENT_REMOTE_APPS = {'cern': cern.REMOTE_APP}
-
-OAUTHCLIENT_REMOTE_APPS = {
-    'cern': dict(
-        title='CERN',
-        description='Connecting to CERN Organization.',
-        icon='',
+# Update CERN OAuth handlers - due to REST - mostly only redirect urls
+# and error flashing
+CERN_REMOTE_APP.update(dict(
         authorized_handler=authorized_signup_handler,
         disconnect_handler=disconnect_handler,
-        signup_handler=dict(
-            info=account_info,
-            setup=account_setup,
-            view=signup_handler,
-        ),
-        params=dict(
-            base_url='https://oauth.web.cern.ch/',
-            request_token_url=None,
-            access_token_url='https://oauth.web.cern.ch/OAuth/Token',
-            access_token_method='POST',
-            authorize_url='https://oauth.web.cern.ch/OAuth/Authorize',
-            app_key='CERN_APP_CREDENTIALS',
-            content_type='application/json',
-            request_token_params={'scope': 'Name Email Bio Groups',
-                                  'show_login': 'true'}
-        )
-    )
-}
+    ))
+
+CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
+
+#: Defintion of OAuth client applications.
+OAUTHCLIENT_REMOTE_APPS = dict(
+    cern=CERN_REMOTE_APP,
+)
+
+
 #: OAuth login template.
 # OAUTHCLIENT_LOGIN_USER_TEMPLATE = 'access/login_user.html'
 
