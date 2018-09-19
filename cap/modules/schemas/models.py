@@ -37,7 +37,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import JSONType
 
 from .errors import SchemaDoesNotExist
-from .permissions import SchemaReadAction
+from .permissions import ReadSchemaPermission, SchemaReadAction
 
 
 class Schema(db.Model):
@@ -97,12 +97,12 @@ class Schema(db.Model):
 
     @property
     def index_name(self):
-        """."""
+        """Get index name."""
         return "{}-v{}".format(self.name.replace('/', '-'), self.version)
 
     @property
     def aliases(self):
-        """."""
+        """Get ES aliases names."""
         aliases = []
         if self.name.startswith('deposits'):
             aliases = ['deposits', 'deposits-records']
@@ -111,7 +111,7 @@ class Schema(db.Model):
         return aliases
 
     def add_read_access(self, role):
-        """."""
+        """Give read access to egroup."""
         db.session.add(
             ActionRoles.allow(
                 SchemaReadAction(self.id),
@@ -151,28 +151,14 @@ class Schema(db.Model):
             raise SchemaDoesNotExist
 
     @classmethod
-    def get_schemas(cls):
-        """Get available schemas."""
-        available_schemas = cls.query.filter(cls.experiment.isnot(
-            None), cls.name.startswith('deposits/records')).all()
+    def get_user_deposit_schemas(cls):
+        """Return all deposits schemas that are not partial and user has access to."""
+        schemas = cls.query.filter(
+            cls.partial.isnot(True),
+            cls.name.startswith('deposits/records')
+        ).all()
 
-        return ["{}-v{}.{}.{}.json".format(
-            i.name, i.major, i.minor, i.patch)
-            for i in available_schemas]
-
-    @classmethod
-    def get_experiments(cls):
-        """Get available experiments."""
-        experiments = cls.query.filter(cls.experiment.isnot(
-            None), cls.name.startswith('deposits/records')).all()
-
-        return [exp.experiment for exp in experiments]
-
-    @classmethod
-    def get_results(cls):
-        """Return all rows with schemas."""
-        return cls.query.filter(cls.experiment.isnot(None),
-                                cls.name.startswith('deposits/records')).all()
+        return [x for x in schemas if ReadSchemaPermission(x).can()]
 
     @staticmethod
     def _parse_fullpath(string):
@@ -188,7 +174,7 @@ class Schema(db.Model):
 
 @event.listens_for(Schema, 'after_insert')
 def after_insert_schema(target, value, initiator):
-    """."""
+    """On schema insert, create corresponding indexes and aliases in ES."""
     if not initiator.partial:
         # invenio search needs it
         current_search.mappings[initiator.index_name] = {}
@@ -213,7 +199,7 @@ def after_insert_schema(target, value, initiator):
 
 @event.listens_for(Schema, 'after_delete')
 def before_delete_schema(mapper, connect, target):
-    """."""
+    """On schema delete, delete corresponding indexes and aliases in ES."""
     if es.indices.exists(target.index_name):
         es.indices.delete(target.index_name)
 

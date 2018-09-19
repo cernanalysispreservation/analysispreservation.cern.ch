@@ -22,35 +22,42 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Utils for Schemas module."""
 
-from invenio_db import db
+"""CAP Schema permissions."""
 
-from .errors import SchemaDoesNotExist
-from .models import Schema
+from functools import partial
+
+from flask import current_app
+from invenio_access.factory import action_factory
+from invenio_access.permissions import ParameterizedActionNeed, Permission
+
+SchemaReadAction = action_factory(
+    'schema-object-read', parameter=True)
+
+SchemaReadActionNeed = partial(ParameterizedActionNeed, 'schema-object-read')
 
 
-def add_or_update_schema(fullpath=None, data=None):
-    """Add or update schema by fullpath, e.g. records/ana1-v0.0.1.json."""
-    try:
-        schema = Schema.get_by_fullpath(fullpath)
-        schema.experiment = data.get('experiment', None)
-        schema.fullname = data.get('fullname', None)
-        schema.partial = data.get('partial', False)
-        schema.json = data['jsonschema']
+class ReadSchemaPermission(Permission):
+    """Schema read permission."""
 
-        print('{} updated.'.format(fullpath))
+    def __init__(self, schema):
+        """Initialize state.
 
-    except SchemaDoesNotExist:
-        schema = Schema(fullpath=fullpath,
-                        experiment=data.get('experiment', None),
-                        fullname=data.get('fullname', None),
-                        partial=data.get('partial', False),
-                        json=data['jsonschema']
-                        )
+        Read access for:
 
-        db.session.add(schema)
+        * all members of experiment assigned to schema
+        * all users/roles assigned to schema-object-read action
 
-        print('{} added.'.format(fullpath))
+        """
+        _needs = set()
 
-    db.session.commit()
+        _needs.add(SchemaReadActionNeed(schema.id))
+
+        # experiments members can access schema
+        exp_needs = current_app.config['CAP_COLLAB_EGROUPS']
+        if schema.experiment in exp_needs:
+            _needs.update(exp_needs[schema.experiment])
+
+        self._needs = _needs
+
+        super(ReadSchemaPermission, self).__init__(*_needs)

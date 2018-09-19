@@ -27,13 +27,12 @@
 
 from functools import partial
 
-from flask import current_app, g, request
+from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
-from cap.modules.schemas.permissions import SchemaReadActionNeed
-from cap.utils import obj_or_import_string
+from cap.modules.schemas.permissions import ReadSchemaPermission
 
 from .errors import WrongJSONSchemaError
 
@@ -108,11 +107,10 @@ class CreateDepositPermission(Permission):
 
     def __init__(self, record):
         """Initialize state."""
-        # Get payload and pass it as record to get the '$schema'
-        record = request.get_json(force=True)
-
         _needs = set()
-        _needs.add(self._get_schema_needs(record))
+
+        data = request.get_json(force=True)
+        _needs.update(self._get_schema_needs(data))
 
         self._needs = _needs
 
@@ -138,7 +136,7 @@ class CreateDepositPermission(Permission):
             raise WrongJSONSchemaError(
                 'You have to specify either $schema or $ana_type')
 
-        return SchemaReadActionNeed(schema.id)
+        return ReadSchemaPermission(schema).needs
 
 
 class ReadDepositPermission(DepositPermission):

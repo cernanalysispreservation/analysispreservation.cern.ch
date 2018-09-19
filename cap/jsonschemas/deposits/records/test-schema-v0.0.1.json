@@ -1,6 +1,6 @@
 {
   "fullname": "Test schema.",
-  "experiment": "CMS",
+  "experiment": null,
   "partial": true,
   "jsonschema": {
     "description": "Describe information needed for deposit module.",
@@ -21,8 +21,9 @@
             "title": "Select"
           },
           "_buckets": {
-            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-          }, 
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+          },
           "array_of_strings": {
             "items": {
               "type": "string"

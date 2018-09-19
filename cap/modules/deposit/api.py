@@ -345,7 +345,7 @@ class CAPDeposit(Deposit):
 
     def _set_experiment(self):
         schema = Schema.get_by_fullpath(self['$schema'])
-        self['_experiment'] = schema.experiment or 'None'
+        self['_experiment'] = schema.experiment
         self.commit()
 
     def _create_buckets(self):

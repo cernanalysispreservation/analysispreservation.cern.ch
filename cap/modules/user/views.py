@@ -26,7 +26,6 @@
 
 from __future__ import absolute_import, print_function
 
-
 import ldap
 import requests
 from flask import Blueprint, current_app, jsonify, request, session
@@ -35,13 +34,13 @@ from flask_principal import Permission
 from flask_security.utils import verify_password
 from flask_security.views import logout
 from invenio_accounts.models import Role
-
 from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.experiments.permissions import collaboration_permissions
 from cap.modules.schemas.models import Schema
+from cap.modules.schemas.permissions import ReadSchemaPermission
 from cap.utils import obj_or_import_string
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -90,20 +89,14 @@ def get_user_experiments():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    deposit_groups = Schema.get_results()
-    user_deposit_groups = []
-    for obj in deposit_groups:
-        permission = current_app.config.get(
-            'EXPERIMENT_PERMISSION', {})[obj.experiment]
-        needs = obj_or_import_string(permission)
-        if Permission(*needs).can():
-            group_data = {}
-            group_data['name'] = obj.fullname
-            group_data['deposit_group'] = obj.name.replace(
-                'deposits/records/', '')
-            user_deposit_groups.append(group_data)
+    schemas = Schema.get_user_deposit_schemas()
 
-    return user_deposit_groups
+    dep_groups = [{
+        'name': schema.fullname,
+        'deposit_group': schema.name.replace('deposits/records/', '')                
+    } for schema in schemas]
+
+    return dep_groups
 
 
 LDAP_USER_RESP_FIELDS = [

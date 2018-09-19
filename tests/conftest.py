@@ -94,6 +94,7 @@ def default_config():
         CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
         CELERY_RESULT_BACKEND='cache',
         SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
+        ACCESS_CACHE=None,
         TESTING=True,
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
@@ -111,7 +112,7 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture
+@pytest.yield_fixture(scope='function')
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
