@@ -25,10 +25,9 @@
 
 """CAP generic permissions."""
 
-from invenio_access.permissions import DynamicPermission
-
 from flask import current_app
 from flask_principal import RoleNeed
+from invenio_access.permissions import Permission, superuser_access
 
 
 def admin_permission_factory(view):
@@ -41,7 +40,5 @@ def admin_permission_factory(view):
         protected.
     :returns: Permission instance.
     """
-    admin_needs = set([RoleNeed('admin_superuser')]) | \
-        set([g for g in current_app.config['SUPERUSER_EGROUPS']])
 
-    return DynamicPermission(*admin_needs)
+    return Permission(superuser_access)
