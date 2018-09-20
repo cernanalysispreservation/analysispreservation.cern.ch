@@ -126,8 +126,9 @@ class CreateDepositPermission(Permission):
 
         elif '$ana_type' in deposit:
             try:
-                schema = Schema.get_latest('deposits/records/{}'.format(
-                    deposit['$ana_type']))
+                schema = Schema.get_latest(
+                    'deposits/records/{}'.format(deposit['$ana_type'])
+                )
             except SchemaDoesNotExist:
                 raise WrongJSONSchemaError('Schema with name {} doesnt exist.'.
                                            format(deposit['$ana_type']))

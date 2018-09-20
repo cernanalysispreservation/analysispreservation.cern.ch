@@ -184,7 +184,6 @@ def test_create_deposit_when_passed_empty_data_returns_400(app,
         assert resp.json['message'] == "You have to specify either $schema or $ana_type"
 
 
-@mark.skip
 def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version_of_ana_type(app,
                                                                                              location,
                                                                                              create_schema,
@@ -192,16 +191,16 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
                                                                                              auth_headers_for_superuser,
                                                                                              json_headers):
     create_schema('deposits/records/test-schema-v1.0.0')
-    create_schema('deposits/records/test-schema-v2.0.0')
-    metadata = {
-        '$ana_type': 'test-schema'
-    }
+    latest = create_schema('deposits/records/test-schema-v2.0.0')
+    metadata = {'$ana_type': 'test-schema'}
 
     with app.test_client() as client:
-        resp = client.post('/deposits/', headers=auth_headers_for_superuser + json_headers,
+        resp = client.post('/deposits/',
+                           headers=auth_headers_for_superuser + json_headers,
                            data=json.dumps(metadata))
 
         assert resp.status_code == 201
+        assert resp.json['metadata']['$schema'] == latest.fullpath
 
 
 def test_create_deposit_set_fields_correctly(app,

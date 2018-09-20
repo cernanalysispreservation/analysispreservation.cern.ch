@@ -38,18 +38,17 @@ from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_deposit.api import Deposit, index, preserve
-from invenio_deposit.scopes import write_scope
-from invenio_deposit.utils import check_oauth2_scope, mark_as_action
+from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
-from invenio_records_rest.views import need_record_permission
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
 
 from .errors import DepositValidationError, UpdateDepositPermissionsError
@@ -366,6 +365,8 @@ class CAPDeposit(Deposit):
 
         Adds bucket creation immediately on deposit creation.
         """
+        data = cls._preprocess_data(data)
+
         cls._validate_data(data)
 
         deposit = super(CAPDeposit, cls).create(data, id_=id_)
@@ -374,6 +375,27 @@ class CAPDeposit(Deposit):
         deposit._init_owner_permissions(owner)
 
         return deposit
+
+    @classmethod
+    def _preprocess_data(cls, data):
+
+        # data can be sent without specifying particular version of schema,
+        # but just with a type, e.g. cms-analysis
+        # this be resolved to the last version of deposit schema of this type
+        if '$ana_type' in data:
+            try:
+                schema = Schema.get_latest(
+                    'deposits/records/{}'.format(data['$ana_type'])
+                )
+            except SchemaDoesNotExist:
+                raise DepositValidationError(
+                    'Schema {} is not a valid deposit schema.'
+                    .format(data['$ana_type']))
+
+            data['$schema'] = schema.fullpath
+            data.pop('$ana_type')
+
+        return data
 
     @classmethod
     def _validate_data(cls, data):
