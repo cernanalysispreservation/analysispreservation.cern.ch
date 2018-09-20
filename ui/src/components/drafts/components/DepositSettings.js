@@ -42,8 +42,15 @@ class DepositSettings extends React.Component {
     this.props.getPermissions(this.props.match.params.draft_id);
   }
 
-  onSuggestionsFetchRequested = event => {
-    let value = event.target.value;
+  fetchLdapData = _.debounce(url => {
+    axios.get(url).then(({ data }) => {
+      this.setState({
+        suggestions: data
+      });
+    });
+  }, 500);
+
+  onSuggestionsFetchRequested = value => {
     this.setState({
       inputValue: value
     });
@@ -52,11 +59,7 @@ class DepositSettings extends React.Component {
       this.state.type === "user"
         ? `/api/ldap/user/mail?query=${value}`
         : `/api/ldap/egroup/mail?query=${value}&sf=mail`;
-    axios.get(url).then(({ data }) => {
-      this.setState({
-        suggestions: data
-      });
-    });
+    this.fetchLdapData(url);
   };
 
   handleChange = event => {
@@ -106,7 +109,7 @@ class DepositSettings extends React.Component {
                 <RadioButton
                   id="user"
                   name="user"
-                  label="User"
+                  label="User email"
                   value="user"
                   checked={this.state.type === "user"}
                   onChange={this.handleChange}
@@ -114,7 +117,7 @@ class DepositSettings extends React.Component {
                 <RadioButton
                   id="egroup"
                   name="egroup"
-                  label="Egroup"
+                  label="Egroup email"
                   value="egroup"
                   checked={this.state.type === "egroup"}
                   onChange={this.handleChange}
@@ -124,11 +127,11 @@ class DepositSettings extends React.Component {
                 <Box size="medium">
                   <FormField>
                     <TextInput
-                      placeHolder={`Type ${
-                        this.state.type
-                      } email to  ADD access rights`}
+                      placeHolder={`Type to  ADD access rights`}
                       value={this.state.inputValue}
-                      onDOMChange={this.onSuggestionsFetchRequested}
+                      onDOMChange={e =>
+                        this.onSuggestionsFetchRequested(e.target.value)
+                      }
                       onSelect={this.onSuggestionSelect}
                       suggestions={this.state.suggestions}
                     />

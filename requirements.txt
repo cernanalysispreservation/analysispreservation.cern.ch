@@ -85,7 +85,7 @@ invenio-logging==1.0.0    # via invenio
 invenio-mail==1.0.1       # via invenio, invenio-oauthclient
 invenio-oaiserver==1.0.0  # via invenio
 invenio-oauth2server==1.0.1  # via invenio, invenio-accounts-rest
-invenio-oauthclient==1.0.0
+git+git://github.com/cernanalysispreservation/invenio-oauthclient.git@master#egg=invenio-oauthclient
 invenio-pidstore==1.0.0   # via invenio, invenio-indexer, invenio-oaiserver, invenio-records-rest, invenio-records-ui
 invenio-query-parser==0.6.0
 invenio-records-rest==1.1.0  # via invenio

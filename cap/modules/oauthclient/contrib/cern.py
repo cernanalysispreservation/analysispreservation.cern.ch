@@ -24,7 +24,8 @@
 
 """Overriding remote application methods for CERN OAuth contrib."""
 
-from flask import current_app, g, redirect, session
+from flask import current_app, redirect
+from flask_login import current_user
 
 
 def disconnect_handler(remote, *args, **kwargs):
