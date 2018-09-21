@@ -3,21 +3,21 @@
 from elasticsearch_dsl import Q
 from flask import abort
 from flask_login import current_user
+# from cap.modules.access.views import get_user_experiments
+from flask_principal import Permission
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
 
-# from cap.modules.access.views import get_user_experiments
-from flask_principal import Permission
-# from cap.config import CAP_COLLAB_EGROUPS, SUPERUSER_EGROUPS
-# from cap.modules.experiments.permissions import collaboration_permissions
+from cap.modules.access.permissions import admin_permission_factory
 
 
 def records_filter(experiments_needs, admin_needs=None):
     """Filter list of deposits."""
     if current_user.is_authenticated:
-        user_experiments = []
-        if admin_needs and Permission(*admin_needs).can():
+        if admin_permission_factory(None).can():
             return Q()
+
+        user_experiments = []
 
         for exp in experiments_needs:
             if Permission(*experiments_needs[exp]).can():

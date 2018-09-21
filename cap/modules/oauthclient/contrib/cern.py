@@ -24,8 +24,20 @@
 
 """Overriding remote application methods for CERN OAuth contrib."""
 
-from flask import current_app, redirect
+from flask import current_app, g, redirect, session
+
 from flask_login import current_user
+from flask_principal import (AnonymousIdentity, identity_changed,
+                             identity_loaded)
+from invenio_access import superuser_access
+from invenio_db import db
+from invenio_oauthclient.contrib.cern import (OAUTHCLIENT_CERN_REFRESH_TIMEDELTA,
+                                              OAUTHCLIENT_CERN_SESSION_KEY,
+                                              account_groups, extend_identity,
+                                              find_remote_by_client_id,
+                                              get_resource)
+from invenio_oauthclient.models import RemoteAccount
+from invenio_oauthclient.utils import oauth_link_external_id
 
 
 def disconnect_handler(remote, *args, **kwargs):
