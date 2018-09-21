@@ -194,15 +194,18 @@ def create_schema(db, es):
         """
         Add new schema into db
         """
+        default_json = {
+            'type': 'object',
+            'additionalProperties': False
+        }
+
         try:
             schema = Schema.get_by_fullpath(schema)
         except SchemaDoesNotExist:
             schema = Schema(
                 fullpath=schema,
                 experiment=experiment,
-                json=json or {
-                    'title': 'string'
-                }
+                json=json or default_json
             )
             db.session.add(schema)
             db.session.commit()
@@ -309,7 +312,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
 
     with db_.session.begin_nested():
 
-        def _create_deposit(user, schema_fullpath, metadata=None):
+        def _create_deposit(user, schema_name, metadata=None):
             """
             Create a new deposit for given user and schema name
             e.g cms-analysis-v0.0.1,
@@ -317,12 +320,12 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             """
             with app.test_request_context():
                 # create schema for record
-                create_schema('records/{}'.format(schema_fullpath))
+                create_schema('records/{}'.format(schema_name))
 
                 # create schema for deposit
-                schema = create_schema('deposits/records/{}'.format(schema_fullpath))
+                schema = create_schema('deposits/records/{}'.format(schema_name))
                 metadata = metadata or minimal_metadata(jsonschemas_host,
-                                                        'deposits/records/{}'.format(schema_fullpath))
+                                                        'deposits/records/{}'.format(schema_name))
                 login_user(user)
                 id_ = uuid4()
                 deposit_minter(id_, metadata)

@@ -30,48 +30,102 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import session
-
+from invenio_accounts.models import Role
 from mock import patch
 from pytest import mark
+
+from cap.modules.deposit.permissions import read_permission_factory
 
 
 ########################################
 # api/deposits/{pid}/actions/permissions [POST]
 ########################################
-def test_permissions_when_user_doesnt_have_update_permissions_returns_403(app,
-                                                                         users,
-                                                                         auth_headers_for_user,
-                                                                         create_deposit,
-                                                                         json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-    cms_user2_headers = auth_headers_for_user(users['cms_user2']) + json_headers
+@mark.parametrize("action", [
+    ("deposit-read"),
+    ("deposit-update")
+])
+def test_permissions_when_user_has_only_read_update_permissions_returns_403(action,
+                                                                            app,
+                                                                            users,
+                                                                            auth_headers_for_user,
+                                                                            create_deposit,
+                                                                            json_headers):
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     permissions = [{
-        'email': users['cms_user2'].email,
+        'email': other_user.email,
         'type': 'user',
         'op': 'add',
-        'action': 'deposit-read'
+        'action': action
     }]
 
     with app.test_client() as client:
-        # cms_user2 will get read permissions, but not write ones
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
-        # so one can't update permissions without deposit-admin permission
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user2_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(other_user) + json_headers,
+                           data=json.dumps([]))
 
         assert resp.status_code == 403
 
 
-def test_permissions_when_user_doesnt_exist(app,
-                                            users,
-                                            auth_headers_for_user,
-                                            create_deposit,
-                                            json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+def test_permissions_when_user_has_admin_access_can_update_permissions(app,
+                                                                       users,
+                                                                       auth_headers_for_user,
+                                                                       create_deposit,
+                                                                       json_headers):
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-admin'
+    }]
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(other_user) + json_headers,
+                           data=json.dumps([]))
+
+        assert resp.status_code == 201
+
+
+def test_permissions_when_superuser_can_update_others_deposits_permissions(app,
+                                                                           users,
+                                                                           auth_headers_for_superuser,
+                                                                           create_deposit,
+                                                                           json_headers):
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-update'
+    }]
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_superuser + json_headers,
+                           data=json.dumps(permissions))
+
+        assert resp.status_code == 201
+
+
+def test_permissions_when_user_doesnt_exist_returns_400(app,
+                                                        users,
+                                                        auth_headers_for_superuser,
+                                                        create_deposit,
+                                                        json_headers):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     permissions = [{
         'email': 'non-existing-user',
         'type': 'user',
@@ -80,11 +134,86 @@ def test_permissions_when_user_doesnt_exist(app,
     }]
 
     with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_superuser + json_headers,
+                           data=json.dumps(permissions))
 
         assert resp.status_code == 400
         assert resp.json['message'] == 'User with this mail does not exist.'
+
+
+def test_permissions_on_add_when_permission_already_exist_returns_400(app,
+                                                                      users,
+                                                                      auth_headers_for_superuser,
+                                                                      create_deposit,
+                                                                      json_headers):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
+
+    with app.test_client() as client:
+
+        permissions = [{
+            'email': owner.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-read'
+        }]
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_superuser + json_headers,
+                           data=json.dumps(permissions))
+
+        assert resp.status_code == 400
+        assert resp.json['message'] == 'Permission already exist.'.format(
+            owner.email)
+
+
+def test_permissions_on_add_when_permission_doesnt_exist_returns_400(app,
+                                                                     users,
+                                                                     auth_headers_for_superuser,
+                                                                     create_deposit,
+                                                                     json_headers):
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
+
+    with app.test_client() as client:
+
+        permissions = [{
+            'email': other_user.email,
+            'type': 'user',
+            'op': 'remove',
+            'action': 'deposit-read'
+        }]
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_superuser + json_headers,
+                           data=json.dumps(permissions))
+
+        assert resp.status_code == 400
+        assert resp.json['message'] == 'Permission does not exist.'
+
+
+@mark.skip
+def test_permissions_when_add_admin_permissions_add_all_the_others_as_well(app,
+                                                                           users,
+                                                                           auth_headers_for_user,
+                                                                           create_deposit,
+                                                                           json_headers):
+    cms_user = users['cms_user']
+    deposit = create_deposit(cms_user, 'test-v1.0.0')
+    cms_user_headers = auth_headers_for_user(cms_user) + json_headers
+
+    with app.test_client() as client:
+
+        permissions = [{
+            'email': cms_user.email,
+            'type': 'user',
+            'op': 'add',
+            'action': 'deposit-admin'
+        }]
+
+        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
+                           headers=cms_user_headers, data=json.dumps(permissions))
 
 
 def test_permissions_add_permissions_for_user(app,
@@ -92,163 +221,114 @@ def test_permissions_add_permissions_for_user(app,
                                               auth_headers_for_user,
                                               create_deposit,
                                               json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-    cms_user2_headers = auth_headers_for_user(users['cms_user2']) + json_headers
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
 
     with app.test_client() as client:
         # owner can see the deposit
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=cms_user_headers)
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 200
 
         # other user cant see the deposit
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=cms_user2_headers)
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
 
         permissions = [{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'add',
             'action': 'deposit-read'
         }]
 
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
         # now other user can see the deposit
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=cms_user2_headers)
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 200
 
         # but other user still can't update the deposit
-        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                          data=json.dumps({}),
-                          headers=([('Content-Type', 'application/json')] + cms_user2_headers))
+        resp = client.put('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
         permissions = [{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'add',
             'action': 'deposit-update'
         }]
 
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
         # now user can update the deposit
-        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                          data=json.dumps({}),
-                          headers=([('Content-Type', 'application/json')] + cms_user2_headers))
+        resp = client.put('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 200
-
-
-def test_permissions_on_add_when_permission_already_exist_returns_400(app,
-                                                                      users,
-                                                                      auth_headers_for_user,
-                                                                      create_deposit,
-                                                                      json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-
-    with app.test_client() as client:
-
-        permissions = [{
-            'email': users['cms_user'].email,
-            'type': 'user',
-            'op': 'add',
-            'action': 'deposit-read'
-        }]
-
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
-
-        assert resp.status_code == 400
-        assert resp.json['message'] == 'Permission already exist.'
-
-
-def test_permissions_on_add_when_permission_doesnt_exist_returns_400(app,
-                                                                     users,
-                                                                     auth_headers_for_user,
-                                                                     create_deposit,
-                                                                     json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-
-    with app.test_client() as client:
-
-        permissions = [{
-            'email': users['cms_user2'].email,
-            'type': 'user',
-            'op': 'remove',
-            'action': 'deposit-read'
-        }]
-
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
-
-        assert resp.status_code == 400
-        assert resp.json['message'] == 'Permission does not exist.'
 
 
 def test_permissions_remove_user_permissions(app,
                                              users,
                                              auth_headers_for_user,
                                              create_deposit,
-                                             prepare_user_permissions_for_request,
-                                             json_headers,
-                                             record_metadata):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
-    cms_user2_headers = auth_headers_for_user(users['cms_user2']) + json_headers
-    test_data = {"$schema": deposit.get('$schema', '')}
+                                             json_headers):
+    owner, other_user = users['cms_user'], users['cms_user2']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
 
     with app.test_client() as client:
         permissions = [{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'add',
             'action': 'deposit-read'
         },{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'add',
             'action': 'deposit-update'
         }]
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
         # user can read/write the deposit
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=cms_user2_headers)
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user) + json_headers)
 
         assert resp.status_code == 200
 
         # remove read/write permissions
         permissions = [{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'remove',
             'action': 'deposit-read'
         },{
-            'email': users['cms_user2'].email,
+            'email': other_user.email,
             'type': 'user',
             'op': 'remove',
             'action': 'deposit-update'
         }]
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
         # user cant read/write the deposit anymore
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=cms_user2_headers)
+        resp = client.get('/deposits/{}'.format(pid),
+                          headers=auth_headers_for_user(other_user) + json_headers)
 
         assert resp.status_code == 403
 
@@ -258,8 +338,8 @@ def test_permissions_when_egroup_doesnt_exist(app,
                                             auth_headers_for_user,
                                             create_deposit,
                                             json_headers):
-    deposit = create_deposit(users['cms_user'], 'cms-analysis-v0.0.1')
-    cms_user_headers = auth_headers_for_user(users['cms_user']) + json_headers
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     permissions = [{
         'email': 'non-existing-egroup',
         'type': 'egroup',
@@ -268,8 +348,9 @@ def test_permissions_when_egroup_doesnt_exist(app,
     }]
 
     with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=cms_user_headers, data=json.dumps(permissions))
+        resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                           headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps(permissions))
 
         assert resp.status_code == 400
         assert resp.json['message'] == 'Egroup with this mail does not exist.'

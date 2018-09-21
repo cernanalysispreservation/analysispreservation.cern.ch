@@ -29,8 +29,8 @@ from __future__ import absolute_import, print_function
 
 import pytest
 
-from cap.modules.deposit.utils import clean_empty_values, discover_schema
 from cap.modules.deposit.errors import WrongJSONSchemaError
+from cap.modules.deposit.utils import clean_empty_values, discover_schema
 
 
 def test_cleaning_of_empty_values():
@@ -92,18 +92,3 @@ def test_cleaning_of_empty_values():
     assert "cms_questionnaire" not in result
     assert "the_best_dream_team" in result
     assert "testing" in result
-
-
-def test_discover_schema_when_ana_type_is_provided(app):
-    test_data = {'$ana_type': 'lhcb'}
-    with app.test_request_context():
-        result = discover_schema(test_data)
-        assert 'records' in result
-        assert 'lhcb-v0.0.1.json' in result
-
-
-def test_discover_schema_when_ana_type_is_not_provided(app):
-    test_data = {}
-    with app.test_request_context():
-        with pytest.raises(WrongJSONSchemaError):
-            discover_schema(test_data)

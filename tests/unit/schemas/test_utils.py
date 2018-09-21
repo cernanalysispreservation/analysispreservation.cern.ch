@@ -10,9 +10,7 @@ def test_add_or_update_schema_when_schema_does_not_exist_create_new_one(db):  # 
     data = {
         'experiment': 'CMS',
         'fullname': 'Test Schema',
-        'jsonschema': {
-            'field': 'string'
-        }
+        'jsonschema': {'field': 'string'}
     }
 
     add_or_update_schema(fullpath='records/ana1-v1.0.2.json',

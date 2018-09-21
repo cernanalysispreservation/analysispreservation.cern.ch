@@ -118,9 +118,9 @@ def test_create_deposit_when_superuser_can_create_deposit(app,
                                                           jsonschemas_host,
                                                           auth_headers_for_superuser,
                                                           json_headers):
-    schema = create_schema('deposits/records/test-schema-v1.0.0') 
+    schema = create_schema('deposits/records/test-analysis-v1.0.0') 
     metadata = {
-        '$schema': 'https://{}/schemas/deposits/records/test-schema-v1.0.0.json'.format(
+        '$schema': 'https://{}/schemas/deposits/records/test-analysis-v1.0.0.json'.format(
             jsonschemas_host),
     }
 
@@ -190,9 +190,9 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
                                                                                              jsonschemas_host,
                                                                                              auth_headers_for_superuser,
                                                                                              json_headers):
-    create_schema('deposits/records/test-schema-v1.0.0')
-    latest = create_schema('deposits/records/test-schema-v2.0.0')
-    metadata = {'$ana_type': 'test-schema'}
+    create_schema('deposits/records/test-analysis-v1.0.0')
+    latest = create_schema('deposits/records/test-analysis-v2.0.0')
+    metadata = {'$ana_type': 'test-analysis'}
 
     with app.test_client() as client:
         resp = client.post('/deposits/',
@@ -211,10 +211,10 @@ def test_create_deposit_set_fields_correctly(app,
                                              auth_headers_for_user,
                                              json_headers):
     owner = users['cms_user']
-    schema = create_schema('deposits/records/test-schema-v1.0.0',
+    schema = create_schema('deposits/records/test-analysis-v1.0.0',
                            experiment='LHCb', roles=['cms-members@cern.ch']) 
     metadata = {
-        '$schema': 'https://{}/schemas/deposits/records/test-schema-v1.0.0.json'.format(
+        '$schema': 'https://{}/schemas/deposits/records/test-analysis-v1.0.0.json'.format(
             jsonschemas_host)
     }
 
@@ -244,3 +244,42 @@ def test_create_deposit_set_fields_correctly(app,
                 'roles': []        
             }
         }
+
+
+def test_create_deposit_when_schema_with_refs_works_correctly(app,
+                                                              location,
+                                                              users,
+                                                              create_schema,
+                                                              jsonschemas_host,
+                                                              auth_headers_for_user,
+                                                              json_headers):
+    owner = users['cms_user']
+    nested_schema = create_schema('nested-schema-v0.0.0', json={
+        'type': 'object',
+        'properties': {
+            'title': {
+                'type': 'string'
+            }
+        }
+    })
+    schema = create_schema('deposits/records/test-analysis-v1.0.0',
+                           experiment='CMS',
+                           json={
+                               'type': 'object',
+                               'properties': {
+                                   'nested': {
+                                       '$ref': nested_schema.fullpath,
+                                   }
+                               }
+                           }) 
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/', headers=auth_headers_for_user(owner) + json_headers,
+                           data=json.dumps({
+                               '$schema': schema.fullpath,
+                               'nested': {
+                                   'title': 'nested'
+                               }
+                           } ))
+
+        assert resp.status_code == 201
