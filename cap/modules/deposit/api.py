@@ -112,7 +112,13 @@ class CAPDeposit(Deposit):
     @property
     def schema(self):
         """Schema property."""
-        return re.search('schemas/(.*)', self['$schema']).group(1)
+        return Schema.get_by_fullpath(self['$schema'])
+
+    @property
+    def record_schema(self):
+        """Convert deposit schema to a valid record schema."""
+        record_schema = self.schema.get_matching_record_schema()
+        return record_schema.fullpath
 
     @mark_as_action
     def permissions(self, pid=None):

@@ -38,15 +38,12 @@ def test_deposit_clone_when_owner_can_clone_his_deposit(app, users,
                                                         json_headers,
                                                         create_deposit):
     owner = users['cms_user']
-    headers_for_owner = auth_headers_for_user(owner)
-    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
 
     with app.test_client() as client:
-        client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=headers_for_owner)
-
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
-                           headers=headers_for_owner)
+                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 201
 
@@ -56,12 +53,10 @@ def test_deposit_clone_when_superuser_can_clone_others_deposits(app, users,
                                                                 json_headers,
                                                                 create_deposit):
     owner = users['cms_user']
-    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
 
     with app.test_client() as client:
-        client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=auth_headers_for_superuser)
-
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
                            headers=auth_headers_for_superuser)
 
@@ -73,17 +68,12 @@ def test_deposit_clone_when_other_user_returns_403(app, users,
                                                    json_headers,
                                                    create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    headers_for_owner = auth_headers_for_user(owner)
-    headers_for_other_user = auth_headers_for_user(other_user)
-
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
 
     with app.test_client() as client:
-        client.post('/deposits/{}/actions/publish'.format(pid),
-                          headers=headers_for_owner)
-
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
-                           headers=headers_for_other_user)
+                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
 
@@ -94,9 +84,8 @@ def test_deposit_clone_when_user_has_only_update_permission_returns_403(app,
                                                                         create_deposit,
                                                                         json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
-    headers_for_owner = auth_headers_for_user(owner)
-    headers_for_other_user = auth_headers_for_user(other_user)
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
@@ -105,15 +94,12 @@ def test_deposit_clone_when_user_has_only_update_permission_returns_403(app,
     }]
 
     with app.test_client() as client:
-        client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=headers_for_owner)
-
         client.post('/deposits/{}/actions/permissions'.format(pid),
-                    headers=headers_for_owner + json_headers,
+                    headers=auth_headers_for_user(owner) + json_headers,
                     data=json.dumps(permissions))
 
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
-                           headers=headers_for_other_user)
+                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
 
@@ -129,9 +115,8 @@ def test_deposit_clone_when_user_has_read_or_admin_permission_can_clone_deposit(
                                                                                 create_deposit,
                                                                                 json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
-    headers_for_owner = auth_headers_for_user(owner)
-    headers_for_other_user = auth_headers_for_user(other_user)
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
@@ -140,15 +125,12 @@ def test_deposit_clone_when_user_has_read_or_admin_permission_can_clone_deposit(
     }]
 
     with app.test_client() as client:
-        client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=headers_for_owner)
-
         client.post('/deposits/{}/actions/permissions'.format(pid),
-                    headers=headers_for_owner + json_headers,
+                    headers=auth_headers_for_user(owner) + json_headers,
                     data=json.dumps(permissions))
 
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
-                           headers=headers_for_other_user)
+                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 201
 
@@ -158,16 +140,13 @@ def test_deposit_clone_works_correctly(app, users,
                                        json_headers,
                                        create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    headers = auth_headers_for_user(owner)
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
 
     with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=headers)
-
         resp = client.post('/deposits/{}/actions/clone'.format(pid),
-                                     headers=headers)
-        cloned = json.loads(resp.data)
+                                     headers=auth_headers_for_user(owner))
+        cloned = resp.json
 
         assert resp.status_code == 201
         assert 'cloned_from' in cloned['metadata']['_deposit']

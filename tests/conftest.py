@@ -48,6 +48,7 @@ from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
+from invenio_indexer.api import RecordIndexer
 from invenio_oauth2server.models import Client, Token
 from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
@@ -195,8 +196,9 @@ def create_schema(db, es):
         Add new schema into db
         """
         default_json = {
-            'type': 'object',
-            'additionalProperties': False
+            'title': {
+                'type': 'string'
+            }
         }
 
         try:
@@ -312,7 +314,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
 
     with db_.session.begin_nested():
 
-        def _create_deposit(user, schema_name, metadata=None):
+        def _create_deposit(user, schema_name, metadata=None, experiment=None, publish=False):
             """
             Create a new deposit for given user and schema name
             e.g cms-analysis-v0.0.1,
@@ -320,10 +322,12 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             """
             with app.test_request_context():
                 # create schema for record
-                create_schema('records/{}'.format(schema_name))
+                create_schema('records/{}'.format(schema_name), 
+                              experiment='CMS')
 
                 # create schema for deposit
-                schema = create_schema('deposits/records/{}'.format(schema_name))
+                schema = create_schema('deposits/records/{}'.format(schema_name), 
+                                       experiment=experiment)
                 metadata = metadata or minimal_metadata(jsonschemas_host,
                                                         'deposits/records/{}'.format(schema_name))
                 login_user(user)
@@ -331,9 +335,16 @@ def create_deposit(app, db, es, location, jsonschemas_host,
                 deposit_minter(id_, metadata)
                 deposit = Deposit.create(metadata, id_=id_)
 
+            if publish:
+                deposit.publish()
+                _, record = deposit.fetch_published()
+                RecordIndexer().index(record)
+
+                current_search.flush_and_refresh('records')
+
             current_search.flush_and_refresh(schema.index_name)
 
-            return deposit
+            return Deposit.get_record(deposit.id)
 
     yield _create_deposit
 

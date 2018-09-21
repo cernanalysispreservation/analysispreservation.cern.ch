@@ -110,8 +110,22 @@ class Schema(db.Model):
             aliases = ['records']
         return aliases
 
+    def get_matching_record_schema(self):
+        """For given deposit schema, get record one."""
+        name = self.name.replace('deposits/', '')
+        try:
+            return Schema.query \
+                .filter_by(name=name,
+                           major=self.major,
+                           minor=self.minor,
+                           patch=self.patch)\
+                .one()
+        except NoResultFound:
+            raise SchemaDoesNotExist
+
     def add_read_access(self, role):
         """Give read access to egroup."""
+        # @TODO make possible to give access also to users
         db.session.add(
             ActionRoles.allow(
                 SchemaReadAction(self.id),
