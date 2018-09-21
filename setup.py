@@ -172,10 +172,7 @@ setup(
         ],
         'invenio_config.module': [
             'cap = cap.config',
-        ],
-        # 'invenio_i18n.translations': [
-        #     'messages = cap',
-        # ]
+        ]
     },
     extras_require=extras_require,
     install_requires=install_requires,

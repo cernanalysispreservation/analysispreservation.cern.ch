@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 
 import copy
 import re
+
 from copy import deepcopy
 
 import requests
@@ -36,6 +37,7 @@ from flask import current_app, request
 from werkzeug.local import LocalProxy
 
 from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.models import Schema
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
@@ -51,6 +53,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
 from .errors import DepositValidationError, UpdateDepositPermissionsError
+
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (DepositAdminActionNeed, DepositReadActionNeed,
@@ -334,11 +337,12 @@ class CAPDeposit(Deposit):
         return filename
 
     def _set_experiment(self):
-        depgroups = current_app.config['DEPOSIT_GROUPS']
+        schemas = Schema.get_schemas()
 
-        # return first found or Unknown
-        experiment = next((group['experiment'] for group in depgroups.values()
-                           if self.schema in group['schema']), 'Unknown')
+        schema = (schema for schema in schemas if self.schema == schema)
+
+        experiment = Schema.get_by_fullstring(
+            schema.next()).experiment
 
         self['_experiment'] = experiment
         self.commit()
@@ -386,7 +390,7 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema_fullstring))
 
-        if schema not in current_app.config['SCHEMAS_LIST']:
+        if schema not in Schema.get_schemas():
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema))
 

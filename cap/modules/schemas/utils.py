@@ -49,8 +49,66 @@ def add_or_update_schema(fullpath=None, json=None):
                            )
         name, major, minor, patch = re.search(regex, fullpath).groups()
 
-        schema = Schema(name=name, major=major, minor=minor,
-                        patch=patch, json=json)
+        experiment_info = {
+            'records/lhcb': {
+                'experiment': 'LHCb',
+                'experiment_full_name': 'LHCb Analysis'
+            },
+            'records/atlas-analysis': {
+                'experiment': 'ATLAS',
+                'experiment_full_name': 'ATLAS Analysis'
+            },
+            'records/atlas-workflows': {
+                'experiment': 'ATLAS',
+                'experiment_full_name': 'ATLAS Workflows'
+            },
+            'records/cms-analysis': {
+                'experiment': 'CMS',
+                'experiment_full_name': 'CMS Analysis'
+            },
+            'records/cms-questionnaire': {
+                'experiment': 'CMS',
+                'experiment_full_name': 'CMS Questionnaire'
+            },
+            'records/alice-analysis': {
+                'experiment': 'ALICE',
+                'experiment_full_name': 'ALICE Analysis'
+            },
+            'deposits/records/lhcb': {
+                'experiment': 'LHCb',
+                'experiment_full_name': 'LHCb Analysis'
+            },
+            'deposits/records/atlas-analysis': {
+                'experiment': 'ATLAS',
+                'experiment_full_name': 'ATLAS Analysis'
+            },
+            'deposits/records/atlas-workflows': {
+                'experiment': 'ATLAS',
+                'experiment_full_name': 'ATLAS Workflows'
+            },
+            'deposits/records/cms-analysis': {
+                'experiment': 'CMS',
+                'experiment_full_name': 'CMS Analysis'
+            },
+            'deposits/records/cms-questionnaire': {
+                'experiment': 'CMS',
+                'experiment_full_name': 'CMS Questionnaire'
+            },
+            'deposits/records/alice-analysis': {
+                'experiment': 'ALICE',
+                'experiment_full_name': 'ALICE Analysis'
+            }
+        }
+
+        schema = Schema(name=name,
+                        experiment=experiment_info.get(name, {})
+                        .get('experiment', None),
+                        experiment_full_name=experiment_info.get(name, {})
+                        .get('experiment_full_name', None),
+                        major=major,
+                        minor=minor,
+                        patch=patch,
+                        json=json)
         db.session.add(schema)
 
         print('{} added.'.format(fullpath))

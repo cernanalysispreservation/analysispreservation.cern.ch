@@ -42,5 +42,6 @@ def get_superuser_needs():
     else:
         return []
 
+
 superuser_needs = set([g for g in
                        get_superuser_needs()])
