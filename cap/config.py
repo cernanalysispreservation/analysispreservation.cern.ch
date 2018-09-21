@@ -571,9 +571,7 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'read_permission_factory_imp': check_oauth2_scope(
         lambda record: ReadDepositPermission(record).can(),
         write_scope.id),
-    'update_permission_factory_imp': check_oauth2_scope(
-        lambda record: UpdateDepositPermission(record).can(),
-        write_scope.id),
+    'update_permission_factory_imp': allow_all,
     'delete_permission_factory_imp': check_oauth2_scope(
         lambda record: AdminDepositPermission(record).can(),
         write_scope.id),

@@ -54,8 +54,10 @@ from cap.modules.schemas.models import Schema
 from .errors import DepositValidationError, UpdateDepositPermissionsError
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
-from .permissions import (AdminDepositPermission, DepositAdminActionNeed,
-                          DepositReadActionNeed, DepositUpdateActionNeed)
+from .permissions import (AdminDepositPermission, CloneDepositPermission,
+                          DepositAdminActionNeed, DepositReadActionNeed,
+                          DepositUpdateActionNeed, ReadDepositPermission,
+                          UpdateDepositPermission)
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -98,6 +100,15 @@ class CAPDeposit(Deposit):
 
     deposit_minter = staticmethod(cap_deposit_minter)
 
+#    def __init__(self, *args, **kwargs):
+#        """Initialize CAPDeposit object."""
+#        self.admin_permission_factory = check_oauth2_scope(
+#            lambda record: AdminDepositPermission(self).can(),
+#            write_scope.id
+#        )
+#
+#        super(CAPDeposit, self).__init__(*args, **kwargs)
+
     @property
     def schema(self):
         """Schema property."""
@@ -115,18 +126,21 @@ class CAPDeposit(Deposit):
         "action": "deposit-read|deposit-update|deposit-admin"
         }]
         """
-        data = request.get_json()
+        with AdminDepositPermission(self).require(403):
 
-        return self.edit_permissions(data)
+            data = request.get_json()
+
+            return self.edit_permissions(data)
 
     @mark_as_action
     def publish(self, *args, **kwargs):
         """Simple file check before publishing."""
-        for file_ in self.files:
-            if file_.data['checksum'] is None:
-                raise MultipartMissingParts()
+        with AdminDepositPermission(self).require(403):
+            for file_ in self.files:
+                if file_.data['checksum'] is None:
+                    raise MultipartMissingParts()
 
-        return super(CAPDeposit, self).publish(*args, **kwargs)
+            return super(CAPDeposit, self).publish(*args, **kwargs)
 
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
@@ -158,19 +172,38 @@ class CAPDeposit(Deposit):
 
         Adds snapshot of the files when deposit is cloned.
         """
-        data = copy.deepcopy(self.dumps())
-        del data['_deposit'], data['control_number']
-        deposit = super(CAPDeposit, self).create(data, id_=id_)
-        deposit['_deposit']['cloned_from'] = {
-            'type': pid.pid_type,
-            'value': pid.pid_value,
-            'revision_id': self.revision_id,
-        }
-        bucket = self.files.bucket.snapshot()
-        RecordsBuckets.create(record=deposit.model, bucket=bucket)
-        # optionally we might need to do: deposit.files.flush()
-        deposit.commit()
-        return deposit
+        with CloneDepositPermission(self).require(403):
+            data = copy.deepcopy(self.dumps())
+            del data['_deposit'], data['control_number']
+            deposit = super(CAPDeposit, self).create(data, id_=id_)
+            deposit['_deposit']['cloned_from'] = {
+                'type': pid.pid_type,
+                'value': pid.pid_value,
+                'revision_id': self.revision_id,
+            }
+            bucket = self.files.bucket.snapshot()
+            RecordsBuckets.create(record=deposit.model, bucket=bucket)
+            # optionally we might need to do: deposit.files.flush()
+            deposit.commit()
+            return deposit
+
+    @mark_as_action
+    def edit(self, *args, **kwargs):
+        """Edit deposit."""
+        with UpdateDepositPermission(self).require(403):
+            super(CAPDeposit, self).edit(*args,  **kwargs)
+
+    @mark_as_action
+    def update(self, *args, **kwargs):
+        """Update deposit."""
+        with UpdateDepositPermission(self).require(403):
+            super(CAPDeposit, self).update(*args,  **kwargs)
+
+    @mark_as_action
+    def patch(self, *args, **kwargs):
+        """Patch deposit."""
+        with UpdateDepositPermission(self).require(403):
+            super(CAPDeposit, self).patch(*args,  **kwargs)
 
     def edit_permissions(self, data):
         """Edit deposit permissions.

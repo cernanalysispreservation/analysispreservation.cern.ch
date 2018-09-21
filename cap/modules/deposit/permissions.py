@@ -97,8 +97,6 @@ class DepositPermission(Permission):
         if action in self.actions:
             _needs.add(self.actions[action](deposit))
 
-        self._needs = _needs
-
         super(DepositPermission, self).__init__(*_needs)
 
 
@@ -112,11 +110,10 @@ class CreateDepositPermission(Permission):
         data = request.get_json(force=True)
         _needs.update(self._get_schema_needs(data))
 
-        self._needs = _needs
-
         super(CreateDepositPermission, self).__init__(*_needs)
 
     def _get_schema_needs(self, deposit):
+        """Create deposit permissions are allowed based on schema's permissions."""
         if '$schema' in deposit:
             try:
                 schema = Schema.get_by_fullpath(deposit['$schema'])
@@ -162,3 +159,10 @@ class AdminDepositPermission(DepositPermission):
     def __init__(self, record):
         """Initialize state."""
         super(AdminDepositPermission, self).__init__(record, 'admin')
+
+
+class CloneDepositPermission(DepositPermission):
+    """Deposit admin permission."""
+    def __init__(self, record):
+        """Initialize state."""
+        super(CloneDepositPermission, self).__init__(record, 'read')
