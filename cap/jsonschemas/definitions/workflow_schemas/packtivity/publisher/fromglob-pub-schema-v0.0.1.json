@@ -1,7 +1,6 @@
 {
   "fullname": "Glob Publisher", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Glob Publisher", 
     "required": [
@@ -28,5 +27,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "glob_publisher"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "ALICE Analysis", 
   "experiment": "ALICE", 
-  "partial": true, 
   "jsonschema": {
     "description": "Schema describing properties of an ALICE analysis", 
     "title": "ALICE Analysis", 
@@ -44,5 +43,6 @@
         "type": "string"
       }
     }
-  }
+  }, 
+  "is_deposit": true
 }

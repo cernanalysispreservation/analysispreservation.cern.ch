@@ -1,88 +1,87 @@
 {
-  "fullname": "ATLAS Analysis (JSON schema)",
-  "experiment": "ATLAS",
-  "partial": false,
+  "fullname": "ATLAS Analysis (JSON schema)", 
+  "experiment": "ATLAS", 
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "description": "Schema describing properties of an ATLAS analysis",
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Schema describing properties of an ATLAS analysis", 
     "properties": {
       "input_data": {
-        "description":
-          "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
-        "title": "Input Data",
-        "default": [{}],
+        "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)", 
+        "title": "Input Data", 
+        "default": [
+          {}
+        ], 
         "items": {
-          "$ref":
-            "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
-        },
-        "additionalProperties": false,
-        "type": "array",
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
+        }, 
+        "additionalProperties": false, 
+        "type": "array", 
         "id": "input_datasets"
-      },
+      }, 
       "workflows": {
-        "$ref":
-          "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
-      },
+        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
+      }, 
       "publications": {
-        "description": "Publications related to the analysis",
-        "title": "Publications",
-        "default": [{}],
+        "description": "Publications related to the analysis", 
+        "title": "Publications", 
+        "default": [
+          {}
+        ], 
         "items": {
-          "$ref":
-            "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
-        },
-        "additionalProperties": false,
-        "type": "array",
+          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
+        }, 
+        "additionalProperties": false, 
+        "type": "array", 
         "id": "publications"
-      },
+      }, 
       "basic_info": {
-        "type": "object",
+        "id": "basic_info", 
+        "type": "object", 
+        "propertyOrder": 10, 
         "properties": {
+          "abstract": {
+            "type": "string", 
+            "title": "Abstract"
+          }, 
           "people_info": {
             "items": {
-              "type": "object",
+              "type": "object", 
               "properties": {
                 "orcid": {
-                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
-                  "type": "string",
+                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", 
+                  "type": "string", 
                   "title": "ORCID"
-                },
+                }, 
                 "name": {
-                  "type": "string",
+                  "type": "string", 
                   "title": "Name"
-                },
+                }, 
                 "email": {
-                  "type": "string",
+                  "type": "string", 
                   "title": "Email-Adress"
                 }
               }
-            },
-            "type": "array",
-            "description":
-              "Information about the people involved in this analysis",
+            }, 
+            "type": "array", 
+            "description": "Information about the people involved in this analysis", 
             "title": "People Involved"
-          },
-          "abstract": {
-            "type": "string",
-            "title": "Abstract"
-          },
-          "analysis_title": {
-            "type": "string",
-            "description": "Title of the analysis",
-            "title": "Analysis Title"
-          },
+          }, 
           "glance_id": {
-            "type": "string",
-            "description": "ID of related glance record",
+            "type": "string", 
+            "description": "ID of related glance record", 
             "title": "Glance ID"
+          }, 
+          "analysis_title": {
+            "type": "string", 
+            "description": "Title of the analysis", 
+            "title": "Analysis Title"
           }
-        },
-        "propertyOrder": 10,
-        "id": "basic_info",
+        }, 
         "title": "Basic Information"
       }
-    },
+    }, 
     "title": "ATLAS Analysis (JSON schema)"
-  }
+  }, 
+  "is_deposit": false
 }

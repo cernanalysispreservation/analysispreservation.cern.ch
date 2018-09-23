@@ -1,7 +1,6 @@
 {
   "fullname": "ATLAS Publications", 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -37,5 +36,6 @@
       }
     }, 
     "title": "ATLAS Publications"
-  }
+  }, 
+  "is_deposit": false
 }

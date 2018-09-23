@@ -1,7 +1,6 @@
 {
   "fullname": "Workflows", 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": {
     "items": {
       "type": "object", 
@@ -22,5 +21,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "array", 
     "title": "Workflows"
-  }
+  }, 
+  "is_deposit": false
 }

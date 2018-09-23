@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "type": "object", 
     "properties": {
@@ -14,5 +13,6 @@
         "description": "Deposit bucket ID."
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

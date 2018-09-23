@@ -1,7 +1,6 @@
 {
   "fullname": "Yadage Workflow", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Yadage Workflow", 
     "properties": {
@@ -17,5 +16,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "yadage_workflow"
-  }
+  }, 
+  "is_deposit": false
 }

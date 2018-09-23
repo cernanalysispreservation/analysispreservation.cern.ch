@@ -1,7 +1,6 @@
 {
   "fullname": "Constant Publisher", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Constant Publisher", 
     "required": [
@@ -24,5 +23,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "constant_publisher"
-  }
+  }, 
+  "is_deposit": false
 }

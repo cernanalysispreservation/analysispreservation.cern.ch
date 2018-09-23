@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "x-cap-file": {
       "fetch_from": "/url", 
@@ -20,5 +19,6 @@
         "type": "string"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

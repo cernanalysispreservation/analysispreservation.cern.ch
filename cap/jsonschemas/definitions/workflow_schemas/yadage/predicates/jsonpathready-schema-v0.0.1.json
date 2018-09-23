@@ -1,7 +1,6 @@
 {
   "fullname": "JSONPath ready predicate", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "JSONPath ready predicate", 
     "properties": {
@@ -21,5 +20,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "jsonpath_ready"
-  }
+  }, 
+  "is_deposit": false
 }

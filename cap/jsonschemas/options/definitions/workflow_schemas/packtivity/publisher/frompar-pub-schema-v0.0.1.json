@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     {
       "items": [
@@ -12,5 +11,6 @@
       ], 
       "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap"
     }
-  ]
+  ], 
+  "is_deposit": false
 }

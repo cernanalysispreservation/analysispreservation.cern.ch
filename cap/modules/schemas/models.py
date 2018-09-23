@@ -55,9 +55,9 @@ class Schema(db.Model):
 
     experiment = db.Column(db.String(128), unique=False, nullable=True)
 
-    partial = db.Column(db.Boolean(create_constraint=False),
-                        unique=False,
-                        default=False)
+    is_deposit = db.Column(db.Boolean(create_constraint=False),
+                           unique=False,
+                           default=False)
 
     json = db.Column(
         JSONType().with_variant(
@@ -89,6 +89,11 @@ class Schema(db.Model):
         return "{}.{}.{}".format(self.major, self.minor, self.patch)
 
     @property
+    def is_record(self):
+        """Return stringified version."""
+        return self.name.startswith('records')
+
+    @property
     def fullpath(self):
         """Return full path eg. https://host.com/schemas/schema-v0.0.1.json."""
         host = current_app.config['JSONSCHEMAS_HOST']
@@ -104,9 +109,9 @@ class Schema(db.Model):
     def aliases(self):
         """Get ES aliases names."""
         aliases = []
-        if self.name.startswith('deposits'):
+        if self.is_deposit:
             aliases = ['deposits', 'deposits-records']
-        elif self.name.startswith('records'):
+        elif self.is_record:
             aliases = ['records']
         return aliases
 
@@ -166,11 +171,8 @@ class Schema(db.Model):
 
     @classmethod
     def get_user_deposit_schemas(cls):
-        """Return all deposits schemas that are not partial and user has access to."""
-        schemas = cls.query.filter(
-            cls.partial.isnot(True),
-            cls.name.startswith('deposits/records')
-        ).all()
+        """Return all deposit schemas user has read access to."""
+        schemas = cls.query.filter_by(is_deposit=True).all()
 
         return [x for x in schemas if ReadSchemaPermission(x).can()]
 
@@ -187,28 +189,29 @@ class Schema(db.Model):
 
 
 @event.listens_for(Schema, 'after_insert')
-def after_insert_schema(target, value, initiator):
+def after_insert_schema(target, value, schema):
     """On schema insert, create corresponding indexes and aliases in ES."""
-    if not initiator.partial:
+    if (schema.is_deposit or schema.is_record) and \
+            not es.indices.exists(schema.index_name):
+
         # invenio search needs it
-        current_search.mappings[initiator.index_name] = {}
+        current_search.mappings[schema.index_name] = {}
 
-        if not es.indices.exists(initiator.index_name):
-            es.indices.create(
-                index=initiator.index_name,
-                body={},
-                ignore=False
-            )
+        es.indices.create(
+            index=schema.index_name,
+            body={},
+            ignore=False
+        )
 
-            for alias in initiator.aliases:
-                es.indices.update_aliases({
-                    "actions": [
-                        {"add": {
-                            "index": initiator.index_name,
-                            "alias": alias
-                        }}
-                    ]
-                })
+        for alias in schema.aliases:
+            es.indices.update_aliases({
+                "actions": [
+                    {"add": {
+                        "index": schema.index_name,
+                        "alias": alias
+                    }}
+                ]
+            })
 
 
 @event.listens_for(Schema, 'after_delete')

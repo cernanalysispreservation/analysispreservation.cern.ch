@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": {
     "input_datasets": {
       "ui:array": "AccordionArrayField"
@@ -40,5 +39,6 @@
       }, 
       "ui:object": "accordionObjectField"
     }
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Parameter Publisher", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Parameter Publisher", 
     "required": [
@@ -24,5 +23,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "parameter_publisher"
-  }
+  }, 
+  "is_deposit": false
 }

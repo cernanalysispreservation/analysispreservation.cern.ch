@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "LHCb", 
-  "partial": true, 
   "jsonschema": {
     "stripping_turbo_selection": {
       "items": {
@@ -246,5 +245,6 @@
         }
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Inputs", 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": {
     "title": "Inputs", 
     "items": {
@@ -63,5 +62,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "array", 
     "id": "yadage_stage"
-  }
+  }, 
+  "is_deposit": false
 }

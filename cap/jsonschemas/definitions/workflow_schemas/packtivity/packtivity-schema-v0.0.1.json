@@ -1,7 +1,6 @@
 {
   "fullname": "Packtivity Meta Description", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Packtivity Meta Description", 
     "required": [
@@ -72,5 +71,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "packtivity_meta"
-  }
+  }, 
+  "is_deposit": false
 }

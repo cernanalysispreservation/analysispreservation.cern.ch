@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "ALICE", 
-  "partial": true, 
   "jsonschema": {
     "items": {
       "type": "object", 
@@ -66,5 +65,6 @@
       }
     }, 
     "type": "array"
-  }
+  }, 
+  "is_deposit": false
 }

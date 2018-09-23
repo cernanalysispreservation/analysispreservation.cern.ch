@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     {
       "key": "workflows[].workflow.stages[].name", 
@@ -67,5 +66,6 @@
       "key": "workflows[].workflow.stages[].scheduler", 
       "title": "Multi-step Stage"
     }
-  ]
+  ], 
+  "is_deposit": false
 }

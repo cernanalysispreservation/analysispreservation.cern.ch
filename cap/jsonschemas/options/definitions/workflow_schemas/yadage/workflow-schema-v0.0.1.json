@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     {
       "items": {
@@ -11,5 +10,6 @@
       "key": "workflows[].workflow.stages", 
       "title": "Stages"
     }
-  ]
+  ], 
+  "is_deposit": false
 }

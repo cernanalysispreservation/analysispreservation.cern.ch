@@ -1,7 +1,6 @@
 {
   "fullname": "Detector State", 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -308,22 +307,14 @@
                   }, 
                   "title": "Discriminator"
                 }, 
-                "object": {
+                "met_pf_corrections": {
                   "enum": [
-                    "", 
-                    "electron", 
-                    "muon", 
-                    "tau", 
-                    "jet", 
-                    "bjet", 
-                    "photon", 
-                    "track", 
-                    "vertex", 
-                    "MET", 
-                    "HT"
+                    "Type0PFCorrections", 
+                    "Type1PFCorrections", 
+                    "Type2PFCorrections"
                   ], 
                   "type": "string", 
-                  "title": "Object"
+                  "title": "MET Corrections"
                 }, 
                 "jet_corrections": {
                   "enum": [
@@ -340,14 +331,22 @@
                   "type": "string", 
                   "title": "MET type"
                 }, 
-                "met_pf_corrections": {
+                "object": {
                   "enum": [
-                    "Type0PFCorrections", 
-                    "Type1PFCorrections", 
-                    "Type2PFCorrections"
+                    "", 
+                    "electron", 
+                    "muon", 
+                    "tau", 
+                    "jet", 
+                    "bjet", 
+                    "photon", 
+                    "track", 
+                    "vertex", 
+                    "MET", 
+                    "HT"
                   ], 
                   "type": "string", 
-                  "title": "MET Corrections"
+                  "title": "Object"
                 }, 
                 "met_calo_corrections": {
                   "enum": [
@@ -494,10 +493,20 @@
             "items": {
               "type": "object", 
               "properties": {
-                "physics_objects": {
-                  "enum": [], 
-                  "type": "string", 
-                  "title": "Physics Objects Available"
+                "invariant_mass": {
+                  "type": "object", 
+                  "properties": {
+                    "upper_range": {
+                      "pattern": "^[\\d\\.]+$", 
+                      "type": "string", 
+                      "title": ">"
+                    }, 
+                    "lower_range": {
+                      "type": "number", 
+                      "title": "<"
+                    }
+                  }, 
+                  "title": "GeV"
                 }, 
                 "angle_relation": {
                   "pattern": "^[\\d\\.]+$", 
@@ -538,20 +547,10 @@
                   "type": "string", 
                   "title": "Relation Type"
                 }, 
-                "invariant_mass": {
-                  "type": "object", 
-                  "properties": {
-                    "upper_range": {
-                      "pattern": "^[\\d\\.]+$", 
-                      "type": "string", 
-                      "title": ">"
-                    }, 
-                    "lower_range": {
-                      "type": "number", 
-                      "title": "<"
-                    }
-                  }, 
-                  "title": "GeV"
+                "physics_objects": {
+                  "enum": [], 
+                  "type": "string", 
+                  "title": "Physics Objects Available"
                 }
               }
             }, 
@@ -563,5 +562,6 @@
       }
     }, 
     "title": "Detector State"
-  }
+  }, 
+  "is_deposit": false
 }

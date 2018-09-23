@@ -1,7 +1,6 @@
 {
   "fullname": "Docker Encapsulated Environment", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Docker Encapsulated Environment", 
     "required": [
@@ -62,5 +61,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "docker_enc_environment"
-  }
+  }, 
+  "is_deposit": false
 }

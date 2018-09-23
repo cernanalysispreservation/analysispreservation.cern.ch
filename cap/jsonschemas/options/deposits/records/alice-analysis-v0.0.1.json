@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "ALICE", 
-  "partial": true, 
   "jsonschema": {
     "ui:order": [
       "analysis_title", 
@@ -24,5 +23,6 @@
       }, 
       "ui:array": "AccordionArrayField"
     }
-  }
+  }, 
+  "is_deposit": false
 }

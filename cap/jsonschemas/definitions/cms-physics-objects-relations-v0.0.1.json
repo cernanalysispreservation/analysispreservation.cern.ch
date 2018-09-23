@@ -1,14 +1,24 @@
 {
   "fullname": "Relations", 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "items": {
       "type": "object", 
       "properties": {
-        "physics_objects": {
-          "type": "string", 
-          "title": "Physics Objects Available"
+        "invariant_mass": {
+          "type": "object", 
+          "properties": {
+            "upper_range": {
+              "pattern": "^[\\d\\.]+$", 
+              "type": "string", 
+              "title": ">"
+            }, 
+            "lower_range": {
+              "type": "number", 
+              "title": "<"
+            }
+          }, 
+          "title": "GeV"
         }, 
         "angle_relation": {
           "pattern": "^[\\d\\.]+$", 
@@ -49,25 +59,15 @@
           "type": "string", 
           "title": "Relation Type"
         }, 
-        "invariant_mass": {
-          "type": "object", 
-          "properties": {
-            "upper_range": {
-              "pattern": "^[\\d\\.]+$", 
-              "type": "string", 
-              "title": ">"
-            }, 
-            "lower_range": {
-              "type": "number", 
-              "title": "<"
-            }
-          }, 
-          "title": "GeV"
+        "physics_objects": {
+          "type": "string", 
+          "title": "Physics Objects Available"
         }
       }
     }, 
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "array", 
     "title": "Relations"
-  }
+  }, 
+  "is_deposit": false
 }

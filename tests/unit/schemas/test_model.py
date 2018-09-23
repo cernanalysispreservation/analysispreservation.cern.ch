@@ -120,7 +120,7 @@ def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_r
 
 @mark.parametrize("schema_params,index_name", [
     ({'name': 'records/ana1', 'major': 1, 'minor': 0, 'patch': 1}, 'records-ana1-v1.0.1'),
-    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1, 'patch': 0}, 'deposits-records-ana1-v2.1.0'),
+    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1, 'patch': 0, 'is_deposit': True}, 'deposits-records-ana1-v2.1.0'),
 ])
 def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(schema_params, index_name, db, es):
     schema = Schema(**schema_params)

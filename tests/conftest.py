@@ -191,7 +191,7 @@ def jsonschemas_host():
 def create_schema(db, es):
     """Returns function to add a schema to db."""
 
-    def _add_schema(schema, experiment=None, json=None, roles=None):
+    def _add_schema(schema, is_deposit=True, experiment=None, json=None, roles=None):
         """
         Add new schema into db
         """
@@ -207,6 +207,7 @@ def create_schema(db, es):
             schema = Schema(
                 fullpath=schema,
                 experiment=experiment,
+                is_deposit=is_deposit,
                 json=json or default_json
             )
             db.session.add(schema)
@@ -322,7 +323,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             """
             with app.test_request_context():
                 # create schema for record
-                create_schema('records/{}'.format(schema_name), 
+                create_schema('records/{}'.format(schema_name), is_deposit=False,
                               experiment='CMS')
 
                 # create schema for deposit

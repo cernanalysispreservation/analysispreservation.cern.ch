@@ -1,7 +1,6 @@
 {
   "fullname": "Detector State", 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -49,5 +48,6 @@
       }
     }, 
     "title": "Detector State"
-  }
+  }, 
+  "is_deposit": false
 }

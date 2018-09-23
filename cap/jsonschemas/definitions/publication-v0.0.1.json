@@ -1,7 +1,6 @@
 {
   "fullname": "Internal Publication", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -36,5 +35,6 @@
       }
     }, 
     "title": "Internal Publication"
-  }
+  }, 
+  "is_deposit": false
 }

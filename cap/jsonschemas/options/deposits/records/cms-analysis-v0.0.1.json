@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "statistical_treatment": {
       "combine_datacard": {
@@ -81,12 +80,21 @@
       }, 
       "ui:array": "AccordionArrayField"
     }, 
-    "systematic_uncertainties": {
+    "ntuples_production": {
       "items": {
         "ui:order": [
-          "type", 
-          "physics_object"
-        ]
+          "code_base", 
+          "processing_steps"
+        ], 
+        "processing_steps": {
+          "items": {
+            "ui:order": [
+              "configuration_file", 
+              "run_instructions", 
+              "output_data"
+            ]
+          }
+        }
       }, 
       "ui:array": "AccordionArrayField"
     }, 
@@ -256,23 +264,46 @@
         }
       }
     }, 
-    "ntuples_production": {
-      "items": {
-        "ui:order": [
-          "code_base", 
-          "processing_steps"
-        ], 
-        "processing_steps": {
-          "items": {
-            "ui:order": [
-              "configuration_file", 
-              "run_instructions", 
-              "output_data"
-            ]
-          }
-        }
+    "cadi_info": {
+      "status": {
+        "ui:readonly": true
       }, 
-      "ui:array": "AccordionArrayField"
+      "publication_status": {
+        "ui:readonly": true
+      }, 
+      "pas": {
+        "ui:readonly": true
+      }, 
+      "name": {
+        "ui:readonly": true
+      }, 
+      "created": {
+        "ui:readonly": true
+      }, 
+      "ui:object": "accordionObjectField", 
+      "paper": {
+        "ui:readonly": true
+      }, 
+      "contact": {
+        "ui:readonly": true
+      }, 
+      "twiki": {
+        "ui:readonly": true
+      }, 
+      "ui:order": [
+        "name", 
+        "description", 
+        "contact", 
+        "twiki", 
+        "created", 
+        "paper", 
+        "pas", 
+        "publication_status", 
+        "status"
+      ], 
+      "description": {
+        "ui:readonly": true
+      }
     }, 
     "ui:order": [
       "analysis_reuse_mode", 
@@ -371,46 +402,15 @@
       }, 
       "ui:array": "AccordionArrayField"
     }, 
-    "cadi_info": {
-      "status": {
-        "ui:readonly": true
+    "systematic_uncertainties": {
+      "items": {
+        "ui:order": [
+          "type", 
+          "physics_object"
+        ]
       }, 
-      "publication_status": {
-        "ui:readonly": true
-      }, 
-      "pas": {
-        "ui:readonly": true
-      }, 
-      "name": {
-        "ui:readonly": true
-      }, 
-      "created": {
-        "ui:readonly": true
-      }, 
-      "ui:object": "accordionObjectField", 
-      "paper": {
-        "ui:readonly": true
-      }, 
-      "contact": {
-        "ui:readonly": true
-      }, 
-      "twiki": {
-        "ui:readonly": true
-      }, 
-      "ui:order": [
-        "name", 
-        "description", 
-        "contact", 
-        "twiki", 
-        "created", 
-        "paper", 
-        "pas", 
-        "publication_status", 
-        "status"
-      ], 
-      "description": {
-        "ui:readonly": true
-      }
+      "ui:array": "AccordionArrayField"
     }
-  }
+  }, 
+  "is_deposit": false
 }

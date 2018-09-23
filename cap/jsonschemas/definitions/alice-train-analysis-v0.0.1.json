@@ -1,7 +1,6 @@
 {
   "fullname": "Analysis", 
   "experiment": "ALICE", 
-  "partial": true, 
   "jsonschema": {
     "items": {
       "type": "object", 
@@ -78,5 +77,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "array", 
     "title": "Analysis"
-  }
+  }, 
+  "is_deposit": false
 }

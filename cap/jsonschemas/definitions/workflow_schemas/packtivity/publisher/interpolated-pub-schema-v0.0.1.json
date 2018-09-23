@@ -1,7 +1,6 @@
 {
   "fullname": "Simple Interpolated Publisher", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Simple Interpolated Publisher", 
     "required": [
@@ -26,5 +25,6 @@
         "type": "object"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

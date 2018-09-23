@@ -1,71 +1,80 @@
 {
-  "fullname": "Test schema.",
-  "experiment": null,
-  "partial": true,
+  "fullname": "Test schema.", 
+  "experiment": null, 
   "jsonschema": {
-    "description": "Describe information needed for deposit module.",
-    "title": "Test schema.",
-    "additionalProperties": false,
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
+    "description": "Describe information needed for deposit module.", 
+    "title": "Test schema.", 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
     "properties": {
       "basic_object": {
-        "additionalProperties": false,
-        "title": "Basic Object with multiple types",
-        "type": "object",
-        "description": "Object",
+        "additionalProperties": false, 
+        "title": "Basic Object with multiple types", 
+        "type": "object", 
         "properties": {
           "select_option": {
-            "enum": ["0", "1", "2", "3"],
-            "type": "select",
+            "enum": [
+              "0", 
+              "1", 
+              "2", 
+              "3"
+            ], 
+            "type": "select", 
             "title": "Select"
-          },
-          "_buckets": {
-            "$ref":
-              "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-          },
+          }, 
           "array_of_strings": {
             "items": {
               "type": "string"
-            },
-            "type": "array",
+            }, 
+            "type": "array", 
             "title": "Array of strings"
-          },
+          }, 
           "simple_string": {
-            "type": "string",
+            "type": "string", 
             "title": "Simple string"
-          },
+          }, 
+          "_buckets": {
+            "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+          }, 
           "enum_of_strings": {
-            "enum": ["1", "2", "3", "4"],
-            "type": "string",
+            "enum": [
+              "1", 
+              "2", 
+              "3", 
+              "4"
+            ], 
+            "type": "string", 
             "title": "Enum of strings"
           }
-        }
-      },
+        }, 
+        "description": "Object"
+      }, 
       "$schema": {
         "type": "string"
-      },
+      }, 
       "array_of_objects": {
         "items": {
-          "additionalProperties": false,
-          "type": "object",
+          "additionalProperties": false, 
+          "type": "object", 
           "properties": {
             "first_object": {
-              "type": "string",
+              "type": "string", 
               "title": "First object"
-            },
+            }, 
             "second_object": {
-              "type": "string",
+              "type": "string", 
               "title": "Second object"
             }
           }
-        },
-        "type": "array",
+        }, 
+        "type": "array", 
         "title": "Array of objects"
-      },
+      }, 
       "general_title": {
         "type": "string"
       }
     }
-  }
+  }, 
+  "is_deposit": true
 }

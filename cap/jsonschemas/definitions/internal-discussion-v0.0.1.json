@@ -1,7 +1,6 @@
 {
   "fullname": "Internal Discussion", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -12,5 +11,6 @@
       }
     }, 
     "title": "Internal Discussion"
-  }
+  }, 
+  "is_deposit": false
 }

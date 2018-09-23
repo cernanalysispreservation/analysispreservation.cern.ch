@@ -1,7 +1,6 @@
 {
   "fullname": "String Interpolated Command", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "String Interpolated Command", 
     "required": [
@@ -26,5 +25,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "string_interpolated"
-  }
+  }, 
+  "is_deposit": false
 }

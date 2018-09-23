@@ -1,8 +1,8 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     "workflows[].workflow.stages[].scheduler.step.publisher.yamlfile"
-  ]
+  ], 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Documentation", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -21,5 +20,6 @@
       }
     }, 
     "title": "Documentation"
-  }
+  }, 
+  "is_deposit": false
 }

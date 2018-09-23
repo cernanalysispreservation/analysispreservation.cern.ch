@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "required": [
       "id"
@@ -50,5 +49,6 @@
         "name": "created_by"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

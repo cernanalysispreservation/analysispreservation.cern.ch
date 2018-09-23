@@ -1,7 +1,6 @@
 {
   "fullname": "Yadage Stage", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Yadage Stage", 
     "required": [
@@ -46,5 +45,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "yadage_stage"
-  }
+  }, 
+  "is_deposit": false
 }

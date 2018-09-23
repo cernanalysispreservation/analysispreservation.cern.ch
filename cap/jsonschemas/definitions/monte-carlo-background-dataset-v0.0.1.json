@@ -1,7 +1,6 @@
 {
   "fullname": "Monte Carlo Background Dataset", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -52,6 +51,8 @@
             "title": "Issued"
           }, 
           "numbers": {
+            "description": "Numbers concerning various stuff", 
+            "type": "object", 
             "properties": {
               "files": {
                 "type": "number", 
@@ -74,8 +75,6 @@
                 "title": "Number of lumis"
               }
             }, 
-            "type": "object", 
-            "description": "Numbers concerning various stuff", 
             "title": "Numbers"
           }, 
           "licence": {
@@ -166,5 +165,6 @@
       }
     }, 
     "title": "Monte Carlo Background Dataset"
-  }
+  }, 
+  "is_deposit": false
 }

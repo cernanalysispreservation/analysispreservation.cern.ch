@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "required": [
@@ -50,5 +49,6 @@
         "title": "Processing Steps"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

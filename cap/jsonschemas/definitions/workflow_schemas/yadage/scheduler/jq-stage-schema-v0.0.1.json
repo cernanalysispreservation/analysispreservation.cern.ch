@@ -1,7 +1,6 @@
 {
   "fullname": "jq Scheduler", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "jq Scheduler", 
     "required": [
@@ -37,5 +36,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "jq-stage"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Parameters", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "items": [
       {
@@ -65,5 +64,6 @@
     "type": "array", 
     "key": "workflows[].workflow.stages[].scheduler.parameters", 
     "title": "Parameters"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "type": "object", 
     "properties": {
@@ -57,5 +56,6 @@
         }
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

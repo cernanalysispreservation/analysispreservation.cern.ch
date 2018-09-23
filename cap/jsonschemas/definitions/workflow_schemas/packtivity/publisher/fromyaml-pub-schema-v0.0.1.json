@@ -1,7 +1,6 @@
 {
   "fullname": "YAML Publisher", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "YAML Publisher", 
     "required": [
@@ -25,5 +24,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "yaml_publisher"
-  }
+  }, 
+  "is_deposit": false
 }

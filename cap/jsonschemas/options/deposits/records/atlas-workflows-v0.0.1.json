@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": [
     {
       "key": "basic_info"
@@ -59,5 +58,6 @@
       "key": "inputs", 
       "title": "Inputs"
     }
-  ]
+  ], 
+  "is_deposit": false
 }

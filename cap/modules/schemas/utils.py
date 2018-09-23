@@ -36,7 +36,7 @@ def add_or_update_schema(fullpath=None, data=None):
         schema = Schema.get_by_fullpath(fullpath)
         schema.experiment = data.get('experiment', None)
         schema.fullname = data.get('fullname', None)
-        schema.partial = data.get('partial', False)
+        schema.is_deposit = data.get('is_deposit', False)
         schema.json = data['jsonschema']
 
         print('{} updated.'.format(fullpath))
@@ -45,9 +45,8 @@ def add_or_update_schema(fullpath=None, data=None):
         schema = Schema(fullpath=fullpath,
                         experiment=data.get('experiment', None),
                         fullname=data.get('fullname', None),
-                        partial=data.get('partial', False),
-                        json=data['jsonschema']
-                        )
+                        is_deposit=data.get('is_deposit', False),
+                        json=data['jsonschema'])
 
         db.session.add(schema)
 

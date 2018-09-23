@@ -1,7 +1,6 @@
 {
   "fullname": "Identifier", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -17,5 +16,6 @@
       }
     }, 
     "title": "Identifier"
-  }
+  }, 
+  "is_deposit": false
 }

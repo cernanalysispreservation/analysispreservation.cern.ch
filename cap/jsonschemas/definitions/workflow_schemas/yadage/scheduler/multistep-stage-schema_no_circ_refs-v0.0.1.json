@@ -1,7 +1,6 @@
 {
   "fullname": "Multiple Step Scheduler", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "oneOf": [
       {
@@ -64,5 +63,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "multistep-stage"
-  }
+  }, 
+  "is_deposit": false
 }

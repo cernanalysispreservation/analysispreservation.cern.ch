@@ -1,10 +1,10 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     {
       "key": "workflows[].workflow.stages[].dependencies.expressions"
     }
-  ]
+  ], 
+  "is_deposit": false
 }

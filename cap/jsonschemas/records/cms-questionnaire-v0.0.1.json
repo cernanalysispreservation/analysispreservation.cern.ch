@@ -1,1129 +1,1209 @@
 {
-  "fullname": "CMS Statistics Questionnaire",
-  "experiment": "CMS",
-  "partial": true,
+  "fullname": "CMS Statistics Questionnaire", 
+  "experiment": "CMS", 
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "type": "object",
-    "description":
-      "<p>The present questionnaire has the purpose of informing the Statistics Committee on the details of ongoing analyses, in the interest of a quicker and simpler path to approval of physics results. We recommend that you submit your answers at your earliest convenience, regardless of the status of your analysis (in progress, or in advanced stage, or about to be pre-approved). Changes in the statistical analysis after submission can be sent as a simplified \"update\", using a link you will receive via email after submitting this form.</p><p>Please note: each analysis with a separate CADI entry should fill out a separate entry. It is highly advisable that the questionnaire be filled by an author who knows the details of the full analysis, if necessary in consultation with colleagues.</p><p>The purpose of this questionnaire is two-fold:</p><ul><li>It points you to the relevant best practices and recommendations of the CMS Statistics Committee.</li><li>It provides the Statistics Committee with feedback about the statistical methods used at an early point of the analysis where potential issues can still be clarified or fixed.</li></ul><p>Note: There are multiple-choice answers for many questions. These will not always cover your case. If you are unsure about which answer to choose, just choose the answer you think decribes best what you do and use the text field \"Additional comments\" for clarification. Also note that many questions foresee that you choose more than one option, in this case choose <em>all</em> which apply.</p><p>We thank you for your patience and we encourage you to be as explicative as possible in the free-text boxes. Also, we do appreciate any feedback you may be willing to provide, through a text box at the end.</p>",
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "<p>The present questionnaire has the purpose of informing the Statistics Committee on the details of ongoing analyses, in the interest of a quicker and simpler path to approval of physics results. We recommend that you submit your answers at your earliest convenience, regardless of the status of your analysis (in progress, or in advanced stage, or about to be pre-approved). Changes in the statistical analysis after submission can be sent as a simplified \"update\", using a link you will receive via email after submitting this form.</p><p>Please note: each analysis with a separate CADI entry should fill out a separate entry. It is highly advisable that the questionnaire be filled by an author who knows the details of the full analysis, if necessary in consultation with colleagues.</p><p>The purpose of this questionnaire is two-fold:</p><ul><li>It points you to the relevant best practices and recommendations of the CMS Statistics Committee.</li><li>It provides the Statistics Committee with feedback about the statistical methods used at an early point of the analysis where potential issues can still be clarified or fixed.</li></ul><p>Note: There are multiple-choice answers for many questions. These will not always cover your case. If you are unsure about which answer to choose, just choose the answer you think decribes best what you do and use the text field \"Additional comments\" for clarification. Also note that many questions foresee that you choose more than one option, in this case choose <em>all</em> which apply.</p><p>We thank you for your patience and we encourage you to be as explicative as possible in the free-text boxes. Also, we do appreciate any feedback you may be willing to provide, through a text box at the end.</p>", 
     "properties": {
       "multivariate": {
+        "description": "Take a second and read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki Page on MVA Recommendations</a>.", 
+        "type": "object", 
         "properties": {
           "null_pdf": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "no",
-                  "yes_not_relevant",
-                  "yes_large_sample",
-                  "yes_need_to_check",
+                  "no", 
+                  "yes_not_relevant", 
+                  "yes_large_sample", 
+                  "yes_need_to_check", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?"
-              },
+                ], 
+                "type": "string", 
+                "description": "Are you aware that some MVA techniques may classify data events as very signal-like if any of their variables take values in regions where the background training samples have no events?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Null PDF"
-          },
+          }, 
           "robustness": {
-            "type": "object",
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["no", "yes", "other"],
-                "type": "string",
+                "enum": [
+                  "no", 
+                  "yes", 
+                  "other"
+                ], 
+                "type": "string", 
                 "description": "Do you perform the following robustness check?"
-              },
+              }, 
               "comments": {
-                "type": "string",
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Robustness Checks"
-          },
-          "input_selection": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["yes", "no", "other"],
-                "type": "string",
-                "description":
-                  "How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Input variable selection "
-          },
-          "overtraining": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["no", "yes_partition", "other"],
-                "type": "string",
-                "description":
-                  "How do you make sure you are not affected by overtraining?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Overtraining Checks"
-          },
+          }, 
           "discriminant_type": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["boosted", "fisher", "likelehoods", "ann", "other"],
+                  "enum": [
+                    "boosted", 
+                    "fisher", 
+                    "likelehoods", 
+                    "ann", 
+                    "other"
+                  ], 
                   "type": "string"
-                },
-                "type": "array",
+                }, 
+                "type": "array", 
                 "description": "What type of discriminant do you use?"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Used Type"
-          },
+          }, 
+          "twiki_read": {
+            "type": "boolean", 
+            "description": "Have you read the TWiki mentioned above?", 
+            "title": "TWiki Read"
+          }, 
           "background_mix": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["undecided", "yes", "no", "other"],
-                "type": "string",
-                "description":
-                  "When training with more than one background, do you mix all samples in the proportions you expect in data?"
-              },
+                "enum": [
+                  "undecided", 
+                  "yes", 
+                  "no", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "When training with more than one background, do you mix all samples in the proportions you expect in data?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Background Mix"
-          },
-          "twiki_read": {
-            "type": "boolean",
-            "description": "Have you read the TWiki mentioned above?",
-            "title": "TWiki Read"
-          },
+          }, 
+          "input_selection": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "yes", 
+                  "no", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "How do you select the input variables? Do you perform any pruning of your initial list of input variables, based on the correlations or dependencies between the input variables?"
+              }, 
+              "comments": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
+            "title": "Input variable selection "
+          }, 
           "usage": {
-            "type": "boolean",
-            "description":
-              "Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background? If the answer is \"No\", please proceed with the next section.",
+            "type": "boolean", 
+            "description": "Are you using a multi-variate discriminant in your data analysis to discriminate between signal and background? If the answer is \"No\", please proceed with the next section.", 
             "title": "Usage of multi-variante descriminant"
-          },
+          }, 
+          "overtraining": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "no", 
+                  "yes_partition", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "How do you make sure you are not affected by overtraining?"
+              }, 
+              "comments": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
+            "title": "Overtraining Checks"
+          }, 
           "input_checks": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["1d", "2d", "other"]
-                },
-                "type": "array",
-                "description":
-                  "How have you checked that the input variables, including their dependencies, are well-modeled?"
-              },
+                  "enum": [
+                    "1d", 
+                    "2d", 
+                    "other"
+                  ]
+                }, 
+                "type": "array", 
+                "description": "How have you checked that the input variables, including their dependencies, are well-modeled?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Input Variable Checks"
-          },
+          }, 
           "correlation_studies": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["matrix", "nonlinear", "other"],
+                  "enum": [
+                    "matrix", 
+                    "nonlinear", 
+                    "other"
+                  ], 
                   "type": "string"
-                },
-                "type": "array",
-                "description":
-                  "Do you study the correlations and dependencies between the input variables?"
-              },
+                }, 
+                "type": "array", 
+                "description": "Do you study the correlations and dependencies between the input variables?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Study of correlations/dependencies "
-          },
+          }, 
           "mva_output_usage": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["output_cut", "output_fit", "other"],
+                  "enum": [
+                    "output_cut", 
+                    "output_fit", 
+                    "other"
+                  ], 
                   "type": "string"
-                },
-                "type": "array",
-                "description":
-                  "How do you make use of the MVA output in the analysis?"
-              },
+                }, 
+                "type": "array", 
+                "description": "How do you make use of the MVA output in the analysis?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "MVA Output Usage"
-          },
+          }, 
           "software": {
             "dependencies": {
-              "comments": ["name"]
-            },
-            "type": "object",
+              "comments": [
+                "name"
+              ]
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["tmva", "other"],
+                  "enum": [
+                    "tmva", 
+                    "other"
+                  ], 
                   "type": "string"
-                },
-                "type": "array",
+                }, 
+                "type": "array", 
                 "description": "What software are you using?"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Used Software"
           }
-        },
-        "type": "object",
-        "description":
-          "Take a second and read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki Page on MVA Recommendations</a>.",
+        }, 
         "title": "Multivariate Discriminants"
-      },
+      }, 
       "confidence": {
-        "type": "object",
+        "type": "object", 
         "properties": {
           "atlas_cms_agreement": {
-            "enum": ["not_relevant", "yes", "no"],
-            "type": "string",
-            "description":
-              "Are you aware of the agreement between ATLAS and CMS regarding limit setting?",
+            "enum": [
+              "not_relevant", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Are you aware of the agreement between ATLAS and CMS regarding limit setting?", 
             "title": "ATLAS-CMS agreement"
-          },
+          }, 
           "citation": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "undecided",
-                  "cite_limit",
-                  "cite_interval",
-                  "to_decise",
-                  "cite_both",
+                  "undecided", 
+                  "cite_limit", 
+                  "cite_interval", 
+                  "to_decise", 
+                  "cite_both", 
                   "not_relevant"
-                ],
-                "type": "string",
-                "description":
-                  "Will you cite a limit or a two-sided confidence interval?"
-              },
+                ], 
+                "type": "string", 
+                "description": "Will you cite a limit or a two-sided confidence interval?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Citation of limit or two-sided confidence interval "
-          },
+          }, 
           "theory_error": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "not_relevant",
-                  "not_accounted",
-                  "vary_one_sigma",
-                  "additional_nuisance",
-                  "bayes",
+                  "not_relevant", 
+                  "not_accounted", 
+                  "vary_one_sigma", 
+                  "additional_nuisance", 
+                  "bayes", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "In case you convert a limit on a signal cross section into a limit on the mass (or another parameter; we call it \"mass\" here): how do you account for the theory error on the signal cross section?"
-              },
+                ], 
+                "type": "string", 
+                "description": "In case you convert a limit on a signal cross section into a limit on the mass (or another parameter; we call it \"mass\" here): how do you account for the theory error on the signal cross section?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Theory Error in Signal Cross Section"
-          },
+          }, 
           "approaches": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
                   "enum": [
-                    "freq_limits",
-                    "freq_intervals",
-                    "freq_limits_mod",
-                    "prof_lh_limits",
-                    "prof_lh_intervals",
-                    "unified",
-                    "bayes_flat",
-                    "byes_ref",
+                    "freq_limits", 
+                    "freq_intervals", 
+                    "freq_limits_mod", 
+                    "prof_lh_limits", 
+                    "prof_lh_intervals", 
+                    "unified", 
+                    "bayes_flat", 
+                    "byes_ref", 
                     "other"
                   ]
-                },
-                "type": "array",
+                }, 
+                "type": "array", 
                 "description": "Mark the approach(es) you are using"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Approach(es)"
-          },
+          }, 
           "toy_data": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "not_relevant",
-                  "priors",
-                  "bootstrapping",
-                  "not_varied",
+                  "not_relevant", 
+                  "priors", 
+                  "bootstrapping", 
+                  "not_varied", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "In the case toy data is generated as part of the limit setting procedure - e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands - please specify how the nuisance parameter are chosen for the toys:"
-              },
+                ], 
+                "type": "string", 
+                "description": "In the case toy data is generated as part of the limit setting procedure - e.g. to determine the test statistic distribution or to compute the expected limit / expected limit bands - please specify how the nuisance parameter are chosen for the toys:"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Toy Data"
-          },
+          }, 
           "usage": {
-            "enum": ["undecided", "yes", "no"],
-            "type": "string",
-            "description":
-              "Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? (If the answer is \"No\", please proceed with the next section.)",
+            "enum": [
+              "undecided", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Does the analysis include the setting of limits on some parameter or placing a confidence interval on some parameter? (If the answer is \"No\", please proceed with the next section.)", 
             "title": "Usage of confidence intervals and limits"
-          },
+          }, 
           "test_stats": {
             "dependencies": {
               "details": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["not_relevant", "lep", "tevatron", "higgs", "other"],
-                "type": "string",
-                "description":
-                  "In the case of frequentist/CLs confidence interval construction: which test statistic do you use? As an example of the detail you should provide: \"the HCG choice is qmu = -2 Ln[L(mu, theta_mu_* )/L(mu* ,theta* )], with 0 < mu* < mu at the denominator, and the numerator has nuisances set at conditional ML estimate for data at given mu, theta_mu_*\"(If you chose \"other\", please specify the test statistic used)"
-              },
-              "comments": {
-                "type": "string",
-                "title": "Additional comments"
-              },
-              "details": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Details"
-              }
-            },
-            "title": "Test Statistics"
-          },
-          "recommendation_awareness": {
-            "enum": ["not_relevant", "yes", "no"],
-            "type": "string",
-            "description":
-              "If you are using a Bayesian technique, are you aware that the SC recommends to perform a prior sensitivity analysis, both on the PDFs of parameters describing the systematic uncertainties (nuisance parameters) and on the PDF of the parameter to be estimated?",
-            "title": "Awareness of Recommendation of Prior Sensitivity Analysis"
-          },
-          "support_awareness": {
-            "enum": ["not_relevant", "yes", "no"],
-            "type": "string",
-            "description":
-              "Are you aware that the Statistics Committee provides support and a simple recipe to include the derivation of Feldman-Cousins confidence intervals in RooStats jobs that are currently used to compute CLs limits?",
-            "title": "Awareness of Support by the Statistics Committee"
-          },
-          "software": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "items": {
-                  "enum": ["combine", "lands", "roostats", "theta", "other"]
-                },
-                "type": "array",
-                "description":
-                  "What software tool are you using for your confidence interval calculations?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Software"
-          }
-        },
-        "title": "Confidence Intervals and Limits"
-      },
-      "feedback": {
-        "properties": {
-          "subject_to_change": {
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "almost_nothing",
-                  "final_decision_pending",
-                  "improvements_pending",
-                  "frozen"
-                ],
-                "type": "string",
-                "description":
-                  "What statistical element of your analysis is not yet frozen (what changes can be expected)?"
-              },
+                  "not_relevant", 
+                  "lep", 
+                  "tevatron", 
+                  "higgs", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "In the case of frequentist/CLs confidence interval construction: which test statistic do you use? As an example of the detail you should provide: \"the HCG choice is qmu = -2 Ln[L(mu, theta_mu_* )/L(mu* ,theta* )], with 0 < mu* < mu at the denominator, and the numerator has nuisances set at conditional ML estimate for data at given mu, theta_mu_*\"(If you chose \"other\", please specify the test statistic used)"
+              }, 
               "comments": {
-                "type": "string",
+                "type": "string", 
                 "title": "Additional comments"
+              }, 
+              "details": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Details"
               }
-            },
-            "title": "Subjects to Change"
-          },
-          "additional_comments": {
-            "type": "string",
-            "title":
-              "Do you have any additional comment related to the analysis? Is there a statistic-related element of your analysis not covered by this questionnaire?"
-          },
-          "feedback": {
-            "type": "string",
-            "title":
-              "Do you have a suggestion for improving this questionnaire? Do you have a suggestion for improving interaction with the CMS Statistics Committee in general or documentation of statistical recommendations?"
-          }
-        },
-        "type": "object",
-        "description":
-          "You're almost there! Just some final questions that may help us to improve our service.",
-        "title": "Comments and Feedback"
-      },
-      "unfolding": {
-        "properties": {
-          "bbb_discouragement_awareness": {
-            "type": "boolean",
-            "description":
-              "Are you aware that the SC discourages the use of bin-by-bin unfolding, or correction factors, and in general on techniques neglecting correlations?",
-            "title": "Awareness of Discouragement of Bin-By-Bin Folding"
-          },
-          "technique": {
+            }, 
+            "title": "Test Statistics"
+          }, 
+          "recommendation_awareness": {
+            "enum": [
+              "not_relevant", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "If you are using a Bayesian technique, are you aware that the SC recommends to perform a prior sensitivity analysis, both on the PDFs of parameters describing the systematic uncertainties (nuisance parameters) and on the PDF of the parameter to be estimated?", 
+            "title": "Awareness of Recommendation of Prior Sensitivity Analysis"
+          }, 
+          "support_awareness": {
+            "enum": [
+              "not_relevant", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Are you aware that the Statistics Committee provides support and a simple recipe to include the derivation of Feldman-Cousins confidence intervals in RooStats jobs that are currently used to compute CLs limits?", 
+            "title": "Awareness of Support by the Statistics Committee"
+          }, 
+          "software": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
                   "enum": [
-                    "bbb_factor",
-                    "matrix",
-                    "matrix_tikhonov",
-                    "dagostini",
+                    "combine", 
+                    "lands", 
+                    "roostats", 
+                    "theta", 
                     "other"
                   ]
-                },
-                "type": "array",
-                "description": "Which unfolding technique are you using?"
-              },
+                }, 
+                "type": "array", 
+                "description": "What software tool are you using for your confidence interval calculations?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
-            "title": "Technique"
-          },
-          "event_weight_application": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "title": "Software"
+          }
+        }, 
+        "title": "Confidence Intervals and Limits"
+      }, 
+      "feedback": {
+        "description": "You're almost there! Just some final questions that may help us to improve our service.", 
+        "type": "object", 
+        "properties": {
+          "subject_to_change": {
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["not_relevant", "weighted", "unweighted"],
-                "type": "string",
-                "description":
-                  "In case you apply weights to the number of observed (real data) events, e.g. to correct for trigger prescales."
-              },
+                "enum": [
+                  "almost_nothing", 
+                  "final_decision_pending", 
+                  "improvements_pending", 
+                  "frozen"
+                ], 
+                "type": "string", 
+                "description": "What statistical element of your analysis is not yet frozen (what changes can be expected)?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
-            "title": "Event Weight Application"
-          },
-          "usage": {
-            "enum": ["undecided", "yes", "no"],
-            "type": "string",
-            "description":
-              "Is unfolding used in parts of the analysis? (If the answer is \"No\", please proceed with the next section)",
-            "title": "Usage"
-          },
-          "note_read": {
-            "type": "boolean",
-            "description":
-              "Have you read the SC note on Interim recommendations on unfolding techniques?",
-            "title": "Interim recommendations on unfolding techniques Read"
-          },
-          "validation": {
-            "format": "textarea",
-            "type": "string",
-            "title":
-              "How do you validate the unfolding procedure (e.g., comparison with other techniques, toy studies, etc.)?"
-          },
-          "software": {
+            }, 
+            "title": "Subjects to Change"
+          }, 
+          "additional_comments": {
+            "type": "string", 
+            "title": "Do you have any additional comment related to the analysis? Is there a statistic-related element of your analysis not covered by this questionnaire?"
+          }, 
+          "feedback": {
+            "type": "string", 
+            "title": "Do you have a suggestion for improving this questionnaire? Do you have a suggestion for improving interaction with the CMS Statistics Committee in general or documentation of statistical recommendations?"
+          }
+        }, 
+        "title": "Comments and Feedback"
+      }, 
+      "unfolding": {
+        "description": "Take a second and read the <a target='_blank' href='http://cousins.web.cern.ch/cousins/unfolding_14mar13.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>", 
+        "type": "object", 
+        "properties": {
+          "bbb_discouragement_awareness": {
+            "type": "boolean", 
+            "description": "Are you aware that the SC discourages the use of bin-by-bin unfolding, or correction factors, and in general on techniques neglecting correlations?", 
+            "title": "Awareness of Discouragement of Bin-By-Bin Folding"
+          }, 
+          "technique": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["foounfold", "tunfold", "other"]
-                },
-                "type": "array",
-                "description": "Which software are you using?"
-              },
+                  "enum": [
+                    "bbb_factor", 
+                    "matrix", 
+                    "matrix_tikhonov", 
+                    "dagostini", 
+                    "other"
+                  ]
+                }, 
+                "type": "array", 
+                "description": "Which unfolding technique are you using?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
+            "title": "Technique"
+          }, 
+          "event_weight_application": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "not_relevant", 
+                  "weighted", 
+                  "unweighted"
+                ], 
+                "type": "string", 
+                "description": "In case you apply weights to the number of observed (real data) events, e.g. to correct for trigger prescales."
+              }, 
+              "comments": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
+            "title": "Event Weight Application"
+          }, 
+          "usage": {
+            "enum": [
+              "undecided", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Is unfolding used in parts of the analysis? (If the answer is \"No\", please proceed with the next section)", 
+            "title": "Usage"
+          }, 
+          "note_read": {
+            "type": "boolean", 
+            "description": "Have you read the SC note on Interim recommendations on unfolding techniques?", 
+            "title": "Interim recommendations on unfolding techniques Read"
+          }, 
+          "validation": {
+            "format": "textarea", 
+            "type": "string", 
+            "title": "How do you validate the unfolding procedure (e.g., comparison with other techniques, toy studies, etc.)?"
+          }, 
+          "software": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
+            "properties": {
+              "name": {
+                "items": {
+                  "enum": [
+                    "foounfold", 
+                    "tunfold", 
+                    "other"
+                  ]
+                }, 
+                "type": "array", 
+                "description": "Which software are you using?"
+              }, 
+              "comments": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
             "title": "Software"
           }
-        },
-        "type": "object",
-        "description":
-          "Take a second and read the <a target='_blank' href='http://cousins.web.cern.ch/cousins/unfolding_14mar13.pdf'>SC Note on \"Interim recommendations on unfolding techniques\"</a>",
+        }, 
         "title": "Unfolding"
-      },
+      }, 
       "general": {
+        "description": "Please get familiar with the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>Statistics Committee TWiki Page</a>, which for example links <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>, and a <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>Page of Statistics-related References</a> you can cite. You might also want to take a quick look at the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews Forum</a> and add the Committee's mailing list cms-statistics-committee@cern.ch to your contacts.", 
+        "type": "object", 
         "properties": {
           "forum_awareness": {
-            "type": "boolean",
-            "description":
-              "Are you aware that the Statistics Committee will make an effort to promptly answer your question on statistics issues if sent via the Statistics Discussions Hypernews forum, or to the Committee's mailing list cms-statistics-committee@cern.ch?",
+            "type": "boolean", 
+            "description": "Are you aware that the Statistics Committee will make an effort to promptly answer your question on statistics issues if sent via the Statistics Discussions Hypernews forum, or to the Committee's mailing list cms-statistics-committee@cern.ch?", 
             "title": "Forum/List Awareness"
-          },
+          }, 
           "forum_subscription": {
-            "type": "boolean",
-            "description":
-              "Have you subscribed yet to the Statistics Discussions Hypernews forum (if not, we suggest that you do)?",
+            "type": "boolean", 
+            "description": "Have you subscribed yet to the Statistics Discussions Hypernews forum (if not, we suggest that you do)?", 
             "title": "Forum/List Subscription"
-          },
+          }, 
           "past_interaction": {
-            "type": "boolean",
-            "description":
-              "Have you interacted with the Statistics Committee in the past (via email, HN, or in person) to discuss an issue with a CMS analysis?",
+            "type": "boolean", 
+            "description": "Have you interacted with the Statistics Committee in the past (via email, HN, or in person) to discuss an issue with a CMS analysis?", 
             "title": "Past Interaction"
-          },
+          }, 
           "meetings_awareness": {
-            "type": "boolean",
-            "description":
-              "Are you aware that the Statistics Committee meets regularly (Vidyo only; look for announcement in Statistics Discussions HN forum) and that everybody is welcome to participate?",
+            "type": "boolean", 
+            "description": "Are you aware that the Statistics Committee meets regularly (Vidyo only; look for announcement in Statistics Discussions HN forum) and that everybody is welcome to participate?", 
             "title": "Open Meetings Awareness"
-          },
+          }, 
           "faq_awareness": {
-            "type": "boolean",
-            "description":
-              "Are you aware that the Statistics Committee has a TWiki page which links a number of short documents describing recommendations for statistical techniques, including e.g., Frequently Asked Questions, and a page of statistics-related references you can cite?",
+            "type": "boolean", 
+            "description": "Are you aware that the Statistics Committee has a TWiki page which links a number of short documents describing recommendations for statistical techniques, including e.g., Frequently Asked Questions, and a page of statistics-related references you can cite?", 
             "title": "FAQ Awareness"
           }
-        },
-        "type": "object",
-        "description":
-          "Please get familiar with the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>Statistics Committee TWiki Page</a>, which for example links <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>, and a <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>Page of Statistics-related References</a> you can cite. You might also want to take a quick look at the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews Forum</a> and add the Committee's mailing list cms-statistics-committee@cern.ch to your contacts.",
+        }, 
         "title": "General Information"
-      },
+      }, 
       "other_stats": {
+        "description": "Take a second read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>", 
+        "type": "object", 
         "properties": {
           "blind_analysis": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["no_no_practical_way", "no", "yes"],
-                "type": "string",
-                "description":
-                  "Do you perform a blind analysis? If so, can you succinctly describe what was done?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Blind Analysis Performed"
-          },
-          "correlation_treatment": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["not_relevant", "yes"],
-                "type": "string",
-                "description":
-                  "In case you use the results of another CMS analysis: how did you treat correlations from common systematic uncertainties and from potential overlap in the datasets?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Correlation Treatment"
-          },
-          "combined_measurements": {
-            "dependencies": {
-              "comments": "name"
-            },
-            "type": "object",
-            "properties": {
-              "name": {
-                "enum": ["not_relevant", "blue", "likelihood", "other"],
-                "type": "string",
-                "description":
-                  "In case you combine measurements in your analysis: what method is used?"
-              },
-              "comments": {
-                "dependencies": "name",
-                "type": "string",
-                "title": "Additional comments"
-              }
-            },
-            "title": "Methods of Combined Measurements"
-          },
-          "faq_read": {
-            "type": "boolean",
-            "description":
-              "Did you check if one of the frequently asked questions apply to your analysis?",
-            "title": "FAQ Read"
-          }
-        },
-        "type": "object",
-        "description":
-          "Take a second read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>FAQ</a>",
-        "title": "Other Statistics Related Items"
-      },
-      "analysis_context": {
-        "type": "object",
-        "properties": {
-          "group": {
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "bph",
-                  "b2g",
-                  "exo",
-                  "fsq",
-                  "hig",
-                  "hin",
-                  "smp",
-                  "sus",
-                  "top",
-                  "other"
-                ],
-                "type": "string",
-                "title": "Name"
-              },
+                  "no_no_practical_way", 
+                  "no", 
+                  "yes"
+                ], 
+                "type": "string", 
+                "description": "Do you perform a blind analysis? If so, can you succinctly describe what was done?"
+              }, 
               "comments": {
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
-            "title": "Working group"
-          },
-          "name": {
-            "type": "string",
-            "title": "Your name"
-          },
-          "analysis_title": {
-            "type": "string",
-            "description": "analysis note numbers, etc.",
-            "title":
-              "If no CADI entry is available, please provide the title and applicable references"
-          },
-          "cadi_id": {
-            "type": "string",
-            "description": "e.g., HIG-11-032",
-            "title": "CADI entry number, if available"
-          },
-          "preapproval_date": {
-            "type": "object",
+            }, 
+            "title": "Blind Analysis Performed"
+          }, 
+          "correlation_treatment": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["schedule", "date_range", "undecided", "not_approval"],
-                "type": "string",
-                "title": ""
-              },
+                "enum": [
+                  "not_relevant", 
+                  "yes"
+                ], 
+                "type": "string", 
+                "description": "In case you use the results of another CMS analysis: how did you treat correlations from common systematic uncertainties and from potential overlap in the datasets?"
+              }, 
               "comments": {
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
+            "title": "Correlation Treatment"
+          }, 
+          "combined_measurements": {
+            "dependencies": {
+              "comments": "name"
+            }, 
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "not_relevant", 
+                  "blue", 
+                  "likelihood", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "In case you combine measurements in your analysis: what method is used?"
+              }, 
+              "comments": {
+                "dependencies": "name", 
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
+            "title": "Methods of Combined Measurements"
+          }, 
+          "faq_read": {
+            "type": "boolean", 
+            "description": "Did you check if one of the frequently asked questions apply to your analysis?", 
+            "title": "FAQ Read"
+          }
+        }, 
+        "title": "Other Statistics Related Items"
+      }, 
+      "analysis_context": {
+        "type": "object", 
+        "properties": {
+          "group": {
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "bph", 
+                  "b2g", 
+                  "exo", 
+                  "fsq", 
+                  "hig", 
+                  "hin", 
+                  "smp", 
+                  "sus", 
+                  "top", 
+                  "other"
+                ], 
+                "type": "string", 
+                "title": "Name"
+              }, 
+              "comments": {
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
+            "title": "Working group"
+          }, 
+          "name": {
+            "type": "string", 
+            "title": "Your name"
+          }, 
+          "analysis_title": {
+            "type": "string", 
+            "description": "analysis note numbers, etc.", 
+            "title": "If no CADI entry is available, please provide the title and applicable references"
+          }, 
+          "cadi_id": {
+            "type": "string", 
+            "description": "e.g., HIG-11-032", 
+            "title": "CADI entry number, if available"
+          }, 
+          "preapproval_date": {
+            "type": "object", 
+            "properties": {
+              "name": {
+                "enum": [
+                  "schedule", 
+                  "date_range", 
+                  "undecided", 
+                  "not_approval"
+                ], 
+                "type": "string", 
+                "title": ""
+              }, 
+              "comments": {
+                "type": "string", 
+                "title": "Additional comments"
+              }
+            }, 
             "title": "Preapproval date"
-          },
+          }, 
           "email": {
-            "type": "string",
+            "type": "string", 
             "title": "Your email address"
           }
-        },
+        }, 
         "title": "Analysis Context"
-      },
+      }, 
       "data_fitting": {
-        "type": "object",
+        "type": "object", 
         "properties": {
           "parameter_boundaries": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "not_checked",
-                  "no",
-                  "yes_unused",
-                  "yes_checked",
+                  "not_checked", 
+                  "no", 
+                  "yes_unused", 
+                  "yes_checked", 
                   "yes_trusted"
-                ],
-                "type": "string",
-                "description":
-                  "Are any of the parameters returned by the fit close (less than 3 sigma) to their physical or pre-defined boundary?"
-              },
+                ], 
+                "type": "string", 
+                "description": "Are any of the parameters returned by the fit close (less than 3 sigma) to their physical or pre-defined boundary?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Parameter Boundaries"
-          },
+          }, 
           "covariance_matrix": {
-            "type": "object",
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["not_relevant", "yes", "no"],
-                "type": "string",
-                "description":
-                  "In case you are using the returned parameters in other parts of your analysis: are you accounting for the covariance matrix (error and off-diagonal correlation terms) of the parameter uncertainties?"
-              },
+                "enum": [
+                  "not_relevant", 
+                  "yes", 
+                  "no"
+                ], 
+                "type": "string", 
+                "description": "In case you are using the returned parameters in other parts of your analysis: are you accounting for the covariance matrix (error and off-diagonal correlation terms) of the parameter uncertainties?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Covariance Matrix Check"
-          },
+          }, 
           "toy_pull_distribution": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "no_not_checked",
-                  "no_not_used",
-                  "yes_unbiased",
-                  "yes_found_something",
+                  "no_not_checked", 
+                  "no_not_used", 
+                  "yes_unbiased", 
+                  "yes_found_something", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "Do you check that the pull distribution in toy experiments is distributed as expected for an unbiased method (mean 0, width 1)?"
-              },
+                ], 
+                "type": "string", 
+                "description": "Do you check that the pull distribution in toy experiments is distributed as expected for an unbiased method (mean 0, width 1)?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Check of Pull Distributions in Toy Experiments "
-          },
+          }, 
           "fitting_model_choice": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
                   "enum": [
-                    "template_mc",
-                    "template_sideband",
-                    "theory_curves",
-                    "theory_inspired_curves",
-                    "adhoc_curves",
+                    "template_mc", 
+                    "template_sideband", 
+                    "theory_curves", 
+                    "theory_inspired_curves", 
+                    "adhoc_curves", 
                     "other"
                   ]
-                },
-                "type": "array",
+                }, 
+                "type": "array", 
                 "description": "How do you choose the fitting model?"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Fitting Model Choice"
-          },
+          }, 
           "goodness_test": {
             "dependencies": {
-              "p-value": "name",
+              "p-value": "name", 
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "p-value": {
                 "enum": [
-                  "dont_know",
-                  "0-0001",
-                  "0001-0010",
-                  "0010-0050",
-                  "0050-0990",
-                  "0990-0999",
+                  "dont_know", 
+                  "0-0001", 
+                  "0001-0010", 
+                  "0010-0050", 
+                  "0050-0990", 
+                  "0990-0999", 
                   "0999-1000"
-                ],
-                "type": "string",
+                ], 
+                "type": "string", 
                 "dependencies": "name"
-              },
+              }, 
               "name": {
-                "enum": ["undecided", "yes", "no"],
-                "type": "string",
-                "description":
-                  "Do you perform a goodness-of-fit test for the fit(s)? If the answer is \"Yes\" or \"Undecided\", please provide additional information and the resultung p-values(s)."
-              },
+                "enum": [
+                  "undecided", 
+                  "yes", 
+                  "no"
+                ], 
+                "type": "string", 
+                "description": "Do you perform a goodness-of-fit test for the fit(s)? If the answer is \"Yes\" or \"Undecided\", please provide additional information and the resultung p-values(s)."
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Goodness-Of-Fit Test (incl. p-values)"
-          },
+          }, 
           "background_shape": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "not_relevant",
-                  "yes_checked",
-                  "yes_assigned_from_difference",
+                  "not_relevant", 
+                  "yes_checked", 
+                  "yes_assigned_from_difference", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "In case you perform a fit to the background shape with a function: How do you choose the functional form?"
-              },
+                ], 
+                "type": "string", 
+                "description": "In case you perform a fit to the background shape with a function: How do you choose the functional form?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Background Shape Choice "
-          },
+          }, 
           "functional_form": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "items": {
-                  "enum": ["templates", "parametric", "other"]
-                },
-                "type": "array",
+                  "enum": [
+                    "templates", 
+                    "parametric", 
+                    "other"
+                  ]
+                }, 
+                "type": "array", 
                 "description": "What functional forms are used?"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Functional Form"
-          },
+          }, 
           "usage": {
-            "enum": ["undecided", "yes", "no"],
-            "type": "string",
-            "description":
-              "Does the analysis include fitting of data distributions? If the answer is \"No\", please proceed with the next section.",
+            "enum": [
+              "undecided", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Does the analysis include fitting of data distributions? If the answer is \"No\", please proceed with the next section.", 
             "title": "Usage of fitting of data distributions"
-          },
+          }, 
           "fit_function": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
                 "enum": [
-                  "not_relevant",
-                  "chose_okish",
-                  "robustness_checks",
-                  "conservative",
-                  "formal",
+                  "not_relevant", 
+                  "chose_okish", 
+                  "robustness_checks", 
+                  "conservative", 
+                  "formal", 
                   "other"
-                ],
-                "type": "string",
-                "description":
-                  "In case you perform a fit using a functional form which exists for many different number of parameters (such as polynomials): How are you choosing the number of parameters?"
-              },
+                ], 
+                "type": "string", 
+                "description": "In case you perform a fit using a functional form which exists for many different number of parameters (such as polynomials): How are you choosing the number of parameters?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Fit Function: Choice of Number of Parameters "
-          },
+          }, 
           "test_stats": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "reason": {
-                "type": "string",
+                "type": "string", 
                 "title": "What drove you to this particular choice?"
-              },
+              }, 
               "name": {
                 "items": {
-                  "enum": ["chi_square", "binned", "unbinned", "other"]
-                },
-                "type": "array",
-                "description":
-                  "Which test statistic are you using to perform the fit(s)?"
-              },
+                  "enum": [
+                    "chi_square", 
+                    "binned", 
+                    "unbinned", 
+                    "other"
+                  ]
+                }, 
+                "type": "array", 
+                "description": "Which test statistic are you using to perform the fit(s)?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Test Statistic"
           }
-        },
+        }, 
         "title": "Data Fitting"
-      },
+      }, 
       "uncertainties": {
-        "type": "object",
+        "type": "object", 
         "properties": {
           "crosschecks": {
             "dependencies": {
               "deriving": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "deriving": {
-                "enum": ["undecided", "yes", "no"],
-                "type": "string",
+                "enum": [
+                  "undecided", 
+                  "yes", 
+                  "no"
+                ], 
+                "type": "string", 
                 "dependencies": "name"
-              },
+              }, 
               "name": {
-                "enum": ["undecided", "yes", "no"],
-                "type": "string",
-                "description":
-                  "Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data? If the answer is \"No\": Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check? What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?"
-              },
+                "enum": [
+                  "undecided", 
+                  "yes", 
+                  "no"
+                ], 
+                "type": "string", 
+                "description": "Does your analysis include \"cross-checks\" of your method, e.g. the verification of a technique on a subsidiary set of data? If the answer is \"No\": Are you deriving a systematic uncertainty on your main measurement from the level of agreement you observe in the cross-check? What would you have done if the cross-check failed (e.g. p-value below 0.01, or other pre-defined criterion)?"
+              }, 
               "comments": {
-                "type": "string",
+                "type": "string", 
                 "title": "Additional comments"
-              },
+              }, 
               "failure_procedure": {
-                "type": "string",
+                "type": "string", 
                 "title": "Procedure in case of cross-check failure"
               }
-            },
+            }, 
             "title": "Crosschecks"
-          },
+          }, 
           "consideration": {
-            "type": "boolean",
-            "description":
-              "Have you considered that systematic uncertainties constrained by sideband measurements in the data, and whose estimate thus depends on the size of the analyzed dataset, should be treated as statistical uncertainties?",
+            "type": "boolean", 
+            "description": "Have you considered that systematic uncertainties constrained by sideband measurements in the data, and whose estimate thus depends on the size of the analyzed dataset, should be treated as statistical uncertainties?", 
             "title": "Consideration of Systematic Uncertainties"
-          },
+          }, 
           "recommendations_awareness": {
-            "type": "boolean",
-            "description":
-              "If a systematic effect is included as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?",
+            "type": "boolean", 
+            "description": "If a systematic effect is included as nuisance parameter in the model, are you aware that the SC recommends the use of Gamma or Log-Normal priors instead of truncated Gaussians?", 
             "title": "Awareness of SC recommendations"
-          },
+          }, 
           "twiki_read": {
-            "type": "boolean",
-            "description":
-              "Have you read the SC recommendation TWiki pages on systematic uncertainties?",
+            "type": "boolean", 
+            "description": "Have you read the SC recommendation TWiki pages on systematic uncertainties?", 
             "title": "TWiki Pages Read"
-          },
+          }, 
           "template_morphing": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
-                "type": "boolean",
-                "description":
-                  "Do you use \"template morphing\" in your analysis, e.g. to model a systematic uncertainty in the statistical model?"
-              },
+                "type": "boolean", 
+                "description": "Do you use \"template morphing\" in your analysis, e.g. to model a systematic uncertainty in the statistical model?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Template Morphing"
           }
-        },
+        }, 
         "title": "Systematic Uncertainties"
-      },
+      }, 
       "discovery": {
+        "description": "Take a second a read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>TWiki Pages on Search Procedures</a>, <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, and <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a> (if applicable)?", 
+        "type": "object", 
         "properties": {
           "usage": {
-            "enum": ["undecided", "yes", "no"],
-            "type": "string",
-            "description":
-              "Does the analysis include discovery-related statements, such as citing p-values of the null hypothesis or a \"significance\"? If the answer is \"No\", please proceed with the next section.",
+            "enum": [
+              "undecided", 
+              "yes", 
+              "no"
+            ], 
+            "type": "string", 
+            "description": "Does the analysis include discovery-related statements, such as citing p-values of the null hypothesis or a \"significance\"? If the answer is \"No\", please proceed with the next section.", 
             "title": "Usage"
-          },
+          }, 
           "lookelsewhere_effect": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["not_relevant", "no", "yes"],
-                "type": "string",
+                "enum": [
+                  "not_relevant", 
+                  "no", 
+                  "yes"
+                ], 
+                "type": "string", 
                 "description": "Do you account for the look-elsewhere effect?"
-              },
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Look-Elsewhere Effect"
-          },
+          }, 
           "twiki_read": {
-            "type": "boolean",
-            "description":
-              "Have you read the discovery-related TWiki pages mentioned above (if applicable)?",
+            "type": "boolean", 
+            "description": "Have you read the discovery-related TWiki pages mentioned above (if applicable)?", 
             "title": "TWiki Pages Read"
-          },
+          }, 
           "test_statistics": {
             "dependencies": {
               "comments": "name"
-            },
-            "type": "object",
+            }, 
+            "type": "object", 
             "properties": {
               "name": {
-                "enum": ["likelihood", "profile", "other"],
-                "type": "string",
-                "description":
-                  "To evaluate the p-value(s) of the null hypothesis, what test statistic was used?"
-              },
+                "enum": [
+                  "likelihood", 
+                  "profile", 
+                  "other"
+                ], 
+                "type": "string", 
+                "description": "To evaluate the p-value(s) of the null hypothesis, what test statistic was used?"
+              }, 
               "comments": {
-                "dependencies": "name",
-                "type": "string",
+                "dependencies": "name", 
+                "type": "string", 
                 "title": "Additional comments"
               }
-            },
+            }, 
             "title": "Test Statistics"
           }
-        },
-        "type": "object",
-        "description":
-          "Take a second a read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>TWiki Pages on Search Procedures</a>, <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, and <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a> (if applicable)?",
+        }, 
         "title": "Discovery"
       }
-    },
+    }, 
     "title": "CMS Statistics Questionnaire"
-  }
+  }, 
+  "is_deposit": false
 }

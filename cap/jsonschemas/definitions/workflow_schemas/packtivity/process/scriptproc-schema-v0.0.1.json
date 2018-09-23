@@ -1,7 +1,6 @@
 {
   "fullname": "String Interpolated Script", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "String Interpolated Script", 
     "required": [
@@ -30,5 +29,6 @@
         "title": "Script"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

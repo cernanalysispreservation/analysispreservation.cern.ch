@@ -1,7 +1,6 @@
 {
   "fullname": "Step", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "items": [
       {
@@ -87,5 +86,6 @@
     "type": "fieldset", 
     "key": "workflows[].workflow.stages[].scheduler.step", 
     "title": "Step"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Parameter Selection", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Parameter Selection", 
     "items": {
@@ -58,5 +57,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "array", 
     "id": "parameter_selection"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,6 +1,6 @@
 {
   "fullname": null, 
   "experiment": "CMS", 
-  "partial": true, 
-  "jsonschema": {}
+  "jsonschema": {}, 
+  "is_deposit": false
 }

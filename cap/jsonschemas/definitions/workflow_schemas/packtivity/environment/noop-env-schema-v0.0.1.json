@@ -1,7 +1,6 @@
 {
   "fullname": "Noop Environment for Testing", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "title": "Noop Environment for Testing", 
     "required": [
@@ -20,5 +19,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "noop-env"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,7 +1,6 @@
 {
   "fullname": "Workflow", 
   "experiment": "ATLAS", 
-  "partial": true, 
   "jsonschema": {
     "items": [
       {
@@ -16,5 +15,6 @@
     "type": "tabArrayTop", 
     "key": "workflows", 
     "title": "Workflow"
-  }
+  }, 
+  "is_deposit": false
 }

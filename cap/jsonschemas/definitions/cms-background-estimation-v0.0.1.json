@@ -1,7 +1,6 @@
 {
   "fullname": null, 
   "experiment": "CMS", 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -52,5 +51,6 @@
         "title": "Samples"
       }
     }
-  }
+  }, 
+  "is_deposit": false
 }

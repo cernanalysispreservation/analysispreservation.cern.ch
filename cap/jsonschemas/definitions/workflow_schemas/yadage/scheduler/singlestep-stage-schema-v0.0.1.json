@@ -1,7 +1,6 @@
 {
   "fullname": "Single Step Scheduler", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "oneOf": [
       {
@@ -51,5 +50,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
     "id": "singlestep-stage"
-  }
+  }, 
+  "is_deposit": false
 }

@@ -1,9 +1,9 @@
 {
   "fullname": null, 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": [
     "workflows[].workflow.stages[].scheduler.step.publisher.globexpression", 
     "workflows[].workflow.stages[].scheduler.step.publisher.outputkey"
-  ]
+  ], 
+  "is_deposit": false
 }

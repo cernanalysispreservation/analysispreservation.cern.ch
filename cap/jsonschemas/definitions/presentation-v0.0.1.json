@@ -1,7 +1,6 @@
 {
   "fullname": "Presentation", 
   "experiment": null, 
-  "partial": true, 
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#", 
     "type": "object", 
@@ -12,5 +11,6 @@
       }
     }, 
     "title": "Presentation"
-  }
+  }, 
+  "is_deposit": false
 }
