@@ -374,6 +374,7 @@ class CAPDeposit(Deposit):
 
     def _construct_filename(self, url, type):
         """Constructs repo name  or file name."""
+        url = url.rstrip('/')
         filename = url.split('/')[-1] + '.tar.gz' \
             if type == 'repo' else url.split('/')[-1]
         return filename
