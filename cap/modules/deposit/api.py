@@ -27,6 +27,9 @@
 from __future__ import absolute_import, print_function
 
 import copy
+import shutil
+import tempfile
+
 from copy import deepcopy
 
 import requests
@@ -196,17 +199,17 @@ class CAPDeposit(Deposit):
     def edit(self, *args, **kwargs):
         """Edit deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).edit(*args,  **kwargs)
+            super(CAPDeposit, self).edit(*args, **kwargs)
 
     def update(self, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).update(*args,  **kwargs)
+            super(CAPDeposit, self).update(*args, **kwargs)
 
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).patch(*args,  **kwargs)
+            super(CAPDeposit, self).patch(*args, **kwargs)
 
     def edit_permissions(self, data):
         """Edit deposit permissions.
@@ -478,11 +481,12 @@ def download_repo(pid, url, filename):
     record = CAPDeposit.get_record(pid)
     try:
         link = RepoImporter.create(url).archive_repository()
-        response = requests.get(link, stream=True).raw
+        # response = requests.get(link, stream=True).raw
+        response = ensure_content_length(link)
         total = int(response.headers.get('Content-Length'))
     except TypeError as exc:
         download_repo.retry(exc=exc, countdown=10)
-    task_commit(record, response, filename, total)
+    task_commit(record, response.raw, filename, total)
 
 
 def task_commit(record, response, filename, total):
@@ -493,3 +497,22 @@ def task_commit(record, response, filename, total):
         size=total
     )
     db.session.commit()
+
+
+def ensure_content_length(
+        url, method='GET', session=None, max_size=(2**20) * 3000,  # 3gb
+        *args, **kwargs):
+    """Adds Content-Length when no present."""
+    kwargs['stream'] = True
+    session = session or requests.Session()
+    r = session.request(method, url, *args, **kwargs)
+    if 'Content-Length' not in r.headers:
+        # stream content into a temporary file so we can get the real size
+        spool = tempfile.SpooledTemporaryFile(max_size)
+        shutil.copyfileobj(r.raw, spool)
+        r.headers['Content-Length'] = str(spool.tell())
+        spool.seek(0)
+        # replace the original socket with our temporary file
+        r.raw._fp.close()
+        r.raw._fp = spool
+    return r
