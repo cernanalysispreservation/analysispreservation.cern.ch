@@ -35,7 +35,7 @@ from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.minters import cap_deposit_minter
 from elasticsearch import helpers
 from elasticsearch_dsl import Q
-from invenio_accounts.models import Role
+from invenio_access.models import Role, User
 from invenio_db import db
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
@@ -70,15 +70,16 @@ def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
 
 def add_read_permission_for_egroup(deposit, egroup):
     """Adds read permission for egroup."""
-    deposit.edit_permissions([{
-        'email': 'cms-members@cern.ch',
-        'type': 'egroup',
-        'op': 'add',
-        'action': 'deposit-read'
-    }])
+    role = Role.query.filter_by(name=egroup).one()
+    deposit._add_egroup_permissions(role,
+                                    ['deposit-read'],
+                                    db.session)
+    deposit.commit()
+    db.session.commit()
 
 
-def add_drafts_from_file(file_path, schema, egroup, limit=None):
+def add_drafts_from_file(file_path, schema,
+                         egroup=None, user=None, limit=None):
     """Adds drafts from a specified file.
 
     Drafts with specified pid will be registered under those.
@@ -100,8 +101,15 @@ def add_drafts_from_file(file_path, schema, egroup, limit=None):
             except PIDDoesNotExistError:
                 record_uuid = uuid.uuid4()
                 pid = cap_deposit_minter(record_uuid, data)
-                deposit = CAPDeposit.create(data, record_uuid)
-                add_read_permission_for_egroup(deposit, egroup)
+                if user:
+                    user = User.query.filter_by(email=user).one()
+                if egroup:
+                    role = Role.query.filter_by(name=egroup).one()
+                deposit = CAPDeposit.create(data, record_uuid, user)
+                deposit.commit()
+
+                if egroup:
+                    add_read_permission_for_egroup(deposit, egroup)
 
                 print('Draft {} added.'.format(pid.pid_value))
 
