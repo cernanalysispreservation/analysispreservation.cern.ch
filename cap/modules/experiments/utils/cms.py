@@ -148,7 +148,7 @@ def synchronize_cadi_entries(limit=None):
 
             print('Cadi entry {} updated.'.format(cadi_id))
 
-        except (DepositDoesNotExist, NoResultFound):  # or create new cadi entry
+        except (DepositDoesNotExist, NoResultFound):
             data = construct_cadi_entry(cadi_id, {
                 'cadi_info': {v: parser.unescape(entry.get(k, '') or '') or ''
                               for k, v in CADI_FIELD_TO_CAP_MAP.items()}

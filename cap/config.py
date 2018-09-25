@@ -31,15 +31,13 @@ from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
 
-from cap.modules.deposit.permissions import (CreateDepositPermission,
-                                             DeleteDepositPermission,
-                                             ReadDepositPermission,
-                                             UpdateDepositPermission)
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
 from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
 from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.records.search import cap_record_search_factory
 from cap.modules.search.facets import nested_filter
 
 
@@ -252,12 +250,11 @@ RECORDS_REST_SORT_OPTIONS = dict(
         bestmatch=dict(
             title=_('Best match'),
             fields=['_score'],
-            default_order='desc',
             order=1,
         ),
         mostrecent=dict(
             title=_('Most recent'),
-            fields=['created'],
+            fields=['_created'],
             default_order='desc',
             order=2,
         ),
@@ -346,16 +343,10 @@ RECORDS_REST_FACETS = {
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
 RECORDS_REST_ENDPOINTS['recid'].update({
-    # 'pid_type': 'recid',
-    # 'pid_minter': 'cap_record_minter',
     'pid_fetcher': 'cap_record_fetcher',
-    # 'search_index': 'records',
-    # 'record_class': "invenio_records_files.api:Record",
-    # search_type=None,
-    'search_class': cap_record_search_factory(
-        CAP_COLLAB_EGROUPS,
-        SUPERUSER_EGROUPS,
-    ),
+    'search_class': 'cap.modules.records.search:CAPRecordSearch',
+    'search_factory_imp': 'cap.modules.search.query'
+    ':cap_search_factory',
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
                              ':json_v1_response'),
@@ -368,11 +359,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_search'),
     },
-    # 'read_permission_factory_imp': check_oauth2_scope(
-    #     lambda record: record_read_permission_factory(
-    #         CAP_COLLAB_EGROUPS,
-    #         SUPERUSER_EGROUPS)(record).can(),
-    #     write_scope.id),
     'read_permission_factory_imp': check_oauth2_scope(
         lambda record: ReadRecordPermission(record).can(),
         write_scope.id),

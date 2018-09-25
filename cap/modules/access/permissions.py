@@ -25,8 +25,6 @@
 
 """CAP generic permissions."""
 
-from flask import current_app
-from flask_principal import RoleNeed
 from invenio_access.permissions import Permission, superuser_access
 
 
@@ -40,5 +38,4 @@ def admin_permission_factory(view):
         protected.
     :returns: Permission instance.
     """
-
     return Permission(superuser_access)

@@ -27,7 +27,6 @@
 from __future__ import absolute_import, print_function
 
 import copy
-import re
 from copy import deepcopy
 
 import requests
@@ -56,8 +55,7 @@ from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
-                          DepositUpdateActionNeed, ReadDepositPermission,
-                          UpdateDepositPermission)
+                          DepositUpdateActionNeed, UpdateDepositPermission)
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -70,6 +68,7 @@ PRESERVE_FIELDS = (
     '_buckets',
     '_files',
     '_experiment',
+    '_access',
 )
 
 DEPOSIT_ACTIONS = [

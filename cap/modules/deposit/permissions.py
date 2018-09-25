@@ -28,11 +28,11 @@
 from functools import partial
 
 from flask import request
-from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
+from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from .errors import WrongJSONSchemaError
 
@@ -113,7 +113,7 @@ class CreateDepositPermission(Permission):
         super(CreateDepositPermission, self).__init__(*_needs)
 
     def _get_schema_needs(self, deposit):
-        """Create deposit permissions are allowed based on schema's permissions."""
+        """Create deposit permissions are based on schema's permissions."""
         if '$schema' in deposit:
             try:
                 schema = Schema.get_by_fullpath(deposit['$schema'])
@@ -162,7 +162,8 @@ class AdminDepositPermission(DepositPermission):
 
 
 class CloneDepositPermission(DepositPermission):
-    """Deposit admin permission."""
+    """Clone deposit permission."""
+
     def __init__(self, record):
         """Initialize state."""
         super(CloneDepositPermission, self).__init__(record, 'read')

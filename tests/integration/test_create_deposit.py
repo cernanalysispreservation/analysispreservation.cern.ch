@@ -230,20 +230,6 @@ def test_create_deposit_set_fields_correctly(app,
         assert created['$schema'] == schema.fullpath
         assert created['_experiment'] == 'LHCb'
         assert created['_deposit']['status'] == 'draft'
-        assert created['_access'] == {
-            'deposit-read': {
-                'users': [owner.id],
-                'roles': []
-            },
-            'deposit-update': {
-                'users': [owner.id],
-                'roles': []        
-            },
-            'deposit-admin': {
-                'users': [owner.id],
-                'roles': []        
-            }
-        }
 
 
 def test_create_deposit_when_schema_with_refs_works_correctly(app,

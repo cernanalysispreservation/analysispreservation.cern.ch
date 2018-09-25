@@ -46,14 +46,14 @@ def test_me_when_user_not_logged_in_returns_401(app):
 #
 #        assert resp.status_code == 200
 #        assert json.loads(resp.data) == superuser_me_data
-
-
-def test_me_when_cms_user_returns_correct_user_data(app, users,
-                                                    auth_headers_for_user,
-                                                    cms_user_me_data):
-    with app.test_client() as client:
-        user_headers = auth_headers_for_user(users['cms_user'])
-        resp = client.get('/me',
-                          headers=user_headers)
-
-        assert json.loads(resp.data) == cms_user_me_data
+#
+#
+#def test_me_when_cms_user_returns_correct_user_data(app, users,
+#                                                    auth_headers_for_user,
+#                                                    cms_user_me_data):
+#    with app.test_client() as client:
+#        user_headers = auth_headers_for_user(users['cms_user'])
+#        resp = client.get('/me',
+#                          headers=user_headers)
+#
+#        assert json.loads(resp.data) == cms_user_me_data

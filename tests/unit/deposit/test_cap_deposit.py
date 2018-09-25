@@ -40,18 +40,6 @@ from cap.modules.deposit.errors import (DepositValidationError,
                                         WrongJSONSchemaError)
 
 
-def test_create_deposit_with_non_object_data_raises_DepositValidationError(app,
-                                                                           users,
-                                                                           location,
-                                                                           jsonschemas_host):
-    with app.test_request_context():
-        metadata = 5
-        login_user(users['superuser'])
-        id_ = uuid4()
-        with raises(DepositValidationError):
-            Deposit.create(metadata, id_=id_)
-
-
 def test_create_deposit_with_empty_data_raises_DepositValidationError(app,
                                                                       users,
                                                                       location,
@@ -98,7 +86,7 @@ def test_create_deposit_with_wrong_schema_raises_DepositValidationError(app,
 
 
 def test_add_user_permissions_set_access_object_properly(app, db, users, create_deposit):
-    owner, user = users['cms_user'], users['cms_user2']
+    owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
 
     assert deposit['_access'] == {
@@ -125,11 +113,11 @@ def test_add_user_permissions_set_access_object_properly(app, db, users, create_
 
     assert deposit['_access'] == {
         'deposit-read': {
-            'users': [owner.id, user.id],
+            'users': [owner.id, other_user.id],
             'roles': []        
         },
         'deposit-update': {
-            'users': [owner.id, user.id],
+            'users': [owner.id, other_user.id],
             'roles': []        
         },
         'deposit-admin': {
