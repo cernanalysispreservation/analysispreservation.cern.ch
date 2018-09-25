@@ -51,7 +51,8 @@ class GithubImporter(repo_importer.RepoImporter):
         gh = Github(self.token)
         repo = gh.get_repo(self.repo)
         link = repo.get_file_contents(file)
-        return link.download_url, link.size
+        return {'url': link.download_url,
+                'size': link.size, 'token': self.token}
 
     def get_url_of_repository_archive(self):
         """Retrieve repository archive URL via PyGithub."""

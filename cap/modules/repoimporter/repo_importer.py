@@ -26,7 +26,7 @@
 """Abstract class RepoImporter."""
 
 from abc import ABCMeta, abstractmethod
-
+from flask import current_app
 from utils import parse_url
 
 
@@ -36,15 +36,15 @@ class RepoImporter:
     __metaclass__ = ABCMeta
 
     @staticmethod
-    def create(url, ref=None):
+    def create(url, ref='master'):
         """Create github or gitalb repo."""
         host, user, repo = parse_url(url)
         repo_name = "/".join([user, repo])
 
         if "gitlab" in host:
             from gitlab_importer import GitlabImporter
-            # token = current_app.config.get('GITLAB_OAUTH_ACCESS_TOKEN')
-            gli = GitlabImporter(repo_name, ref, token=None)
+            token = current_app.config.get('GITLAB_OAUTH_ACCESS_TOKEN')
+            gli = GitlabImporter(repo_name, ref, token=token)
             return gli
 
         if "github" in host:

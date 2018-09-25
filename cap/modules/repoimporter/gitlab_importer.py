@@ -25,6 +25,7 @@
 
 """Gitlab importer."""
 
+import gitlab
 import repo_importer
 from utils import parse_url
 
@@ -40,6 +41,7 @@ class GitlabImporter(repo_importer.RepoImporter):
         else:
             self.repo = repo
         self.token = token
+        self.host = "https://gitlab.cern.ch"
         self.ref = ref  # branch/tag/commit
 
     def archive_repository(self):
@@ -48,7 +50,11 @@ class GitlabImporter(repo_importer.RepoImporter):
 
     def archive_file(self, file):
         """Retrieve file URL via python-gitlab."""
-        pass
+        gl = gitlab.Gitlab(self.host, private_token=self.token)
+        project = gl.projects.get(self.repo)
+        url = '{}/api/v4/projects/{}/repository/files/{}/raw?ref={}'.format(
+            self.host, project.id, file, self.ref)
+        return {'url': url, 'size': None, 'token': self.token}
 
     def get_url_of_repository_archive(self):
         """Retrieve repository archive URL."""
@@ -56,9 +62,8 @@ class GitlabImporter(repo_importer.RepoImporter):
             self.ref = self.ref.replace('/', '%2F')
         else:
             self.ref = "master"
-        host = "https://gitlab.cern.ch"
         url = '{}/{}/repository/{}/archive.tar.gz'.format(
-            host,
+            self.host,
             self.repo,
             self.ref)
         if self.token:

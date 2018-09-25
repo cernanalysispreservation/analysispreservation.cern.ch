@@ -444,9 +444,9 @@ CERN_APP_CREDENTIALS = {
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
 # and error flashing
 CERN_REMOTE_APP.update(dict(
-        authorized_handler=authorized_signup_handler,
-        disconnect_handler=disconnect_handler,
-    ))
+    authorized_handler=authorized_signup_handler,
+    disconnect_handler=disconnect_handler,
+))
 
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
@@ -573,6 +573,9 @@ DATADIR = join(dirname(__file__), 'data')
 # TOFIX: Fix to check '$schema' permissions( like
 #        'UpdateDepositPermission') for file upload
 FILES_REST_PERMISSION_FACTORY = allow_all
+
+# Grab files max size
+FILES_URL_MAX_SIZE = (2**20) * 5000
 
 # Indexer
 # =======

@@ -37,6 +37,7 @@ from celery import shared_task
 from flask import current_app, request
 from werkzeug.local import LocalProxy
 
+from cap.config import FILES_URL_MAX_SIZE
 from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
@@ -466,10 +467,16 @@ def download_url(pid, url, filename):
     else:
         try:
             if any(u in url for u in ['github', 'gitlab']):
-                url, size = RepoImporter.create(url).archive_file(filename)
-            response = requests.get(url, stream=True).raw
+                file = RepoImporter.create(url).archive_file(filename)
+                url = file.get('url', None)
+                size = file.get('size', None)
+                token = file.get('token', None)
+                headers = {'PRIVATE-TOKEN': token}
+            response = requests.get(
+                url, stream=True, headers=headers).raw
             response.decode_content = True
-            total = size or int(response.headers.get('Content-Length'))
+            total = size or int(
+                response.headers.get('Content-Length'))
         except TypeError as exc:
             download_url.retry(exc=exc, countdown=10)
     task_commit(record, response, filename, total)
@@ -481,7 +488,6 @@ def download_repo(pid, url, filename):
     record = CAPDeposit.get_record(pid)
     try:
         link = RepoImporter.create(url).archive_repository()
-        # response = requests.get(link, stream=True).raw
         response = ensure_content_length(link)
         total = int(response.headers.get('Content-Length'))
     except TypeError as exc:
@@ -500,7 +506,9 @@ def task_commit(record, response, filename, total):
 
 
 def ensure_content_length(
-        url, method='GET', session=None, max_size=(2**20) * 3000,  # 3gb
+        url, method='GET',
+        session=None,
+        max_size=FILES_URL_MAX_SIZE or 2**20,
         *args, **kwargs):
     """Adds Content-Length when no present."""
     kwargs['stream'] = True
