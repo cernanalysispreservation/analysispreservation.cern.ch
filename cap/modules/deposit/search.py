@@ -25,14 +25,15 @@
 """Configuration for deposit search."""
 
 from elasticsearch_dsl import Q, TermsFacet
-from flask import abort  # has_request_context
 from flask_login import current_user
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
 
 from cap.modules.access.permissions import admin_permission_factory
+from cap.modules.access.utils import login_required
 
 
+@login_required
 def deposits_filter():
     """Filter list of deposits.
 
@@ -48,25 +49,20 @@ def deposits_filter():
     if admin_permission_factory(None).can():
         return Q()
 
-    if current_user.is_authenticated:
-        roles = [role.id for role in current_user.roles]
+    roles = [role.id for role in current_user.roles]
 
-        q = Q('multi_match',
-              query=current_user.id,
-              fields=[
-                  '_access.deposit-read.users',
-                  '_access.deposit-admin.users',
-                  '_deposit.owners'
-              ]) | \
-            Q('terms',
-              **{'_access.deposit-read.roles': roles}) | \
-            Q('terms',
-              **{'_access.deposit-admin.roles': roles})
+    q = Q('multi_match',
+          query=current_user.id,
+          fields=[
+              '_access.deposit-read.users',
+              '_access.deposit-admin.users'
+          ]) | \
+        Q('terms',
+          **{'_access.deposit-read.roles': roles}) | \
+        Q('terms',
+          **{'_access.deposit-admin.roles': roles})
 
-        return q
-
-    else:
-        abort(403)
+    return q
 
 
 class DepositSearch(RecordsSearch):

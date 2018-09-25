@@ -34,11 +34,11 @@ from pytest import mark
 ######################
 # api/deposits/  [GET]
 ######################
-def test_get_deposits_when_user_not_logged_in_returns_403(app, users):
+def test_get_deposits_when_user_not_logged_in_returns_401(app, users):
     with app.test_client() as client:
         resp = client.get('/deposits/')
 
-        assert resp.status_code == 403
+        assert resp.status_code == 401
 
 
 def test_get_deposits_when_superuser_returns_all_deposits(app, users,
