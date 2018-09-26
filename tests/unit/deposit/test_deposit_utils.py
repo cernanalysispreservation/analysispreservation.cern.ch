@@ -27,10 +27,7 @@
 
 from __future__ import absolute_import, print_function
 
-import pytest
-
-from cap.modules.deposit.errors import WrongJSONSchemaError
-from cap.modules.deposit.utils import clean_empty_values, discover_schema
+from cap.modules.deposit.utils import clean_empty_values
 
 
 def test_cleaning_of_empty_values():

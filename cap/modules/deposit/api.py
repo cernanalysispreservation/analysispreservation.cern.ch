@@ -37,6 +37,7 @@ import requests
 from celery import shared_task
 from flask import current_app, request
 from werkzeug.local import LocalProxy
+from jsonschema.validators import Draft4Validator, RefResolutionError
 
 from cap.config import FILES_URL_MAX_SIZE
 from cap.modules.repoimporter.repo_importer import RepoImporter
@@ -47,7 +48,6 @@ from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
-from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
@@ -55,6 +55,7 @@ from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
+from invenio_rest.errors import FieldError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -414,6 +415,39 @@ class CAPDeposit(Deposit):
     def _create_buckets(self):
         bucket = Bucket.create()
         RecordsBuckets.create(record=self.model, bucket=bucket)
+
+    def validate(self, **kwargs):
+        """Validate data using schema with ``JSONResolver``."""
+        def _concat_deque(queue):
+            """Helper for joining dequeue object."""
+            result = ''
+            for i in queue:
+                if isinstance(i, int):
+                    result += '[' + str(i) + ']'
+                else:
+                    result += '/' + i
+            return result
+
+        result = {}
+        try:
+            schema = self['$schema']
+            if not isinstance(schema, dict):
+                schema = {'$ref': schema}
+            resolver = current_app.extensions[
+                'invenio-records'].ref_resolver_cls.from_schema(schema)
+
+            result['errors'] = [
+                FieldError(_concat_deque(error.path), str(error.message))
+                for error in
+                Draft4Validator(schema, resolver=resolver).iter_errors(self)
+            ]
+
+            if result['errors']:
+                raise DepositValidationError(None, errors=result['errors'])
+        except RefResolutionError:
+            raise DepositValidationError('Schema with given url not found.')
+        except KeyError:
+            raise DepositValidationError('Schema field is required.')
 
     @classmethod
     def get_record(cls, id_, with_deleted=False):

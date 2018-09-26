@@ -27,12 +27,6 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app
-
-from cap.modules.schemas.models import Schema
-
-from .errors import WrongJSONSchemaError
-
 
 def clean_empty_values(data):
     """Removes empty values from model."""
@@ -42,29 +36,3 @@ def clean_empty_values(data):
         return [v for v in (clean_empty_values(v) for v in data) if v]
     return {k: v for k, v in (
         (k, clean_empty_values(v)) for k, v in data.items()) if v}
-
-
-def discover_schema(deposit):
-    """If schema url not passed directly, set it based on $ana_type field."""
-    if '$schema' not in deposit:
-        schemas = Schema.get_user_deposit_schemas()
-
-        ana_type = deposit.get("$ana_type", None)
-
-        if ana_type is None:
-            raise WrongJSONSchemaError()
-
-        schema = (s for s in schemas if ana_type in s)
-
-        if schema:
-            host = current_app.config.get('JSONSCHEMAS_HOST', None)
-            protocol = current_app.config.get(
-                'JSONSCHEMAS_URL_SCHEME', 'https')
-            schema = "{protocol}://{host}/schemas/{schema}".format(
-                host=host,
-                schema=schema.next(),
-                protocol=protocol)
-    else:
-        schema = deposit['$schema']
-
-    return schema

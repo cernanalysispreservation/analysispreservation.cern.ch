@@ -68,8 +68,9 @@ class DepositValidationError(RESTValidationError):
 
     description = "Validation error. Try again with valid data"
 
-    def __init__(self, description, **kwargs):
+    def __init__(self, description, errors=None, **kwargs):
         """Initialize exception."""
         super(DepositValidationError, self).__init__(**kwargs)
 
         self.description = description or self.description
+        self.errors = errors
