@@ -43,8 +43,6 @@ blueprint = Blueprint(
     'cap_oauth2server_settings',
     __name__,
     url_prefix='/applications',
-    static_folder='../static',
-    template_folder='../templates',
 )
 
 

@@ -41,8 +41,6 @@ lhcb_bp = Blueprint(
     'cap_lhcb',
     __name__,
     url_prefix='/lhcb',
-    template_folder='templates',
-    static_folder='static',
 )
 
 

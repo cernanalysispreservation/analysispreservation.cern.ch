@@ -32,6 +32,4 @@ alice_bp = Blueprint(
     'cap_alice',
     __name__,
     url_prefix='/ALICE',
-    template_folder='templates',
-    static_folder='static',
 )

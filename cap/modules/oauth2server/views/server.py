@@ -44,8 +44,6 @@ blueprint = Blueprint(
     'invenio_oauth2server_server',
     __name__,
     url_prefix='/oauth',
-    static_folder="../static",
-    template_folder="../templates",
 )
 
 

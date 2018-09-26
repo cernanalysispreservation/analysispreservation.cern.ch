@@ -33,9 +33,7 @@ from cap.modules.deposit.utils import discover_schema
 deposit_blueprint = Blueprint(
     'cap_deposit_ui',
     __name__,
-    template_folder='../templates',
     url_prefix='/deposit',
-    static_folder='../static'
 )
 
 

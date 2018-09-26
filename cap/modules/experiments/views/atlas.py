@@ -37,8 +37,6 @@ atlas_bp = Blueprint(
     'cap_atlas',
     __name__,
     url_prefix='/ATLAS',
-    template_folder='templates',
-    static_folder='static',
 )
 
 
