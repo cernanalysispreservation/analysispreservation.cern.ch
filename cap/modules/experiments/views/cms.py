@@ -34,7 +34,7 @@ from flask import Blueprint, current_app, jsonify, request
 
 from invenio_search.proxies import current_search_client as es
 
-from ..permissions.cms import cms_permission
+from ..permissions import cms_permission
 
 cms_bp = Blueprint(
     'cap_cms',

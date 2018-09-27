@@ -28,16 +28,14 @@ from __future__ import absolute_import, print_function
 
 import ldap
 import requests
-from flask import Blueprint, current_app, jsonify, request, session
+from flask import Blueprint, current_app, g, jsonify, request, session
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
-from invenio_accounts.models import Role
 from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import collaboration_permissions
 from cap.modules.schemas.models import Schema
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
@@ -58,18 +56,9 @@ def get_user():
     _user = {
         "id": current_user.id,
         "email": current_user.email,
-        "collaborations": user_experiments,
         "deposit_groups": deposit_groups,
         "current_experiment": current_experiment,
     }
-
-    roles = Role.query.filter(
-        Role.name.in_(
-            [x + '@cern.ch' for x in session.get(
-                'cern_resource', {}).get(
-                    'Group', [])]
-        )).all()
-    session['roles'] = [x.id for x in roles]
 
     response = jsonify(_user)
     response.status_code = 200
@@ -77,10 +66,14 @@ def get_user():
 
 
 def get_user_experiments():
-    """Return an array with user's experiments."""
-    experiments = [collab for collab, needs in
-                   collaboration_permissions.items() if needs.can()]
-    return experiments
+    """Get user's experiments."""
+    exp_needs = current_app.config['EXPERIMENT_NEEDS']
+    user_needs = g.identity.provides
+
+    return [
+        exp for exp, needs in exp_needs.items()
+        if any(need in user_needs for need in needs)
+    ]
 
 
 def get_user_deposit_groups():

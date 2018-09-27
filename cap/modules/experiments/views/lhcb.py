@@ -35,7 +35,7 @@ from urllib import unquote
 import requests
 from flask import Blueprint, current_app, jsonify, request
 
-from ..permissions.lhcb import lhcb_permission
+from ..permissions import lhcb_permission
 
 lhcb_bp = Blueprint(
     'cap_lhcb',
