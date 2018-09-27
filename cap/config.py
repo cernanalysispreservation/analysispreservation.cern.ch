@@ -71,6 +71,12 @@ MAIL_SUPPRESS_SEND = True
 
 # Accounts
 # ========
+#: Allow user to confirm their email address.
+SECURITY_CONFIRMABLE = False
+"""Allow users to login without first confirming their email address."""
+SECURITY_LOGIN_WITHOUT_CONFIRMATION = True
+"""Disable sending registration email."""
+SECURITY_SEND_REGISTER_EMAIL = False
 #: Email address used as sender of account registration emails.
 SECURITY_EMAIL_SENDER = SUPPORT_EMAIL
 #: Email subject for account registration emails.
