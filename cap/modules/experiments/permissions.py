@@ -22,20 +22,30 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
+"""Experiments permissions."""
 
-"""CAP deposit permissions."""
-
-from alice import alice_permission
-from atlas import atlas_permission
-from cms import cms_permission
-from lhcb import lhcb_permission
+from cap.config import EXPERIMENT_NEEDS
+from invenio_access.permissions import Permission
 
 
-collaboration_permissions = {
-    'ALICE': alice_permission,
-    'ATLAS': atlas_permission,
-    'CMS': cms_permission,
-    'LHCb': lhcb_permission,
-}
+class ExperimentPermission(Permission):
+    """Generic experiment permission."""
 
-__all__ = ['collaboration_permissions']
+    def __init__(self, experiment):
+        """Constructor.
+
+        Args:
+        deposit: deposit to which access is requested.
+        """
+        exp_needs = EXPERIMENT_NEEDS.get(experiment)
+
+        _needs = set()
+        _needs.update(exp_needs)
+
+        super(ExperimentPermission, self).__init__(*_needs)
+
+
+cms_permission = ExperimentPermission('CMS')
+alice_permission = ExperimentPermission('ALICE')
+atlas_permission = ExperimentPermission('ATLAS')
+lhcb_permission = ExperimentPermission('LHCb')

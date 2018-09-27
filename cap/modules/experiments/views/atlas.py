@@ -26,12 +26,12 @@
 
 from __future__ import absolute_import, print_function
 
-import requests
 import json
 
+import requests
 from flask import Blueprint, jsonify, request
 
-from ..permissions.atlas import atlas_permission
+from ..permissions import atlas_permission
 
 atlas_bp = Blueprint(
     'cap_atlas',

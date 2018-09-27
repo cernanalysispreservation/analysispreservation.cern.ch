@@ -26,19 +26,18 @@
 
 from __future__ import absolute_import, print_function
 
-import ldap
 import requests
 from flask import Blueprint, current_app, jsonify, request, session
+from werkzeug.local import LocalProxy
+
+import ldap
+from cap.config import DEBUG
+from cap.modules.access.utils import login_required
+from cap.modules.schemas.models import Schema
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
 from invenio_accounts.models import Role
-from werkzeug.local import LocalProxy
-
-from cap.config import DEBUG
-from cap.modules.access.utils import login_required
-from cap.modules.experiments.permissions import collaboration_permissions
-from cap.modules.schemas.models import Schema
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -58,7 +57,6 @@ def get_user():
     _user = {
         "id": current_user.id,
         "email": current_user.email,
-        "collaborations": user_experiments,
         "deposit_groups": deposit_groups,
         "current_experiment": current_experiment,
     }
@@ -76,11 +74,10 @@ def get_user():
     return response
 
 
-def get_user_experiments():
-    """Return an array with user's experiments."""
-    experiments = [collab for collab, needs in
-                   collaboration_permissions.items() if needs.can()]
-    return experiments
+def get_user_experiments(user=current_user):
+    exp_needs = current_app.config['EXPERIMENT_NEEDS']
+    return [exp for exp, needs in exp_needs.items()
+            if any(need.can() for need in needs)]
 
 
 def get_user_deposit_groups():
