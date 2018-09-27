@@ -43,7 +43,6 @@ from invenio_access.models import ActionUsers
 from invenio_access.permissions import superuser_access
 from invenio_accounts.models import Role
 from invenio_accounts.testutils import create_test_user
-from invenio_app.factory import create_api
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
@@ -57,6 +56,7 @@ from jsonresolver.contrib.jsonref import json_loader_factory
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
+from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.reana.models import ReanaJob
 from cap.modules.schemas.errors import SchemaDoesNotExist

@@ -28,6 +28,6 @@ from __future__ import absolute_import, print_function
 
 from flask_celeryext import create_celery_app
 
-from invenio_app.factory import create_api
+from cap.factory import create_api
 
 celery = create_celery_app(create_api())

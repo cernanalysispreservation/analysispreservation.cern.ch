@@ -27,7 +27,7 @@ Celery workers can be started using the command:
 
 .. code-block:: console
 
-    $ celery worker -A invenio_app.celery -l INFO
+    $ celery worker -A cap.celery -l INFO
 
 An interactive Python shell is started with the command:
 
