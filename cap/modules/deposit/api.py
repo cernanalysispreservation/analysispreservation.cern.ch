@@ -32,6 +32,11 @@ from copy import deepcopy
 import requests
 from celery import shared_task
 from flask import current_app, request
+from werkzeug.local import LocalProxy
+
+from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
@@ -44,11 +49,6 @@ from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-from werkzeug.local import LocalProxy
-
-from cap.modules.repoimporter.repo_importer import RepoImporter
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
 
 from .errors import DepositValidationError, UpdateDepositPermissionsError
 from .fetchers import cap_deposit_fetcher
@@ -198,13 +198,11 @@ class CAPDeposit(Deposit):
         with UpdateDepositPermission(self).require(403):
             super(CAPDeposit, self).edit(*args,  **kwargs)
 
-    @mark_as_action
     def update(self, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):
             super(CAPDeposit, self).update(*args,  **kwargs)
 
-    @mark_as_action
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
