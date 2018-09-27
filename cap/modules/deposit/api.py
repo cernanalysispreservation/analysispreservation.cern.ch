@@ -29,7 +29,6 @@ from __future__ import absolute_import, print_function
 import copy
 import shutil
 import tempfile
-
 from copy import deepcopy
 
 import requests
@@ -41,6 +40,9 @@ from cap.config import FILES_URL_MAX_SIZE
 from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
+from cap.modules.user.errors import DoesNotExistInLDAP
+from cap.modules.user.utils import (get_existing_or_register_role,
+                                    get_existing_or_register_user)
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
@@ -228,10 +230,10 @@ class CAPDeposit(Deposit):
             for obj in data:
                 if obj['type'] == 'user':
                     try:
-                        user = User.query.filter_by(email=obj['email']).one()
-                    except NoResultFound:
+                        user = get_existing_or_register_user(obj['email'])
+                    except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'User with this mail does not exist.')
+                            'User with this mail does not exist in LDAP.')
 
                     if obj['op'] == 'add':
                         try:
@@ -253,10 +255,10 @@ class CAPDeposit(Deposit):
 
                 elif obj['type'] == 'egroup':
                     try:
-                        role = Role.query.filter_by(name=obj['email']).one()
-                    except NoResultFound:
+                        role = get_existing_or_register_role(obj['email'])
+                    except DoesNotExistInLDAP:
                         raise UpdateDepositPermissionsError(
-                            'Egroup with this mail does not exist.')
+                            'Egroup with this mail does not exist in LDAP.')
 
                     if obj['op'] == 'add':
                         try:
