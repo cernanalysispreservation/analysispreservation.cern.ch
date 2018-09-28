@@ -29,6 +29,8 @@ from __future__ import absolute_import, print_function
 import copy
 import shutil
 import tempfile
+
+from functools import wraps
 from copy import deepcopy
 
 import requests
@@ -75,6 +77,7 @@ PRESERVE_FIELDS = (
     '_files',
     '_experiment',
     '_access',
+    '$schema'
 )
 
 DEPOSIT_ACTIONS = [
@@ -113,6 +116,23 @@ class CAPDeposit(Deposit):
 #        )
 #
 #        super(CAPDeposit, self).__init__(*args, **kwargs)
+
+    def pop_from_data(method, fields=None):
+        """Remove fields from deposit data.
+
+        :param fields: List of fields to remove (default: ``('_deposit',)``).
+        """
+        fields = fields or ('_deposit', '_access', "$schema")
+
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+            """Check current deposit status."""
+            for field in fields:
+                if field in args[0]:
+                    args[0].pop(field)
+
+            return method(self, *args, **kwargs)
+        return wrapper
 
     @property
     def schema(self):
@@ -204,6 +224,7 @@ class CAPDeposit(Deposit):
         with UpdateDepositPermission(self).require(403):
             super(CAPDeposit, self).edit(*args, **kwargs)
 
+    @pop_from_data
     def update(self, *args, **kwargs):
         """Update deposit."""
         with UpdateDepositPermission(self).require(403):

@@ -233,26 +233,69 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
         assert resp.status_code == 403
 
 
-# @TOFIX updating schema shouldnt be allowed
-@mark.skip
 def test_update_deposit_cannot_update_schema_field(app, db, users,
                                                    create_deposit,
                                                    create_schema,
                                                    json_headers,
                                                    auth_headers_for_user):
     owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb-v0.0.1')
+    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
     schema = create_schema('deposits/records/another-v0.0.0',
                            experiment='LHCb') 
+
+    deposit_schema = deposit.get("$schema", None)
+    assert deposit_schema is not None
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                              headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({
-                                 '$schema': ''
-                             }))
+                             data=json.dumps({}))
 
-        assert resp.status_code == 400
+        resp_schema = resp.json.get("metadata", {}).get("$schema", None)
+        assert resp_schema == deposit_schema
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + json_headers,
+                             data=json.dumps({"$schema": schema.fullpath }))
+
+        resp_schema = resp.json.get("metadata", {}).get("$schema", None)
+        assert resp_schema == deposit_schema
+
+        assert resp.status_code == 200
+
+
+def test_update_deposit_cannot_update_access_field(app, db, users,
+                                                   create_deposit,
+                                                   create_schema,
+                                                   json_headers,
+                                                   auth_headers_for_user):
+    owner = users['lhcb_user']
+    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
+    schema = create_schema('deposits/records/another-v0.0.0',
+                           experiment='LHCb') 
+
+    deposit_access = deposit.get("_access", None)
+    assert deposit_access is not None
+
+    with app.test_client() as client:
+        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + json_headers,
+                             data=json.dumps({}))
+
+        resp_access = resp.json.get("access", None)
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + json_headers,
+                             data=json.dumps({}))
+
+        updated_resp_data = resp.json.get("access", None)
+        assert updated_resp_data == resp_access
+
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + json_headers,
+                             data=json.dumps({"_access": [] }))
+
+        assert resp.status_code == 200
 
 
 #@TODO add tests to check if put validates properly
