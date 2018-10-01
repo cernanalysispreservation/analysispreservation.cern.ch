@@ -150,6 +150,70 @@ def test_deposit_publish_changes_status_and_creates_record(app, users,
         assert resp.status_code == 200
 
 
+def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
+                                                           auth_headers_for_user,
+                                                           json_headers,
+                                                           create_schema,
+                                                           create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                           headers=headers)
+
+        assert resp.status_code == 202
+
+        resp = client.put('/deposits/{}'.format(pid),
+                           headers=headers + json_headers,
+                           data = json.dumps({"general_title": "Updated published"}))
+
+        assert resp.status_code == 403
+
+        resp = client.post('/deposits/{}/actions/edit'.format(pid),
+                           headers=headers + json_headers)
+
+        assert resp.status_code == 201
+
+        resp = client.put('/deposits/{}'.format(pid),
+                           headers=headers + json_headers,
+                           data = json.dumps({"general_title": "Updated published"}))
+
+        assert resp.status_code == 200
+        assert resp.json.get("metadata", {}).get("general_title", None) == "Updated published"
+
+
+# TOFIX : updating schemas that are not have indexes results to error
+@mark.skip
+def test_deposit_publish_unknown_schema_then_deposit_update_should_not_be_allowed(app, users,
+                                                           auth_headers_for_user,
+                                                           json_headers,
+                                                           create_schema,
+                                                           create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
+    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                           headers=headers)
+
+        assert resp.status_code == 202
+
+        resp = client.put('/deposits/{}'.format(pid),
+                           headers=headers + json_headers,
+                           data = json.dumps({"general_title": "Updated published"}))
+
+        assert resp.status_code == 403
+
+        resp = client.post('/deposits/{}/actions/edit'.format(pid),
+                           headers=headers + json_headers)
+
+        assert resp.status_code == 201
+
+
 def test_get_deposits_when_published_other_members_of_experiment_can_see_it(app, db, users,
                                                                             auth_headers_for_user,
                                                                             json_headers,

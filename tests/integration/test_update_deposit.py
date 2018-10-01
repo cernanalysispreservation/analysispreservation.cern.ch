@@ -298,4 +298,62 @@ def test_update_deposit_cannot_update_access_field(app, db, users,
         assert resp.status_code == 200
 
 
+def test_patch_deposit(app, db, users,
+                       create_deposit,
+                       create_schema,
+                       json_headers,
+                       auth_headers_for_user):
+    owner = users['lhcb_user']
+    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
+
+    with app.test_client() as client:
+        resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + [
+                                        ('Content-Type', 'application/json-patch+json'),
+                                        ('Accept', 'application/json')],
+                             data=json.dumps([
+                              { 
+                                "op": "replace", 
+                                "path": "/general_title", 
+                                "value": "Gen Test"
+                              }
+                            ]))
+
+        assert resp.status_code == 400
+
+        resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + [
+                                        ('Content-Type', 'application/json-patch+json'),
+                                        ('Accept', 'application/json')],
+                             data=json.dumps([
+                              { 
+                                "op": "add", 
+                                "path": "/general_title", 
+                                "value": "Gen Test"
+                              },
+                              { "op": "add", 
+                                "path": "/basic_info", 
+                                "value": {"conclusion": "Updated path" } 
+                              }
+                            ]))
+
+        assert resp.status_code == 200
+        assert resp.json.get("metadata", {}).get("general_title", None) == "Gen Test"
+
+        resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + [
+                                        ('Content-Type', 'application/json-patch+json'),
+                                        ('Accept', 'application/json')],
+                             data=json.dumps([
+                              { 
+                                "op": "replace", 
+                                "path": "/general_title", 
+                                "value": "Gen 8"
+                              }
+                            ]))
+
+        assert resp.status_code == 200
+        assert resp.json.get("metadata", {}).get("general_title", None) == "Gen 8"
+
+
 #@TODO add tests to check if put validates properly

@@ -223,7 +223,7 @@ class CAPDeposit(Deposit):
     def edit(self, *args, **kwargs):
         """Edit deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).edit(*args, **kwargs)
+            return super(CAPDeposit, self).edit(*args, **kwargs)
 
     @pop_from_data
     def update(self, *args, **kwargs):
@@ -234,7 +234,7 @@ class CAPDeposit(Deposit):
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).patch(*args, **kwargs)
+            return super(CAPDeposit, self).patch(*args, **kwargs)
 
     def edit_permissions(self, data):
         """Edit deposit permissions.
