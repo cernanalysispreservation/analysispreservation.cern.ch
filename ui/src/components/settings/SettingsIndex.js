@@ -11,7 +11,8 @@ import {
   Title,
   Heading,
   Table,
-  TableRow
+  TableRow,
+  Toast
 } from "grommet";
 
 import AddIcon from "grommet/components/icons/base/Add";
@@ -32,7 +33,8 @@ class SettingsIndex extends React.Component {
     this.state = {
       layer: {
         active: false
-      }
+      },
+      showToast: false
     };
   }
 
@@ -53,12 +55,11 @@ class SettingsIndex extends React.Component {
   _onSubmit(type, data) {
     // FIX for frontend validation from schema
     let _data = Object.assign({}, data.formData);
-    if (!(_data.scopes instanceof Array)) {
-      if (_data.scopes) _data.scopes = [_data.scopes];
-      else _data.scopes = [];
+    _data.scopes = ["deposit:write"];
+    if (type == "token") {
+      this.props.createToken(_data);
     }
-    if (type == "token") this.props.createToken(_data);
-    // else if (type == "application") this.props.createApplication(data.formData);
+    this.setState({ showToast: true, layer: { active: false } });
   }
 
   getLayer() {
@@ -123,12 +124,22 @@ class SettingsIndex extends React.Component {
 
           {!this.props.tokens.isEmpty() ? (
             <Box colorIndex="light-2">
+              {this.state.showToast ? (
+                <Toast
+                  status="warning"
+                  onClose={() => {
+                    this.setState({ showToast: false });
+                  }}
+                >
+                  Do not share any personal access token. It gives full access
+                  to your account.
+                </Toast>
+              ) : null}
               <Table colorIndex="light-2">
                 <thead key="token_header">
                   <tr>
                     <th>id</th>
                     <th>Name</th>
-                    <th>Scopes</th>
                     <th>API key</th>
                     <th>Revoke</th>
                   </tr>
@@ -140,7 +151,6 @@ class SettingsIndex extends React.Component {
                         {[
                           <td key="id">{token.t_id}</td>,
                           <td key="name">{token.name}</td>,
-                          <td key="scopes">{token.scopes}</td>,
                           <td key="access_token">{token.access_token}</td>,
                           <td key="action">
                             <Anchor
@@ -184,7 +194,6 @@ SettingsIndex.propTypes = {
 function mapStateToProps(state) {
   return {
     tokens: state.auth.get("tokens")
-    // clients: state.auth.get("clients"),
   };
 }
 
