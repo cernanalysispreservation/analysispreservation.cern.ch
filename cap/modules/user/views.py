@@ -75,6 +75,7 @@ def get_user():
 
 
 def get_user_experiments(user=current_user):
+    """Returns user experiments."""
     exp_needs = current_app.config['EXPERIMENT_NEEDS']
     return [exp for exp, needs in exp_needs.items()
             if any(need.can() for need in needs)]
