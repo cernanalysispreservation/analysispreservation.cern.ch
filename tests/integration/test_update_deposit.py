@@ -356,4 +356,43 @@ def test_patch_deposit(app, db, users,
         assert resp.json.get("metadata", {}).get("general_title", None) == "Gen 8"
 
 
+def test_patch_deposit_passing__files_field(app, db, users,
+                       create_deposit,
+                       create_schema,
+                       json_headers,
+                       auth_headers_for_user):
+    owner = users['lhcb_user']
+    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
+
+    with app.test_client() as client:
+        resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + [
+                                        ('Content-Type', 'application/json-patch+json'),
+                                        ('Accept', 'application/json')],
+                             data=json.dumps([
+                              {
+                                "op": "add",
+                                "path": "/_files",
+                                "value": "Gen Test"
+                              }
+                            ]))
+
+        assert resp.status_code == 200
+
+
+def test_put_deposit_passing__files_field(app, db, users,
+                       create_deposit,
+                       create_schema,
+                       json_headers,
+                       auth_headers_for_user):
+    owner = users['lhcb_user']
+    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
+
+    with app.test_client() as client:
+        resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
+                             headers=auth_headers_for_user(owner) + json_headers,
+                             data=json.dumps({ "_files": "Gen Test" }))
+
+        assert resp.status_code == 200
+
 #@TODO add tests to check if put validates properly

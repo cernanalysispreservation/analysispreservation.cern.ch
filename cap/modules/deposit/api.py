@@ -135,6 +135,24 @@ class CAPDeposit(Deposit):
             return method(self, *args, **kwargs)
         return wrapper
 
+    def pop_from_data_patch(method, fields=None):
+        """Remove fields from deposit data.
+
+        :param fields: List of fields to remove (default: ``('_deposit',)``).
+        """
+        fields = fields or ('/_deposit', '/_access', "/$schema", "/_files")
+
+        @wraps(method)
+        def wrapper(self, *args, **kwargs):
+            """Check current deposit status."""
+            for field in fields:
+                for k, patch in enumerate(args[0]):
+                    if field == patch.get("path", None):
+                        del args[0][k]
+
+            return method(self, *args, **kwargs)
+        return wrapper
+
     @property
     def schema(self):
         """Schema property."""
@@ -231,6 +249,7 @@ class CAPDeposit(Deposit):
         with UpdateDepositPermission(self).require(403):
             super(CAPDeposit, self).update(*args, **kwargs)
 
+    @pop_from_data_patch
     def patch(self, *args, **kwargs):
         """Patch deposit."""
         with UpdateDepositPermission(self).require(403):
