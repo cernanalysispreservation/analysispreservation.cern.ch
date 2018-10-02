@@ -123,7 +123,12 @@ class CAPDeposit(Deposit):
 
         :param fields: List of fields to remove (default: ``('_deposit',)``).
         """
-        fields = fields or ('_deposit', '_access', "$schema")
+        fields = fields or (
+            '_deposit',
+            '_access',
+            '_experiment',
+            '$schema'
+        )
 
         @wraps(method)
         def wrapper(self, *args, **kwargs):
@@ -140,7 +145,13 @@ class CAPDeposit(Deposit):
 
         :param fields: List of fields to remove (default: ``('_deposit',)``).
         """
-        fields = fields or ('/_deposit', '/_access', "/$schema", "/_files")
+        fields = fields or (
+            '/_deposit',
+            '/_access',
+            '/_files',
+            '/_experiment',
+            '/$schema',
+        )
 
         @wraps(method)
         def wrapper(self, *args, **kwargs):
