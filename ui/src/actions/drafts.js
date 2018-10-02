@@ -77,8 +77,8 @@ export function draftsError(error) {
 export function draftsItemRequest() {
   return { type: DRAFTS_ITEM_REQUEST };
 }
-export function draftsItemSuccess(draft_id, draft) {
-  return { type: DRAFTS_ITEM_SUCCESS, draft_id, draft };
+export function draftsItemSuccess(draft_id, draft, permissions) {
+  return { type: DRAFTS_ITEM_SUCCESS, draft_id, draft, permissions };
 }
 export function draftsItemError(error) {
   return { type: DRAFTS_ITEM_ERROR, error };
@@ -181,11 +181,12 @@ export function createDraftRequest() {
   };
 }
 
-export function createDraftSuccess(draft_id, draft) {
+export function createDraftSuccess(draft_id, draft, permissions) {
   return {
     type: CREATE_DRAFT_SUCCESS,
     draft_id,
-    draft
+    draft,
+    permissions
   };
 }
 
@@ -304,23 +305,6 @@ export function clearErrorSuccess() {
   };
 }
 
-// [TOFIX] Plug validation action if needed.
-// export function validate(data, schema) {
-//   return dispatch => {
-//     dispatch(validateRequest());
-
-//     data['$ana_type'] = schema;
-
-//     axios.post('/api/deposit/validator', data)
-//       .then(function(response) {
-//         dispatch(validateSuccess(response.data));
-//       })
-//       .catch(function(error) {
-//         dispatch(validateError(error));
-//       })
-//   };
-// }
-
 // [TOFIX] : update the way to handle schemas
 export function fetchSchema(schema) {
   return dispatch => {
@@ -372,7 +356,9 @@ export function createDraft(data = {}, schema) {
         axios
           .put(uri + draft_id, response.data.metadata)
           .then(response => {
-            dispatch(createDraftSuccess(draft_id, response.data));
+            dispatch(
+              createDraftSuccess(draft_id, response.data, response.data.access)
+            );
           })
           .catch(error => {
             dispatch(createDraftError(error));
@@ -481,6 +467,7 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
+
     axios
       .get(uri, {
         headers: {
@@ -495,7 +482,9 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
           let schema = url[url.length - 1].split("-v")[0];
           dispatch(fetchSchema(schema));
         }
-        dispatch(draftsItemSuccess(draft_id, response.data));
+        dispatch(
+          draftsItemSuccess(draft_id, response.data, response.data.access)
+        );
       })
       .catch(error => {
         dispatch(draftsItemError(error));
@@ -566,23 +555,6 @@ export function uploadViaUrl(draft_id, urlToGrab, type) {
       })
       .catch(error => {
         dispatch(uploadFileError(urlToGrab, error.message));
-      });
-  };
-}
-
-export function getPermissions(draft_id) {
-  return dispatch => {
-    dispatch(permissionsItemRequest());
-
-    let uri = `/api/deposits/${draft_id}`;
-
-    axios
-      .get(uri)
-      .then(response => {
-        dispatch(permissionsItemSuccess(response.data.access));
-      })
-      .catch(error => {
-        dispatch(permissionsItemError(error));
       });
   };
 }

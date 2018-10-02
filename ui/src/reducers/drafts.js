@@ -113,6 +113,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "id"], action.draft_id)
         .setIn(["current_item", "data"], action.draft.metadata)
         .setIn(["current_item", "formData"], action.draft.metadata)
+        .setIn(["current_item", "permissions"], action.permissions)
         .setIn(
           ["current_item", "files"],
           action.draft.files
@@ -136,6 +137,7 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "error"], null)
         .setIn(["current_item", "id"], action.draft_id)
         .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(["current_item", "permissions"], action.permissions)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "links"], Map(action.draft.links));
     case CREATE_DRAFT_ERROR:

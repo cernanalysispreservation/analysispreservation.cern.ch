@@ -28,7 +28,6 @@ class DraftsIndex extends React.Component {
           <Route exact path={`/drafts/:draft_id`} component={DraftPreview} />
           <Route path={`/drafts/:draft_id/edit`} component={CreateDeposit} />
           <Route
-            exact
             path={`/drafts/:draft_id/settings`}
             component={DepositSettings}
           />

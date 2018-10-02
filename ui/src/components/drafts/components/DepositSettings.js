@@ -10,6 +10,7 @@ import {
   Label,
   Table,
   TableRow,
+  TableHeader,
   CheckBox,
   RadioButton,
   FormField,
@@ -18,7 +19,7 @@ import {
 } from "grommet";
 
 import {
-  getPermissions,
+  getDraftById,
   handlePermissions,
   clearError
 } from "../../../actions/drafts";
@@ -39,7 +40,12 @@ class DepositSettings extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getPermissions(this.props.match.params.draft_id);
+    if (
+      this.props.match.params.draft_id &&
+      this.props.match.params.draft_id !== this.props.draft_id
+    ) {
+      this.props.getDraftById(this.props.match.params.draft_id, true);
+    }
   }
 
   fetchLdapData = _.debounce(url => {
@@ -74,6 +80,17 @@ class DepositSettings extends React.Component {
     });
   };
 
+  addPermissions = draft_id => {
+    this.props.handlePermissions(
+      draft_id,
+      this.state.type,
+      this.state.inputValue,
+      "deposit-read",
+      "add"
+    );
+    this.setState({ inputValue: "" });
+  };
+
   permissionExists(grouped, action) {
     let actionExists = _.filter(grouped, ["action", action]);
     return actionExists.length > 0 ? true : false;
@@ -87,6 +104,11 @@ class DepositSettings extends React.Component {
 
     let error = this.props.error ? this.props.error.message : null;
     let owner = this.props.draft ? this.props.draft._deposit.owners[0] : null;
+    let draft_id = this.props.draft_id
+      ? this.props.draft_id
+      : this.props.match.params.draft_id;
+
+    let users = _.sortBy(Object.keys(grouped));
 
     return (
       <Box>
@@ -95,7 +117,7 @@ class DepositSettings extends React.Component {
             {error}
           </Toast>
         ) : null}
-        <DepositHeader draftId={this.props.draft_id} />
+        <DepositHeader draftId={draft_id} />
         <SectionHeader label="Access" />
         <Box flex={true} align="center">
           <Box size="xxlarge">
@@ -146,142 +168,134 @@ class DepositSettings extends React.Component {
                     icon={<AddIcon />}
                     size="small"
                     onClick={() => {
-                      this.props.handlePermissions(
-                        this.props.draft_id,
-                        this.state.type,
-                        this.state.inputValue,
-                        "deposit-read",
-                        "add"
-                      );
+                      this.addPermissions(draft_id);
                     }}
                   />
                 )}
               </Box>
             </Box>
-            <Table>
-              <thead>
-                <tr>
-                  <th>
-                    <Label>User/Role</Label>
-                  </th>
-                  <th>
-                    <Label>Read</Label>
-                  </th>
-                  <th>
-                    <Label>Write</Label>
-                  </th>
-                  <th>
-                    <Label>Admin</Label>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.keys(grouped).map((key, index) => (
-                  <TableRow key={`${key}-${index}`}>
-                    <td>{key}</td>
-                    <td>
-                      {this.permissionExists(grouped[key], "deposit-read") ? (
-                        <CheckBox
-                          toggle={true}
-                          checked={true}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-read",
-                              "remove"
-                            )
-                          }
-                        />
-                      ) : (
-                        <CheckBox
-                          toggle={true}
-                          checked={false}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-read",
-                              "add"
-                            )
-                          }
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {this.permissionExists(grouped[key], "deposit-update") ? (
-                        <CheckBox
-                          toggle={true}
-                          checked={true}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-update",
-                              "remove"
-                            )
-                          }
-                        />
-                      ) : (
-                        <CheckBox
-                          toggle={true}
-                          checked={false}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-update",
-                              "add"
-                            )
-                          }
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {this.permissionExists(grouped[key], "deposit-admin") ? (
-                        <CheckBox
-                          toggle={true}
-                          checked={true}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-admin",
-                              "remove"
-                            )
-                          }
-                        />
-                      ) : (
-                        <CheckBox
-                          toggle={true}
-                          checked={false}
-                          disabled={owner && owner === key}
-                          onChange={() =>
-                            this.props.handlePermissions(
-                              this.props.draft_id,
-                              this.state.type,
-                              key,
-                              "deposit-admin",
-                              "add"
-                            )
-                          }
-                        />
-                      )}
-                    </td>
-                  </TableRow>
-                ))}
-              </tbody>
-            </Table>
+            <Box margin="small">
+              <Table>
+                <TableHeader labels={["User/Role", "Read", "Write", "Admin"]} />
+                <tbody>
+                  {users.map((key, index) => (
+                    <TableRow key={`${key}-${index}`}>
+                      <td>
+                        {key}
+                        {owner && owner === key ? (
+                          <strong> (owner)</strong>
+                        ) : null}
+                      </td>
+                      <td>
+                        {this.permissionExists(grouped[key], "deposit-read") ? (
+                          <CheckBox
+                            toggle={true}
+                            checked={true}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-read",
+                                "remove"
+                              )
+                            }
+                          />
+                        ) : (
+                          <CheckBox
+                            toggle={true}
+                            checked={false}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-read",
+                                "add"
+                              )
+                            }
+                          />
+                        )}
+                      </td>
+                      <td>
+                        {this.permissionExists(
+                          grouped[key],
+                          "deposit-update"
+                        ) ? (
+                          <CheckBox
+                            toggle={true}
+                            checked={true}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-update",
+                                "remove"
+                              )
+                            }
+                          />
+                        ) : (
+                          <CheckBox
+                            toggle={true}
+                            checked={false}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-update",
+                                "add"
+                              )
+                            }
+                          />
+                        )}
+                      </td>
+                      <td>
+                        {this.permissionExists(
+                          grouped[key],
+                          "deposit-admin"
+                        ) ? (
+                          <CheckBox
+                            toggle={true}
+                            checked={true}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-admin",
+                                "remove"
+                              )
+                            }
+                          />
+                        ) : (
+                          <CheckBox
+                            toggle={true}
+                            checked={false}
+                            disabled={owner && owner === key}
+                            onChange={() =>
+                              this.props.handlePermissions(
+                                draft_id,
+                                grouped[key][0]["type"],
+                                key,
+                                "deposit-admin",
+                                "add"
+                              )
+                            }
+                          />
+                        )}
+                      </td>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </Table>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -292,7 +306,7 @@ class DepositSettings extends React.Component {
 DepositSettings.propTypes = {
   match: PropTypes.object,
   error: PropTypes.object,
-  getPermissions: PropTypes.func,
+  getDraftById: PropTypes.func,
   loading: PropTypes.bool,
   clearError: PropTypes.func,
   draft_id: PropTypes.string,
@@ -314,7 +328,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPermissions: draft_id => dispatch(getPermissions(draft_id)),
+    getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
     handlePermissions: (draft_id, type, email, action, operation) =>
       dispatch(handlePermissions(draft_id, type, email, action, operation)),
     clearError: () => dispatch(clearError())

@@ -54,10 +54,11 @@ class CreateDeposit extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.draft_id) {
-      if (this.props.match.params.draft_id !== this.props.draft_id) {
-        this.props.getDraftById(this.props.match.params.draft_id, true);
-      }
+    if (
+      this.props.match.params.draft_id &&
+      this.props.match.params.draft_id !== this.props.draft_id
+    ) {
+      this.props.getDraftById(this.props.match.params.draft_id, true);
     }
     if (this.props.match.params.schema_id) {
       this.props.initForm();
