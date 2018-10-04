@@ -39,7 +39,7 @@ let FieldHeader = function(props) {
 };
 
 FieldHeader.propTypes = {
-  title: PropTypes.object,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   description: PropTypes.string,
   margin: PropTypes.string,
   onArrayAddClick: PropTypes.func,

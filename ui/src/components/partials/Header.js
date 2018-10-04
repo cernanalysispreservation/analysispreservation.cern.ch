@@ -56,7 +56,7 @@ class Header extends React.Component {
               href="#"
               path="/"
               label={config.project.name || "Project Name"}
-              style={{ "text-decoration": "none" }}
+              style={{ textDecoration: "none" }}
             />
           </Title>
           <Box flex={true} justify="center" colorIndex="neutral-1-t">
