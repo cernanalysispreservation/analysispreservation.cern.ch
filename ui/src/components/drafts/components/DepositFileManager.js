@@ -23,20 +23,27 @@ const schema = {
 };
 
 const uiSchema = {
-  "ui:placeholder": "Please provide a valid file url",
-  "ui:widget": "textarea"
+  "ui:placeholder": "Please provide a github/gitlab file url",
+  "ui:widget": "tags",
+  "ui:options": {
+    pattern: /(http:\/\/|https:\/\/|root:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
+  }
 };
 
 const uiSchemaRepoUpload = {
-  "ui:placeholder": "Please provide a valid repository url",
-  "ui:widget": "textarea"
+  "ui:placeholder": "Please provide a valid github/gitlab repository url",
+  "ui:widget": "tags",
+  "ui:options": {
+    pattern: /(http:\/\/|https:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
+  }
 };
 
 class FileManager extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: null
+      selected: null,
+      formData: []
     };
   }
 
@@ -46,6 +53,14 @@ class FileManager extends React.Component {
   };
 
   setSelected = key => this.setState({ selected: key });
+
+  formDataChange = data => {
+    this.setState({ formData: data });
+  };
+
+  clearFormData = () => {
+    this.setState({ formData: [] });
+  };
 
   render() {
     return this.props.activeLayer && this.props.links ? (
@@ -87,7 +102,7 @@ class FileManager extends React.Component {
                 />
               </Box>
               <Box flex={true} pad="small" colorIndex="grey-4-a">
-                <Tabs justify="start">
+                <Tabs justify="start" onActive={this.clearFormData}>
                   <Tab title="Upload File">
                     <Box>
                       <Heading tag="h5" strong={true}>
@@ -112,8 +127,6 @@ class FileManager extends React.Component {
                                 ".cern.ch/",
                                 ".cern.ch/api/"
                               );
-                              // console.log("acceptedFiles", acceptedFiles);
-                              // console.log(rejectedFiles);
 
                               if (acceptedFiles.length > 0)
                                 this.props.uploadFile(
@@ -133,22 +146,34 @@ class FileManager extends React.Component {
                       <Box>
                         <Box flex={true}>
                           <CleanForm
+                            formData={this.state.formData}
                             schema={schema}
                             uiSchema={uiSchema}
-                            onSubmit={data => {
-                              this.props.uploadViaUrl(
-                                this.props.draft_id,
-                                data.formData,
-                                "url"
-                              );
+                            onChange={change => {
+                              this.formDataChange(change.formData);
                             }}
                           >
                             <Box margin={{ top: "small" }}>
-                              <Button
-                                label="Upload"
-                                type="submit"
-                                primary={true}
-                              />
+                              {this.state.formData.length > 0 ? (
+                                <Button
+                                  label="Upload"
+                                  primary={true}
+                                  fill={true}
+                                  onClick={() => {
+                                    this.props.uploadViaUrl(
+                                      this.props.draft_id,
+                                      this.state.formData,
+                                      "url"
+                                    );
+                                  }}
+                                />
+                              ) : (
+                                <Button
+                                  label="Upload"
+                                  primary={true}
+                                  fill={true}
+                                />
+                              )}
                             </Box>
                           </CleanForm>
                         </Box>
@@ -162,22 +187,34 @@ class FileManager extends React.Component {
                       </Heading>
                       <Box direction="row">
                         <CleanForm
+                          formData={this.state.formData}
                           schema={schema}
                           uiSchema={uiSchemaRepoUpload}
-                          onSubmit={data => {
-                            this.props.uploadViaUrl(
-                              this.props.draft_id,
-                              data.formData,
-                              "repo"
-                            );
+                          onChange={change => {
+                            this.formDataChange(change.formData);
                           }}
                         >
                           <Box margin={{ top: "small" }}>
-                            <Button
-                              label="Upload"
-                              type="submit"
-                              primary={true}
-                            />
+                            {this.state.formData.length > 0 ? (
+                              <Button
+                                label="Upload"
+                                primary={true}
+                                fill={true}
+                                onClick={() => {
+                                  this.props.uploadViaUrl(
+                                    this.props.draft_id,
+                                    this.state.formData,
+                                    "repo"
+                                  );
+                                }}
+                              />
+                            ) : (
+                              <Button
+                                label="Upload"
+                                primary={true}
+                                fill={true}
+                              />
+                            )}
                           </Box>
                         </CleanForm>
                       </Box>

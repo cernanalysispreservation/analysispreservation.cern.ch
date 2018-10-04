@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,29 +21,19 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+# or submit itself to any jurisdiction.
 
-"""CAP general utils."""
+"""Unit tests for Cap general views."""
 
-
-from __future__ import absolute_import, print_function
-
-import six
-from flask import current_app
-from werkzeug.local import LocalProxy
-from werkzeug.utils import import_string
-
-_records_state = LocalProxy(lambda: current_app.extensions['invenio-records'])
+from flask import url_for
 
 
-def obj_or_import_string(value, default=None):
-    """Import string or return object.
+def test_view_ping(app):
+    with app.test_request_context():
+        url = url_for('cap.ping')
 
-    :params value: Import path or class object to instantiate.
-    :params default: Default object to return if passed value is None.
-    :returns: The imported object.
-    """
-    if isinstance(value, six.string_types):
-        return import_string(value)
-    elif value:
-        return value
-    return default
+    with app.test_client() as client:
+        resp = client.get(url)
+
+        assert resp.status_code == 200
+        assert resp.data == 'Pong'

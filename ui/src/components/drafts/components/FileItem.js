@@ -1,16 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Label, Menu, Anchor, ListItem } from "grommet";
+import { Box, Label, Anchor, ListItem, Toast } from "grommet";
 
 import Status from "grommet/components/icons/Status";
-
-import ArchiveIcon from "grommet/components/icons/base/Archive";
-import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
-import PieChartIcon from "grommet/components/icons/base/PieChart";
-import BookIcon from "grommet/components/icons/base/Book";
-import NoteIcon from "grommet/components/icons/base/Note";
-import MoreIcon from "grommet/components/icons/base/More";
+import {
+  ArchiveIcon,
+  DocumentConfigIcon,
+  PieChartIcon,
+  BookIcon,
+  NoteIcon,
+  DownloadIcon
+} from "grommet/components/icons/base";
 
 import prettyBytes from "pretty-bytes";
 
@@ -44,6 +45,7 @@ class FileItem extends React.Component {
 
   render() {
     let { file } = this.props;
+    let filename = file.key.split("/").pop();
     return (
       <ListItem
         key={file.key}
@@ -52,6 +54,9 @@ class FileItem extends React.Component {
         pad="none"
         flex={true}
       >
+        {file.status == "error" ? (
+          <Toast status="critical">{file.error.message}</Toast>
+        ) : null}
         <Box direction="row" flex={true} justify="between" wrap={false}>
           <Box direction="row" flex={true}>
             <Box justify="center" margin={{ horizontal: "small" }}>
@@ -70,7 +75,10 @@ class FileItem extends React.Component {
                 size="small"
                 truncate={true}
               >
-                {file.key}
+                {filename}{" "}
+                {file.size ? (
+                  <strong>({prettyBytes(parseInt(file.size))})</strong>
+                ) : null}
               </Label>
             </Box>
             {file.status ? (
@@ -78,22 +86,8 @@ class FileItem extends React.Component {
                 <Status size="small" value={uploadStatusMap[file.status]} />
               </Box>
             ) : null}
+            <Anchor href="#" icon={<DownloadIcon />} />
           </Box>
-
-          <Menu
-            responsive={true}
-            size="small"
-            dropAlign={{ right: "right", top: "bottom" }}
-            icon={<MoreIcon size="xsmall" />}
-          >
-            <Box justify="center" margin={{ right: "small" }}>
-              {file.size ? prettyBytes(parseInt(file.size)) : "No size"}
-            </Box>
-            <Anchor href="#" className="active">
-              Download
-            </Anchor>
-            <Anchor href="#">More Info</Anchor>
-          </Menu>
         </Box>
       </ListItem>
     );

@@ -188,7 +188,7 @@ export default function depositReducer(state = initialState, action) {
       return state.setIn(["current_item", "files", action.filename], {
         key: action.filename,
         status: "error",
-        error: action.error
+        error: action.error.response.data
       });
     case PUBLISH_DRAFT_REQUEST:
       return state

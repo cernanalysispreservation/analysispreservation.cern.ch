@@ -25,6 +25,7 @@
 """Deposit errors."""
 
 from invenio_rest.errors import RESTValidationError
+from invenio_rest.errors import RESTException
 
 
 class DepositDoesNotExist(Exception):
@@ -74,3 +75,15 @@ class DepositValidationError(RESTValidationError):
 
         self.description = description or self.description
         self.errors = errors
+
+
+class FileUploadError(RESTException):
+    """Exception during uploading external urls."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(FileUploadError, self).__init__(**kwargs)
+
+        self.description = description or self.description

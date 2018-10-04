@@ -47,6 +47,7 @@
     "react-router-dom": "4.2.2",
     "react-router-redux": "5.0.0-alpha.6",
     "react-split-pane": "0.1.74",
+    "react-tagsinput": "3.19.0",
     "redux": "3.6.0",
     "redux-logger": "^3.0.6",
     "redux-promise": "0.6.0",

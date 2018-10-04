@@ -58,7 +58,8 @@ from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .errors import DepositValidationError, UpdateDepositPermissionsError
+from .errors import (DepositValidationError,
+                     UpdateDepositPermissionsError, FileUploadError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
@@ -207,11 +208,13 @@ class CAPDeposit(Deposit):
         """Upload action for file/repository."""
         with UpdateDepositPermission(self).require(403):
             data = request.get_json()
-            filename = self._construct_filename(data['url'],
+
+            fileinfo = self._construct_fileinfo(data['url'],
                                                 data['type'])
             if request:
                 _, record = request.view_args.get('pid_value').data
                 record_id = str(record.id)
+                filename = fileinfo['filename']
                 obj = ObjectVersion.create(
                     bucket=record.files.bucket, key=filename
                 )
@@ -220,9 +223,21 @@ class CAPDeposit(Deposit):
                 record.files[filename]['source_url'] = data['url']
 
                 if data['type'] == 'url':
-                    download_url.delay(record_id, data['url'], filename)
+                    if data['url'].startswith(
+                            ('https://github',
+                             'https://gitlab.cern.ch',
+                             'root://')):
+                        download_url.delay(record_id, data['url'], fileinfo)
+                    else:
+                        raise FileUploadError(
+                            'Please provide a valid file url.')
                 else:
-                    download_repo.delay(record_id, data['url'], filename)
+                    if data['url'].startswith(
+                            ('https://github', 'https://gitlab.cern.ch')):
+                        download_repo.delay(record_id, data['url'], filename)
+                    else:
+                        raise FileUploadError(
+                            'Please provide a valid repository url.')
 
             return self
 
@@ -430,12 +445,19 @@ class CAPDeposit(Deposit):
 
         self.commit()
 
-    def _construct_filename(self, url, type):
+    def _construct_fileinfo(self, url, type):
         """Constructs repo name  or file name."""
         url = url.rstrip('/')
-        filename = url.split('/')[-1] + '.tar.gz' \
-            if type == 'repo' else url.split('/')[-1]
-        return filename
+        branch = None
+        if type == 'repo':
+            filename = filepath = url.split('/')[-1] + '.tar.gz'
+        else:
+            url = url.split('/blob/')[-1]
+            info = url.split('/')
+            branch = info[0]
+            filename = info[-1]
+            filepath = '/'.join(info[1:])
+        return {'filepath': filepath, 'filename': filename, 'branch': branch}
 
     def _set_experiment(self):
         schema = Schema.get_by_fullpath(self['$schema'])
@@ -543,7 +565,7 @@ class CAPDeposit(Deposit):
 
 
 @shared_task(max_retries=5)
-def download_url(pid, url, filename):
+def download_url(pid, url, fileinfo):
     """Task for fetching external files/repos."""
     record = CAPDeposit.get_record(pid)
     size = None
@@ -553,12 +575,14 @@ def download_url(pid, url, filename):
         total = response.size
     else:
         try:
-            if any(u in url for u in ['github', 'gitlab']):
-                file = RepoImporter.create(url).archive_file(filename)
-                url = file.get('url', None)
-                size = file.get('size', None)
-                token = file.get('token', None)
-                headers = {'PRIVATE-TOKEN': token}
+            filepath = fileinfo.get('filepath', None)
+            filename = fileinfo.get('filename', None)
+            branch = fileinfo.get('branch', None)
+            file = RepoImporter.create(url, branch).archive_file(filepath)
+            url = file.get('url', None)
+            size = file.get('size', None)
+            token = file.get('token', None)
+            headers = {'PRIVATE-TOKEN': token}
             response = requests.get(
                 url, stream=True, headers=headers).raw
             response.decode_content = True

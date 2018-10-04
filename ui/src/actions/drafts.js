@@ -544,18 +544,23 @@ export function uploadFile(bucket_link, file) {
 
 export function uploadViaUrl(draft_id, urlToGrab, type) {
   return dispatch => {
-    dispatch(uploadFileRequest(urlToGrab));
-
     let uri = `/api/deposits/${draft_id}/actions/upload`;
-    let data = { url: urlToGrab, type: type };
-    axios
-      .post(uri, data)
-      .then(response => {
-        dispatch(uploadFileSuccess(urlToGrab, response.data));
-      })
-      .catch(error => {
-        dispatch(uploadFileError(urlToGrab, error.message));
-      });
+    let data = urlToGrab.map(url => {
+      return { url: url, type: type };
+    });
+
+    // TOFIX !!!WARNING!!! Change this so as to send the data in one request.
+    data.map(d => {
+      dispatch(uploadFileRequest(d.url)),
+        axios
+          .post(uri, d)
+          .then(response => {
+            dispatch(uploadFileSuccess(d.url, response.data));
+          })
+          .catch(error => {
+            dispatch(uploadFileError(d.url, error));
+          });
+    });
   };
 }
 

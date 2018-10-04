@@ -52,7 +52,7 @@ def test_create_deposit_when_user_is_member_of_schema_experiment_can_create_depo
     user = users['cms_user']
     other_user = users['lhcb_user']
     schema = create_schema('deposits/records/cms-v0.0.0',
-                           experiment='CMS') 
+                           experiment='CMS')
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/cms-v0.0.0.json'.format(
             jsonschemas_host),
@@ -67,7 +67,8 @@ def test_create_deposit_when_user_is_member_of_schema_experiment_can_create_depo
                            headers=auth_headers_for_user(other_user) + json_headers)
 
         assert resp.status_code == 403
-        
+
+
 def test_create_deposit_when_user_is_member_of_egroup_that_has_read_access_to_schema_can_create_deposit(app,
                                                                                                         users,
                                                                                                         location,
@@ -77,7 +78,7 @@ def test_create_deposit_when_user_is_member_of_egroup_that_has_read_access_to_sc
                                                                                                         create_schema):
     user = users['lhcb_user']
     schema = create_schema('deposits/records/cms-v0.0.0',
-                           experiment='CMS', roles=['lhcb-general@cern.ch']) 
+                           experiment='CMS', roles=['lhcb-general@cern.ch'])
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/cms-v0.0.0.json'.format(
             jsonschemas_host),
@@ -98,7 +99,7 @@ def test_create_deposit_when_user_has_no_permission_to_schema_returns_403(app,
                                                                           create_schema):
     user = users['cms_user']
     schema = create_schema('deposits/records/test-v1.0.1',
-                           roles=['alice-members@cern.ch']) 
+                           roles=['alice-members@cern.ch'])
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/test-v1.0.1.json'.format(
             jsonschemas_host),
@@ -111,14 +112,13 @@ def test_create_deposit_when_user_has_no_permission_to_schema_returns_403(app,
         assert resp.status_code == 403
 
 
-
 def test_create_deposit_when_superuser_can_create_deposit(app,
                                                           location,
                                                           create_schema,
                                                           jsonschemas_host,
                                                           auth_headers_for_superuser,
                                                           json_headers):
-    schema = create_schema('deposits/records/test-analysis-v1.0.0') 
+    schema = create_schema('deposits/records/test-analysis-v1.0.0')
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/test-analysis-v1.0.0.json'.format(
             jsonschemas_host),
@@ -137,9 +137,10 @@ def test_create_deposit_when_passed_non_existing_schema_returns_404(app,
                                                                     jsonschemas_host,
                                                                     auth_headers_for_superuser,
                                                                     json_headers):
-    schema = 'https://{}/schemas/non-existing-schema-v1.0.0.json'.format(jsonschemas_host)                    
+    schema = 'https://{}/schemas/non-existing-schema-v1.0.0.json'.format(
+        jsonschemas_host)
     metadata = {
-        '$schema': schema 
+        '$schema': schema
     }
 
     with app.test_client() as client:
@@ -147,7 +148,7 @@ def test_create_deposit_when_passed_non_existing_schema_returns_404(app,
                            data=json.dumps(metadata))
 
         assert resp.status_code == 400
-        assert resp.json['message'] == 'Schema {} doesnt exist.'.format(schema) 
+        assert resp.json['message'] == 'Schema {} doesnt exist.'.format(schema)
 
 
 def test_create_deposit_when_passed_non_existing_ana_type_returns_400(app,
@@ -167,7 +168,8 @@ def test_create_deposit_when_passed_non_existing_ana_type_returns_400(app,
                            data=json.dumps(metadata))
 
         assert resp.status_code == 400
-        assert resp.json['message'] == 'Schema with name {} doesnt exist.'.format(ana_type) 
+        assert resp.json[
+            'message'] == 'Schema with name {} doesnt exist.'.format(ana_type)
 
 
 def test_create_deposit_when_passed_empty_data_returns_400(app,
@@ -181,7 +183,8 @@ def test_create_deposit_when_passed_empty_data_returns_400(app,
                            data=json.dumps({}))
 
         assert resp.status_code == 400
-        assert resp.json['message'] == "You have to specify either $schema or $ana_type"
+        assert resp.json[
+            'message'] == "You have to specify either $schema or $ana_type"
 
 
 def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version_of_ana_type(app,
@@ -212,7 +215,7 @@ def test_create_deposit_set_fields_correctly(app,
                                              json_headers):
     owner = users['cms_user']
     schema = create_schema('deposits/records/test-analysis-v1.0.0',
-                           experiment='LHCb', roles=['cms-members@cern.ch']) 
+                           experiment='LHCb', roles=['cms-members@cern.ch'])
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/test-analysis-v1.0.0.json'.format(
             jsonschemas_host)
@@ -220,12 +223,12 @@ def test_create_deposit_set_fields_correctly(app,
 
     with app.test_client() as client:
         resp = client.post('/deposits/', headers=auth_headers_for_user(owner) + json_headers,
-                              data=json.dumps(metadata))
+                           data=json.dumps(metadata))
 
         assert resp.status_code == 201
 
         created = resp.json['metadata']
-        
+
         assert created['_deposit']['created_by'] == owner.id
         assert created['$schema'] == schema.fullpath
         assert created['_experiment'] == 'LHCb'
@@ -257,7 +260,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(app,
                                        '$ref': nested_schema.fullpath,
                                    }
                                }
-                           }) 
+                           })
 
     with app.test_client() as client:
         resp = client.post('/deposits/', headers=auth_headers_for_user(owner) + json_headers,
@@ -266,6 +269,6 @@ def test_create_deposit_when_schema_with_refs_works_correctly(app,
                                'nested': {
                                    'title': 'nested'
                                }
-                           } ))
+                           }))
 
         assert resp.status_code == 201

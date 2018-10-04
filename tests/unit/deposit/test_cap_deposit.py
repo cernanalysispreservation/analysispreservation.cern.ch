@@ -25,19 +25,14 @@
 
 """Unit tests for Cap Deposit class."""
 
-import sqlite3
 from uuid import uuid4
 
-import pytest
 from flask_security import login_user
-from invenio_access.models import ActionRoles, ActionUsers
-from jsonschema.exceptions import ValidationError
+from invenio_access.models import ActionUsers
 from pytest import raises
-from sqlalchemy.exc import IntegrityError
 
 from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.deposit.errors import (DepositValidationError,
-                                        WrongJSONSchemaError)
+from cap.modules.deposit.errors import DepositValidationError
 
 
 def test_create_deposit_with_empty_data_raises_DepositValidationError(app,
@@ -63,7 +58,7 @@ def test_create_deposit_with_empty_schema_raises_DepositValidationError(app,
     with app.test_request_context():
         login_user(users['superuser'])
         id_ = uuid4()
-        
+
         with raises(DepositValidationError):
             Deposit.create(metadata, id_=id_)
 
@@ -96,11 +91,11 @@ def test_add_user_permissions_set_access_object_properly(app, db, users, create_
         },
         'deposit-update': {
             'users': [owner.id],
-            'roles': []        
+            'roles': []
         },
         'deposit-admin': {
             'users': [owner.id],
-            'roles': []        
+            'roles': []
         }
     }
 
@@ -114,15 +109,15 @@ def test_add_user_permissions_set_access_object_properly(app, db, users, create_
     assert deposit['_access'] == {
         'deposit-read': {
             'users': [owner.id, other_user.id],
-            'roles': []        
+            'roles': []
         },
         'deposit-update': {
             'users': [owner.id, other_user.id],
-            'roles': []        
+            'roles': []
         },
         'deposit-admin': {
             'users': [owner.id],
-            'roles': []        
+            'roles': []
         }
     }
 
@@ -140,3 +135,25 @@ def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):
     assert ActionUsers.query.filter_by(action='deposit-read',
                                        argument=str(deposit.id),
                                        user_id=user.id).one()
+
+
+def test_construct_fileinfo_to_return_correct_info_for_file(app, users, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
+    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/cap/modules/deposit/api.py"
+    type = 'url'
+    file_info = deposit._construct_fileinfo(url, type)
+    assert file_info['filename'] == "api.py"
+    assert file_info['filepath'] == "cap/modules/deposit/api.py"
+    assert file_info['branch'] == "master"
+
+
+def test_construct_fileinfo_to_return_correct_info_for_repo(app, users, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
+    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/"
+    type = 'repo'
+    file_info = deposit._construct_fileinfo(url, type)
+    assert file_info['filename'] == "analysispreservation.cern.ch.tar.gz"
+    assert file_info['filepath'] == "analysispreservation.cern.ch.tar.gz"
+    assert file_info['branch'] is None

@@ -50,7 +50,7 @@ class GithubImporter(repo_importer.RepoImporter):
         """Retrieve file URL via PyGithub."""
         gh = Github(self.token)
         repo = gh.get_repo(self.repo)
-        link = repo.get_file_contents(file)
+        link = repo.get_file_contents(file, ref=self.ref)
         return {'url': link.download_url,
                 'size': link.size, 'token': self.token}
 

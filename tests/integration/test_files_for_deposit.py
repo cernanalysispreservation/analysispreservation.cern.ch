@@ -28,6 +28,7 @@
 
 import json
 
+from mock import patch
 from pytest import mark
 from six import BytesIO
 
@@ -213,11 +214,11 @@ def test_bucket_read_when_other_user_returns_404(app, users,
     ("deposit-admin"),
 ])
 def test_bucket_read_when_user_has_read_update_or_admin_access_can_access(action,
-                                                                   app,
-                                                                   users,
-                                                                   auth_headers_for_user,
-                                                                   create_deposit,
-                                                                   json_headers):
+                                                                          app,
+                                                                          users,
+                                                                          auth_headers_for_user,
+                                                                          create_deposit,
+                                                                          json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     pid = deposit['_deposit']['id']
@@ -255,6 +256,7 @@ def test_file_read_when_given_nonexisting_filekey_returns_404(app, users,
                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 404
+
 
 def test_file_read_when_owner_of_deposit_can_access_file(app, users,
                                                          auth_headers_for_user,
@@ -308,11 +310,11 @@ def test_file_read_when_other_user_returns_404(app, users,
     ("deposit-admin"),
 ])
 def test_file_read_when_user_has_read_update_or_admin_access_can_access(action,
-                                                                 app,
-                                                                 users,
-                                                                 auth_headers_for_user,
-                                                                 create_deposit,
-                                                                 json_headers):
+                                                                        app,
+                                                                        users,
+                                                                        auth_headers_for_user,
+                                                                        create_deposit,
+                                                                        json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
@@ -350,21 +352,22 @@ def test_file_upload_when_key_already_exists_returns_400(app, users,
 
     with app.test_client() as client:
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 400
 
+
 def test_file_upload_when_owner_of_deposit_can_upload(app, users,
-                                                         auth_headers_for_user,
-                                                         create_deposit):
+                                                      auth_headers_for_user,
+                                                      create_deposit):
     owner = users['cms_user']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     bucket = deposit.files.bucket
 
     with app.test_client() as client:
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 200
@@ -379,7 +382,7 @@ def test_file_upload_when_superuser_can_upload(app, users,
 
     with app.test_client() as client:
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_superuser)
 
         assert resp.status_code == 200
@@ -396,7 +399,7 @@ def test_file_upload_when_other_user_returns_404(app, users,
 
     with app.test_client() as client:
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 404
@@ -429,17 +432,17 @@ def test_file_upload_when_user_has_update_or_admin_access_can_upload(action,
                     data=json.dumps(permissions))
 
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 200
 
 
 def test_file_upload_when_user_has_only_read_access_returns_404(app,
-                                                                  users,
-                                                                  auth_headers_for_user,
-                                                                  create_deposit,
-                                                                  json_headers):
+                                                                users,
+                                                                auth_headers_for_user,
+                                                                create_deposit,
+                                                                json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     pid = deposit['_deposit']['id']
@@ -457,7 +460,7 @@ def test_file_upload_when_user_has_only_read_access_returns_404(app,
                     data=json.dumps(permissions))
 
         resp = client.put('/files/{}/file_1.txt'.format(bucket),
-                          input_stream= BytesIO(b'Hello world!'),
+                          input_stream=BytesIO(b'Hello world!'),
                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 404
@@ -472,12 +475,11 @@ def test_file_upload_uploads_successfully(app, users,
 
     with app.test_client() as client:
         client.put('/files/{}/file_1.txt'.format(bucket),
-                   input_stream= BytesIO(b'Hello world!'),
+                   input_stream=BytesIO(b'Hello world!'),
                    headers=auth_headers_for_user(owner))
 
         resp = client.get('/files/{}/file_1.txt'.format(bucket),
                           headers=auth_headers_for_user(owner))
-
 
         assert resp.status_code == 200
         assert resp.data == 'Hello world!'
@@ -499,9 +501,10 @@ def test_file_delete_when_key_doesnt_exist_returns_404(app, users,
 
         assert resp.status_code == 404
 
+
 def test_file_delete_when_owner_of_deposit_can_delete(app, users,
-                                                         auth_headers_for_user,
-                                                         create_deposit):
+                                                      auth_headers_for_user,
+                                                      create_deposit):
     owner = users['cms_user']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
@@ -509,7 +512,7 @@ def test_file_delete_when_owner_of_deposit_can_delete(app, users,
 
     with app.test_client() as client:
         resp = client.delete('/files/{}/file_1.txt'.format(bucket),
-                          headers=auth_headers_for_user(owner))
+                             headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 204
 
@@ -524,7 +527,7 @@ def test_file_delete_when_superuser_can_delete(app, users,
 
     with app.test_client() as client:
         resp = client.delete('/files/{}/file_1.txt'.format(bucket),
-                          headers=auth_headers_for_superuser)
+                             headers=auth_headers_for_superuser)
 
         assert resp.status_code == 204
 
@@ -540,7 +543,7 @@ def test_file_delete_when_other_user_returns_404(app, users,
 
     with app.test_client() as client:
         resp = client.delete('/files/{}/file_1.txt'.format(bucket),
-                          headers=auth_headers_for_user(other_user))
+                             headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 404
 
@@ -573,16 +576,16 @@ def test_file_delete_when_user_has_update_or_admin_access_can_delete(action,
                     data=json.dumps(permissions))
 
         resp = client.delete('/files/{}/file_1.txt'.format(bucket),
-                          headers=auth_headers_for_user(other_user))
+                             headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 204
 
 
 def test_file_delete_when_user_has_only_read_access_returns_403(app,
-                                                                  users,
-                                                                  auth_headers_for_user,
-                                                                  create_deposit,
-                                                                  json_headers):
+                                                                users,
+                                                                auth_headers_for_user,
+                                                                create_deposit,
+                                                                json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
@@ -601,14 +604,14 @@ def test_file_delete_when_user_has_only_read_access_returns_403(app,
                     data=json.dumps(permissions))
 
         resp = client.delete('/files/{}/file_1.txt'.format(bucket),
-                          headers=auth_headers_for_user(other_user))
+                             headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
 
 
 def test_file_delete_delets_successfully(app, users,
-                                          auth_headers_for_user,
-                                          create_deposit):
+                                         auth_headers_for_user,
+                                         create_deposit):
     owner = users['cms_user']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
@@ -616,9 +619,78 @@ def test_file_delete_delets_successfully(app, users,
 
     with app.test_client() as client:
         client.delete('/files/{}/file_1.txt'.format(bucket),
-                   headers=auth_headers_for_user(owner))
+                      headers=auth_headers_for_user(owner))
 
         resp = client.get('/files/{}/file_1.txt'.format(bucket),
                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 404
+
+
+#########################################
+# /api/deposits/${draft_id}/actions/upload [POST]
+#########################################
+@patch("cap.modules.deposit.api.download_url")
+def test_upload_file_in_deposit_via_external_url(mocked_method,
+                                                 app,
+                                                 users,
+                                                 auth_headers_for_user,
+                                                 json_headers,
+                                                 create_deposit):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+
+    headers = auth_headers_for_user(owner) + json_headers
+    data = {'url': 'https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/cap/modules/deposit/api.py',
+            'type': 'url'}
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                           headers=headers,
+                           data=json.dumps(data))
+
+        assert resp.status_code == 201
+
+
+@mark.parametrize("type", ["url", "repo"])
+def test_upload_file_in_deposit_via_external_url_returns_400_when_url_is_not_correct(type,
+                                                                                     app,
+                                                                                     users,
+                                                                                     auth_headers_for_user,
+                                                                                     json_headers,
+                                                                                     create_deposit):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+
+    headers = auth_headers_for_user(owner) + json_headers
+    data = {'url': 'https://dream.team',
+            'type': type}
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                           headers=headers,
+                           data=json.dumps(data))
+
+        assert resp.status_code == 400
+
+
+@patch("cap.modules.deposit.api.download_repo")
+def test_upload_repo_in_deposit_via_external_url(mocked_method,
+                                                 app,
+                                                 users,
+                                                 auth_headers_for_user,
+                                                 json_headers,
+                                                 create_deposit):
+    owner = users['cms_user']
+    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+
+    headers = auth_headers_for_user(owner) + json_headers
+    data = {'url': 'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
+            'type': 'repo'}
+
+    with app.test_client() as client:
+        resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                           headers=headers,
+                           data=json.dumps(data))
+
+        assert resp.status_code == 201
