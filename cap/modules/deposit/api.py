@@ -29,23 +29,12 @@ from __future__ import absolute_import, print_function
 import copy
 import shutil
 import tempfile
-
-from functools import wraps
 from copy import deepcopy
+from functools import wraps
 
 import requests
 from celery import shared_task
 from flask import current_app, request
-from werkzeug.local import LocalProxy
-from jsonschema.validators import Draft4Validator, RefResolutionError
-
-from cap.config import FILES_URL_MAX_SIZE
-from cap.modules.repoimporter.repo_importer import RepoImporter
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
-from cap.modules.user.errors import DoesNotExistInLDAP
-from cap.modules.user.utils import (get_existing_or_register_role,
-                                    get_existing_or_register_user)
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
@@ -56,8 +45,18 @@ from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
+from jsonschema.validators import Draft4Validator, RefResolutionError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.local import LocalProxy
+
+from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
+from cap.modules.user.errors import DoesNotExistInLDAP
+from cap.modules.user.utils import (get_existing_or_register_role,
+                                    get_existing_or_register_user)
 
 from .errors import DepositValidationError, UpdateDepositPermissionsError
 from .fetchers import cap_deposit_fetcher
@@ -118,6 +117,17 @@ class CAPDeposit(Deposit):
 #
 #        super(CAPDeposit, self).__init__(*args, **kwargs)
 
+    @property
+    def schema(self):
+        """Schema property."""
+        return Schema.get_by_fullpath(self['$schema'])
+
+    @property
+    def record_schema(self):
+        """Convert deposit schema to a valid record schema."""
+        record_schema = self.schema.get_matching_record_schema()
+        return record_schema.fullpath
+
     def pop_from_data(method, fields=None):
         """Remove fields from deposit data.
 
@@ -164,17 +174,6 @@ class CAPDeposit(Deposit):
             return method(self, *args, **kwargs)
         return wrapper
 
-    @property
-    def schema(self):
-        """Schema property."""
-        return Schema.get_by_fullpath(self['$schema'])
-
-    @property
-    def record_schema(self):
-        """Convert deposit schema to a valid record schema."""
-        record_schema = self.schema.get_matching_record_schema()
-        return record_schema.fullpath
-
     @mark_as_action
     def permissions(self, pid=None):
         """Permissions action.
@@ -206,25 +205,26 @@ class CAPDeposit(Deposit):
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
         """Upload action for file/repository."""
-        data = request.get_json()
-        filename = self._construct_filename(data['url'],
-                                            data['type'])
-        if request:
-            _, record = request.view_args.get('pid_value').data
-            record_id = str(record.id)
-            obj = ObjectVersion.create(
-                bucket=record.files.bucket, key=filename
-            )
-            obj.file = FileInstance.create()
-            record.files.flush()
-            record.files[filename]['source_url'] = data['url']
+        with UpdateDepositPermission(self).require(403):
+            data = request.get_json()
+            filename = self._construct_filename(data['url'],
+                                                data['type'])
+            if request:
+                _, record = request.view_args.get('pid_value').data
+                record_id = str(record.id)
+                obj = ObjectVersion.create(
+                    bucket=record.files.bucket, key=filename
+                )
+                obj.file = FileInstance.create()
+                record.files.flush()
+                record.files[filename]['source_url'] = data['url']
 
-            if data['type'] == 'url':
-                download_url.delay(record_id, data['url'], filename)
-            else:
-                download_repo.delay(record_id, data['url'], filename)
+                if data['type'] == 'url':
+                    download_url.delay(record_id, data['url'], filename)
+                else:
+                    download_repo.delay(record_id, data['url'], filename)
 
-        return self
+            return self
 
     @index
     @mark_as_action

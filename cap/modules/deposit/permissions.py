@@ -28,11 +28,15 @@
 from functools import partial
 
 from flask import request
+from invenio_access.permissions import ParameterizedActionNeed, Permission
+from invenio_files_rest.models import Bucket
+from invenio_records.api import Record
+from invenio_records_files.models import RecordsBuckets
+from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
-from invenio_access.permissions import ParameterizedActionNeed, Permission
 
 from .errors import WrongJSONSchemaError
 
@@ -167,3 +171,65 @@ class CloneDepositPermission(DepositPermission):
     def __init__(self, record):
         """Initialize state."""
         super(CloneDepositPermission, self).__init__(record, 'read')
+
+
+class DepositFilesPermission(Permission):
+    """Permission for files in deposit records (read and update access)."""
+
+    access_actions = {
+        'read': [
+            'bucket-read',
+            'bucket-read-versions',
+            'object-read',
+            'object-read-version',
+            'multipart-read',
+        ],
+        'update': [
+            'bucket-read',
+            'bucket-read-versions',
+            'object-read',
+            'object-read-version',
+            'multipart-read',
+            'bucket-update',
+            'bucket-listmultiparts',
+            'object-delete',
+            'object-delete-version',
+            'multipart-delete',
+        ]
+    }
+
+    access_needs = {
+        "read": deposit_read_need,
+        "update": deposit_update_need,
+        "admin": deposit_admin_need,
+    }
+
+    def __init__(self, deposit, action):
+        """Constructor.
+
+        Args:
+            deposit: deposit to which access is requested.
+        """
+        _needs = set()
+        _needs.add(self.access_needs['admin'](deposit))
+
+        for access, actions in self.access_actions.items():
+            if action in actions:
+                _needs.add(self.access_needs[access](deposit))
+
+        super(DepositFilesPermission, self).__init__(*_needs)
+
+
+def files_permission_factory(obj, action=None):
+    """Permission factory for deposit files."""
+    bucket_id = str(obj.id) if isinstance(obj, Bucket) else str(obj.bucket_id)
+
+    try:
+        bucket = RecordsBuckets.query.filter_by(
+            bucket_id=bucket_id
+        ).one()
+
+        return DepositFilesPermission(bucket.record, action)
+
+    except NoResultFound:
+        return Permission()
