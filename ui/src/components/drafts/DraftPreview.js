@@ -6,11 +6,11 @@ import { connect } from "react-redux";
 
 import { Box, Toast } from "grommet";
 
-import { fetchSchema, getDraftById } from "../../actions/drafts";
+import { fetchAndAssignSchema } from "../../actions/drafts";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
-import DepositHeader from "./components/DepositHeader";
 import Sidebar from "./components/DepositSidebar";
+import DraftActionsHeader from "./components/DraftActionsHeader";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -36,37 +36,59 @@ const transformSchema = schema => {
 };
 
 class DraftPreview extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    // Check if schemaId exist on state and fetch schema if needed
+    if (this.props.schemaId) {
+      // If form schemas are empty, then fetch
+      if (this.props.schemas == null) {
+        this.props.fetchAndAssignSchema(this.props.schemaId);
+      }
+      // If form schemas aren't empty and schemaId different than the one needed
+      // fetch and assign the correct schema
+      else if (this.props.schemaId != this.props.schemas.schemaId) {
+        this.props.fetchAndAssignSchema(this.props.schemaId);
+      }
+    }
   }
 
-  componentDidMount() {
-    if (this.props.match.params.draft_id) {
-      if (this.props.match.params.draft_id !== this.props.draft_id) {
-        this.props.getDraftById(this.props.match.params.draft_id, true);
+  componentDidUpdate() {
+    if (this.props.schemaId) {
+      if (!this.props.schemasLoading) {
+        if (
+          this.props.schemas == null ||
+          this.props.schemaId != this.props.schemas.schemaId
+        ) {
+          this.props.fetchAndAssignSchema(this.props.schemaId);
+        }
       }
     }
   }
 
   render() {
-    let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
+    let _schema =
+      this.props.schemas && this.props.schemas.schema
+        ? transformSchema(this.props.schemas.schema)
+        : null;
+
     return (
       <Box id="deposit-page" flex={true}>
         {this.props.error ? (
           <Toast status="critical">{this.props.error.message}</Toast>
         ) : null}
-        <DepositHeader draftId={this.props.draft_id} />
+
+        <DraftActionsHeader type="preview" draftId={this.props.draft_id} />
         <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
-          {this.props.schema ? (
+
+          {this.props.schemas && this.props.schemas.schema ? (
             <Box flex={true}>
               <Box pad="medium" colorIndex="light-2" />
               <Box flex={true}>
                 <Box flex={false} pad="medium">
                   <JSONSchemaPreviewer
-                    formData={this.props.formData}
+                    formData={this.props.formData} // TOFIX: change to get from metadata
                     schema={_schema}
-                    uiSchema={this.props.uiSchema || {}}
+                    uiSchema={this.props.schemas.uiSchema || {}}
                     onChange={() => {
                       // console.log("CHANGE::",change);
                       // this.props.formDataChange(change.formData);
@@ -87,28 +109,29 @@ class DraftPreview extends React.Component {
 DraftPreview.propTypes = {
   match: PropTypes.object,
   draft_id: PropTypes.string,
-  getDraftById: PropTypes.func,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object,
-  error: PropTypes.object,
-  formData: PropTypes.object
+  schemas: PropTypes.object,
+  schemaId: PropTypes.string,
+  formData: PropTypes.object,
+  schemasLoading: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
-    schema: state.drafts.get("schema"),
-    uiSchema: state.drafts.get("uiSchema"),
+    schemaId: state.drafts.getIn(["current_item", "schema"]),
+    schemas: state.drafts.getIn(["current_item", "schemas"]),
+    schemasLoading: state.drafts.getIn(["current_item", "schemasLoading"]),
+
     draft_id: state.drafts.getIn(["current_item", "id"]),
     draft: state.drafts.getIn(["current_item", "data"]),
     published_id: state.drafts.getIn(["current_item", "published_id"]),
-    formData: state.drafts.getIn(["current_item", "formData"])
+    formData: state.drafts.getIn(["current_item", "formData"]) // TOFIX: remove to get from metadata
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSchema: schema => dispatch(fetchSchema(schema)),
-    getDraftById: (id, fet) => dispatch(getDraftById(id, fet))
+    fetchAndAssignSchema: (schemaURL, schemaID, schemaVersion) =>
+      dispatch(fetchAndAssignSchema(schemaURL, schemaID, schemaVersion))
   };
 }
 

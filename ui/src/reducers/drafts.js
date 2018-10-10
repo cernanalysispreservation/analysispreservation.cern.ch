@@ -45,6 +45,8 @@ import {
 
 const initialState = Map({
   schema: null,
+  schemas: {},
+  uiSchemas: {},
   uiSchema: null,
   data: {},
   selectedSchema: null,
@@ -58,6 +60,9 @@ const initialState = Map({
   validate: true,
   customValidation: false,
   current_item: Map({
+    schemas: null,
+    schemasLoading: false,
+    schema: null,
     id: null,
     published_id: null,
     data: null,
@@ -67,7 +72,7 @@ const initialState = Map({
     message: null,
     error: null,
     links: null,
-    permissions: {}
+    permissions: []
   })
 });
 // IMPORTANT: Note that with Redux, state should NEVER be changed.
@@ -95,23 +100,28 @@ export default function depositReducer(state = initialState, action) {
     case TOGGLE_VALIDATE:
       return state.set("validate", !state.get("validate"));
     case FETCH_SCHEMA_REQUEST:
-      return state.set("loading", true).set("error", null);
+      return state
+        .setIn(["current_item", "schemasLoading"], true)
+        .set("error", null);
     case FETCH_SCHEMA_SUCCESS:
       return state
-        .set("loading", false)
-        .set("schema", action.schema.schema)
-        .set("uiSchema", action.schema.uiSchema);
+        .setIn(["current_item", "schemasLoading"], false)
+        .setIn(["current_item", "schemas"], action.schema);
     case FETCH_SCHEMA_ERROR:
-      return state.set("loading", false).set("error", action.error);
+      return state
+        .setIn(["current_item", "schemasLoading"], false)
+        .set("error", action.error);
     case DRAFTS_ITEM_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "message"], null)
         .setIn(["current_item", "error"], null);
     case DRAFTS_ITEM_SUCCESS:
       return state
         .setIn(["current_item", "loading"], false)
         .setIn(["current_item", "id"], action.draft_id)
         .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(["current_item", "schema"], action.draft.metadata.$schema)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "permissions"], action.permissions)
         .setIn(
@@ -135,9 +145,10 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "loading"], false)
         .setIn(["current_item", "message"], { status: "ok", msg: "Created!" })
         .setIn(["current_item", "error"], null)
-        .setIn(["current_item", "id"], action.draft_id)
+        .setIn(["current_item", "id"], action.draft.id)
+        .setIn(["current_item", "schema"], action.draft.metadata.$schema)
         .setIn(["current_item", "data"], action.draft.metadata)
-        .setIn(["current_item", "permissions"], action.permissions)
+        .setIn(["current_item", "permissions"], action.draft.access)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "links"], Map(action.draft.links));
     case CREATE_DRAFT_ERROR:
@@ -193,7 +204,7 @@ export default function depositReducer(state = initialState, action) {
     case PUBLISH_DRAFT_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "error"], false);
+        .setIn(["current_item", "error"], null);
     case PUBLISH_DRAFT_SUCCESS:
       return state
         .setIn(["current_item", "published_id"], action.published_id)
@@ -205,7 +216,7 @@ export default function depositReducer(state = initialState, action) {
     case DELETE_DRAFT_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "error"], false);
+        .setIn(["current_item", "error"], null);
     case DELETE_DRAFT_SUCCESS:
       return state
         .setIn(["current_item", "id"], null)
@@ -217,7 +228,7 @@ export default function depositReducer(state = initialState, action) {
     case DISCARD_DRAFT_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "error"], false);
+        .setIn(["current_item", "error"], null);
     case DISCARD_DRAFT_SUCCESS:
       return state
         .setIn(["current_item", "id"], action.draft_id)
@@ -231,7 +242,7 @@ export default function depositReducer(state = initialState, action) {
     case EDIT_PUBLISHED_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "error"], false);
+        .setIn(["current_item", "error"], null);
     case EDIT_PUBLISHED_SUCCESS:
       return state
         .setIn(["current_item", "id"], action.draft_id)
@@ -244,7 +255,7 @@ export default function depositReducer(state = initialState, action) {
     case PERMISSIONS_ITEM_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "error"], false);
+        .setIn(["current_item", "error"], null);
     case PERMISSIONS_ITEM_SUCCESS:
       return state
         .setIn(["current_item", "permissions"], action.permissions)

@@ -181,12 +181,10 @@ export function createDraftRequest() {
   };
 }
 
-export function createDraftSuccess(draft_id, draft, permissions) {
+export function createDraftSuccess(draft) {
   return {
     type: CREATE_DRAFT_SUCCESS,
-    draft_id,
-    draft,
-    permissions
+    draft
   };
 }
 
@@ -305,33 +303,89 @@ export function clearErrorSuccess() {
   };
 }
 
-// [TOFIX] : update the way to handle schemas
-export function fetchSchema(schema) {
-  return dispatch => {
-    let schemaUrl = "/api/schemas/deposits/records/" + schema + "-v0.0.1.json";
-    let uiSchemaUrl =
-      "/api/schemas/options/deposits/records/" + schema + "-v0.0.1.json";
+// [TOFIX] Plug validation action if needed.
+// export function validate(data, schema) {
+//   return dispatch => {
+//     dispatch(validateRequest());
 
-    dispatch(fetchSchemaRequest());
-    axios
-      .get(schemaUrl)
-      .then(response => {
-        let schema = response.data;
-        axios
-          .get(uiSchemaUrl)
-          .then(response => {
-            let uiSchema = response.data;
-            dispatch(
-              fetchSchemaSuccess({ schema: schema, uiSchema: uiSchema })
-            );
-          })
-          .catch(error => {
-            dispatch(fetchSchemaError(error));
-          });
-      })
-      .catch(error => {
-        dispatch(fetchSchemaError(error));
-      });
+//     data['$ana_type'] = schema;
+
+//     axios.post('/api/deposit/validator', data)
+//       .then(function(response) {
+//         dispatch(validateSuccess(response.data));
+//       })
+//       .catch(function(error) {
+//         dispatch(validateError(error));
+//       })
+//   };
+// }
+
+let getLocation = function(href) {
+  let l = document.createElement("a");
+  l.href = href;
+  return l;
+};
+
+export function fetchAndAssignSchema(
+  schemaURL = null,
+  schemaID = null,
+  schemaVersion = "-v0.0.1"
+) {
+  return dispatch => {
+    let _schemaId, _schemaURL, _schemaApiUrlPath, _uiSchemaApiUrlPath;
+
+    if (schemaURL) {
+      _schemaURL = getLocation(schemaURL);
+
+      let schemaUrlPath = _schemaURL.pathname;
+      let uiSchemaUrlPath = schemaUrlPath.replace(
+        "/schemas/deposits/",
+        "/schemas/options/deposits/"
+      );
+
+      _schemaApiUrlPath = `/api${schemaUrlPath}`;
+      _uiSchemaApiUrlPath = `/api${uiSchemaUrlPath}`;
+
+      _schemaId = _schemaURL.href;
+    } else if (schemaID) {
+      _schemaApiUrlPath = `/api/schemas/deposits/records/${schemaID}${schemaVersion}.json`;
+      _uiSchemaApiUrlPath = `/api/schemas/options/deposits/records/${schemaID}${schemaVersion}.json`;
+      _schemaId = `https://analysispreservation.cern.ch${_schemaApiUrlPath}`;
+    }
+
+    if (_schemaApiUrlPath && _uiSchemaApiUrlPath && _schemaId) {
+      dispatch(fetchSchemaRequest());
+      axios
+        .get(_schemaApiUrlPath)
+        .then(response => {
+          let schema = response.data;
+          axios
+            .get(_uiSchemaApiUrlPath)
+            .then(response => {
+              let uiSchema = response.data;
+              dispatch(
+                fetchSchemaSuccess({
+                  schema: schema,
+                  schemaId: _schemaId,
+                  uiSchema: uiSchema
+                })
+              );
+            })
+            .catch(error => {
+              dispatch(fetchSchemaError(error.response));
+            });
+        })
+        .catch(error => {
+          dispatch(fetchSchemaError(error.response));
+        });
+    } else {
+      dispatch(
+        fetchSchemaError({
+          message:
+            "Something went wrong when fetching the schema. Please check that you are in the correct location"
+        })
+      );
+    }
   };
 }
 
@@ -342,29 +396,38 @@ export function clearError() {
 }
 
 export function createDraft(data = {}, schema) {
+  return (dispatch, getState) => {
+    dispatch(postCreateDraft(data, schema))
+      .then(() => {
+        let currentState = getState();
+        const draft_id = currentState.drafts.getIn(["current_item", "id"]);
+        dispatch(replace(`/drafts/${draft_id}/edit`));
+      })
+      .catch(() => {
+        alert("There was an error with creating the record");
+      });
+  };
+}
+
+export function postCreateDraft(data = {}, schema) {
   return dispatch => {
     dispatch(createDraftRequest());
 
     let uri = "/api/deposits/";
     data["$ana_type"] = schema;
 
-    axios
+    return axios
       .post(uri, data)
       .then(response => {
-        const draft_id = response.data.links.self.split("/deposits/")[1];
-        dispatch(replace(`/drafts/${draft_id}/edit`));
-        axios
-          .put(uri + draft_id, response.data.metadata)
-          .then(response => {
-            dispatch(
-              createDraftSuccess(draft_id, response.data, response.data.access)
-            );
-          })
-          .catch(error => {
-            dispatch(createDraftError(error));
-          });
+        let draft = response.data;
+        if (draft.id) {
+          dispatch(createDraftSuccess(response.data));
+        }
       })
-      .catch(error => dispatch(createDraftError(error)));
+      .catch(error => {
+        dispatch(createDraftError(error.response));
+        throw error;
+      });
   };
 }
 
@@ -478,16 +541,22 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         let url;
         if (fetchSchemaFlag && response.data.metadata.$schema) {
           url = response.data.metadata.$schema;
-          url = url.split("/");
-          let schema = url[url.length - 1].split("-v")[0];
-          dispatch(fetchSchema(schema));
+          dispatch(fetchAndAssignSchema(url));
         }
         dispatch(
           draftsItemSuccess(draft_id, response.data, response.data.access)
         );
       })
       .catch(error => {
-        dispatch(draftsItemError(error));
+        const e = error.response
+          ? error.response.data
+          : {
+              status: 400,
+              message:
+                "Something went wrong with your request. Please try again"
+            };
+
+        dispatch(draftsItemError(e));
       });
   };
 }

@@ -8,7 +8,7 @@ import { Box } from "grommet";
 
 import SearchPage from "../search/SearchPage";
 import Header from "../partials/Header";
-import CreateIndex from "../drafts/CreateIndex";
+
 import Dashboard from "../dashboard/Dashboard";
 import SettingsIndex from "../settings/SettingsIndex";
 import DraftsIndex from "../drafts/DraftsIndex";
@@ -44,7 +44,6 @@ class IndexPage extends React.Component {
           <Route path="/search" component={SearchPage} />
           <Route path="/published" component={PublishedIndex} />
           <Route path="/drafts" component={DraftsIndex} />
-          <Route path="/create" component={CreateIndex} />
           <Route path="/settings" component={SettingsIndex} />
         </Switch>
         <GrommetFooter />

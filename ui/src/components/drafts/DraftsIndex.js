@@ -1,59 +1,28 @@
-import PropTypes from "prop-types";
-
 import React from "react";
 
-import { connect } from "react-redux";
+import { Switch, Route } from "react-router-dom";
 
 import Box from "grommet/components/Box";
 
-import AvailableDeposits from "./AvailableDeposits";
-import CreateDeposit from "./CreateDeposit";
-import DepositSettings from "./components/DepositSettings";
-import DraftPreview from "./DraftPreview";
+// Components
+import DraftHeader from "./components/DraftHeader";
 
-import { Switch, Route } from "react-router-dom";
-import { withRouter } from "react-router";
+// Containers
+import DraftsItemIndex from "./DraftsItemIndex";
+import DraftsCreateIndex from "./DraftsCreateIndex";
 
 class DraftsIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Box flex={true}>
+        <DraftHeader />
         <Switch>
-          <Route exact path="/drafts/create" component={AvailableDeposits} />
-          <Route path={`/drafts/create/:schema_id`} component={CreateDeposit} />
-          <Route exact path={`/drafts/:draft_id`} component={DraftPreview} />
-          <Route path={`/drafts/:draft_id/edit`} component={CreateDeposit} />
-          <Route
-            path={`/drafts/:draft_id/settings`}
-            component={DepositSettings}
-          />
+          <Route path="/drafts/create" component={DraftsCreateIndex} />
+          <Route path="/drafts/:draft_id" component={DraftsItemIndex} />
         </Switch>
       </Box>
     );
   }
 }
 
-DraftsIndex.propTypes = {
-  startDeposit: PropTypes.func
-};
-
-function mapStateToProps(state) {
-  return {
-    groups: state.auth.getIn(["currentUser", "depositGroups"])
-  };
-}
-
-function mapDispatchToProps() {
-  return {};
-}
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(DraftsIndex)
-);
+export default DraftsIndex;

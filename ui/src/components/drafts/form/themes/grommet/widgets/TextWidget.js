@@ -135,7 +135,7 @@ class TextWidget extends React.Component {
           </Box>
           {this.state.showSpinner ? (
             <Box align="end">
-              <Spinning size="xsmall" />
+              <Spinning size="small" />
             </Box>
           ) : null}
         </Box>

@@ -25,8 +25,8 @@ import {
 import AddIcon from "grommet/components/icons/base/Add";
 import Spinning from "grommet/components/icons/Spinning";
 
-import DepositHeader from "./DepositHeader";
 import SectionHeader from "./SectionHeader";
+import DraftActionsHeader from "./DraftActionsHeader";
 
 class DepositSettings extends React.Component {
   constructor() {
@@ -116,7 +116,8 @@ class DepositSettings extends React.Component {
             {error}
           </Toast>
         ) : null}
-        <DepositHeader draftId={draft_id} />
+        
+        <DraftActionsHeader backButton={true} />
         <SectionHeader label="Access" />
         <Box flex={true} align="center">
           <Box size="xxlarge">
