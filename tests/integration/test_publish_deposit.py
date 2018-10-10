@@ -184,7 +184,7 @@ def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
         assert resp.json.get("metadata", {}).get("general_title", None) == "Updated published"
 
 
-# TOFIX : updating schemas that are not have indexes results to error
+# TOFIX : updating schemas that don't have indexes, results to error
 @mark.skip
 def test_deposit_publish_unknown_schema_then_deposit_update_should_not_be_allowed(app, users,
                                                            auth_headers_for_user,

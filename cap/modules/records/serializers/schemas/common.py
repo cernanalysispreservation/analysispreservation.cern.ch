@@ -73,7 +73,7 @@ class StrictKeysMixin(object):
 class CommonRecordSchemaV1(Schema, StrictKeysMixin):
     """Common record schema."""
 
-    id = fields.Integer(attribute='pid.pid_value', dump_only=True)
+    id = fields.Str(attribute='pid.pid_value', dump_only=True)
     created = fields.Str(dump_only=True)
     access = fields.Method('get_access', dump_only=True)
     links = fields.Raw()
