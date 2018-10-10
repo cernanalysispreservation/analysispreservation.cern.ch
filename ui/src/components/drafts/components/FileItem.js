@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Label, Anchor, ListItem, Toast } from "grommet";
+import { Box, Label, ListItem, Toast } from "grommet";
 
 import Status from "grommet/components/icons/Status";
 import {
@@ -9,8 +9,7 @@ import {
   DocumentConfigIcon,
   PieChartIcon,
   BookIcon,
-  NoteIcon,
-  DownloadIcon
+  NoteIcon
 } from "grommet/components/icons/base";
 
 import prettyBytes from "pretty-bytes";
@@ -86,7 +85,6 @@ class FileItem extends React.Component {
                 <Status size="small" value={uploadStatusMap[file.status]} />
               </Box>
             ) : null}
-            <Anchor href="#" icon={<DownloadIcon />} />
           </Box>
         </Box>
       </ListItem>

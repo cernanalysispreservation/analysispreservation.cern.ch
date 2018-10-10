@@ -34,6 +34,7 @@ from pytest import mark
 # # api/deposits/{pid}  [PUT]
 # #######################################
 
+
 def test_update_deposit_with_non_existing_pid_returns_404(app,
                                                           auth_headers_for_superuser):
     with app.test_client() as client:
@@ -54,8 +55,8 @@ def test_update_deposit_when_user_has_no_permission_returns_403(app,
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=other_user_headers + json_headers,
-                             data=json.dumps({}))
+                          headers=other_user_headers + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
@@ -70,11 +71,10 @@ def test_update_deposit_when_user_is_owner_can_update_his_deposit(app,
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 200
-
 
 
 def test_update_deposit_when_superuser_can_update_others_deposits(app,
@@ -87,8 +87,8 @@ def test_update_deposit_when_superuser_can_update_others_deposits(app,
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_superuser + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_superuser + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 200
 
@@ -107,8 +107,9 @@ def test_update_deposit_when_user_has_update_or_admin_access_can_update(action,
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
@@ -125,10 +126,11 @@ def test_update_deposit_when_user_has_update_or_admin_access_can_update(action,
 
         # sometimes ES needs refresh
         current_search.flush_and_refresh('deposits')
-        
+
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 200
 
@@ -154,10 +156,11 @@ def test_update_deposit_when_user_has_only_read_access_returns_403(app, db, user
 
         # sometimes ES needs refresh
         current_search.flush_and_refresh('deposits')
-        
+
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
@@ -176,8 +179,9 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
@@ -196,10 +200,11 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
 
         # sometimes ES needs refresh
         current_search.flush_and_refresh('deposits')
-        
+
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 200
 
@@ -225,10 +230,11 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
 
         # sometimes ES needs refresh
         current_search.flush_and_refresh('deposits')
-        
+
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
+                          data=json.dumps({}))
 
         assert resp.status_code == 403
 
@@ -241,22 +247,22 @@ def test_update_deposit_cannot_update_schema_field(app, db, users,
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
     schema = create_schema('deposits/records/another-v0.0.0',
-                           experiment='LHCb') 
+                           experiment='LHCb')
 
     deposit_schema = deposit.get("$schema", None)
     assert deposit_schema is not None
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({}))
 
         resp_schema = resp.json.get("metadata", {}).get("$schema", None)
         assert resp_schema == deposit_schema
 
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({"$schema": schema.fullpath }))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({"$schema": schema.fullpath}))
 
         resp_schema = resp.json.get("metadata", {}).get("$schema", None)
         assert resp_schema == deposit_schema
@@ -272,28 +278,28 @@ def test_update_deposit_cannot_update_access_field(app, db, users,
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
     schema = create_schema('deposits/records/another-v0.0.0',
-                           experiment='LHCb') 
+                           experiment='LHCb')
 
     deposit_access = deposit.get("_access", None)
     assert deposit_access is not None
 
     with app.test_client() as client:
         resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({}))
 
         resp_access = resp.json.get("access", None)
 
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({}))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({}))
 
         updated_resp_data = resp.json.get("access", None)
         assert updated_resp_data == resp_access
 
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({"_access": [] }))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({"_access": []}))
 
         assert resp.status_code == 200
 
@@ -308,139 +314,143 @@ def test_patch_deposit(app, db, users,
 
     with app.test_client() as client:
         resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + [
-                                        ('Content-Type', 'application/json-patch+json'),
-                                        ('Accept', 'application/json')],
-                             data=json.dumps([
-                              { 
-                                "op": "replace", 
-                                "path": "/general_title", 
-                                "value": "Gen Test"
-                              }
-                            ]))
+                            headers=auth_headers_for_user(owner) + [
+            ('Content-Type', 'application/json-patch+json'),
+            ('Accept', 'application/json')],
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/general_title",
+                    "value": "Gen Test"
+                }
+            ]))
 
         assert resp.status_code == 400
 
         resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + [
-                                        ('Content-Type', 'application/json-patch+json'),
-                                        ('Accept', 'application/json')],
-                             data=json.dumps([
-                              { 
-                                "op": "add", 
-                                "path": "/general_title", 
-                                "value": "Gen Test"
-                              },
-                              { "op": "add", 
-                                "path": "/basic_info", 
-                                "value": {"conclusion": "Updated path" } 
-                              }
-                            ]))
+                            headers=auth_headers_for_user(owner) + [
+            ('Content-Type', 'application/json-patch+json'),
+            ('Accept', 'application/json')],
+            data=json.dumps([
+                {
+                    "op": "add",
+                    "path": "/general_title",
+                    "value": "Gen Test"
+                },
+                {"op": "add",
+                 "path": "/basic_info",
+                 "value": {"conclusion": "Updated path"}
+                 }
+            ]))
 
         assert resp.status_code == 200
-        assert resp.json.get("metadata", {}).get("general_title", None) == "Gen Test"
+        assert resp.json.get("metadata", {}).get(
+            "general_title", None) == "Gen Test"
 
         resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + [
-                                        ('Content-Type', 'application/json-patch+json'),
-                                        ('Accept', 'application/json')],
-                             data=json.dumps([
-                              { 
-                                "op": "replace", 
-                                "path": "/general_title", 
-                                "value": "Gen 8"
-                              }
-                            ]))
+                            headers=auth_headers_for_user(owner) + [
+            ('Content-Type', 'application/json-patch+json'),
+            ('Accept', 'application/json')],
+            data=json.dumps([
+                {
+                    "op": "replace",
+                    "path": "/general_title",
+                    "value": "Gen 8"
+                }
+            ]))
 
         assert resp.status_code == 200
-        assert resp.json.get("metadata", {}).get("general_title", None) == "Gen 8"
+        assert resp.json.get("metadata", {}).get(
+            "general_title", None) == "Gen 8"
 
 
 def test_patch_deposit_passing__files_field(app, db, users,
-                       create_deposit,
-                       create_schema,
-                       json_headers,
-                       auth_headers_for_user):
+                                            create_deposit,
+                                            create_schema,
+                                            json_headers,
+                                            auth_headers_for_user):
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
 
     with app.test_client() as client:
         resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + [
-                                        ('Content-Type', 'application/json-patch+json'),
-                                        ('Accept', 'application/json')],
-                             data=json.dumps([
-                              {
-                                "op": "add",
-                                "path": "/_files",
-                                "value": "Gen Test"
-                              }
-                            ]))
+                            headers=auth_headers_for_user(owner) + [
+            ('Content-Type', 'application/json-patch+json'),
+            ('Accept', 'application/json')],
+            data=json.dumps([
+                {
+                    "op": "add",
+                    "path": "/_files",
+                    "value": "Gen Test"
+                }
+            ]))
 
         assert resp.status_code == 200
 
 
 def test_put_deposit_passing__files_field(app, db, users,
-                       create_deposit,
-                       create_schema,
-                       json_headers,
-                       auth_headers_for_user):
+                                          create_deposit,
+                                          create_schema,
+                                          json_headers,
+                                          auth_headers_for_user):
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({ "_files": "Gen Test" }))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({"_files": "Gen Test"}))
 
         assert resp.status_code == 200
 
 
 def test_put_deposit_passing__experiment_field(app, db, users,
-                       create_deposit,
-                       create_schema,
-                       json_headers,
-                       auth_headers_for_user):
+                                               create_deposit,
+                                               create_schema,
+                                               json_headers,
+                                               auth_headers_for_user):
 
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
 
     with app.test_client() as client:
         resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + json_headers,
-                             data=json.dumps({ "_experiment": "LHCb2" }))
+                          headers=auth_headers_for_user(owner) + json_headers,
+                          data=json.dumps({"_experiment": "LHCb2"}))
 
         assert resp.status_code == 200
 
-        resp_experiment = resp.json.get("metadata", {}).get("_experiment", None)
+        resp_experiment = resp.json.get(
+            "metadata", {}).get("_experiment", None)
         assert resp_experiment == "LHCb"
 
 
 def test_patch_deposit_passing__experiment_field(app, db, users,
-                       create_deposit,
-                       create_schema,
-                       json_headers,
-                       auth_headers_for_user):
+                                                 create_deposit,
+                                                 create_schema,
+                                                 json_headers,
+                                                 auth_headers_for_user):
 
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
 
     with app.test_client() as client:
         resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(owner) + [
-                                        ('Content-Type', 'application/json-patch+json'),
-                                        ('Accept', 'application/json')],
-                             data=json.dumps([
-                              {
-                                "op": "add",
-                                "path": "/_experiment",
-                                "value": "wrong_experiment"
-                              }
-                            ]))
+                            headers=auth_headers_for_user(owner) + [
+            ('Content-Type', 'application/json-patch+json'),
+            ('Accept', 'application/json')],
+            data=json.dumps([
+                {
+                    "op": "add",
+                    "path": "/_experiment",
+                    "value": "wrong_experiment"
+                }
+            ]))
 
         assert resp.status_code == 200
 
-        resp_experiment = resp.json.get("metadata", {}).get("_experiment", None)
+        resp_experiment = resp.json.get(
+            "metadata", {}).get("_experiment", None)
         assert resp_experiment == "LHCb"
 
 

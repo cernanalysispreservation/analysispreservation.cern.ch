@@ -51,8 +51,8 @@ class TagsWidget extends Component {
       <Box>
         {this.state.errors && this.state.errors.length > 0 ? (
           <Toast status="critical" onClose={() => this.clearError()}>
-            {this.state.errors} is not a valid url. Please provide a valid{" "}
-            <strong>github</strong> or <strong>gitlab</strong> url.
+            {this.state.errors} is not a valid url. Please provide a valid
+            <strong>Github</strong> or <strong>Gitlab CERN</strong> url.
           </Toast>
         ) : null}
         <TagsInput

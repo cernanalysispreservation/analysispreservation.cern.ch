@@ -23,7 +23,7 @@ const schema = {
 };
 
 const uiSchema = {
-  "ui:placeholder": "Please provide a github/gitlab file url",
+  "ui:placeholder": "Please provide a Github or Gitlab CERN file url",
   "ui:widget": "tags",
   "ui:options": {
     pattern: /(http:\/\/|https:\/\/|root:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
@@ -31,7 +31,8 @@ const uiSchema = {
 };
 
 const uiSchemaRepoUpload = {
-  "ui:placeholder": "Please provide a valid github/gitlab repository url",
+  "ui:placeholder":
+    "Please provide a valid Github or Gitlab CERN repository url",
   "ui:widget": "tags",
   "ui:options": {
     pattern: /(http:\/\/|https:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
