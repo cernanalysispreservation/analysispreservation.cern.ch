@@ -47,7 +47,6 @@ class DepositSidebar extends React.Component {
             draftId={this.props.draftId}
           />
         </Box>
-        )
       </Sidebar>
     );
   }
