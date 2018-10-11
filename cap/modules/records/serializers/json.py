@@ -37,10 +37,14 @@ class CAPSchemaSerializer(JSONSerializer):
 
     def _transform_record_owners(self, result):
         """Replaces owners id with email."""
-        owner = User.query.filter_by(id=result['metadata']['_deposit'][
-                                     'owners'][0]).one_or_none()
-        if owner:
-            result['metadata']['_deposit']['owners'][0] = owner.email
+        # TOFIX for fixtures loding
+        try:
+            owner = User.query.filter_by(id=result['metadata']['_deposit'][
+                                         'owners'][0]).one_or_none()
+            if owner:
+                result['metadata']['_deposit']['owners'][0] = owner.email
+        except:
+            pass
         return result
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
