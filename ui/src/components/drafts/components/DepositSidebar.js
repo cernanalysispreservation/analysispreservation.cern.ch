@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Box, Button, Anchor, Paragraph, Sidebar, Title } from "grommet";
+import { Box, Anchor, Sidebar } from "grommet";
 
 import AddIcon from "grommet/components/icons/base/Add";
 
@@ -10,7 +10,6 @@ import { toggleFilemanagerLayer, createDraft } from "../../../actions/drafts";
 
 import { withRouter } from "react-router";
 
-import Form from "../form/GrommetForm";
 import SectionHeader from "./SectionHeader";
 import DepositFilesList from "./DepositFilesList";
 

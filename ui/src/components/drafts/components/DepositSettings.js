@@ -7,7 +7,6 @@ import _ from "lodash";
 import {
   Box,
   Button,
-  Label,
   Table,
   TableRow,
   TableHeader,
