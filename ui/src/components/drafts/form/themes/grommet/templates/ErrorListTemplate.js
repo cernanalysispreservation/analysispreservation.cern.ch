@@ -31,5 +31,5 @@ export default function ErrorListTemplate(props) {
 }
 
 ErrorListTemplate.propTypes = {
-  errors: PropTypes.object
+  errors: PropTypes.array
 };

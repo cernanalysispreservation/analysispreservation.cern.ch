@@ -35,7 +35,9 @@ class GrommetForm extends React.Component {
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={ArrayFieldTemplate}
-        showErrorList={true}
+        showErrorList={
+          this.props.showErrorList ? this.props.showErrorList : false
+        }
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}
@@ -63,6 +65,7 @@ GrommetForm.propTypes = {
   uiSchema: PropTypes.object,
   formData: PropTypes.object,
   customValidation: PropTypes.bool,
+  showErrorList: PropTypes.bool,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node

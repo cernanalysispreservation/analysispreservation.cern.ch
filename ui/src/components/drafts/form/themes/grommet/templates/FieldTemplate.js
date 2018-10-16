@@ -34,7 +34,7 @@ FieldTemplate.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   rawDescription: PropTypes.string,
-  rawErrors: PropTypes.object,
+  rawErrors: PropTypes.array,
   schema: PropTypes.object,
   children: PropTypes.element
 };

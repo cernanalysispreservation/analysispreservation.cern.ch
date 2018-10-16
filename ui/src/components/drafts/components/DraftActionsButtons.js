@@ -93,9 +93,10 @@ class DepositHeader extends React.Component {
         : null;
 
     let isDraft = status == "draft" ? true : false;
-    let isPublishedOnce = this.props.draft
-      ? this.props.draft._deposit.pid
-      : null;
+    let isPublishedOnce =
+      this.props.draft && this.props.draft._deposit
+        ? this.props.draft._deposit.pid
+        : null;
 
     return (
       <Box

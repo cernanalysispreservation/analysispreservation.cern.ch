@@ -52,5 +52,6 @@ export const tokenSchema = {
     //     "user::email"
     //   ]
     // }
-  }
+  },
+  required: ["name"]
 };

@@ -72,7 +72,7 @@ class SettingsIndex extends React.Component {
         }}
         align="right"
       >
-        <Box flex={true} pad="medium" size="large">
+        <Box flex={true} size="large">
           <Heading align="start" margin={{ vertical: "medium" }} tag="h3">
             New OAuth Application
           </Heading>
@@ -81,14 +81,8 @@ class SettingsIndex extends React.Component {
             schema={
               this.state.layer.type == "token" ? tokenSchema : applicationSchema
             }
-            uiSchema={{
-              scopes: {
-                "ui:options": {
-                  inline: true
-                }
-              }
-            }}
             onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
+            validate={true}
           >
             <Box flex={true} margin={{ vertical: "medium" }}>
               <Button label="Submit" type="submit" primary={true} />
@@ -105,9 +99,9 @@ class SettingsIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true} pad="medium">
+      <Box flex={true} pad="medium" align="center">
         {this.state.layer.active ? this.getLayer() : null}
-        <Box>
+        <Box size="xxlarge">
           <Box
             pad="small"
             direction="row"
