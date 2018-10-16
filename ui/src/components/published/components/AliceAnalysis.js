@@ -3,12 +3,14 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box, Sidebar, Header, Title, Button } from "grommet";
+import { Box, Sidebar, Header, Title } from "grommet";
 
 import DepositFilesList from "../../drafts/components/DepositFilesList";
-import { withRouter } from "react-router";
-import CirclePlayIcon from "grommet/components/icons/base/CirclePlay";
+// import { withRouter } from "react-router";
+// import CirclePlayIcon from "grommet/components/icons/base/CirclePlay";
 
+{
+  /*
 const RerunButton = withRouter(({ history, record_id = record_id }) => (
   <Button
     icon={<CirclePlayIcon />}
@@ -16,6 +18,8 @@ const RerunButton = withRouter(({ history, record_id = record_id }) => (
     onClick={() => history.push(`/published/${record_id}/rerun`)}
   />
 ));
+*/
+}
 
 class AlicePublished extends React.Component {
   constructor(props) {
@@ -81,11 +85,13 @@ class AlicePublished extends React.Component {
             </Box>
           </Box>
         </Box>
+        {/*
         <Sidebar full={false} size="small">
           <Header pad="medium" justify="between">
             <RerunButton record_id={this.props.item.control_number} />
           </Header>
         </Sidebar>
+        */}
       </Box>
     );
   }

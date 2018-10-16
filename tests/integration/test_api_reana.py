@@ -28,18 +28,22 @@ from __future__ import absolute_import, print_function
 
 import json
 
+from pytest import mark
 from cap.modules.reana.models import ReanaJob
 
 
 #################
 # api/reana/jobs
 #################
+@mark.skip
 def test_get_reana_jobs_when_user_not_logged_in_returns_401(app, users, deposit):
     with app.test_client() as client:
         resp = client.get('/reana/jobs/{}'.format(deposit.id))
 
         assert resp.status_code == 401
 
+
+@mark.skip
 def test_get_reana_jobs_when_depid_doesnt_exists_returns_404(app,
                                                              auth_headers_for_superuser):
     with app.test_client() as client:
@@ -48,6 +52,8 @@ def test_get_reana_jobs_when_depid_doesnt_exists_returns_404(app,
 
         assert resp.status_code == 404
 
+
+@mark.skip
 def test_get_reana_jobs_when_no_jobs_returns_empty_list(app, auth_headers_for_superuser,
                                                         deposit):
     with app.test_client() as client:
@@ -56,6 +62,8 @@ def test_get_reana_jobs_when_no_jobs_returns_empty_list(app, auth_headers_for_su
 
         assert json.loads(resp.data) == []
 
+
+@mark.skip
 def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
                                                     auth_headers_for_superuser,
                                                     deposit):
@@ -66,7 +74,7 @@ def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
         params={
             'param_1': 1,
             'param_2': 2
-    }))
+        }))
     db.session.commit()
 
     with app.test_client() as client:
@@ -75,7 +83,7 @@ def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
 
         serialized_reana_job = {
             'name': 'my_workflow_run',
-            'params':{
+            'params': {
                 'param_1': 1,
                 'param_2': 2
             },
