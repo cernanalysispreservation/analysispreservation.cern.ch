@@ -92,6 +92,11 @@ class DepositHeader extends React.Component {
         ? this.props.draft._deposit.status
         : null;
 
+    let isDraft = status == "draft" ? true : false;
+    let isPublishedOnce = this.props.draft
+      ? this.props.draft._deposit.pid
+      : null;
+
     return (
       <Box
         flex={false}
@@ -126,15 +131,15 @@ class DepositHeader extends React.Component {
                         <SettingsAnchor draft_id={this.props.draft_id} />
                       ) : null}
 
-                      {status == "draft" ? (
+                      {isDraft ? (
                         <ShareAnchor action={this.props.publishData} />
                       ) : null}
 
-                      {status == "draft" ? (
+                      {isDraft && !isPublishedOnce ? (
                         <DeleteAnchor action={this.props.deleteDraft} />
                       ) : null}
 
-                      {status == "draft" && this.props.draft._deposit.pid ? (
+                      {isDraft && isPublishedOnce ? (
                         <DiscardAnchor action={this.props.discardData} />
                       ) : null}
                     </React.Fragment>

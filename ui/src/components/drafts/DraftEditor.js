@@ -101,11 +101,12 @@ CreateDeposit.propTypes = {
   match: PropTypes.object,
   initForm: PropTypes.func,
   schemas: PropTypes.object,
-  schemasLoading: PropTypes.object,
+  schemasLoading: PropTypes.bool,
   schemaId: PropTypes.string,
   error: PropTypes.object,
   formData: PropTypes.object,
   draft_id: PropTypes.string,
+  formDataChange: PropTypes.func,
   fetchAndAssignSchema: PropTypes.func
 };
 
@@ -114,7 +115,6 @@ function mapStateToProps(state) {
     schemaId: state.drafts.getIn(["current_item", "schema"]),
     draft_id: state.drafts.getIn(["current_item", "id"]),
     schemasLoading: state.drafts.getIn(["current_item", "schemasLoading"]),
-
     formData: state.drafts.getIn(["current_item", "formData"]),
     schemas: state.drafts.getIn(["current_item", "schemas"]),
     error: state.drafts.getIn(["current_item", "error"])
