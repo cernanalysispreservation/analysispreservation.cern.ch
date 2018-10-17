@@ -1,4 +1,3 @@
-import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -97,7 +96,11 @@ class DraftActionsLayer extends React.Component {
 DraftActionsLayer.propTypes = {
   actionsLayer: PropTypes.bool,
   schemaId: PropTypes.object,
-
+  saveData: PropTypes.func,
+  publishData: PropTypes.func,
+  deleteDraft: PropTypes.func,
+  discardData: PropTypes.func,
+  type: PropTypes.string,
   toggleActionsLayer: PropTypes.func
 };
 

@@ -1,7 +1,6 @@
 import React from "react";
 
-import { Anchor, Box, Section, Article, Heading } from "grommet";
-import Header from "../partials/Header";
+import { Box, Section, Article, Heading } from "grommet";
 
 class HowToSearchPage extends React.Component {
   render() {
@@ -9,8 +8,7 @@ class HowToSearchPage extends React.Component {
     let color = "light-2";
     let margin = "none";
     return (
-      <Box flex={true}>
-        <Header />
+      <Box flex={true} pad="small">
         <Box flex={true} textAlign="center" align="center">
           <Article size="xxlarge">
             <Section>
@@ -92,13 +90,6 @@ class HowToSearchPage extends React.Component {
                   </small>
                 </code>
               </Heading>
-            </Section>
-            <Section>
-              <Anchor path="/search" index={true}>
-                <Heading tag="h3" align="center" margin={margin}>
-                  Start Searching
-                </Heading>
-              </Anchor>
             </Section>
           </Article>
         </Box>

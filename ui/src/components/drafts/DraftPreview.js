@@ -112,7 +112,9 @@ DraftPreview.propTypes = {
   schemas: PropTypes.object,
   schemaId: PropTypes.string,
   formData: PropTypes.object,
-  schemasLoading: PropTypes.bool
+  schemasLoading: PropTypes.bool,
+  fetchAndAssignSchema: PropTypes.func,
+  error: PropTypes.object
 };
 
 function mapStateToProps(state) {

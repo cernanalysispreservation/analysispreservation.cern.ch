@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Anchor, Box, Header, Heading, Label, Menu } from "grommet";
+import { Box } from "grommet";
 
 import { withRouter } from "react-router";
 
@@ -117,7 +117,8 @@ class DraftHeader extends React.Component {
 DraftHeader.propTypes = {
   match: PropTypes.object.isRequired,
   draft: PropTypes.object,
-  id: PropTypes.string
+  id: PropTypes.string,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {
