@@ -73,7 +73,7 @@ class SettingsIndex extends React.Component {
         align="right"
       >
         <Box flex={true} size="large">
-          <Heading align="start" margin={{ vertical: "medium" }} tag="h3">
+          <Heading align="start" margin="small" tag="h3">
             New OAuth Application
           </Heading>
           <Paragraph align="start" margin="none" />

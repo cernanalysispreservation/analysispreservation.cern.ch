@@ -140,7 +140,8 @@ class Dashboard extends React.Component {
                 </Heading>
               </Box>
               <Tiles flush={false} fill={false} size="large">
-                {this.props.currentUser.get("depositGroups") &&
+                {this.props.currentUser &&
+                this.props.currentUser.get("depositGroups") &&
                 this.props.currentUser.get("depositGroups").map ? (
                   this.props.currentUser
                     .get("depositGroups")
