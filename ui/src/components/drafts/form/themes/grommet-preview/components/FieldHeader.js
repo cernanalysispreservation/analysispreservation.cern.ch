@@ -6,7 +6,7 @@ import { Box, Heading, Paragraph, Button } from "grommet";
 import AddIcon from "grommet/components/icons/base/Add";
 
 let FieldHeader = function(props) {
-  const { title, required, description } = props;
+  const { title, required } = props;
   return (
     <Box margin={props.margin ? props.margin : { vertical: "small" }}>
       <Box direction="row" align="center" justify="between">
@@ -29,11 +29,6 @@ let FieldHeader = function(props) {
           </Box>
         ) : null}
       </Box>
-      {description ? (
-        <Paragraph margin="none" size="small">
-          {description}
-        </Paragraph>
-      ) : null}
     </Box>
   );
 };

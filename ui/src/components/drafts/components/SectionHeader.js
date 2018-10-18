@@ -20,7 +20,9 @@ export default function SectionHeader(props) {
         pad={{ horizontal: "small" }}
         responsive={false}
       >
-        <span>{props.label}</span>
+        <span>
+          {props.label} {props.status}
+        </span>
       </Box>
       <Box flex={false} margin={{ horizontal: "small" }}>
         {props.icon ? props.icon : null}
@@ -31,5 +33,6 @@ export default function SectionHeader(props) {
 
 SectionHeader.propTypes = {
   label: PropTypes.string,
-  icon: PropTypes.element
+  icon: PropTypes.element,
+  status: PropTypes.element
 };

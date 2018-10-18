@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import { Box, Toast } from "grommet";
 
-import { fetchAndAssignSchema } from "../../actions/drafts";
+import { fetchAndAssignSchema } from "../../actions/common";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import Sidebar from "./components/DepositSidebar";
@@ -87,10 +87,7 @@ class DraftPreview extends React.Component {
                     formData={this.props.formData} // TOFIX: change to get from metadata
                     schema={_schema}
                     uiSchema={this.props.schemas.uiSchema || {}}
-                    onChange={() => {
-                      // console.log("CHANGE::",change);
-                      // this.props.formDataChange(change.formData);
-                    }}
+                    onChange={() => {}}
                   >
                     <span />
                   </JSONSchemaPreviewer>

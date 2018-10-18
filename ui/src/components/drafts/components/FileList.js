@@ -59,7 +59,7 @@ class FileList extends React.Component {
             })
         ) : (
           <ListPlaceholder
-            emptyMessage="No files have been attached to this project."
+            emptyMessage="No files have been attached to this analysis."
             unfilteredTotal={0}
           />
         )}

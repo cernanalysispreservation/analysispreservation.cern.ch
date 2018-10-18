@@ -1,12 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box } from "grommet";
-
-import FieldHeader from "../components/FieldHeader";
+import { Box, Label } from "grommet";
 
 import LayerArrayField from "./LayerArrayField";
 import DefaultArrayField from "./DefaultArrayField";
+import FieldHeader from "../components/FieldHeader";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -39,7 +38,10 @@ class ArrayFieldTemplate extends React.Component {
   }
 
   _getArrayField(_label) {
-    if (this.formRenderType == "default") {
+    if (
+      this.formRenderType == "default" ||
+      this.formRenderType == "StringArrayField"
+    ) {
       return (
         <Box margin={{ top: "small" }}>
           {_label}
@@ -65,25 +67,22 @@ class ArrayFieldTemplate extends React.Component {
       //     _onAddClick={this._onAddClick.bind(this)}
       //     {...this.props} />
       // );
+      // TOFIX Consider changing render type to LayerArrayField
+      _label = this.props.title;
       return (
         <Box margin={{ top: "small" }}>
-          {_label}
-          <DefaultArrayField {...this.props} />
+          <FieldHeader title={_label} margin="none" />
+          <LayerArrayField {...this.props} />
         </Box>
       );
-    } else {
-      return <div>{this.props.schema.items.type}</div>;
     }
   }
 
   render() {
     let _label = (
-      <FieldHeader
-        title={this.props.title}
-        required={this.props.required}
-        description={this.props.description}
-        margin="none"
-      />
+      <Label margin="none" size="small" strong="none">
+        {this.props.title}
+      </Label>
     );
 
     return this._getArrayField(_label);

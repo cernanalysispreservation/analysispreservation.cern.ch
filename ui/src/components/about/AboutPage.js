@@ -1,14 +1,9 @@
 import React from "react";
 
-import {
-  Box,
-  Section,
-  Paragraph,
-  Tiles,
-  Tile,
-  Article,
-  Heading
-} from "grommet";
+import { Box, Tiles, Tile, Heading } from "grommet";
+import Header from "../partials/Header";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function CustomTile(props) {
   return (
@@ -24,12 +19,16 @@ class AboutPage extends React.Component {
   render() {
     return (
       <Box flex={true}>
-        <Box
-          align="center"
-          full="horizontal"
-          pad="medium"
-          colorIndex="neutral-1-a"
-        />
+        {this.props.isLoggedIn ? (
+          <Header />
+        ) : (
+          <Box
+            align="center"
+            full="horizontal"
+            pad="medium"
+            colorIndex="neutral-1-a"
+          />
+        )}
         <Box flex={true} colorIndex="light-2" align="center">
           <Tiles fill={true}>
             <Tile basis="1/2" pad="large" justify="center">
@@ -163,4 +162,17 @@ class AboutPage extends React.Component {
   }
 }
 
-export default AboutPage;
+AboutPage.propTypes = {
+  isLoggedIn: PropTypes.bool
+};
+
+function mapStateToProps(state) {
+  return {
+    isLoggedIn: state.auth.getIn(["isLoggedIn"])
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(AboutPage);

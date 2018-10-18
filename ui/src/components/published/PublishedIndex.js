@@ -1,16 +1,17 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import React from 'react';
+import React from "react";
 
-import {connect} from 'react-redux';
+import { connect } from "react-redux";
 
-import Box from 'grommet/components/Box';
+import Box from "grommet/components/Box";
 
-import PublishedItem from '../published/PublishedItem';
-import RerunPublished from '../published/RerunPublished';
-import RerunStatus from '../published/RerunStatus';
-import {Switch, Route} from 'react-router-dom';
-import {withRouter} from 'react-router';
+// import PublishedItem from '../published/PublishedItem';
+// import RerunPublished from '../published/RerunPublished';
+// import RerunStatus from '../published/RerunStatus';
+import PublishedPreview from "./PublishedPreview";
+import { Switch, Route } from "react-router-dom";
+import { withRouter } from "react-router";
 
 class DraftsIndex extends React.Component {
   constructor(props) {
@@ -21,9 +22,12 @@ class DraftsIndex extends React.Component {
     return (
       <Box flex={true}>
         <Switch>
+          <Route exact path={`/published/:id`} component={PublishedPreview} />
+          {/*
           <Route exact path={`/published/:id`} component={PublishedItem}  />
           <Route path={`/published/:id/rerun`} component={RerunPublished} />
           <Route path={`/published/:id/status/:workflow_id`} component={RerunStatus} />
+          */}
         </Switch>
       </Box>
     );
@@ -36,16 +40,17 @@ DraftsIndex.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    groups: state.auth.getIn(['currentUser', 'depositGroups'])
+    groups: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }
 
 function mapDispatchToProps() {
-  return {
-  };
+  return {};
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DraftsIndex));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DraftsIndex)
+);

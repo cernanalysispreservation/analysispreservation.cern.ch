@@ -11,7 +11,6 @@ import ErrorListTemplate from "./themes/grommet-preview/templates/ErrorListTempl
 
 import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
-
 import Form from "react-jsonschema-form";
 
 class JSONShemaPreviewer extends React.Component {

@@ -7,11 +7,9 @@ import { connect } from "react-redux";
 import { Box, Toast } from "grommet";
 import { Switch, Route } from "react-router-dom";
 
-import {
-  fetchAndAssignSchema,
-  initForm,
-  formDataChange
-} from "../../actions/drafts";
+import { initForm, formDataChange } from "../../actions/drafts";
+
+import { fetchAndAssignSchema } from "../../actions/common";
 
 import DepositForm from "./form/Form";
 import Sidebar from "./components/DepositSidebar";

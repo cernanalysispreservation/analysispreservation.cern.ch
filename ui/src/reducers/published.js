@@ -1,4 +1,10 @@
-import { Map } from 'immutable';
+import { Map } from "immutable";
+
+import {
+  FETCH_SCHEMA_REQUEST,
+  FETCH_SCHEMA_SUCCESS,
+  FETCH_SCHEMA_ERROR
+} from "../actions/common";
 
 import {
   PUBLISHED_REQUEST,
@@ -16,7 +22,7 @@ import {
   RERUN_OUTPUTS_REQUEST,
   RERUN_OUTPUTS_SUCCESS,
   RERUN_OUTPUTS_ERROR
-} from '../actions/published';
+} from "../actions/published";
 
 const initialState = Map({
   results: {},
@@ -25,6 +31,8 @@ const initialState = Map({
   current_item: Map({
     id: null,
     data: null,
+    schema: null,
+    uiSchema: null,
     loading: false,
     error: null
   }),
@@ -49,50 +57,64 @@ export default function publishedReducer(state = initialState, action) {
       return state;
     case PUBLISHED_ERROR:
       return state;
+    case FETCH_SCHEMA_REQUEST:
+      return state
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
+    case FETCH_SCHEMA_SUCCESS:
+      return state
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "schema"], action.schema.schema)
+        .setIn(["current_item", "uiSchema"], action.schema.uiSchema);
+    case FETCH_SCHEMA_ERROR:
+      return state
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case PUBLISHED_ITEM_REQUEST:
-      return state.setIn(['current_item', 'loading'], true)
-                  .setIn(['current_item', 'error'], false);
+      return state
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], false);
     case PUBLISHED_ITEM_SUCCESS:
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'data'], action.published);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "data"], action.published);
     case PUBLISHED_ITEM_ERROR:
       return state
-              .setIn(['current_item', 'loading'], false)
-              .setIn(['current_item', 'error'], action.error);
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
     case RERUN_PUBLISHED_REQUEST:
-      return state.setIn(['current_run', 'loading'], true);
-      // return state.setIn(['current_run', 'error'], false);
+      return state.setIn(["current_run", "loading"], true);
+    // return state.setIn(['current_run', 'error'], false);
     case RERUN_PUBLISHED_SUCCESS:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'data'], action.data);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "data"], action.data);
     case RERUN_PUBLISHED_ERROR:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'error'], action.error);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "error"], action.error);
     case RERUN_STATUS_REQUEST:
-      return state.setIn(['current_run', 'loading'], true);
-      // return state.setIn(['current_run', 'error'], false);
+      return state.setIn(["current_run", "loading"], true);
+    // return state.setIn(['current_run', 'error'], false);
     case RERUN_STATUS_SUCCESS:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'data'], action.data);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "data"], action.data);
     case RERUN_STATUS_ERROR:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'error'], action.error);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "error"], action.error);
     case RERUN_OUTPUTS_REQUEST:
-      return state.setIn(['current_run', 'loading'], true);
-      // return state.setIn(['current_run', 'error'], false);
+      return state.setIn(["current_run", "loading"], true);
+    // return state.setIn(['current_run', 'error'], false);
     case RERUN_OUTPUTS_SUCCESS:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'outputs'], action.data);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "outputs"], action.data);
     case RERUN_OUTPUTS_ERROR:
       return state
-              .setIn(['current_run', 'loading'], false)
-              .setIn(['current_run', 'error'], action.error);
+        .setIn(["current_run", "loading"], false)
+        .setIn(["current_run", "error"], action.error);
     default:
       return state;
   }

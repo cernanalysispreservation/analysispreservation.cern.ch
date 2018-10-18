@@ -25,7 +25,7 @@ class DefaultArrayField extends React.Component {
             ))
           ) : (
             <Box colorIndex="light-2" pad="small" margin={{ top: "small" }}>
-              No {this.props.title}.
+              No {this.props.title} provided.
             </Box>
           )}
         </List>

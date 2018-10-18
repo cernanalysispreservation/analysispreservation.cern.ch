@@ -1,5 +1,6 @@
 import axios from "axios";
 import { replace } from "react-router-redux";
+import { fetchAndAssignSchema } from "./common";
 
 export const PUBLISHED_REQUEST = "PUBLISHED_REQUEST";
 export const PUBLISHED_SUCCESS = "PUBLISHED_SUCCESS";
@@ -122,84 +123,85 @@ export function rerunOutputsError(error) {
 }
 
 export function getPublished() {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(publishedRequest());
 
     let uri = "/api/records/";
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(publishedSuccess(response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(publishedError(error));
       });
   };
 }
 
 export function getPublishedItem(id) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(publishedItemRequest());
 
     let uri = `/api/records/${id}`;
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
+        dispatch(fetchAndAssignSchema(response.data.metadata.$schema));
         dispatch(publishedItemSuccess(response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(publishedItemError(error.response.data));
       });
   };
 }
 
 export function rerunPublished(workflow_id, pid) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(rerunPublishedRequest());
 
     let uri = `/api/reana/start/${workflow_id}`;
 
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(rerunPublishedSuccess(response.data));
         dispatch(replace(`/published/${pid}/status/${workflow_id}`));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(rerunPublishedSuccess(error));
       });
   };
 }
 
 export function getAnalysisStatus(workflow_id) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(rerunStatusRequest());
 
     let uri = `/api/reana/status/${workflow_id}`;
 
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(rerunStatusSuccess(response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(rerunStatusError(error));
       });
   };
 }
 
 export function getAnalysisOutputs(workflow_id) {
-  return function(dispatch) {
+  return dispatch => {
     dispatch(rerunOutputsRequest());
 
     let uri = `/api/reana/status/${workflow_id}/outputs`;
 
     axios
       .get(uri)
-      .then(function(response) {
+      .then(response => {
         dispatch(rerunOutputsSuccess(response.data));
       })
-      .catch(function(error) {
+      .catch(error => {
         dispatch(rerunOutputsError(error));
       });
   };

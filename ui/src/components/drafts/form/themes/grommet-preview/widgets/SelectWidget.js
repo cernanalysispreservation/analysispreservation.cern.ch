@@ -1,26 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Select } from "grommet";
+import { Box, Paragraph } from "grommet";
 
 const SelectWidget = function(props) {
-  // TOFIX onBlur, onFocus
-  let _onChange = function _onChange(value) {
-    let _value = value.value.value;
-    return props.onChange(_value);
-  };
-
   return (
-    <Box flex={true} margin={{ horizontal: "medium" }}>
-      <Select
-        placeHolder={props.placeholder}
-        inline={props.options.inline ? true : false}
-        multiple={props.options.multiple ? true : false}
-        options={props.options.enumOptions}
-        value={props.value}
-        onBlur={props.onBlur}
-        onChange={_onChange}
-      />
+    <Box key={props.id} flex={true} pad="none">
+      <Paragraph margin="small" size="small">
+        {props.value || ""}
+      </Paragraph>
     </Box>
   );
 };

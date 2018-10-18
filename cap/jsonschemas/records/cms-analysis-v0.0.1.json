@@ -4,6 +4,106 @@
   "jsonschema": {
     "description": "Describe information needed for deposit module.",
     "title": "CMS Analysis - Published",
+    "dependencies": {
+      "analysis_reuse_mode": {
+        "properties": {
+          "main_measurements": {
+            "id": "main_measurements",
+            "items": {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-main-measurements-v0.0.1.json"
+            },
+            "type": "array",
+            "description":
+              "Please provide information about the main measurements of your analysis",
+            "title": "Main Measurements Workflows"
+          },
+          "final_results": {
+            "description":
+              "Please provide information necessary to generate final plots and tables for your analysis.",
+            "type": "object",
+            "properties": {
+              "processing": {
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+              },
+              "description": {
+                "type": "string",
+                "title": "Description"
+              }
+            },
+            "title": "Final Results"
+          },
+          "systematic_uncertainties": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "associated_to_obj",
+                    "associated_to_background_pred_methods",
+                    "associated_to_mc_production",
+                    "assocciated_to_luminosity",
+                    "statement_about_most_important_systematics"
+                  ],
+                  "type": "string",
+                  "title": "Type"
+                },
+                "physics_object": {
+                  "type": "string",
+                  "description":
+                    "Choose from objects defined in main measurements",
+                  "title": "Physics Object"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Systematic Uncertainties"
+          },
+          "auxiliary_measurements": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "enum": [
+                    "trigger_efficiencies",
+                    "background_measurements",
+                    "systematic_uncertainties",
+                    "mc_scale_factors",
+                    "object_efficiencies",
+                    "rates",
+                    "acceptance_corrections",
+                    "other"
+                  ],
+                  "type": "string",
+                  "title": "Type"
+                },
+                "links": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "description": "Provide links to all necessary sources",
+                  "title": "Links to sources"
+                }
+              }
+            },
+            "type": "array",
+            "description":
+              "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
+            "title": "Auxiliary Measurements"
+          },
+          "background_estimations": {
+            "items": {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-background-estimation-v0.0.1.json"
+            },
+            "type": "array",
+            "title": "Background Estimation"
+          }
+        }
+      }
+    },
     "additionalProperties": true,
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
@@ -123,6 +223,12 @@
           }
         },
         "title": "Basic Information"
+      },
+      "analysis_reuse_mode": {
+        "type": "string",
+        "description":
+          "please turn this mode on if you want to capture additional information about main and auxiliary measurements, systematic uncertainties, background estimates, final state particles",
+        "title": "Full reproducibility mode"
       },
       "input_data": {
         "id": "input_data",

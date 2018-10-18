@@ -39,7 +39,7 @@ class AccordionArrayField extends React.Component {
             </Box>
           ) : (
             <Box colorIndex="light-2" pad="small" margin={{ top: "small" }}>
-              No {this.props.title}.
+              No {this.props.title} provided.
             </Box>
           )}
         </AccordionPanel>
