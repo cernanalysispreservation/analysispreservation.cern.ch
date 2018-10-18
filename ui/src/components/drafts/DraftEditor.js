@@ -56,7 +56,12 @@ class DraftEditor extends React.Component {
     }
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.match.params.schema_id !== prevProps.match.params.schema_id
+    ) {
+      this.props.fetchAndAssignSchema(null, this.props.match.params.schema_id);
+    }
     if (this.props.schemaId) {
       if (!this.props.schemasLoading) {
         if (

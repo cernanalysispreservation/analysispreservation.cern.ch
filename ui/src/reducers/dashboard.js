@@ -1,4 +1,4 @@
-import { Map, fromJS, List } from "immutable";
+import { Map } from "immutable";
 
 import { DASHBOARD_QUERY } from "../actions/dashboard";
 

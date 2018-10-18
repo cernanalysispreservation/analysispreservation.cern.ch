@@ -95,7 +95,26 @@ class Header extends React.Component {
             size="small"
           >
             <Anchor icon={<CircleInformationIcon />} onClick={this.showLayer} />
-            <Anchor path="/drafts/create" label="Create" />
+            <Menu
+              colorIndex="neutral-1"
+              responsive={true}
+              label="Create"
+              dropAlign={{ top: "bottom" }}
+              size="small"
+            >
+              {this.props.groups ? (
+                this.props.groups.map((group, index) => (
+                  <Anchor
+                    key={`${group.get("name")}-${index}`}
+                    label={`${group.get("name")}`}
+                    animateIcon={true}
+                    path={`/drafts/create/${group.get("deposit_group")}`}
+                  />
+                ))
+              ) : (
+                <Box> No available schemas.</Box>
+              )}
+            </Menu>
             <Menu
               colorIndex="neutral-1"
               dropAlign={{ top: "bottom" }}
@@ -109,7 +128,7 @@ class Header extends React.Component {
                 onClick={this.props.logout}
               />
               <Anchor
-                label="Settings"
+                label="Tokens"
                 href="#"
                 animateIcon={true}
                 path="/settings"
@@ -125,8 +144,15 @@ class Header extends React.Component {
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  match: PropTypes.object
+  match: PropTypes.object,
+  groups: PropTypes.object
 };
+
+function mapStateToProps(state) {
+  return {
+    groups: state.auth.getIn(["currentUser", "depositGroups"])
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -137,7 +163,7 @@ function mapDispatchToProps(dispatch) {
 
 export default withRouter(
   connect(
-    () => ({}),
+    mapStateToProps,
     mapDispatchToProps
   )(Header)
 );

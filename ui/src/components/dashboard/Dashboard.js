@@ -1,21 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Distribution from "grommet/components/Distribution";
 import { connect } from "react-redux";
 import AnnotatedMeter from "grommet-addons/components/AnnotatedMeter";
 import MoreIcon from "grommet/components/icons/base/More";
 
 import {
   Box,
-  Section,
   Heading,
   Header,
   Tiles,
   Tile,
   List,
   ListItem,
-  Anchor,
-  Value
+  Anchor
 } from "grommet";
 
 import { withRouter } from "react-router-dom";
@@ -30,15 +27,15 @@ function DashboardList(props) {
       </Heading>
       <List>
         {props.items.length > 0 ? (
-          props.items.map(item => {
+          props.items.map((item, index) => {
             let metadata = item.metadata;
             let id = item.id;
 
             return (
-              <ListItem justify="center">
+              <ListItem justify="center" key={`${item.id}-${index}`}>
                 <Anchor
                   path={`${props.url}/${id}`}
-                  style={{ "text-decoration": "none", color: "black" }}
+                  style={{ textDecoration: "none", color: "black" }}
                 >
                   {metadata.general_title || id}
                 </Anchor>
@@ -59,7 +56,7 @@ function DashboardList(props) {
         <Box align="center" margin={{ horizontal: "medium" }}>
           <Anchor
             path="/search"
-            style={{ "text-decoration": "none", color: "black" }}
+            style={{ textDecoration: "none", color: "black" }}
           >
             <MoreIcon />
           </Anchor>

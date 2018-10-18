@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Tiles, Anchor, Box, Tile, Heading } from "grommet";
+import { Tiles, Box, Tile, Heading } from "grommet";
 
 function CustomTile(props) {
   return (
@@ -34,7 +34,7 @@ class HowToSearchPage extends React.Component {
                   <a
                     href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html"
                     target="_blank"
-                    style={{ "text-decoration": "none" }}
+                    style={{ textDecoration: "none" }}
                   >
                     Lucene Query
                   </a>

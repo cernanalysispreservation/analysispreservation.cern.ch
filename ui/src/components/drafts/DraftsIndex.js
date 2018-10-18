@@ -9,7 +9,7 @@ import DraftHeader from "./components/DraftHeader";
 
 // Containers
 import DraftsItemIndex from "./DraftsItemIndex";
-import DraftsCreateIndex from "./DraftsCreateIndex";
+import DraftEditor from "./DraftEditor";
 
 
 class DraftsIndex extends React.Component {
@@ -25,8 +25,12 @@ class DraftsIndex extends React.Component {
       <Box flex={true}>
         <DraftHeader formRef={this.formRef} />
         <Switch>
-          <Route path="/drafts/create" render={(props) => <DraftsCreateIndex {...props} formRef={this.formRef}/>} />
-          <Route path="/drafts/:draft_id" render={(props) => <DraftsItemIndex {...props} formRef={this.formRef}/>} />
+          <Route
+            exact
+            path="/drafts/create/:schema_id"
+            component={DraftEditor}
+          />
+          <Route path="/drafts/:draft_id" render={(props) => <DraftsItemIndex {...props} formRef={this.formRef}/>}  />
         </Switch>
       </Box>
     );

@@ -10,7 +10,7 @@ export function dashboardQuery(results) {
 }
 
 export function fetchDashboard() {
-  return function(dispatch, getState) {
+  return dispatch => {
     let url = "/api/dashboard/";
 
     axios.get(url).then(response => {
