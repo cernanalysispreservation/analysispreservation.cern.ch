@@ -39,3 +39,16 @@ class CAPRecordSearch(RecordsSearch):
         fields = ('*',)
         facets = {}
         default_filter = DefaultFilter(records_filter)
+
+    def get_user_records(self):
+        """Get records that current user owns."""
+        return self.filter(
+            Q('multi_match', query=current_user.id, fields=['_deposit.owners'])
+        )
+
+    def sort_by_latest(self):
+        """Sort by latest (updated|created)."""
+        return self.sort(
+            {'-_updated': {'unmapped_type': 'date'}},
+            {'-created': {'unmapped_type': 'date'}}
+        )

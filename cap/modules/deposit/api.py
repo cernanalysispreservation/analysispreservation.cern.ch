@@ -58,8 +58,8 @@ from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .errors import (DepositValidationError,
-                     UpdateDepositPermissionsError, FileUploadError)
+from .errors import (DepositValidationError, FileUploadError,
+                     UpdateDepositPermissionsError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,

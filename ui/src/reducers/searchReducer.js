@@ -1,4 +1,4 @@
-import {Map, fromJS} from 'immutable';
+import { Map, fromJS } from "immutable";
 
 import {
   QUERY_CHANGED,
@@ -8,20 +8,14 @@ import {
   PAGE_CHANGE,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
-  SEARCH_ERROR,
-  SEARCH_MINE_SUCCESS,
-  SEARCH_MINE_ERROR
-} from '../actions/search';
+  SEARCH_ERROR
+} from "../actions/search";
 
 const initialState = Map({
-  query: '',
+  query: "",
   aggs: Map({}),
   selectedAggs: Map({}),
   results: Map({
-    hits: [],
-    total: 0
-  }),
-  mine: Map({
     hits: [],
     total: 0
   }),
@@ -37,10 +31,9 @@ const initialState = Map({
 export default function searchReducer(state = initialState, action) {
   switch (action.type) {
     case QUERY_CHANGED:
-      return state.set('query', action.query);
+      return state.set("query", action.query);
     case ADD_AGGS:
-      return state
-        .set('selectedAggs', action.selectedAggs);
+      return state.set("selectedAggs", action.selectedAggs);
     case REMOVE_AGGS:
       return state;
     case CLEAR_SEARCH:
@@ -48,19 +41,11 @@ export default function searchReducer(state = initialState, action) {
     case PAGE_CHANGE:
       return state;
     case SEARCH_REQUEST:
-      return state.set('loading', true);
+      return state.set("loading", true);
     case SEARCH_SUCCESS:
-      return state
-        .set('results', fromJS(action.results))
-        .set('loading', false);
-        // .set('aggs', fromJS(action.results.aggregations))
+      return state.set("results", fromJS(action.results)).set("loading", false);
+    // .set('aggs', fromJS(action.results.aggregations))
     case SEARCH_ERROR:
-      return state;
-    case SEARCH_MINE_SUCCESS:
-      return state
-        .set('mine', fromJS(action.results))
-        .set('loading', false);
-    case SEARCH_MINE_ERROR:
       return state;
     default:
       return state;

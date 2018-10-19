@@ -51,8 +51,7 @@ def deposits_filter():
 
     roles = [role.id for role in current_user.roles]
 
-    q = Q('multi_match',
-          query=current_user.id,
+    q = Q('multi_match', query=current_user.id,
           fields=[
               '_access.deposit-read.users',
               '_access.deposit-admin.users'
@@ -65,7 +64,7 @@ def deposits_filter():
     return q
 
 
-class DepositSearch(RecordsSearch):
+class CAPDepositSearch(RecordsSearch):
     """Default search class."""
 
     class Meta:
@@ -78,3 +77,25 @@ class DepositSearch(RecordsSearch):
             'status': TermsFacet(field='_deposit.status'),
         }
         default_filter = DefaultFilter(deposits_filter)
+
+    def get_user_deposits(self):
+        """Get draft deposits that current user owns."""
+        return self.filter(
+            Q('match', **{'_deposit.status': 'draft'}) &
+            Q('multi_match', query=current_user.id, fields=['_deposit.owners'])
+        )
+
+    def get_shared_with_user(self):
+        """Get draft deposits shared with current user ."""
+        return self.filter(
+            Q('match', **{'_deposit.status': 'draft'}) & ~
+            Q('multi_match', query=current_user.id,
+                fields=['_deposit.owners'])
+        )
+
+    def sort_by_latest(self):
+        """Sort by latest (updated|created)."""
+        return self.sort(
+            {'-_updated': {'unmapped_type': 'date'}},
+            {'-created': {'unmapped_type': 'date'}}
+        )
