@@ -11,14 +11,22 @@ import DraftHeader from "./components/DraftHeader";
 import DraftsItemIndex from "./DraftsItemIndex";
 import DraftsCreateIndex from "./DraftsCreateIndex";
 
+
 class DraftsIndex extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Create the ref for the form
+    this.formRef = React.createRef();
+  }
+
   render() {
     return (
       <Box flex={true}>
-        <DraftHeader />
+        <DraftHeader formRef={this.formRef} />
         <Switch>
-          <Route path="/drafts/create" component={DraftsCreateIndex} />
-          <Route path="/drafts/:draft_id" component={DraftsItemIndex} />
+          <Route path="/drafts/create" render={(props) => <DraftsCreateIndex {...props} formRef={this.formRef}/>} />
+          <Route path="/drafts/:draft_id" render={(props) => <DraftsItemIndex {...props} formRef={this.formRef}/>} />
         </Switch>
       </Box>
     );

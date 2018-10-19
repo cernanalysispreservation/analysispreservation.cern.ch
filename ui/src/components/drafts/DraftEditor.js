@@ -40,7 +40,14 @@ const transformSchema = schema => {
   return schema;
 };
 
-class CreateDeposit extends React.Component {
+class DraftEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Create the ref for the form
+    // this.formRef = React.createRef();
+  }
+
   componentDidMount() {
     // If "schema_id" from URL exists init form and fetch schema
     if (this.props.match.params.schema_id) {
@@ -76,18 +83,22 @@ class CreateDeposit extends React.Component {
         <Box direction="row" justify="between" flex={true} wrap={false}>
           <Route
             path="/drafts/create/:schema_id"
-            component={CreateDraftSidebar}
+            render={ props => <CreateDraftSidebar {...props} ref={this.formRef}/> }
           />
           <Route path="/drafts/:draft_id/edit" component={Sidebar} />
 
           {this.props.schemas && this.props.schemas.schema ? (
             <DepositForm
+              formRef={this.props.formRef}
               formData={this.props.formData}
               schema={_schema}
               uiSchema={this.props.schemas.uiSchema || {}}
               onChange={change => {
                 this.props.formDataChange(change.formData);
               }}
+              customValidation={true}
+              validate={true}
+              errors={this.props.error ? this.props.error.data.errors : []}
             />
           ) : null}
 
@@ -98,7 +109,7 @@ class CreateDeposit extends React.Component {
   }
 }
 
-CreateDeposit.propTypes = {
+DraftEditor.propTypes = {
   match: PropTypes.object,
   initForm: PropTypes.func,
   schemas: PropTypes.object,
@@ -134,4 +145,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateDeposit);
+)(DraftEditor);

@@ -18,11 +18,11 @@ export default function ErrorListTemplate(props) {
       <Box colorIndex="light-2">
         <List flex="true">
           {errors.map((error, i) => {
-            return (
+            return error.stack && error.stack.slice(-9) !== "undefined" ? (
               <ListItem key={i}>
                 <Box flex={true}>{error.stack}</Box>
               </ListItem>
-            );
+            ) : null;
           })}
         </List>
       </Box>

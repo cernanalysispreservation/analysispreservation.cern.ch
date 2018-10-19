@@ -23,7 +23,7 @@ class DraftsItemIndex extends React.Component {
     return (
       <Switch>
         <Route exact path={`/drafts/:draft_id`} component={DraftPreview} />
-        <Route path={`/drafts/:draft_id/edit`} component={DraftEditor} />
+        <Route path={`/drafts/:draft_id/edit`} render={props => <DraftEditor {...props} formRef={this.props.formRef} />} />} />
         <Route path={`/drafts/:draft_id/settings`} component={DraftSettings} />
       </Switch>
     );

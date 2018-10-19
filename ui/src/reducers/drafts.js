@@ -174,6 +174,7 @@ export default function depositReducer(state = initialState, action) {
     case CREATE_DRAFT_ERROR:
       return state
         .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error)
         .setIn(["current_item", "message"], {
           status: "critical",
           msg: "Error while creating.."
@@ -185,10 +186,13 @@ export default function depositReducer(state = initialState, action) {
     case UPDATE_DRAFT_SUCCESS:
       return state
         .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "message"], { status: "ok", msg: "Saved!" });
     case UPDATE_DRAFT_ERROR:
       return state
         .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error)
         .setIn(["current_item", "message"], {
           status: "critical",
           msg: "Error while updating.."

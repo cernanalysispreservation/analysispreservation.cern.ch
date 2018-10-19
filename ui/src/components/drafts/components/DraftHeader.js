@@ -13,11 +13,8 @@ class DraftHeader extends React.Component {
     return (
       <Box colorIndex="neutral-1-a" flex={false} wrap={false} direction="row">
         <Route path="/drafts/create/:schema_id" component={CreateDraftHeader} />
-        <Route path="/drafts/:draft_id/edit" component={DraftEditorHeader} />
-        <Route
-          path="/drafts/:draft_id/settings"
-          component={DraftDefaultHeader}
-        />
+        <Route path="/drafts/:draft_id/edit" render={props => <DraftEditorHeader {...props} formRef={this.props.formRef} />} />
+        <Route path="/drafts/:draft_id/settings" component={DraftDefaultHeader} />
         <Route exact path="/drafts/:draft_id" component={DraftDefaultHeader} />
       </Box>
     );

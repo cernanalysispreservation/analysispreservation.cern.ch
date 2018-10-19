@@ -2,16 +2,27 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import FormField from "grommet/components/FormField";
+import Box from "grommet/components/Box";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, rawErrors = [], children } = props;
-  let _errors = null;
+  let _errors = "";
 
   if (rawErrors.length > 0)
-    _errors = rawErrors.map((error, index) => <span key={index}>{error}</span>);
+    rawErrors.map((error, index) => {
+      _errors += `(${index + 1}) ${error} `;
+    });
 
   if (["array", "object"].indexOf(props.schema.type) > -1) {
-    return <span>{children}</span>;
+    return (
+      <Box
+        style={{
+          borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null
+        }}
+      >
+        {children}
+      </Box>
+    );
   }
 
   return (
@@ -23,7 +34,7 @@ let FieldTemplate = function(props) {
         </span>
       }
       key={id + label}
-      error={_errors}
+      error={rawErrors.length > 0 ? _errors : null}
     >
       {children}
     </FormField>

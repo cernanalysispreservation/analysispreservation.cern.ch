@@ -7,6 +7,8 @@ import { Box } from "grommet";
 
 import { toggleFilemanagerLayer } from "../../../actions/drafts";
 
+import objectPath from "object-path";
+
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet/templates/FieldTemplate";
 import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
@@ -26,6 +28,43 @@ class DepositForm extends React.Component {
   }
 
   _validate(formData, errors) {
+    this.props.errors.map(error => {
+      let errorObj = objectPath.get(errors, error.field);
+      errorObj.addError(error.message);
+    });
+
+    return errors;
+  }
+
+  transformErrors(errors) {
+    errors.map(error => {
+      error.name = error.property;
+
+      let objPath = error.property.slice(1).split(".");
+      objPath.map((path, index) => {
+        let _path = objPath.slice(0, index + 1);
+        if (objPath.length == index + 1) return;
+
+        const re = new RegExp("\\[.*?]");
+        let isArray = re.test(path);
+        if (isArray) {
+          let arrayPathname, arrayPath;
+
+          arrayPathname = path.split("[", 1);
+          arrayPath = objPath.slice(0, index);
+          arrayPath.push(arrayPathname[0]);
+
+          errors.push({ property: "." + arrayPath.join(".") });
+        }
+
+        // *** Uncomment following lines if you want to add error
+        // *** propagation only for the first level (not nested ones)
+        // index == 0 ?
+        errors.push({ property: "." + _path.join(".") });
+        //: null;
+      });
+      return error;
+    });
     return errors;
   }
 
@@ -33,12 +72,11 @@ class DepositForm extends React.Component {
     return (
       <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
         <SectionHeader label="Submission Form" />
+
         <Box align="center" flex={true} wrap={false}>
           <Box size={{ width: "xlarge" }} pad="large" flex={false} wrap={false}>
             <Form
-              ref={form => {
-                this.form = form;
-              }}
+              ref={this.props.formRef}
               style={{ marginBottom: "1em" }}
               schema={this.props.schema}
               FieldTemplate={FieldTemplate}
@@ -49,9 +87,13 @@ class DepositForm extends React.Component {
               widgets={widgets}
               fields={fields}
               uiSchema={this.props.uiSchema}
+              liveValidate={false}
               noValidate={!this.props.validate}
-              validate={this.props.customValidation ? this._validate : null}
+              validate={
+                this.props.customValidation ? this._validate.bind(this) : null
+              }
               onError={() => {}}
+              transformErrors={this.transformErrors}
               formData={this.props.formData}
               onBlur={() => {}}
               onChange={this.props.onChange}

@@ -29,10 +29,12 @@ from __future__ import absolute_import, print_function
 import copy
 import shutil
 import tempfile
+
 from copy import deepcopy
 from functools import wraps
 
 import requests
+
 from celery import shared_task
 from flask import current_app, request
 from flask_login import current_user
@@ -472,15 +474,15 @@ class CAPDeposit(Deposit):
 
     def validate(self, **kwargs):
         """Validate data using schema with ``JSONResolver``."""
-        def _concat_deque(queue):
-            """Helper for joining dequeue object."""
-            result = ''
-            for i in queue:
-                if isinstance(i, int):
-                    result += '[' + str(i) + ']'
-                else:
-                    result += '/' + i
-            return result
+        # def _concat_deque(queue):
+        #     """Helper for joining dequeue object."""
+        #     result = ''
+        #     for i in queue:
+        #         if isinstance(i, int):
+        #             result += '[' + str(i) + ']'
+        #         else:
+        #             result += '/' + i
+        #     return result
 
         result = {}
         try:
@@ -491,7 +493,7 @@ class CAPDeposit(Deposit):
                 'invenio-records'].ref_resolver_cls.from_schema(schema)
 
             result['errors'] = [
-                FieldError(_concat_deque(error.path), str(error.message))
+                FieldError(list(error.path), str(error.message))
                 for error in
                 Draft4Validator(schema, resolver=resolver).iter_errors(self)
             ]

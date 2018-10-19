@@ -337,14 +337,15 @@ export function clearError() {
 
 export function createDraft(data = {}, schema) {
   return (dispatch, getState) => {
-    dispatch(postCreateDraft(data, schema))
+    return dispatch(postCreateDraft(data, schema))
       .then(() => {
         let currentState = getState();
         const draft_id = currentState.drafts.getIn(["current_item", "id"]);
         dispatch(replace(`/drafts/${draft_id}/edit`));
       })
-      .catch(() => {
-        alert("There was an error with creating the record");
+      .catch(error => {
+        dispatch(createDraftError(error.response));
+        throw error;
       });
   };
 }
@@ -406,7 +407,6 @@ export function postCreateDraft(data = {}, schema, title) {
         }
       })
       .catch(error => {
-        dispatch(createDraftError(error.response));
         throw error;
       });
   };
@@ -414,24 +414,39 @@ export function postCreateDraft(data = {}, schema, title) {
 
 export function editPublished(data = {}, schema, draft_id) {
   return dispatch => {
+    return dispatch(postAndPutPublished(data, schema, draft_id)).catch(
+      error => {
+        dispatch(dispatch(editPublishedError(error.response)));
+        throw error;
+      }
+    );
+  };
+}
+
+export function postAndPutPublished(data = {}, schema, draft_id) {
+  return dispatch => {
     dispatch(editPublishedRequest());
 
     let uri = `/api/deposits/${draft_id}/actions/edit`;
 
-    axios
+    return axios
       .post(uri)
-      .then(() => {
+      .then(resp => {
+        dispatch(editPublishedSuccess(draft_id, resp.data.metadata));
         data["$schema"] = schema;
-        axios
+
+        return axios
           .put(`/api/deposits/${draft_id}`, data)
           .then(response => {
-            dispatch(editPublishedSuccess(draft_id, response.data.metadata));
+            dispatch(updateDraftSuccess(draft_id, response.data));
           })
           .catch(error => {
-            dispatch(editPublishedError(error));
+            throw error;
           });
       })
-      .catch(error => dispatch(editPublishedError(error)));
+      .catch(error => {
+        throw error;
+      });
   };
 }
 
@@ -454,17 +469,26 @@ export function discardDraft(draft_id) {
 
 export function updateDraft(data, draft_id) {
   return dispatch => {
+    return dispatch(putUpdateDraft(data, draft_id)).catch(error => {
+      dispatch(updateDraftError(error.response));
+      throw error;
+    });
+  };
+}
+
+export function putUpdateDraft(data, draft_id) {
+  return dispatch => {
     dispatch(updateDraftRequest());
 
     let uri = `/api/deposits/${draft_id}`;
 
-    axios
+    return axios
       .put(uri, data)
       .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
       })
       .catch(error => {
-        dispatch(updateDraftError(error));
+        throw error;
       });
   };
 }
@@ -483,7 +507,7 @@ export function publishDraft(draft_id) {
         dispatch(replace(`/published/${pid}`));
       })
       .catch(error => {
-        dispatch(publishDraftError(error));
+        dispatch(publishDraftError(error.response));
       });
   };
 }
@@ -501,7 +525,7 @@ export function deleteDraft(draft_id) {
         dispatch(replace("/"));
       })
       .catch(error => {
-        dispatch(deleteDraftError(error));
+        dispatch(deleteDraftError(error.response));
       });
   };
 }
@@ -553,7 +577,7 @@ export function getBucketById(bucket_id) {
         dispatch(bucketItemSuccess(bucket_id, response.data));
       })
       .catch(error => {
-        dispatch(bucketItemError(error));
+        dispatch(bucketItemError(error.response));
       });
   };
 }

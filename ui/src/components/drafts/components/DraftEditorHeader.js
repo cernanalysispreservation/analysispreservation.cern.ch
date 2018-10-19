@@ -28,26 +28,46 @@ import {
 import DragIcon from "grommet/components/icons/base/Drag";
 import DraftActionsLayer from "./DraftActionsLayer";
 
-class DraftHeader extends React.Component {
+class DraftEditorHeader extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = { actionType: null };
   }
 
+  _validateFormData() {
+    const formData = this.props.formRef.current.props.formData;
+    const { errors, errorSchema } = this.props.formRef.current.validate(
+      formData
+    );
+
+    let e = new Event("save");
+
+    if (errors.length > 0) {
+      this.props.formRef.current.onSubmit(e);
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   _saveData() {
-    let status =
-      this.props.draft && this.props.draft._deposit
-        ? this.props.draft._deposit.status
-        : null;
-    if (status !== "published")
-      this.props.updateDraft({ ...this.props.formData }, this.props.draft_id);
-    else if (status == "published")
-      this.props.editPublished(
-        { ...this.props.formData, $schema: this.props.draft.$schema },
-        this.props.match.params.schema_id,
-        this.props.draft_id
-      );
+    if (this._validateFormData()) {
+      let status =
+        this.props.draft && this.props.draft._deposit
+          ? this.props.draft._deposit.status
+          : null;
+      if (status !== "published")
+        this.props.updateDraft({ ...this.props.formData }, this.props.draft_id)
+                  .catch(() => { this._validateFormData(); });
+      else if (status == "published")
+        this.props.editPublished(
+          { ...this.props.formData, $schema: this.props.draft.$schema },
+          this.props.match.params.schema_id,
+          this.props.draft_id
+        )
+        .catch(() => { this._validateFormData(); });;
+    }
   }
 
   _publishData() {
@@ -64,7 +84,6 @@ class DraftHeader extends React.Component {
 
   _actionHandler = type => () => {
     this.props.toggleActionsLayer();
-    console.log("_actionHandler_actionHandler:::::", type);
     this.setState({ actionType: type });
   };
 
@@ -203,7 +222,7 @@ class DraftHeader extends React.Component {
   }
 }
 
-DraftHeader.propTypes = {
+DraftEditorHeader.propTypes = {
   match: PropTypes.object.isRequired,
   draft: PropTypes.object,
   id: PropTypes.string
@@ -237,4 +256,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DraftHeader);
+)(DraftEditorHeader);
