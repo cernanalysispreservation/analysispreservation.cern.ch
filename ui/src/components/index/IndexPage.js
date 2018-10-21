@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
 
-import AboutPage from "../about/AboutPage";
 import { Box } from "grommet";
 
 import SearchPage from "../search/SearchPage";
@@ -46,7 +45,6 @@ class IndexPage extends React.Component {
           <Route path="/published" component={PublishedIndex} />
           <Route path="/drafts" component={DraftsIndex} />
           <Route path="/settings" component={SettingsIndex} />
-          <Route path="/about" component={AboutPage} />
         </Switch>
         <GrommetFooter />
       </Box>

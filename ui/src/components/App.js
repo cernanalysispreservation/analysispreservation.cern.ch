@@ -5,11 +5,14 @@ import PropTypes from "prop-types";
 
 import WelcomePage from "./welcome/WelcomePage";
 import IndexPage from "./index/IndexPage";
+import AboutPage from "./about/AboutPage";
 import NotFoundPage from "./NotFoundPage";
 
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 
 import GrommetApp from "grommet/components/App";
+import Box from "grommet/components/Box";
+import Grommet from "grommet/components/Grommet";
 
 import { initCurrentUser } from "../actions/auth";
 import { connect } from "react-redux";
@@ -29,15 +32,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <GrommetApp centered={false} id="app-main">
-        <div id="main-container">
+      <Grommet>
+        <Box flex={true} full={true}>
           <Switch id="main-container">
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
+            <Route path="/about" component={AboutPage} />
             <Route path="/" component={IndexPage} />
             <Route component={NotFoundPage} />
           </Switch>
-        </div>
-      </GrommetApp>
+        </Box>
+      </Grommet>
     );
   }
 }
