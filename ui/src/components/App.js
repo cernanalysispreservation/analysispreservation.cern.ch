@@ -4,7 +4,6 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import WelcomePage from "./welcome/WelcomePage";
-import AboutPage from "./about/AboutPage";
 import IndexPage from "./index/IndexPage";
 import NotFoundPage from "./NotFoundPage";
 
@@ -34,7 +33,6 @@ class App extends React.Component {
         <div id="main-container">
           <Switch id="main-container">
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
-            <Route path="/about" component={AboutPage} />
             <Route path="/" component={IndexPage} />
             <Route component={NotFoundPage} />
           </Switch>

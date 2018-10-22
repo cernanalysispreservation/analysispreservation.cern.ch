@@ -60,7 +60,12 @@ class Header extends React.Component {
     return (
       <GrommetHeader fixed={false} size="small" colorIndex="neutral-1">
         {this.state.show ? (
-          <Layer closer={true} overlayClose={true} onClose={this.hideLayer}>
+          <Layer
+            closer={true}
+            flush={true}
+            overlayClose={true}
+            onClose={this.hideLayer}
+          >
             <HowToSearchPage />
           </Layer>
         ) : null}
