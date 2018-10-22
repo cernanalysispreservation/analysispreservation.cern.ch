@@ -46,11 +46,17 @@ function DashboardList(props) {
             );
           })
         ) : (
-          <ListPlaceholder unfilteredTotal={0} emptyMessage="No analysis." />
+          <Box textAlign="center">
+            <ListPlaceholder
+              unfilteredTotal={0}
+              pad="large"
+              emptyMessage={props.emptyMessage || "No analysis."}
+            />
+          </Box>
         )}
       </List>
       {props.items.length > 0 ? (
-        <Box align="center">
+        <Box align="center" margin={{ horizontal: "medium" }}>
           <Anchor
             path="/search"
             style={{ "text-decoration": "none", color: "black" }}
@@ -84,6 +90,7 @@ class Dashboard extends React.Component {
               items={this.props.results.published_by_collab}
               header="published in collaboration"
               url="/published"
+              emptyMessage="All analyses published on CAP by members of your collaboration."
             />
           </Tile>
           <Tile pad="large" basis="1/3">
@@ -91,6 +98,7 @@ class Dashboard extends React.Component {
               items={this.props.results.shared_with_user}
               header="shared with you"
               url="/drafts"
+              emptyMessage="Draft analyses that your collaborators have given you read/write access to."
             />
           </Tile>
           <Tile pad="large" basis="1/3">
@@ -98,6 +106,7 @@ class Dashboard extends React.Component {
               items={this.props.results.published_by_collab}
               header="latest from your group"
               url="/published"
+              emptyMessage="All analyses published on CAP by members of your working group."
             />
           </Tile>
           <Tile pad="large" basis="1/3">
@@ -105,6 +114,7 @@ class Dashboard extends React.Component {
               items={this.props.results.user_drafts}
               header="your drafts"
               url="/drafts"
+              emptyMessage="Your draft analyses. By default, only you can access them, but it is possible to give read/write access to other collaborators."
             />
           </Tile>
           <Tile pad="medium" basis="1/3">
@@ -132,6 +142,7 @@ class Dashboard extends React.Component {
               items={this.props.results.user_published}
               header="published by you"
               url="/published"
+              emptyMessage="Your published analyses. Once published on CAP, all members of your collaboration will have read access."
             />
           </Tile>
         </Tiles>
