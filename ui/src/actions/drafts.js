@@ -9,6 +9,11 @@ export const TOGGLE_CUSTOM_VALIDATION = "TOGGLE_CUSTOM_VALIDATION";
 export const TOGGLE_VALIDATE = "TOGGLE_VALIDATE";
 export const TOGGLE_ACTIONS_LAYER = "TOGGLE_ACTIONS_LAYER";
 
+export const GENERAL_TITLE_CHANGED = "GENERAL_TITLE_CHANGED";
+export const GENERAL_TITLE_REQUEST = "GENERAL_TITLE_REQUEST";
+export const GENERAL_TITLE_SUCCESS = "GENERAL_TITLE_SUCCESS";
+export const GENERAL_TITLE_ERROR = "GENERAL_TITLE_ERROR";
+
 export const FETCH_SCHEMA_REQUEST = "FETCH_SCHEMA_REQUEST";
 export const FETCH_SCHEMA_SUCCESS = "FETCH_SCHEMA_SUCCESS";
 export const FETCH_SCHEMA_ERROR = "FETCH_SCHEMA_ERROR";
@@ -152,6 +157,33 @@ export function formDataChange(data) {
   return {
     type: FORM_DATA_CHANGE,
     data
+  };
+}
+
+export function generalTitleChange(title) {
+  return {
+    type: GENERAL_TITLE_CHANGED,
+    title
+  };
+}
+
+export function generalTitleRequest() {
+  return {
+    type: GENERAL_TITLE_REQUEST
+  };
+}
+
+export function generalTitleSuccess(title) {
+  return {
+    type: GENERAL_TITLE_SUCCESS,
+    title
+  };
+}
+
+export function generalTitleError(error) {
+  return {
+    type: GENERAL_TITLE_ERROR,
+    error
   };
 }
 
@@ -409,12 +441,53 @@ export function createDraft(data = {}, schema) {
   };
 }
 
-export function postCreateDraft(data = {}, schema) {
-  return dispatch => {
+export function updateGeneralTitle(title) {
+  return (dispatch, getState) => {
+    dispatch(generalTitleRequest());
+
+    const draft_id = getState().drafts.getIn(["current_item", "id"]);
+    const general_title = getState().drafts.getIn([
+      "current_item",
+      "data",
+      "general_title"
+    ]);
+    let uri = "/api/deposits/" + draft_id;
+
+    let patch_data = [
+      {
+        op: general_title ? "replace" : "add",
+        path: "/general_title",
+        value: title
+      }
+    ];
+
+    return axios
+      .patch(uri, patch_data, {
+        headers: { "Content-Type": "application/json-patch+json" }
+      })
+      .then(response => {
+        if (response.status == 200) {
+          dispatch(generalTitleSuccess(title));
+        }
+      })
+      .catch(error => {
+        dispatch(generalTitleError(error.response));
+        throw error;
+      });
+  };
+}
+
+export function postCreateDraft(data = {}, schema, title) {
+  return (dispatch, getState) => {
     dispatch(createDraftRequest());
 
     let uri = "/api/deposits/";
     data["$ana_type"] = schema;
+    data["general_title"] = getState().drafts.getIn([
+      "current_item",
+      "general_title",
+      "title"
+    ]);
 
     return axios
       .post(uri, data)

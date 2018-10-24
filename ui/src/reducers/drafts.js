@@ -40,7 +40,11 @@ import {
   PERMISSIONS_ITEM_SUCCESS,
   PERMISSIONS_ITEM_ERROR,
   CLEAR_ERROR_SUCCESS,
-  FORM_DATA_CHANGE
+  FORM_DATA_CHANGE,
+  GENERAL_TITLE_CHANGED,
+  GENERAL_TITLE_REQUEST,
+  GENERAL_TITLE_SUCCESS,
+  GENERAL_TITLE_ERROR
 } from "../actions/drafts";
 
 const initialState = Map({
@@ -60,6 +64,11 @@ const initialState = Map({
   validate: true,
   customValidation: false,
   current_item: Map({
+    general_title: Map({
+      title: "",
+      error: null,
+      loading: false
+    }),
     schemas: null,
     schemasLoading: false,
     schema: null,
@@ -121,6 +130,10 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "loading"], false)
         .setIn(["current_item", "id"], action.draft_id)
         .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(
+          ["current_item", "general_title", "title"],
+          action.draft.metadata.general_title
+        )
         .setIn(["current_item", "schema"], action.draft.metadata.$schema)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "permissions"], action.permissions)
@@ -148,6 +161,10 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "id"], action.draft.id)
         .setIn(["current_item", "schema"], action.draft.metadata.$schema)
         .setIn(["current_item", "data"], action.draft.metadata)
+        .setIn(
+          ["current_item", "general_title", "title"],
+          action.draft.metadata.general_title
+        )
         .setIn(["current_item", "permissions"], action.draft.access)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "links"], Map(action.draft.links));
@@ -268,6 +285,23 @@ export default function depositReducer(state = initialState, action) {
       return state.setIn(["current_item", "error"], null);
     case FORM_DATA_CHANGE:
       return state.setIn(["current_item", "formData"], action.data);
+    case GENERAL_TITLE_CHANGED:
+      return state.setIn(
+        ["current_item", "general_title", "title"],
+        action.title
+      );
+    case GENERAL_TITLE_REQUEST:
+      return state
+        .setIn(["current_item", "general_title", "loading"], true)
+        .setIn(["current_item", "general_title", "error"], null);
+    case GENERAL_TITLE_SUCCESS:
+      return state
+        .setIn(["current_item", "general_title", "loading"], false)
+        .setIn(["current_item", "general_title", "title"], action.title);
+    case GENERAL_TITLE_ERROR:
+      return state
+        .setIn(["current_item", "general_title", "loading"], false)
+        .setIn(["current_item", "general_title", "error"], action.error);
     default:
       return state;
   }

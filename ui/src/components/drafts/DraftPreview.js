@@ -10,7 +10,6 @@ import { fetchAndAssignSchema } from "../../actions/drafts";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import Sidebar from "./components/DepositSidebar";
-import DraftActionsHeader from "./components/DraftActionsHeader";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -76,7 +75,6 @@ class DraftPreview extends React.Component {
           <Toast status="critical">{this.props.error.message}</Toast>
         ) : null}
 
-        <DraftActionsHeader type="preview" draftId={this.props.draft_id} />
         <Box direction="row" flex={true} wrap={false}>
           <Sidebar draftId={this.props.draft_id} />
 

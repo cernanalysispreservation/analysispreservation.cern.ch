@@ -78,6 +78,7 @@ PRESERVE_FIELDS = (
     '_files',
     '_experiment',
     '_access',
+    'general_title',
     '$schema'
 )
 
@@ -138,6 +139,7 @@ class CAPDeposit(Deposit):
             '_deposit',
             '_access',
             '_experiment',
+            'general_title',
             '$schema'
         )
 

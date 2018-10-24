@@ -167,7 +167,7 @@ def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
 
         resp = client.put('/deposits/{}'.format(pid),
                            headers=headers + json_headers,
-                           data = json.dumps({"general_title": "Updated published"}))
+                           data = json.dumps({"title": "Updated published"}))
 
         assert resp.status_code == 403
 
@@ -178,10 +178,10 @@ def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
 
         resp = client.put('/deposits/{}'.format(pid),
                            headers=headers + json_headers,
-                           data = json.dumps({"general_title": "Updated published"}))
+                           data = json.dumps({"title": "Updated published"}))
 
         assert resp.status_code == 200
-        assert resp.json.get("metadata", {}).get("general_title", None) == "Updated published"
+        assert resp.json.get("metadata", {}).get("title", None) == "Updated published"
 
 
 # TOFIX : updating schemas that don't have indexes, results to error

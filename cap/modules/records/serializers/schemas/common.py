@@ -74,6 +74,14 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
     """Common record schema."""
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
+
+    schema = fields.Str(attribute='metadata.$schema', dump_only=True)
+    status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
+    published = fields.Raw(attribute='metadata._deposit.pid', dump_only=True)
+    owners = fields.List(fields.Integer,
+                         attribute='metadata.owners',
+                         dump_only=True)
+
     created = fields.Str(dump_only=True)
     access = fields.Method('get_access', dump_only=True)
     links = fields.Raw()

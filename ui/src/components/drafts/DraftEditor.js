@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { Box, Toast } from "grommet";
+import { Switch, Route } from "react-router-dom";
 
 import {
   fetchAndAssignSchema,
@@ -13,9 +14,9 @@ import {
 } from "../../actions/drafts";
 
 import DepositForm from "./form/Form";
-import DraftActionsHeader from "./components/DraftActionsHeader";
 import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
+import CreateDraftSidebar from "./components/CreateDraftSidebar";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -74,10 +75,12 @@ class CreateDeposit extends React.Component {
           <Toast status="critical">{this.props.error.message}</Toast>
         ) : null}
 
-        <DraftActionsHeader type="actions" />
-
         <Box direction="row" justify="between" flex={true} wrap={false}>
-          <Sidebar />
+          <Route
+            path="/drafts/create/:schema_id"
+            component={CreateDraftSidebar}
+          />
+          <Route path="/drafts/:draft_id/edit" component={Sidebar} />
 
           {this.props.schemas && this.props.schemas.schema ? (
             <DepositForm
@@ -90,7 +93,7 @@ class CreateDeposit extends React.Component {
             />
           ) : null}
 
-          <DraftJSONPreviewer data={this.props.formData || {}} />
+          <Route path="/drafts/:draft_id/edit" component={DraftJSONPreviewer} />
         </Box>
       </Box>
     );
