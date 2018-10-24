@@ -5,9 +5,8 @@ import PropTypes from "prop-types";
 
 import WelcomePage from "./welcome/WelcomePage";
 import IndexPage from "./index/IndexPage";
-import AboutPage from "./about/AboutPage";
-import NotFoundPage from "./NotFoundPage";
 
+import AboutPage from "./about/AboutPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 
 import GrommetApp from "grommet/components/App";
@@ -38,7 +37,9 @@ class App extends React.Component {
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
             <Route path="/" component={IndexPage} />
+            {/*
             <Route component={NotFoundPage} />
+             */}
           </Switch>
         </Box>
       </Grommet>

@@ -128,7 +128,7 @@ class Header extends React.Component {
                 onClick={this.props.logout}
               />
               <Anchor
-                label="Tokens"
+                label="Settings"
                 href="#"
                 animateIcon={true}
                 path="/settings"

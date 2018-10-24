@@ -14,6 +14,7 @@ import SettingsIndex from "../settings/SettingsIndex";
 import DraftsIndex from "../drafts/DraftsIndex";
 import PublishedIndex from "../published/PublishedIndex";
 import GrommetFooter from "../footer/Footer";
+import NotFoundPage from "../errors/404";
 
 class IndexPage extends React.Component {
   constructor(props) {
@@ -45,6 +46,7 @@ class IndexPage extends React.Component {
           <Route path="/published" component={PublishedIndex} />
           <Route path="/drafts" component={DraftsIndex} />
           <Route path="/settings" component={SettingsIndex} />
+          <Route component={NotFoundPage} />
         </Switch>
         <GrommetFooter />
       </Box>
