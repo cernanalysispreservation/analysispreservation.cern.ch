@@ -76,7 +76,7 @@ class Header extends React.Component {
           direction="row"
           responsive={false}
         >
-          <Title>
+          <Title style={{ fontWeight: "300" }}>
             <Anchor
               href="#"
               path="/"

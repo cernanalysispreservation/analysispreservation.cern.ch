@@ -1,261 +1,162 @@
 {
-  "fullname": null, 
-  "experiment": "CMS", 
+  "fullname": null,
+  "experiment": "CMS",
   "jsonschema": {
     "statistical_treatment": {
       "combine_datacard": {
         "ui:field": "CapFiles"
-      }, 
+      },
       "statistics_questionnaire": {
         "ui:options": {
           "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
-        }, 
+        },
         "ui:field": "ImportDataField"
-      }, 
+      },
       "ui:object": "accordionObjectField"
-    }, 
+    },
     "auxiliary_measurements": {
       "items": {
-        "ui:order": [
-          "type", 
-          "links"
-        ], 
+        "ui:order": ["type", "links"],
         "links": {
           "ui:array": "StringArrayField"
         }
-      }, 
+      },
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "main_measurements": {
       "items": {
         "ui:order": [
-          "description", 
-          "detailed_desciption", 
-          "analysis_code", 
-          "signal_event_selection", 
-          "processing_steps", 
+          "description",
+          "detailed_desciption",
+          "analysis_code",
+          "signal_event_selection",
+          "processing_steps",
           "*"
-        ], 
+        ],
         "signal_event_selection": {
           "veto": {
             "items": {
-              "ui:order": [
-                "object", 
-                "number", 
-                "pt_cut", 
-                "eta_cut", 
-                "*"
-              ]
+              "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
             }
-          }, 
+          },
           "physics_objects": {
             "items": {
               "ui:order": [
-                "number", 
-                "object", 
-                "sel_criteria", 
-                "pt_cut", 
-                "pt_cut_min", 
-                "pt_cut_max", 
-                "eta_cut", 
-                "eta_cut_min", 
-                "eta_cut_max", 
+                "number",
+                "object",
+                "sel_criteria",
+                "pt_cut",
+                "pt_cut_min",
+                "pt_cut_max",
+                "eta_cut",
+                "eta_cut_min",
+                "eta_cut_max",
                 "*"
-              ], 
+              ],
               "object": {
                 "ui:widget": "select"
               }
             }
           }
-        }, 
+        },
         "processing_steps": {
           "items": {
             "ui:order": [
-              "configuration_file", 
-              "run_instructions", 
+              "configuration_file",
+              "run_instructions",
               "output_data"
             ]
           }
         }
-      }, 
+      },
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "ntuples_production": {
       "items": {
-        "ui:order": [
-          "code_base", 
-          "processing_steps"
-        ], 
+        "ui:order": ["code_base", "processing_steps"],
         "processing_steps": {
           "items": {
             "ui:order": [
-              "configuration_file", 
-              "run_instructions", 
+              "configuration_file",
+              "run_instructions",
               "output_data"
             ]
           }
         }
-      }, 
+      },
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "basic_info": {
-      "ui:order": [
-        "cadi_id", 
-        "abstract", 
-        "conclusion", 
-        "*"
-      ], 
+      "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
       "cadi_id": {
         "ui:options": {
-          "autofill_from": "/api/cms/cadi/", 
+          "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
-            [
-              [
-                "PAPER"
-              ], 
-              [
-                "cadi_info", 
-                "paper"
-              ]
-            ], 
-            [
-              [
-                "name"
-              ], 
-              [
-                "cadi_info", 
-                "name"
-              ]
-            ], 
-            [
-              [
-                "description"
-              ], 
-              [
-                "cadi_info", 
-                "description"
-              ]
-            ], 
-            [
-              [
-                "contact"
-              ], 
-              [
-                "cadi_info", 
-                "contact"
-              ]
-            ], 
-            [
-              [
-                "creatorDate"
-              ], 
-              [
-                "cadi_info", 
-                "created"
-              ]
-            ], 
-            [
-              [
-                "URL"
-              ], 
-              [
-                "cadi_info", 
-                "twiki"
-              ]
-            ], 
-            [
-              [
-                "PAS"
-              ], 
-              [
-                "cadi_info", 
-                "pas"
-              ]
-            ], 
-            [
-              [
-                "publicationStatus"
-              ], 
-              [
-                "cadi_info", 
-                "publication_status"
-              ]
-            ], 
-            [
-              [
-                "status"
-              ], 
-              [
-                "cadi_info", 
-                "status"
-              ]
-            ]
+            [["PAPER"], ["cadi_info", "paper"]],
+            [["name"], ["cadi_info", "name"]],
+            [["description"], ["cadi_info", "description"]],
+            [["contact"], ["cadi_info", "contact"]],
+            [["creatorDate"], ["cadi_info", "created"]],
+            [["URL"], ["cadi_info", "twiki"]],
+            [["PAS"], ["cadi_info", "pas"]],
+            [["publicationStatus"], ["cadi_info", "publication_status"]],
+            [["status"], ["cadi_info", "status"]]
           ]
         }
-      }, 
-      "ui:object": "accordionObjectField", 
+      },
+      "ui:object": "accordionObjectField",
       "ana_notes": {
         "ui:array": "StringArrayField"
       }
-    }, 
+    },
     "analysis_reuse_mode": {
       "ui:widget": "switch"
-    }, 
+    },
     "input_data": {
       "triggers": {
         "items": {
-          "ui:order": [
-            "trigger", 
-            "prescale"
-          ], 
+          "ui:order": ["trigger", "prescale"],
           "ui:options": {
-            "stringify": [
-              "trigger"
-            ]
+            "stringify": ["trigger"]
           }
         }
-      }, 
-      "ui:object": "accordionObjectField", 
+      },
+      "ui:object": "accordionObjectField",
       "mc_sig_datasets": {
         "items": {
           "ui:options": {
             "suggestions": "/api/cms/datasets?query="
           }
-        }, 
+        },
         "ui:array": "StringArrayField"
-      }, 
+      },
       "json_files": {
         "items": {
           "ui:field": "CapFiles"
         }
-      }, 
+      },
       "mc_bg_datasets": {
         "items": {
           "ui:options": {
             "suggestions": "/api/cms/datasets?query="
           }
-        }, 
+        },
         "ui:array": "StringArrayField"
-      }, 
+      },
       "ui:order": [
-        "primary_datasets", 
-        "mc_sig_datasets", 
-        "mc_bg_datasets", 
-        "triggers", 
-        "json_files", 
+        "primary_datasets",
+        "mc_sig_datasets",
+        "mc_bg_datasets",
+        "triggers",
+        "json_files",
         "*"
-      ], 
+      ],
       "primary_datasets": {
         "items": {
-          "ui:order": [
-            "path", 
-            "ranges"
-          ], 
+          "ui:order": ["path", "ranges"],
           "ui:options": {
-            "stringify": [
-              "path"
-            ]
-          }, 
+            "stringify": ["path"]
+          },
           "path": {
             "ui:options": {
               "suggestions": "/api/cms/datasets?query="
@@ -263,154 +164,127 @@
           }
         }
       }
-    }, 
+    },
     "cadi_info": {
       "status": {
         "ui:readonly": true
-      }, 
+      },
       "publication_status": {
         "ui:readonly": true
-      }, 
+      },
       "pas": {
         "ui:readonly": true
-      }, 
+      },
       "name": {
         "ui:readonly": true
-      }, 
+      },
       "created": {
         "ui:readonly": true
-      }, 
-      "ui:object": "accordionObjectField", 
+      },
+      "ui:object": "accordionObjectField",
       "paper": {
         "ui:readonly": true
-      }, 
+      },
       "contact": {
         "ui:readonly": true
-      }, 
+      },
       "twiki": {
         "ui:readonly": true
-      }, 
+      },
       "ui:order": [
-        "name", 
-        "description", 
-        "contact", 
-        "twiki", 
-        "created", 
-        "paper", 
-        "pas", 
-        "publication_status", 
+        "name",
+        "description",
+        "contact",
+        "twiki",
+        "created",
+        "paper",
+        "pas",
+        "publication_status",
         "status"
-      ], 
+      ],
       "description": {
         "ui:readonly": true
       }
-    }, 
+    },
     "ui:order": [
-      "analysis_reuse_mode", 
-      "basic_info", 
-      "cadi_info", 
-      "input_data", 
-      "ntuples_production", 
-      "*", 
-      "additional_resources", 
+      "analysis_reuse_mode",
+      "basic_info",
+      "cadi_info",
+      "input_data",
+      "ntuples_production",
+      "*",
+      "additional_resources",
       "statistical_treatment"
-    ], 
+    ],
     "additional_resources": {
-      "ui:object": "accordionObjectField", 
+      "ui:object": "accordionObjectField",
       "presentations": {
         "items": {
           "ui:options": {
-            "stringify": [
-              "conference"
-            ]
+            "stringify": ["conference"]
           }
         }
-      }, 
+      },
       "documentations": {
         "items": {
           "ui:field": "CapFiles"
         }
-      }, 
+      },
       "publications": {
         "items": {
           "ui:options": {
-            "stringify": [
-              "journal_title"
-            ]
-          }, 
+            "stringify": ["journal_title"]
+          },
           "persistent_identifiers": {
             "ui:array": "StringArrayField"
           }
         }
-      }, 
+      },
       "ui:order": [
-        "presentations", 
-        "internal_discussions", 
-        "documentations", 
-        "publications", 
-        "keywords", 
+        "presentations",
+        "internal_discussions",
+        "documentations",
+        "publications",
+        "keywords",
         "*"
-      ], 
+      ],
       "internal_discussions": {
         "ui:array": "StringArrayField"
       }
-    }, 
+    },
     "final_results": {
-      "ui:order": [
-        "description", 
-        "*"
-      ], 
+      "ui:order": ["description", "*"],
       "ui:object": "accordionObjectField"
-    }, 
+    },
     "background_estimations": {
       "items": {
-        "ui:order": [
-          "type", 
-          "method", 
-          "control_regions", 
-          "samples"
-        ], 
+        "ui:order": ["type", "method", "control_regions", "samples"],
         "samples": {
           "ui:array": "StringArrayField"
-        }, 
+        },
         "control_regions": {
           "items": {
             "veto": {
               "items": {
-                "ui:order": [
-                  "object", 
-                  "number", 
-                  "pt_cut", 
-                  "eta_cut", 
-                  "*"
-                ]
+                "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
               }
-            }, 
+            },
             "physics_objects": {
               "items": {
-                "ui:order": [
-                  "object", 
-                  "number", 
-                  "pt_cut", 
-                  "eta_cut", 
-                  "*"
-                ]
+                "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
               }
             }
           }
         }
-      }, 
+      },
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "systematic_uncertainties": {
       "items": {
-        "ui:order": [
-          "type", 
-          "physics_object"
-        ]
-      }, 
+        "ui:order": ["type", "physics_object"]
+      },
       "ui:array": "AccordionArrayField"
     }
-  }, 
+  },
   "is_deposit": false
 }
