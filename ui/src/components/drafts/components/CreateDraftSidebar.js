@@ -26,9 +26,7 @@ class CreateDraftSidebar extends React.Component {
 
   _validateFormData() {
     const formData = this.props.formRef.current.props.formData;
-    const { errors, errorSchema } = this.props.formRef.current.validate(
-      formData
-    );
+    const { errors } = this.props.formRef.current.validate(formData);
 
     let e = new Event("save");
 
