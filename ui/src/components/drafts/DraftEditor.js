@@ -42,13 +42,6 @@ const transformSchema = schema => {
 };
 
 class DraftEditor extends React.Component {
-  constructor(props) {
-    super(props);
-
-    // Create the ref for the form
-    // this.formRef = React.createRef();
-  }
-
   componentDidMount() {
     // If "schema_id" from URL exists init form and fetch schema
     if (this.props.match.params.schema_id) {
@@ -87,37 +80,40 @@ class DraftEditor extends React.Component {
             status={this.props.error.status}
             message={this.props.error.message}
           />
-        ) : (
-          <Box direction="row" justify="between" flex={true} wrap={false}>
-            <Route
-              path="/drafts/create/:schema_id"
-              render={props => (
-                <CreateDraftSidebar {...props} ref={this.formRef} />
-              )}
-            />
+        ) : this.props.schemas && this.props.schemas.schema ? (
+          <Box
+            direction="row"
+            justify="between"
+            alignContent="end"
+            flex={true}
+            wrap={false}
+          >
             <Route path="/drafts/:draft_id/edit" component={Sidebar} />
-
-            {this.props.schemas && this.props.schemas.schema ? (
-              <DepositForm
-                formRef={this.props.formRef}
-                formData={this.props.formData}
-                schema={_schema}
-                uiSchema={this.props.schemas.uiSchema || {}}
-                onChange={change => {
-                  this.props.formDataChange(change.formData);
-                }}
-                customValidation={true}
-                validate={true}
-                errors={this.props.error ? this.props.error.data.errors : []}
-              />
-            ) : null}
+            <DepositForm
+              formRef={this.props.formRef}
+              formData={this.props.formData || {}}
+              schema={_schema}
+              uiSchema={this.props.schemas.uiSchema || {}}
+              onChange={change => {
+                this.props.formDataChange(change.formData);
+              }}
+              customValidation={true}
+              validate={true}
+              errors={this.props.error ? this.props.error.data.errors : []}
+            />
 
             <Route
               path="/drafts/:draft_id/edit"
               component={DraftJSONPreviewer}
             />
+            <Route
+              path="/drafts/create/:schema_id"
+              render={props => (
+                <CreateDraftSidebar {...props} formRef={this.props.formRef} />
+              )}
+            />
           </Box>
-        )}
+        ) : null}
       </Box>
     );
   }

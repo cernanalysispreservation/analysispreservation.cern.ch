@@ -11,7 +11,6 @@ import DraftHeader from "./components/DraftHeader";
 import DraftsItemIndex from "./DraftsItemIndex";
 import DraftEditor from "./DraftEditor";
 
-
 class DraftsIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -28,9 +27,15 @@ class DraftsIndex extends React.Component {
           <Route
             exact
             path="/drafts/create/:schema_id"
-            component={DraftEditor}
+            render={props => <DraftEditor {...props} formRef={this.formRef} />}
           />
-          <Route path="/drafts/:draft_id" render={(props) => <DraftsItemIndex {...props} formRef={this.formRef}/>}  />
+
+          <Route
+            path="/drafts/:draft_id"
+            render={props => (
+              <DraftsItemIndex {...props} formRef={this.formRef} />
+            )}
+          />
         </Switch>
       </Box>
     );

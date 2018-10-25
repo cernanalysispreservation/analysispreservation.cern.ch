@@ -3,13 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Anchor, Box, Label, Menu } from "grommet";
-
-import { createDraft } from "../../../actions/drafts";
-
-const CreateAnchor = ({ onClick = null }) => (
-  <Anchor label={<span>Save & Continue</span>} onClick={onClick} />
-);
+import { Box, Label } from "grommet";
 
 class DraftHeader extends React.Component {
   _createDraft(schema_id) {
@@ -25,32 +19,13 @@ class DraftHeader extends React.Component {
 
     if (group && group.length > 0) group = group[0];
 
-    return [
+    return (
       <Box flex={true} pad={{ horizontal: "small" }}>
         <Label align="start" pad="none" margin="small">
           Create a new {group && group.name}
         </Label>
-      </Box>,
-      <Box flex={true} size="small" direction="row" justify="end">
-        <Menu
-          flex={false}
-          pad={{ horizontal: "small" }}
-          margin="none"
-          direction="row"
-          alignContent="between"
-          justify="center"
-          align="center"
-          colorIndex="brand"
-        >
-          <CreateAnchor
-            onClick={this._createDraft.bind(
-              this,
-              this.props.match.params.schema_id
-            )}
-          />
-        </Menu>
       </Box>
-    ];
+    );
   }
 }
 
@@ -68,13 +43,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    createDraft: (data, schema) => dispatch(createDraft(data, schema))
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DraftHeader);
+export default connect(mapStateToProps)(DraftHeader);

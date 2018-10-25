@@ -89,7 +89,7 @@ class Header extends React.Component {
           </Box>
           <Menu
             align="center"
-            pad={{ horizontal: "small" }}
+            margin={{ left: "small" }}
             direction="row"
             responsive={true}
             size="small"
