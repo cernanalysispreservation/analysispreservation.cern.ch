@@ -493,21 +493,35 @@ export function putUpdateDraft(data, draft_id) {
   };
 }
 
-export function publishDraft(draft_id) {
+export function postPublishDraft(draft_id) {
   return dispatch => {
     dispatch(publishDraftRequest());
 
     let uri = `/api/deposits/${draft_id}/actions/publish`;
 
-    axios
+    return axios
       .post(uri)
       .then(response => {
         let pid = response.data.metadata._deposit.pid.value;
         dispatch(publishDraftSuccess(pid, response.data));
+      })
+      .catch(error => {
+        throw error.response;
+      });
+  };
+}
+
+export function publishDraft(draft_id) {
+  return (dispatch, getState) => {
+    dispatch(postPublishDraft(draft_id))
+      .then(() => {
+        let currentState = getState();
+        const pid = currentState.drafts.getIn(["current_item", "published_id"]);
         dispatch(replace(`/published/${pid}`));
       })
       .catch(error => {
-        dispatch(publishDraftError(error.response));
+        dispatch(publishDraftError(error));
+        throw error;
       });
   };
 }

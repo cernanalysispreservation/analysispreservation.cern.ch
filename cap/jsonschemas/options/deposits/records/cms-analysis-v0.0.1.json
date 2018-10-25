@@ -253,7 +253,7 @@
       }
     },
     "final_results": {
-      "ui:order": ["description", "*"],
+      "ui:order": ["*"],
       "ui:object": "accordionObjectField"
     },
     "background_estimations": {
