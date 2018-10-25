@@ -12,7 +12,13 @@ const PermissionDenied = props => {
         pad="medium"
         colorIndex="neutral-1-a"
       />
-      <Box flex={true} colorIndex="light-2" align="center">
+      <Box
+        fill={true}
+        flex={true}
+        colorIndex="light-2"
+        justify="center"
+        align="center"
+      >
         <Label>
           {props.status} {props.message}
         </Label>

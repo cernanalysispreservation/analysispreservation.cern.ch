@@ -15,7 +15,6 @@ import DepositForm from "./form/Form";
 import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import CreateDraftSidebar from "./components/CreateDraftSidebar";
-import PermissionDenied from "../errors/403";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -75,45 +74,41 @@ class DraftEditor extends React.Component {
         : null;
     return (
       <Box id="deposit-page" flex={true}>
-        {this.props.error ? (
-          <PermissionDenied
-            status={this.props.error.status}
-            message={this.props.error.message}
-          />
-        ) : this.props.schemas && this.props.schemas.schema ? (
-          <Box
-            direction="row"
-            justify="between"
-            alignContent="end"
-            flex={true}
-            wrap={false}
-          >
-            <Route path="/drafts/:draft_id/edit" component={Sidebar} />
-            <DepositForm
-              formRef={this.props.formRef}
-              formData={this.props.formData || {}}
-              schema={_schema}
-              uiSchema={this.props.schemas.uiSchema || {}}
-              onChange={change => {
-                this.props.formDataChange(change.formData);
-              }}
-              customValidation={true}
-              validate={true}
-              errors={this.props.error ? this.props.error.data.errors : []}
-            />
+        {this.props.schemas &&
+          this.props.schemas.schema && (
+            <Box
+              direction="row"
+              justify="between"
+              alignContent="end"
+              flex={true}
+              wrap={false}
+            >
+              <Route path="/drafts/:draft_id/edit" component={Sidebar} />
+              <DepositForm
+                formRef={this.props.formRef}
+                formData={this.props.formData || {}}
+                schema={_schema}
+                uiSchema={this.props.schemas.uiSchema || {}}
+                onChange={change => {
+                  this.props.formDataChange(change.formData);
+                }}
+                customValidation={true}
+                validate={true}
+                errors={this.props.error ? this.props.error.data.errors : []}
+              />
 
-            <Route
-              path="/drafts/:draft_id/edit"
-              component={DraftJSONPreviewer}
-            />
-            <Route
-              path="/drafts/create/:schema_id"
-              render={props => (
-                <CreateDraftSidebar {...props} formRef={this.props.formRef} />
-              )}
-            />
-          </Box>
-        ) : null}
+              <Route
+                path="/drafts/:draft_id/edit"
+                component={DraftJSONPreviewer}
+              />
+              <Route
+                path="/drafts/create/:schema_id"
+                render={props => (
+                  <CreateDraftSidebar {...props} formRef={this.props.formRef} />
+                )}
+              />
+            </Box>
+          )}
       </Box>
     );
   }

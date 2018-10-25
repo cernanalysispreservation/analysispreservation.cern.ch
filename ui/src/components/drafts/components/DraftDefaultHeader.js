@@ -14,6 +14,10 @@ import { Route } from "react-router-dom";
 import DragIcon from "grommet/components/icons/base/Drag";
 
 class DraftDefaultHeader extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     // let status =
     //   this.props.draft && this.props.draft._deposit
@@ -42,6 +46,8 @@ class DraftDefaultHeader extends React.Component {
 
     //   if (group && group.length > 0) dg = group[0];
     // }
+
+    if (this.props.error && this.props.error.status == 403) return null;
 
     return (
       <Box flex={true} wrap={false} direction="row">
@@ -98,6 +104,7 @@ function mapStateToProps(state) {
   return {
     draft_id: state.drafts.getIn(["current_item", "id"]),
     draft: state.drafts.getIn(["current_item", "data"]),
+    error: state.drafts.getIn(["current_item", "error"]),
     schema: state.drafts.getIn(["current_item", "schema"]),
     formData: state.drafts.getIn(["current_item", "formData"]),
     depositGroups: state.auth.getIn(["currentUser", "depositGroups"])

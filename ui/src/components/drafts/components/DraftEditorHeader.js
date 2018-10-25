@@ -119,6 +119,8 @@ class DraftEditorHeader extends React.Component {
     //   if (group && group.length > 0) dg = group[0];
     // }
 
+    if (this.props.error && this.props.error.status == 403) return null;
+
     return (
       <Box flex={true} wrap={false} direction="row">
         <Box
@@ -236,6 +238,7 @@ function mapStateToProps(state) {
     formData: state.drafts.getIn(["current_item", "formData"]),
     depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
 
+    error: state.drafts.getIn(["current_item", "error"]),
     loading: state.drafts.getIn(["current_item", "loading"]),
     message: state.drafts.getIn(["current_item", "message"])
   };
