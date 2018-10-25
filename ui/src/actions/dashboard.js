@@ -11,7 +11,7 @@ export function dashboardQuery(results) {
 
 export function fetchDashboard() {
   return dispatch => {
-    let url = "/api/dashboard/";
+    let url = "/api/dashboard";
 
     axios.get(url).then(response => {
       let results = response.data;
