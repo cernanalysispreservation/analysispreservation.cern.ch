@@ -386,7 +386,7 @@ export function updateGeneralTitle(title) {
   };
 }
 
-export function postCreateDraft(data = {}, schema, title) {
+export function postCreateDraft(data = {}, schema) {
   return (dispatch, getState) => {
     dispatch(createDraftRequest());
 

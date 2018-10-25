@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Heading, Paragraph, Button } from "grommet";
+import { Box, Heading, Button } from "grommet";
 
 import AddIcon from "grommet/components/icons/base/Add";
 

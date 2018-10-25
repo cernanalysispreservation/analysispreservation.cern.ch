@@ -37,9 +37,7 @@ class DraftEditorHeader extends React.Component {
 
   _validateFormData() {
     const formData = this.props.formRef.current.props.formData;
-    const { errors, errorSchema } = this.props.formRef.current.validate(
-      formData
-    );
+    const { errors } = this.props.formRef.current.validate(formData);
 
     let e = new Event("save");
 
@@ -58,15 +56,21 @@ class DraftEditorHeader extends React.Component {
           ? this.props.draft._deposit.status
           : null;
       if (status !== "published")
-        this.props.updateDraft({ ...this.props.formData }, this.props.draft_id)
-                  .catch(() => { this._validateFormData(); });
+        this.props
+          .updateDraft({ ...this.props.formData }, this.props.draft_id)
+          .catch(() => {
+            this._validateFormData();
+          });
       else if (status == "published")
-        this.props.editPublished(
-          { ...this.props.formData, $schema: this.props.draft.$schema },
-          this.props.match.params.schema_id,
-          this.props.draft_id
-        )
-        .catch(() => { this._validateFormData(); });;
+        this.props
+          .editPublished(
+            { ...this.props.formData, $schema: this.props.draft.$schema },
+            this.props.match.params.schema_id,
+            this.props.draft_id
+          )
+          .catch(() => {
+            this._validateFormData();
+          });
     }
   }
 
@@ -98,23 +102,22 @@ class DraftEditorHeader extends React.Component {
       this.props.draft && this.props.draft._deposit
         ? this.props.draft._deposit.pid
         : null;
-    let title = this.props.draft && this.props.draft.general_title;
 
-    let dg = null;
-    if (this.props.schema) {
-      let schema = this.props.schema.split("/");
+    // let dg = null;
+    // if (this.props.schema) {
+    //   let schema = this.props.schema.split("/");
 
-      schema = schema[schema.length - 1];
-      schema = schema.split("-v0")[0];
+    //   schema = schema[schema.length - 1];
+    //   schema = schema.split("-v0")[0];
 
-      let group =
-        this.props.depositGroups &&
-        this.props.depositGroups
-          .toJS()
-          .filter(dg => dg.deposit_group == schema);
+    //   let group =
+    //     this.props.depositGroups &&
+    //     this.props.depositGroups
+    //       .toJS()
+    //       .filter(dg => dg.deposit_group == schema);
 
-      if (group && group.length > 0) dg = group[0];
-    }
+    //   if (group && group.length > 0) dg = group[0];
+    // }
 
     return (
       <Box flex={true} wrap={false} direction="row">
@@ -156,7 +159,6 @@ class DraftEditorHeader extends React.Component {
               margin={{ horizontal: "small" }}
               size="small"
               pad={{ horizontal: "small" }}
-              direction="row"
               alignContent="center"
               justify="center"
               align="center"
@@ -174,7 +176,6 @@ class DraftEditorHeader extends React.Component {
             margin={{ horizontal: "small" }}
             size="small"
             pad={{ horizontal: "small" }}
-            direction="row"
             alignContent="center"
             justify="center"
             align="center"
@@ -200,7 +201,6 @@ class DraftEditorHeader extends React.Component {
             responsive={false}
             size="small"
             pad={{ horizontal: "small" }}
-            direction="row"
             alignContent="center"
             justify="center"
             align="center"

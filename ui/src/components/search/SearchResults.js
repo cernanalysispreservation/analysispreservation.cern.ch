@@ -16,7 +16,7 @@ class SearchResults extends React.Component {
       return (
         <Box full={true} colorIndex="light-1">
           <List>
-            {this.props.results.map(item => {
+            {this.props.results.map((item, index) => {
               let status = item.metadata._deposit.status;
               let id =
                 status === "published"
@@ -34,7 +34,11 @@ class SearchResults extends React.Component {
               });
 
               return (
-                <ListItem pad="small" size={{ height: "xsmall" }}>
+                <ListItem
+                  pad="small"
+                  size={{ height: "xsmall" }}
+                  key={`${id}-${index}`}
+                >
                   <Box direction="row" full={true}>
                     <Box
                       basis="1/3"

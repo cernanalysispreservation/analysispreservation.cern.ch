@@ -1,21 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import FieldHeader from "../components/FieldHeader";
-import Edit from "grommet/components/icons/base/Edit";
-import Link from "grommet/components/icons/base/Link";
-import {
-  Select,
-  Box,
-  Button,
-  Anchor,
-  Layer,
-  Label,
-  List,
-  ListItem
-} from "grommet";
-
-import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import { Select, Box } from "grommet";
 
 import axios from "axios";
 
@@ -58,11 +44,8 @@ class ImportDataField extends React.Component {
   }
 
   _saveSelection = ({ option }) => {
-    this.setState(
-      prevState => ({
-        selected: option.label
-      }),
-      () => this.props.onChange(option.value)
+    this.setState({ selected: option.label }, () =>
+      this.props.onChange(option.value)
     );
   };
 
@@ -89,7 +72,8 @@ ImportDataField.propTypes = {
   schema: PropTypes.object,
   onChange: PropTypes.func,
   properties: PropTypes.object,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  formData: PropTypes.object
 };
 
 export default ImportDataField;

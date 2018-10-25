@@ -61,7 +61,7 @@ class PublishedPreview extends React.Component {
               <Box flex={true}>
                 <Box flex={false} pad="medium">
                   <JSONSchemaPreviewer
-                    formData={item}
+                    formData={item || {}}
                     schema={_schema}
                     uiSchema={this.props.uiSchema || {}}
                     onChange={() => {}}

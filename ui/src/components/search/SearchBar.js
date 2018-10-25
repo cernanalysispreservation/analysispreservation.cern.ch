@@ -2,16 +2,14 @@ import React from "react";
 
 import { Search, Box } from "grommet";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import queryString from "query-string";
 
-import { fetchSearch } from "../../actions/search";
-
 class SearchBar extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.q = queryString.parse(this.props.location.search);
   }
 
   _onSearchSubmit(event) {
@@ -43,6 +41,7 @@ class SearchBar extends React.Component {
           inline={true}
           flex="true"
           placeHolder="Search"
+          defaultValue={this.q && this.q["q"]}
           dropAlign={{ right: "right" }}
           onDOMChange={this.onSearchInput}
           onSelect={this._onSearchSubmit.bind(this)}
@@ -53,25 +52,9 @@ class SearchBar extends React.Component {
 }
 
 SearchBar.propTypes = {
-  fetchSearch: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired
 };
 
-function mapStateToProps() {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchSearch: query => dispatch(fetchSearch(query))
-  };
-}
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SearchBar)
-);
+export default withRouter(SearchBar);
