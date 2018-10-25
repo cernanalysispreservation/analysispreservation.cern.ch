@@ -32,6 +32,13 @@ class ArrayFieldTemplate extends React.Component {
     this.setState({ layers: layers });
   }
 
+  stringifyItem = (options, item) => {
+    const stringify = options ? options.stringify : [],
+      reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
+
+    return stringify.reduce(reducer, "");
+  };
+
   render() {
     return (
       <Box flex={false} size={{ height: { max: "small" } }}>
@@ -58,8 +65,10 @@ class ArrayFieldTemplate extends React.Component {
                       index={element.index}
                       item={element.children.props.formData}
                       label={
-                        this.props.uiSchema.label ||
-                        (this.props.title || "Item")
+                        this.stringifyItem(
+                          element.children.props.uiSchema["ui:options"],
+                          element.children.props.formData
+                        ) || `Item #${element.index + 1}`
                       }
                     />
                   </Box>

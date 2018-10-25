@@ -9,14 +9,14 @@ let ItemBrief = function(props) {
 
   let preview = [];
 
-  if (!label || typeof label === "string") {
-    preview = `${label || "--"} #${index}`;
-  } else {
+  if (Array.isArray(label)) {
     label.map(prop => {
       preview.push(
         `${prop.title}${prop.separator || ":"} ${_.get(item, prop.path) || "-"}`
       );
     });
+  } else {
+    preview = label;
   }
 
   return (
