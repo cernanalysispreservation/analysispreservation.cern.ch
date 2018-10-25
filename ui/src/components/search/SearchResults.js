@@ -42,7 +42,7 @@ class SearchResults extends React.Component {
                 >
                   <Box direction="row" full={true}>
                     <Box
-                      basis="1/3"
+                      basis="1/4"
                       full={true}
                       align="start"
                       separator="right"

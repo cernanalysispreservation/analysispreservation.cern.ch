@@ -10,6 +10,7 @@ import Sidebar from "grommet/components/Sidebar";
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import CheckBox from "grommet/components/CheckBox";
+import { Label } from "grommet";
 
 // import FiltersPreview from './components/FiltersPreview';
 
@@ -115,7 +116,7 @@ class SearchFacets extends React.Component {
                           id={category}
                           value={category}
                         >
-                          {category}
+                          {category.replace("_", " ")}
                         </Heading>
                         <Box
                           size="medium"
@@ -129,10 +130,12 @@ class SearchFacets extends React.Component {
                                 size="medium"
                                 direction="row"
                                 justify="between"
-                                align="start"
+                                align="center"
+                                style={{ fontSize: "0.8em" }}
                               >
                                 <CheckBox
                                   label={field.key}
+                                  id={field.key}
                                   key={field.key}
                                   name={String(field.key)}
                                   checked={
