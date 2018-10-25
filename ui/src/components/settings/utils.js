@@ -40,7 +40,7 @@ export const tokenSchema = {
     name: {
       type: "string",
       title: "Name",
-      description: "Name of personal access token."
+      description: "Give a name to your personal access token."
     }
     // "scopes": {
     //   "type": "string",

@@ -8,11 +8,12 @@ import {
   Anchor,
   Layer,
   Paragraph,
-  Title,
   Heading,
   Table,
   TableRow,
-  Toast
+  Toast,
+  Label,
+  Header
 } from "grommet";
 
 import AddIcon from "grommet/components/icons/base/Add";
@@ -72,7 +73,7 @@ class SettingsIndex extends React.Component {
         }}
         align="right"
       >
-        <Box flex={true} size="large">
+        <Box flex={true} size="medium" pad={{ vertical: "large" }}>
           <Heading align="start" margin="small" tag="h3">
             New OAuth Application
           </Heading>
@@ -84,7 +85,7 @@ class SettingsIndex extends React.Component {
             onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
             validate={true}
           >
-            <Box flex={true} margin={{ vertical: "medium" }}>
+            <Box flex={true} margin={{ vertical: "small" }}>
               <Button label="Submit" type="submit" primary={true} />
             </Box>
           </Form>
@@ -99,25 +100,31 @@ class SettingsIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true} pad="medium" align="center">
+      <Box full={true} colorIndex="light-2">
         {this.state.layer.active ? this.getLayer() : null}
-        <Box size="xxlarge">
-          <Box
-            pad="small"
-            direction="row"
+        <Box>
+          <Header
+            size="small"
             colorIndex="neutral-1-a"
+            pad={{ horizontal: "small" }}
+            wrap={true}
             justify="between"
           >
-            <Title>Tokens</Title>
+            <Label margin="small" pad="none">
+              Your OAuth Tokens
+            </Label>
             <Button
+              size="small"
               label="Add Token"
               icon={<AddIcon />}
               onClick={this.activateLayer.bind(this, "token")}
             />
-          </Box>
+          </Header>
+        </Box>
 
+        <Box pad="medium" align="center">
           {!this.props.tokens.isEmpty() ? (
-            <Box colorIndex="light-2">
+            <Box colorIndex="light-2" align="center">
               {this.state.showToast ? (
                 <Toast
                   status="warning"
@@ -132,16 +139,16 @@ class SettingsIndex extends React.Component {
               <Table colorIndex="light-2">
                 <thead key="token_header">
                   <tr>
-                    <th>id</th>
-                    <th>Name</th>
-                    <th>API key</th>
-                    <th>Revoke</th>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>API KEY</th>
+                    <th>REVOKE</th>
                   </tr>
                 </thead>
                 <tbody>
                   {this.props.tokens.map((token, keyy) => {
                     return token && token.t_id ? (
-                      <TableRow key={token.t_id}>
+                      <TableRow key={token.t_id} uppercase={true}>
                         {[
                           <td key="id">{token.t_id}</td>,
                           <td key="name">{token.name}</td>,
