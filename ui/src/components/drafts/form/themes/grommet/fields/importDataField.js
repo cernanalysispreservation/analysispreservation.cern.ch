@@ -51,16 +51,13 @@ class ImportDataField extends React.Component {
 
   render() {
     return (
-      <Box pad="small">
-        <Box pad={{ horizontal: "small" }}>
-          <Select
-            options={this.state.data}
-            onChange={this._saveSelection}
-            value={this.state.selected}
-            placeHolder="Pick created statistics questionnaire"
-          />
-        </Box>
-      </Box>
+      <Select
+        options={this.state.data}
+        onChange={this._saveSelection}
+        value={this.state.selected}
+        placeHolder="Pick created statistics questionnaire"
+        style={{ height: "3.4em" }}
+      />
     );
   }
 }

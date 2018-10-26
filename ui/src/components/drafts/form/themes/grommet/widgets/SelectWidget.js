@@ -11,17 +11,16 @@ const SelectWidget = function(props) {
   };
 
   return (
-    <Box flex={true} pad={{ horizontal: "medium" }} margin={{ bottom: "none" }}>
-      <Select
-        placeHolder="Choose from list"
-        inline={props.options.inline ? true : false}
-        multiple={props.options.multiple ? true : false}
-        options={props.options.enumOptions}
-        value={props.value}
-        onBlur={props.onBlur}
-        onChange={_onChange}
-      />
-    </Box>
+    <Select
+      placeHolder="Choose from list"
+      inline={props.options.inline ? true : false}
+      multiple={props.options.multiple ? true : false}
+      options={props.options.enumOptions}
+      value={props.value}
+      onBlur={props.onBlur}
+      onChange={_onChange}
+      style={{ height: "3.4em" }}
+    />
   );
 };
 
