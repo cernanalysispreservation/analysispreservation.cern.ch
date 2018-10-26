@@ -41,8 +41,9 @@ class DraftEditorHeader extends React.Component {
 
     let e = new Event("save");
 
+    this.props.formRef.current.onSubmit(e);
+
     if (errors.length > 0) {
-      this.props.formRef.current.onSubmit(e);
       return false;
     } else {
       return true;
@@ -58,7 +59,7 @@ class DraftEditorHeader extends React.Component {
       if (status !== "published")
         this.props
           .updateDraft({ ...this.props.formData }, this.props.draft_id)
-          .catch(() => {
+          .finally(() => {
             this._validateFormData();
           });
       else if (status == "published")
@@ -68,7 +69,7 @@ class DraftEditorHeader extends React.Component {
             this.props.match.params.schema_id,
             this.props.draft_id
           )
-          .catch(() => {
+          .finally(() => {
             this._validateFormData();
           });
     }

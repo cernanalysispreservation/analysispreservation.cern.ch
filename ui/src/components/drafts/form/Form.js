@@ -126,7 +126,6 @@ DepositForm.propTypes = {
 function mapStateToProps(state) {
   return {
     showSidebar: state.drafts.get("showSidebar"),
-    customValidation: state.drafts.get("customValidation"),
     liveValidate: state.drafts.get("liveValidate"),
     validate: state.drafts.get("validate"),
     data: state.drafts.get("data")

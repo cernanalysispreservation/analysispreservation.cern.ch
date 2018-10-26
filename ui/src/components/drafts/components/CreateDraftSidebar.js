@@ -30,8 +30,9 @@ class CreateDraftSidebar extends React.Component {
 
     let e = new Event("save");
 
+    this.props.formRef.current.onSubmit(e);
+
     if (errors.length > 0) {
-      this.props.formRef.current.onSubmit(e);
       return false;
     } else {
       return true;
@@ -40,7 +41,7 @@ class CreateDraftSidebar extends React.Component {
 
   _createDraft(schema_id) {
     if (this._validateFormData())
-      this.props.createDraft(this.props.formData, schema_id).catch(() => {
+      this.props.createDraft(this.props.formData, schema_id).finally(() => {
         this._validateFormData();
       });
   }

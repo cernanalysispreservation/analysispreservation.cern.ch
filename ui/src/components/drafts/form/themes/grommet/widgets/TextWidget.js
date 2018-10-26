@@ -48,7 +48,8 @@ class TextWidget extends React.Component {
   // TOFIX onBlur, onFocus
   _onChange = _ref => {
     let value = _ref.target.value;
-    return this.props.onChange(value);
+
+    return this.props.onChange(value !== "" ? value : undefined);
   };
 
   updateSuggestions = event => {

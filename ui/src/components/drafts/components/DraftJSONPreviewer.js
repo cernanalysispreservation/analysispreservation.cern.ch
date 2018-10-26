@@ -26,7 +26,7 @@ class DepositPreviewer extends React.Component {
           icon={<View onClick={() => this.props.togglePreviewer()} />}
         />
         <Box pad="small" flex={true}>
-          <ReactJson src={this.props.data} />
+          <ReactJson src={this.props.formData} />
         </Box>
       </Box>
     ) : (
@@ -50,7 +50,8 @@ DepositPreviewer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    showPreviewer: state.drafts.get("showPreviewer")
+    showPreviewer: state.drafts.get("showPreviewer"),
+    formData: state.drafts.getIn(["current_item", "formData"])
   };
 }
 
