@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, List, ListItem } from "grommet";
+import { Box, List, Button, ListItem } from "grommet";
+import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
 import ArrayUtils from "../components/ArrayUtils";
 
@@ -20,6 +21,12 @@ class DefaultArrayField extends React.Component {
                 ? this.props.items.map(element => (
                     <ListItem key={element.index} separator="none" pad="none">
                       <Box flex={true}>{element.children}</Box>
+                      <Button
+                        onClick={event =>
+                          element.onDropIndexClick(element.index)(event)
+                        }
+                        icon={<FormTrashIcon />}
+                      />
                       {this.props.options &&
                       this.props.options.enableArrayUtils ? (
                         <ArrayUtils
