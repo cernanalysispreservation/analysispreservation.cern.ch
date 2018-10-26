@@ -5,12 +5,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 
-import GrommetHeader from "grommet/components/Header";
-import Title from "grommet/components/Title";
-import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
-import Menu from "grommet/components/Menu";
-import Anchor from "grommet/components/Anchor";
+import {
+  Header as GrommetHeader,
+  Title,
+  Box,
+  Layer,
+  Menu,
+  Anchor,
+  Label
+} from "grommet";
+
 import SearchBar from "../search/SearchBar";
 
 import UserIcon from "grommet/components/icons/base/User";
@@ -76,13 +80,16 @@ class Header extends React.Component {
           direction="row"
           responsive={false}
         >
-          <Title style={{ fontWeight: "300" }}>
+          <Title style={{ fontWeight: "300" }} align="end">
             <Anchor
               href="#"
               path="/"
               label={config.project.name || "Project Name"}
               style={{ textDecoration: "none" }}
             />
+            <Label alignSelf="end" align="end" justify="end" size="small">
+              BETA
+            </Label>
           </Title>
           <Box flex={true} justify="center" colorIndex="neutral-1-t">
             <SearchBar />
