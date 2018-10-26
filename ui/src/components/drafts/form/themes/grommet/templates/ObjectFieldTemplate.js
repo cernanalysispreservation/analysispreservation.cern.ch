@@ -19,7 +19,11 @@ let ObjectFieldTemplate = function(props) {
           <FieldHeader
             title={props.title}
             required={props.required}
-            description={props.description ? props.description : null}
+            description={
+              props.description ? (
+                <span dangerouslySetInnerHTML={{ __html: props.description }} />
+              ) : null
+            }
           />
         ) : null}
         {props.properties.map(prop => prop.content)}
