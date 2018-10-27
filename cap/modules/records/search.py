@@ -47,8 +47,7 @@ class CAPRecordSearch(RecordsSearch):
         )
 
     def sort_by_latest(self):
-        """Sort by latest (updated|created)."""
+        """Sort by latest (updated)."""
         return self.sort(
-            {'-_updated': {'unmapped_type': 'date'}},
-            {'-created': {'unmapped_type': 'date'}}
+            {'_updated': {'unmapped_type': 'date', 'order': 'desc'}}
         )
