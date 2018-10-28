@@ -35,11 +35,10 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <Box>
+      <Box colorIndex="neutral-1">
         <Search
           id="searchbar"
           inline={true}
-          flex="true"
           placeHolder="Search"
           defaultValue={this.q && this.q["q"]}
           dropAlign={{ right: "right" }}

@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { fromJS } from "immutable";
 import { connect } from "react-redux";
+import Truncate from "react-truncate";
 
-import { Box, Anchor, Label, List, ListItem } from "grommet";
+import { Paragraph, Box, Anchor, Label, List, ListItem } from "grommet";
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -35,24 +36,19 @@ class SearchResults extends React.Component {
 
               return (
                 <ListItem
-                  pad="small"
                   size={{ height: "xsmall" }}
+                  pad={{ vertical: "small" }}
                   key={`${id}-${index}`}
                 >
                   <Box direction="row" full={true}>
                     <Box
                       basis="1/3"
                       full={true}
-                      pad={{ horizontal: "small" }}
                       align="start"
+                      separator="right"
+                      pad={{ horizontal: "medium" }}
                     >
-                      <Label
-                        pad="none"
-                        margin="none"
-                        size="small"
-                        uppercase={true}
-                        truncate={true}
-                      >
+                      <Label size="small" uppercase={true} truncate={true}>
                         <Anchor
                           path={
                             status === "published"
@@ -82,9 +78,6 @@ class SearchResults extends React.Component {
                             <Label
                               key={`${object}-${index}`}
                               size="small"
-                              align="center"
-                              margin="none"
-                              pad="none"
                               uppercase="true"
                             >
                               {object} &nbsp;
@@ -93,8 +86,17 @@ class SearchResults extends React.Component {
                         })}
                       </Box>
                     </Box>
-                    <Box basis="2/3" full={true}>
-                      {metadata.getIn(["basic_info", "abstract"]) || ""}
+                    <Box
+                      basis="2/3"
+                      full={true}
+                      pad={{ horizontal: "medium" }}
+                      justify="center"
+                    >
+                      <i>
+                        <Truncate lines={3} ellipsis={<span>...</span>}>
+                          {metadata.getIn(["basic_info", "abstract"]) || ""}
+                        </Truncate>
+                      </i>
                     </Box>
                   </Box>
                 </ListItem>
