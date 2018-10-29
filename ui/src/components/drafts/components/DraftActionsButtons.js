@@ -69,7 +69,7 @@ export const SaveAnchor = ({ action = null }) => (
 export const CreateAnchor = ({ onClick = null }) => (
   <Anchor
     icon={<SaveIcon size="xsmall" />}
-    label={<Label size="small">Save</Label>}
+    label={<Label size="small">Save & Continue</Label>}
     onClick={onClick}
   />
 );

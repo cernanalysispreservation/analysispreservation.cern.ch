@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Box, Menu } from "grommet";
 
 import {
+  CreateAnchor,
   SaveAnchor,
   SettingsAnchor,
   ShareAnchor,
@@ -17,6 +18,7 @@ import {
 import EditableTitle from "./EditableTitle";
 
 import {
+  createDraft,
   publishDraft,
   deleteDraft,
   updateDraft,
@@ -48,6 +50,13 @@ class DraftEditorHeader extends React.Component {
     } else {
       return true;
     }
+  }
+
+  _createDraft(schema_id) {
+    if (this._validateFormData())
+      this.props.createDraft(this.props.formData, schema_id).finally(() => {
+        this._validateFormData();
+      });
   }
 
   _saveData() {
@@ -135,7 +144,7 @@ class DraftEditorHeader extends React.Component {
           <Box margin={{ right: "small" }}>
             <DragIcon size="xsmall" />
           </Box>
-          <EditableTitle />
+          <EditableTitle anaType={this.props.match.params.schema_id} />
         </Box>
 
         <Box flex={true} justify="center" align="end">
@@ -145,22 +154,14 @@ class DraftEditorHeader extends React.Component {
             loading={this.props.loading}
           />
         </Box>
-        <Box
-          pad={{ horizontal: "small" }}
-          flex={false}
-          direction="row"
-          wrap={false}
-          justify="end"
-          align="center"
-        >
+        <Box flex={false} direction="row" wrap={false} justify="end">
           {isDraft ? (
             <Menu
               flex={false}
               direction="row"
               wrap={false}
               responsive={false}
-              margin={{ horizontal: "small" }}
-              size="small"
+              margin={{ vertical: "small", right: "large" }}
               pad={{ horizontal: "small" }}
               alignContent="center"
               justify="center"
@@ -171,46 +172,51 @@ class DraftEditorHeader extends React.Component {
             </Menu>
           ) : null}
 
-          <Menu
-            flex={false}
-            direction="row"
-            wrap={false}
-            responsive={false}
-            margin={{ horizontal: "small" }}
-            size="small"
-            pad={{ horizontal: "small" }}
-            alignContent="center"
-            justify="center"
-            align="center"
-            colorIndex="neutral-1-t"
-          >
-            {this.props.draft_id ? (
+          {this.props.draft_id ? (
+            <Menu
+              flex={false}
+              direction="row"
+              wrap={false}
+              responsive={false}
+              size="small"
+              pad={{ horizontal: "small" }}
+              alignContent="center"
+              justify="center"
+              align="center"
+            >
               <SettingsAnchor draft_id={this.props.draft_id} />
-            ) : null}
 
-            {isDraft && !isPublishedOnce ? (
-              <DeleteAnchor action={this._actionHandler("delete")} />
-            ) : null}
+              {isDraft && !isPublishedOnce ? (
+                <DeleteAnchor action={this._actionHandler("delete")} />
+              ) : null}
 
-            {isDraft && isPublishedOnce ? (
-              <DiscardAnchor action={this._actionHandler("discard")} />
-            ) : null}
-          </Menu>
+              {isDraft && isPublishedOnce ? (
+                <DiscardAnchor action={this._actionHandler("discard")} />
+              ) : null}
 
-          <Menu
-            flex={false}
-            direction="row"
-            wrap={false}
-            responsive={false}
-            size="small"
-            pad={{ horizontal: "small" }}
-            alignContent="center"
-            justify="center"
-            align="center"
-            colorIndex="brand"
-          >
-            <SaveAnchor action={this._saveData.bind(this)} />
-          </Menu>
+              <SaveAnchor action={this._saveData.bind(this)} />
+            </Menu>
+          ) : (
+            <Menu
+              flex={false}
+              direction="row"
+              wrap={false}
+              responsive={false}
+              size="small"
+              pad={{ horizontal: "small" }}
+              alignContent="center"
+              justify="center"
+              align="center"
+              colorIndex="brand"
+            >
+              <CreateAnchor
+                onClick={this._createDraft.bind(
+                  this,
+                  this.props.match.params.schema_id
+                )}
+              />
+            </Menu>
+          )}
         </Box>
         <DraftActionsLayer
           key="action-layer"
@@ -247,6 +253,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    createDraft: (data, ana_type) =>
+      dispatch(createDraft(data, null, ana_type)),
     updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
     publishDraft: draft_id => dispatch(publishDraft(draft_id)),
     deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),

@@ -14,7 +14,6 @@ import { fetchAndAssignSchema } from "../../actions/common";
 import DepositForm from "./form/Form";
 import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
-import CreateDraftSidebar from "./components/CreateDraftSidebar";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -83,7 +82,7 @@ class DraftEditor extends React.Component {
               flex={true}
               wrap={false}
             >
-              <Route path="/drafts/:draft_id/edit" component={Sidebar} />
+              <Sidebar />
               <DepositForm
                 formRef={this.props.formRef}
                 formData={this.props.formData || {}}
@@ -97,16 +96,7 @@ class DraftEditor extends React.Component {
                 errors={this.props.error ? this.props.error.data.errors : []}
               />
 
-              <Route
-                path="/drafts/:draft_id/edit"
-                component={DraftJSONPreviewer}
-              />
-              <Route
-                path="/drafts/create/:schema_id"
-                render={props => (
-                  <CreateDraftSidebar {...props} formRef={this.props.formRef} />
-                )}
-              />
+              <DraftJSONPreviewer />
             </Box>
           )}
       </Box>

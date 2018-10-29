@@ -23,7 +23,7 @@ class EditableTitle extends React.Component {
 
   _focusInput = () => {
     this.setState({
-      titleValue: this.props.general_title,
+      titleValue: this.props.general_title || "Untitled document",
       editTitle: true
     });
   };
@@ -42,7 +42,7 @@ class EditableTitle extends React.Component {
 
   _update = () => {
     this.props
-      .updateGeneralTitle(this.state.titleValue)
+      .updateGeneralTitle(this.state.titleValue, this.props.anaType)
       .then(() => {
         this.setState({
           hoverTitle: false,
@@ -107,7 +107,7 @@ class EditableTitle extends React.Component {
         >
           <Label align="start" pad="none" margin="none">
             {" "}
-            {this.props.general_title}
+            {this.props.general_title || "Untitled document"}
           </Label>
         </Box>
       </Box>
@@ -117,7 +117,8 @@ class EditableTitle extends React.Component {
 
 EditableTitle.propTypes = {
   general_title: PropTypes.string,
-  updateGeneralTitle: PropTypes.func
+  updateGeneralTitle: PropTypes.func,
+  anaType: PropTypes.string
 };
 
 function mapStateToProps(state) {
@@ -132,7 +133,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateGeneralTitle: title => dispatch(updateGeneralTitle(title))
+    updateGeneralTitle: (title, anaType) =>
+      dispatch(updateGeneralTitle(title, anaType))
   };
 }
 

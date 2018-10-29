@@ -335,9 +335,9 @@ export function clearError() {
   };
 }
 
-export function createDraft(data = {}, schema) {
+export function createDraft(data = {}, schema, ana_type) {
   return (dispatch, getState) => {
-    return dispatch(postCreateDraft(data, schema))
+    return dispatch(postCreateDraft(data, schema, ana_type))
       .then(() => {
         let currentState = getState();
         const draft_id = currentState.drafts.getIn(["current_item", "id"]);
@@ -350,11 +350,33 @@ export function createDraft(data = {}, schema) {
   };
 }
 
-export function updateGeneralTitle(title) {
+export function createDraftFromCurrentItem(title, ana_type) {
+  return (dispatch, getState) => {
+    let currentState = getState();
+    let formData =
+      currentState.drafts.getIn(["current_item", "formData"]) || {};
+
+    formData["general_title"] = title;
+
+    return dispatch(createDraft(formData, null, ana_type));
+  };
+}
+
+export function updateGeneralTitle(title, ana_type) {
   return (dispatch, getState) => {
     dispatch(generalTitleRequest());
 
     const draft_id = getState().drafts.getIn(["current_item", "id"]);
+
+    if (draft_id) return dispatch(patchGeneralTitle(draft_id, title));
+    else return dispatch(createDraftFromCurrentItem(title, ana_type));
+  };
+}
+
+export function patchGeneralTitle(draft_id, title) {
+  return (dispatch, getState) => {
+    dispatch(generalTitleRequest());
+
     const general_title = getState().drafts.getIn([
       "current_item",
       "data",
@@ -386,17 +408,12 @@ export function updateGeneralTitle(title) {
   };
 }
 
-export function postCreateDraft(data = {}, schema) {
+export function postCreateDraft(data = {}, schema, ana_type) {
   return (dispatch, getState) => {
     dispatch(createDraftRequest());
 
     let uri = "/api/deposits/";
-    data["$ana_type"] = schema;
-    data["general_title"] = getState().drafts.getIn([
-      "current_item",
-      "general_title",
-      "title"
-    ]);
+    data["$ana_type"] = ana_type;
 
     return axios
       .post(uri, data)
