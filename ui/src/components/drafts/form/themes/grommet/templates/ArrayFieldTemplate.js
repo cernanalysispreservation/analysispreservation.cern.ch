@@ -82,7 +82,7 @@ class ArrayFieldTemplate extends React.Component {
                 </span>
               }
               required={this.props.required}
-              description={this.props.description}
+              description={this.props.schema.description}
               margin="none"
             />
           }

@@ -30,7 +30,9 @@ let FieldTemplate = function(props) {
       label={
         <span>
           <span style={{ color: "#000" }}>{label}</span>
-          {rawDescription ? <i>- {rawDescription}</i> : null}
+          {rawDescription ? (
+            <span style={{ color: "#bbb" }}> &nbsp; {rawDescription}</span>
+          ) : null}
         </span>
       }
       key={id + label}

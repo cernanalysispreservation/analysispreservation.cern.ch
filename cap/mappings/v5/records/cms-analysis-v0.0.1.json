@@ -1,291 +1,305 @@
 {
-    "mappings": {
-        "cms-analysis-v0.0.1": {
-            "properties": {
-                "_experiment" : {
-                    "type": "text"
-                },
-                "_created": {
-                    "type": "date",
-                    "copy_to": "created"
-                },
-                "created":{
-                    "type": "date"
-                },
-                "status": {
-                    "type": "keyword"
-                },
-                "cadi_id": {
-                    "type": "keyword"
-                },
-                "basic_info": {
-                    "type": "object",
-                    "properties": {
-                        "cadi_id": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            },
-                            "copy_to": "cadi_id"
-                        },
-                        "ana_notes": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            },
-                            "copy_to": "ananote"
-                        },
-                        "created": {
-                            "type": "date"
-                        }
-                    }
-                },
-                "input_data": {
-                    "type": "object",
-                    "properties": {
-                        "primary_datasets": {
-                            "type": "object",
-                            "properties": {
-                                "path": {
-                                    "type": "keyword",
-                                    "copy_to": "dataset"
-                                }
-                            }
-                        },
-                        "triggers": {
-                            "type": "object",
-                            "properties": {
-                                "trigger": {
-                                    "type": "keyword",
-                                    "copy_to": "trigger"
-                                }
-                            }
-                        },
-                        "mc_sig_datasets": {
-                            "type": "keyword",
-                            "copy_to": "dataset"
-                        },
-                        "mc_bg_datasets": {
-                            "type": "keyword",
-                            "copy_to": "dataset"
-                        },
-                        "json_files": {
-                            "type": "keyword"
-                        }
-                    }
-                },
-                "cadi_status": {
-                    "type": "keyword"
-                },
-                "cadi_info": {
-                    "type": "object",
-                    "properties": {
-                        "status": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            },
-                            "copy_to": "cadi_status"
-                        },
-                        "contact_person": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            },
-                            "copy_to": "researcher"
-                        },
-                        "publication_status": {
-                            "type": "text",
-                            "fields": {
-                                "keyword": {
-                                    "type": "keyword"
-                                }
-                            },
-                            "copy_to": "publication_status"
-                        }
-                    }
-                },
-                "additional_resources": {
-                    "type": "object",
-                    "properties": {
-                        "documentations": {
-                            "type": "object",
-                            "properties": {
-                                "keywords": {
-                                    "type": "string",
-                                    "copy_to": "keyword"
-                                }
-                            }
-                        },
-                        "keywords": {
-                            "type": "keyword",
-                            "copy_to": "keyword"
-                        }
-                    }
-                },
-                "main_measurements": {
-                    "type": "nested",
-                    "properties": {
-                        "signal_event_selection": {
-                            "type": "object",
-                            "properties": {
-                                "physics_objects": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "object": {
-                                            "type": "keyword",
-                                            "copy_to": "object"
-                                        },
-                                        "pt_cut": {
-                                            "type": "keyword",
-                                            "copy_to": "pt"
-                                        },
-                                        "pt_cut_min": {
-                                            "type": "keyword",
-                                            "copy_to": "pt_min"
-                                        },
-                                        "pt_cut_max": {
-                                            "type": "keyword",
-                                            "copy_to": "pt_max"
-                                        },
-                                        "eta_cut": {
-                                            "type": "keyword",
-                                            "copy_to": "eta"
-                                        },
-                                        "eta_cut_min": {
-                                            "type": "keyword",
-                                            "copy_to": "eta_min"
-                                        },
-                                        "eta_cut_max": {
-                                            "type": "keyword",
-                                            "copy_to": "eta_max"
-                                        },
-                                        "electron_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "muon_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "tau_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "jet_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "photon_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "met_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "track_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
-                                        },
-                                        "number": {
-                                            "type": "object",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                "veto": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "object": {
-                                            "type": "keyword",
-                                            "copy_to": "veto"
-                                        },
-                                        "pt_cut": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_pt"
-                                        },
-                                        "pt_cut_min": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_pt_min"
-                                        },
-                                        "pt_cut_max": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_pt_max"
-                                        },
-                                        "eta_cut": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_eta"
-                                        },
-                                        "eta_cut_min": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_eta_min"
-                                        },
-                                        "eta_cut_max": {
-                                            "type": "keyword",
-                                            "copy_to": "veto_eta_max"
-                                        },
-                                        "electron_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "muon_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "tau_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "jet_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "photon_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "met_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "track_type": {
-                                            "type": "keyword",
-                                            "copy_to": "main_measurements.signal_event_selection.veto.object_type"
-                                        },
-                                        "number": {
-                                            "type": "object",
-                                            "properties": {
-                                                "sign": {
-                                                    "type": "keyword"
-                                                },
-                                                "number": {
-                                                    "type": "keyword"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+  "mappings": {
+    "cms-analysis-v0.0.1": {
+      "properties": {
+        "_experiment": {
+          "type": "text"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "created": {
+          "type": "date"
+        },
+        "status": {
+          "type": "keyword"
+        },
+        "cadi_id": {
+          "type": "keyword"
+        },
+        "basic_info": {
+          "type": "object",
+          "properties": {
+            "cadi_id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
                 }
+              },
+              "copy_to": "cadi_id"
+            },
+            "ana_notes": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "ananote"
+            },
+            "created": {
+              "type": "date"
             }
+          }
+        },
+        "input_data": {
+          "type": "object",
+          "properties": {
+            "primary_datasets": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "keyword",
+                  "copy_to": "dataset"
+                }
+              }
+            },
+            "triggers": {
+              "type": "object",
+              "properties": {
+                "trigger": {
+                  "type": "keyword",
+                  "copy_to": "trigger"
+                }
+              }
+            },
+            "mc_sig_datasets": {
+              "type": "keyword",
+              "copy_to": "dataset"
+            },
+            "mc_bg_datasets": {
+              "type": "keyword",
+              "copy_to": "dataset"
+            },
+            "json_files": {
+              "type": "keyword"
+            }
+          }
+        },
+        "cadi_status": {
+          "type": "keyword"
+        },
+        "cadi_info": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "cadi_status"
+            },
+            "contact_person": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "researcher"
+            },
+            "publication_status": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "publication_status"
+            }
+          }
+        },
+        "additional_resources": {
+          "type": "object",
+          "properties": {
+            "documentations": {
+              "type": "object",
+              "properties": {
+                "keywords": {
+                  "type": "string",
+                  "copy_to": "keyword"
+                }
+              }
+            },
+            "keywords": {
+              "type": "keyword",
+              "copy_to": "keyword"
+            }
+          }
+        },
+        "main_measurements": {
+          "type": "nested",
+          "properties": {
+            "signal_event_selection": {
+              "type": "object",
+              "properties": {
+                "physics_objects": {
+                  "type": "nested",
+                  "properties": {
+                    "object": {
+                      "type": "keyword",
+                      "copy_to": "object"
+                    },
+                    "pt_cut": {
+                      "type": "keyword",
+                      "copy_to": "pt"
+                    },
+                    "pt_cut_min": {
+                      "type": "keyword",
+                      "copy_to": "pt_min"
+                    },
+                    "pt_cut_max": {
+                      "type": "keyword",
+                      "copy_to": "pt_max"
+                    },
+                    "eta_cut": {
+                      "type": "keyword",
+                      "copy_to": "eta"
+                    },
+                    "eta_cut_min": {
+                      "type": "keyword",
+                      "copy_to": "eta_min"
+                    },
+                    "eta_cut_max": {
+                      "type": "keyword",
+                      "copy_to": "eta_max"
+                    },
+                    "electron_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "muon_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "tau_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "jet_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "photon_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "met_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "track_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.physics_objects.object_type"
+                    },
+                    "number": {
+                      "type": "object",
+                      "properties": {
+                        "sign": {
+                          "type": "keyword"
+                        },
+                        "number": {
+                          "type": "keyword"
+                        }
+                      }
+                    }
+                  }
+                },
+                "veto": {
+                  "type": "nested",
+                  "properties": {
+                    "object": {
+                      "type": "keyword",
+                      "copy_to": "veto"
+                    },
+                    "pt_cut": {
+                      "type": "keyword",
+                      "copy_to": "veto_pt"
+                    },
+                    "pt_cut_min": {
+                      "type": "keyword",
+                      "copy_to": "veto_pt_min"
+                    },
+                    "pt_cut_max": {
+                      "type": "keyword",
+                      "copy_to": "veto_pt_max"
+                    },
+                    "eta_cut": {
+                      "type": "keyword",
+                      "copy_to": "veto_eta"
+                    },
+                    "eta_cut_min": {
+                      "type": "keyword",
+                      "copy_to": "veto_eta_min"
+                    },
+                    "eta_cut_max": {
+                      "type": "keyword",
+                      "copy_to": "veto_eta_max"
+                    },
+                    "electron_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "muon_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "tau_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "jet_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "photon_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "met_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "track_type": {
+                      "type": "keyword",
+                      "copy_to":
+                        "main_measurements.signal_event_selection.veto.object_type"
+                    },
+                    "number": {
+                      "type": "object",
+                      "properties": {
+                        "sign": {
+                          "type": "keyword"
+                        },
+                        "number": {
+                          "type": "keyword"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
+      }
     }
+  }
 }

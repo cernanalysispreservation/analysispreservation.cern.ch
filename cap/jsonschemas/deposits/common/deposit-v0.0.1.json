@@ -1,54 +1,49 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "fullname": null,
+  "experiment": null,
   "jsonschema": {
-    "required": [
-      "id"
-    ], 
-    "type": "object", 
-    "name": "_deposit", 
+    "required": ["id"],
+    "type": "object",
+    "name": "_deposit",
     "properties": {
       "status": {
-        "enum": [
-          "draft", 
-          "published"
-        ], 
-        "type": "string", 
+        "enum": ["draft", "published"],
+        "type": "string",
         "name": "status"
-      }, 
+      },
       "owners": {
         "items": [
           {
             "type": "integer"
           }
-        ], 
-        "type": "array", 
+        ],
+        "type": "array",
         "name": "owners"
-      }, 
+      },
       "pid": {
-        "type": "object", 
-        "name": "pid", 
+        "type": "object",
+        "name": "pid",
         "properties": {
           "revision_id": {
             "type": "integer"
-          }, 
+          },
           "type": {
             "type": "string"
-          }, 
+          },
           "value": {
             "type": "string"
           }
         }
-      }, 
+      },
       "id": {
-        "type": "string", 
+        "type": "string",
         "name": "id"
-      }, 
+      },
       "created_by": {
-        "type": "integer", 
+        "type": "integer",
         "name": "created_by"
       }
     }
-  }, 
+  },
   "is_deposit": false
 }

@@ -37,7 +37,7 @@ class TextAreaWidget extends Component {
   render() {
     return (
       <textarea
-        rows="5"
+        rows="3"
         type="text"
         id={this.props.id}
         name={this.props.id}

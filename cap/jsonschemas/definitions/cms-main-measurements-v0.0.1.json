@@ -1,53 +1,52 @@
 {
-  "fullname": "Detector State", 
-  "experiment": "CMS", 
+  "fullname": "Detector State",
+  "experiment": "CMS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Information concerning the state of the detector", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "description": "Information concerning the state of the detector",
     "properties": {
       "signal_event_selection": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "veto": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-            }, 
-            "type": "array", 
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+            },
+            "type": "array",
             "title": "Vetos"
-          }, 
+          },
           "physics_objects": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-            }, 
-            "type": "array", 
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+            },
+            "type": "array",
             "title": "Physics Objects"
           }
-        }, 
+        },
         "title": "Signal Event Selection"
-      }, 
+      },
       "detailed_desciption": {
-        "type": "string", 
+        "type": "string",
         "title": "Detailed Description"
-      }, 
+      },
       "description": {
-        "type": "string", 
+        "type": "string",
         "title": "Measurement Description"
-      }, 
+      },
       "processing_steps": {
-        "items": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
-        }, 
-        "type": "array", 
-        "title": "Processing Steps"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+      },
       "analysis_code": {
-        "x-cap-file": {}, 
-        "type": "string", 
+        "x-cap-file": {},
+        "type": "string",
         "title": "Analysis Code"
       }
-    }, 
+    },
     "title": "Detector State"
-  }, 
+  },
   "is_deposit": false
 }

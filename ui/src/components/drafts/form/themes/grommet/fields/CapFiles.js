@@ -66,8 +66,6 @@ class CapFile extends React.Component {
               label="Open File Manager"
               onClick={this._toggleFileManager.bind(this)}
             />
-            <Box> -- OR -- </Box>
-            <Box>Drag & Drop files here</Box>
           </React.Fragment>
         )}
       </Box>

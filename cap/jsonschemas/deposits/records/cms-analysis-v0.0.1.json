@@ -22,13 +22,15 @@
               "Please provide information necessary to generate final plots and tables for your analysis.",
             "type": "object",
             "properties": {
-              "processing": {
+              "code_base": {
+                "x-cap-file": {},
+                "type": "string",
+                "title": "Your Code",
+                "description": "Include your code for n-tuple production"
+              },
+              "processing_steps": {
                 "$ref":
                   "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
-              },
-              "description": {
-                "type": "string",
-                "title": "Description"
               }
             },
             "title": "Final Results"
@@ -48,6 +50,10 @@
                   "type": "string",
                   "title": "Type"
                 },
+                "statement": {
+                  "type": "string",
+                  "title": "Statement about the most important systematics"
+                },
                 "physics_object": {
                   "type": "string",
                   "description":
@@ -57,7 +63,8 @@
               }
             },
             "type": "array",
-            "title": "Systematic Uncertainties"
+            "title": "Systematic Uncertainties",
+            "description": "Details on the systematic uncertainties"
           },
           "auxiliary_measurements": {
             "items": {
@@ -79,17 +86,18 @@
                 },
                 "links": {
                   "items": {
+                    "x-cap-file": {},
                     "type": "string"
                   },
                   "type": "array",
-                  "description": "Provide links to all necessary sources",
-                  "title": "Links to sources"
+                  "description": "Code for auxiliary measurements",
+                  "title": "Your code"
                 }
               }
             },
             "type": "array",
             "description":
-              "Please provide information about the additional measurements included in your analysis concerning e.g. Trigger Efficiencies, MC Scale Factors, Object Efficiencies, Rates, Acceptance Corrections",
+              "Provide details on auxiliary measurements used in the analysis",
             "title": "Auxiliary Measurements"
           },
           "background_estimations": {
@@ -98,7 +106,8 @@
                 "https://analysispreservation.cern.ch/schemas/definitions/cms-background-estimation-v0.0.1.json"
             },
             "type": "array",
-            "title": "Background Estimation"
+            "title": "Background Estimation",
+            "description": "Details on the background estimation methods"
           }
         }
       }
@@ -113,7 +122,8 @@
           "combine_datacard": {
             "x-cap-file": {},
             "type": "string",
-            "title": "Combine Datacard File"
+            "title": "Combine Datacard File",
+            "description": "Add final combine datacards of the analysis"
           },
           "statistics_questionnaire": {
             "default": {},
@@ -209,17 +219,19 @@
                   "type": "object",
                   "properties": {
                     "max": {
-                      "type": "number"
+                      "type": "number",
+                      "title": "Max"
                     },
                     "min": {
-                      "type": "number"
+                      "type": "number",
+                      "title": "Min"
                     }
                   },
                   "title": "Ranges"
                 },
                 "path": {
                   "type": "string",
-                  "placeholder": "Path"
+                  "title": "Path"
                 }
               }
             },
@@ -244,11 +256,11 @@
               "properties": {
                 "trigger": {
                   "type": "string",
-                  "title": "trigger"
+                  "title": "Trigger"
                 },
                 "prescale": {
                   "type": "number",
-                  "title": "prescale"
+                  "title": "Prescale"
                 }
               }
             },
@@ -273,7 +285,7 @@
       },
       "additional_resources": {
         "description":
-          "Please provide information about the additional resources of the analysis",
+          "Add any useful additional documentation on the analysis",
         "type": "object",
         "properties": {
           "comments": {
@@ -288,13 +300,14 @@
                   "type": "string",
                   "title": "Conference/meeting"
                 },
-                "url": {
+                "items": {
+                  "x-cap-file": {},
                   "type": "string",
-                  "title": "URL"
+                  "title": "Presentation"
                 }
               }
             },
-            "description": "Please add links to presentations",
+            "description": "Upload presentations about the analysis",
             "type": "array",
             "id": "presentations",
             "title": "Presentations"
@@ -304,7 +317,7 @@
               "x-cap-file": {},
               "type": "string"
             },
-            "description": "Please provide all documentation",
+            "description": "Add any useful additional documentation",
             "type": "array",
             "id": "documentations",
             "title": "Additional Documentations"
@@ -314,7 +327,7 @@
               "$ref":
                 "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
             },
-            "description": "Please add all publications",
+            "description": "Add references to related publications",
             "type": "array",
             "id": "publications",
             "title": "Publications"
@@ -329,7 +342,7 @@
               "type": "string",
               "title": "URL"
             },
-            "description": "Please add links to internal discussions",
+            "description": "Link to hypernews thread",
             "type": "array",
             "id": "internal-discussions",
             "title": "Internal Discussions"
@@ -352,11 +365,25 @@
       "ntuples_production": {
         "id": "ntuples_production",
         "items": {
-          "$ref":
-            "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+          "type": "object",
+          "properties": {
+            "code_base": {
+              "x-cap-file": {},
+              "type": "string",
+              "title": "Your Code",
+              "description": "Include your code for n-tuple production"
+            },
+            "processing_steps": {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+            }
+          },
+          "title": "",
+          "description": "Add instructions to run your code"
         },
         "type": "array",
-        "description": "Please provide the n-tuples used for your measurements",
+        "description":
+          "Provide details on the intermediate n-tuples production",
         "title": "N-tuples Production"
       }
     }

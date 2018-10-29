@@ -1,56 +1,62 @@
 {
-  "fullname": null, 
-  "experiment": "CMS", 
+  "fullname": null,
+  "experiment": "CMS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "control_regions": {
         "items": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "veto": {
               "items": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-              }, 
-              "type": "array", 
-              "title": "Vetos"
-            }, 
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              },
+              "type": "array",
+              "title": "Vetos",
+              "description": "Physics objects vetoed in control region"
+            },
             "physics_objects": {
               "items": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-              }, 
-              "type": "array", 
-              "title": "Physics Objects"
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              },
+              "type": "array",
+              "title": "Physics Objects",
+              "description": "Physics objects selection in control region"
             }
-          }, 
+          },
           "title": "Event Selection"
-        }, 
-        "type": "array", 
-        "title": "Control Regions"
-      }, 
+        },
+        "type": "array",
+        "title": "Control Regions",
+        "description": "Details on control regions definition"
+      },
       "type": {
-        "type": "string", 
-        "title": "Type"
-      }, 
+        "type": "string",
+        "title": "Type",
+        "description": "Type of background process (TTbar, DY, fakes...)"
+      },
       "method": {
         "enum": [
-          "directly_from_mc_simulation", 
-          "shape_from_mc_simulation_and_normalization_from_control_regions", 
+          "directly_from_mc_simulation",
+          "shape_from_mc_simulation_and_normalization_from_control_regions",
           "shape_and_normalization_from_control_regions"
-        ], 
-        "type": "string", 
+        ],
+        "type": "string",
         "title": "Estimation Method"
-      }, 
+      },
       "samples": {
         "items": {
           "type": "string"
-        }, 
-        "type": "array", 
-        "description": "Provide all necessary samples from DAS", 
+        },
+        "type": "array",
+        "description": "Provide all necessary samples from DAS",
         "title": "Samples"
       }
     }
-  }, 
+  },
   "is_deposit": false
 }

@@ -1,61 +1,61 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "fullname": null,
+  "experiment": null,
   "jsonschema": {
-    "type": "object", 
+    "type": "object",
     "properties": {
       "deposit-admin": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "users": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "roles": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
           }
         }
-      }, 
+      },
       "deposit-update": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "users": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "roles": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
           }
         }
-      }, 
+      },
       "deposit-read": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "users": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "roles": {
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
           }
         }
       }
     }
-  }, 
+  },
   "is_deposit": false
 }

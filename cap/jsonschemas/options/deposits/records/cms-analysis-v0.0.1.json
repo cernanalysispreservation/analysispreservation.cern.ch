@@ -18,7 +18,9 @@
       "items": {
         "ui:order": ["type", "links"],
         "links": {
-          "ui:array": "StringArrayField"
+          "items": {
+            "ui:field": "CapFiles"
+          }
         }
       },
       "ui:array": "AccordionArrayField"
@@ -36,7 +38,7 @@
         "signal_event_selection": {
           "veto": {
             "items": {
-              "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+              "ui:order": ["number", "object", "pt_cut", "eta_cut", "*"]
             }
           },
           "physics_objects": {
@@ -59,13 +61,25 @@
             }
           }
         },
+        "analysis_code": {
+          "ui:field": "CapFiles"
+        },
         "processing_steps": {
           "items": {
             "ui:order": [
               "configuration_file",
               "run_instructions",
               "output_data"
-            ]
+            ],
+            "output_data": {
+              "ui:field": "CapFiles"
+            },
+            "run_instructions": {
+              "ui:field": "CapFiles"
+            },
+            "configuration_file": {
+              "ui:field": "CapFiles"
+            }
           }
         }
       },
@@ -74,13 +88,25 @@
     "ntuples_production": {
       "items": {
         "ui:order": ["code_base", "processing_steps"],
+        "code_base": {
+          "ui:field": "CapFiles"
+        },
         "processing_steps": {
           "items": {
             "ui:order": [
               "configuration_file",
               "run_instructions",
               "output_data"
-            ]
+            ],
+            "output_data": {
+              "ui:field": "CapFiles"
+            },
+            "run_instructions": {
+              "ui:field": "CapFiles"
+            },
+            "configuration_file": {
+              "ui:field": "CapFiles"
+            }
           }
         }
       },
@@ -107,6 +133,9 @@
       "ui:object": "accordionObjectField",
       "ana_notes": {
         "ui:array": "StringArrayField"
+      },
+      "abstract": {
+        "ui:widget": "textarea"
       }
     },
     "analysis_reuse_mode": {
@@ -222,6 +251,9 @@
         "items": {
           "ui:options": {
             "stringify": ["conference"]
+          },
+          "items": {
+            "ui:field": "CapFiles"
           }
         }
       },
@@ -254,24 +286,42 @@
     },
     "final_results": {
       "ui:order": ["*"],
-      "ui:object": "accordionObjectField"
+      "ui:object": "accordionObjectField",
+      "code_base": {
+        "ui:field": "CapFiles"
+      },
+      "processing_steps": {
+        "items": {
+          "ui:order": ["configuration_file", "run_instructions", "output_data"],
+          "output_data": {
+            "ui:field": "CapFiles"
+          },
+          "run_instructions": {
+            "ui:field": "CapFiles"
+          },
+          "configuration_file": {
+            "ui:field": "CapFiles"
+          }
+        }
+      }
     },
     "background_estimations": {
       "items": {
-        "ui:order": ["type", "method", "control_regions", "samples"],
+        "ui:order": ["control_regions", "samples", "type", "method"],
         "samples": {
           "ui:array": "StringArrayField"
         },
         "control_regions": {
+          "ui:array": "AccordionArrayField",
           "items": {
             "veto": {
               "items": {
-                "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                "ui:order": ["number", "object", "pt_cut", "eta_cut", "*"]
               }
             },
             "physics_objects": {
               "items": {
-                "ui:order": ["object", "number", "pt_cut", "eta_cut", "*"]
+                "ui:order": ["number", "object", "pt_cut", "eta_cut", "*"]
               }
             }
           }
@@ -281,7 +331,7 @@
     },
     "systematic_uncertainties": {
       "items": {
-        "ui:order": ["type", "physics_object"]
+        "ui:order": ["type", "physics_object", "*"]
       },
       "ui:array": "AccordionArrayField"
     }
