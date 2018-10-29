@@ -42,7 +42,7 @@ class SearchResults extends React.Component {
                 >
                   <Box direction="row" full={true}>
                     <Box
-                      basis="1/4"
+                      basis="1/3"
                       full={true}
                       align="start"
                       separator="right"
@@ -92,11 +92,15 @@ class SearchResults extends React.Component {
                       pad={{ horizontal: "medium" }}
                       justify="center"
                     >
-                      <i>
-                        <Truncate lines={3} ellipsis={<span>...</span>}>
-                          {metadata.getIn(["basic_info", "abstract"]) || ""}
-                        </Truncate>
-                      </i>
+                      {metadata.getIn(["basic_info", "abstract"]) ? (
+                        <i>
+                          <Truncate lines={3} ellipsis={<span>...</span>}>
+                            {metadata.getIn(["basic_info", "abstract"]) || ""}
+                          </Truncate>
+                        </i>
+                      ) : (
+                        <i style={{ color: "#ddd" }}> no abstract </i>
+                      )}
                     </Box>
                   </Box>
                 </ListItem>
