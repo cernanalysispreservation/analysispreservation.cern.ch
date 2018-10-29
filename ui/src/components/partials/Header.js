@@ -87,8 +87,11 @@ class Header extends React.Component {
               label={config.project.name || "Project Name"}
               style={{ textDecoration: "none" }}
             />
-            <Label alignSelf="end" align="end" justify="end" size="small">
-              BETA
+            <Label
+              size="small"
+              style={{ marginTop: "-10px", marginLeft: "-5px" }}
+            >
+              <b>BETA</b>
             </Label>
           </Title>
           <Box flex={true} justify="center" colorIndex="neutral-1-t">

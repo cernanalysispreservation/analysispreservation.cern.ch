@@ -17,17 +17,25 @@ import { withRouter } from "react-router";
 export const SettingsAnchor = withRouter(({ history, draft_id = draft_id }) => (
   <Anchor
     icon={<ShareIcon size="xsmall" />}
-    label={<Label size="small">Access</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Access
+      </Label>
+    }
     onClick={() => history.push(`/drafts/${draft_id}/settings`)}
   />
 ));
 
 export const EditAnchor = withRouter(({ history, draft_id = draft_id }) => (
-  <Box colorIndex="brand" pad={{ horizontal: "small" }}>
+  <Box pad={{ horizontal: "small" }}>
     <Anchor
       icon={<Edit size="xsmall" />}
       primary={true}
-      label={<Label size="small">Edit</Label>}
+      label={
+        <Label size="small" uppercase={true}>
+          Edit
+        </Label>
+      }
       onClick={() => history.push(`/drafts/${draft_id}/edit`)}
     />
   </Box>
@@ -45,7 +53,11 @@ export const BackToEditAnchor = withRouter(({ history, draft_id = null }) => {
 export const ShareAnchor2 = ({ action = null }) => (
   <Button
     icon={<ShareIcon size="xsmall" />}
-    label={<Label size="small">Publish</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Publish
+      </Label>
+    }
     onClick={action ? action : null}
   />
 );
@@ -53,7 +65,11 @@ export const ShareAnchor2 = ({ action = null }) => (
 export const ShareAnchor = ({ action = null }) => (
   <Anchor
     icon={<AnnounceIcon size="xsmall" />}
-    label={<Label size="small">Publish</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Publish
+      </Label>
+    }
     onClick={action ? action : null}
   />
 );
@@ -61,7 +77,11 @@ export const ShareAnchor = ({ action = null }) => (
 export const SaveAnchor = ({ action = null }) => (
   <Anchor
     icon={<SaveIcon size="xsmall" />}
-    label={<Label size="small">Save</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Save
+      </Label>
+    }
     onClick={action ? action : null}
   />
 );
@@ -69,14 +89,22 @@ export const SaveAnchor = ({ action = null }) => (
 export const CreateAnchor = ({ onClick = null }) => (
   <Anchor
     icon={<SaveIcon size="xsmall" />}
-    label={<Label size="small">Save & Continue</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Save & Continue
+      </Label>
+    }
     onClick={onClick}
   />
 );
 
 export const DeleteAnchor = ({ action = null }) => (
   <Anchor
-    label={<Label size="small">Delete</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Delete
+      </Label>
+    }
     icon={<TrashIcon size="xsmall" />}
     onClick={action ? action : null}
   />
@@ -84,7 +112,11 @@ export const DeleteAnchor = ({ action = null }) => (
 
 export const DiscardAnchor = ({ action = null }) => (
   <Anchor
-    label={<Label size="small">Discard</Label>}
+    label={
+      <Label size="small" uppercase={true}>
+        Discard
+      </Label>
+    }
     icon={<RefreshIcon size="xsmall" />}
     onClick={action ? action : null}
   />
@@ -92,24 +124,17 @@ export const DiscardAnchor = ({ action = null }) => (
 
 export const DraftMessage = ({ message, loading }) => {
   return message ? (
-    <Box
-      colorIndex="light-1"
-      direction="row"
-      pad={{ horizontal: "small" }}
-      align="center"
-      justify="between"
-      margin={{ left: "small" }}
-    >
+    <Box direction="row" pad={{ horizontal: "small" }} full="horizontal">
       {[
         loading ? (
           <Spinning key="loading-spinner" />
         ) : (
-          <Status size="small" key="loading" value={message.status} />
+          <Box margin={{ left: "medium" }} />
         ),
         message && (
-          <Box key="message" pad={{ horizontal: "small" }}>
-            <Label size="small">{message.msg}</Label>
-          </Box>
+          <Label size="medium" margin="none">
+            {message.msg.toLowerCase()}
+          </Label>
         )
       ]}
     </Box>

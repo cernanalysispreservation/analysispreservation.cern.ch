@@ -159,7 +159,7 @@ export default function depositReducer(state = initialState, action) {
     case CREATE_DRAFT_SUCCESS:
       return state
         .setIn(["current_item", "loading"], false)
-        .setIn(["current_item", "message"], { status: "ok", msg: "Created!" })
+        .setIn(["current_item", "message"], { status: "ok", msg: "Created" })
         .setIn(["current_item", "error"], null)
         .setIn(["current_item", "id"], action.draft.id)
         .setIn(["current_item", "schema"], action.draft.metadata.$schema)
@@ -188,7 +188,10 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "loading"], false)
         .setIn(["current_item", "data"], action.draft.metadata)
         .setIn(["current_item", "formData"], action.draft.metadata)
-        .setIn(["current_item", "message"], { status: "ok", msg: "Saved!" });
+        .setIn(["current_item", "message"], {
+          status: "ok",
+          msg: "All changes saved"
+        });
     case UPDATE_DRAFT_ERROR:
       return state
         .setIn(["current_item", "loading"], false)

@@ -10,7 +10,12 @@ import DraftDefaultHeader from "./DraftDefaultHeader";
 class DraftHeader extends React.Component {
   render() {
     return (
-      <Box colorIndex="neutral-1-a" flex={false} wrap={false} direction="row">
+      <Box
+        colorIndex="neutral-1-a"
+        flex={false}
+        justify="between"
+        direction="row"
+      >
         <Route
           path={["/drafts/:draft_id/edit", "/drafts/create/:schema_id"]}
           render={props => (

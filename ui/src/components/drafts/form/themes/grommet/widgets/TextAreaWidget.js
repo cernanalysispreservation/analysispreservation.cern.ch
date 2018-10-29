@@ -44,6 +44,7 @@ class TextAreaWidget extends Component {
         onBlur={this.props.onBlur}
         value={this.props.value ? this.props.value : ""}
         onChange={this._onChange.bind(this)}
+        style={{ fontSize: "1em" }}
       />
     );
   }

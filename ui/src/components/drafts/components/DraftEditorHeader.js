@@ -207,7 +207,6 @@ class DraftEditorHeader extends React.Component {
               alignContent="center"
               justify="center"
               align="center"
-              colorIndex="brand"
             >
               <CreateAnchor
                 onClick={this._createDraft.bind(
