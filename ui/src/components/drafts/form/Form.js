@@ -40,6 +40,11 @@ class DepositForm extends React.Component {
     errors.map(error => {
       error.name = error.property;
 
+      if (error.message == "should be string") {
+        let errorMessages = objectPath.get(this.props.formData, error.property);
+        if (errorMessages == undefined) error.message = "Either edit or remove";
+      }
+
       let objPath = error.property.slice(1).split(".");
       objPath.map((path, index) => {
         let _path = objPath.slice(0, index + 1);
@@ -93,7 +98,7 @@ class DepositForm extends React.Component {
                 this.props.customValidation ? this._validate.bind(this) : null
               }
               onError={() => {}}
-              transformErrors={this.transformErrors}
+              transformErrors={this.transformErrors.bind(this)}
               formData={this.props.formData}
               onBlur={() => {}}
               onChange={this.props.onChange}
