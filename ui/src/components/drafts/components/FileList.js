@@ -52,7 +52,9 @@ class FileList extends React.Component {
               return (
                 <FileItem
                   key={`${filename}-${index}`}
-                  action={key => this._actionItem.bind(this, key)}
+                  action={key =>
+                    this.props.action ? this._actionItem.bind(this, key) : null
+                  }
                   file={file}
                 />
               );

@@ -53,6 +53,10 @@ export const UPLOAD_FILE_REQUEST = "UPLOAD_FILE_REQUEST";
 export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
 export const UPLOAD_FILE_ERROR = "UPLOAD_FILE_ERROR";
 
+export const DELETE_FILE_REQUEST = "DELETE_FILE_REQUEST";
+export const DELETE_FILE_SUCCESS = "DELETE_FILE_SUCCESS";
+export const DELETE_FILE_ERROR = "DELETE_FILE_ERROR";
+
 export const EDIT_PUBLISHED_REQUEST = "EDIT_PUBLISHED_REQUEST";
 export const EDIT_PUBLISHED_SUCCESS = "EDIT_PUBLISHED_SUCCESS";
 export const EDIT_PUBLISHED_ERROR = "EDIT_PUBLISHED_ERROR";
@@ -104,6 +108,16 @@ export function uploadFileSuccess(filename, data) {
 }
 export function uploadFileError(filename, error) {
   return { type: UPLOAD_FILE_ERROR, filename, error };
+}
+
+export function deleteFileRequest(filename) {
+  return { type: DELETE_FILE_REQUEST, filename };
+}
+export function deleteFileSuccess(filename) {
+  return { type: DELETE_FILE_SUCCESS, filename };
+}
+export function deleteFileError(filename, error) {
+  return { type: DELETE_FILE_ERROR, filename, error };
 }
 
 export function publishDraftRequest() {
@@ -617,7 +631,8 @@ export function getBucketById(bucket_id) {
 export function uploadFile(bucket_link, file) {
   return dispatch => {
     dispatch(uploadFileRequest(file.name));
-    bucket_link = "/api/files/" + bucket_link.split("/files/")[1];
+    let bucket_id = bucket_link.split("/files/")[1];
+    bucket_link = "/api/files/" + bucket_id;
     let uri = `${bucket_link}/${file.name}`;
 
     let oReq = new XMLHttpRequest();
@@ -647,6 +662,19 @@ export function uploadFile(bucket_link, file) {
   };
 }
 
+export function deleteFile(bucket, key) {
+  return dispatch => {
+    dispatch(deleteFileRequest(key));
+    let uri = `/api/files/${bucket}/${key}`;
+    axios
+      .delete(uri)
+      .then(dispatch(deleteFileSuccess(key)))
+      .catch(error => {
+        dispatch(deleteFileError(key, error));
+      });
+  };
+}
+
 export function uploadViaUrl(draft_id, urlToGrab, type) {
   return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
@@ -656,11 +684,13 @@ export function uploadViaUrl(draft_id, urlToGrab, type) {
 
     // TOFIX !!!WARNING!!! Change this so as to send the data in one request.
     data.map(d => {
-      dispatch(uploadFileRequest(d.url)),
+      let filename = d.url.split("/").pop();
+      d.type == "repo" ? (filename = `${filename}.tar.gz`) : filename;
+      dispatch(uploadFileRequest(filename)),
         axios
           .post(uri, d)
           .then(response => {
-            dispatch(uploadFileSuccess(d.url, response.data));
+            dispatch(uploadFileSuccess(filename, response.data));
           })
           .catch(error => {
             dispatch(uploadFileError(d.url, error));

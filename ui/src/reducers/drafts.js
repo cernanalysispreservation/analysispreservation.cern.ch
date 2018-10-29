@@ -23,6 +23,9 @@ import {
   UPLOAD_FILE_REQUEST,
   UPLOAD_FILE_SUCCESS,
   UPLOAD_FILE_ERROR,
+  DELETE_FILE_REQUEST,
+  DELETE_FILE_SUCCESS,
+  DELETE_FILE_ERROR,
   INIT_FORM,
   PUBLISH_DRAFT_REQUEST,
   PUBLISH_DRAFT_SUCCESS,
@@ -223,6 +226,19 @@ export default function depositReducer(state = initialState, action) {
         status: "done"
       });
     case UPLOAD_FILE_ERROR:
+      return state.setIn(["current_item", "files", action.filename], {
+        key: action.filename,
+        status: "error",
+        error: action.error.response.data
+      });
+    case DELETE_FILE_REQUEST:
+      return state.setIn(["current_item", "files", action.filename], {
+        key: action.filename,
+        status: "deleting"
+      });
+    case DELETE_FILE_SUCCESS:
+      return state.removeIn(["current_item", "files", action.filename]);
+    case DELETE_FILE_ERROR:
       return state.setIn(["current_item", "files", action.filename], {
         key: action.filename,
         status: "error",

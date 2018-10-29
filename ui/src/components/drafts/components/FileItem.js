@@ -1,16 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Label, ListItem, Toast } from "grommet";
+import { connect } from "react-redux";
+
+import { Anchor, Box, Label, ListItem, Toast } from "grommet";
 
 import Status from "grommet/components/icons/Status";
-import {
-  ArchiveIcon,
-  DocumentConfigIcon,
-  PieChartIcon,
-  BookIcon,
-  NoteIcon
-} from "grommet/components/icons/base";
+
+import ArchiveIcon from "grommet/components/icons/base/Archive";
+import BookIcon from "grommet/components/icons/base/Book";
+import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
+import PieChartIcon from "grommet/components/icons/base/PieChart";
+import NoteIcon from "grommet/components/icons/base/Note";
+import CloseIcon from "grommet/components/icons/base/Close";
+
+import { deleteFile } from "../../../actions/drafts";
 
 import prettyBytes from "pretty-bytes";
 
@@ -45,6 +49,10 @@ class FileItem extends React.Component {
   render() {
     let { file } = this.props;
     let filename = file.key.split("/").pop();
+    let bucket_id = this.props.links
+      .get("bucket")
+      .split("/")
+      .pop();
     return (
       <ListItem
         key={file.key}
@@ -85,6 +93,14 @@ class FileItem extends React.Component {
                 <Status size="small" value={uploadStatusMap[file.status]} />
               </Box>
             ) : null}
+            <Box margin={{ top: "small" }}>
+              <Anchor
+                icon={<CloseIcon size="xsmall" />}
+                onClick={() => {
+                  this.props.deleteFile(bucket_id, filename);
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </ListItem>
@@ -94,7 +110,24 @@ class FileItem extends React.Component {
 
 FileItem.propTypes = {
   file: PropTypes.object,
-  action: PropTypes.func
+  action: PropTypes.func,
+  deleteFile: PropTypes.func,
+  links: PropTypes.node
 };
 
-export default FileItem;
+function mapStateToProps(state) {
+  return {
+    links: state.drafts.getIn(["current_item", "links"])
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    deleteFile: (bucket, file) => dispatch(deleteFile(bucket, file))
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FileItem);
