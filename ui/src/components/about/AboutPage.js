@@ -8,9 +8,7 @@ import PropTypes from "prop-types";
 function CustomTile(props) {
   return (
     <Tile basis="1/2" pad="large">
-      <Heading tag="h5" uppercase={true}>
-        {props.header}
-      </Heading>
+      <Heading tag="h4">{props.header}</Heading>
     </Tile>
   );
 }
@@ -42,11 +40,10 @@ class AboutPage extends React.Component {
                   <b>CERN Analysis Preservation</b> is a service for physicists
                   to preserve and document the various materials produced in the
                   process of their analyses, e.g. datasets, code, documentation,
-                  so that they are reusable and understandable in the future.{" "}
-                  <br />
-                  <br /> By using this tool, researchers ensure these outputs
-                  are preserved and also findable and accessible by their
-                  (internal) collaborators.
+                  so that they are reusable and understandable in the future. By
+                  using this tool, researchers ensure these outputs are
+                  preserved and also findable and accessible by their (internal)
+                  collaborators.
                 </span>
               }
             />
@@ -57,11 +54,10 @@ class AboutPage extends React.Component {
                   dedicated client are available, as well as integrations with
                   existing databases and platforms used by the collaborations.{" "}
                   This shall help reducing the burden on the HEP researchers and
-                  to avoid duplication of information.<br />
-                  <br /> The researchers remain in full control of their
-                  datasets while being able to preserve and share their data and
-                  materials easily with their colleagues.<br />
-                  <br /> A search engine allows collaborators to search for
+                  to avoid duplication of information. The researchers remain in
+                  full control of their datasets while being able to preserve
+                  and share their data and materials easily with their
+                  colleagues. A search engine allows collaborators to search for
                   elements of an analysis, such as trigger information or
                   selection criteria.
                 </span>
@@ -74,8 +70,8 @@ class AboutPage extends React.Component {
                   community and corresponds to current data management policies
                   which have been put into place by funding agencies in recent
                   years. These policies demand data management that facilitates
-                  future reuse and reproducibility of research outcomes.<br />
-                  <br /> CERN Analysis Preservation and
+                  future reuse and reproducibility of research outcomes. CERN
+                  Analysis Preservation and
                   <a
                     style={{ textDecoration: "underline" }}
                     href="http://opendata.cern.ch/"
@@ -86,14 +82,12 @@ class AboutPage extends React.Component {
                   </a>{" "}
                   enable researchers to comply with these requirements, while
                   offering functionalities to simplify internal research
-                  workflows and publishing procedures.<br />
-                  <br /> CAP enables the user to give specific access to
-                  analysis records and store relevant analysis information in
-                  one place, so that reviewing analyses and the process of
-                  analysis approval becomes easier.<br />
-                  <br /> CERN Open Data can be used to publish openly various
-                  materials, such as datasets, software, configuration files,
-                  etc.
+                  workflows and publishing procedures. CAP enables the user to
+                  give specific access to analysis records and store relevant
+                  analysis information in one place, so that reviewing analyses
+                  and the process of analysis approval becomes easier. CERN Open
+                  Data can be used to publish openly various materials, such as
+                  datasets, software, configuration files, etc.
                 </span>
               }
             />
@@ -105,12 +99,10 @@ class AboutPage extends React.Component {
                   <a href="http://www.reana.io/" target="_blank">
                     Reusable Analyses
                   </a>{" "}
-                  - REANA - service.<br />
-                  <br /> REANA is a platform for reusable research data
-                  analyses.<br />
-                  <br /> It permits researchers to structure their analysis
-                  data, code, environment and workflows in a reusable manner.<br />
-                  <br /> It allows the users to instantiate and run
+                  - REANA - service. REANA is a platform for reusable research
+                  data analyses. It permits researchers to structure their
+                  analysis data, code, environment and workflows in a reusable
+                  manner. It allows the users to instantiate and run
                   computational research data analysis workflows on remote
                   containerised compute clouds.
                 </span>
@@ -120,10 +112,8 @@ class AboutPage extends React.Component {
               header={
                 <span>
                   These services are being developed and operated by the CERN IT
-                  and the Scientific Information Service.
-                  <br />
-                  <br />
-                  The documentation for the service can be found at{" "}
+                  and the Scientific Information Service. The documentation for
+                  the service can be found at{" "}
                   <a
                     style={{ textDecoration: "underline" }}
                     href="https://cernanalysispreservation.readthedocs.io/en/latest/index.html"
