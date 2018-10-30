@@ -17,15 +17,6 @@ from os.path import dirname, join
 
 from celery.schedules import crontab
 from flask import request
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -39,6 +30,15 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
+
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter
 
 
 def _(x):
@@ -581,10 +581,11 @@ INDEXER_REPLACE_REFS = False
 
 # LHCB DB files location
 # ======================
-LHCB_DB_FILES_LOCATION = os.path.join(
-    APP_ROOT,
-    'modules/experiments/static/example_lhcb/'
-)
+LHCB_DB_FILES_LOCATION = os.environ.get(
+    'APP_LHCB_FILES_LOCATION', os.path.join(
+        APP_ROOT,
+        'modules/experiments/static/example_lhcb/'
+    ))
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False
