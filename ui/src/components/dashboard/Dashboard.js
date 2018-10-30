@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import AnnotatedMeter from "grommet-addons/components/AnnotatedMeter";
 import MoreIcon from "grommet/components/icons/base/More";
+import ReactTooltip from "react-tooltip";
 
 import {
   Box,
@@ -22,9 +23,16 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 function DashboardList(props) {
   return (
     <Box>
-      <Heading tag="h5" uppercase={true} align="center" justify="center">
+      <Heading
+        tag="h5"
+        uppercase={true}
+        align="center"
+        justify="center"
+        data-tip={props.emptyMessage}
+      >
         {props.header}
       </Heading>
+      <ReactTooltip />
       <List>
         {props.items.length > 0 ? (
           props.items.map((item, index) => {

@@ -4,8 +4,10 @@ import { withRouter } from "react-router";
 import { fromJS } from "immutable";
 import { connect } from "react-redux";
 import Truncate from "react-truncate";
+import AnnounceIcon from "grommet/components/icons/base/Announce";
+import ReactTooltip from "react-tooltip";
 
-import { Paragraph, Box, Anchor, Label, List, ListItem } from "grommet";
+import { Paragraph, Box, Button, Anchor, Label, List, ListItem } from "grommet";
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -60,6 +62,7 @@ class SearchResults extends React.Component {
                             color: "black"
                           }}
                           uppercase={true}
+                          data-tip={metadata.get("general_title")}
                         >
                           {metadata.get("general_title") || (
                             <span
@@ -71,20 +74,13 @@ class SearchResults extends React.Component {
                             </span>
                           )}
                         </Anchor>
+                        <ReactTooltip />
                       </Label>
-                      <Box direction="row" justify="end">
-                        {Array.from(objects).map((object, index) => {
-                          return (
-                            <Label
-                              key={`${object}-${index}`}
-                              size="small"
-                              uppercase="true"
-                            >
-                              {object} &nbsp;
-                            </Label>
-                          );
-                        })}
-                      </Box>
+                      {status === "published" ? (
+                        <Label size="small" uppercase={true}>
+                          <AnnounceIcon size="xsmall" /> Published
+                        </Label>
+                      ) : null}
                     </Box>
                     <Box
                       basis="2/3"
