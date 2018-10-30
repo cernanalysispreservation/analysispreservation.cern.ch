@@ -10,7 +10,6 @@ import Sidebar from "grommet/components/Sidebar";
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import CheckBox from "grommet/components/CheckBox";
-import { Label } from "grommet";
 
 // import FiltersPreview from './components/FiltersPreview';
 

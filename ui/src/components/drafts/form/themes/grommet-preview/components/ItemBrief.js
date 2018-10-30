@@ -1,18 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
+
+import _get from "lodash/get";
 
 import { Box } from "grommet";
 
 let ItemBrief = function(props) {
-  const { index, item, label } = props;
+  const { item, label } = props;
 
   let preview = [];
 
   if (Array.isArray(label)) {
     label.map(prop => {
       preview.push(
-        `${prop.title}${prop.separator || ":"} ${_.get(item, prop.path) || "-"}`
+        `${prop.title}${prop.separator || ":"} ${_get(item, prop.path) || "-"}`
       );
     });
   } else {

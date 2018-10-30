@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _isEmpty from "lodash/isEmpty";
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -21,7 +21,7 @@ let FieldTemplate = function(props) {
         {label}
       </Label>
       {_errors}
-      {(children.props.formData && _.isEmpty(children.props.formData)) ||
+      {(children.props.formData && _isEmpty(children.props.formData)) ||
       children.props.formData === undefined ? (
         <Box colorIndex="light-2" pad="small" margin={{ top: "small" }}>
           No {label} provided.

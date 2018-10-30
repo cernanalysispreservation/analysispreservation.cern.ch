@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Select, Box } from "grommet";
+import Select from "grommet/components/Select";
 
 import axios from "axios";
 

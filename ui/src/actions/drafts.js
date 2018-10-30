@@ -409,7 +409,7 @@ export function patchGeneralTitle(draft_id, title) {
 }
 
 export function postCreateDraft(data = {}, schema, ana_type) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(createDraftRequest());
 
     let uri = "/api/deposits/";

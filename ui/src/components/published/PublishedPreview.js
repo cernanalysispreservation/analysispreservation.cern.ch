@@ -1,6 +1,7 @@
-import _ from "lodash";
 import React from "react";
 import PropTypes from "prop-types";
+
+import _omit from "lodash/omit";
 
 import { connect } from "react-redux";
 
@@ -27,7 +28,7 @@ const transformSchema = schema => {
     "control_number"
   ];
 
-  schema.properties = _.omit(schema.properties, schemaFieldsToRemove);
+  schema.properties = _omit(schema.properties, schemaFieldsToRemove);
   schema = {
     type: schema.type,
     properties: schema.properties,

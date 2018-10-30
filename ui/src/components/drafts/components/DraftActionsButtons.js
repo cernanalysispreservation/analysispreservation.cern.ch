@@ -10,7 +10,6 @@ import TrashIcon from "grommet/components/icons/base/Trash";
 import RefreshIcon from "grommet/components/icons/base/Refresh";
 import Edit from "grommet/components/icons/base/Edit";
 import Spinning from "grommet/components/icons/Spinning";
-import Status from "grommet/components/icons/Status";
 
 import { withRouter } from "react-router";
 

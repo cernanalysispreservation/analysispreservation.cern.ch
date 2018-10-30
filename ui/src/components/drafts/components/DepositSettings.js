@@ -2,7 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import axios from "axios";
 import PropTypes from "prop-types";
-import _ from "lodash";
+
+import _debounce from "lodash/debounce";
+import _filter from "lodash/filter";
+import _groupBy from "lodash/groupBy";
+import _sortBy from "lodash/sortBy";
 
 import {
   Box,
@@ -46,7 +50,7 @@ class DepositSettings extends React.Component {
     }
   }
 
-  fetchLdapData = _.debounce(url => {
+  fetchLdapData = _debounce(url => {
     axios.get(url).then(({ data }) => {
       this.setState({
         suggestions: data
@@ -90,13 +94,13 @@ class DepositSettings extends React.Component {
   };
 
   permissionExists(grouped, action) {
-    let actionExists = _.filter(grouped, ["action", action]);
+    let actionExists = _filter(grouped, ["action", action]);
     return actionExists.length > 0 ? true : false;
   }
 
   render() {
     let permissions = this.props.permissions;
-    let grouped = _.groupBy(permissions, function(permission) {
+    let grouped = _groupBy(permissions, function(permission) {
       return permission.identity;
     });
 
@@ -106,7 +110,7 @@ class DepositSettings extends React.Component {
       ? this.props.draft_id
       : this.props.match.params.draft_id;
 
-    let users = _.sortBy(Object.keys(grouped));
+    let users = _sortBy(Object.keys(grouped));
 
     return (
       <Box>
