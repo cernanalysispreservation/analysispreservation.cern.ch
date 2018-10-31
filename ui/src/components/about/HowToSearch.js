@@ -5,9 +5,7 @@ import { Tiles, Box, Tile, Heading } from "grommet";
 function CustomTile(props) {
   return (
     <Tile basis={props.basis || "1/2"} pad="large">
-      <Heading tag="h5" uppercase={true}>
-        {props.header}
-      </Heading>
+      <Heading tag="h5">{props.header}</Heading>
       <code style={{ color: "#C094bf" }}>
         <span>{props.code}</span>
       </code>
