@@ -125,14 +125,17 @@
           "analysis_status": {
             "enum": [
               "None",
-              "Planned / open topic",
-              "In preparation",
-              "ANA note released",
-              "Review committee",
-              "Collaboration review",
-              "CONF note published",
-              "Journal review",
-              "PAPER published"
+              "0 - planned / open topic",
+              "1 - in preparation",
+              "2 - ANA note released",
+              "3 - review committee",
+              "4 - collaboration review",
+              "5 -",
+              "6 - CONF note published",
+              "7 -",
+              "8 - journal review",
+              "9 - PAPER published",
+              "x - other"
             ],
             "type": "string",
             "title": "Status"

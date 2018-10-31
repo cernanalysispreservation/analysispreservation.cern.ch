@@ -1,108 +1,108 @@
 {
-    "mappings": {
-        "lhcb-v0.0.1": {
-            "properties": {
-                "_experiment" : {
-                    "type": "text"
+  "mappings": {
+    "lhcb-v0.0.1": {
+      "properties": {
+        "_experiment": {
+          "type": "text"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "created": {
+          "type": "date"
+        },
+        "keyword": {
+          "type": "keyword"
+        },
+        "basic_info": {
+          "type": "object",
+          "properties": {
+            "analysis_proponents": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "text",
+                  "copy_to": "researcher"
                 },
-                "_created": {
-                    "type": "date",
-                    "copy_to": "created"
-                },
-                "created": {
-                    "type": "date"
-                },
-                "keyword": {
-                    "type": "keyword"
-                },
-                "basic_info": {
-                    "type": "object",
-                    "properties": {
-                        "analysis_proponents": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "text",
-                                    "copy_to": "researcher"
-                                },
-                                "orcid": {
-                                    "type": "keyword",
-                                    "copy_to": "researcher"
-                                }
-                            }
-                        },
-                        "reviewers": {
-                            "type": "object",
-                            "properties": {
-                                "name": {
-                                    "type": "text",
-                                    "copy_to": "reviewer"
-                                },
-                                "orcid": {
-                                    "type": "keyword",
-                                    "copy_to": "reviewer"
-                                }
-                            }
-                        },
-                        "review_egroup": {
-                            "type": "keyword",
-                            "copy_to": "reviewer"
-                        },
-                        "institutes": {
-                            "type": "keyword",
-                            "copy_to": "institute"
-                        },
-                        "keywords": {
-                            "type": "keyword",
-                            "copy_to": "keyword"
-                        }
-                    }
-                },
-                "ntuple_userdst_production": {
-                    "type": "object",
-                    "properties": {
-                        "input_dataset": {
-                            "type": "keyword",
-                            "copy_to": "dataset"
-                        }
-                    }
-                },
-                "stripping_turbo_selection": {
-                    "type": "object",
-                    "properties": {
-                        "bookkeping_locations": {
-                            "type": "keyword",
-                            "copy_to": "bookkeeping"
-                        },
-                        "stripping_turbo_line": {
-                            "type": "keyword",
-                            "copy_to": "stripping_line"
-                        }
-                    }
-                },
-                "additional_resources": {
-                    "type": "object",
-                    "properties": {
-                        "publications": {
-                            "type": "object",
-                            "properties":{
-                                "analysis_number": {
-                                    "type": "keyword",
-                                    "copy_to": "ananote"
-                                },
-                                "arxiv_id": {
-                                    "type": "keyword",
-                                    "copy_to": "arxiv"
-                                },
-                                "twiki": {
-                                    "type": "keyword",
-                                    "copy_to": "twiki"
-                                }
-                            }
-                        }
-                    }
+                "orcid": {
+                  "type": "keyword",
+                  "copy_to": "researcher"
                 }
+              }
+            },
+            "reviewers": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "text",
+                  "copy_to": "reviewer"
+                },
+                "orcid": {
+                  "type": "keyword",
+                  "copy_to": "reviewer"
+                }
+              }
+            },
+            "review_egroup": {
+              "type": "keyword",
+              "copy_to": "reviewer"
+            },
+            "institutes": {
+              "type": "keyword",
+              "copy_to": "institute"
+            },
+            "keywords": {
+              "type": "keyword",
+              "copy_to": "keyword"
             }
+          }
+        },
+        "ntuple_userdst_production": {
+          "type": "object",
+          "properties": {
+            "input_dataset": {
+              "type": "keyword",
+              "copy_to": "dataset"
+            }
+          }
+        },
+        "stripping_turbo_selection": {
+          "type": "object",
+          "properties": {
+            "bookkeping_locations": {
+              "type": "keyword",
+              "copy_to": "bookkeeping"
+            },
+            "stripping_turbo_line": {
+              "type": "keyword",
+              "copy_to": "stripping_line"
+            }
+          }
+        },
+        "additional_resources": {
+          "type": "object",
+          "properties": {
+            "publications": {
+              "type": "object",
+              "properties": {
+                "analysis_number": {
+                  "type": "keyword",
+                  "copy_to": "ananote"
+                },
+                "arxiv_id": {
+                  "type": "keyword",
+                  "copy_to": "arxiv"
+                },
+                "twiki": {
+                  "type": "keyword",
+                  "copy_to": "twiki"
+                }
+              }
+            }
+          }
         }
+      }
     }
+  }
 }
