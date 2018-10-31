@@ -142,7 +142,7 @@ class FileManager extends React.Component {
                         </Box>
                       </Box>
                       <Heading tag="h5" strong={true}>
-                        Upload from URL
+                        Upload from CERN Gitlab/Github file URL
                       </Heading>
                       <Box>
                         <Box flex={true}>
@@ -184,7 +184,7 @@ class FileManager extends React.Component {
                   <Tab title="Repo Upload">
                     <Box pad="medium">
                       <Heading tag="h5" strong={true}>
-                        Upload from Gitlab CERN/Github
+                        Upload from Gitlab CERN/Github repository url
                       </Heading>
                       <Box direction="row">
                         <CleanForm
