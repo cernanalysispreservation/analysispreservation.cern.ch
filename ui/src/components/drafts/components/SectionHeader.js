@@ -27,6 +27,9 @@ export default function SectionHeader(props) {
       <Box flex={false} margin={{ horizontal: "small" }}>
         {props.icon ? props.icon : null}
       </Box>
+      <Box flex={false} margin={{ horizontal: "small" }}>
+        {props.action ? props.action : null}
+      </Box>
     </Header>
   );
 }
@@ -34,5 +37,6 @@ export default function SectionHeader(props) {
 SectionHeader.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.element,
-  status: PropTypes.element
+  status: PropTypes.element,
+  action: PropTypes.element
 };

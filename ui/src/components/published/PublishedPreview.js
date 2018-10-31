@@ -13,6 +13,7 @@ import FilesPublished from "./components/FilesPublished";
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
 import Status from "grommet/components/icons/Status";
+import { EditAnchor } from "../drafts/components/DraftActionsButtons";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -47,6 +48,8 @@ class PublishedPreview extends React.Component {
     let item = this.props.item ? this.props.item.metadata : null;
     let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
     let files = item ? item._files : null;
+    let draft_id = item._deposit.id;
+
     return (
       <Box flex={true}>
         <Box direction="row" flex={true} wrap={false}>
@@ -58,7 +61,11 @@ class PublishedPreview extends React.Component {
           </Sidebar>
           {_schema && this.props.uiSchema ? (
             <Box flex={true}>
-              <SectionHeader label="Published" status={<Status value="ok" />} />
+              <SectionHeader
+                label="Published"
+                status={<Status value="ok" />}
+                action={<EditAnchor draft_id={draft_id} />}
+              />
               <Box flex={true}>
                 <Box flex={false} pad="medium">
                   <JSONSchemaPreviewer

@@ -102,10 +102,9 @@ class SettingsIndex extends React.Component {
     return (
       <Box full={true} colorIndex="light-2">
         {this.state.layer.active ? this.getLayer() : null}
-        <Box>
+        <Box colorIndex="neutral-1-a">
           <Header
             size="small"
-            colorIndex="neutral-1-a"
             pad={{ horizontal: "small" }}
             wrap={true}
             justify="between"
@@ -136,7 +135,7 @@ class SettingsIndex extends React.Component {
                   to your account.
                 </Toast>
               ) : null}
-              <Table colorIndex="light-2">
+              <Table>
                 <thead key="token_header">
                   <tr>
                     <th>ID</th>
@@ -148,7 +147,7 @@ class SettingsIndex extends React.Component {
                 <tbody>
                   {this.props.tokens.map((token, keyy) => {
                     return token && token.t_id ? (
-                      <TableRow key={token.t_id} uppercase={true}>
+                      <TableRow key={token.t_id}>
                         {[
                           <td key="id">{token.t_id}</td>,
                           <td key="name">{token.name}</td>,

@@ -58,10 +58,9 @@ class SearchResults extends React.Component {
                               : `/drafts/${id}`
                           }
                           style={{
-                            "text-decoration": "none",
+                            textDecoration: "none",
                             color: "black"
                           }}
-                          uppercase={true}
                           data-tip={metadata.get("general_title")}
                         >
                           {metadata.get("general_title") || (
