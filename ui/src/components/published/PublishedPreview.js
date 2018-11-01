@@ -49,7 +49,7 @@ class PublishedPreview extends React.Component {
     let item = this.props.item ? this.props.item.metadata : null;
     let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
     let files = item ? item._files : null;
-    let draft_id = item._deposit.id;
+    let draft_id = item ? item._deposit.id : null;
 
     return (
       <Box flex={true}>
