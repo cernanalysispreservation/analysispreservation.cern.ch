@@ -80,6 +80,47 @@ def test_get_deposits_when_owner_returns_his_deposits(app, db, users,
             assert hit['metadata']['_deposit']['id'] in user_deposits_ids
 
 
+def test_get_deposits_returns_also_published_ones(app, db, users,
+                                                  auth_headers_for_user,
+                                                  create_deposit
+                                                  ):
+    user = users['cms_user']
+
+    with app.test_client() as client:
+        user_deposits_ids = [x['_deposit']['id'] for x in [
+            create_deposit(user, 'cms-analysis-v0.0.1', publish=True),
+            create_deposit(user, 'cms-questionnaire-v0.0.1'),
+        ]]
+
+        create_deposit(users['lhcb_user'], 'lhcb-v0.0.1'),
+
+        resp = client.get('/deposits/', headers=auth_headers_for_user(user))
+        hits = resp.json['hits']['hits']
+
+        assert resp.status_code == 200
+        assert len(hits) == 2
+        for hit in hits:
+            assert hit['metadata']['_deposit']['id'] in user_deposits_ids
+
+
+def test_get_deposits_returns_published_ones_that_belongs_to_member_of_collab(app, db, users,
+                                                                              auth_headers_for_user,
+                                                                              create_deposit
+                                                                              ):
+    owner, other_user = users['alice_user'], users['alice_user2'] 
+
+    with app.test_client() as client:
+        published_deposit = create_deposit(owner, 'alice-v0.0.1', experiment='ALICE', publish=True)
+        non_published_deposit = create_deposit(owner, 'alice-v0.0.1')
+
+        resp = client.get('/deposits/', headers=auth_headers_for_user(other_user))
+        hits = [hit['metadata']['_deposit']['id'] for hit in resp.json['hits']['hits']]
+
+        assert resp.status_code == 200
+        assert published_deposit['_deposit']['id'] in hits 
+        assert non_published_deposit['_deposit']['id'] not in hits 
+
+
 @mark.parametrize("action", [
     ("deposit-read"),
     ("deposit-admin")
