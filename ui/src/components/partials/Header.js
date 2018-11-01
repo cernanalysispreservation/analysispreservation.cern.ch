@@ -5,15 +5,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 
-import {
-  Header as GrommetHeader,
-  Title,
-  Box,
-  Layer,
-  Menu,
-  Anchor,
-  Label
-} from "grommet";
+import { Header as GrommetHeader } from "grommet";
+
+import Box from "grommet/components/Box";
+import Title from "grommet/components/Title";
+import Layer from "grommet/components/Layer";
+import Menu from "grommet/components/Menu";
+import Anchor from "grommet/components/Anchor";
+import Label from "grommet/components/Label";
 
 import SearchBar from "../search/SearchBar";
 

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { Box, Toast } from "grommet";
+import Box from "grommet/components/Box";
+import Toast from "grommet/components/Toast";
 
 import TagsInput from "react-tagsinput";
 

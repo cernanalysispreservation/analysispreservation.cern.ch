@@ -7,7 +7,11 @@ import Truncate from "react-truncate";
 import AnnounceIcon from "grommet/components/icons/base/Announce";
 import ReactTooltip from "react-tooltip";
 
-import { Box, Anchor, Label, List, ListItem } from "grommet";
+import Box from "grommet/components/Box";
+import Anchor from "grommet/components/Anchor";
+import Label from "grommet/components/Label";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
 
 class SearchResults extends React.Component {
   constructor(props) {

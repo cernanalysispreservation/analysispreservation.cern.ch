@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Search, Box } from "grommet";
+import Box from "grommet/components/Box";
+import Search from "grommet/components/Search";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 

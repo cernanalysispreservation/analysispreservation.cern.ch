@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Label, List, ListItem } from "grommet";
+import Label from "grommet/components/Label";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
 import prettyBytes from "pretty-bytes";
 import NoteIcon from "grommet/components/icons/base/Note";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";

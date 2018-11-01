@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { CheckBox, Box } from "grommet";
+import Box from "grommet/components/Box";
+import CheckBox from "grommet/components/CheckBox";
 
 function selectValue(value, selected, all) {
   const at = all.indexOf(value);

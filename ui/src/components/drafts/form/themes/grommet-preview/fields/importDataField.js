@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Anchor } from "grommet";
+import Anchor from "grommet/components/Anchor";
+import Box from "grommet/components/Box";
 
 import axios from "axios";
 

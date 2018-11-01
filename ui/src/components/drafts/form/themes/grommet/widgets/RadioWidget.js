@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, RadioButton } from "grommet";
+import Box from "grommet/components/Box";
+import RadioButton from "grommet/components/RadioButton";
 
 const RadioWidget = function(props) {
   let { onChange, options, value } = props;

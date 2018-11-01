@@ -5,7 +5,8 @@ import _omit from "lodash/omit";
 
 import { connect } from "react-redux";
 
-import { Box, Sidebar } from "grommet";
+import Box from "grommet/components/Box";
+import Sidebar from "grommet/components/Sidebar";
 
 import { getPublishedItem } from "../../actions/published";
 import FilesPublished from "./components/FilesPublished";

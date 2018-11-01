@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Paragraph } from "grommet";
+import Box from "grommet/components/Box";
+import Paragraph from "grommet/components/Paragraph";
 
 const SelectWidget = function(props) {
   return (

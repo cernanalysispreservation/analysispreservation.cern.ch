@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Box, Table, TableRow } from "grommet";
+import Box from "grommet/components/Box";
+import Table from "grommet/components/Table";
+import TableRow from "grommet/components/TableRow";
 import DownloadIcon from "grommet/components/icons/base/Download";
 
 import { getAnalysisOutputs } from "../../actions/published";

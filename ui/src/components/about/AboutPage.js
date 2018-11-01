@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Box, Tiles, Tile, Heading } from "grommet";
+import Box from "grommet/components/Box";
+import Tiles from "grommet/components/Tiles";
+import Tile from "grommet/components/Tile";
+import Heading from "grommet/components/Heading";
 import Header from "../partials/Header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";

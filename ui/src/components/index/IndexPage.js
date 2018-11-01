@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Switch, Route } from "react-router-dom";
 
-import { Box } from "grommet";
+import Box from "grommet/components/Box";
 
 import SearchPage from "../search/SearchPage";
 import Header from "../partials/Header";

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box } from "grommet";
+import Box from "grommet/components/Box";
 
 import View from "grommet/components/icons/base/View";
 

@@ -5,16 +5,14 @@ import AnnotatedMeter from "grommet-addons/components/AnnotatedMeter";
 import MoreIcon from "grommet/components/icons/base/More";
 import ReactTooltip from "react-tooltip";
 
-import {
-  Box,
-  Heading,
-  Header,
-  Tiles,
-  Tile,
-  List,
-  ListItem,
-  Anchor
-} from "grommet";
+import Anchor from "grommet/components/Anchor";
+import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
+import Header from "grommet/components/Header";
+import Tiles from "grommet/components/Tiles";
+import Tile from "grommet/components/Tile";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
 
 import { withRouter } from "react-router-dom";
 import { fetchDashboard } from "../../actions/dashboard";

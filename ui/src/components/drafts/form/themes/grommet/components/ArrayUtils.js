@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Button } from "grommet";
+import Box from "grommet/components/Box";
+import Button from "grommet/components/Button";
 
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import FormUpIcon from "grommet/components/icons/base/FormUp";

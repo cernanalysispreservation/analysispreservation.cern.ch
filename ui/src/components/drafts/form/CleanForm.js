@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box } from "grommet";
-
+import Box from "grommet/components/Box";
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet/templates/FieldTemplate";
 import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";

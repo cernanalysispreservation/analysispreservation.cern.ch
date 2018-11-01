@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Anchor, Button, Box, Label } from "grommet";
+import Box from "grommet/components/Box";
+import Anchor from "grommet/components/Anchor";
+import Button from "grommet/components/Button";
+import Label from "grommet/components/Label";
 
 import AnnounceIcon from "grommet/components/icons/base/Announce";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";

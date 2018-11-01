@@ -3,7 +3,14 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Anchor, Box, Button, Tabs, Title, Tab, Layer, Heading } from "grommet";
+import Anchor from "grommet/components/Anchor";
+import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
+import Button from "grommet/components/Button";
+import Tabs from "grommet/components/Tabs";
+import Title from "grommet/components/Title";
+import Tab from "grommet/components/Tab";
+import Layer from "grommet/components/Layer";
 
 import {
   toggleFilemanagerLayer,

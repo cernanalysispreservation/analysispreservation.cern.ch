@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { CheckBox } from "grommet";
+import CheckBox from "grommet/components/CheckBox";
 
 const SwitchWidget = function(props) {
   // TOFIX onBlur, onFocus

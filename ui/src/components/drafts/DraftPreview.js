@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box, Toast } from "grommet";
+import Box from "grommet/components/Box";
+import Toast from "grommet/components/Toast";
 
 import { fetchAndAssignSchema } from "../../actions/common";
 

@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Box, Header, Heading, Section } from "grommet";
+import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
+import Section from "grommet/components/Section";
 
 import { getDraftById } from "../../actions/drafts";
 

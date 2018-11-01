@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Anchor, Box, Label, ListItem, Toast } from "grommet";
+import Anchor from "grommet/components/Anchor";
+import Label from "grommet/components/Label";
+import Box from "grommet/components/Box";
+import ListItem from "grommet/components/ListItem";
+import Toast from "grommet/components/Toast";
 
 import Status from "grommet/components/icons/Status";
 

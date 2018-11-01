@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Box, Title, Label, Meter } from "grommet";
+import Box from "grommet/components/Box";
+import Title from "grommet/components/Title";
+import Label from "grommet/components/Label";
+import Meter from "grommet/components/Meter";
 
 import { getAnalysisStatus } from "../../actions/published";
 import RerunOutputs from "./RerunOutputs";

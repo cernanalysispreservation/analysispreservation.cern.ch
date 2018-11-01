@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Box } from "grommet";
+import Box from "grommet/components/Box";
 
 import { Route } from "react-router-dom";
 

@@ -2,7 +2,8 @@ import _isEmpty from "lodash/isEmpty";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Label } from "grommet";
+import Box from "grommet/components/Box";
+import Label from "grommet/components/Label";
 // import FieldHeader from "../components/FieldHeader";
 
 let FieldTemplate = function(props) {

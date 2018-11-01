@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Select } from "grommet";
+import Select from "grommet/components/Select";
 
 const SelectWidget = function(props) {
   // TOFIX onBlur, onFocus

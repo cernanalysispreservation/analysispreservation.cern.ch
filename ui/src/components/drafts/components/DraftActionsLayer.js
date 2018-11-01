@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box, Layer, Paragraph, Button } from "grommet";
+import Box from "grommet/components/Box";
+import Button from "grommet/components/Button";
+import Layer from "grommet/components/Layer";
+import Paragraph from "grommet/components/Paragraph";
 
 import { toggleActionsLayer } from "../../../actions/drafts";
 

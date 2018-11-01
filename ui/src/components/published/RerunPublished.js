@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Box, Title, Button } from "grommet";
+import Box from "grommet/components/Box";
+import Title from "grommet/components/Title";
+import Button from "grommet/components/Button";
 
 import { rerunPublished } from "../../actions/published";
 

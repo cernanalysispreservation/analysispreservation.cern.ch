@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box, Label } from "grommet";
+import Box from "grommet/components/Box";
+import Label from "grommet/components/Label";
 
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";

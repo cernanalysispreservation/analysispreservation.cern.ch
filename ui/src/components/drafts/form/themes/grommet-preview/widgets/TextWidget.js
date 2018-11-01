@@ -2,7 +2,8 @@ import axios from "axios";
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Paragraph } from "grommet";
+import Box from "grommet/components/Box";
+import Paragraph from "grommet/components/Paragraph";
 import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/drafts";
 import { fromJS } from "immutable";

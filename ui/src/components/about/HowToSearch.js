@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Tiles, Box, Tile, Heading } from "grommet";
+import Box from "grommet/components/Box";
+import Tiles from "grommet/components/Tiles";
+import Tile from "grommet/components/Tile";
+import Heading from "grommet/components/Heading";
 
 function CustomTile(props) {
   return (

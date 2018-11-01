@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import { Box, Menu } from "grommet";
+import Box from "grommet/components/Box";
+import Menu from "grommet/components/Menu";
 
 import {
   CreateAnchor,

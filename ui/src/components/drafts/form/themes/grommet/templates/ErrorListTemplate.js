@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Notification, List, ListItem } from "grommet";
+import Box from "grommet/components/Box";
+import Notification from "grommet/components/Notification";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
 
 export default function ErrorListTemplate(props) {
   const { errors } = props;

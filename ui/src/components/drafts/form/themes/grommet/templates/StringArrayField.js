@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Button, Box, List, ListItem } from "grommet";
+import Box from "grommet/components/Box";
+import Button from "grommet/components/Button";
+import List from "grommet/components/List";
+import ListItem from "grommet/components/ListItem";
 
 import TextWidget from "../widgets/TextWidget";
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";

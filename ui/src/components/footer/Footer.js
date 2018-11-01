@@ -1,5 +1,9 @@
 import React from "react";
-import { Box, Footer, Paragraph, Menu, Anchor } from "grommet";
+import Box from "grommet/components/Box";
+import Footer from "grommet/components/Footer";
+import Paragraph from "grommet/components/Paragraph";
+import Menu from "grommet/components/Menu";
+import Anchor from "grommet/components/Anchor";
 
 class GrommetFooter extends React.Component {
   render() {

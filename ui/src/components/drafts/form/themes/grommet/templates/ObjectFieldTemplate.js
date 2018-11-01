@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box } from "grommet";
+import Box from "grommet/components/Box";
 
 import AccordionFieldTemplate from "./AccordionObjectField";
 import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";

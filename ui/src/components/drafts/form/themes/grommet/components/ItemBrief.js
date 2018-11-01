@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import _get from "lodash/get";
 
-import { Box } from "grommet";
+import Box from "grommet/components/Box";
 
 let ItemBrief = function(props) {
   const { item, label } = props;

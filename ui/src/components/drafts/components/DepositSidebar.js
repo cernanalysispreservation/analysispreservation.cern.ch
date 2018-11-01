@@ -4,7 +4,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import { Box, Anchor, Sidebar } from "grommet";
+import Box from "grommet/components/Box";
+import Anchor from "grommet/components/Anchor";
+import Sidebar from "grommet/components/Sidebar";
 
 import AddIcon from "grommet/components/icons/base/Add";
 

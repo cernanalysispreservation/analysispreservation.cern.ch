@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Box, Header } from "grommet";
+import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
 
 export default function SectionHeader(props) {
   return (

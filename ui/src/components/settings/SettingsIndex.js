@@ -2,19 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import {
-  Box,
-  Button,
-  Anchor,
-  Layer,
-  Paragraph,
-  Heading,
-  Table,
-  TableRow,
-  Toast,
-  Label,
-  Header
-} from "grommet";
+import Box from "grommet/components/Box";
+import Button from "grommet/components/Button";
+import Anchor from "grommet/components/Anchor";
+import Layer from "grommet/components/Layer";
+import Paragraph from "grommet/components/Paragraph";
+import Table from "grommet/components/Table";
+import TableRow from "grommet/components/TableRow";
+import Toast from "grommet/components/Toast";
+import Label from "grommet/components/Label";
+import Header from "grommet/components/Header";
+import Heading from "grommet/components/Heading";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import CloseIcon from "grommet/components/icons/base/Close";

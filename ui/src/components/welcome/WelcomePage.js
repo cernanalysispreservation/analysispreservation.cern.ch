@@ -2,17 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import {
-  Box,
-  Sidebar,
-  Button,
-  Heading,
-  Header,
-  Section,
-  LoginForm,
-  Anchor,
-  Paragraph
-} from "grommet";
+import Box from "grommet/components/Box";
+import Sidebar from "grommet/components/Sidebar";
+import Button from "grommet/components/Button";
+import Heading from "grommet/components/Heading";
+import Header from "grommet/components/Header";
+import Section from "grommet/components/Section";
+import LoginForm from "grommet/components/LoginForm";
+import Anchor from "grommet/components/Anchor";
+import Paragraph from "grommet/components/Paragraph";
 
 import Spinning from "grommet/components/icons/Spinning";
 
