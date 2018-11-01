@@ -55,10 +55,12 @@ export default class SearchUtils extends React.Component {
             onClick={this._onPrevPage.bind(this)}
             icon={<PreviousIcon />}
           />
-          <Label size="small" uppercase={true}>
-            Page <strong>{this.props.currentPage}</strong> of{" "}
-            <strong>{num_pages}</strong>
-          </Label>
+          {this.props.total != 0 ? (
+            <Label size="small" uppercase={true}>
+              Page <strong>{this.props.currentPage}</strong> of{" "}
+              <strong>{num_pages}</strong>
+            </Label>
+          ) : null}
           <Button
             onClick={this._onNextPage.bind(this, num_pages)}
             icon={<NextIcon />}

@@ -34,11 +34,10 @@ export function searchError(error) {
 export function fetchSearch() {
   return function(dispatch, getState) {
     let searchApiUrl = "/api/deposits/";
-    let params = queryString.parse(location_search);
-    let location_search = getState().routing.location.search;
-    let searchUrl = `${searchApiUrl}/${location_search}`;
 
-    if (!("sort" in params)) searchUrl += "&sort=mostrecent";
+    let location_search = getState().routing.location.search;
+    let params = queryString.parse(location_search);
+    let searchUrl = `${searchApiUrl}/${location_search}`;
 
     dispatch(toggleAggs(params));
     dispatch(searchRequest());

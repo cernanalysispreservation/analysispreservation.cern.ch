@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
+import Label from "grommet/components/Label";
 
 import SearchFacets from "./SearchFacets";
 import SearchUtils from "./SearchUtils";
@@ -95,7 +96,17 @@ class SearchPage extends React.Component {
           onPageSizeChange={this._changePageSize.bind(this)}
         />
       );
-      results = <SearchResults results={_results.hits.hits || []} />;
+      results =
+        total == 0 ? (
+          <Box flex={true} justify="center" align="center">
+            <Label>
+              No search results where found or you have no permission to see
+              them
+            </Label>
+          </Box>
+        ) : (
+          <SearchResults results={_results.hits.hits || []} />
+        );
     }
 
     return (
