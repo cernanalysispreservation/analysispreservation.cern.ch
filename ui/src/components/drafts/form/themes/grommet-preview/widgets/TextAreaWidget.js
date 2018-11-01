@@ -37,6 +37,7 @@ class TextAreaWidget extends Component {
   render() {
     return (
       <textarea
+        disabled={true}
         rows="5"
         type="text"
         id={this.props.id}
