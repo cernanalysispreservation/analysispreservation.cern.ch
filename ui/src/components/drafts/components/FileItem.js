@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
+import Menu from "grommet/components/Menu";
+
 import ListItem from "grommet/components/ListItem";
 import Toast from "grommet/components/Toast";
 
@@ -17,6 +19,8 @@ import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
 import PieChartIcon from "grommet/components/icons/base/PieChart";
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
+import DownloadIcon from "grommet/components/icons/base/Download";
+import MoreIcon from "grommet/components/icons/base/More";
 
 import { deleteFile } from "../../../actions/drafts";
 
@@ -97,13 +101,29 @@ class FileItem extends React.Component {
                 <Status size="small" value={uploadStatusMap[file.status]} />
               </Box>
             ) : null}
-            <Box margin={{ top: "small" }}>
-              <Anchor
-                icon={<CloseIcon size="xsmall" />}
-                onClick={() => {
-                  this.props.deleteFile(bucket_id, filename);
-                }}
-              />
+            <Box direction="row" justify="center" align="center">
+              <Menu
+                responsive={true}
+                size="small"
+                inline={false}
+                icon={<MoreIcon size="xsmall" />}
+              >
+                <Anchor
+                  size="small"
+                  icon={<DownloadIcon size="xsmall" />}
+                  label={<Label size="small">Download</Label>}
+                  href={`/api/files/${bucket_id}/${filename}`}
+                  download
+                />
+                <Anchor
+                  size="small"
+                  icon={<CloseIcon size="xsmall" />}
+                  label={<Label size="small">Delete</Label>}
+                  onClick={() => {
+                    this.props.deleteFile(bucket_id, filename);
+                  }}
+                />
+              </Menu>
             </Box>
           </Box>
         </Box>
