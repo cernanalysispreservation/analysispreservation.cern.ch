@@ -15,13 +15,6 @@ We want to make it easier for physicists who are meant to have access to this an
 
 ---------------
 
-Taking Part
------------
-
-Do you want to help us grow? We are always happy to receive contributions and as we are developing open source you are free to make up your own mind on what we are doing. Just go to `our repository on GitHub <https://github.com/cernanalysispreservation/analysis-preservation.cern.ch>`_ and look around.
-
-In case you are unsure what to do, you can contact us at analysis-preservation-support@cern.ch.
-
 Further Reading
 ---------------
 
@@ -31,16 +24,16 @@ Further Reading
 
 	introduction
 	project
-	tutorials 
-	schema 
-	api 
-	terms 
-	faq 
-	glossary 
-	support 
+	tutorials
+	schema
+	api
+	terms
+	faq
+	glossary
+	support
 	related-projects
 	README
-	
+
 License
 -------
 
