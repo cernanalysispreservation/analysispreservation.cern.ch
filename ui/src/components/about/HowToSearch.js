@@ -4,14 +4,16 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Section from "grommet/components/Section";
 import Article from "grommet/components/Article";
+import Header from "../partials/Header";
+import GrommetFooter from "../footer/Footer";
 
 class HowToSearchPage extends React.Component {
   render() {
-    return (
+    return [
+      <Header />,
       <Box flex={true}>
         <Box
           flex={true}
-          // full="horizontal"
           align="center"
           textAlign="center"
           colorIndex="light-2"
@@ -101,8 +103,9 @@ class HowToSearchPage extends React.Component {
             </Section>
           </Article>
         </Box>
-      </Box>
-    );
+      </Box>,
+      <GrommetFooter />
+    ];
   }
 }
 

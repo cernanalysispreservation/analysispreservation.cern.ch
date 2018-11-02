@@ -50,7 +50,7 @@ class Header extends React.Component {
         <Box
           flex={true}
           pad={{ horizontal: "small" }}
-          justify="end"
+          justify="start"
           direction="row"
           responsive={false}
         >
@@ -68,56 +68,61 @@ class Header extends React.Component {
               <b>BETA</b>
             </Label>
           </Title>
-          <Box flex={true} justify="center" colorIndex="neutral-1-t">
-            <SearchBar />
-          </Box>
-          <Menu
-            align="center"
-            margin={{ left: "small" }}
-            direction="row"
-            responsive={true}
-            size="small"
-          >
-            <Menu
-              colorIndex="neutral-1"
-              responsive={true}
-              label="Create"
-              dropAlign={{ top: "bottom" }}
-              size="small"
-            >
-              {this.props.groups ? (
-                this.props.groups.map((group, index) => (
-                  <Anchor
-                    key={`${group.get("name")}-${index}`}
-                    label={`${group.get("name")}`}
-                    animateIcon={true}
-                    path={`/drafts/create/${group.get("deposit_group")}`}
-                  />
-                ))
-              ) : (
-                <Box> No available schemas.</Box>
-              )}
-            </Menu>
-            <Menu
-              colorIndex="neutral-1"
-              dropAlign={{ top: "bottom" }}
-              icon={<UserIcon />}
-              size="small"
-            >
-              <Anchor
-                label="Logout"
-                href="#"
-                animateIcon={true}
-                onClick={this.props.logout}
-              />
-              <Anchor
-                label="Settings"
-                href="#"
-                animateIcon={true}
-                path="/settings"
-              />
-            </Menu>
-          </Menu>
+
+          {this.props.isLoggedIn
+            ? [
+                <Box flex={true} justify="center" colorIndex="neutral-1-t">
+                  <SearchBar />
+                </Box>,
+                <Menu
+                  align="center"
+                  margin={{ left: "small" }}
+                  direction="row"
+                  responsive={true}
+                  size="small"
+                >
+                  <Menu
+                    colorIndex="neutral-1"
+                    responsive={true}
+                    label="Create"
+                    dropAlign={{ top: "bottom" }}
+                    size="small"
+                  >
+                    {this.props.groups ? (
+                      this.props.groups.map((group, index) => (
+                        <Anchor
+                          key={`${group.get("name")}-${index}`}
+                          label={`${group.get("name")}`}
+                          animateIcon={true}
+                          path={`/drafts/create/${group.get("deposit_group")}`}
+                        />
+                      ))
+                    ) : (
+                      <Box> No available schemas.</Box>
+                    )}
+                  </Menu>
+                  <Menu
+                    colorIndex="neutral-1"
+                    dropAlign={{ top: "bottom" }}
+                    icon={<UserIcon />}
+                    size="small"
+                  >
+                    <Anchor
+                      label="Logout"
+                      href="#"
+                      animateIcon={true}
+                      onClick={this.props.logout}
+                    />
+                    <Anchor
+                      label="Settings"
+                      href="#"
+                      animateIcon={true}
+                      path="/settings"
+                    />
+                  </Menu>
+                </Menu>
+              ]
+            : null}
         </Box>
       </GrommetHeader>
     );
@@ -125,6 +130,7 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
+  isLoggedIn: PropTypes.bool,
   logout: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object,
@@ -133,6 +139,7 @@ Header.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    isLoggedIn: state.auth.getIn(["isLoggedIn"]),
     groups: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }

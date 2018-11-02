@@ -4,37 +4,16 @@ import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
 import Heading from "grommet/components/Heading";
 import Header from "../partials/Header";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Header as BlueHeader } from "grommet";
 import GrommetFooter from "../footer/Footer";
 
 class AboutPage extends React.Component {
   render() {
     return [
-      this.props.isLoggedIn ? (
-        [
-          <Header />,
-          <BlueHeader
-            size="small"
-            colorIndex="neutral-1-a"
-            pad="none"
-            wrap={true}
-            justify="center"
-          />
-        ]
-      ) : (
-        <Box
-          align="center"
-          full="horizontal"
-          pad="medium"
-          colorIndex="neutral-1-a"
-        />
-      ),
-      <Box flex={true} full={true} margin="small">
+      <Header />,
+      <Box flex={true}>
         <Box align="center">
           <Box align="center" size="xxlarge">
-            <Box>
+            <Box margin={{ vertical: "medium" }}>
               <Heading tag="h2">What is it?</Heading>
               <Paragraph>
                 CERN Analysis Preservation (CAP) is a service for physicists to
@@ -125,22 +104,11 @@ class AboutPage extends React.Component {
           </Box>
         </Box>
       </Box>,
-      this.props.isLoggedIn ? <GrommetFooter /> : null
+      <GrommetFooter />
     ];
   }
 }
 
-AboutPage.propTypes = {
-  isLoggedIn: PropTypes.bool
-};
+AboutPage.propTypes = {};
 
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.auth.getIn(["isLoggedIn"])
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  {}
-)(AboutPage);
+export default AboutPage;
