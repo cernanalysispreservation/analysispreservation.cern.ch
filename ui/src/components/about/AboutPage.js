@@ -81,21 +81,23 @@ class AboutPage extends React.Component {
                 always be restricted to members of the collaboration associated
                 with an analysis. Permissions within a collaboration can be
                 adjusted by the creator of the analysis, defaulting to
-                creator-only access. More specifically: only collaboration
-                members have access to a collaboration’s area, can create
-                analyses and can see shared analyses only a certain
-                collaboration’s members have access to this collaboration’s
-                analyses only members granted specific rights can see or edit a
-                draft version of an analysis only the creator can see or edit an
-                analysis with default permission settings For more detailed
-                information please refer to our{" "}
+                creator-only access. More specifically: <br />
+                * only collaboration members have access to a collaboration’s
+                area, can create analyses and can see shared analyses <br />
+                * only a certain collaboration’s members have access to this
+                collaboration’s analyses <br />
+                * only members granted specific rights can see or edit a draft
+                version of an analysis <br />
+                * only the creator can see or edit an analysis with default
+                permission settings For more detailed information please refer
+                to our{" "}
                 <a href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access">
                   documentation
                 </a>.
               </Paragraph>
               <Heading tag="h2">Contact</Heading>
               <Paragraph>
-                Get in touch with us! Send us a message at:{" "}
+                Get in touch with us! Send us a message at&nbsp;
                 <a href="mailto:analysis-preservation-support@cern.ch">
                   analysis-preservation-support@cern.ch
                 </a>
