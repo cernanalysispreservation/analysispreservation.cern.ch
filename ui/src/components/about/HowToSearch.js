@@ -34,7 +34,7 @@ class HowToSearchPage extends React.Component {
             <Section colorIndex="grey-4">
               <Heading tag="h4" margin="none">
                 If you look for a value in a specific field, prefix the value
-                with the name or alias of this field
+                with the name or alias of this field.
                 <br />
                 <code>
                   <small>object:electron</small>
@@ -56,7 +56,7 @@ class HowToSearchPage extends React.Component {
                 You can use wildcards in your queries (<b>"?" </b> for a single
                 character and <b> "*" </b> for multiple ones). <br />Keep in
                 mind that none of those can be used as first character in your
-                search!
+                search.
                 <br />
                 <code>
                   <small>dataset:"/MinimumBias/*"</small>
@@ -91,14 +91,14 @@ class HowToSearchPage extends React.Component {
             </Section>
             <Section colorIndex="grey-4">
               <Heading tag="h4" margin="none">
-                You can find more search tips using Lucene query syntax &nbsp;
+                You can find more search tips using Lucene query syntax&nbsp;
                 <a
                   href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html"
                   target="_blank"
                   style={{ textDecoration: "none" }}
                 >
                   here
-                </a>
+                </a>.
               </Heading>
             </Section>
           </Article>
