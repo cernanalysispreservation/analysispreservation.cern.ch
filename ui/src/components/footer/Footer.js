@@ -24,7 +24,8 @@ class GrommetFooter extends React.Component {
               label="Contact"
               href="mailto:analysis-preservation-support@cern.ch"
             />
-            <Anchor label="About" href="#" path="/about" />
+            <Anchor label="About" path="/about" />
+            <Anchor label="Search Tips" path="/search-tips" />
           </Menu>
         </Box>
       </Footer>

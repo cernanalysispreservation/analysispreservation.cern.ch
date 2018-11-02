@@ -36,7 +36,7 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <Box colorIndex="neutral-1">
+      <Box colorIndex="neutral-1-t">
         <Search
           id="searchbar"
           inline={true}

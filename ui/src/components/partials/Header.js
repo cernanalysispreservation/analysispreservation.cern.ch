@@ -9,7 +9,6 @@ import { Header as GrommetHeader } from "grommet";
 
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
-import Layer from "grommet/components/Layer";
 import Menu from "grommet/components/Menu";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
@@ -17,9 +16,6 @@ import Label from "grommet/components/Label";
 import SearchBar from "../search/SearchBar";
 
 import UserIcon from "grommet/components/icons/base/User";
-import CircleInformationIcon from "grommet/components/icons/base/CircleInformation";
-
-import HowToSearchPage from "../about/HowToSearch";
 import { fetchSearch } from "../../actions/search";
 import config from "../../config";
 import { logout } from "../../actions/auth";
@@ -27,9 +23,6 @@ import { logout } from "../../actions/auth";
 class Header extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      show: false
-    };
   }
 
   _onSearchSubmit(event) {
@@ -51,27 +44,9 @@ class Header extends React.Component {
     return q["q"] || "";
   }
 
-  showLayer = () => {
-    this.setState({ show: true });
-  };
-
-  hideLayer = () => {
-    this.setState({ show: false });
-  };
-
   render() {
     return (
       <GrommetHeader fixed={false} size="small" colorIndex="neutral-1">
-        {this.state.show ? (
-          <Layer
-            closer={true}
-            flush={true}
-            overlayClose={true}
-            onClose={this.hideLayer}
-          >
-            <HowToSearchPage />
-          </Layer>
-        ) : null}
         <Box
           flex={true}
           pad={{ horizontal: "small" }}
@@ -103,7 +78,6 @@ class Header extends React.Component {
             responsive={true}
             size="small"
           >
-            <Anchor icon={<CircleInformationIcon />} onClick={this.showLayer} />
             <Menu
               colorIndex="neutral-1"
               responsive={true}
