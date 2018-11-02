@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import Label from "grommet/components/Label";
 import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 
@@ -61,7 +62,13 @@ class FileList extends React.Component {
             })
         ) : (
           <ListPlaceholder
-            emptyMessage="No files have been attached to this analysis."
+            emptyMessage={
+              <Label size="small" margin="none">
+                <strong>No files have been attached.</strong> Upload your
+                analysis files here (n-tuples, macros, publication, output,
+                etc). 10 GB of storage are available for each analysis
+              </Label>
+            }
             unfilteredTotal={0}
           />
         )}

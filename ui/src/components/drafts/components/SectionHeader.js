@@ -25,12 +25,14 @@ export default function SectionHeader(props) {
           {props.label} {props.status}
         </span>
       </Box>
-      <Box flex={false} margin={{ horizontal: "small" }}>
+      <Box flex={false} margin={{ horizontal: "xsmall" }}>
         {props.icon ? props.icon : null}
       </Box>
-      <Box flex={false} margin={{ horizontal: "small" }}>
-        {props.action ? props.action : null}
-      </Box>
+      {props.action ? (
+        <Box flex={false} margin={{ horizontal: "small" }}>
+          {props.action}
+        </Box>
+      ) : null}
     </Header>
   );
 }

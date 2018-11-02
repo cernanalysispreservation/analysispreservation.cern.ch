@@ -15,9 +15,26 @@ import { toggleFilemanagerLayer } from "../../../actions/drafts";
 import SectionHeader from "./SectionHeader";
 import DepositFilesList from "./DepositFilesList";
 
+import { Route } from "react-router-dom";
+
 class DepositSidebar extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  _renderAddFileIcon() {
+    return (
+      <Route
+        path="/drafts/:draft_id/edit"
+        render={() => (
+          <Anchor
+            onClick={this.props.toggleFilemanagerLayer}
+            size="xsmall"
+            icon={<AddIcon />}
+          />
+        )}
+      />
+    );
   }
 
   render() {
@@ -26,15 +43,7 @@ class DepositSidebar extends React.Component {
         <Box flex={true}>
           <SectionHeader
             label="Files | Data | Source Code"
-            icon={
-              this.props.draft_id ? (
-                <Anchor
-                  onClick={this.props.toggleFilemanagerLayer}
-                  size="xsmall"
-                  icon={<AddIcon />}
-                />
-              ) : null
-            }
+            icon={this._renderAddFileIcon()}
           />
           <DepositFilesList
             files={this.props.files || []}
