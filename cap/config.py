@@ -67,6 +67,7 @@ I18N_LANGUAGES = [
 #: Email address for support.
 SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 #: Disable email sending by default.
+MAIL_DEBUG = False
 MAIL_SUPPRESS_SEND = True
 
 # Accounts
@@ -167,13 +168,15 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 # =======================================================================
 
 
-DEBUG = True
+DEBUG_MODE = os.environ.get('DEBUG_MODE', False)
+if DEBUG_MODE == 'True':
+    DEBUG = True
+else:
+    DEBUG = False
 
 if DEBUG:
     REST_ENABLE_CORS = True
     APP_ENABLE_SECURE_HEADERS = False
-else:
-    APP_ENABLE_SECURE_HEADERS = True
 
 
 # Path to app root dir

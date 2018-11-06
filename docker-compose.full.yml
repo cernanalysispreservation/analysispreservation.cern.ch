@@ -46,6 +46,7 @@ services:
       - "5000"
     volumes:
       - static_data:/opt/cap/var/instance/static
+      - ./var/data:/var/data
     links:
       - cache
       - es

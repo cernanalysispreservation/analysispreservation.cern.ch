@@ -43,6 +43,7 @@ from invenio_access.models import ActionUsers
 from invenio_access.permissions import superuser_access
 from invenio_accounts.models import Role
 from invenio_accounts.testutils import create_test_user
+from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
@@ -88,8 +89,13 @@ def env_config(instance_path):
 @pytest.fixture(scope='session')
 def default_config():
     """Default configuration."""
+
+    APP_DEFAULT_SECURE_HEADERS['force_https'] = False
+    APP_DEFAULT_SECURE_HEADERS['session_cookie_secure'] = False
+
     return dict(
         DEBUG_TB_ENABLED=False,
+        APP_DEFAULT_SECURE_HEADERS=APP_DEFAULT_SECURE_HEADERS,
         CELERY_ALWAYS_EAGER=True,
         CELERY_CACHE_BACKEND='memory',
         CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
@@ -99,8 +105,6 @@ def default_config():
         TESTING=True,
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
-
-
 
 
 @pytest.yield_fixture(scope='session')
@@ -176,7 +180,8 @@ def users(app, db):
         'superuser': create_user_with_role('superuser@cern.ch',
                                            'analysis-preservation-support@cern.ch'),
     }
-    db.session.add(ActionUsers.allow(superuser_access, user=users['superuser']))
+    db.session.add(ActionUsers.allow(
+        superuser_access, user=users['superuser']))
     db.session.commit()
 
     return users
@@ -274,7 +279,7 @@ def auth_headers_for_user(app, db, es):
             auth_header=[
                 ('Authorization', 'Bearer {0}'.format(token_.access_token)),
             ]
-        )) 
+        ))
 
     return _write_token
 
@@ -304,12 +309,11 @@ def location(db):
     shutil.rmtree(tmppath)
 
 
-
 @pytest.fixture
 def create_deposit(app, db, es, location, jsonschemas_host,
                    create_schema):
     """Returns function to create a new deposit."""
-    minimal_metadata = lambda host,schema: {
+    minimal_metadata = lambda host, schema: {
         '$schema': 'https://{}/schemas/{}.json'.format(host, schema)
     }
 
@@ -327,7 +331,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
                               experiment='CMS')
 
                 # create schema for deposit
-                schema = create_schema('deposits/records/{}'.format(schema_name), 
+                schema = create_schema('deposits/records/{}'.format(schema_name),
                                        experiment=experiment)
                 metadata = metadata or minimal_metadata(jsonschemas_host,
                                                         'deposits/records/{}'.format(schema_name))
