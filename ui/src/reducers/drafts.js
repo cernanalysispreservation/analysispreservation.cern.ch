@@ -17,6 +17,9 @@ import {
   DRAFTS_ITEM_REQUEST,
   DRAFTS_ITEM_SUCCESS,
   DRAFTS_ITEM_ERROR,
+  BUCKET_ITEM_REQUEST,
+  BUCKET_ITEM_SUCCESS,
+  BUCKET_ITEM_ERROR,
   CREATE_DRAFT_REQUEST,
   CREATE_DRAFT_SUCCESS,
   CREATE_DRAFT_ERROR,
@@ -83,6 +86,7 @@ const initialState = Map({
     published_id: null,
     data: null,
     formData: {},
+    bucket_id: null,
     files: Map({}),
     loading: false,
     message: null,
@@ -144,14 +148,27 @@ export default function depositReducer(state = initialState, action) {
         .setIn(["current_item", "schema"], action.draft.metadata.$schema)
         .setIn(["current_item", "formData"], action.draft.metadata)
         .setIn(["current_item", "permissions"], action.permissions)
-        .setIn(
-          ["current_item", "files"],
-          action.draft.files
-            ? Map(action.draft.files.map(item => [item.key, item]))
-            : Map({})
-        )
         .setIn(["current_item", "links"], Map(action.draft.links));
     case DRAFTS_ITEM_ERROR:
+      return state
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], action.error);
+    case BUCKET_ITEM_REQUEST:
+      return state
+        .setIn(["current_item", "loading"], true)
+        .setIn(["current_item", "error"], null);
+    case BUCKET_ITEM_SUCCESS:
+      return state
+        .setIn(["current_item", "loading"], false)
+        .setIn(["current_item", "error"], null)
+        .setIn(["current_item", "bucket_id"], action.bucket_id)
+        .setIn(
+          ["current_item", "files"],
+          action.bucket.contents.length > 0
+            ? Map(action.bucket.contents.map(item => [item.key, item]))
+            : Map({})
+        );
+    case BUCKET_ITEM_ERROR:
       return state
         .setIn(["current_item", "loading"], false)
         .setIn(["current_item", "error"], action.error);

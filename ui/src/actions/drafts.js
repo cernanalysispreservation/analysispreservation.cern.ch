@@ -596,6 +596,8 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         dispatch(
           draftsItemSuccess(draft_id, response.data, response.data.access)
         );
+        let bucket_id = response.data.links.bucket.split("/").pop();
+        dispatch(getBucketById(bucket_id));
       })
       .catch(error => {
         const e = error.response

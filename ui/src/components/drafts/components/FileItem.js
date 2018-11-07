@@ -56,12 +56,9 @@ class FileItem extends React.Component {
 
   render() {
     let { file } = this.props;
-    let filename = file.key.split("/").pop();
-    let bucket_id = this.props.links
-      .get("bucket")
-      .split("/")
-      .pop();
-    return (
+    let filename = file && file.key ? file.key.split("/").pop() : null;
+    let bucket_id = this.props.bucket_id;
+    return file ? (
       <ListItem
         key={file.key}
         onClick={this.props.action ? this.props.action(file.key) : null}
@@ -128,7 +125,7 @@ class FileItem extends React.Component {
           </Box>
         </Box>
       </ListItem>
-    );
+    ) : null;
   }
 }
 
@@ -136,12 +133,12 @@ FileItem.propTypes = {
   file: PropTypes.object,
   action: PropTypes.func,
   deleteFile: PropTypes.func,
-  links: PropTypes.node
+  bucket_id: PropTypes.string
 };
 
 function mapStateToProps(state) {
   return {
-    links: state.drafts.getIn(["current_item", "links"])
+    bucket_id: state.drafts.getIn(["current_item", "bucket_id"])
   };
 }
 
