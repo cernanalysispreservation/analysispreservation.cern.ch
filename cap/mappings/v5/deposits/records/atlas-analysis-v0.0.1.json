@@ -1,18 +1,36 @@
 {
-    "mappings":{
-        "atlas-analysis-v0.0.1":{
-            "properties":{
-                "_experiment" : {
-                    "type": "text"
-                },         
-                "_created": {
-                    "type": "date",
-                    "copy_to": "created"
-                },       
-                "created": {
-                    "type": "date"
+  "mappings": {
+    "atlas-analysis-v0.0.1": {
+      "properties": {
+        "_deposit": {
+          "type": "object",
+          "properties": {
+            "created_by": {
+              "type": "integer",
+              "copy_to": "created_by"
+            },
+            "status": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
                 }
+              },
+              "copy_to": "status"
             }
+          }
+        },
+        "_experiment": {
+          "type": "text"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "created": {
+          "type": "date"
         }
+      }
     }
+  }
 }

@@ -40,7 +40,7 @@ function DashboardList(props) {
             return (
               <ListItem justify="center" key={`${item.id}-${index}`}>
                 <Anchor
-                  path={`${props.url}/${id}`}
+                  path={`${props.urlDetailed}/${id}`}
                   style={{ textDecoration: "none", color: "black" }}
                 >
                   {metadata.general_title || id}
@@ -61,7 +61,7 @@ function DashboardList(props) {
       {props.items.length > 0 ? (
         <Box align="center" margin={{ horizontal: "medium" }}>
           <Anchor
-            path="/search"
+            path={props.urlMore || "/search"}
             style={{ textDecoration: "none", color: "black" }}
           >
             <MoreIcon />
@@ -92,7 +92,8 @@ class Dashboard extends React.Component {
             <DashboardList
               items={this.props.results.published_by_collab}
               header="published in collaboration"
-              url="/published"
+              urlDetailed="/published"
+              urlMore="/search?q=&status=published"
               emptyMessage="All analyses published on CAP by members of your collaboration."
             />
           </Tile>
@@ -100,7 +101,10 @@ class Dashboard extends React.Component {
             <DashboardList
               items={this.props.results.shared_with_user}
               header="shared with you"
-              url="/drafts"
+              urlDetailed="/drafts"
+              urlMore={`/search?q=-created_by=${this.props.currentUser.get(
+                "userId"
+              )}&status=draft`}
               emptyMessage="Draft analyses that your collaborators have given you read/write access to."
             />
           </Tile>
@@ -108,7 +112,8 @@ class Dashboard extends React.Component {
             <DashboardList
               items={this.props.results.published_by_collab}
               header="latest from your group"
-              url="/published"
+              urlDetailed="/published"
+              urlMore="/search?q=&status=published"
               emptyMessage="All analyses published on CAP by members of your working group."
             />
           </Tile>
@@ -116,7 +121,10 @@ class Dashboard extends React.Component {
             <DashboardList
               items={this.props.results.user_drafts}
               header="your drafts"
-              url="/drafts"
+              urlDetailed="/drafts"
+              urlMore={`/search?q=created_by=${this.props.currentUser.get(
+                "userId"
+              )}&status=draft`}
               emptyMessage="Your draft analyses. By default, only you can access them, but it is possible to give read/write access to other collaborators."
             />
           </Tile>
@@ -144,7 +152,10 @@ class Dashboard extends React.Component {
             <DashboardList
               items={this.props.results.user_published}
               header="published by you"
-              url="/published"
+              urlDetailed="/published"
+              urlMore={`/search?q=created_by=${this.props.currentUser.get(
+                "userId"
+              )}&status=published`}
               emptyMessage="Your published analyses. Once published on CAP, all members of your collaboration will have read access."
             />
           </Tile>

@@ -12,6 +12,10 @@
         "_deposit": {
           "type": "object",
           "properties": {
+            "created_by": {
+              "type": "integer",
+              "copy_to": "created_by"
+            },
             "status": {
               "type": "text",
               "fields": {
