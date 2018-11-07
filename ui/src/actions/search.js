@@ -39,6 +39,8 @@ export function fetchSearch() {
     let params = queryString.parse(location_search);
     let searchUrl = `${searchApiUrl}/${location_search}`;
 
+    if (!("sort" in params)) searchUrl += "&sort=mostrecent";
+
     dispatch(toggleAggs(params));
     dispatch(searchRequest());
 

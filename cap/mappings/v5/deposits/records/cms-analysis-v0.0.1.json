@@ -30,9 +30,6 @@
         "created": {
           "type": "date"
         },
-        "status": {
-          "type": "keyword"
-        },
         "basic_info": {
           "type": "object",
           "properties": {

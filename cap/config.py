@@ -267,7 +267,7 @@ RECORDS_REST_FACETS = {
         'aggs': {
             'facet_status': {
                 'terms': {
-                    'field': 'status'
+                    'field': 'status.keyword'
                 }
             },
             'facet_type': {
@@ -321,7 +321,7 @@ RECORDS_REST_FACETS = {
         },
         'post_filters': {
             'type': terms_filter('_type'),
-            'status': terms_filter('status'),
+            'status': terms_filter('status.keyword'),
             'cadi_status': terms_filter('cadi_status'),
             'publication_status': terms_filter('publication_status.keyword'),
             'conference': terms_filter('conference'),

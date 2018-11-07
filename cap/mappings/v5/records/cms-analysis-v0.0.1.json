@@ -30,9 +30,6 @@
         "created": {
           "type": "date"
         },
-        "status": {
-          "type": "keyword"
-        },
         "cadi_id": {
           "type": "keyword"
         },

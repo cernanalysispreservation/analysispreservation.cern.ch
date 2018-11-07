@@ -32,7 +32,7 @@ body {
 
 #app {
   height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 #app-main {
   height: 100%; /*allows both columns to span the full height of the browser window*/
