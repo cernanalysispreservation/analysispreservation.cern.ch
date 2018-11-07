@@ -44,8 +44,7 @@ def fixtures():
 
 
 @fixtures.command('add')
-@click.option('--egroup', '-e',
-              default='analysis-preservation-support@cern.ch')
+@click.option('--egroup', '-e')
 @click.option('--schema', '-s', required=True)
 @click.option('--file', '-f', required=True, type=click.Path(exists=True))
 @click.option('--user', '-u', required=False)

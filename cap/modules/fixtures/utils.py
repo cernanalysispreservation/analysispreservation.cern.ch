@@ -27,20 +27,21 @@
 import json
 import uuid
 
-from flask import current_app
-
-from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.errors import DepositDoesNotExist
-from cap.modules.deposit.fetchers import cap_deposit_fetcher
-from cap.modules.deposit.minters import cap_deposit_minter
 from elasticsearch import helpers
 from elasticsearch_dsl import Q
-from invenio_access.models import Role, User
+from flask import current_app
+from invenio_access.models import Role
 from invenio_db import db
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_search import RecordsSearch
 from invenio_search.proxies import current_search_client as es
+
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.errors import DepositDoesNotExist
+from cap.modules.deposit.fetchers import cap_deposit_fetcher
+from cap.modules.deposit.minters import cap_deposit_minter
+from cap.modules.user.utils import get_existing_or_register_user
 
 
 def construct_draft_obj(schema, data):
@@ -79,12 +80,15 @@ def add_read_permission_for_egroup(deposit, egroup):
 
 
 def add_drafts_from_file(file_path, schema,
-                         egroup=None, user=None, limit=None):
+                         egroup=None, usermail=None, limit=None):
     """Adds drafts from a specified file.
 
     Drafts with specified pid will be registered under those.
     For drafts without pid, new pids will be minted.
     """
+    if usermail:
+        user = get_existing_or_register_user(usermail)
+
     with open(file_path, 'r') as fp:
         entries = json.load(fp)
 
@@ -101,10 +105,6 @@ def add_drafts_from_file(file_path, schema,
             except PIDDoesNotExistError:
                 record_uuid = uuid.uuid4()
                 pid = cap_deposit_minter(record_uuid, data)
-                if user:
-                    user = User.query.filter_by(email=user).one()
-                if egroup:
-                    role = Role.query.filter_by(name=egroup).one()
                 deposit = CAPDeposit.create(data, record_uuid, user)
                 deposit.commit()
 
@@ -112,6 +112,8 @@ def add_drafts_from_file(file_path, schema,
                     add_read_permission_for_egroup(deposit, egroup)
 
                 print('Draft {} added.'.format(pid.pid_value))
+
+        db.session.commit()
 
 
 def bulk_index_from_source(index_name, doc_type, source):

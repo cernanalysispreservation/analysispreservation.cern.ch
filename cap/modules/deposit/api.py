@@ -29,14 +29,21 @@ from __future__ import absolute_import, print_function
 import copy
 import shutil
 import tempfile
-
 from copy import deepcopy
 from functools import wraps
 
 import requests
-
 from celery import shared_task
 from flask import current_app, request
+from werkzeug.local import LocalProxy
+
+from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
+from cap.modules.user.errors import DoesNotExistInLDAP
+from cap.modules.user.utils import (get_existing_or_register_role,
+                                    get_existing_or_register_user)
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
@@ -50,15 +57,6 @@ from invenio_rest.errors import FieldError
 from jsonschema.validators import Draft4Validator, RefResolutionError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
-from werkzeug.local import LocalProxy
-
-from cap.config import FILES_URL_MAX_SIZE
-from cap.modules.repoimporter.repo_importer import RepoImporter
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
-from cap.modules.user.errors import DoesNotExistInLDAP
-from cap.modules.user.utils import (get_existing_or_register_role,
-                                    get_existing_or_register_user)
 
 from .errors import (DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
