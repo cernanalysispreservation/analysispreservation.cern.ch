@@ -30,6 +30,11 @@ from __future__ import absolute_import, print_function
 from invenio_accounts.models import User
 from invenio_records_files.api import Record
 from invenio_records_rest.serializers.json import JSONSerializer
+from sqlalchemy.orm.exc import NoResultFound
+
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             UpdateDepositPermission)
 
 
 class CAPSchemaSerializer(JSONSerializer):
@@ -39,12 +44,20 @@ class CAPSchemaSerializer(JSONSerializer):
         """Replaces owners id with email."""
         # TOFIX for fixtures loding
         try:
-            owner = User.query.filter_by(id=result['metadata']['_deposit'][
-                                         'owners'][0]).one_or_none()
-            if owner:
-                result['metadata']['_deposit']['owners'][0] = owner.email
-        except:
+            owner = User.query.filter_by(
+                id=result['metadata']['_deposit']['owners'][0]
+            ).one()
+
+            result['metadata']['_deposit']['owners'][0] = owner.email
+        except (NoResultFound, IndexError):
             pass
+
+        return result
+
+    def _get_user_rights_to_record(self, deposit, result):
+        result['can_edit'] = UpdateDepositPermission(deposit).can()
+        result['can_admin'] = AdminDepositPermission(deposit).can()
+
         return result
 
     def preprocess_record(self, pid, record, links_factory=None, **kwargs):
@@ -67,7 +80,9 @@ class CAPSchemaSerializer(JSONSerializer):
         result = super(CAPSchemaSerializer, self).preprocess_search_hit(
             pid, record_hit, links_factory=links_factory
         )
+        deposit = CAPDeposit.get_record(record_hit['_id'])
 
+        result = self._get_user_rights_to_record(deposit, result)
         result = self._transform_record_owners(result)
 
         return result

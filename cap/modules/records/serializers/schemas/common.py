@@ -24,12 +24,10 @@
 
 """CAP Marshmallow Schemas."""
 
-from marshmallow import Schema, ValidationError, fields, validates_schema
-
+from invenio_access.models import ActionRoles, ActionUsers
 from invenio_search import current_search
 from invenio_search.utils import schema_to_index
-
-from invenio_access.models import ActionRoles, ActionUsers
+from marshmallow import Schema, ValidationError, fields, validates_schema
 
 
 def schema_prefix(schema):
@@ -39,16 +37,6 @@ def schema_prefix(schema):
     index, doctype = schema_to_index(
         schema, index_names=current_search.mappings.keys())
     return index.split('-')[0]
-
-
-def is_record(record):
-    """Determine if a record is a bibliographic record."""
-    return schema_prefix(record.get('$schema')) == 'records'
-
-
-def is_deposit(record):
-    """Determine if a record is a deposit record."""
-    return schema_prefix(record.get('$schema')) == 'deposits'
 
 
 class StrictKeysMixin(object):
@@ -83,9 +71,11 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
                          dump_only=True)
 
     created = fields.Str(dump_only=True)
-    access = fields.Method('get_access', dump_only=True)
     links = fields.Raw()
+
     files = fields.Raw(dump_only=True)
+
+    access = fields.Method('get_access', dump_only=True)
 
     def get_access(self, obj):
         """Returns access object."""

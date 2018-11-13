@@ -28,7 +28,6 @@
 from functools import partial
 
 from flask import current_app
-
 from invenio_access.factory import action_factory
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 

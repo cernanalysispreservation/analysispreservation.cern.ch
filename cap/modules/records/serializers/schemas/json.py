@@ -40,6 +40,9 @@ class RecordSchemaJSONV1(common.CommonRecordSchemaV1):
     revision = fields.Integer(dump_only=True)
     updated = fields.Str(dump_only=True)
 
+    can_edit = fields.Boolean(dump_only=True)
+    can_admin = fields.Boolean(dump_only=True)
+
 
 class BasicDepositSchema(Schema):
     """Schema for deposit in JSON."""

@@ -12,6 +12,8 @@ import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
+import UserAdminIcon from "grommet/components/icons/base/UserAdmin";
+import EditIcon from "grommet/components/icons/base/Edit";
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -54,31 +56,51 @@ class SearchResults extends React.Component {
                       separator="right"
                       pad={{ horizontal: "medium" }}
                     >
-                      <Label size="small" uppercase={true} truncate={true}>
-                        <Anchor
-                          path={
-                            status === "published"
-                              ? `/published/${id}`
-                              : `/drafts/${id}`
-                          }
-                          style={{
-                            textDecoration: "none",
-                            color: "black"
-                          }}
-                          data-tip={metadata.get("general_title")}
-                        >
-                          {metadata.get("general_title") || (
-                            <span
-                              style={{
-                                color: "#ccc"
-                              }}
-                            >
-                              No title provided
-                            </span>
-                          )}
-                        </Anchor>
-                        <ReactTooltip />
-                      </Label>
+                      <Box
+                        alignSelf="stretch"
+                        direction="row"
+                        justify="between"
+                      >
+                        <Label size="small" uppercase={true} truncate={true}>
+                          <Anchor
+                            path={
+                              status === "published"
+                                ? `/published/${id}`
+                                : `/drafts/${id}`
+                            }
+                            style={{
+                              textDecoration: "none",
+                              color: "black"
+                            }}
+                            data-tip={metadata.get("general_title")}
+                          >
+                            {metadata.get("general_title") || (
+                              <span
+                                style={{
+                                  color: "#ccc"
+                                }}
+                              >
+                                No title provided
+                              </span>
+                            )}
+                          </Anchor>
+                          <ReactTooltip />
+                        </Label>
+                        <Box align="center" justify="center">
+                          {(item.can_admin && (
+                            <UserAdminIcon
+                              size="xsmall"
+                              data-tip="You have admin access."
+                            />
+                          )) ||
+                            (item.can_edit && (
+                              <EditIcon
+                                size="xsmall"
+                                data-tip="You have write access."
+                              />
+                            ))}
+                        </Box>
+                      </Box>
                       {status === "published" ? (
                         <Label size="small" uppercase={true}>
                           <AnnounceIcon size="xsmall" /> Published
