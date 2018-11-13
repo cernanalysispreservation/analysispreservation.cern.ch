@@ -1,26 +1,27 @@
 {
-  "fullname": "Workflows", 
-  "experiment": "ATLAS", 
+  "fullname": "Workflows",
+  "experiment": "ATLAS",
   "jsonschema": {
     "items": {
-      "type": "object", 
+      "type": "object",
       "properties": {
         "analysis_title": {
-          "type": "string", 
+          "type": "string",
           "title": "Analysis Title"
-        }, 
+        },
         "workflow": {
           "oneOf": [
             {
-              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json"
             }
           ]
         }
       }
-    }, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "array", 
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
     "title": "Workflows"
-  }, 
+  },
   "is_deposit": false
 }

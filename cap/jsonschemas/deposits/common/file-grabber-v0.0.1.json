@@ -1,24 +1,25 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
+  "is_deposit": false,
   "jsonschema": {
     "x-cap-file": {
-      "fetch_from": "/url", 
+      "fetch_from": "/url",
       "file_key": "/key"
-    }, 
-    "type": "object", 
+    },
+    "type": "object",
     "properties": {
       "url": {
-        "pattern": "^(http|https|root)://", 
+        "pattern": "^(http|https|root)://",
         "type": "string"
-      }, 
-      "version_id": {
-        "type": "string"
-      }, 
+      },
       "key": {
+        "type": "string"
+      },
+      "version_id": {
         "type": "string"
       }
     }
-  }, 
-  "is_deposit": false
+  }
 }

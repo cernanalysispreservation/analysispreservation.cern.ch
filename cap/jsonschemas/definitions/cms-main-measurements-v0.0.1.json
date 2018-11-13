@@ -3,6 +3,7 @@
   "experiment": "CMS",
   "jsonschema": {
     "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Detector State",
     "type": "object",
     "description": "Information concerning the state of the detector",
     "properties": {
@@ -32,6 +33,11 @@
         "type": "string",
         "title": "Detailed Description"
       },
+      "analysis_code": {
+        "x-cap-file": {},
+        "type": "string",
+        "title": "Analysis Code"
+      },
       "description": {
         "type": "string",
         "title": "Measurement Description"
@@ -39,14 +45,8 @@
       "processing_steps": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
-      },
-      "analysis_code": {
-        "x-cap-file": {},
-        "type": "string",
-        "title": "Analysis Code"
       }
-    },
-    "title": "Detector State"
+    }
   },
   "is_deposit": false
 }

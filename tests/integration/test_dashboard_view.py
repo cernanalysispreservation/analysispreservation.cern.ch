@@ -161,7 +161,7 @@ def test_dashboard_view_returns_user_counts_properly(app,
                                                      auth_headers_for_user):
     create_deposit(users['lhcb_user'], 'lhcb-v0.2.0', experiment='LHCb')
     create_deposit(users['lhcb_user'], 'lhcb-v0.2.0', experiment='LHCb')
-    create_deposit(users['lhcb_user'], 'lhcb-v1.2.0', experiment='CMS')
+    create_deposit(users['lhcb_user'], 'lhcb-v1.2.0', experiment='LHCb')
     create_deposit(users['lhcb_user'], 'lhcb-v1.2.0', publish=True, experiment='LHCb')
     create_deposit(users['lhcb_user2'], 'lhcb-v1.2.0', experiment='LHCb')
     create_deposit(users['lhcb_user2'], 'lhcb-v1.2.0', experiment='LHCb', publish=True)

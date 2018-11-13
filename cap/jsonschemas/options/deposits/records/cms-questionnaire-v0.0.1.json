@@ -2,110 +2,53 @@
   "fullname": null,
   "experiment": "CMS",
   "jsonschema": {
-    "analysis_context": {
-      "ui:order": [
-        "name",
-        "email",
-        "analysis_title",
-        "cadi_id",
-        "group",
-        "preapproval_date"
-      ],
-      "group": {
+    "unfolding": {
+      "event_weight_application": {
         "ui:order": ["name", "comments"]
       },
-      "preapproval_date": {
+      "software": {
         "ui:order": ["name", "comments"]
+      },
+      "note_read": {
+        "ui:widget": "switch"
+      },
+      "technique": {
+        "ui:order": ["name", "comments"]
+      },
+      "bbb_discouragement_awareness": {
+        "ui:widget": "switch"
       }
     },
     "confidence": {
       "citation": {
         "ui:order": ["name", "comments"]
       },
-      "test_stats": {
-        "ui:order": ["name", "details", "comments"]
-      },
       "theory_error": {
-        "ui:order": ["name", "comments"]
-      },
-      "toy_data": {
         "ui:order": ["name", "comments"]
       },
       "approaches": {
         "ui:order": ["name", "comments"],
         "name": {
-          "ui:widget": "select",
           "ui:options": {
             "multiple": true
-          }
+          },
+          "ui:widget": "select"
         }
+      },
+      "toy_data": {
+        "ui:order": ["name", "comments"]
+      },
+      "test_stats": {
+        "ui:order": ["name", "details", "comments"]
       },
       "software": {
         "ui:order": ["name", "comments"],
         "name": {
-          "ui:widget": "select",
           "ui:options": {
             "multiple": true
-          }
+          },
+          "ui:widget": "select"
         }
-      }
-    },
-    "data_fitting": {
-      "background_shape": {
-        "ui:order": ["name", "comments"]
-      },
-      "covariance_matrix": {
-        "ui:order": ["name", "comments"]
-      },
-      "fit_function": {
-        "ui:order": ["name", "comments"]
-      },
-      "fitting_model_choice": {
-        "ui:order": ["name", "comments"],
-        "name": {
-          "ui:widget": "select",
-          "ui:options": {
-            "multiple": true
-          }
-        }
-      },
-      "functional_form": {
-        "ui:order": ["name", "comments"],
-        "name": {
-          "ui:widget": "select",
-          "ui:options": {
-            "multiple": true
-          }
-        }
-      },
-      "goodness_test": {
-        "ui:order": ["name", "p-value", "comments"]
-      },
-      "parameter_boundaries": {
-        "ui:order": ["name", "comments"]
-      },
-      "test_stats": {
-        "ui:order": ["name", "reason", "comments"],
-        "name": {
-          "ui:widget": "select",
-          "ui:options": {
-            "multiple": true
-          }
-        }
-      },
-      "toy_pull_distribution": {
-        "ui:order": ["name", "comments"]
-      }
-    },
-    "discovery": {
-      "lookelsewhere_effect": {
-        "ui:order": ["name", "comments"]
-      },
-      "test_statistics": {
-        "ui:order": ["name", "comments"]
-      },
-      "twiki_read": {
-        "ui:widget": "switch"
       }
     },
     "feedback": {
@@ -113,56 +56,59 @@
         "ui:order": ["name", "comments"]
       }
     },
-    "general": {
-      "faq_awareness": {
+    "uncertainties": {
+      "crosschecks": {
+        "ui:order": ["name", "deriving", "failure_procedure", "comments"]
+      },
+      "consideration": {
         "ui:widget": "switch"
       },
-      "forum_awareness": {
+      "recommendations_awareness": {
         "ui:widget": "switch"
       },
-      "forum_subscription": {
+      "twiki_read": {
         "ui:widget": "switch"
       },
-      "meetings_awareness": {
-        "ui:widget": "switch"
-      },
-      "past_interaction": {
-        "ui:widget": "switch"
+      "template_morphing": {
+        "ui:order": ["name", "comments"],
+        "name": {
+          "ui:widget": "switch"
+        }
       }
     },
     "multivariate": {
-      "background_mix": {
-        "ui:order": ["name", "comments"]
-      },
-      "input_checks": {
-        "ui:order": ["name", "comments"],
-        "name": {
-          "ui:widget": "select",
-          "ui:options": {
-            "multiple": true
-          }
-        }
-      },
-      "discriminant_type": {
-        "ui:order": ["name", "comments"]
-      },
-      "input_selection": {
-        "ui:order": ["name", "comments"]
-      },
       "null_pdf": {
-        "ui:order": ["name", "comments"]
-      },
-      "overtraining": {
         "ui:order": ["name", "comments"]
       },
       "robustness": {
         "ui:order": ["name", "comments"]
       },
+      "discriminant_type": {
+        "ui:order": ["name", "comments"]
+      },
       "twiki_read": {
         "ui:widget": "switch"
       },
+      "background_mix": {
+        "ui:order": ["name", "comments"]
+      },
+      "input_selection": {
+        "ui:order": ["name", "comments"]
+      },
       "usage": {
         "ui:widget": "switch"
+      },
+      "overtraining": {
+        "ui:order": ["name", "comments"]
+      },
+      "input_checks": {
+        "ui:order": ["name", "comments"],
+        "name": {
+          "ui:options": {
+            "multiple": true
+          },
+          "ui:widget": "select"
+        }
       },
       "correlation_studies": {
         "ui:order": ["name", "comments"]
@@ -174,55 +120,109 @@
         "ui:order": ["name", "comments"]
       }
     },
+    "general": {
+      "forum_awareness": {
+        "ui:widget": "switch"
+      },
+      "faq_awareness": {
+        "ui:widget": "switch"
+      },
+      "past_interaction": {
+        "ui:widget": "switch"
+      },
+      "meetings_awareness": {
+        "ui:widget": "switch"
+      },
+      "forum_subscription": {
+        "ui:widget": "switch"
+      }
+    },
     "other_stats": {
       "blind_analysis": {
         "ui:order": ["name", "comments"]
       },
-      "combined_measurements": {
+      "correlation_treatment": {
         "ui:order": ["name", "comments"]
       },
-      "correlation_treatment": {
+      "combined_measurements": {
         "ui:order": ["name", "comments"]
       },
       "faq_read": {
         "ui:widget": "switch"
       }
     },
-    "uncertainties": {
-      "consideration": {
-        "ui:widget": "switch"
+    "analysis_context": {
+      "ui:order": [
+        "name",
+        "email",
+        "analysis_title",
+        "cadi_id",
+        "group",
+        "preapproval_date"
+      ],
+      "preapproval_date": {
+        "ui:order": ["name", "comments"]
       },
-      "crosschecks": {
-        "ui:order": ["name", "deriving", "failure_procedure", "comments"]
+      "group": {
+        "ui:order": ["name", "comments"]
+      }
+    },
+    "data_fitting": {
+      "parameter_boundaries": {
+        "ui:order": ["name", "comments"]
       },
-      "recommendations_awareness": {
-        "ui:widget": "switch"
+      "toy_pull_distribution": {
+        "ui:order": ["name", "comments"]
       },
-      "template_morphing": {
+      "fitting_model_choice": {
         "ui:order": ["name", "comments"],
         "name": {
-          "ui:widget": "switch"
+          "ui:options": {
+            "multiple": true
+          },
+          "ui:widget": "select"
         }
+      },
+      "goodness_test": {
+        "ui:order": ["name", "p-value", "comments"]
+      },
+      "background_shape": {
+        "ui:order": ["name", "comments"]
+      },
+      "functional_form": {
+        "ui:order": ["name", "comments"],
+        "name": {
+          "ui:options": {
+            "multiple": true
+          },
+          "ui:widget": "select"
+        }
+      },
+      "covariance_matrix": {
+        "ui:order": ["name", "comments"]
+      },
+      "fit_function": {
+        "ui:order": ["name", "comments"]
+      },
+      "test_stats": {
+        "ui:order": ["name", "reason", "comments"],
+        "name": {
+          "ui:options": {
+            "multiple": true
+          },
+          "ui:widget": "select"
+        }
+      }
+    },
+    "discovery": {
+      "lookelsewhere_effect": {
+        "ui:order": ["name", "comments"]
+      },
+      "test_statistics": {
+        "ui:order": ["name", "comments"]
       },
       "twiki_read": {
         "ui:widget": "switch"
-      }
-    },
-    "unfolding": {
-      "bbb_discouragement_awareness": {
-        "ui:widget": "switch"
-      },
-      "event_weight_application": {
-        "ui:order": ["name", "comments"]
-      },
-      "note_read": {
-        "ui:widget": "switch"
-      },
-      "software": {
-        "ui:order": ["name", "comments"]
-      },
-      "technique": {
-        "ui:order": ["name", "comments"]
       }
     }
   },

@@ -1,16 +1,17 @@
 {
-  "fullname": "Presentation", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Presentation",
+  "is_deposit": false,
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "url": {
-        "type": "string", 
+        "type": "string",
         "title": "URL"
       }
-    }, 
+    },
     "title": "Presentation"
-  }, 
-  "is_deposit": false
+  }
 }

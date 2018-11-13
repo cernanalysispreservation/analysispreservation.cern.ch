@@ -5,39 +5,18 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "control_regions": {
+      "samples": {
         "items": {
-          "type": "object",
-          "properties": {
-            "veto": {
-              "items": {
-                "$ref":
-                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-              },
-              "type": "array",
-              "title": "Vetos",
-              "description": "Physics objects vetoed in control region"
-            },
-            "physics_objects": {
-              "items": {
-                "$ref":
-                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
-              },
-              "type": "array",
-              "title": "Physics Objects",
-              "description": "Physics objects selection in control region"
-            }
-          },
-          "title": "Event Selection"
+          "type": "string"
         },
         "type": "array",
-        "title": "Control Regions",
-        "description": "Details on control regions definition"
+        "description": "Provide all necessary samples from DAS",
+        "title": "Samples"
       },
       "type": {
         "type": "string",
-        "title": "Type",
-        "description": "Type of background process (TTbar, DY, fakes...)"
+        "description": "Type of background process (TTbar, DY, fakes...)",
+        "title": "Type"
       },
       "method": {
         "enum": [
@@ -48,13 +27,34 @@
         "type": "string",
         "title": "Estimation Method"
       },
-      "samples": {
+      "control_regions": {
         "items": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "veto": {
+              "items": {
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              },
+              "type": "array",
+              "description": "Physics objects vetoed in control region",
+              "title": "Vetos"
+            },
+            "physics_objects": {
+              "items": {
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/definitions/cms-physics-object-v0.0.1.json"
+              },
+              "type": "array",
+              "description": "Physics objects selection in control region",
+              "title": "Physics Objects"
+            }
+          },
+          "title": "Event Selection"
         },
         "type": "array",
-        "description": "Provide all necessary samples from DAS",
-        "title": "Samples"
+        "description": "Details on control regions definition",
+        "title": "Control Regions"
       }
     }
   },

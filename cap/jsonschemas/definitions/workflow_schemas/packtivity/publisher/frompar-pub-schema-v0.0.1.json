@@ -1,28 +1,24 @@
 {
-  "fullname": "Parameter Publisher", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Parameter Publisher",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Parameter Publisher", 
-    "required": [
-      "publisher_type", 
-      "outputmap"
-    ], 
+    "title": "Parameter Publisher",
+    "required": ["publisher_type", "outputmap"],
+    "id": "parameter_publisher",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "publisher_type": {
-        "default": "frompar-pub", 
-        "enum": [
-          "frompar-pub"
-        ], 
+        "default": "frompar-pub",
+        "enum": ["frompar-pub"],
         "type": "string"
-      }, 
+      },
       "outputmap": {
         "type": "object"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "parameter_publisher"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

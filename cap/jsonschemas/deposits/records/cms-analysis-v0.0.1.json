@@ -7,33 +7,33 @@
       "analysis_reuse_mode": {
         "properties": {
           "main_measurements": {
-            "id": "main_measurements",
             "items": {
               "$ref":
                 "https://analysispreservation.cern.ch/schemas/definitions/cms-main-measurements-v0.0.1.json"
             },
+            "title": "Main Measurements Workflows",
             "type": "array",
             "description":
               "Please provide information about the main measurements of your analysis",
-            "title": "Main Measurements Workflows"
+            "id": "main_measurements"
           },
           "final_results": {
-            "description":
-              "Please provide information necessary to generate final plots and tables for your analysis.",
+            "title": "Final Results",
             "type": "object",
             "properties": {
               "code_base": {
                 "x-cap-file": {},
                 "type": "string",
-                "title": "Your Code",
-                "description": "Include your code for n-tuple production"
+                "description": "Include your code for n-tuple production",
+                "title": "Your Code"
               },
               "processing_steps": {
                 "$ref":
                   "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
               }
             },
-            "title": "Final Results"
+            "description":
+              "Please provide information necessary to generate final plots and tables for your analysis."
           },
           "systematic_uncertainties": {
             "items": {
@@ -50,21 +50,21 @@
                   "type": "string",
                   "title": "Type"
                 },
-                "statement": {
-                  "type": "string",
-                  "title": "Statement about the most important systematics"
-                },
                 "physics_object": {
                   "type": "string",
                   "description":
                     "Choose from objects defined in main measurements",
                   "title": "Physics Object"
+                },
+                "statement": {
+                  "type": "string",
+                  "title": "Statement about the most important systematics"
                 }
               }
             },
             "type": "array",
-            "title": "Systematic Uncertainties",
-            "description": "Details on the systematic uncertainties"
+            "description": "Details on the systematic uncertainties",
+            "title": "Systematic Uncertainties"
           },
           "auxiliary_measurements": {
             "items": {
@@ -106,8 +106,8 @@
                 "https://analysispreservation.cern.ch/schemas/definitions/cms-background-estimation-v0.0.1.json"
             },
             "type": "array",
-            "title": "Background Estimation",
-            "description": "Details on the background estimation methods"
+            "description": "Details on the background estimation methods",
+            "title": "Background Estimation"
           }
         }
       }
@@ -122,8 +122,8 @@
           "combine_datacard": {
             "x-cap-file": {},
             "type": "string",
-            "title": "Combine Datacard File",
-            "description": "Add final combine datacards of the analysis"
+            "description": "Add final combine datacards of the analysis",
+            "title": "Combine Datacard File"
           },
           "statistics_questionnaire": {
             "default": {},
@@ -149,10 +149,6 @@
           "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
       },
       "basic_info": {
-        "id": "basic_info",
-        "description":
-          "Please provide some information relevant for all parts of the Analysis here",
-        "type": "object",
         "properties": {
           "cadi_id": {
             "pattern": "^[A-Za-z0-9]{3}-[0-9]{2}-[0-9]{3}$",
@@ -178,7 +174,11 @@
             "title": "Conclusion"
           }
         },
-        "title": "Basic Information"
+        "title": "Basic Information",
+        "type": "object",
+        "id": "basic_info",
+        "description":
+          "Please provide some information relevant for all parts of the Analysis here"
       },
       "analysis_reuse_mode": {
         "type": "string",
@@ -187,20 +187,16 @@
         "title": "Full reproducibility mode"
       },
       "input_data": {
-        "id": "input_data",
-        "description":
-          "Please list all datasets and triggers relevant for your analysis here",
-        "type": "object",
         "properties": {
           "mc_bg_datasets": {
-            "id": "mc_bg_datasets",
             "items": {
-              "type": "string",
-              "placeholder": "Path"
+              "placeholder": "Path",
+              "type": "string"
             },
+            "title": "Monte Carlo Background Datasets",
             "type": "array",
             "description": "Please list all Monte Carlo Background datasets",
-            "title": "Monte Carlo Background Datasets"
+            "id": "mc_bg_datasets"
           },
           "json_files": {
             "items": {
@@ -211,7 +207,6 @@
             "title": "Official JSON files"
           },
           "primary_datasets": {
-            "id": "primary_datasets",
             "items": {
               "type": "object",
               "properties": {
@@ -235,22 +230,22 @@
                 }
               }
             },
+            "title": "Primary Datasets",
             "type": "array",
             "description": "Please list all primary datasets here",
-            "title": "Primary Datasets"
+            "id": "primary_datasets"
           },
           "mc_sig_datasets": {
-            "id": "mc_sig_datasets",
             "items": {
-              "type": "string",
-              "placeholder": "Path"
+              "placeholder": "Path",
+              "type": "string"
             },
+            "title": "Monte Carlo Signal Datasets",
             "type": "array",
             "description": "Please list all Monte Carlo Signal datasets",
-            "title": "Monte Carlo Signal Datasets"
+            "id": "mc_sig_datasets"
           },
           "triggers": {
-            "id": "triggers",
             "items": {
               "type": "object",
               "properties": {
@@ -264,16 +259,45 @@
                 }
               }
             },
+            "title": "Triggers",
             "type": "array",
             "description": "Add selection triggers here",
-            "title": "Triggers"
+            "id": "triggers"
           }
         },
-        "title": "Input Data"
+        "title": "Input Data",
+        "type": "object",
+        "id": "input_data",
+        "description":
+          "Please list all datasets and triggers relevant for your analysis here"
       },
       "cadi_info": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/definitions/cms-cadi-info-v0.0.1.json"
+      },
+      "ntuples_production": {
+        "items": {
+          "properties": {
+            "code_base": {
+              "x-cap-file": {},
+              "type": "string",
+              "description": "Include your code for n-tuple production",
+              "title": "Your Code"
+            },
+            "processing_steps": {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
+            }
+          },
+          "type": "object",
+          "description": "Add instructions to run your code",
+          "title": ""
+        },
+        "title": "N-tuples Production",
+        "type": "array",
+        "description":
+          "Provide details on the intermediate n-tuples production",
+        "id": "ntuples_production"
       },
       "_access": {
         "$ref":
@@ -284,8 +308,7 @@
           "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
       },
       "additional_resources": {
-        "description":
-          "Add any useful additional documentation on the analysis",
+        "title": "Additional Resources",
         "type": "object",
         "properties": {
           "comments": {
@@ -307,30 +330,30 @@
                 }
               }
             },
-            "description": "Upload presentations about the analysis",
+            "title": "Presentations",
             "type": "array",
             "id": "presentations",
-            "title": "Presentations"
+            "description": "Upload presentations about the analysis"
           },
           "documentations": {
             "items": {
               "x-cap-file": {},
               "type": "string"
             },
-            "description": "Add any useful additional documentation",
+            "title": "Additional Documentations",
             "type": "array",
             "id": "documentations",
-            "title": "Additional Documentations"
+            "description": "Add any useful additional documentation"
           },
           "publications": {
             "items": {
               "$ref":
                 "https://analysispreservation.cern.ch/schemas/definitions/publication-v0.0.1.json"
             },
-            "description": "Add references to related publications",
+            "title": "Publications",
             "type": "array",
             "id": "publications",
-            "title": "Publications"
+            "description": "Add references to related publications"
           },
           "keywords": {
             "type": "string",
@@ -342,18 +365,15 @@
               "type": "string",
               "title": "URL"
             },
-            "description": "Link to hypernews thread",
+            "title": "Internal Discussions",
             "type": "array",
             "id": "internal-discussions",
-            "title": "Internal Discussions"
+            "description": "Link to hypernews thread"
           }
         },
-        "title": "Additional Resources"
+        "description": "Add any useful additional documentation on the analysis"
       },
       "$ana_type": {
-        "type": "string"
-      },
-      "_experiment": {
         "type": "string"
       },
       "$schema": {
@@ -362,29 +382,8 @@
       "general_title": {
         "type": "string"
       },
-      "ntuples_production": {
-        "id": "ntuples_production",
-        "items": {
-          "type": "object",
-          "properties": {
-            "code_base": {
-              "x-cap-file": {},
-              "type": "string",
-              "title": "Your Code",
-              "description": "Include your code for n-tuple production"
-            },
-            "processing_steps": {
-              "$ref":
-                "https://analysispreservation.cern.ch/schemas/definitions/cms-processing-v0.0.1.json"
-            }
-          },
-          "title": "",
-          "description": "Add instructions to run your code"
-        },
-        "type": "array",
-        "description":
-          "Provide details on the intermediate n-tuples production",
-        "title": "N-tuples Production"
+      "_experiment": {
+        "type": "string"
       }
     }
   },

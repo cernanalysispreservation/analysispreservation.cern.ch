@@ -1,54 +1,47 @@
 {
-  "fullname": null, 
-  "experiment": "CMS", 
+  "fullname": null,
+  "experiment": "CMS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "required": [
-      "code_base", 
-      "processing_steps"
-    ], 
-    "type": "object", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "required": ["code_base", "processing_steps"],
+    "type": "object",
     "properties": {
       "code_base": {
-        "x-cap-file": {}, 
-        "type": "string", 
+        "x-cap-file": {},
+        "type": "string",
         "title": "Your Code"
-      }, 
+      },
       "processing_steps": {
         "items": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "configuration_file": {
-              "x-cap-file": {}, 
-              "type": "string", 
-              "placeholder": "E.g. my_job_config.py", 
+              "x-cap-file": {},
+              "placeholder": "E.g. my_job_config.py",
+              "type": "string",
               "title": "Configuration File"
-            }, 
-            "output_data": {
-              "x-cap-file": {}, 
-              "type": "string", 
-              "placeholder": "E.g. myfile-data.root", 
-              "title": "Output"
-            }, 
+            },
             "run_instructions": {
-              "x-cap-file": {}, 
-              "type": "string", 
-              "placeholder": "E.g. README.md", 
-              "description": "Provide run instructions", 
+              "x-cap-file": {},
+              "placeholder": "E.g. README.md",
+              "type": "string",
+              "description": "Provide run instructions",
               "title": "Run Instructions"
+            },
+            "output_data": {
+              "x-cap-file": {},
+              "placeholder": "E.g. myfile-data.root",
+              "type": "string",
+              "title": "Output"
             }
-          }, 
+          },
           "title": "Step"
-        }, 
-        "required": [
-          "configuration_file", 
-          "run_instructions", 
-          "output_data"
-        ], 
-        "type": "array", 
+        },
+        "required": ["configuration_file", "run_instructions", "output_data"],
+        "type": "array",
         "title": "Processing Steps"
       }
     }
-  }, 
+  },
   "is_deposit": false
 }

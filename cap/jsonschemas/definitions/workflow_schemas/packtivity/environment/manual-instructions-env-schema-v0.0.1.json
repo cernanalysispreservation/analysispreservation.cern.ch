@@ -1,29 +1,25 @@
 {
-  "fullname": "Manual Instructions Environment", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Manual Instructions Environment",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Manual Instructions Environment", 
-    "required": [
-      "environment_type", 
-      "instructions"
-    ], 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "title": "Manual Instructions Environment",
+    "required": ["environment_type", "instructions"],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "environment_type": {
-        "default": "manual-instructions-env", 
-        "enum": [
-          "manual-instructions-env"
-        ], 
-        "type": "string", 
+        "default": "manual-instructions-env",
+        "enum": ["manual-instructions-env"],
+        "type": "string",
         "title": "Process Type"
-      }, 
+      },
       "instructions": {
-        "type": "string", 
+        "type": "string",
         "title": "Instructions"
       }
     }
-  }, 
-  "is_deposit": false
+  }
 }

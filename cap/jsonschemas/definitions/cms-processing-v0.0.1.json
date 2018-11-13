@@ -2,7 +2,6 @@
   "fullname": "",
   "experiment": "CMS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#",
     "items": {
       "type": "object",
       "properties": {
@@ -12,21 +11,22 @@
           "description": "e.g. my_job_config.py",
           "title": "Configuration File"
         },
-        "output_data": {
-          "x-cap-file": {},
-          "type": "string",
-          "title": "Output",
-          "description": "e.g. myfile-data.root"
-        },
         "run_instructions": {
           "x-cap-file": {},
           "type": "string",
-          "title": "Run Instructions",
-          "description": "e.g. README.md"
+          "description": "e.g. README.md",
+          "title": "Run Instructions"
+        },
+        "output_data": {
+          "x-cap-file": {},
+          "type": "string",
+          "description": "e.g. myfile-data.root",
+          "title": "Output"
         }
       },
       "title": "Add Processing Step"
     },
+    "$schema": "http://json-schema.org/draft-04/schema#",
     "required": ["configuration_file", "run_instructions", "output_data"],
     "type": "array",
     "title": "Processing Steps"

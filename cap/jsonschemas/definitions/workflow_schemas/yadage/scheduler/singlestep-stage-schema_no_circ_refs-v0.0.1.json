@@ -1,55 +1,46 @@
 {
-  "fullname": "Single Step Scheduler", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Single Step Scheduler",
+  "is_deposit": false,
   "jsonschema": {
     "oneOf": [
       {
         "not": {
-          "required": [
-            "step"
-          ]
-        }, 
-        "required": [
-          "workflow"
-        ]
-      }, 
+          "required": ["step"]
+        },
+        "required": ["workflow"]
+      },
       {
         "not": {
-          "required": [
-            "workflow"
-          ]
-        }, 
-        "required": [
-          "step"
-        ]
+          "required": ["workflow"]
+        },
+        "required": ["step"]
       }
-    ], 
-    "title": "Single Step Scheduler", 
-    "required": [
-      "scheduler_type"
-    ], 
+    ],
+    "title": "Single Step Scheduler",
+    "required": ["scheduler_type"],
+    "id": "singlestep-stage",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "step": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
+      },
       "scheduler_type": {
-        "default": "singlestep-stage", 
-        "enum": [
-          "singlestep-stage"
-        ], 
+        "default": "singlestep-stage",
+        "enum": ["singlestep-stage"],
         "type": "string"
-      }, 
+      },
       "parameters": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
+      },
       "workflow": {
         "type": "object"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "singlestep-stage"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

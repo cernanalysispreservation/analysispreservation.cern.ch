@@ -1,34 +1,30 @@
 {
-  "fullname": "String Interpolated Script", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "String Interpolated Script",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "String Interpolated Script", 
-    "required": [
-      "process_type", 
-      "script"
-    ], 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "title": "String Interpolated Script",
+    "required": ["process_type", "script"],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "interpreter": {
-        "default": "sh", 
-        "type": "string", 
+        "default": "sh",
+        "type": "string",
         "title": "Interpreter"
-      }, 
+      },
       "process_type": {
-        "default": "interpolated-script-cmd", 
-        "enum": [
-          "interpolated-script-cmd"
-        ], 
-        "type": "string", 
+        "default": "interpolated-script-cmd",
+        "enum": ["interpolated-script-cmd"],
+        "type": "string",
         "title": "Process Type"
-      }, 
+      },
       "script": {
-        "type": "string", 
+        "type": "string",
         "title": "Script"
       }
     }
-  }, 
-  "is_deposit": false
+  }
 }

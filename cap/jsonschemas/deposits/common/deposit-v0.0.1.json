@@ -1,6 +1,8 @@
 {
-  "fullname": null,
+  "allow_all": true,
   "experiment": null,
+  "fullname": null,
+  "is_deposit": false,
   "jsonschema": {
     "required": ["id"],
     "type": "object",
@@ -44,6 +46,5 @@
         "name": "created_by"
       }
     }
-  },
-  "is_deposit": false
+  }
 }

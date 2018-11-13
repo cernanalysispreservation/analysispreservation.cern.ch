@@ -1,25 +1,26 @@
 {
-  "fullname": "Documentation", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Documentation",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Add documentation", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Documentation",
+    "type": "object",
+    "description": "Add documentation",
     "properties": {
       "url": {
-        "type": "string", 
+        "type": "string",
         "title": "URL"
-      }, 
+      },
       "keywords": {
-        "type": "string", 
+        "type": "string",
         "title": "Keywords"
-      }, 
+      },
       "comment": {
-        "type": "string", 
+        "type": "string",
         "title": "Comment"
       }
-    }, 
-    "title": "Documentation"
-  }, 
+    }
+  },
   "is_deposit": false
 }

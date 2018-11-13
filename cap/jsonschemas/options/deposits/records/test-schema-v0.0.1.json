@@ -1,5 +1,6 @@
 {
-  "fullname": null, 
-  "jsonschema": {}, 
-  "is_deposit": false
+  "is_deposit": false,
+  "fullname": null,
+  "allow_all": true,
+  "jsonschema": {}
 }

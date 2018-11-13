@@ -1,24 +1,21 @@
 {
-  "fullname": "Local Process Environment for Testing", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Local Process Environment for Testing",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Local Process Environment for Testing", 
-    "required": [
-      "environment_type"
-    ], 
+    "title": "Local Process Environment for Testing",
+    "required": ["environment_type"],
+    "id": "localproc",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "environment_type": {
-        "default": "localproc-env", 
-        "enum": [
-          "localproc-env"
-        ], 
+        "default": "localproc-env",
+        "enum": ["localproc-env"],
         "type": "string"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "localproc"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

@@ -27,12 +27,14 @@
 import re
 
 from flask import current_app
-from invenio_access.models import ActionRoles
+from invenio_access.models import ActionRoles, ActionSystemRoles
+from invenio_access.permissions import authenticated_user
 from invenio_db import db
 from invenio_search import current_search
 from invenio_search import current_search_client as es
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.dialects import postgresql
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import JSONType
 
@@ -128,16 +130,18 @@ class Schema(db.Model):
         except NoResultFound:
             raise SchemaDoesNotExist
 
-    def add_read_access(self, role):
-        """Give read access to egroup."""
-        # @TODO make possible to give access also to users
-        db.session.add(
-            ActionRoles.allow(
-                SchemaReadAction(self.id),
-                role=role
+    def add_read_access_to_all(self):
+        """Give read access to all authenticated users."""
+        try:
+            db.session.add(
+                ActionSystemRoles.allow(
+                    SchemaReadAction(self.id),
+                    role=authenticated_user
+                )
             )
-        )
-        db.session.commit()
+            db.session.flush()
+        except IntegrityError:
+            db.session.rollback()
 
     @classmethod
     def get_latest(cls, name):

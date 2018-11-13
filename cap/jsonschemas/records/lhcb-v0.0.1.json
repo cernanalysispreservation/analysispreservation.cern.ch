@@ -146,14 +146,12 @@
         }
       },
       "additional_resources": {
-        "description":
-          "Please provide information about the additional resources of the analysis",
-        "type": "object",
         "properties": {
           "documentations": {
             "items": {
               "title": "Documentation",
               "type": "object",
+              "description": "Add documentation",
               "properties": {
                 "url": {
                   "type": "string",
@@ -163,12 +161,55 @@
                   "type": "string",
                   "title": "Title"
                 }
-              },
-              "description": "Add documentation"
+              }
             },
             "type": "array",
             "id": "documentations",
             "title": "Documentations"
+          },
+          "internal_discussions": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "title": "URL"
+                },
+                "meeting": {
+                  "type": "string",
+                  "title": "eGroup"
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title"
+                }
+              },
+              "title": "Reports"
+            },
+            "type": "array",
+            "id": "internal-discussions",
+            "title": "Internal Discussions"
+          },
+          "presentations": {
+            "items": {
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "title": "URL"
+                },
+                "meeting": {
+                  "type": "string",
+                  "title": "Meeting (GROUP)"
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title"
+                }
+              }
+            },
+            "type": "array",
+            "id": "presentations",
+            "title": "Presentations"
           },
           "publications": {
             "items": {
@@ -212,52 +253,11 @@
             "type": "array",
             "id": "publications",
             "title": "Publications"
-          },
-          "presentations": {
-            "items": {
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "title": "URL"
-                },
-                "meeting": {
-                  "type": "string",
-                  "title": "Meeting (GROUP)"
-                },
-                "title": {
-                  "type": "string",
-                  "title": "Title"
-                }
-              }
-            },
-            "type": "array",
-            "id": "presentations",
-            "title": "Presentations"
-          },
-          "internal_discussions": {
-            "items": {
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "title": "URL"
-                },
-                "meeting": {
-                  "type": "string",
-                  "title": "eGroup"
-                },
-                "title": {
-                  "type": "string",
-                  "title": "Title"
-                }
-              },
-              "title": "Reports"
-            },
-            "type": "array",
-            "id": "internal-discussions",
-            "title": "Internal Discussions"
           }
         },
+        "type": "object",
+        "description":
+          "Please provide information about the additional resources of the analysis",
         "title": "Additional Resources"
       },
       "basic_info": {

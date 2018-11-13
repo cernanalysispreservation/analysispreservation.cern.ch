@@ -80,7 +80,6 @@
       },
       "number": {
         "type": "object",
-        "title": "",
         "properties": {
           "number": {
             "type": "number",
@@ -92,7 +91,8 @@
             "type": "string",
             "title": "<, >, =, <=, >="
           }
-        }
+        },
+        "title": ""
       },
       "eta_cut": {
         "type": "number",

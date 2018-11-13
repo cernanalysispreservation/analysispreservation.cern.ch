@@ -1,6 +1,8 @@
 {
-  "fullname": "Test schema.",
+  "allow_all": true,
   "experiment": null,
+  "fullname": "Test schema.",
+  "is_deposit": true,
   "jsonschema": {
     "description": "Describe information needed for deposit module.",
     "title": "Test schema.",
@@ -8,10 +10,29 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
+      "array_of_objects": {
+        "items": {
+          "additionalProperties": false,
+          "type": "object",
+          "properties": {
+            "first_object": {
+              "type": "string",
+              "title": "First object"
+            },
+            "second_object": {
+              "type": "string",
+              "title": "Second object"
+            }
+          }
+        },
+        "type": "array",
+        "title": "Array of objects"
+      },
+      "$schema": {
+        "type": "string"
+      },
       "basic_object": {
         "additionalProperties": false,
-        "title": "Basic Object with multiple types",
-        "type": "object",
         "properties": {
           "select_option": {
             "enum": ["0", "1", "2", "3"],
@@ -39,33 +60,13 @@
             "title": "Enum of strings"
           }
         },
-        "description": "Object"
-      },
-      "$schema": {
-        "type": "string"
-      },
-      "array_of_objects": {
-        "items": {
-          "additionalProperties": false,
-          "type": "object",
-          "properties": {
-            "first_object": {
-              "type": "string",
-              "title": "First object"
-            },
-            "second_object": {
-              "type": "string",
-              "title": "Second object"
-            }
-          }
-        },
-        "type": "array",
-        "title": "Array of objects"
+        "type": "object",
+        "description": "Object",
+        "title": "Basic Object with multiple types"
       },
       "general_title": {
         "type": "string"
       }
     }
-  },
-  "is_deposit": true
+  }
 }

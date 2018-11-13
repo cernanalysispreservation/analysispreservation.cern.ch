@@ -27,12 +27,17 @@
 from __future__ import absolute_import, print_function
 
 import jsonresolver
+
 from cap.config import JSONSCHEMAS_HOST
 from cap.modules.schemas.models import Schema
+from cap.modules.schemas.permissions import ReadSchemaPermission
 
 
 @jsonresolver.route('/schemas/<path:path>',
                     host=JSONSCHEMAS_HOST)
 def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
-    return Schema.get_by_fullpath(path).json
+    schema = Schema.get_by_fullpath(path)
+
+    with ReadSchemaPermission(schema).require(403):
+        return schema.json

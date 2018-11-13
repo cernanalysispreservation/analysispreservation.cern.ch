@@ -52,4 +52,7 @@ def add_or_update_schema(fullpath=None, data=None):
 
         print('{} added.'.format(fullpath))
 
+    if data.get("allow_all", False):
+        schema.add_read_access_to_all()
+
     db.session.commit()

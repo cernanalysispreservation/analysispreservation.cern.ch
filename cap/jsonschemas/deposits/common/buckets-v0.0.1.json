@@ -1,18 +1,19 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
+  "is_deposit": false,
   "jsonschema": {
-    "type": "object", 
+    "type": "object",
     "properties": {
       "record": {
-        "type": "string", 
+        "type": "string",
         "description": "Record bucket ID."
-      }, 
+      },
       "deposit": {
-        "type": "string", 
+        "type": "string",
         "description": "Deposit bucket ID."
       }
     }
-  }, 
-  "is_deposit": false
+  }
 }

@@ -1,28 +1,24 @@
 {
-  "fullname": "Constant Publisher", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Constant Publisher",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Constant Publisher", 
-    "required": [
-      "publisher_type", 
-      "publish"
-    ], 
+    "title": "Constant Publisher",
+    "required": ["publisher_type", "publish"],
+    "id": "constant_publisher",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "publisher_type": {
-        "default": "constant-pub", 
-        "enum": [
-          "constant-pub"
-        ], 
+        "default": "constant-pub",
+        "enum": ["constant-pub"],
         "type": "string"
-      }, 
+      },
       "publish": {
         "type": "object"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "constant_publisher"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

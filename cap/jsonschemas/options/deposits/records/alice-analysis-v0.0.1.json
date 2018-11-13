@@ -1,28 +1,25 @@
 {
-  "fullname": null, 
-  "experiment": "ALICE", 
+  "fullname": null,
+  "experiment": "ALICE",
   "jsonschema": {
-    "ui:order": [
-      "analysis_title", 
-      "train_analysis"
-    ], 
+    "ui:order": ["analysis_title", "train_analysis"],
     "train_analysis": {
       "items": {
         "ui:order": [
-          "train_id", 
-          "run_id", 
-          "configuration_files", 
-          "wagon_names", 
-          "dataset", 
-          "reference_production", 
-          "dataset_aod", 
-          "run", 
-          "ali_physics", 
+          "train_id",
+          "run_id",
+          "configuration_files",
+          "wagon_names",
+          "dataset",
+          "reference_production",
+          "dataset_aod",
+          "run",
+          "ali_physics",
           "derived_dataset"
         ]
-      }, 
+      },
       "ui:array": "AccordionArrayField"
     }
-  }, 
+  },
   "is_deposit": false
 }

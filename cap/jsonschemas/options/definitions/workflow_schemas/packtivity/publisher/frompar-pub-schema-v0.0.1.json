@@ -1,16 +1,18 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "is_deposit": false,
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
   "jsonschema": [
     {
       "items": [
         {
-          "type": "string", 
-          "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card"
+          "type": "string",
+          "key":
+            "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card"
         }
-      ], 
+      ],
       "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap"
     }
-  ], 
-  "is_deposit": false
+  ]
 }

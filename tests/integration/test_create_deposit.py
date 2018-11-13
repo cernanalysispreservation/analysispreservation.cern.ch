@@ -78,7 +78,7 @@ def test_create_deposit_when_user_is_member_of_egroup_that_has_read_access_to_sc
                                                                                                         create_schema):
     user = users['lhcb_user']
     schema = create_schema('deposits/records/cms-v0.0.0',
-                           experiment='CMS', roles=['lhcb-general@cern.ch'])
+                           experiment='LHCb')
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/cms-v0.0.0.json'.format(
             jsonschemas_host),
@@ -99,7 +99,7 @@ def test_create_deposit_when_user_has_no_permission_to_schema_returns_403(app,
                                                                           create_schema):
     user = users['cms_user']
     schema = create_schema('deposits/records/test-v1.0.1',
-                           roles=['alice-members@cern.ch'])
+                           experiment='ALICE')
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/test-v1.0.1.json'.format(
             jsonschemas_host),
@@ -215,7 +215,7 @@ def test_create_deposit_set_fields_correctly(app,
                                              json_headers):
     owner = users['cms_user']
     schema = create_schema('deposits/records/test-analysis-v1.0.0',
-                           experiment='LHCb', roles=['cms-members@cern.ch'])
+                           experiment='CMS')
     metadata = {
         '$schema': 'https://{}/schemas/deposits/records/test-analysis-v1.0.0.json'.format(
             jsonschemas_host)
@@ -231,7 +231,7 @@ def test_create_deposit_set_fields_correctly(app,
 
         assert created['_deposit']['created_by'] == owner.id
         assert created['$schema'] == schema.fullpath
-        assert created['_experiment'] == 'LHCb'
+        assert created['_experiment'] == 'CMS'
         assert created['_deposit']['status'] == 'draft'
 
 
@@ -251,6 +251,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(app,
             }
         }
     })
+    nested_schema.add_read_access_to_all()
     schema = create_schema('deposits/records/test-analysis-v1.0.0',
                            experiment='CMS',
                            json={

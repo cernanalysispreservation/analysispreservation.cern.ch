@@ -1,66 +1,62 @@
 {
-  "fullname": "Docker Encapsulated Environment", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Docker Encapsulated Environment",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Docker Encapsulated Environment", 
-    "required": [
-      "environment_type", 
-      "image"
-    ], 
+    "title": "Docker Encapsulated Environment",
+    "required": ["environment_type", "image"],
+    "id": "docker_enc_environment",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
-      "envscript": {
-        "default": "", 
-        "type": "string", 
-        "title": "Env Script"
-      }, 
+      "imagetag": {
+        "default": "latest",
+        "type": "string",
+        "title": "Tag"
+      },
       "par_mounts": {
-        "default": [], 
+        "default": [],
         "items": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "mountpath": {
               "type": "string"
-            }, 
+            },
             "jqscript": {
               "type": "string"
             }
           }
-        }, 
-        "type": "array", 
+        },
+        "type": "array",
         "title": "Parameter Mounts"
-      }, 
+      },
       "image": {
-        "type": "string", 
+        "type": "string",
         "title": "Image"
-      }, 
-      "imagetag": {
-        "default": "latest", 
-        "type": "string", 
-        "title": "Tag"
-      }, 
-      "environment_type": {
-        "default": "docker-encapsulated", 
-        "enum": [
-          "docker-encapsulated"
-        ], 
-        "type": "string"
-      }, 
-      "env": {
-        "default": {}, 
-        "type": "object", 
-        "properties": {}, 
-        "title": "Env Vars"
-      }, 
+      },
+      "envscript": {
+        "default": "",
+        "type": "string",
+        "title": "Env Script"
+      },
       "resources": {
-        "default": [], 
-        "type": "array", 
+        "default": [],
+        "type": "array",
         "title": "Resources"
+      },
+      "env": {
+        "default": {},
+        "type": "object",
+        "properties": {},
+        "title": "Env Vars"
+      },
+      "environment_type": {
+        "default": "docker-encapsulated",
+        "enum": ["docker-encapsulated"],
+        "type": "string"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "docker_enc_environment"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

@@ -1,10 +1,11 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "is_deposit": false,
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
   "jsonschema": [
     {
       "key": "workflows[].workflow.stages[].scheduler.step.process.cmd"
     }
-  ], 
-  "is_deposit": false
+  ]
 }

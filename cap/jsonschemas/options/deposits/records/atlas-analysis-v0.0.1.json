@@ -1,44 +1,29 @@
 {
-  "fullname": null, 
-  "experiment": "ATLAS", 
+  "fullname": null,
+  "experiment": "ATLAS",
   "jsonschema": {
     "input_datasets": {
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "publications": {
       "ui:array": "AccordionArrayField"
-    }, 
+    },
     "basic_info": {
-      "ui:order": [
-        "analysis_title", 
-        "glance_id", 
-        "abstract", 
-        "people_info"
-      ], 
+      "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
       "people_info": {
         "items": {
           "name": {
             "ui:options": {
-              "autofill_from": "/api/orcid?name=", 
+              "autofill_from": "/api/orcid?name=",
               "autofill_fields": [
-                [
-                  [
-                    "orcid"
-                  ], 
-                  [
-                    "basic_info", 
-                    "people_info", 
-                    "#", 
-                    "orcid"
-                  ]
-                ]
+                [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
               ]
             }
           }
         }
-      }, 
+      },
       "ui:object": "accordionObjectField"
     }
-  }, 
+  },
   "is_deposit": false
 }

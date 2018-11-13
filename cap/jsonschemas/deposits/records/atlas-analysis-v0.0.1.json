@@ -1,115 +1,116 @@
 {
-  "fullname": "ATLAS Analysis", 
-  "experiment": "ATLAS", 
+  "fullname": "ATLAS Analysis",
+  "experiment": "ATLAS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Schema describing properties of an ATLAS analysis", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ATLAS Analysis",
+    "type": "object",
+    "description": "Schema describing properties of an ATLAS analysis",
     "properties": {
       "_buckets": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+      },
       "control_number": {
         "type": "string"
-      }, 
+      },
       "input_datasets": {
-        "description": "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)", 
-        "title": "Input Data", 
-        "default": [
-          {}
-        ], 
+        "description":
+          "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
+        "title": "Input Data",
+        "default": [{}],
         "items": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
-        }, 
-        "additionalProperties": false, 
-        "type": "array", 
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/definitions/atlas-dataset-v0.0.1.json"
+        },
+        "additionalProperties": false,
+        "type": "array",
         "id": "input_datasets"
-      }, 
-      "workflows": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
-      }, 
+      },
+      "_deposit": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+      },
       "_files": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+      },
       "basic_info": {
-        "title": "Basic Information", 
-        "required": [
-          "analysis_title", 
-          "glance_id"
-        ], 
-        "id": "basic_info", 
-        "propertyOrder": 10, 
-        "type": "object", 
+        "title": "Basic Information",
+        "required": ["analysis_title", "glance_id"],
+        "id": "basic_info",
+        "propertyOrder": 10,
+        "type": "object",
         "properties": {
           "abstract": {
-            "type": "string", 
+            "type": "string",
             "title": "Abstract"
-          }, 
+          },
           "people_info": {
             "items": {
-              "type": "object", 
+              "type": "object",
               "properties": {
                 "orcid": {
-                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", 
-                  "type": "string", 
+                  "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
+                  "type": "string",
                   "title": "ORCID"
-                }, 
+                },
                 "name": {
-                  "type": "string", 
+                  "type": "string",
                   "title": "Name"
-                }, 
+                },
                 "email": {
-                  "type": "string", 
+                  "type": "string",
                   "title": "Email-Adress"
                 }
               }
-            }, 
-            "type": "array", 
+            },
+            "type": "array",
             "title": "People Involved"
-          }, 
+          },
           "glance_id": {
-            "type": "string", 
+            "type": "string",
             "title": "Glance ID"
-          }, 
+          },
           "analysis_title": {
-            "type": "string", 
+            "type": "string",
             "title": "Analysis Title"
           }
         }
-      }, 
+      },
       "$ana_type": {
         "type": "string"
-      }, 
+      },
       "_experiment": {
         "type": "string"
-      }, 
+      },
       "_access": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
-      }, 
-      "_deposit": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+      },
+      "workflows": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
+      },
       "$schema": {
         "type": "string"
-      }, 
+      },
       "general_title": {
         "type": "string"
-      }, 
+      },
       "publications": {
-        "description": "Publications related to the analysis", 
-        "title": "Publications", 
-        "default": [
-          {}
-        ], 
+        "description": "Publications related to the analysis",
+        "title": "Publications",
+        "default": [{}],
         "items": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
-        }, 
-        "additionalProperties": false, 
-        "type": "array", 
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/definitions/atlas-publication-v0.0.1.json"
+        },
+        "additionalProperties": false,
+        "type": "array",
         "id": "publications"
       }
-    }, 
-    "title": "ATLAS Analysis"
-  }, 
+    }
+  },
   "is_deposit": true
 }

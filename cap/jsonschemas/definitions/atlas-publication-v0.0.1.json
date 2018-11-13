@@ -1,41 +1,41 @@
 {
-  "fullname": "ATLAS Publications", 
-  "experiment": "ATLAS", 
+  "fullname": "ATLAS Publications",
+  "experiment": "ATLAS",
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Information concerning the publications related to a dataset", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "ATLAS Publications",
+    "type": "object",
+    "description":
+      "Information concerning the publications related to a dataset",
     "properties": {
       "access": {
-        "enum": [
-          "public", 
-          "internal"
-        ], 
-        "type": "string", 
+        "enum": ["public", "internal"],
+        "type": "string",
         "title": "Access Level"
-      }, 
+      },
       "persistent_identifiers": {
         "items": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/identifiers-v0.0.1.json"
-        }, 
-        "type": "array", 
-        "description": "Identifier numbers for the publication, e.g. arXiv ID or CDS ID", 
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/definitions/identifiers-v0.0.1.json"
+        },
+        "type": "array",
+        "description":
+          "Identifier numbers for the publication, e.g. arXiv ID or CDS ID",
         "title": "Identifiers"
-      }, 
+      },
       "type": {
-        "type": "string", 
+        "type": "string",
         "title": "Document Type"
-      }, 
+      },
       "url": {
-        "type": "string", 
+        "type": "string",
         "title": "URL"
-      }, 
+      },
       "comment": {
-        "type": "string", 
+        "type": "string",
         "title": "Comment"
       }
-    }, 
-    "title": "ATLAS Publications"
-  }, 
+    }
+  },
   "is_deposit": false
 }

@@ -1,185 +1,173 @@
 {
-  "fullname": "Monte Carlo Signal Dataset", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Monte Carlo Signal Dataset",
+  "is_deposit": false,
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Information concerning the Monte Carlo Signal Dataset used", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Monte Carlo Signal Dataset",
+    "type": "object",
+    "description": "Information concerning the Monte Carlo Signal Dataset used",
     "properties": {
       "dataset_metadata": {
-        "type": "object", 
+        "type": "object",
         "properties": {
           "other_ids": {
-            "type": "number", 
-            "description": "Provide dataset ID e.g. 1853590", 
+            "type": "number",
+            "description": "Provide dataset ID e.g. 1853590",
             "title": "Dataset ID"
-          }, 
+          },
           "run_number": {
-            "type": "number", 
-            "description": "e.g. 146242", 
+            "type": "number",
+            "description": "e.g. 146242",
             "title": "Run #"
-          }, 
+          },
           "description": {
-            "format": "textarea", 
-            "type": "string", 
-            "description": "Provide a description for the MC dataset", 
-            "title": "Description"
-          }, 
+            "title": "Description",
+            "type": "string",
+            "description": "Provide a description for the MC dataset",
+            "format": "textarea"
+          },
           "date_modified": {
-            "hidden": "true", 
-            "format": "datetime", 
-            "type": "string", 
-            "title": "Modified"
-          }, 
+            "hidden": "true",
+            "title": "Modified",
+            "type": "string",
+            "format": "datetime"
+          },
           "persistent_identifiers": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/definitions/identifiers-v0.0.1.json"
-            }, 
-            "type": "array", 
-            "description": "", 
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/definitions/identifiers-v0.0.1.json"
+            },
+            "type": "array",
+            "description": "",
             "title": "Persistent Identifiers"
-          }, 
+          },
           "date_available": {
-            "type": "number", 
-            "description": "Provide the year the MC dataset will be available in public. e.g. 2014", 
+            "type": "number",
+            "description":
+              "Provide the year the MC dataset will be available in public. e.g. 2014",
             "title": "Year Available"
-          }, 
+          },
           "date_issued": {
-            "format": "datetime", 
-            "type": "string", 
-            "description": "Provide date/time the dataset was issued", 
-            "title": "Issued"
-          }, 
+            "title": "Issued",
+            "type": "string",
+            "description": "Provide date/time the dataset was issued",
+            "format": "datetime"
+          },
           "numbers": {
-            "description": "Numbers concerning various stuff", 
-            "type": "object", 
+            "title": "Numbers",
+            "type": "object",
             "properties": {
               "files": {
-                "type": "number", 
+                "type": "number",
                 "title": "Number of files"
-              }, 
+              },
               "blocks": {
-                "type": "number", 
+                "type": "number",
                 "title": "Number of blocks"
-              }, 
+              },
               "events": {
-                "type": "number", 
+                "type": "number",
                 "title": "Numbers of events"
-              }, 
+              },
               "extend": {
-                "type": "number", 
+                "type": "number",
                 "title": "Extend"
-              }, 
+              },
               "lumis": {
-                "type": "number", 
+                "type": "number",
                 "title": "Number of lumis"
               }
-            }, 
-            "title": "Numbers"
-          }, 
+            },
+            "description": "Numbers concerning various stuff"
+          },
           "licence": {
-            "type": "string", 
-            "description": "e.g. CC0 waiver", 
+            "type": "string",
+            "description": "e.g. CC0 waiver",
             "title": "Licence"
-          }, 
+          },
           "type": {
-            "type": "string", 
-            "description": "Provide type of item e.g. 'mc'", 
+            "type": "string",
+            "description": "Provide type of item e.g. 'mc'",
             "title": "Type"
-          }, 
+          },
           "dataset_title": {
-            "autocomplete": true, 
-            "propertyOrder": 301, 
-            "type": "string", 
-            "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD", 
+            "autocomplete": true,
+            "type": "string",
+            "propertyOrder": 301,
+            "description": "e.g. /Mu/Run2010B-Apr21ReReco-v1/AOD",
             "title": "Title"
           }
         }
-      }, 
+      },
       "mc_signal_selection": {
         "items": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "bin": {
-              "type": "object", 
+              "type": "object",
               "properties": {
                 "pt_hat": {
-                  "type": "string", 
+                  "type": "string",
                   "title": "pt_hat"
-                }, 
+                },
                 "events": {
-                  "type": "string", 
+                  "type": "string",
                   "title": "Number of Events"
                 }
-              }, 
+              },
               "title": "Bin"
-            }, 
+            },
             "decay_engine": {
-              "enum": [
-                "need", 
-                "more", 
-                "information"
-              ], 
-              "type": "string", 
+              "enum": ["need", "more", "information"],
+              "type": "string",
               "title": "Decay Engine"
-            }, 
+            },
             "pT": {
-              "type": "string", 
+              "type": "string",
               "title": "PT"
-            }, 
+            },
             "signal": {
-              "type": "string", 
+              "type": "string",
               "title": "Signal"
-            }, 
+            },
             "decay_channel": {
-              "type": "string", 
+              "type": "string",
               "title": "Decay Channel"
-            }, 
+            },
             "generator_tune": {
-              "type": "object", 
+              "type": "object",
               "properties": {
-                "tune": {
-                  "enum": [
-                    "need", 
-                    "more", 
-                    "information"
-                  ], 
-                  "type": "string"
-                }, 
                 "generator": {
-                  "enum": [
-                    "need", 
-                    "more", 
-                    "information"
-                  ], 
+                  "enum": ["need", "more", "information"],
+                  "type": "string"
+                },
+                "tune": {
+                  "enum": ["need", "more", "information"],
                   "type": "string"
                 }
-              }, 
+              },
               "title": "Generator and Tune"
-            }, 
+            },
             "additional_info": {
-              "type": "string", 
+              "type": "string",
               "title": "Additional Information"
-            }, 
+            },
             "rapidity": {
-              "enum": [
-                "Rapidity", 
-                "Pseudorapidity"
-              ], 
+              "enum": ["Rapidity", "Pseudorapidity"],
               "title": "Rapidity"
             }
           }
-        }, 
-        "type": "array", 
+        },
+        "type": "array",
         "title": "MC Signal"
-      }, 
+      },
       "mc_signal_cross_section": {
-        "required": "true", 
-        "type": "number", 
+        "required": "true",
+        "type": "number",
         "title": "Cross Section"
       }
-    }, 
-    "title": "Monte Carlo Signal Dataset"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

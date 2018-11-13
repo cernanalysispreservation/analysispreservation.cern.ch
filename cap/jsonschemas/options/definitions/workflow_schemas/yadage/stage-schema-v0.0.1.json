@@ -1,71 +1,77 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "is_deposit": false,
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
   "jsonschema": [
     {
-      "key": "workflows[].workflow.stages[].name", 
+      "key": "workflows[].workflow.stages[].name",
       "title": "Name"
-    }, 
+    },
     {
       "titleMap": [
         {
-          "name": "Select a Workflow Schema", 
+          "name": "Select a Workflow Schema",
           "value": "-1"
-        }, 
+        },
         {
-          "name": "jsonpathready-schema-v0.0.1", 
+          "name": "jsonpathready-schema-v0.0.1",
           "value": "jsonpath_ready"
         }
-      ], 
-      "placeholder": "Select sub-schema to use", 
-      "type": "select", 
-      "key": "workflows[].workflow.stages[].dependencies.dependency_type", 
+      ],
+      "placeholder": "Select sub-schema to use",
+      "type": "select",
+      "key": "workflows[].workflow.stages[].dependencies.dependency_type",
       "title": "Dependencies Schema"
-    }, 
+    },
     {
       "items": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json"
-      }, 
-      "type": "fieldset", 
-      "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['dependencies']['dependency_type'] == 'jsonpath_ready'", 
-      "key": "workflows[].workflow.stages[].dependencies", 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json"
+      },
+      "type": "fieldset",
+      "condition":
+        "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['dependencies']['dependency_type'] == 'jsonpath_ready'",
+      "key": "workflows[].workflow.stages[].dependencies",
       "title": "JSON-pathready Dependencies"
-    }, 
+    },
     {
       "titleMap": [
         {
-          "name": "Select a Scheduler Schema", 
+          "name": "Select a Scheduler Schema",
           "value": "-1"
-        }, 
+        },
         {
-          "name": "singlestep-stage-schema-v0.0.1.json", 
+          "name": "singlestep-stage-schema-v0.0.1.json",
           "value": "singlestep-stage"
-        }, 
+        },
         {
-          "name": "multistep-stage-schema-v0.0.1.json", 
+          "name": "multistep-stage-schema-v0.0.1.json",
           "value": "multistep-stage"
         }
-      ], 
-      "placeholder": "Select sub-schema to use", 
-      "type": "select", 
-      "key": "workflows[].workflow.stages[].scheduler.scheduler_type", 
+      ],
+      "placeholder": "Select sub-schema to use",
+      "type": "select",
+      "key": "workflows[].workflow.stages[].scheduler.scheduler_type",
       "title": "Scheduler Schema"
-    }, 
+    },
     {
       "items": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json"
-      }, 
-      "type": "fieldset", 
-      "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['scheduler_type'] == 'singlestep-stage'", 
-      "key": "workflows[].workflow.stages[].scheduler", 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/singlestep-stage-schema-v0.0.1.json"
+      },
+      "type": "fieldset",
+      "condition":
+        "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['scheduler_type'] == 'singlestep-stage'",
+      "key": "workflows[].workflow.stages[].scheduler",
       "title": "Single-step Stage"
-    }, 
+    },
     {
-      "type": "fieldset", 
-      "condition": "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['scheduler_type'] == 'multistep-stage'", 
-      "key": "workflows[].workflow.stages[].scheduler", 
+      "type": "fieldset",
+      "condition":
+        "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['scheduler_type'] == 'multistep-stage'",
+      "key": "workflows[].workflow.stages[].scheduler",
       "title": "Multi-step Stage"
     }
-  ], 
-  "is_deposit": false
+  ]
 }

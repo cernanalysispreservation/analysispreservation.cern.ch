@@ -25,13 +25,13 @@
         "type": "string",
         "title": "Created"
       },
-      "contact": {
-        "type": "string",
-        "title": "Contact Person"
-      },
       "paper": {
         "type": "string",
         "title": "Paper"
+      },
+      "contact": {
+        "type": "string",
+        "title": "Contact Person"
       },
       "twiki": {
         "type": "string",

@@ -1,40 +1,41 @@
 {
-  "fullname": "Internal Publication", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Internal Publication",
+  "is_deposit": false,
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Add publications", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Internal Publication",
+    "type": "object",
+    "description": "Add publications",
     "properties": {
       "journal_title": {
-        "type": "string", 
+        "type": "string",
         "title": "Journal Title"
-      }, 
+      },
       "persistent_identifiers": {
         "items": {
           "type": "string"
-        }, 
-        "type": "array", 
+        },
+        "type": "array",
         "title": "Identifiers"
-      }, 
+      },
       "journal_volume": {
-        "type": "integer", 
+        "type": "integer",
         "title": "Journal Volume"
-      }, 
+      },
       "journal_year": {
-        "type": "integer", 
+        "type": "integer",
         "title": "Journal Year"
-      }, 
+      },
       "journal_issue": {
-        "type": "integer", 
+        "type": "integer",
         "title": "Journal Issue"
-      }, 
+      },
       "journal_page": {
-        "type": "integer", 
+        "type": "integer",
         "title": "Journal Page"
       }
-    }, 
-    "title": "Internal Publication"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

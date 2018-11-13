@@ -196,7 +196,7 @@ def jsonschemas_host():
 def create_schema(db, es):
     """Returns function to add a schema to db."""
 
-    def _add_schema(schema, is_deposit=True, experiment=None, json=None, roles=None):
+    def _add_schema(schema, is_deposit=True, experiment=None, json=None):
         """
         Add new schema into db
         """
@@ -217,11 +217,6 @@ def create_schema(db, es):
             )
             db.session.add(schema)
             db.session.commit()
-
-        if roles:
-            roles = Role.query.filter(Role.name.in_(roles)).all()
-            for role in roles:
-                schema.add_read_access(role)
 
         return schema
 
@@ -327,12 +322,17 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             """
             with app.test_request_context():
                 # create schema for record
-                create_schema('records/{}'.format(schema_name), is_deposit=False,
-                              experiment='CMS')
+                schema = create_schema('records/{}'.format(schema_name), is_deposit=False,
+                              experiment=experiment)
+                if not experiment:
+                    schema.add_read_access_to_all()
 
                 # create schema for deposit
                 schema = create_schema('deposits/records/{}'.format(schema_name),
                                        experiment=experiment)
+                if not experiment:
+                    schema.add_read_access_to_all()
+
                 metadata = metadata or minimal_metadata(jsonschemas_host,
                                                         'deposits/records/{}'.format(schema_name))
                 login_user(user)

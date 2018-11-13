@@ -1,25 +1,24 @@
 {
-  "fullname": "JSONPath ready predicate", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "JSONPath ready predicate",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "JSONPath ready predicate", 
+    "title": "JSONPath ready predicate",
+    "id": "jsonpath_ready",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "dependency_type": {
-        "default": "jsonpath_ready", 
-        "enum": [
-          "jsonpath_ready"
-        ], 
-        "type": "string", 
+        "default": "jsonpath_ready",
+        "enum": ["jsonpath_ready"],
+        "type": "string",
         "title": "Dependency Type"
-      }, 
+      },
       "expressions": {
         "type": "array"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "jsonpath_ready"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

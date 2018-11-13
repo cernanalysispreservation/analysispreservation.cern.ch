@@ -1,6 +1,8 @@
 {
-  "fullname": null,
+  "allow_all": true,
   "experiment": null,
+  "fullname": null,
+  "is_deposit": false,
   "jsonschema": {
     "type": "object",
     "properties": {
@@ -56,6 +58,5 @@
         }
       }
     }
-  },
-  "is_deposit": false
+  }
 }

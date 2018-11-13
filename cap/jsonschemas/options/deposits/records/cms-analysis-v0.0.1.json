@@ -61,53 +61,26 @@
             }
           }
         },
+        "processing_steps": {
+          "items": {
+            "ui:order": [
+              "configuration_file",
+              "run_instructions",
+              "output_data"
+            ],
+            "output_data": {
+              "ui:field": "CapFiles"
+            },
+            "run_instructions": {
+              "ui:field": "CapFiles"
+            },
+            "configuration_file": {
+              "ui:field": "CapFiles"
+            }
+          }
+        },
         "analysis_code": {
           "ui:field": "CapFiles"
-        },
-        "processing_steps": {
-          "items": {
-            "ui:order": [
-              "configuration_file",
-              "run_instructions",
-              "output_data"
-            ],
-            "output_data": {
-              "ui:field": "CapFiles"
-            },
-            "run_instructions": {
-              "ui:field": "CapFiles"
-            },
-            "configuration_file": {
-              "ui:field": "CapFiles"
-            }
-          }
-        }
-      },
-      "ui:array": "AccordionArrayField"
-    },
-    "ntuples_production": {
-      "items": {
-        "ui:order": ["code_base", "processing_steps"],
-        "code_base": {
-          "ui:field": "CapFiles"
-        },
-        "processing_steps": {
-          "items": {
-            "ui:order": [
-              "configuration_file",
-              "run_instructions",
-              "output_data"
-            ],
-            "output_data": {
-              "ui:field": "CapFiles"
-            },
-            "run_instructions": {
-              "ui:field": "CapFiles"
-            },
-            "configuration_file": {
-              "ui:field": "CapFiles"
-            }
-          }
         }
       },
       "ui:array": "AccordionArrayField"
@@ -130,12 +103,12 @@
           ]
         }
       },
+      "abstract": {
+        "ui:widget": "textarea"
+      },
       "ui:object": "accordionObjectField",
       "ana_notes": {
         "ui:array": "StringArrayField"
-      },
-      "abstract": {
-        "ui:widget": "textarea"
       }
     },
     "analysis_reuse_mode": {
@@ -235,6 +208,12 @@
         "ui:readonly": true
       }
     },
+    "systematic_uncertainties": {
+      "items": {
+        "ui:order": ["type", "physics_object", "*"]
+      },
+      "ui:array": "AccordionArrayField"
+    },
     "ui:order": [
       "analysis_reuse_mode",
       "basic_info",
@@ -286,10 +265,10 @@
     },
     "final_results": {
       "ui:order": ["*"],
-      "ui:object": "accordionObjectField",
       "code_base": {
         "ui:field": "CapFiles"
       },
+      "ui:object": "accordionObjectField",
       "processing_steps": {
         "items": {
           "ui:order": ["configuration_file", "run_instructions", "output_data"],
@@ -312,7 +291,6 @@
           "ui:array": "StringArrayField"
         },
         "control_regions": {
-          "ui:array": "AccordionArrayField",
           "items": {
             "veto": {
               "items": {
@@ -324,14 +302,36 @@
                 "ui:order": ["number", "object", "pt_cut", "eta_cut", "*"]
               }
             }
-          }
+          },
+          "ui:array": "AccordionArrayField"
         }
       },
       "ui:array": "AccordionArrayField"
     },
-    "systematic_uncertainties": {
+    "ntuples_production": {
       "items": {
-        "ui:order": ["type", "physics_object", "*"]
+        "ui:order": ["code_base", "processing_steps"],
+        "code_base": {
+          "ui:field": "CapFiles"
+        },
+        "processing_steps": {
+          "items": {
+            "ui:order": [
+              "configuration_file",
+              "run_instructions",
+              "output_data"
+            ],
+            "output_data": {
+              "ui:field": "CapFiles"
+            },
+            "run_instructions": {
+              "ui:field": "CapFiles"
+            },
+            "configuration_file": {
+              "ui:field": "CapFiles"
+            }
+          }
+        }
       },
       "ui:array": "AccordionArrayField"
     }

@@ -1,48 +1,53 @@
 {
-  "fullname": "ALICE Analysis", 
-  "experiment": "ALICE", 
+  "fullname": "ALICE Analysis",
+  "experiment": "ALICE",
   "jsonschema": {
-    "description": "Schema describing properties of an ALICE analysis", 
-    "title": "ALICE Analysis", 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "description": "Schema describing properties of an ALICE analysis",
+    "title": "ALICE Analysis",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "_buckets": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+      },
       "control_number": {
         "type": "string"
-      }, 
+      },
       "analysis_title": {
-        "type": "string", 
+        "type": "string",
         "title": "Analysis Title"
-      }, 
+      },
       "_files": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+      },
       "$ana_type": {
         "type": "string"
-      }, 
+      },
       "_experiment": {
         "type": "string"
-      }, 
+      },
       "_access": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+      },
       "_deposit": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+      },
       "$schema": {
         "type": "string"
-      }, 
+      },
       "train_analysis": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/alice-train-analysis-v0.0.1.json"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/alice-train-analysis-v0.0.1.json"
+      },
       "general_title": {
         "type": "string"
       }
     }
-  }, 
+  },
   "is_deposit": true
 }

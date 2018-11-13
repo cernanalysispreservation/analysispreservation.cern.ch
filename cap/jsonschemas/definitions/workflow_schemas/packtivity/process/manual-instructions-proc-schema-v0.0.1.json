@@ -1,29 +1,25 @@
 {
-  "fullname": "Manual Instructions Process", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Manual Instructions Process",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Manual Instructions Process", 
-    "required": [
-      "process_type", 
-      "instructions"
-    ], 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "title": "Manual Instructions Process",
+    "required": ["process_type", "instructions"],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "process_type": {
-        "default": "manual-instructions-proc", 
-        "enum": [
-          "manual-instructions-proc"
-        ], 
-        "type": "string", 
+        "default": "manual-instructions-proc",
+        "enum": ["manual-instructions-proc"],
+        "type": "string",
         "title": "Process Type"
-      }, 
+      },
       "instructions": {
-        "type": "string", 
+        "type": "string",
         "title": "Instructions"
       }
     }
-  }, 
-  "is_deposit": false
+  }
 }

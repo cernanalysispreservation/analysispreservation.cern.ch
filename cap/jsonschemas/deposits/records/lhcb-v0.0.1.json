@@ -98,10 +98,6 @@
           "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
       },
       "basic_info": {
-        "id": "basic_info",
-        "description":
-          "Please provide some information relevant for all parts of the Analysis here",
-        "type": "object",
         "properties": {
           "analysis_proponents": {
             "items": {
@@ -194,7 +190,11 @@
             "title": "Institutes Involved"
           }
         },
-        "title": "Basic Information"
+        "title": "Basic Information",
+        "type": "object",
+        "id": "basic_info",
+        "description":
+          "Please provide some information relevant for all parts of the Analysis here"
       },
       "$ana_type": {
         "type": "string"
@@ -211,30 +211,9 @@
           "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
       },
       "additional_resources": {
-        "description":
-          "Please provide information about the additional resources of the analysis",
+        "title": "Additional Resources",
         "type": "object",
         "properties": {
-          "documentations": {
-            "items": {
-              "title": "Documentation",
-              "type": "object",
-              "properties": {
-                "url": {
-                  "type": "string",
-                  "title": "URL"
-                },
-                "title": {
-                  "type": "string",
-                  "title": "Title"
-                }
-              },
-              "description": "Add documentation"
-            },
-            "type": "array",
-            "id": "documentations",
-            "title": "Documentations"
-          },
           "publications": {
             "items": {
               "type": "object",
@@ -278,6 +257,29 @@
             "id": "publications",
             "title": "Publications"
           },
+          "internal_discussions": {
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "title": "URL"
+                },
+                "meeting": {
+                  "type": "string",
+                  "title": "eGroup"
+                },
+                "title": {
+                  "type": "string",
+                  "title": "Title"
+                }
+              },
+              "title": "Internal Discussion"
+            },
+            "type": "array",
+            "id": "internal-discussions",
+            "title": "Internal Discussions"
+          },
           "presentations": {
             "items": {
               "type": "object",
@@ -301,31 +303,29 @@
             "id": "presentations",
             "title": "Presentations"
           },
-          "internal_discussions": {
+          "documentations": {
             "items": {
-              "type": "object",
               "properties": {
                 "url": {
                   "type": "string",
                   "title": "URL"
-                },
-                "meeting": {
-                  "type": "string",
-                  "title": "eGroup"
                 },
                 "title": {
                   "type": "string",
                   "title": "Title"
                 }
               },
-              "title": "Internal Discussion"
+              "type": "object",
+              "description": "Add documentation",
+              "title": "Documentation"
             },
             "type": "array",
-            "id": "internal-discussions",
-            "title": "Internal Discussions"
+            "id": "documentations",
+            "title": "Documentations"
           }
         },
-        "title": "Additional Resources"
+        "description":
+          "Please provide information about the additional resources of the analysis"
       },
       "$schema": {
         "type": "string"
@@ -358,14 +358,6 @@
             },
             "title": "Basic scripts"
           },
-          "docker_registries": {
-            "items": {
-              "x-cap-file": {},
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Docker images of the analysis"
-          },
           "gitlab_links": {
             "items": {
               "x-cap-file": {},
@@ -373,6 +365,14 @@
             },
             "type": "array",
             "title": "Gitlab repositories of the analysis"
+          },
+          "docker_registries": {
+            "items": {
+              "x-cap-file": {},
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Docker images of the analysis"
           }
         },
         "title": "User Analysis"

@@ -1,29 +1,25 @@
 {
-  "fullname": "YAML Publisher", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "YAML Publisher",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "YAML Publisher", 
-    "required": [
-      "publisher_type", 
-      "yamlfile"
-    ], 
+    "title": "YAML Publisher",
+    "required": ["publisher_type", "yamlfile"],
+    "id": "yaml_publisher",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "publisher_type": {
-        "default": "fromyaml-pub", 
-        "enum": [
-          "fromyaml-pub"
-        ], 
+        "default": "fromyaml-pub",
+        "enum": ["fromyaml-pub"],
         "type": "string"
-      }, 
+      },
       "yamlfile": {
-        "type": "string", 
+        "type": "string",
         "title": "YAML file"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "yaml_publisher"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

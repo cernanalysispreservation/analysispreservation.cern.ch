@@ -1,24 +1,24 @@
 {
-  "fullname": "Yadage Workflow", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Yadage Workflow",
+  "is_deposit": false,
   "jsonschema": {
-    "title": "Yadage Workflow", 
-    "required": [
-      "stages"
-    ], 
+    "title": "Yadage Workflow",
+    "required": ["stages"],
+    "id": "yadage_workflow",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "stages": {
         "items": {
-          "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json#"
-        }, 
-        "type": "array", 
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/stage-schema-v0.0.1.json#"
+        },
+        "type": "array",
         "title": "Stages"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "yadage_workflow"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

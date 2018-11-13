@@ -1,68 +1,65 @@
 {
-  "fullname": "Multiple Step Scheduler", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Multiple Step Scheduler",
+  "is_deposit": false,
   "jsonschema": {
     "oneOf": [
       {
         "not": {
-          "required": [
-            "batchsize", 
-            "partitionsize"
-          ]
+          "required": ["batchsize", "partitionsize"]
         }
       }
-    ], 
-    "title": "Multiple Step Scheduler", 
-    "required": [
-      "scheduler_type"
-    ], 
+    ],
+    "title": "Multiple Step Scheduler",
+    "required": ["scheduler_type"],
+    "id": "multistep-stage",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "partitionsize": {
         "type": "number"
-      }, 
+      },
       "parameters": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
+      },
       "workflow": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"
+      },
       "batchsize": {
         "type": "number"
-      }, 
+      },
       "step": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
-      }, 
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json#"
+      },
       "scheduler_type": {
-        "default": "multistep-stage", 
-        "enum": [
-          "multistep-stage"
-        ], 
+        "default": "multistep-stage",
+        "enum": ["multistep-stage"],
         "type": "string"
-      }, 
+      },
       "scatter": {
-        "additionalProperties": false, 
-        "type": "object", 
+        "additionalProperties": false,
+        "type": "object",
         "properties": {
           "method": {
-            "type": "string", 
+            "type": "string",
             "title": "Method"
-          }, 
+          },
           "parameters": {
             "items": {
-              "type": "string", 
+              "type": "string",
               "title": "Parameter"
-            }, 
-            "type": "array", 
+            },
+            "type": "array",
             "title": "Parameters"
           }
-        }, 
+        },
         "title": "Scatter"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "id": "multistep-stage"
-  }, 
-  "is_deposit": false
+    }
+  }
 }

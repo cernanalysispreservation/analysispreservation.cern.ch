@@ -1,13 +1,16 @@
 {
-  "fullname": null, 
-  "experiment": null, 
+  "is_deposit": false,
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
   "jsonschema": [
     {
-      "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"
-    }, 
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"
+    },
     {
-      "$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"
     }
-  ], 
-  "is_deposit": false
+  ]
 }

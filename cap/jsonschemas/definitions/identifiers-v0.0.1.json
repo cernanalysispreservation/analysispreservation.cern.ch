@@ -1,21 +1,22 @@
 {
-  "fullname": "Identifier", 
-  "experiment": null, 
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Identifier",
+  "is_deposit": false,
   "jsonschema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "An issued identifier", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Identifier",
+    "type": "object",
+    "description": "An issued identifier",
     "properties": {
       "scheme": {
-        "type": "string", 
+        "type": "string",
         "title": "Scheme"
-      }, 
+      },
       "identifier": {
-        "type": "string", 
+        "type": "string",
         "title": "Identifier"
       }
-    }, 
-    "title": "Identifier"
-  }, 
-  "is_deposit": false
+    }
+  }
 }
