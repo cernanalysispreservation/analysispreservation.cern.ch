@@ -102,9 +102,8 @@ class Dashboard extends React.Component {
               items={this.props.results.shared_with_user}
               header="shared with you"
               urlDetailed="/drafts"
-              urlMore={`/search?q=-created_by=${this.props.currentUser.get(
-                "userId"
-              )}&status=draft`}
+              urlMore={`/search?q=-created_by=${this.props.currentUser &&
+                this.props.currentUser.get("userId")}&status=draft`}
               emptyMessage="Draft analyses that your collaborators have given you read/write access to."
             />
           </Tile>
@@ -122,9 +121,8 @@ class Dashboard extends React.Component {
               items={this.props.results.user_drafts}
               header="your drafts"
               urlDetailed="/drafts"
-              urlMore={`/search?q=created_by=${this.props.currentUser.get(
-                "userId"
-              )}&status=draft`}
+              urlMore={`/search?q=created_by=${this.props.currentUser &&
+                this.props.currentUser.get("userId")}&status=draft`}
               emptyMessage="Your draft analyses. By default, only you can access them, but it is possible to give read/write access to other collaborators."
             />
           </Tile>
@@ -153,9 +151,8 @@ class Dashboard extends React.Component {
               items={this.props.results.user_published}
               header="published by you"
               urlDetailed="/published"
-              urlMore={`/search?q=created_by=${this.props.currentUser.get(
-                "userId"
-              )}&status=published`}
+              urlMore={`/search?q=created_by=${this.props.currentUser &&
+                this.props.currentUser.get("userId")}&status=published`}
               emptyMessage="Your published analyses. Once published on CAP, all members of your collaboration will have read access."
             />
           </Tile>
