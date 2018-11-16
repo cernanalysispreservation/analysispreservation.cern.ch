@@ -58,6 +58,7 @@ const initialState = Map({
   schemas: {},
   uiSchemas: {},
   uiSchema: null,
+  schemaError: null,
   data: {},
   selectedSchema: null,
   fileManagerActiveLayer: false,
@@ -117,7 +118,7 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_REQUEST:
       return state
         .setIn(["current_item", "schemasLoading"], true)
-        .set("error", null);
+        .set("schemaError", null);
     case FETCH_SCHEMA_SUCCESS:
       return state
         .setIn(["current_item", "schemasLoading"], false)
@@ -125,7 +126,7 @@ export default function depositReducer(state = initialState, action) {
     case FETCH_SCHEMA_ERROR:
       return state
         .setIn(["current_item", "schemasLoading"], false)
-        .set("error", action.error);
+        .set("schemaError", action.error.data);
     case DRAFTS_ITEM_REQUEST:
       return state
         .setIn(["current_item", "loading"], true)

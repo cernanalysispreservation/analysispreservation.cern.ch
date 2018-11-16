@@ -130,7 +130,11 @@ class DraftEditorHeader extends React.Component {
     //   if (group && group.length > 0) dg = group[0];
     // }
 
-    if (this.props.error && this.props.error.status == 403) return null;
+    if (
+      (this.props.error && this.props.error.status == 403) ||
+      (this.props.schemaError && this.props.schemaError.status == 403)
+    )
+      return null;
 
     return (
       <Box flex={true} wrap={false} direction="row">
@@ -246,6 +250,7 @@ function mapStateToProps(state) {
     depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
 
     error: state.drafts.getIn(["current_item", "error"]),
+    schemaError: state.drafts.get("schemaError"),
     loading: state.drafts.getIn(["current_item", "loading"]),
     message: state.drafts.getIn(["current_item", "message"])
   };

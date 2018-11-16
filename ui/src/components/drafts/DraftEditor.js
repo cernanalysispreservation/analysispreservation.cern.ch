@@ -14,6 +14,7 @@ import { fetchAndAssignSchema } from "../../actions/common";
 import DepositForm from "./form/Form";
 import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
+import PermissionDenied from "../errors/403";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -67,6 +68,14 @@ class DraftEditor extends React.Component {
   }
 
   render() {
+    if (this.props.schemaError && this.props.schemaError.status == 403)
+      return (
+        <PermissionDenied
+          status={this.props.schemaError.status}
+          message={this.props.schemaError.message}
+        />
+      );
+
     let _schema =
       this.props.schemas && this.props.schemas.schema
         ? transformSchema(this.props.schemas.schema)
@@ -124,7 +133,8 @@ function mapStateToProps(state) {
     schemasLoading: state.drafts.getIn(["current_item", "schemasLoading"]),
     formData: state.drafts.getIn(["current_item", "formData"]),
     schemas: state.drafts.getIn(["current_item", "schemas"]),
-    error: state.drafts.getIn(["current_item", "error"])
+    error: state.drafts.getIn(["current_item", "error"]),
+    schemaError: state.drafts.get("schemaError")
   };
 }
 
