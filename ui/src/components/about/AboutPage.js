@@ -66,13 +66,19 @@ class AboutPage extends React.Component {
               <Paragraph>
                 It is possible to interact with the service in three different
                 ways: <br />
-                * The submission forms via the user interface <br />
-                * The command-line client (<a href="https://cap-client.readthedocs.io/en/latest/?badge=latest#">
-                  cap-client
-                </a>) <br />
-                * The REST API (<a href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html">
-                  API docs
-                </a>)
+                <ul>
+                  <li>The submission forms via the user interface</li>
+                  <li>
+                    The command-line client (<a href="https://cap-client.readthedocs.io/en/latest/?badge=latest#">
+                      cap-client
+                    </a>)
+                  </li>
+                  <li>
+                    The REST API (<a href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html">
+                      API docs
+                    </a>)
+                  </li>
+                </ul>
               </Paragraph>
               <Heading tag="h2">Who has access to my work?</Heading>
               <Paragraph>
@@ -82,18 +88,28 @@ class AboutPage extends React.Component {
                 with an analysis. Permissions within a collaboration can be
                 adjusted by the creator of the analysis, defaulting to
                 creator-only access. More specifically: <br />
-                * only collaboration members have access to a collaboration’s
-                area, can create analyses and can see shared analyses <br />
-                * only a certain collaboration’s members have access to this
-                collaboration’s analyses <br />
-                * only members granted specific rights can see or edit a draft
-                version of an analysis <br />
-                * only the creator can see or edit an analysis with default
-                permission settings For more detailed information please refer
-                to our{" "}
-                <a href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access">
-                  documentation
-                </a>.
+                <ul>
+                  <li>
+                    only collaboration members have access to a collaboration’s
+                    area, can create analyses and can see shared analyses{" "}
+                  </li>
+                  <li>
+                    only a certain collaboration’s members have access to this
+                    collaboration’s analyses{" "}
+                  </li>
+                  <li>
+                    only members granted specific rights can see or edit a draft
+                    version of an analysis{" "}
+                  </li>
+                  <li>
+                    only the creator can see or edit an analysis with default
+                    permission settings For more detailed information please
+                    refer to our &nbsp;
+                    <a href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access">
+                      documentation
+                    </a>.{" "}
+                  </li>
+                </ul>
               </Paragraph>
               <Heading tag="h2">Contact</Heading>
               <Paragraph>
