@@ -78,7 +78,6 @@ class WelcomePage extends React.Component {
                   {this.props.authError}
                 </Box>
               ) : null}
-              <hr />
               {process.env.NODE_ENV === "development" ? (
                 <LoginForm
                   usernameType="email"
