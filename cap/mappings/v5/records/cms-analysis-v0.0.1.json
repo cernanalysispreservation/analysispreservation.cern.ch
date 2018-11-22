@@ -30,9 +30,6 @@
         "created": {
           "type": "date"
         },
-        "cadi_id": {
-          "type": "keyword"
-        },
         "basic_info": {
           "type": "object",
           "properties": {
@@ -132,11 +129,10 @@
           "type": "object",
           "properties": {
             "documentations": {
-              "type": "object",
-              "properties": {
-                "keywords": {
-                  "type": "string",
-                  "copy_to": "keyword"
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
                 }
               }
             },

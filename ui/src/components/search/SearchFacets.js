@@ -169,6 +169,7 @@ class SearchFacets extends React.Component {
                                             direction="row"
                                             justify="between"
                                             align="left"
+                                            style={{ fontSize: "0.8em" }}
                                           >
                                             <CheckBox
                                               label={nested_field.key}
