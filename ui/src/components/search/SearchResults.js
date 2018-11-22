@@ -61,6 +61,7 @@ class SearchResults extends React.Component {
                         direction="row"
                         justify="between"
                       >
+                        <ReactTooltip />
                         <Label size="small" uppercase={true} truncate={true}>
                           <Anchor
                             path={
@@ -84,7 +85,6 @@ class SearchResults extends React.Component {
                               </span>
                             )}
                           </Anchor>
-                          <ReactTooltip />
                         </Label>
                         <Box align="center" justify="center">
                           {(item.can_admin && (

@@ -88,6 +88,8 @@ def add_drafts_from_file(file_path, schema,
     """
     if usermail:
         user = get_existing_or_register_user(usermail)
+    else:
+        user = None
 
     with open(file_path, 'r') as fp:
         entries = json.load(fp)

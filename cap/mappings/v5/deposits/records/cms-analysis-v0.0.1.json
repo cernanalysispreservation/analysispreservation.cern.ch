@@ -2,13 +2,6 @@
   "mappings": {
     "cms-analysis-v0.0.1": {
       "properties": {
-        "_experiment": {
-          "type": "text"
-        },
-        "_created": {
-          "type": "date",
-          "copy_to": "created"
-        },
         "_deposit": {
           "type": "object",
           "properties": {
@@ -26,6 +19,13 @@
               "copy_to": "status"
             }
           }
+        },
+        "_experiment": {
+          "type": "text"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
         },
         "created": {
           "type": "date"
@@ -107,6 +107,11 @@
             },
             "contact_person": {
               "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
               "copy_to": "researcher"
             },
             "publication_status": {
@@ -124,11 +129,10 @@
           "type": "object",
           "properties": {
             "documentations": {
-              "type": "object",
-              "properties": {
-                "keywords": {
-                  "type": "string",
-                  "copy_to": "keyword"
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
                 }
               }
             },
