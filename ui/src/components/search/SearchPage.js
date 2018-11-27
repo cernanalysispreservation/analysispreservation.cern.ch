@@ -100,8 +100,7 @@ class SearchPage extends React.Component {
         total == 0 ? (
           <Box flex={true} justify="center" align="center">
             <Label>
-              No search results where found or you have no permission to see
-              them
+              No search results were found or you have no permission to see them
             </Label>
           </Box>
         ) : (
