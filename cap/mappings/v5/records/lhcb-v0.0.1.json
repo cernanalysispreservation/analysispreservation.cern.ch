@@ -23,12 +23,16 @@
         "_experiment": {
           "type": "text"
         },
+        "created": {
+          "type": "date"
+        },
         "_created": {
           "type": "date",
           "copy_to": "created"
         },
-        "created": {
-          "type": "date"
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
         },
         "keyword": {
           "type": "keyword"

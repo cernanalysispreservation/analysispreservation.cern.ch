@@ -27,6 +27,10 @@
           "type": "date",
           "copy_to": "created"
         },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        },
         "created": {
           "type": "date"
         }

@@ -30,6 +30,10 @@
         "created": {
           "type": "date"
         },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        },
         "basic_info": {
           "type": "object",
           "properties": {
