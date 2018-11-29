@@ -27,7 +27,6 @@
 
 import json
 import re
-from datetime import datetime, timedelta
 from HTMLParser import HTMLParser
 
 import requests
@@ -69,7 +68,7 @@ DAS_DATASETS_MAPPING = {
 
 
 def construct_cadi_entry(cadi_id, data):
-    """Cosntructs CADI entry."""
+    """Construct CADI entry."""
     schema = \
         'https://{}/schemas/deposits/records/cms-analysis-v0.0.1.json'.format(
             current_app.config.get('JSONSCHEMAS_HOST'))
@@ -87,8 +86,8 @@ def construct_cadi_entry(cadi_id, data):
     return entry
 
 
-def get_entries_from_cadi_db():
-    """Retrieves entries from CADI database."""
+def get_all_entries_from_cadi():
+    """Retrieve entries from CADI database."""
     url = current_app.config.get('CADI_GET_ALL_URL')
     data = {"selWGs": "all"}
 
@@ -99,59 +98,47 @@ def get_entries_from_cadi_db():
 
     # we dont want inactive or superseded entries
     entries = [x for x in all_entries
-               if x['status'] not in ['Inactive',
-                                      'SUPERSEDED']]
+               if x['status'] not in ['Inactive', 'SUPERSEDED']]
 
     return entries
 
 
-def get_updated_cadi_lines(from_date=None, until_date=None):
-    """Get CADI lines updated since yesterday."""
-    url = current_app.config.get('CADI_GET_CHANGES_URL')
-    now = datetime.today()
-    yesterday = now - timedelta(days=1)
-
-    resp = requests.post(url=url, params={
-        'fromDate': from_date or yesterday.strftime("%d/%m/%Y"),
-        'toDate': until_date or now.strftime("%d/%m/%Y")
-    })
-
-    data = resp.json().get('data', None)
-
-    return data
-
-
 def synchronize_cadi_entries(limit=None):
-    """Add/update all CADI entries connecting with CADI database."""
-    entries = get_entries_from_cadi_db()
+    """Add/update CADI info in all cms-analysis syncing with CADI db."""
+    parser = HTMLParser()
+    entries = get_all_entries_from_cadi()
+
+    def parse_field(field):
+        """Escape HTML characters."""
+        if isinstance(field, unicode):
+            return parser.unescape(parser.unescape(field))
+        else:
+            return ''
+
     for entry in entries[:limit]:
-        # remove artefact from code names
+        # remove artefact from cadi names
         cadi_id = re.sub('^d', '', entry.get('code', None))
 
+        cadi_info = {
+            cap_key: parse_field(entry.get(cadi_key, None))
+            for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items()
+        }
+
         try:  # update if already exists
-            parser = HTMLParser()
             uuid = get_entry_uuid_by_unique_field(
                 'deposits-records-cms-analysis-v0.0.1',
                 {'basic_info__cadi_id__keyword': cadi_id}
             )
 
             deposit = CAPDeposit.get_record(uuid)
-
-            if 'cadi_info' not in deposit:
-                deposit['cadi_info'] = {}
-            for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
-                # sometimes they store data in HTML format.. need to escape
-                # chars
-                deposit['cadi_info'][cap_key] = parser.unescape(
-                    entry.get(cadi_key, '') or '') or ''
+            deposit['cadi_info'] = cadi_info
             deposit.commit()
 
             print('Cadi entry {} updated.'.format(cadi_id))
 
         except (DepositDoesNotExist, NoResultFound):
             data = construct_cadi_entry(cadi_id, {
-                'cadi_info': {v: parser.unescape(entry.get(k, '') or '') or ''
-                              for k, v in CADI_FIELD_TO_CAP_MAP.items()}
+                'cadi_info': cadi_info
             })
 
             deposit = CAPDeposit.create(data=data)
@@ -198,3 +185,21 @@ def cache_das_datasets_in_es_from_file(file):
         es.indices.delete(index=old_index)
 
     print("Datasets are safe in ES.")
+
+#
+# KEEP IN MIND: DUE TO API PROBLEMS, CALL TO CADI SERVER SOMETIMES FAIL
+#
+# def get_updated_entries_from_cadi(from_date=None, until_date=None):
+#    """Get CADI lines updated since yesterday."""
+#    url = current_app.config.get('CADI_GET_CHANGES_URL')
+#    now = datetime.today()
+#    yesterday = now - timedelta(days=1)
+#
+#    resp = requests.post(url=url, params={
+#        'fromDate': from_date or yesterday.strftime("%d/%m/%Y"),
+#        'toDate': until_date or now.strftime("%d/%m/%Y")
+#    })
+#
+#    data = resp.json().get('data', None)
+#
+#    return data

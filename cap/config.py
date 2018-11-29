@@ -103,6 +103,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'invenio_accounts.tasks.clean_session_table',
         'schedule': timedelta(minutes=60),
     },
+    'cadi_sync': {
+        'task': 'cap.modules.experiments.tasks.cms.synchronize_with_cadi',
+        'schedule': timedelta(days=1),
+    },
 }
 
 # Database
@@ -203,21 +207,6 @@ ACCESS_SESSION_REDIS_HOST = os.environ.get('APP_ACCESS_SESSION_REDIS_HOST',
 ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
-
-# Celery
-# ======
-#: Import modules
-CELERY_IMPORTS = {
-    'cap.modules.experiments.tasks.lhcb',
-}
-#: Scheduled tasks
-CELERYBEAT_SCHEDULE = {
-    'dump_lhcb_analyses_to_json': {
-        'task':
-            'cap.modules.experiments.tasks.lhcb.dump_lhcb_analyses_to_json',
-        'schedule': crontab(minute=0, hour=2)
-    },
-}
 
 #: E-Groups for superuser rights
 SUPERUSER_EGROUPS = [

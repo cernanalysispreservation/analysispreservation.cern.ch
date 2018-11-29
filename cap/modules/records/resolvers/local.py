@@ -27,6 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import jsonresolver
+from flask import abort, has_request_context
 
 from cap.config import JSONSCHEMAS_HOST
 from cap.modules.schemas.models import Schema
@@ -39,5 +40,7 @@ def resolve_schemas(path):
     """Resolve CAP JSON schemas."""
     schema = Schema.get_by_fullpath(path)
 
-    with ReadSchemaPermission(schema).require(403):
+    if not has_request_context() or ReadSchemaPermission(schema).can():
         return schema.json
+    else:
+        abort(403)

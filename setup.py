@@ -137,6 +137,8 @@ setup(
         ],
         'invenio_celery.tasks': [
             'cap_deposit = cap.modules.deposit.loaders',
+            'cap_cms = cap.modules.experiments.tasks.cms',
+            'cap_lhcb = cap.modules.experiments.tasks.lhcb',
         ],
         'invenio_pidstore.minters': [
             'cap_record_minter = '

@@ -26,8 +26,8 @@
 
 from elasticsearch_dsl import Q, TermsFacet
 from flask import g
-from flask.ext.principal import RoleNeed
 from flask_login import current_user
+from flask_principal import RoleNeed
 from invenio_access.models import Role
 from invenio_search import RecordsSearch
 from invenio_search.api import DefaultFilter
