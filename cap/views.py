@@ -15,11 +15,19 @@ this file.
 
 from __future__ import absolute_import, print_function
 
+from os.path import join
+
 from flask import Blueprint, jsonify
+
+from sqlalchemy.exc import OperationalError
+
+from invenio_search import current_search
+from invenio_files_rest.models import Location
 
 from cap.modules.access.utils import login_required
 from cap.modules.deposit.search import CAPDepositSearch
 from cap.modules.records.search import CAPRecordSearch
+
 
 blueprint = Blueprint(
     'cap',
@@ -27,10 +35,42 @@ blueprint = Blueprint(
 )
 
 
-@blueprint.route('/ping', methods=['HEAD', 'GET'])
+@blueprint.route('/ping', methods=['GET'])
 def ping():
     """Load balancer ping view."""
     return 'Pong'
+
+
+@blueprint.route('/ping/db', methods=['GET'])
+def ping_db():
+    """Load balancer ping view."""
+    try:
+        default_location = Location.get_default()
+        return 'OK'
+    except OperationalError:
+        return 'ERROR'
+
+
+@blueprint.route('/ping/search', methods=['GET'])
+def ping_es():
+    """Load balancer ping view."""
+    try:
+        current_search.cluster_version
+        return "OK"
+    except ConnectionError:
+        return "ERROR"
+
+
+@blueprint.route('/ping/files', methods=['GET'])
+def ping_files():
+    """Load balancer ping view."""
+    try:
+        default_location = Location.get_default().uri
+        test_file_path = join(default_location, 'test.txt')
+        f = open(test_file_path, 'r')
+        return "OK"
+    except (OperationalError, IOError) as e:
+        return "ERROR"
 
 
 @blueprint.route('/dashboard')
