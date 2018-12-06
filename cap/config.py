@@ -107,6 +107,14 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'cap.modules.experiments.tasks.cms.synchronize_with_cadi',
         'schedule': timedelta(days=1),
     },
+    'stats-process-events': {
+        'task': 'invenio_stats.tasks.process_events',
+        'schedule': timedelta(minutes=30),
+        'args': [('file-download',)],
+    },
+}
+CELERY_TASK_ROUTES = {
+    'invenio_indexer.tasks.process_bulk_queue': {'queue': 'celery-indexer'}
 }
 
 # Database
@@ -596,3 +604,9 @@ REANA_SERVER_URL = os.environ.get(
 
 REANA_CLIENT_TOKEN = os.environ.get(
     'APP_REANA_CLIENT_TOKEN', None)
+
+
+# Queues
+# ======
+QUEUES_BROKER_URL = CELERY_BROKER_URL
+
