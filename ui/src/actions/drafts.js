@@ -630,39 +630,39 @@ export function getBucketById(bucket_id) {
 }
 
 // Semi - working file upload
-export function uploadFile(bucket_link, file) {
-  return dispatch => {
-    dispatch(uploadFileRequest(file.name));
-    let bucket_id = bucket_link.split("/files/")[1];
-    bucket_link = "/api/files/" + bucket_id;
-    let uri = `${bucket_link}/${file.name}`;
+// export function uploadFile(bucket_link, file) {
+//   return dispatch => {
+//     dispatch(uploadFileRequest(file.name));
+//     let bucket_id = bucket_link.split("/files/")[1];
+//     bucket_link = "/api/files/" + bucket_id;
+//     let uri = `${bucket_link}/${file.name}`;
 
-    let oReq = new XMLHttpRequest();
-    oReq.open("PUT", uri, true);
-    oReq.onload = function(oEvent) {
-      try {
-        let data = oEvent.target.response;
-        data = JSON.parse(data);
-        dispatch(uploadFileSuccess(file.name, data));
-      } catch (err) {
-        dispatch(uploadFileError(file.name, err.message));
-      }
-    };
+//     let oReq = new XMLHttpRequest();
+//     oReq.open("PUT", uri, true);
+//     oReq.onload = function(oEvent) {
+//       try {
+//         let data = oEvent.target.response;
+//         data = JSON.parse(data);
+//         dispatch(uploadFileSuccess(file.name, data));
+//       } catch (err) {
+//         dispatch(uploadFileError(file.name, err.message));
+//       }
+//     };
 
-    oReq.onreadystatechange = function() {
-      //Call a function when the state changes.
-      if (oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
-        // Request finished. Do processing here.
-      }
-    };
+//     oReq.onreadystatechange = function() {
+//       //Call a function when the state changes.
+//       if (oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
+//         // Request finished. Do processing here.
+//       }
+//     };
 
-    oReq.addEventListener("error", function() {
-      dispatch(uploadFileError(file.name, { message: "Error in uploading" }));
-    });
+//     oReq.addEventListener("error", function() {
+//       dispatch(uploadFileError(file.name, { message: "Error in uploading" }));
+//     });
 
-    oReq.send(file);
-  };
-}
+//     oReq.send(file);
+//   };
+// }
 
 export function deleteFile(bucket, key) {
   return dispatch => {
@@ -728,31 +728,41 @@ function _get_permissions_data(type, email, action, operation) {
   ];
 }
 
-// export function uploadFile(bucket_link, file) {
-//   return function (dispatch) {
-//     dispatch(draftsItemRequest());
-//     bucket_link = bucket_link.replace('http:', 'https:');
-//     let uri = `${bucket_link}/${file.name}`;
+export function uploadFile(bucket_link, file) {
+  return function(dispatch) {
+    dispatch(draftsItemRequest());
+    // bucket_link = bucket_link.replace('http:', 'https:');
+    let bucket_id = bucket_link.split("/").pop();
+    let uri = `/api/files/${bucket_id}/${file.name}`;
+    let file_size = file.size;
+    let part_size = 6291456; // 6mb
 
-//     const data = new FormData();
-//     data.append('file', file);
-//     data.append('name', 'myfile');
+    uri = uri + `?uploads&size=${file_size}&partSize=${part_size}`;
 
-//     // uri = uri+'?uploads&size=8&partSize=4'
-//     // axios.post(uri, data)
-//     //   .then((response) => {
-//     //     console.log("UPLOADED fiel::::::",response.data)
-//     //   })
-//     //   .catch((error) => {
-//     //     console.log("UPLOADED error::::::",error)
-//     //   })
-//     axios.put(uri, data)
-//       .then((response) => {
-//         console.log("UPLOADED fiel::::::",response.data)
-//       })
-//       .catch((error) => {
-//         console.log("UPLOADED error::::::",error)
-//       })
-
-//   };
-// }
+    axios
+      .post(uri)
+      .then(response => {
+        console.log("response is ", response);
+        let last_part_number = response.data.last_part_number;
+        for (let i = 0; i <= last_part_number; i++) {
+          let offset = i * part_size;
+          axios
+            .put(
+              `/api/files/${bucket_id}/${file.name}?uploadId=${
+                response.data.id
+              }&partNumber=${i}`,
+              file.slice(offset, offset + part_size)
+            )
+            .then(response => {
+              console.log("response", response);
+            })
+            .catch(error => {
+              console.log("ERROR", error);
+            });
+        }
+      })
+      .catch(error => {
+        console.log("UPLOADED error::::::", error);
+      });
+  };
+}
