@@ -31,9 +31,9 @@ export function searchError(error) {
   };
 }
 
-export function fetchSearch() {
+export function fetchSearch(index = "deposits") {
   return function(dispatch, getState) {
-    let searchApiUrl = "/api/deposits/";
+    let searchApiUrl = `/api/${index}/`;
 
     let location_search = getState().routing.location.search;
     let params = queryString.parse(location_search);
@@ -55,18 +55,5 @@ export function toggleAggs(selectedAggs) {
   return {
     type: ADD_AGGS,
     selectedAggs: selectedAggs
-  };
-}
-
-export function queryChanged(query) {
-  return function(dispatch) {
-    dispatch(fetchSearch(query));
-  };
-}
-
-export function setQuery(query) {
-  return {
-    type: QUERY_CHANGED,
-    query
   };
 }

@@ -10,6 +10,7 @@ import DraftHeader from "./components/DraftHeader";
 // Containers
 import DraftsItemIndex from "./DraftsItemIndex";
 import DraftEditor from "./DraftEditor";
+import SearchPage from "../search/SearchPage";
 
 class DraftsIndex extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class DraftsIndex extends React.Component {
       <Box flex={true}>
         <DraftHeader formRef={this.formRef} />
         <Switch>
+          <Route exact path="/drafts" component={SearchPage} />
           <Route
             exact
             path="/drafts/create/:schema_id"

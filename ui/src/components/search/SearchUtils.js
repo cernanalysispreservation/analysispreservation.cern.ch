@@ -1,6 +1,7 @@
 import React from "react";
-// import {connect} from 'react-redux';
 import PropTypes from "prop-types";
+
+import _debounce from "lodash/debounce";
 
 import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
@@ -14,11 +15,9 @@ export default class SearchUtils extends React.Component {
     super(props);
   }
 
-  componentWillUnmount() {}
-
-  _onPageChange(page) {
+  _onPageChange = _debounce(page => {
     this.props.onPageChange(page);
-  }
+  }, 300);
 
   _onPageSizeChange(size) {
     this.props.onPageSizeChange(size);
@@ -79,20 +78,3 @@ SearchUtils.propTypes = {
   onPageChange: PropTypes.func,
   onPageSizeChange: PropTypes.func
 };
-
-// function mapStateToProps(state) {
-//   return {
-//     // fuelSavings: state.fuelSavings
-//   };
-// }
-
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     // actions: bindActionCreators(actions, dispatch)
-//   };
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(SearchUtils);

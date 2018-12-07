@@ -11,6 +11,8 @@ import SearchResults from "./SearchResults";
 
 import { fetchSearch } from "../../actions/search";
 import queryString from "query-string";
+import Spinning from "grommet/components/icons/Spinning";
+import { withRouter } from "react-router";
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -18,12 +20,12 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchSearch();
+    this.props.fetchSearch(this.props.location.index);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.location.search !== nextProps.location.search) {
-      this.props.fetchSearch();
+  componentDidUpdate(prevProps) {
+    if (this.props.location.search !== prevProps.location.search) {
+      this.props.fetchSearch(this.props.location.index);
     }
   }
 
@@ -47,9 +49,7 @@ class SearchPage extends React.Component {
         Object.assign(currentParams, { page: page })
       )}`
     };
-
     this.props.history.push(location);
-    this.props.fetchSearch();
   }
 
   render() {
@@ -103,6 +103,12 @@ class SearchPage extends React.Component {
               No search results were found or you have no permission to see them
             </Label>
           </Box>
+        ) : this.props.loading ? (
+          <Box flex={true} justify="center" direction="row">
+            <Box align="center">
+              <Spinning size="large" />
+            </Box>
+          </Box>
         ) : (
           <SearchResults results={_results.hits.hits || []} />
         );
@@ -139,11 +145,13 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: () => dispatch(fetchSearch())
+    fetchSearch: index => dispatch(fetchSearch(index))
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SearchPage);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SearchPage)
+);
