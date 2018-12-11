@@ -105,7 +105,7 @@ class SearchPage extends React.Component {
           </Box>
         ) : this.props.loading ? (
           <Box flex={true} justify="center" direction="row">
-            <Box align="center">
+            <Box justify="center" align="center">
               <Spinning size="large" />
             </Box>
           </Box>

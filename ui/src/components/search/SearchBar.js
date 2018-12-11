@@ -1,20 +1,31 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
 import Search from "grommet/components/Search";
-import RevertIcon from "grommet/components/icons/base/Revert";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import queryString from "query-string";
+
+import Suggestions from "./components/Suggestions";
+
+const INITIAL_STATE = [
+  {
+    label: <Suggestions text="drafts" />,
+    pathname: "/drafts"
+  },
+  {
+    label: <Suggestions text="shared" />,
+    pathname: "/search"
+  }
+];
 
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.q = queryString.parse(this.props.location.search);
     this.state = {
-      suggestions: []
+      suggestions: INITIAL_STATE
     };
   }
 
@@ -40,37 +51,19 @@ class SearchBar extends React.Component {
     this.props.history.push(search_location);
   };
 
-  renderSuggestion(query, text) {
-    return (
-      <Box direction="row" flex={true} justify="between">
-        <Box flex={true} size="small">
-          <Label size="small" truncate={true}>
-            {query}
-          </Label>
-        </Box>
-        <Box flex={false} colorIndex="grey-3" pad={{ horizontal: "small" }}>
-          <Label size="small">
-            <RevertIcon size="xsmall" /> Search in {text}
-          </Label>
-        </Box>
-      </Box>
-    );
-  }
-
   onSearchInput = event => {
     let query = event.target.value;
     let q = queryString.parse(this.props.location.search);
     q["q"] = query;
-    this.setState({ suggestions: [] });
     this.setState({
       suggestions: [
         {
-          label: this.renderSuggestion(query, "drafts"),
+          label: <Suggestions query={query} text="drafts" />,
           query,
           pathname: "/drafts"
         },
         {
-          label: this.renderSuggestion(query, "shared"),
+          label: <Suggestions query={query} text="shared" />,
           query,
           pathname: "/search"
         }

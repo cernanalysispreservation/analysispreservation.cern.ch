@@ -134,7 +134,7 @@ export const DraftMessage = ({ message, loading }) => {
           <Box margin={{ left: "medium" }} />
         ),
         message && (
-          <Label size="medium" margin="none">
+          <Label size="small" margin="none" uppercase={true}>
             {message.msg.toLowerCase()}
           </Label>
         )

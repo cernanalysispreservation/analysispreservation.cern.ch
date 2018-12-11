@@ -41,8 +41,6 @@ services:
 
 env:
   - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.0.1 APP_GITLAB_OAUTH_ACCESS_TOKEN="testtoken"
-  # - REQUIREMENTS=release E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
-  # - REQUIREMENTS=devel E2E="no" SQLALCHEMY_DATABASE_URI="sqlite:///cap.db" ES_VERSION=2.3.1
 
 before_install:
   - mkdir /tmp/elasticsearch
@@ -53,31 +51,17 @@ before_install:
   - travis_retry pip install coveralls
   - travis_retry pip install kwalitee --pre
   - echo ${TRAVIS_COMMIT_RANGE}
-  # Comments out workaround because of Travis CI issues
-  # - |
-  #      # inspiration from https://github.com/trevp/tlslite/blob/master/.travis.yml
-  #      # workaround for https://github.com/travis-ci/travis-ci/issues/2666
-  #      if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-  #        URL="https://github.com/${TRAVIS_REPO_SLUG}/pull/${TRAVIS_PULL_REQUEST}.patch"
-  #        PR_FIRST=$(curl --silent --show-error --location $URL | head -1 | grep -o -E '\b[0-9a-f]{40}\b' | tr -d '\n')
-  #        TRAVIS_COMMIT_RANGE=$PR_FIRST^..$TRAVIS_COMMIT
-  #      fi
-  # - echo ${TRAVIS_COMMIT_RANGE}
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
-  - "requirements-builder --level=min setup.py > .travis-lowest-requirements.txt"
-  # - "requirements-builder --level=pypi setup.py > .travis-release-requirements.txt"
-  - "requirements-builder --level=dev --req requirements-devel.txt setup.py > .travis-devel-requirements.txt"
+  - "cat requirements.txt > .travis-lowest-requirements.txt"
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -r requirements-local-forks.txt"
   - "travis_retry pip install -e .[docs,tests,ldap]"
-  # - "travis_retry pip install -r requirements.txt --upgrade"
 
 before_script:
   - travis_retry pip install kwalitee GitPython --pre
-  # - kwalitee check message -s ${TRAVIS_COMMIT_RANGE/.../..}
 
 script:
   - "./run-tests.sh"
