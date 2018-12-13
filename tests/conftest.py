@@ -38,6 +38,7 @@ import pytest
 from elasticsearch.exceptions import RequestError
 from flask import current_app
 from flask_celeryext import FlaskCeleryExt
+from flask_principal import ActionNeed
 from flask_security import login_user
 from invenio_access.models import ActionUsers
 from invenio_access.permissions import superuser_access
@@ -155,6 +156,11 @@ def create_user_with_role(username, rolename):
     _datastore.add_role_to_user(user, role)
 
     return user
+
+def add_role_to_user(user, rolename):
+    role = _datastore.find_or_create_role(rolename)
+        
+    _datastore.add_role_to_user(user, role)
 
 
 @pytest.fixture()

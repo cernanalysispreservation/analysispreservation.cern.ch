@@ -34,7 +34,6 @@ from invenio_search.api import DefaultFilter
 
 from cap.modules.access.permissions import admin_permission_factory
 from cap.modules.access.utils import login_required
-from cap.modules.user.views import get_user_experiments
 
 
 @login_required
@@ -56,24 +55,14 @@ def deposits_filter():
     roles = [role.id for role in Role.query.all()
              if RoleNeed(role) in g.identity.provides]
 
-    # we store experiments in ES with lowercases
-    user_experiments = [x.lower() for x in get_user_experiments()]
-
-    # @TOFIX this one shouldnt be here, this is the records part
-    # we should find a better solution...
-    q = Q('multi_match', query=g.identity.id,
-          fields=[
-              '_access.deposit-read.users',
-              '_access.deposit-admin.users'
-          ]) | \
-        Q('terms',
-          **{'_access.deposit-read.roles': roles}) | \
-        Q('terms',
-          **{'_access.deposit-admin.roles': roles}) | \
-        Q('bool', must=[
-            Q('terms', **{'_experiment': user_experiments}),
-            Q('term', **{'_deposit.status': 'published'})
-        ])
+    q = (Q('multi_match', query=g.identity.id,
+           fields=[
+               '_access.deposit-read.users',
+               '_access.deposit-admin.users'
+           ]) |
+         Q('terms', **{'_access.deposit-read.roles': roles}) |
+         Q('terms', **{'_access.deposit-admin.roles': roles})
+         ) & Q('term', **{'_deposit.status': 'draft'})
 
     return q
 
