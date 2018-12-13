@@ -30,6 +30,8 @@ import json
 from invenio_search import current_search
 from pytest import mark
 
+from conftest import add_role_to_user
+
 # #######################################
 # # api/deposits/{pid}  [PUT]
 # #######################################
@@ -175,6 +177,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
                                                                                                     json_headers,
                                                                                                     auth_headers_for_user):
     owner, other_user = users['lhcb_user'], users['cms_user']
+    add_role_to_user(other_user, 'some-egroup@cern.ch')
     deposit = create_deposit(owner, 'lhcb-v0.0.1')
 
     with app.test_client() as client:
@@ -186,7 +189,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
         assert resp.status_code == 403
 
         permissions = [{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'add',
             'action': action
@@ -214,11 +217,12 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
                                                                                             json_headers,
                                                                                             auth_headers_for_user):
     owner, other_user = users['lhcb_user'], users['cms_user']
+    add_role_to_user(other_user, 'some-egroup@cern.ch')
     deposit = create_deposit(owner, 'lhcb-v0.0.1')
 
     with app.test_client() as client:
         permissions = [{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'add',
             'action': 'deposit-read'

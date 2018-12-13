@@ -27,7 +27,7 @@
 
 from functools import partial
 
-from flask import current_app
+from cap.modules.experiments.permissions import exp_need_factory
 from invenio_access.factory import action_factory
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 
@@ -54,10 +54,7 @@ class ReadSchemaPermission(Permission):
         _needs.add(SchemaReadActionNeed(schema.id))
 
         # experiments members can access schema
-        exp_needs = current_app.config['EXPERIMENT_NEEDS'].get(
-            schema.experiment, [])
-        _needs.update(exp_needs)
-
-        self._needs = _needs
+        if schema.experiment:
+            _needs.add(exp_need_factory(schema.experiment))
 
         super(ReadSchemaPermission, self).__init__(*_needs)

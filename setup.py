@@ -115,6 +115,16 @@ setup(
         'console_scripts': [
             'cap = cap.cli:cli',
         ],
+        'invenio_access.actions': [
+            'cms_access = '
+            'cap.modules.experiments.permissions:cms_access_action',
+            'lhcb_access = '
+            'cap.modules.experiments.permissions:lhcb_access_action',
+            'alice_access = '
+            'cap.modules.experiments.permissions:alice_access_action',
+            'atlas_access = '
+            'cap.modules.experiments.permissions:atlas_access_action',
+        ],
         'invenio_base.api_apps': [
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',

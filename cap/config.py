@@ -214,24 +214,6 @@ SUPERUSER_EGROUPS = [
     RoleNeed('data-preservation-admins@cern.ch'),
 ]
 
-# CAP collaboration groups
-# ========================
-#: Configuration for collaborations
-EXPERIMENT_NEEDS = {
-    "CMS": [
-        RoleNeed("cms-members@cern.ch"),
-    ],
-    "ALICE": [
-        RoleNeed("alice-member@cern.ch"),
-    ],
-    "ATLAS": [
-        RoleNeed("atlas-active-members-all@cern.ch"),
-    ],
-    "LHCb": [
-        RoleNeed("lhcb-general@cern.ch"),
-    ]
-}
-
 # Records
 # =======
 #: Records sort/facets options
@@ -333,6 +315,7 @@ RECORDS_REST_FACETS = {
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
 RECORDS_REST_ENDPOINTS['recid'].update({
+    'record_class': 'cap.modules.records.api:CAPRecord',
     'pid_fetcher': 'cap_record_fetcher',
     'search_class': 'cap.modules.records.search:CAPRecordSearch',
     'search_factory_imp': 'cap.modules.search.query'

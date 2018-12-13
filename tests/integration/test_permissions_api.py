@@ -30,13 +30,13 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app, session
-from werkzeug.local import LocalProxy
-
-from cap.modules.deposit.permissions import read_permission_factory
-from conftest import create_user_with_role
 from invenio_accounts.models import Role, User
 from mock import patch
 from pytest import mark
+from werkzeug.local import LocalProxy
+
+from cap.modules.deposit.permissions import read_permission_factory
+from conftest import add_role_to_user
 
 _datastore = LocalProxy(
     lambda: current_app.extensions['security'].datastore)
@@ -449,16 +449,17 @@ def test_change_permissions_for_egroup(app,
                                        create_deposit,
                                        json_headers):
     owner, other_user = users['cms_user'], users['cms_user2']
+    add_role_to_user(other_user, 'some-egroup@cern.ch')
     pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
 
     with app.test_client() as client:
         permissions = [{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'add',
             'action': 'deposit-read'
         },{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'add',
             'action': 'deposit-update'
@@ -481,12 +482,12 @@ def test_change_permissions_for_egroup(app,
 
         # remove read/write permissions
         permissions = [{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'remove',
             'action': 'deposit-read'
         },{
-            'email': 'cms-members@cern.ch',
+            'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'remove',
             'action': 'deposit-update'

@@ -30,7 +30,6 @@ from functools import partial
 from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 from invenio_files_rest.models import Bucket
-from invenio_records.api import Record
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 

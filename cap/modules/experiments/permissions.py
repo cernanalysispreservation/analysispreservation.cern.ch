@@ -24,28 +24,29 @@
 
 """Experiments permissions."""
 
-from cap.config import EXPERIMENT_NEEDS
+from flask_principal import ActionNeed
 from invenio_access.permissions import Permission
 
 
-class ExperimentPermission(Permission):
-    """Generic experiment permission."""
-
-    def __init__(self, experiment):
-        """Constructor.
-
-        Args:
-        deposit: deposit to which access is requested.
-        """
-        exp_needs = EXPERIMENT_NEEDS.get(experiment)
-
-        _needs = set()
-        _needs.update(exp_needs)
-
-        super(ExperimentPermission, self).__init__(*_needs)
+def exp_permission_factory(experiment):
+    """Experiment permission factory."""
+    return Permission(
+        ActionNeed('{}-access'.format(experiment.lower()))
+    )
 
 
-cms_permission = ExperimentPermission('CMS')
-alice_permission = ExperimentPermission('ALICE')
-atlas_permission = ExperimentPermission('ATLAS')
-lhcb_permission = ExperimentPermission('LHCb')
+def exp_need_factory(experiment):
+    """Experiment need factory."""
+    return ActionNeed(('{}-access'.format(experiment.lower())))
+
+
+cms_access_action = exp_need_factory('CMS')
+lhcb_access_action = exp_need_factory('LHCb')
+alice_access_action = exp_need_factory('ALICE')
+atlas_access_action = exp_need_factory('ATLAS')
+
+
+cms_permission = exp_permission_factory('CMS')
+lhcb_permission = exp_permission_factory('LHCb')
+alice_permission = exp_permission_factory('ALICE')
+atlas_permission = exp_permission_factory('ATLAS')

@@ -142,18 +142,20 @@ def es(app):
         current_search_client.indices.delete(index='*')
 
 
-def create_user_with_role(username, rolename):
-    _datastore = LocalProxy(
-        lambda: current_app.extensions['security'].datastore)
+_datastore = LocalProxy(
+    lambda: current_app.extensions['security'].datastore)
 
-    user, role = _datastore._prepare_role_modify_args(username, rolename)
+
+def create_user_with_access(username, action):
+    user = _datastore.find_user(email=username)
 
     if not user:
         user = create_test_user(email=username, password='pass')
-    if not role:
-        role = _datastore.create_role(name=rolename)
 
-    _datastore.add_role_to_user(user, role)
+    db_.session.add(ActionUsers.allow(
+        ActionNeed(action), user=user))
+
+    db_.session.commit()
 
     return user
 
@@ -164,31 +166,28 @@ def add_role_to_user(user, rolename):
 
 
 @pytest.fixture()
-def users(app, db):
+def users(db):
     """Create users."""
     users = {
-        'cms_user': create_user_with_role('cms_user@cern.ch',
-                                          'cms-members@cern.ch'),
-        'cms_user2': create_user_with_role('cms_user2@cern.ch',
-                                           'cms-members@cern.ch'),
-        'alice_user': create_user_with_role('alice_user@cern.ch',
-                                            'alice-member@cern.ch'),
-        'alice_user2': create_user_with_role('alice_user2@cern.ch',
-                                             'alice-member@cern.ch'),
-        'atlas_user': create_user_with_role('atlas_user@cern.ch',
-                                            'atlas-active-members-all@cern.ch'),
-        'atlas_user2': create_user_with_role('atlas_user2@cern.ch',
-                                             'atlas-active-members-all@cern.ch'),
-        'lhcb_user': create_user_with_role('lhcb_user@cern.ch',
-                                           'lhcb-general@cern.ch'),
-        'lhcb_user2': create_user_with_role('lhcb_user2@cern.ch',
-                                            'lhcb-general@cern.ch'),
-        'superuser': create_user_with_role('superuser@cern.ch',
-                                           'analysis-preservation-support@cern.ch'),
+        'cms_user': create_user_with_access('cms_user@cern.ch',
+                                          'cms-access'),
+        'cms_user2': create_user_with_access('cms_user2@cern.ch',
+                                           'cms-access'),
+        'alice_user': create_user_with_access('alice_user@cern.ch',
+                                            'alice-access'),
+        'alice_user2': create_user_with_access('alice_user2@cern.ch',
+                                             'alice-access'),
+        'atlas_user': create_user_with_access('atlas_user@cern.ch',
+                                            'atlas-access'),
+        'atlas_user2': create_user_with_access('atlas_user2@cern.ch',
+                                             'atlas-access'),
+        'lhcb_user': create_user_with_access('lhcb_user@cern.ch',
+                                           'lhcb-access'),
+        'lhcb_user2': create_user_with_access('lhcb_user2@cern.ch',
+                                            'lhcb-access'),
+        'superuser': create_user_with_access('superuser@cern.ch',
+                                           'superuser-access'),
     }
-    db.session.add(ActionUsers.allow(
-        superuser_access, user=users['superuser']))
-    db.session.commit()
 
     return users
 

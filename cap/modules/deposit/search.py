@@ -50,7 +50,7 @@ def deposits_filter():
     Otherwise, it filters out any deposit where user is not the owner.
     """
     if admin_permission_factory(None).can():
-        return Q()
+        return Q('term', **{'_deposit.status': 'draft'})
 
     roles = [role.id for role in Role.query.all()
              if RoleNeed(role) in g.identity.provides]

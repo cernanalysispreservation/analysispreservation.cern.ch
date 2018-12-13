@@ -26,9 +26,10 @@
 
 from functools import partial
 
-from flask import current_app, request
-
+from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
+
+from cap.modules.experiments.permissions import exp_need_factory
 
 RecordReadActionNeed = partial(ParameterizedActionNeed, 'record-read')
 """Action need for reading a record."""
@@ -105,10 +106,6 @@ class ReadRecordPermission(RecordPermission):
     def __init__(self, record):
         """Initialize state."""
         self._needs = set()
-
-        exp_needs = current_app.config['EXPERIMENT_NEEDS'].get(
-            record['_experiment'], [])
-        self._needs.update(exp_needs)
 
         super(ReadRecordPermission, self).__init__(record, 'read')
 

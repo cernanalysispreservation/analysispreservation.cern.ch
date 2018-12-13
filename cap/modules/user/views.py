@@ -28,7 +28,7 @@ from __future__ import absolute_import, print_function
 
 import ldap
 import requests
-from flask import Blueprint, current_app, g, jsonify, request, session
+from flask import Blueprint, current_app, jsonify, request
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
@@ -48,32 +48,16 @@ user_blueprint = Blueprint('cap_user', __name__,
 @login_required
 def get_user():
     """Returns logged in user."""
-    user_experiments = get_user_experiments()
     deposit_groups = get_user_deposit_groups()
-    current_experiment = session.get('current_experiment', '')
-    if user_experiments and not current_experiment:
-        current_experiment = user_experiments[0]
     _user = {
         "id": current_user.id,
         "email": current_user.email,
         "deposit_groups": deposit_groups,
-        "current_experiment": current_experiment,
     }
 
     response = jsonify(_user)
     response.status_code = 200
     return response
-
-
-def get_user_experiments():
-    """Get user's experiments."""
-    exp_needs = current_app.config['EXPERIMENT_NEEDS']
-    user_needs = g.identity.provides
-
-    return [
-        exp for exp, needs in exp_needs.items()
-        if any(need in user_needs for need in needs)
-    ]
 
 
 def get_user_deposit_groups():

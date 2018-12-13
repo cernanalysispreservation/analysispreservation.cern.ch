@@ -28,7 +28,13 @@
 import json
 import re
 
+from flask_principal import ActionNeed
+from invenio_access.models import ActionRoles, ActionUsers
 from pytest import mark
+
+from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.user.utils import get_existing_or_register_role
+from conftest import _datastore
 
 
 ###########################################
@@ -224,8 +230,7 @@ def test_get_deposits_when_published_other_members_of_experiment_can_see_it(app,
     headers_for_other_user = auth_headers_for_user(other_user) 
     user_from_different_exp = users['lhcb_user']
     headers_for_diff_exp_user = auth_headers_for_user(user_from_different_exp)
-    schema = create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test-v0.0.1', experiment='CMS')['_deposit']['id']
     
     with app.test_client() as client:
         # creator can see it
@@ -262,3 +267,82 @@ def test_get_deposits_when_published_other_members_of_experiment_can_see_it(app,
                           headers=headers_for_diff_exp_user)
 
         assert resp.status_code == 403
+
+
+def test_deposit_publish_record_inherits_deposit_permissions(app, db, users, create_deposit):
+    owner = users['superuser']
+    role = _datastore.find_or_create_role('some-egroup@cern.ch')
+    deposit = create_deposit(owner, 'test-v1.0.0', {})
+    deposit._add_egroup_permissions(role,
+                                    ['deposit-read',
+                                     'deposit-update'],
+                                    db.session)
+    deposit.publish()
+    _, record = deposit.fetch_published()
+
+    assert record['_access'] == {
+        'record-read': {
+            'users': [owner.id],
+            'roles': [role.id]
+        },
+        'record-update': {
+            'users': [owner.id],
+            'roles': [role.id]
+        },
+        'record-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+
+    assert ActionUsers.query.filter_by(action='record-read',
+                                       argument=str(record.id),
+                                       user_id=owner.id).one()
+    assert ActionUsers.query.filter_by(action='record-update',
+                                       argument=str(record.id),
+                                       user_id=owner.id).one()
+    assert ActionUsers.query.filter_by(action='record-admin',
+                                       argument=str(record.id),
+                                       user_id=owner.id).one()
+    assert ActionRoles.query.filter_by(action='record-read',
+                                       argument=str(record.id),
+                                       role_id=role.id).one()
+    assert ActionRoles.query.filter_by(action='record-update',
+                                       argument=str(record.id),
+                                       role_id=role.id).one()
+    assert not ActionRoles.query.filter_by(action='record-admin',
+                                       argument=str(record.id),
+                                       role_id=role.id).one_or_none()
+
+
+def test_deposit_publish_gives_acceess_to_members_of_exp(app, db, users, create_deposit):
+    owner = users['superuser']
+    role = _datastore.find_or_create_role('some-egroup@cern.ch')
+    db.session.add(ActionRoles.allow(exp_need_factory('CMS'), role=role))
+    deposit = create_deposit(owner, 'test-v1.0.0', {}, 'CMS', publish=True)
+    _, record = deposit.fetch_published()
+
+    assert record['_access'] == {
+        'record-read': {
+            'users': [owner.id, users['cms_user'].id, users['cms_user2'].id],
+            'roles': [role.id]
+        },
+        'record-update': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'record-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+
+    assert ActionUsers.query.filter_by(action='record-read',
+                                       argument=str(record.id),
+                                       user=users['cms_user']).one()
+    assert ActionUsers.query.filter_by(action='record-read',
+                                       argument=str(record.id),
+                                       user=users['cms_user2']).one()
+    assert ActionRoles.query.filter_by(action='record-read',
+                                       argument=str(record.id),
+                                       role=role).one()

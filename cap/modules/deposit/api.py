@@ -38,6 +38,7 @@ from flask import current_app, request
 from werkzeug.local import LocalProxy
 
 from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
@@ -110,14 +111,7 @@ class CAPDeposit(Deposit):
 
     deposit_minter = staticmethod(cap_deposit_minter)
 
-#    def __init__(self, *args, **kwargs):
-#        """Initialize CAPDeposit object."""
-#        self.admin_permission_factory = check_oauth2_scope(
-#            lambda record: AdminDepositPermission(self).can(),
-#            write_scope.id
-#        )
-#
-#        super(CAPDeposit, self).__init__(*args, **kwargs)
+    published_record_class = CAPRecord
 
     @property
     def schema(self):

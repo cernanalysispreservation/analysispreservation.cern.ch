@@ -31,7 +31,6 @@ from urllib import unquote
 
 import requests
 from flask import Blueprint, current_app, jsonify, request
-
 from invenio_search.proxies import current_search_client as es
 
 from ..permissions import cms_permission
