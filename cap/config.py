@@ -15,7 +15,6 @@ import os
 from datetime import timedelta
 from os.path import dirname, join
 
-from celery.schedules import crontab
 from flask import request
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
@@ -296,6 +295,73 @@ RECORDS_REST_FACETS = {
         'post_filters': {
             'type': terms_filter('_type'),
             'status': terms_filter('status.keyword'),
+            'cadi_status': terms_filter('cadi_status'),
+            'publication_status': terms_filter('publication_status.keyword'),
+            'conference': terms_filter('conference'),
+            'physics_objects': nested_filter(
+                'main_measurements.signal_event_selection.physics_objects',
+                'main_measurements.signal_event_selection'
+                '.physics_objects.object'
+            ),
+            'physics_objects_type': nested_filter(
+                'main_measurements.signal_event_selection.physics_objects',
+                'main_measurements.signal_event_selection.physics_objects'
+                '.object_type.keyword'),
+        }
+    },
+    'records': {
+        'aggs': {
+            'facet_type': {
+                'terms': {
+                    'field': '_type'
+                }
+            },
+            'facet_cadi_status': {
+                'terms': {
+                    'field': 'cadi_status'
+                }
+            },
+            'facet_publication_status': {
+                'terms': {
+                    'field': 'publication_status.keyword'
+                }
+            },
+            "particles": {
+                "nested": {
+                    "path": "main_measurements.signal_event_selection"
+                            ".physics_objects"
+                },
+                "aggs": {
+                    "facet_physics_objects": {
+                        "terms": {
+                            "field": "main_measurements.signal_event_selection"
+                                     ".physics_objects.object",
+                            "exclude": ""
+                        },
+                        "aggs": {
+                            "doc_count": {
+                                "reverse_nested": {}
+                            },
+                            "facet_physics_objects_type": {
+                                "terms": {
+                                    "field": "main_measurements"
+                                             ".signal_event_selection"
+                                             ".physics_objects"
+                                             ".object_type.keyword"
+                                },
+                                "aggs": {
+                                    "doc_count": {
+                                        "reverse_nested": {}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                }
+            },
+        },
+        'post_filters': {
+            'type': terms_filter('_type'),
             'cadi_status': terms_filter('cadi_status'),
             'publication_status': terms_filter('publication_status.keyword'),
             'conference': terms_filter('conference'),
