@@ -15,7 +15,7 @@ const INITIAL_STATE = [
     pathname: "/drafts"
   },
   {
-    label: <Suggestions text="shared" />,
+    label: <Suggestions text="published" />,
     pathname: "/search"
   }
 ];
@@ -63,7 +63,7 @@ class SearchBar extends React.Component {
           pathname: "/drafts"
         },
         {
-          label: <Suggestions query={query} text="shared" />,
+          label: <Suggestions query={query} text="published" />,
           query,
           pathname: "/search"
         }
@@ -73,18 +73,16 @@ class SearchBar extends React.Component {
 
   render() {
     return (
-      <Box colorIndex="neutral-1-t">
-        <Search
-          id="searchbar"
-          inline={true}
-          placeHolder="Search"
-          defaultValue={this.q && this.q["q"]}
-          dropAlign={{ top: "bottom" }}
-          onDOMChange={this.onSearchInput}
-          onSelect={this._onSearchSubmit}
-          suggestions={this.state.suggestions}
-        />
-      </Box>
+      <Search
+        id="searchbar"
+        inline={true}
+        placeHolder="Search"
+        defaultValue={this.q && this.q["q"]}
+        dropAlign={{ top: "bottom" }}
+        onDOMChange={this.onSearchInput}
+        onSelect={this._onSearchSubmit}
+        suggestions={this.state.suggestions}
+      />
     );
   }
 }

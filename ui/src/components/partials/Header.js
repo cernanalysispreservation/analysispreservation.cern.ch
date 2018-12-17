@@ -50,7 +50,6 @@ class Header extends React.Component {
         <Box
           flex={true}
           pad={{ horizontal: "small" }}
-          justify="start"
           direction="row"
           responsive={false}
         >
@@ -69,11 +68,18 @@ class Header extends React.Component {
             </Label>
           </Title>
 
-          {this.props.isLoggedIn
-            ? [
-                <Box flex={true} justify="center" colorIndex="neutral-1-t">
-                  <SearchBar />
-                </Box>,
+          {this.props.isLoggedIn ? (
+            <Box direction="row" justify="between" flex={true}>
+              <Box
+                flex={true}
+                justify="center"
+                size={{ width: { max: "large" } }}
+                colorIndex="neutral-1-t"
+                margin={{ horizontal: "small" }}
+              >
+                <SearchBar />
+              </Box>
+              <Box>
                 <Menu
                   align="center"
                   margin={{ left: "small" }}
@@ -121,8 +127,9 @@ class Header extends React.Component {
                     />
                   </Menu>
                 </Menu>
-              ]
-            : null}
+              </Box>
+            </Box>
+          ) : null}
         </Box>
       </GrommetHeader>
     );
