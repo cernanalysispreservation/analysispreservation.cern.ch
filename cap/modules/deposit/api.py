@@ -35,16 +35,6 @@ from functools import wraps
 import requests
 from celery import shared_task
 from flask import current_app, request
-from werkzeug.local import LocalProxy
-
-from cap.config import FILES_URL_MAX_SIZE
-from cap.modules.records.api import CAPRecord
-from cap.modules.repoimporter.repo_importer import RepoImporter
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
-from cap.modules.user.errors import DoesNotExistInLDAP
-from cap.modules.user.utils import (get_existing_or_register_role,
-                                    get_existing_or_register_user)
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_db import db
@@ -58,6 +48,16 @@ from invenio_rest.errors import FieldError
 from jsonschema.validators import Draft4Validator, RefResolutionError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.local import LocalProxy
+
+from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.records.api import CAPRecord
+from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
+from cap.modules.user.errors import DoesNotExistInLDAP
+from cap.modules.user.utils import (get_existing_or_register_role,
+                                    get_existing_or_register_user)
 
 from .errors import (DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
@@ -439,8 +439,6 @@ class CAPDeposit(Deposit):
             self['_deposit']['created_by'] = owner.id
             self['_deposit']['owners'] = [owner.id]
 
-        self.commit()
-
     def _construct_fileinfo(self, url, type):
         """Constructs repo name  or file name."""
         url = url.rstrip('/')
@@ -458,7 +456,6 @@ class CAPDeposit(Deposit):
     def _set_experiment(self):
         schema = Schema.get_by_fullpath(self['$schema'])
         self['_experiment'] = schema.experiment
-        self.commit()
 
     def _create_buckets(self):
         bucket = Bucket.create()
@@ -519,6 +516,8 @@ class CAPDeposit(Deposit):
         deposit._create_buckets()
         deposit._set_experiment()
         deposit._init_owner_permissions(owner)
+
+        deposit.commit()
 
         return deposit
 
