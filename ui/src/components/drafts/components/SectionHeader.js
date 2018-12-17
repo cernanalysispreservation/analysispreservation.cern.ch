@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
+import Label from "grommet/components/Label";
 import Header from "grommet/components/Header";
 
 export default function SectionHeader(props) {
@@ -21,9 +22,9 @@ export default function SectionHeader(props) {
         pad={{ horizontal: "small" }}
         responsive={false}
       >
-        <span>
+        <Label size="small" style={{ overflow: "hidden" }}>
           {props.label} {props.status}
-        </span>
+        </Label>
       </Box>
       <Box flex={false} margin={{ horizontal: "xsmall" }}>
         {props.icon ? props.icon : null}
