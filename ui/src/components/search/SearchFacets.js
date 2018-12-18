@@ -11,8 +11,6 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import CheckBox from "grommet/components/CheckBox";
 
-// import FiltersPreview from './components/FiltersPreview';
-
 class SearchFacets extends React.Component {
   constructor(props) {
     super(props);
@@ -69,6 +67,40 @@ class SearchFacets extends React.Component {
     return false;
   }
 
+  onIsMineChecked = event => {
+    let currentParams = queryString.parse(this.props.history.location.search);
+
+    if (event.target.checked) {
+      if (currentParams["q"]) {
+        if (currentParams["q"].indexOf("-created_by:") > -1) {
+          currentParams["q"] = currentParams["q"].replace("-", "");
+        } else {
+          currentParams["q"] = `${`${currentParams["q"]} AND created_by:${
+            this.props.currentUserId
+          }`}`;
+        }
+      } else {
+        currentParams["q"] = `${`created_by:${this.props.currentUserId}`}`;
+      }
+    } else {
+      if (currentParams["q"].indexOf("AND created_by:") > -1) {
+        currentParams["q"] = `${currentParams["q"]
+          .replace(`AND created_by:${this.props.currentUserId}`, "")
+          .trim()}`;
+      } else if (currentParams["q"].indexOf("created_by:") > -1) {
+        currentParams["q"] = `${currentParams["q"]
+          .replace(`created_by:${this.props.currentUserId}`, "")
+          .trim()}`;
+      }
+    }
+
+    const location = {
+      search: `${queryString.stringify(currentParams)}`
+    };
+
+    this.props.history.push(location);
+  };
+
   render() {
     if (this.props.aggs) {
       let constructFacets = function(aggs) {
@@ -94,10 +126,43 @@ class SearchFacets extends React.Component {
       let facets = constructFacets(this.props.aggs);
       let categories = Object.keys(facets);
 
+      let q = queryString.parse(this.props.history.location.search)["q"];
+      let isChecked =
+        q && (q.indexOf("created_by:") > -1 && q.indexOf("-created_by:") == -1)
+          ? true
+          : false;
+
       return (
         <Sidebar full={false} colorIndex="light-2">
           <Box flex={true} justify="start">
             <Menu flex={true} primary={true}>
+              <Box pad="small">
+                <Heading
+                  pad="small"
+                  tag="h5"
+                  strong={false}
+                  uppercase={true}
+                  truncate={true}
+                  href="#"
+                  className="active"
+                >
+                  FILTER BY
+                </Heading>
+                <Box
+                  size="medium"
+                  styles={{ maxHeight: "100px" }}
+                  pad="none"
+                  direction="column"
+                  style={{ fontSize: "0.8em" }}
+                >
+                  <CheckBox
+                    label="Mine"
+                    onChange={this.onIsMineChecked}
+                    checked={isChecked}
+                  />
+                </Box>
+              </Box>
+
               {categories.map(category => {
                 return (
                   <Box key={category}>
@@ -229,6 +294,7 @@ SearchFacets.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    currentUserId: state.auth.getIn(["currentUser", "userId"]),
     selectedAggs: state.search.getIn(["selectedAggs"])
   };
 }

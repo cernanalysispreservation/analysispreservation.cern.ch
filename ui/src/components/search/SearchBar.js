@@ -1,6 +1,5 @@
 import React from "react";
 
-import Box from "grommet/components/Box";
 import Search from "grommet/components/Search";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -27,11 +26,36 @@ const INITIAL_STATE = [
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    this.q = queryString.parse(this.props.location.search);
     this.state = {
-      suggestions: INITIAL_STATE
+      suggestions: INITIAL_STATE,
+      value: ""
     };
   }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.location !== prevProps.location) {
+      this.updateSearchInput(this.props.history.location.search);
+    }
+  }
+
+  updateSearchInput = location => {
+    let q = queryString.parse(location)["q"];
+    this.setState({
+      suggestions: [
+        {
+          label: <Suggestions query={q} text="drafts" />,
+          q,
+          pathname: "/drafts"
+        },
+        {
+          label: <Suggestions query={q} text="published" />,
+          q,
+          pathname: "/search"
+        }
+      ],
+      value: q
+    });
+  };
 
   onSearchSubmit = (event, selected) => {
     let pathname;
@@ -77,7 +101,8 @@ class SearchBar extends React.Component {
           query,
           pathname: "/search"
         }
-      ]
+      ],
+      value: query
     });
   };
 
@@ -87,11 +112,11 @@ class SearchBar extends React.Component {
         id="searchbar"
         inline={true}
         placeHolder="Search"
-        defaultValue={this.q && this.q["q"]}
         dropAlign={{ top: "bottom" }}
         onDOMChange={this.onSearchInput}
         onSelect={this.onSearchSubmit}
         suggestions={this.state.suggestions}
+        value={this.state.value}
       />
     );
   }
