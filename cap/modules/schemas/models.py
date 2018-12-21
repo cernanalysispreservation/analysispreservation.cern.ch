@@ -27,12 +27,10 @@
 import re
 
 from flask import current_app
-from invenio_access.models import ActionRoles, ActionSystemRoles
+from invenio_access.models import ActionSystemRoles
 from invenio_access.permissions import authenticated_user
 from invenio_db import db
-from invenio_search import current_search
-from invenio_search import current_search_client as es
-from sqlalchemy import UniqueConstraint, event
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
@@ -61,7 +59,23 @@ class Schema(db.Model):
                            unique=False,
                            default=False)
 
+    is_index_in_es = db.Column(db.Boolean(create_constraint=False),
+                               unique=False,
+                               default=False)
+
     json = db.Column(
+        JSONType().with_variant(
+            postgresql.JSONB(none_as_null=True),
+            'postgresql',
+        ).with_variant(
+            JSONType(),
+            'sqlite',
+        ),
+        default=lambda: dict(),
+        nullable=True
+    )
+
+    mapping = db.Column(
         JSONType().with_variant(
             postgresql.JSONB(none_as_null=True),
             'postgresql',
@@ -190,39 +204,3 @@ class Schema(db.Model):
                            '(?:.json)?')
 
         return re.search(regex, string).groups()
-
-
-@event.listens_for(Schema, 'after_insert')
-def after_insert_schema(target, value, schema):
-    """On schema insert, create corresponding indexes and aliases in ES."""
-    if (schema.is_deposit or schema.is_record) and \
-            not es.indices.exists(schema.index_name):
-
-        # invenio search needs it
-        current_search.mappings[schema.index_name] = {}
-
-        es.indices.create(
-            index=schema.index_name,
-            body={},
-            ignore=False
-        )
-
-        for alias in schema.aliases:
-            es.indices.update_aliases({
-                "actions": [
-                    {"add": {
-                        "index": schema.index_name,
-                        "alias": alias
-                    }}
-                ]
-            })
-
-
-@event.listens_for(Schema, 'after_delete')
-def before_delete_schema(mapper, connect, target):
-    """On schema delete, delete corresponding indexes and aliases in ES."""
-    if es.indices.exists(target.index_name):
-        es.indices.delete(target.index_name)
-
-    # invenio search needs it
-    current_search.mappings.pop(target.index_name)

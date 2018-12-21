@@ -23,12 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
+from cap.modules.schemas.errors import SchemaDoesNotExist
+from cap.modules.schemas.models import Schema
 from invenio_search import current_search
 from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
-
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
 
 
 def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
