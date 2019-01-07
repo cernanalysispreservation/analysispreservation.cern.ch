@@ -9,6 +9,13 @@ import queryString from "query-string";
 
 import Suggestions from "./components/Suggestions";
 
+const SEARCH_PATH_TO_INDEX = {
+  "/search": "records",
+  "/drafts": "deposits"
+};
+
+const DEFAULT_SEARCH_PATH = "/search";
+
 const INITIAL_STATE = [
   {
     label: <Suggestions text="drafts" />,
@@ -29,32 +36,39 @@ class SearchBar extends React.Component {
     };
   }
 
-  _onSearchSubmit = event => {
-    let query = event.target.value;
+  onSearchSubmit = (event, selected) => {
+    let pathname;
     let q = queryString.parse(this.props.history.location.search);
+    let query = event.target.value;
+
     q["q"] = query;
+
     delete q["page"];
 
-    let index = event.suggestion
-      ? event.suggestion.pathname == "/drafts"
-        ? "deposits"
-        : "records"
-      : "records";
+    if (selected) {
+      pathname = event.suggestion.pathname; // if suggestion picked, redirect to corresponding search page
+    } else if (this.props.location.pathname in SEARCH_PATH_TO_INDEX) {
+      pathname = this.props.location.pathname; // if query typed on the search page, keep path
+    } else {
+      pathname = DEFAULT_SEARCH_PATH; // if query typed on non search page, redirect to the default one
+    }
 
     const search_location = {
-      pathname: event.suggestion ? event.suggestion.pathname : "/search",
+      pathname: pathname,
       search: `${queryString.stringify(q)}`,
       from: this.props.match.path,
-      index: index
+      index: SEARCH_PATH_TO_INDEX[pathname]
     };
 
     this.props.history.push(search_location);
   };
 
   onSearchInput = event => {
-    let query = event.target.value;
     let q = queryString.parse(this.props.location.search);
+    let query = event.target.value;
+
     q["q"] = query;
+
     this.setState({
       suggestions: [
         {
@@ -80,7 +94,7 @@ class SearchBar extends React.Component {
         defaultValue={this.q && this.q["q"]}
         dropAlign={{ top: "bottom" }}
         onDOMChange={this.onSearchInput}
-        onSelect={this._onSearchSubmit}
+        onSelect={this.onSearchSubmit}
         suggestions={this.state.suggestions}
       />
     );
