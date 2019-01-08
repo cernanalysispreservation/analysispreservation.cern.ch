@@ -31,8 +31,20 @@ export function searchError(error) {
   };
 }
 
-export function fetchSearch(index = "deposits") {
+const SEARCH_PATH_TO_INDEX = {
+  "/search": "records",
+  "/drafts": "deposits"
+};
+
+const DEFAULT_INDEX = "records";
+
+export function fetchSearch() {
   return function(dispatch, getState) {
+    let pathname = getState().routing.location.pathname;
+    let index =
+      pathname in SEARCH_PATH_TO_INDEX
+        ? SEARCH_PATH_TO_INDEX[pathname]
+        : DEFAULT_INDEX;
     let searchApiUrl = `/api/${index}/`;
 
     let location_search = getState().routing.location.search;

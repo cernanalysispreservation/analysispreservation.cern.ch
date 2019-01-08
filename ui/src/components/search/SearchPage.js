@@ -20,12 +20,12 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchSearch(this.props.location.index);
+    this.props.fetchSearch();
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      this.props.fetchSearch(this.props.location.index);
+      this.props.fetchSearch();
     }
   }
 
@@ -145,7 +145,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: index => dispatch(fetchSearch(index))
+    fetchSearch: () => dispatch(fetchSearch())
   };
 }
 

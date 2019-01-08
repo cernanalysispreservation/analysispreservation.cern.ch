@@ -9,10 +9,7 @@ import queryString from "query-string";
 
 import Suggestions from "./components/Suggestions";
 
-const SEARCH_PATH_TO_INDEX = {
-  "/search": "records",
-  "/drafts": "deposits"
-};
+const SEARCH_PATHS = ["/search", "/drafts"];
 
 const DEFAULT_SEARCH_PATH = "/search";
 
@@ -47,7 +44,7 @@ class SearchBar extends React.Component {
 
     if (selected) {
       pathname = event.suggestion.pathname; // if suggestion picked, redirect to corresponding search page
-    } else if (this.props.location.pathname in SEARCH_PATH_TO_INDEX) {
+    } else if (SEARCH_PATHS.includes(this.props.location.pathname)) {
       pathname = this.props.location.pathname; // if query typed on the search page, keep path
     } else {
       pathname = DEFAULT_SEARCH_PATH; // if query typed on non search page, redirect to the default one
@@ -56,8 +53,7 @@ class SearchBar extends React.Component {
     const search_location = {
       pathname: pathname,
       search: `${queryString.stringify(q)}`,
-      from: this.props.match.path,
-      index: SEARCH_PATH_TO_INDEX[pathname]
+      from: this.props.match.path
     };
 
     this.props.history.push(search_location);
