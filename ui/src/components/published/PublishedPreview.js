@@ -15,6 +15,10 @@ import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
 import Status from "grommet/components/icons/Status";
 import { EditAnchor } from "../drafts/components/DraftActionsButtons";
+import AnnounceIcon from "grommet/components/icons/base/Announce";
+
+import Anchor from "grommet/components/Anchor";
+import Label from "grommet/components/Label";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -64,7 +68,8 @@ class PublishedPreview extends React.Component {
             <Box flex={true}>
               <SectionHeader
                 label="Published"
-                status={<Status value="ok" />}
+                status={<AnnounceIcon size="xsmall" />}
+                uppercase={true}
                 action={<EditAnchor draft_id={draft_id} />}
               />
               <Box flex={true}>

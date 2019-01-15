@@ -3,45 +3,29 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
-// import FieldHeader from "../components/FieldHeader";
+import FieldHeader from "../components/FieldHeader";
 
 let FieldTemplate = function(props) {
-  const { id, label, rawErrors = [], children } = props;
-  let _errors = null;
-
-  if (rawErrors.length > 0)
-    _errors = rawErrors.map((error, index) => <span key={index}>{error}</span>);
+  const { label, children } = props;
 
   if (["array", "object"].indexOf(props.schema.type) > -1) {
     return <span>{children}</span>;
   }
-  return (
-    <Box key={id + label} pad="none">
-      <Label margin="none" size="small" strong="none">
-        {label}
-      </Label>
-      {_errors}
-      {(children.props.formData && _isEmpty(children.props.formData)) ||
-      children.props.formData === undefined ? (
-        <Box colorIndex="light-2" pad="small" margin={{ top: "small" }}>
-          No {label} provided.
+
+  return children.props.formData === undefined ? null : (
+    <Box flex={true} direction="row">
+      {label ? (
+        <Box>
+          <FieldHeader title={label} />
         </Box>
-      ) : (
-        <Box colorIndex="light-2" pad="small" margin={{ top: "small" }}>
-          {children}{" "}
-        </Box>
-      )}
+      ) : null}
+      <Box flex={true}>{children}</Box>
     </Box>
   );
 };
 
 FieldTemplate.propTypes = {
-  id: PropTypes.string,
   label: PropTypes.string,
-  rawDescription: PropTypes.string,
-  rawErrors: PropTypes.object,
-  schema: PropTypes.object,
   children: PropTypes.element
 };
 

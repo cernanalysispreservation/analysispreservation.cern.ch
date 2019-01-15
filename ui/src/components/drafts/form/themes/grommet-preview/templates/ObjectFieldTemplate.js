@@ -2,60 +2,50 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-
-import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 import FieldHeader from "../components/FieldHeader";
+import Heading from "grommet/components/Heading";
 
 let ObjectFieldTemplate = function(props) {
-  if (props.idSchema.$id == "root") {
-    return <Box>{props.properties.map(prop => prop.content)}</Box>;
+  const { properties, title, uiSchema, idSchema, formData } = props;
+
+  function allPropsEmpty(obj) {
+    for (var key in obj) if (obj[key] !== undefined) return false;
+    return true;
   }
 
-  if (!("ui:object" in props.uiSchema)) {
+  if (allPropsEmpty(formData)) return null;
+
+  if (idSchema.$id == "root") {
+    return <Box flex={true}>{properties.map(prop => prop.content)}</Box>;
+  }
+
+  if (!("ui:object" in uiSchema)) {
     return (
-      <Box margin="none" pad="none">
-        {props.title ? (
-          <FieldHeader
-            title={props.title}
-            required={props.required}
-            description={props.description ? props.description : null}
-          />
-        ) : null}
-        {props.properties.map(prop => prop.content)}
+      <Box flex={true}>
+        <Box>
+          <FieldHeader title={title} />
+        </Box>
+        <Box margin={{ left: "small" }}>
+          {properties.map(prop => prop.content)}
+        </Box>
       </Box>
     );
   } else {
-    if (props.uiSchema["ui:object"] == "layerObjectField") {
-      return <LayerObjectFieldTemplate {...props} />;
-    } else if (props.uiSchema["ui:object"] == "accordionObjectField") {
-      // return <AccordionFieldTemplate {...props} />;
-      return (
-        <Box margin="none" pad="none">
-          {props.title ? (
-            <FieldHeader
-              title={props.title}
-              required={props.required}
-              description={props.description ? props.description : null}
-            />
-          ) : null}
-          {props.properties.map(prop => prop.content)}
+    return (
+      <Box flex={true}>
+        <Box margin={{ top: "small" }}>
+          <Heading uppercase={true} tag="h4" strong={false}>
+            {title}
+          </Heading>
         </Box>
-      );
-    } else {
-      return (
-        <div {...props}>
-          This object( <i>{props.title}</i>) can NOT be rendered.. Check
-          implementaion
-        </div>
-      );
-    }
+        {properties.map(prop => prop.content)}
+      </Box>
+    );
   }
 };
 
 ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
-  description: PropTypes.string,
-  required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   properties: PropTypes.array

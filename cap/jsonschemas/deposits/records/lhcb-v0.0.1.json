@@ -112,8 +112,7 @@
                   "type": "string",
                   "title": "Name"
                 }
-              },
-              "title": "Proponent"
+              }
             },
             "type": "array",
             "title": "Proponents"
@@ -153,8 +152,7 @@
                   "type": "string",
                   "title": "Name"
                 }
-              },
-              "title": "Reviewer"
+              }
             },
             "type": "array",
             "title": "Reviewers"
@@ -250,8 +248,7 @@
                   "type": "string",
                   "title": "TWiki Page"
                 }
-              },
-              "title": "Publications"
+              }
             },
             "type": "array",
             "id": "publications",
@@ -273,8 +270,7 @@
                   "type": "string",
                   "title": "Title"
                 }
-              },
-              "title": "Internal Discussion"
+              }
             },
             "type": "array",
             "id": "internal-discussions",
@@ -296,8 +292,7 @@
                   "type": "string",
                   "title": "Title"
                 }
-              },
-              "title": "Reports"
+              }
             },
             "type": "array",
             "id": "presentations",
@@ -316,8 +311,7 @@
                 }
               },
               "type": "object",
-              "description": "Add documentation",
-              "title": "Documentation"
+              "description": "Add documentation"
             },
             "type": "array",
             "id": "documentations",

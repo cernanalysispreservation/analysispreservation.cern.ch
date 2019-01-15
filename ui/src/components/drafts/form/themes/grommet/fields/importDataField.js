@@ -11,7 +11,7 @@ class ImportDataField extends React.Component {
 
     this.state = {
       data: [],
-      selected: {}
+      selected: undefined
     };
   }
 

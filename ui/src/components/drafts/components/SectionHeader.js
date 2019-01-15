@@ -22,7 +22,11 @@ export default function SectionHeader(props) {
         pad={{ horizontal: "small" }}
         responsive={false}
       >
-        <Label size="small" style={{ overflow: "hidden" }}>
+        <Label
+          size="small"
+          uppercase={props.uppercase || false}
+          style={{ overflow: "hidden" }}
+        >
           {props.label} {props.status}
         </Label>
       </Box>

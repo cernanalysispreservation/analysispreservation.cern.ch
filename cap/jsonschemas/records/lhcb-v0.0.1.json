@@ -149,7 +149,6 @@
         "properties": {
           "documentations": {
             "items": {
-              "title": "Documentation",
               "type": "object",
               "description": "Add documentation",
               "properties": {
@@ -183,8 +182,7 @@
                   "type": "string",
                   "title": "Title"
                 }
-              },
-              "title": "Reports"
+              }
             },
             "type": "array",
             "id": "internal-discussions",
@@ -192,6 +190,7 @@
           },
           "presentations": {
             "items": {
+              "type": "object",
               "properties": {
                 "url": {
                   "type": "string",
@@ -205,7 +204,8 @@
                   "type": "string",
                   "title": "Title"
                 }
-              }
+              },
+              "title": "Reports"
             },
             "type": "array",
             "id": "presentations",
@@ -247,8 +247,7 @@
                   "type": "string",
                   "title": "TWiki Page"
                 }
-              },
-              "title": "Publications"
+              }
             },
             "type": "array",
             "id": "publications",
@@ -279,8 +278,7 @@
                   "type": "string",
                   "title": "Name"
                 }
-              },
-              "title": "Proponent"
+              }
             },
             "type": "array",
             "title": "Proponents"
@@ -320,8 +318,7 @@
                   "type": "string",
                   "title": "Name"
                 }
-              },
-              "title": "Reviewer"
+              }
             },
             "type": "array",
             "title": "Reviewers"

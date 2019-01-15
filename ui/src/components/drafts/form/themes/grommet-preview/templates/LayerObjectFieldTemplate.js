@@ -39,21 +39,15 @@ class LayerObjectFieldTemplate extends React.Component {
             />
           }
           <Box flex={true}>
-            <Title>
-              {this.props.title}
-              {this.props.required ? "*" : null}
-            </Title>
+            <Box align="center">
+              <Label size="small" strong="none" uppercase={true}>
+                {this.props.title}
+              </Label>
+            </Box>
 
             {this.props.description ? (
               <Paragraph size="small">{this.props.description}</Paragraph>
             ) : null}
-          </Box>
-          <Box justify="center">
-            <Button
-              icon={<Edit />}
-              label="Edit"
-              onClick={this._onClick.bind(this)}
-            />
           </Box>
         </Box>
       );

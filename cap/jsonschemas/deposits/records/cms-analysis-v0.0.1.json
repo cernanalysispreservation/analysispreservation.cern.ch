@@ -126,7 +126,6 @@
             "title": "Combine Datacard File"
           },
           "statistics_questionnaire": {
-            "default": {},
             "properties": {
               "$ref": {
                 "type": "string"

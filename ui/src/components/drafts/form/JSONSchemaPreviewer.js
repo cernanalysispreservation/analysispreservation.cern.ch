@@ -24,7 +24,7 @@ class JSONShemaPreviewer extends React.Component {
 
   render() {
     return (
-      <Box size="xlarge" flex={true} wrap={false}>
+      <Box>
         {this.props.schema ? (
           <Form
             ref={form => {
@@ -34,8 +34,7 @@ class JSONShemaPreviewer extends React.Component {
             FieldTemplate={FieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
             ArrayFieldTemplate={ArrayFieldTemplate}
-            showErrorList={true}
-            ErrorList={ErrorListTemplate}
+            showErrorList={false}
             widgets={widgets}
             fields={fields}
             uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}

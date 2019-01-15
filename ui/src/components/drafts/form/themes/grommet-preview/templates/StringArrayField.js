@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
-class DefaultArrayField extends React.Component {
+class StringArrayField extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -16,8 +16,8 @@ class DefaultArrayField extends React.Component {
         <List>
           {this.props.items.map(element => (
             <ListItem
+              margin="none"
               pad="none"
-              margin={{ bottom: "small" }}
               key={element.index}
               separator="none"
             >
@@ -30,8 +30,8 @@ class DefaultArrayField extends React.Component {
   }
 }
 
-DefaultArrayField.propTypes = {
+StringArrayField.propTypes = {
   items: PropTypes.array
 };
 
-export default DefaultArrayField;
+export default StringArrayField;
