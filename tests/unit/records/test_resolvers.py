@@ -23,13 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
-import json
-
 from pytest import mark
-from sqlalchemy.exc import IntegrityError
-
-from cap.modules.schemas.errors import SchemaDoesNotExist
-from cap.modules.schemas.models import Schema
 
 
 def test_resolve_schema_when_user_doesnt_have_permission_to_schema_returns_403(app,
@@ -79,16 +73,16 @@ def test_resolve_schema_when_schema_and_refs_belong_to_experiment(app,
                                                                   create_schema,
                                                                   auth_headers_for_user):
     owner = users['cms_user']
-    nested_schema = create_schema('nested-schema-v0.0.0',
+    nested_schema = create_schema('deposits/records/nested-schema-v0.0.0',
                                   experiment='CMS',
                                   json={
-        'type': 'object',
-        'properties': {
-            'title': {
-                'type': 'string'
-            }
-        }
-    })
+                                      'type': 'object',
+                                      'properties': {
+                                          'title': {
+                                              'type': 'string'
+                                          }
+                                      }
+                                  })
 
     schema = create_schema('deposits/records/test-schema-v1.0.1',
                            experiment='CMS',
@@ -108,22 +102,22 @@ def test_resolve_schema_when_schema_and_refs_belong_to_experiment(app,
         assert resp.status_code == 200
 
 
-@mark.skip('this will throw JsonRefError now, needs to be fixed')
+@mark.skip('this will throw JsonRefError now, needs to be discussed in private')
 def test_resolve_schema_when_schema_in_refs_belongs_to_different_experiment_returns_403(app,
-                                                                  users,
-                                                                  create_schema,
-                                                                  auth_headers_for_user):
+                                                                                        users,
+                                                                                        create_schema,
+                                                                                        auth_headers_for_user):
     owner = users['cms_user']
-    nested_schema = create_schema('nested-schema-v0.0.0',
+    nested_schema = create_schema('deposits/records/nested-schema-v1.0.0',
                                   experiment='LHCb',
                                   json={
-        'type': 'object',
-        'properties': {
-            'title': {
-                'type': 'string'
-            }
-        }
-    })
+                                      'type': 'object',
+                                      'properties': {
+                                          'title': {
+                                              'type': 'string'
+                                          }
+                                      }
+                                  })
 
     schema = create_schema('deposits/records/test-analysis-v1.0.1',
                            experiment='CMS',
@@ -141,3 +135,25 @@ def test_resolve_schema_when_schema_in_refs_belongs_to_different_experiment_retu
                           headers=auth_headers_for_user(owner))
 
         assert resp.status_code == 403
+
+
+def test_resolve_schema_when_wrong_refs_returns_404(app,
+                                                    create_schema,
+                                                    auth_headers_for_superuser):
+
+    schema = create_schema('deposits/records/test-schema-v1.1.1',
+                           experiment='CMS',
+                           json={
+                               'type': 'object',
+                               'properties': {
+                                   'nested': {
+                                       '$ref': "https://analysispreservation.cern.ch/schemas/deposits/records/wrong-schema-v1.0.1.json",
+                                   }
+                               }
+                           })
+
+    with app.test_client() as client:
+        resp = client.get('/schemas/{}'.format(schema.fullpath),
+                          headers=auth_headers_for_superuser)
+
+        assert resp.status_code == 404

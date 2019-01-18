@@ -27,7 +27,6 @@
 
 from __future__ import absolute_import, print_function
 
-import json
 import os
 import shutil
 import tempfile
@@ -35,35 +34,28 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 import pytest
-from elasticsearch.exceptions import RequestError
 from flask import current_app
 from flask_celeryext import FlaskCeleryExt
 from flask_principal import ActionNeed
 from flask_security import login_user
 from invenio_access.models import ActionUsers
-from invenio_access.permissions import superuser_access
-from invenio_accounts.models import Role
 from invenio_accounts.testutils import create_test_user
 from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_indexer.api import RecordIndexer
 from invenio_oauth2server.models import Client, Token
-from invenio_records.models import RecordMetadata
 from invenio_search import current_search, current_search_client
-from jsonresolver import JSONResolver
-from jsonresolver.contrib.jsonref import json_loader_factory
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
 from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.reana.models import ReanaJob
-from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
-from cap.modules.schemas.utils import add_or_update_schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -159,9 +151,10 @@ def create_user_with_access(username, action):
 
     return user
 
+
 def add_role_to_user(user, rolename):
     role = _datastore.find_or_create_role(rolename)
-        
+
     _datastore.add_role_to_user(user, role)
 
 
@@ -170,23 +163,23 @@ def users(db):
     """Create users."""
     users = {
         'cms_user': create_user_with_access('cms_user@cern.ch',
-                                          'cms-access'),
+                                            'cms-access'),
         'cms_user2': create_user_with_access('cms_user2@cern.ch',
-                                           'cms-access'),
+                                             'cms-access'),
         'alice_user': create_user_with_access('alice_user@cern.ch',
-                                            'alice-access'),
+                                              'alice-access'),
         'alice_user2': create_user_with_access('alice_user2@cern.ch',
-                                             'alice-access'),
+                                               'alice-access'),
         'atlas_user': create_user_with_access('atlas_user@cern.ch',
-                                            'atlas-access'),
+                                              'atlas-access'),
         'atlas_user2': create_user_with_access('atlas_user2@cern.ch',
-                                             'atlas-access'),
+                                               'atlas-access'),
         'lhcb_user': create_user_with_access('lhcb_user@cern.ch',
-                                           'lhcb-access'),
+                                             'lhcb-access'),
         'lhcb_user2': create_user_with_access('lhcb_user2@cern.ch',
-                                            'lhcb-access'),
+                                              'lhcb-access'),
         'superuser': create_user_with_access('superuser@cern.ch',
-                                           'superuser-access'),
+                                             'superuser-access'),
     }
 
     return users
@@ -213,7 +206,7 @@ def create_schema(db, es):
 
         try:
             schema = Schema.get_by_fullpath(schema)
-        except SchemaDoesNotExist:
+        except JSONSchemaNotFound:
             schema = Schema(
                 fullpath=schema,
                 experiment=experiment,
@@ -328,7 +321,7 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             with app.test_request_context():
                 # create schema for record
                 schema = create_schema('records/{}'.format(schema_name), is_deposit=False,
-                              experiment=experiment)
+                                       experiment=experiment)
                 if not experiment:
                     schema.add_read_access_to_all()
 

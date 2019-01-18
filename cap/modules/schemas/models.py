@@ -27,8 +27,9 @@
 import re
 
 from flask import current_app
-from invenio_access.models import ActionRoles, ActionSystemRoles
+from invenio_access.models import ActionSystemRoles
 from invenio_access.permissions import authenticated_user
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_db import db
 from invenio_search import current_search
 from invenio_search import current_search_client as es
@@ -38,7 +39,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import JSONType
 
-from .errors import SchemaDoesNotExist
 from .permissions import ReadSchemaPermission, SchemaReadAction
 
 
@@ -128,7 +128,7 @@ class Schema(db.Model):
                            patch=self.patch)\
                 .one()
         except NoResultFound:
-            raise SchemaDoesNotExist
+            raise JSONSchemaNotFound(schema=name)
 
     def add_read_access_to_all(self):
         """Give read access to all authenticated users."""
@@ -156,7 +156,7 @@ class Schema(db.Model):
         if latest:
             return latest
         else:
-            raise SchemaDoesNotExist
+            raise JSONSchemaNotFound(schema=name)
 
     @classmethod
     def get_by_fullpath(cls, string):
@@ -171,7 +171,7 @@ class Schema(db.Model):
                            patch=patch)\
                 .one()
         except NoResultFound:
-            raise SchemaDoesNotExist
+            raise JSONSchemaNotFound(schema=name)
 
     @classmethod
     def get_user_deposit_schemas(cls):
@@ -182,14 +182,16 @@ class Schema(db.Model):
 
     @staticmethod
     def _parse_fullpath(string):
-        regex = re.compile('(?:.*schemas)?'
-                           '/?(?P<name>\S+)'
-                           '-v(?P<major>\d+).'
-                           '(?P<minor>\d+).'
-                           '(?P<patch>\d+)'
-                           '(?:.json)?')
-
-        return re.search(regex, string).groups()
+        try:
+            regex = re.compile('(?:.*schemas)?'
+                               '/?(?P<name>\S+)'
+                               '-v(?P<major>\d+).'
+                               '(?P<minor>\d+).'
+                               '(?P<patch>\d+)'
+                               '(?:.json)?')
+            return re.search(regex, string).groups()
+        except AttributeError:
+            raise JSONSchemaNotFound(schema=string)
 
 
 @event.listens_for(Schema, 'after_insert')

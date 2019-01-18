@@ -27,7 +27,7 @@ from invenio_search import current_search
 from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
 
-from cap.modules.schemas.errors import SchemaDoesNotExist
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from cap.modules.schemas.models import Schema
 
 
@@ -65,7 +65,7 @@ def test_create_schema_by_fullpath(db):
     db.session.commit()
 
     assert schema.name == 'records/ana1'
-    assert schema.major == 1 
+    assert schema.major == 1
     assert schema.minor == 3
     assert schema.patch == 2
 
@@ -83,16 +83,20 @@ def test_get_by_fullpath(db):
     db.session.add(schema2)
     db.session.commit()
 
-    assert Schema.get_by_fullpath('https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
+    assert Schema.get_by_fullpath(
+        'https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
     assert Schema.get_by_fullpath('records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullpath('https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
-    assert Schema.get_by_fullpath('deposits/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullpath('/deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullpath(
+        'https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
+    assert Schema.get_by_fullpath(
+        'deposits/records/ana2-v2.1.1.json') == schema2
+    assert Schema.get_by_fullpath(
+        '/deposits/records/ana2-v2.1.1.json') == schema2
     assert Schema.get_by_fullpath('/deposits/records/ana2-v2.1.1') == schema2
 
 
-def test_get_by_fullpath_when_non_existing_raise_SchemaDoesNotExist(db):
-    with raises(SchemaDoesNotExist):
+def test_get_by_fullpath_when_non_existing_raise_JSONSchemaNotFound(db):
+    with raises(JSONSchemaNotFound):
         Schema.get_by_fullpath('/non-existing/schema/ana2-v2.1.1')
 
 
@@ -113,14 +117,15 @@ def test_get_latest_version_of_schema(db):
     assert latest.version == "2.4.3"
 
 
-def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_SchemaDoesNotExist(db):
-    with raises(SchemaDoesNotExist):
+def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_JSONSchemaNotFound(db):
+    with raises(JSONSchemaNotFound):
         Schema.get_latest(name='non-existing')
 
 
 @mark.parametrize("schema_params,index_name", [
     ({'name': 'records/ana1', 'major': 1, 'minor': 0, 'patch': 1}, 'records-ana1-v1.0.1'),
-    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1, 'patch': 0, 'is_deposit': True}, 'deposits-records-ana1-v2.1.0'),
+    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1,
+      'patch': 0, 'is_deposit': True}, 'deposits-records-ana1-v2.1.0'),
 ])
 def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(schema_params, index_name, db, es):
     schema = Schema(**schema_params)
@@ -135,3 +140,18 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(schema_
 
     assert not es.indices.exists(index_name)
     assert not schema.name in current_search.mappings.keys()
+
+
+def test_parse_fullpath():
+    wrong_string = "deposits/records/alice-analysis-111v0.0.1.json"
+    correct_string = "deposits/records/alice-analysis-v0.0.1.json"
+
+    with raises(JSONSchemaNotFound):
+        Schema._parse_fullpath(wrong_string)
+
+    resp = Schema._parse_fullpath(correct_string)
+
+    assert resp[0] == "deposits/records/alice-analysis"
+    assert resp[1] == "0"
+    assert resp[2] == "0"
+    assert resp[3] == "1"

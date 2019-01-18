@@ -42,6 +42,7 @@ from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
@@ -53,7 +54,6 @@ from werkzeug.local import LocalProxy
 from cap.config import FILES_URL_MAX_SIZE
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.repo_importer import RepoImporter
-from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
@@ -532,7 +532,7 @@ class CAPDeposit(Deposit):
                 schema = Schema.get_latest(
                     'deposits/records/{}'.format(data['$ana_type'])
                 )
-            except SchemaDoesNotExist:
+            except JSONSchemaNotFound:
                 raise DepositValidationError(
                     'Schema {} is not a valid deposit schema.'
                     .format(data['$ana_type']))
@@ -554,7 +554,7 @@ class CAPDeposit(Deposit):
 
         try:
             Schema.get_by_fullpath(schema_fullpath)
-        except AttributeError:
+        except (AttributeError, JSONSchemaNotFound):
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema_fullpath))
 

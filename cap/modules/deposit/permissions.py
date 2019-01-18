@@ -30,10 +30,10 @@ from functools import partial
 from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 from invenio_files_rest.models import Bucket
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 
-from cap.modules.schemas.errors import SchemaDoesNotExist
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
 
@@ -120,7 +120,7 @@ class CreateDepositPermission(Permission):
         if '$schema' in deposit:
             try:
                 schema = Schema.get_by_fullpath(deposit['$schema'])
-            except SchemaDoesNotExist:
+            except JSONSchemaNotFound:
                 raise WrongJSONSchemaError('Schema {} doesnt exist.'.
                                            format(deposit['$schema']))
 
@@ -129,7 +129,7 @@ class CreateDepositPermission(Permission):
                 schema = Schema.get_latest(
                     'deposits/records/{}'.format(deposit['$ana_type'])
                 )
-            except SchemaDoesNotExist:
+            except JSONSchemaNotFound:
                 raise WrongJSONSchemaError('Schema with name {} doesnt exist.'.
                                            format(deposit['$ana_type']))
 

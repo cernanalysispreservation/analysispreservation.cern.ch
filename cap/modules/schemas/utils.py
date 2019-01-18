@@ -26,7 +26,7 @@
 
 from invenio_db import db
 
-from .errors import SchemaDoesNotExist
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from .models import Schema
 
 
@@ -41,7 +41,7 @@ def add_or_update_schema(fullpath=None, data=None):
 
         print('{} updated.'.format(fullpath))
 
-    except SchemaDoesNotExist:
+    except JSONSchemaNotFound:
         schema = Schema(fullpath=fullpath,
                         experiment=data.get('experiment', None),
                         fullname=data.get('fullname', None),

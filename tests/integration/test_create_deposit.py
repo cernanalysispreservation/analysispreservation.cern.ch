@@ -29,7 +29,8 @@ from __future__ import absolute_import, print_function
 
 import json
 
-from pytest import mark
+from pytest import mark, raises
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 
 
 #######################
