@@ -14,7 +14,7 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in props.uiSchema)) {
     return (
-      <Box margin="none" pad="none">
+      <Box margin="none" pad="none" margin={{ bottom: "small" }}>
         {props.title ? (
           <FieldHeader
             title={props.title}

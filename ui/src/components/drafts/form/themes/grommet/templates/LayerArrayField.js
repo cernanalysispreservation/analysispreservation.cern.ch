@@ -13,6 +13,8 @@ import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import FormUpIcon from "grommet/components/icons/base/FormUp";
 import FormDownIcon from "grommet/components/icons/base/FormDown";
 
+import pluralize from "pluralize";
+
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
@@ -81,7 +83,12 @@ class ArrayFieldTemplate extends React.Component {
                           this.stringifyItem(
                             element.children.props.uiSchema["ui:options"],
                             element.children.props.formData
-                          ) || `Item #${element.index + 1}`
+                          ) ||
+                          `${
+                            this.props.title
+                              ? pluralize.singular(this.props.title)
+                              : "Item"
+                          } #${element.index + 1}`
                         }
                       />
                     </Box>
