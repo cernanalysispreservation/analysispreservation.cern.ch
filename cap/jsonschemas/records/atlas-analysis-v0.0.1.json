@@ -6,7 +6,7 @@
     "type": "object",
     "description": "Schema describing properties of an ATLAS analysis",
     "properties": {
-      "input_data": {
+      "input_datasets": {
         "description":
           "Datasets relevant for this analysis (including all datasets for all main and auxiliary measurements)",
         "title": "Input Data",
@@ -21,7 +21,7 @@
       },
       "workflows": {
         "$ref":
-          "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-v0.0.1.json"
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-workflows-no-circ-refs-v0.0.1.json"
       },
       "publications": {
         "description": "Publications related to the analysis",
@@ -35,7 +35,23 @@
         "type": "array",
         "id": "publications"
       },
+      "glance_info": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-glance-info-v0.0.1.json"
+      },
+      "limits": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-limits-v0.0.1.json"
+      },
+      "likelihoods": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-likelihood-v0.0.1.json"
+      },
       "basic_info": {
+        "title": "Basic Information",
+        "required": ["analysis_title", "glance_id"],
+        "id": "basic_info",
+        "propertyOrder": 10,
         "type": "object",
         "properties": {
           "abstract": {
@@ -62,24 +78,17 @@
               }
             },
             "type": "array",
-            "description":
-              "Information about the people involved in this analysis",
             "title": "People Involved"
           },
           "glance_id": {
             "type": "string",
-            "description": "ID of related glance record",
             "title": "Glance ID"
           },
           "analysis_title": {
             "type": "string",
-            "description": "Title of the analysis",
             "title": "Analysis Title"
           }
-        },
-        "propertyOrder": 10,
-        "id": "basic_info",
-        "title": "Basic Information"
+        }
       }
     },
     "title": "ATLAS Analysis (JSON schema)"

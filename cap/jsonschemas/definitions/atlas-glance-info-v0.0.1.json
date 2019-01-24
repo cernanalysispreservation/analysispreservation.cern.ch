@@ -1,0 +1,99 @@
+{
+  "fullname": "Information from GLANCE database",
+  "experiment": "ATLAS",
+  "jsonschema": {
+    "description": "Automatically taken from GLANCE, based on GLANCE ID",
+    "title": "Information from GLANCE database",
+    "properties": {
+      "id": {
+        "type": "string",
+        "title": "GLANCE ID"
+      },
+      "short_title": {
+        "type": "string",
+        "title": "Short Title"
+      },
+      "full_title": {
+        "type": "string",
+        "title": "Full Title"
+      },
+      "pub_short_title": {
+        "type": "string",
+        "title": "Publication title"
+      },
+      "ref_code": {
+        "type": "string",
+        "title": "Ref Code"
+      },
+      "creation_date": {
+        "type": "string",
+        "title": "Creation date"
+      },
+      "status": {
+        "type": "string",
+        "title": "Status"
+      },
+      "phase_0": {
+        "type": "array",
+        "title": "Phase 0",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "title": "ID"
+            },
+            "main_physics_aim": {
+              "type": "string",
+              "title": "Main Physics Aim"
+            },
+            "dataset_used": {
+              "type": "string",
+              "title": "Dataset Used"
+            },
+            "model_tested": {
+              "type": "string",
+              "title": "Model Tested"
+            },
+            "methods": {
+              "type": "string",
+              "title": "Methods"
+            }
+          }
+        }
+      },
+      "gitlab_group": {
+        "type": "object",
+        "title": "Gitlab Group",
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "ID"
+          },
+          "projects": {
+            "title": "Projects",
+            "type": "array",
+            "items": {
+              "title": "Project",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "title": "ID"
+                },
+                "url": {
+                  "type": "string",
+                  "title": "URL"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "glance_info"
+  },
+  "is_deposit": false
+}

@@ -5,6 +5,7 @@
   "is_deposit": false,
   "jsonschema": {
     "title": "Yadage Workflow",
+    "required": ["stages"],
     "id": "yadage_workflow",
     "additionalProperties": false,
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -12,8 +13,7 @@
     "properties": {
       "stages": {
         "items": {
-          "$ref":
-            "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/stage-schema_no_circ_refs-v0.0.1.json#"
+          "type": "object"
         },
         "type": "array",
         "title": "Stages"

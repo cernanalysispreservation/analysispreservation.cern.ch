@@ -2,8 +2,19 @@
   "fullname": null,
   "experiment": "ATLAS",
   "jsonschema": {
+    "ui:order": [
+      "basic_info",
+      "glance_info",
+      "workflows",
+      "likelihoods",
+      "limits",
+      "*"
+    ],
     "input_datasets": {
-      "ui:array": "AccordionArrayField"
+      "ui:array": "AccordionArrayField",
+      "ui:options": {
+        "enableArrayUtils": true
+      }
     },
     "publications": {
       "ui:array": "AccordionArrayField"
@@ -22,7 +33,88 @@
           }
         }
       },
+      "glance_id": {
+        "ui:options": {
+          "autofill_from": "/api/atlas/glance/",
+          "autofill_fields": [
+            [["pub_short_title"], ["basic_info", "analysis_title"]],
+            [["id"], ["glance_info", "id"]],
+            [["short_title"], ["glance_info", "short_title"]],
+            [["full_title"], ["glance_info", "full_title"]],
+            [["pub_short_title"], ["glance_info", "pub_short_title"]],
+            [["ref_code"], ["glance_info", "ref_code"]],
+            [["creation_date"], ["glance_info", "creation_date"]],
+            [["status"], ["glance_info", "status"]],
+            [["phase_0"], ["glance_info", "phase_0"]],
+            [["gitlab_group"], ["glance_info", "gitlab_group"]]
+          ]
+        }
+      },
       "ui:object": "accordionObjectField"
+    },
+    "limits": {
+      "ui:object": "accordionObjectField"
+    },
+    "likelihoods": {
+      "ui:object": "accordionObjectField",
+      "channels": {
+        "ui:array": "default"
+      }
+    },
+    "glance_info": {
+      "ui:object": "accordionObjectField",
+      "id": {
+        "ui:readonly": true
+      },
+      "short_title": {
+        "ui:readonly": true
+      },
+      "full_title": {
+        "ui:readonly": true
+      },
+      "pub_short_title": {
+        "ui:readonly": true
+      },
+      "ref_code": {
+        "ui:readonly": true
+      },
+      "creation_date": {
+        "ui:readonly": true
+      },
+      "status": {
+        "ui:readonly": true
+      },
+      "phase_0": {
+        "ui:readonly": true
+      },
+      "ui:order": [
+        "id",
+        "short_title",
+        "full_title",
+        "pub_short_title",
+        "ref_code",
+        "creation_date",
+        "status",
+        "phase_0",
+        "gitlab_group"
+      ],
+      "gitlab_group": {
+        "ui:readonly": true,
+        "projects": {
+          "ui:title": "Projects"
+        }
+      }
+    },
+    "workflows": {
+      "ui:array": "AccordionArrayField",
+      "items": {
+        "ui:order": ["workflow_title", "*"],
+
+        "workflow": {
+          "ui:title": "Workflow",
+          "ui:field": "jsoneditor"
+        }
+      }
     }
   },
   "is_deposit": false

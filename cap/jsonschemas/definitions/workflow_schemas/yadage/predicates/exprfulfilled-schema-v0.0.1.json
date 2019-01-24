@@ -1,0 +1,19 @@
+{
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "exprfulfilled-schema predicate",
+  "is_deposit": false,
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "exprfulfilled-schema predicate",
+    "additionalProperties": false,
+    "properties": {
+      "dependency_type": {
+        "type": "string",
+        "enum": ["expressions_fulfilled"]
+      },
+      "expressions": { "type": "array" }
+    }
+  }
+}

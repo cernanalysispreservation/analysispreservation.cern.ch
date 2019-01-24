@@ -29,6 +29,10 @@
       "bindings": {
         "type": "object"
       },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/value_registration-v0.0.1.json"
+      },
       "scheduler_type": {
         "default": "jq-stage",
         "enum": ["jq-stage"],

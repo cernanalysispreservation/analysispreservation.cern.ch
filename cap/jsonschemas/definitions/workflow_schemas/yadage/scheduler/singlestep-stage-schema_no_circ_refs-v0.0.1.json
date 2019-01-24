@@ -7,15 +7,19 @@
     "oneOf": [
       {
         "not": {
-          "required": ["step"]
+          "required": ["step", "cases"]
         },
         "required": ["workflow"]
       },
       {
         "not": {
-          "required": ["workflow"]
+          "required": ["workflow", "cases"]
         },
         "required": ["step"]
+      },
+      {
+        "required": ["cases"],
+        "not": { "required": ["workflow", "step"] }
       }
     ],
     "title": "Single Step Scheduler",
@@ -40,7 +44,16 @@
       },
       "workflow": {
         "type": "object"
-      }
+      },
+      "cases": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/cases_no_circ_refs-v0.0.1.json#"
+      },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/value_registration-v0.0.1.json#"
+      },
+      "workflow_opts": { "type": "object" }
     }
   }
 }

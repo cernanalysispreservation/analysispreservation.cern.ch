@@ -41,6 +41,10 @@
           },
           {
             "$ref":
+              "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/publisher/fromparjq-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
               "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json#"
           },
           {
@@ -76,7 +80,8 @@
           {
             "$ref":
               "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/packtivity/environment/manual-instructions-env-schema-v0.0.1.json#"
-          }
+          },
+          { "type": "object" }
         ],
         "type": "object",
         "title": "Enviroment"

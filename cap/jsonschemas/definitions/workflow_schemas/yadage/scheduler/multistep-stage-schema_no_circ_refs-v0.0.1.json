@@ -6,9 +6,16 @@
   "jsonschema": {
     "oneOf": [
       {
-        "not": {
-          "required": ["batchsize", "partitionsize"]
-        }
+        "required": ["workflow"],
+        "not": { "required": ["step", "cases"] }
+      },
+      {
+        "required": ["step"],
+        "not": { "required": ["workflow", "cases"] }
+      },
+      {
+        "required": ["cases"],
+        "not": { "required": ["workflow", "step"] }
       }
     ],
     "title": "Multiple Step Scheduler",
@@ -30,6 +37,14 @@
       },
       "batchsize": {
         "type": "number"
+      },
+      "cases": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/cases_no_circ_refs-v0.0.1.json#"
+      },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/value_registration-v0.0.1.json#"
       },
       "step": {
         "$ref":

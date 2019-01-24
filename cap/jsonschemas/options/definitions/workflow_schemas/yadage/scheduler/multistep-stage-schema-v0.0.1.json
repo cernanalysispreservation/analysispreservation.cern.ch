@@ -1,22 +1,37 @@
-[
-    {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"},
-    {"$ref": "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"},
+{
+  "is_deposit": false,
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Parameters",
+  "jsonschema": [
     {
-        "key": "workflows[].workflow.stages[].scheduler.scatter",
-        "type": "fieldset",
-        "items": [
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"
+    },
+    {
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"
+    },
+    {
+      "key": "workflows[].workflow.stages[].scheduler.scatter",
+      "type": "fieldset",
+      "items": [
+        {
+          "key": "workflows[].workflow.stages[].scheduler.scatter.parameters",
+          "type": "array",
+          "items": [
             {
-                "key": "workflows[].workflow.stages[].scheduler.scatter.parameters",
-                "type": "array",
-                "items": [
-                    "key": "workflows[].workflow.stages[].scheduler.scatter.parameters",
-                    "type": "string"
-                ]
-            },
-            {
-                "key": "workflows[].workflow.stages[].scheduler.scatter.method",
-                "type": "string"
+              "key":
+                "workflows[].workflow.stages[].scheduler.scatter.parameters",
+              "type": "string"
             }
-        ]
+          ]
+        },
+        {
+          "key": "workflows[].workflow.stages[].scheduler.scatter.method",
+          "type": "string"
+        }
+      ]
     }
-]
+  ]
+}

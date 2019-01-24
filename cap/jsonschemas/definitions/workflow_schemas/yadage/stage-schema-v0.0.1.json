@@ -20,6 +20,10 @@
           {
             "$ref":
               "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/predicates/jsonpathready-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/predicates/exprfulfilled-schema-v0.0.1.json#"
           }
         ],
         "type": "object",

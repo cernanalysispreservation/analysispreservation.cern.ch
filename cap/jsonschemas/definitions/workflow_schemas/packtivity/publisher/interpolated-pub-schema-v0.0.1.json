@@ -20,6 +20,10 @@
       },
       "publish": {
         "type": "object"
+      },
+      "relative_paths": {
+        "type": "boolean",
+        "default": false
       }
     }
   }

@@ -98,6 +98,18 @@
       "general_title": {
         "type": "string"
       },
+      "glance_info": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-glance-info-v0.0.1.json"
+      },
+      "limits": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-limits-v0.0.1.json"
+      },
+      "likelihoods": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/atlas-likelihood-v0.0.1.json"
+      },
       "publications": {
         "description": "Publications related to the analysis",
         "title": "Publications",

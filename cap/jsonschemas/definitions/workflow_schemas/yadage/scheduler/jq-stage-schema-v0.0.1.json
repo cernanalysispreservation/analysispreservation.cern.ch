@@ -30,6 +30,10 @@
       "bindings": {
         "type": "object"
       },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/scheduler/value_registration.json"
+      },
       "scheduler_type": {
         "default": "jq-stage",
         "enum": ["jq-stage"],

@@ -7,15 +7,19 @@
     "oneOf": [
       {
         "not": {
-          "required": ["step"]
+          "required": ["step", "cases"]
         },
         "required": ["workflow"]
       },
       {
         "not": {
-          "required": ["workflow"]
+          "required": ["workflow", "cases"]
         },
         "required": ["step"]
+      },
+      {
+        "required": ["cases"],
+        "not": { "required": ["workflow", "step"] }
       }
     ],
     "title": "Single Step Scheduler",
@@ -34,6 +38,14 @@
         "enum": ["singlestep-stage"],
         "type": "string"
       },
+      "cases": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/scheduler/cases_no_circ_refs-v0.0.1.json#"
+      },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/scheduler/value_registration-v0.0.1.json#"
+      },
       "parameters": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json#"
@@ -41,7 +53,8 @@
       "workflow": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/definitions/workflow_schemas/yadage/workflow-schema-v0.0.1.json#"
-      }
+      },
+      "workflow_opts": { "type": "object" }
     }
   }
 }

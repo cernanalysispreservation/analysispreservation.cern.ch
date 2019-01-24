@@ -1,0 +1,10 @@
+{
+  "allow_all": true,
+  "experiment": null,
+  "fullname": "Value Registration",
+  "is_deposit": false,
+  "jsonschema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object"
+  }
+}

@@ -5,9 +5,9 @@
     "items": {
       "type": "object",
       "properties": {
-        "analysis_title": {
+        "workflow_title": {
           "type": "string",
-          "title": "Analysis Title"
+          "title": "Workflow Title"
         },
         "workflow": {
           "oneOf": [
