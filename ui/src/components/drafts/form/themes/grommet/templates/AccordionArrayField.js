@@ -9,6 +9,7 @@ import Button from "grommet/components/Button";
 import AddIcon from "grommet/components/icons/base/Add";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
+import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
 class AccordionArrayField extends React.Component {
   constructor(props) {
@@ -42,7 +43,19 @@ class AccordionArrayField extends React.Component {
         <AccordionPanel heading={this.props.header}>
           {this.props.items.length > 0 ? (
             <Box pad="medium" colorIndex="light-2">
-              {this.props.items.map(element => element.children)}
+              {this.props.items.map(element => (
+                <Box direction="row" flex={true}>
+                  <Box flex={true}>{element.children}</Box>
+                  <Box flex={false}>
+                    <Button
+                      onClick={event =>
+                        element.onDropIndexClick(element.index)(event)
+                      }
+                      icon={<FormTrashIcon />}
+                    />
+                  </Box>
+                </Box>
+              ))}
               <Box justify="center" align="center">
                 <Button
                   onClick={this._onAddClick.bind(this)}
