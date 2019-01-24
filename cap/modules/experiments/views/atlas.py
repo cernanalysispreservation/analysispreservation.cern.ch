@@ -26,17 +26,19 @@
 
 from __future__ import absolute_import, print_function
 
+import codecs
+import os
 import json
 
 import requests
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 
 from ..permissions import atlas_permission
 
 atlas_bp = Blueprint(
     'cap_atlas',
     __name__,
-    url_prefix='/ATLAS',
+    url_prefix='/atlas',
 )
 
 
@@ -66,3 +68,24 @@ def yadage_workflow_submit():
             "error_msg": "An error occured in the request to Yadage Engine",
             "error": r.text
         }), 409
+
+
+@atlas_bp.route('/glance/<id>', methods=['GET'])
+@atlas_permission.require(403)
+def get_glance_by_id(id):
+    """Retrieves GLANCE analysis data."""
+    glance_examples_location = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), 
+        '../static/example_atlas/glance_examples.json')
+    location = current_app.config.get(
+                'ATLAS_GLANCE_FILES_LOCATION',
+                glance_examples_location)
+
+    with codecs.open(location, 'r', encoding='utf8', errors='ignore') as fp:
+        data = json.load(fp)
+
+        for i in data: 
+            if i.get("id") == id:
+                return jsonify(i)
+
+    return jsonify({})
