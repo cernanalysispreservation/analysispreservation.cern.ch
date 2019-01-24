@@ -162,7 +162,6 @@ class Schema(db.Model):
     def get_by_fullpath(cls, string):
         """Get schema by full path, e.g. record/schema-v0.0.1.json."""
         name, major, minor, patch = cls._parse_fullpath(string)
-
         try:
             return cls.query \
                 .filter_by(name=name,
@@ -183,7 +182,7 @@ class Schema(db.Model):
     @staticmethod
     def _parse_fullpath(string):
         try:
-            regex = re.compile('(?:.*schemas)?'
+            regex = re.compile('(?:.*/schemas/)?'
                                '/?(?P<name>\S+)'
                                '-v(?P<major>\d+).'
                                '(?P<minor>\d+).'
