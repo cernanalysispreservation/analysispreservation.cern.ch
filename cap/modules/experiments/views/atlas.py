@@ -75,16 +75,16 @@ def yadage_workflow_submit():
 def get_glance_by_id(id):
     """Retrieves GLANCE analysis data."""
     glance_examples_location = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)), 
+        os.path.dirname(os.path.abspath(__file__)),
         '../static/example_atlas/glance_examples.json')
     location = current_app.config.get(
-                'ATLAS_GLANCE_FILES_LOCATION',
-                glance_examples_location)
+        'ATLAS_GLANCE_FILES_LOCATION',
+        glance_examples_location)
 
     with codecs.open(location, 'r', encoding='utf8', errors='ignore') as fp:
         data = json.load(fp)
 
-        for i in data: 
+        for i in data:
             if i.get("id") == id:
                 return jsonify(i)
 
