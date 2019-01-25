@@ -51,7 +51,7 @@ DEPOSIT_TO_RECORD_ACTION_MAP = {
 
 
 def RECORD_ACTION_NEEDS(id):
-    """Method to construct action needs."""
+    """Construct action needs."""
     return {
         'record-read': RecordReadActionNeed(str(id)),
         'record-update': RecordUpdateActionNeed(str(id)),

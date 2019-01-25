@@ -58,7 +58,7 @@ def construct_draft_obj(schema, data):
 
 
 def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
-    """Returns record by uuid."""
+    """Return record by uuid."""
     rs = RecordsSearch(index=index)
     res = rs.query(Q('match',
                      **dict_unique_field_value)).execute().hits.hits
@@ -70,7 +70,7 @@ def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
 
 
 def add_read_permission_for_egroup(deposit, egroup):
-    """Adds read permission for egroup."""
+    """Add read permission for egroup."""
     role = Role.query.filter_by(name=egroup).one()
     deposit._add_egroup_permissions(role,
                                     ['deposit-read'],
@@ -81,7 +81,7 @@ def add_read_permission_for_egroup(deposit, egroup):
 
 def add_drafts_from_file(file_path, schema,
                          egroup=None, usermail=None, limit=None):
-    """Adds drafts from a specified file.
+    """Add drafts from a specified file.
 
     Drafts with specified pid will be registered under those.
     For drafts without pid, new pids will be minted.

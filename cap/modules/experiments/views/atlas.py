@@ -45,7 +45,7 @@ atlas_bp = Blueprint(
 @atlas_bp.route('/yadage/workflow_submit', methods=['POST'])
 @atlas_permission.require(403)
 def yadage_workflow_submit():
-    """Submits a yadage workflow."""
+    """Submit a yadage workflow."""
     resp = request.get_json()
 
     at = resp.get('at', None)

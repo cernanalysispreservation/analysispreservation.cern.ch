@@ -47,7 +47,7 @@ user_blueprint = Blueprint('cap_user', __name__,
 @user_blueprint.route('/me')
 @login_required
 def get_user():
-    """Returns logged in user."""
+    """Return logged in user."""
     deposit_groups = get_user_deposit_groups()
     _user = {
         "id": current_user.id,

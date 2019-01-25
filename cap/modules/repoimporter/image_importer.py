@@ -37,7 +37,7 @@ class ImageImporter:
         self.token = token
 
     def archive_image(self, image_name, location):
-        """Archives image."""
+        """Archive image."""
         location = location.rstrip('/')
 
         if self.token is None:

@@ -105,7 +105,7 @@ def create_workflow():
 
 @reana_bp.route('/start/<workflow_id>')
 def start_analysis(workflow_id=None):
-    """Starts an analysis workflow."""
+    """Start an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
     parameters = {"parameters": {"did": 404958, "xsec_in_pb": 0.00122, "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root"}}
     response = start_workflow(workflow_id, token, parameters)
@@ -114,7 +114,7 @@ def start_analysis(workflow_id=None):
 
 @reana_bp.route('/status/<workflow_id>')
 def get_analysis_status(workflow_id=None):
-    """Retrieves status of an analysis workflow."""
+    """Retrieve status of an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
     response = get_workflow_status(workflow_id, token)
 
@@ -125,7 +125,7 @@ def get_analysis_status(workflow_id=None):
 
 @reana_bp.route('/status/<workflow_id>/outputs')
 def get_analysis_outputs(workflow_id=None):
-    """Starts outputs of an analysis workflow."""
+    """Start outputs of an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
     response = get_workflow_logs(workflow_id, token)
     return jsonify(response)

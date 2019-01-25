@@ -230,7 +230,7 @@ def token_delete(remote, token=''):
 # Error handling decorators
 #
 def oauth_error_handler(f):
-    """Decorator to handle exceptions."""
+    """Handle exceptions."""
     @wraps(f)
     def inner(*args, **kwargs):
         # OAuthErrors should not happen, so they are not caught here. Hence

@@ -29,7 +29,7 @@ from __future__ import absolute_import, print_function
 
 
 def clean_empty_values(data):
-    """Removes empty values from model."""
+    """Remove empty values from model."""
     if not isinstance(data, (dict, list)):
         return data
     if isinstance(data, list):

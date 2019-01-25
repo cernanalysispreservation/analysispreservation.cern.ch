@@ -41,7 +41,7 @@ class CAPSchemaSerializer(JSONSerializer):
     """Serializer for records v1 in JSON."""
 
     def _transform_record_owners(self, result):
-        """Replaces owners id with email."""
+        """Replace owners id with email."""
         # TOFIX for fixtures loding
         try:
             owner = User.query.filter_by(

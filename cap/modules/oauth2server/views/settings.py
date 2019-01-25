@@ -50,7 +50,7 @@ blueprint = Blueprint(
 # Decorator
 #
 def client_getter():
-    """Decorator to retrieve Client object and check user permission."""
+    """Retrieve Client object and check user permission."""
     def wrapper(f):
         @wraps(f)
         def decorated(*args, **kwargs):
@@ -71,7 +71,7 @@ def client_getter():
 
 
 def token_getter(is_personal=True, is_internal=False):
-    """Decorator to retrieve Token object and check user permission.
+    """Retrieve Token object and check user permission.
 
     :param is_personal: Search for a personal token. (Default: ``True``)
     :param is_internal: Search for a internal token. (Default: ``False``)

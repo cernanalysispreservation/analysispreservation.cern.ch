@@ -78,7 +78,7 @@ class CommonRecordSchemaV1(Schema, StrictKeysMixin):
     access = fields.Method('get_access', dump_only=True)
 
     def get_access(self, obj):
-        """Returns access object."""
+        """Return access object."""
         _uuid = obj.get('pid', None)
         if _uuid is not None:
             _uuid = _uuid.object_uuid

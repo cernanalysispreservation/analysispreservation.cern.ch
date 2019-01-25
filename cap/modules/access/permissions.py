@@ -29,7 +29,7 @@ from invenio_access.permissions import Permission, superuser_access
 
 
 def admin_permission_factory(view):
-    """Default factory for creating a permission for an admin.
+    """Create a permission for an admin.
 
     It tries to load a :class:`invenio_access.permissions.DynamicPermission`
     instance if `invenio_access` is installed.

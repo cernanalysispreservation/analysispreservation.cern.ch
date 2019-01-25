@@ -42,7 +42,7 @@ def generate_recid(experiment):
 
 
 def random_pid(experiment):
-    """Generates a random pid value for experiments."""
+    """Generate a random pid value for experiments."""
     def _generate_random_string(length):
         """Random string generator."""
         chars = string.lowercase + string.digits
