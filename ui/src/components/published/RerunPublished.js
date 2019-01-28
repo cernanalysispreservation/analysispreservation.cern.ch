@@ -12,50 +12,6 @@ import CheckBox from "grommet/components/CheckBox";
 
 import { rerunPublished, REANACreateWorkflow } from "../../actions/published";
 
-import CleanForm from "../drafts/form/CleanForm";
-
-const schema = {
-  type: "object",
-  properties: {
-    reana_yaml: {
-      title: "REANA YAML",
-      type: "object"
-    },
-    input_parameters: {
-      title: "Input Parameters",
-      type: "object",
-      properties: {
-        workflow_id: {
-          title: "Workflow Id",
-          type: "string"
-        },
-        ali_physics: {
-          title: "AliPhysics",
-          type: "string"
-        }
-      }
-    }
-  }
-};
-
-const uiSchema = {
-  reana_yaml: {
-    title: "REANA YAML",
-    "ui:field": "jsoneditor"
-  },
-  input_parameters: {
-    ali_physics: {
-      "ui:readonly": true
-    }
-  }
-};
-
-const formData = {
-  input_parameters: {
-    ali_physics: "vAN-20180614-1"
-  }
-};
-
 class RerunPublished extends React.Component {
   constructor(props) {
     super(props);
@@ -68,20 +24,17 @@ class RerunPublished extends React.Component {
   }
 
   selectWorkflow = event => {
-    let value = event.target.value;
-
     this.setState({ workflow: event.option.value });
   };
 
   runWorkflow = () => {
     let { id } = this.props.match.params;
-    console.log("runWorkflow::", id);
     if (this.state.workflow && id)
       this.props.REANACreateWorkflow(this.state.workflow, id);
   };
 
   render() {
-    let { id } = this.props.match.params;
+    // let { id } = this.props.match.params;
 
     let current_workflows = this.props.published.metadata.workflows.map(
       workflow =>
@@ -116,7 +69,7 @@ class RerunPublished extends React.Component {
               this.props.published.metadata &&
               this.props.published.metadata.workflows ? (
                 <Box>
-                  {this.props.published.metadata.workflows.map(workflow => (
+                  {this.props.published.metadata.workflows.map(() => (
                     <Box>
                       <FormField label="Select Platform">
                         <Select

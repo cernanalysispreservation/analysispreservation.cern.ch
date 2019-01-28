@@ -81,7 +81,6 @@ def create_workflow():
         workflow_json, name, access_token, parameters, workflow_engine)
 
 
-    # import ipdb;ipdb.set_trace()
     try:
         uuid = PersistentIdentifier.get('recid', record_id).object_uuid
     except PIDDoesNotExistError:

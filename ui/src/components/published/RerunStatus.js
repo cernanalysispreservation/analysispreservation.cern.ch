@@ -7,7 +7,6 @@ import Title from "grommet/components/Title";
 import Label from "grommet/components/Label";
 import Meter from "grommet/components/Meter";
 
-import { getAnalysisStatus } from "../../actions/published";
 import RerunOutputs from "./RerunOutputs";
 
 import Spinning from "grommet/components/icons/Spinning";
@@ -131,10 +130,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getAnalysisStatus: id => dispatch(getAnalysisStatus(id))
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(

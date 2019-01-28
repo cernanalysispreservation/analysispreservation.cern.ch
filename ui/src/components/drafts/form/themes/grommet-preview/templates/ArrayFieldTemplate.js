@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
 
 import DefaultArrayField from "./DefaultArrayField";
 import StringArrayField from "./StringArrayField";

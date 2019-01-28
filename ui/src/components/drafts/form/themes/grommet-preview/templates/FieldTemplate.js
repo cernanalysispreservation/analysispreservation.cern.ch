@@ -1,4 +1,3 @@
-import _isEmpty from "lodash/isEmpty";
 import React from "react";
 import PropTypes from "prop-types";
 

@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
-import Title from "grommet/components/Title";
 import Paragraph from "grommet/components/Paragraph";
-
-import Edit from "grommet/components/icons/base/Edit";
 
 import FormLayer from "../components/FormLayer";
 

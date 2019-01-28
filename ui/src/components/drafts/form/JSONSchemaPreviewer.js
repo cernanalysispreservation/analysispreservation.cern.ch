@@ -7,7 +7,6 @@ import Box from "grommet/components/Box";
 import FieldTemplate from "./themes/grommet-preview/templates/FieldTemplate";
 import ObjectFieldTemplate from "./themes/grommet-preview/templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./themes/grommet-preview/templates/ArrayFieldTemplate";
-import ErrorListTemplate from "./themes/grommet-preview/templates/ErrorListTemplate";
 
 import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";

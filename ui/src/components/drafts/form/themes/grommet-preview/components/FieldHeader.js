@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
-import Button from "grommet/components/Button";
-
-import AddIcon from "grommet/components/icons/base/Add";
 
 let FieldHeader = function(props) {
   return props.title ? (

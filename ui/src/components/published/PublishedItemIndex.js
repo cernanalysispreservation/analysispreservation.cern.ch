@@ -12,7 +12,7 @@ import RerunPublished from "../published/RerunPublished";
 import RunsIndex from "../published/RunsIndex";
 // import RerunStatus from '../published/RerunStatus';
 import PublishedPreview from "./PublishedPreview";
-import { Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
 import PublishedSidebar from "./components/PublishedSidebar";
 

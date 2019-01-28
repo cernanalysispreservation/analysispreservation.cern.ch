@@ -195,8 +195,8 @@ export function REANAGetWorkflowsError(error) {
   };
 }
 
-export function REANACreateWorkflow(workflow, published_id, autostart = false) {
-  return (dispatch, getState, history) => {
+export function REANACreateWorkflow(workflow, published_id) {
+  return dispatch => {
     dispatch(REANACreateWorkflowRequest());
     let uri = "/api/reana/create";
 
@@ -219,7 +219,7 @@ export function REANACreateWorkflow(workflow, published_id, autostart = false) {
 }
 
 export function REANAStartWorkflow(workflow_id) {
-  return (dispatch, getState) => {
+  return dispatch => {
     dispatch(REANAStartWorkflowRequest());
     let uri = `/api/reana/start/${workflow_id}`;
 
@@ -235,7 +235,7 @@ export function REANAStartWorkflow(workflow_id) {
 }
 
 export function REANAWorkflowsGet(published_id) {
-  return (dispatch, getState, history) => {
+  return dispatch => {
     dispatch(REANAGetWorkflowsRequest());
     let uri = `/api/reana/jobs/${published_id}`;
 

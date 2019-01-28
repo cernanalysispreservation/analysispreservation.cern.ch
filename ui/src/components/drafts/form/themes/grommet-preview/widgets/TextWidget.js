@@ -1,11 +1,9 @@
-import axios from "axios";
 import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/drafts";
-import { fromJS } from "immutable";
 
 class TextWidget extends React.Component {
   constructor() {

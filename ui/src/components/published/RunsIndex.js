@@ -4,14 +4,8 @@ import { connect } from "react-redux";
 
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
 import Title from "grommet/components/Title";
-import Button from "grommet/components/Button";
-import Select from "grommet/components/Select";
-import FormField from "grommet/components/FormField";
 import Label from "grommet/components/Label";
-import CheckBox from "grommet/components/CheckBox";
-import ListItem from "grommet/components/ListItem";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 
 import {

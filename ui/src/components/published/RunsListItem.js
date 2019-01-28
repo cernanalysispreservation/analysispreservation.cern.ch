@@ -52,7 +52,7 @@ class RunsListItem extends React.Component {
           clearInterval(this.state.intervalId);
         }
       })
-      .catch(error => {
+      .catch(() => {
         // dispatch(rerunStatusError(error));
       });
   };
@@ -134,7 +134,7 @@ RunsListItem.propTypes = {
   RunsListItem: PropTypes.func
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {};
 }
 

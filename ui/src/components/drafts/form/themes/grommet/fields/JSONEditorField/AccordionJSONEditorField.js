@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
-import Paragraph from "grommet/components/Paragraph";
 
 import JSONDropzone from "./components/JSONDropzone";
 import JSONEditorLayer from "./components/JSONEditorLayer";
-import ReactJson from "react-json-view";
 
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
@@ -22,7 +18,6 @@ import _isEmpty from "lodash/isEmpty";
 class JSONEditorWidget extends Component {
   constructor(props) {
     super(props);
-    console.log("ppppp::", props);
     this.state = { editorOpen: false };
   }
 
@@ -34,17 +29,6 @@ class JSONEditorWidget extends Component {
   toggleLayer = () => {
     this.setState({ editorOpen: !this.state.editorOpen });
   };
-
-  // onTextAreaChange = event => {
-  //   try {
-  //     let valid_json = JSON.parse(event.target.value);
-  //     console.log("VALID JSON:::", valid_json);
-  //     this.setJSON(valid_json);
-  //   }
-  //   catch(e) {
-  //     console.log("to poulo:::", e)
-  //   }
-  // };
 
   render() {
     return (

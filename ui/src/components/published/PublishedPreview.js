@@ -10,21 +10,14 @@ import Sidebar from "grommet/components/Sidebar";
 
 import { getPublishedItem } from "../../actions/published";
 import FilesPublished from "./components/FilesPublished";
-import PublishedSidebar from "./components/PublishedSidebar";
 
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
-import Status from "grommet/components/icons/Status";
 import { EditAnchor } from "../drafts/components/DraftActionsButtons";
 import AnnounceIcon from "grommet/components/icons/base/Announce";
-import CirclePlayIcon from "grommet/components/icons/base/CirclePlay";
-
-import Anchor from "grommet/components/Anchor";
-import Button from "grommet/components/Button";
-import Label from "grommet/components/Label";
 
 import RunsIndex from "../published/RunsIndex";
-import { Switch, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [

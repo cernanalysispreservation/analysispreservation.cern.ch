@@ -1,16 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
-import Paragraph from "grommet/components/Paragraph";
-
-import ReactJson from "react-json-view";
-
-import CodeIcon from "grommet/components/icons/base/Code";
-
-import _isEmpty from "lodash/isEmpty";
 
 class JSONEditorWidget extends Component {
   constructor(props) {

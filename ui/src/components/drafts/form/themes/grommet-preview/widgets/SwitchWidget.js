@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import CheckBox from "grommet/components/CheckBox";
 
 const SwitchWidget = function(props) {
   return (

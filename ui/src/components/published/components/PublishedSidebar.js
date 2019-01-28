@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import _omit from "lodash/omit";
+// import _omit from "lodash/omit";
 
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
@@ -13,28 +13,28 @@ import ResourcesIcon from "grommet/components/icons/base/Resources";
 
 import Label from "grommet/components/Label";
 
-const transformSchema = schema => {
-  const schemaFieldsToRemove = [
-    "_access",
-    "_deposit",
-    "_cap_status",
-    "_buckets",
-    "_files",
-    "$ana_type",
-    "$schema",
-    "general_title",
-    "_experiment",
-    "control_number"
-  ];
+// const transformSchema = schema => {
+//   const schemaFieldsToRemove = [
+//     "_access",
+//     "_deposit",
+//     "_cap_status",
+//     "_buckets",
+//     "_files",
+//     "$ana_type",
+//     "$schema",
+//     "general_title",
+//     "_experiment",
+//     "control_number"
+//   ];
 
-  schema.properties = _omit(schema.properties, schemaFieldsToRemove);
-  schema = {
-    type: schema.type,
-    properties: schema.properties,
-    dependencies: schema.dependencies
-  };
-  return schema;
-};
+//   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
+//   schema = {
+//     type: schema.type,
+//     properties: schema.properties,
+//     dependencies: schema.dependencies
+//   };
+//   return schema;
+// };
 
 class PublishedSidebar extends React.Component {
   componentDidMount() {
@@ -96,10 +96,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getPublishedItem: id => dispatch(getPublishedItem(id))
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(
