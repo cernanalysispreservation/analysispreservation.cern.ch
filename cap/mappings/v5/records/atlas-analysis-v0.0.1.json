@@ -33,6 +33,10 @@
         },
         "created": {
           "type": "date"
+        },
+        "workflows": {
+          "type": "object",
+          "enabled": "false"
         }
       }
     }
