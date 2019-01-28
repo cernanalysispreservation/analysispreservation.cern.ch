@@ -56,10 +56,7 @@
       "ui:object": "accordionObjectField"
     },
     "likelihoods": {
-      "ui:object": "accordionObjectField",
-      "channels": {
-        "ui:array": "default"
-      }
+      "ui:field": "accordion_jsoneditor"
     },
     "glance_info": {
       "ui:object": "accordionObjectField",

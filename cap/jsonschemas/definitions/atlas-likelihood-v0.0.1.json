@@ -16,7 +16,7 @@
         "items": { "$ref": "#/definitions/parameter" }
       }
     },
-    "additionalProperties": false,
+    "additionalProperties": true,
     "definitions": {
       "channel": {
         "type": "object",
@@ -87,7 +87,8 @@
                 { "$ref": "#/definitions/modifier/normsys" },
                 { "$ref": "#/definitions/modifier/shapefactor" },
                 { "$ref": "#/definitions/modifier/shapesys" },
-                { "$ref": "#/definitions/modifier/staterror" }
+                { "$ref": "#/definitions/modifier/staterror" },
+                { "type": "object" }
               ]
             }
           }

@@ -30,6 +30,8 @@ from flask import Blueprint, abort, current_app, jsonify, request
 from flask_login import current_user
 from invenio_pidstore.models import PersistentIdentifier, PIDDoesNotExistError
 
+from invenio_db import db
+import json
 from .models import ReanaJob
 from .serializers import ReanaJobSchema
 from reana_client.api.client import create_workflow_from_json, \
@@ -48,7 +50,7 @@ def get_current_user_jobs(pid=None):
         abort(401)
 
     try:
-        uuid = PersistentIdentifier.get('depid', pid).object_uuid
+        uuid = PersistentIdentifier.get('recid', pid).object_uuid
     except PIDDoesNotExistError:
         abort(404)
 
@@ -63,15 +65,42 @@ def get_current_user_jobs(pid=None):
 def create_workflow():
     """Create workflow."""
     data = request.get_json()
+    record_id = data['record_id']
     workflow_json = data['workflow_json']
-    name = data['worflow_name']
+    name = data['workflow_name']
     workflow_engine = 'yadage'
-    parameters = {"files": ["code/helloworld.py", "data/names.txt"],
-                  "parameters": {"sleeptime": 2, "inputfile": "data/names.txt",
-                                 "helloworld": "code/helloworld.py"}}
+    parameters = {
+        "parameters": {
+            "did": 404958,
+            "xsec_in_pb": 0.00122,
+            "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root"
+        }
+    }
     access_token = current_app.config.get('REANA_ACCESS_TOKEN')
     response = create_workflow_from_json(
         workflow_json, name, access_token, parameters, workflow_engine)
+
+
+    # import ipdb;ipdb.set_trace()
+    try:
+        uuid = PersistentIdentifier.get('recid', record_id).object_uuid
+    except PIDDoesNotExistError:
+        abort(404)
+
+    reana_job = ReanaJob(
+        user_id=current_user.id,
+        record_id=uuid,
+        name=name,
+        params={
+            "reana_id": response.get('workflow_id'),
+            "json": workflow_json,
+            "name": name,
+            "parameters": parameters,
+        }
+    )
+
+    db.session.add(reana_job)
+    db.session.commit()
     return jsonify(response)
 
 
@@ -79,9 +108,7 @@ def create_workflow():
 def start_analysis(workflow_id=None):
     """Starts an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
-    parameters = {"files": ["code/helloworld.py", "data/names.txt"],
-                  "parameters": {"sleeptime": 2, "inputfile": "data/names.txt",
-                                 "helloworld": "code/helloworld.py"}}
+    parameters = {"parameters": {"did": 404958, "xsec_in_pb": 0.00122, "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root"}}
     response = start_workflow(workflow_id, token, parameters)
     return jsonify(response)
 
@@ -91,6 +118,9 @@ def get_analysis_status(workflow_id=None):
     """Retrieves status of an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
     response = get_workflow_status(workflow_id, token)
+
+    _logs = json.loads(response.get("logs"))
+    response["logs"] = _logs
     return jsonify(response)
 
 

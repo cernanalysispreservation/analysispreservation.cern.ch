@@ -1,4 +1,4 @@
-import { Map } from "immutable";
+import { Map, List } from "immutable";
 
 import {
   FETCH_SCHEMA_REQUEST,
@@ -21,7 +21,13 @@ import {
   RERUN_STATUS_ERROR,
   RERUN_OUTPUTS_REQUEST,
   RERUN_OUTPUTS_SUCCESS,
-  RERUN_OUTPUTS_ERROR
+  RERUN_OUTPUTS_ERROR,
+  REANA_CREATE_WORKFLOW_REQUEST,
+  REANA_CREATE_WORKFLOW_SUCCESS,
+  REANA_CREATE_WORKFLOW_ERROR,
+  REANA_GET_WORKFLOWS_REQUEST,
+  REANA_GET_WORKFLOWS_SUCCESS,
+  REANA_GET_WORKFLOWS_ERROR
 } from "../actions/published";
 
 const initialState = Map({
@@ -36,6 +42,8 @@ const initialState = Map({
     loading: false,
     error: null
   }),
+  runs: Map(),
+  status: Map(),
   current_run: Map({
     id: null,
     data: null,
@@ -97,9 +105,11 @@ export default function publishedReducer(state = initialState, action) {
       return state.setIn(["current_run", "loading"], true);
     // return state.setIn(['current_run', 'error'], false);
     case RERUN_STATUS_SUCCESS:
-      return state
-        .setIn(["current_run", "loading"], false)
-        .setIn(["current_run", "data"], action.data);
+      return (
+        state
+          // .setIn(["current_run", "loading"], false)
+          .setIn(["status", action.workflow_id], action.data)
+      );
     case RERUN_STATUS_ERROR:
       return state
         .setIn(["current_run", "loading"], false)
@@ -115,6 +125,20 @@ export default function publishedReducer(state = initialState, action) {
       return state
         .setIn(["current_run", "loading"], false)
         .setIn(["current_run", "error"], action.error);
+    // case REANA_CREATE_WORKFLOW_REQUEST:
+    //   return state
+
+    case REANA_CREATE_WORKFLOW_SUCCESS:
+      return state.setIn(["runs", action.data.workflow_id], action.data);
+    // case REANA_CREATE_WORKFLOW_ERROR:
+    //   return state
+
+    case REANA_GET_WORKFLOWS_REQUEST:
+      return state;
+    case REANA_GET_WORKFLOWS_SUCCESS:
+      return state.setIn(["runs"], Map(action.data));
+    case REANA_GET_WORKFLOWS_ERROR:
+      return state;
     default:
       return state;
   }

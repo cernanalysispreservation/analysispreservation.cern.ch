@@ -5,7 +5,7 @@ import JSONViewField from "./JSONViewField";
 const fields = {
   ImportDataField: importDataField,
   CapFiles: capFiles,
-  jsoneditor: JSONViewField
+  jsoneditor: JSONViewField,
 };
 
 export default fields;

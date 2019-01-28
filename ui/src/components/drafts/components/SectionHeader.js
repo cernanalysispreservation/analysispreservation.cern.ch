@@ -30,7 +30,7 @@ export default function SectionHeader(props) {
           {props.label} {props.status}
         </Label>
       </Box>
-      <Box flex={false} margin={{ horizontal: "xsmall" }}>
+      <Box flex={false} margin={{ horizontal: "small" }}>
         {props.icon ? props.icon : null}
       </Box>
       {props.action ? (

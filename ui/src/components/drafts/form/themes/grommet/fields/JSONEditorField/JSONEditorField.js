@@ -30,10 +30,22 @@ class JSONEditorWidget extends Component {
     this.setState({ editorOpen: !this.state.editorOpen });
   };
 
+  // onTextAreaChange = event => {
+  //   try {
+  //     let valid_json = JSON.parse(event.target.value);
+  //     console.log("VALID JSON:::", valid_json);
+  //     this.setJSON(valid_json);
+  //   }
+  //   catch(e) {
+  //     console.log("to poulo:::", e)
+  //   }
+  // };
+
   render() {
     return (
       <Box pad={{ horizontal: "medium" }} margin={{ bottom: "small" }}>
-        {_isEmpty(this.props.formData) ? (
+        {_isEmpty(this.props.formData) ||
+        JSON.stringify(this.props.formData) === JSON.stringify({}) ? (
           <JSONDropzone
             setJSON={this.setJSON}
             actionButtonOnClick={this.toggleLayer}
