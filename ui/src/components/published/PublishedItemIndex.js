@@ -21,7 +21,22 @@ class PublishedItemIndex extends React.Component {
     this.props.getPublishedItem(id);
   }
 
+  _discoverSchema = schema => {
+    if (schema) {
+      let ana_type = schema.split("-v")[0];
+      let type = ana_type.split("/");
+      ana_type = type[type.length - 1];
+
+      return ana_type;
+    }
+    return null;
+  };
+
   render() {
+    let ana_type = this.props.published
+      ? this._discoverSchema(this.props.published.schema)
+      : null;
+
     return (
       <Box flex={true} direction="row">
         <Route exact path={`/published/:id`} component={PublishedPreview} />
@@ -31,7 +46,7 @@ class PublishedItemIndex extends React.Component {
           path={`/published/:id/runs/create`}
           component={RerunPublished}
         />
-        <PublishedSidebar />
+        {ana_type == "atlas-analysis" ? <PublishedSidebar /> : null}
       </Box>
     );
   }
@@ -43,6 +58,7 @@ PublishedItemIndex.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    published: state.published.getIn(["current_item", "data"]),
     groups: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }

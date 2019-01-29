@@ -7,7 +7,10 @@ import FieldHeader from "../components/FieldHeader";
 let FieldTemplate = function(props) {
   const { label, children } = props;
 
-  if (["array", "object"].indexOf(props.schema.type) > -1) {
+  if (
+    !("ui:field" in props.uiSchema) &&
+    ["array", "object"].indexOf(props.schema.type) > -1
+  ) {
     return <span>{children}</span>;
   }
 
