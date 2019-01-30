@@ -7,20 +7,15 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import { getPublishedItem } from "../../actions/published";
 
-// import PublishedItem from '../published/PublishedItem';
 import RerunPublished from "../published/RerunPublished";
 import RunsIndex from "../published/RunsIndex";
-// import RerunStatus from '../published/RerunStatus';
+
 import PublishedPreview from "./PublishedPreview";
 import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
 import PublishedSidebar from "./components/PublishedSidebar";
 
 class PublishedItemIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     let { id } = this.props.match.params;
     this.props.getPublishedItem(id);

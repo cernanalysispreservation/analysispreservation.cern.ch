@@ -11,10 +11,6 @@ import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
 
 class PublishedIndex extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Box flex={true}>

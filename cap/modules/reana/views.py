@@ -73,13 +73,14 @@ def create_workflow():
         "parameters": {
             "did": 404958,
             "xsec_in_pb": 0.00122,
-            "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root"
+            "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/" +
+            "reana-recast-demo/" +
+            "mc15_13TeV.123456.cap_recast_demo_signal_one.root"
         }
     }
     access_token = current_app.config.get('REANA_ACCESS_TOKEN')
     response = create_workflow_from_json(
         workflow_json, name, access_token, parameters, workflow_engine)
-
 
     try:
         uuid = PersistentIdentifier.get('recid', record_id).object_uuid
@@ -107,7 +108,13 @@ def create_workflow():
 def start_analysis(workflow_id=None):
     """Start an analysis workflow."""
     token = current_app.config.get('REANA_ACCESS_TOKEN')
-    parameters = {"parameters": {"did": 404958, "xsec_in_pb": 0.00122, "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data/reana-recast-demo/mc15_13TeV.123456.cap_recast_demo_signal_one.root"}}
+    parameters = {
+        "parameters": {
+            "did": 404958,
+            "xsec_in_pb": 0.00122,
+            "dxaod_file": "https://recastwww.web.cern.ch/recastwww/data" +
+            "/reana-recast-demo/" +
+            "mc15_13TeV.123456.cap_recast_demo_signal_one.root"}}
     response = start_workflow(workflow_id, token, parameters)
     return jsonify(response)
 

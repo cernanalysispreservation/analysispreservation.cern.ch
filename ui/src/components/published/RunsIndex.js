@@ -8,24 +8,14 @@ import Title from "grommet/components/Title";
 import Label from "grommet/components/Label";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 
-import {
-  REANAStartWorkflow,
-  REANAWorkflowStatus,
-  REANAWorkflowsGet
-} from "../../actions/published";
+import { rerunGetWorkflows } from "../../actions/published";
 
 import RunsListItem from "./RunsListItem";
 
 class RunsIndex extends React.Component {
-  constructor(props) {
-    super(props);
-
-    console.log("RunsIndex::", props);
-  }
-
   componentDidMount() {
     let { id } = this.props.match.params;
-    this.props.REANAWorkflowsGet(id);
+    this.props.rerunGetWorkflows(id);
   }
 
   render() {
@@ -76,9 +66,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    REANAStartWorkflow: id => dispatch(REANAStartWorkflow(id)),
-    REANAWorkflowStatus: id => dispatch(REANAWorkflowStatus(id)),
-    REANAWorkflowsGet: published_id => dispatch(REANAWorkflowsGet(published_id))
+    rerunGetWorkflows: published_id => dispatch(rerunGetWorkflows(published_id))
   };
 }
 

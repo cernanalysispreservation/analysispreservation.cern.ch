@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Layer from "grommet/components/Layer";
@@ -11,11 +10,6 @@ import ListItem from "grommet/components/ListItem";
 import Meter from "grommet/components/Meter";
 
 import axios from "axios";
-
-import {
-  REANAStartWorkflow,
-  REANAWorkflowStatus
-} from "../../actions/published";
 
 class RunsListItem extends React.Component {
   constructor(props) {
@@ -134,18 +128,4 @@ RunsListItem.propTypes = {
   RunsListItem: PropTypes.func
 };
 
-function mapStateToProps() {
-  return {};
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    REANAStartWorkflow: id => dispatch(REANAStartWorkflow(id)),
-    REANAWorkflowStatus: id => dispatch(REANAWorkflowStatus(id))
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RunsListItem);
+export default RunsListItem;

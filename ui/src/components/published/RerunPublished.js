@@ -10,7 +10,7 @@ import Select from "grommet/components/Select";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 
-import { rerunPublished, REANACreateWorkflow } from "../../actions/published";
+import { rerunCreateWorkflow } from "../../actions/published";
 
 class RerunPublished extends React.Component {
   constructor(props) {
@@ -30,12 +30,10 @@ class RerunPublished extends React.Component {
   runWorkflow = () => {
     let { id } = this.props.match.params;
     if (this.state.workflow && id)
-      this.props.REANACreateWorkflow(this.state.workflow, id);
+      this.props.rerunCreateWorkflow(this.state.workflow, id);
   };
 
   render() {
-    // let { id } = this.props.match.params;
-
     let current_workflows = this.props.published.metadata.workflows.map(
       workflow =>
         workflow.workflow_title
@@ -138,8 +136,7 @@ class RerunPublished extends React.Component {
 }
 
 RerunPublished.propTypes = {
-  match: PropTypes.object,
-  rerunPublished: PropTypes.func
+  match: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -150,10 +147,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    REANACreateWorkflow: (workflow, published_id) =>
-      dispatch(REANACreateWorkflow(workflow, published_id)),
-    rerunPublished: (workflow_id, id) =>
-      dispatch(rerunPublished(workflow_id, id))
+    rerunCreateWorkflow: (workflow, published_id) =>
+      dispatch(rerunCreateWorkflow(workflow, published_id))
   };
 }
 
