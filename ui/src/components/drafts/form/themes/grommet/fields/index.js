@@ -8,6 +8,7 @@ const fields = {
   CapFiles: CapFiles,
   jsoneditor: JSONEditorField,
   accordion_jsoneditor: AccordionJSONEditorField,
+  thebelab: JSONEditorField
 };
 
 export default fields;
