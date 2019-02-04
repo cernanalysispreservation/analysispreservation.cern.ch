@@ -24,16 +24,19 @@
 
 
 """CAP REANA views."""
+import json
 
 from flask import Blueprint, abort, current_app, jsonify, request
 
 from flask_login import current_user
-from invenio_pidstore.models import PersistentIdentifier, PIDDoesNotExistError
 
+from invenio_pidstore.models import PersistentIdentifier, PIDDoesNotExistError
 from invenio_db import db
-import json
+
+from .errors import ExperimentIsNotValid
 from .models import ReanaJob
 from .serializers import ReanaJobSchema
+from cap.modules.records.api import CAPRecord
 from reana_client.api.client import create_workflow_from_json, \
     start_workflow, get_workflow_status, get_workflow_logs
 
@@ -78,14 +81,24 @@ def create_workflow():
             "mc15_13TeV.123456.cap_recast_demo_signal_one.root"
         }
     }
-    access_token = current_app.config.get('REANA_ACCESS_TOKEN')
-    response = create_workflow_from_json(
-        workflow_json, name, access_token, parameters, workflow_engine)
 
     try:
         uuid = PersistentIdentifier.get('recid', record_id).object_uuid
+        experiment = CAPRecord.get_record(uuid).get('_experiment', None)
+        if experiment is None:
+            raise ExperimentIsNotValid('Experiment is not valid.')
+        access_token = current_app.config.get(
+            'REANA_ACCESS_TOKEN').get(experiment, None)
+        if access_token is None:
+            raise ExperimentIsNotValid(
+                'Access token for {} is not available'.format(
+                    experiment))
+
     except PIDDoesNotExistError:
         abort(404)
+
+    response = create_workflow_from_json(
+        workflow_json, name, access_token, parameters, workflow_engine)
 
     reana_job = ReanaJob(
         user_id=current_user.id,

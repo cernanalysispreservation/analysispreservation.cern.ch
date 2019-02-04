@@ -312,7 +312,8 @@ def create_deposit(app, db, es, location, jsonschemas_host,
 
     with db_.session.begin_nested():
 
-        def _create_deposit(user, schema_name, metadata=None, experiment=None, publish=False):
+        def _create_deposit(user, schema_name,
+                            metadata=None, experiment=None, publish=False):
             """
             Create a new deposit for given user and schema name
             e.g cms-analysis-v0.0.1,
@@ -362,6 +363,14 @@ def bearer_auth(token):
 def deposit(users, create_deposit):
     """New deposit with files."""
     return create_deposit(users['superuser'], 'cms-analysis-v0.0.1')
+
+
+@pytest.fixture
+def record(users, create_deposit):
+    return create_deposit(users['superuser'],
+                          'cms-analysis-v0.0.1',
+                          experiment='CMS',
+                          publish=True)
 
 
 @pytest.fixture
