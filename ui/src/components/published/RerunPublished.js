@@ -10,7 +10,7 @@ import Select from "grommet/components/Select";
 import FormField from "grommet/components/FormField";
 import CheckBox from "grommet/components/CheckBox";
 
-import { rerunCreateWorkflow } from "../../actions/published";
+import { createWorkflow } from "../../actions/workflows";
 
 class RerunPublished extends React.Component {
   constructor(props) {
@@ -30,8 +30,11 @@ class RerunPublished extends React.Component {
   runWorkflow = () => {
     let { id } = this.props.match.params;
     if (this.state.workflow && id)
-      this.props.rerunCreateWorkflow(this.state.workflow, id);
+      this.props.createWorkflow(this.state.workflow, id, this.state.autostart);
   };
+
+  handleAutostart = () =>
+    this.setState(state => ({ autostart: !state.autostart }));
 
   render() {
     let current_workflows = this.props.published.metadata.workflows.map(
@@ -67,13 +70,12 @@ class RerunPublished extends React.Component {
               this.props.published.metadata &&
               this.props.published.metadata.workflows ? (
                 <Box>
-                  {this.props.published.metadata.workflows.map(() => (
-                    <Box>
+                  {this.props.published.metadata.workflows.map(index => (
+                    <Box key={`${index}`}>
                       <FormField label="Select Platform">
                         <Select
                           inline={false}
                           multiple={true}
-                          onSearch={false}
                           value={{ value: "reana", label: "REANA" }}
                           options={[{ value: "reana", label: "REANA" }]}
                         />
@@ -83,7 +85,6 @@ class RerunPublished extends React.Component {
                           placeHolder="None"
                           inline={false}
                           multiple={true}
-                          onSearch={false}
                           value={
                             this.state.workflow
                               ? this.state.workflow.workflow_title
@@ -98,9 +99,7 @@ class RerunPublished extends React.Component {
                           label="Auto-start workflow"
                           toggle={true}
                           checked={this.state.autostart}
-                          onChange={() =>
-                            this.setState({ autostart: !this.state.autostart })
-                          }
+                          onChange={this.handleAutostart}
                         />
                       </FormField>
                     </Box>
@@ -139,18 +138,18 @@ RerunPublished.propTypes = {
   match: PropTypes.object
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     published: state.published.getIn(["current_item", "data"])
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    rerunCreateWorkflow: (workflow, published_id) =>
-      dispatch(rerunCreateWorkflow(workflow, published_id))
+    createWorkflow: (workflow, published_id, autostart) =>
+      dispatch(createWorkflow(workflow, published_id, autostart))
   };
-}
+};
 
 export default connect(
   mapStateToProps,

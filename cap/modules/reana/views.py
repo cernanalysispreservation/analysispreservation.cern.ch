@@ -46,6 +46,20 @@ reana_bp = Blueprint('cap_reana',
                      )
 
 
+def get_token(uuid):
+    """Retrieve token based on experiment."""
+    experiment = CAPRecord.get_record(uuid).get('_experiment', None)
+    if experiment is None:
+        raise ExperimentIsNotValid('Experiment is not valid.')
+    access_token = current_app.config.get(
+        'REANA_ACCESS_TOKEN').get(experiment, None)
+    if access_token is None:
+        raise ExperimentIsNotValid(
+            'Access token for {} is not available'.format(
+                experiment))
+    return access_token
+
+
 @reana_bp.route('/jobs/<pid>')
 def get_current_user_jobs(pid=None):
     """Get reana jobs for current user and analysis with given id."""
@@ -84,16 +98,7 @@ def create_workflow():
 
     try:
         uuid = PersistentIdentifier.get('recid', record_id).object_uuid
-        experiment = CAPRecord.get_record(uuid).get('_experiment', None)
-        if experiment is None:
-            raise ExperimentIsNotValid('Experiment is not valid.')
-        access_token = current_app.config.get(
-            'REANA_ACCESS_TOKEN').get(experiment, None)
-        if access_token is None:
-            raise ExperimentIsNotValid(
-                'Access token for {} is not available'.format(
-                    experiment))
-
+        access_token = get_token(uuid)
     except PIDDoesNotExistError:
         abort(404)
 
@@ -103,9 +108,10 @@ def create_workflow():
     reana_job = ReanaJob(
         user_id=current_user.id,
         record_id=uuid,
+        reana_id=response.get('workflow_id'),
         name=name,
         params={
-            "reana_id": response.get('workflow_id'),
+            # "reana_id": response.get('workflow_id'),
             "json": workflow_json,
             "name": name,
             "parameters": parameters,
@@ -120,7 +126,8 @@ def create_workflow():
 @reana_bp.route('/start/<workflow_id>')
 def start_analysis(workflow_id=None):
     """Start an analysis workflow."""
-    token = current_app.config.get('REANA_ACCESS_TOKEN')
+    uuid = ReanaJob.get_record_from_workflow_id(workflow_id)
+    token = get_token(uuid)
     parameters = {
         "parameters": {
             "did": 404958,
@@ -135,7 +142,8 @@ def start_analysis(workflow_id=None):
 @reana_bp.route('/status/<workflow_id>')
 def get_analysis_status(workflow_id=None):
     """Retrieve status of an analysis workflow."""
-    token = current_app.config.get('REANA_ACCESS_TOKEN')
+    uuid = ReanaJob.get_record_from_workflow_id(workflow_id)
+    token = get_token(uuid)
     response = get_workflow_status(workflow_id, token)
 
     _logs = json.loads(response.get("logs"))
@@ -146,6 +154,7 @@ def get_analysis_status(workflow_id=None):
 @reana_bp.route('/status/<workflow_id>/outputs')
 def get_analysis_outputs(workflow_id=None):
     """Start outputs of an analysis workflow."""
-    token = current_app.config.get('REANA_ACCESS_TOKEN')
+    uuid = ReanaJob.get_record_from_workflow_id(workflow_id)
+    token = get_token(uuid)
     response = get_workflow_logs(workflow_id, token)
     return jsonify(response)

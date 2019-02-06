@@ -7,6 +7,7 @@ import drafts from "./drafts";
 import published from "./published";
 import users from "./users";
 import dashboard from "./dashboard";
+import workflows from "./workflows";
 
 const rootReducer = combineReducers({
   auth,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   dashboard,
   search,
   published,
+  workflows,
   routing: routerReducer
 });
 

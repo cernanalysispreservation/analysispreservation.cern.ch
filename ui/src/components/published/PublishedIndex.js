@@ -30,13 +30,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps() {
-  return {};
-}
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(PublishedIndex)
-);
+export default withRouter(connect(mapStateToProps)(PublishedIndex));

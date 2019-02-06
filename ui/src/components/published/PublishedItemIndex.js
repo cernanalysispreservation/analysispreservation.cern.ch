@@ -25,33 +25,48 @@ class PublishedItemIndex extends React.Component {
     return (
       <Box flex={true} direction="row">
         <Route exact path={`/published/:id`} component={PublishedPreview} />
-        <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
-        <Route
-          exact
-          path={`/published/:id/runs/create`}
-          component={RerunPublished}
-        />
-        <PublishedSidebar />
+        {this.props.item &&
+        this.props.item.metadata.workflows &&
+        this.props.item.metadata.workflows.length > 0 ? (
+          <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
+        ) : null}
+        {this.props.item &&
+        this.props.item.metadata.workflows &&
+        this.props.item.metadata.workflows.length > 0 ? (
+          <Route
+            exact
+            path={`/published/:id/runs/create`}
+            component={RerunPublished}
+          />
+        ) : null}
+        {this.props.item &&
+        this.props.item.metadata.workflows &&
+        this.props.item.metadata.workflows.length > 0 ? (
+          <PublishedSidebar />
+        ) : null}
       </Box>
     );
   }
 }
 
 PublishedItemIndex.propTypes = {
-  startDeposit: PropTypes.func
+  startDeposit: PropTypes.func,
+  getPublishedItem: PropTypes.func,
+  item: PropTypes.object
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    groups: state.auth.getIn(["currentUser", "depositGroups"])
+    groups: state.auth.getIn(["currentUser", "depositGroups"]),
+    item: state.published.getIn(["current_item", "data"])
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
     getPublishedItem: id => dispatch(getPublishedItem(id))
   };
-}
+};
 
 export default withRouter(
   connect(

@@ -31,6 +31,7 @@ from marshmallow import Schema, fields
 class ReanaJobSchema(Schema):
     """Schema for Reana Job in JSON."""
 
-    name = fields.Str(dump_only=True)
-    params = fields.Dict(ump_only=True)
-    output = fields.Dict(ump_only=True)
+    name = fields.Str()
+    params = fields.Dict(dump_only=True)
+    output = fields.Dict(dump_only=True)
+    reana_id = fields.Str()

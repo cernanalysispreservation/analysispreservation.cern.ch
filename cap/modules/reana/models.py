@@ -31,6 +31,7 @@ from invenio_db import db
 from invenio_records.models import RecordMetadata
 from sqlalchemy.dialects import postgresql
 from sqlalchemy_utils.types import JSONType, UUIDType
+from sqlalchemy.orm.exc import NoResultFound
 
 
 class ReanaJob(db.Model):
@@ -54,6 +55,11 @@ class ReanaJob(db.Model):
         db.ForeignKey(RecordMetadata.id),
         nullable=False,
     )
+
+    reana_id = db.Column(
+        UUIDType,
+        unique=True,
+        nullable=False)
 
     name = db.Column(db.String(100), unique=False, nullable=False)
 
@@ -89,3 +95,12 @@ class ReanaJob(db.Model):
         """Return all the jobs run by user for this record."""
         return cls.query.filter_by(user_id=user_id,
                                    record_id=record_id).all()
+
+    @classmethod
+    def get_record_from_workflow_id(cls, workflow_id):
+        """Return record id from from workflow id."""
+        try:
+            workflow = cls.query.filter_by(reana_id=workflow_id).one()
+            return workflow.record_id
+        except NoResultFound as e:
+            raise e

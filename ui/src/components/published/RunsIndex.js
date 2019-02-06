@@ -8,14 +8,14 @@ import Title from "grommet/components/Title";
 import Label from "grommet/components/Label";
 import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 
-import { rerunGetWorkflows } from "../../actions/published";
+import { getWorkflows } from "../../actions/workflows";
 
 import RunsListItem from "./RunsListItem";
 
 class RunsIndex extends React.Component {
   componentDidMount() {
     let { id } = this.props.match.params;
-    this.props.rerunGetWorkflows(id);
+    this.props.getWorkflows(id);
   }
 
   render() {
@@ -36,11 +36,12 @@ class RunsIndex extends React.Component {
             <Title>Runs</Title>
           </Box>
         </Box>
-        {this.props.runs && Object.keys(this.props.runs.toJS()).length > 0 ? (
-          Object.keys(this.props.runs.toJS()).map(reana_id => (
+        {Object.entries(this.props.runs).length > 0 ? (
+          Object.keys(this.props.runs).map((reana_id, index) => (
             <RunsListItem
+              key={`${reana_id}-${index}`}
               reana_id={reana_id}
-              run={this.props.runs.toJS()[reana_id]}
+              run={this.props.runs[reana_id]}
             />
           ))
         ) : (
@@ -55,20 +56,22 @@ class RunsIndex extends React.Component {
 
 RunsIndex.propTypes = {
   match: PropTypes.object,
-  RunsIndex: PropTypes.func
+  runs: PropTypes.object,
+  RunsIndex: PropTypes.func,
+  getWorkflows: PropTypes.func
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    runs: state.published.getIn(["runs"])
+    runs: state.workflows.get("runs")
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
-    rerunGetWorkflows: published_id => dispatch(rerunGetWorkflows(published_id))
+    getWorkflows: published_id => dispatch(getWorkflows(published_id))
   };
-}
+};
 
 export default connect(
   mapStateToProps,

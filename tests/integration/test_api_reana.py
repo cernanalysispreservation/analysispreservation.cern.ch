@@ -27,6 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import json
+from uuid import uuid4
 
 from invenio_pidstore.models import PersistentIdentifier
 from cap.modules.reana.models import ReanaJob
@@ -87,9 +88,11 @@ def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
 
     uuid = PersistentIdentifier.get('recid', record['_deposit'][
                                     'pid']['value']).object_uuid
+    id_ = uuid4()
     db.session.add(ReanaJob(
         user_id=users['superuser'].id,
         record_id=uuid,
+        reana_id=id_,
         name='my_workflow_run',
         params={
             'param_1': 1,
@@ -108,7 +111,8 @@ def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
                 'param_1': 1,
                 'param_2': 2
             },
-            'output': {}
+            'output': {},
+            'reana_id': str(id_)
         }
 
         assert json.loads(resp.data) == [serialized_reana_job]
