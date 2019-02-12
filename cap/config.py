@@ -642,3 +642,6 @@ GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get(
 # ================
 REANA_ACCESS_TOKEN = os.environ.get(
     'APP_REANA_ACCESS_TOKEN', None)
+
+SIPSTORE_DEFAULT_AGENT_JSONSCHEMA = 'sipstore/agent-v0.0.1.json'
+SIPSTORE_DEFAULT_BAGIT_JSONSCHEMA = 'sipstore/bagit-v0.0.1.json'

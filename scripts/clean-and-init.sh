@@ -42,12 +42,14 @@ cap index init
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
   cap files location local var/data --default 
+  cap files location archive var/archive 
 fi
 
 
 cap alembic upgrade heads
 # install schemas in db
 cap fixtures schemas
+cap fixtures sipmetadata
 
 # install demo users
 cap users create info@inveniosoftware.org -a --password infoinfo
