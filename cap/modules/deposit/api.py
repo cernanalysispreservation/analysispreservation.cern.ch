@@ -29,6 +29,8 @@ from __future__ import absolute_import, print_function
 import copy
 from copy import deepcopy
 from functools import wraps
+from contextlib import contextmanager
+
 
 import requests
 from celery import shared_task
@@ -176,6 +178,76 @@ class CAPDeposit(Deposit):
             return method(self, *args, **kwargs)
         return wrapper
 
+    @contextmanager
+    def _process_files(self, record_id, data):
+        """Snapshot bucket and add files in record during first publishing."""
+        # import ipdb
+        # ipdb.set_trace()
+        # if self.files:
+        assert not self.files.bucket.locked
+        self.files.bucket.locked = False  # Do not lock the bucket
+        # snapshot = self.files.bucket.snapshot(lock=True)
+        snapshot = self.files.bucket.snapshot()
+        data['_files'] = self.files.dumps(bucket=snapshot.id)
+        yield data
+        db.session.add(RecordsBuckets(
+            record_id=record_id, bucket_id=snapshot.id
+        ))
+        # else:
+        #     yield data
+
+    def _publish_edited(self):
+        """Publish the deposit after for editing."""
+        record_pid, record = self.fetch_published()
+        # self.sync(record.files.bucket)
+        self.files.bucket.sync(record.files.bucket)
+        if record.revision_id == self['_deposit']['pid']['revision_id']:
+            data = dict(self.dumps())
+        else:
+            data = self.merge_with_published()
+
+        data['$schema'] = self.record_schema
+        data['_deposit'] = self['_deposit']
+        record = record.__class__(data, model=record.model)
+        return record
+
+    def prepare_record_for_sip(self, deposit, create_sip_files=None,
+                               is_first_publishing=False):
+        recid, record = deposit.fetch_published()
+        sip_patch_of = None
+        if not is_first_publishing:
+            sip_recid = recid
+
+            sip_patch_of = (
+                db.session.query(SIPModel)
+                .join(RecordSIPModel, RecordSIPModel.sip_id == SIPModel.id)
+                .filter(RecordSIPModel.pid_id == sip_recid.id)
+                .order_by(SIPModel.created.desc())
+                .first()
+            )
+
+        recordsip = RecordSIP.create(
+            recid, record, archivable=True,
+            create_sip_files=create_sip_files,
+            sip_metadata_type='json',
+            user_id=current_user.id,
+            agent=None)
+
+        archiver = BagItArchiver(
+            recordsip.sip, include_all_previous=(not is_first_publishing),
+            patch_of=sip_patch_of)
+
+        archiver.save_bagit_metadata()
+
+        sip = (
+            RecordSIPModel.query
+            .filter_by(pid_id=recid.id)
+            .order_by(RecordSIPModel.created.desc())
+            .first().sip
+        )
+
+        archive_sip.delay(str(sip.id))
+
     @mark_as_action
     def permissions(self, pid=None):
         """Permissions action.
@@ -212,40 +284,10 @@ class CAPDeposit(Deposit):
                 create_sip_files = True if self.files else False
 
             deposit = super(CAPDeposit, self).publish(*args, **kwargs)
-            recid, record = deposit.fetch_published()
-            sip_patch_of = None
-            if not is_first_publishing:
-                sip_recid = recid
-
-                sip_patch_of = (
-                    db.session.query(SIPModel)
-                    .join(RecordSIPModel, RecordSIPModel.sip_id == SIPModel.id)
-                    .filter(RecordSIPModel.pid_id == sip_recid.id)
-                    .order_by(SIPModel.created.desc())
-                    .first()
-                )
-
-            recordsip = RecordSIP.create(
-                recid, record, archivable=True,
+            self.prepare_record_for_sip(
+                deposit,
                 create_sip_files=create_sip_files,
-                sip_metadata_type='json',
-                user_id=current_user.id,
-                agent=None)
-
-            archiver = BagItArchiver(
-                recordsip.sip, include_all_previous=(not is_first_publishing),
-                patch_of=sip_patch_of)
-
-            archiver.save_bagit_metadata()
-
-            sip = (
-                RecordSIPModel.query
-                .filter_by(pid_id=recid.id)
-                .order_by(RecordSIPModel.created.desc())
-                .first().sip
-            )
-
-            archive_sip.delay(str(sip.id))
+                is_first_publishing=is_first_publishing)
 
             return deposit
 
