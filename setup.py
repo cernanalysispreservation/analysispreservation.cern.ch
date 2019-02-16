@@ -78,6 +78,7 @@ install_requires = [
     'fs==0.5.4',
     'invenio-accounts-rest>=1.0.0a4',
     'invenio-oauthclient>=1.0.0',
+    'invenio-oauth2server>=1.0.3',
     # 'invenio-sipstore>=1.0.0a7',
     'invenio-userprofiles>=1.0.0',
     'invenio-query-parser>=0.3.0',
