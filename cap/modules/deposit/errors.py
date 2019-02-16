@@ -28,6 +28,10 @@ from invenio_rest.errors import RESTValidationError
 from invenio_rest.errors import RESTException
 
 
+class ArchivingError(Exception):
+    """Represents a SIP archiving error that can occur during task."""
+
+
 class DepositDoesNotExist(Exception):
     """Deposit with given key does not exist exception."""
 

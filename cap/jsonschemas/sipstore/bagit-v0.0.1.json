@@ -1,0 +1,77 @@
+{
+  "allow_all": true,
+  "experiment": null,
+  "fullname": null,
+  "is_deposit": false,
+  "jsonschema": {
+    "definitions": {
+      "file": {
+        "type": "object",
+        "title": "Archived file information.",
+        "description": "JSON describing a single file.",
+        "additionalProperties": false,
+        "properties": {
+          "filepath": {
+            "description":
+              "Filepath to the archived file, relative to the archived directory root.",
+            "type": "string"
+          },
+          "fullpath": {
+            "description":
+              "Absolute filepath to the file in the archive file system.",
+            "type": "string"
+          },
+          "size": {
+            "description": "Size of the file in bytes.",
+            "type": "number"
+          },
+          "checksum": {
+            "description":
+              "MD5 checksum of the file. Always starts with 'md5:' prefix.",
+            "type": "string"
+          },
+          "file_uuid": {
+            "description":
+              "UUID of the related FileInstance object. Used for Record's data files only.",
+            "type": "string"
+          },
+          "metadata_id": {
+            "description":
+              "ID of the type (SIPMetadataType.id) of the related SIPMetadata object. Used for Record's metadata files only.",
+            "type": "number"
+          },
+          "sipfilepath": {
+            "description":
+              "Original SIPFile.filepath value. Used for Record's data files only.",
+            "type": "string"
+          },
+          "filename": {
+            "description":
+              "Filename of the SIPFile in the archive. Used for Record's data files only.",
+            "type": "string"
+          },
+          "content": {
+            "description":
+              "Text-content of the file. Used for BagIt metadata files only.",
+            "type": "string"
+          },
+          "fetched": {
+            "description":
+              "Marks whether given file is fetched from another bag (specified in 'fetch.txt'). If the key does not exist or is set to false, it is assumed that the file is written down in the bag, hence NOT fetched. Used for Record's data files only.",
+            "type": "boolean"
+          }
+        },
+        "required": ["filepath", "fullpath", "size", "checksum"]
+      }
+    },
+    "properties": {
+      "files": {
+        "description": "All files stored in this archive package.",
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/file"
+        }
+      }
+    }
+  }
+}

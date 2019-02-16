@@ -27,10 +27,10 @@
 from __future__ import absolute_import, print_function
 
 import copy
-import shutil
-import tempfile
 from copy import deepcopy
 from functools import wraps
+from contextlib import contextmanager
+
 
 import requests
 from celery import shared_task
@@ -43,15 +43,21 @@ from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
+
+from invenio_sipstore.api import RecordSIP, SIP as SIPApi
+from invenio_sipstore.archivers import BagItArchiver
+from invenio_sipstore.models import SIP as SIPModel, \
+    RecordSIP as RecordSIPModel
+
 from jsonschema.validators import Draft4Validator, RefResolutionError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
-from cap.config import FILES_URL_MAX_SIZE
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.schemas.models import Schema
@@ -59,13 +65,14 @@ from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .errors import (DepositValidationError, FileUploadError,
+from .errors import (ArchivingError, DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
                           DepositUpdateActionNeed, UpdateDepositPermission)
+from .utils import compare_files, task_commit, ensure_content_length
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -171,6 +178,76 @@ class CAPDeposit(Deposit):
             return method(self, *args, **kwargs)
         return wrapper
 
+    @contextmanager
+    def _process_files(self, record_id, data):
+        """Snapshot bucket and add files in record during first publishing."""
+        # import ipdb
+        # ipdb.set_trace()
+        # if self.files:
+        assert not self.files.bucket.locked
+        self.files.bucket.locked = False  # Do not lock the bucket
+        # snapshot = self.files.bucket.snapshot(lock=True)
+        snapshot = self.files.bucket.snapshot()
+        data['_files'] = self.files.dumps(bucket=snapshot.id)
+        yield data
+        db.session.add(RecordsBuckets(
+            record_id=record_id, bucket_id=snapshot.id
+        ))
+        # else:
+        #     yield data
+
+    def _publish_edited(self):
+        """Publish the deposit after for editing."""
+        record_pid, record = self.fetch_published()
+        # self.sync(record.files.bucket)
+        self.files.bucket.sync(record.files.bucket)
+        if record.revision_id == self['_deposit']['pid']['revision_id']:
+            data = dict(self.dumps())
+        else:
+            data = self.merge_with_published()
+
+        data['$schema'] = self.record_schema
+        data['_deposit'] = self['_deposit']
+        record = record.__class__(data, model=record.model)
+        return record
+
+    def prepare_record_for_sip(self, deposit, create_sip_files=None,
+                               is_first_publishing=False):
+        recid, record = deposit.fetch_published()
+        sip_patch_of = None
+        if not is_first_publishing:
+            sip_recid = recid
+
+            sip_patch_of = (
+                db.session.query(SIPModel)
+                .join(RecordSIPModel, RecordSIPModel.sip_id == SIPModel.id)
+                .filter(RecordSIPModel.pid_id == sip_recid.id)
+                .order_by(SIPModel.created.desc())
+                .first()
+            )
+
+        recordsip = RecordSIP.create(
+            recid, record, archivable=True,
+            create_sip_files=create_sip_files,
+            sip_metadata_type='json',
+            user_id=current_user.id,
+            agent=None)
+
+        archiver = BagItArchiver(
+            recordsip.sip, include_all_previous=(not is_first_publishing),
+            patch_of=sip_patch_of)
+
+        archiver.save_bagit_metadata()
+
+        sip = (
+            RecordSIPModel.query
+            .filter_by(pid_id=recid.id)
+            .order_by(RecordSIPModel.created.desc())
+            .first().sip
+        )
+
+        archive_sip.delay(str(sip.id))
+
     @mark_as_action
     def permissions(self, pid=None):
         """Permissions action.
@@ -197,7 +274,22 @@ class CAPDeposit(Deposit):
                 if file_.data['checksum'] is None:
                     raise MultipartMissingParts()
 
-            return super(CAPDeposit, self).publish(*args, **kwargs)
+            try:
+                _, last_record = self.fetch_published()
+                is_first_publishing = False
+                fetched_files = last_record.files
+                create_sip_files = not compare_files(fetched_files, self.files)
+            except (PIDDoesNotExistError, KeyError):
+                is_first_publishing = True
+                create_sip_files = True if self.files else False
+
+            deposit = super(CAPDeposit, self).publish(*args, **kwargs)
+            self.prepare_record_for_sip(
+                deposit,
+                create_sip_files=create_sip_files,
+                is_first_publishing=is_first_publishing)
+
+            return deposit
 
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
@@ -601,32 +693,31 @@ def download_repo(pid, url, filename):
     task_commit(record, response.raw, filename, total)
 
 
-def task_commit(record, response, filename, total):
-    """Commit file to the record."""
-    record.files[filename].file.set_contents(
-        response,
-        default_location=record.files.bucket.location.uri,
-        size=total
-    )
-    db.session.commit()
+@shared_task(ignore_result=True, max_retries=6,
+             default_retry_delay=4 * 60 * 60)
+def archive_sip(sip_uuid):
+    """Send the SIP for archiving.
 
-
-def ensure_content_length(
-        url, method='GET',
-        session=None,
-        max_size=FILES_URL_MAX_SIZE or 2**20,
-        *args, **kwargs):
-    """Add Content-Length when no present."""
-    kwargs['stream'] = True
-    session = session or requests.Session()
-    r = session.request(method, url, *args, **kwargs)
-    if 'Content-Length' not in r.headers:
-        # stream content into a temporary file so we can get the real size
-        spool = tempfile.SpooledTemporaryFile(max_size)
-        shutil.copyfileobj(r.raw, spool)
-        r.headers['Content-Length'] = str(spool.tell())
-        spool.seek(0)
-        # replace the original socket with our temporary file
-        r.raw._fp.close()
-        r.raw._fp = spool
-    return r
+    Retries every 4 hours, six times, which should work for up to 24 hours
+    archiving system downtime.
+    :param sip_uuid: UUID of the SIP for archiving.
+    :type sip_uuid: str
+    """
+    try:
+        sip = SIPApi(SIPModel.query.get(sip_uuid))
+        archiver = BagItArchiver(sip)
+        bagmeta = archiver.get_bagit_metadata(sip)
+        if bagmeta is None:
+            raise ArchivingError(
+                'Bagit metadata does not exist for SIP: {0}.'.format(sip.id))
+        if sip.archived:
+            raise ArchivingError(
+                'SIP was already archived {0}.'.format(sip.id))
+        archiver.write_all_files()
+        sip.archived = True
+        db.session.commit()
+    except Exception as exc:
+        # On ArchivingError (see above), do not retry, but re-raise
+        if not isinstance(exc, ArchivingError):
+            archive_sip.retry(exc=exc)
+        raise

@@ -30,6 +30,9 @@ import os
 import click
 from flask_cli import with_appcontext
 
+from invenio_db import db
+from invenio_sipstore.models import SIPMetadataType
+
 from cap.modules.experiments.utils.cms import \
     cache_das_datasets_in_es_from_file  # noqa
 from cap.modules.experiments.utils.cms import synchronize_cadi_entries
@@ -96,3 +99,32 @@ def schemas(dir):
 
                 add_or_update_schema(fullpath=fullpath.replace(dir, ''),
                                      data=json_content)
+
+
+@fixtures.command()
+@with_appcontext
+def sipmetadata():
+    """Load sipmetadata types."""
+    data = [
+        {
+            "title": "CAP Alice Record JSON",
+            "name": "json",
+            "format": "json",
+            "schema": ""
+        },
+        {
+            "title": "BagIt Archiver metadata",
+            "name": "bagit",
+            "format": "json",
+            "schema": "https://analysispreservation.cern.ch/schemas/" +
+            "sipstore/bagit-v0.0.1.json"
+        }
+    ]
+
+    click.secho('Loading SIP metadata types...', fg='blue')
+    with click.progressbar(data) as types:
+        with db.session.begin_nested():
+            for type in types:
+                db.session.add(SIPMetadataType(**type))
+        db.session.commit()
+    click.secho('SIP metadata types loaded!', fg='green')
