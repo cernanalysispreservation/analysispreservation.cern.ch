@@ -54,6 +54,8 @@ build_nginx_ui_docker_image:
     BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
     BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
 
+
+
 # import_image_to_openshift:
 #   only:
 #     - triggers
