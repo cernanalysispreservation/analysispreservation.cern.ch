@@ -24,7 +24,7 @@ build_application_docker_image:
     - docker-image-build
   script: echo "Building ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
   variables:
-    TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} # where to push the built image
+    TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
     CONTEXT_DIR: "docker/web"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
@@ -45,7 +45,7 @@ build_nginx_ui_docker_image:
     - docker-image-build
   script: echo "Building ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
   variables:
-    TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} # where to push the built image
+    TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
     CONTEXT_DIR: "docker/nginx-ui"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
