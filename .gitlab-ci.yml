@@ -18,7 +18,7 @@ stages:
 
 build_application_docker_image:
   only:
-    - triggers
+    - pushes
   stage: build_docker_images
   tags:
     - docker-image-build
@@ -36,7 +36,7 @@ build_application_docker_image:
 
 build_nginx_ui_docker_image:
   only:
-    - triggers
+    - pushes
   only:
     changes:
       - ui/**/*
