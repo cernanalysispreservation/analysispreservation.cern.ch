@@ -1,0 +1,94 @@
+### Template to build the Dockerfile available at the root of the repository and to publish the built image
+### to the `group` GitLab registry
+###
+### The build can be initiated only by a `trigger` call.
+### Documentation: https://docs.gitlab.com/ee/ci/triggers/
+###
+variables:
+  # the OpenShift server url is hardcoded. If you need to have it as parameter,
+  # change the build.sh script and add a new param to the cURL request
+  OPENSHIFT_SERVER: https://openshift.cern.ch
+  APPLICATION_IMAGE_NAME: analysispreservation-app-image
+  NGINX_UI_IMAGE_NAME: analysispreservation-nginx-ui-image
+
+stages:
+  - build_docker_images
+  # - import_image_to_openshift
+  # - deploy
+
+build_application_docker_image:
+  only:
+    - triggers
+  stage: build_docker_images
+  tags:
+    - docker-image-build
+  script: echo "Building ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
+  variables:
+    TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} # where to push the built image
+    CONTEXT_DIR: "docker/web"
+    # ARGs passed to the Docker image when build triggered
+    BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
+    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
+    BUILD_ARG_COMMIT_ID: "COMMIT_ID=${COMMIT_ID}"
+    BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
+    BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
+
+
+build_nginx_ui_docker_image:
+  only:
+    - triggers
+    - changes:
+      - ui/**/*
+  stage: build_docker_images
+  tags:
+    - docker-image-build
+  script: echo "Building ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
+  variables:
+    TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} # where to push the built image
+    CONTEXT_DIR: "docker/nginx-ui"
+    # ARGs passed to the Docker image when build triggered
+    BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
+    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
+    BUILD_ARG_COMMIT_ID: "COMMIT_ID=${COMMIT_ID}"
+    BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
+    BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
+
+# import_image_to_openshift:
+#   only:
+#     - triggers
+#     - changes:
+#       - ui/**/*
+#   stage: import_image_to_openshift
+#   image: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
+#   script:
+#     - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} ${APPLICATION_IMAGE_NAME}:${VERSION} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
+#     - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} ${NGINX_UI_IMAGE_NAME}:${VERSION} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
+#   variables:
+#     TOKEN: ${OPENSHIFT_PROJECT_TAGS_TOKEN}
+
+# deploy:
+#   only:
+#     - triggers
+#   stage: deploy
+#   image: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
+#   script:
+#     - >
+#       if [[ $DEPLOY = "dev" ]]; then
+#         export OPENSHIFT_PROJECT_TOKEN=$TOKEN_DEV;
+#       elif [[ $DEPLOY = "qa" ]]; then
+#         export OPENSHIFT_PROJECT_TOKEN=$TOKEN_QA;
+#       elif [[ $DEPLOY = "prod" ]]; then
+#         echo "Skipping, no automatic deployment for \"prod\" environment.";
+#         export SKIP=1;
+#       else
+#         echo "Skipping deployment, no environment specified...";
+#         export SKIP=1;
+#       fi;
+#     - >
+#       if [[ -z $SKIP ]] && [[ -n $OPENSHIFT_PROJECT_TOKEN ]]; then
+#         echo "./scripts/deploy.sh $DEPLOY $VERSION --yes-i-know";
+#       fi;
+#   variables:
+#     TOKEN_DEV: ${OPENSHIFT_PROJECT_DEV_TOKEN}
+#     TOKEN_QA: ${OPENSHIFT_PROJECT_QA_TOKEN}
+#     OPENSHIFT_PROJECT_TAGS_NAME: ${OPENSHIFT_PROJECT_TAGS_NAME}
