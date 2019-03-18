@@ -17,8 +17,8 @@ stages:
   # - deploy
 
 build_application_docker_image:
-  only:
-    - pushes
+  # only:
+  #   - pushes
   stage: build_docker_images
   tags:
     - docker-image-build
@@ -35,8 +35,8 @@ build_application_docker_image:
 
 
 build_nginx_ui_docker_image:
-  only:
-    - pushes
+  # only:
+  #   - pushes
   only:
     changes:
       - ui/**/*
@@ -53,24 +53,6 @@ build_nginx_ui_docker_image:
     BUILD_ARG_COMMIT_ID: "COMMIT_ID=${COMMIT_ID}"
     BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
     BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # import_image_to_openshift:
 #   only:
