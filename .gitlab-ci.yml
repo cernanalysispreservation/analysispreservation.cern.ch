@@ -18,14 +18,14 @@ stages:
 
 build_application_docker_image:
   # only:
-  #   - triggers
+  #   - pushes
   stage: build_docker_images
   tags:
     - docker-image-build
-  script: echo "Building ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} Docker image..."
+  script: echo "Building ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
   variables:
     TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
-    DOCKER_FILE: "Dockerfile.web"
+    CONTEXT_DIR: "docker/web"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
     BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
@@ -36,14 +36,17 @@ build_application_docker_image:
 
 build_nginx_ui_docker_image:
   # only:
-  #   - triggers
+  #   - pushes
+  only:
+    changes:
+      - ui/**/*
   stage: build_docker_images
   tags:
     - docker-image-build
-  script: echo "Building ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} Docker image..."
+  script: echo "Building ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} ${CI_COMMIT_REF_NAME} Docker image..."
   variables:
     TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
-    DOCKER_FILE: "Dockerfile.nginx"
+    CONTEXT_DIR: "docker/nginx-ui"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
     BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
