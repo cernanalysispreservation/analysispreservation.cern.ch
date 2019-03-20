@@ -8,6 +8,8 @@ variables:
   # the OpenShift server url is hardcoded. If you need to have it as parameter,
   # change the build.sh script and add a new param to the cURL request
   OPENSHIFT_SERVER: https://openshift.cern.ch
+  APPLICATION_IMAGE_NAME: analysispreservation-app-image
+  NGINX_UI_IMAGE_NAME: analysispreservation-nginx-ui-image
 
 stages:
   - build_docker_images
@@ -15,36 +17,36 @@ stages:
   # - deploy
 
 build_application_docker_image:
-  only:
-    - triggers
+  # only:
+  #   - triggers
   stage: build_docker_images
   tags:
     - docker-image-build
   script: echo "Building ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} Docker image..."
   variables:
-    TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} # where to push the built image
+    TO: ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
     DOCKER_FILE: "Dockerfile.web"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
-    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${BRANCH_NAME}"
+    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
     BUILD_ARG_COMMIT_ID: "COMMIT_ID=${COMMIT_ID}"
     BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
     BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
 
 
 build_nginx_ui_docker_image:
-  only:
-    - triggers
+  # only:
+  #   - triggers
   stage: build_docker_images
   tags:
     - docker-image-build
   script: echo "Building ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} Docker image..."
   variables:
-    TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} # where to push the built image
+    TO: ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${CI_COMMIT_REF_NAME} # where to push the built image
     DOCKER_FILE: "Dockerfile.nginx"
     # ARGs passed to the Docker image when build triggered
     BUILD_ARG_CACHE_DATE: "CACHE_DATE=${CACHE_DATE}"
-    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${BRANCH_NAME}"
+    BUILD_ARG_BRANCH_NAME: "BRANCH_NAME=${CI_COMMIT_REF_NAME}"
     BUILD_ARG_COMMIT_ID: "COMMIT_ID=${COMMIT_ID}"
     BUILD_ARG_TAG_NAME: "TAG_NAME=${TAG_NAME}"
     BUILD_ARG_PR_ID: "PR_ID=${PR_ID}"
@@ -55,8 +57,8 @@ import_image_to_openshift:
   stage: import_image_to_openshift
   image: gitlab-registry.cern.ch/paas-tools/openshift-client:latest
   script:
-    - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${VERSION} ${APPLICATION_IMAGE_NAME}:${VERSION} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
-    - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${VERSION} ${NGINX_UI_IMAGE_NAME}:${VERSION} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
+    - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${APPLICATION_IMAGE_NAME}:${CI_COMMIT_REF_NAME} ${APPLICATION_IMAGE_NAME}:${CI_COMMIT_REF_NAME} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
+    - oc tag --source=docker ${CI_REGISTRY_IMAGE}/${NGINX_UI_IMAGE_NAME}:${CI_COMMIT_REF_NAME} ${NGINX_UI_IMAGE_NAME}:${CI_COMMIT_REF_NAME} --token ${TOKEN} --server=${OPENSHIFT_SERVER} -n ${OPENSHIFT_PROJECT_TAGS_NAME}
   variables:
     TOKEN: ${OPENSHIFT_PROJECT_TAGS_TOKEN}
 
