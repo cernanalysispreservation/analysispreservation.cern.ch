@@ -62,9 +62,9 @@ class GitlabImporter(repo_importer.RepoImporter):
             self.ref = self.ref.replace('/', '%2F')
         else:
             self.ref = "master"
-        url = '{}/{}/repository/{}/archive.tar.gz'.format(
+        url = '{}/api/v4/projects/{}/repository/archive.tar.gz'.format(
             self.host,
-            self.repo,
+            self.repo.replace('/', '%2F'),
             self.ref)
         if self.token:
             url = url + "?private_token=" + self.token
