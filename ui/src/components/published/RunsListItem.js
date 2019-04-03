@@ -11,7 +11,6 @@ import Label from "grommet/components/Label";
 import ListItem from "grommet/components/ListItem";
 import Status from "grommet/components/icons/Status";
 import Select from "grommet/components/Select";
-import Title from "grommet/components/Title";
 
 import { startWorkflow } from "../../actions/workflows";
 import WorkflowStatus from "./components/WorkflowStatus";
