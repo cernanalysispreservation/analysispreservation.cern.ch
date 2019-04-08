@@ -57,7 +57,7 @@ class FileItem extends React.Component {
   render() {
     let { file } = this.props;
     let filename = file && file.key ? file.key.split("/").pop() : null;
-    let bucket_id = this.props.bucket_id;
+    let bucket_id = this.props.bucket_id ? this.props.bucket_id : file.bucket;
     return file ? (
       <ListItem
         key={file.key}
@@ -112,14 +112,16 @@ class FileItem extends React.Component {
                   href={`/api/files/${bucket_id}/${filename}`}
                   download
                 />
-                <Anchor
-                  size="small"
-                  icon={<CloseIcon size="xsmall" />}
-                  label={<Label size="small">Delete</Label>}
-                  onClick={() => {
-                    this.props.deleteFile(bucket_id, filename);
-                  }}
-                />
+                {this.props.status !== "published" ? (
+                  <Anchor
+                    size="small"
+                    icon={<CloseIcon size="xsmall" />}
+                    label={<Label size="small">Delete</Label>}
+                    onClick={() => {
+                      this.props.deleteFile(bucket_id, filename);
+                    }}
+                  />
+                ) : null}
               </Menu>
             </Box>
           </Box>
@@ -136,17 +138,18 @@ FileItem.propTypes = {
   bucket_id: PropTypes.string
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-    bucket_id: state.drafts.getIn(["current_item", "bucket_id"])
+    bucket_id: state.drafts.getIn(["current_item", "bucket_id"]),
+    draft: state.drafts.getIn(["current_item", "data"])
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return {
     deleteFile: (bucket, file) => dispatch(deleteFile(bucket, file))
   };
-}
+};
 
 export default connect(
   mapStateToProps,

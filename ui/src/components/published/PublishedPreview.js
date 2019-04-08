@@ -7,9 +7,7 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
-
-import { getPublishedItem } from "../../actions/published";
-import FilesPublished from "./components/FilesPublished";
+import FileList from "../drafts/components/FileList";
 
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
@@ -56,14 +54,14 @@ class PublishedPreview extends React.Component {
     let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
     let files = item ? item._files : null;
     let draft_id = item ? item._deposit.id : null;
-
+    let status = item ? item._deposit.status : null;
     return (
       <Box flex={true}>
         <Box direction="row" flex={true} wrap={false}>
           <Sidebar full={false} size="medium" colorIndex="light-2">
             <SectionHeader label="Files | Data | Source Code" />
             <Box flex={true}>
-              <FilesPublished files={files} />
+              <FileList files={files} status={status} />
             </Box>
           </Sidebar>
           {_schema && this.props.uiSchema ? (
@@ -112,21 +110,12 @@ PublishedPreview.propTypes = {
   uiSchema: PropTypes.object
 };
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     item: state.published.getIn(["current_item", "data"]),
     schema: state.published.getIn(["current_item", "schema"]),
     uiSchema: state.published.getIn(["current_item", "uiSchema"])
   };
-}
+};
 
-function mapDispatchToProps(dispatch) {
-  return {
-    getPublishedItem: id => dispatch(getPublishedItem(id))
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PublishedPreview);
+export default connect(mapStateToProps)(PublishedPreview);
