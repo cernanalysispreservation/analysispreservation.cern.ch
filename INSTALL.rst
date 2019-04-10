@@ -32,49 +32,26 @@ on your machine.
 Prerequisites
 -------------
 
-CERN Analysis Preservation is based on Invenio v3.0 alpha, which
-requires some additional software packages:
+CERN Analysis Preservation is based on Invenio v3.0.
 
-- `Elasticsearch <https://www.elastic.co/products/elasticsearch>`_
-- `PostgreSQL <http://www.postgresql.org/>`_
-- `RabbitMQ <http://www.rabbitmq.com/>`_
-- `Redis <http://redis.io/>`_
-
-For example, on Debian GNU/Linux, you can install them as follows:
+To run the services (ElasticSearch, RabbitMQ, PostgreSQL, Redis) simply do:
 
 .. code-block:: shell
 
-   sudo apt-get install elasticsearch postgresql rabbitmq-server redis-server
+  docker-compose up
 
-Now, add the following lines in your "elasticsearch.yml" (for
-Debian GNU/Linux the full path is
-``/etc/elasticsearch/elasticsearch.yml``):
+In your ~/.bash_profile or ~/.bashrc add:
 
 .. code-block:: shell
+  
+  export DEBUG_MODE=True
+  export ENABLE_BACKEND_PROXY=true
 
-  # CAP CONFIGURATION
-  cluster.name: cap
-  discovery.zen.ping.multicast.enabled: false
-  http.port: 9200
-  http.publish_port: 9200
-
-In order to use PostgreSQL you need to start the database server. This
-is very operation system specific, so you should check how it works for
-yours. When the server is running, switch to the default PostgreSQL user
-and create a user who is allowed to create databases:
+Finally install some required 3rd party libraries for python-ldap:
 
 .. code-block:: shell
-
-   createuser -d $Username
-
-Finally, do a system-wide install (see below for how to do a local
-install enclosed inside your virtual environment instead) for the Sass
-preprocessor by following
-`Sass web guide <http://sass-lang.com/install>`_ and running:
-
-.. code-block:: shell
-
-  sudo npm install -g node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs
+  
+  sudo apt-get install libsasl2-dev python-dev libldap2-dev libsasl2-dev
 
 Installation
 ------------
@@ -110,109 +87,59 @@ instance from inside the repository folder:
    cd cap
    mkvirtualenv cap
 
-Install the CAP package from inside your ``cap`` repository folder and
-run npm to install the necessary JavaScript assets the Invenio modules
-depend on:
+Install the CAP package from inside your ``cap`` repository folder:
 
 .. code-block:: shell
 
-   pip install -r requirements.txt
-   cap npm
-   cdvirtualenv var/cap-instance/static
-   npm install bower
-   npm install
+  pip install -r requirements.txt
+  pip install -e .[all]
+  pip install -r requirements-local-forks.txt
 
-Build the assets from your repository folder:
+Install the required packages for UI:
 
 .. code-block:: shell
 
-   cd -
-   cap collect -v
-   cap assets build
-   python ./scripts/schemas.py
+  cd ui/
+  npm install
 
-Start Elasticsearch in the background:
+or
 
 .. code-block:: shell
 
-   elasticsearch &
+  cd ui/
+  yarn install
 
-**Note:**	Instead of the following steps you may want to run
-``./scripts/init.sh``.
 
-Create a database to hold persistent data:
-
-.. code-block:: shell
-
-   cap db init
-   cap db create
-
-Create test user accounts and roles with which you can log in later:
-
-.. code-block:: shell
-
-   cap users create info@inveniosoftware.org -a --password infoinfo
-   cap users create alice@inveniosoftware.org -a --password alicealice
-   cap users create atlas@inveniosoftware.org -a --password atlasatlas
-   cap users create cms@inveniosoftware.org -a --password cmscms
-   cap users create lhcb@inveniosoftware.org -a --password lhcblhcb
-
-   cap roles create analysis-preservation-support@cern.ch
-   cap roles create alice-member@cern.ch
-   cap roles create atlas-active-members-all@cern.ch
-   cap roles create cms-members@cern.ch
-   cap roles create lhcb-general@cern.ch
-
-   cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
-   cap roles add alice@inveniosoftware.org alice-member@cern.ch
-   cap roles add atlas@inveniosoftware.org atlas-active-members-all@cern.ch
-   cap roles add cms@inveniosoftware.org cms-members@cern.ch
-   cap roles add lhcb@inveniosoftware.org lhcb-general@cern.ch
-
-``info`` is a superuser, ``alice`` is an ALICE user, ``atlas`` is an
-ATLAS user, ``cms`` is a CMS user and ``lhcb`` is a LHCB user.
-
-Create some basic collections for ElasticSearch:
-
-.. code-block:: shell
-
-   cap collections create CERNAnalysisPreservation
-   cap collections create CMS -p CERNAnalysisPreservation
-   cap collections create CMSQuestionnaire -p CMS -q '_type:cmsquestionnaire'
-   cap collections create CMSAnalysis -p CMS -q '_type:cmsanalysis'
-   cap collections create LHCb -p CERNAnalysisPreservation
-   cap collections create LHCbAnalysis -p LHCb -q '_type:lhcbanalysis'
-   cap collections create ATLAS -p CERNAnalysisPreservation
-   cap collections create ATLASWorkflows -p ATLAS -q '_type:atlasworkflows'
-   cap collections create ATLASAnalysis -p ATLAS -q '_type:atlasanalysis'
-   cap collections create ALICE -p CERNAnalysisPreservation
-
-Create the index in ElasticSearch using the mappings:
-
-.. code-block:: shell
-
-   cap index init
-
-Create a location for files:
-
-.. code-block:: shell
-
-   cap files location local var/data --default
+Finally run the setup and initialization script
+``./scripts/clean-and-init.sh``.
 
 Now you are ready to run the server.
 
-Populating the Database with Example Records
+Running the server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want to populate the database with example records simply run:
-
+To run the backend:
+  
 .. code-block:: shell
+    
+    cap run --reload
 
-   # For creating demo records with schema validation
-   cap fixtures records
+To run the the frontend:
+    
+.. code-block:: shell
+    
+    cd ui/
+    npm start
+  
+or
+  
+.. code-block:: shell
+    
+    cd ui/
+    yarn start
 
-   # For creating demo records without validation ( --force )
-   cap fixtures records -f
+You are ready to see the website in `action <http://localhost:3000>`_:
+
 
 Database Migrations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -235,41 +162,6 @@ If you made some changes in one of the CAP models, Alembic can generate migratio
    # To create a new revision in cap branch
    cap alembic revision "Add some field" -b cap -p <parent-revision>
 
-Prerequisites for Running the Server
-------------------------------------
-
-To run an https server you will have to create a certificate. This needs
-to be done only once from inside your repository folder:
-
-.. code-block:: shell
-
-   openssl genrsa 4096 > ssl.key
-   openssl req -key ssl.key -new -x509 -days 365 -sha256 -batch > ssl.crt
-
-The certificate will be valid for 365 days.
-
-Running the Server
-------------------
-
-Start a redis server in the background:
-
-.. code-block:: shell
-
-   redis-server &
-
-Start the web application locally in debug mode:
-
-.. code-block:: shell
-
-   gunicorn -b 127.0.0.1:5000 --certfile=ssl.crt --keyfile=ssl.key cap.wsgi:application --workers 9 --log-level debug
-
-Now you can log in locally in your browser by going to
-``https://localhost:5000/login`` and entering one of the user
-credentials created above, e.g. user ``info@inveniosoftware.org`` with
-password ``infoinfo``.
-
-General Recommendations
------------------------
 
 Specify Python Version
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -280,33 +172,6 @@ creation as follows (e.g. to use python 2.7):
 .. code-block:: shell
 
    mkvirtualenv -p /usr/bin/python2.7 cap
-
-Local Installation of npms and gems
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-You do not need to install sass and all npm dependencies globally on
-your system. You can install them inside your virtual environment so
-they will only be accessible from within it. Simply add:
-
-.. code-block:: shell
-
-   export GEM_HOME="$VIRTUAL_ENV/gems"
-   export GEM_PATH=""
-   export PATH="$GEM_HOME/bin:$PATH"
-   export npm_config_prefix=$VIRTUAL_ENV
-
-to the ``postactivate`` of your ``.virtualenv`` folder and run
-
-.. code-block:: shell
-
-   cdvirtualenv
-   gem install sass
-   npm -g install node-sass@3.8.0 clean-css@3.4.12 uglify-js requirejs
-
-after creating your virtual environment.
-
-Troubleshooting
----------------
 
 Missing Requirements
 ~~~~~~~~~~~~~~~~~~~~
@@ -320,17 +185,6 @@ following requirements, e.g. on Debian GNU/Linux:
 
 The version of Python 2 given by ``python --version`` or
 ``python2 --version`` should be greater than 2.7.10.
-
-Non-matching Requirements
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you encounter a problem with requirements that do not match it may
-be because the python eggs are not included in your virtualenv and you
-will have to update them running:
-
-.. code-block:: shell
-
-   pip install -r requirements.txt
 
 Database Indexing Problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -348,8 +202,6 @@ and if that does not work try:
 
    curl -XDELETE 'http://localhost:9200/_all'
    cap db init
-
-
 
 Docker Installation
 ===================
