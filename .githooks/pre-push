@@ -1,0 +1,15 @@
+#!/bin/sh
+
+red='\033[0;31m'
+green='\033[0;32m'
+yellow='\033[0;33m'
+no_color='\033[0m'
+
+# If models has been updated, according alembic recipes has to be created.
+if git diff --cached --name-only master | grep -q models.py
+then 
+    if  ! git diff --cached --name-only master | grep -q /alembic/
+    then
+        echo "${yellow}You've changed a model without updating an alembic recipes.${no_color}"
+    fi
+fi

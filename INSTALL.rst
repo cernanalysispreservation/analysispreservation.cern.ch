@@ -85,6 +85,17 @@ Let's start by cloning the repository:
 
    git clone https://github.com/cernanalysispreservation/analysispreservation.cern.ch.git cap
 
+To use git hooks shared by our team:
+
+.. code-block:: shell
+
+    # Git version 2.9 or greater
+    git config core.hooksPath .githooks
+
+    # older versions
+    find .git/hooks -type l -exec rm {} \;
+    find .githooks -type f -exec ln -sf ../../{} .git/hooks/ \;
+
 All else will be installed inside a python *virtualenv* for easy
 maintenance and encapsulation of the libraries required. From inside
 your `cap` folder you can choose anytime whatever virtual environment
