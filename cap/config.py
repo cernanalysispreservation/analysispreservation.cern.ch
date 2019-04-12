@@ -520,17 +520,33 @@ JSONSCHEMAS_RECORDS_DIR = 'records/'
 # version control.
 SECRET_KEY = "changeme"
 
-# Ana's database
+# LHCb
+# ========
+#: Ana's database
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
 LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
 LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 
-# CADI database
-# @TOFIX should this be public?
+# CMS
+# ========
+#: CADI database
 CADI_API_URL = 'http://vocms0190.cern.ch/tools/api'
 CADI_GET_CHANGES_URL = '{0}/updatedCadiLines/'.format(CADI_API_URL)
 CADI_GET_ALL_URL = '{0}/viewCadiLines'.format(CADI_API_URL)
 CADI_GET_RECORD_URL = '{0}/cadiLine/'.format(CADI_API_URL)
+
+# ATLAS
+# ========
+#: Glance database
+GLANCE_CLIENT_ID = os.environ.get('APP_GLANCE_CLIENT_ID')
+GLANCE_CLIENT_PASSWORD = os.environ.get('APP_GLANCE_CLIENT_PASSWORD')
+#: Glance API URLs
+GLANCE_GET_TOKEN_URL = \
+    'https://oraweb.cern.ch/ords/atlr/atlas_authdb/oauth/token'
+GLANCE_GET_ALL_URL = \
+    'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap'  # noqa
+GLANCE_GET_BY_ID_URL = \
+    'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={id}'  # noqa
 
 # Deposit
 # ============

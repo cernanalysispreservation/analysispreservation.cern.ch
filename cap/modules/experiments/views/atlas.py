@@ -26,14 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
-import codecs
-import os
 import json
 
 import requests
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, abort, current_app, jsonify, request
 
 from ..permissions import atlas_permission
+from ..utils.atlas import get_glance_token
 
 atlas_bp = Blueprint(
     'cap_atlas',
@@ -73,19 +72,24 @@ def yadage_workflow_submit():
 @atlas_bp.route('/glance/<id>', methods=['GET'])
 @atlas_permission.require(403)
 def get_glance_by_id(id):
-    """Retrieves GLANCE analysis data."""
-    glance_examples_location = os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),
-        '../static/example_atlas/glance_examples.json')
-    location = current_app.config.get(
-        'ATLAS_GLANCE_FILES_LOCATION',
-        glance_examples_location)
+    """Retrieves GLANCE analysis data by given id."""
+    access_token = get_glance_token()
 
-    with codecs.open(location, 'r', encoding='utf8', errors='ignore') as fp:
-        data = json.load(fp)
+    if not access_token:
+        abort(503, 'External server replied with an error.')
 
-        for i in data:
-            if i.get("id") == id:
-                return jsonify(i)
+    url = current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=id)
 
-    return jsonify({})
+    try:
+        resp = requests.get(url=url, headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer {}'.format(access_token)
+        })
+
+        data = resp.json()
+        item = data['items'][0] if data['items'] else {}
+
+    except (KeyError, ValueError):
+        abort(503, 'External server replied with an error.')
+
+    return jsonify(item)
