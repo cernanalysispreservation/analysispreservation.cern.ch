@@ -23,35 +23,32 @@ class CleanForm extends React.Component {
   }
 
   render() {
-    return (
-      <Box flex={true} wrap={false}>
-        {this.props.schema ? (
-          <Form
-            ref={form => {
-              this.form = form;
-            }}
-            schema={this.props.schema}
-            FieldTemplate={FieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            showErrorList={true}
-            ErrorList={ErrorListTemplate}
-            widgets={widgets}
-            fields={fields}
-            uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
-            liveValidate={false}
-            noValidate={true}
-            onError={() => {}}
-            formData={this.props.formData}
-            onBlur={() => {}}
-            onChange={this.props.onChange}
-            onSubmit={this.props.onSubmit}
-          >
-            {this.props.children}
-          </Form>
-        ) : null}
-      </Box>
-    );
+    return this.props.schema ? (
+      <Form
+        ref={form => {
+          this.form = form;
+        }}
+        schema={this.props.schema}
+        FieldTemplate={FieldTemplate}
+        ObjectFieldTemplate={ObjectFieldTemplate}
+        ArrayFieldTemplate={ArrayFieldTemplate}
+        showErrorList={true}
+        ErrorList={ErrorListTemplate}
+        widgets={widgets}
+        fields={fields}
+        tagName="div"
+        uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
+        liveValidate={false}
+        noValidate={true}
+        onError={() => {}}
+        formData={this.props.formData}
+        onBlur={() => {}}
+        onChange={this.props.onChange}
+        onSubmit={this.props.onSubmit}
+      >
+        {this.props.children}
+      </Form>
+    ) : null;
   }
 }
 

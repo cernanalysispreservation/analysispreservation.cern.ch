@@ -53,8 +53,16 @@ class AccordionArrayField extends React.Component {
                       }
                       icon={this.props.readonly ? null : <FormTrashIcon />}
                     />
+                      </Box>
                   </Box>
+                ))}
+                <Box justify="center" align="center">
+                  <Button
+                    onClick={this._onAddClick.bind(this)}
+                    icon={<AddIcon />}
+                  />
                 </Box>
+
               ))}
               <Box justify="center" align="center">
                 {this.props.readonly ? null : (

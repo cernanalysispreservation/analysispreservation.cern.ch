@@ -85,8 +85,7 @@ ui/package-lock.json
 .idea
 .idea_modules
 
-# Visual Code
-
+# VS Code specific
 .vscode
 
 # Celery

@@ -65,6 +65,43 @@ let FieldTemplate = function(props) {
       {children}
     </FormField>
   );
+  // if (["array", "object"].indexOf(props.schema.type) > -1) {
+  //   return (
+  //     <div
+  //       style={{
+  //         flex: 1,
+  //         display: "flex",
+  //         borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null,
+  //       }}
+  //     >
+  //       {children}
+  //     </div>
+  //   );
+  // }
+
+  // return (
+  //   <div
+  //     style={{
+  //       flex: 1,
+  //       display: "flex"
+  //     }}
+  //   >
+  //   <FormField
+  //     label={
+  //       <span>
+  //         <span style={{ color: "#000" }}>{label}</span>
+  //         {rawDescription ? (
+  //           <span style={{ color: "#bbb" }}> &nbsp; {rawDescription}</span>
+  //         ) : null}
+  //       </span>
+  //     }
+  //     key={id + label}
+  //     error={rawErrors.length > 0 ? _errors : null}
+  //   >
+  //     {children}
+  //   </FormField>
+  //   </div>
+  // );
 };
 
 FieldTemplate.propTypes = {

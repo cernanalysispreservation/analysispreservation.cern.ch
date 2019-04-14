@@ -47,7 +47,7 @@ class GrommetForm extends React.Component {
         validate={this.props.customValidation ? this._validate : null}
         onError={() => {}}
         formData={this.props.formData}
-        onBlur={() => {}}
+        onBlur={this.props.onBlur}
         onChange={this.props.onChange}
         onSubmit={this.props.onSubmit}
       >
@@ -66,6 +66,7 @@ GrommetForm.propTypes = {
   formData: PropTypes.object,
   customValidation: PropTypes.bool,
   showErrorList: PropTypes.bool,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
   children: PropTypes.node
