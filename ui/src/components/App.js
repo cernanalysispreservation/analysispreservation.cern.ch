@@ -6,6 +6,8 @@ import PropTypes from "prop-types";
 import WelcomePage from "./welcome/WelcomePage";
 import IndexPage from "./index/IndexPage";
 
+import CMSIndex from "./cms";
+
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
 import StatusPage from "./status/StatusPage";
@@ -44,6 +46,7 @@ class App extends React.Component {
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
             <Route path="/status" component={StatusPage} />
+            <Route path="/cms" component={CMSIndex} />
             <Route path="/search-tips" component={HowToSearchPage} />
             <Route path="/" component={requireAuth(IndexPage)} />
             {/*

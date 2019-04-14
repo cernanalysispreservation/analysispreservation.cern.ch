@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 
 import AccordionFieldTemplate from "./AccordionObjectField";
-import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 import TabField from "./TabField";
+import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 
 import FieldHeader from "../components/FieldHeader";
 import { Repeat } from "immutable";
@@ -65,6 +65,7 @@ let ObjectFieldTemplate = function(props) {
             }
           />
         ) : null}
+
         <Box
           style={{
             display: "grid",

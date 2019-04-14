@@ -86,33 +86,30 @@ class DepositForm extends React.Component {
     return (
       <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
         <SectionHeader label="Submission Form" />
-
-        <Box align="center" flex={true} wrap={false}>
-          <Box size={{ width: "xlarge" }} pad="large" flex={false} wrap={false}>
-            <Form
-              ref={this.props.formRef}
-              style={{ marginBottom: "1em" }}
-              schema={this.props.schema}
-              FieldTemplate={FieldTemplate}
-              ObjectFieldTemplate={ObjectFieldTemplate}
-              ArrayFieldTemplate={ArrayFieldTemplate}
-              showErrorList={true}
-              ErrorList={ErrorListTemplate}
-              widgets={widgets}
-              fields={fields}
-              uiSchema={__uiSchema || this.props.uiSchema}
-              liveValidate={false}
-              noValidate={false}
-              validate={this._validate.bind(this)}
-              onError={() => {}}
-              transformErrors={this.transformErrors.bind(this)}
-              formData={this.props.formData}
-              onBlur={() => {}}
-              onChange={this.props.onChange}
-            >
-              <span />
-            </Form>
-          </Box>
+        <Box pad="none" flex={true}>
+          <Form
+            ref={this.props.formRef}
+            style={{ marginBottom: "1em" }}
+            schema={this.props.schema}
+            FieldTemplate={FieldTemplate}
+            ObjectFieldTemplate={ObjectFieldTemplate}
+            ArrayFieldTemplate={ArrayFieldTemplate}
+            showErrorList={true}
+            ErrorList={ErrorListTemplate}
+            widgets={widgets}
+            fields={fields}
+            uiSchema={__uiSchema || this.props.uiSchema}
+            liveValidate={false}
+            noValidate={false}
+            validate={this._validate.bind(this)}
+            onError={() => {}}
+            transformErrors={this.transformErrors.bind(this)}
+            formData={this.props.formData}
+            onBlur={() => {}}
+            onChange={this.props.onChange}
+          >
+            <span />
+          </Form>
         </Box>
       </Box>
     );
