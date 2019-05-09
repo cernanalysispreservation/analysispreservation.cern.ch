@@ -1,6 +1,6 @@
 {
   "allow_all": true,
-  "experiment": null,
+  "experiment": "General",
   "fullname": "Test schema.",
   "is_deposit": true,
   "jsonschema": {
@@ -10,6 +10,33 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
+      "fetchedFromService": {
+        "title": "Fetch from service",
+        "description": "Fetch JSON of remote record OR attach PID metadata",
+        "type": "object"
+      },
+      "_buckets": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
+      },
+      "_files": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/file-v0.0.1.json"
+      },
+      "$ana_type": {
+        "type": "string"
+      },
+      "_experiment": {
+        "type": "string"
+      },
+      "_access": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/access-v0.0.1.json"
+      },
+      "_deposit": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/common/deposit-v0.0.1.json"
+      },
       "array_of_objects": {
         "items": {
           "additionalProperties": false,
@@ -50,14 +77,15 @@
             "type": "string",
             "title": "Simple string"
           },
-          "_buckets": {
-            "$ref":
-              "https://analysispreservation.cern.ch/schemas/deposits/common/buckets-v0.0.1.json"
-          },
           "enum_of_strings": {
             "enum": ["1", "2", "3", "4"],
             "type": "string",
             "title": "Enum of strings"
+          },
+          "fetchedFromService": {
+            "title": "Fetch from service",
+            "description": "Fetch JSON of remote record OR attach PID metadata",
+            "type": "object"
           }
         },
         "type": "object",

@@ -2,5 +2,14 @@
   "is_deposit": false,
   "fullname": null,
   "allow_all": true,
-  "jsonschema": {}
+  "jsonschema": {
+    "fetchedFromService": {
+      "ui:field": "idFetcher"
+    },
+    "basic_object": {
+      "fetchedFromService": {
+        "ui:field": "jsoneditor"
+      }
+    }
+  }
 }

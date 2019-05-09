@@ -26,8 +26,6 @@
 
 from __future__ import absolute_import, print_function
 
-import ldap
-import requests
 from flask import Blueprint, current_app, jsonify, request
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
@@ -71,104 +69,6 @@ def get_user_deposit_groups():
     } for schema in schemas]
 
     return dep_groups
-
-
-LDAP_USER_RESP_FIELDS = [
-    'cn',
-    'displayName',
-    'mail',
-    'memberOf',
-    'company',
-    'department',
-    'cernAccountType',
-    'objectClass'
-]
-
-LDAP_EGROUP_RESP_FIELDS = [
-    'cn',
-    'displayName',
-    'description',
-    'mail',
-    'member',
-    'objectClass'
-]
-
-
-@user_blueprint.route('/ldap/user/mail')
-@login_required
-def ldap_user_by_mail():
-    """LDAP user by username query."""
-    query = request.args.get('query', None)
-
-    if not query:
-        return jsonify([])
-
-    lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '(&(cernAccountType=Primary)(mail=*{}*))'.format(query),
-        ['mail'],
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
-    res = lc.result()[1]
-
-    res = [x[1]['mail'][0] for x in res]
-    return jsonify(res)
-
-
-@user_blueprint.route('/ldap/egroup/mail')
-@login_required
-def ldap_egroup_mail():
-    """LDAP egroup query."""
-    query = request.args.get('query', None)
-    sf = request.args.get('sf', 'cn')
-
-    if not query:
-        return jsonify([])
-
-    lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '{}=*{}*'.format(sf, query),
-        LDAP_EGROUP_RESP_FIELDS,
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
-    res = lc.result()[1]
-
-    res = [x[1]['mail'][0] for x in res]
-    return jsonify(res)
-
-
-@user_blueprint.route('/orcid')
-@login_required
-def get_orcid():
-    """Get ORCID identifier registered for given name."""
-    name = request.args.get('name', None)
-    res = {}
-
-    if not name:
-        return jsonify(res)
-
-    names = name.split()
-    url = "https://pub.orcid.org/v2.1/search/?" \
-        "q=given-names:{}+AND+family-name:{}" \
-        .format(names[0], names[-1])
-
-    resp = requests.get(url=url, headers={
-        'Content-Type': 'application/json'
-    })
-    data = resp.json().get('result', [])
-
-    # return only if one result
-    if len(data) == 1:
-        res['orcid'] = data[0]['orcid-identifier']['path']
-
-    return jsonify(res)
-
 
 user_blueprint.route('/logout', endpoint='logout')(logout)
 

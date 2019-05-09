@@ -63,8 +63,8 @@ class DepositSettings extends React.Component {
 
     let url =
       this.state.type === "user"
-        ? `/api/ldap/user/mail?query=${value}`
-        : `/api/ldap/egroup/mail?query=${value}&sf=mail`;
+        ? `/api/services/ldap/user/mail?query=${value}`
+        : `/api/services/ldap/egroup/mail?query=${value}&sf=mail`;
     this.fetchLdapData(url);
   };
 

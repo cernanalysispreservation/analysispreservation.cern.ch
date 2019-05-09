@@ -149,6 +149,7 @@ setup(
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_cms = cap.modules.experiments.views.cms:cms_bp',
             'cap_reana = cap.modules.reana.views:reana_bp',
+            'cap_services = cap.modules.services.views:blueprint',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
