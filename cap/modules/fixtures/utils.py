@@ -27,18 +27,13 @@
 import json
 import uuid
 
-from elasticsearch import helpers
-from elasticsearch_dsl import Q
 from flask import current_app
 from invenio_access.models import Role
 from invenio_db import db
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
-from invenio_search import RecordsSearch
-from invenio_search.proxies import current_search_client as es
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.minters import cap_deposit_minter
 from cap.modules.user.utils import get_existing_or_register_user
@@ -55,18 +50,6 @@ def construct_draft_obj(schema, data):
     entry.update(data)
 
     return entry
-
-
-def get_entry_uuid_by_unique_field(index, dict_unique_field_value):
-    """Return record by uuid."""
-    rs = RecordsSearch(index=index)
-    res = rs.query(Q('match',
-                     **dict_unique_field_value)).execute().hits.hits
-
-    if not res:
-        raise DepositDoesNotExist
-    else:
-        return res[0]['_id']
 
 
 def add_read_permission_for_egroup(deposit, egroup):
@@ -116,15 +99,3 @@ def add_drafts_from_file(file_path, schema,
                 print('Draft {} added.'.format(pid.pid_value))
 
         db.session.commit()
-
-
-def bulk_index_from_source(index_name, doc_type, source):
-    """Indexes from source."""
-    actions = [{
-        "_index": index_name,
-        "_type": doc_type,
-        "_id": idx,
-        "_source": obj
-    } for idx, obj in enumerate(source)]
-
-    helpers.bulk(es, actions)

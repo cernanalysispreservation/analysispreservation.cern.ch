@@ -529,11 +529,14 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 
 # CMS
 # ========
+#: Kerberos credentials
+CMS_USER_PRINCIPAL = os.environ.get('APP_CMS_USER_PRINCIPAL')
+CMS_USER_KEYTAB = os.environ.get('APP_CMS_USER_KEYTAB')
 #: CADI database
-CADI_API_URL = 'http://vocms0190.cern.ch/tools/api'
-CADI_GET_CHANGES_URL = '{0}/updatedCadiLines/'.format(CADI_API_URL)
-CADI_GET_ALL_URL = '{0}/viewCadiLines'.format(CADI_API_URL)
-CADI_GET_RECORD_URL = '{0}/cadiLine/'.format(CADI_API_URL)
+CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/viewCadiLines'
+CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
+CADI_GET_ALL_URL = 'https://icms.cern.ch/tools/api/viewCadiLines'
+CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools/api/cadiLine/{id}'
 
 # ATLAS
 # ========
@@ -668,7 +671,7 @@ KEYTABS_LOCATION = os.environ.get(
 )
 
 KRB_PRINCIPALS = {
-    'CADI': ('cernapcms@CERN.CH', 'cernapcms.keytab')
+    'CADI': (CMS_USER_PRINCIPAL, CMS_USER_KEYTAB),
 }
 
 CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')

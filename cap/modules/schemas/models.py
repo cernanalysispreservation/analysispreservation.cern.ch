@@ -29,8 +29,8 @@ import re
 from flask import current_app
 from invenio_access.models import ActionSystemRoles
 from invenio_access.permissions import authenticated_user
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_db import db
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from invenio_search import current_search_client as es
 from sqlalchemy import UniqueConstraint, event
