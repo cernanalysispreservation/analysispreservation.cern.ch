@@ -30,9 +30,9 @@ import os
 import click
 from flask_cli import with_appcontext
 
-from cap.modules.experiments.utils.cms import \
+from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
+from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file  # noqa
-from cap.modules.experiments.utils.cms import synchronize_cadi_entries
 from cap.modules.schemas.utils import add_or_update_schema
 
 from .utils import add_drafts_from_file

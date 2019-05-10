@@ -24,12 +24,11 @@
 
 """User module utils methods."""
 
-from flask import current_app
-from werkzeug.local import LocalProxy
-
 import ldap
+from flask import current_app
 from invenio_accounts.models import Role, User
 from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.local import LocalProxy
 
 from .errors import DoesNotExistInLDAP
 

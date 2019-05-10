@@ -52,6 +52,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.schemas.models import Schema
@@ -427,6 +428,17 @@ class CAPDeposit(Deposit):
 
             self['_access'][permission]['roles'].remove(egroup.id)
 
+    def _add_experiment_permissions(self, experiment, permissions):
+        """Add read permissions to everybody assigned to experiment."""
+        exp_need = exp_need_factory(experiment)
+
+        # give read access to members of collaboration
+        with db.session.begin_nested():
+            for au in ActionUsers.query_by_action(exp_need).all():
+                self._add_user_permissions(au.user, permissions, db.session)
+            for ar in ActionRoles.query_by_action(exp_need).all():
+                self._add_egroup_permissions(ar.role, permissions, db.session)
+
     def _init_owner_permissions(self, owner=current_user):
         self['_access'] = deepcopy(EMPTY_ACCESS_OBJECT)
 
@@ -463,16 +475,6 @@ class CAPDeposit(Deposit):
 
     def validate(self, **kwargs):
         """Validate data using schema with ``JSONResolver``."""
-        # def _concat_deque(queue):
-        #     """Helper for joining dequeue object."""
-        #     result = ''
-        #     for i in queue:
-        #         if isinstance(i, int):
-        #             result += '[' + str(i) + ']'
-        #         else:
-        #             result += '/' + i
-        #     return result
-
         result = {}
         try:
             schema = self['$schema']

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,14 +22,21 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Periodic tasks for CMS."""
+"""Exceptions for experiments related module."""
 
-from celery import shared_task
-
-from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
+from invenio_rest.errors import RESTException
 
 
-@shared_task
-def synchronize_with_cadi():
-    """Add/update CADI info in all cms-analysis, by syncing with CADI db."""
-    synchronize_cadi_entries()
+class ExternalAPIException(RESTException):
+    """External API replied with an error."""
+
+    code = 503
+    description = 'External API replied with an error.'
+
+    def __init__(self, response=None, **kwargs):
+        """Initialize exception."""
+        super(ExternalAPIException, self).__init__(**kwargs)
+
+        if response is not None:
+            self.description = 'External API replied with an error:\n{0}\n{1}'\
+                .format(response.status_code, response.content)

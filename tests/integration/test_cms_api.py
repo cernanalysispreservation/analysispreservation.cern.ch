@@ -32,6 +32,8 @@ import json
 from flask import current_app
 from mock import patch
 
+from cap.modules.experiments.errors import ExternalAPIException
+
 
 ################
 # api/cms/cadi
@@ -46,52 +48,76 @@ def test_get_cms_cadi_when_user_from_outside_cms_returns_403(app, users,
         assert resp.status_code == 403
 
 
-@patch('requests.get')
-def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_requests, app,
-                                                                         auth_headers_for_superuser):
-    class MockedResp:
-        def json(self):
-            return {
-                'data': []
-            }
-
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
+def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id, app, users, auth_headers_for_user):
     with app.test_client() as client:
-        mock_requests.return_value = MockedResp()
+        resp = client.get('/cms/cadi/ANA-00-001',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.status_code == 200
+
+
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
+def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
+    with app.test_client() as client:
         resp = client.get('/cms/cadi/non-existing',
                           headers=auth_headers_for_superuser)
 
-        assert json.loads(resp.data) == {}
+        assert resp.json == {}
 
 
-@patch('requests.get')
-def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_ana_data(mock_requests, app,
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id')
+def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(mock_get_from_cadi_by_id, app,
                                                                              auth_headers_for_superuser):
-    ana_data = {
-        'code': 'dAna-Num',
-        'conferences': []
+    cadi_response = {
+        u'Conference': '',
+        u'conferenceStatus': '',
+        u'code': 'dANA-00-000',
+        u'targetConference': None,
+        u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+        u'updaterDate': '24/12/2014',
+        u'creatorDate': '14/12/2014',
+        u'PAS': 'http://cms.cern.ch:80/pas.pdf',
+        u'id': 1,
+        u'updaterName': 'Updater User',
+        u'targetPubPeriod': None,
+        u'targetDatePreApp': '19/12/2014',
+        u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+        u'contact': 'Contact User',
+        u'status': 'PUB',
+        u'URL': 'https://twiki.cern.ch/twikiurl',
+        u'creatorName': 'Creator User',
+        u'publicationStatus': 'Free',
+        u'name': 'Name',
+        u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
+        u'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
-
-    class MockedResp:
-        def json(self):
-            return {
-                'data': [ana_data]
-            }
+    mock_get_from_cadi_by_id.return_value = cadi_response
 
     with app.test_client() as client:
-        mock_requests.return_value = MockedResp()
-        resp = client.get('/cms/cadi/Ana-Num',
+        resp = client.get('/cms/cadi/ANA-00-000',
                           headers=auth_headers_for_superuser)
 
-        assert json.loads(resp.data) == ana_data
+        mock_get_from_cadi_by_id.assert_called_with('ANA-00-000')
+
+        assert resp.json == {
+            'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+            'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
+            'contact': 'Contact User',
+            'created': '14/12/2014',
+            'twiki': 'https://twiki.cern.ch/twikiurl',
+            'paper': 'http://cms.cern.ch:80/paper.pdf',
+            'pas': 'http://cms.cern.ch:80/pas.pdf',
+            'publication_status': 'Free',
+            'status': 'PUB',
+        }
 
 
-@patch('requests.get')
-def test_get_cms_cadi_calls_cadi_api_with_correct_url(mock_requests, app,
-                                                      auth_headers_for_superuser):
-    api_url = current_app.config['CADI_GET_RECORD_URL']
-    ana_num = 'Ana-Num'
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', side_effect=ExternalAPIException())
+def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
     with app.test_client() as client:
-        client.get('/cms/cadi/{}'.format(ana_num),
-                   headers=auth_headers_for_superuser)
+        resp = client.get('/cms/cadi/non-existing',
+                          headers=auth_headers_for_superuser)
 
-        mock_requests.assert_called_with(url=api_url + ana_num.upper())
+        assert resp.status_code == 503

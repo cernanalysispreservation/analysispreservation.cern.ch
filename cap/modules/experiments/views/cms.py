@@ -26,14 +26,13 @@
 
 from __future__ import absolute_import, print_function
 
-from HTMLParser import HTMLParser
 from urllib import unquote
 
-import requests
-from flask import Blueprint, current_app, jsonify, request
+from flask import Blueprint, jsonify, request
 from invenio_search.proxies import current_search_client as es
 
 from ..permissions import cms_permission
+from ..utils.cadi import get_from_cadi_by_id, parse_cadi_entry
 
 cms_bp = Blueprint(
     'cap_cms',
@@ -47,21 +46,14 @@ cms_bp = Blueprint(
 def get_analysis_from_cadi(cadi_id):
     """Retrieve specific CADI analysis."""
     cadi_id = unquote(cadi_id).upper()
-    url = current_app.config['CADI_GET_RECORD_URL'] + cadi_id
 
-    resp = requests.get(url=url)
+    entry = get_from_cadi_by_id(cadi_id)
+    if entry:
+        _, parsed = parse_cadi_entry(entry)
+    else:
+        parsed = {}
 
-    data = resp.json()
-    try:
-        response = data['data'][0]
-    except IndexError:
-        response = {}
-
-    parser = HTMLParser()
-    response = {k: (parser.unescape(v) if isinstance(v, str) else v)
-                for k, v in response.items()}
-
-    return jsonify(response)
+    return jsonify(parsed)
 
 
 @cms_bp.route('/datasets', methods=['GET'])

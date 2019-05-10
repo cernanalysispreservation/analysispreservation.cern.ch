@@ -91,14 +91,14 @@
         "ui:options": {
           "autofill_from": "/api/cms/cadi/",
           "autofill_fields": [
-            [["PAPER"], ["cadi_info", "paper"]],
+            [["paper"], ["cadi_info", "paper"]],
             [["name"], ["cadi_info", "name"]],
             [["description"], ["cadi_info", "description"]],
             [["contact"], ["cadi_info", "contact"]],
-            [["creatorDate"], ["cadi_info", "created"]],
-            [["URL"], ["cadi_info", "twiki"]],
-            [["PAS"], ["cadi_info", "pas"]],
-            [["publicationStatus"], ["cadi_info", "publication_status"]],
+            [["created"], ["cadi_info", "created"]],
+            [["twiki"], ["cadi_info", "twiki"]],
+            [["pas"], ["cadi_info", "pas"]],
+            [["publication_status"], ["cadi_info", "publication_status"]],
             [["status"], ["cadi_info", "status"]]
           ]
         }
