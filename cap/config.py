@@ -649,20 +649,24 @@ ACCOUNTS_JWT_ENABLE = False
 
 # Github and Gitlab oauth tokens
 # ==============================
-GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get(
-    'APP_GITHUB_OAUTH_ACCESS_TOKEN', None)
-GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get(
-    'APP_GITLAB_OAUTH_ACCESS_TOKEN', None)
+GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITHUB_OAUTH_ACCESS_TOKEN')
+GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITLAB_OAUTH_ACCESS_TOKEN')
 
 # Reana server url
 # ================
 REANA_ACCESS_TOKEN = {
-    'ATLAS': os.environ.get(
-        'APP_REANA_ATLAS_ACCESS_TOKEN', None),
-    'ALICE': os.environ.get(
-        'APP_REANA_ALICE_ACCESS_TOKEN', None),
-    'CMS': os.environ.get(
-        'APP_REANA_CMS_ACCESS_TOKEN', None),
-    'LHCb': os.environ.get(
-        'APP_REANA_LHCb_ACCESS_TOKEN', None)
+    'ATLAS': os.environ.get('APP_REANA_ATLAS_ACCESS_TOKEN'),
+    'ALICE': os.environ.get('APP_REANA_ALICE_ACCESS_TOKEN'),
+    'CMS': os.environ.get('APP_REANA_CMS_ACCESS_TOKEN'),
+    'LHCb': os.environ.get('APP_REANA_LHCb_ACCESS_TOKEN')
+}
+
+# Keytabs
+KEYTABS_LOCATION = os.environ.get(
+    'APP_KEYTABS_LOCATION',
+    '/etc/keytabs'
+)
+
+KRB_PRINCIPALS = {
+    'CADI': ('cernapcms@CERN.CH', 'cernapcms.keytab')
 }
