@@ -64,9 +64,12 @@ install_requires = [
     'Flask-Cli>=0.4.0',
     'Flask-Cache>=0.13.1',
     'Flask-Debugtoolbar>=0.10.1',
+
     # CAP specific libraries
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
+    'python-cern-sso-krb==1.3.3',
+    'cachetools==3.1.0',
 
     # Pinned libraries
     'celery==4.1.1',  # temporary fix
@@ -74,6 +77,7 @@ install_requires = [
     # on production server
     'urllib3[secure]==1.22',
     'SQLAlchemy-Continuum==1.3.4',
+
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
     'fs==0.5.4',
