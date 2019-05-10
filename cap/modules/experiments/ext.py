@@ -22,6 +22,36 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Cern Analysis Preservation Experiments module."""
+"""Experiments module."""
 
 from __future__ import absolute_import, print_function
+
+import certifi
+
+
+class CAPExperiments(object):
+    """Experiments extension."""
+
+    def __init__(self, app=None):
+        """Extension initialization."""
+        if app:
+            self.init_app(app)
+
+    def init_app(self, app):
+        """Initialize configuration."""
+        self._add_cern_certs_to_trusted(app)
+        app.extensions['cap-experiments'] = self
+
+    def _add_cern_certs_to_trusted(self, app):
+        """Add CERN Verification Authority to trusted by certifi module.
+
+        Location of pem file defined in `cap.config.CERN_CERTS_PEM`
+        """
+        cern_pem = app.config.get('CERN_CERTS_PEM')
+
+        if cern_pem:
+            with open(certifi.where(), 'r+') as _out, \
+                    open(cern_pem, 'r') as _in:
+                content = _in.read()
+                if content not in _out.read():
+                    _out.write(content)
