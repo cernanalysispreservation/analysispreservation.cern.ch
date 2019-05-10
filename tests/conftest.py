@@ -34,26 +34,29 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 import pytest
-from flask import current_app
+from flask import Flask, current_app, has_request_context
 from flask_celeryext import FlaskCeleryExt
 from flask_principal import ActionNeed
 from flask_security import login_user
-from invenio_access.models import ActionUsers
+from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.testutils import create_test_user
 from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
 from invenio_db import db as db_
 from invenio_deposit.minters import deposit_minter
 from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_indexer.api import RecordIndexer
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_oauth2server.models import Client, Token
+from invenio_pidstore.models import PersistentIdentifier
+from invenio_records.api import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
 from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.reana.models import ReanaJob
 from cap.modules.schemas.models import Schema
 
@@ -102,7 +105,11 @@ def default_config():
 
 @pytest.yield_fixture(scope='session')
 def app(env_config, default_config):
-    """Flask application fixture."""
+    """Flask application fixture.
+
+    This fixture will also push a request context, more here:
+    https://pytest-flask.readthedocs.io/en/latest/features.html#request-ctx-request-context
+    """
     app = create_api(**default_config)
     FlaskCeleryExt(app)
 
@@ -110,7 +117,12 @@ def app(env_config, default_config):
         yield app
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='module')
+def create_app():
+    return create_api
+
+
+@pytest.yield_fixture
 def db(app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -122,7 +134,7 @@ def db(app):
 
 
 @pytest.yield_fixture
-def es(app):
+def es(base_app):
     """Provide elasticsearch access."""
     list(current_search.delete(ignore=[400, 404]))
     current_search_client.indices.delete(index='*')
@@ -150,6 +162,18 @@ def create_user_with_access(username, action):
     db_.session.commit()
 
     return user
+
+
+def assign_egroup_to_experiment(egroup_name, exp):
+    role = _datastore.find_or_create_role(egroup_name)
+    exp_need = exp_need_factory(exp)
+
+    db_.session.add(ActionRoles.allow(
+        exp_need, role=role))
+
+    db_.session.commit()
+
+    return role
 
 
 def add_role_to_user(user, rolename):
@@ -184,6 +208,13 @@ def users(db):
 
     return users
 
+@pytest.fixture()
+def superuser(db):
+    "Create superuser."
+    superuser = create_user_with_access('superuser@cern.ch', 'superuser-access')
+
+    return superuser
+
 
 @pytest.fixture
 def jsonschemas_host():
@@ -191,7 +222,7 @@ def jsonschemas_host():
 
 
 @pytest.fixture
-def create_schema(db, es):
+def create_schema(db):
     """Returns function to add a schema to db."""
 
     def _add_schema(schema, is_deposit=True, experiment=None, json=None):
@@ -222,12 +253,12 @@ def create_schema(db, es):
 
 
 @pytest.fixture
-def auth_headers_for_superuser(users, auth_headers_for_user):
-    return auth_headers_for_user(users['superuser'])
+def auth_headers_for_superuser(superuser, auth_headers_for_user):
+    return auth_headers_for_user(superuser)
 
 
 @pytest.fixture()
-def auth_headers_for_user(app, db, es):
+def auth_headers_for_user(base_app, db):
     """Return method to generate write token for user."""
 
     def _write_token(user):
@@ -310,45 +341,45 @@ def create_deposit(app, db, es, location, jsonschemas_host,
         '$schema': 'https://{}/schemas/{}.json'.format(host, schema)
     }
 
-    with db_.session.begin_nested():
+    def _create_deposit(user, schema_name,
+                        metadata=None, experiment=None, publish=False):
+        """
+        Create a new deposit for given user and schema name
+        e.g cms-analysis-v0.0.1,
+        with minimal metadata defined for this schema type.
+        """
+        # create schema for record
+        with app.test_request_context():
+            schema = create_schema('records/{}'.format(schema_name), is_deposit=False,
+                                   experiment=experiment)
+            if not experiment:
+                schema.add_read_access_to_all()
 
-        def _create_deposit(user, schema_name,
-                            metadata=None, experiment=None, publish=False):
-            """
-            Create a new deposit for given user and schema name
-            e.g cms-analysis-v0.0.1,
-            with minimal metadata defined for this schema type.
-            """
-            with app.test_request_context():
-                # create schema for record
-                schema = create_schema('records/{}'.format(schema_name), is_deposit=False,
-                                       experiment=experiment)
-                if not experiment:
-                    schema.add_read_access_to_all()
+            # create schema for deposit
+            schema = create_schema('deposits/records/{}'.format(schema_name),
+                                   experiment=experiment)
+            if not experiment:
+                schema.add_read_access_to_all()
 
-                # create schema for deposit
-                schema = create_schema('deposits/records/{}'.format(schema_name),
-                                       experiment=experiment)
-                if not experiment:
-                    schema.add_read_access_to_all()
+            metadata = metadata or minimal_metadata(jsonschemas_host,
+                                                    'deposits/records/{}'.format(schema_name))
+            login_user(user)
+            id_ = uuid4()
+            deposit_minter(id_, metadata)
+            deposit = Deposit.create(metadata, id_=id_)
 
-                metadata = metadata or minimal_metadata(jsonschemas_host,
-                                                        'deposits/records/{}'.format(schema_name))
-                login_user(user)
-                id_ = uuid4()
-                deposit_minter(id_, metadata)
-                deposit = Deposit.create(metadata, id_=id_)
+            db.session.commit()
 
-            if publish:
-                deposit.publish()
-                _, record = deposit.fetch_published()
-                RecordIndexer().index(record)
+        if publish:
+            deposit.publish()
+            _, record = deposit.fetch_published()
+            RecordIndexer().index(record)
 
-                current_search.flush_and_refresh('records')
+            current_search.flush_and_refresh('records')
 
-            current_search.flush_and_refresh(schema.index_name)
+        current_search.flush_and_refresh(schema.index_name)
 
-            return Deposit.get_record(deposit.id)
+        return Deposit.get_record(deposit.id)
 
     yield _create_deposit
 
@@ -360,14 +391,14 @@ def bearer_auth(token):
 
 
 @pytest.fixture
-def deposit(users, create_deposit):
+def deposit(superuser, create_deposit):
     """New deposit with files."""
-    return create_deposit(users['superuser'], 'cms-analysis-v0.0.1')
+    return create_deposit(superuser, 'cms-analysis-v0.0.1')
 
 
 @pytest.fixture
-def record(users, create_deposit):
-    return create_deposit(users['superuser'],
+def record(superuser, create_deposit):
+    return create_deposit(superuser,
                           'cms-analysis-v0.0.1',
                           experiment='CMS',
                           publish=True)
@@ -379,7 +410,7 @@ def record_metadata(deposit):
 
 
 @pytest.fixture
-def superuser_me_data(users):
+def superuser_me_data(superuser):
     return {
         "collaborations": [
             "ATLAS",
@@ -425,8 +456,8 @@ def superuser_me_data(users):
                 "name": "Test schema"
             }
         ],
-        "email": users['superuser'].email,
-        "id": users['superuser'].id
+        "email": superuser.email,
+        "id": superuser.id
     }
 
 
@@ -454,10 +485,10 @@ def cms_user_me_data(users):
     }
 
 
-@pytest.fixture(scope='function')
-def reana_job(db, users, record_metadata):
+@pytest.fixture
+def reana_job(db, superuser, record_metadata):
     reana_job = ReanaJob(
-        user=users['superuser'],
+        user=superuser,
         record=record_metadata,
         name='my_workflow_run',
         params={
