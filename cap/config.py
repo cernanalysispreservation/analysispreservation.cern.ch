@@ -670,3 +670,5 @@ KEYTABS_LOCATION = os.environ.get(
 KRB_PRINCIPALS = {
     'CADI': ('cernapcms@CERN.CH', 'cernapcms.keytab')
 }
+
+CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')

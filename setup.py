@@ -134,6 +134,7 @@ setup(
             'cap_access = cap.modules.access.ext:CAPAccess',
             'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
+            'cap_experiments = cap.modules.experiments.ext:CAPExperiments',
             'cap_fixtures = cap.modules.fixtures.ext:CAPFixtures',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
         ],
