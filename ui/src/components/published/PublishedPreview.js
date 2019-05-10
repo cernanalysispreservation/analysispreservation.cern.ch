@@ -6,6 +6,7 @@ import _omit from "lodash/omit";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
+import Label from "grommet/components/Label";
 import Sidebar from "grommet/components/Sidebar";
 import FileList from "../drafts/components/FileList";
 
@@ -67,9 +68,37 @@ class PublishedPreview extends React.Component {
           {_schema && this.props.uiSchema ? (
             <Box flex={true}>
               <SectionHeader
-                label="Published"
-                status={<AnnounceIcon size="xsmall" />}
-                uppercase={true}
+                label={
+                  <Box
+                    direction="row"
+                    align="center"
+                    pad={{ between: "small" }}
+                  >
+                    <Box>
+                      {this.props.item.metadata &&
+                        this.props.item.metadata.general_title}
+                    </Box>
+                    <Box
+                      direction="row"
+                      align="center"
+                      pad={{ horizontal: "small", between: "small" }}
+                      margin="none"
+                      colorIndex="grey-3-a"
+                    >
+                      <span>{this.props.item.id}</span>
+                    </Box>
+                    <Box
+                      direction="row"
+                      align="center"
+                      pad={{ horizontal: "small", between: "small" }}
+                      margin="none"
+                      colorIndex="neutral-4-a"
+                    >
+                      <span>Published</span> <AnnounceIcon size="xsmall" />
+                    </Box>
+                  </Box>
+                }
+                uppercase={false}
                 action={<EditAnchor draft_id={draft_id} />}
               />
               <Box flex={true} direction="row" justify="between">

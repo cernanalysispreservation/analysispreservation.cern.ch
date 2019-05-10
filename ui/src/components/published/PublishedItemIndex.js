@@ -26,11 +26,13 @@ class PublishedItemIndex extends React.Component {
       <Box flex={true} direction="row">
         <Route exact path={`/published/:id`} component={PublishedPreview} />
         {this.props.item &&
+        this.props.item.metadata &&
         this.props.item.metadata.workflows &&
         this.props.item.metadata.workflows.length > 0 ? (
           <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
         ) : null}
         {this.props.item &&
+        this.props.item.metadata &&
         this.props.item.metadata.workflows &&
         this.props.item.metadata.workflows.length > 0 ? (
           <Route
@@ -40,6 +42,7 @@ class PublishedItemIndex extends React.Component {
           />
         ) : null}
         {this.props.item &&
+        this.props.item.metadata &&
         this.props.item.metadata.workflows &&
         this.props.item.metadata.workflows.length > 0 ? (
           <PublishedSidebar />
