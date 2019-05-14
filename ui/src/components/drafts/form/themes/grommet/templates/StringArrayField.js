@@ -26,6 +26,9 @@ class StringArrayField extends React.Component {
                       <Box flex={true} direction="row">
                         <TextWidget
                           {...element.children.props}
+                          options={
+                            element.children.props.uiSchema["ui:options"]
+                          }
                           value={element.children.props.formData}
                           autofocus="true"
                           pad="none"
@@ -35,8 +38,6 @@ class StringArrayField extends React.Component {
                               !element.children.props.formData
                             ) {
                               element.onDropIndexClick(element.index)(event);
-                            } else if (event.key === "Enter") {
-                              this.props.onAddClick(event);
                             }
                           }}
                         />
