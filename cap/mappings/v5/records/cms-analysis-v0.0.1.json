@@ -69,15 +69,15 @@
                 "path": {
                   "type": "keyword",
                   "copy_to": "dataset"
-                }
-              }
-            },
-            "triggers": {
-              "type": "object",
-              "properties": {
-                "trigger": {
-                  "type": "keyword",
-                  "copy_to": "trigger"
+                },
+                "triggers": {
+                  "type": "object",
+                  "properties": {
+                    "trigger": {
+                      "type": "keyword",
+                      "copy_to": "trigger"
+                    }
+                  }
                 }
               }
             },

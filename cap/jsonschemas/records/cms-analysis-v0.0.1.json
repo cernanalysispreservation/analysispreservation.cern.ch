@@ -231,6 +231,25 @@
                 "path": {
                   "type": "string",
                   "title": "Path"
+                },
+                "triggers": {
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "trigger": {
+                        "type": "string",
+                        "title": "Trigger"
+                      },
+                      "prescale": {
+                        "type": "number",
+                        "title": "Prescale"
+                      }
+                    }
+                  },
+                  "description": "Add selection triggers here",
+                  "type": "array",
+                  "id": "triggers",
+                  "title": "Triggers"
                 }
               }
             },
@@ -248,25 +267,6 @@
             "type": "array",
             "id": "mc_sig_datasets",
             "title": "Monte Carlo Signal Datasets"
-          },
-          "triggers": {
-            "items": {
-              "type": "object",
-              "properties": {
-                "trigger": {
-                  "type": "string",
-                  "title": "Trigger"
-                },
-                "prescale": {
-                  "type": "number",
-                  "title": "Prescale"
-                }
-              }
-            },
-            "description": "Add selection triggers here",
-            "type": "array",
-            "id": "triggers",
-            "title": "Triggers"
           }
         },
         "title": "Input Data"
