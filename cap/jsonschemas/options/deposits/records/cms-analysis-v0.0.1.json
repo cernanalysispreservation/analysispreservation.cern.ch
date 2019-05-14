@@ -115,14 +115,6 @@
       "ui:widget": "switch"
     },
     "input_data": {
-      "triggers": {
-        "items": {
-          "ui:order": ["trigger", "prescale"],
-          "ui:options": {
-            "stringify": ["trigger"]
-          }
-        }
-      },
       "ui:object": "accordionObjectField",
       "mc_sig_datasets": {
         "items": {
@@ -149,19 +141,27 @@
         "primary_datasets",
         "mc_sig_datasets",
         "mc_bg_datasets",
-        "triggers",
         "json_files",
         "*"
       ],
       "primary_datasets": {
         "items": {
-          "ui:order": ["path", "ranges"],
+          "ui:order": ["path", "ranges", "triggers"],
           "ui:options": {
             "stringify": ["path"]
           },
           "path": {
             "ui:options": {
               "suggestions": "/api/cms/datasets?query="
+            }
+          },
+          "triggers": {
+            "ui:array": "default",
+            "items": {
+              "ui:order": ["trigger", "prescale"],
+              "ui:options": {
+                "stringify": ["trigger"]
+              }
             }
           }
         }
