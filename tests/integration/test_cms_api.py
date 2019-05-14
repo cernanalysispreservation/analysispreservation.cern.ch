@@ -30,9 +30,9 @@ from __future__ import absolute_import, print_function
 import json
 
 from flask import current_app
-from mock import patch
 
 from cap.modules.experiments.errors import ExternalAPIException
+from mock import patch
 
 
 ################
@@ -121,3 +121,102 @@ def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(mock_ge
                           headers=auth_headers_for_superuser)
 
         assert resp.status_code == 503
+
+
+##################
+# api/cms/datasets
+##################
+def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(app, users,
+                                                                         auth_headers_for_user):
+    with app.test_client() as client:
+        resp = client.get('/cms/datasets?query=q',
+                          headers=auth_headers_for_user(users['lhcb_user']))
+
+        assert resp.status_code == 403
+
+
+def test_get_datasets_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user, das_datasets_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/datasets?query=q',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.status_code == 200
+
+
+def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user, das_datasets_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/datasets?query=',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == []
+
+def test_get_datasets_suggestions_returns_correct_suggestions(app, users,auth_headers_for_user, das_datasets_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/datasets?query=datas',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == ['dataset1', 'dataset2']
+
+        resp = client.get('/cms/datasets?query=another_',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == ['another_dataset']
+
+
+##################
+# api/cms/triggers
+##################
+def test_get_triggers_suggestions_when_user_from_outside_cms_returns_403(app, users,
+                                                                         auth_headers_for_user):
+    with app.test_client() as client:
+        resp = client.get('/cms/triggers?query=q&dataset=D',
+                          headers=auth_headers_for_user(users['lhcb_user']))
+
+        assert resp.status_code == 403
+
+
+def test_get_triggers_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user, cms_triggers_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/triggers?query=q&dataset=D',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.status_code == 200
+
+
+def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user, cms_triggers_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/triggers?query=&dataset=D',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == []
+        
+
+def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(app, users,auth_headers_for_user, cms_triggers_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/triggers?query=&dataset=',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == []
+
+
+def test_get_triggers_suggestions_returns_correct_suggestions(app, users,auth_headers_for_user, cms_triggers_index):
+    with app.test_client() as client:
+        resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == []
+
+        resp = client.get('/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == ['Trigger1', 'Trigger_2']
+
+        resp = client.get('/cms/triggers?query=Another&dataset=Dataset1/sth/sth/sth',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == ['Another_Trigger']
+
+        resp = client.get('/cms/triggers?query=Trigger1&dataset=/Dataset2/sth/sth/sth',
+                          headers=auth_headers_for_user(users['cms_user']))
+
+        assert resp.json == ['Trigger1']

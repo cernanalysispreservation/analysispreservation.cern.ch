@@ -54,14 +54,42 @@ class TextWidget extends React.Component {
     return this.props.onChange(value !== "" ? value : undefined);
   };
 
+  _replace_hash_with_current_indexes = path => {
+    let indexes = this.props.id.split("_").filter(item => !isNaN(item)),
+      index_cnt = 0;
+
+    return path.map(item => {
+      item = item === "#" ? indexes[index_cnt] : item;
+      if (!isNaN(item)) ++index_cnt;
+      return item;
+    });
+  };
+
   updateSuggestions = event => {
-    axios
-      .get(`${this.props.options.suggestions}${event.target.value}`)
-      .then(({ data }) => {
-        this.setState({
-          suggestions: data
-        });
+    let suggestions = this.props.options.suggestions,
+      data = fromJS(this.props.formData),
+      params = this.props.options.params,
+      indexes = this.props.id.split("_").filter(item => !isNaN(item));
+
+    if (params) {
+      for (let param in params) {
+        let path = params[param];
+
+        // replace # with current input path
+        path = this._replace_hash_with_current_indexes(path);
+
+        suggestions = suggestions.replace(
+          `${param}=`,
+          `${param}=${data.getIn(path)}`
+        );
+      }
+    }
+
+    axios.get(`${suggestions}${event.target.value}`).then(({ data }) => {
+      this.setState({
+        suggestions: data
       });
+    });
 
     return this.props.onChange(event.target.value);
   };
@@ -73,8 +101,7 @@ class TextWidget extends React.Component {
   autoFillOtherFields = event => {
     let url = this.props.options.autofill_from,
       fieldsMap = this.props.options.autofill_fields,
-      formData = fromJS(this.props.formData),
-      indexes = this.props.id.split("_").filter(item => !isNaN(item));
+      formData = fromJS(this.props.formData);
 
     this.setState({
       showSpinner: true
@@ -89,10 +116,10 @@ class TextWidget extends React.Component {
         fieldsMap.map(el => {
           let source = el[0],
             destination = el[1];
-          // autofill indexes to match current input path
-          destination = destination.map(
-            item => (item === "#" ? indexes.pop() : item)
-          );
+
+          // replace # with current path
+          destination = this._replace_hash_with_current_indexes(destination);
+
           formData = formData.setIn(destination, _data.getIn(source));
         });
         this.props.formDataChange(formData.toJS());

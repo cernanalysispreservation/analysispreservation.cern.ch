@@ -31,7 +31,9 @@ from os.path import join
 
 import cern_sso
 from cachetools.func import ttl_cache
+from elasticsearch import helpers
 from flask import current_app
+from invenio_search.proxies import current_search_client as es
 
 
 def kinit(principal, keytab):
@@ -80,3 +82,48 @@ def generate_krb_cookie(principal, kt, url):
         return cookie
 
     return generate(url)
+
+
+def recreate_es_index_from_source(alias, source, mapping=None):
+    """
+    Recreate index in ES, with documents passed in source.
+
+    As change has to be tranparent
+    * put everything under index with a different name
+    * redirect alias to point to newly created index
+    * remove old index
+
+    :param str alias: Alias name
+    :param List(dict) source:  List of documents to index
+    :param dict mapping: Mapping object
+    """
+    if es.indices.exists('{}-v1'.format(alias)):
+        old_index, new_index = ('{}-v1'.format(alias), '{}-v2'.format(alias))
+    else:
+        old_index, new_index = ('{}-v2'.format(alias), '{}-v1'.format(alias))
+
+    # create new index
+    es.indices.create(index=new_index, body=dict(mappings=mapping))
+
+    # index datasets from file under new index
+    try:
+        print("Indexing...")
+        actions = [{
+            "_index": new_index,
+            "_type": 'doc',
+            "_id": idx,
+            "_source": obj
+        } for idx, obj in enumerate(source)]
+
+        helpers.bulk(es, actions)
+    except Exception as e:
+        # delete index if sth went wrong
+        es.indices.delete(index=old_index)
+        raise e
+
+    # add newly created index under das-datasets alias
+    es.indices.put_alias(index=new_index, name=alias)
+
+    # remove old index
+    if es.indices.exists(old_index):
+        es.indices.delete(index=old_index)

@@ -24,12 +24,10 @@
 
 """Cern Analysis Preservation methods for DAS database connection."""
 
-import json
+from .common import recreate_es_index_from_source
 
-from elasticsearch import helpers
-from invenio_search.proxies import current_search_client as es
-
-DAS_DATASETS_MAPPING = {
+DAS_DATASETS_INDEX = {
+    'alias': 'das-datasets',
     "mappings": {
         "doc": {
             "properties": {
@@ -43,58 +41,10 @@ DAS_DATASETS_MAPPING = {
 }
 
 
-def cache_das_datasets_in_es_from_file(file):
-    """
-    Cache datasets names from DAS in ES, so can be used for autocompletion.
-
-    As change has to be tranparent
-    * put everything under index with a different name
-    * redirect alias to point to newly created index
-    * remove old index
-    """
-    if es.indices.exists('das-datasets-v1'):
-        old_index, new_index = ('das-datasets-v1',
-                                'das-datasets-v2')
-    else:
-        old_index, new_index = ('das-datasets-v2',
-                                'das-datasets-v1')
-
-    # create new index
-    es.indices.create(index=new_index, body=DAS_DATASETS_MAPPING)
-
-    # index datasets from file under new index
-    try:
-        with open(file, 'r') as fp:
-            res = json.load(fp)
-            source = [x['dataset'][0] for x in res]
-            bulk_index_from_source(new_index, 'doc', source)
-    except Exception:
-        # delete index if sth went wrong
-        es.indices.delete(index=old_index)
-        raise
-
-    # add newly created index under das-datasets alias
-    es.indices.put_alias(index=new_index, name='das-datasets')
-
-    # remove old index
-    if es.indices.exists(old_index):
-        es.indices.delete(index=old_index)
-
-    print("Datasets are safe in ES.")
-
-
-def bulk_index_from_source(index_name, doc_type, source):
-    """Index in ES from given source.
-
-    :params str index_name: index name
-    :params str doc_type: document type
-    :params dict source: content to be indexed
-    """
-    actions = [{
-        "_index": index_name,
-        "_type": doc_type,
-        "_id": idx,
-        "_source": obj
-    } for idx, obj in enumerate(source)]
-
-    helpers.bulk(es, actions)
+def cache_das_datasets_in_es_from_file(source):
+    """Cache datasets names from DAS in ES."""
+    recreate_es_index_from_source(
+        alias=DAS_DATASETS_INDEX['alias'],
+        mapping=DAS_DATASETS_INDEX['mappings'],
+        source=source
+    )

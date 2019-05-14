@@ -31,6 +31,8 @@ import click
 from flask_cli import with_appcontext
 
 from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
+from cap.modules.experiments.utils.cms import \
+    cache_cms_triggers_in_es_from_file  # noqa
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file  # noqa
 from cap.modules.schemas.utils import add_or_update_schema
@@ -73,7 +75,23 @@ def sync_with_cadi_database(limit):
 @with_appcontext
 def index_datasets(file):
     """Load datasets from file and index in ES."""
-    cache_das_datasets_in_es_from_file(file)
+    with open(file, 'r') as fp:
+        source = json.load(fp)
+        cache_das_datasets_in_es_from_file(source)
+
+    print("Datasets indexed in Elasticsearch.")
+
+
+@cms.command('index-triggers')
+@click.option('--file', '-f', required=True, type=click.Path(exists=True))
+@with_appcontext
+def index_triggers(file):
+    """Load cms triggers from file and index in ES."""
+    with open(file, 'r') as fp:
+        source = json.load(fp)
+        cache_cms_triggers_in_es_from_file(source)
+
+    print("Triggers indexed in Elasticsearch.")
 
 
 @fixtures.command()

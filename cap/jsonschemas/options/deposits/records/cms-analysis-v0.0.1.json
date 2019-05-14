@@ -161,6 +161,14 @@
               "ui:order": ["trigger", "prescale"],
               "ui:options": {
                 "stringify": ["trigger"]
+              },
+              "trigger": {
+                "ui:options": {
+                  "suggestions": "/api/cms/triggers?dataset=&query=",
+                  "params": {
+                    "dataset": ["input_data", "primary_datasets", "#", "path"]
+                  }
+                }
               }
             }
           }

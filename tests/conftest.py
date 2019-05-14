@@ -33,8 +33,19 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
 from flask import Flask, current_app, has_request_context
+from werkzeug.local import LocalProxy
+
+import pytest
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
+                                               cache_cms_triggers_in_es_from_file)
+from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
+                                               cache_das_datasets_in_es_from_file)
+from cap.modules.reana.models import ReanaJob
+from cap.modules.schemas.models import Schema
 from flask_celeryext import FlaskCeleryExt
 from flask_principal import ActionNeed
 from flask_security import login_user
@@ -52,13 +63,6 @@ from invenio_pidstore.models import PersistentIdentifier
 from invenio_records.api import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
-from werkzeug.local import LocalProxy
-
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.reana.models import ReanaJob
-from cap.modules.schemas.models import Schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -122,8 +126,16 @@ def create_app():
     return create_api
 
 
+@pytest.fixture(scope='module')
+def base_app(create_app, default_config, request, default_handler):
+    app_ = create_app(**default_config)
+
+    with app_.app_context():
+        yield app_
+
+
 @pytest.yield_fixture
-def db(app):
+def db(base_app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
         create_database(str(db_.engine.url))
@@ -486,16 +498,29 @@ def cms_user_me_data(users):
 
 
 @pytest.fixture
-def reana_job(db, superuser, record_metadata):
-    reana_job = ReanaJob(
-        user=superuser,
-        record=record_metadata,
-        name='my_workflow_run',
-        params={
-            'param_1': 1,
-            'param_2': 2
-        })
-    db.session.add(reana_job)
-    db.session.commit()
+def das_datasets_index(es):
+    source = [
+        {'name': 'dataset1'},
+        {'name': 'dataset2'},
+        {'name': 'another_dataset'}
+    ]
 
-    yield reana_job
+    cache_das_datasets_in_es_from_file(source)
+
+    current_search.flush_and_refresh(DAS_DATASETS_INDEX['alias'])
+
+
+@pytest.fixture
+def cms_triggers_index(es):
+    source = [
+        {'dataset': 'Dataset1', 'trigger': 'Trigger1'},
+        {'dataset': 'Dataset1', 'trigger': 'Trigger_2'},
+        {'dataset': 'Dataset1', 'trigger': 'Another_Trigger'},
+        {'dataset': 'Dataset2', 'trigger': 'Trigger1'},
+        {'dataset': 'Dataset2', 'trigger': 'Trigger2'},
+        {'dataset': 'Dataset2', 'trigger': 'Another_One'}
+    ]
+
+    cache_cms_triggers_in_es_from_file(source)
+
+    current_search.flush_and_refresh(CMS_TRIGGERS_INDEX['alias'])
