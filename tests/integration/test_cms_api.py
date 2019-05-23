@@ -33,6 +33,7 @@ from flask import current_app
 
 from cap.modules.experiments.errors import ExternalAPIException
 from mock import patch
+from pytest import mark
 
 
 ################
@@ -199,6 +200,7 @@ def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_
         assert resp.json == []
 
 
+@mark.skip
 def test_get_triggers_suggestions_returns_correct_suggestions(app, users,auth_headers_for_user, cms_triggers_index):
     with app.test_client() as client:
         resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
