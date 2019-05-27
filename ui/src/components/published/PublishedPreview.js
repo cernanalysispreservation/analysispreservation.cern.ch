@@ -6,7 +6,6 @@ import _omit from "lodash/omit";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Label";
 import Sidebar from "grommet/components/Sidebar";
 import FileList from "../drafts/components/FileList";
 

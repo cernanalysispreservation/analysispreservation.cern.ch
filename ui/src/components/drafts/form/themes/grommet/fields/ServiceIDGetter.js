@@ -60,7 +60,7 @@ class ServiceIDGetter extends React.Component {
             this.setState({ error: "Resource not found or unaccesible" });
           }
         })
-        .catch(err => {});
+        .catch(() => {});
     }
   };
 

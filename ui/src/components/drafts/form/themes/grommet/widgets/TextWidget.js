@@ -68,8 +68,8 @@ class TextWidget extends React.Component {
   updateSuggestions = event => {
     let suggestions = this.props.options.suggestions,
       data = fromJS(this.props.formData),
-      params = this.props.options.params,
-      indexes = this.props.id.split("_").filter(item => !isNaN(item));
+      params = this.props.options.params;
+    // indexes = this.props.id.split("_").filter(item => !isNaN(item));
 
     if (params) {
       for (let param in params) {

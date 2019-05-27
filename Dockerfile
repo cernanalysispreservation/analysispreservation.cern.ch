@@ -7,6 +7,8 @@
 
 FROM gitlab-registry.cern.ch/analysispreservation/base:python2-xrootd-go
 
+RUN yum -y install krb5-server krb5-libs
+
 # Install Invenio
 ENV WORKING_DIR=/opt/cap
 ENV INVENIO_INSTANCE_PATH=${WORKING_DIR}/var/instance
