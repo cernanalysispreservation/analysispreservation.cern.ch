@@ -16,6 +16,15 @@ from datetime import timedelta
 from os.path import dirname, join
 
 from flask import request
+
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -29,15 +38,6 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter
 
 
 def _(x):
@@ -533,7 +533,7 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 CMS_USER_PRINCIPAL = os.environ.get('APP_CMS_USER_PRINCIPAL')
 CMS_USER_KEYTAB = os.environ.get('APP_CMS_USER_KEYTAB')
 #: CADI database
-CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/viewCadiLines'
+CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/cadiLine/BPH-13-009'
 CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
 CADI_GET_ALL_URL = 'https://icms.cern.ch/tools/api/viewCadiLines'
 CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools/api/cadiLine/{id}'
