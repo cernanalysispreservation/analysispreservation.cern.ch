@@ -29,10 +29,11 @@ import subprocess
 from functools import wraps
 from os.path import join
 
+from flask import current_app
+
 import cern_sso
 from cachetools.func import ttl_cache
 from elasticsearch import helpers
-from flask import current_app
 from invenio_search.proxies import current_search_client as es
 
 
@@ -57,8 +58,7 @@ def kinit(principal, keytab):
             subprocess.check_output(
                 'kinit -kt {} {}'.format(kt, principal), shell=True)
             ret_val = func(*args, **kwargs)
-            subprocess.check_output(
-                'kdestroy -p {}'.format(principal), shell=True)
+            subprocess.check_output('kdestroy', shell=True)
 
             return ret_val
         return wrapped_function
