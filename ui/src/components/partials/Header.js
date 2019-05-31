@@ -4,6 +4,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
+import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
+import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader } from "grommet";
 
@@ -12,6 +14,7 @@ import Title from "grommet/components/Title";
 import Menu from "grommet/components/Menu";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
+import Layer from "grommet/components/Layer";
 
 import SearchBar from "../search/SearchBar";
 
@@ -23,7 +26,18 @@ import { logout } from "../../actions/auth";
 class Header extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      show: false
+    };
   }
+
+  showLayer = () => {
+    this.setState({ show: true });
+  };
+
+  hideLayer = () => {
+    this.setState({ show: false });
+  };
 
   _onSearchSubmit(event) {
     let query = event.target.value;
@@ -47,6 +61,16 @@ class Header extends React.Component {
   render() {
     return (
       <GrommetHeader fixed={false} size="small" colorIndex="neutral-1">
+        {this.state.show ? (
+          <Layer
+            closer={true}
+            flush={true}
+            overlayClose={true}
+            onClose={this.hideLayer}
+          >
+            <HowToSearchPage />
+          </Layer>
+        ) : null}
         <Box
           flex={true}
           pad={{ horizontal: "small" }}
@@ -70,14 +94,20 @@ class Header extends React.Component {
 
           {this.props.isLoggedIn ? (
             <Box direction="row" justify="between" flex={true}>
-              <Box
-                flex={true}
-                justify="center"
-                size={{ width: { max: "large" } }}
-                colorIndex="neutral-1-t"
-                margin={{ horizontal: "small" }}
-              >
-                <SearchBar />
+              <Box flex={true} direction="row">
+                <Box
+                  flex={true}
+                  justify="center"
+                  size={{ width: { max: "large" } }}
+                  colorIndex="neutral-1-t"
+                  margin={{ horizontal: "small" }}
+                >
+                  <SearchBar />
+                </Box>
+                <Anchor
+                  icon={<CircleQuestionIcon />}
+                  onClick={this.showLayer}
+                />
               </Box>
               <Box>
                 <Menu

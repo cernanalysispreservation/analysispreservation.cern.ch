@@ -26,11 +26,11 @@
 
 import subprocess
 
-from mock import patch
-from pytest import raises
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from cap.modules.experiments.utils.common import kinit
+from mock import patch
+from pytest import raises
 
 
 @patch('subprocess.check_output')
@@ -48,7 +48,7 @@ def test_kinit_decorator(subprocess_mock, app):
     assert function('return_value') == 'return_value'
 
     subprocess_mock.assert_called_with(
-        'kdestroy -p user@CERN.CH',
+        'kdestroy',
         shell=True
     )
 
