@@ -634,6 +634,9 @@ FILES_REST_PERMISSION_FACTORY = \
 # Grab files max size
 FILES_URL_MAX_SIZE = (2**20) * 5000
 
+# Header for updating file tags
+FILES_REST_FILE_TAGS_HEADER = 'X-CAP-File-Tags'
+
 # Indexer
 # =======
 #: Flag for not replacing refs when creating deposit
