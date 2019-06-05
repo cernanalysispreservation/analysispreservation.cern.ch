@@ -485,6 +485,75 @@ def test_file_upload_uploads_successfully(app, users,
         assert resp.data == 'Hello world!'
 
 
+def test_put_header_tags(app, users, auth_headers_for_user, create_deposit):
+    """Test upload of an object with tags in the headers."""
+    key = 'test.txt'
+    headers = [(
+        app.config['FILES_REST_FILE_TAGS_HEADER'],
+            'key1=val1;key2=val2;key3=val3'
+    ),]
+
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    bucket = deposit.files.bucket
+
+    # login_user(client, permissions['bucket'])
+    with app.test_client() as client:
+        resp = client.put('/files/{}/{}'.format(bucket, key),
+            input_stream=BytesIO(b'updated_content'),
+            headers=headers+auth_headers_for_user(owner),
+        )
+
+        assert resp.status_code == 200
+
+        resp = client.get('/files/{}'.format(bucket),
+            headers=auth_headers_for_user(owner),
+        )
+
+        tags = resp.json.get('contents', [{}])[0].get('tags', {})
+
+        assert tags['key1'] == 'val1'
+        assert tags['key2'] == 'val2'
+        assert tags['key3'] == 'val3'
+
+
+def test_put_header_invalid_tags(app, users, auth_headers_for_user, create_deposit):
+    """Test upload of an object with tags in the headers."""
+    key = 'test.txt'
+    header_name = app.config['FILES_REST_FILE_TAGS_HEADER']
+    invalid = [
+        # We don't test zero-length values/keys, because they are filtered out
+        # from parse_qsl
+        ('a'*256, 'valid'),
+        ('valid', 'b'*256),
+    ]
+
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    bucket = deposit.files.bucket
+
+    with app.test_client() as client:
+        # Invalid key or values
+        for k, v in invalid:
+            resp = client.put('/files/{}/{}'.format(bucket, key),
+                input_stream=BytesIO(b'updated_content'),
+                headers=[(header_name, '{}={}'.format(k, v))] + \
+                    auth_headers_for_user(owner)
+            )
+
+            assert resp.status_code == 400
+
+        # Duplicate key
+        resp = client.put('/files/{}/{}'.format(bucket, key),
+            input_stream=BytesIO(b'updated_content'),
+            headers=[(header_name, 'a=1&a=2')] + \
+                auth_headers_for_user(owner)
+        )
+
+        assert resp.status_code == 400
+
+
+
 #########################################
 # api/files/{bucket_id}/{filekey} [DELETE]
 #########################################
