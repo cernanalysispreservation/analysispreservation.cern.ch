@@ -88,6 +88,11 @@ install_requires = [
     'invenio[{db},{es},base,auth,metadata]~={version}'.format(
         db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION),
     'invenio-files-rest>=1.0.0b1',
+
+    # "raven" versions needed till we FIX dependecies on installation
+    'raven[flask]>=5.0.0,<5.5',
+    'invenio-logging[sentry]>=1.0.0b1',
+
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
