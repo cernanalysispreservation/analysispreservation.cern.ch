@@ -699,28 +699,6 @@ def test_file_delete_delets_successfully(app, users,
 #########################################
 # /api/deposits/${draft_id}/actions/upload [POST]
 #########################################
-@patch("cap.modules.deposit.api.download_url")
-def test_upload_file_in_deposit_via_external_url(mocked_method,
-                                                 app,
-                                                 users,
-                                                 auth_headers_for_user,
-                                                 json_headers,
-                                                 create_deposit):
-    owner = users['cms_user']
-    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
-
-    headers = auth_headers_for_user(owner) + json_headers
-    data = {'url': 'https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/cap/modules/deposit/api.py',
-            'type': 'url'}
-
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers,
-                           data=json.dumps(data))
-
-        assert resp.status_code == 201
-
-
 @mark.parametrize("type", ["url", "repo"])
 def test_upload_file_in_deposit_via_external_url_returns_400_when_url_is_not_correct(type,
                                                                                      app,
@@ -741,25 +719,3 @@ def test_upload_file_in_deposit_via_external_url_returns_400_when_url_is_not_cor
                            data=json.dumps(data))
 
         assert resp.status_code == 400
-
-
-@patch("cap.modules.deposit.api.download_repo")
-def test_upload_repo_in_deposit_via_external_url(mocked_method,
-                                                 app,
-                                                 users,
-                                                 auth_headers_for_user,
-                                                 json_headers,
-                                                 create_deposit):
-    owner = users['cms_user']
-    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
-
-    headers = auth_headers_for_user(owner) + json_headers
-    data = {'url': 'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',
-            'type': 'repo'}
-
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers,
-                           data=json.dumps(data))
-
-        assert resp.status_code == 201

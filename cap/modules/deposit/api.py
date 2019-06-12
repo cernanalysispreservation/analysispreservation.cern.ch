@@ -27,13 +27,8 @@
 from __future__ import absolute_import, print_function
 
 import copy
-import shutil
-import tempfile
-from copy import deepcopy
 from functools import wraps
 
-import requests
-from celery import shared_task
 from flask import current_app, request
 from flask_login import current_user
 from invenio_access.models import ActionRoles, ActionUsers
@@ -51,16 +46,17 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
-from cap.config import FILES_URL_MAX_SIZE
+from cap.modules.deposit.utils import download_from_git, name_git_record
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
-from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.repoimporter.utils import parse_url
 from cap.modules.schemas.models import Schema
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .errors import (DepositValidationError, FileUploadError,
+from .errors import (DepositValidationError,
+                     FileUploadError,
                      UpdateDepositPermissionsError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
@@ -205,36 +201,37 @@ class CAPDeposit(Deposit):
         """Upload action for file/repository."""
         with UpdateDepositPermission(self).require(403):
             data = request.get_json()
+            try:
+                url_attrs = parse_url(data['url'])
+            except ValueError:
+                raise FileUploadError(
+                    'URL could not be parsed. '
+                    'Try again with correct GitHub / CERN GitLab link.')
 
-            fileinfo = self._construct_fileinfo(data['url'],
-                                                data['type'])
             if request:
                 _, record = request.view_args.get('pid_value').data
                 record_id = str(record.id)
-                filename = fileinfo['filename']
+                approved_hosts = ('https://github',
+                                  'https://gitlab.cern.ch',
+                                  'root://')
+
+                # use the name and branch to create a key for the record
+                name = name_git_record(url_attrs, data['type'])
                 obj = ObjectVersion.create(
-                    bucket=record.files.bucket, key=filename
+                    bucket=record.files.bucket,
+                    key=name
                 )
                 obj.file = FileInstance.create()
                 record.files.flush()
-                record.files[filename]['source_url'] = data['url']
+                record.files[name]['source_url'] = data['url']
 
-                if data['type'] == 'url':
-                    if data['url'].startswith(
-                            ('https://github',
-                             'https://gitlab.cern.ch',
-                             'root://')):
-                        download_url.delay(record_id, data['url'], fileinfo)
-                    else:
-                        raise FileUploadError(
-                            'Please provide a valid file url.')
+                if data['url'].startswith(approved_hosts):
+                    record = CAPDeposit.get_record(record_id)
+                    download_from_git.delay(record, name, url_attrs, data)
                 else:
-                    if data['url'].startswith(
-                            ('https://github', 'https://gitlab.cern.ch')):
-                        download_repo.delay(record_id, data['url'], filename)
-                    else:
-                        raise FileUploadError(
-                            'Please provide a valid repository url.')
+                    raise FileUploadError(
+                        'URL could not be parsed. '
+                        'Try again with correct GitHub / CERN GitLab link.')
 
             return self
 
@@ -440,7 +437,7 @@ class CAPDeposit(Deposit):
                 self._add_egroup_permissions(ar.role, permissions, db.session)
 
     def _init_owner_permissions(self, owner=current_user):
-        self['_access'] = deepcopy(EMPTY_ACCESS_OBJECT)
+        self['_access'] = copy.deepcopy(EMPTY_ACCESS_OBJECT)
 
         if owner:
             with db.session.begin_nested():
@@ -450,20 +447,6 @@ class CAPDeposit(Deposit):
 
             self['_deposit']['created_by'] = owner.id
             self['_deposit']['owners'] = [owner.id]
-
-    def _construct_fileinfo(self, url, type):
-        """Construct repo name  or file name."""
-        url = url.rstrip('/')
-        branch = None
-        if type == 'repo':
-            filename = filepath = url.split('/')[-1] + '.tar.gz'
-        else:
-            url = url.split('/blob/')[-1]
-            info = url.split('/')
-            branch = info[0]
-            filename = info[-1]
-            filepath = '/'.join(info[1:])
-        return {'filepath': filepath, 'filename': filename, 'branch': branch}
 
     def _set_experiment(self):
         schema = Schema.get_by_fullpath(self['$schema'])
@@ -559,76 +542,3 @@ class CAPDeposit(Deposit):
         except (AttributeError, JSONSchemaNotFound):
             raise DepositValidationError('Schema {} is not a valid option.'
                                          .format(schema_fullpath))
-
-
-@shared_task(max_retries=5)
-def download_url(pid, url, fileinfo):
-    """Task for fetching external files/repos."""
-    record = CAPDeposit.get_record(pid)
-    size = None
-    if url.startswith("root://"):
-        from xrootdpyfs.xrdfile import XRootDPyFile
-        response = XRootDPyFile(url, mode='r-')
-        total = response.size
-    else:
-        try:
-            filepath = fileinfo.get('filepath', None)
-            filename = fileinfo.get('filename', None)
-            branch = fileinfo.get('branch', None)
-            file = RepoImporter.create(url, branch).archive_file(filepath)
-            url = file.get('url', None)
-            size = file.get('size', None)
-            token = file.get('token', None)
-            headers = {'PRIVATE-TOKEN': token}
-            response = requests.get(
-                url, stream=True, headers=headers).raw
-            response.decode_content = True
-            total = size or int(
-                response.headers.get('Content-Length'))
-        except TypeError as exc:
-            download_url.retry(exc=exc, countdown=10)
-    task_commit(record, response, filename, total)
-
-
-@shared_task(max_retries=5)
-def download_repo(pid, url, filename):
-    """Task for fetching external files/repos."""
-    record = CAPDeposit.get_record(pid)
-    try:
-        link = RepoImporter.create(url).archive_repository()
-        response = ensure_content_length(link)
-        total = int(response.headers.get('Content-Length'))
-    except TypeError as exc:
-        download_repo.retry(exc=exc, countdown=10)
-    task_commit(record, response.raw, filename, total)
-
-
-def task_commit(record, response, filename, total):
-    """Commit file to the record."""
-    record.files[filename].file.set_contents(
-        response,
-        default_location=record.files.bucket.location.uri,
-        size=total
-    )
-    db.session.commit()
-
-
-def ensure_content_length(
-        url, method='GET',
-        session=None,
-        max_size=FILES_URL_MAX_SIZE or 2**20,
-        *args, **kwargs):
-    """Add Content-Length when no present."""
-    kwargs['stream'] = True
-    session = session or requests.Session()
-    r = session.request(method, url, *args, **kwargs)
-    if 'Content-Length' not in r.headers:
-        # stream content into a temporary file so we can get the real size
-        spool = tempfile.SpooledTemporaryFile(max_size)
-        shutil.copyfileobj(r.raw, spool)
-        r.headers['Content-Length'] = str(spool.tell())
-        spool.seek(0)
-        # replace the original socket with our temporary file
-        r.raw._fp.close()
-        r.raw._fp = spool
-    return r

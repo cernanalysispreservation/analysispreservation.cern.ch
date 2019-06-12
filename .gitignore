@@ -78,3 +78,11 @@ cap/test.db
 
 # UI npn modules
 ui/node_modules/*
+ui/package-lock.json
+
+# Pycharm specific
+.idea
+.idea_modules
+
+# Celery
+celerybeat-schedule.db

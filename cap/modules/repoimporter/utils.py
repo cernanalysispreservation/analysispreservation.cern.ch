@@ -26,20 +26,50 @@
 """Importer utils."""
 
 import re
+from flask import current_app
+
+GIT_REG = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)[:|\/]' \
+            r'(?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)(/)?'
+
+GIT_REG_FOR_BRANCH = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)' \
+                     r'[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \
+                     r'/tree/(?P<branch>.+)'
+
+GIT_REG_FOR_FILE = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)[:|\/]' \
+                     r'(?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \
+                     r'/blob/(?P<branch>[-a-zA-Z]+)/(?P<filepath>.+)'
 
 
 def parse_url(url):
-    """Verify url to find and return host, username and repository."""
-    # Pattern host/username/repository or host:username/repository
-    pattern =  \
-        r"(?P<host>github\.com|gitlab\.cern\.ch)[:|\/]" + \
-        r"(?P<user>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)"
-    match = re.search(pattern, url.lower(), re.IGNORECASE)
+    """Parse a git url, and extract the associated information."""
+    url = url[:-4] if url.endswith('.git') else url
+
+    # select the correct regex according to the type of file
+    if 'tree' in url:
+        pattern = GIT_REG_FOR_BRANCH
+    elif 'blob' in url:
+        pattern = GIT_REG_FOR_FILE
+    else:
+        pattern = GIT_REG
+
+    match = re.search(pattern, url, re.IGNORECASE)
     if not match:
-        raise ValueError(
-            "The URL cannot be parsed, please provide a valid URL.")
-    p = match.groupdict()
-    # Remove '.git' if it is there
-    if p['repo'].endswith(".git"):
-        p['repo'] = p['repo'][:-4]
-    return p['host'], p['user'], p['repo']
+        raise ValueError('The URL cannot be parsed, provide a valid git URL.')
+
+    url_results = match.groupdict()
+    url_results['branch'] = 'master' \
+        if 'branch' not in url_results.keys() else url_results['branch']
+
+    # if blob, we need to figure out if path/name are the same
+    # else, we have a standard repo, so we know the path is owner/repo/branch
+    if 'blob' in url:
+        url_results['filename'] = url_results['filepath'].split('/')[-1]
+    else:
+        url_results['filename'] = url_results['filepath'] = url_results['repo']
+
+    return url_results
+
+
+def get_access_token(git):
+    """Get token from the environment variable."""
+    return current_app.config.get('{}_OAUTH_ACCESS_TOKEN'.format(git))

@@ -220,9 +220,10 @@ def users(db):
 
     return users
 
+
 @pytest.fixture()
 def superuser(db):
-    "Create superuser."
+    """Create superuser."""
     superuser = create_user_with_access('superuser@cern.ch', 'superuser-access')
 
     return superuser
@@ -524,3 +525,14 @@ def cms_triggers_index(es):
     cache_cms_triggers_in_es_from_file(source)
 
     current_search.flush_and_refresh(CMS_TRIGGERS_INDEX['alias'])
+
+
+@pytest.fixture
+def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    pid = deposit['_deposit']['id']
+    bucket = deposit.files.bucket
+    headers = auth_headers_for_user(owner)
+
+    return owner, deposit, pid, bucket, headers
