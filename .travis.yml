@@ -29,6 +29,8 @@ notifications:
 
 sudo: false
 
+dist: trusty
+
 language: python
 
 python:
