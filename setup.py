@@ -21,7 +21,7 @@ tests_require = [
     'check-manifest>=0.35',
     'coverage>=4.4.1',
     'isort>=4.3',
-    'mock>=2.0.0',
+    'mock>=3.0.0',
     'pydocstyle>=2.0.0',
     'pytest-cov>=2.5.1',
     'pytest-invenio>=1.0.5',
@@ -94,7 +94,7 @@ install_requires = [
 
     'requests==2.18.4',
     'requests-kerberos==0.12.0',
-    'requests-oauthlib==1.0.0'
+    'requests-oauthlib==1.0.0',
 ]
 
 packages = find_packages()
