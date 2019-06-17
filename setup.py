@@ -94,7 +94,7 @@ install_requires = [
 
     'requests==2.18.4',
     'requests-kerberos==0.12.0',
-    'requests-oauthlib==1.0.0
+    'requests-oauthlib==1.0.0'
 ]
 
 packages = find_packages()
