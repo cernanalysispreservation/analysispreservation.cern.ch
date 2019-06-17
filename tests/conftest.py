@@ -33,19 +33,8 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import Flask, current_app, has_request_context
-from werkzeug.local import LocalProxy
-
 import pytest
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
-                                               cache_cms_triggers_in_es_from_file)
-from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
-                                               cache_das_datasets_in_es_from_file)
-from cap.modules.reana.models import ReanaJob
-from cap.modules.schemas.models import Schema
+from flask import Flask, current_app, has_request_context
 from flask_celeryext import FlaskCeleryExt
 from flask_principal import ActionNeed
 from flask_security import login_user
@@ -62,7 +51,19 @@ from invenio_oauth2server.models import Client, Token
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records.api import RecordMetadata
 from invenio_search import current_search, current_search_client
+from pytest_flask.plugin import _make_test_response_class
 from sqlalchemy_utils.functions import create_database, database_exists
+from werkzeug.local import LocalProxy
+
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
+                                               cache_cms_triggers_in_es_from_file)
+from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
+                                               cache_das_datasets_in_es_from_file)
+from cap.modules.reana.models import ReanaJob
+from cap.modules.schemas.models import Schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -105,6 +106,17 @@ def default_config():
         TESTING=True,
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
     )
+
+
+@pytest.fixture(autouse=True, scope='function')
+def _monkeypatch_response_class(request, monkeypatch):
+    if 'app' not in request.fixturenames:
+        return
+
+    app = request.getfixturevalue('app')
+    monkeypatch.setattr(
+        app, 'response_class',
+        _make_test_response_class(app.response_class))
 
 
 @pytest.yield_fixture(scope='session')
@@ -220,10 +232,12 @@ def users(db):
 
     return users
 
+
 @pytest.fixture()
 def superuser(db):
     "Create superuser."
-    superuser = create_user_with_access('superuser@cern.ch', 'superuser-access')
+    superuser = create_user_with_access(
+        'superuser@cern.ch', 'superuser-access')
 
     return superuser
 
@@ -349,7 +363,7 @@ def location(db):
 def create_deposit(app, db, es, location, jsonschemas_host,
                    create_schema):
     """Returns function to create a new deposit."""
-    minimal_metadata = lambda host, schema: {
+    def minimal_metadata(host, schema): return {
         '$schema': 'https://{}/schemas/{}.json'.format(host, schema)
     }
 
