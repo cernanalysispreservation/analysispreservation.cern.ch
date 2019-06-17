@@ -11,4 +11,4 @@
 #isort -rc -c -df && \
 # check-manifest --ignore ".travis-*,docs/_build*" && \
 # sphinx-build -qnNW docs docs/_build/html && \
-python setup.py test
+pytest . -k test_get_glance_by_id -s

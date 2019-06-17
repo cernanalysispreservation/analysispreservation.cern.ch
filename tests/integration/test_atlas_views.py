@@ -76,6 +76,13 @@ def test_get_glance_by_id(mock_get_token, app, auth_headers_for_superuser):
         assert responses.calls[0].request.url == 'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={}'.format(glance_id)
         assert responses.calls[0].request.headers['Authorization'] == 'Bearer {}'.format(access_token)
 
+        print("===========================")
+        print("===========================")
+
+        print(resp.data)
+        print(type(resp))
+        print("===========================")
+        print("===========================")
         # check the response
         assert resp.json == glance_resp['items'][0]
 
