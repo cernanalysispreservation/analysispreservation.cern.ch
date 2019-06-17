@@ -50,7 +50,6 @@ before_install:
   - /tmp/elasticsearch/bin/elasticsearch &
   - sleep 30
   - travis_retry pip install coveralls
-  - travis_retry pip install kwalitee --pre
   - echo ${TRAVIS_COMMIT_RANGE}
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
@@ -58,12 +57,10 @@ before_install:
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+  - "travis_retry pip install -e .[all]"
   - "travis_retry pip install -r requirements-local-forks.txt"
-  - "travis_retry pip install -e .[docs,tests,ldap]"
 
 before_script:
-  - travis_retry pip freeze
-  - travis_retry pip install kwalitee GitPython --pre
   - travis_retry pip freeze
 
 script:
