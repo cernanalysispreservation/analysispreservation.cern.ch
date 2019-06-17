@@ -29,17 +29,15 @@ notifications:
 
 sudo: false
 
-dist: trusty
-
 language: python
 
 python:
   - "2.7.14"
 
 services:
-- postgresql
-- redis
-- rabbitmq
+  - postgresql
+  - redis
+  - rabbitmq
 
 env:
   - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.0.1 APP_GITLAB_OAUTH_ACCESS_TOKEN="testtoken"
