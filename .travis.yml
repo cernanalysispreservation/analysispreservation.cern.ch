@@ -42,6 +42,7 @@ services:
 env:
   - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.0.1 APP_GITLAB_OAUTH_ACCESS_TOKEN="testtoken"
 
+
 before_install:
   - mkdir /tmp/elasticsearch
   - wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz  | tar xz --directory=/tmp/elasticsearch --strip-components=1
