@@ -62,7 +62,9 @@ install:
   - "travis_retry pip install -e .[docs,tests,ldap]"
 
 before_script:
+  - travis_retry pip freeze
   - travis_retry pip install kwalitee GitPython --pre
+  - travis_retry pip freeze
 
 script:
   - "./run-tests.sh"

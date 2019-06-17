@@ -91,6 +91,10 @@ install_requires = [
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
+
+    'requests==2.18.4',
+    'requests-kerberos==0.12.0',
+    'requests-oauthlib==1.0.0
 ]
 
 packages = find_packages()
