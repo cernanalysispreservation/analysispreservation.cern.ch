@@ -35,6 +35,7 @@ from invenio_search import RecordsSearch
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.schemas.models import Schema
+from cap.modules.user.utils import get_existing_or_register_role
 
 from ..errors import ExternalAPIException
 from ..serializers import CADISchema
@@ -55,12 +56,13 @@ def synchronize_cadi_entries(limit=None):
 
     If analysis with given CADI id doesn't exist yet,
     new deposit will be created.
-    All members of CMS will get a read access.
+    All members of CMS will get a r access and cms-admin egroup rw access.
 
     :params int limit: number of entries to update
     """
     entries = get_all_from_cadi()
     serializer = CADISchema()
+    cms_admin_group = get_existing_or_register_role('cms-cap-admin@cern.ch')
 
     for entry in entries[:limit]:
         cadi_info = serializer.dump(entry).data
@@ -83,6 +85,8 @@ def synchronize_cadi_entries(limit=None):
             cadi_deposit = build_cadi_deposit(cadi_id, cadi_info)
             deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
             deposit._add_experiment_permissions('CMS', ['deposit-read'])
+            deposit._add_egroup_permissions(
+                cms_admin_group, ['deposit-read', 'deposit-update'], db.session)  # noqa
             deposit.commit()
             db.session.commit()
 

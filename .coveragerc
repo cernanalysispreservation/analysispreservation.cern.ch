@@ -1,6 +1,6 @@
 [run]
 source = cap
-omit = 
+omit =
        *__init__.py
        *ext.py
        *bundles.py
@@ -15,4 +15,5 @@ omit =
        cap/modules/cache/proxies.py
        cap/modules/records/serializers/schemas/json.py
        cap/modules/search_ui/views.py
+       cap/modules/repoimporter/git_importer.py
        ui/*

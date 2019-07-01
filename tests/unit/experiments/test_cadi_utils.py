@@ -25,31 +25,21 @@
 
 from __future__ import absolute_import
 
-from time import sleep
-from uuid import uuid4
-
 import responses
-from flask import current_app, has_request_context
-from flask_celeryext import FlaskCeleryExt
-from flask_security import login_user
-from invenio_deposit.minters import deposit_minter
-from invenio_search import current_search, current_search_client
+from flask import current_app
+from invenio_search import current_search
 from mock import patch
+from mock.mock import MagicMock
 from pytest import mark, raises
-from requests.cookies import RequestsCookieJar
-from sqlalchemy.orm.exc import NoResultFound
 
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.errors import ExternalAPIException
 from cap.modules.experiments.serializers import CADISchema
-from cap.modules.experiments.utils.cadi import (build_cadi_deposit,
-                                                get_all_from_cadi,
+from cap.modules.experiments.utils.cadi import (get_all_from_cadi,
                                                 get_deposit_by_cadi_id,
                                                 get_from_cadi_by_id,
                                                 synchronize_cadi_entries)
-from conftest import assign_egroup_to_experiment
+from conftest import _datastore, assign_egroup_to_experiment
 
 
 @responses.activate
@@ -101,15 +91,14 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+@patch('cap.modules.experiments.utils.cadi.generate_krb_cookie',
+       MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
-        mock_get_sso_cookie_for_cadi, app):
+        app):
     cadi_id = 'non-existing'
     # CADI API returns empty list, when no match with given id
     cadi_resp = dict(data=[])
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(
-        cookies_are='example_cookie')
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   json=cadi_resp,
@@ -122,13 +111,11 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(
-        mock_get_sso_cookie_for_cadi, app):
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
+       MagicMock(return_value=dict(cookies_are='example_cookie')))
+def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
     cadi_id = 'ANA-00-000'
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(
-        cookies_are='example_cookie')
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   status=500)
@@ -138,11 +125,11 @@ def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
+       MagicMock(side_effect=ExternalAPIException()))
 def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
-        mock_get_sso_cookie_for_cadi, app):
+        app):
     cadi_id = 'ANA-00-000'
-    mock_get_sso_cookie_for_cadi.side_effect = ExternalAPIException()
 
     with raises(ExternalAPIException):
         get_from_cadi_by_id(cadi_id)
@@ -180,13 +167,11 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_all_from_cadi_when_cadi_server_down_returns_503(
-        mock_get_sso_cookie_for_cadi, app):
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
+       MagicMock(return_value=dict(cookies_are='example_cookie')))
+def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
     cadi_id = 'ANA-00-000'
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(
-        cookies_are='example_cookie')
     responses.add(responses.POST,
                   current_app.config['CADI_GET_ALL_URL'],
                   status=500)
@@ -196,11 +181,11 @@ def test_get_all_from_cadi_when_cadi_server_down_returns_503(
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
+       MagicMock(side_effect=ExternalAPIException()))
 def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_503(
-        mock_get_sso_cookie_for_cadi, app):
+        app):
     cadi_id = 'ANA-00-000'
-    mock_get_sso_cookie_for_cadi.side_effect = ExternalAPIException()
 
     with raises(ExternalAPIException):
         get_all_from_cadi()
@@ -309,14 +294,14 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
 # this should be patched in schemas PR
 @mark.skip('problem with app fixture that pushes app ctx. Needs to be fixed')
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       return_value=[dict(code=u'dANA-00-001', status=u'Free')])
-@patch('cap.modules.experiments.utils.cadi.parse_cadi_entry',
-       return_value=('ANA-00-001', dict(status='Free')))
+       MagicMock(return_value=[dict(code=u'dANA-00-001', status=u'Free')]))
 def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(
-        mock_parse_cadi_enty, mock_get_all_from_cadi, app, es, location,
-        create_schema):
-    schema = create_schema('cms-analysis', experiment='CMS')
-    role = assign_egroup_to_experiment('cms-members@cern.ch', 'CMS')
+        base_app, es, location, create_schema):
+    create_schema('cms-analysis', experiment='CMS', version='0.0.1')
+    group_with_r_access = assign_egroup_to_experiment('cms-members@cern.ch',
+                                                      'CMS')
+    group_with_rw_access = _datastore.find_or_create_role(
+        'cms-cap-admin@cern.ch')
 
     # deposit with this cadi id doesn't exist
     with raises(DepositDoesNotExist):
@@ -330,17 +315,29 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(
     deposit = get_deposit_by_cadi_id('ANA-00-001')
 
     assert deposit['cadi_info'] == {
-        'status': 'Free'
+        'cadi_id': 'ANA-00-001',
+        'contact': '',
+        'created': '',
+        'description': '',
+        'name': '',
+        'paper': '',
+        'pas': '',
+        'publication_status': '',
+        'status': 'Free',
+        'twiki': ''
     }  # sets cadi info correctly
     assert deposit['basic_info']['cadi_id'] == 'ANA-00-001'  # sets cadi id
     assert deposit['general_title'] == 'ANA-00-001'
 
-    # members of experiment got read access
+    # members of experiment got read access and cms-cap-admin egroup write access
     assert deposit['_access']['deposit-read'] == {
         'users': [],
-        'roles': [role.id]
+        'roles': [group_with_r_access.id, group_with_rw_access.id]
     }
-    assert deposit['_access']['deposit-update'] == {'users': [], 'roles': []}
+    assert deposit['_access']['deposit-update'] == {
+        'users': [],
+        'roles': [group_with_rw_access.id]
+    }
     assert deposit['_access']['deposit-admin'] == {'users': [], 'roles': []}
 
     # deposit doesnt have owner
@@ -350,15 +347,19 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       return_value=[dict(code=u'dANA-00-001', status=u'Free')])
+       MagicMock(return_value=[dict(code=u'dANA-00-001', status=u'Free')]))
+@patch('cap.modules.user.utils.does_egroup_exist_in_ldap',
+       MagicMock(return_value=True))
 def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
-        mock_get_all_from_cadi, appctx, db, es, superuser, create_deposit):
-    create_deposit(superuser, 'cms-analysis', {
-        '$ana_type': 'cms-analysis',
-        'basic_info': {
-            'cadi_id': 'ANA-00-001'
-        }
-    })
+        appctx, db, es, superuser, create_deposit):
+    create_deposit(
+        superuser, 'cms-analysis', {
+            'version': '0.0.1',
+            '$ana_type': 'cms-analysis',
+            'basic_info': {
+                'cadi_id': 'ANA-00-001'
+            }
+        })
 
     # deposit with this cadi id already exists
     deposit = get_deposit_by_cadi_id('ANA-00-001')
