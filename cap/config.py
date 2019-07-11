@@ -45,10 +45,46 @@ def _(x):
     return x
 
 
+### ************************************ ###
+# GOOD TO KNOW!
+# 
+# Enviromental variables with INVENIO_ prefix
+# will override variables set in the config.py
+# ex. 
+#  ZENODO_ACCESS_TOKEN = 'CHANGE_ME'
+#  will be overriden if INVENIO_ZENODO_ACCESS_TOKEN
+#  is set in the ENVIRONMENT running the app
+#
+### ************************************ ###
+
+# Cache
+# =========
+#: Default cache type.
+CACHE_TYPE = "redis"
+#: Redis Cache key prefix
+CACHE_KEY_PREFIX = "cache::"
+#: Redis Cache Host
+CACHE_REDIS_HOST = "localhost"
+#: Redis Cache Port
+CACHE_REDIS_PORT = 6379
+#: Redis Cache base url
+CACHE_REDIS_BASE_URL = "redis://{0}:{1}".format(
+    CACHE_REDIS_HOST, CACHE_REDIS_PORT)
+
+CACHE_REDIS_BASE_URL = os.environ.get("CACHE_REDIS_BASE_URL", "redis://localhost:6379")
+
+#: URL of Redis db.
+CACHE_REDIS_URL = "{0}/0".format(CACHE_REDIS_BASE_URL)
+
+# Accounts
+# ========
+#: Redis session storage URL.
+ACCOUNTS_SESSION_REDIS_URL = '{0}/1'.format(CACHE_REDIS_BASE_URL)
+
 # Rate limiting
 # =============
 #: Storage for ratelimiter.
-RATELIMIT_STORAGE_URL = 'redis://localhost:6379/3'
+RATELIMIT_STORAGE_URL = "{0}/3".format(CACHE_REDIS_BASE_URL)
 
 # I18N
 # ====
@@ -69,7 +105,7 @@ SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 MAIL_DEBUG = False
 MAIL_SUPPRESS_SEND = True
 
-# Accounts
+# Flask Security
 # ========
 #: Allow user to confirm their email address.
 SECURITY_CONFIRMABLE = False
@@ -82,8 +118,6 @@ SECURITY_EMAIL_SENDER = SUPPORT_EMAIL
 #: Email subject for account registration emails.
 SECURITY_EMAIL_SUBJECT_REGISTER = _(
     "Welcome to CERN Analysis Preservation!")
-#: Redis session storage URL.
-ACCOUNTS_SESSION_REDIS_URL = 'redis://localhost:6379/1'
 
 # Celery configuration
 # ====================
@@ -91,7 +125,7 @@ BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 #: URL of message broker for Celery (default is RabbitMQ).
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 #: URL of backend for result storage (default is Redis).
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
+CELERY_RESULT_BACKEND = '{0}/2'.format(CACHE_REDIS_BASE_URL)
 #: Scheduled tasks configuration (aka cronjobs).
 CELERY_BEAT_SCHEDULE = {
     'indexer': {
@@ -111,10 +145,7 @@ CELERY_BEAT_SCHEDULE = {
 # Database
 # ========
 #: Database URI including user and password
-SQLALCHEMY_DATABASE_URI = os.environ.get(
-    'APP_SQLALCHEMY_DATABASE_URI',
-    'postgresql+psycopg2://cap:cap@localhost/cap'
-)
+SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://cap:cap@localhost/cap'
 
 # JSONSchemas
 # ===========
@@ -171,8 +202,9 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 # =======================================================================
 
 
-DEBUG_MODE = os.environ.get('DEBUG_MODE', False)
-if DEBUG_MODE == 'True':
+DEBUG_MODE = str(os.environ.get('DEBUG_MODE')).lower() == 'true'
+
+if DEBUG_MODE:
     DEBUG = True
 else:
     DEBUG = False
@@ -185,25 +217,10 @@ if DEBUG:
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Cache
-# =========
-#: Cache key prefix
-CACHE_KEY_PREFIX = "cache::"
-#: Host
-CACHE_REDIS_HOST = "localhost"
-#: Port
-CACHE_REDIS_PORT = 6379
-#: DB
-CACHE_REDIS_DB = 0
-#: URL of Redis db.
-CACHE_REDIS_URL = "redis://{0}:{1}/{2}".format(
-    CACHE_REDIS_HOST, CACHE_REDIS_PORT, CACHE_REDIS_DB)
-#: Default cache type.
-CACHE_TYPE = "redis"
+
 #: Default cache URL for sessions.
-ACCESS_SESSION_REDIS_HOST = os.environ.get('APP_ACCESS_SESSION_REDIS_HOST',
-                                           'localhost')
-ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
+ACCESS_SESSION_REDIS_HOST = 'localhost'
+ACCOUNTS_SESSION_REDIS_URL = "{0}/2".format(CACHE_REDIS_BASE_URL)
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
 
@@ -403,9 +420,6 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         write_scope.id),
 })
 
-#: Default api endpoint for LHCb db
-GRAPHENEDB_URL = 'http://datadependency.cern.ch:7474'
-
 #: Account-REST Configuration
 ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
 """Default get role permission factory: reject any request."""
@@ -446,8 +460,14 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 SEARCH_UI_SEARCH_API = '/api/deposits/'
 
 #: Default ElasticSearch hosts
-es_user = os.environ.get('ELASTICSEARCH_USER')
-es_password = os.environ.get('ELASTICSEARCH_PASSWORD')
+ELASTICSEARCH_HOST = 'localhost'
+ELASTICSEARCH_PORT = '9200'
+
+ELASTICSEARCH_USER = os.environ.get('ELASTICSEARCH_USER')
+ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD')
+es_user = ELASTICSEARCH_USER
+es_password = ELASTICSEARCH_PASSWORD
+
 if es_user and es_password:
     es_params = dict(
         http_auth=(es_user, es_password),
@@ -461,8 +481,8 @@ else:
 
 SEARCH_ELASTIC_HOSTS = [
     dict(
-        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
-        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
+        host=ELASTICSEARCH_HOST,
+        port=int(ELASTICSEARCH_PORT),
         **es_params
     )
 ]
@@ -523,6 +543,9 @@ SECRET_KEY = "changeme"
 # LHCb
 # ========
 #: Ana's database
+# TOFIX: Check below PR for more info
+# https://github.com/cernanalysispreservation/
+# analysispreservation.cern.ch/pull/663
 LHCB_ANA_DB = 'http://datadependency.cern.ch'
 LHCB_GETCOLLISIONDATA_URL = '{0}/getRecoStripSoft?propass='.format(LHCB_ANA_DB)
 LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
@@ -530,8 +553,8 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 # CMS
 # ========
 #: Kerberos credentials
-CMS_USER_PRINCIPAL = os.environ.get('APP_CMS_USER_PRINCIPAL')
-CMS_USER_KEYTAB = os.environ.get('APP_CMS_USER_KEYTAB')
+CMS_USER_PRINCIPAL = os.environ.get("CMS_USER_PRINCIPAL")
+CMS_USER_KEYTAB = os.environ.get("CMS_USER_KEYTAB")
 #: CADI database
 CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/cadiLine/BPH-13-009'
 CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
@@ -541,8 +564,8 @@ CADI_GET_RECORD_URL = 'https://icms.cern.ch/tools/api/cadiLine/{id}'
 # ATLAS
 # ========
 #: Glance database
-GLANCE_CLIENT_ID = os.environ.get('APP_GLANCE_CLIENT_ID')
-GLANCE_CLIENT_PASSWORD = os.environ.get('APP_GLANCE_CLIENT_PASSWORD')
+GLANCE_CLIENT_ID = 'CHANGE_ME'
+GLANCE_CLIENT_PASSWORD = 'CHANGE_ME'
 #: Glance API URLs
 GLANCE_GET_TOKEN_URL = \
     'https://oraweb.cern.ch/ords/atlr/atlas_authdb/oauth/token'
@@ -644,47 +667,39 @@ INDEXER_REPLACE_REFS = False
 
 # LHCB DB files location
 # ======================
-LHCB_DB_FILES_LOCATION = os.environ.get(
-    'APP_LHCB_FILES_LOCATION', os.path.join(
-        APP_ROOT,
-        'modules/experiments/static/example_lhcb/'
-    ))
+LHCB_DB_FILES_LOCATION = os.path.join(
+    APP_ROOT,
+    'modules/experiments/static/example_lhcb/'
+)
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False
 
 # Github and Gitlab oauth tokens
 # ==============================
-GITHUB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITHUB_OAUTH_ACCESS_TOKEN')
-GITLAB_OAUTH_ACCESS_TOKEN = os.environ.get('APP_GITLAB_OAUTH_ACCESS_TOKEN')
+GITHUB_OAUTH_ACCESS_TOKEN = "CHANGE_ME"
+GITLAB_OAUTH_ACCESS_TOKEN = "CHANGE_ME"
 
 # Reana server url
 # ================
 REANA_ACCESS_TOKEN = {
-    'ATLAS': os.environ.get('APP_REANA_ATLAS_ACCESS_TOKEN'),
-    'ALICE': os.environ.get('APP_REANA_ALICE_ACCESS_TOKEN'),
-    'CMS': os.environ.get('APP_REANA_CMS_ACCESS_TOKEN'),
-    'LHCb': os.environ.get('APP_REANA_LHCb_ACCESS_TOKEN')
+    'ATLAS': os.environ.get('REANA_ATLAS_ACCESS_TOKEN'),
+    'ALICE': os.environ.get('REANA_ALICE_ACCESS_TOKEN'),
+    'CMS': os.environ.get('REANA_CMS_ACCESS_TOKEN'),
+    'LHCb': os.environ.get('REANA_LHCb_ACCESS_TOKEN'),
 }
 
 # Keytabs
-KEYTABS_LOCATION = os.environ.get(
-    'APP_KEYTABS_LOCATION',
-    '/etc/keytabs'
-)
+KEYTABS_LOCATION = '/etc/keytabs'
 
 KRB_PRINCIPALS = {
     'CADI': (CMS_USER_PRINCIPAL, CMS_USER_KEYTAB),
 }
 
-CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')
+CERN_CERTS_PEM = None
 
 # Zenodo
 # ======
-ZENODO_SERVER_URL = os.environ.get(
-    'APP_ZENODO_SERVER_URL',
-    'https://zenodo.org/api')
+ZENODO_SERVER_URL = 'https://zenodo.org/api'
 
-ZENODO_ACCESS_TOKEN = os.environ.get(
-    'APP_ZENODO_ACCESS_TOKEN',
-    'CHANGE_ME')
+ZENODO_ACCESS_TOKEN = 'CHANGE_ME'
