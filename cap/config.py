@@ -385,18 +385,12 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 #: Default API endpoint for search UI.
 SEARCH_UI_SEARCH_API = '/api/deposits'
 
-#: Default ElasticSearch hosts
-ELASTICSEARCH_HOST = os.environ.get('ELASTICSEARCH_HOST', 'localhost')
-ELASTICSEARCH_PORT = os.environ.get('ELASTICSEARCH_PORT', '9200')
-
 ELASTICSEARCH_USER = os.environ.get('ELASTICSEARCH_USER')
 ELASTICSEARCH_PASSWORD = os.environ.get('ELASTICSEARCH_PASSWORD')
-es_user = ELASTICSEARCH_USER
-es_password = ELASTICSEARCH_PASSWORD
 
-if es_user and es_password:
+if ELASTICSEARCH_USER and ELASTICSEARCH_PASSWORD:
     es_params = dict(
-        http_auth=(es_user, es_password),
+        http_auth=(ELASTICSEARCH_USER, ELASTICSEARCH_PASSWORD),
         use_ssl=str(os.environ.get('ELASTICSEARCH_USE_SSL')).lower() == 'true',
         verify_certs=str(
             os.environ.get('ELASTICSEARCH_VERIFY_CERTS')).lower() == 'true',
@@ -407,8 +401,8 @@ else:
 
 SEARCH_ELASTIC_HOSTS = [
     dict(
-        host=ELASTICSEARCH_HOST,
-        port=int(ELASTICSEARCH_PORT),
+        host=os.environ.get('ELASTICSEARCH_HOST', 'localhost'),
+        port=int(os.environ.get('ELASTICSEARCH_PORT', '9200')),
         **es_params
     )
 ]
