@@ -64,7 +64,11 @@ install_requires = [
     'Flask-Cli>=0.4.0',
     'Flask-Cache>=0.13.1',
     'Flask-Debugtoolbar>=0.10.1',
-
+    # [TOFIX] Flask-Talisman from 0.5.0->0.5.1 pinning needed for issue
+    # https://github.com/GoogleCloudPlatform/flask-talisman/issues/22
+    # Check also invenio issue
+    # https://github.com/inveniosoftware/invenio-admin/issues/66
+    'flask-talisman==0.5.1',
     # CAP specific libraries
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
