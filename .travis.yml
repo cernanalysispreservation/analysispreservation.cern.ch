@@ -63,11 +63,12 @@ install:
   - "travis_retry pip install -r requirements-local-forks.txt"
   - "travis_retry pip install -e .[docs,tests,ldap]"
 
-before_script:
-  - travis_retry pip install kwalitee GitPython --pre
+# before_script:
+#   - travis_retry pip install kwalitee GitPython --pre
 
 script:
   - "./run-tests.sh"
 
 after_success:
   - coveralls
+  - "./deploy.sh"
