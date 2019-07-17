@@ -59,18 +59,6 @@ def _(x):
 
 # Cache
 # =========
-#: Default cache type.
-CACHE_TYPE = "redis"
-#: Redis Cache key prefix
-CACHE_KEY_PREFIX = "cache::"
-#: Redis Cache Host
-CACHE_REDIS_HOST = "localhost"
-#: Redis Cache Port
-CACHE_REDIS_PORT = 6379
-#: Redis Cache base url
-CACHE_REDIS_BASE_URL = "redis://{0}:{1}".format(
-    CACHE_REDIS_HOST, CACHE_REDIS_PORT)
-
 CACHE_REDIS_BASE_URL = os.environ.get("CACHE_REDIS_BASE_URL", "redis://localhost:6379")
 
 #: URL of Redis db.
@@ -145,7 +133,19 @@ CELERY_BEAT_SCHEDULE = {
 # Database
 # ========
 #: Database URI including user and password
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://cap:cap@localhost/cap'
+POSTGRESQL_CONFIGS = (
+    os.environ.get("POSTGRESQL_USER"),
+    os.environ.get("POSTGRESQL_PASSWORD"),
+    os.environ.get("POSTGRESQL_HOST"),
+    os.environ.get("POSTGRESQL_PORT"),
+    os.environ.get("POSTGRESQL_DATABASE"),
+)
+if all(POSTGRESQL_CONFIGS):
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
+        *POSTGRESQL_CONFIGS
+    )
+else:
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://cap:cap@localhost/cap'
 
 # JSONSchemas
 # ===========
