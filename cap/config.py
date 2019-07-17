@@ -41,9 +41,40 @@ def _(x):
     return x
 
 
+# ************************************ #
+# GOOD TO KNOW!
+#
+# Enviromental variables with INVENIO_ prefix
+# will override variables set in the config.py
+# ex.
+#  ZENODO_ACCESS_TOKEN = 'CHANGE_ME'
+#  will be overriden if INVENIO_ZENODO_ACCESS_TOKEN
+#  is set in the ENVIRONMENT running the app
+#
+# ************************************ #
+
+# Cache
+# =========
+#: Redis Cache Host
+CACHE_REDIS_HOST = os.environ.get("CACHE_REDIS_HOST", "localhost")
+#: Redis Cache Port
+CACHE_REDIS_PORT = os.environ.get("CACHE_REDIS_PORT", 6379)
+#: Redis Cache base url
+CACHE_REDIS_BASE_URL = "redis://{0}:{1}".format(
+    CACHE_REDIS_HOST, CACHE_REDIS_PORT)
+
+#: URL of Redis db.
+CACHE_REDIS_URL = "{0}/0".format(CACHE_REDIS_BASE_URL)
+
+# Accounts
+# ========
+#: Redis session storage URL.
+ACCOUNTS_SESSION_REDIS_URL = '{0}/1'.format(CACHE_REDIS_BASE_URL)
+
 # Rate limiting
 # =============
 #: Storage for ratelimiter.
+# TODO FIX for deployments
 RATELIMIT_STORAGE_URL = 'redis://localhost:6379/3'
 
 # I18N
@@ -75,8 +106,6 @@ SECURITY_SEND_REGISTER_EMAIL = False
 SECURITY_EMAIL_SENDER = SUPPORT_EMAIL
 #: Email subject for account registration emails.
 SECURITY_EMAIL_SUBJECT_REGISTER = _("Welcome to CERN Analysis Preservation!")
-#: Redis session storage URL.
-ACCOUNTS_SESSION_REDIS_URL = 'redis://localhost:6379/1'
 
 # Celery configuration
 # ====================
@@ -184,26 +213,12 @@ if DEBUG:
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-# Cache
-# =========
-#: Cache key prefix
-CACHE_KEY_PREFIX = "cache::"
-#: Host
-CACHE_REDIS_HOST = "localhost"
-#: Port
-CACHE_REDIS_PORT = 6379
-#: DB
-CACHE_REDIS_DB = 0
-#: URL of Redis db.
-CACHE_REDIS_URL = "redis://{0}:{1}/{2}".format(CACHE_REDIS_HOST,
-                                               CACHE_REDIS_PORT,
-                                               CACHE_REDIS_DB)
 #: Default cache type.
 CACHE_TYPE = "redis"
 #: Default cache URL for sessions.
 ACCESS_SESSION_REDIS_HOST = os.environ.get('APP_ACCESS_SESSION_REDIS_HOST',
                                            'localhost')
-ACCOUNTS_SESSION_REDIS_URL = "redis://localhost:6379/2"
+
 #: Cache for storing access restrictions
 ACCESS_CACHE = 'cap.modules.cache:current_cache'
 
