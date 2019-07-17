@@ -5,7 +5,7 @@ component=(
 "ATLAS"
 "CMS"
 "LHCb"
-"UI"
+"ui"
 "access"
 "deposit"
 "devops"

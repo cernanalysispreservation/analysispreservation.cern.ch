@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Sidebar from "grommet/components/Sidebar";
 import Button from "grommet/components/Button";
 import Heading from "grommet/components/Heading";
 import Header from "grommet/components/Header";
@@ -17,6 +16,8 @@ import Spinning from "grommet/components/icons/Spinning";
 import { loginLocalUser } from "../../actions/auth";
 
 import LoginIcon from "grommet/components/icons/base/Login";
+
+import capPackageJSON from "../../../package";
 
 class WelcomePage extends React.Component {
   constructor(props) {
@@ -52,8 +53,8 @@ class WelcomePage extends React.Component {
             </Box>
           </Section>
         </Box>
-        <Sidebar size="medium" justify="center" full={true}>
-          <Box flex={true} justify="center" margin="medium">
+        <Box size="medium" justify="center" full={true}>
+          <Box flex="grow" justify="center" margin="medium">
             <Header
               pad="small"
               justify="end"
@@ -86,12 +87,22 @@ class WelcomePage extends React.Component {
                 />
               ) : null}
             </Box>
+            <div style={styles.version}>ver. {capPackageJSON.version}</div>
           </Box>
-        </Sidebar>
+        </Box>
       </Box>
     );
   }
 }
+
+const styles = {
+  version: {
+    fontSize: "11px",
+    color: "#ccc",
+    justifyContent: "flex-end",
+    textAlign: "center"
+  }
+};
 
 WelcomePage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
