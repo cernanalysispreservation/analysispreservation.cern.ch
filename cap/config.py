@@ -43,17 +43,17 @@ def _(x):
     return x
 
 
-### ************************************ ###
+# ************************************ #
 # GOOD TO KNOW!
-# 
+#
 # Enviromental variables with INVENIO_ prefix
 # will override variables set in the config.py
-# ex. 
+# ex.
 #  ZENODO_ACCESS_TOKEN = 'CHANGE_ME'
 #  will be overriden if INVENIO_ZENODO_ACCESS_TOKEN
 #  is set in the ENVIRONMENT running the app
 #
-### ************************************ ###
+# ************************************ #
 
 # Cache
 # =========
@@ -146,7 +146,19 @@ CELERY_BEAT_SCHEDULE = {
 # Database
 # ========
 #: Database URI including user and password
-SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://cap:cap@localhost/cap'
+POSTGRESQL_CONFIGS = (
+    os.environ.get("POSTGRESQL_USER"),
+    os.environ.get("POSTGRESQL_PASSWORD"),
+    os.environ.get("POSTGRESQL_HOST"),
+    os.environ.get("POSTGRESQL_PORT"),
+    os.environ.get("POSTGRESQL_DATABASE"),
+)
+if all(POSTGRESQL_CONFIGS):
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
+        *POSTGRESQL_CONFIGS
+    )
+else:
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://cap:cap@localhost/cap'
 
 # JSONSchemas
 # ===========

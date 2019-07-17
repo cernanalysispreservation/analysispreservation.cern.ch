@@ -56,6 +56,8 @@ before_install:
   - "cat requirements.txt > .travis-lowest-requirements.txt"
 
 install:
+  - cd ui && yarn install
+  - cd ..
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
   - "travis_retry pip install -e .[all,docs,tests,ldap]"
   - "travis_retry pip install -r requirements-local-forks.txt"
