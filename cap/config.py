@@ -10,31 +10,15 @@
 
 from __future__ import absolute_import, print_function
 
-import copy
 import os
 from datetime import timedelta
 from os.path import dirname, join
 
-from flask import request
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
 from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter
-from flask_principal import RoleNeed
-from invenio_deposit import config as deposit_config
-from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
-from invenio_deposit.scopes import write_scope
-from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
-from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
-                                         RECORDS_REST_FACETS,
-                                         RECORDS_REST_SORT_OPTIONS)
-from invenio_records_rest.facets import terms_filter
+
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
@@ -45,17 +29,17 @@ def _(x):
     return x
 
 
-### ************************************ ###
+# ************************************ ###
 # GOOD TO KNOW!
-# 
+#
 # Enviromental variables with INVENIO_ prefix
 # will override variables set in the config.py
-# ex. 
+# ex.
 #  ZENODO_ACCESS_TOKEN = 'CHANGE_ME'
 #  will be overriden if INVENIO_ZENODO_ACCESS_TOKEN
 #  is set in the ENVIRONMENT running the app
 #
-### ************************************ ###
+# ************************************ ###
 
 # Cache
 # =========
@@ -230,195 +214,7 @@ SUPERUSER_EGROUPS = [
     RoleNeed('data-preservation-admins@cern.ch'),
 ]
 
-# Records
-# =======
-#: Records sort/facets options
-RECORDS_REST_SORT_OPTIONS = dict(
-    records=dict(
-        bestmatch=dict(
-            title=_('Best match'),
-            fields=['_score'],
-            order=1,
-        ),
-        mostrecent=dict(
-            title=_('Most recent'),
-            fields=['_updated'],
-            default_order='desc',
-            order=2,
-        ),
-    )
-)
-RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
-#: Record search facets.
-# for aggregations, only ones starting with facet_ will be displayed on a page
-RECORDS_REST_FACETS = {
-    'deposits': {
-        'aggs': {
-            'facet_status': {
-                'terms': {
-                    'field': 'status.keyword'
-                }
-            },
-            'facet_type': {
-                'terms': {
-                    'field': '_type'
-                }
-            },
-            'facet_cadi_status': {
-                'terms': {
-                    'field': 'cadi_status'
-                }
-            },
-            'facet_publication_status': {
-                'terms': {
-                    'field': 'publication_status.keyword'
-                }
-            },
-            "particles": {
-                "nested": {
-                    "path": "main_measurements.signal_event_selection"
-                            ".physics_objects"
-                },
-                "aggs": {
-                    "facet_physics_objects": {
-                        "terms": {
-                            "field": "main_measurements.signal_event_selection"
-                                     ".physics_objects.object",
-                            "exclude": ""
-                        },
-                        "aggs": {
-                            "doc_count": {
-                                "reverse_nested": {}
-                            },
-                            "facet_physics_objects_type": {
-                                "terms": {
-                                    "field": "main_measurements"
-                                             ".signal_event_selection"
-                                             ".physics_objects"
-                                             ".object_type.keyword"
-                                },
-                                "aggs": {
-                                    "doc_count": {
-                                        "reverse_nested": {}
-                                    }
-                                }
-                            }
-                        }
-                    },
-                }
-            },
-        },
-        'post_filters': {
-            'type': terms_filter('_type'),
-            'status': terms_filter('status.keyword'),
-            'cadi_status': terms_filter('cadi_status'),
-            'publication_status': terms_filter('publication_status.keyword'),
-            'conference': terms_filter('conference'),
-            'physics_objects': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection'
-                '.physics_objects.object'
-            ),
-            'physics_objects_type': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection.physics_objects'
-                '.object_type.keyword'),
-        }
-    },
-    'records': {
-        'aggs': {
-            'facet_type': {
-                'terms': {
-                    'field': '_type'
-                }
-            },
-            'facet_cadi_status': {
-                'terms': {
-                    'field': 'cadi_status'
-                }
-            },
-            'facet_publication_status': {
-                'terms': {
-                    'field': 'publication_status.keyword'
-                }
-            },
-            "particles": {
-                "nested": {
-                    "path": "main_measurements.signal_event_selection"
-                            ".physics_objects"
-                },
-                "aggs": {
-                    "facet_physics_objects": {
-                        "terms": {
-                            "field": "main_measurements.signal_event_selection"
-                                     ".physics_objects.object",
-                            "exclude": ""
-                        },
-                        "aggs": {
-                            "doc_count": {
-                                "reverse_nested": {}
-                            },
-                            "facet_physics_objects_type": {
-                                "terms": {
-                                    "field": "main_measurements"
-                                             ".signal_event_selection"
-                                             ".physics_objects"
-                                             ".object_type.keyword"
-                                },
-                                "aggs": {
-                                    "doc_count": {
-                                        "reverse_nested": {}
-                                    }
-                                }
-                            }
-                        }
-                    },
-                }
-            },
-        },
-        'post_filters': {
-            'type': terms_filter('_type'),
-            'cadi_status': terms_filter('cadi_status'),
-            'publication_status': terms_filter('publication_status.keyword'),
-            'conference': terms_filter('conference'),
-            'physics_objects': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection'
-                '.physics_objects.object'
-            ),
-            'physics_objects_type': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection.physics_objects'
-                '.object_type.keyword'),
-        }
-    }
-}
-
-#: Records REST API endpoints.
-RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
-RECORDS_REST_ENDPOINTS['recid'].update({
-    'record_class': 'cap.modules.records.api:CAPRecord',
-    'pid_fetcher': 'cap_record_fetcher',
-    'search_class': 'cap.modules.records.search:CAPRecordSearch',
-    'search_factory_imp': 'cap.modules.search.query'
-    ':cap_search_factory',
-    'record_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_response'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_response')
-    },
-    'search_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_search'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_search'),
-    },
-    'read_permission_factory_imp': check_oauth2_scope(
-        lambda record: ReadRecordPermission(record).can(),
-        write_scope.id),
-})
 
 #: Account-REST Configuration
 ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
@@ -568,76 +364,6 @@ GLANCE_GET_ALL_URL = \
 GLANCE_GET_BY_ID_URL = \
     'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={id}'  # noqa
 
-# Deposit
-# ============
-#: Default jsonschema for deposit
-DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
-#: Default schemanform for deposit
-DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v0.0.1.json'
-#: Search api url for deposit
-DEPOSIT_SEARCH_API = '/api/deposits/'
-#: Files api url for deposit
-DEPOSIT_FILES_API = '/api/files'
-
-DEPOSIT_PID_MINTER = 'cap_record_minter'
-
-DEPOSIT_REST_ENDPOINTS = copy.deepcopy(deposit_config.DEPOSIT_REST_ENDPOINTS)
-_PID = 'pid(depid,record_class="cap.modules.deposit.api:CAPDeposit")'
-
-DEPOSIT_UI_SEARCH_INDEX = '*'
-
-# DEPOSIT_PID_MINTER is used on publish method in deposit class
-DEPOSIT_REST_ENDPOINTS['depid'].update({
-    'pid_type': 'depid',
-    'pid_minter': 'cap_deposit_minter',
-    'pid_fetcher': 'cap_deposit_fetcher',
-    'record_class': 'cap.modules.deposit.api:CAPDeposit',
-    'record_loaders': {
-        'application/json': 'cap.modules.deposit.loaders:json_v1_loader',
-        'application/json-patch+json': lambda: request.get_json(force=True),
-    },
-    'record_serializers': {
-        'application/json': (
-            'cap.modules.records.serializers'
-            ':json_v1_response'),
-        'application/basic+json': (
-            'cap.modules.records.serializers'
-            ':basic_json_v1_response'),
-        'application/permissions+json': (
-            'cap.modules.records.serializers'
-            ':permissions_json_v1_response'
-        )
-    },
-    'search_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_search'),
-        'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_search')
-    },
-    'files_serializers': {
-        'application/json': (
-            'cap.modules.records.serializers'
-            ':deposit_v1_files_response'),
-    },
-    'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
-    'search_factory_imp': 'cap.modules.search.query'
-    ':cap_search_factory',
-    'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
-    'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
-    'file_item_route':
-    '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
-    'create_permission_factory_imp': check_oauth2_scope(
-        lambda record: CreateDepositPermission(record).can(),
-        write_scope.id),
-    'read_permission_factory_imp': check_oauth2_scope(
-        lambda record: ReadDepositPermission(record).can(),
-        write_scope.id),
-    'update_permission_factory_imp': allow_all,
-    'delete_permission_factory_imp': check_oauth2_scope(
-        lambda record: AdminDepositPermission(record).can(),
-        write_scope.id),
-    'links_factory_imp': 'cap.modules.deposit.links:links_factory',
-})
 
 # Datadir
 # =======

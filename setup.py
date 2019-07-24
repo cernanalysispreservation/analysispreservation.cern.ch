@@ -173,7 +173,6 @@ setup(
             'cap.modules.records.minters:cap_record_minter',
             'cap_deposit_minter = '
             'cap.modules.deposit.minters:cap_deposit_minter',
-
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
@@ -201,6 +200,8 @@ setup(
         ],
         'invenio_config.module': [
             'cap = cap.config',
+            'cap_records = cap.modules.records.config',
+            'cap_deposit = cap.modules.deposit.config',
         ]
     },
     extras_require=extras_require,
