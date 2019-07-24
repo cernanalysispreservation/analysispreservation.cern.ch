@@ -21,13 +21,12 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Models for schemas."""
 
 import re
 
 from flask import current_app
-from invenio_access.models import ActionSystemRoles
+from invenio_access.models import ActionSystemRoles, ActionUsers
 from invenio_access.permissions import authenticated_user
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
@@ -41,7 +40,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from cap.types import json_type
 
-from .permissions import SchemaReadAction
+from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import schema_serializer
 
 ES_FORBIDDEN = r' ,"\<*>|?'
@@ -74,9 +73,7 @@ class Schema(db.Model):
                                 default=lambda: dict(),
                                 nullable=True)
 
-    record_schema = db.Column(json_type,
-                              default=lambda: dict(),
-                              nullable=True)
+    record_schema = db.Column(json_type, default=lambda: dict(), nullable=True)
 
     record_options = db.Column(json_type,
                                default=lambda: dict(),
@@ -87,13 +84,18 @@ class Schema(db.Model):
                                nullable=True)
 
     use_deposit_as_record = db.Column(db.Boolean(create_constraint=False),
-                                      unique=False, default=False)
+                                      unique=False,
+                                      default=False)
     is_indexed = db.Column(db.Boolean(create_constraint=False),
-                           unique=False, default=False)
+                           unique=False,
+                           default=False)
 
     __tablename__ = 'schema'
-    __table_args__ = (UniqueConstraint('name', 'major', 'minor', 'patch',
-                                       name='unique_schema_version'),)
+    __table_args__ = (UniqueConstraint('name',
+                                       'major',
+                                       'minor',
+                                       'patch',
+                                       name='unique_schema_version'), )
 
     def serialize(self):
         """Serialize schema model."""
@@ -101,8 +103,7 @@ class Schema(db.Model):
 
     def __str__(self):
         """Stringify schema object."""
-        return '{name}-v{version}'.format(
-            name=self.name, version=self.version)
+        return '{name}-v{version}'.format(name=self.name, version=self.version)
 
     @validates('name')
     def validate_name(self, key, name):
@@ -152,8 +153,7 @@ class Schema(db.Model):
     def deposit_aliases(self):
         """Get ES deposits aliases."""
         name = name_to_es_name(self.name)
-        return ['deposits', 'deposits-records',
-                'deposits-{}'.format(name)]
+        return ['deposits', 'deposits-records', 'deposits-{}'.format(name)]
 
     @property
     def record_aliases(self):
@@ -167,11 +167,10 @@ class Schema(db.Model):
 
     def __str__(self):
         """Stringify schema object."""
-        return '{name}-v{version}'.format(
-            name=self.name, version=self.version)
+        return '{name}-v{version}'.format(name=self.name, version=self.version)
 
     def update(self, **kwargs):
-        """."""
+        """Update schema instance."""
         Schema.query.filter_by(id=self.id).update(kwargs)
         db.session.commit()
 
@@ -181,11 +180,17 @@ class Schema(db.Model):
         """Give read access to all authenticated users."""
         try:
             db.session.add(
-                ActionSystemRoles.allow(
-                    SchemaReadAction(self.id),
-                    role=authenticated_user
-                )
-            )
+                ActionSystemRoles.allow(SchemaReadAction(self.id),
+                                        role=authenticated_user))
+            db.session.flush()
+        except IntegrityError:
+            db.session.rollback()
+
+    def give_admin_access_for_user(self, user):
+        """Give admin access for users."""
+        try:
+            db.session.add(
+                ActionUsers.allow(SchemaAdminAction(self.id), user=user))
             db.session.flush()
         except IntegrityError:
             db.session.rollback()
@@ -208,8 +213,7 @@ class Schema(db.Model):
     @classmethod
     def get(cls, name, version):
         """Get schema by name and version."""
-        major, minor, patch = re.match(r"(\d+).(\d+).(\d+)",
-                                       version).groups()
+        major, minor, patch = re.match(r"(\d+).(\d+).(\d+)", version).groups()
         try:
             schema = cls.query \
                 .filter_by(name=name, major=major, minor=minor, patch=patch) \
@@ -237,23 +241,18 @@ def create_index(index_name, mapping_body, aliases):
     if not es.indices.exists(index_name):
         current_search.mappings[index_name] = {}  # invenio search needs it
 
-        es.indices.create(
-            index=index_name,
-            body={
-                'mappings': mapping_body
-            },
-            ignore=False
-        )
+        es.indices.create(index=index_name,
+                          body={'mappings': mapping_body},
+                          ignore=False)
 
         for alias in aliases:
-            es.indices.update_aliases({
-                'actions': [
-                    {'add': {
+            es.indices.update_aliases(
+                {'actions': [{
+                    'add': {
                         'index': index_name,
                         'alias': alias
-                    }}
-                ]
-            })
+                    }
+                }]})
 
 
 @event.listens_for(Schema, 'after_insert')

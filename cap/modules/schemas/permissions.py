@@ -35,7 +35,11 @@ from cap.modules.experiments.permissions import exp_need_factory
 SchemaReadAction = action_factory(
     'schema-object-read', parameter=True)
 
+SchemaAdminAction = action_factory(
+    'schema-object-admin', parameter=True)
+
 SchemaReadActionNeed = partial(ParameterizedActionNeed, 'schema-object-read')
+SchemaAdminActionNeed = partial(ParameterizedActionNeed, 'schema-object-admin')
 
 
 class ReadSchemaPermission(Permission):
@@ -53,9 +57,29 @@ class ReadSchemaPermission(Permission):
         _needs = set()
 
         _needs.add(SchemaReadActionNeed(schema.id))
+        _needs.add(SchemaAdminActionNeed(schema.id))
 
         # experiments members can access schema
         if schema.experiment:
             _needs.add(exp_need_factory(schema.experiment))
 
         super(ReadSchemaPermission, self).__init__(*_needs)
+
+
+class AdminSchemaPermission(Permission):
+    """Schema read permission."""
+
+    def __init__(self, schema):
+        """Initialize state.
+
+        Read access for:
+
+        * all members of experiment assigned to schema
+        * all users/roles assigned to schema-object-read action
+
+        """
+        _needs = set()
+
+        _needs.add(SchemaAdminActionNeed(schema.id))
+
+        super(AdminSchemaPermission, self).__init__(*_needs)

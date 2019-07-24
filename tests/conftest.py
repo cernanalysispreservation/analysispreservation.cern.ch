@@ -422,6 +422,14 @@ def record_metadata(deposit):
 
 
 @pytest.fixture
+def schema(db):
+    schema = Schema(name='test-schema', fullname='Test Schema')
+    db.session.add(schema)
+    db.session.commit()
+    return schema
+
+
+@pytest.fixture
 def cms_user_me_data(users):
     return {
         "collaborations": [
