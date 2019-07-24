@@ -341,7 +341,7 @@ def test_file_read_when_user_has_read_update_or_admin_access_can_access(action,
 #########################################
 # api/files/{bucket_id}/{filekey} [PUT]
 #########################################
-@mark.skip
+@mark.skip('This should be possible? or we solve problem from UI/client side')
 def test_file_upload_when_key_already_exists_returns_400(app, users,
                                                          auth_headers_for_user,
                                                          create_deposit):
@@ -490,8 +490,8 @@ def test_put_header_tags(app, users, auth_headers_for_user, create_deposit):
     key = 'test.txt'
     headers = [(
         app.config['FILES_REST_FILE_TAGS_HEADER'],
-            'key1=val1;key2=val2;key3=val3'
-    ),]
+        'key1=val1;key2=val2;key3=val3'
+    ), ]
 
     owner = users['cms_user']
     deposit = create_deposit(owner, 'test-analysis-v0.0.1')
@@ -500,15 +500,15 @@ def test_put_header_tags(app, users, auth_headers_for_user, create_deposit):
     # login_user(client, permissions['bucket'])
     with app.test_client() as client:
         resp = client.put('/files/{}/{}'.format(bucket, key),
-            input_stream=BytesIO(b'updated_content'),
-            headers=headers+auth_headers_for_user(owner),
-        )
+                          input_stream=BytesIO(b'updated_content'),
+                          headers=headers+auth_headers_for_user(owner),
+                          )
 
         assert resp.status_code == 200
 
         resp = client.get('/files/{}'.format(bucket),
-            headers=auth_headers_for_user(owner),
-        )
+                          headers=auth_headers_for_user(owner),
+                          )
 
         tags = resp.json.get('contents', [{}])[0].get('tags', {})
 
@@ -536,22 +536,21 @@ def test_put_header_invalid_tags(app, users, auth_headers_for_user, create_depos
         # Invalid key or values
         for k, v in invalid:
             resp = client.put('/files/{}/{}'.format(bucket, key),
-                input_stream=BytesIO(b'updated_content'),
-                headers=[(header_name, '{}={}'.format(k, v))] + \
-                    auth_headers_for_user(owner)
-            )
+                              input_stream=BytesIO(b'updated_content'),
+                              headers=[(header_name, '{}={}'.format(k, v))] +
+                              auth_headers_for_user(owner)
+                              )
 
             assert resp.status_code == 400
 
         # Duplicate key
         resp = client.put('/files/{}/{}'.format(bucket, key),
-            input_stream=BytesIO(b'updated_content'),
-            headers=[(header_name, 'a=1&a=2')] + \
-                auth_headers_for_user(owner)
-        )
+                          input_stream=BytesIO(b'updated_content'),
+                          headers=[(header_name, 'a=1&a=2')] +
+                          auth_headers_for_user(owner)
+                          )
 
         assert resp.status_code == 400
-
 
 
 #########################################

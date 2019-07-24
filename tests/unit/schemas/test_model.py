@@ -23,18 +23,19 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
 
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 from cap.modules.schemas.models import Schema
 
 
 def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
     with raises(IntegrityError):
         schema = {
-            'name': 'records/ana1',
+            'name': 'cms-analysis',
+            'deposit_schema': {},
             'major': 1,
             'minor': 0,
             'patch': 1
@@ -44,12 +45,23 @@ def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
         db.session.commit()
 
 
+def test_when_schema_name_contains_forbidden_characters_raises_AssertionError(db):
+    with raises(AssertionError):
+        schema = {
+            'name': 'cmsanalysis,\\',
+            'deposit_schema': {},
+        }
+        db.session.add(Schema(**schema))
+        db.session.commit()
+
+
 def test_create_newer_version_of_existing_schema(db):
     schema = {
-        'name': 'records/ana1',
+        'name': 'cms-analysis',
+        'deposit_schema': {},
         'major': 1,
         'minor': 0,
-        'patch': 1,
+        'patch': 1
     }
     db.session.add(Schema(**schema))
     schema.update({'patch': 2})
@@ -59,99 +71,209 @@ def test_create_newer_version_of_existing_schema(db):
     assert Schema.query.count() == 2
 
 
-def test_create_schema_by_fullpath(db):
-    schema = Schema('records/ana1-v1.3.2')
+def test_schema_stringify(db):
+    schema = Schema(**{
+        'name': 'cms-analysis',
+        'deposit_schema': {},
+        'major': 1,
+        'minor': 0,
+        'patch': 2
+    })
     db.session.add(schema)
     db.session.commit()
 
-    assert schema.name == 'records/ana1'
-    assert schema.major == 1
-    assert schema.minor == 3
-    assert schema.patch == 2
+    assert str(schema) == 'cms-analysis-v1.0.2'
 
 
-def test_get_by_fullpath(db):
-    schema = Schema(**{'name': 'records/ana1',
-                       'major': 1,
-                       'minor': 0,
-                       'patch': 1})
-    schema2 = Schema(**{'name': 'deposits/records/ana2',
-                        'major': 2,
-                        'minor': 1,
-                        'patch': 1})
+def test_deposit_path_and_index(db):
+    schema = Schema(**{
+        'name': 'cms-analysis',
+        'deposit_schema': {},
+        'major': 1,
+        'minor': 0,
+        'patch': 2
+    })
     db.session.add(schema)
-    db.session.add(schema2)
     db.session.commit()
 
-    assert Schema.get_by_fullpath(
-        'https://some-host.com/schemas/records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullpath('records/ana1-v1.0.1.json') == schema
-    assert Schema.get_by_fullpath(
-        'https://some-host.com/schemas/deposits/records/ana2-v2.1.1') == schema2
-    assert Schema.get_by_fullpath(
-        'deposits/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullpath(
-        '/deposits/records/ana2-v2.1.1.json') == schema2
-    assert Schema.get_by_fullpath('/deposits/records/ana2-v2.1.1') == schema2
+    assert schema.deposit_path == 'deposits/records/cms-analysis-v1.0.2.json'
+    assert schema.deposit_index == 'deposits-records-cms-analysis-v1.0.2'
 
 
-def test_get_by_fullpath_when_non_existing_raise_JSONSchemaNotFound(db):
+def test_record_path_and_index(db):
+    schema = Schema(**{
+        'name': 'cms-analysis',
+        'deposit_schema': {},
+        'major': 1,
+        'minor': 0,
+        'patch': 2
+    })
+    db.session.add(schema)
+    db.session.commit()
+
+    assert schema.record_path == 'records/cms-analysis-v1.0.2.json'
+    assert schema.record_index == 'records-cms-analysis-v1.0.2'
+
+
+def test_get_when_schema_doesnt_exist_raises_JSONSchemaNotFound(db):
     with raises(JSONSchemaNotFound):
-        Schema.get_by_fullpath('/non-existing/schema/ana2-v2.1.1')
+        Schema.get('non-existing', '1.0.0')
 
 
-def test_get_latest_version_of_schema(db):
-    schemas = [
-        {'name': 'name', 'major': 0, 'minor': 6, 'patch': 6},
-        {'name': 'name', 'major': 1, 'minor': 5, 'patch': 5},
-        {'name': 'name', 'major': 2, 'minor': 3, 'patch': 4},
-        {'name': 'name', 'major': 2, 'minor': 4, 'patch': 0},
-        {'name': 'name', 'major': 2, 'minor': 4, 'patch': 3},
-    ]
-
-    for x in schemas:
-        db.session.add(Schema(**x))
+def test_get(db):
+    schema = Schema(name='test-schema')
+    db.session.add(schema)
+    db.session.add(Schema(name='test-schema', version='2.0.0'))
+    db.session.add(Schema(name='another-schema', version='1.0.1'))
     db.session.commit()
-    latest = Schema.get_latest(name='name')
 
-    assert latest.version == "2.4.3"
+    assert Schema.get('test-schema', '1.0.0') == schema
+
+
+# @mark.parametrize("path,jsonschema", [
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/example-analysis-v1.0.1', 'deposit_schema'),
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/options/example-analysis-v1.0.1', 'deposit_options'),
+#   ('http://analysispreservation.cern.ch/api/schemas/records/example-analysis-v1.0.1', 'record_schema'),
+#   ('http://analysispreservation.cern.ch/api/schemas/records/options/example-analysis-v1.0.1', 'record_options')
+# ])
+# def test_resolve_returns_correct_jsonschema(path, jsonschema, db):
+#    schema = Schema(**{
+#        'name': 'example-analysis',
+#        'major': 1,
+#        'minor': 0,
+#        'patch': 1,
+#        'deposit_schema': {'title': 'Example Deposit Schema'},
+#        'record_schema': {'title': 'Example Record Schema'},
+#        'deposit_options': {'title': 'Example Deposit Options Schema'},
+#        'record_options': {'title': 'Example Record Options Schema'}
+#    })
+#    db.session.add(schema)
+#    db.session.commit()
+#
+#    assert Schema.resolve(path) == (schema, getattr(schema, jsonschema))
+#
+#
+# @mark.parametrize("path,field", [
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-analysis-v1.0.1', 'deposit_schema'),
+#   ('http://analysispreservation.cern.ch/schemas/deposits/records/options/cms-analysis-v1.0.1', 'deposit_options'),
+#   ('http://analysispreservation.cern.ch/schemas/records/options/cms-analysis-v1.0.1', 'deposit_options'),
+#   ('https://analysispreservation.cern.ch/api/schemas/records/cms-analysis-v1.0.1.json', 'deposit_schema'),
+#   ('deposits/records/cms-analysis-v1.0.1', 'deposit_schema'),
+#   ('records/options/cms-analysis-v1.0.1', 'deposit_options')
+# ])
+# def test_resolve_when_use_deposit_as_record_flag_returns_deposit_schemas(db, path, field):
+#    schema = Schema(
+#        name='cms-analysis', major=1, minor=0, patch=1,
+#        deposit_schema={'title': 'deposit'},
+#        deposit_options={'title': 'deposit_options'},
+#        use_deposit_as_record = True
+#    )
+#    db.session.add(schema)
+#    db.session.commit()
+#
+#    assert Schema.resolve(path) == getattr(schema, field)
+#
+#
+# @mark.parametrize("path", [
+#   ('http://weird-host.cern.ch/api/schemas/deposits/records/cms-analysis-v1.0.1'),
+#   ('http://analysispreservation.cern.ch/api/wrong-endpoint/deposits/records/cms-analysis-v1.0.1'),
+#   ('http://analysispreservation.cern.ch/api/schemas/wrong-type/cms-analysis-v1.0.1'),
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/non-existing-schema-v1.0.1'),
+#   ('http://analysispreservation.cern.ch/api/schemas/records/non-existing-schema-v1.0.1'),
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-analysis-v0.0.0'),
+#   ('http://analysispreservation.cern.ch/api/schemas/deposits/records/schemas/schemas/cms-analysis-v0.0.0'),
+#   ('http://analysispreservation.cern.ch/api/schemas/records/cmsanalysisv0.0.0'),
+# ])
+# def test_resolve_when_wrong_path_raises_JSONSchemaNotFound(db, path):
+#    schema = Schema(
+#        name='cms-analysis', major=1, minor=0, patch=1,
+#        deposit_schema={'title': 'deposit'},
+#        record_schema={'title': 'record'},
+#        deposit_options={'title': 'deposit_options'},
+#        record_options={'title': 'record_options'}
+#    )
+#    db.session.add(schema)
+#    db.session.commit()
+#
+#    with raises(JSONSchemaNotFound):
+#        Schema.resolve(path)
+#
+#
+# def test_get_by_fullpath_when_non_existing_raise_JSONSchemaNotFound(db):
+# with raises(JSONSchemaNotFound):
+# Schema.get_by_fullpath('/non-existing/schema/ana2-v2.1.1')
+##
+##
+def test_get_latest_version_of_schema(db):
+    latest_schema = Schema(name='my-schema', version='2.4.3')
+    db.session.add(Schema(name='my-schema', version='0.6.6'))
+    db.session.add(Schema(name='my-schema', version='1.5.5'))
+    db.session.add(Schema(name='my-schema', version='2.3.4'))
+    db.session.add(Schema(name='my-schema', version='2.4.0'))
+    db.session.add(Schema(name='different-schema', version='3.5.4'))
+    db.session.add(latest_schema)
+    db.session.commit()
+
+    assert Schema.get_latest('my-schema') == latest_schema
 
 
 def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_JSONSchemaNotFound(db):
     with raises(JSONSchemaNotFound):
-        Schema.get_latest(name='non-existing')
+        Schema.get_latest('non-existing')
 
 
-@mark.parametrize("schema_params,index_name", [
-    ({'name': 'records/ana1', 'major': 1, 'minor': 0, 'patch': 1}, 'records-ana1-v1.0.1'),
-    ({'name': 'deposits/records/ana1', 'major': 2, 'minor': 1,
-      'patch': 0, 'is_deposit': True}, 'deposits-records-ana1-v2.1.0'),
-])
-def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(schema_params, index_name, db, es):
-    schema = Schema(**schema_params)
+def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(db, es):
+    schema = Schema(name='cms-schema',
+                    is_indexed=True,
+                    record_mapping={'doc': {'properties': {
+                        "title": {"type": "text"}}}},
+                    deposit_mapping={'doc': {'properties': {
+                        "keyword": {"type": "keyword"}}}}
+                    )
     db.session.add(schema)
     db.session.commit()
 
-    assert index_name in current_search.mappings.keys()
-    assert es.indices.exists(index_name)
+    assert 'deposits-records-cms-schema-v1.0.0' in current_search.mappings.keys()
+    assert 'records-cms-schema-v1.0.0' in current_search.mappings.keys()
+
+    assert es.indices.exists('deposits-records-cms-schema-v1.0.0')
+    assert es.indices.exists('records-cms-schema-v1.0.0')
+
+    assert es.indices.get_mapping(
+        'records-cms-schema-v1.0.0') == {
+        'records-cms-schema-v1.0.0': {
+            'mappings': {
+                'doc': {
+                    'properties': {
+                        'title': {
+                            'type': 'text'
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    assert es.indices.get_mapping(
+        'deposits-records-cms-schema-v1.0.0') == {
+        'deposits-records-cms-schema-v1.0.0': {
+            'mappings': {
+                'doc': {
+                    'properties': {
+                        'keyword': {
+                            'type': 'keyword'
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     db.session.delete(schema)
     db.session.commit()
 
-    assert not es.indices.exists(index_name)
-    assert not schema.name in current_search.mappings.keys()
+    assert not es.indices.exists('deposits-records-cms-schema-v1.0.0')
+    assert not es.indices.exists('records-cms-schema-v1.0.0')
 
-
-def test_parse_fullpath():
-    wrong_string = "deposits/records/alice-analysis-111v0.0.1.json"
-    correct_string = "deposits/records/alice-analysis-v0.0.1.json"
-
-    with raises(JSONSchemaNotFound):
-        Schema._parse_fullpath(wrong_string)
-
-    resp = Schema._parse_fullpath(correct_string)
-
-    assert resp[0] == "deposits/records/alice-analysis"
-    assert resp[1] == "0"
-    assert resp[2] == "0"
-    assert resp[3] == "1"
+    assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys()
+    assert 'records-cms-schema-v1.0.0' not in current_search.mappings.keys()

@@ -22,7 +22,7 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Models for JSONschemas."""
+"""Models for schemas."""
 
 import re
 
@@ -33,13 +33,17 @@ from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from invenio_search import current_search_client as es
+from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
-from sqlalchemy.dialects import postgresql
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import validates
 from sqlalchemy.orm.exc import NoResultFound
-from sqlalchemy_utils.types import JSONType
 
-from .permissions import ReadSchemaPermission, SchemaReadAction
+from cap.types import json_type
+
+from .permissions import SchemaReadAction
+
+ES_FORBIDDEN = r' ,"\<*>|?'
 
 
 class Schema(db.Model):
@@ -51,86 +55,117 @@ class Schema(db.Model):
     fullname = db.Column(db.String(128), unique=False, nullable=True)
 
     # version
-    major = db.Column(db.Integer, unique=False, nullable=False, default=0)
+    major = db.Column(db.Integer, unique=False, nullable=False, default=1)
     minor = db.Column(db.Integer, unique=False, nullable=False, default=0)
     patch = db.Column(db.Integer, unique=False, nullable=False, default=0)
 
     experiment = db.Column(db.String(128), unique=False, nullable=True)
 
-    is_deposit = db.Column(db.Boolean(create_constraint=False),
-                           unique=False,
-                           default=False)
+    deposit_schema = db.Column(json_type,
+                               default=lambda: dict(),
+                               nullable=True)
 
-    json = db.Column(
-        JSONType().with_variant(
-            postgresql.JSONB(none_as_null=True),
-            'postgresql',
-        ).with_variant(
-            JSONType(),
-            'sqlite',
-        ),
-        default=lambda: dict(),
-        nullable=True
-    )
+    deposit_options = db.Column(json_type,
+                                default=lambda: dict(),
+                                nullable=True)
+
+    deposit_mapping = db.Column(json_type,
+                                default=lambda: dict(),
+                                nullable=True)
+
+    record_schema = db.Column(json_type,
+                              default=lambda: dict(),
+                              nullable=True)
+
+    record_options = db.Column(json_type,
+                               default=lambda: dict(),
+                               nullable=True)
+
+    record_mapping = db.Column(json_type,
+                               default=lambda: dict(),
+                               nullable=True)
+
+    use_deposit_as_record = db.Column(db.Boolean(create_constraint=False),
+                                      unique=False, default=False)
+    is_indexed = db.Column(db.Boolean(create_constraint=False),
+                           unique=False, default=False)
 
     __tablename__ = 'schema'
     __table_args__ = (UniqueConstraint('name', 'major', 'minor', 'patch',
                                        name='unique_schema_version'),)
 
-    def __init__(self, fullpath=None, **kwargs):
-        """."""
-        if fullpath:
-            self.name, self.major, self.minor, self.patch = \
-                self._parse_fullpath(fullpath)
+    def __str__(self):
+        """Stringify schema object."""
+        return '{name}-v{version}'.format(
+            name=self.name, version=self.version)
 
-        super(Schema, self).__init__(**kwargs)
+    @validates('name')
+    def validate_name(self, key, name):
+        if any(x in ES_FORBIDDEN for x in name):
+            raise AssertionError('Name cannot contain the following characters'
+                                 '[, ", *, \\, <, | , , , > , ?]')
+        return name
 
     @property
     def version(self):
         """Return stringified version."""
-        return "{}.{}.{}".format(self.major, self.minor, self.patch)
+        return "{0}.{1}.{2}".format(self.major, self.minor, self.patch)
+
+    @version.setter
+    def version(self, string):
+        """Set version."""
+        self.major, self.minor, self.patch = re.match(r"(\d+).(\d+).(\d+)",
+                                                      string).groups()
 
     @property
-    def is_record(self):
-        """Return stringified version."""
-        return self.name.startswith('records')
+    def deposit_path(self):
+        """Return deposit schema path."""
+        prefix = current_app.config['SCHEMAS_DEPOSIT_PREFIX']
+        path = urljoin(prefix, "{0}.json".format(self))
+        return path
 
     @property
-    def fullpath(self):
-        """Return full path eg. https://host.com/schemas/schema-v0.0.1.json."""
-        host = current_app.config['JSONSCHEMAS_HOST']
-        return "https://{}/schemas/{}-v{}.json".format(
-            host, self.name, self.version)
+    def record_path(self):
+        """Return record schema path."""
+        prefix = current_app.config['SCHEMAS_RECORD_PREFIX']
+        path = urljoin(prefix, "{0}.json".format(self))
+        return path
 
     @property
-    def index_name(self):
-        """Get index name."""
-        return "{}-v{}".format(self.name.replace('/', '-'), self.version)
+    def deposit_index(self):
+        """Get deposit index name."""
+        path = urljoin(current_app.config['SCHEMAS_DEPOSIT_PREFIX'], str(self))
+        return name_to_es_name(path)
 
     @property
-    def aliases(self):
-        """Get ES aliases names."""
-        aliases = []
-        if self.is_deposit:
-            aliases = ['deposits', 'deposits-records']
-        elif self.is_record:
-            aliases = ['records']
-        return aliases
+    def record_index(self):
+        """Get record index name."""
+        path = urljoin(current_app.config['SCHEMAS_RECORD_PREFIX'], str(self))
+        return name_to_es_name(path)
 
-    def get_matching_record_schema(self):
-        """For given deposit schema, get record one."""
-        name = self.name.replace('deposits/', '')
-        try:
-            return Schema.query \
-                .filter_by(name=name,
-                           major=self.major,
-                           minor=self.minor,
-                           patch=self.patch)\
-                .one()
-        except NoResultFound:
-            raise JSONSchemaNotFound(schema=name)
+    @property
+    def deposit_aliases(self):
+        """Get ES deposits aliases."""
+        name = name_to_es_name(self.name)
+        return ['deposits', 'deposits-records',
+                'deposits-{}'.format(name)]
 
-    def add_read_access_to_all(self):
+    @property
+    def record_aliases(self):
+        """Get ES records aliases."""
+        name = name_to_es_name(self.name)
+        return ['records', 'records-{}'.format(name)]
+
+    def serialize(self):
+        """Serialize schema model."""
+        return schema_serializer.dump(self).data
+
+    def __str__(self):
+        """Stringify schema object."""
+        return '{name}-v{version}'.format(
+            name=self.name, version=self.version)
+
+    def add_read_access_for_all_users(self):
         """Give read access to all authenticated users."""
         try:
             db.session.add(
@@ -150,7 +185,7 @@ class Schema(db.Model):
             .filter_by(name=name) \
             .order_by(cls.major.desc(),
                       cls.minor.desc(),
-                      cls.patch.desc())\
+                      cls.patch.desc()) \
             .first()
 
         if latest:
@@ -159,71 +194,73 @@ class Schema(db.Model):
             raise JSONSchemaNotFound(schema=name)
 
     @classmethod
-    def get_by_fullpath(cls, string):
-        """Get schema by full path, e.g. record/schema-v0.0.1.json."""
-        name, major, minor, patch = cls._parse_fullpath(string)
+    def get(cls, name, version):
+        """Get schema by name and version."""
+        major, minor, patch = re.match(r"(\d+).(\d+).(\d+)",
+                                       version).groups()
         try:
-            return cls.query \
-                .filter_by(name=name,
-                           major=major,
-                           minor=minor,
-                           patch=patch)\
+            schema = cls.query \
+                .filter_by(name=name, major=major, minor=minor, patch=patch) \
                 .one()
         except NoResultFound:
-            raise JSONSchemaNotFound(schema=name)
+            raise JSONSchemaNotFound("{}-v{}".format(name, version))
 
-    @classmethod
-    def get_user_deposit_schemas(cls):
-        """Return all deposit schemas user has read access to."""
-        schemas = cls.query.filter_by(is_deposit=True).all()
-
-        return [x for x in schemas if ReadSchemaPermission(x).can()]
-
-    @staticmethod
-    def _parse_fullpath(string):
-        try:
-            regex = re.compile('(?:.*/schemas/)?'
-                               '/?(?P<name>\S+)'
-                               '-v(?P<major>\d+).'
-                               '(?P<minor>\d+).'
-                               '(?P<patch>\d+)'
-                               '(?:.json)?')
-            return re.search(regex, string).groups()
-        except AttributeError:
-            raise JSONSchemaNotFound(schema=string)
+        return schema
 
 
-@event.listens_for(Schema, 'after_insert')
-def after_insert_schema(target, value, schema):
-    """On schema insert, create corresponding indexes and aliases in ES."""
-    if (schema.is_deposit or schema.is_record) and \
-            not es.indices.exists(schema.index_name):
+def name_to_es_name(name):
+    """Translate name to ES compatible name.
+       Replace '/' with '-'.
+       [, ", *, \\, <, | , , , > , ?] are forbidden.
+    """
+    if any(x in ES_FORBIDDEN for x in name):
+        raise AssertionError('Name cannot contain the following characters'
+                             '[, ", *, \\, <, | , , , > , ?]')
 
-        # invenio search needs it
-        current_search.mappings[schema.index_name] = {}
+    return name.replace('/', '-')
+
+
+def create_index(index_name, mapping_body, aliases):
+    """Create index in elasticsearch, add under given aliases."""
+    if not es.indices.exists(index_name):
+        current_search.mappings[index_name] = {}  # invenio search needs it
 
         es.indices.create(
-            index=schema.index_name,
-            body={},
+            index=index_name,
+            body={
+                'mappings': mapping_body
+            },
             ignore=False
         )
 
-        for alias in schema.aliases:
+        for alias in aliases:
             es.indices.update_aliases({
-                "actions": [
-                    {"add": {
-                        "index": schema.index_name,
-                        "alias": alias
+                'actions': [
+                    {'add': {
+                        'index': index_name,
+                        'alias': alias
                     }}
                 ]
             })
 
 
-@event.listens_for(Schema, 'after_delete')
-def before_delete_schema(mapper, connect, target):
-    """On schema delete, delete corresponding indexes and aliases in ES."""
-    if es.indices.exists(target.index_name):
-        es.indices.delete(target.index_name)
+@event.listens_for(Schema, 'after_insert')
+def after_insert_schema(target, value, schema):
+    """On schema insert, create corresponding indexes and aliases in ES."""
+    if schema.is_indexed:
+        create_index(schema.deposit_index, schema.deposit_mapping,
+                     schema.deposit_aliases)
+        create_index(schema.record_index, schema.record_mapping,
+                     schema.record_aliases)
 
-    # invenio search needs it
-    current_search.mappings.pop(target.index_name)
+
+@event.listens_for(Schema, 'after_delete')
+def before_delete_schema(mapper, connect, schema):
+    """On schema delete, delete corresponding indexes and aliases in ES."""
+    if schema.is_indexed:
+        for index in (schema.record_index, schema.deposit_index):
+            if es.indices.exists(index):
+                es.indices.delete(index)
+
+            # invenio search needs it
+            current_search.mappings.pop(index)

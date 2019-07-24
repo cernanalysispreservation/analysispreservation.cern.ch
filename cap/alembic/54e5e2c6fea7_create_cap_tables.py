@@ -8,10 +8,10 @@
 """Create cap tables."""
 
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
-from sqlalchemy_utils import JSONType, UUIDType
-
 from alembic import op
+from cap.types import json_type
+from sqlalchemy.dialects import postgresql
+from sqlalchemy_utils import UUIDType
 
 # revision identifiers, used by Alembic.
 revision = '54e5e2c6fea7'
@@ -30,13 +30,7 @@ def upgrade():
                     sa.Column('minor', sa.Integer(), nullable=False),
                     sa.Column('patch', sa.Integer(), nullable=False),
                     sa.Column('json',
-                              JSONType().with_variant(
-                                  postgresql.JSONB(none_as_null=True),
-                                  'postgresql',
-                              ).with_variant(
-                                  JSONType(),
-                                  'sqlite',
-                              ),
+                              json_type,
                               default=lambda: dict(),
                               nullable=True
                               ),
@@ -56,24 +50,12 @@ def upgrade():
                               ),
                     sa.Column('name', sa.String(length=100), nullable=False),
                     sa.Column('params',
-                              JSONType().with_variant(
-                                  postgresql.JSONB(none_as_null=True),
-                                  'postgresql',
-                              ).with_variant(
-                                  JSONType(),
-                                  'sqlite',
-                              ),
+                              json_type,
                               default=lambda: dict(),
                               nullable=True
                               ),
                     sa.Column('output',
-                              JSONType().with_variant(
-                                  postgresql.JSONB(none_as_null=True),
-                                  'postgresql',
-                              ).with_variant(
-                                  JSONType(),
-                                  'sqlite',
-                              ),
+                              json_type,
                               default=lambda: dict(),
                               nullable=True),
                     sa.ForeignKeyConstraint(

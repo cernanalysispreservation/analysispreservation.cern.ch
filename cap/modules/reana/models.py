@@ -30,8 +30,10 @@ from invenio_accounts.models import User
 from invenio_db import db
 from invenio_records.models import RecordMetadata
 from sqlalchemy.dialects import postgresql
-from sqlalchemy_utils.types import JSONType, UUIDType
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy_utils.types import UUIDType
+
+from cap.types import json_type
 
 
 class ReanaJob(db.Model):
@@ -64,25 +66,13 @@ class ReanaJob(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
 
     params = db.Column(
-        JSONType().with_variant(
-            postgresql.JSONB(none_as_null=True),
-            'postgresql',
-        ).with_variant(
-            JSONType(),
-            'sqlite',
-        ),
+        json_type,
         default=lambda: dict(),
         nullable=True
     )
 
     output = db.Column(
-        JSONType().with_variant(
-            postgresql.JSONB(none_as_null=True),
-            'postgresql',
-        ).with_variant(
-            JSONType(),
-            'sqlite',
-        ),
+        json_type,
         default=lambda: dict(),
         nullable=True
     )

@@ -41,10 +41,10 @@ from conftest import _datastore
 # api/deposits/{pid}/actions/publish [POST]
 ###########################################
 def test_deposit_publish_when_owner_can_publish_his_deposit(app, users,
-                                                          auth_headers_for_user,
-                                                          create_deposit):
+                                                            auth_headers_for_user,
+                                                            create_deposit):
     owner = users['cms_user']
-    pid = create_deposit(owner, 'test-analysis-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
@@ -54,10 +54,10 @@ def test_deposit_publish_when_owner_can_publish_his_deposit(app, users,
 
 
 def test_deposit_publish_when_superuser_can_publish_others_deposits(app, users,
-                                                                  auth_headers_for_superuser,
-                                                                  create_deposit):
+                                                                    auth_headers_for_superuser,
+                                                                    create_deposit):
     owner = users['cms_user']
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
@@ -70,11 +70,11 @@ def test_deposit_publish_when_other_user_returns_403(app, users,
                                                      auth_headers_for_user,
                                                      create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
-                          headers=auth_headers_for_user(other_user))
+                           headers=auth_headers_for_user(other_user))
 
         assert resp.status_code == 403
 
@@ -88,7 +88,7 @@ def test_deposit_publish_when_user_has_only_read_or_update_permission_returns_40
                                                                                   auth_headers_for_user,
                                                                                   create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test')['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
@@ -112,7 +112,7 @@ def test_deposit_publish_when_user_has_admin_permission_can_publish_deposit(app,
                                                                             auth_headers_for_user,
                                                                             create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'cms')['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
@@ -138,16 +138,17 @@ def test_deposit_publish_changes_status_and_creates_record(app, users,
                                                            create_deposit):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test', experiment='CMS')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
                            headers=headers)
 
         record_metadata = resp.json['metadata']
-        assert re.match('CAP.CMS.{4}\w.{4}\w', record_metadata['control_number'])
-        assert re.match('CAP.CMS.{4}\w.{4}\w', record_metadata['_deposit']['pid']['value'])
+        assert re.match('CAP.CMS.{4}\w.{4}\w',
+                        record_metadata['control_number'])
+        assert re.match('CAP.CMS.{4}\w.{4}\w',
+                        record_metadata['_deposit']['pid']['value'])
         assert record_metadata['_deposit']['status'] == 'published'
 
         resp = client.get('/records/{}'.format(record_metadata['control_number']),
@@ -156,14 +157,14 @@ def test_deposit_publish_changes_status_and_creates_record(app, users,
         assert resp.status_code == 200
 
 
-def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
-                                                           auth_headers_for_user,
-                                                           json_headers,
-                                                           create_schema,
-                                                           create_deposit):
+def test_deposit_publish_then_deposit_update_should_not_be_allowed(app,
+                                                                   users,
+                                                                   auth_headers_for_user,
+                                                                   json_headers,
+                                                                   create_deposit):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    pid = create_deposit(owner, 'cms-analysis-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'cms')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
@@ -172,8 +173,8 @@ def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
         assert resp.status_code == 202
 
         resp = client.put('/deposits/{}'.format(pid),
-                           headers=headers + json_headers,
-                           data = json.dumps({"title": "Updated published"}))
+                          headers=headers + json_headers,
+                          data=json.dumps({"title": "Updated published"}))
 
         assert resp.status_code == 403
 
@@ -183,24 +184,23 @@ def test_deposit_publish_then_deposit_update_should_not_be_allowed(app, users,
         assert resp.status_code == 201
 
         resp = client.put('/deposits/{}'.format(pid),
-                           headers=headers + json_headers,
-                           data = json.dumps({"title": "Updated published"}))
+                          headers=headers + json_headers,
+                          data=json.dumps({"title": "Updated published"}))
 
         assert resp.status_code == 200
-        assert resp.json.get("metadata", {}).get("title", None) == "Updated published"
+        assert resp.json.get("metadata", {}).get(
+            "title", None) == "Updated published"
 
 
 # TOFIX : updating schemas that don't have indexes, results to error
 @mark.skip
 def test_deposit_publish_unknown_schema_then_deposit_update_should_not_be_allowed(app, users,
-                                                           auth_headers_for_user,
-                                                           json_headers,
-                                                           create_schema,
-                                                           create_deposit):
+                                                                                  auth_headers_for_user,
+                                                                                  json_headers,
+                                                                                  create_deposit):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    pid = create_deposit(owner, 'test-v0.0.1')['_deposit']['id']
+    pid = create_deposit(owner, 'test')['_deposit']['id']
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/publish'.format(pid),
@@ -209,8 +209,8 @@ def test_deposit_publish_unknown_schema_then_deposit_update_should_not_be_allowe
         assert resp.status_code == 202
 
         resp = client.put('/deposits/{}'.format(pid),
-                           headers=headers + json_headers,
-                           data = json.dumps({"general_title": "Updated published"}))
+                          headers=headers + json_headers,
+                          data=json.dumps({"general_title": "Updated published"}))
 
         assert resp.status_code == 403
 
@@ -226,12 +226,12 @@ def test_get_deposits_when_published_other_members_of_experiment_can_see_it(app,
                                                                             create_schema,
                                                                             create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
-    headers_for_owner = auth_headers_for_user(owner) 
-    headers_for_other_user = auth_headers_for_user(other_user) 
     user_from_different_exp = users['lhcb_user']
+    headers_for_owner = auth_headers_for_user(owner)
+    headers_for_other_user = auth_headers_for_user(other_user)
     headers_for_diff_exp_user = auth_headers_for_user(user_from_different_exp)
-    pid = create_deposit(owner, 'test-v0.0.1', experiment='CMS')['_deposit']['id']
-    
+    pid = create_deposit(owner, 'test', experiment='CMS')['_deposit']['id']
+
     with app.test_client() as client:
         # creator can see it
         resp = client.get('/deposits/{}'.format(pid),
@@ -272,11 +272,9 @@ def test_get_deposits_when_published_other_members_of_experiment_can_see_it(app,
 def test_deposit_publish_record_inherits_deposit_permissions(app, db, users, create_deposit):
     owner = users['superuser']
     role = _datastore.find_or_create_role('some-egroup@cern.ch')
-    deposit = create_deposit(owner, 'test-v1.0.0', {})
-    deposit._add_egroup_permissions(role,
-                                    ['deposit-read',
-                                     'deposit-update'],
-                                    db.session)
+    deposit = create_deposit(owner, 'test', {})
+    deposit._add_egroup_permissions(
+        role, ['deposit-read', 'deposit-update'], db.session)
     deposit.publish()
     _, record = deposit.fetch_published()
 
@@ -311,15 +309,15 @@ def test_deposit_publish_record_inherits_deposit_permissions(app, db, users, cre
                                        argument=str(record.id),
                                        role_id=role.id).one()
     assert not ActionRoles.query.filter_by(action='record-admin',
-                                       argument=str(record.id),
-                                       role_id=role.id).one_or_none()
+                                           argument=str(record.id),
+                                           role_id=role.id).one_or_none()
 
 
 def test_deposit_publish_gives_acceess_to_members_of_exp(app, db, users, create_deposit):
     owner = users['superuser']
     role = _datastore.find_or_create_role('some-egroup@cern.ch')
     db.session.add(ActionRoles.allow(exp_need_factory('CMS'), role=role))
-    deposit = create_deposit(owner, 'test-v1.0.0', {}, 'CMS', publish=True)
+    deposit = create_deposit(owner, 'test', {}, experiment='CMS', publish=True)
     _, record = deposit.fetch_published()
 
     assert record['_access'] == {

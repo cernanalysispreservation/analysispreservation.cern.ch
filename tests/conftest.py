@@ -33,19 +33,8 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from flask import Flask, current_app, has_request_context
-from werkzeug.local import LocalProxy
-
 import pytest
-from cap.factory import create_api
-from cap.modules.deposit.api import CAPDeposit as Deposit
-from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
-                                               cache_cms_triggers_in_es_from_file)
-from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
-                                               cache_das_datasets_in_es_from_file)
-from cap.modules.reana.models import ReanaJob
-from cap.modules.schemas.models import Schema
+from flask import Flask, current_app, has_request_context
 from flask_celeryext import FlaskCeleryExt
 from flask_principal import ActionNeed
 from flask_security import login_user
@@ -58,11 +47,23 @@ from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
 from invenio_indexer.api import RecordIndexer
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_oauth2server.models import Client, Token
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records.api import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
+from werkzeug.local import LocalProxy
+
+from cap.factory import create_api
+from cap.modules.deposit.api import CAPDeposit as Deposit
+from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
+                                               cache_cms_triggers_in_es_from_file)
+from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
+                                               cache_das_datasets_in_es_from_file)
+from cap.modules.reana.models import ReanaJob
+from cap.modules.schemas.models import Schema
 
 
 @pytest.yield_fixture(scope='session')
@@ -101,6 +102,7 @@ def default_config():
         CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
         CELERY_RESULT_BACKEND='cache',
         SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
+        JSONSCHEMAS_HOST='analysispreservation.cern.ch',
         ACCESS_CACHE=None,
         TESTING=True,
         APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
@@ -223,8 +225,9 @@ def users(db):
 
 @pytest.fixture()
 def superuser(db):
-    """Create superuser."""
-    superuser = create_user_with_access('superuser@cern.ch', 'superuser-access')
+    "Create superuser."
+    superuser = create_user_with_access(
+        'superuser@cern.ch', 'superuser-access')
 
     return superuser
 
@@ -238,7 +241,7 @@ def jsonschemas_host():
 def create_schema(db):
     """Returns function to add a schema to db."""
 
-    def _add_schema(schema, is_deposit=True, experiment=None, json=None):
+    def _add_schema(name, deposit_schema=None, is_indexed=True, use_deposit_as_record=True, version="1.0.0", **kwargs):
         """
         Add new schema into db
         """
@@ -249,13 +252,15 @@ def create_schema(db):
         }
 
         try:
-            schema = Schema.get_by_fullpath(schema)
+            schema = Schema.get(name, version)
         except JSONSchemaNotFound:
             schema = Schema(
-                fullpath=schema,
-                experiment=experiment,
-                is_deposit=is_deposit,
-                json=json or default_json
+                name=name,
+                version=version,
+                is_indexed=is_indexed,
+                use_deposit_as_record=use_deposit_as_record,
+                deposit_schema=deposit_schema or default_json,
+                **kwargs
             )
             db.session.add(schema)
             db.session.commit()
@@ -350,32 +355,26 @@ def location(db):
 def create_deposit(app, db, es, location, jsonschemas_host,
                    create_schema):
     """Returns function to create a new deposit."""
-    minimal_metadata = lambda host, schema: {
-        '$schema': 'https://{}/schemas/{}.json'.format(host, schema)
+    def minimal_metadata(url): return {
+        '$schema': url
     }
 
-    def _create_deposit(user, schema_name,
-                        metadata=None, experiment=None, publish=False):
-        """
-        Create a new deposit for given user and schema name
+    def _create_deposit(user, schema_name, metadata=None, experiment=None, publish=False):
+        """Create a new deposit for given user and schema name.
+
         e.g cms-analysis-v0.0.1,
         with minimal metadata defined for this schema type.
         """
         # create schema for record
         with app.test_request_context():
-            schema = create_schema('records/{}'.format(schema_name), is_deposit=False,
-                                   experiment=experiment)
-            if not experiment:
-                schema.add_read_access_to_all()
+            schema = create_schema(schema_name, experiment=experiment)
+            deposit_schema_url = current_jsonschemas.path_to_url(
+                schema.deposit_path)
 
-            # create schema for deposit
-            schema = create_schema('deposits/records/{}'.format(schema_name),
-                                   experiment=experiment)
             if not experiment:
-                schema.add_read_access_to_all()
+                schema.add_read_access_for_all_users()
 
-            metadata = metadata or minimal_metadata(jsonschemas_host,
-                                                    'deposits/records/{}'.format(schema_name))
+            metadata = metadata or minimal_metadata(deposit_schema_url)
             login_user(user)
             id_ = uuid4()
             deposit_minter(id_, metadata)
@@ -388,9 +387,9 @@ def create_deposit(app, db, es, location, jsonschemas_host,
             _, record = deposit.fetch_published()
             RecordIndexer().index(record)
 
-            current_search.flush_and_refresh('records')
+            current_search.flush_and_refresh(schema.record_index)
 
-        current_search.flush_and_refresh(schema.index_name)
+        current_search.flush_and_refresh(schema.deposit_index)
 
         return Deposit.get_record(deposit.id)
 
@@ -406,7 +405,7 @@ def bearer_auth(token):
 @pytest.fixture
 def deposit(superuser, create_deposit):
     """New deposit with files."""
-    return create_deposit(superuser, 'cms-analysis-v0.0.1')
+    return create_deposit(superuser, 'cms-analysis')
 
 
 @pytest.fixture
@@ -420,58 +419,6 @@ def record(superuser, create_deposit):
 @pytest.fixture
 def record_metadata(deposit):
     return deposit.get_record_metadata()
-
-
-@pytest.fixture
-def superuser_me_data(superuser):
-    return {
-        "collaborations": [
-            "ATLAS",
-            "LHCb",
-            "CMS",
-            "ALICE"
-        ],
-        "current_experiment": "ATLAS",
-        "deposit_groups": [
-            {
-                "deposit_group": "lhcb",
-                "description": "Create an LHCb Analysis (analysis metadata, workflows, etc)",
-                "name": "LHCb Analysis"
-            },
-            {
-                "deposit_group": "alice-analysis",
-                "description": "Create an ALICE Analysis",
-                "name": "ALICE Analysis"
-            },
-            {
-                "deposit_group": "cms-questionnaire",
-                "description": "Create a CMS Questionnaire",
-                "name": "CMS Questionnaire"
-            },
-            {
-                "deposit_group": "atlas-workflows",
-                "description": "Create an ATLAS Workflow",
-                "name": "ATLAS Workflow"
-            },
-            {
-                "deposit_group": "cms-analysis",
-                "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
-                "name": "CMS Analysis"
-            },
-            {
-                "deposit_group": "atlas-analysis",
-                "description": "Create an ATLAS Analysis",
-                "name": "ATLAS Analysis"
-            },
-            {
-                "deposit_group": "test-schema",
-                "description": "Create a CMS CADI Entry",
-                "name": "Test schema"
-            }
-        ],
-        "email": superuser.email,
-        "id": superuser.id
-    }
 
 
 @pytest.fixture

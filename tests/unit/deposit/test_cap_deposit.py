@@ -135,3 +135,21 @@ def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):
     assert ActionUsers.query.filter_by(action='deposit-read',
                                        argument=str(deposit.id),
                                        user_id=user.id).one()
+
+
+def test_construct_fileinfo_to_return_correct_info_for_file(deposit):
+    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/cap/modules/deposit/api.py"
+    type = 'url'
+    file_info = deposit._construct_fileinfo(url, type)
+    assert file_info['filename'] == "api.py"
+    assert file_info['filepath'] == "cap/modules/deposit/api.py"
+    assert file_info['branch'] == "master"
+
+
+def test_construct_fileinfo_to_return_correct_info_for_repo(deposit):
+    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/"
+    type = 'repo'
+    file_info = deposit._construct_fileinfo(url, type)
+    assert file_info['filename'] == "analysispreservation.cern.ch.tar.gz"
+    assert file_info['filepath'] == "analysispreservation.cern.ch.tar.gz"
+    assert file_info['branch'] is None

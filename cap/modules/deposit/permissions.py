@@ -36,6 +36,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
+from cap.modules.schemas.resolvers import resolve_schema_by_url
 
 from .errors import WrongJSONSchemaError
 
@@ -119,16 +120,14 @@ class CreateDepositPermission(Permission):
         """Create deposit permissions are based on schema's permissions."""
         if '$schema' in deposit:
             try:
-                schema = Schema.get_by_fullpath(deposit['$schema'])
+                schema = resolve_schema_by_url(deposit['$schema'])
             except JSONSchemaNotFound:
                 raise WrongJSONSchemaError('Schema {} doesnt exist.'.
                                            format(deposit['$schema']))
 
         elif '$ana_type' in deposit:
             try:
-                schema = Schema.get_latest(
-                    'deposits/records/{}'.format(deposit['$ana_type'])
-                )
+                schema = Schema.get_latest(deposit['$ana_type'])
             except JSONSchemaNotFound:
                 raise WrongJSONSchemaError('Schema with name {} doesnt exist.'.
                                            format(deposit['$ana_type']))

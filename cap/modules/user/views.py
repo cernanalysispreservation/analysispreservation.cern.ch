@@ -34,7 +34,7 @@ from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.utils import get_schemas_for_user
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -61,14 +61,15 @@ def get_user():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    schemas = Schema.get_user_deposit_schemas()
+    schemas = get_schemas_for_user()
 
     dep_groups = [{
         'name': schema.fullname,
-        'deposit_group': schema.name.replace('deposits/records/', '')
+        'deposit_group': schema.name
     } for schema in schemas]
 
     return dep_groups
+
 
 user_blueprint.route('/logout', endpoint='logout')(logout)
 

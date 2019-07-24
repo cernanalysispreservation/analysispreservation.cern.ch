@@ -16,15 +16,6 @@ from datetime import timedelta
 from os.path import dirname, join
 
 from flask import request
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -38,6 +29,15 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
+
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter
 
 
 def _(x):
@@ -128,6 +128,10 @@ SQLALCHEMY_DATABASE_URI = os.environ.get(
 # ===========
 #: Hostname used in URLs for local JSONSchemas.
 JSONSCHEMAS_HOST = 'analysispreservation.cern.ch'
+
+SCHEMAS_DEPOSIT_PREFIX = 'deposits/records/'
+SCHEMAS_RECORD_PREFIX = 'records/'
+SCHEMAS_OPTIONS_PREFIX = 'options/'
 
 # Flask configuration
 # ===================
@@ -514,16 +518,15 @@ JSONSCHEMAS_RESOLVE_SCHEMA = True
 
 JSONSCHEMAS_LOADER_CLS = json_loader_factory(JSONResolver(
     plugins=[
-        'cap.modules.records.resolvers.local',
-        'cap.modules.records.resolvers.cap',
+        'cap.modules.schemas.resolvers',
     ],
 ))
 
-JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
-
-# directories with jsonschemas
-JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
-JSONSCHEMAS_RECORDS_DIR = 'records/'
+#JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
+#
+## directories with jsonschemas
+#JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
+#JSONSCHEMAS_RECORDS_DIR = 'records/'
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.

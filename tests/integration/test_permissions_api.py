@@ -44,6 +44,8 @@ _datastore = LocalProxy(
 ########################################
 # api/deposits/{pid}/actions/permissions [POST]
 ########################################
+
+
 @mark.parametrize("action", [
     ("deposit-read"),
     ("deposit-update")
@@ -69,7 +71,8 @@ def test_change_permissions_when_user_has_only_read_update_access_to_deposit_ret
                            data=json.dumps(permissions))
 
         resp = client.post('/deposits/{}/actions/permissions'.format(pid),
-                           headers=auth_headers_for_user(other_user) + json_headers,
+                           headers=auth_headers_for_user(
+                               other_user) + json_headers,
                            data=json.dumps([]))
 
         assert resp.status_code == 403
@@ -95,7 +98,8 @@ def test_change_permissions_when_user_has_admin_access_to_deposit_can_update_per
                            data=json.dumps(permissions))
 
         resp = client.post('/deposits/{}/actions/permissions'.format(pid),
-                           headers=auth_headers_for_user(other_user) + json_headers,
+                           headers=auth_headers_for_user(
+                               other_user) + json_headers,
                            data=json.dumps([]))
 
         assert resp.status_code == 201
@@ -130,7 +134,7 @@ def test_add_permissions_for_non_registered_user_registers_him_and_adds_permissi
                                                                                     auth_headers_for_user,
                                                                                     create_deposit,
                                                                                     json_headers):
-    owner = users['cms_user'] 
+    owner = users['cms_user']
     pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     mocked_ldap_check.return_value = True
 
@@ -164,7 +168,7 @@ def test_add_permissions_for_user_that_doesnt_exist_in_ldap_returns_400(mocked_l
                                                                         auth_headers_for_user,
                                                                         create_deposit,
                                                                         json_headers):
-    owner = users['cms_user'] 
+    owner = users['cms_user']
     pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     mocked_ldap_check.return_value = False
 
@@ -235,7 +239,7 @@ def test_add_permissions_when_permission_doesnt_exist_returns_400(app,
         assert resp.json['message'] == 'Permission does not exist.'
 
 
-@mark.skip
+@mark.skip('to discuss if this should be done this way')
 def test_add_permissions_when_add_admin_permissions_add_all_the_others_as_well(app,
                                                                                users,
                                                                                auth_headers_for_user,
@@ -298,7 +302,8 @@ def test_add_ermissions_gives_permissions_for_user(app,
 
         # but other user still can't update the deposit
         resp = client.put('/deposits/{}'.format(pid),
-                          headers=auth_headers_for_user(other_user) + json_headers,
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
                           data=json.dumps({}))
 
         assert resp.status_code == 403
@@ -316,7 +321,8 @@ def test_add_ermissions_gives_permissions_for_user(app,
 
         # now user can update the deposit
         resp = client.put('/deposits/{}'.format(pid),
-                          headers=auth_headers_for_user(other_user) + json_headers,
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
                           data=json.dumps({}))
 
         assert resp.status_code == 200
@@ -336,7 +342,7 @@ def test_remove_permissions_for_user(app,
             'type': 'user',
             'op': 'add',
             'action': 'deposit-read'
-        },{
+        }, {
             'email': other_user.email,
             'type': 'user',
             'op': 'add',
@@ -358,7 +364,7 @@ def test_remove_permissions_for_user(app,
             'type': 'user',
             'op': 'remove',
             'action': 'deposit-read'
-        },{
+        }, {
             'email': other_user.email,
             'type': 'user',
             'op': 'remove',
@@ -377,13 +383,13 @@ def test_remove_permissions_for_user(app,
 
 @patch('cap.modules.user.utils.does_egroup_exist_in_ldap')
 def test_add_permissions_for_non_registered_egroup_registers_it_and_adds_permissions(mocked_ldap_check,
-                                                                                    app,
-                                                                                    users,
-                                                                                    auth_headers_for_user,
-                                                                                    create_deposit,
-                                                                                    json_headers):
+                                                                                     app,
+                                                                                     users,
+                                                                                     auth_headers_for_user,
+                                                                                     create_deposit,
+                                                                                     json_headers):
     mocked_ldap_check.return_value = True
-    owner, other_user = users['cms_user'], users['lhcb_user'] 
+    owner, other_user = users['cms_user'], users['lhcb_user']
     pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
 
     with app.test_client() as client:
@@ -423,7 +429,7 @@ def test_add_permissions_for_egroup_that_doesnt_exist_in_ldap_returns_400(mocked
                                                                           auth_headers_for_user,
                                                                           create_deposit,
                                                                           json_headers):
-    owner = users['cms_user'] 
+    owner = users['cms_user']
     pid = create_deposit(owner, 'test-v1.0.0')['_deposit']['id']
     mocked_ldap_check.return_value = False
 
@@ -458,7 +464,7 @@ def test_change_permissions_for_egroup(app,
             'type': 'egroup',
             'op': 'add',
             'action': 'deposit-read'
-        },{
+        }, {
             'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'add',
@@ -475,7 +481,8 @@ def test_change_permissions_for_egroup(app,
         assert resp.status_code == 200
 
         resp = client.put('/deposits/{}'.format(pid),
-                          headers=auth_headers_for_user(other_user) + json_headers,
+                          headers=auth_headers_for_user(
+                              other_user) + json_headers,
                           data=json.dumps({}))
 
         assert resp.status_code == 200
@@ -486,7 +493,7 @@ def test_change_permissions_for_egroup(app,
             'type': 'egroup',
             'op': 'remove',
             'action': 'deposit-read'
-        },{
+        }, {
             'email': 'some-egroup@cern.ch',
             'type': 'egroup',
             'op': 'remove',

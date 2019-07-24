@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Tests for CADI utils methods."""
 
 from __future__ import absolute_import
@@ -59,30 +58,28 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_id = 'ANA-00-000'
     cadi_resp = {
-        'data': [
-            {
-                u'Conference': '',
-                u'conferenceStatus': '',
-                u'code': 'dANA-00-000',
-                u'targetConference': None,
-                u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-                u'updaterDate': '24/12/2014',
-                u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-                u'id': 1,
-                u'updaterName': 'Updater User',
-                u'targetPubPeriod': None,
-                u'targetDatePreApp': '19/12/2014',
-                u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-                u'contact': 'Contact User',
-                u'status': 'PUB',
-                u'description': 'Description',
-                u'URL': 'https://twiki.cern.ch/twikiurl',
-                u'creatorName': 'Creator User',
-                u'publicationStatus': 'Free',
-                u'name': 'Name',
-                u'PAPER': 'http://cms.cern.ch:80/paper.pdf'
-            }
-        ]
+        'data': [{
+            u'Conference': '',
+            u'conferenceStatus': '',
+            u'code': 'dANA-00-000',
+            u'targetConference': None,
+            u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+            u'updaterDate': '24/12/2014',
+            u'PAS': 'http://cms.cern.ch:80/pas.pdf',
+            u'id': 1,
+            u'updaterName': 'Updater User',
+            u'targetPubPeriod': None,
+            u'targetDatePreApp': '19/12/2014',
+            u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+            u'contact': 'Contact User',
+            u'status': 'PUB',
+            u'description': 'Description',
+            u'URL': 'https://twiki.cern.ch/twikiurl',
+            u'creatorName': 'Creator User',
+            u'publicationStatus': 'Free',
+            u'name': 'Name',
+            u'PAPER': 'http://cms.cern.ch:80/paper.pdf'
+        }]
     }
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
@@ -94,7 +91,9 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     output = get_from_cadi_by_id(cadi_id)
 
     # check that requst to glance is called with correct url and cookie
-    assert responses.calls[0].request.url == 'https://icms.cern.ch/tools/api/cadiLine/{id}'.format(id=cadi_id)
+    assert responses.calls[
+        0].request.url == 'https://icms.cern.ch/tools/api/cadiLine/{id}'.format(
+            id=cadi_id)
     assert responses.calls[0].request._cookies == cookie
 
     # check the response
@@ -103,11 +102,14 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(mock_get_sso_cookie_for_cadi, app):
+def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
+        mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'non-existing'
-    cadi_resp = dict(data=[])  # CADI API returns empty list, when no match with given id
+    # CADI API returns empty list, when no match with given id
+    cadi_resp = dict(data=[])
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(cookies_are='example_cookie')
+    mock_get_sso_cookie_for_cadi.return_value = dict(
+        cookies_are='example_cookie')
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   json=cadi_resp,
@@ -121,10 +123,12 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(mock_get_sso_cookie_for_cadi, app):
+def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(
+        mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'ANA-00-000'
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(cookies_are='example_cookie')
+    mock_get_sso_cookie_for_cadi.return_value = dict(
+        cookies_are='example_cookie')
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   status=500)
@@ -135,7 +139,8 @@ def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(mock_get_sso_cook
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(mock_get_sso_cookie_for_cadi, app):
+def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
+        mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'ANA-00-000'
     mock_get_sso_cookie_for_cadi.side_effect = ExternalAPIException()
 
@@ -162,7 +167,8 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     output = get_all_from_cadi()
 
     # check that request to glance is called with correct url and cookie
-    assert responses.calls[0].request.url == 'https://icms.cern.ch/tools/api/viewCadiLines'
+    assert responses.calls[
+        0].request.url == 'https://icms.cern.ch/tools/api/viewCadiLines'
     assert responses.calls[0].request._cookies == cookie
 
     # check that inactive|supseded analysis are not returned
@@ -175,10 +181,12 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_all_from_cadi_when_cadi_server_down_returns_503(mock_get_sso_cookie_for_cadi, app):
+def test_get_all_from_cadi_when_cadi_server_down_returns_503(
+        mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'ANA-00-000'
 
-    mock_get_sso_cookie_for_cadi.return_value = dict(cookies_are='example_cookie')
+    mock_get_sso_cookie_for_cadi.return_value = dict(
+        cookies_are='example_cookie')
     responses.add(responses.POST,
                   current_app.config['CADI_GET_ALL_URL'],
                   status=500)
@@ -189,7 +197,8 @@ def test_get_all_from_cadi_when_cadi_server_down_returns_503(mock_get_sso_cookie
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
-def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_503(mock_get_sso_cookie_for_cadi, app):
+def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_503(
+        mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'ANA-00-000'
     mock_get_sso_cookie_for_cadi.side_effect = ExternalAPIException()
 
@@ -264,24 +273,32 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
     }
 
 
-def test_get_deposit_by_cadi_id_returns_correct_deposit(app, es, create_deposit, superuser):
+def test_get_deposit_by_cadi_id_returns_correct_deposit(
+        app, es, create_deposit, superuser):
     cadi_id = 'ANA-00-001'
-    deposit = create_deposit(superuser, 'cms-analysis-v0.0.1', {
+    deposit = create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
-        'basic_info': { 'cadi_id': cadi_id }
+        'basic_info': {
+            'cadi_id': cadi_id
+        }
     })
-    create_deposit(superuser, 'cms-analysis-v0.0.1', {
+    create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
-        'basic_info': { 'cadi_id': 'ANA-00-002' }
+        'basic_info': {
+            'cadi_id': 'ANA-00-002'
+        }
     })
 
     assert get_deposit_by_cadi_id(cadi_id) == deposit
 
 
-def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(app, es, create_deposit, superuser):
-    create_deposit(superuser, 'cms-analysis-v0.0.1', {
+def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
+        app, es, create_deposit, superuser):
+    create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
-        'basic_info': { 'cadi_id': 'ANA-00-001' }
+        'basic_info': {
+            'cadi_id': 'ANA-00-001'
+        }
     })
 
     with raises(DepositDoesNotExist):
@@ -295,10 +312,10 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(app, es
        return_value=[dict(code=u'dANA-00-001', status=u'Free')])
 @patch('cap.modules.experiments.utils.cadi.parse_cadi_entry',
        return_value=('ANA-00-001', dict(status='Free')))
-def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(mock_parse_cadi_enty,
-                                  mock_get_all_from_cadi,
-                                  app, es, location, create_schema):
-    schema = create_schema('deposits/records/cms-analysis-v0.0.1', experiment='CMS')
+def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(
+        mock_parse_cadi_enty, mock_get_all_from_cadi, app, es, location,
+        create_schema):
+    schema = create_schema('cms-analysis', experiment='CMS')
     role = assign_egroup_to_experiment('cms-members@cern.ch', 'CMS')
 
     # deposit with this cadi id doesn't exist
@@ -307,17 +324,22 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(mock
 
     synchronize_cadi_entries()
 
-    current_search.flush_and_refresh('deposits-records')  
+    current_search.flush_and_refresh('deposits-records')
 
     # deposit with this cadi id created
     deposit = get_deposit_by_cadi_id('ANA-00-001')
 
-    assert deposit['cadi_info'] == {'status': 'Free'}  # sets cadi info correctly
+    assert deposit['cadi_info'] == {
+        'status': 'Free'
+    }  # sets cadi info correctly
     assert deposit['basic_info']['cadi_id'] == 'ANA-00-001'  # sets cadi id
     assert deposit['general_title'] == 'ANA-00-001'
 
     # members of experiment got read access
-    assert deposit['_access']['deposit-read'] == {'users': [],'roles': [role.id]}
+    assert deposit['_access']['deposit-read'] == {
+        'users': [],
+        'roles': [role.id]
+    }
     assert deposit['_access']['deposit-update'] == {'users': [], 'roles': []}
     assert deposit['_access']['deposit-admin'] == {'users': [], 'roles': []}
 
@@ -329,11 +351,13 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(mock
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
        return_value=[dict(code=u'dANA-00-001', status=u'Free')])
-def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(mock_get_all_from_cadi,
-                                  appctx, db, es, superuser, create_deposit):
-    create_deposit(superuser, 'cms-analysis-v0.0.1', {
+def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
+        mock_get_all_from_cadi, appctx, db, es, superuser, create_deposit):
+    create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
-        'basic_info': { 'cadi_id': 'ANA-00-001' }
+        'basic_info': {
+            'cadi_id': 'ANA-00-001'
+        }
     })
 
     # deposit with this cadi id already exists
@@ -353,6 +377,9 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(mock_get_al
         u'pas': u'',
         u'publication_status': u'',
         u'status': u'Free',
-        u'twiki': u''}  # sets cadi info correctly
-    assert updated_deposit['_access'] == deposit['_access'] # access didnt change 
-    assert updated_deposit['_deposit']['owners'] == deposit['_deposit']['owners'] # deposit owner didn't change
+        u'twiki': u''
+    }  # sets cadi info correctly
+    assert updated_deposit['_access'] == deposit[
+        '_access']  # access didnt change
+    assert updated_deposit['_deposit']['owners'] == deposit['_deposit'][
+        'owners']  # deposit owner didn't change

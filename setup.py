@@ -178,8 +178,7 @@ setup(
             'cap.modules.deposit.fetchers:cap_deposit_fetcher',
         ],
         'invenio_records.jsonresolver': [
-            'cap = cap.modules.records.resolvers.cap',
-            'local = cap.modules.records.resolvers.local',
+            'schemas = cap.modules.schemas.resolvers',
         ],
         'invenio_search.mappings': [
             'deposits = cap.mappings',

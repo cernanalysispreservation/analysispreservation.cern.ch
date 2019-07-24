@@ -25,18 +25,20 @@
 """Utils for Schemas module."""
 
 from invenio_db import db
-
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+
 from .models import Schema
+from .permissions import ReadSchemaPermission
+from .resolvers import resolve
 
 
 def add_or_update_schema(fullpath=None, data=None):
     """Add or update schema by fullpath, e.g. records/ana1-v0.0.1.json."""
     try:
-        schema = Schema.get_by_fullpath(fullpath)
+        schema = resolve(fullpath)
         schema.experiment = data.get('experiment', None)
         schema.fullname = data.get('fullname', None)
-        schema.is_deposit = data.get('is_deposit', False)
+        schema.is_indexed = data.get('is_indexed', False)
         schema.json = data['jsonschema']
 
         print('{} updated.'.format(fullpath))
@@ -45,7 +47,7 @@ def add_or_update_schema(fullpath=None, data=None):
         schema = Schema(fullpath=fullpath,
                         experiment=data.get('experiment', None),
                         fullname=data.get('fullname', None),
-                        is_deposit=data.get('is_deposit', False),
+                        is_indexed=data.get('is_indexed', False),
                         json=data['jsonschema'])
 
         db.session.add(schema)
@@ -56,3 +58,10 @@ def add_or_update_schema(fullpath=None, data=None):
         schema.add_read_access_to_all()
 
     db.session.commit()
+
+
+def get_schemas_for_user():
+    """Return all indexed schemas current user has read access to."""
+    schemas = Schema.query.filter_by(is_indexed=True).all()
+
+    return [x for x in schemas if ReadSchemaPermission(x).can()]

@@ -38,6 +38,7 @@ from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
@@ -52,6 +53,9 @@ from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.utils import parse_url
 from cap.modules.schemas.models import Schema
+from cap.modules.repoimporter.repo_importer import RepoImporter
+from cap.modules.schemas.resolvers import (resolve_schema_by_url,
+                                           schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
@@ -67,9 +71,6 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
-current_jsonschemas = LocalProxy(
-    lambda: current_app.extensions['invenio-jsonschemas']
-)
 
 PRESERVE_FIELDS = (
     '_deposit',
@@ -114,13 +115,16 @@ class CAPDeposit(Deposit):
     @property
     def schema(self):
         """Schema property."""
-        return Schema.get_by_fullpath(self['$schema'])
+        return resolve_schema_by_url(self['$schema'])
 
     @property
     def record_schema(self):
-        """Convert deposit schema to a valid record schema."""
-        record_schema = self.schema.get_matching_record_schema()
-        return record_schema.fullpath
+        """Get corresponding schema path for record."""
+        return current_jsonschemas.path_to_url(self.schema.record_path)
+
+    def build_deposit_schema(self, record):
+        """Get schema path for deposit."""
+        return current_jsonschemas.path_to_url(self.schema.deposit_path)
 
     def pop_from_data(method, fields=None):
         """Remove fields from deposit data.
@@ -450,7 +454,7 @@ class CAPDeposit(Deposit):
             self['_deposit']['owners'] = [owner.id]
 
     def _set_experiment(self):
-        schema = Schema.get_by_fullpath(self['$schema'])
+        schema = resolve_schema_by_url(self['$schema'])
         self['_experiment'] = schema.experiment
 
     def _create_buckets(self):
@@ -459,26 +463,29 @@ class CAPDeposit(Deposit):
 
     def validate(self, **kwargs):
         """Validate data using schema with ``JSONResolver``."""
-        result = {}
-        try:
-            schema = self['$schema']
-            if not isinstance(schema, dict):
-                schema = {'$ref': schema}
-            resolver = current_app.extensions[
-                'invenio-records'].ref_resolver_cls.from_schema(schema)
+        if '$schema' in self and self['$schema']:
+            try:
+                schema = self['$schema']
+                if not isinstance(schema, dict):
+                    schema = {'$ref': schema}
+                resolver = current_app.extensions[
+                    'invenio-records'].ref_resolver_cls.from_schema(schema)
 
-            result['errors'] = [
-                FieldError(list(error.path), str(error.message))
-                for error in
-                Draft4Validator(schema, resolver=resolver).iter_errors(self)
-            ]
+                validator = Draft4Validator(schema, resolver=resolver)
 
-            if result['errors']:
-                raise DepositValidationError(None, errors=result['errors'])
-        except RefResolutionError:
-            raise DepositValidationError('Schema with given url not found.')
-        except KeyError:
-            raise DepositValidationError('Schema field is required.')
+                result = {}
+                result['errors'] = [
+                    FieldError(list(error.path), str(error.message))
+                    for error in validator.iter_errors(self)
+                ]
+
+                if result['errors']:
+                    raise DepositValidationError(None, errors=result['errors'])
+            except RefResolutionError:
+                raise DepositValidationError(
+                    'Schema with given url not found.')
+        else:
+            raise DepositValidationError('You need to provide a valid schema.')
 
     @classmethod
     def get_record(cls, id_, with_deleted=False):
@@ -509,22 +516,17 @@ class CAPDeposit(Deposit):
 
     @classmethod
     def _preprocess_data(cls, data):
-
         # data can be sent without specifying particular version of schema,
         # but just with a type, e.g. cms-analysis
         # this be resolved to the last version of deposit schema of this type
         if '$ana_type' in data:
             try:
-                schema = Schema.get_latest(
-                    'deposits/records/{}'.format(data['$ana_type'])
-                )
+                ana_type = data.pop('$ana_type')
+                data['$schema'] = schema_name_to_url(ana_type)
             except JSONSchemaNotFound:
                 raise DepositValidationError(
                     'Schema {} is not a valid deposit schema.'
-                    .format(data['$ana_type']))
-
-            data['$schema'] = schema.fullpath
-            data.pop('$ana_type')
+                    .format(ana_type))
 
         return data
 
@@ -534,12 +536,79 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Empty deposit data.')
 
         try:
-            schema_fullpath = data['$schema']
+            schema_url = data['$schema']
         except KeyError:
             raise DepositValidationError('Schema not specified.')
 
+
+@shared_task(max_retries=5)
+def download_url(pid, url, fileinfo):
+    """Task for fetching external files/repos."""
+    record = CAPDeposit.get_record(pid)
+    size = None
+    if url.startswith("root://"):
+        from xrootdpyfs.xrdfile import XRootDPyFile
+        response = XRootDPyFile(url, mode='r-')
+        total = response.size
+    else:
         try:
-            Schema.get_by_fullpath(schema_fullpath)
-        except (AttributeError, JSONSchemaNotFound):
-            raise DepositValidationError('Schema {} is not a valid option.'
-                                         .format(schema_fullpath))
+            filepath = fileinfo.get('filepath', None)
+            filename = fileinfo.get('filename', None)
+            branch = fileinfo.get('branch', None)
+            file = RepoImporter.create(url, branch).archive_file(filepath)
+            url = file.get('url', None)
+            size = file.get('size', None)
+            token = file.get('token', None)
+            headers = {'PRIVATE-TOKEN': token}
+            response = requests.get(
+                url, stream=True, headers=headers).raw
+            response.decode_content = True
+            total = size or int(
+                response.headers.get('Content-Length'))
+        except TypeError as exc:
+            download_url.retry(exc=exc, countdown=10)
+    task_commit(record, response, filename, total)
+
+
+@shared_task(max_retries=5)
+def download_repo(pid, url, filename):
+    """Task for fetching external files/repos."""
+    record = CAPDeposit.get_record(pid)
+    try:
+        link = RepoImporter.create(url).archive_repository()
+        response = ensure_content_length(link)
+        total = int(response.headers.get('Content-Length'))
+    except TypeError as exc:
+        download_repo.retry(exc=exc, countdown=10)
+    task_commit(record, response.raw, filename, total)
+
+
+def task_commit(record, response, filename, total):
+    """Commit file to the record."""
+    record.files[filename].file.set_contents(
+        response,
+        default_location=record.files.bucket.location.uri,
+        size=total
+    )
+    db.session.commit()
+
+
+def ensure_content_length(
+        url, method='GET',
+        session=None,
+        max_size=FILES_URL_MAX_SIZE or 2**20,
+        *args, **kwargs):
+    """Add Content-Length when no present."""
+    kwargs['stream'] = True
+    session = session or requests.Session()
+    r = session.request(method, url, *args, **kwargs)
+    if 'Content-Length' not in r.headers:
+        # stream content into a temporary file so we can get the real size
+        spool = tempfile.SpooledTemporaryFile(max_size)
+        shutil.copyfileobj(r.raw, spool)
+        r.headers['Content-Length'] = str(spool.tell())
+        spool.seek(0)
+        # replace the original socket with our temporary file
+        r.raw._fp.close()
+        r.raw._fp = spool
+    return r

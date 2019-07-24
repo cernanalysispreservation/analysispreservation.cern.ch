@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016, 2017 CERN.
+# Copyright (C) 2016 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -22,24 +22,15 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Resolver JSON for default JSON Schemas."""
+"""Field types for CAP models."""
 
-from __future__ import absolute_import, print_function
+from sqlalchemy.dialects import postgresql
+from sqlalchemy_utils.types import JSONType
 
-import jsonresolver
-from flask import abort, has_request_context
-
-from cap.modules.schemas.models import Schema
-from cap.modules.schemas.permissions import ReadSchemaPermission
-
-
-@jsonresolver.route('/schemas/<path:path>',
-                    host='analysispreservation.cern.ch')
-def resolve_cap_schemas(path):
-    """Resolve CAP JSON schemas."""
-    schema = Schema.get_by_fullpath(path)
-
-    if not has_request_context() or ReadSchemaPermission(schema).can():
-        return schema.json
-    else:
-        abort(403)
+json_type = JSONType().with_variant(
+    postgresql.JSONB(none_as_null=True),
+    'postgresql',
+).with_variant(
+    JSONType(),
+    'sqlite',
+)
