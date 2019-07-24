@@ -222,9 +222,6 @@ SUPERUSER_EGROUPS = [
     RoleNeed('data-preservation-admins@cern.ch'),
 ]
 
-#: Cache for storing access restrictions
-ACCESS_CACHE = 'invenio_cache:current_cache'
-
 #: Account-REST Configuration
 ACCOUNTS_REST_READ_ROLE_PERMISSION_FACTORY = deny_all
 """Default get role permission factory: reject any request."""
