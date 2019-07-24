@@ -142,7 +142,6 @@ setup(
             'cap.modules.experiments.permissions:atlas_access_action',
         ],
         'invenio_base.api_apps': [
-            'cap_cache = cap.modules.cache.ext:CAPCache',
             'cap_deposit = cap.modules.deposit.ext:CAPDeposit',
             'cap_experiments = cap.modules.experiments.ext:CAPExperiments',
             'cap_fixtures = cap.modules.fixtures.ext:CAPFixtures',
