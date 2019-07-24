@@ -41,17 +41,39 @@ def _(x):
 #
 # ************************************ ###
 
-# Cache
-# =========
-CACHE_REDIS_BASE_URL = os.environ.get("CACHE_REDIS_BASE_URL", "redis://localhost:6379")
+# Datadir
+# =======
+DATADIR = join(dirname(__file__), 'data')
 
+
+# Debug
+# =====
+# Flask-DebugToolbar is by default enabled when the application is running in
+# debug mode. More configuration options are available at
+# https://flask-debugtoolbar.readthedocs.io/en/latest/#configuration
+#: Switches off incept of redirects by Flask-DebugToolbar.
+DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+DEBUG_MODE = str(os.environ.get('DEBUG_MODE')).lower() == 'true'
+
+if DEBUG_MODE:
+    DEBUG = True
+else:
+    DEBUG = False
+
+if DEBUG:
+    REST_ENABLE_CORS = True
+    APP_ENABLE_SECURE_HEADERS = False
+
+
+# Cache (Redis)
+# =========
+#: BASE URL of Redis.
+CACHE_REDIS_BASE_URL = os.environ.get("CACHE_REDIS_BASE_URL",
+                                      "redis://localhost:6379")
 #: URL of Redis db.
 CACHE_REDIS_URL = "{0}/0".format(CACHE_REDIS_BASE_URL)
 
-# Accounts
-# ========
-#: Redis session storage URL.
-ACCOUNTS_SESSION_REDIS_URL = '{0}/1'.format(CACHE_REDIS_BASE_URL)
 
 # Rate limiting
 # =============
@@ -143,7 +165,7 @@ JSONSCHEMAS_HOST = 'analysispreservation.cern.ch'
 
 #: Secret key - each installation (dev, production, ...) needs a separate key.
 #: It should be changed before deploying.
-SECRET_KEY = 'CHANGE_ME'
+SECRET_KEY = "changeme"
 #: Max upload size for form data via application/mulitpart-formdata.
 MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MiB
 #: Sets cookie with the secure flag by default
@@ -171,49 +193,15 @@ if os.environ.get('DEV_HOST', False):
 # =======
 OAISERVER_ID_PREFIX = 'oai:analysispreservation.cern.ch:'
 
-# Debug
-# =====
-# Flask-DebugToolbar is by default enabled when the application is running in
-# debug mode. More configuration options are available at
-# https://flask-debugtoolbar.readthedocs.io/en/latest/#configuration
-
-#: Switches off incept of redirects by Flask-DebugToolbar.
-DEBUG_TB_INTERCEPT_REDIRECTS = False
-
-
-# =======================================================================
-# =======================================================================
-# =======================================================================
-
-
-DEBUG_MODE = str(os.environ.get('DEBUG_MODE')).lower() == 'true'
-
-if DEBUG_MODE:
-    DEBUG = True
-else:
-    DEBUG = False
-
-if DEBUG:
-    REST_ENABLE_CORS = True
-    APP_ENABLE_SECURE_HEADERS = False
-
-
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-
-#: Default cache URL for sessions.
-ACCESS_SESSION_REDIS_HOST = 'localhost'
-ACCOUNTS_SESSION_REDIS_URL = "{0}/2".format(CACHE_REDIS_BASE_URL)
+# Accounts
+# ========
+#: Redis session storage URL.
+ACCOUNTS_SESSION_REDIS_URL = '{0}/1'.format(CACHE_REDIS_BASE_URL)
 #: Cache for storing access restrictions
-ACCESS_CACHE = 'cap.modules.cache:current_cache'
-
-#: E-Groups for superuser rights
-SUPERUSER_EGROUPS = [
-    RoleNeed('analysis-preservation-support@cern.ch'),
-    RoleNeed('data-preservation-admins@cern.ch'),
-]
-
+ACCESS_CACHE = 'invenio_cache:current_cache'
 
 
 #: Account-REST Configuration
@@ -326,10 +314,6 @@ JSONSCHEMAS_ROOT = os.path.join(APP_ROOT, 'jsonschemas')
 JSONSCHEMAS_DEPOSIT_DIR = 'deposits/records/'
 JSONSCHEMAS_RECORDS_DIR = 'records/'
 
-# WARNING: Do not share the secret key - especially do not commit it to
-# version control.
-SECRET_KEY = "changeme"
-
 # LHCb
 # ========
 #: Ana's database
@@ -364,10 +348,6 @@ GLANCE_GET_ALL_URL = \
 GLANCE_GET_BY_ID_URL = \
     'https://oraweb.cern.ch/ords/atlr/atlas_authdb/atlas/analysis/analysis/?client_name=cap&id={id}'  # noqa
 
-
-# Datadir
-# =======
-DATADIR = join(dirname(__file__), 'data')
 
 # Files
 # ===========
