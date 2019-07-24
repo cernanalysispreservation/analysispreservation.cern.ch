@@ -164,6 +164,7 @@ setup(
             'cap_cms = cap.modules.experiments.tasks.cms',
             'cap_lhcb = cap.modules.experiments.tasks.lhcb',
         ],
+        'invenio_search.mappings': [],
         'invenio_pidstore.minters': [
             'cap_record_minter = '
             'cap.modules.records.minters:cap_record_minter',
@@ -179,13 +180,6 @@ setup(
         ],
         'invenio_records.jsonresolver': [
             'schemas = cap.modules.schemas.resolvers',
-        ],
-        'invenio_search.mappings': [
-            'deposits = cap.mappings',
-            'records = cap.mappings',
-        ],
-        'invenio_jsonschemas.schemas': [
-            'cap_schemas = cap.jsonschemas',
         ],
         'invenio_db.models': [
             # 'cap_reana_model = cap.modules.reana.models',
