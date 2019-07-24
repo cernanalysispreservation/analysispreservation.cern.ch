@@ -42,6 +42,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from cap.types import json_type
 
 from .permissions import SchemaReadAction
+from .serializers import schema_serializer
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -93,6 +94,10 @@ class Schema(db.Model):
     __tablename__ = 'schema'
     __table_args__ = (UniqueConstraint('name', 'major', 'minor', 'patch',
                                        name='unique_schema_version'),)
+
+    def serialize(self):
+        """Serialize schema model."""
+        return schema_serializer.dump(self).data
 
     def __str__(self):
         """Stringify schema object."""
@@ -164,6 +169,13 @@ class Schema(db.Model):
         """Stringify schema object."""
         return '{name}-v{version}'.format(
             name=self.name, version=self.version)
+
+    def update(self, **kwargs):
+        """."""
+        Schema.query.filter_by(id=self.id).update(kwargs)
+        db.session.commit()
+
+        return self
 
     def add_read_access_for_all_users(self):
         """Give read access to all authenticated users."""

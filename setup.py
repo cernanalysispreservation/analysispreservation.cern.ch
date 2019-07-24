@@ -157,6 +157,7 @@ setup(
             'cap_cms = cap.modules.experiments.views.cms:cms_bp',
             'cap_reana = cap.modules.reana.views:reana_bp',
             'cap_services = cap.modules.services.views:blueprint',
+            'cap_schemas = cap.modules.schemas.views:abp',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
