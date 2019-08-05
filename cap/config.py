@@ -106,6 +106,14 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'cap.modules.experiments.tasks.cms.synchronize_with_cadi',
         'schedule': timedelta(days=1),
     },
+    'api_status_check': {
+        'task': 'cap.modules.services.views.status_checks.status_check',
+        'schedule': timedelta(hours=12),
+    },
+    'api_status_check_table_cleanup': {
+        'task': 'cap.modules.services.views.status_checks.clear_status_table',
+        'schedule': timedelta(days=1),
+    }
 }
 
 # Database
@@ -380,6 +388,7 @@ RECORDS_REST_FACETS = {
 
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
+# noinspection PyPackageRequirements
 RECORDS_REST_ENDPOINTS['recid'].update({
     'record_class': 'cap.modules.records.api:CAPRecord',
     'pid_fetcher': 'cap_record_fetcher',

@@ -93,6 +93,7 @@ install_requires = [
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
+    'invenio-rest=1.1.0',
 
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
@@ -190,6 +191,7 @@ setup(
         'invenio_db.models': [
             # 'cap_reana_model = cap.modules.reana.models',
             'analysis_schema_model = cap.modules.schemas.models',
+            'status_check_model = cap.modules.services.models',
         ],
         'invenio_db.alembic': [
             'cap = cap:alembic',

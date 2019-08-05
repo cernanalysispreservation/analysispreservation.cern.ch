@@ -93,3 +93,27 @@ def get_glance_by_id(id):
         abort(503, 'External server replied with an error.')
 
     return jsonify(item)
+
+
+def get_glance_by_id_no_route(id='225'):
+    """Retrieves GLANCE analysis data by given id."""
+    access_token = get_glance_token()
+    url = current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=id)
+
+    if not access_token:
+        abort(503, 'External server replied with an error.')
+
+    try:
+        resp = requests.get(url=url, headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer {}'.format(access_token)
+        })
+
+        data = resp.json()
+        item = data['items'][0] if data['items'] else {}
+        status = resp.status_code
+
+    except (KeyError, ValueError):
+        abort(503, 'External server replied with an error.')
+
+    return url, status, item['id']

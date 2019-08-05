@@ -26,10 +26,7 @@
 """CAP CERN service views."""
 
 import ldap
-import requests
-
-from flask import Blueprint, current_app, jsonify, request
-from invenio_files_rest.models import FileInstance, ObjectVersion
+from flask import jsonify, request
 
 from cap.modules.access.utils import login_required
 
@@ -103,3 +100,44 @@ def ldap_egroup_mail():
 
     res = [x[1]['mail'][0] for x in res]
     return jsonify(res)
+
+
+def ldap_user_by_mail_no_route(query='ilias.koutsakis@cern.ch'):
+    """LDAP mail query no route."""
+    url = 'ldap://xldap.cern.ch'
+    lc = ldap.initialize(url)
+    lc.search_ext(
+        'OU=Users,OU=Organic Units,DC=cern,DC=ch', ldap.SCOPE_ONELEVEL,
+        '(&(cernAccountType=Primary)(mail=*{}*))'.format(query), ['mail'],
+        serverctrls=[ldap.controls.SimplePagedResultsControl(
+            True, size=7, cookie='')]
+    )
+    res = lc.result()[1]
+    status = 'LDAP Failure'
+
+    if len(res) >= 1:
+        status = 'Success'
+        res = [x[1]['mail'][0] for x in res][0]
+
+    return url, status, res
+
+
+def ldap_egroup_mail_no_route(query='sis-group-documentation'):
+    """LDAP egroup query no route."""
+    sf = 'cn'
+    url = 'ldap://xldap.cern.ch'
+    lc = ldap.initialize(url)
+    lc.search_ext(
+        'OU=e-groups,OU=Workgroups,DC=cern,DC=ch', ldap.SCOPE_ONELEVEL,
+        '{}=*{}*'.format(sf, query), LDAP_EGROUP_RESP_FIELDS,
+        serverctrls=[ldap.controls.SimplePagedResultsControl(
+            True, size=7, cookie='')]
+    )
+    res = lc.result()[1]
+    status = 'LDAP Failure'
+
+    if len(res) >= 1:
+        status = 'Success'
+        res = [x[1]['mail'][0] for x in res][0]
+
+    return url, status, res

@@ -122,3 +122,15 @@ def get_triggers_suggestions():
         res = [x['_source']['trigger'] for x in suggestions]
 
     return jsonify(res)
+
+
+def get_analysis_from_cadi_no_route(cadi_id):
+    """Retrieve specific CADI analysis."""
+    cadi_id = unquote(cadi_id).upper()
+    entry = get_from_cadi_by_id(cadi_id)
+    if entry:
+        _, parsed = parse_cadi_entry(entry)
+    else:
+        parsed = {}
+
+    return 'cadi', '200', parsed['twiki']

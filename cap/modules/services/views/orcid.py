@@ -26,13 +26,13 @@
 """CAP ORCID service views."""
 
 import requests
-
-from flask import Blueprint, current_app, jsonify, request
-from invenio_files_rest.models import FileInstance, ObjectVersion
+from flask import jsonify, request
 
 from cap.modules.access.utils import login_required
 
 from . import blueprint
+
+JSON_HEADERS = {'Content-Type': 'application/json'}
 
 
 @blueprint.route('/orcid')
@@ -75,3 +75,36 @@ def get_record_by_orcid(orcid):
     data = resp.json()
 
     return jsonify(data)
+
+
+def get_orcid_no_route(args):
+    """Get ORCID no route."""
+    url = "https://pub.orcid.org/v2.1/search/?" \
+          "q=given-names:{}+AND+family-name:{}".format(args[0], args[1])
+
+    # resp = requests.get(url, headers=JSON_HEADERS)
+    resp = requests.get(url, headers=JSON_HEADERS)
+    status = resp.status_code
+    data = resp.json()
+
+    if resp.ok:
+        data = data.get('result', [])
+        data = data[0]['orcid-identifier']['path'] \
+            if len(data) == 1 else ''
+
+    return url, status, data
+
+
+def get_record_by_orcid_no_route(orcid_id='0000-0003-0710-0576'):
+    """Get ORCID by id no route."""
+    url = "https://pub.orcid.org/v2.1/{}/record".format(orcid_id)
+
+    # resp = requests.get(url, headers=JSON_HEADERS)
+    resp = requests.get(url, headers=JSON_HEADERS)
+    status = resp.status_code
+    data = resp.json()
+
+    if resp.ok:
+        data = data['orcid-identifier']['path']
+
+    return url, status, data

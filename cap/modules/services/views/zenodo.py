@@ -26,11 +26,8 @@
 """CAP Zenodo service views."""
 
 import requests
-
-from flask import Blueprint, current_app, jsonify
+from flask import current_app, jsonify
 from invenio_files_rest.models import FileInstance, ObjectVersion
-
-from cap.modules.access.utils import login_required
 
 from . import blueprint
 
@@ -71,3 +68,19 @@ def upload_to_zenodo(bucket_id, filename):
         )
 
     return jsonify({"status": response.status_code})
+
+
+def get_zenodo_record_no_route(zenodo_id='3243963'):
+    """Upload code to zenodo no route."""
+    params = {"access_token": current_app.config.get('ZENODO_ACCESS_TOKEN')}
+    url = 'https://zenodo.org/api/records/{}'.format(zenodo_id)
+
+    # resp = requests.get(url, params=params, json={})
+    resp = requests.get(url, params=params, json={})
+    status = resp.status_code
+    data = resp.json()
+
+    if resp.ok:
+        data = resp.json()['doi']
+
+    return url, status, data
