@@ -81,6 +81,7 @@ install_requires = [
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
     'fs==0.5.4',
+    'invenio-rest==1.1.0',
     'invenio-accounts-rest>=1.0.0a4',
     'invenio-oauthclient>=1.0.0',
     'invenio-userprofiles>=1.0.0',
@@ -93,7 +94,6 @@ install_requires = [
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
-    'invenio-rest=1.1.0',
 
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',

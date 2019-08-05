@@ -63,6 +63,7 @@ html5lib==1.0.1           # via bleach, ftfy
 idna==2.6                 # via cryptography, requests, urllib3
 infinity==1.4             # via intervals
 intervals==0.8.1          # via wtforms-components
+invenio-rest==1.1.0
 invenio-access==1.0.1     # via invenio, invenio-accounts-rest
 invenio-accounts-rest==1.0.0a4
 invenio-accounts==1.0.1   # via invenio, invenio-access, invenio-accounts-rest, invenio-oauth2server, invenio-oauthclient, invenio-userprofiles
@@ -91,7 +92,7 @@ invenio-query-parser==0.6.0
 invenio-records-rest==1.1.0  # via invenio
 invenio-records-ui==1.0.1  # via invenio
 invenio-records==1.0.0    # via invenio, invenio-indexer, invenio-oaiserver, invenio-records-rest, invenio-records-ui
-invenio-rest==1.0.0       # via invenio, invenio-accounts-rest, invenio-records-rest
+# invenio-rest==1.1.0       # via invenio, invenio-accounts-rest, invenio-records-rest
 invenio-search-ui==1.0.1  # via invenio
 invenio-search[elasticsearch5]==1.0.0  # via invenio
 invenio-theme==1.0.0      # via invenio
