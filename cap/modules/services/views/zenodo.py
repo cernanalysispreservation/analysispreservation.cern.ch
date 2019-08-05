@@ -26,25 +26,28 @@
 """CAP Zenodo service views."""
 
 import requests
-
-from flask import Blueprint, current_app, jsonify
+from flask import current_app, jsonify
 from invenio_files_rest.models import FileInstance, ObjectVersion
-
-from cap.modules.access.utils import login_required
 
 from . import blueprint
 
 
-@blueprint.route('/zenodo/record/<zenodo_id>')
-def get_zenodo_record(zenodo_id):
+def _get_zenodo_record(zenodo_id):
     """Get record from zenodo."""
     zenodo_server_url = current_app.config.get('ZENODO_SERVER_URL')
-    params = {"access_token": current_app.config.get(
-        'ZENODO_ACCESS_TOKEN')}
-    _url = "{}/records/{}".format(zenodo_server_url, zenodo_id)
-    r = requests.get(_url, params=params)
+    url = "{}/records/{}".format(zenodo_server_url, zenodo_id)
+    params = {"access_token": current_app.config.get('ZENODO_ACCESS_TOKEN')}
 
-    return jsonify(r.json())
+    resp = requests.get(url, headers={'Content-Type': 'application/json'},
+                        params=params)
+    return resp.json(), resp.status_code
+
+
+@blueprint.route('/zenodo/record/<zenodo_id>')
+def get_zenodo_record(zenodo_id):
+    """Get record from zenodo (route)."""
+    resp, status = _get_zenodo_record(zenodo_id)
+    return jsonify(resp), status
 
 
 @blueprint.route('/zenodo/<bucket_id>/<filename>')

@@ -26,52 +26,50 @@
 """CAP ORCID service views."""
 
 import requests
-
-from flask import Blueprint, current_app, jsonify, request
-from invenio_files_rest.models import FileInstance, ObjectVersion
-
-from cap.modules.access.utils import login_required
+from flask import jsonify, request, current_app
 
 from . import blueprint
+from cap.modules.access.utils import login_required
+
+JSON_HEADERS = {'Content-Type': 'application/json'}
+ORCID_SERVER_URL = 'https://pub.orcid.org/v2.1'
+
+
+def _get_orcid(arg, by='name'):
+    """Get ORCID information depending on the argument type (name/orcid id)."""
+    if by == 'name':
+        name = arg.split()
+        url = "{}/search/?q=given-names:{}+AND+family-name:{}".format(
+            ORCID_SERVER_URL, name[0], name[-1])
+    else:
+        url = '{}/{}/record'.format(ORCID_SERVER_URL, arg)
+
+    resp = requests.get(url, headers=JSON_HEADERS)
+    return resp.json(), resp.status_code
 
 
 @blueprint.route('/orcid')
 @login_required
 def get_orcid():
-    """Get ORCID identifier registered for given name."""
+    """Get ORCID for given name (route)."""
     name = request.args.get('name', None)
     res = {}
-
     if not name:
         return jsonify(res)
 
-    names = name.split()
-    url = "https://pub.orcid.org/v2.1/search/?" \
-        "q=given-names:{}+AND+family-name:{}" \
-        .format(names[0], names[-1])
-
-    resp = requests.get(url=url, headers={
-        'Content-Type': 'application/json'
-    })
-    data = resp.json().get('result', [])
+    resp, status = _get_orcid(name, by='name')
+    results = resp.get('result', [])
 
     # return only if one result
-    if len(data) == 1:
-        res['orcid'] = data[0]['orcid-identifier']['path']
+    if len(results) == 1:
+        res['orcid'] = results[0]['orcid-identifier']['path']
 
-    return jsonify(res)
+    return jsonify(res), status
 
 
 @blueprint.route('/orcid/<orcid>')
 @login_required
 def get_record_by_orcid(orcid):
-    """Get ORCID identifier registered for given name."""
-    url = "https://pub.orcid.org/v2.1/{}/record" \
-        .format(orcid)
-
-    resp = requests.get(url=url, headers={
-        'Content-Type': 'application/json'
-    })
-    data = resp.json()
-
-    return jsonify(data)
+    """Get ORCID identifier registered for given name (route)."""
+    resp, status = _get_orcid(orcid, by='orcid')
+    return jsonify(resp), status

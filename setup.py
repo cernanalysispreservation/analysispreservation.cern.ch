@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = "3.0.0rc2"
+INVENIO_VERSION = '3.0.0' # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -191,6 +191,7 @@ setup(
         'invenio_db.models': [
             # 'cap_reana_model = cap.modules.reana.models',
             'analysis_schema_model = cap.modules.schemas.models',
+            'status_check_model = cap.modules.services.models',
         ],
         'invenio_db.alembic': [
             'cap = cap:alembic',

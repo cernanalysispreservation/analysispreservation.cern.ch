@@ -14,4 +14,4 @@ blueprint = Blueprint('cap_services',
                       url_prefix='/services'
                       )
 
-from . import zenodo, cern, orcid  # noqa
+from . import zenodo, cern, orcid, status_checks  # noqa

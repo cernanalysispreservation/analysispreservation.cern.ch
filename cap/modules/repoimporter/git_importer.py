@@ -25,8 +25,11 @@
 
 """Github/Gitlab importer class."""
 
+import requests
 from github import Github
 from gitlab import Gitlab
+from flask import jsonify
+
 from utils import parse_url, get_access_token
 
 
@@ -103,3 +106,21 @@ class GitImporter:
             return {'url': link,
                     'size': None,
                     'token': self.token}
+
+
+def _test_connection(client=None):
+    """Tests the Git connections."""
+    if not client:
+        return jsonify({'error': 'No client found.'}), 500
+
+    headers = {'Content-Type': 'application/json'}
+    token = get_access_token(client.upper())
+
+    if client == 'github':
+        resp = requests.get('https://api.github.com',
+                            headers=headers)
+    else:
+        resp = requests.get('https://gitlab.cern.ch/api/v4/projects'
+                            '?private_token='.format(token), headers=headers)
+
+    return resp.json(), resp.status_code
