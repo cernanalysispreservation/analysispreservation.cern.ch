@@ -29,7 +29,7 @@ from __future__ import absolute_import, print_function
 import json
 
 import requests
-from flask import Blueprint, abort, current_app, jsonify, request
+from flask import Blueprint, current_app, jsonify, request
 
 from ..permissions import atlas_permission
 from ..utils.atlas import get_glance_token
@@ -39,6 +39,24 @@ atlas_bp = Blueprint(
     __name__,
     url_prefix='/atlas',
 )
+
+
+def _get_glance_by_id(glance_id):
+    """Retrieves GLANCE analysis data by given id."""
+    access_token = get_glance_token()
+    if not access_token:
+        return {'message': 'External server replied with an error.'}, 503
+
+    url = current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=glance_id)
+    try:
+        resp = requests.get(url=url, headers={
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer {}'.format(access_token)
+        })
+    except (KeyError, ValueError):
+        return {'message': 'External server replied with an error.'}, 503
+
+    return resp.json(), resp.status_code
 
 
 @atlas_bp.route('/yadage/workflow_submit', methods=['POST'])
@@ -72,24 +90,11 @@ def yadage_workflow_submit():
 @atlas_bp.route('/glance/<id>', methods=['GET'])
 @atlas_permission.require(403)
 def get_glance_by_id(id):
-    """Retrieves GLANCE analysis data by given id."""
-    access_token = get_glance_token()
+    """Retrieves GLANCE analysis data by given id (route)."""
+    resp, status = _get_glance_by_id(id)
 
-    if not access_token:
-        abort(503, 'External server replied with an error.')
+    # basically, if it has en error, send the error message
+    if 'items' in resp.keys():
+        resp = resp['items'][0]
 
-    url = current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=id)
-
-    try:
-        resp = requests.get(url=url, headers={
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer {}'.format(access_token)
-        })
-
-        data = resp.json()
-        item = data['items'][0] if data['items'] else {}
-
-    except (KeyError, ValueError):
-        abort(503, 'External server replied with an error.')
-
-    return jsonify(item)
+    return jsonify(resp), status

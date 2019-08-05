@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 import responses
 from flask import current_app
 from mock import patch
+from pytest import mark
 
 
 @responses.activate
@@ -87,11 +88,11 @@ def test_get_glance_by_id_when_glance_server_down_returns_503(mock_get_token, ap
     mock_get_token.return_value = 'some_token'
     responses.add(responses.GET,
                   current_app.config.get('GLANCE_GET_BY_ID_URL').format(id=glance_id),
-                  status=500)
+                  json={'message': 'External server replied with an error.'},
+                  status=503)
 
     with app.test_client() as client:
-        resp = client.get('/atlas/glance/{}'.format(glance_id),
-                          headers=auth_headers_for_superuser)
+        resp = client.get('/atlas/glance/{}'.format(glance_id), headers=auth_headers_for_superuser)
 
         assert resp.status_code == 503
         assert resp.json['message'] == 'External server replied with an error.'

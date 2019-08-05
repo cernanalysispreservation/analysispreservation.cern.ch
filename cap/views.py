@@ -14,11 +14,10 @@ this file.
 """
 
 from __future__ import absolute_import, print_function
-
 from os.path import join
 
 from flask import Blueprint, jsonify
-
+from elasticsearch import ConnectionError
 from sqlalchemy.exc import OperationalError
 
 from invenio_search import current_search
@@ -36,41 +35,24 @@ blueprint = Blueprint(
 
 
 @blueprint.route('/ping', methods=['GET'])
-def ping():
-    """Load balancer ping view."""
-    return 'Pong'
-
-
-@blueprint.route('/ping/db', methods=['GET'])
-def ping_db():
-    """Load balancer ping view."""
+@blueprint.route('/ping/<service>', methods=['GET'])
+def ping(service=None):
+    """Ping the services for status check."""
     try:
-        default_location = Location.get_default()
-        return 'OK'
-    except OperationalError:
-        return 'ERROR'
+        if service is None:
+            return 'Pong!', 200
+        elif service == 'db':
+            location = Location.get_default()
+        elif service == 'search':
+            version = current_search.cluster_version
+        elif service == 'files':
+            default_location = Location.get_default().uri
+            test_file_path = join(default_location, 'test.txt')
+            f = open(test_file_path, 'r')
 
-
-@blueprint.route('/ping/search', methods=['GET'])
-def ping_es():
-    """Load balancer ping view."""
-    try:
-        current_search.cluster_version
-        return "OK"
-    except ConnectionError:
-        return "ERROR"
-
-
-@blueprint.route('/ping/files', methods=['GET'])
-def ping_files():
-    """Load balancer ping view."""
-    try:
-        default_location = Location.get_default().uri
-        test_file_path = join(default_location, 'test.txt')
-        f = open(test_file_path, 'r')
-        return "OK"
-    except (OperationalError, IOError) as e:
-        return "ERROR"
+        return {'message': 'OK'}, 200
+    except (OperationalError, IOError, ConnectionError) as err:
+        return {'message': str(err)}, 500
 
 
 @blueprint.route('/dashboard')

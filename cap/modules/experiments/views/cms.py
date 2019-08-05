@@ -44,19 +44,24 @@ cms_bp = Blueprint(
 )
 
 
-@cms_bp.route('/cadi/<cadi_id>', methods=['GET'])
-@cms_permission.require(403)
-def get_analysis_from_cadi(cadi_id):
+def _get_cadi(cadi_id):
     """Retrieve specific CADI analysis."""
     cadi_id = unquote(cadi_id).upper()
-
     entry = get_from_cadi_by_id(cadi_id)
+
     if entry:
         _, parsed = parse_cadi_entry(entry)
     else:
         parsed = {}
+    return parsed, 200
 
-    return jsonify(parsed)
+
+@cms_bp.route('/cadi/<cadi_id>', methods=['GET'])
+@cms_permission.require(403)
+def get_analysis_from_cadi(cadi_id):
+    """Retrieve specific CADI analysis (route)."""
+    resp, status = _get_cadi(cadi_id)
+    return jsonify(resp), status
 
 
 @cms_bp.route('/datasets', methods=['GET'])

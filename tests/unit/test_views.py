@@ -36,4 +36,4 @@ def test_view_ping(app):
         resp = client.get(url)
 
         assert resp.status_code == 200
-        assert resp.data == 'Pong'
+        assert resp.data == 'Pong!'

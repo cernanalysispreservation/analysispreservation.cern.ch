@@ -26,14 +26,14 @@
 """CAP CERN service views."""
 
 import ldap
-import requests
-
-from flask import Blueprint, current_app, jsonify, request
-from invenio_files_rest.models import FileInstance, ObjectVersion
-
-from cap.modules.access.utils import login_required
+from ldap import LDAPError
+from flask import jsonify, request
 
 from . import blueprint
+from cap.modules.access.utils import login_required
+
+
+LDAP_SERVER_URL = 'ldap://xldap.cern.ch'
 
 LDAP_USER_RESP_FIELDS = [
     'cn',
@@ -56,6 +56,37 @@ LDAP_EGROUP_RESP_FIELDS = [
 ]
 
 
+def _ldap(query, sf=None, by=None):
+    """LDAP user depending on the query type."""
+    lc = ldap.initialize(LDAP_SERVER_URL)
+
+    # different arguments depending on the query type
+    if by == 'mail':
+        ldap_fields = ['mail']  # LDAP_USER_RESP_FIELDS alternative
+        search_at = 'OU=Users,OU=Organic Units,DC=cern,DC=ch'
+        ldap_query = '(&(cernAccountType=Primary)(mail=*{}*))' \
+            .format(query)
+    else:
+        ldap_fields = LDAP_EGROUP_RESP_FIELDS
+        search_at = 'OU=e-groups,OU=Workgroups,DC=cern,DC=ch'
+        ldap_query = '{}=*{}*'.format(sf, query)
+
+    try:
+        lc.search_ext(
+            search_at, ldap.SCOPE_ONELEVEL, ldap_query, ldap_fields,
+            serverctrls=[ldap.controls.SimplePagedResultsControl(
+                True, size=7, cookie='')
+            ]
+        )
+        status = 200
+        data = lc.result()[1]
+    except LDAPError as err:
+        status = 500
+        data = err.message
+
+    return data, status
+
+
 @blueprint.route('/ldap/user/mail')
 @login_required
 def ldap_user_by_mail():
@@ -65,19 +96,9 @@ def ldap_user_by_mail():
     if not query:
         return jsonify([])
 
-    lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '(&(cernAccountType=Primary)(mail=*{}*))'.format(query),
-        ['mail'],
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
-    res = lc.result()[1]
-
-    res = [x[1]['mail'][0] for x in res]
-    return jsonify(res)
+    resp = _ldap(query, by='mail')
+    data = [x[1]['mail'][0] for x in resp]
+    return jsonify(data)
 
 
 @blueprint.route('/ldap/egroup/mail')
@@ -90,16 +111,6 @@ def ldap_egroup_mail():
     if not query:
         return jsonify([])
 
-    lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '{}=*{}*'.format(sf, query),
-        LDAP_EGROUP_RESP_FIELDS,
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
-    res = lc.result()[1]
-
-    res = [x[1]['mail'][0] for x in res]
-    return jsonify(res)
+    resp, status = _ldap(query, sf, by='egroup')
+    data = [x[1]['mail'][0] for x in resp[1]]
+    return jsonify(data)

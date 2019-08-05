@@ -33,6 +33,8 @@ from mock import patch
 def test_get_orcid_when_no_results_for_given_name_returns_empty_object(
         mock_requests, app, auth_headers_for_superuser):
     class MockedResp:
+        status_code = 200
+
         def json(self):
             return {
                 'num-results': 0,
@@ -52,6 +54,8 @@ def test_get_orcid_when_no_results_for_given_name_returns_empty_object(
 def test_get_orcid_when_multiple_results_for_given_name_returns_empty_object(
         mock_requests, app, auth_headers_for_superuser):
     class MockedResp:
+        status_code = 200
+
         def json(self):
             return {
                 'num-results': 2,
@@ -82,6 +86,8 @@ def test_get_orcid_when_multiple_results_for_given_name_returns_empty_object(
 def test_get_orcid_when_exactly_one_results_returns_orcid_path(
         mock_requests, app, auth_headers_for_superuser):
     class MockedResp:
+        status_code = 200
+
         def json(self):
             return {
                 'num-results': 1,
