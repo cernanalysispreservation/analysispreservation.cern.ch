@@ -1,0 +1,44 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "description":
+      "Information concerning the publications related to a dataset",
+    "properties": {
+      "access": {
+        "enum": ["public", "internal"],
+        "type": "string",
+        "title": "Access Level"
+      },
+      "persistent_identifiers": {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/deposits/records/identifiers-v0.0.1.json"
+        },
+        "type": "array",
+        "description":
+          "Identifier numbers for the publication, e.g. arXiv ID or CDS ID",
+        "title": "Identifiers"
+      },
+      "type": {
+        "type": "string",
+        "title": "Document Type"
+      },
+      "url": {
+        "type": "string",
+        "title": "URL"
+      },
+      "comment": {
+        "type": "string",
+        "title": "Comment"
+      }
+    },
+    "title": "ATLAS Publications"
+  },
+  "name": "atlas-publication"
+}

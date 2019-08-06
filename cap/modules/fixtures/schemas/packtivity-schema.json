@@ -1,0 +1,193 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Packtivity Meta Description",
+    "required": ["process", "publisher", "environment"],
+    "properties": {
+      "process": {
+        "oneOf": [
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/stringinterp-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/scriptproc-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/manual-instructions-proc-schema-v0.0.1.json#"
+          }
+        ],
+        "type": "object",
+        "title": "Process"
+      },
+      "publisher": {
+        "oneOf": [
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/constant-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/frompar-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/fromparjq-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/fromyaml-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/fromglob-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/interpolated-pub-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/manual-instructions-pub-schema-v0.0.1.json#"
+          }
+        ],
+        "type": "object",
+        "title": "Publisher"
+      },
+      "environment": {
+        "oneOf": [
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/noop-env-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/localproc-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/docker-enc-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/manual-instructions-env-schema-v0.0.1.json#"
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "type": "object",
+        "title": "Enviroment"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "packtivity_meta"
+  },
+  "deposit_options": {
+    "items": [
+      {
+        "titleMap": [
+          {
+            "name": "Select a Process Type",
+            "value": "-1"
+          },
+          {
+            "name": "stringinterp-schema-v0.0.1.json",
+            "value": "0"
+          }
+        ],
+        "type": "select",
+        "placeholder": "Select sub-schema to use",
+        "key":
+          "workflows[].workflow.stages[].scheduler.step.process.process_type",
+        "title": "Process Type"
+      },
+      {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/process/stringinterp-schema-v0.0.1.json"
+        },
+        "key": "workflows[].workflow.stages[].scheduler.step.process",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['process_type'] == 0"
+      },
+      {
+        "titleMap": [
+          {
+            "name": "Select a Publisher Type",
+            "value": "-1"
+          },
+          {
+            "name": "constant-pub-schema-v0.0.1.json",
+            "value": "constant-pub"
+          },
+          {
+            "name": "frompar-pub-schema-v0.0.1.json",
+            "value": "frompar-pub"
+          },
+          {
+            "name": "fromyaml-pub-schema-v0.0.1.json",
+            "value": "fromyaml-pub"
+          },
+          {
+            "name": "fromglob-pub-schema-v0.0.1.json",
+            "value": "fromglob-pub"
+          }
+        ],
+        "type": "select",
+        "placeholder": "Select sub-schema to use",
+        "key":
+          "workflows[].workflow.stages[].scheduler.step.publisher.publisher_type",
+        "title": "Publisher Type"
+      },
+      {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/constant-pub-schema-v0.0.1.json"
+        },
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'constant-pub'"
+      },
+      {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/frompar-pub-schema-v0.0.1.json"
+        },
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'frompar-pub'"
+      },
+      {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromyaml-pub-schema-v0.0.1.json"
+        },
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'fromyaml-pub'"
+      },
+      {
+        "items": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/publisher/fromglob-pub-schema-v0.0.1.json"
+        },
+        "key": "workflows[].workflow.stages[].scheduler.step.publisher",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publisher_type'] == 'fromglob-pub'"
+      }
+    ],
+    "type": "fieldset",
+    "key": "workflows[].workflow.stages[].scheduler.step",
+    "title": "Step"
+  },
+  "name": "packtivity-schema"
+}

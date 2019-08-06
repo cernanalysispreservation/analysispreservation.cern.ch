@@ -1,0 +1,30 @@
+{
+  "name": "file-grabber",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "x-cap-file": {
+      "fetch_from": "/url",
+      "file_key": "/key"
+    },
+    "type": "object",
+    "properties": {
+      "url": {
+        "pattern": "^(http|https|root)://",
+        "type": "string"
+      },
+      "key": {
+        "type": "string"
+      },
+      "version_id": {
+        "type": "string"
+      }
+    }
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

@@ -178,6 +178,8 @@ class Schema(db.Model):
 
     def add_read_access_for_all_users(self):
         """Give read access to all authenticated users."""
+        assert self.id
+
         try:
             db.session.add(
                 ActionSystemRoles.allow(SchemaReadAction(self.id),

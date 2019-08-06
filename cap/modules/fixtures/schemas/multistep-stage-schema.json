@@ -1,0 +1,119 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "oneOf": [
+      {
+        "not": {
+          "required": ["step", "cases"]
+        },
+        "required": ["workflow"]
+      },
+      {
+        "not": {
+          "required": ["workflow", "cases"]
+        },
+        "required": ["step"]
+      },
+      {
+        "not": {
+          "required": ["workflow", "step"]
+        },
+        "required": ["cases"]
+      }
+    ],
+    "title": "Multiple Step Scheduler",
+    "required": ["scheduler_type"],
+    "properties": {
+      "partitionsize": {
+        "type": "number"
+      },
+      "parameters": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/parameterselection-v0.0.1.json#"
+      },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/value_registration-v0.0.1.json#"
+      },
+      "batchsize": {
+        "type": "number"
+      },
+      "workflow": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/workflow-schema-v0.0.1.json#"
+      },
+      "step": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/packtivity-schema-v0.0.1.json#"
+      },
+      "cases": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/cases-v0.0.1.json#"
+      },
+      "scheduler_type": {
+        "default": "multistep-stage",
+        "enum": ["multistep-stage"],
+        "type": "string"
+      },
+      "scatter": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "parameters": {
+            "items": {
+              "type": "string",
+              "title": "Parameter"
+            },
+            "type": "array",
+            "title": "Parameters"
+          }
+        },
+        "title": "Scatter"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "multistep-stage"
+  },
+  "deposit_options": [
+    {
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"
+    },
+    {
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"
+    },
+    {
+      "key": "workflows[].workflow.stages[].scheduler.scatter",
+      "type": "fieldset",
+      "items": [
+        {
+          "key": "workflows[].workflow.stages[].scheduler.scatter.parameters",
+          "type": "array",
+          "items": [
+            {
+              "key":
+                "workflows[].workflow.stages[].scheduler.scatter.parameters",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "key": "workflows[].workflow.stages[].scheduler.scatter.method",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "name": "multistep-stage-schema"
+}

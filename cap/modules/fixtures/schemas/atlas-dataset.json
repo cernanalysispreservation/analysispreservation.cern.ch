@@ -1,0 +1,28 @@
+{
+  "experiment": null, 
+  "use_deposit_as_record": true, 
+  "version": "0.0.1", 
+  "is_indexed": false, 
+  "fullname": "", 
+  "deposit_schema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Information concerning the ATLAS datasets used", 
+    "properties": {
+      "type": {
+        "type": "string", 
+        "title": "Data Type"
+      }, 
+      "dataset_title": {
+        "type": "string", 
+        "title": "Title"
+      }, 
+      "format": {
+        "type": "string", 
+        "title": "Data Format"
+      }
+    }, 
+    "title": "ATLAS Dataset"
+  }, 
+  "name": "atlas-dataset"
+}

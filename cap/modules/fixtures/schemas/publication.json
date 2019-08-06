@@ -1,0 +1,43 @@
+{
+  "experiment": null, 
+  "use_deposit_as_record": true, 
+  "version": "0.0.1", 
+  "is_indexed": false, 
+  "fullname": "", 
+  "deposit_schema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Add publications", 
+    "properties": {
+      "journal_title": {
+        "type": "string", 
+        "title": "Journal Title"
+      }, 
+      "persistent_identifiers": {
+        "items": {
+          "type": "string"
+        }, 
+        "type": "array", 
+        "title": "Identifiers"
+      }, 
+      "journal_volume": {
+        "type": "integer", 
+        "title": "Journal Volume"
+      }, 
+      "journal_year": {
+        "type": "integer", 
+        "title": "Journal Year"
+      }, 
+      "journal_issue": {
+        "type": "integer", 
+        "title": "Journal Issue"
+      }, 
+      "journal_page": {
+        "type": "integer", 
+        "title": "Journal Page"
+      }
+    }, 
+    "title": "Internal Publication"
+  }, 
+  "name": "publication"
+}

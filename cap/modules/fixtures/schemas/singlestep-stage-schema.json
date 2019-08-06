@@ -1,0 +1,76 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "oneOf": [
+      {
+        "not": {
+          "required": ["step", "cases"]
+        },
+        "required": ["workflow"]
+      },
+      {
+        "not": {
+          "required": ["workflow", "cases"]
+        },
+        "required": ["step"]
+      },
+      {
+        "not": {
+          "required": ["workflow", "step"]
+        },
+        "required": ["cases"]
+      }
+    ],
+    "title": "Single Step Scheduler",
+    "required": ["scheduler_type"],
+    "properties": {
+      "parameters": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/parameterselection-v0.0.1.json#"
+      },
+      "workflow": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/workflow-schema-v0.0.1.json#"
+      },
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/value_registration-v0.0.1.json#"
+      },
+      "workflow_opts": {
+        "type": "object"
+      },
+      "step": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/packtivity-schema-v0.0.1.json#"
+      },
+      "cases": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/cases_no_circ_refs-v0.0.1.json#"
+      },
+      "scheduler_type": {
+        "default": "singlestep-stage",
+        "enum": ["singlestep-stage"],
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "singlestep-stage"
+  },
+  "deposit_options": [
+    {
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/yadage/scheduler/parameterselection-v0.0.1.json"
+    },
+    {
+      "$ref":
+        "https://analysispreservation.cern.ch/schemas/options/definitions/workflow_schemas/packtivity/packtivity-schema-v0.0.1.json"
+    }
+  ],
+  "name": "singlestep-stage-schema"
+}

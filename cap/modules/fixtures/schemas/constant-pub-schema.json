@@ -1,0 +1,54 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Constant Publisher",
+    "required": ["publisher_type", "publish"],
+    "properties": {
+      "publisher_type": {
+        "default": "constant-pub",
+        "enum": ["constant-pub"],
+        "type": "string"
+      },
+      "publish": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "constant_publisher"
+  },
+  "deposit_options": [
+    {
+      "titleMap": [
+        {
+          "name": "Select a Process Type",
+          "value": "-1"
+        },
+        {
+          "name": "shallow-primitive-schema-v0.0.1.json",
+          "value": "0"
+        }
+      ],
+      "type": "select",
+      "placeholder": "Select sub-schema to use",
+      "key":
+        "workflows[].workflow.stages[].scheduler.step.publisher.publish.publish_type",
+      "title": "Process Type"
+    },
+    {
+      "items": [
+        "workflows[].workflow.stages[].scheduler.step.publisher.publish.value"
+      ],
+      "type": "fieldset",
+      "key": "workflows[].workflow.stages[].scheduler.step.publisher.publish",
+      "condition":
+        "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['step']['publisher']['publish']['publish_type'] == 0"
+    }
+  ],
+  "name": "constant-pub-schema"
+}

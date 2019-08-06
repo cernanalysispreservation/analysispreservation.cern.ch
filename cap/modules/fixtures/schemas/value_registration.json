@@ -1,0 +1,12 @@
+{
+  "experiment": null, 
+  "use_deposit_as_record": true, 
+  "version": "0.0.1", 
+  "is_indexed": false, 
+  "fullname": "", 
+  "deposit_schema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object"
+  }, 
+  "name": "value_registration"
+}

@@ -1,0 +1,38 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Parameter Publisher",
+    "required": ["publisher_type", "outputmap"],
+    "properties": {
+      "publisher_type": {
+        "default": "frompar-pub",
+        "enum": ["frompar-pub"],
+        "type": "string"
+      },
+      "outputmap": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "parameter_publisher"
+  },
+  "deposit_options": [
+    {
+      "items": [
+        {
+          "type": "string",
+          "key":
+            "workflows[].workflow.stages[].scheduler.step.publisher.outputmap.param_card"
+        }
+      ],
+      "key": "workflows[].workflow.stages[].scheduler.step.publisher.outputmap"
+    }
+  ],
+  "name": "frompar-pub-schema"
+}

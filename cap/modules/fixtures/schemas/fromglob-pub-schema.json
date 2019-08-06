@@ -1,0 +1,33 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Glob Publisher",
+    "required": ["publisher_type", "globexpression", "outputkey"],
+    "properties": {
+      "publisher_type": {
+        "default": "fromglob-pub",
+        "enum": ["fromglob-pub"],
+        "type": "string"
+      },
+      "outputkey": {
+        "type": "string"
+      },
+      "globexpression": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "glob_publisher"
+  },
+  "deposit_options": [
+    "workflows[].workflow.stages[].scheduler.step.publisher.globexpression",
+    "workflows[].workflow.stages[].scheduler.step.publisher.outputkey"
+  ],
+  "name": "fromglob-pub-schema"
+}

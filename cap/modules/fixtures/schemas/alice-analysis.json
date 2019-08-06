@@ -1,0 +1,114 @@
+{
+  "name": "alice",
+  "version": "0.0.1",
+  "fullname": "ALICE Analysis",
+  "experiment": "ALICE",
+  "is_indexed": true,
+  "use_deposit_as_record": true,
+  "deposit_schema": {
+    "description": "Schema describing properties of an ALICE analysis",
+    "title": "ALICE Analysis",
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "properties": {
+      "_buckets": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
+      },
+      "control_number": {
+        "type": "string"
+      },
+      "analysis_title": {
+        "type": "string",
+        "title": "Analysis Title"
+      },
+      "_files": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
+      },
+      "$ana_type": {
+        "type": "string"
+      },
+      "_experiment": {
+        "type": "string"
+      },
+      "_access": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
+      },
+      "_deposit": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
+      },
+      "$schema": {
+        "type": "string"
+      },
+      "train_analysis": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/alice-train-analysis-v0.0.1.json"
+      },
+      "general_title": {
+        "type": "string"
+      }
+    }
+  },
+  "deposit_mapping": {
+    "alice-analysis-v0.0.1": {
+      "properties": {
+        "_deposit": {
+          "type": "object",
+          "properties": {
+            "created_by": {
+              "type": "integer",
+              "copy_to": "created_by"
+            },
+            "status": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword"
+                }
+              },
+              "copy_to": "status"
+            }
+          }
+        },
+        "_experiment": {
+          "type": "text"
+        },
+        "_created": {
+          "type": "date",
+          "copy_to": "created"
+        },
+        "_updated": {
+          "type": "date",
+          "copy_to": "updated"
+        },
+        "created": {
+          "type": "date"
+        }
+      }
+    }
+  },
+  "deposit_options": {
+    "ui:order": ["analysis_title", "train_analysis"],
+    "train_analysis": {
+      "items": {
+        "ui:order": [
+          "train_id",
+          "run_id",
+          "configuration_files",
+          "wagon_names",
+          "dataset",
+          "reference_production",
+          "dataset_aod",
+          "run",
+          "ali_physics",
+          "derived_dataset"
+        ]
+      },
+      "ui:array": "AccordionArrayField"
+    }
+  }
+}

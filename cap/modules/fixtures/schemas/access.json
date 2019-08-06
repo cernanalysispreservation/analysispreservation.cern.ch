@@ -1,0 +1,67 @@
+{
+  "name": "access",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "type": "object",
+    "properties": {
+      "deposit-admin": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "roles": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "deposit-update": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "roles": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        }
+      },
+      "deposit-read": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "roles": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        }
+      }
+    }
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

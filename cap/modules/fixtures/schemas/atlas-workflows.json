@@ -1,0 +1,47 @@
+{
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "items": {
+      "type": "object",
+      "properties": {
+        "analysis_title": {
+          "type": "string",
+          "title": "Analysis Title"
+        },
+        "workflow": {
+          "oneOf": [
+            {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/workflow-schema-v0.0.1.json#"
+            }
+          ],
+          "title": "Workflow"
+        }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "title": "Workflows"
+  },
+  "deposit_options": {
+    "items": [
+        {
+          "key": "workflows[].analysis_title"
+        },
+        {
+          "type": "cap:JSONEditor",
+          "key": "workflows[].workflow",
+          "title": "Yadage Workflow ( add your JSON workflow here )"
+        }
+      ],
+      "type": "tabArrayTop",
+      "key": "workflows",
+      "title": "Workflow"
+    }
+  },
+  "name": "atlas-workflows"
+}

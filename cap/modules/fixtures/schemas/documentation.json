@@ -1,0 +1,28 @@
+{
+  "experiment": null, 
+  "use_deposit_as_record": true, 
+  "version": "0.0.1", 
+  "is_indexed": false, 
+  "fullname": "", 
+  "deposit_schema": {
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "description": "Add documentation", 
+    "properties": {
+      "url": {
+        "type": "string", 
+        "title": "URL"
+      }, 
+      "keywords": {
+        "type": "string", 
+        "title": "Keywords"
+      }, 
+      "comment": {
+        "type": "string", 
+        "title": "Comment"
+      }
+    }, 
+    "title": "Documentation"
+  }, 
+  "name": "documentation"
+}

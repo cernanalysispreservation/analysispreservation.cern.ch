@@ -1,0 +1,24 @@
+{
+  "name": "buckets",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "type": "object",
+    "properties": {
+      "record": {
+        "type": "string",
+        "description": "Record bucket ID."
+      },
+      "deposit": {
+        "type": "string",
+        "description": "Deposit bucket ID."
+      }
+    }
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

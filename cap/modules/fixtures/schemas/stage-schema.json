@@ -1,0 +1,58 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Yadage Stage",
+    "required": ["name", "scheduler"],
+    "properties": {
+      "dependencies": {
+        "default": {
+          "dependency_type": "jsonpath_ready",
+          "expressions": []
+        },
+        "oneOf": [
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/jsonpathready-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/exprfulfilled-schema-v0.0.1.json#"
+          }
+        ],
+        "type": "object",
+        "title": "Dependencies"
+      },
+      "name": {
+        "type": "string",
+        "title": "Name"
+      },
+      "scheduler": {
+        "oneOf": [
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/singlestep-stage-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/multistep-stage-schema-v0.0.1.json#"
+          },
+          {
+            "$ref":
+              "https://analysispreservation.cern.ch/schemas/deposits/records/jq-stage-schema-v0.0.1.json#"
+          }
+        ],
+        "type": "object",
+        "title": "Scheduler"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "yadage_stage"
+  },
+  "name": "stage-schema"
+}

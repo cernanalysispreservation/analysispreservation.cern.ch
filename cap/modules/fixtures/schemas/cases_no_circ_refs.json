@@ -1,0 +1,42 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "items": {
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "not": {
+            "required": ["step"]
+          },
+          "required": ["workflow"]
+        },
+        {
+          "not": {
+            "required": ["workflow"]
+          },
+          "required": ["step"]
+        }
+      ],
+      "type": "object",
+      "properties": {
+        "step": {
+          "$ref":
+            "https://analysispreservation.cern.ch/schemas/deposits/records/packtivity-schema-v0.0.1.json#"
+        },
+        "workflow": {
+          "type": "object"
+        },
+        "if": {
+          "type": "string"
+        }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array"
+  },
+  "name": "cases_no_circ_refs"
+}

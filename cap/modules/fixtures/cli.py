@@ -35,7 +35,7 @@ from cap.modules.experiments.utils.cms import \
     cache_cms_triggers_in_es_from_file  # noqa
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file  # noqa
-from cap.modules.schemas.utils import add_or_update_schema
+from cap.modules.schemas.utils import add_schema_from_fixture
 
 from .utils import add_drafts_from_file
 
@@ -98,7 +98,7 @@ def index_triggers(file):
 @with_appcontext
 @click.option('--dir', '-d',
               type=click.Path(exists=True),
-              default='cap/jsonschemas')
+              default='cap/modules/fixtures/schemas')
 def schemas(dir):
     """Load default schemas."""
     for root, dirs, files in os.walk(dir):
@@ -112,5 +112,4 @@ def schemas(dir):
                         print("Not valid json in {} file".format(fullpath))
                         continue
 
-                add_or_update_schema(fullpath=fullpath.replace(dir, ''),
-                                     data=json_content)
+                add_schema_from_fixture(data=json_content)

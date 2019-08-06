@@ -1,0 +1,45 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "jq Scheduler",
+    "required": ["scheduler_type"],
+    "properties": {
+      "register_values": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/value_registration-v0.0.1.json"
+      },
+      "stepscript": {
+        "default": "[.]",
+        "type": "string"
+      },
+      "workflow": {
+        "type": "object"
+      },
+      "postscript": {
+        "default": ".",
+        "type": "string"
+      },
+      "step": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/packtivity-schema-v0.0.1.json#"
+      },
+      "bindings": {
+        "type": "object"
+      },
+      "scheduler_type": {
+        "default": "jq-stage",
+        "enum": ["jq-stage"],
+        "type": "string"
+      }
+    },
+    "additionalProperties": true,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "jq-stage"
+  },
+  "name": "jq-stage-schema_no_circ_refs"
+}

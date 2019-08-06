@@ -1,0 +1,33 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "String Interpolated Command",
+    "required": ["process_type", "cmd"],
+    "properties": {
+      "cmd": {
+        "type": "string",
+        "title": "Command"
+      },
+      "process_type": {
+        "default": "string-interpolated-cmd",
+        "enum": ["string-interpolated-cmd"],
+        "type": "string",
+        "title": "Process Type"
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "string_interpolated"
+  },
+  "deposit_options": [
+    {
+      "key": "workflows[].workflow.stages[].scheduler.step.process.cmd"
+    }
+  ],
+  "name": "stringinterp-schema"
+}

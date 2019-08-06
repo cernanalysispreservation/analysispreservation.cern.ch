@@ -1,0 +1,36 @@
+{
+  "name": "file",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "items": {
+      "type": "object",
+      "description": "Describe information needed for files in records.",
+      "properties": {
+        "bucket": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "description": "File type extension."
+        },
+        "version_id": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        }
+      }
+    },
+    "type": "array"
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

@@ -1,0 +1,30 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "items": {
+      "type": "object",
+      "properties": {
+        "workflow_title": {
+          "type": "string",
+          "title": "Workflow Title"
+        },
+        "workflow": {
+          "oneOf": [
+            {
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/workflow-schema_no_circ_refs-v0.0.1.json"
+            }
+          ]
+        }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "title": "Workflows"
+  },
+  "name": "atlas-workflows-no-circ-refs"
+}

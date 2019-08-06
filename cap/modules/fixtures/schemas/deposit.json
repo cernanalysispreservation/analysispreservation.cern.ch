@@ -1,0 +1,55 @@
+{
+  "name": "deposit",
+  "version": "0.0.1",
+  "fullname": "",
+  "experiment": null,
+  "is_indexed": false,
+  "use_deposit_as_record": true,
+  "allow_all": true,
+  "deposit_schema": {
+    "required": ["id"],
+    "type": "object",
+    "name": "_deposit",
+    "properties": {
+      "status": {
+        "enum": ["draft", "published"],
+        "type": "string",
+        "name": "status"
+      },
+      "owners": {
+        "items": [
+          {
+            "type": "integer"
+          }
+        ],
+        "type": "array",
+        "name": "owners"
+      },
+      "pid": {
+        "type": "object",
+        "name": "pid",
+        "properties": {
+          "revision_id": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "id": {
+        "type": "string",
+        "name": "id"
+      },
+      "created_by": {
+        "type": "integer",
+        "name": "created_by"
+      }
+    }
+  },
+  "deposit_mapping": {},
+  "deposit_options": {}
+}

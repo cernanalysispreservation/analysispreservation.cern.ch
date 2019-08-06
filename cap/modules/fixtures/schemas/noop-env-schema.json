@@ -1,0 +1,27 @@
+{
+  "experiment": null, 
+  "use_deposit_as_record": true, 
+  "version": "0.0.1", 
+  "is_indexed": false, 
+  "fullname": "", 
+  "deposit_schema": {
+    "title": "Noop Environment for Testing", 
+    "required": [
+      "environment_type"
+    ], 
+    "properties": {
+      "environment_type": {
+        "default": "noop-env", 
+        "enum": [
+          "noop-env"
+        ], 
+        "type": "string"
+      }
+    }, 
+    "additionalProperties": false, 
+    "$schema": "http://json-schema.org/draft-04/schema#", 
+    "type": "object", 
+    "id": "noop-env"
+  }, 
+  "name": "noop-env-schema"
+}

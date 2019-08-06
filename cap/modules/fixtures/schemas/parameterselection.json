@@ -1,0 +1,132 @@
+{
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
+  "deposit_schema": {
+    "title": "Parameter Selection",
+    "items": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "required": ["expression_type"],
+              "type": "object",
+              "properties": {
+                "output": {
+                  "type": "string"
+                },
+                "expression_type": {
+                  "default": "stage-output-selector",
+                  "enum": ["stage-output-selector"],
+                  "type": "string"
+                },
+                "stages": {
+                  "type": "string"
+                },
+                "flatten": {
+                  "type": "boolean"
+                },
+                "unwrap": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ],
+          "title": "Value"
+        },
+        "key": {
+          "type": "string",
+          "title": "Key/Attribute"
+        }
+      }
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
+    "id": "parameter_selection"
+  },
+  "deposit_options": {
+    "items": [
+      {
+        "type": "string",
+        "key": "workflows[].workflow.stages[].scheduler.parameters[].key",
+        "title": "Key"
+      },
+      {
+        "titleMap": [
+          {
+            "name": "Select a Parameter Type",
+            "value": "-1"
+          },
+          {
+            "name": "sting, number",
+            "value": "0"
+          },
+          {
+            "name": "parameters object",
+            "value": "1"
+          }
+        ],
+        "placeholder": "Select sub-schema to use",
+        "type": "select",
+        "key":
+          "workflows[].workflow.stages[].scheduler.parameters[].value_type",
+        "title": "Parameter Type"
+      },
+      {
+        "type": "string",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['parameters'][arrayIndices[2]]['value_type'] == 0",
+        "key": "workflows[].workflow.stages[].scheduler.parameters[].value"
+      },
+      {
+        "items": [
+          {
+            "type": "string",
+            "key":
+              "workflows[].workflow.stages[].scheduler.parameters[].value.stages",
+            "title": "Stages"
+          },
+          {
+            "type": "string",
+            "key":
+              "workflows[].workflow.stages[].scheduler.parameters[].value.output",
+            "title": "Output"
+          },
+          {
+            "type": "boolean",
+            "key":
+              "workflows[].workflow.stages[].scheduler.parameters[].value.unwrap",
+            "title": "Unwrap"
+          },
+          {
+            "type": "boolean",
+            "key":
+              "workflows[].workflow.stages[].scheduler.parameters[].value.flatten",
+            "title": "Flatten"
+          }
+        ],
+        "type": "fieldset",
+        "condition":
+          "model['workflows'][arrayIndices[0]]['workflow']['stages'][arrayIndices[1]]['scheduler']['parameters'][arrayIndices[2]]['value_type'] == 1",
+        "key": "workflows[].workflow.stages[].scheduler.parameters[].value"
+      }
+    ],
+    "type": "array",
+    "key": "workflows[].workflow.stages[].scheduler.parameters",
+    "title": "Parameters"
+  },
+  "name": "parameterselection"
+}
