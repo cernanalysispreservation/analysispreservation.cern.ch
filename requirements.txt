@@ -91,7 +91,9 @@ invenio-query-parser==0.6.0
 invenio-records-rest==1.1.0  # via invenio
 invenio-records-ui==1.0.1  # via invenio
 invenio-records==1.0.0    # via invenio, invenio-indexer, invenio-oaiserver, invenio-records-rest, invenio-records-ui
-invenio-rest==1.0.0       # via invenio, invenio-accounts-rest, invenio-records-rest
+invenio-rest==1.0.0
+invenio-files-rest==1.0.0
+# invenio-rest==1.0.0       # via invenio, invenio-accounts-rest, invenio-records-rest
 invenio-search-ui==1.0.1  # via invenio
 invenio-search[elasticsearch5]==1.0.0  # via invenio
 invenio-theme==1.0.0      # via invenio

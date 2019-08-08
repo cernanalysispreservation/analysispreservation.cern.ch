@@ -87,7 +87,8 @@ install_requires = [
     'invenio-query-parser>=0.3.0',
     'invenio[{db},{es},base,auth,metadata]~={version}'.format(
         db=DATABASE, es=ELASTICSEARCH, version=INVENIO_VERSION),
-    'invenio-files-rest>=1.0.0b1',
+    'invenio-rest==1.0.0',
+    'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
 
     # "raven" versions needed till we FIX dependecies on installation
