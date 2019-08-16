@@ -21,8 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-
 """Pytest configuration."""
 
 from __future__ import absolute_import, print_function
@@ -58,15 +56,17 @@ from werkzeug.local import LocalProxy
 from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.experiments.utils.cms import (CMS_TRIGGERS_INDEX,
-                                               cache_cms_triggers_in_es_from_file)
-from cap.modules.experiments.utils.das import (DAS_DATASETS_INDEX,
-                                               cache_das_datasets_in_es_from_file)
+from cap.modules.experiments.utils.cms import (
+    CMS_TRIGGERS_INDEX, cache_cms_triggers_in_es_from_file)
+from cap.modules.experiments.utils.das import (
+    DAS_DATASETS_INDEX, cache_das_datasets_in_es_from_file)
 from cap.modules.reana.models import ReanaJob
 from cap.modules.schemas.models import Schema
 
+_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
-@pytest.yield_fixture(scope='session')
+
+@pytest.fixture(scope='session')
 def instance_path():
     """Default instance path."""
     path = tempfile.mkdtemp()
@@ -79,10 +79,8 @@ def instance_path():
 @pytest.fixture(scope='session')
 def env_config(instance_path):
     """Default instance path."""
-    os.environ.update(
-        APP_INSTANCE_PATH=os.environ.get(
-            'INSTANCE_PATH', instance_path),
-    )
+    os.environ.update(APP_INSTANCE_PATH=os.environ.get('INSTANCE_PATH',
+                                                       instance_path), )
 
     return os.environ
 
@@ -94,49 +92,39 @@ def default_config():
     APP_DEFAULT_SECURE_HEADERS['force_https'] = False
     APP_DEFAULT_SECURE_HEADERS['session_cookie_secure'] = False
 
-    return dict(
-        DEBUG_TB_ENABLED=False,
-        APP_DEFAULT_SECURE_HEADERS=APP_DEFAULT_SECURE_HEADERS,
-        CELERY_ALWAYS_EAGER=True,
-        CELERY_CACHE_BACKEND='memory',
-        CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
-        CELERY_RESULT_BACKEND='cache',
-        SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
-        JSONSCHEMAS_HOST='analysispreservation.cern.ch',
-        ACCESS_CACHE=None,
-        TESTING=True,
-        APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken'
-    )
+    return dict(DEBUG_TB_ENABLED=False,
+                APP_DEFAULT_SECURE_HEADERS=APP_DEFAULT_SECURE_HEADERS,
+                CELERY_ALWAYS_EAGER=True,
+                CELERY_CACHE_BACKEND='memory',
+                CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
+                CELERY_RESULT_BACKEND='cache',
+                SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
+                JSONSCHEMAS_HOST='analysispreservation.cern.ch',
+                ACCESS_CACHE=None,
+                TESTING=True,
+                APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken')
 
 
-@pytest.yield_fixture(scope='session')
-def app(env_config, default_config):
-    """Flask application fixture.
-
-    This fixture will also push a request context, more here:
-    https://pytest-flask.readthedocs.io/en/latest/features.html#request-ctx-request-context
-    """
-    app = create_api(**default_config)
-    FlaskCeleryExt(app)
-
-    with app.app_context():
-        yield app
+@pytest.fixture(scope='session')
+def app(base_app):
+    """Flask application fixture."""
+    yield base_app
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def create_app():
     return create_api
 
 
-@pytest.fixture(scope='module')
-def base_app(create_app, default_config, request, default_handler):
+@pytest.fixture(scope='session')
+def base_app(create_app, default_config, request):
     app_ = create_app(**default_config)
 
     with app_.app_context():
         yield app_
 
 
-@pytest.yield_fixture
+@pytest.fixture
 def db(base_app):
     """Setup database."""
     if not database_exists(str(db_.engine.url)):
@@ -147,7 +135,63 @@ def db(base_app):
     db_.drop_all()
 
 
-@pytest.yield_fixture
+@pytest.fixture
+def location(db):
+    """File system location."""
+    tmppath = tempfile.mkdtemp()
+
+    loc = Location(name='testloc', uri=tmppath, default=True)
+    db.session.add(loc)
+    db.session.commit()
+
+    yield loc
+
+    shutil.rmtree(tmppath)
+
+
+@pytest.fixture()
+def users(db):
+    """Create users."""
+    users = {
+        'cms_user': create_user_with_access(db.session, 'cms_user@cern.ch',
+                                            'cms-access'),
+        'cms_user2': create_user_with_access(db.session, 'cms_user2@cern.ch',
+                                             'cms-access'),
+        'alice_user': create_user_with_access(db.session, 'alice_user@cern.ch',
+                                              'alice-access'),
+        'alice_user2': create_user_with_access(db.session,
+                                               'alice_user2@cern.ch',
+                                               'alice-access'),
+        'atlas_user': create_user_with_access(db.session, 'atlas_user@cern.ch',
+                                              'atlas-access'),
+        'atlas_user2': create_user_with_access(db.session,
+                                               'atlas_user2@cern.ch',
+                                               'atlas-access'),
+        'lhcb_user': create_user_with_access(db.session, 'lhcb_user@cern.ch',
+                                             'lhcb-access'),
+        'lhcb_user2': create_user_with_access(db.session, 'lhcb_user2@cern.ch',
+                                              'lhcb-access'),
+        'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
+                                             'superuser-access'),
+    }
+
+    db.session.commit()
+
+    return users
+
+
+@pytest.fixture()
+def superuser(db):
+    "Create superuser."
+    superuser = create_user_with_access(db.session, 'superuser@cern.ch',
+                                        'superuser-access')
+
+    db.session.commit()
+
+    return superuser
+
+
+@pytest.fixture
 def es(base_app):
     """Provide elasticsearch access."""
     list(current_search.delete(ignore=[400, 404]))
@@ -160,108 +204,29 @@ def es(base_app):
         current_search_client.indices.delete(index='*')
 
 
-_datastore = LocalProxy(
-    lambda: current_app.extensions['security'].datastore)
-
-
-def create_user_with_access(username, action):
-    user = _datastore.find_user(email=username)
-
-    if not user:
-        user = create_test_user(email=username, password='pass')
-
-    db_.session.add(ActionUsers.allow(
-        ActionNeed(action), user=user))
-
-    db_.session.commit()
-
-    return user
-
-
-def assign_egroup_to_experiment(egroup_name, exp):
-    role = _datastore.find_or_create_role(egroup_name)
-    exp_need = exp_need_factory(exp)
-
-    db_.session.add(ActionRoles.allow(
-        exp_need, role=role))
-
-    db_.session.commit()
-
-    return role
-
-
-def add_role_to_user(user, rolename):
-    role = _datastore.find_or_create_role(rolename)
-
-    _datastore.add_role_to_user(user, role)
-
-
-@pytest.fixture()
-def users(db):
-    """Create users."""
-    users = {
-        'cms_user': create_user_with_access('cms_user@cern.ch',
-                                            'cms-access'),
-        'cms_user2': create_user_with_access('cms_user2@cern.ch',
-                                             'cms-access'),
-        'alice_user': create_user_with_access('alice_user@cern.ch',
-                                              'alice-access'),
-        'alice_user2': create_user_with_access('alice_user2@cern.ch',
-                                               'alice-access'),
-        'atlas_user': create_user_with_access('atlas_user@cern.ch',
-                                              'atlas-access'),
-        'atlas_user2': create_user_with_access('atlas_user2@cern.ch',
-                                               'atlas-access'),
-        'lhcb_user': create_user_with_access('lhcb_user@cern.ch',
-                                             'lhcb-access'),
-        'lhcb_user2': create_user_with_access('lhcb_user2@cern.ch',
-                                              'lhcb-access'),
-        'superuser': create_user_with_access('superuser@cern.ch',
-                                             'superuser-access'),
-    }
-
-    return users
-
-
-@pytest.fixture()
-def superuser(db):
-    "Create superuser."
-    superuser = create_user_with_access(
-        'superuser@cern.ch', 'superuser-access')
-
-    return superuser
-
-
-@pytest.fixture
-def jsonschemas_host():
-    return current_app.config.get('JSONSCHEMAS_HOST')
-
-
 @pytest.fixture
 def create_schema(db):
     """Returns function to add a schema to db."""
-
-    def _add_schema(name, deposit_schema=None, is_indexed=True, use_deposit_as_record=True, version="1.0.0", **kwargs):
+    def _add_schema(name,
+                    deposit_schema=None,
+                    is_indexed=True,
+                    use_deposit_as_record=True,
+                    version="1.0.0",
+                    **kwargs):
         """
         Add new schema into db
         """
-        default_json = {
-            'title': {
-                'type': 'string'
-            }
-        }
+        default_json = {'title': {'type': 'string'}}
 
         try:
             schema = Schema.get(name, version)
         except JSONSchemaNotFound:
-            schema = Schema(
-                name=name,
-                version=version,
-                is_indexed=is_indexed,
-                use_deposit_as_record=use_deposit_as_record,
-                deposit_schema=deposit_schema or default_json,
-                **kwargs
-            )
+            schema = Schema(name=name,
+                            version=version,
+                            is_indexed=is_indexed,
+                            use_deposit_as_record=use_deposit_as_record,
+                            deposit_schema=deposit_schema or default_json,
+                            **kwargs)
             db.session.add(schema)
             db.session.commit()
 
@@ -270,20 +235,18 @@ def create_schema(db):
     yield _add_schema
 
 
+def bearer_auth(token):
+    """Create authentication headers (with a valid oauth2 token)."""
+    return [('Authorization', 'Bearer {0}'.format(token['token'].access_token))
+            ]
+
+
 @pytest.fixture
-def auth_headers_for_superuser(superuser, auth_headers_for_user):
-    return auth_headers_for_user(superuser)
-
-
-@pytest.fixture()
 def auth_headers_for_user(base_app, db):
     """Return method to generate write token for user."""
-
     def _write_token(user):
         """Return json headers with write oauth token for given user."""
-        client_ = Client.query.filter_by(
-            user_id=user.id
-        ).first()
+        client_ = Client.query.filter_by(user_id=user.id).first()
 
         if not client_:
             client_ = Client(
@@ -298,9 +261,7 @@ def auth_headers_for_user(base_app, db):
             )
             db.session.add(client_)
 
-        token_ = Token.query.filter_by(
-            user_id=user.id
-        ).first()
+        token_ = Token.query.filter_by(user_id=user.id).first()
 
         if not token_:
             token_ = Token(
@@ -316,14 +277,19 @@ def auth_headers_for_user(base_app, db):
             db.session.add(token_)
         db.session.commit()
 
-        return bearer_auth(dict(
-            token=token_,
-            auth_header=[
-                ('Authorization', 'Bearer {0}'.format(token_.access_token)),
-            ]
-        ))
+        return bearer_auth(
+            dict(token=token_,
+                 auth_header=[
+                     ('Authorization',
+                      'Bearer {0}'.format(token_.access_token)),
+                 ]))
 
     return _write_token
+
+
+@pytest.fixture
+def auth_headers_for_superuser(superuser, auth_headers_for_user):
+    return auth_headers_for_user(superuser)
 
 
 @pytest.fixture
@@ -333,33 +299,17 @@ def json_headers():
             ('Accept', 'application/json')]
 
 
-@pytest.yield_fixture()
-def location(db):
-    """File system location."""
-    tmppath = tempfile.mkdtemp()
-
-    loc = Location(
-        name='testloc',
-        uri=tmppath,
-        default=True
-    )
-    db.session.add(loc)
-    db.session.commit()
-
-    yield loc
-
-    shutil.rmtree(tmppath)
-
-
 @pytest.fixture
-def create_deposit(app, db, es, location, jsonschemas_host,
-                   create_schema):
+def create_deposit(app, db, es, location, create_schema):
     """Returns function to create a new deposit."""
-    def minimal_metadata(url): return {
-        '$schema': url
-    }
+    def minimal_metadata(url):
+        return {'$schema': url}
 
-    def _create_deposit(user, schema_name, metadata=None, experiment=None, publish=False):
+    def _create_deposit(user,
+                        schema_name,
+                        metadata=None,
+                        experiment=None,
+                        publish=False):
         """Create a new deposit for given user and schema name.
 
         e.g cms-analysis-v0.0.1,
@@ -396,12 +346,6 @@ def create_deposit(app, db, es, location, jsonschemas_host,
     yield _create_deposit
 
 
-def bearer_auth(token):
-    """Create authentication headers (with a valid oauth2 token)."""
-    return [('Authorization',
-             'Bearer {0}'.format(token['token'].access_token))]
-
-
 @pytest.fixture
 def deposit(superuser, create_deposit):
     """New deposit with files."""
@@ -410,6 +354,7 @@ def deposit(superuser, create_deposit):
 
 @pytest.fixture
 def record(superuser, create_deposit):
+    """Example record."""
     return create_deposit(superuser,
                           'cms-analysis-v0.0.1',
                           experiment='CMS',
@@ -418,11 +363,13 @@ def record(superuser, create_deposit):
 
 @pytest.fixture
 def record_metadata(deposit):
+    """Example record metadata."""
     return deposit.get_record_metadata()
 
 
 @pytest.fixture
 def schema(db):
+    """Example schema."""
     schema = Schema(name='test-schema', fullname='Test Schema')
     db.session.add(schema)
     db.session.commit()
@@ -431,23 +378,19 @@ def schema(db):
 
 @pytest.fixture
 def cms_user_me_data(users):
+    """CMS user data returned by /me endpoint."""
     return {
-        "collaborations": [
-            "CMS",
-        ],
+        "collaborations": ["CMS", ],
         "current_experiment": "CMS",
-        "deposit_groups": [
-            {
-                "deposit_group": "cms-questionnaire",
-                "description": "Create a CMS Questionnaire",
-                "name": "CMS Questionnaire"
-            },
-            {
-                "deposit_group": "cms-analysis",
-                "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
-                "name": "CMS Analysis"
-            }
-        ],
+        "deposit_groups": [{
+            "deposit_group": "cms-questionnaire",
+            "description": "Create a CMS Questionnaire",
+            "name": "CMS Questionnaire"
+        }, {
+            "deposit_group": "cms-analysis",
+            "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+            "name": "CMS Analysis"
+        }],
         "email": users['cms_user'].email,
         "id": users['cms_user'].id
     }
@@ -455,11 +398,14 @@ def cms_user_me_data(users):
 
 @pytest.fixture
 def das_datasets_index(es):
-    source = [
-        {'name': 'dataset1'},
-        {'name': 'dataset2'},
-        {'name': 'another_dataset'}
-    ]
+    """Example datasets under DAS datasets index."""
+    source = [{
+        'name': 'dataset1'
+    }, {
+        'name': 'dataset2'
+    }, {
+        'name': 'another_dataset'
+    }]
 
     cache_das_datasets_in_es_from_file(source)
 
@@ -468,14 +414,26 @@ def das_datasets_index(es):
 
 @pytest.fixture
 def cms_triggers_index(es):
-    source = [
-        {'dataset': 'Dataset1', 'trigger': 'Trigger1'},
-        {'dataset': 'Dataset1', 'trigger': 'Trigger_2'},
-        {'dataset': 'Dataset1', 'trigger': 'Another_Trigger'},
-        {'dataset': 'Dataset2', 'trigger': 'Trigger1'},
-        {'dataset': 'Dataset2', 'trigger': 'Trigger2'},
-        {'dataset': 'Dataset2', 'trigger': 'Another_One'}
-    ]
+    """Example triggers under CMS triggers index."""
+    source = [{
+        'dataset': 'Dataset1',
+        'trigger': 'Trigger1'
+    }, {
+        'dataset': 'Dataset1',
+        'trigger': 'Trigger_2'
+    }, {
+        'dataset': 'Dataset1',
+        'trigger': 'Another_Trigger'
+    }, {
+        'dataset': 'Dataset2',
+        'trigger': 'Trigger1'
+    }, {
+        'dataset': 'Dataset2',
+        'trigger': 'Trigger2'
+    }, {
+        'dataset': 'Dataset2',
+        'trigger': 'Another_One'
+    }]
 
     cache_cms_triggers_in_es_from_file(source)
 
@@ -491,3 +449,31 @@ def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
     headers = auth_headers_for_user(owner)
 
     return owner, deposit, pid, bucket, headers
+
+
+def create_user_with_access(session, username, action):
+    user = _datastore.find_user(email=username)
+
+    if not user:
+        user = create_test_user(email=username, password='pass')
+
+    session.add(ActionUsers.allow(ActionNeed(action), user=user))
+
+    return user
+
+
+def assign_egroup_to_experiment(egroup_name, exp):
+    role = _datastore.find_or_create_role(egroup_name)
+    exp_need = exp_need_factory(exp)
+
+    db_.session.add(ActionRoles.allow(exp_need, role=role))
+
+    db_.session.commit()
+
+    return role
+
+
+def add_role_to_user(user, rolename):
+    role = _datastore.find_or_create_role(rolename)
+
+    _datastore.add_role_to_user(user, role)

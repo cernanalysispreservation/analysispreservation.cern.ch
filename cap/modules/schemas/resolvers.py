@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Resolver for JSON Schemas."""
 
 from __future__ import absolute_import, print_function
@@ -68,18 +67,18 @@ def resolve(path):
 
 def parse_path(string):
     """Parse schema path."""
-    pattern = re.compile("""
+    pattern = re.compile(
+        """
         (?P<options>{})?/?                      # check if options schema
         (?P<schema_type>{}|{})/?                # check if deposit/record
         (?P<name>\S+)                           # name of the schema
         -v(?P<major>\d+).                       # version
         (?P<minor>\d+).                         # version
         (?P<patch>\d+)                          # version
-    """.format(
-        re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
-        re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
-        re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])
-    ), re.VERBOSE)
+    """.format(re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
+               re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
+               re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])),
+        re.VERBOSE)
 
     return re.match(pattern, string).groups()
 

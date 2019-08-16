@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-
 """Integration tests for deleting deposits."""
 
 import json
@@ -31,96 +30,77 @@ import json
 # # api/deposits/{pid}  [DELETE]
 # #######################################
 
-def test_delete_deposit_with_non_existing_pid_returns_404(app,
-                                                          auth_headers_for_superuser):
-    with app.test_client() as client:
-        resp = client.delete('/deposits/{}'.format('non-existing-pid'),
-                             headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 404
+def test_delete_deposit_with_non_existing_pid_returns_404(
+        client, auth_headers_for_superuser):
+    resp = client.delete('/deposits/{}'.format('non-existing-pid'),
+                         headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 404
 
 
-def test_delete_deposit_when_user_has_no_permission_returns_403(app,
-                                                                users,
-                                                                create_deposit,
-                                                                auth_headers_for_user):
+def test_delete_deposit_when_user_has_no_permission_returns_403(
+        client, users, create_deposit, auth_headers_for_user):
     deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
     other_user_headers = auth_headers_for_user(users['lhcb_user2'])
 
-    with app.test_client() as client:
-        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=other_user_headers)
+    resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
+                         headers=other_user_headers)
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403
 
 
-def test_delete_deposit_when_user_is_owner_can_delete_his_deposit(app,
-                                                                  users,
-                                                                  create_deposit,
-                                                                  json_headers,
-                                                                  auth_headers_for_user):
+def test_delete_deposit_when_user_is_owner_can_delete_his_deposit(
+        client, users, create_deposit, json_headers, auth_headers_for_user):
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1')
+    pid = deposit['_deposit']['id']
     headers = auth_headers_for_user(owner) + json_headers
 
-    with app.test_client() as client:
-        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=headers)
+    resp = client.delete('/deposits/{}'.format(pid), headers=headers)
 
-        assert resp.status_code == 204
+    assert resp.status_code == 204
 
-        # deposit not existing anymore
-        resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                          headers=headers)
+    # deposit not existing anymore
+    resp = client.get('/deposits/{}'.format(pid), headers=headers)
 
-        assert resp.status_code == 410
+    assert resp.status_code == 410
 
 
-def test_delete_deposit_when_deposit_published_already_cant_be_deleted(app,
-                                                                       users,
-                                                                       create_deposit,
-                                                                       json_headers,
-                                                                       auth_headers_for_user):
+def test_delete_deposit_when_deposit_published_already_cant_be_deleted(
+        client, users, create_deposit, json_headers, auth_headers_for_user):
     deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
     headers = auth_headers_for_user(users['lhcb_user']) + json_headers
     pid = deposit['_deposit']['id']
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/publish'.format(pid),
-                           headers=headers)
+    resp = client.post('/deposits/{}/actions/publish'.format(pid),
+                       headers=headers)
 
-        resp = client.delete('/deposits/{}'.format(pid),
-                             headers=headers)
+    resp = client.delete('/deposits/{}'.format(pid), headers=headers)
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403
 
-        # deposit not removed
-        resp = client.get('/deposits/{}'.format(pid),
-                          headers=headers)
+    # deposit not removed
+    resp = client.get('/deposits/{}'.format(pid), headers=headers)
 
-        assert resp.status_code == 200
+    assert resp.status_code == 200
 
 
-def test_delete_deposit_when_superuser_can_delete_others_deposit(app,
-                                                                 users,
-                                                                 create_deposit,
-                                                                 auth_headers_for_superuser):
+def test_delete_deposit_when_superuser_can_delete_others_deposit(
+        client, users, create_deposit, auth_headers_for_superuser):
     deposit = create_deposit(users['lhcb_user'], 'lhcb-v0.0.1')
 
-    with app.test_client() as client:
-        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_superuser)
+    resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
+                         headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 204
+    assert resp.status_code == 204
 
 
-def test_delete_deposit_when_user_with_admin_access_can_delete(app,
-                                                               users,
-                                                               create_deposit,
-                                                               auth_headers_for_user,
-                                                               json_headers):
+def test_delete_deposit_when_user_with_admin_access_can_delete(
+        client, users, create_deposit, auth_headers_for_user, json_headers):
     owner, other_user = users['lhcb_user'], users['cms_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1')
+    pid = deposit['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
@@ -128,44 +108,40 @@ def test_delete_deposit_when_user_with_admin_access_can_delete(app,
         'action': 'deposit-admin'
     }]
 
-    with app.test_client() as client:
-        # give other user read/write access
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=auth_headers_for_user(owner) + json_headers,
-                           data=json.dumps(permissions))
+    # give other user read/write access
+    resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                       headers=auth_headers_for_user(owner) + json_headers,
+                       data=json.dumps(permissions))
 
-        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user))
+    resp = client.delete('/deposits/{}'.format(pid),
+                         headers=auth_headers_for_user(other_user))
 
-        assert resp.status_code == 204
+    assert resp.status_code == 204
 
 
-def test_delete_deposit_when_user_only_with_read_write_access_returns_403(app,
-                                                                          users,
-                                                                          create_deposit,
-                                                                          auth_headers_for_user,
-                                                                          json_headers):
+def test_delete_deposit_when_user_only_with_read_write_access_returns_403(
+        client, users, create_deposit, auth_headers_for_user, json_headers):
     owner, other_user = users['lhcb_user'], users['cms_user']
     deposit = create_deposit(owner, 'lhcb-v0.0.1')
+    pid = deposit['_deposit']['id']
     permissions = [{
         'email': other_user.email,
         'type': 'user',
         'op': 'add',
         'action': 'deposit-read'
-    },{
+    }, {
         'email': other_user.email,
         'type': 'user',
         'op': 'add',
         'action': 'deposit-update'
     }]
 
-    with app.test_client() as client:
-        # give other user read/write access
-        resp = client.post('/deposits/{}/actions/permissions'.format(deposit['_deposit']['id']),
-                           headers=auth_headers_for_user(owner) + json_headers,
-                           data=json.dumps(permissions))
+    # give other user read/write access
+    resp = client.post('/deposits/{}/actions/permissions'.format(pid),
+                       headers=auth_headers_for_user(owner) + json_headers,
+                       data=json.dumps(permissions))
 
-        resp = client.delete('/deposits/{}'.format(deposit['_deposit']['id']),
-                             headers=auth_headers_for_user(other_user))
+    resp = client.delete('/deposits/{}'.format(pid),
+                         headers=auth_headers_for_user(other_user))
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403

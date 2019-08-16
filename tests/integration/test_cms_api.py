@@ -22,52 +22,51 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-
 """Integration tests for CAP api."""
 
 from __future__ import absolute_import, print_function
 
-from cap.modules.experiments.errors import ExternalAPIException
 from mock import patch
 from pytest import mark
+
+from cap.modules.experiments.errors import ExternalAPIException
 
 
 ################
 # api/cms/cadi
 ################
-def test_get_cms_cadi_when_user_from_outside_cms_returns_403(app, users,
-                                                             auth_headers_for_user):
-    with app.test_client() as client:
-        user_headers = auth_headers_for_user(users['lhcb_user'])
-        resp = client.get('/cms/cadi/EXO-17-023',
-                          headers=user_headers)
+def test_get_cms_cadi_when_user_from_outside_cms_returns_403(
+        client, users, auth_headers_for_user):
+    resp = client.get('/cms/cadi/EXO-17-023',
+                      headers=auth_headers_for_user(users['lhcb_user']))
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403
 
 
-@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id',
+       return_value={})
 def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id,
-                                                app, users, auth_headers_for_user):
-    with app.test_client() as client:
-        resp = client.get('/cms/cadi/ANA-00-001',
-                          headers=auth_headers_for_user(users['cms_user']))
+                                                client, users,
+                                                auth_headers_for_user):
+    resp = client.get('/cms/cadi/ANA-00-001',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.status_code == 200
+    assert resp.status_code == 200
 
 
-@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
-def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_get_from_cadi_by_id, 
-                                                                         app, auth_headers_for_superuser):
-    with app.test_client() as client:
-        resp = client.get('/cms/cadi/non-existing',
-                          headers=auth_headers_for_superuser)
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id',
+       return_value={})
+def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(
+        mock_get_from_cadi_by_id, client, auth_headers_for_superuser):
+    resp = client.get('/cms/cadi/non-existing',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.json == {}
+    assert resp.json == {}
 
 
 @patch('cap.modules.experiments.views.cms.get_from_cadi_by_id')
-def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(mock_get_from_cadi_by_id,
-                                                                                app, auth_headers_for_superuser):
+def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
+        mock_get_from_cadi_by_id, client, auth_headers_for_superuser):
     cadi_response = {
         'Conference': '',
         'conferenceStatus': '',
@@ -94,137 +93,132 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
     }
     mock_get_from_cadi_by_id.return_value = cadi_response
 
-    with app.test_client() as client:
-        resp = client.get('/cms/cadi/ANA-00-000',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/cms/cadi/ANA-00-000',
+                      headers=auth_headers_for_superuser)
 
-        mock_get_from_cadi_by_id.assert_called_with('ANA-00-000')
+    mock_get_from_cadi_by_id.assert_called_with('ANA-00-000')
 
-        assert resp.json == {
-            'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
-            'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
-            'contact': 'Contact User',
-            'created': '14/12/2014',
-            'twiki': 'https://twiki.cern.ch/twikiurl',
-            'paper': 'http://cms.cern.ch:80/paper.pdf',
-            'pas': 'http://cms.cern.ch:80/pas.pdf',
-            'publication_status': 'Free',
-            'status': 'PUB',
-            'cadi_id': 'ANA-00-000'
-        }
+    assert resp.json == {
+        'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+        'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
+        'contact': 'Contact User',
+        'created': '14/12/2014',
+        'twiki': 'https://twiki.cern.ch/twikiurl',
+        'paper': 'http://cms.cern.ch:80/paper.pdf',
+        'pas': 'http://cms.cern.ch:80/pas.pdf',
+        'publication_status': 'Free',
+        'status': 'PUB',
+        'cadi_id': 'ANA-00-000'
+    }
 
 
-@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', side_effect=ExternalAPIException())
-def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(mock_get_from_cadi_by_id,
-                                                                         app, auth_headers_for_superuser):
+@patch('cap.modules.experiments.views.cms.get_from_cadi_by_id',
+       side_effect=ExternalAPIException())
+def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(
+        mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
     with app.test_client() as client:
         resp = client.get('/cms/cadi/non-existing',
                           headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 503
+    assert resp.status_code == 503
 
 
 ##################
 # api/cms/datasets
 ##################
-def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(app, users,
-                                                                         auth_headers_for_user):
-    with app.test_client() as client:
-        resp = client.get('/cms/datasets?query=q',
-                          headers=auth_headers_for_user(users['lhcb_user']))
+def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(
+        client, users, auth_headers_for_user):
+    resp = client.get('/cms/datasets?query=q',
+                      headers=auth_headers_for_user(users['lhcb_user']))
 
-        assert resp.status_code == 403
-
-
-def test_get_datasets_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user,
-                                                            das_datasets_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/datasets?query=q',
-                          headers=auth_headers_for_user(users['cms_user']))
-
-        assert resp.status_code == 200
+    assert resp.status_code == 403
 
 
-def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user,
-                                                                          das_datasets_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/datasets?query=',
-                          headers=auth_headers_for_user(users['cms_user']))
+def test_get_datasets_suggestions_when_cms_user_returns_200(
+        client, users, auth_headers_for_user, das_datasets_index):
+    resp = client.get('/cms/datasets?query=q',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == []
+    assert resp.status_code == 200
 
-def test_get_datasets_suggestions_returns_correct_suggestions(app, users, auth_headers_for_user,
-                                                              das_datasets_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/datasets?query=datas',
-                          headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == ['dataset1', 'dataset2']
+def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
+        client, users, auth_headers_for_user, das_datasets_index):
+    resp = client.get('/cms/datasets?query=',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        resp = client.get('/cms/datasets?query=another_',
-                          headers=auth_headers_for_user(users['cms_user']))
+    assert resp.json == []
 
-        assert resp.json == ['another_dataset']
+
+def test_get_datasets_suggestions_returns_correct_suggestions(
+        client, users, auth_headers_for_user, das_datasets_index):
+    resp = client.get('/cms/datasets?query=datas',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == ['dataset1', 'dataset2']
+
+    resp = client.get('/cms/datasets?query=another_',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == ['another_dataset']
 
 
 ##################
 # api/cms/triggers
 ##################
-def test_get_triggers_suggestions_when_user_from_outside_cms_returns_403(app, users,
-                                                                         auth_headers_for_user):
-    with app.test_client() as client:
-        resp = client.get('/cms/triggers?query=q&dataset=D',
-                          headers=auth_headers_for_user(users['lhcb_user']))
+def test_get_triggers_suggestions_when_user_from_outside_cms_returns_403(
+        client, users, auth_headers_for_user):
+    resp = client.get('/cms/triggers?query=q&dataset=D',
+                      headers=auth_headers_for_user(users['lhcb_user']))
 
-        assert resp.status_code == 403
-
-
-def test_get_triggers_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user,
-                                                            cms_triggers_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/triggers?query=q&dataset=D',
-                          headers=auth_headers_for_user(users['cms_user']))
-
-        assert resp.status_code == 200
+    assert resp.status_code == 403
 
 
-def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(app, users, auth_headers_for_user,
-                                                                          cms_triggers_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/triggers?query=&dataset=D',
-                          headers=auth_headers_for_user(users['cms_user']))
+def test_get_triggers_suggestions_when_cms_user_returns_200(
+        client, users, auth_headers_for_user, cms_triggers_index):
+    resp = client.get('/cms/triggers?query=q&dataset=D',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == []
-        
+    assert resp.status_code == 200
 
-def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(app, users, auth_headers_for_user,
-                                                                                     cms_triggers_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/triggers?query=&dataset=',
-                          headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == []
+def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(
+        client, users, auth_headers_for_user, cms_triggers_index):
+    resp = client.get('/cms/triggers?query=&dataset=D',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == []
+
+
+def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(
+        client, users, auth_headers_for_user, cms_triggers_index):
+    resp = client.get('/cms/triggers?query=&dataset=',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == []
 
 
 @mark.skip
-def test_get_triggers_suggestions_returns_correct_suggestions(app, users,auth_headers_for_user, cms_triggers_index):
-    with app.test_client() as client:
-        resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
-                          headers=auth_headers_for_user(users['cms_user']))
+def test_get_triggers_suggestions_returns_correct_suggestions(
+        client, users, auth_headers_for_user, cms_triggers_index):
+    resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == []
+    assert resp.json == []
 
-        resp = client.get('/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth',
-                          headers=auth_headers_for_user(users['cms_user']))
+    resp = client.get('/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth',
+                      headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == ['Trigger1', 'Trigger_2']
+    assert resp.json == ['Trigger1', 'Trigger_2']
 
-        resp = client.get('/cms/triggers?query=Another&dataset=Dataset1/sth/sth/sth',
-                          headers=auth_headers_for_user(users['cms_user']))
+    resp = client.get(
+        '/cms/triggers?query=Another&dataset=Dataset1/sth/sth/sth',
+        headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == ['Another_Trigger']
+    assert resp.json == ['Another_Trigger']
 
-        resp = client.get('/cms/triggers?query=Trigger1&dataset=/Dataset2/sth/sth/sth',
-                          headers=auth_headers_for_user(users['cms_user']))
+    resp = client.get(
+        '/cms/triggers?query=Trigger1&dataset=/Dataset2/sth/sth/sth',
+        headers=auth_headers_for_user(users['cms_user']))
 
-        assert resp.json == ['Trigger1']
+    assert resp.json == ['Trigger1']

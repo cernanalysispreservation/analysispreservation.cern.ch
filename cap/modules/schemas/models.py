@@ -107,6 +107,7 @@ class Schema(db.Model):
 
     @validates('name')
     def validate_name(self, key, name):
+        """Validate if name is ES compatible."""
         if any(x in ES_FORBIDDEN for x in name):
             raise AssertionError('Name cannot contain the following characters'
                                  '[, ", *, \\, <, | , , , > , ?]')
@@ -227,9 +228,10 @@ class Schema(db.Model):
 
 
 def name_to_es_name(name):
-    """Translate name to ES compatible name.
-       Replace '/' with '-'.
-       [, ", *, \\, <, | , , , > , ?] are forbidden.
+    r"""Translate name to ES compatible name.
+
+    Replace '/' with '-'.
+    [, ", *, \\, <, | , , , > , ?] are forbidden.
     """
     if any(x in ES_FORBIDDEN for x in name):
         raise AssertionError('Name cannot contain the following characters'

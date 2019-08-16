@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Views for schemas."""
 
 from flask import Blueprint, abort, jsonify, request
@@ -41,7 +40,6 @@ blueprint = Blueprint(
     __name__,
     url_prefix='/jsonschemas',
 )
-
 
 EDITABLE_FIELDS = [
     'fullname',
@@ -105,8 +103,10 @@ class SchemaAPI(MethodView):
         with AdminSchemaPermission(schema).require(403):
 
             # only editable fields can be updated
-            valid_data = {k: v for k, v in data.iteritems()
-                          if k in EDITABLE_FIELDS}
+            valid_data = {
+                k: v
+                for k, v in data.iteritems() if k in EDITABLE_FIELDS
+            }
 
             schema.update(**valid_data)
             db.session.commit()
@@ -130,13 +130,22 @@ class SchemaAPI(MethodView):
 schema_view_func = SchemaAPI.as_view('schemas')
 
 blueprint.add_url_rule('/',
-                       defaults={'name': None, 'version': None},
-                       view_func=schema_view_func, methods=['GET', ])
-blueprint.add_url_rule('/',
-                       view_func=schema_view_func, methods=['POST', ])
+                       defaults={
+                           'name': None,
+                           'version': None
+                       },
+                       view_func=schema_view_func,
+                       methods=[
+                           'GET',
+                       ])
+blueprint.add_url_rule('/', view_func=schema_view_func, methods=[
+    'POST',
+])
 blueprint.add_url_rule('/<string:name>',
                        view_func=schema_view_func,
-                       methods=['GET', ])
+                       methods=[
+                           'GET',
+                       ])
 blueprint.add_url_rule('/<string:name>/<string:version>',
                        view_func=schema_view_func,
                        methods=['GET', 'PUT', 'DELETE'])

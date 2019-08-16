@@ -22,12 +22,11 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 from pytest import mark
 
 
 def test_resolve_schema_when_user_doesnt_have_permission_to_schema_returns_403(
-        app, users, create_schema, auth_headers_for_user):
+        client, users, create_schema, auth_headers_for_user):
     some_user = users['cms_user']
     create_schema('test-schema',
                   deposit_schema={
@@ -39,15 +38,14 @@ def test_resolve_schema_when_user_doesnt_have_permission_to_schema_returns_403(
                       }
                   })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
-                          headers=auth_headers_for_user(some_user))
+    resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
+                      headers=auth_headers_for_user(some_user))
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403
 
 
 def test_resolve_schema_when_superuser_returns_schema(
-        app, create_schema, auth_headers_for_superuser):
+        client, create_schema, auth_headers_for_superuser):
     create_schema('test-schema',
                   deposit_schema={
                       'type': 'object',
@@ -58,15 +56,14 @@ def test_resolve_schema_when_superuser_returns_schema(
                       }
                   })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 200
+    assert resp.status_code == 200
 
 
 def test_resolve_schema_when_schema_name_with_slashes(
-        app, create_schema, auth_headers_for_superuser):
+        client, create_schema, auth_headers_for_superuser):
     create_schema('definitions/test-schema',
                   deposit_schema={
                       'type': 'object',
@@ -77,18 +74,18 @@ def test_resolve_schema_when_schema_name_with_slashes(
                       }
                   })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/definitions/test-schema-v1.0.0',
-                          headers=auth_headers_for_superuser)
+    resp = client.get(
+        '/schemas/deposits/records/definitions/test-schema-v1.0.0',
+        headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 200
+    assert resp.status_code == 200
 
 
 def test_resolve_schema_when_schema_and_refs_belong_to_experiment(
-        app, users, create_schema, auth_headers_for_user):
+        client, users, create_schema, auth_headers_for_user):
     cms_user = users['cms_user']
     nested_schema = create_schema('nested-schema',
-                                  version="0.0.0",
+                                  version='0.0.0',
                                   experiment='CMS',
                                   deposit_schema={
                                       'type': 'object',
@@ -99,28 +96,29 @@ def test_resolve_schema_when_schema_and_refs_belong_to_experiment(
                                       }
                                   })
 
-    create_schema('test-schema',
-                  version="1.0.1",
-                  experiment='CMS',
-                  deposit_schema={
-                      'type': 'object',
-                      'properties': {
-                          'nested': {
-                              '$ref': "https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v0.0.0.json",
-                          }
-                      }
-                  })
+    create_schema(
+        'test-schema',
+        version='1.0.1',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v0.0.0.json',
+                }
+            }
+        })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/test-schema-v1.0.1',
-                          headers=auth_headers_for_user(cms_user))
+    resp = client.get('/schemas/deposits/records/test-schema-v1.0.1',
+                      headers=auth_headers_for_user(cms_user))
 
-        assert resp.status_code == 200
+    assert resp.status_code == 200
 
 
-@mark.skip('this will throw JsonRefError now, needs to be discussed in private')
+@mark.skip('this will throw JsonRefError now, needs to be discussed in private'
+           )
 def test_resolve_schema_when_schema_in_refs_belongs_to_different_experiment_returns_403(
-        app, users, create_schema, auth_headers_for_user):
+        client, users, create_schema, auth_headers_for_user):
     cms_user = users['cms_user']
     nested_schema = create_schema('nested-schema',
                                   experiment='LHCb',
@@ -133,77 +131,71 @@ def test_resolve_schema_when_schema_in_refs_belongs_to_different_experiment_retu
                                       }
                                   })
 
-    create_schema('test-schema',
-                  experiment='CMS',
-                  deposit_schema={
-                      'type': 'object',
-                      'properties': {
-                          'nested': {
-                              '$ref': "https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json",
-                          }
-                      }
-                  })
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
+                }
+            }
+        })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
-                          headers=auth_headers_for_user(cms_user))
+    resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
+                      headers=auth_headers_for_user(cms_user))
 
-        assert resp.status_code == 403
+    assert resp.status_code == 403
 
 
 def test_resolve_schema_when_wrong_refs_returns_404(
-        app, create_schema, auth_headers_for_superuser):
-    create_schema('test-schema',
-                  experiment='CMS',
-                  deposit_schema={
-                      'type': 'object',
-                      'properties': {
-                          'nested': {
-                              '$ref': "https://analysispreservation.cern.ch/schemas/deposits/records/wrong-schema-v1.0.0.json",
-                          }
-                      }
-                  })
+        client, create_schema, auth_headers_for_superuser):
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/wrong-schema-v1.0.0.json',
+                }
+            }
+        })
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.status_code == 404
+    assert resp.status_code == 404
 
 
-def test_resolve_schema_returns_correct_jsonschema(
-        app, create_schema, auth_headers_for_superuser):
-    schema = create_schema('some-schema',
-                           deposit_schema={
-                               'title': 'i\'m a deposit schema'
-                           },
-                           record_schema={
-                               'title': 'i\'m a record schema'
-                           },
-                           deposit_options={
-                               'title': 'i\'m a deposits options schema'
-                           },
-                           record_options={
-                               'title': 'i\'m a record options schema'
-                           }, use_deposit_as_record=False)
+def test_resolve_schema_returns_correct_jsonschema(client, create_schema,
+                                                   auth_headers_for_superuser):
+    schema = create_schema(
+        'some-schema',
+        deposit_schema={'title': 'i\'m a deposit schema'},
+        record_schema={'title': 'i\'m a record schema'},
+        deposit_options={'title': 'i\'m a deposits options schema'},
+        record_options={'title': 'i\'m a record options schema'},
+        use_deposit_as_record=False)
 
-    with app.test_client() as client:
-        resp = client.get('/schemas/deposits/records/some-schema-v1.0.0.json',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/schemas/deposits/records/some-schema-v1.0.0.json',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.json == schema.deposit_schema
+    assert resp.json == schema.deposit_schema
 
-        resp = client.get('/schemas/records/some-schema-v1.0.0.json',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/schemas/records/some-schema-v1.0.0.json',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.json == schema.record_schema
+    assert resp.json == schema.record_schema
 
-        resp = client.get('/schemas/options/deposits/records/some-schema-v1.0.0.json',
-                          headers=auth_headers_for_superuser)
+    resp = client.get(
+        '/schemas/options/deposits/records/some-schema-v1.0.0.json',
+        headers=auth_headers_for_superuser)
 
-        assert resp.json == schema.deposit_options
+    assert resp.json == schema.deposit_options
 
-        resp = client.get('/schemas/options/records/some-schema-v1.0.0.json',
-                          headers=auth_headers_for_superuser)
+    resp = client.get('/schemas/options/records/some-schema-v1.0.0.json',
+                      headers=auth_headers_for_superuser)
 
-        assert resp.json == schema.record_options
+    assert resp.json == schema.record_options

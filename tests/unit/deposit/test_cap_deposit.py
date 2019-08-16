@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-
 """Unit tests for Cap Deposit class."""
 
 from uuid import uuid4
@@ -35,10 +34,8 @@ from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import DepositValidationError
 
 
-def test_create_deposit_with_empty_data_raises_DepositValidationError(app,
-                                                                      users,
-                                                                      location,
-                                                                      jsonschemas_host):
+def test_create_deposit_with_empty_data_raises_DepositValidationError(
+        app, users, location):
     metadata = {}
 
     with app.test_request_context():
@@ -49,10 +46,8 @@ def test_create_deposit_with_empty_data_raises_DepositValidationError(app,
             Deposit.create(metadata, id_=id_)
 
 
-def test_create_deposit_with_empty_schema_raises_DepositValidationError(app,
-                                                                        users,
-                                                                        location,
-                                                                        jsonschemas_host):
+def test_create_deposit_with_empty_schema_raises_DepositValidationError(
+        app, users, location):
     metadata = {'$schema': ''}
 
     with app.test_request_context():
@@ -63,13 +58,10 @@ def test_create_deposit_with_empty_schema_raises_DepositValidationError(app,
             Deposit.create(metadata, id_=id_)
 
 
-def test_create_deposit_with_wrong_schema_raises_DepositValidationError(app,
-                                                                        users,
-                                                                        location,
-                                                                        jsonschemas_host):
+def test_create_deposit_with_wrong_schema_raises_DepositValidationError(
+        app, users, location):
     metadata = {
-        '$schema': 'https://{}/schemas/deposits/records/non-existing-schema.json'.format(
-            jsonschemas_host)
+        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/non-existing-schema.json'  # noqa
     }
 
     with app.test_request_context():
@@ -80,7 +72,8 @@ def test_create_deposit_with_wrong_schema_raises_DepositValidationError(app,
             Deposit.create(metadata, id_=id_)
 
 
-def test_add_user_permissions_set_access_object_properly(app, db, users, create_deposit):
+def test_add_user_permissions_set_access_object_properly(
+        app, db, users, create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
 
@@ -100,8 +93,7 @@ def test_add_user_permissions_set_access_object_properly(app, db, users, create_
     }
 
     deposit._add_user_permissions(other_user,
-                                  ['deposit-read',
-                                   'deposit-update'],
+                                  ['deposit-read', 'deposit-update'],
                                   db.session)
 
     deposit = Deposit.get_record(deposit.id)
@@ -128,28 +120,8 @@ def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):
                                            argument=str(deposit.id),
                                            user_id=user.id).all()
 
-    deposit._add_user_permissions(user,
-                                  ['deposit-read'],
-                                  db.session)
+    deposit._add_user_permissions(user, ['deposit-read'], db.session)
 
     assert ActionUsers.query.filter_by(action='deposit-read',
                                        argument=str(deposit.id),
                                        user_id=user.id).one()
-
-
-def test_construct_fileinfo_to_return_correct_info_for_file(deposit):
-    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/blob/master/cap/modules/deposit/api.py"
-    type = 'url'
-    file_info = deposit._construct_fileinfo(url, type)
-    assert file_info['filename'] == "api.py"
-    assert file_info['filepath'] == "cap/modules/deposit/api.py"
-    assert file_info['branch'] == "master"
-
-
-def test_construct_fileinfo_to_return_correct_info_for_repo(deposit):
-    url = "https://github.com/cernanalysispreservation/analysispreservation.cern.ch/"
-    type = 'repo'
-    file_info = deposit._construct_fileinfo(url, type)
-    assert file_info['filename'] == "analysispreservation.cern.ch.tar.gz"
-    assert file_info['filepath'] == "analysispreservation.cern.ch.tar.gz"
-    assert file_info['branch'] is None

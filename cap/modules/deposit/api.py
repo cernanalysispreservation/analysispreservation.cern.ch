@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Deposit API."""
 
 from __future__ import absolute_import, print_function
@@ -52,7 +51,6 @@ from werkzeug.local import LocalProxy
 from cap.modules.deposit.utils import download_from_git, name_git_record
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
-from cap.modules.repoimporter.repo_importer import RepoImporter
 from cap.modules.repoimporter.utils import parse_url
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
@@ -71,7 +69,6 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
-
 PRESERVE_FIELDS = (
     '_deposit',
     '_buckets',
@@ -79,14 +76,14 @@ PRESERVE_FIELDS = (
     '_experiment',
     '_access',
     'general_title',
-    '$schema'
+    '$schema',
 )
 
-DEPOSIT_ACTIONS = [
+DEPOSIT_ACTIONS = (
     'deposit-read',
     'deposit-update',
     'deposit-admin',
-]
+)
 
 
 def DEPOSIT_ACTIONS_NEEDS(id):
@@ -99,7 +96,11 @@ def DEPOSIT_ACTIONS_NEEDS(id):
 
 
 EMPTY_ACCESS_OBJECT = {
-    action: {'users': [], 'roles': []} for action in DEPOSIT_ACTIONS
+    action: {
+        'users': [],
+        'roles': []
+    }
+    for action in DEPOSIT_ACTIONS
 }
 
 
@@ -136,7 +137,7 @@ class CAPDeposit(Deposit):
             '_access',
             '_experiment',
             'general_title',
-            '$schema'
+            '$schema',
         )
 
         @wraps(method)
@@ -147,6 +148,7 @@ class CAPDeposit(Deposit):
                     args[0].pop(field)
 
             return method(self, *args, **kwargs)
+
         return wrapper
 
     def pop_from_data_patch(method, fields=None):
@@ -171,6 +173,7 @@ class CAPDeposit(Deposit):
                         del args[0][k]
 
             return method(self, *args, **kwargs)
+
         return wrapper
 
     @mark_as_action
@@ -216,16 +219,13 @@ class CAPDeposit(Deposit):
             if request:
                 _, record = request.view_args.get('pid_value').data
                 record_id = str(record.id)
-                approved_hosts = ('https://github',
-                                  'https://gitlab.cern.ch',
+                approved_hosts = ('https://github', 'https://gitlab.cern.ch',
                                   'root://')
 
                 # use the name and branch to create a key for the record
                 name = name_git_record(url_attrs, data['type'])
-                obj = ObjectVersion.create(
-                    bucket=record.files.bucket,
-                    key=name
-                )
+                obj = ObjectVersion.create(bucket=record.files.bucket,
+                                           key=name)
                 obj.file = FileInstance.create()
                 record.files.flush()
                 record.files[name]['source_url'] = data['url']
@@ -303,8 +303,7 @@ class CAPDeposit(Deposit):
 
                     if obj['op'] == 'add':
                         try:
-                            self._add_user_permissions(user,
-                                                       [obj['action']],
+                            self._add_user_permissions(user, [obj['action']],
                                                        db.session)
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
@@ -312,9 +311,8 @@ class CAPDeposit(Deposit):
 
                     elif obj['op'] == 'remove':
                         try:
-                            self._remove_user_permissions(user,
-                                                          [obj['action']],
-                                                          db.session)
+                            self._remove_user_permissions(
+                                user, [obj['action']], db.session)
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
                                 'Permission does not exist.')
@@ -328,17 +326,15 @@ class CAPDeposit(Deposit):
 
                     if obj['op'] == 'add':
                         try:
-                            self._add_egroup_permissions(role,
-                                                         [obj['action']],
-                                                         db.session)
+                            self._add_egroup_permissions(
+                                role, [obj['action']], db.session)
                         except IntegrityError:
                             raise UpdateDepositPermissionsError(
                                 'Permission already exist.')
                     elif obj['op'] == 'remove':
                         try:
-                            self._remove_egroup_permissions(role,
-                                                            [obj['action']],
-                                                            db.session)
+                            self._remove_egroup_permissions(
+                                role, [obj['action']], db.session)
                         except NoResultFound:
                             raise UpdateDepositPermissionsError(
                                 'Permission does not exist.')
@@ -365,67 +361,44 @@ class CAPDeposit(Deposit):
         self.files.flush()
         return super(CAPDeposit, self).commit(*args, **kwargs)
 
-    def _add_user_permissions(self,
-                              user,
-                              permissions,
-                              session):
+    def _add_user_permissions(self, user, permissions, session):
         """Adds permissions for user for this deposit."""
         for permission in permissions:
             session.add(
-                ActionUsers.allow(
-                    DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
-                    user=user
-                )
-            )
+                ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
+                                  user=user))
 
             session.flush()
 
             self['_access'][permission]['users'].append(user.id)
 
-    def _remove_user_permissions(self,
-                                 user,
-                                 permissions,
-                                 session):
+    def _remove_user_permissions(self, user, permissions, session):
         """Remove permissions for user for this deposit."""
         for permission in permissions:
             session.delete(
-                ActionUsers.query.filter(
-                    ActionUsers.action == permission,
-                    ActionUsers.argument == str(self.id),
-                    ActionUsers.user_id == user.id
-                ).one()
-            )
+                ActionUsers.query.filter(ActionUsers.action == permission,
+                                         ActionUsers.argument == str(self.id),
+                                         ActionUsers.user_id == user.id).one())
             session.flush()
 
             self['_access'][permission]['users'].remove(user.id)
 
-    def _add_egroup_permissions(self,
-                                egroup,
-                                permissions,
-                                session):
+    def _add_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
             session.add(
-                ActionRoles.allow(
-                    DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
-                    role=egroup
-                )
-            )
+                ActionRoles.allow(DEPOSIT_ACTIONS_NEEDS(self.id)[permission],
+                                  role=egroup))
             session.flush()
 
             self['_access'][permission]['roles'].append(egroup.id)
 
-    def _remove_egroup_permissions(self,
-                                   egroup,
-                                   permissions,
-                                   session):
+    def _remove_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
             session.delete(
                 ActionRoles.query.filter(
                     ActionRoles.action == permission,
                     ActionRoles.argument == str(self.id),
-                    ActionRoles.role_id == egroup.id
-                ).one()
-            )
+                    ActionRoles.role_id == egroup.id).one())
             session.flush()
 
             self['_access'][permission]['roles'].remove(egroup.id)
@@ -446,9 +419,7 @@ class CAPDeposit(Deposit):
 
         if owner:
             with db.session.begin_nested():
-                self._add_user_permissions(owner,
-                                           DEPOSIT_ACTIONS,
-                                           db.session)
+                self._add_user_permissions(owner, DEPOSIT_ACTIONS, db.session)
 
             self['_deposit']['created_by'] = owner.id
             self['_deposit']['owners'] = [owner.id]
@@ -490,8 +461,8 @@ class CAPDeposit(Deposit):
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""
-        deposit = super(CAPDeposit, cls).get_record(
-            id_=id_, with_deleted=with_deleted)
+        deposit = super(CAPDeposit, cls).get_record(id_=id_,
+                                                    with_deleted=with_deleted)
         deposit['_files'] = deposit.files.dumps()
         return deposit
 
@@ -525,17 +496,19 @@ class CAPDeposit(Deposit):
                 data['$schema'] = schema_name_to_url(ana_type)
             except JSONSchemaNotFound:
                 raise DepositValidationError(
-                    'Schema {} is not a valid deposit schema.'
-                    .format(ana_type))
+                    'Schema {} is not a valid deposit schema.'.format(
+                        ana_type))
 
         return data
 
     @classmethod
     def _validate_data(cls, data):
         if not isinstance(data, dict) or data == {}:
+
             raise DepositValidationError('Empty deposit data.')
 
         try:
             schema_url = data['$schema']
+
         except KeyError:
             raise DepositValidationError('Schema not specified.')

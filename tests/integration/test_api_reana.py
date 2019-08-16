@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-
 """Integration tests for CAP api."""
 from __future__ import absolute_import, print_function
 
@@ -30,89 +29,85 @@ import json
 from uuid import uuid4
 
 from invenio_pidstore.models import PersistentIdentifier
+
 from cap.modules.reana.models import ReanaJob
+
 
 #################
 # api/reana/create
 #################
-
-
-def test_create_workflow_returns_404_when_record_does_not_exist(app,
-                                                                auth_headers_for_superuser,
-                                                                json_headers):
+def test_create_workflow_returns_404_when_record_does_not_exist(
+        client, auth_headers_for_superuser, json_headers):
     data = {
         'record_id': 'wrong_pid',
         'workflow_name': 'test_workflow',
         'workflow_json': {}
     }
-    with app.test_client() as client:
-        resp = client.post('/reana/create', data=json.dumps(data),
-                           headers=auth_headers_for_superuser + json_headers)
 
-        assert resp.status_code == 404
+    resp = client.post('/reana/create',
+                       data=json.dumps(data),
+                       headers=auth_headers_for_superuser + json_headers)
+
+    assert resp.status_code == 404
 
 
 #################
 # api/reana/jobs
 #################
+def test_get_reana_jobs_when_user_not_logged_in_returns_401(
+        client, users, record):
+    resp = client.get('/reana/jobs/{}'.format(
+        record['_deposit']['pid']['value']))
 
-def test_get_reana_jobs_when_user_not_logged_in_returns_401(app, users, record):
-    with app.test_client() as client:
-        resp = client.get(
-            '/reana/jobs/{}'.format(record['_deposit']['pid']['value']))
-
-        assert resp.status_code == 401
-
-
-def test_get_reana_jobs_when_recid_doesnt_exists_returns_404(app,
-                                                             auth_headers_for_superuser):
-    with app.test_client() as client:
-        resp = client.get('/reana/jobs/{}'.format('non-existing-pid'),
-                          headers=auth_headers_for_superuser)
-
-        assert resp.status_code == 404
+    assert resp.status_code == 401
 
 
-def test_get_reana_jobs_when_no_jobs_returns_empty_list(app, auth_headers_for_superuser,
-                                                        record):
-    with app.test_client() as client:
-        resp = client.get('/reana/jobs/{}'.format(record['_deposit']['pid']['value']),
-                          headers=auth_headers_for_superuser)
+def test_get_reana_jobs_when_recid_doesnt_exists_returns_404(
+        client, auth_headers_for_superuser):
+    resp = client.get('/reana/jobs/{}'.format('non-existing-pid'),
+                      headers=auth_headers_for_superuser)
 
-        assert json.loads(resp.data) == []
+    assert resp.status_code == 404
 
 
-def test_get_reana_jobs_returns_list_with_user_jobs(db, app, users,
+def test_get_reana_jobs_when_no_jobs_returns_empty_list(
+        client, auth_headers_for_superuser, record):
+    pid = record['_deposit']['pid']['value']
+
+    resp = client.get('/reana/jobs/{}'.format(pid),
+                      headers=auth_headers_for_superuser)
+
+    assert resp.json == []
+
+
+def test_get_reana_jobs_returns_list_with_user_jobs(client, db, users,
                                                     auth_headers_for_superuser,
                                                     record):
-
-    uuid = PersistentIdentifier.get('recid', record['_deposit'][
-                                    'pid']['value']).object_uuid
+    pid = record['_deposit']['pid']['value']
+    uuid = PersistentIdentifier.get('recid', pid).object_uuid
     id_ = uuid4()
-    db.session.add(ReanaJob(
-        user_id=users['superuser'].id,
-        record_id=uuid,
-        reana_id=id_,
-        name='my_workflow_run',
-        params={
-            'param_1': 1,
-            'param_2': 2
-        }))
+    db.session.add(
+        ReanaJob(user_id=users['superuser'].id,
+                 record_id=uuid,
+                 reana_id=id_,
+                 name='my_workflow_run',
+                 params={
+                     'param_1': 1,
+                     'param_2': 2
+                 }))
     db.session.commit()
 
-    with app.test_client() as client:
-        resp = client.get('/reana/jobs/{}'.format(
-            record['_deposit']['pid']['value']),
-            headers=auth_headers_for_superuser)
+    resp = client.get('/reana/jobs/{}'.format(pid),
+                      headers=auth_headers_for_superuser)
 
-        serialized_reana_job = {
-            'name': 'my_workflow_run',
-            'params': {
-                'param_1': 1,
-                'param_2': 2
-            },
-            'output': {},
-            'reana_id': str(id_)
-        }
+    serialized_reana_job = {
+        'name': 'my_workflow_run',
+        'params': {
+            'param_1': 1,
+            'param_2': 2
+        },
+        'output': {},
+        'reana_id': str(id_)
+    }
 
-        assert json.loads(resp.data) == [serialized_reana_job]
+    assert resp.json == [serialized_reana_job]

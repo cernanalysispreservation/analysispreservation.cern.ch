@@ -24,13 +24,14 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, print_function
+
 import json
 import tarfile
+
 import pytest
-
 from invenio_files_rest.models import ObjectVersion
-from cap.modules.repoimporter.utils import get_access_token
 
+from cap.modules.repoimporter.utils import get_access_token
 
 GITHUB_TEST = 'https://github.com/cernanalysispreservation/test-repo'
 GITLAB_TEST = 'https://gitlab.cern.ch/pfokiano/test-repo'
@@ -52,12 +53,14 @@ GITHUB_FILE_BRANCH = 'https://github.com/cernanalysispreservation/test-repo/blob
 GITLAB_FILE_BRANCH = 'https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/README.md'
 
 
-@pytest.mark.parametrize('git_url, git, git_record', [
-    (GITHUB_TEST, 'GITHUB', 'cernanalysispreservation_test-repo_master.tar.gz'),
-    (GITLAB_TEST, 'GITLAB', 'pfokiano_test-repo_master.tar.gz')
-])
-def test_download_archive_from_url_master(app, db, get_git_attributes, json_headers,
-                                          git_url, git, git_record):
+@pytest.mark.parametrize(
+    'git_url, git, git_record',
+    [(GITHUB_TEST, 'GITHUB',
+      'cernanalysispreservation_test-repo_master.tar.gz'),
+     (GITLAB_TEST, 'GITLAB', 'pfokiano_test-repo_master.tar.gz')])
+def test_download_archive_from_url_master(client, db, get_git_attributes,
+                                          json_headers, git_url, git,
+                                          git_record):
     """Given a git url, check if the link correctly identifies the repo, downloads
        the data, and then CAP is able to retrieve them from a bucket.
     """
@@ -69,7 +72,8 @@ def test_download_archive_from_url_master(app, db, get_git_attributes, json_head
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers, data=json.dumps(data))
+                           headers=headers + json_headers,
+                           data=json.dumps(data))
         assert resp.status_code == 201
 
         resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
@@ -83,12 +87,14 @@ def test_download_archive_from_url_master(app, db, get_git_attributes, json_head
         assert repo_content == 'test repo for cap\n'
 
 
-@pytest.mark.parametrize('git_url, git, git_record', [
-    (GITHUB_TEST_BRANCH, 'GITHUB', 'cernanalysispreservation_test-repo_test-branch.tar.gz'),
-    (GITLAB_TEST_BRANCH, 'GITLAB', 'pfokiano_test-repo_test-branch.tar.gz')
-])
-def test_download_archive_from_url_branch(app, db, get_git_attributes, json_headers,
-                                          git_url, git, git_record):
+@pytest.mark.parametrize(
+    'git_url, git, git_record',
+    [(GITHUB_TEST_BRANCH, 'GITHUB',
+      'cernanalysispreservation_test-repo_test-branch.tar.gz'),
+     (GITLAB_TEST_BRANCH, 'GITLAB', 'pfokiano_test-repo_test-branch.tar.gz')])
+def test_download_archive_from_url_branch(client, db, get_git_attributes,
+                                          json_headers, git_url, git,
+                                          git_record):
     """Given a git url, check if the link correctly identifies the repo, downloads its data,
        and then CAP is able to retrieve them from a bucket.
     """
@@ -100,7 +106,8 @@ def test_download_archive_from_url_branch(app, db, get_git_attributes, json_head
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers+json_headers, data=json.dumps(data))
+                           headers=headers + json_headers,
+                           data=json.dumps(data))
         assert resp.status_code == 201
 
         resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
@@ -114,12 +121,13 @@ def test_download_archive_from_url_branch(app, db, get_git_attributes, json_head
         assert repo_content == 'test repo for cap - branch\n'
 
 
-@pytest.mark.parametrize('git_url, git, git_record', [
-    (GITHUB_FILE, 'GITHUB', 'cernanalysispreservation_test-repo_master_README.md'),
-    (GITLAB_FILE, 'GITLAB', 'pfokiano_test-repo_master_README.md')
-])
-def test_download_file_from_url_master(app, db, get_git_attributes, json_headers,
-                                       git_url, git, git_record):
+@pytest.mark.parametrize(
+    'git_url, git, git_record',
+    [(GITHUB_FILE, 'GITHUB',
+      'cernanalysispreservation_test-repo_master_README.md'),
+     (GITLAB_FILE, 'GITLAB', 'pfokiano_test-repo_master_README.md')])
+def test_download_file_from_url_master(client, db, get_git_attributes,
+                                       json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url'}
 
@@ -128,7 +136,8 @@ def test_download_file_from_url_master(app, db, get_git_attributes, json_headers
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers, data=json.dumps(data))
+                           headers=headers + json_headers,
+                           data=json.dumps(data))
         assert resp.status_code == 201
 
         resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
@@ -141,11 +150,12 @@ def test_download_file_from_url_master(app, db, get_git_attributes, json_headers
 
 
 @pytest.mark.parametrize('git_url, git, git_record', [
-    (GITHUB_FILE_BRANCH, 'GITHUB', 'cernanalysispreservation_test-repo_test-branch_README.md'),
+    (GITHUB_FILE_BRANCH, 'GITHUB',
+     'cernanalysispreservation_test-repo_test-branch_README.md'),
     (GITLAB_FILE_BRANCH, 'GITLAB', 'pfokiano_test-repo_test-branch_README.md')
 ])
-def test_download_file_from_url_branch(app, db, get_git_attributes, json_headers,
-                                       git_url, git, git_record):
+def test_download_file_from_url_branch(client, db, get_git_attributes,
+                                       json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url'}
 
@@ -154,7 +164,8 @@ def test_download_file_from_url_branch(app, db, get_git_attributes, json_headers
 
     with app.test_client() as client:
         resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers, data=json.dumps(data))
+                           headers=headers + json_headers,
+                           data=json.dumps(data))
         assert resp.status_code == 201
 
         resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
@@ -166,7 +177,8 @@ def test_download_file_from_url_branch(app, db, get_git_attributes, json_headers
         assert repo_content == 'test repo for cap - branch\n'
 
 
-def test_download_gitlab_archive_private(app, db, get_git_attributes, json_headers):
+def test_download_gitlab_archive_private(client, db, get_git_attributes,
+                                         json_headers):
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {
         'url': 'https://gitlab.cern.ch/analysispreservation/test-private-repo',
@@ -185,7 +197,8 @@ def test_download_gitlab_archive_private(app, db, get_git_attributes, json_heade
         resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
         assert resp.status_code == 200
 
-        obj = ObjectVersion.get(bucket.id, 'analysispreservation_test-private-repo_master.tar.gz')
+        obj = ObjectVersion.get(
+            bucket.id, 'analysispreservation_test-private-repo_master.tar.gz')
         tar_obj = tarfile.open(obj.file.uri)
         repo_file_name = tar_obj.getmembers()[1]
         repo_content = tar_obj.extractfile(repo_file_name).read()

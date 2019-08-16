@@ -22,88 +22,87 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
-
 """Integration tests for user views."""
 from __future__ import absolute_import, print_function
 
+import responses
 from mock import patch
 
 
-@patch('requests.get')
+@responses.activate
 def test_get_orcid_when_no_results_for_given_name_returns_empty_object(
-        mock_requests, app, auth_headers_for_superuser):
-    class MockedResp:
-        status_code = 200
+        client, auth_headers_for_superuser):
+    orcid_resp = {"num-results": 0, "result": []}
 
-        def json(self):
-            return {
-                'num-results': 0,
-                'result': []
-            }
+    responses.add(
+        responses.GET,
+        "https://pub.orcid.org/v2.1/search/?"
+        "q=given-names:some+AND+family-name:name",
+        json=orcid_resp,
+        status=200,
+    )
 
-    with app.test_client() as client:
-        mock_requests.return_value = MockedResp()
+    resp = client.get("/services/orcid?name=some%20name",
+                      headers=auth_headers_for_superuser)
 
-        resp = client.get('/services/orcid?name=some-name',
-                          headers=auth_headers_for_superuser)
-
-        assert resp.json == {}
+    assert resp.json == {}
 
 
-@patch('requests.get')
+@responses.activate
 def test_get_orcid_when_multiple_results_for_given_name_returns_empty_object(
-        mock_requests, app, auth_headers_for_superuser):
-    class MockedResp:
-        status_code = 200
+        client, auth_headers_for_superuser):
 
-        def json(self):
-            return {
-                'num-results': 2,
-                'result': [
-                    {
-                        'orcid-identifier': {
-                            'path': '0000-0002-2341-2132'
-                        }
-                    },
-                    {
-                        'orcid-identifier': {
-                            'path': '0000-0002-2341-2132'
-                        }
-                    },
-                ]
-            }
+    orcid_resp = {
+        "num-results": 2,
+        "result": [
+            {
+                "orcid-identifier": {
+                    "path": "0000-0002-2341-2132"
+                }
+            },
+            {
+                "orcid-identifier": {
+                    "path": "0000-0002-2341-2132"
+                }
+            },
+        ],
+    }
+    responses.add(
+        responses.GET,
+        "https://pub.orcid.org/v2.1/search/?"
+        "q=given-names:some+AND+family-name:name",
+        json=orcid_resp,
+        status=200,
+    )
 
-    with app.test_client() as client:
-        mock_requests.return_value = MockedResp()
+    resp = client.get("/services/orcid?name=some%20name",
+                      headers=auth_headers_for_superuser)
 
-        resp = client.get('/services/orcid?name=some-name',
-                          headers=auth_headers_for_superuser)
-
-        assert resp.json == {}
+    assert resp.json == {}
 
 
-@patch('requests.get')
+@responses.activate
 def test_get_orcid_when_exactly_one_results_returns_orcid_path(
-        mock_requests, app, auth_headers_for_superuser):
-    class MockedResp:
-        status_code = 200
+        client, auth_headers_for_superuser):
 
-        def json(self):
-            return {
-                'num-results': 1,
-                'result': [
-                    {
-                        'orcid-identifier': {
-                            'path': '0000-0002-2341-2132'
-                        }
-                    }
-                ]
+    orcid_resp = {
+        "num-results": 1,
+        "result": [{
+            "orcid-identifier": {
+                "path": "0000-0002-2341-2132"
             }
+        }],
+    }
 
-    with app.test_client() as client:
-        mock_requests.return_value = MockedResp()
+    responses.add(
+        responses.GET,
+        "https://pub.orcid.org/v2.1/search/?"
+        "q=given-names:some+AND+family-name:name",
+        json=orcid_resp,
+        status=200,
+    )
 
-        resp = client.get('/services/orcid?name=some-name',
-                          headers=auth_headers_for_superuser)
+    resp = client.get("/services/orcid?name=some%20name",
+                      headers=auth_headers_for_superuser)
 
-        assert resp.json == {'orcid': '0000-0002-2341-2132'}
+    assert resp.json == {"orcid": "0000-0002-2341-2132"}
