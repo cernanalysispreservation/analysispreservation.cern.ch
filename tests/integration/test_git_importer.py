@@ -64,7 +64,7 @@ def test_download_archive_from_url_master(app, db, get_git_attributes, json_head
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'repo'}
 
-    if get_access_token(git) is None:
+    if get_access_token(git) is "CHANGE_ME":
         pytest.skip("No access token found for Git integration. Skipping.")
 
     with app.test_client() as client:
@@ -95,7 +95,7 @@ def test_download_archive_from_url_branch(app, db, get_git_attributes, json_head
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'repo'}
 
-    if get_access_token(git) is None:
+    if get_access_token(git) is "CHANGE_ME":
         pytest.skip("No access token found for Git integration. Skipping.")
 
     with app.test_client() as client:
@@ -123,7 +123,7 @@ def test_download_file_from_url_master(app, db, get_git_attributes, json_headers
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url'}
 
-    if get_access_token(git) is None:
+    if get_access_token(git) is "CHANGE_ME":
         pytest.skip("No access token found for Git integration. Skipping.")
 
     with app.test_client() as client:
@@ -149,7 +149,7 @@ def test_download_file_from_url_branch(app, db, get_git_attributes, json_headers
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url'}
 
-    if get_access_token(git) is None:
+    if get_access_token(git) is "CHANGE_ME":
         pytest.skip("No access token found for Git integration. Skipping.")
 
     with app.test_client() as client:
