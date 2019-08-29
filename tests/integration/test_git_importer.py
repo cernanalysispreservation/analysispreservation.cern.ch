@@ -173,7 +173,7 @@ def test_download_gitlab_archive_private(app, db, get_git_attributes, json_heade
         'type': 'repo'
     }
 
-    if get_access_token('GITLAB') is None:
+    if get_access_token('GITLAB') is "CHANGE_ME":
         pytest.skip("No access token found for Git integration. Skipping.")
 
     with app.test_client() as client:
