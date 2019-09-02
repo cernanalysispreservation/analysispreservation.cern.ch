@@ -197,3 +197,144 @@ atlas_glance = {u'count': 1, u'links': [
 
 github = {}
 gitlab = {u'error': u'404 Not Found'}
+indico = {
+  "count": 1,
+  "additionalInfo": {},
+  "_type": "HTTPAPIResult",
+  "url": "https://indico.cern.ch/export/event/845049.json",
+  "results": [
+    {
+      "folders": [
+        {
+          "_type": "folder",
+          "attachments": [
+            {
+              "_type": "attachment",
+              "description": "",
+              "content_type": "image/png",
+              "id": 3136666,
+              "size": 2294221,
+              "modified_dt": "2019-08-30T14:30:46.031039+00:00",
+              "title": "img_2.png",
+              "download_url": "https://indico.cern.ch/event/845049/attachments/1900364/3136666/img_2.png",
+              "filename": "img_2.png",
+              "is_protected": False,
+              "type": "file"
+            }
+          ],
+          "title": None,
+          "is_protected": False,
+          "default_folder": True,
+          "id": 1900364,
+          "description": ""
+        },
+        {
+          "_type": "folder",
+          "attachments": [],
+          "title": "another folder",
+          "is_protected": False,
+          "default_folder": False,
+          "id": 1900363,
+          "description": "another folder for stuff"
+        },
+        {
+          "_type": "folder",
+          "attachments": [],
+          "title": "materials_folder",
+          "is_protected": False,
+          "default_folder": False,
+          "id": 1900362,
+          "description": "this folder has materials"
+        }
+      ],
+      "startDate": {
+        "date": "2019-08-30",
+        "tz": "Europe/Zurich",
+        "time": "17:00:00"
+      },
+      "_type": "Conference",
+      "hasAnyProtection": False,
+      "endDate": {
+        "date": "2019-08-30",
+        "tz": "Europe/Zurich",
+        "time": "19:00:00"
+      },
+      "description": "<p>this is the description stuff</p>",
+      "roomMapURL": "https://maps.cern.ch/mapsearch/mapsearch.htm?n=['4/2-037']",
+      "creator": {
+        "affiliation": "",
+        "_type": "Avatar",
+        "last_name": "Koutsakis",
+        "emailHash": "514487040d28517d3c94700dd987e10e",
+        "_fossil": "conferenceChairMetadata",
+        "fullName": "Koutsakis, Ilias",
+        "first_name": "Ilias",
+        "id": "77851"
+      },
+      "material": [],
+      "visibility": {
+        "id": "",
+        "name": "Everywhere"
+      },
+      "roomFullname": "4/2-037 - TH meeting room",
+      "references": [
+        {
+          "url": None,
+          "urn": None,
+          "type": "Local",
+          "value": "localID"
+        },
+        {
+          "url": "https://edms.cern.ch/document/edmsID",
+          "urn": None,
+          "type": "EDMS",
+          "value": "edmsID"
+        }
+      ],
+      "address": "Address Adressington 13, Geneva",
+      "timezone": "Europe/Zurich",
+      "creationDate": {
+        "date": "2019-08-30",
+        "tz": "Europe/Zurich",
+        "time": "16:27:13.211866"
+      },
+      "id": "845049",
+      "category": "TEST Category",
+      "room": "4/2-037",
+      "title": "test_folders",
+      "url": "https://indico.cern.ch/event/845049/",
+      "note": {},
+      "chairs": [
+        {
+          "person_id": 4676217,
+          "affiliation": "CERN",
+          "_type": "ConferenceChair",
+          "last_name": "Fokianos",
+          "db_id": 770812,
+          "emailHash": "0bc625725a7099d0e24b738432077ba2",
+          "_fossil": "conferenceChairMetadata",
+          "fullName": "Fokianos, Pamfilos",
+          "first_name": "Pamfilos",
+          "id": "770812"
+        },
+        {
+          "person_id": 4676216,
+          "affiliation": "",
+          "_type": "ConferenceChair",
+          "last_name": "Koutsakis",
+          "db_id": 770811,
+          "emailHash": "514487040d28517d3c94700dd987e10e",
+          "_fossil": "conferenceChairMetadata",
+          "fullName": "Mr Koutsakis, Ilias",
+          "first_name": "Ilias",
+          "id": "770811"
+        }
+      ],
+      "location": "CERN",
+      "_fossil": "conferenceMetadata",
+      "type": "meeting",
+      "categoryId": 2
+    }
+  ],
+  "ts": 1567417389
+}

@@ -35,9 +35,10 @@ from . import blueprint
 from .orcid import _get_orcid
 from .zenodo import _get_zenodo_record
 from .cern import _ldap
+from .indico import _indico
 from ..models import StatusCheck
 from ..test_responses.responses import orcid_id, orcid_name, zenodo, \
-    ldap_egroup, ldap_mail, cms_cadi, atlas_glance, github, gitlab
+    ldap_egroup, ldap_mail, cms_cadi, atlas_glance, github, gitlab, indico
 
 from cap.views import ping
 from cap.modules.experiments.views.atlas import _get_glance_by_id
@@ -78,6 +79,12 @@ status_checks = [
         'should_return': ldap_egroup,
         'service': 'ldap_egroup',
         'log': 'Checking CERN LDAP by egroup...'
+    }, {
+        'func': _indico,
+        'args': {'event_id': '845049'},
+        'should_return': indico,
+        'service': 'indico',
+        'log': 'Checking Indico GET by event id...'
     },
 
     # INTERNAL SERVICES
