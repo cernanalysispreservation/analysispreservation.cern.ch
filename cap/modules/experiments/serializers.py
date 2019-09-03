@@ -21,38 +21,37 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-"""Experiments module."""
+"""Serializers for Reana models."""
 
 from __future__ import absolute_import, print_function
+from HTMLParser import HTMLParser
+import re
 
-import certifi
+from marshmallow import Schema, fields
+
+parser = HTMLParser()
 
 
-class CAPExperiments(object):
-    """Experiments extension."""
+class CADIField(fields.Field):
+    """CADI html preprocessing field."""
 
-    def __init__(self, app=None):
-        """Extension initialization."""
-        if app:
-            self.init_app(app)
+    def _serialize(self, value, attr, obj):
+        return '' if value is None \
+            else parser.unescape(parser.unescape(value))
 
-    def init_app(self, app):
-        """Initialize configuration."""
-        self._add_cern_certs_to_trusted(app)
-        app.extensions['cap-experiments'] = self
 
-    def _add_cern_certs_to_trusted(self, app):
-        """Add CERN Verification Authority to trusted by certifi module.
+class CADISchema(Schema):
+    """Schema for CADI in JSON."""
 
-        Location of pem file defined in `cap.config.CERN_CERTS_PEM`
-        """
-        cern_pem = app.config.get('CERN_CERTS_PEM')
-        is_debug = app.config.get('DEBUG')
-
-        if cern_pem and is_debug:
-            with open(certifi.where(), 'r+') as _out, \
-                    open(cern_pem, 'r') as _in:
-                content = _in.read()
-                if content not in _out.read():
-                    _out.write(content)
+    name = CADIField(default='', dump_only=True)
+    description = CADIField(default='', dump_only=True)
+    pas = CADIField(attribute='PAS', default='', dump_only=True)
+    paper = CADIField(attribute='PAPER', default='', dump_only=True)
+    created = CADIField(attribute='creatorDate', default='', dump_only=True)
+    contact = CADIField(default='', dump_only=True)
+    twiki = CADIField(attribute='URL', default='', dump_only=True)
+    status = CADIField(default='', dump_only=True)
+    publication_status = CADIField(attribute='publicationStatus',
+                                   default='', dump_only=True)
+    cadi_id = fields.Function(
+        lambda entry: re.sub('^d', '', entry.get('code', '')), dump_only=True)

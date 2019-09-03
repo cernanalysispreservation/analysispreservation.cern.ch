@@ -26,8 +26,6 @@
 
 import subprocess
 
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
 from cap.modules.experiments.utils.common import kinit
 from mock import patch
 from pytest import raises
@@ -45,12 +43,8 @@ def test_kinit_decorator(subprocess_mock, app):
 
     subprocess_mock.assert_not_called()
 
-    assert function('return_value') == 'return_value'
-
-    subprocess_mock.assert_called_with(
-        'kdestroy',
-        shell=True
-    )
+    with raises(subprocess.CalledProcessError, match='.* /etc/keytabs/user.keytab user@CERN.CH'):
+        function('return_value')
 
 
 def test_kinit_decorator_when_non_existing_keytab_file(app):

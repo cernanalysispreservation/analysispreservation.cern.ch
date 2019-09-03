@@ -33,9 +33,10 @@ from flask import Blueprint, jsonify, request
 from invenio_search.proxies import current_search_client as es
 
 from ..permissions import cms_permission
-from ..utils.cadi import get_from_cadi_by_id, parse_cadi_entry
+from ..utils.cadi import get_from_cadi_by_id
 from ..utils.cms import CMS_TRIGGERS_INDEX
 from ..utils.das import DAS_DATASETS_INDEX
+from ..serializers import CADISchema
 
 cms_bp = Blueprint(
     'cap_cms',
@@ -50,7 +51,8 @@ def _get_cadi(cadi_id):
     entry = get_from_cadi_by_id(cadi_id)
 
     if entry:
-        _, parsed = parse_cadi_entry(entry)
+        serializer = CADISchema()
+        parsed = serializer.dump(entry).data
     else:
         parsed = {}
     return parsed, 200

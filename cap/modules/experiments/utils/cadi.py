@@ -25,8 +25,6 @@
 """Cern Analysis Preservation utils for CADI database."""
 
 import json
-import re
-from HTMLParser import HTMLParser
 
 import requests
 from elasticsearch_dsl import Q
@@ -39,50 +37,15 @@ from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.schemas.models import Schema
 
 from ..errors import ExternalAPIException
+from ..serializers import CADISchema
 from .common import generate_krb_cookie
-
-CADI_FIELD_TO_CAP_MAP = {
-    "name": "name",
-    "description": "description",
-    "contact": "contact",
-    "creatorDate": "created",
-    "URL": "twiki",
-    "PAPER": "paper",
-    "PAS": "pas",
-    "publicationStatus": "publication_status",
-    "status": "status",
-}
 
 
 def get_sso_cookie_for_cadi():
     """Get sso cookie needed to authenticate to CADI."""
     principal, kt = current_app.config['KRB_PRINCIPALS']['CADI']
     url = current_app.config['CADI_AUTH_URL']
-
     return generate_krb_cookie(principal, kt, url)
-
-
-def parse_cadi_entry(entry):
-    """Translate CADI entry to CAP compatible form.
-
-    :params dict entry: CADI entry
-
-    :rtype dict
-    """
-    parser = HTMLParser()
-    parsed_entry = {}
-
-    for cadi_key, cap_key in CADI_FIELD_TO_CAP_MAP.items():
-        val = entry.get(cadi_key)
-
-        if isinstance(val, basestring):
-            parsed_entry[cap_key] = parser.unescape(parser.unescape(val))
-        else:
-            parsed_entry[cap_key] = ''
-
-    # remove artefacts from name
-    cadi_id = re.sub('^d', '', entry.get('code', ''))
-    return cadi_id, parsed_entry
 
 
 def synchronize_cadi_entries(limit=None):
@@ -97,9 +60,11 @@ def synchronize_cadi_entries(limit=None):
     :params int limit: number of entries to update
     """
     entries = get_all_from_cadi()
+    serializer = CADISchema()
 
     for entry in entries[:limit]:
-        cadi_id, cadi_info = parse_cadi_entry(entry)
+        cadi_info = serializer.dump(entry).data
+        cadi_id = cadi_info['cadi_id']
 
         try:  # update if cadi deposit already exists
             deposit = get_deposit_by_cadi_id(cadi_id)

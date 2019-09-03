@@ -25,7 +25,7 @@
 """Experiments common utils."""
 
 
-import subprocess
+from subprocess import check_output, CalledProcessError
 from functools import wraps
 from os.path import join
 
@@ -53,14 +53,22 @@ def kinit(principal, keytab):
     def decorator(func):
         @wraps(func)
         def wrapped_function(*args, **kwargs):
+            if not (principal and keytab):
+                raise AssertionError('Kerberos principal and/or keytab are '
+                                     'empty. Please check.')
+
             kt = join(current_app.config.get('KEYTABS_LOCATION'), keytab)
+            try:
+                check_output(
+                    'kinit -kt {} {}'.format(kt, principal), shell=True)
+                ret_val = func(*args, **kwargs)
+                check_output('kdestroy', shell=True)
 
-            subprocess.check_output(
-                'kinit -kt {} {}'.format(kt, principal), shell=True)
-            ret_val = func(*args, **kwargs)
-            subprocess.check_output('kdestroy', shell=True)
+                return ret_val
+            except CalledProcessError as err:
+                current_app.logger.error(err.message)
+                raise
 
-            return ret_val
         return wrapped_function
     return decorator
 

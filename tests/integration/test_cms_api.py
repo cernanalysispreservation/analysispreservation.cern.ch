@@ -27,10 +27,6 @@
 
 from __future__ import absolute_import, print_function
 
-import json
-
-from flask import current_app
-
 from cap.modules.experiments.errors import ExternalAPIException
 from mock import patch
 from pytest import mark
@@ -50,7 +46,8 @@ def test_get_cms_cadi_when_user_from_outside_cms_returns_403(app, users,
 
 
 @patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
-def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id, app, users, auth_headers_for_user):
+def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id,
+                                                app, users, auth_headers_for_user):
     with app.test_client() as client:
         resp = client.get('/cms/cadi/ANA-00-001',
                           headers=auth_headers_for_user(users['cms_user']))
@@ -59,7 +56,8 @@ def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id, app, u
 
 
 @patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', return_value={})
-def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
+def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_get_from_cadi_by_id, 
+                                                                         app, auth_headers_for_superuser):
     with app.test_client() as client:
         resp = client.get('/cms/cadi/non-existing',
                           headers=auth_headers_for_superuser)
@@ -68,31 +66,31 @@ def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(mock_ge
 
 
 @patch('cap.modules.experiments.views.cms.get_from_cadi_by_id')
-def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(mock_get_from_cadi_by_id, app,
-                                                                             auth_headers_for_superuser):
+def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(mock_get_from_cadi_by_id,
+                                                                                app, auth_headers_for_superuser):
     cadi_response = {
-        u'Conference': '',
-        u'conferenceStatus': '',
-        u'code': 'dANA-00-000',
-        u'targetConference': None,
-        u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-        u'updaterDate': '24/12/2014',
-        u'creatorDate': '14/12/2014',
-        u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-        u'id': 1,
-        u'updaterName': 'Updater User',
-        u'targetPubPeriod': None,
-        u'targetDatePreApp': '19/12/2014',
-        u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-        u'contact': 'Contact User',
-        u'status': 'PUB',
-        u'URL': 'https://twiki.cern.ch/twikiurl',
-        u'creatorName': 'Creator User',
-        u'publicationStatus': 'Free',
-        u'name': 'Name',
-        u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-        u'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
-        u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+        'Conference': '',
+        'conferenceStatus': '',
+        'code': 'dANA-00-000',
+        'targetConference': None,
+        'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+        'updaterDate': '24/12/2014',
+        'creatorDate': '14/12/2014',
+        'PAS': 'http://cms.cern.ch:80/pas.pdf',
+        'id': 1,
+        'updaterName': 'Updater User',
+        'targetPubPeriod': None,
+        'targetDatePreApp': '19/12/2014',
+        'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+        'contact': 'Contact User',
+        'status': 'PUB',
+        'URL': 'https://twiki.cern.ch/twikiurl',
+        'creatorName': 'Creator User',
+        'publicationStatus': 'Free',
+        'name': 'Name',
+        'PAPER': 'http://cms.cern.ch:80/paper.pdf',
+        'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
     mock_get_from_cadi_by_id.return_value = cadi_response
 
@@ -112,11 +110,13 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
             'pas': 'http://cms.cern.ch:80/pas.pdf',
             'publication_status': 'Free',
             'status': 'PUB',
+            'cadi_id': 'ANA-00-000'
         }
 
 
 @patch('cap.modules.experiments.views.cms.get_from_cadi_by_id', side_effect=ExternalAPIException())
-def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
+def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(mock_get_from_cadi_by_id,
+                                                                         app, auth_headers_for_superuser):
     with app.test_client() as client:
         resp = client.get('/cms/cadi/non-existing',
                           headers=auth_headers_for_superuser)
@@ -136,7 +136,8 @@ def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(app, us
         assert resp.status_code == 403
 
 
-def test_get_datasets_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user, das_datasets_index):
+def test_get_datasets_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user,
+                                                            das_datasets_index):
     with app.test_client() as client:
         resp = client.get('/cms/datasets?query=q',
                           headers=auth_headers_for_user(users['cms_user']))
@@ -144,14 +145,16 @@ def test_get_datasets_suggestions_when_cms_user_returns_200(app, users,auth_head
         assert resp.status_code == 200
 
 
-def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user, das_datasets_index):
+def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user,
+                                                                          das_datasets_index):
     with app.test_client() as client:
         resp = client.get('/cms/datasets?query=',
                           headers=auth_headers_for_user(users['cms_user']))
 
         assert resp.json == []
 
-def test_get_datasets_suggestions_returns_correct_suggestions(app, users,auth_headers_for_user, das_datasets_index):
+def test_get_datasets_suggestions_returns_correct_suggestions(app, users, auth_headers_for_user,
+                                                              das_datasets_index):
     with app.test_client() as client:
         resp = client.get('/cms/datasets?query=datas',
                           headers=auth_headers_for_user(users['cms_user']))
@@ -176,7 +179,8 @@ def test_get_triggers_suggestions_when_user_from_outside_cms_returns_403(app, us
         assert resp.status_code == 403
 
 
-def test_get_triggers_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user, cms_triggers_index):
+def test_get_triggers_suggestions_when_cms_user_returns_200(app, users,auth_headers_for_user,
+                                                            cms_triggers_index):
     with app.test_client() as client:
         resp = client.get('/cms/triggers?query=q&dataset=D',
                           headers=auth_headers_for_user(users['cms_user']))
@@ -184,7 +188,8 @@ def test_get_triggers_suggestions_when_cms_user_returns_200(app, users,auth_head
         assert resp.status_code == 200
 
 
-def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(app, users,auth_headers_for_user, cms_triggers_index):
+def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(app, users, auth_headers_for_user,
+                                                                          cms_triggers_index):
     with app.test_client() as client:
         resp = client.get('/cms/triggers?query=&dataset=D',
                           headers=auth_headers_for_user(users['cms_user']))
@@ -192,7 +197,8 @@ def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(app, u
         assert resp.json == []
         
 
-def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(app, users,auth_headers_for_user, cms_triggers_index):
+def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(app, users, auth_headers_for_user,
+                                                                                     cms_triggers_index):
     with app.test_client() as client:
         resp = client.get('/cms/triggers?query=&dataset=',
                           headers=auth_headers_for_user(users['cms_user']))

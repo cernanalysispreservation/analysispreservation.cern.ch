@@ -44,18 +44,18 @@ from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.errors import ExternalAPIException
+from cap.modules.experiments.serializers import CADISchema
 from cap.modules.experiments.utils.cadi import (build_cadi_deposit,
                                                 get_all_from_cadi,
                                                 get_deposit_by_cadi_id,
                                                 get_from_cadi_by_id,
-                                                parse_cadi_entry,
                                                 synchronize_cadi_entries)
 from conftest import assign_egroup_to_experiment
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.generate_krb_cookie')
-def test_get_from_cadi_by_id(mock_generate_krb_cookie, app):
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_id = 'ANA-00-000'
     cadi_resp = {
@@ -85,7 +85,7 @@ def test_get_from_cadi_by_id(mock_generate_krb_cookie, app):
         ]
     }
 
-    mock_generate_krb_cookie.return_value = cookie
+    mock_get_sso_cookie_for_cadi.return_value = cookie
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   json=cadi_resp,
@@ -102,12 +102,12 @@ def test_get_from_cadi_by_id(mock_generate_krb_cookie, app):
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.generate_krb_cookie')
-def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(mock_generate_krb_cookie, app):
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(mock_get_sso_cookie_for_cadi, app):
     cadi_id = 'non-existing'
     cadi_resp = dict(data=[])  # CADI API returns empty list, when no match with given id
 
-    mock_generate_krb_cookie.return_value = dict(cookies_are='example_cookie')
+    mock_get_sso_cookie_for_cadi.return_value = dict(cookies_are='example_cookie')
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   json=cadi_resp,
@@ -144,8 +144,8 @@ def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns
 
 
 @responses.activate
-@patch('cap.modules.experiments.utils.cadi.generate_krb_cookie')
-def test_get_all_from_cadi(mock_generate_krb_cookie, app):
+@patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
+def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_resp = dict(data=[
         dict(code=u'dANA-00-001', status=u'Inactive'),
@@ -153,7 +153,7 @@ def test_get_all_from_cadi(mock_generate_krb_cookie, app):
         dict(code=u'dANA-00-003', status=u'SUPERSEDED')
     ])
 
-    mock_generate_krb_cookie.return_value = cookie
+    mock_get_sso_cookie_for_cadi.return_value = cookie
     responses.add(responses.POST,
                   current_app.config['CADI_GET_ALL_URL'],
                   json=cadi_resp,
@@ -222,9 +222,9 @@ def test_parse_cadi_entry():
         u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
 
-    id, parsed = parse_cadi_entry(cadi_resp)
+    serializer = CADISchema()
+    parsed = serializer.dump(cadi_resp).data
 
-    assert id == 'ANA-00-000'
     assert parsed == {
         'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
         'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
@@ -235,6 +235,7 @@ def test_parse_cadi_entry():
         'pas': 'http://cms.cern.ch:80/pas.pdf',
         'publication_status': 'Free',
         'status': 'PUB',
+        'cadi_id': 'ANA-00-000'
     }
 
 
@@ -246,9 +247,9 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
         u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
 
-    id, parsed = parse_cadi_entry(cadi_resp)
+    serializer = CADISchema()
+    parsed = serializer.dump(cadi_resp).data
 
-    assert id == 'ANA-00-000'
     assert parsed == {
         'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
         'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
@@ -259,6 +260,7 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
         'pas': '',
         'publication_status': '',
         'status': '',
+        'cadi_id': 'ANA-00-000'
     }
 
 
@@ -327,10 +329,7 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(mock
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
        return_value=[dict(code=u'dANA-00-001', status=u'Free')])
-@patch('cap.modules.experiments.utils.cadi.parse_cadi_entry',
-       return_value=('ANA-00-001', dict(status='Free')))
-def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(mock_parse_cadi_enty,
-                                  mock_get_all_from_cadi,
+def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(mock_get_all_from_cadi,
                                   appctx, db, es, superuser, create_deposit):
     create_deposit(superuser, 'cms-analysis-v0.0.1', {
         '$ana_type': 'cms-analysis',
@@ -339,12 +338,21 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(mock_parse_
 
     # deposit with this cadi id already exists
     deposit = get_deposit_by_cadi_id('ANA-00-001')
-
     synchronize_cadi_entries()
 
     # deposit with this cadi id created
     updated_deposit = get_deposit_by_cadi_id('ANA-00-001')
 
-    assert updated_deposit['cadi_info'] == {'status': 'Free'}  # sets cadi info correctly
+    assert updated_deposit['cadi_info'] == {
+        u'cadi_id': u'ANA-00-001',
+        u'contact': u'',
+        u'created': u'',
+        u'description': u'',
+        u'name': u'',
+        u'paper': u'',
+        u'pas': u'',
+        u'publication_status': u'',
+        u'status': u'Free',
+        u'twiki': u''}  # sets cadi info correctly
     assert updated_deposit['_access'] == deposit['_access'] # access didnt change 
     assert updated_deposit['_deposit']['owners'] == deposit['_deposit']['owners'] # deposit owner didn't change

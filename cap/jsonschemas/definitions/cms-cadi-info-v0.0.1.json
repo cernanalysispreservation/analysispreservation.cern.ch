@@ -40,6 +40,10 @@
       "name": {
         "type": "string",
         "title": "Name"
+      },
+      "cadi_id": {
+        "type": "string",
+        "title": "Name"
       }
     },
     "$schema": "http://json-schema.org/draft-04/schema#",
