@@ -41,7 +41,8 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
-from jsonschema.validators import Draft4Validator, RefResolutionError
+from jsonschema.exceptions import RefResolutionError
+from jsonschema.validators import Draft4Validator
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
