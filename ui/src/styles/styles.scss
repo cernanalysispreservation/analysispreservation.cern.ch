@@ -30,6 +30,11 @@ body {
   box-sizing: border-box;
 }
 
+// remove scrollbar from the Dashboard circle legend
+.grommetux-legend {
+  overflow: visible;
+}
+
 #app {
   height: 100vh;
   overflow-y: scroll;
