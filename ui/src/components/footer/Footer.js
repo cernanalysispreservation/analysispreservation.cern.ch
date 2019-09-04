@@ -16,7 +16,7 @@ class GrommetFooter extends React.Component {
           pad={{ between: "medium" }}
         >
           <Paragraph margin="none">
-            Copyright 2018 © CERN. Created & Hosted by CERN. Powered by Invenio
+            Copyright 2019 © CERN. Created & Hosted by CERN. Powered by Invenio
             Software.
           </Paragraph>
           <Menu direction="row" size="small" dropAlign={{ right: "right" }}>
