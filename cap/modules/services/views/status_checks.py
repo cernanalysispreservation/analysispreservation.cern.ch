@@ -36,9 +36,11 @@ from .orcid import _get_orcid
 from .zenodo import _get_zenodo_record
 from .cern import _ldap
 from .indico import _indico
+from .ror import _ror
 from ..models import StatusCheck
 from ..test_responses.responses import orcid_id, orcid_name, zenodo, \
-    ldap_egroup, ldap_mail, cms_cadi, atlas_glance, github, gitlab, indico
+    ldap_egroup, ldap_mail, cms_cadi, atlas_glance, github, gitlab, indico, ror
+
 
 from cap.views import ping
 from cap.modules.experiments.views.atlas import _get_glance_by_id
@@ -85,6 +87,12 @@ status_checks = [
         'should_return': indico,
         'service': 'indico',
         'log': 'Checking Indico GET by event id...'
+    }, {
+        'func': _ror,
+        'args': {'item': 'https://ror.org/05a28rw58', 'by': 'org'},
+        'should_return': ror,
+        'service': 'ror',
+        'log': 'Checking ROR by org...'
     },
 
     # INTERNAL SERVICES

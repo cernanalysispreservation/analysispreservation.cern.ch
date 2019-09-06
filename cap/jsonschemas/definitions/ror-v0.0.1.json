@@ -1,0 +1,111 @@
+{
+  "fullname": "ROR API",
+  "experiment": null,
+  "jsonschema": {
+    "title": "ROR API",
+    "description": "Org information taken from ROR API.",
+    "properties": {
+      "id": {
+        "type": "string",
+        "title": "ID"
+      },
+      "name": {
+        "type": "string",
+        "title": "Name"
+      },
+      "wikipedia_url": {
+        "type": "string",
+        "title": "Wikipedia URL"
+      },
+      "labels": {
+        "type": "array",
+        "title": "Labels",
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "title": "Label"
+            },
+            "iso639": {
+              "type": "string",
+              "title": "ISO (Label language)"
+            }
+          }
+        }
+      },
+      "external_ids": {
+        "type": "object",
+        "properties": {
+          "isni": {
+            "type": "string",
+            "title": "ISNI"
+          },
+          "fundref": {
+            "type": "string",
+            "title": "FundRef"
+          },
+          "orgref": {
+            "type": "string",
+            "title": "OrgRef"
+          },
+          "wikidata": {
+            "type": "string",
+            "title": "Wikidata"
+          },
+          "grid": {
+            "type": "string",
+            "title": "GRID"
+          }
+        }
+      },
+
+      "country": {
+        "type": "object",
+        "properties": {
+          "country_name": {
+            "type": "string",
+            "title": "Country Name"
+          },
+          "country_code": {
+            "type": "string",
+            "title": "Country Code"
+          }
+        }
+      },
+
+      "links": {
+        "type": "array",
+        "title": "Links",
+        "items": {
+          "type": "string"
+        }
+      },
+      "aliases": {
+        "type": "array",
+        "title": "Aliases",
+        "items": {
+          "type": "string"
+        }
+      },
+      "acronyms": {
+        "type": "array",
+        "title": "Acronyms",
+        "items": {
+          "type": "string"
+        }
+      },
+      "types": {
+        "type": "array",
+        "title": "Types",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "id": "ror-api"
+  },
+  "is_deposit": false
+}

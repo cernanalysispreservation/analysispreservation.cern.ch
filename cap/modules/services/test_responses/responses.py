@@ -338,3 +338,17 @@ indico = {
   ],
   "ts": 1567417389
 }
+ror = {"id": "https://ror.org/05a28rw58",
+       "name": "Swiss Federal Institute of Technology in Zurich",
+       "types": ["Education"], "links": ["https://www.ethz.ch/en.html"],
+       "aliases": ["ETH Zurich"], "acronyms": [],
+       "wikipedia_url": "http://en.wikipedia.org/wiki/ETH_Zurich",
+       "labels": [{"label": "Politecnico federale di Zurigo", "iso639": "it"},
+                  {"label": "École polytechnique fédérale de zurich", "iso639": "fr"},
+                  {"label": "Eidgenössische Technische Hochschule Zürich", "iso639": "de"}],
+       "country": {"country_name": "Switzerland", "country_code": "CH"},
+       "external_ids": {"ISNI": {"preferred": None, "all": ["0000 0001 2156 2780"]},
+                        "FundRef": {"preferred": "501100003006", "all": ["501100003006", "501100003070", "501100001710"]},
+                        "OrgRef": {"preferred": None, "all": ["210910"]},
+                        "Wikidata": {"preferred":None, "all": ["Q11942"]},
+                        "GRID": {"preferred": "grid.5801.c", "all": "grid.5801.c"}}}
