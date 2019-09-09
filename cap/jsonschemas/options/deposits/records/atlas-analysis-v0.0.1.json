@@ -25,7 +25,7 @@
         "items": {
           "name": {
             "ui:options": {
-              "autofill_from": "/api/orcid?name=",
+              "autofill_from": "/api/services/orcid?name=",
               "autofill_fields": [
                 [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
               ]
