@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
@@ -22,6 +23,14 @@ class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  onFormSubmit = formData => {
+    // insert history data
+    formData.next = this.props.history.location.state.next;
+
+    // send form data
+    this.props.loginLocalUser(formData);
+  };
 
   render() {
     return (
@@ -82,7 +91,7 @@ class WelcomePage extends React.Component {
                 <LoginForm
                   usernameType="email"
                   defaultValues={{ username: "info@inveniosoftware.org" }}
-                  onSubmit={this.props.loginLocalUser.bind(this)}
+                  onSubmit={this.onFormSubmit}
                 />
               ) : null}
             </Box>
@@ -114,7 +123,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WelcomePage);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(WelcomePage)
+);

@@ -21,21 +21,6 @@ class IndexPage extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    if (!this.props.isLoggedIn) {
-      this.props.history.push({
-        pathname: "/login",
-        from: this.props.match.path
-      });
-    }
-  }
-
-  componentWillUpdate(nextProps) {
-    if (!nextProps.isLoggedIn) {
-      this.props.history.push("/login");
-    }
-  }
-
   render() {
     return (
       <Box flex={true}>

@@ -82,10 +82,15 @@ def login():
     # Fetch user from db
     user = _datastore.get_user(username)
 
+    next = request.args.get('next')
+
     if user and verify_password(password, user.password):
         try:
             login_user(user)
-            return current_user.email
+            return jsonify({
+                "user": current_user.email,
+                "next": next
+            })
         except Exception:
             return jsonify({
                 "error":
