@@ -127,6 +127,15 @@ class TextWidget extends React.Component {
     });
   };
 
+  // initiate ORCID search on Enter
+  _searchOnEnter = event => {
+    if (event.keyCode === 13) {
+      this.autoFillOtherFields();
+    } else {
+      this.props.onKeyDown;
+    }
+  };
+
   render() {
     return (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
@@ -159,7 +168,7 @@ class TextWidget extends React.Component {
                     onBlur: this.autoFillOtherFields
                   }
                 : {})}
-              onKeyDown={this.props.onKeyDown}
+              onKeyDown={this._searchOnEnter}
               value={this.props.value || ""}
             />
           </Box>
