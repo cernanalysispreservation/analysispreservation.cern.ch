@@ -1,4 +1,5 @@
 import axios from "axios";
+import { history } from "../store/configureStore";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
@@ -68,16 +69,19 @@ export function loginLocalUser(data) {
   return function(dispatch) {
     dispatch(loginRequest());
 
-    let uri = "/api/login/local";
+    let uri = `/api/login/local?next=${data.next}`;
 
     axios
       .post(uri, data)
-      .then(function() {
+      .then(function(response) {
         let token = "12345";
 
         localStorage.setItem("token", token);
 
-        dispatch(initCurrentUser());
+        // if the user tried to access priviledged location without login
+        const { next } = response.data;
+
+        dispatch(initCurrentUser(next));
       })
       .catch(function(error) {
         dispatch(
@@ -90,7 +94,7 @@ export function loginLocalUser(data) {
   };
 }
 
-export function initCurrentUser() {
+export function initCurrentUser(next) {
   return function(dispatch) {
     axios
       .get("/api/me")
@@ -106,6 +110,7 @@ export function initCurrentUser() {
             depositGroups: deposit_groups
           })
         );
+        history.push(`${next}`);
       })
       .catch(function() {
         dispatch(clearAuth());

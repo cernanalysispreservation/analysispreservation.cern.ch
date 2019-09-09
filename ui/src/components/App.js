@@ -9,6 +9,7 @@ import IndexPage from "./index/IndexPage";
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
+import requireAuth from "./auth/AuthorizationRequired";
 
 import Box from "grommet/components/Box";
 import Grommet from "grommet/components/Grommet";
@@ -37,7 +38,7 @@ class App extends React.Component {
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
             <Route path="/search-tips" component={HowToSearchPage} />
-            <Route path="/" component={IndexPage} />
+            <Route path="/" component={requireAuth(IndexPage)} />
             {/*
             <Route component={NotFoundPage} />
              */}
