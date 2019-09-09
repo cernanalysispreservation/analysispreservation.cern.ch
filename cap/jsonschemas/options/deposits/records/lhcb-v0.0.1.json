@@ -136,7 +136,7 @@
           },
           "name": {
             "ui:options": {
-              "autofill_from": "/api/orcid?name=",
+              "autofill_from": "/api/services/orcid?name=",
               "autofill_fields": [
                 [["orcid"], ["basic_info", "analysis_proponents", "#", "orcid"]]
               ]
@@ -164,7 +164,7 @@
           },
           "name": {
             "ui:options": {
-              "autofill_from": "/api/orcid?name=",
+              "autofill_from": "/api/services/orcid?name=",
               "autofill_fields": [
                 [["orcid"], ["basic_info", "reviewers", "#", "orcid"]]
               ]
