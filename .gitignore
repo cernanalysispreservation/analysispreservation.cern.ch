@@ -85,6 +85,10 @@ ui/package-lock.json
 .idea
 .idea_modules
 
+# Visual Code
+
+.vscode
+
 # Celery
 celerybeat-schedule.db
 

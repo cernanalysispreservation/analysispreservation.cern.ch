@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 
 export default function(ComposedComponent) {
   class NotAuthentication extends Component {
-    componentWillMount() {
-      if (this.props.isLoggedIn) {
-        this.props.history.push("/");
+    constructor(props) {
+      super(props);
+      if (props.isLoggedIn) {
+        props.history.push("/");
       }
     }
 

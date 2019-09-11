@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
+import { connectRouter } from "connected-react-router";
 
 import search from "./searchReducer";
 import auth from "./authReducer";
@@ -10,16 +10,18 @@ import dashboard from "./dashboard";
 import workflows from "./workflows";
 import status from "./status";
 
-const rootReducer = combineReducers({
-  auth,
-  users,
-  draftItem,
-  dashboard,
-  search,
-  published,
-  workflows,
-  status,
-  routing: routerReducer
-});
+const rootReducer = history =>
+  combineReducers({
+    auth,
+    users,
+    draftItem,
+    dashboard,
+    search,
+    published,
+    workflows,
+    status,
+    routing: connectRouter(history),
+    router: connectRouter(history)
+  });
 
 export default rootReducer;
