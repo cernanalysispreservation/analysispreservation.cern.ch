@@ -23,6 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 #
 
-"""Reana utilities module."""
+"""Workflows utilities module."""
 
 from __future__ import absolute_import, print_function

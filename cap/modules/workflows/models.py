@@ -22,48 +22,35 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-"""Models for Reana."""
+"""Workflows db models."""
 
 import uuid
 
 from invenio_accounts.models import User
 from invenio_db import db
 from invenio_records.models import RecordMetadata
-from sqlalchemy.dialects import postgresql
-from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import UUIDType
 
 from cap.types import json_type
 
 
-class ReanaJob(db.Model):
-    """Model defining REANA job."""
+class ReanaWorkflow(db.Model):
+    """Model defining a REANA workflow."""
 
-    __tablename__ = 'reana'
+    __tablename__ = 'reana_workflows'
 
-    id = db.Column(UUIDType,
-                   primary_key=True,
-                   nullable=False,
-                   default=uuid.uuid4)
+    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4,
+                   nullable=False)
+    record_id = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id),
+                          nullable=False)
 
-    user_id = db.Column(
-        db.Integer,
-        db.ForeignKey(User.id),
-        nullable=False,
-    )
-
-    record_id = db.Column(
-        UUIDType,
-        db.ForeignKey(RecordMetadata.id),
-        nullable=False,
-    )
-
-    reana_id = db.Column(
-        UUIDType,
-        unique=True,
-        nullable=False)
+    cap_user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
     name = db.Column(db.String(100), unique=False, nullable=False)
+    status = db.Column(db.String(100), unique=False, nullable=False)
+    engine = db.Column(db.Enum('yadage', 'cwl', 'serial', name='engine'),
+                       unique=False, nullable=False)
 
     params = db.Column(
         json_type,
@@ -71,7 +58,7 @@ class ReanaJob(db.Model):
         nullable=True
     )
 
-    output = db.Column(
+    logs = db.Column(
         json_type,
         default=lambda: dict(),
         nullable=True
@@ -79,18 +66,3 @@ class ReanaJob(db.Model):
 
     user = db.relationship('User')
     record = db.relationship('RecordMetadata')
-
-    @classmethod
-    def get_jobs(cls, user_id, record_id):
-        """Return all the jobs run by user for this record."""
-        return cls.query.filter_by(user_id=user_id,
-                                   record_id=record_id).all()
-
-    @classmethod
-    def get_record_from_workflow_id(cls, workflow_id):
-        """Return record id from from workflow id."""
-        try:
-            workflow = cls.query.filter_by(reana_id=workflow_id).one()
-            return workflow.record_id
-        except NoResultFound as e:
-            raise e
