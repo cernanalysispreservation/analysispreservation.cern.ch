@@ -157,7 +157,7 @@ setup(
             'cap_atlas = cap.modules.experiments.views.atlas:atlas_bp',
             'cap_lhcb = cap.modules.experiments.views.lhcb:lhcb_bp',
             'cap_cms = cap.modules.experiments.views.cms:cms_bp',
-            'cap_reana = cap.modules.reana.views:reana_bp',
+            'cap_workflows = cap.modules.workflows.views:workflows_bp',
             'cap_services = cap.modules.services.views:blueprint',
             'cap_schemas = cap.modules.schemas.views:blueprint',
             'cap_auth = cap.modules.auth.views:blueprint',
@@ -187,6 +187,7 @@ setup(
             'schemas = cap.modules.schemas.resolvers',
         ],
         'invenio_db.models': [
+            'cap_reana_model = cap.modules.workflows.models',
             'analysis_schema_model = cap.modules.schemas.models',
             'status_check_model = cap.modules.services.models',
             'auth = cap.modules.auth.models',
