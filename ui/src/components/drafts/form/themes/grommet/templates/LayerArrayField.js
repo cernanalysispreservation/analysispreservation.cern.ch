@@ -68,7 +68,7 @@ class ArrayFieldTemplate extends React.Component {
                     onClose={this._onFormLayerClose.bind(this, element.index)}
                     properties={element.children}
                     remove={
-                      element.hasRemove
+                      element.hasRemove && !this.props.readonly
                         ? element.onDropIndexClick(element.index)
                         : null
                     }
@@ -95,11 +95,11 @@ class ArrayFieldTemplate extends React.Component {
                     <Box direction="row" justify="between">
                       <Button
                         onClick={
-                          element.hasRemove
+                          element.hasRemove && !this.props.readonly
                             ? element.onDropIndexClick(element.index)
                             : null
                         }
-                        icon={<FormTrashIcon />}
+                        icon={this.props.readonly ? " " : <FormTrashIcon />}
                       />
                       {this.props.reorder
                         ? [

@@ -57,6 +57,7 @@ class TagsWidget extends Component {
           </Toast>
         ) : null}
         <TagsInput
+          disabled={this.props.readonly}
           value={this.state.tags}
           onChange={this.handleChange}
           className={"cap-react-tagsinput"}

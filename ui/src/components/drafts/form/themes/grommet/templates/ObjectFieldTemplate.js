@@ -5,16 +5,54 @@ import Box from "grommet/components/Box";
 
 import AccordionFieldTemplate from "./AccordionObjectField";
 import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
+import TabField from "./TabField";
+
 import FieldHeader from "../components/FieldHeader";
 
 let ObjectFieldTemplate = function(props) {
-  if (props.idSchema.$id == "root") {
-    return <Box>{props.properties.map(prop => prop.content)}</Box>;
+  if (
+    props.idSchema.$id == "root" &&
+    props.uiSchema["ui:object"] != "tabView"
+  ) {
+    return (
+      <Box
+        style={{
+          display: "grid",
+          justifyContent:
+            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
+              ? props.uiSchema["ui:options"].align
+              : "full"
+        }}
+      >
+        <Box
+          size={
+            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].size
+              ? props.uiSchema["ui:options"].size
+              : "full"
+          }
+        >
+          <Box
+            style={{
+              display:
+                props.uiSchema["ui:options"] &&
+                props.uiSchema["ui:options"].display
+                  ? props.uiSchema["ui:options"].display
+                  : "flex",
+              gridTemplateColumns: "45% 45%",
+              gridColumnGap: "5%",
+              maxWidth: "100vw"
+            }}
+          >
+            {props.properties.map(prop => prop.content)}
+          </Box>
+        </Box>
+      </Box>
+    );
   }
 
   if (!("ui:object" in props.uiSchema)) {
     return (
-      <Box margin="none" pad="none" margin={{ bottom: "small" }}>
+      <Box pad="none" margin={{ bottom: "small" }}>
         {props.title ? (
           <FieldHeader
             title={props.title}
@@ -26,7 +64,21 @@ let ObjectFieldTemplate = function(props) {
             }
           />
         ) : null}
-        {props.properties.map(prop => prop.content)}
+        <Box
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              props.uiSchema["ui:options"] && props.uiSchema["ui:options"].list
+                ? "45% 45%"
+                : null,
+            gridColumnGap:
+              props.uiSchema["ui:options"] && props.uiSchema["ui:options"].list
+                ? "5%"
+                : null
+          }}
+        >
+          {props.properties.map(prop => prop.content)}
+        </Box>
       </Box>
     );
   } else {
@@ -34,6 +86,8 @@ let ObjectFieldTemplate = function(props) {
       return <LayerObjectFieldTemplate {...props} />;
     } else if (props.uiSchema["ui:object"] == "accordionObjectField") {
       return <AccordionFieldTemplate {...props} />;
+    } else if (props.uiSchema["ui:object"] == "tabView") {
+      return <TabField {...props} />;
     } else {
       return (
         <div {...props}>

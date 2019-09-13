@@ -1,9 +1,10 @@
 import axios from "axios";
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import TextInput from "grommet/components/TextInput";
+import Paragraph from "grommet/components/Paragraph";
 
 import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/drafts";
@@ -11,7 +12,14 @@ import { fromJS } from "immutable";
 
 import Spinning from "grommet/components/icons/Spinning";
 
-class TextWidget extends React.Component {
+const RenderReadOnlyText = props => (
+  <Box flex={true} pad={props.pad || { horizontal: "medium" }}>
+    <Paragraph size="small" margin="none" style={{ color: "#a8a8a8" }}>
+      {props.value || "empty value from the user"}
+    </Paragraph>
+  </Box>
+);
+class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
      *       "ui:options":{
@@ -137,7 +145,7 @@ class TextWidget extends React.Component {
   };
 
   render() {
-    return (
+    return !this.props.readonly ? (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
         <Box flex={true} direction="row">
           <Box full={{ horizontal: true }}>
@@ -146,11 +154,6 @@ class TextWidget extends React.Component {
               name={this.props.id}
               placeHolder={this.props.placeholder}
               onDOMChange={this._onChange}
-              {...(this.props.readonly
-                ? {
-                    readOnly: "true"
-                  }
-                : {})}
               {...(this.props.autofocus
                 ? {
                     autoFocus: "true"
@@ -179,6 +182,26 @@ class TextWidget extends React.Component {
           ) : null}
         </Box>
       </Box>
+    ) : (
+      <RenderReadOnlyText value={this.props.value} />
+    );
+  }
+}
+
+class TextComponent extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return this.props.readonly ? (
+      <RenderReadOnlyText value={this.props.value} />
+    ) : (
+      <TextWidget
+        formData={this.props.formData}
+        formDataChange={this.props.formDataChange}
+        {...this.props}
+      />
     );
   }
 }
@@ -213,4 +236,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TextWidget);
+)(TextComponent);

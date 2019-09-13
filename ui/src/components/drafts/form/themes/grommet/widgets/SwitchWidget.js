@@ -12,13 +12,12 @@ const SwitchWidget = function(props) {
       props.onChange(undefined);
     }
   };
-
   // let _errors = null;
   // if (props.rawErrors && props.rawErrors.length > 0)
   //   _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
-
   return (
     <CheckBox
+      disabled={props.readonly}
       key={props.id}
       toggle={true}
       name={props.id}

@@ -14,7 +14,6 @@ class DefaultArrayField extends React.Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
       <Box margin="none" size={{ height: { max: "small" } }}>
@@ -25,12 +24,14 @@ class DefaultArrayField extends React.Component {
                 ? this.props.items.map(element => (
                     <ListItem key={element.index} separator="none" pad="none">
                       <Box flex={true}>{element.children}</Box>
-                      <Button
-                        onClick={event =>
-                          element.onDropIndexClick(element.index)(event)
-                        }
-                        icon={<FormTrashIcon />}
-                      />
+                      {!this.props.readonly && (
+                        <Button
+                          onClick={event =>
+                            element.onDropIndexClick(element.index)(event)
+                          }
+                          icon={<FormTrashIcon />}
+                        />
+                      )}
                       {this.props.options &&
                       this.props.options.enableArrayUtils ? (
                         <ArrayUtils

@@ -23,7 +23,6 @@ class ArrayFieldTemplate extends React.Component {
     this.state = {
       layers: []
     };
-
     if ("ui:array" in this.props.uiSchema) {
       this.formRenderType = this.props.uiSchema["ui:array"];
     } else if (
@@ -82,6 +81,7 @@ class ArrayFieldTemplate extends React.Component {
                 </span>
               }
               required={this.props.required}
+              readonly={this.props.readonly}
               description={this.props.schema.description}
               margin="none"
             />
@@ -100,12 +100,12 @@ class ArrayFieldTemplate extends React.Component {
       <FieldHeader
         title={this.props.title}
         required={this.props.required}
+        readonly={this.props.readonly}
         description={this.props.description}
         onArrayAddClick={this._onAddClick.bind(this)}
         margin="none"
       />
     );
-
     return this._getArrayField(_label);
   }
 }

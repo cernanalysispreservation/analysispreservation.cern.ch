@@ -41,12 +41,14 @@ class StringArrayField extends React.Component {
                             }
                           }}
                         />
-                        <Button
-                          onClick={event =>
-                            element.onDropIndexClick(element.index)(event)
-                          }
-                          icon={<FormTrashIcon />}
-                        />
+                        {!this.props.readonly && (
+                          <Button
+                            onClick={event =>
+                              element.onDropIndexClick(element.index)(event)
+                            }
+                            icon={<FormTrashIcon />}
+                          />
+                        )}
                       </Box>
                     </ListItem>
                   ))

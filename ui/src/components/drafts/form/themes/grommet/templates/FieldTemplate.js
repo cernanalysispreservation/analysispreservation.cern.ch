@@ -5,19 +5,40 @@ import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 
 let FieldTemplate = function(props) {
-  const { id, label, rawDescription, rawErrors = [], children } = props;
+  const {
+    id,
+    label,
+    rawDescription,
+    rawErrors = [],
+    children,
+    uiSchema
+  } = props;
+
   let _errors = "";
+  let gridColumns = null;
 
   if (rawErrors.length > 0)
     rawErrors.map((error, index) => {
       _errors += `(${index + 1}) ${error} `;
     });
 
+  // if the grid options exists in uiSchema pass it as prop
+  // else set it full width
+  if (props.uiSchema["ui:options"] && props.uiSchema["ui:options"].grid) {
+    gridColumns = props.uiSchema["ui:options"].grid.gridColumn
+      ? props.uiSchema["ui:options"].grid.gridColumn
+      : "1/5";
+  }
+
   if (["array", "object"].indexOf(props.schema.type) > -1) {
+    if (props.id === "root") {
+      gridColumns = null;
+    }
     return (
       <Box
         style={{
-          borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null
+          borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null,
+          gridColumn: gridColumns
         }}
       >
         {children}
@@ -37,6 +58,9 @@ let FieldTemplate = function(props) {
       }
       key={id + label}
       error={rawErrors.length > 0 ? _errors : null}
+      style={{
+        gridColumn: gridColumns
+      }}
     >
       {children}
     </FormField>

@@ -13,6 +13,7 @@ import Tiles from "grommet/components/Tiles";
 import Tile from "grommet/components/Tile";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
+import Notification from "grommet/components/Notification";
 
 import { withRouter } from "react-router-dom";
 import { fetchDashboard } from "../../actions/dashboard";
@@ -94,6 +95,12 @@ class Dashboard extends React.Component {
           wrap={true}
           justify="center"
         />
+        {!this.props.permissions && (
+          <Notification
+            message="Your account has no permissions for the platform."
+            status="warning"
+          />
+        )}
         <Tiles full={true}>
           <Tile pad="large" basis="1/3">
             <DashboardList
@@ -176,12 +183,14 @@ Dashboard.propTypes = {
   fetchDashboard: PropTypes.func,
   currentUser: PropTypes.object,
   results: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  permissions: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     currentUserId: state.auth.getIn(["currentUser", "userId"]),
+    permissions: state.auth.getIn(["currentUser", "permissions"]),
     results: state.dashboard.getIn(["results"])
   };
 }
