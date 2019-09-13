@@ -9,7 +9,7 @@ import Button from "grommet/components/Button";
 import AddIcon from "grommet/components/icons/base/Add";
 
 let FieldHeader = function(props) {
-  const { title, required, description } = props;
+  const { title, required, description, readonly } = props;
   return (
     <Box margin={props.margin ? props.margin : { vertical: "small" }}>
       <Box direction="row" align="center" justify="between">
@@ -21,14 +21,16 @@ let FieldHeader = function(props) {
         ) : null}
         {props.onArrayAddClick ? (
           <Box>
-            <Button
-              icon={<AddIcon />}
-              onClick={props.onArrayAddClick}
-              href="#"
-              plain={false}
-              critical={false}
-              primary={false}
-            />
+            {readonly ? null : (
+              <Button
+                icon={<AddIcon />}
+                onClick={props.onArrayAddClick}
+                href="#"
+                plain={false}
+                critical={false}
+                primary={false}
+              />
+            )}
           </Box>
         ) : null}
       </Box>

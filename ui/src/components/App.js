@@ -8,6 +8,7 @@ import IndexPage from "./index/IndexPage";
 
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
+import StatusPage from "./status/StatusPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 import requireAuth from "./auth/AuthorizationRequired";
 
@@ -37,6 +38,7 @@ class App extends React.Component {
           <Switch id="main-container">
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
+            <Route path="/status" component={StatusPage} />
             <Route path="/search-tips" component={HowToSearchPage} />
             <Route path="/" component={requireAuth(IndexPage)} />
             {/*

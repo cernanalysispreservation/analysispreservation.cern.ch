@@ -55,44 +55,51 @@ status_checks = [
         'args': {'arg': 'Ilias Koutsakis'},
         'should_return': orcid_name,
         'service': 'orcid_name',
-        'log': 'Checking ORCID GET by name...'
+        'log': 'Checking ORCID GET by name...',
+        'category': 'External Services',
     }, {
         'func': _get_orcid,
         'args': {'arg': '0000-0003-0710-0576', 'by': 'orcid'},
         'should_return': orcid_id,
         'service': 'orcid_id',
-        'log': 'Checking ORCID GET by id...'
+        'log': 'Checking ORCID GET by id...',
+        'category': 'External Services',
     }, {
         'func': _get_zenodo_record,
         'args': {'zenodo_id': '3243963'},
         'should_return': zenodo,
         'service': 'zenodo',
-        'log': 'Checking ZENODO GET by record id...'
+        'log': 'Checking ZENODO GET by record id...',
+        'category': 'External Services',
     }, {
         'func': _ldap,
         'args': {'query': 'ilias.koutsakis@cern.ch', 'sf': None, 'by': 'mail'},
         'should_return': ldap_mail,
         'service': 'ldap_mail',
-        'log': 'Checking CERN LDAP by mail...'
+        'log': 'Checking CERN LDAP by mail...',
+        'category': 'External Services',
     }, {
         'func': _ldap,
         'args': {'query': 'sis-group-documentation',
                  'sf': 'cn', 'by': 'egroup'},
         'should_return': ldap_egroup,
         'service': 'ldap_egroup',
-        'log': 'Checking CERN LDAP by egroup...'
+        'log': 'Checking CERN LDAP by egroup...',
+        'category': 'External Services',
     }, {
         'func': _indico,
         'args': {'event_id': '845049'},
         'should_return': indico,
         'service': 'indico',
-        'log': 'Checking Indico GET by event id...'
+        'log': 'Checking Indico GET by event id...',
+        'category': 'External Services',
     }, {
         'func': _ror,
         'args': {'item': 'https://ror.org/05a28rw58', 'by': 'org'},
         'should_return': ror,
         'service': 'ror',
-        'log': 'Checking ROR by org...'
+        'log': 'Checking ROR by org...',
+        'category': 'External Services',
     },
 
     # INTERNAL SERVICES
@@ -101,19 +108,22 @@ status_checks = [
         'args': {'service': 'db'},
         'should_return': {'message': 'OK'},
         'service': 'cap_db',
-        'log': 'Checking Postgres API...'
+        'log': 'Checking Postgres API...',
+        'category': 'Internal Services',
     }, {
         'func': ping,
         'args': {'service': 'search'},
         'should_return': {'message': 'OK'},
         'service': 'cap_es',
-        'log': 'Checking ElasticSearch API...'
+        'log': 'Checking ElasticSearch API...',
+        'category': 'Internal Services',
     }, {
         'func': ping,
         'args': {'service': 'files'},
         'should_return': {'message': 'OK'},
         'service': 'cap_files',
-        'log': 'Checking Files API...'
+        'log': 'Checking Files API...',
+        'category': 'Internal Services',
     },
 
     # EXPERIMENTS
@@ -122,13 +132,16 @@ status_checks = [
         'args': {'glance_id': '225'},
         'should_return': atlas_glance,
         'service': 'atlas_glance',
-        'log': 'Checking ATLAS Glance API...'
-    }, {
+        'log': 'Checking ATLAS Glance API...',
+        'category': 'Experiments',
+    },
+    {
         'func': _get_cadi,
         'args': {'cadi_id': 'EXO-17-023'},
         'should_return': cms_cadi,
         'service': 'cms_cadi',
-        'log': 'Checking CMS CADI API...'
+        'log': 'Checking CMS CADI API...',
+        'category': 'Experiments',
     },
 
     # GITHUB / GITLAB
@@ -137,13 +150,15 @@ status_checks = [
         'args': {'client': 'github'},
         'should_return': github,
         'service': 'github',
-        'log': 'Checking GitHub API...'
+        'log': 'Checking GitHub API...',
+        'category': 'Git',
     }, {
         'func': _test_connection,
         'args': {'client': 'gitlab'},
         'should_return': gitlab,
         'service': 'gitlab',
-        'log': 'Checking GitLab API...'
+        'log': 'Checking GitLab API...',
+        'category': 'Git',
     },
 ]
 
@@ -154,6 +169,7 @@ def _status_check():
 
     for service in status_checks:
         log, name = service['log'], service['service']
+        category = service['category']
         resp, status = service['func'](**service['args'])
 
         # deep equality comparison of dict responses
@@ -171,6 +187,7 @@ def _status_check():
             'service': name,
             'status': status,
             'message': msg,
+            'category': category
         })
         service_status = StatusCheck(service=name, status=status, message=msg)
         db.session.add(service_status)

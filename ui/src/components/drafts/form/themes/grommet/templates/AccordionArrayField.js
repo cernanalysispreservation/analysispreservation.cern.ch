@@ -51,25 +51,29 @@ class AccordionArrayField extends React.Component {
                       onClick={event =>
                         element.onDropIndexClick(element.index)(event)
                       }
-                      icon={<FormTrashIcon />}
+                      icon={this.props.readonly ? null : <FormTrashIcon />}
                     />
                   </Box>
                 </Box>
               ))}
               <Box justify="center" align="center">
-                <Button
-                  onClick={this._onAddClick.bind(this)}
-                  icon={<AddIcon />}
-                />
+                {this.props.readonly ? null : (
+                  <Button
+                    onClick={this._onAddClick.bind(this)}
+                    icon={<AddIcon />}
+                  />
+                )}
               </Box>
             </Box>
           ) : (
             <ListPlaceholder
               addControl={
-                <Button
-                  onClick={this._onAddClick.bind(this)}
-                  icon={<AddIcon />}
-                />
+                this.props.readonly ? null : (
+                  <Button
+                    onClick={this._onAddClick.bind(this)}
+                    icon={<AddIcon />}
+                  />
+                )
               }
               emptyMessage="You do not have any items at the moment."
               unfilteredTotal={0}
@@ -90,7 +94,8 @@ AccordionArrayField.propTypes = {
   items: PropTypes.array,
   properties: PropTypes.object,
   header: PropTypes.object,
-  onAddClick: PropTypes.func
+  onAddClick: PropTypes.func,
+  readonly: PropTypes.bool
 };
 
 export default AccordionArrayField;

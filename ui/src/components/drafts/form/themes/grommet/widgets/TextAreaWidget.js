@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import Box from "grommet/components/Box";
+import Paragraph from "grommet/components/Paragraph";
 
 class TextAreaWidget extends Component {
   constructor(props) {
@@ -35,7 +37,7 @@ class TextAreaWidget extends Component {
   }
 
   render() {
-    return (
+    return !this.props.readonly ? (
       <textarea
         rows="3"
         type="text"
@@ -46,6 +48,12 @@ class TextAreaWidget extends Component {
         onChange={this._onChange.bind(this)}
         style={{ fontSize: "1em" }}
       />
+    ) : (
+      <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
+        <Paragraph size="small" margin="none" style={{ color: "#a8a8a8" }}>
+          {this.props.value || "empty value from the user"}
+        </Paragraph>
+      </Box>
     );
   }
 }
@@ -55,7 +63,9 @@ TextAreaWidget.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   id: PropTypes.string,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  readonly: PropTypes.bool,
+  pad: PropTypes.string
 };
 
 export default TextAreaWidget;

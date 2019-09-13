@@ -13,6 +13,7 @@ const UpDownWidget = function(props) {
 
   return (
     <NumberInput
+      disabled={props.readonly}
       id="item1"
       name="item-1"
       step={null}

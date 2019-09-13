@@ -100,14 +100,14 @@ export function initCurrentUser(next = undefined) {
       .get("/api/me")
       .then(function(response) {
         let { id, deposit_groups } = response.data;
-
         localStorage.setItem("token", id);
         dispatch(
           loginSuccess({
             userId: id,
             token: id,
             profile: response.data,
-            depositGroups: deposit_groups
+            depositGroups: deposit_groups,
+            permissions: deposit_groups.length === 0 ? false : true
           })
         );
         // if next is defined
