@@ -388,18 +388,19 @@ RECORDS_REST_ENDPOINTS['recid'].update({
                           ':cap_search_factory',
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_response'),
+                             ':record_json_v1_response'),
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_response')
     },
     'search_serializers': {
         'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_search'),
+                             ':record_json_v1_search'),
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_search'),
     },
     'read_permission_factory_imp': check_oauth2_scope(
         lambda record: ReadRecordPermission(record).can(), write_scope.id),
+    'links_factory_imp': 'cap.modules.records.links:links_factory',
 })
 
 #: Default api endpoint for LHCb db
@@ -567,22 +568,22 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         'application/json-patch+json': lambda: request.get_json(force=True),
     },
     'record_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_response'),
+        'application/json': ('cap.modules.deposit.serializers'
+                             ':deposit_json_v1_response'),
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_response'),
         'application/permissions+json': ('cap.modules.records.serializers'
                                          ':permissions_json_v1_response')
     },
     'search_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':json_v1_search'),
+        'application/json': ('cap.modules.deposit.serializers'
+                             ':deposit_json_v1_search'),
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_search')
     },
     'files_serializers': {
-        'application/json': ('cap.modules.records.serializers'
-                             ':deposit_v1_files_response'),
+        'application/json': ('cap.modules.deposit.serializers'
+                             ':files_response'),
     },
     'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
     'search_factory_imp': 'cap.modules.search.query'
@@ -659,3 +660,8 @@ ZENODO_SERVER_URL = os.environ.get('APP_ZENODO_SERVER_URL',
                                    'https://zenodo.org/api')
 
 ZENODO_ACCESS_TOKEN = os.environ.get('APP_ZENODO_ACCESS_TOKEN', 'CHANGE_ME')
+
+# Endpoints
+# =========
+DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/drafts/{pid_value}'
+RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'

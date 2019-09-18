@@ -21,14 +21,15 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Record module utils."""
 
 import random
 import string
 
-from invenio_pidstore.models import PersistentIdentifier
+from flask import url_for
 from invenio_pidstore.errors import PIDDoesNotExistError
+from invenio_pidstore.models import PersistentIdentifier
+from six.moves.urllib import parse
 
 
 def generate_recid(experiment):
@@ -48,7 +49,25 @@ def random_pid(experiment):
         chars = string.lowercase + string.digits
         return ''.join((random.choice(chars)) for x in range(length))
 
-    return 'CAP.{}.{}.{}'.format(
-        experiment,
-        _generate_random_string(4).upper(),
-        _generate_random_string(4).upper())
+    return 'CAP.{}.{}.{}'.format(experiment,
+                                 _generate_random_string(4).upper(),
+                                 _generate_random_string(4).upper())
+
+
+def url_to_api_url(url):
+    """Translate url to api url."""
+    parts = parse.urlsplit(url)
+    api_url = parse.urlunsplit(
+        (parts.scheme, parts.netloc, '/api' + parts.path, parts.query,
+         parts.fragment))
+    return api_url
+
+
+def api_url_for(endpoint, pid, **kwargs):
+    """API URL builder."""
+    url = url_for('.{0}'.format(endpoint),
+                  pid_value=pid.pid_value,
+                  _external=True,
+                  **kwargs)
+
+    return url_to_api_url(url)

@@ -25,46 +25,33 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_accounts.models import User
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
 
+from cap.modules.deposit.links import links_factory as deposit_links_factory
 
-class RecordSerializer(JSONSerializer):
+
+class DepositSerializer(JSONSerializer):
     """Serializer for records v1 in JSON."""
+    def preprocess_record(self, pid, record, links_factory=None, **kwargs):
+        """Preprocess record serializing for record retrievals from the db.
+
+        Call base serializer with deposit_links_factory explicitly.
+        (bug in invenio doesn't pass correct one on deposit actions (e.g. /actions/publish)
+        """
+        result = super(DepositSerializer, self).preprocess_record(
+            pid, record, links_factory=deposit_links_factory)
+
+        return result
+
     def preprocess_search_hit(self, pid, record_hit, links_factory=None):
         """Fetch PID object for records retrievals from ES."""
         pid = PersistentIdentifier.get(pid_type=pid.pid_type,
                                        pid_value=pid.pid_value)
 
-        result = super(RecordSerializer,
+        result = super(DepositSerializer,
                        self).preprocess_search_hit(pid,
                                                    record_hit,
                                                    links_factory=links_factory)
-
-        return result
-
-
-class BasicJSONSerializer(JSONSerializer):
-    """Serializer for deposit client in JSON."""
-    pass
-
-
-class PermissionsJSONSerializer(JSONSerializer):
-    """Serializer for returning deposit permissions in JSON."""
-    def preprocess_record(self, pid, record, links_factory=None, **kwargs):
-        """Remove unnecessary values for client."""
-        result = super(PermissionsJSONSerializer,
-                       self).preprocess_record(pid,
-                                               record,
-                                               links_factory=links_factory)
-
-        result['permissions'] = result.get('metadata', {}).get('_access', {})
-
-        for k, v in result['permissions'].items():
-            if v['users']:
-                for index, user_id in enumerate(v['users']):
-                    user = User.query.filter_by(id=user_id).one()
-                    v['users'][index] = user.email
 
         return result

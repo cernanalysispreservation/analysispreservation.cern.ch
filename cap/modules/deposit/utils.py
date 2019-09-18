@@ -21,22 +21,19 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-
 """CAP Deposit utils."""
 
 from __future__ import absolute_import, print_function
-from tempfile import SpooledTemporaryFile
+
 import shutil
+from tempfile import SpooledTemporaryFile
 
 from cap.config import FILES_URL_MAX_SIZE
 
 
 def name_git_record(data, type):
     """Create a name for the git repo / file downloaded."""
-    name = '{}_{}_{}'.format(data['owner'],
-                             data['repo'],
-                             data['branch'])
+    name = '{}_{}_{}'.format(data['owner'], data['repo'], data['branch'])
 
     return name + '.tar.gz' \
         if type == 'repo' \
@@ -49,8 +46,10 @@ def clean_empty_values(data):
         return data
     if isinstance(data, list):
         return [v for v in (clean_empty_values(v) for v in data) if v]
-    return {k: v for k, v in (
-        (k, clean_empty_values(v)) for k, v in data.items()) if v}
+    return {
+        k: v
+        for k, v in ((k, clean_empty_values(v)) for k, v in data.items()) if v
+    }
 
 
 def ensure_content_length(resp):
@@ -68,3 +67,11 @@ def ensure_content_length(resp):
     resp.raw._fp.close()
     resp.raw._fp = spool
     return resp
+
+
+def extract_actions_from_class(record_class):
+    """Extract actions from class."""
+    for name in dir(record_class):
+        method = getattr(record_class, name, None)
+        if method and getattr(method, '__deposit_action__', False):
+            yield method.__name__

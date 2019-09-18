@@ -28,9 +28,12 @@ from __future__ import absolute_import, print_function
 
 import json
 
-from cap.modules.schemas.models import Schema
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_records.api import RecordMetadata
 from pytest import mark, raises
+
+from cap.modules.deposit.api import CAPDeposit
+from cap.modules.schemas.models import Schema
 
 
 #######################
@@ -49,8 +52,7 @@ def test_create_deposit_when_user_is_member_of_schema_experiment_can_create_depo
     other_user = users['lhcb_user']
     schema = create_schema('cms', experiment='CMS')
     metadata = {
-        '$schema':
-        'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
+        '$schema': 'http://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json'
     }
 
     resp = client.post('/deposits/',
@@ -159,8 +161,7 @@ def test_create_deposit_when_passed_ana_type_creates_deposit_with_latest_version
                        data=json.dumps(metadata))
 
     assert resp.status_code == 201
-    assert resp.json['metadata'][
-        '$schema'] == 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v2.0.0.json'
+    assert resp.json['schema'] == {'name': 'test-analysis', 'version': '2.0.0'}
 
 
 def test_create_deposit_set_fields_correctly(client, location, users,
@@ -170,23 +171,88 @@ def test_create_deposit_set_fields_correctly(client, location, users,
     owner = users['cms_user']
     schema = create_schema('test-analysis', experiment='CMS')
     metadata = {
-        '$schema':
-        'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json'
+        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json',
+        'basic_info': {
+            'analysis_number': 'dream_team'
+        }
     }
 
     resp = client.post('/deposits/',
                        headers=auth_headers_for_user(owner) + json_headers,
                        data=json.dumps(metadata))
 
+    metadata = RecordMetadata.query.first()
+    deposit = CAPDeposit.get_record(metadata.id)
+    depid = deposit['_deposit']['id']
+
     assert resp.status_code == 201
-
-    created = resp.json['metadata']
-
-    assert created['_deposit']['created_by'] == owner.id
-    assert created[
-        '$schema'] == 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json'
-    assert created['_experiment'] == 'CMS'
-    assert created['_deposit']['status'] == 'draft'
+    assert resp.json == {
+        'id': depid,
+        'type': 'deposit',
+        'revision': 1,
+        'schema': {
+            'name': 'test-analysis',
+            'version': '1.0.0'
+        },
+        'experiment': 'CMS',
+        'status': 'draft',
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {
+            'basic_info': {
+                'analysis_number': 'dream_team'
+            }
+        },
+        'files': [],
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'can_update': True,
+        'can_admin': True,
+        'links': {
+            'bucket':
+                'http://analysispreservation.cern.ch/api/files/{}'.format(
+                    deposit.files.bucket),
+            'clone':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+                .format(depid),
+            'discard':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+                .format(depid),
+            'edit':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+                .format(depid),
+            'files':
+                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
+                format(depid),
+            'html':
+                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
+            'permissions':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+                .format(depid),
+            'publish':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+                .format(depid),
+            'self':
+                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
+                    depid),
+            'upload':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+                .format(depid)
+        }
+    }
 
 
 def test_create_deposit_when_schema_with_refs_works_correctly(
@@ -209,8 +275,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
             'type': 'object',
             'properties': {
                 'nested': {
-                    '$ref':
-                    'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json'
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json'
                 }
             }
         })
@@ -219,8 +284,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
         '/deposits/',
         headers=auth_headers_for_user(users['cms_user']) + json_headers,
         data=json.dumps({
-            '$schema':
-            'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
             'nested': {
                 'title': 'nested'
             }

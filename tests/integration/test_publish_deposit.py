@@ -125,18 +125,81 @@ def test_deposit_publish_changes_status_and_creates_record(
         create_deposit):
     owner = users['cms_user']
     headers = auth_headers_for_user(owner)
-    pid = create_deposit(owner, 'test', experiment='CMS')['_deposit']['id']
+    deposit = create_deposit(owner, 'test', experiment='CMS')
+    depid = deposit['_deposit']['id']
+    metadata = deposit.get_record_metadata()
 
-    resp = client.post('/deposits/{}/actions/publish'.format(pid),
+    resp = client.post('/deposits/{}/actions/publish'.format(depid),
                        headers=headers)
 
-    record_metadata = resp.json['metadata']
-    assert re.match('CAP.CMS.{4}\w.{4}\w', record_metadata['control_number'])
-    assert re.match('CAP.CMS.{4}\w.{4}\w',
-                    record_metadata['_deposit']['pid']['value'])
-    assert record_metadata['_deposit']['status'] == 'published'
+    _, record = deposit.fetch_published()
 
-    resp = client.get('/records/{}'.format(record_metadata['control_number']),
+    assert resp.json == {
+        'id': depid,
+        'recid': record['control_number'],
+        'type': 'deposit',
+        'revision': 2,
+        'schema': {
+            'name': 'test',
+            'version': '1.0.0'
+        },
+        'experiment': 'CMS',
+        'status': 'published',
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {},
+        'files': [],
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'can_update': True,
+        'can_admin': True,
+        'links': {
+            'bucket':
+                'http://analysispreservation.cern.ch/api/files/{}'.format(
+                    deposit.files.bucket),
+            'clone':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+                .format(depid),
+            'discard':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+                .format(depid),
+            'edit':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+                .format(depid),
+            'files':
+                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
+                format(depid),
+            'html':
+                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
+            'permissions':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+                .format(depid),
+            'publish':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+                .format(depid),
+            'self':
+                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
+                    depid),
+            'upload':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+                .format(depid)
+        }
+    }
+
+    resp = client.get('/records/{}'.format(record['control_number']),
                       headers=headers)
 
     assert resp.status_code == 200
@@ -222,7 +285,7 @@ def test_get_deposits_when_published_other_members_of_experiment_can_see_it(
     # publish
     resp = client.post('/deposits/{}/actions/publish'.format(pid),
                        headers=headers_for_owner)
-    record_pid = resp.json['metadata']['control_number']
+    record_pid = resp.json['recid']
 
     # creator can see published one under api/records
     resp = client.get('/records/{}'.format(record_pid),

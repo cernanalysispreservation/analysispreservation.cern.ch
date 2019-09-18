@@ -27,19 +27,17 @@ from __future__ import absolute_import, print_function
 
 from flask import current_app, request
 from invenio_records_files.links import default_bucket_link_factory
+from invenio_records_rest.links import default_links_factory
 
-from cap.modules.records.utils import api_url_for, url_to_api_url
-
-from .api import CAPDeposit
-from .utils import extract_actions_from_class
+from .api import CAPRecord
+from .utils import api_url_for, url_to_api_url
 
 
 def links_factory(pid, record=None):
     """Deposit links factory."""
     links = {
-        'self': api_url_for('depid_item', pid),
-        'files': api_url_for('depid_files', pid),
-        'html': current_app.config['DEPOSIT_UI_ENDPOINT'].format(
+        'self': api_url_for('recid_item', pid),
+        'html': current_app.config['RECORDS_UI_ENDPOINT'].format(
             host=request.host,
             scheme=request.scheme,
             pid_value=pid.pid_value,
@@ -49,8 +47,5 @@ def links_factory(pid, record=None):
     bucket_link = default_bucket_link_factory(pid)
     if bucket_link:
         links['bucket'] = url_to_api_url(bucket_link)
-
-    for action in extract_actions_from_class(CAPDeposit):
-        links[action] = api_url_for('depid_actions', pid, action=action)
 
     return links

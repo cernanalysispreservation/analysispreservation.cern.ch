@@ -506,8 +506,8 @@ class CAPDeposit(Deposit):
                 if result['errors']:
                     raise DepositValidationError(None, errors=result['errors'])
             except RefResolutionError:
-                raise DepositValidationError(
-                    'Schema with given url not found.')
+                raise DepositValidationError('Schema {} not found.'.format(
+                    self['$schema']))
         else:
             raise DepositValidationError('You need to provide a valid schema.')
 

@@ -21,27 +21,19 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP Marshmallow Schemas."""
 
 from invenio_access.models import ActionRoles, ActionUsers
+from invenio_accounts.models import Role, User
 from invenio_search import current_search
 from invenio_search.utils import schema_to_index
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
-
-def schema_prefix(schema):
-    """Get index prefix for a given schema."""
-    if not schema:
-        return None
-    index, doctype = schema_to_index(
-        schema, index_names=current_search.mappings.keys())
-    return index.split('-')[0]
+from cap.modules.schemas.resolvers import resolve_schema_by_url
 
 
 class StrictKeysMixin(object):
     """Ensure only defined keys exists in data."""
-
     @validates_schema(pass_original=True)
     def check_unknown_fields(self, data, original_data):
         """Check for unknown keys."""
@@ -58,52 +50,64 @@ class StrictKeysMixin(object):
                     )
 
 
-class CommonRecordSchemaV1(Schema, StrictKeysMixin):
-    """Common record schema."""
+class CommonRecordSchema(Schema, StrictKeysMixin):
+    """Base record schema."""
 
     id = fields.Str(attribute='pid.pid_value', dump_only=True)
 
-    schema = fields.Str(attribute='metadata.$schema', dump_only=True)
+    schema = fields.Method('get_schema', dump_only=True)
+
+    experiment = fields.Str(attribute='metadata._experiment', dump_only=True)
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
-    published = fields.Raw(attribute='metadata._deposit.pid', dump_only=True)
-    owners = fields.List(fields.Integer,
-                         attribute='metadata.owners',
-                         dump_only=True)
+    created_by = fields.Method('get_created_by', dump_only=True)
 
-    created = fields.Str(dump_only=True)
-    links = fields.Raw()
+    metadata = fields.Method('get_metadata', dump_only=True)
 
-    files = fields.Raw(dump_only=True)
+    links = fields.Raw(dump_only=True)
+    files = fields.Method('get_files', dump_only=True)
 
     access = fields.Method('get_access', dump_only=True)
 
+    created = fields.Str(dump_only=True)
+    updated = fields.Str(dump_only=True)
+
+    revision = fields.Integer(dump_only=True)
+
+    def get_files(self, obj):
+        return obj['metadata'].get('_files', [])
+
+    def get_schema(self, obj):
+        schema = resolve_schema_by_url(obj['metadata']['$schema'])
+        result = {'name': schema.name, 'version': schema.version}
+        return result
+
+    def get_metadata(self, obj):
+        result = {
+            k: v
+            for k, v in obj.get('metadata', {}).items() if k not in [
+                'control_number', '$schema', '_deposit', '_experiment',
+                '_access', '_files'
+            ]
+        }
+        return result
+
+    def get_created_by(self, obj):
+        user_id = obj['metadata']['_deposit']['created_by']
+        user = User.query.filter_by(id=user_id).one()
+        return user.email
+
     def get_access(self, obj):
         """Return access object."""
-        _uuid = obj.get('pid', None)
-        if _uuid is not None:
-            _uuid = _uuid.object_uuid
+        access = obj['metadata']['_access']
 
-        action_users = ActionUsers.query.filter(
-            ActionUsers.argument == str(_uuid)).all()
+        for permission in access.values():
+            if permission['users']:
+                for index, user_id in enumerate(permission['users']):
+                    user = User.query.filter_by(id=user_id).one()
+                    permission['users'][index] = user.email
+            elif permission['roles']:
+                for index, role_id in enumerate(permission['users']):
+                    user = Role.query.filter_by(id=role_id).one()
+                    permission['users'][index] = role.name
 
-        action_roles = ActionRoles.query.filter(
-            ActionRoles.argument == str(_uuid)).all()
-
-        _access = []
-        for au in action_users:
-            i = {
-                "type": "user",
-                "identity": au.user.email,
-                "action": au.action
-            }
-            _access.append(i)
-
-        for ar in action_roles:
-            i = {
-                "type": "egroup",
-                "identity": ar.role.name,
-                "action": ar.action
-            }
-            _access.append(i)
-
-        return _access
+        return access
