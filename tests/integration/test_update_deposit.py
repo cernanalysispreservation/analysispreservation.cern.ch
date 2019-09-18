@@ -72,7 +72,8 @@ def test_update_deposit_when_user_is_owner_can_update_his_deposit(
 
 
 def test_update_deposit_when_superuser_can_update_others_deposits(
-        client, users, create_deposit, json_headers, auth_headers_for_superuser):
+        client, users, create_deposit, json_headers,
+        auth_headers_for_superuser):
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb')
 
@@ -103,10 +104,7 @@ def test_update_deposit_when_user_has_update_or_admin_access_can_update(
         'action': action
     }]
 
-    resp = client.post('/deposits/{}/actions/permissions'.format(
-        deposit['_deposit']['id']),
-                       headers=auth_headers_for_user(owner) + json_headers,
-                       data=json.dumps(permissions))
+    deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
     current_search.flush_and_refresh('deposits')
@@ -119,7 +117,8 @@ def test_update_deposit_when_user_has_update_or_admin_access_can_update(
 
 
 def test_update_deposit_when_user_has_only_read_access_returns_403(
-        client, db, users, create_deposit, json_headers, auth_headers_for_user):
+        client, db, users, create_deposit, json_headers,
+        auth_headers_for_user):
     owner, other_user = users['lhcb_user'], users['cms_user']
     deposit = create_deposit(owner, 'lhcb')
 
@@ -130,10 +129,7 @@ def test_update_deposit_when_user_has_only_read_access_returns_403(
         'action': 'deposit-read'
     }]
 
-    resp = client.post('/deposits/{}/actions/permissions'.format(
-        deposit['_deposit']['id']),
-                       headers=auth_headers_for_user(owner) + json_headers,
-                       data=json.dumps(permissions))
+    deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
     current_search.flush_and_refresh('deposits')
@@ -166,12 +162,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
         'action': action
     }]
 
-    resp = client.post('/deposits/{}/actions/permissions'.format(
-        deposit['_deposit']['id']),
-                       headers=auth_headers_for_user(owner) + json_headers,
-                       data=json.dumps(permissions))
-
-    assert resp.status_code == 201
+    deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
     current_search.flush_and_refresh('deposits')
@@ -184,7 +175,8 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_update_or_admin_a
 
 
 def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_returns_403(
-        client, db, users, create_deposit, json_headers, auth_headers_for_user):
+        client, db, users, create_deposit, json_headers,
+        auth_headers_for_user):
     owner, other_user = users['lhcb_user'], users['cms_user']
     add_role_to_user(other_user, 'some-egroup@cern.ch')
     deposit = create_deposit(owner, 'lhcb')
@@ -196,10 +188,7 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
         'action': 'deposit-read'
     }]
 
-    resp = client.post('/deposits/{}/actions/permissions'.format(
-        deposit['_deposit']['id']),
-                       headers=auth_headers_for_user(owner) + json_headers,
-                       data=json.dumps(permissions))
+    deposit.edit_permissions(permissions)
 
     # sometimes ES needs refresh
     current_search.flush_and_refresh('deposits')
@@ -211,62 +200,87 @@ def test_update_deposit_when_user_is_member_of_egroup_that_has_only_read_access_
     assert resp.status_code == 403
 
 
-def test_update_deposit_cannot_update_schema_field(client, db, users,
-                                                   create_deposit,
-                                                   create_schema, json_headers,
-                                                   auth_headers_for_user):
+def test_update_deposit_cannot_update_underscore_prefixed_files(
+        client, db, users, create_deposit, create_schema, json_headers,
+        auth_headers_for_user):
     owner = users['lhcb_user']
     deposit = create_deposit(owner, 'lhcb', experiment='LHCb')
+    depid = deposit['_deposit']['id']
     schema = create_schema('another-schema', experiment='LHCb')
-    schema_url = schema_name_to_url('lhcb')
-
-    deposit_schema = deposit.get("$schema", None)
-    assert deposit_schema is not None
+    metadata = deposit.get_record_metadata()
 
     resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({}))
+                      data=json.dumps({
+                          "$schema": 'another_schema',
+                          "_access": [],
+                          "_files": [],
+                          "_experiment": "ccc"
+                      }))
 
-    resp_schema = resp.json.get("metadata", {}).get("$schema", None)
-    assert resp_schema == deposit_schema
-
-    resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({"$schema": schema_url}))
-
-    resp_schema = resp.json.get("metadata", {}).get("$schema", None)
-    assert resp_schema == deposit_schema
-
-    assert resp.status_code == 200
-
-
-def test_update_deposit_cannot_update_access_field(client, db, users,
-                                                   create_deposit,
-                                                   create_schema, json_headers,
-                                                   auth_headers_for_user):
-    owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb', experiment='LHCb')
-    schema = create_schema('another-schema', experiment='LHCb')
-
-    deposit_access = deposit.get("_access", None)
-    assert deposit_access is not None
-
-    resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({}))
-
-    resp_access = resp.json.get("access", None)
-
-    resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({}))
-
-    updated_resp_data = resp.json.get("access", None)
-    assert updated_resp_data == resp_access
-
-    resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({"_access": []}))
+    assert resp.json == {
+        'id': depid,
+        'type': 'deposit',
+        'revision': 2,
+        'schema': {
+            'name': 'lhcb',
+            'version': '1.0.0'
+        },
+        'experiment': 'LHCb',
+        'status': 'draft',
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {},
+        'files': [],
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'can_update': True,
+        'can_admin': True,
+        'links': {
+            'bucket':
+                'http://analysispreservation.cern.ch/api/files/{}'.format(
+                    deposit.files.bucket),
+            'clone':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+                .format(depid),
+            'discard':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+                .format(depid),
+            'edit':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+                .format(depid),
+            'files':
+                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
+                format(depid),
+            'html':
+                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
+            'permissions':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+                .format(depid),
+            'publish':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+                .format(depid),
+            'self':
+                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
+                    depid),
+            'upload':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+                .format(depid)
+        }
+    }
 
     assert resp.status_code == 200
 
@@ -308,76 +322,15 @@ def test_patch_deposit(client, db, users, create_deposit, create_schema,
     assert resp.json.get("metadata", {}).get("general_title",
                                              None) == "Gen Test"
 
-    resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                        headers=auth_headers_for_user(owner) +
-                        [('Content-Type', 'application/json-patch+json'),
-                         ('Accept', 'application/json')],
-                        data=json.dumps([{
-                            "op": "replace",
-                            "path": "/general_title",
-                            "value": "Gen 8"
-                        }]))
 
-    assert resp.status_code == 200
-    assert resp.json.get("metadata", {}).get("general_title", None) == "Gen 8"
-
-
-def test_patch_deposit_passing__files_field(client, db, users, create_deposit,
-                                            create_schema, json_headers,
-                                            auth_headers_for_user):
-    owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
-
-    resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
-                        headers=auth_headers_for_user(owner) +
-                        [('Content-Type', 'application/json-patch+json'),
-                         ('Accept', 'application/json')],
-                        data=json.dumps([{
-                            "op": "add",
-                            "path": "/_files",
-                            "value": "Gen Test"
-                        }]))
-
-    assert resp.status_code == 200
-
-
-def test_put_deposit_passing__files_field(client, db, users, create_deposit,
-                                          create_schema, json_headers,
-                                          auth_headers_for_user):
-    owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
-
-    resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({"_files": "Gen Test"}))
-
-    assert resp.status_code == 200
-
-
-def test_put_deposit_passing__experiment_field(client, db, users, create_deposit,
-                                               create_schema, json_headers,
-                                               auth_headers_for_user):
+def test_patch_deposit_cannot_update_underscore_prefixed_fields(
+        client, db, users, create_deposit, create_schema, json_headers,
+        auth_headers_for_user):
 
     owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
-
-    resp = client.put('/deposits/{}'.format(deposit['_deposit']['id']),
-                      headers=auth_headers_for_user(owner) + json_headers,
-                      data=json.dumps({"_experiment": "LHCb2"}))
-
-    assert resp.status_code == 200
-
-    resp_experiment = resp.json.get("metadata", {}).get("_experiment", None)
-    assert resp_experiment == "LHCb"
-
-
-def test_patch_deposit_passing__experiment_field(client, db, users,
-                                                 create_deposit, create_schema,
-                                                 json_headers,
-                                                 auth_headers_for_user):
-
-    owner = users['lhcb_user']
-    deposit = create_deposit(owner, 'lhcb-v0.0.1', experiment='LHCb')
+    deposit = create_deposit(owner, 'lhcb', experiment='LHCb')
+    depid = deposit['_deposit']['id']
+    metadata = deposit.get_record_metadata()
 
     resp = client.patch('/deposits/{}'.format(deposit['_deposit']['id']),
                         headers=auth_headers_for_user(owner) +
@@ -386,13 +339,82 @@ def test_patch_deposit_passing__experiment_field(client, db, users,
                         data=json.dumps([{
                             "op": "add",
                             "path": "/_experiment",
-                            "value": "wrong_experiment"
+                            "value": "some-exp"
+                        }, {
+                            "op": "add",
+                            "path": "/$schema",
+                            "value": "some-schema"
+                        }, {
+                            "op": "add",
+                            "path": "/_files",
+                            "value": []
                         }]))
 
     assert resp.status_code == 200
 
-    resp_experiment = resp.json.get("metadata", {}).get("_experiment", None)
-    assert resp_experiment == "LHCb"
+    assert resp.json == {
+        'id': depid,
+        'type': 'deposit',
+        'revision': 2,
+        'schema': {
+            'name': 'lhcb',
+            'version': '1.0.0'
+        },
+        'experiment': 'LHCb',
+        'status': 'draft',
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {},
+        'files': [],
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'can_update': True,
+        'can_admin': True,
+        'links': {
+            'bucket':
+                'http://analysispreservation.cern.ch/api/files/{}'.format(
+                    deposit.files.bucket),
+            'clone':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+                .format(depid),
+            'discard':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+                .format(depid),
+            'edit':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+                .format(depid),
+            'files':
+                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
+                format(depid),
+            'html':
+                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
+            'permissions':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+                .format(depid),
+            'publish':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+                .format(depid),
+            'self':
+                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
+                    depid),
+            'upload':
+                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+                .format(depid)
+        }
+    }
 
 
 # @TODO add tests to check if put validates properly

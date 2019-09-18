@@ -64,7 +64,7 @@ def record_delete_need(record):
 
 
 class RecordPermission(Permission):
-    """Generic deposit permission."""
+    """Generic record permission."""
 
     actions = {
         "read": record_read_need,
@@ -84,13 +84,11 @@ class RecordPermission(Permission):
         if action in self.actions:
             _needs.add(self.actions[action](record))
 
-        self._needs.update(_needs)
-
-        super(RecordPermission, self).__init__(*self._needs)
+        super(RecordPermission, self).__init__(*_needs)
 
 
 class CreateRecordPermission(Permission):
-    """Deposit create permission."""
+    """Record create permission."""
     def __init__(self, record):
         """Initialize state."""
         record = request.get_json(force=True)
@@ -99,7 +97,7 @@ class CreateRecordPermission(Permission):
 
 
 class ReadRecordPermission(RecordPermission):
-    """Deposit read permission."""
+    """Record read permission."""
     def __init__(self, record):
         """Initialize state."""
         self._needs = set()
@@ -108,17 +106,24 @@ class ReadRecordPermission(RecordPermission):
 
 
 class UpdateRecordPermission(RecordPermission):
-    """Deposit update permission."""
+    """Record update permission."""
     def __init__(self, record):
         """Initialize state."""
         super(UpdateRecordPermission, self).__init__(record, 'update')
 
 
 class DeleteRecordPermission(RecordPermission):
-    """Deposit delete permission."""
+    """Record delete permission."""
     def __init__(self, record):
         """Initialize state."""
         super(DeleteRecordPermission, self).__init__(record, 'delete')
+
+
+class AdminRecordPermission(RecordPermission):
+    """Record admin permission."""
+    def __init__(self, record):
+        """Initialize state."""
+        super(AdminRecordPermission, self).__init__(record, 'admin')
 
 
 def read_permission_factory(record):

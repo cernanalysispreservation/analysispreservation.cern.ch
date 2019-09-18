@@ -48,7 +48,6 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_oauth2server.models import Client, Token
 from invenio_pidstore.models import PersistentIdentifier
-from invenio_records.api import RecordMetadata
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
@@ -99,8 +98,8 @@ def default_config():
                 CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
                 CELERY_RESULT_BACKEND='cache',
                 SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
-                SERVER_NAME='analysispreservation.cern.ch',
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
+                SERVER_NAME='analysispreservation.cern.ch',
                 ACCESS_CACHE=None,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken')
@@ -310,6 +309,7 @@ def create_deposit(app, db, es, location, create_schema):
                         schema_name,
                         metadata=None,
                         experiment=None,
+                        files={},
                         publish=False):
         """Create a new deposit for given user and schema name.
 
@@ -330,6 +330,11 @@ def create_deposit(app, db, es, location, create_schema):
             id_ = uuid4()
             deposit_minter(id_, metadata)
             deposit = Deposit.create(metadata, id_=id_)
+
+            for k, v in files.items():
+                deposit.files[k] = v
+            if files:
+                deposit.commit()
 
             db.session.commit()
 

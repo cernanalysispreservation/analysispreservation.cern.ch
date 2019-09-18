@@ -29,6 +29,7 @@ from __future__ import absolute_import, print_function
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
+from invenio_records.models import RecordMetadata
 from invenio_records_files.api import Record
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -61,6 +62,10 @@ def RECORD_ACTION_NEEDS(id):
 
 class CAPRecord(Record):
     """Record API class for CAP."""
+
+    def get_record_metadata(self):
+        """Get Record Metadata instance for deposit."""
+        return RecordMetadata.query.filter_by(id=self.id).one_or_none()
 
     @classmethod
     def create(cls, data, id_=None, **kwargs):

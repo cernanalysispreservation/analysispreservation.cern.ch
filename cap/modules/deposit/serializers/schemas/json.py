@@ -30,25 +30,7 @@ from marshmallow import Schema, fields
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              UpdateDepositPermission)
-from cap.modules.records.permissions import (AdminRecordPermission,
-                                             UpdateRecordPermission)
-
-from . import common
-
-
-class RecordSchema(common.CommonRecordSchema):
-    """Schema for records v1 in JSON."""
-    type = fields.Str(default='record')
-    can_update = fields.Method('can_user_update', dump_only=True)
-    can_admin = fields.Method('can_user_admin', dump_only=True)
-
-    def can_user_update(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        return UpdateRecordPermission(deposit).can()
-
-    def can_user_admin(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        return AdminRecordPermission(deposit).can()
+from cap.modules.records.serializers.schemas import common
 
 
 class DepositSchema(common.CommonRecordSchema):
@@ -71,34 +53,3 @@ class DepositSchema(common.CommonRecordSchema):
     def can_user_admin(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return AdminDepositPermission(deposit).can()
-
-
-class BasicDepositSchema(Schema):
-    """Schema for deposit in JSON."""
-
-    pid = fields.Str(attribute='pid.pid_value', dump_only=True)
-    metadata = fields.Method('get_metadata', dump_only=True)
-    created = fields.Str(dump_only=True)
-    updated = fields.Str(dump_only=True)
-
-    def get_metadata(self, obj):
-        result = {
-            k: v
-            for k, v in obj.get('metadata', {}).items() if k not in [
-                'control_number', '$schema', '_deposit', '_experiment',
-                '_access', '_files'
-            ]
-        }
-        return result
-
-
-class PermissionsDepositSchema(Schema):
-    """Schema for files in deposit."""
-
-    permissions = fields.Raw()
-
-
-class FileSchemaV1(Schema):
-    """Schema for files in deposit."""
-
-    pass
