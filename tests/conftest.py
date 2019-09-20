@@ -99,6 +99,7 @@ def default_config():
                 CELERY_EAGER_PROPAGATES_EXCEPTIONS=True,
                 CELERY_RESULT_BACKEND='cache',
                 SQLALCHEMY_DATABASE_URI='sqlite:///test.db',
+                SERVER_NAME='analysispreservation.cern.ch',
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
                 ACCESS_CACHE=None,
                 TESTING=True,

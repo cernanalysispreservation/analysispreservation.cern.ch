@@ -21,6 +21,22 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Schemas module."""
+"""Models for schemas."""
+from jsonschema.validators import Draft4Validator
+from marshmallow import ValidationError, validate
 
-from __future__ import absolute_import, print_function
+draft4SchemaValidator = Draft4Validator(Draft4Validator.META_SCHEMA)
+
+
+class JSONSchemaValidator(validate.Validator):
+    """Validate JSONSchema json against corresponding draft version."""
+
+    def __call__(self, value):
+        """Wrap errors in marshmallow ValidationError."""
+        # make errors compliant with marshamllow ValidationError format
+        errors = {
+            '.'.join(error.path): [str(error.message)]
+            for error in draft4SchemaValidator.iter_errors(value)
+        }
+        if errors:
+            raise ValidationError(message=errors)

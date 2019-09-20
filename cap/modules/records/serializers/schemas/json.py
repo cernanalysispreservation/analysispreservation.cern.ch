@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP Basic Schemas."""
 
 from __future__ import absolute_import, print_function
@@ -35,8 +34,9 @@ class RecordSchemaJSONV1(common.CommonRecordSchemaV1):
     """Schema for records v1 in JSON."""
 
     metadata = fields.Raw()
-    owners = fields.List(
-        fields.Integer, attribute='metadata.owners', dump_only=True)
+    owners = fields.List(fields.Integer,
+                         attribute='metadata.owners',
+                         dump_only=True)
     revision = fields.Integer(dump_only=True)
     updated = fields.Str(dump_only=True)
 

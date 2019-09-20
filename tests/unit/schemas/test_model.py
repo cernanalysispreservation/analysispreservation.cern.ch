@@ -22,7 +22,6 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from pytest import mark, raises
@@ -45,8 +44,9 @@ def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
         db.session.commit()
 
 
-def test_when_schema_name_contains_forbidden_characters_raises_AssertionError(db):
-    with raises(AssertionError):
+def test_when_schema_name_contains_forbidden_characters_raises_AssertionError(
+        db):
+    with raises(ValueError):
         schema = {
             'name': 'cmsanalysis,\\',
             'deposit_schema': {},
@@ -72,13 +72,14 @@ def test_create_newer_version_of_existing_schema(db):
 
 
 def test_schema_stringify(db):
-    schema = Schema(**{
-        'name': 'cms-analysis',
-        'deposit_schema': {},
-        'major': 1,
-        'minor': 0,
-        'patch': 2
-    })
+    schema = Schema(
+        **{
+            'name': 'cms-analysis',
+            'deposit_schema': {},
+            'major': 1,
+            'minor': 0,
+            'patch': 2
+        })
     db.session.add(schema)
     db.session.commit()
 
@@ -86,13 +87,14 @@ def test_schema_stringify(db):
 
 
 def test_deposit_path_and_index(db):
-    schema = Schema(**{
-        'name': 'cms-analysis',
-        'deposit_schema': {},
-        'major': 1,
-        'minor': 0,
-        'patch': 2
-    })
+    schema = Schema(
+        **{
+            'name': 'cms-analysis',
+            'deposit_schema': {},
+            'major': 1,
+            'minor': 0,
+            'patch': 2
+        })
     db.session.add(schema)
     db.session.commit()
 
@@ -101,13 +103,14 @@ def test_deposit_path_and_index(db):
 
 
 def test_record_path_and_index(db):
-    schema = Schema(**{
-        'name': 'cms-analysis',
-        'deposit_schema': {},
-        'major': 1,
-        'minor': 0,
-        'patch': 2
-    })
+    schema = Schema(
+        **{
+            'name': 'cms-analysis',
+            'deposit_schema': {},
+            'major': 1,
+            'minor': 0,
+            'patch': 2
+        })
     db.session.add(schema)
     db.session.commit()
 
@@ -217,30 +220,44 @@ def test_get_latest_version_of_schema(db):
     assert Schema.get_latest('my-schema') == latest_schema
 
 
-def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_JSONSchemaNotFound(db):
+def test_get_latest_version_of_schema_when_schema_with_given_name_doesnt_exist_raises_JSONSchemaNotFound(
+        db):
     with raises(JSONSchemaNotFound):
         Schema.get_latest('non-existing')
 
 
-def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(db, es):
-    schema = Schema(name='cms-schema',
-                    is_indexed=True,
-                    record_mapping={'doc': {'properties': {
-                        "title": {"type": "text"}}}},
-                    deposit_mapping={'doc': {'properties': {
-                        "keyword": {"type": "keyword"}}}}
-                    )
+def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
+        db, es):
+    schema = Schema(
+        name='cms-schema',
+        is_indexed=True,
+        record_mapping={'doc': {
+            'properties': {
+                "title": {
+                    "type": "text"
+                }
+            }
+        }},
+        deposit_mapping={
+            'doc': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        })
     db.session.add(schema)
     db.session.commit()
 
-    assert 'deposits-records-cms-schema-v1.0.0' in current_search.mappings.keys()
+    assert 'deposits-records-cms-schema-v1.0.0' in current_search.mappings.keys(
+    )
     assert 'records-cms-schema-v1.0.0' in current_search.mappings.keys()
 
     assert es.indices.exists('deposits-records-cms-schema-v1.0.0')
     assert es.indices.exists('records-cms-schema-v1.0.0')
 
-    assert es.indices.get_mapping(
-        'records-cms-schema-v1.0.0') == {
+    assert es.indices.get_mapping('records-cms-schema-v1.0.0') == {
         'records-cms-schema-v1.0.0': {
             'mappings': {
                 'doc': {
@@ -254,8 +271,7 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(db, es)
         }
     }
 
-    assert es.indices.get_mapping(
-        'deposits-records-cms-schema-v1.0.0') == {
+    assert es.indices.get_mapping('deposits-records-cms-schema-v1.0.0') == {
         'deposits-records-cms-schema-v1.0.0': {
             'mappings': {
                 'doc': {
@@ -275,5 +291,6 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(db, es)
     assert not es.indices.exists('deposits-records-cms-schema-v1.0.0')
     assert not es.indices.exists('records-cms-schema-v1.0.0')
 
-    assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys()
+    assert 'deposits-records-cms-schema-v1.0.0' not in current_search.mappings.keys(
+    )
     assert 'records-cms-schema-v1.0.0' not in current_search.mappings.keys()

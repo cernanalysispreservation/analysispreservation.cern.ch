@@ -41,7 +41,6 @@ def test_get_schemas_when_user_not_logged_in_returns_401(client, users):
 
 def test_get_when_user_outside_of_experiment_returns_403(
         client, db, users, auth_headers_for_user):
-    cms_user = users['cms_user']
     other_user = users['lhcb_user']
     schema = Schema(
         name='cms-schema',
@@ -124,8 +123,8 @@ def test_get(client, db, users, auth_headers_for_user):
         'name': 'cms-schema',
         'version': '1.2.3',
         'fullname': 'CMS Schema 1.2.3',
-        'is_indexed': 'True',
-        'use_deposit_as_record': 'False',
+        'is_indexed': True,
+        'use_deposit_as_record': False,
         'deposit_schema': {
             'title': 'deposit_schema'
         },
@@ -155,6 +154,12 @@ def test_get(client, db, users, auth_headers_for_user):
                     }
                 }
             }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         }
     }]
 
@@ -166,8 +171,8 @@ def test_get(client, db, users, auth_headers_for_user):
         'name': 'cms-schema',
         'version': '1.2.3',
         'fullname': 'CMS Schema 1.2.3',
-        'is_indexed': 'True',
-        'use_deposit_as_record': 'False',
+        'is_indexed': True,
+        'use_deposit_as_record': False,
         'deposit_schema': {
             'title': 'deposit_schema'
         },
@@ -197,6 +202,12 @@ def test_get(client, db, users, auth_headers_for_user):
                     }
                 }
             }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         }
     }
 
@@ -208,8 +219,8 @@ def test_get(client, db, users, auth_headers_for_user):
         'name': 'cms-schema',
         'version': '1.2.3',
         'fullname': 'CMS Schema 1.2.3',
-        'is_indexed': 'True',
-        'use_deposit_as_record': 'False',
+        'is_indexed': True,
+        'use_deposit_as_record': False,
         'deposit_schema': {
             'title': 'deposit_schema'
         },
@@ -239,6 +250,12 @@ def test_get(client, db, users, auth_headers_for_user):
                     }
                 }
             }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         }
     }
 
@@ -294,8 +311,8 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
         'name': 'cms-schema',
         'version': '1.2.3',
         'fullname': 'CMS Schema 1.2.3',
-        'is_indexed': 'True',
-        'use_deposit_as_record': 'False',
+        'is_indexed': True,
+        'use_deposit_as_record': False,
         'deposit_schema': {
             'title': 'deposit_schema'
         },
@@ -325,7 +342,42 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
                     }
                 }
             }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         }
+    }
+
+
+def test_post_when_validation_errors_returns_400(client, db, users,
+                                                 auth_headers_for_user,
+                                                 json_headers):
+    owner = users['cms_user']
+    schema = json.dumps(
+        dict(version='.1.2.3',
+             fullname='CMS Schema 1.2.3',
+             deposit_schema={
+                 'properties': [],
+                 'dependencies': []
+             },
+             deposit_options={'title': 'deposit_options'},
+             is_indexed=True))
+
+    resp = client.post('/jsonschemas/',
+                       data=schema,
+                       headers=json_headers + auth_headers_for_user(owner))
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == {
+        'deposit_schema': [{
+            'dependencies': ["[] is not of type u'object'"],
+            'properties': ["[] is not of type u'object'"]
+        }],
+        'name': ['Missing data for required field.'],
+        'version': ['String does not match expected pattern.']
     }
 
 
@@ -388,8 +440,8 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
         'name': 'cms-schema',
         'version': '1.2.3',
         'fullname': 'New fullname',
-        'is_indexed': 'False',
-        'use_deposit_as_record': 'True',
+        'is_indexed': False,
+        'use_deposit_as_record': True,
         'deposit_schema': {},
         'deposit_options': {
             'title': 'deposit_options'
@@ -415,8 +467,34 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
                     }
                 }
             }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
         }
     }
+
+
+def test_put_when_validation_errors_returns_400(client, db, users,
+                                                auth_headers_for_user,
+                                                json_headers):
+    owner = users['superuser']
+    db.session.add(
+        Schema(**{
+            'name': 'cms-schema',
+            'experiment': 'CMS',
+            'fullname': 'Old Schema',
+        }))
+    db.session.commit()
+
+    resp = client.put('/jsonschemas/cms-schema/1.0.0',
+                      data='{}',
+                      headers=json_headers + auth_headers_for_user(owner))
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == {'_schema': ['Empty data']}
 
 
 def test_put_when_not_an_schema_owner_returns_403(client, db,

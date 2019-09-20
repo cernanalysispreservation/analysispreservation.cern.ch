@@ -33,6 +33,7 @@ from cap.modules.access.utils import login_required
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
+from .serializers import schema_serializer, update_schema_serializer
 from .utils import get_schemas_for_user
 
 blueprint = Blueprint(
@@ -40,17 +41,6 @@ blueprint = Blueprint(
     __name__,
     url_prefix='/jsonschemas',
 )
-
-EDITABLE_FIELDS = [
-    'fullname',
-    'use_deposit_as_record',
-    #   TODO can be editable, but create/remove es index on edit
-    #   'is_indexed',
-    'deposit_mapping',
-    'record_mapping',
-    'deposit_options',
-    'record_options'
-]
 
 
 class SchemaAPI(MethodView):
@@ -84,7 +74,13 @@ class SchemaAPI(MethodView):
         """Create new schema."""
         data = request.json
 
-        schema = Schema(**data)
+        serialized_data, errors = schema_serializer.load(data)
+
+        if errors:
+            raise abort(400, errors)
+
+        schema = Schema(**serialized_data)
+
         schema.give_admin_access_for_user(current_user)
         db.session.add(schema)
         db.session.commit()
@@ -98,17 +94,15 @@ class SchemaAPI(MethodView):
         except JSONSchemaNotFound:
             abort(404)
 
-        data = request.json
-
         with AdminSchemaPermission(schema).require(403):
+            data = request.json
+            serialized_data, errors = update_schema_serializer.load(
+                data, partial=True)
 
-            # only editable fields can be updated
-            valid_data = {
-                k: v
-                for k, v in data.iteritems() if k in EDITABLE_FIELDS
-            }
+            if errors:
+                raise abort(400, errors)
 
-            schema.update(**valid_data)
+            schema.update(**serialized_data)
             db.session.commit()
 
             return jsonify(schema.serialize())
@@ -129,15 +123,9 @@ class SchemaAPI(MethodView):
 
 schema_view_func = SchemaAPI.as_view('schemas')
 
-blueprint.add_url_rule('/',
-                       defaults={
-                           'name': None,
-                           'version': None
-                       },
-                       view_func=schema_view_func,
-                       methods=[
-                           'GET',
-                       ])
+blueprint.add_url_rule('/', view_func=schema_view_func, methods=[
+    'GET',
+])
 blueprint.add_url_rule('/', view_func=schema_view_func, methods=[
     'POST',
 ])

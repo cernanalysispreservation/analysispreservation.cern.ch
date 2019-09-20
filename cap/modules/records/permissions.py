@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP Record permissions."""
 
 from functools import partial
@@ -92,7 +91,6 @@ class RecordPermission(Permission):
 
 class CreateRecordPermission(Permission):
     """Deposit create permission."""
-
     def __init__(self, record):
         """Initialize state."""
         record = request.get_json(force=True)
@@ -102,7 +100,6 @@ class CreateRecordPermission(Permission):
 
 class ReadRecordPermission(RecordPermission):
     """Deposit read permission."""
-
     def __init__(self, record):
         """Initialize state."""
         self._needs = set()
@@ -112,7 +109,6 @@ class ReadRecordPermission(RecordPermission):
 
 class UpdateRecordPermission(RecordPermission):
     """Deposit update permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(UpdateRecordPermission, self).__init__(record, 'update')
@@ -120,7 +116,6 @@ class UpdateRecordPermission(RecordPermission):
 
 class DeleteRecordPermission(RecordPermission):
     """Deposit delete permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(DeleteRecordPermission, self).__init__(record, 'delete')

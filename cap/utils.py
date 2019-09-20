@@ -21,6 +21,14 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Schemas module."""
+"""CAP module utils."""
+from six.moves.urllib import parse
 
-from __future__ import absolute_import, print_function
+
+def url_to_api_url(url):
+    """Translate url to api url."""
+    parts = parse.urlsplit(url)
+    api_url = parse.urlunsplit(
+        (parts.scheme, parts.netloc, '/api' + parts.path, parts.query,
+         parts.fragment))
+    return api_url

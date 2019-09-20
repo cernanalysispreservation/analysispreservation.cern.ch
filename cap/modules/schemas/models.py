@@ -24,6 +24,7 @@
 """Models for schemas."""
 
 import re
+from datetime import datetime
 
 from flask import current_app
 from invenio_access.models import ActionSystemRoles, ActionUsers
@@ -90,12 +91,23 @@ class Schema(db.Model):
                            unique=False,
                            default=False)
 
+    created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
+    updated = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
+
     __tablename__ = 'schema'
     __table_args__ = (UniqueConstraint('name',
                                        'major',
                                        'minor',
                                        'patch',
                                        name='unique_schema_version'), )
+
+    def __init__(self, *args, **kwargs):
+        """Possible to set version from string."""
+        version = kwargs.pop('version', None)
+        if version:
+            self.version = version
+
+        super(Schema, self).__init__(*args, **kwargs)
 
     def serialize(self):
         """Serialize schema model."""
@@ -109,8 +121,8 @@ class Schema(db.Model):
     def validate_name(self, key, name):
         """Validate if name is ES compatible."""
         if any(x in ES_FORBIDDEN for x in name):
-            raise AssertionError('Name cannot contain the following characters'
-                                 '[, ", *, \\, <, | , , , > , ?]')
+            raise ValueError('Name cannot contain the following characters'
+                             '[, ", *, \\, <, | , , , > , ?]')
         return name
 
     @property
@@ -121,8 +133,12 @@ class Schema(db.Model):
     @version.setter
     def version(self, string):
         """Set version."""
-        self.major, self.minor, self.patch = re.match(r"(\d+).(\d+).(\d+)",
-                                                      string).groups()
+        matched = re.match(r"(\d+).(\d+).(\d+)", string)
+        if matched is None:
+            raise ValueError(
+                'Version has to be passed as string <major>.<minor>.<patch>')
+
+        self.major, self.minor, self.patch = matched.groups()
 
     @property
     def deposit_path(self):
@@ -216,11 +232,18 @@ class Schema(db.Model):
     @classmethod
     def get(cls, name, version):
         """Get schema by name and version."""
-        major, minor, patch = re.match(r"(\d+).(\d+).(\d+)", version).groups()
+        matched = re.match(r"(\d+).(\d+).(\d+)", version)
+        if matched is None:
+            raise ValueError(
+                'Version has to be passed as string <major>.<minor>.<patch>')
+
+        major, minor, patch = matched.groups()
+
         try:
             schema = cls.query \
                 .filter_by(name=name, major=major, minor=minor, patch=patch) \
                 .one()
+
         except NoResultFound:
             raise JSONSchemaNotFound("{}-v{}".format(name, version))
 
@@ -279,3 +302,9 @@ def before_delete_schema(mapper, connect, schema):
 
             # invenio search needs it
             current_search.mappings.pop(index)
+
+
+@db.event.listens_for(Schema, 'before_update', propagate=True)
+def timestamp_before_update(mapper, connection, target):
+    """Update `updated` property with current time on `before_update` event."""
+    target.updated = datetime.utcnow()
