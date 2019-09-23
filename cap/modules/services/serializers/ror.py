@@ -32,8 +32,8 @@ from marshmallow import Schema, fields
 class RORAffiliationsListSchema(Schema):
     """Schema for ROR organizations list in JSON."""
 
-    org_id = fields.Function(lambda obj: obj['id'].split('/')[-1],
-                             dump_only=True)
+    ror_org_id = fields.Function(lambda obj: obj['id'].split('/')[-1],
+                                 dump_only=True)
     name = fields.Str(dump_only=True)
     acronyms = fields.List(fields.Str(), dump_only=True)
 
@@ -41,8 +41,8 @@ class RORAffiliationsListSchema(Schema):
 class RORAffiliationSchema(Schema):
     """Schema for ROR organizations in JSON."""
 
-    org_id = fields.Function(lambda obj: obj['id'].split('/')[-1],
-                             dump_only=True)
+    ror_org_id = fields.Function(lambda obj: obj['id'].split('/')[-1],
+                                 attribute='org_id', dump_only=True)
     name = fields.Str(dump_only=True)
     wikipedia_url = fields.Str(dump_only=True)
 

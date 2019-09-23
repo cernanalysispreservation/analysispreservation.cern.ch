@@ -83,7 +83,7 @@ def test_indico(mock_indico, app, auth_headers_for_superuser):
 
         assert resp.status_code == 200
         assert resp.json == {
-            "address": "", "category": "TEST Category", "description": "", "id": "848989",
+            "address": "", "category": "TEST Category", "description": "", "indico_event_id": "848989",
             "room_map_url": "", "title": "test", "url": "https://indico.cern.ch/event/848989/",
             "chairs": [], "folders": [], "location": "CERN", "room": "",
             "creation_date": "2019-09-16T13:46:47.701463+02:00",

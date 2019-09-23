@@ -5,9 +5,9 @@
     "title": "ROR API",
     "description": "Org information taken from ROR API.",
     "properties": {
-      "id": {
+      "ror_org_id": {
         "type": "string",
-        "title": "ID"
+        "title": "ROR ID"
       },
       "name": {
         "type": "string",

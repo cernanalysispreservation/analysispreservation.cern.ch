@@ -62,7 +62,7 @@ def test_ror_by_query(mock_ror, app, auth_headers_for_superuser, json_headers):
         assert resp.status_code == 200
         assert resp.json == [{
             "acronyms": ["TiU"],
-            "org_id": "04b8v1s79",
+            "ror_org_id": "04b8v1s79",
             "name": "Tilburg University"
         }]
 
@@ -133,7 +133,7 @@ def test_ror_by_org(mock_ror, app, auth_headers_for_superuser, json_headers):
                                               "ISNI": "0000 0001 0943 3265", "OrgRef": "1070237",
                                               "Wikidata": "Q595668"},
                              "labels": [{"iso639": "nl", "label": "Universiteit van Tilburg"}],
-                             "org_id": "04b8v1s79", "name": "Tilburg University",
+                             "ror_org_id": "04b8v1s79", "name": "Tilburg University",
                              "links": ["https://www.tilburguniversity.edu/"],
                              "wikipedia_url": "http://en.wikipedia.org/wiki/Tilburg_University"}
 

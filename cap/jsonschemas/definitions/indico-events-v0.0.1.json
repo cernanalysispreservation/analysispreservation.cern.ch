@@ -5,9 +5,9 @@
     "title": "Indico Events",
     "description": "Events taken from indico.cern.ch",
     "properties": {
-      "id": {
+      "indico_event_id": {
         "type": "string",
-        "title": "ID"
+        "title": "Indico Event ID"
       },
       "title": {
         "type": "string",

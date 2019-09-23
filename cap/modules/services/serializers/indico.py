@@ -46,7 +46,7 @@ class IndicoDateField(fields.Field):
 class IndicoEventSchema(Schema):
     """Schema for Indico events in JSON."""
 
-    id = fields.Str(dump_only=True)
+    indico_event_id = fields.Str(attribute='id', dump_only=True)
     title = fields.Str(dump_only=True)
     description = fields.Str(dump_only=True)
     category = fields.Str(dump_only=True)

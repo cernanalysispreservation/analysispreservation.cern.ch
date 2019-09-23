@@ -43,7 +43,7 @@
       },
       "cadi_id": {
         "type": "string",
-        "title": "Name"
+        "title": "CADI ID"
       }
     },
     "$schema": "http://json-schema.org/draft-04/schema#",

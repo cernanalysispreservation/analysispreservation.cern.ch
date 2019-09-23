@@ -73,4 +73,4 @@ def test_get_indico_by_event_id(app, auth_headers_for_superuser):
                           headers=auth_headers_for_superuser)
 
         assert resp.status_code == 200
-        assert resp.json['id'] == indico_event_id
+        assert resp.json['indico_event_id'] == indico_event_id
