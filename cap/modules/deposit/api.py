@@ -232,7 +232,8 @@ class CAPDeposit(Deposit):
 
                 if data['url'].startswith(approved_hosts):
                     record = CAPDeposit.get_record(record_id)
-                    download_from_git.delay(record, name, url_attrs, data)
+                    download_from_git.apply_async(
+                        (record, name, url_attrs, data), serializer='pickle')
                 else:
                     raise FileUploadError(
                         'URL could not be parsed. '

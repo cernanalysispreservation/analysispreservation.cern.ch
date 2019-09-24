@@ -88,6 +88,8 @@ BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 #: URL of backend for result storage (default is Redis).
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
+#: Accepted content types
+CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 #: Scheduled tasks configuration (aka cronjobs).
 CELERY_BEAT_SCHEDULE = {
     'indexer': {
