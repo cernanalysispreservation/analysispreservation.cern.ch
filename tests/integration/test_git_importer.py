@@ -70,21 +70,20 @@ def test_download_archive_from_url_master(client, db, get_git_attributes,
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers,
-                           data=json.dumps(data))
-        assert resp.status_code == 201
+    resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                       headers=headers + json_headers,
+                       data=json.dumps(data))
+    assert resp.status_code == 201
 
-        resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
-        assert resp.status_code == 200
+    resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
+    assert resp.status_code == 200
 
-        obj = ObjectVersion.get(bucket.id, git_record)
-        tar_obj = tarfile.open(obj.file.uri)
-        repo_file_name = tar_obj.getmembers()[1]
-        repo_content = tar_obj.extractfile(repo_file_name).read()
+    obj = ObjectVersion.get(bucket.id, git_record)
+    tar_obj = tarfile.open(obj.file.uri)
+    repo_file_name = tar_obj.getmembers()[1]
+    repo_content = tar_obj.extractfile(repo_file_name).read()
 
-        assert repo_content == 'test repo for cap\n'
+    assert repo_content == 'test repo for cap\n'
 
 
 @pytest.mark.parametrize(
@@ -104,21 +103,20 @@ def test_download_archive_from_url_branch(client, db, get_git_attributes,
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers,
-                           data=json.dumps(data))
-        assert resp.status_code == 201
+    resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                       headers=headers + json_headers,
+                       data=json.dumps(data))
+    assert resp.status_code == 201
 
-        resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
-        assert resp.status_code == 200
+    resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
+    assert resp.status_code == 200
 
-        obj = ObjectVersion.get(bucket.id, git_record)
-        tar_obj = tarfile.open(obj.file.uri)
-        repo_file_name = tar_obj.getmembers()[1]
-        repo_content = tar_obj.extractfile(repo_file_name).read()
+    obj = ObjectVersion.get(bucket.id, git_record)
+    tar_obj = tarfile.open(obj.file.uri)
+    repo_file_name = tar_obj.getmembers()[1]
+    repo_content = tar_obj.extractfile(repo_file_name).read()
 
-        assert repo_content == 'test repo for cap - branch\n'
+    assert repo_content == 'test repo for cap - branch\n'
 
 
 @pytest.mark.parametrize(
@@ -134,19 +132,18 @@ def test_download_file_from_url_master(client, db, get_git_attributes,
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers,
-                           data=json.dumps(data))
-        assert resp.status_code == 201
+    resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                       headers=headers + json_headers,
+                       data=json.dumps(data))
+    assert resp.status_code == 201
 
-        resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
-        assert resp.status_code == 200
+    resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
+    assert resp.status_code == 200
 
-        obj = ObjectVersion.get(bucket.id, git_record)
-        open_file = open(obj.file.uri)
-        repo_content = open_file.read()
-        assert repo_content == 'test repo for cap\n'
+    obj = ObjectVersion.get(bucket.id, git_record)
+    open_file = open(obj.file.uri)
+    repo_content = open_file.read()
+    assert repo_content == 'test repo for cap\n'
 
 
 @pytest.mark.parametrize('git_url, git, git_record', [
@@ -162,19 +159,18 @@ def test_download_file_from_url_branch(client, db, get_git_attributes,
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers,
-                           data=json.dumps(data))
-        assert resp.status_code == 201
+    resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                       headers=headers + json_headers,
+                       data=json.dumps(data))
+    assert resp.status_code == 201
 
-        resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
-        assert resp.status_code == 200
+    resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
+    assert resp.status_code == 200
 
-        obj = ObjectVersion.get(bucket.id, git_record)
-        open_file = open(obj.file.uri)
-        repo_content = open_file.read()
-        assert repo_content == 'test repo for cap - branch\n'
+    obj = ObjectVersion.get(bucket.id, git_record)
+    open_file = open(obj.file.uri)
+    repo_content = open_file.read()
+    assert repo_content == 'test repo for cap - branch\n'
 
 
 def test_download_gitlab_archive_private(client, db, get_git_attributes,
@@ -188,19 +184,18 @@ def test_download_gitlab_archive_private(client, db, get_git_attributes,
     if get_access_token('GITLAB') is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    with app.test_client() as client:
-        resp = client.post('/deposits/{}/actions/upload'.format(pid),
-                           headers=headers + json_headers,
-                           data=json.dumps(data))
-        assert resp.status_code == 201
+    resp = client.post('/deposits/{}/actions/upload'.format(pid),
+                       headers=headers + json_headers,
+                       data=json.dumps(data))
+    assert resp.status_code == 201
 
-        resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
-        assert resp.status_code == 200
+    resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
+    assert resp.status_code == 200
 
-        obj = ObjectVersion.get(
-            bucket.id, 'analysispreservation_test-private-repo_master.tar.gz')
-        tar_obj = tarfile.open(obj.file.uri)
-        repo_file_name = tar_obj.getmembers()[1]
-        repo_content = tar_obj.extractfile(repo_file_name).read()
+    obj = ObjectVersion.get(
+        bucket.id, 'analysispreservation_test-private-repo_master.tar.gz')
+    tar_obj = tarfile.open(obj.file.uri)
+    repo_file_name = tar_obj.getmembers()[1]
+    repo_content = tar_obj.extractfile(repo_file_name).read()
 
-        assert repo_content == 'test repo for cap'
+    assert repo_content == 'test repo for cap'
