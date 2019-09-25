@@ -28,11 +28,12 @@ from __future__ import absolute_import, print_function
 import copy
 from functools import wraps
 
-from celery import shared_task
+import requests
 from flask import current_app, request
 from flask_login import current_user
-from invenio_access.models import ActionRoles, ActionUsers
+
 from invenio_db import db
+from invenio_access.models import ActionRoles, ActionUsers
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
@@ -47,18 +48,19 @@ from jsonschema.validators import Draft4Validator
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
+from celery import shared_task
 
-from cap.modules.deposit.utils import download_from_git, name_git_record
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
+from cap.modules.repoimporter.git_importer import GitImporter
 from cap.modules.repoimporter.utils import parse_url
-from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
+from .utils import ensure_content_length, name_git_record
 from .errors import (DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
 from .fetchers import cap_deposit_fetcher
@@ -66,6 +68,7 @@ from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
                           DepositUpdateActionNeed, UpdateDepositPermission)
+
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -102,6 +105,55 @@ EMPTY_ACCESS_OBJECT = {
     }
     for action in DEPOSIT_ACTIONS
 }
+
+
+@shared_task(max_retries=5)
+def download_from_git(record_id, name, url_attrs, data):
+    """Download the contents of a url, either local or from git (file/repo)."""
+    data_type, data_url = data['type'], data['url']
+
+    # differentiate between local files and urls
+    if data_url.startswith("root://"):
+        from xrootdpyfs.xrdfile import XRootDPyFile
+        response = XRootDPyFile(data_url, mode='r-')
+        total = response.size
+    else:
+        try:
+            git = GitImporter(url=data_url)
+            if data_type == 'repo':
+                url = git.archive_repo_url()
+                response = requests.get(url, stream=True)
+
+                if 'Content-Length' not in response.headers:
+                    response = ensure_content_length(response)
+
+                total = int(response.headers.get('Content-Length'))
+                response = response.raw
+            else:
+                archived_file = git.archive_file_url(url_attrs['filepath'])
+                url = archived_file.get('url', None)
+                size = archived_file.get('size', None)
+                token = archived_file.get('token', None)
+                headers = {'Authorization': 'token {}'.format(token)}
+
+                response = requests.get(url, stream=True, headers=headers).raw
+                response.decode_content = True
+                total = size or int(response.headers.get('Content-Length'))
+        except TypeError as exc:
+            download_from_git.retry(exc=exc, countdown=10)
+
+    save_files_to_record(record_id, response, name, total)
+
+
+def save_files_to_record(record_id, response, filename, total):
+    """Commit file to the record."""
+    record = CAPDeposit.get_record(record_id)
+    record.files[filename].file.set_contents(
+        response,
+        default_location=record.files.bucket.location.uri,
+        size=total
+    )
+    db.session.commit()
 
 
 class CAPDeposit(Deposit):
@@ -230,9 +282,10 @@ class CAPDeposit(Deposit):
                 record.files.flush()
                 record.files[name]['source_url'] = data['url']
 
+                # in case of object serialization, we add the serializer=<type>
+                # in the apply_async method, else we use the delay() shorthand
                 if data['url'].startswith(approved_hosts):
-                    record = CAPDeposit.get_record(record_id)
-                    download_from_git.delay(record, name, url_attrs, data)
+                    download_from_git.delay(record_id, name, url_attrs, data)
                 else:
                     raise FileUploadError(
                         'URL could not be parsed. '
