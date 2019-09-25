@@ -111,6 +111,9 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(days=3),
     }
 }
+#: Accepted content types, used for serializing objects
+#: when sending tasks to Celery (json default in 4.0)
+# CELERY_ACCEPT_CONTENT = ['pickle', 'json']
 
 # Database
 # ========
