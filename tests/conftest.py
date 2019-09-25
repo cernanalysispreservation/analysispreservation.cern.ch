@@ -47,6 +47,7 @@ from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_oauth2server.models import Client, Token
 from invenio_search import current_search, current_search_client
+from invenio_pidstore.resolver import Resolver
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
@@ -446,6 +447,18 @@ def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
     headers = auth_headers_for_user(owner)
 
     return owner, deposit, pid, bucket, headers
+
+
+@pytest.fixture
+def create_and_get_uuid(app, users, create_deposit, create_schema):
+    owner = users['cms_user']
+    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
+    deposit = create_deposit(owner, 'test-v0.0.1')
+    pid = deposit['_deposit']['id']
+
+    resolver = Resolver(pid_type='depid', object_type='rec', getter=lambda x: x)
+    _, uuid = resolver.resolve(pid)
+    return str(uuid)
 
 
 def create_user_with_access(session, username, action):
