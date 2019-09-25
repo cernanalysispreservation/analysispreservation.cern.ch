@@ -94,7 +94,7 @@ export function loginLocalUser(data) {
   };
 }
 
-export function initCurrentUser(next) {
+export function initCurrentUser(next = undefined) {
   return function(dispatch) {
     axios
       .get("/api/me")
@@ -110,7 +110,10 @@ export function initCurrentUser(next) {
             depositGroups: deposit_groups
           })
         );
-        history.push(`${next}`);
+        // if next is defined
+        if (next) {
+          history.push(next);
+        }
       })
       .catch(function() {
         dispatch(clearAuth());
