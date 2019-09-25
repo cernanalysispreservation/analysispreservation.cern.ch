@@ -49,15 +49,30 @@ class ReanaWorkflow(db.Model):
 
     name = db.Column(db.String(100), unique=False, nullable=False)
     status = db.Column(db.String(100), unique=False, nullable=False)
+
+    # the following fields represent the creation part of a workflow
     engine = db.Column(db.Enum('yadage', 'cwl', 'serial', name='engine'),
                        unique=False, nullable=False)
 
-    params = db.Column(
+    specification = db.Column(
         json_type,
         default=lambda: dict(),
         nullable=True
     )
 
+    inputs = db.Column(
+        json_type,
+        default=lambda: dict(),
+        nullable=True
+    )
+
+    outputs = db.Column(
+        json_type,
+        default=lambda: dict(),
+        nullable=True
+    )
+
+    # logging after the workflow runs
     logs = db.Column(
         json_type,
         default=lambda: dict(),

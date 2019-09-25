@@ -49,22 +49,27 @@ def test_reana_ping_exception(mock_ping, app, auth_headers_for_superuser, json_h
 
 
 @patch('cap.modules.workflows.views.create_workflow_from_json')
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_create_reana_workflow(mock_token, mock_created, app, create_deposit, create_schema,
-                               users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
-    mock_data = {
-        "record_id": str(rec.id), "workflow_name": "demo",
-        "workflow_engine": "yadage", "workflow_params": {}
-    }
+def test_create_reana_workflow(mock_token, mock_uuid, mock_created, app, create_and_get_uuid,
+                               auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_created.return_value = {
         'message': 'Workflow workspace created',
         'workflow_id': 'a5140d92-65e3-4fb0-a246-dc1f06cc2e13',
         'workflow_name': 'demo.1'
+    }
+
+    mock_data = {
+        "record_id": uuid,
+        "workflow_name": "demo",
+        "workflow_engine": "serial",
+        "workflow_json": {"steps": [{"environment": "python:2.7-slim",
+                                     "commands": ["python \"${helloworld}\""]}]},
+        "parameters": {"files": ["code/helloworld.py"],
+                       "parameters": {"helloworld": "code/helloworld.py"}},
+        "outputs": {"files": ["results/results.txt"]}
     }
 
     with app.test_client() as client:
@@ -72,23 +77,21 @@ def test_create_reana_workflow(mock_token, mock_created, app, create_deposit, cr
                            headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
         assert resp.json == {
-            "engine": "yadage", "record_id": str(rec.id),
+            "engine": "serial", "record_id": uuid,
             "status": "created", "workflow_name": "demo.1",
             "workflow_id": "a5140d92-65e3-4fb0-a246-dc1f06cc2e13"
         }
 
 
 @patch('cap.modules.workflows.views.create_workflow_from_json', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_create_reana_workflow_exception(mock_token, mock_created, app, create_deposit, create_schema,
-                               users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_create_reana_workflow_exception(mock_token, mock_uuid, mock_created, app, create_and_get_uuid,
+                                         auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_data = {
-        "record_id": str(rec.id), "workflow_name": "demo",
+        "record_id": uuid, "workflow_name": "demo",
         "workflow_engine": "yadage", "workflow_params": {}
     }
 
@@ -100,14 +103,12 @@ def test_create_reana_workflow_exception(mock_token, mock_created, app, create_d
 
 
 @patch('cap.modules.workflows.views.get_workflows')
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_get_all_workflows(mock_token, mock_get_all, app, create_deposit, create_schema,
-                           users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_get_all_workflows(mock_token, mock_uuid, mock_get_all, app, create_and_get_uuid,
+                           auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_get_all.return_value = [{
         u'created': u'2019-09-12T14:45:39',
         u'id': u'98af7a4f-0745-49c2-884d-bb7187b29ad6',
@@ -126,7 +127,7 @@ def test_get_all_workflows(mock_token, mock_get_all, app, create_deposit, create
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/all',
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
         assert resp.json == {
@@ -141,66 +142,19 @@ def test_get_all_workflows(mock_token, mock_get_all, app, create_deposit, create
                 "id": "8cc0dfa5-473b-49cf-8636-4bd48a59b847",
                 "name": "demo.1", "status": "deleted"
             }],
-            "record_id": str(rec.id)
-        }
-
-
-@patch('cap.modules.workflows.views.get_workflows')
-@patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_get_all_workflows(mock_token, mock_get_all, app, create_deposit, create_schema,
-                           users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
-    mock_get_all.return_value = [{
-        u'created': u'2019-09-12T14:45:39',
-        u'id': u'98af7a4f-0745-49c2-884d-bb7187b29ad6',
-        u'name': u'demo.3', u'size': u'512', u'status': u'created',
-        u'user': u'9ee3a516-7e97-4e50-852f-636c0b881f3a'
-    }, {
-        u'created': u'2019-09-12T14:56:35',
-        u'id': u'26db86dc-4f32-428e-b1cf-c84bbe190db9',
-        u'name': u'demo.2', u'size': u'512', u'status': u'created',
-        u'user': u'9ee3a516-7e97-4e50-852f-636c0b881f3a'
-    }, {
-        u'id': u'8cc0dfa5-473b-49cf-8636-4bd48a59b847',
-        u'name': u'demo.1', u'size': u'31K', u'status': u'deleted',
-        u'user': u'9ee3a516-7e97-4e50-852f-636c0b881f3a'
-    }]
-
-    with app.test_client() as client:
-        resp = client.get('workflows/reana/all',
-                          data=json.dumps({'record_id': str(rec.id)}),
-                          headers=auth_headers_for_superuser + json_headers)
-        assert resp.status_code == 200
-        assert resp.json == {
-            "current_workflows": [{
-                "id": "98af7a4f-0745-49c2-884d-bb7187b29ad6",
-                "name": "demo.3", "status": "created"
-            }, {
-                "id": "26db86dc-4f32-428e-b1cf-c84bbe190db9",
-                "name": "demo.2", "status": "created"
-            }],
-            "deleted_workflows": [{
-                "id": "8cc0dfa5-473b-49cf-8636-4bd48a59b847",
-                "name": "demo.1", "status": "deleted"
-            }],
-            "record_id": str(rec.id)
+            "record_id": uuid
         }
 
 
 @patch('cap.modules.workflows.views.get_workflow_logs')
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_reana_workflow_logs(mock_token, mock_logs, app, create_deposit, create_schema,
-                             users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
+def test_reana_workflow_logs(mock_token, mock_uuid, mock_logs, app, create_and_get_uuid,
+                             auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
 
     mock_workflow_id = 'b46e27ac-a40e-4e4e-97ee-30703e6f1406'
+    mock_uuid.return_value = uuid
     mock_logs.return_value = {
         'logs': '{"workflow_logs": "this is a tracking log at 2019-09-12T12:34:18.074285\\'
                 'nthis is a tracking log at 2019-09-12T12:34:18.104328\\n", "job_logs": {}, "engine_specific": null}',
@@ -210,7 +164,7 @@ def test_reana_workflow_logs(mock_token, mock_logs, app, create_deposit, create_
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/logs'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 200
@@ -221,24 +175,22 @@ def test_reana_workflow_logs(mock_token, mock_logs, app, create_deposit, create_
                 "workflow_logs": "this is a tracking log at 2019-09-12T12:34:18.074285"
                                  "\nthis is a tracking log at 2019-09-12T12:34:18.104328\n"
               },
-            "record_id": str(rec.id), "workflow_id": mock_workflow_id, "workflow_name": "demo.3"
+            "record_id": uuid, "workflow_id": mock_workflow_id, "workflow_name": "demo.3"
         }
 
 
 @patch('cap.modules.workflows.views.start_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_start_exception(mock_token, mock_start, app, create_deposit, create_schema,
-                                  users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_start_exception(mock_token, mock_uuid, mock_start, app, create_and_get_uuid,
+                                  auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/start'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
@@ -247,19 +199,17 @@ def test_workflow_start_exception(mock_token, mock_start, app, create_deposit, c
 
 
 @patch('cap.modules.workflows.views.stop_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_stop_exception(mock_token, mock_stop, app, create_deposit, create_schema,
-                                 users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_stop_exception(mock_token, mock_uuid, mock_stop, app, create_and_get_uuid,
+                                 auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/stop'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
@@ -268,19 +218,17 @@ def test_workflow_stop_exception(mock_token, mock_stop, app, create_deposit, cre
 
 
 @patch('cap.modules.workflows.views.delete_workflow', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_delete_exception(mock_token, mock_start, app, create_deposit, create_schema,
-                                   users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_delete_exception(mock_token, mock_uuid, mock_start, app, create_and_get_uuid,
+                                   auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/delete'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
@@ -289,15 +237,13 @@ def test_workflow_delete_exception(mock_token, mock_start, app, create_deposit, 
 
 
 @patch('cap.modules.workflows.views.list_files')
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_list_files(mock_token, mock_ls, app, create_deposit, create_schema,
-                             users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_list_files(mock_token, mock_uuid, mock_ls, app, create_and_get_uuid,
+                             auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_uuid.return_value = uuid
     mock_ls.return_value = [{
         'last-modified': '2019-09-12T11:25:30',
         'name': '_yadage/yadage_snapshot_backend.json', 'size': 2
@@ -311,7 +257,7 @@ def test_workflow_list_files(mock_token, mock_ls, app, create_deposit, create_sc
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/ls'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 200
@@ -326,24 +272,22 @@ def test_workflow_list_files(mock_token, mock_ls, app, create_deposit, create_sc
                 "last-modified": "2019-09-12T11:25:30",
                 "name": "_yadage/yadage_template.json", "size": 1104
             }],
-            "record_id": str(rec.id), "workflow_id": mock_workflow_id
+            "record_id": uuid, "workflow_id": mock_workflow_id
         }
 
 
 @patch('cap.modules.workflows.views.list_files', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_list_files_exception(mock_token, mock_ls, app, create_deposit, create_schema,
-                                       users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_list_files_exception(mock_token, mock_uuid, mock_ls, app, create_and_get_uuid,
+                                       auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
 
     with app.test_client() as client:
         resp = client.get('workflows/reana/{}/ls'.format(mock_workflow_id),
-                          data=json.dumps({'record_id': str(rec.id)}),
+                          data=json.dumps({'record_id': uuid}),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
@@ -352,16 +296,14 @@ def test_workflow_list_files_exception(mock_token, mock_ls, app, create_deposit,
 
 
 @patch('cap.modules.workflows.views.delete_file', side_effect=FileDeletionError())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_delete_files_exception(mock_token, mock_rm, app, create_deposit, create_schema,
-                                         users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_delete_files_exception(mock_token, mock_uuid, mock_rm, app, create_and_get_uuid,
+                                         auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
-    mock_data = {'record_id': str(rec.id),
+    mock_data = {'record_id': uuid,
                  'file_path': 'code/code.py'}
 
     with app.test_client() as client:
@@ -374,17 +316,15 @@ def test_workflow_delete_files_exception(mock_token, mock_rm, app, create_deposi
                                         'Aborting deletion.'.format(mock_data['file_path'])}
 
 
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_upload_files_with_errors(mock_token, app, create_deposit, create_schema,
-                                           users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_upload_files_with_errors(mock_token,mock_uuid, app, create_and_get_uuid,
+                                           auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
     mock_data = {
-        'record_id': str(rec.id),
+        'record_id': uuid,
         'files_to_upload': [
             {'path': 'tmp/example1.txt', 'new_path': 'data/example1.txt'}
         ]
@@ -402,16 +342,14 @@ def test_workflow_upload_files_with_errors(mock_token, app, create_deposit, crea
 
 
 @patch('cap.modules.workflows.views.download_file', side_effect=Exception())
+@patch('cap.modules.workflows.utils.resolve_uuid')
 @patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
-def test_workflow_download_files_exception(mock_token, mock_download, app, create_deposit, create_schema,
-                                           users, auth_headers_for_superuser, json_headers):
-    owner = users['cms_user']
-    create_schema('deposits/records/test-v0.0.1', experiment='CMS')
-    deposit = create_deposit(owner, 'test-v0.0.1')
-    rec = deposit.get_record_metadata()
-
+def test_workflow_download_files_exception(mock_token, mock_uuid, mock_download, app, create_and_get_uuid,
+                                           auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
     mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
-    mock_data = {'record_id': str(rec.id),
+    mock_data = {'record_id': uuid,
                  'file_path': 'code/code.py'}
 
     with app.test_client() as client:
