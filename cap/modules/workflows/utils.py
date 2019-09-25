@@ -26,6 +26,7 @@
 from flask import current_app
 
 from invenio_db import db
+from invenio_pidstore.resolver import Resolver
 
 from .errors import ExperimentIsNotValid
 from .models import ReanaWorkflow
@@ -48,19 +49,29 @@ def update_workflow(workflow, column, data):
 def get_request_attributes(req):
     """Retrieve the required arguments from the REANA request."""
     args = req.get_json()
-    record_id = args.get('record_id')
-    token = get_reana_token(record_id)
-    return args, record_id, token
+    uuid = resolve_uuid(args.get('pid'), args.get('pid_type'))
+    token = get_reana_token(uuid)
+
+    return args, uuid, token
+
+
+def resolve_uuid(pid, ptype):
+    """Resolve the pid into a UUID."""
+    resolver = Resolver(pid_type=ptype, object_type='rec', getter=lambda x: x)
+    _, uuid = resolver.resolve(pid)
+    return uuid
 
 
 def get_reana_token(uuid):
-    """Retrieve token based on experiment."""
-    experiment = CAPRecord.get_record(uuid).get('_experiment', None)
+    """Retrieve token based on experiment, by UUID."""
+    experiment = CAPRecord.get_record(uuid).get('_experiment')
     if not experiment:
         raise ExperimentIsNotValid('Experiment is not valid.')
 
-    token = current_app.config['REANA_ACCESS_TOKEN'].get(experiment, None)
+    # assign the token to the correct experiment
+    token = current_app.config['REANA_ACCESS_TOKEN'].get(experiment)
     if not token:
-        raise ExperimentIsNotValid('Access token for {} is not available'
-                                   .format(experiment))
+        raise ExperimentIsNotValid(
+            'Access token for {} is not available'.format(experiment))
+
     return token

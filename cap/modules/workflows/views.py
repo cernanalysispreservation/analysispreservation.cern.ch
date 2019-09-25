@@ -66,27 +66,32 @@ def ping_reana():
 @login_required
 def create_reana_workflow():
     """Create a reana workflow by json."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
 
-    workflow_params = args.get('workflow_params')
     workflow_name = args.get('workflow_name')
-    engine = request.args.get('workflow_engine', 'yadage')
+    workflow_engine = args.get('workflow_engine')
+    workflow_json = args.get('workflow_json')
+    workflow_parameters = args.get('parameters')
+    workflow_outputs = args.get('outputs')
 
     try:
-        resp = create_workflow_from_json(workflow_params, workflow_name,
-                                         token, workflow_engine=engine)
+        resp = create_workflow_from_json(workflow_json, workflow_name, token,
+                                         workflow_engine=workflow_engine,
+                                         parameters=workflow_parameters,
+                                         outputs=workflow_outputs)
 
         # create a workflow dict, which can be used to populate
         # the db, but also used in the serializer
         _workflow = {
+            'cap_user_id': current_user.id,
             'name': resp['workflow_name'],
             'workflow_id': resp['workflow_id'],
-            'record_id': record_id,
-            'engine': engine,
+            'record_id': rec_uuid,
             'status': 'created',
-            'params': workflow_params,
-            'cap_user_id': str(current_user.id),
-
+            'engine': workflow_engine,
+            'specification': workflow_json,
+            'inputs': workflow_parameters,
+            'outputs': workflow_outputs
         }
         workflow = ReanaWorkflow(**_workflow)
         workflow_serialized = ReanaWorkflowSchema().dump(_workflow).data
@@ -103,11 +108,11 @@ def create_reana_workflow():
 @login_required
 def get_all_reana_workflows():
     """Get all workflows for a single experiment."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     resp = get_workflows(token, type='batch')
 
     _record = {
-        'record_id': record_id,
+        'record_id': rec_uuid,
         'workflows': resp
     }
 
@@ -119,7 +124,7 @@ def get_all_reana_workflows():
 @login_required
 def get_reana_workflow_status(workflow_id):
     """Get the status of a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     resp = get_workflow_status(workflow_id, token)
 
     update_workflow(workflow_id, 'status', resp['status'])
@@ -130,10 +135,10 @@ def get_reana_workflow_status(workflow_id):
 @login_required
 def get_reana_workflow_logs(workflow_id):
     """Get the logs of a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     resp = get_workflow_logs(workflow_id, token)
 
-    resp.update({'record_id': record_id})
+    resp.update({'record_id': rec_uuid})
     logs_serialized = ReanaWorkflowLogsSchema().dump(resp).data
 
     update_workflow(workflow_id, 'logs', logs_serialized)
@@ -143,7 +148,7 @@ def get_reana_workflow_logs(workflow_id):
 @workflows_bp.route('/reana/<workflow_id>/start')
 def start_user_workflow(workflow_id):
     """Start a REANA workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
 
     try:
         resp = start_workflow(workflow_id, token, None)
@@ -158,7 +163,7 @@ def start_user_workflow(workflow_id):
 @login_required
 def stop_reana_workflow(workflow_id):
     """Stop a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     force_stop = args.get('force_stop', True)
 
     try:
@@ -174,7 +179,7 @@ def stop_reana_workflow(workflow_id):
 @login_required
 def delete_reana_workflow(workflow_id):
     """Delete a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
 
     all_runs = args.get('all_runs')
     hard_delete = args.get('hard_delete')
@@ -197,12 +202,12 @@ def delete_reana_workflow(workflow_id):
 @login_required
 def list_reana_workflow_files(workflow_id):
     """Show the files of a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
 
     try:
         resp = list_files(workflow_id, token)
         _files = {
-            'record_id': record_id,
+            'record_id': rec_uuid,
             'workflow_id': workflow_id,
             'files': resp
         }
@@ -217,7 +222,7 @@ def list_reana_workflow_files(workflow_id):
 @login_required
 def download_reana_workflow_files(workflow_id):
     """Download files from a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     fpath = args.get('file_path')
 
     try:
@@ -242,7 +247,7 @@ def download_reana_workflow_files(workflow_id):
 @login_required
 def upload_reana_workflow_files(workflow_id):
     """Upload files to a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     files = args.get('files_to_upload')
 
     errors = []
@@ -250,7 +255,7 @@ def upload_reana_workflow_files(workflow_id):
     for _f in files:
         try:
             with open(_f['path'], 'rb') as content:
-                resp = upload_file(workflow_id, content, _f['new_path'], token)
+                upload_file(workflow_id, content, _f['new_path'], token)
                 successful.append('{} saved as {}'.format(_f['path'],
                                                           _f['new_path']))
         except (IOError, FileUploadError):
@@ -265,7 +270,7 @@ def upload_reana_workflow_files(workflow_id):
 @login_required
 def delete_reana_workflow_files(workflow_id):
     """Delete files from a workflow."""
-    args, record_id, token = get_request_attributes(request)
+    args, rec_uuid, token = get_request_attributes(request)
     fpath = args.get('file_path')
 
     try:
