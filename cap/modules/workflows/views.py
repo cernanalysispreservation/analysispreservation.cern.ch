@@ -83,13 +83,15 @@ def create_reana_workflow():
         # create a workflow dict, which can be used to populate
         # the db, but also used in the serializer
         _workflow = {
+            'cap_user_id': current_user.id,
             'name': resp['workflow_name'],
             'workflow_id': resp['workflow_id'],
             'record_id': rec_uuid,
-            'engine': workflow_engine,
             'status': 'created',
-            'params': workflow_parameters,
-            'cap_user_id': current_user.id
+            'engine': workflow_engine,
+            'specification': workflow_json,
+            'inputs': workflow_parameters,
+            'outputs': workflow_outputs
         }
         workflow = ReanaWorkflow(**_workflow)
         workflow_serialized = ReanaWorkflowSchema().dump(_workflow).data

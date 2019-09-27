@@ -49,19 +49,21 @@ def update_workflow(workflow, column, data):
 def get_request_attributes(req):
     """Retrieve the required arguments from the REANA request."""
     args = req.get_json()
-    rec_uuid, token = get_reana_token(args.get('pid'),
-                                      args.get('pid_type'))
-    return args, rec_uuid, token
+    uuid = resolve_uuid(args.get('pid'), args.get('pid_type'))
+    token = get_reana_token(uuid)
+
+    return args, uuid, token
 
 
-def get_reana_token(pid, ptype):
-    """Retrieve token based on experiment."""
-    resolver = Resolver(pid_type=ptype,
-                        object_type='rec',
-                        getter=lambda x: x)
+def resolve_uuid(pid, ptype):
+    """Resolve the pid into a UUID."""
+    resolver = Resolver(pid_type=ptype, object_type='rec', getter=lambda x: x)
     _, uuid = resolver.resolve(pid)
+    return uuid
 
-    # get the experiment assigned to a pid
+
+def get_reana_token(uuid):
+    """Retrieve token based on experiment, by UUID."""
     experiment = CAPRecord.get_record(uuid).get('_experiment')
     if not experiment:
         raise ExperimentIsNotValid('Experiment is not valid.')
@@ -72,4 +74,4 @@ def get_reana_token(pid, ptype):
         raise ExperimentIsNotValid(
             'Access token for {} is not available'.format(experiment))
 
-    return uuid, token
+    return token
