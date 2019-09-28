@@ -35,6 +35,7 @@ from werkzeug.local import LocalProxy
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
 from cap.modules.schemas.utils import get_schemas_for_user
+from invenio_userprofiles.models import UserProfile
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -47,10 +48,16 @@ user_blueprint = Blueprint('cap_user', __name__,
 def get_user():
     """Return logged in user."""
     deposit_groups = get_user_deposit_groups()
+
+    profile = UserProfile.get_by_userid(current_user.id)
+    extra_data = {}
+    if profile:
+        extra_data = profile.extra_data
     _user = {
         "id": current_user.id,
         "email": current_user.email,
         "deposit_groups": deposit_groups,
+        "profile": extra_data
     }
 
     response = jsonify(_user)
