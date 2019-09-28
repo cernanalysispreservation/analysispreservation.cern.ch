@@ -8,6 +8,7 @@ component=(
 "ui"
 "access"
 "deposits"
+"auth"
 "devops"
 "docker"
 "docs"

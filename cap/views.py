@@ -69,6 +69,7 @@ def dashboard():
                                             records.to_dict()))['hits']['hits']  # noqa
 
     def _serialize_deposits(deposits, limit=5):
+        # import ipdb; ipdb.set_trace()
         return json.loads(
             deposit_json_v1.serialize_search(
                 cap_deposit_fetcher, deposits.to_dict()))['hits']['hits']  # noqa
@@ -76,6 +77,7 @@ def dashboard():
     rs = CAPRecordSearch().extra(version=True).sort_by_latest()
     ds = CAPDepositSearch().extra(version=True).sort_by_latest()
 
+    # import ipdb; ipdb.set_trace()
     published_by_collab = _serialize_records(rs.execute())
     user_published = _serialize_records(rs.get_user_records().execute())
     user_published_count = rs.get_user_records().count()

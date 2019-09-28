@@ -53,10 +53,9 @@ def test_me_when_superuser_returns_correct_user_data(
             "name": 'LHCb analysis',
             "schema_path": "deposits/records/lhcb-v1.0.0.json"
         }],
-        "email":
-        superuser.email,
-        "id":
-        superuser.id
+        "email": superuser.email,
+        "id": superuser.id,
+        "profile": {}
     }
 
 
@@ -79,5 +78,6 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
             "schema_path": "deposits/records/cms-v1.0.0.json"
         }],
         "email": user.email,
-        "id": user.id
+        "id": user.id,
+        "profile": {}
     }

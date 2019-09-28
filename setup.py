@@ -91,6 +91,7 @@ install_requires = [
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
 
+    'Authlib==0.12.1',
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
@@ -144,6 +145,7 @@ setup(
             'cap_experiments = cap.modules.experiments.ext:CAPExperiments',
             'cap_fixtures = cap.modules.fixtures.ext:CAPFixtures',
             'cap_xrootd = cap.modules.xrootd.ext:CapXRootD',
+            'cap_auth = cap.modules.auth.ext:CAPOAuth',
         ],
         'invenio_base.api_blueprints': [
             'cap = cap.views:blueprint',
@@ -158,6 +160,7 @@ setup(
             'cap_reana = cap.modules.reana.views:reana_bp',
             'cap_services = cap.modules.services.views:blueprint',
             'cap_schemas = cap.modules.schemas.views:blueprint',
+            'cap_auth = cap.modules.auth.views:blueprint',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
@@ -186,6 +189,7 @@ setup(
             # 'cap_reana_model = cap.modules.reana.models',
             'analysis_schema_model = cap.modules.schemas.models',
             'status_check_model = cap.modules.services.models',
+            'auth = cap.modules.auth.models',
         ],
         'invenio_db.alembic': [
             'cap = cap:alembic',

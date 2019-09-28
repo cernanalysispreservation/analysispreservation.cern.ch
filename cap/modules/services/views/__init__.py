@@ -4,9 +4,7 @@
 
 from __future__ import absolute_import, print_function
 
-import requests
-
-from flask import Blueprint, current_app, jsonify
+from flask import Blueprint
 
 
 blueprint = Blueprint('cap_services',
