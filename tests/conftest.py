@@ -450,7 +450,7 @@ def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
 
 
 @pytest.fixture
-def create_and_get_uuid(app, users, create_deposit, create_schema):
+def get_record_pid_uuid(app, users, create_deposit, create_schema):
     owner = users['cms_user']
     create_schema('deposits/records/test-v0.0.1', experiment='CMS')
     deposit = create_deposit(owner, 'test-v0.0.1')
@@ -458,7 +458,7 @@ def create_and_get_uuid(app, users, create_deposit, create_schema):
 
     resolver = Resolver(pid_type='depid', object_type='rec', getter=lambda x: x)
     _, uuid = resolver.resolve(pid)
-    return str(uuid)
+    return pid, str(uuid)
 
 
 def create_user_with_access(session, username, action):

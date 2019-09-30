@@ -41,13 +41,14 @@ class ReanaWorkflow(db.Model):
 
     id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4,
                    nullable=False)
-    record_id = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id),
-                          nullable=False)
+    rec_uuid = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id),
+                         nullable=False)
 
     cap_user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
     name = db.Column(db.String(100), unique=False, nullable=False)
+    name_run = db.Column(db.String(100), unique=False, nullable=False)
     status = db.Column(db.String(100), unique=False, nullable=False)
 
     # the following fields represent the creation part of a workflow

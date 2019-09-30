@@ -26,16 +26,10 @@
 from flask import current_app
 
 from invenio_db import db
-from invenio_pidstore.resolver import Resolver
 
 from .errors import ExperimentIsNotValid
 from .models import ReanaWorkflow
 from cap.modules.records.api import CAPRecord
-
-
-def bool2num(x):
-    """Boolean to number."""
-    return 1 if x else 0
 
 
 def update_workflow(workflow, column, data):
@@ -46,20 +40,21 @@ def update_workflow(workflow, column, data):
     db.session.commit()
 
 
-def get_request_attributes(req):
-    """Retrieve the required arguments from the REANA request."""
-    args = req.get_json()
-    uuid = resolve_uuid(args.get('pid'), args.get('pid_type'))
-    token = get_reana_token(uuid)
+def clone_workflow(workflow_id):
+    """Clone the attributes of a Reana workflow."""
+    wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    return {
+        'name': wf.name,
+        'workflow_json': wf.specification,
+        'parameters': wf.inputs,
+        'outputs': wf.outputs,
+    }
 
-    return args, uuid, token
 
-
-def resolve_uuid(pid, ptype):
-    """Resolve the pid into a UUID."""
-    resolver = Resolver(pid_type=ptype, object_type='rec', getter=lambda x: x)
-    _, uuid = resolver.resolve(pid)
-    return uuid
+def resolve_uuid(workflow_id):
+    """Resolve the workflow id into a UUID."""
+    workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    return workflow.rec_uuid
 
 
 def get_reana_token(uuid):
