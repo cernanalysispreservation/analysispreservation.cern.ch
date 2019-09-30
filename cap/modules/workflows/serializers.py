@@ -33,10 +33,10 @@ from marshmallow import Schema, fields
 class ReanaWorkflowSchema(Schema):
     """Schema for a single REANA workflow."""
 
-    workflow_name = fields.Str(attribute='name', dump_only=True)
+    workflow_name = fields.Str(attribute='name_run', dump_only=True)
     workflow_id = fields.Str(dump_only=True)
 
-    record_id = fields.Str(dump_only=True)
+    rec_uuid = fields.Str(dump_only=True)
     status = fields.Str(dump_only=True)
     engine = fields.Str(dump_only=True)
 
@@ -44,7 +44,7 @@ class ReanaWorkflowSchema(Schema):
 class ReanaAllWorkflowsSchema(Schema):
     """Schema for the REANA workflows of a single record."""
 
-    record_id = fields.Str(dump_only=True)
+    rec_uuid = fields.Str(dump_only=True)
     current_workflows = fields.Method('get_current', dump_only=True)
     deleted_workflows = fields.Method('get_deleted', dump_only=True)
 
@@ -70,7 +70,7 @@ class ReanaWorkflowLogsSchema(Schema):
 
     workflow_name = fields.Str(dump_only=True)
     workflow_id = fields.Str(dump_only=True)
-    record_id = fields.Str(dump_only=True)
+    rec_uuid = fields.Str(dump_only=True)
     logs = fields.Method('extract_logs', dump_only=True)
 
     def extract_logs(self, obj):
