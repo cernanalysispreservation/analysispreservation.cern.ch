@@ -48,6 +48,7 @@ class ReanaWorkflow(db.Model):
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
     name = db.Column(db.String(100), unique=False, nullable=False)
+    name_run = db.Column(db.String(100), unique=False, nullable=False)
     status = db.Column(db.String(100), unique=False, nullable=False)
 
     # the following fields represent the creation part of a workflow

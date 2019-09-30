@@ -46,6 +46,17 @@ def update_workflow(workflow, column, data):
     db.session.commit()
 
 
+def clone_workflow(workflow_id):
+    """Clone the attributes of a Reana workflow."""
+    wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    return {
+        'name': wf.name,
+        'workflow_json': wf.specification,
+        'parameters': wf.inputs,
+        'outputs': wf.outputs,
+    }
+
+
 def get_request_attributes(req):
     """Retrieve the required arguments from the REANA request."""
     args = req.get_json()

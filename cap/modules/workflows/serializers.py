@@ -33,7 +33,7 @@ from marshmallow import Schema, fields
 class ReanaWorkflowSchema(Schema):
     """Schema for a single REANA workflow."""
 
-    workflow_name = fields.Str(attribute='name', dump_only=True)
+    workflow_name = fields.Str(attribute='name_run', dump_only=True)
     workflow_id = fields.Str(dump_only=True)
 
     record_id = fields.Str(dump_only=True)

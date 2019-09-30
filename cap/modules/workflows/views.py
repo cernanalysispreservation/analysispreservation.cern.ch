@@ -37,7 +37,8 @@ from reana_client.api.client import (ping, get_workflows, get_workflow_status,
                                      list_files, download_file, upload_file)
 from reana_client.errors import FileDeletionError, FileUploadError
 
-from .utils import get_request_attributes, update_workflow, bool2num
+from .utils import get_request_attributes, update_workflow, \
+    bool2num, clone_workflow
 from .models import ReanaWorkflow
 from .serializers import (ReanaWorkflowSchema,
                           ReanaAllWorkflowsSchema,
@@ -84,7 +85,8 @@ def create_reana_workflow():
         # the db, but also used in the serializer
         _workflow = {
             'cap_user_id': current_user.id,
-            'name': resp['workflow_name'],
+            'name': workflow_name,
+            'name_run': resp['workflow_name'],
             'workflow_id': resp['workflow_id'],
             'record_id': rec_uuid,
             'status': 'created',
@@ -118,6 +120,18 @@ def get_all_reana_workflows():
 
     workflow_serialized = ReanaAllWorkflowsSchema().dump(_record).data
     return jsonify(workflow_serialized)
+
+
+@workflows_bp.route('/reana/<workflow_id>/clone')
+@login_required
+def clone_reana_workflow(workflow_id):
+    """Clone a workflow by returning the parameters of the original."""
+    try:
+        resp = clone_reana_workflow(workflow_id)
+        return jsonify(resp)
+    except Exception:
+        return jsonify({'message': 'An exception has occured while retrieving '
+                                   'the original workflow attributes.'}), 400
 
 
 @workflows_bp.route('/reana/<workflow_id>/status')

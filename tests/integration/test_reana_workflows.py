@@ -27,6 +27,7 @@
 from __future__ import absolute_import, print_function
 
 import json
+import responses
 from mock import patch
 
 from reana_client.errors import FileDeletionError
@@ -81,6 +82,54 @@ def test_create_reana_workflow(mock_token, mock_uuid, mock_created, app, create_
             "status": "created", "workflow_name": "demo.1",
             "workflow_id": "a5140d92-65e3-4fb0-a246-dc1f06cc2e13"
         }
+
+
+@patch('cap.modules.workflows.views.clone_reana_workflow')
+@patch('cap.modules.workflows.views.create_workflow_from_json')
+@patch('cap.modules.workflows.utils.resolve_uuid')
+@patch('cap.modules.workflows.utils.get_reana_token', return_value='test-token')
+def test_clone_reana_workflow(mock_token, mock_uuid, mock_created, mock_cloned, app,
+                              create_and_get_uuid, auth_headers_for_superuser, json_headers):
+    uuid = create_and_get_uuid
+    mock_uuid.return_value = uuid
+    mock_created.return_value = {
+        'message': 'Workflow workspace created',
+        'workflow_id': 'a5140d92-65e3-4fb0-a246-dc1f06cc2e13',
+        'workflow_name': 'demo.1'
+    }
+    mock_cloned.return_value = {
+        "name": "demo.1",
+        "workflow_json": {"steps": [{"environment": "python:2.7-slim",
+                                     "commands": ["python \"${helloworld}\""]}]},
+        "parameters": {"files": ["code/helloworld.py"],
+                       "parameters": {"helloworld": "code/helloworld.py"}},
+        "outputs": {"files": ["results/results.txt"]}
+    }
+
+    mock_workflow_id = 'b46e27ac-a40e-4e4e-97ee-30703e6f1406'
+    mock_create_data = {
+        "record_id": uuid,
+        "workflow_name": "demo",
+        "workflow_engine": "serial",
+        "workflow_json": {"steps": [{"environment": "python:2.7-slim",
+                                     "commands": ["python \"${helloworld}\""]}]},
+        "parameters": {"files": ["code/helloworld.py"],
+                       "parameters": {"helloworld": "code/helloworld.py"}},
+        "outputs": {"files": ["results/results.txt"]}
+    }
+
+    with app.test_client() as client:
+        # first create the workflow
+        resp = client.post('workflows/reana/create', data=json.dumps(mock_create_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json['record_id'] == uuid
+
+        # then clone it using it's attributes
+        resp = client.get('workflows/reana/{}/clone'.format(mock_workflow_id), data=json.dumps({}),
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json == mock_cloned.return_value
 
 
 @patch('cap.modules.workflows.views.create_workflow_from_json', side_effect=Exception())
