@@ -119,7 +119,7 @@ class FileItem extends React.Component {
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
 
     return file ? (
-      <ListItem
+      <Box
         key={file.key}
         onClick={
           this.props.action
@@ -150,7 +150,7 @@ class FileItem extends React.Component {
                   size="small"
                   truncate={true}
                 >
-                  {filePath}{" "}
+                  {this.props.filename ? this.props.filename : filePath}{" "}
                   {file.size ? (
                     <strong>({prettyBytes(parseInt(file.size))})</strong>
                   ) : null}
@@ -163,39 +163,27 @@ class FileItem extends React.Component {
               </Box>
             ) : null}
             <Box direction="row" justify="center" align="center">
-              <Menu
-                responsive={true}
+              <Anchor
                 size="small"
-                style={
-                  ["fetching", "upload", "error"].indexOf(file.status) > -1
-                    ? { pointerEvents: "none" }
-                    : null
-                }
-                inline={false}
-                icon={<MoreIcon size="xsmall" />}
-              >
+                icon={<DownloadIcon size="xsmall" />}
+                label={<Label size="small" />}
+                href={file_link}
+                download
+              />
+              {this.props.status !== "published" ? (
                 <Anchor
                   size="small"
-                  icon={<DownloadIcon size="xsmall" />}
-                  label={<Label size="small">Download</Label>}
-                  href={file_link}
-                  download
+                  icon={<CloseIcon size="xsmall" />}
+                  label={<Label size="small" />}
+                  onClick={() => {
+                    this.props.deleteFile(file_link, filePath);
+                  }}
                 />
-                {this.props.status !== "published" ? (
-                  <Anchor
-                    size="small"
-                    icon={<CloseIcon size="xsmall" />}
-                    label={<Label size="small">Delete</Label>}
-                    onClick={() => {
-                      this.props.deleteFile(file_link, filePath);
-                    }}
-                  />
-                ) : null}
-              </Menu>
+              ) : null}
             </Box>
           </Box>
         </Box>
-      </ListItem>
+      </Box>
     ) : null;
   }
 }

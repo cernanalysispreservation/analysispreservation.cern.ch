@@ -2,15 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import FileManager from "./DepositFileManager";
-import FileList from "./FileList";
+// import FileList from "./FileList";
 
 import ArchiveIcon from "grommet/components/icons/base/Archive";
 import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
 import PieChartIcon from "grommet/components/icons/base/PieChart";
 import BookIcon from "grommet/components/icons/base/Book";
 import NoteIcon from "grommet/components/icons/base/Note";
+import Box from "grommet/components/Box";
 
 import PreviewUpload from "./PreviewUpload";
+
+import FileTree from "./FileTree";
 
 class DepositFilesList extends React.Component {
   constructor(props) {
@@ -36,7 +39,10 @@ class DepositFilesList extends React.Component {
   render() {
     return [
       <FileManager key="filesManager" files={this.props.files} />,
-      <FileList key="filesList" files={this.props.files} />,
+      // <FileList key="filesList" files={this.props.files} />,
+      <Box key="filesList" pad="small">
+        <FileTree files={this.props.files.toJS()} />
+      </Box>,
       <PreviewUpload key="_file_previewer" />
     ];
   }
