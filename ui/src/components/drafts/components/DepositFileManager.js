@@ -11,6 +11,8 @@ import Tabs from "grommet/components/Tabs";
 import Title from "grommet/components/Title";
 import Tab from "grommet/components/Tab";
 import Layer from "grommet/components/Layer";
+import Paragraph from "grommet/components/Paragraph";
+import FormUploadIcon from "grommet/components/icons/base/FormUpload";
 
 import {
   toggleFilemanagerLayer,
@@ -113,7 +115,7 @@ class FileManager extends React.Component {
               <Box flex={true} pad="small" colorIndex="grey-4-a">
                 <Tabs justify="start" onActive={this.clearFormData}>
                   <Tab title="Upload File">
-                    <Box>
+                    <Box pad="medium">
                       <Heading tag="h5" strong={true}>
                         Upload from Local
                       </Heading>
@@ -122,13 +124,16 @@ class FileManager extends React.Component {
                           <Dropzone
                             style={{
                               display: "flex",
+                              flexDirection: "column",
                               flex: 1,
                               height: "100px",
+                              padding: "30px 0",
                               border: "2px dashed rgba(0, 0, 0, 0.25)",
                               borderRadius: "4px",
                               justifyContent: "center",
                               alignContent: "center",
-                              alignItems: "center"
+                              alignItems: "center",
+                              cursor: "pointer"
                             }}
                             onDrop={acceptedFiles => {
                               let bucket_url = this.props.links.bucket;
@@ -144,11 +149,32 @@ class FileManager extends React.Component {
                                 );
                             }}
                           >
-                            Drop your files here, or click to select files to
-                            upload.
+                            <Box
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center"
+                              }}
+                            >
+                              <FormUploadIcon size="small" />
+                              <Paragraph margin="none">Browse files</Paragraph>
+                            </Box>
+                            <Paragraph margin="medium" size="large">
+                              OR
+                            </Paragraph>
+                            <Paragraph margin="none">
+                              Drop your files here
+                            </Paragraph>
+                            {/* Drop your files here, or click to select files to
+                            upload. */}
                           </Dropzone>
                         </Box>
                       </Box>
+                    </Box>
+                  </Tab>
+                  <Tab title="Upload Github File">
+                    <Box pad="medium">
                       <Heading tag="h5" strong={true}>
                         Upload from CERN Gitlab/Github file URL
                       </Heading>
@@ -189,7 +215,7 @@ class FileManager extends React.Component {
                       </Box>
                     </Box>
                   </Tab>
-                  <Tab title="Repo Upload">
+                  <Tab title="Upload Github Repo">
                     <Box pad="medium">
                       <Heading tag="h5" strong={true}>
                         Upload from Gitlab CERN/Github repository url

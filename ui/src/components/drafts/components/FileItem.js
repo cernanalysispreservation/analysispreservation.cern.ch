@@ -12,15 +12,24 @@ import ListItem from "grommet/components/ListItem";
 import Toast from "grommet/components/Toast";
 
 import Status from "grommet/components/icons/Status";
-
-import ArchiveIcon from "grommet/components/icons/base/Archive";
-import BookIcon from "grommet/components/icons/base/Book";
-import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
-import PieChartIcon from "grommet/components/icons/base/PieChart";
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
 import DownloadIcon from "grommet/components/icons/base/Download";
 import MoreIcon from "grommet/components/icons/base/More";
+import ImageIcon from "grommet/components/icons/base/Image";
+import ServerIcon from "grommet/components/icons/base/Servers";
+import PdfIcon from "grommet/components/icons/base/DocumentPdf";
+import ZipIcon from "grommet/components/icons/base/DocumentZip";
+import LockIcon from "grommet/components/icons/base/FormLock";
+import MusicIcon from "grommet/components/icons/base/Music";
+import BookIcon from "grommet/components/icons/base/Bookmark";
+import D3Icon from "grommet/components/icons/base/3d";
+import TextIcon from "grommet/components/icons/base/DocumentText";
+import CsvIcon from "grommet/components/icons/base/DocumentCsv";
+import HtmlIcon from "grommet/components/icons/base/StandardsHtml5";
+import VideoIcon from "grommet/components/icons/base/Video";
+
+import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 
 import prettyBytes from "pretty-bytes";
 import { deleteFileByUri } from "../../../actions/files";
@@ -36,28 +45,58 @@ class FileItem extends React.Component {
     super(props);
   }
 
-  _getIcon(type) {
-    const catToIcon = {
-      default: <ArchiveIcon type="status" size="xsmall" />,
-      archive: <ArchiveIcon type="status" size="xsmall" />,
-      configuration: <DocumentConfigIcon type="status" size="xsmall" />,
-      dataset: <PieChartIcon type="status" size="xsmall" />,
-      publication: <BookIcon type="status" size="xsmall" />,
-      plot: <PieChartIcon type="status" size="xsmall" />
+  _getIcon(mimetype) {
+    if (!mimetype) {
+      return <NoteIcon type="status" size="xsmall" />;
+    }
+
+    let type, subtype;
+    type = mimetype.split("/")[0];
+    subtype = mimetype.split("/")[1];
+
+    const typeToIcon = {
+      application: {
+        "octet-stream": <ServerIcon type="status" size="xsmall" />,
+        pdf: <PdfIcon type="status" size="xsmall" />,
+        pkcs8: <LockIcon type="status" size="xsmall" />,
+        zip: <ZipIcon type="status" size="xsmall" />
+      },
+      audio: {
+        default: <MusicIcon type="small" size="xsmall" />
+      },
+      font: {
+        default: <BookIcon type="status" size="xsmall" />
+      },
+      image: {
+        default: <ImageIcon type="status" size="xsmall" />
+      },
+      model: {
+        default: <D3Icon type="status" size="xsmall" />
+      },
+      text: {
+        plain: <TextIcon type="status" size="xsmall" />,
+        csv: <CsvIcon type="status" size="xsmall" />,
+        html: <HtmlIcon type="status" size="xsmall" />
+      },
+      video: {
+        default: <VideoIcon type="status" size="xsmall" />
+      }
     };
 
-    return catToIcon[type] ? (
-      catToIcon[type]
-    ) : (
-      <NoteIcon type="status" size="xsmall" />
-    );
+    if (typeToIcon[type][subtype]) {
+      return typeToIcon[type][subtype];
+    } else if (typeToIcon[type]["default"]) {
+      return typeToIcon[type]["default"];
+    } else {
+      return <NoteIcon type="status" size="xsmall" />;
+    }
   }
 
   render() {
     let { file } = this.props;
-
-    let { links: { self: file_link = null } = {}, key: filePath } = file;
-
+    
+    let { links: { self: file_link = null } = {}, key: filePath } = file.data || file;
+    
     // TO_RMEOVE after fixings links from backend
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
 
@@ -73,28 +112,34 @@ class FileItem extends React.Component {
           <Toast status="critical">{file.error.message}</Toast>
         ) : null}
         <Box direction="row" flex={true} justify="between" wrap={false}>
-          <Box direction="row" flex={true}>
-            <Box justify="center" margin={{ horizontal: "small" }}>
-              {this._getIcon(file.type)}
-            </Box>
+          <Box direction="row" flex={true} justify="between" wrap={false}>
             <Box
-              justify="center"
+              direction="row"
               flex={true}
-              width="100"
-              size="small"
-              margin={{ right: "small" }}
+              onClick={() => this.props.filePreview(file)}
             >
-              <Label
+              <Box justify="center" margin={{ horizontal: "small" }}>
+                {this._getIcon(file.mimetype)}
+              </Box>
+              <Box
                 justify="center"
-                margin="none"
+                flex={true}
+                width="100"
                 size="small"
-                truncate={true}
+                margin={{ right: "small" }}
               >
-                {filePath}{" "}
-                {file.size ? (
-                  <strong>({prettyBytes(parseInt(file.size))})</strong>
-                ) : null}
-              </Label>
+                <Label
+                  justify="center"
+                  margin="none"
+                  size="small"
+                  truncate={true}
+                >
+                  {filePath}{" "}
+                  {file.size ? (
+                    <strong>({prettyBytes(parseInt(file.size))})</strong>
+                  ) : null}
+                </Label>
+              </Box>
             </Box>
             {file.status ? (
               <Box justify="center" margin={{ right: "small" }}>
@@ -138,7 +183,8 @@ FileItem.propTypes = {
   file: PropTypes.object,
   action: PropTypes.func,
   deleteFile: PropTypes.func,
-  bucket_id: PropTypes.string
+  bucket_id: PropTypes.string,
+  filePreview: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -148,7 +194,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     deleteFile: (file_uri, filepath) =>
-      dispatch(deleteFileByUri(file_uri, filepath))
+      dispatch(deleteFileByUri(file_uri, filepath)),
+    filePreview: file => dispatch(toggleFilePreviewEdit(file.data || file))
   };
 };
 

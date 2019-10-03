@@ -8,6 +8,8 @@ const initialState = Map({
   errors: [],
   actionsLayer: false,
   showPreviewer: false,
+  filePreviewEditLayer: true,
+  filePreviewEdit: {},
 
   bucket: Map({}),
   formData: null,
@@ -36,6 +38,10 @@ export default function draftsReducer(state = initialState, action) {
       return state.set("actionsLayer", !state.get("actionsLayer"));
     case draftItemActions.TOGGLE_PREVIEWER:
       return state.set("showPreviewer", !state.get("showPreviewer"));
+    case draftItemActions.TOGGLE_FILE_PREVIEW_EDIT:
+        return state
+          .set("filePreviewEditLayer", !state.get("filePreviewEditLayer"))
+          .set("filePreviewEdit", action.payload);
     case draftItemActions.INIT_FORM:
       return state.merge(initialState);
     case draftItemActions.CLEAR_ERROR_SUCCESS:
@@ -165,12 +171,14 @@ export default function draftsReducer(state = initialState, action) {
     case filesActions.UPLOAD_FILE_REQUEST:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
-        status: "uploading"
+        status: "uploading",
       });
     case filesActions.UPLOAD_FILE_SUCCESS:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
-        status: "done"
+        status: "done",
+        mimetype: action.data.mimetype,
+        data:action.data
       });
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["bucket", action.filename], {

@@ -10,6 +10,8 @@ import PieChartIcon from "grommet/components/icons/base/PieChart";
 import BookIcon from "grommet/components/icons/base/Book";
 import NoteIcon from "grommet/components/icons/base/Note";
 
+import PreviewUpload from "./PreviewUpload";
+
 class DepositFilesList extends React.Component {
   constructor(props) {
     super(props);
@@ -34,7 +36,8 @@ class DepositFilesList extends React.Component {
   render() {
     return [
       <FileManager key="filesManager" files={this.props.files} />,
-      <FileList key="filesList" files={this.props.files} />
+      <FileList key="filesList" files={this.props.files} />,
+      <PreviewUpload key="_file_previewer" />
     ];
   }
 }

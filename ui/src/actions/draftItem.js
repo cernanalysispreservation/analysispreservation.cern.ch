@@ -10,6 +10,7 @@ export const TOGGLE_LIVE_VALIDATE = "TOGGLE_LIVE_VALIDATE";
 export const TOGGLE_CUSTOM_VALIDATION = "TOGGLE_CUSTOM_VALIDATION";
 export const TOGGLE_VALIDATE = "TOGGLE_VALIDATE";
 export const TOGGLE_ACTIONS_LAYER = "TOGGLE_ACTIONS_LAYER";
+export const TOGGLE_FILE_PREVIEW_EDIT = "TOGGLE_FILE_PREVIEW_EDIT";
 
 export const GENERAL_TITLE_CHANGED = "GENERAL_TITLE_CHANGED";
 export const GENERAL_TITLE_REQUEST = "GENERAL_TITLE_REQUEST";
@@ -89,6 +90,12 @@ export const toggleLiveValidate = () => ({ type: TOGGLE_LIVE_VALIDATE });
 export const toggleCustomValidation = () => ({
   type: TOGGLE_CUSTOM_VALIDATION
 });
+export function toggleFilePreviewEdit(payload = {}) {
+  return {
+    type: TOGGLE_FILE_PREVIEW_EDIT,
+    payload
+  };
+}
 export const toggleValidate = () => ({ type: TOGGLE_VALIDATE });
 
 export const formDataChange = data => ({ type: FORM_DATA_CHANGE, data });
