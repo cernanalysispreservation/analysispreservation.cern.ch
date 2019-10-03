@@ -36,7 +36,6 @@ class DepositForm extends React.Component {
   transformErrors(errors) {
     errors.map(error => {
       error.name = error.property;
-
       if (error.message == "should be string") {
         let errorMessages = objectPath.get(this.props.formData, error.property);
         if (errorMessages == undefined) error.message = "Either edit or remove";

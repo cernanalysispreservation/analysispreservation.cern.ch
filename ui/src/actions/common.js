@@ -107,10 +107,35 @@ export function fetchSchemaByNameVersion(name = null, _version = null) {
                     uiSchema: uiSchema
                   })
                 );
+              })
+              .catch(error => {
+                dispatch(
+                  fetchSchemaError({
+                    message: error.response.data.message,
+                    status: error.response.status,
+                    statusText: error.response.statusText
+                  })
+                );
               });
           })
-          .catch();
+          .catch(error => {
+            dispatch(
+              fetchSchemaError({
+                message: error.response.data.message,
+                status: error.response.status,
+                statusText: error.response.statusText
+              })
+            );
+          });
       })
-      .catch();
+      .catch(error => {
+        dispatch(
+          fetchSchemaError({
+            message: error.response.data.message,
+            status: error.response.status,
+            statusText: error.response.statusText
+          })
+        );
+      });
   };
 }

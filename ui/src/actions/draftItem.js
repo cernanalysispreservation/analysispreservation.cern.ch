@@ -2,6 +2,7 @@ import axios from "axios";
 import { replace, push } from "react-router-redux";
 import { fetchAndAssignSchema } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
+import cogoToast from "cogo-toast";
 
 export const TOGGLE_FILEMANAGER_LAYER = "TOGGLE_FILEMANAGER_LAYER";
 export const TOGGLE_PREVIEWER = "TOGGLE_PREVIEWER";
@@ -225,9 +226,25 @@ export function postCreateDraft(data = {}, ana_type) {
         let draft = response.data;
         if (draft.id) {
           dispatch(createDraftSuccess(response.data));
+          cogoToast.success("Your form has been successfully submitted", {
+            position: "top-center",
+            heading: "Form saved",
+            bar: { size: "0" },
+            hideAfter: 2
+          });
         }
       })
       .catch(error => {
+        dispatch(createDraftError(error.response));
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
         throw error;
       });
   };
@@ -315,12 +332,37 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
           .put(`/api/deposits/${draft_id}`, data)
           .then(response => {
             dispatch(updateDraftSuccess(draft_id, response.data));
+            cogoToast.success("Your data has been updated", {
+              position: "top-center",
+              heading: "Draft updated",
+              bar: { size: "0" },
+              hideAfter: 2
+            });
           })
           .catch(error => {
+            dispatch(updateDraftError(error));
+            cogoToast.error(
+              "There is an error, please make sure you are connected",
+              {
+                position: "top-center",
+                heading: error.message,
+                bar: { size: "0" },
+                hideAfter: 2
+              }
+            );
             throw error;
           });
       })
       .catch(error => {
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
         throw error;
       });
   };
@@ -336,9 +378,24 @@ export function discardDraft(draft_id) {
       .post(uri)
       .then(response => {
         dispatch(discardDraftSuccess(draft_id, response.data));
+        cogoToast.success("Your data has been discarded", {
+          position: "top-center",
+          heading: "Data discarded",
+          bar: { size: "0" },
+          hideAfter: 2
+        });
       })
       .catch(error => {
         dispatch(discardDraftError(error));
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
       });
   };
 }
@@ -364,8 +421,24 @@ export function putUpdateDraft(data, draft_id) {
       .put(links.self, data)
       .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
+        cogoToast.success("Your Draft has been successfully submitted", {
+          position: "top-center",
+          heading: "Draft saved",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
       })
       .catch(error => {
+        dispatch(updateDraftError(error));
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
         throw error;
       });
   };
@@ -384,8 +457,24 @@ export function postPublishDraft(draft_id) {
       .then(response => {
         let pid = response.data.id;
         dispatch(publishDraftSuccess(pid, response.data));
+        cogoToast.success("Your Draft has been successfully published", {
+          position: "top-center",
+          heading: "Draft published",
+          bar: { size: "0" },
+          hideAfter: 2
+        });
       })
       .catch(error => {
+        dispatch(publishDraftError(error));
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
         throw error.response;
       });
   };
@@ -419,9 +508,24 @@ export function deleteDraft(draft_id) {
       .then(() => {
         dispatch(deleteDraftSuccess());
         dispatch(replace("/"));
+        cogoToast.success("Your Draft has been deleted", {
+          position: "top-center",
+          heading: "Draft deleted",
+          bar: { size: "0" },
+          hideAfter: 2
+        });
       })
       .catch(error => {
         dispatch(deleteDraftError(error.response));
+        cogoToast.error(
+          "There is an error, please make sure you are connected",
+          {
+            position: "top-center",
+            heading: error.message,
+            bar: { size: "0" },
+            hideAfter: 2
+          }
+        );
       });
   };
 }
