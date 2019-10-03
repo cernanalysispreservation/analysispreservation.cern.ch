@@ -22,8 +22,9 @@ const PermissionDenied = props => {
         align="center"
       >
         <Label>
-          {props.status} {props.message}
+          {props.status} {props.statusText}
         </Label>
+        <Label>{props.message}</Label>
         <Anchor
           icon={<FormPreviousLinkIcon />}
           label="Go back to dashboard"

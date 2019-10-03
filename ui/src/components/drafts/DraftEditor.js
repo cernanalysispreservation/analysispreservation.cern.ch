@@ -74,27 +74,22 @@ class DraftEditor extends React.Component {
   // }
 
   render() {
-    // if (this.props.schemaError && this.props.schemaError.status == 403)
-    //   return (
-    //     <PermissionDenied
-    //       status={this.props.schemaError.status}
-    //       message={this.props.schemaError.message}
-    //     />
-    //   );
+    if (this.props.schemaErrors.length > 0) {
+      return (
+        <PermissionDenied
+          status={this.props.schemaErrors[0].status}
+          message={this.props.schemaErrors[0].message}
+          statusText={this.props.schemaErrors[0].statusText}
+        />
+      );
+    }
 
     let _schema =
       this.props.schemas && this.props.schemas.schema
         ? transformSchema(this.props.schemas.schema)
         : null;
-
     return (
       <Box id="deposit-page" flex={true}>
-        {this.props.errors.length > 0 ? (
-          <Layer onClose={this.props.clearErrorSuccess} overlayClose={true}>
-            {JSON.stringify(this.props.errors)}{" "}
-          </Layer>
-        ) : null}
-
         {this.props.schemas &&
           this.props.schemas.schema && (
             <Box
@@ -144,8 +139,8 @@ function mapStateToProps(state) {
     schemas: state.draftItem.get("schemas"),
     metadata: state.draftItem.get("metadata"),
     formData: state.draftItem.get("formData"),
-    errors: state.draftItem.get("errors")
-    // schemaError: state.draftItem.get("schemaError")
+    errors: state.draftItem.get("errors"),
+    schemaErrors: state.draftItem.get("schemaErrors")
   };
 }
 

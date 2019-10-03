@@ -6,6 +6,7 @@ import * as filesActions from "../actions/files"; // Files Actions
 
 const initialState = Map({
   errors: [],
+  schemaErrors: [],
   actionsLayer: false,
   showPreviewer: false,
   filePreviewEditLayer: true,
@@ -18,6 +19,7 @@ const initialState = Map({
   can_admin: false,
   can_update: false,
   created: null,
+  loading: false,
   created_by: null,
   experiment: null,
   files: Map({}),
@@ -39,13 +41,18 @@ export default function draftsReducer(state = initialState, action) {
     case draftItemActions.TOGGLE_PREVIEWER:
       return state.set("showPreviewer", !state.get("showPreviewer"));
     case draftItemActions.TOGGLE_FILE_PREVIEW_EDIT:
-        return state
-          .set("filePreviewEditLayer", !state.get("filePreviewEditLayer"))
-          .set("filePreviewEdit", action.payload);
+      return state
+        .set("filePreviewEditLayer", !state.get("filePreviewEditLayer"))
+        .set("filePreviewEdit", action.payload);
     case draftItemActions.INIT_FORM:
       return state.merge(initialState);
     case draftItemActions.CLEAR_ERROR_SUCCESS:
       return state.set("errors", []);
+    case commonActions.FETCH_SCHEMA_ERROR:
+      return state.set("schemaErrors", [
+        ...state.get("schemaErrors"),
+        action.error
+      ]);
     case commonActions.FETCH_SCHEMA_SUCCESS:
       const { schemaId, ...schemas } = action.schema;
       return state.set("schema", schemaId).set("schemas", schemas);
@@ -64,20 +71,25 @@ export default function draftsReducer(state = initialState, action) {
         .merge(Map(action.draft));
     case draftItemActions.DRAFTS_ITEM_ERROR:
       return state.set("errors", action.error);
+    case draftItemActions.CREATE_DRAFT_REQUEST:
+      return state.set("loading", true);
     case draftItemActions.CREATE_DRAFT_SUCCESS:
       return state
+        .set("loading", false)
         .set("formData", action.draft.metadata)
         .merge(Map(action.draft));
     case draftItemActions.CREATE_DRAFT_ERROR:
-      return state.set("errors", [...state.get("errors"), action.error]);
+      return state
+        .set("loading", false)
+        .set("errors", [...state.get("errors"), action.error]);
 
     case draftItemActions.UPDATE_DRAFT_REQUEST:
-      return state
-        .setIn(["current_item", "loading"], true)
-        .setIn(["current_item", "message"], { msg: "Updating.." });
+      return state.set("loading", true);
+    // .setIn(["current_item", "message"], { msg: "Updating.." });
     case draftItemActions.UPDATE_DRAFT_SUCCESS:
       return state
         .set("formData", action.draft.metadata)
+        .set("loading", false)
         .set("message", {
           status: "ok",
           msg: "All changes saved"
@@ -171,14 +183,14 @@ export default function draftsReducer(state = initialState, action) {
     case filesActions.UPLOAD_FILE_REQUEST:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
-        status: "uploading",
+        status: "uploading"
       });
     case filesActions.UPLOAD_FILE_SUCCESS:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,
         status: "done",
         mimetype: action.data.mimetype,
-        data:action.data
+        data: action.data
       });
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["bucket", action.filename], {

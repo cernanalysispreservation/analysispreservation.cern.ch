@@ -14,7 +14,6 @@ import { Heading } from "grommet";
 class TabField extends React.Component {
   constructor(props) {
     super(props);
-
     this.options = { ...props.uiSchema["ui:options"] };
 
     this.view = this.options.view;

@@ -2,9 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
+import cogoToast from "cogo-toast";
+import _isEmpty from "lodash/isEmpty";
 
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
+import Spinning from "grommet/components/icons/Spinning";
 
 import {
   CreateAnchor,
@@ -38,13 +41,11 @@ class DraftEditorHeader extends React.Component {
     this.state = { actionType: null };
   }
 
-  _validateFormData() {
+  _validateFormData = () => {
     // TOFIX maybe fetch formData from store instead of ref
     const formData = this.props.formRef.current
       ? this.props.formRef.current.props.formData
       : null;
-
-    const { errors } = this.props.formRef.current.validate(formData);
 
     // let {
     //   "current": {
@@ -58,44 +59,73 @@ class DraftEditorHeader extends React.Component {
     // const { errors = []} = this.props.formRef.current && this.props.formRef.current.validate(formData);
 
 
+
+    const { errors } = this.props.formRef.current.validate(formData);
+
     this.props.formRef.current.submit();
 
+    let emptyObject = 0;
+
+    for (let [key, value] of Object.entries(formData)) {
+      if (_isEmpty(value)) {
+        emptyObject++;
+      } else {
+        for (let [innerKey, innerValue] of Object.entries(value)) {
+          if (_isEmpty(innerValue)) {
+            emptyObject++;
+          }
+        }
+      }
+    }
+
+    let condition =
+      _isEmpty(formData) || emptyObject === Object.entries(formData).length;
+
+
     if (errors.length > 0) {
+      cogoToast.error("Make sure all the fields are properly filled in", {
+        position: "top-center",
+        heading: "Form could not be submitted",
+        bar: { size: "0" },
+        hideAfter: 5
+      });
+      return false;
+    }
+
+    if (condition) {
+      cogoToast.warn(
+        "Please add some content first, and try again saving again",
+        {
+          position: "top-center",
+          heading: "Form is empty",
+          bar: { size: "0" },
+          hideAfter: 3
+        }
+      );
       return false;
     } else {
       return true;
     }
-  }
+  };
 
-  _createDraft(schema_id) {
-    if (
-      this.props.formData == null ||
-      this.formData == {} ||
-      this.formData == ""
-    ) {
-      this.props.createDraftError(
-        "Form is empty. Please add some content first and try saving again"
-      );
-      return;
-    }
-
-    if (this._validateFormData())
-      this.props.createDraft(this.props.formData, schema_id).catch(error => {
+  _createDraft = schema_id => {
+    if (this._validateFormData()) {
+      this.props.createDraft(this.props.formData, schema_id).finally(() => {
         this._validateFormData();
       });
-  }
+    }
+  };
 
   _saveData() {
     if (this._validateFormData()) {
       let status = this.props.status;
-
-      if (status == "draft")
+      if (status == "draft") {
         this.props
           .updateDraft({ ...this.props.formData }, this.props.draft_id)
           .finally(() => {
             this._validateFormData();
           });
-      else if (status == "published")
+      } else if (status == "published")
         this.props
           .editPublished(
             { ...this.props.formData, $schema: this.props.draft.$schema },
@@ -137,6 +167,9 @@ class DraftEditorHeader extends React.Component {
     //   (this.props.schemaError && this.props.schemaError.status == 403)
     // )
     //   return null;
+    if (this.props.schemaErrors.length > 0) {
+      return null;
+    }
 
     return (
       <Box flex={true} wrap={false} direction="row">
@@ -158,6 +191,16 @@ class DraftEditorHeader extends React.Component {
           />
         </Box>
         <Box flex={false} direction="row" wrap={false} justify="end">
+          {this.props.loading ? (
+            <Box
+              flex={true}
+              direction="row"
+              align="center"
+              margin={{ horizontal: "small" }}
+            >
+              <Spinning />
+            </Box>
+          ) : null}
           {isDraft ? (
             <Menu
               flex={false}
@@ -247,9 +290,10 @@ function mapStateToProps(state) {
     // schema: state.draftItem.getIn(["current_item", "schema"]),
     formData: state.draftItem.get("formData"),
     // depositGroups: state.auth.getIn(["currentUser", "depositGroups"]),
-    errors: state.draftItem.get("errors")
-    // schemaError: state.drafts.get("schemaError"),
-    // loading: state.drafts.getIn(["current_item", "loading"]),
+    errors: state.draftItem.get("errors"),
+    schemaErrors: state.draftItem.get("schemaErrors"),
+    loading: state.draftItem.get("loading")
+    // loading: state.draftItem.getIn(["current_item", "loading"]),
     // message: state.drafts.getIn(["current_item", "message"])
   };
 }
