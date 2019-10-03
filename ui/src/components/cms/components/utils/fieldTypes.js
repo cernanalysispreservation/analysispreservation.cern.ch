@@ -123,7 +123,13 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:field": "idFetcher",
+        "ui:servicesList": [
+          {
+            value: "zenodo",
+            label: "Zenodo"
+          }
+        ]
       }
     }
   },
@@ -137,7 +143,33 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:field": "idFetcher",
+        "ui:servicesList": [
+          {
+            value: "orcid",
+            label: "ORCID"
+          }
+        ]
+      }
+    }
+  },
+  ror: {
+    title: "ROR Field",
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    default: {
+      schema: {
+        type: "object",
+        properties: {}
+      },
+      uiSchema: {
+        "ui:field": "idFetcher",
+        "ui:servicesList": [
+          {
+            value: "ror",
+            label: "ROR"
+          }
+        ]
       }
     }
   }

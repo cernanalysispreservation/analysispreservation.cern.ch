@@ -2,7 +2,7 @@ import React from "react";
 
 import SVGIcon from "grommet/components/SVGIcon";
 
-export const ZenodoIcon = () => (
+const ZenodoIcon = () => (
   <SVGIcon
     size="small"
     viewBox="0 0 200 80"
@@ -93,3 +93,5 @@ export const ZenodoIcon = () => (
     </g>
   </SVGIcon>
 );
+
+export default ZenodoIcon;

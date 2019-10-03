@@ -40,7 +40,7 @@ except ImportError:
 
 @patch('cap.modules.services.views.ror._ror')
 def test_ror_by_query(mock_ror, app, auth_headers_for_superuser, json_headers):
-    mock_query = {'query': 'tilburg'}
+    query_arg = 'tilburg'
     mock_ror.return_value = {
         'items': [{
             'acronyms': ['TiU'],
@@ -98,11 +98,9 @@ def test_ror_by_query(mock_ror, app, auth_headers_for_superuser, json_headers):
     }, 200
 
     with app.test_client() as client:
-        resp = client.get('services/ror',
-                          data=json.dumps(mock_query),
+        resp = client.get('services/ror?query={}'.format(query_arg),
                           headers=auth_headers_for_superuser + json_headers)
 
-        assert resp.status_code == 200
         assert resp.json == [{
             "acronyms": ["TiU"],
             "ror_org_id": "04b8v1s79",
@@ -111,39 +109,27 @@ def test_ror_by_query(mock_ror, app, auth_headers_for_superuser, json_headers):
 
 
 @patch('cap.modules.services.views.ror._ror')
-def test_ror_by_query_returns_empty_list(mock_ror, app,
-                                         auth_headers_for_superuser,
-                                         json_headers):
-    mock_query = {'query': 'bleh'}
-    mock_ror.return_value = {
-        'items': [],
-        'time_taken': 4,
-        'number_of_results': 0,
-        'meta': {
-            'types': [],
-            'countries': []
-        }
-    }, 200
+def test_ror_by_query_returns_empty_list(mock_ror, app, auth_headers_for_superuser, json_headers):
+    query_arg = 'bleh'
+    mock_ror.return_value = {'items': [],
+                             'time_taken': 4,
+                             'number_of_results': 0,
+                             'meta': {'types': [], 'countries': []}}, 200
 
     with app.test_client() as client:
-        resp = client.get('services/ror',
-                          data=json.dumps(mock_query),
+        resp = client.get('services/ror?query={}'.format(query_arg),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 200
         assert resp.json == []
 
 
-@patch('cap.modules.services.views.ror._ror',
-       side_effect=ExternalAPIException())
-def test_ror_by_query_returns_exception(mock_ror, app,
-                                        auth_headers_for_superuser,
-                                        json_headers):
-    mock_query = {'query': '111'}
+@patch('cap.modules.services.views.ror._ror', side_effect=ExternalAPIException())
+def test_ror_by_query_returns_exception(mock_ror, app, auth_headers_for_superuser, json_headers):
+    query_arg = '111'
 
     with app.test_client() as client:
-        resp = client.get('services/ror',
-                          data=json.dumps(mock_query),
+        resp = client.get('services/ror?query={}'.format(query_arg),
                           headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 503

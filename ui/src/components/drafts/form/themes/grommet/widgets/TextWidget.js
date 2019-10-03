@@ -87,6 +87,12 @@ class TextWidget extends Component {
     }
 
     axios.get(`${suggestions}${event.target.value}`).then(({ data }) => {
+      if (
+        this.props.options.resultsSchema &&
+        this.props.options.resultsSchema === "object"
+      ) {
+        data = data.map(d => d.name);
+      }
       this.setState({
         suggestions: data
       });

@@ -2,7 +2,7 @@ import importDataField from "./importDataField";
 import CapFiles from "./CapFiles";
 import JSONEditorField from "./JSONEditorField/JSONEditorField";
 import AccordionJSONEditorField from "./JSONEditorField/AccordionJSONEditorField";
-import ServiceIDGetter from "./ServiceIDGetter";
+import ServiceIDGetter from "./ServiceIdGetter/index";
 
 const fields = {
   ImportDataField: importDataField,
