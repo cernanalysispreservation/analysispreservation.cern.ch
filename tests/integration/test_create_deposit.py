@@ -258,17 +258,17 @@ def test_create_deposit_set_fields_correctly(client, location, users,
 def test_create_deposit_when_schema_with_refs_works_correctly(
         client, location, users, create_schema, auth_headers_for_user,
         json_headers):
-    nested_schema = create_schema('nested-schema',
-                                  experiment='CMS',
-                                  deposit_schema={
-                                      'type': 'object',
-                                      'properties': {
-                                          'title': {
-                                              'type': 'string'
-                                          }
-                                      }
-                                  })
-    schema = create_schema(
+    create_schema('nested-schema',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          }
+                      }
+                  })
+    create_schema(
         'test-analysis',
         experiment='CMS',
         deposit_schema={
@@ -284,7 +284,7 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
         '/deposits/',
         headers=auth_headers_for_user(users['cms_user']) + json_headers,
         data=json.dumps({
-            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json',
             'nested': {
                 'title': 'nested'
             }

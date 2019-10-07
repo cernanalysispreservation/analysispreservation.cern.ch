@@ -22,6 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Models for schemas."""
+import copy
+
 from flask import url_for
 from invenio_jsonschemas.proxies import current_jsonschemas
 from marshmallow import Schema, ValidationError, fields, pre_load, validate
@@ -60,19 +62,9 @@ class SchemaSerializer(Schema):
 
     links = fields.Method('build_links', dump_only=True)
 
-    def __init__(self, called_on_update=False, *args, **kwargs):
-        """Initialize SchemaSerializer.
-
-        :param called_on_update: Serializer called during update.
-        """
-        self.called_on_update = called_on_update
-        super(SchemaSerializer, self).__init__(*args, **kwargs)
-
     @pre_load
     def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
         """Remove non editable fields from serialized data."""
-        if self.called_on_update:
-            data = {k: v for k, v in data.iteritems() if k in EDITABLE_FIELDS}
         if not data:
             raise ValidationError('Empty data')
         return data
@@ -93,5 +85,40 @@ class SchemaSerializer(Schema):
         return links
 
 
+class UpdateSchemaSerializer(SchemaSerializer):
+    """Schema serializer with resolved jsonschemas."""
+    @pre_load
+    def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
+        """Remove non editable fields from serialized data."""
+        data = {k: v for k, v in data.iteritems() if k in EDITABLE_FIELDS}
+        if not data:
+            raise ValidationError('Empty data')
+
+        return data
+
+
+class ResolvedSchemaSerializer(SchemaSerializer):
+    """Schema serializer with resolved jsonschemas."""
+
+    deposit_schema = fields.Method('get_resolved_deposit_schema',
+                                   dump_only=True)
+    record_schema = fields.Method('get_resolved_record_schema', dump_only=True)
+
+    def get_resolved_deposit_schema(self, obj):
+        """Resolve refs in deposit schema."""
+        schema = current_jsonschemas.get_schema(obj.deposit_path,
+                                                with_refs=True,
+                                                resolved=True)
+        return copy.deepcopy(schema)  # so all the JSONRefs get resoved
+
+    def get_resolved_record_schema(self, obj):
+        """Resolve refs in record schema."""
+        schema = current_jsonschemas.get_schema(obj.record_path,
+                                                with_refs=True,
+                                                resolved=True)
+        return copy.deepcopy(schema)  # so all the JSONRefs get resoved
+
+
 schema_serializer = SchemaSerializer()
-update_schema_serializer = SchemaSerializer(called_on_update=True)
+update_schema_serializer = UpdateSchemaSerializer()
+resolved_schemas_serializer = ResolvedSchemaSerializer()

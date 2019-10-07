@@ -260,6 +260,89 @@ def test_get(client, db, users, auth_headers_for_user):
     }
 
 
+def test_get_resolved_schemas(client, db, users, create_schema,
+                              auth_headers_for_superuser):
+    create_schema('nested-schema',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          }
+                      }
+                  })
+    create_schema(
+        'test-analysis',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json'
+                }
+            }
+        },
+        record_schema={
+            'title': 'record_schema',
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json'
+                }
+            }
+        },
+        use_deposit_as_record=False)
+
+    resp = client.get('/jsonschemas/test-analysis/1.0.0?resolve=True',
+                      headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'name': 'test-analysis',
+        'fullname': None,
+        'version': '1.0.0',
+        'is_indexed': True,
+        'use_deposit_as_record': False,
+        'deposit_schema': {
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    'type': 'object',
+                    'properties': {
+                        'title': {
+                            'type': 'string'
+                        }
+                    }
+                }
+            }
+        },
+        'record_schema': {
+            'title': 'record_schema',
+            'type': 'object',
+            'properties': {
+                'nested': {
+                    'type': 'object',
+                    'properties': {
+                        'title': {
+                            'type': 'string'
+                        }
+                    }
+                }
+            }
+        },
+        'deposit_mapping': {},
+        'deposit_options': {},
+        'record_mapping': {},
+        'record_options': {},
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
+            'deposit': 'https://analysispreservation.cern.ch/schemas/deposits/records/test-analysis-v1.0.0.json',
+            'record': u'https://analysispreservation.cern.ch/schemas/records/test-analysis-v1.0.0.json',
+        }
+    }
+
+
 ########################
 # api/jsonschemas/  [POST]
 ########################

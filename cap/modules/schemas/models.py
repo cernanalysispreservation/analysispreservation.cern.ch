@@ -42,7 +42,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
-from .serializers import schema_serializer
+from .serializers import resolved_schemas_serializer, schema_serializer
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -109,9 +109,10 @@ class Schema(db.Model):
 
         super(Schema, self).__init__(*args, **kwargs)
 
-    def serialize(self):
+    def serialize(self, resolve=False):
         """Serialize schema model."""
-        return schema_serializer.dump(self).data
+        serializer = resolved_schemas_serializer if resolve else schema_serializer  # noqa
+        return serializer.dump(self).data
 
     def __str__(self):
         """Stringify schema object."""
@@ -177,14 +178,6 @@ class Schema(db.Model):
         """Get ES records aliases."""
         name = name_to_es_name(self.name)
         return ['records', 'records-{}'.format(name)]
-
-    def serialize(self):
-        """Serialize schema model."""
-        return schema_serializer.dump(self).data
-
-    def __str__(self):
-        """Stringify schema object."""
-        return '{name}-v{version}'.format(name=self.name, version=self.version)
 
     def update(self, **kwargs):
         """Update schema instance."""
