@@ -23,10 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Marshmallow Schemas."""
 
-from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
-from invenio_search import current_search
-from invenio_search.utils import schema_to_index
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
@@ -107,7 +104,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                     permission['users'][index] = user.email
             elif permission['roles']:
                 for index, role_id in enumerate(permission['users']):
-                    user = Role.query.filter_by(id=role_id).one()
+                    role = Role.query.filter_by(id=role_id).one()
                     permission['users'][index] = role.name
 
         return access

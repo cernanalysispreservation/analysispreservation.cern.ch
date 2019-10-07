@@ -50,6 +50,7 @@ class SchemaAPI(MethodView):
 
     def get(self, name=None, version=None):
         """Get all schemas that user has access to."""
+        resolve = request.args.get('resolve', False)
         if name:
             try:
                 if version:
@@ -62,7 +63,7 @@ class SchemaAPI(MethodView):
             if not ReadSchemaPermission(schema).can():
                 abort(403)
 
-            response = schema.serialize()
+            response = schema.serialize(resolve=resolve)
 
         else:
             schemas = get_schemas_for_user()
