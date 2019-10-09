@@ -28,10 +28,15 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.props.initCurrentUser();
+    // const path = this.props.location.pathname;
+    let {
+      location: { state: { next: next = undefined } = {} }
+    } = this.props.history;
+    this.props.initCurrentUser(next);
   }
 
   render() {
+    if (this.props.loadingInit) return <Box>Loadiing....</Box>;
     return (
       <Grommet>
         <Box flex={false} full={true}>
@@ -58,13 +63,14 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    groups: state.auth.getIn(["currentUser", "depositGroups"])
+    groups: state.auth.getIn(["currentUser", "depositGroups"]),
+    loadingInit: state.auth.get("loadingInit")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    initCurrentUser: () => dispatch(initCurrentUser())
+    initCurrentUser: next => dispatch(initCurrentUser(next))
   };
 }
 

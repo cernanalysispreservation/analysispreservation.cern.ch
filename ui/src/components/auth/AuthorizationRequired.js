@@ -5,20 +5,22 @@ import Box from "grommet/components/Box";
 
 export default ComposedComponent => {
   class Authentication extends Component {
-    componentWillMount() {
-      if (!this.props.isLoggedIn) {
-        this.props.history.push({
+    constructor(props) {
+      super(props);
+      if (!props.isLoggedIn) {
+        props.history.push({
           pathname: "/login",
-          from: this.props.match.path,
-          search: `?next=${this.props.history.location.pathname}`,
-          state: { next: this.props.history.location.pathname }
+          from: props.match.path,
+          search: `?next=${props.history.location.pathname}`,
+          state: { next: props.history.location.pathname }
         });
       }
     }
 
     componentWillUpdate(nextProps) {
       if (!nextProps.isLoggedIn) {
-        this.props.history.push("/login");
+        const path = `/login?next=${nextProps.history.location.pathname}`;
+        this.props.history.push(path);
       }
     }
 
@@ -27,6 +29,7 @@ export default ComposedComponent => {
     };
 
     render() {
+      if (!this.props.isLoggedIn) return null;
       let cc = <ComposedComponent {...this.props} />;
 
       return <Box flex={true}>{cc}</Box>;
