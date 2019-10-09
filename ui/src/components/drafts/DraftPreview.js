@@ -116,14 +116,12 @@ DraftPreview.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    schemaId: state.drafts.getIn(["current_item", "schema"]),
-    schemas: state.drafts.getIn(["current_item", "schemas"]),
-    schemasLoading: state.drafts.getIn(["current_item", "schemasLoading"]),
+    schemaId: state.draftItem.get("schema"),
+    schemas: state.draftItem.get("schemas"),
+    // schemasLoading: state.draftItem.get("schemasLoading"),
 
-    draft_id: state.drafts.getIn(["current_item", "id"]),
-    draft: state.drafts.getIn(["current_item", "data"]),
-    published_id: state.drafts.getIn(["current_item", "published_id"]),
-    formData: state.drafts.getIn(["current_item", "formData"]) // TOFIX: remove to get from metadata
+    draft_id: state.draftItem.get("id"),
+    formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
   };
 }
 

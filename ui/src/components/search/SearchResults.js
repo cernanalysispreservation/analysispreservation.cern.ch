@@ -25,21 +25,26 @@ class SearchResults extends React.Component {
       <Box full={true} colorIndex="light-1">
         <List>
           {this.props.results.map((item, index) => {
-            let status = item.metadata._deposit.status;
-            let id =
-              status === "published"
-                ? item.metadata.control_number
-                : item.metadata._deposit.id;
-            let metadata = fromJS(item.metadata);
+            let { id, status, metadata = {} } = item;
+
+            let {
+              main_measurements: main_measurements = [],
+              general_title: general_title,
+              basic_info: { abstract: abstract } = {}
+            } = metadata;
             let objects = new Set();
 
-            metadata.getIn(["main_measurements"], []).map(item => {
-              return item
-                .getIn(["signal_event_selection", "physics_objects"], [])
-                .map(item => {
-                  if (item.get("object")) objects.add(item.get("object"));
-                });
-            });
+            if (main_measurements.length > 0) {
+              main_measurements.map(item => {
+                let {
+                  signal_event_selection: { physics_objects: physics_objects }
+                } = item;
+                physics_objects.map(
+                  ph_object =>
+                    ph_object.object ? objects.add(ph_object.object) : null
+                );
+              });
+            }
 
             return (
               <ListItem
@@ -68,14 +73,10 @@ class SearchResults extends React.Component {
                             textDecoration: "none",
                             color: "black"
                           }}
-                          data-tip={metadata.get("general_title")}
+                          data-tip={general_title}
                         >
-                          {metadata.get("general_title") || (
-                            <span
-                              style={{
-                                color: "#ccc"
-                              }}
-                            >
+                          {general_title || (
+                            <span style={{ color: "#ccc" }}>
                               No title provided
                             </span>
                           )}
@@ -108,10 +109,10 @@ class SearchResults extends React.Component {
                     pad={{ horizontal: "medium" }}
                     justify="center"
                   >
-                    {metadata.getIn(["basic_info", "abstract"]) ? (
+                    {abstract ? (
                       <i>
                         <Truncate lines={3} ellipsis={<span>...</span>}>
-                          {metadata.getIn(["basic_info", "abstract"]) || ""}
+                          {abstract || ""}
                         </Truncate>
                       </i>
                     ) : (

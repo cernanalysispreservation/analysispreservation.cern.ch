@@ -102,12 +102,13 @@ DraftDefaultHeader.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    draft_id: state.drafts.getIn(["current_item", "id"]),
-    draft: state.drafts.getIn(["current_item", "data"]),
-    error: state.drafts.getIn(["current_item", "error"]),
-    schema: state.drafts.getIn(["current_item", "schema"]),
-    formData: state.drafts.getIn(["current_item", "formData"]),
-    depositGroups: state.auth.getIn(["currentUser", "depositGroups"])
+    draft_id: state.draftItem.get("id"),
+    status: state.draftItem.get("status"),
+    draft: state.draftItem.get("data"),
+    errors: state.draftItem.get("errors"),
+    schema: state.draftItem.get("schema"),
+    formData: state.draftItem.get("formData")
+    // depositGroups: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }
 

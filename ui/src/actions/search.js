@@ -45,11 +45,15 @@ export function fetchSearch() {
       pathname in SEARCH_PATH_TO_INDEX
         ? SEARCH_PATH_TO_INDEX[pathname]
         : DEFAULT_INDEX;
-    let searchApiUrl = `/api/${index}/`;
+    let searchApiUrl = `/api/${index}`;
 
     let location_search = getState().routing.location.search;
+    // If query exists, remove "?" from string, since
+    // we construct later
+    if (location_search[0] == "?") location_search = location_search.substr(1);
+
     let params = queryString.parse(location_search);
-    let searchUrl = `${searchApiUrl}/${location_search}`;
+    let searchUrl = `${searchApiUrl}?${location_search}`;
 
     if (!("sort" in params)) searchUrl += "&sort=mostrecent";
 

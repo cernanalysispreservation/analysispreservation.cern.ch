@@ -7,7 +7,7 @@ import TextInput from "grommet/components/TextInput";
 import Paragraph from "grommet/components/Paragraph";
 
 import { connect } from "react-redux";
-import { formDataChange } from "../../../../../../actions/drafts";
+import { formDataChange } from "../../../../../../actions/draftItem";
 import { fromJS } from "immutable";
 
 import Spinning from "grommet/components/icons/Spinning";
@@ -103,6 +103,7 @@ class TextWidget extends Component {
   };
 
   updateValueOnSuggestion = ({ suggestion }) => {
+    this.autoFillOtherFields();
     return this.props.onChange(suggestion);
   };
 
@@ -111,11 +112,14 @@ class TextWidget extends Component {
       fieldsMap = this.props.options.autofill_fields,
       formData = fromJS(this.props.formData);
 
+    let { target: value } = event;
+    if (!value) return;
+
     this.setState({
       showSpinner: true
     });
 
-    axios.get(`${url}${event.target.value}`).then(({ data }) => {
+    axios.get(`${url}${value}`).then(({ data }) => {
       this.setState({
         showSpinner: false
       });
@@ -223,7 +227,7 @@ TextWidget.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    formData: state.drafts.getIn(["current_item", "formData"])
+    formData: state.draftItem.get("formData")
   };
 }
 

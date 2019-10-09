@@ -102,7 +102,9 @@ FileList.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    selectableActionLayer: state.drafts.get("fileManagerLayerSelectableAction")
+    selectableActionLayer: state.draftItem.get(
+      "fileManagerLayerSelectableAction"
+    )
   };
 };
 

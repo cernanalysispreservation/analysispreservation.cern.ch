@@ -5,25 +5,12 @@ export const FETCH_SCHEMA_SUCCESS = "FETCH_SCHEMA_SUCCESS";
 export const FETCH_SCHEMA_ERROR = "FETCH_SCHEMA_ERROR";
 
 // TOFIX REMOVE AND ADD TO LOCALSTORAGE
-export function fetchSchemaRequest() {
-  return {
-    type: FETCH_SCHEMA_REQUEST
-  };
-}
-
-export function fetchSchemaSuccess(schema) {
-  return {
-    type: FETCH_SCHEMA_SUCCESS,
-    schema
-  };
-}
-
-export function fetchSchemaError(error) {
-  return {
-    type: FETCH_SCHEMA_ERROR,
-    error
-  };
-}
+export const fetchSchemaRequest = () => ({ type: FETCH_SCHEMA_REQUEST });
+export const fetchSchemaSuccess = schema => ({
+  type: FETCH_SCHEMA_SUCCESS,
+  schema
+});
+export const fetchSchemaError = error => ({ type: FETCH_SCHEMA_ERROR, error });
 
 let getLocation = function(href) {
   let l = document.createElement("a");
@@ -96,5 +83,34 @@ export function fetchAndAssignSchema(
         })
       );
     }
+  };
+}
+
+export function fetchSchemaByNameVersion(name = null, _version = null) {
+  return dispatch => {
+    axios
+      .get(`/api/jsonschemas/${name}`)
+      .then(resp => {
+        let { links, version } = resp.data;
+        axios
+          .get(links.deposit)
+          .then(resp => {
+            let schema = resp.data;
+            axios
+              .get(links.deposit.replace("/schemas/", "/schemas/options/"))
+              .then(resp => {
+                let uiSchema = resp.data;
+                dispatch(
+                  fetchSchemaSuccess({
+                    schema: schema,
+                    schemaId: { name, version },
+                    uiSchema: uiSchema
+                  })
+                );
+              });
+          })
+          .catch();
+      })
+      .catch();
   };
 }

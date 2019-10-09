@@ -22,9 +22,8 @@ import CloseIcon from "grommet/components/icons/base/Close";
 import DownloadIcon from "grommet/components/icons/base/Download";
 import MoreIcon from "grommet/components/icons/base/More";
 
-import { deleteFile } from "../../../actions/drafts";
-
 import prettyBytes from "pretty-bytes";
+import { deleteFileByUri } from "../../../actions/files";
 
 const uploadStatusMap = {
   uploading: "disabled",
@@ -56,8 +55,12 @@ class FileItem extends React.Component {
 
   render() {
     let { file } = this.props;
-    let filename = file && file.key ? file.key.split("/").pop() : null;
-    let bucket_id = this.props.bucket_id ? this.props.bucket_id : file.bucket;
+
+    let { links: { self: file_link = null } = {}, key: filePath } = file;
+
+    // TO_RMEOVE after fixings links from backend
+    file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
+
     return file ? (
       <ListItem
         key={file.key}
@@ -87,7 +90,7 @@ class FileItem extends React.Component {
                 size="small"
                 truncate={true}
               >
-                {filename}{" "}
+                {filePath}{" "}
                 {file.size ? (
                   <strong>({prettyBytes(parseInt(file.size))})</strong>
                 ) : null}
@@ -109,7 +112,7 @@ class FileItem extends React.Component {
                   size="small"
                   icon={<DownloadIcon size="xsmall" />}
                   label={<Label size="small">Download</Label>}
-                  href={`/api/files/${bucket_id}/${filename}`}
+                  href={file_link}
                   download
                 />
                 {this.props.status !== "published" ? (
@@ -118,7 +121,7 @@ class FileItem extends React.Component {
                     icon={<CloseIcon size="xsmall" />}
                     label={<Label size="small">Delete</Label>}
                     onClick={() => {
-                      this.props.deleteFile(bucket_id, filename);
+                      this.props.deleteFile(file_link, filePath);
                     }}
                   />
                 ) : null}
@@ -139,15 +142,13 @@ FileItem.propTypes = {
 };
 
 const mapStateToProps = state => {
-  return {
-    bucket_id: state.drafts.getIn(["current_item", "bucket_id"]),
-    draft: state.drafts.getIn(["current_item", "data"])
-  };
+  return {};
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteFile: (bucket, file) => dispatch(deleteFile(bucket, file))
+    deleteFile: (file_uri, filepath) =>
+      dispatch(deleteFileByUri(file_uri, filepath))
   };
 };
 

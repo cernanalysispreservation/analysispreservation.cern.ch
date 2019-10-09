@@ -43,7 +43,7 @@ export default function SectionHeader(props) {
 }
 
 SectionHeader.propTypes = {
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   icon: PropTypes.element,
   status: PropTypes.element,
   action: PropTypes.element

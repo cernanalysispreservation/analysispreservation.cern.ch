@@ -50,21 +50,24 @@ class PublishedPreview extends React.Component {
   };
 
   render() {
-    let item = this.props.item ? this.props.item.metadata : null;
-    let _schema = this.props.schema ? transformSchema(this.props.schema) : null;
-    let files = item ? item._files : null;
-    let draft_id = item ? item._deposit.id : null;
-    let status = item ? item._deposit.status : null;
+    let { schema, uiSchema } = this.props.schemas
+      ? this.props.schemas.toJS()
+      : {};
+    if (!(schema && uiSchema)) return null;
+
+    let _schema = transformSchema(schema);
+
+    // let status = item ? item._deposit.status : null;
     return (
       <Box flex={true}>
         <Box direction="row" flex={true} wrap={false}>
           <Sidebar full={false} size="medium" colorIndex="light-2">
             <SectionHeader label="Files | Data | Source Code" />
             <Box flex={true}>
-              <FileList files={files} status={status} />
+              <FileList files={this.props.files} status={this.props.status} />
             </Box>
           </Sidebar>
-          {_schema && this.props.uiSchema ? (
+          {this.props.schemas ? (
             <Box flex={true}>
               <SectionHeader
                 label={
@@ -74,8 +77,7 @@ class PublishedPreview extends React.Component {
                     pad={{ between: "small" }}
                   >
                     <Box>
-                      {this.props.item.metadata &&
-                        this.props.item.metadata.general_title}
+                      {this.props.metadata && this.props.metadata.general_title}
                     </Box>
                     <Box
                       direction="row"
@@ -84,7 +86,7 @@ class PublishedPreview extends React.Component {
                       margin="none"
                       colorIndex="grey-3-a"
                     >
-                      <span>{this.props.item.id}</span>
+                      <span>{this.props.id}</span>
                     </Box>
                     <Box
                       direction="row"
@@ -98,14 +100,14 @@ class PublishedPreview extends React.Component {
                   </Box>
                 }
                 uppercase={false}
-                action={<EditAnchor draft_id={draft_id} />}
+                action={<EditAnchor draft_id={this.props.draft_id} />}
               />
               <Box flex={true} direction="row" justify="between">
                 <Box flex={false} pad="medium">
                   <JSONSchemaPreviewer
-                    formData={item || {}}
+                    formData={this.props.metadata.toJS()}
                     schema={_schema}
-                    uiSchema={this.props.uiSchema || {}}
+                    uiSchema={{}}
                     onChange={() => {}}
                   >
                     <span />
@@ -140,9 +142,12 @@ PublishedPreview.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    item: state.published.getIn(["current_item", "data"]),
-    schema: state.published.getIn(["current_item", "schema"]),
-    uiSchema: state.published.getIn(["current_item", "uiSchema"])
+    id: state.published.get("id"),
+    draft_id: state.published.get("draft_id"),
+    metadata: state.published.get("metadata"),
+    files: state.published.get("files"),
+    schemas: state.published.get("schemas"),
+    status: state.published.get("status")
   };
 };
 

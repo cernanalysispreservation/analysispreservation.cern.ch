@@ -6,12 +6,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
+import Layer from "grommet/components/Layer";
 
-import { initForm, formDataChange } from "../../actions/drafts";
+import {
+  initForm,
+  formDataChange,
+  clearErrorSuccess
+} from "../../actions/draftItem";
 
-import { fetchAndAssignSchema } from "../../actions/common";
+import { fetchSchemaByNameVersion } from "../../actions/common";
 
-import DepositForm from "./form/Form";
+import Form from "./form/Form";
 import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import PermissionDenied from "../errors/403";
@@ -45,43 +50,51 @@ class DraftEditor extends React.Component {
     // If "schema_id" from URL exists init form and fetch schema
     if (this.props.match.params.schema_id) {
       this.props.initForm();
-      this.props.fetchAndAssignSchema(null, this.props.match.params.schema_id);
+      this.props.fetchSchemaByNameVersion(this.props.match.params.schema_id);
+      // this.props.fetchAndAssignSchema(null, this.props.match.params.schema_id);
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.match.params.schema_id !== prevProps.match.params.schema_id
-    ) {
-      this.props.fetchAndAssignSchema(null, this.props.match.params.schema_id);
-    }
-    if (this.props.schemaId) {
-      if (!this.props.schemasLoading) {
-        if (
-          this.props.schemas == null ||
-          this.props.schemaId != this.props.schemas.schemaId
-        ) {
-          this.props.fetchAndAssignSchema(this.props.schemaId);
-        }
-      }
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  // if (
+  //   this.props.match.params.schema_id !== prevProps.match.params.schema_id
+  // ) {
+  //   this.props.fetchAndAssignSchema(null, this.props.match.params.schema_id);
+  // }
+  // if (this.props.schemaId) {
+  //   if (!this.props.schemasLoading) {
+  //     if (
+  //       this.props.schemas == null ||
+  //       this.props.schemaId != this.props.schemas.schemaId
+  //     ) {
+  //       this.props.fetchAndAssignSchema(this.props.schemaId);
+  //     }
+  //   }
+  // }
+  // }
 
   render() {
-    if (this.props.schemaError && this.props.schemaError.status == 403)
-      return (
-        <PermissionDenied
-          status={this.props.schemaError.status}
-          message={this.props.schemaError.message}
-        />
-      );
+    // if (this.props.schemaError && this.props.schemaError.status == 403)
+    //   return (
+    //     <PermissionDenied
+    //       status={this.props.schemaError.status}
+    //       message={this.props.schemaError.message}
+    //     />
+    //   );
 
     let _schema =
       this.props.schemas && this.props.schemas.schema
         ? transformSchema(this.props.schemas.schema)
         : null;
+
     return (
       <Box id="deposit-page" flex={true}>
+        {this.props.errors.length > 0 ? (
+          <Layer onClose={this.props.clearErrorSuccess} overlayClose={true}>
+            {JSON.stringify(this.props.errors)}{" "}
+          </Layer>
+        ) : null}
+
         {this.props.schemas &&
           this.props.schemas.schema && (
             <Box
@@ -92,7 +105,7 @@ class DraftEditor extends React.Component {
               wrap={false}
             >
               <Sidebar />
-              <DepositForm
+              <Form
                 formRef={this.props.formRef}
                 formData={this.props.formData || {}}
                 schema={_schema}
@@ -100,11 +113,8 @@ class DraftEditor extends React.Component {
                 onChange={change => {
                   this.props.formDataChange(change.formData);
                 }}
-                customValidation={true}
-                validate={true}
-                errors={this.props.error ? this.props.error.data.errors : []}
+                errors={this.props.errors}
               />
-
               <DraftJSONPreviewer />
             </Box>
           )}
@@ -118,7 +128,7 @@ DraftEditor.propTypes = {
   initForm: PropTypes.func,
   schemas: PropTypes.object,
   schemasLoading: PropTypes.bool,
-  schemaId: PropTypes.string,
+  // schemaId: PropTypes.string,
   error: PropTypes.object,
   formData: PropTypes.object,
   draft_id: PropTypes.string,
@@ -128,22 +138,25 @@ DraftEditor.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    schemaId: state.drafts.getIn(["current_item", "schema"]),
-    draft_id: state.drafts.getIn(["current_item", "id"]),
-    schemasLoading: state.drafts.getIn(["current_item", "schemasLoading"]),
-    formData: state.drafts.getIn(["current_item", "formData"]),
-    schemas: state.drafts.getIn(["current_item", "schemas"]),
-    error: state.drafts.getIn(["current_item", "error"]),
-    schemaError: state.drafts.get("schemaError")
+    all: state.draftItem.toJS(),
+    schemaId: state.draftItem.get("schema"),
+    draft_id: state.draftItem.get("id"),
+    // schemasLoading: state.draftItem.getIn(["current_item", "schemasLoading"]),
+    schemas: state.draftItem.get("schemas"),
+    metadata: state.draftItem.get("metadata"),
+    formData: state.draftItem.get("formData"),
+    errors: state.draftItem.get("errors")
+    // schemaError: state.draftItem.get("schemaError")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchAndAssignSchema: (schemaURL, schemaID, schemaVersion) =>
-      dispatch(fetchAndAssignSchema(schemaURL, schemaID, schemaVersion)),
+    fetchSchemaByNameVersion: (name, version) =>
+      dispatch(fetchSchemaByNameVersion(name, version)),
     initForm: () => dispatch(initForm()),
-    formDataChange: data => dispatch(formDataChange(data))
+    formDataChange: data => dispatch(formDataChange(data)),
+    clearErrorSuccess: () => dispatch(clearErrorSuccess())
   };
 }
 
