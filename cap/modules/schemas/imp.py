@@ -21,38 +21,21 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Utils for Schemas module."""
-
-from invenio_db import db
-from invenio_jsonschemas.errors import JSONSchemaNotFound
+"""Methods for schemas module."""
+from invenio_cache import current_cache
 
 from .models import Schema
-from .permissions import ReadSchemaPermission
 
 
-def add_schema_from_fixture(data=None):
-    """Add or update schema."""
-    allow_all = data.pop("allow_all", False)
-    name = data['name']
+@current_cache.memoize()
+def get_mappings():
+    """Implementation for mappings getter for invenio_search module."""
 
-    try:
-        schema = Schema.get(name=data['name'], version=data['version'])
-        print('{} already exist.'.format(name))
-
-    except JSONSchemaNotFound:
-        schema = Schema(**data)
-        db.session.add(schema)
-
-        print('{} added.'.format(name))
-
-    db.session.commit()
-
-    if allow_all:
-        schema.add_read_access_for_all_users()
-
-
-def get_schemas_for_user():
-    """Return all indexed schemas current user has read access to."""
+    mappings = {}
     schemas = Schema.query.filter_by(is_indexed=True).all()
 
-    return [x for x in schemas if ReadSchemaPermission(x).can()]
+    for schema in schemas:
+        mappings[schema.deposit_index] = {}
+        mappings[schema.record_index] = {}
+
+    return mappings

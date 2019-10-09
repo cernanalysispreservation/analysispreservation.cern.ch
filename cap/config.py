@@ -465,6 +465,8 @@ SEARCH_ELASTIC_HOSTS = [
          **es_params)
 ]
 
+SEARCH_GET_MAPPINGS_IMP = 'cap.modules.schemas.imp.get_mappings'
+
 # Admin
 # ========
 ADMIN_PERMISSION_FACTORY =  \

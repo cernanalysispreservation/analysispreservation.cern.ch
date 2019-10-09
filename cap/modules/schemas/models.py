@@ -29,17 +29,19 @@ from datetime import datetime
 from flask import current_app
 from invenio_access.models import ActionSystemRoles, ActionUsers
 from invenio_access.permissions import authenticated_user
+from invenio_cache import current_cache
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_search import current_search
-from invenio_search import current_search_client as es
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import validates
 from sqlalchemy.orm.exc import NoResultFound
+from werkzeug.utils import import_string
 
 from cap.types import json_type
+from invenio_search import current_search
+from invenio_search import current_search_client as es
 
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import resolved_schemas_serializer, schema_serializer
@@ -284,6 +286,10 @@ def after_insert_schema(target, value, schema):
         create_index(schema.record_index, schema.record_mapping,
                      schema.record_aliases)
 
+        # invenio search needs it
+        mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
+        current_cache.delete_memoized(import_string(mappings_imp))
+
 
 @event.listens_for(Schema, 'after_delete')
 def before_delete_schema(mapper, connect, schema):
@@ -294,7 +300,8 @@ def before_delete_schema(mapper, connect, schema):
                 es.indices.delete(index)
 
             # invenio search needs it
-            current_search.mappings.pop(index)
+            mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
+            current_cache.delete_memoized(import_string(mappings_imp))
 
 
 @db.event.listens_for(Schema, 'before_update', propagate=True)

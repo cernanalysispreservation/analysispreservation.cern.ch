@@ -16,12 +16,3 @@ class CAPDeposit(object):
     def init_app(self, app):
         """Flask application initialization."""
         app.extensions['cap_deposit'] = self
-
-        # fix to register mappings from DB
-        # [TOBE_FIXED] better query, etc
-        @app.before_first_request
-        def register_mappings():
-            schemas = Schema.query.all()
-            for schema in schemas:
-                current_search.mappings[schema.deposit_index] = {}
-                current_search.mappings[schema.record_index] = {}
