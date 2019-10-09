@@ -96,7 +96,7 @@ def ldap_user_by_mail():
     if not query:
         return jsonify([])
 
-    resp = _ldap(query, by='mail')
+    resp, status = _ldap(query, by='mail')
     data = [x[1]['mail'][0] for x in resp]
     return jsonify(data)
 
@@ -112,5 +112,5 @@ def ldap_egroup_mail():
         return jsonify([])
 
     resp, status = _ldap(query, sf, by='egroup')
-    data = [x[1]['mail'][0] for x in resp[1]]
+    data = [x[1]['mail'][0] for x in resp]
     return jsonify(data)
