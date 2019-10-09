@@ -31,7 +31,7 @@ def records_filter():
         Q('terms',
           **{'_access.record-admin.roles': roles})
 
-    return Q(q)
+    return q
 
 
 class CAPRecordSearch(RecordsSearch):
