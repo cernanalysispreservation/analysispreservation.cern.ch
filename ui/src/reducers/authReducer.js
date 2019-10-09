@@ -12,7 +12,10 @@ import {
   API_KEY_LIST_ERROR,
   CREATE_TOKEN_SUCCESS,
   CREATE_TOKEN_ERROR,
-  REVOKE_TOKEN_SUCCESS
+  REVOKE_TOKEN_SUCCESS,
+  INIT_CURRENT_USER_REQUEST,
+  INIT_CURRENT_USER_SUCCESS,
+  INIT_CURRENT_USER_ERROR
 } from "../actions/auth";
 
 const initialState = Map({
@@ -21,6 +24,7 @@ const initialState = Map({
   token: localStorage.getItem("token"),
   error: null,
   loading: false,
+  loadingInit: true,
   tokens: List()
 });
 
@@ -30,6 +34,12 @@ export default function authReducer(state = initialState, action) {
       return state.set("isLoggedIn", true);
     case UNAUTHENTICATED:
       return state.set("isLoggedIn", false);
+    case INIT_CURRENT_USER_REQUEST:
+      return state.set("loadingInit", true);
+    case INIT_CURRENT_USER_SUCCESS:
+      return state.set("loadingInit", false);
+    case INIT_CURRENT_USER_ERROR:
+      return state.set("loadingInit", false);
     case LOGIN_REQUEST:
       return state.set("error", null).set("loading", true);
     case LOGIN_SUCCESS:

@@ -3,6 +3,11 @@ import { history } from "../store/configureStore";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
+
+export const INIT_CURRENT_USER_REQUEST = "INIT_CURRENT_USER_REQUEST";
+export const INIT_CURRENT_USER_SUCCESS = "INIT_CURRENT_USER_SUCCESS";
+export const INIT_CURRENT_USER_ERROR = "INIT_CURRENT_USER_ERROR";
+
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_ERROR = "LOGIN_ERROR";
@@ -16,6 +21,17 @@ export const CREATE_TOKEN_SUCCESS = "CREATE_TOKEN_SUCCESS";
 export const CREATE_TOKEN_ERROR = "CREATE_TOKEN_ERROR";
 export const REVOKE_TOKEN_SUCCESS = "REVOKE_TOKEN_SUCCESS";
 export const REVOKE_TOKEN_ERROR = "REVOKE_TOKEN_ERROR";
+
+
+export function initCurrentUserRequest() {
+  return { type: INIT_CURRENT_USER_REQUEST };
+}
+export function initCurrentUserSuccess(user) {
+  return { type: INIT_CURRENT_USER_SUCCESS, user };
+}
+export function initCurrentUserError(error) {
+  return { type: INIT_CURRENT_USER_ERROR, error };
+}
 
 export function loginRequest() {
   return { type: LOGIN_REQUEST };
@@ -94,8 +110,10 @@ export function loginLocalUser(data) {
   };
 }
 
+
 export function initCurrentUser(next = undefined) {
   return function(dispatch) {
+    dispatch(initCurrentUserRequest());
     axios
       .get("/api/me")
       .then(function(response) {
@@ -110,6 +128,8 @@ export function initCurrentUser(next = undefined) {
             permissions: deposit_groups.length === 0 ? false : true
           })
         );
+        dispatch(initCurrentUserSuccess());
+
         // if next is defined
         if (next) {
           history.push(next);
@@ -117,6 +137,7 @@ export function initCurrentUser(next = undefined) {
       })
       .catch(function() {
         dispatch(clearAuth());
+        dispatch(initCurrentUserError());
       });
   };
 }

@@ -25,10 +25,11 @@ class WelcomePage extends React.Component {
   }
 
   onFormSubmit = formData => {
-    // insert history data
-    formData.next = this.props.history.location.state.next;
+    let {
+      location: { state: { next: next = "/" } = {} }
+    } = this.props.history;
+    formData["next"] = next;
 
-    // send form data
     this.props.loginLocalUser(formData);
   };
 
@@ -106,7 +107,8 @@ WelcomePage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   loginLocalUser: PropTypes.func.isRequired,
   authLoading: PropTypes.bool.isRequired,
-  authError: PropTypes.object
+  authError: PropTypes.object,
+  history: PropTypes.object
 };
 
 function mapStateToProps(state) {
