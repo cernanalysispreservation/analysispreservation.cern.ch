@@ -24,6 +24,7 @@
 """CAP Basic Schemas."""
 
 from __future__ import absolute_import, print_function
+import copy
 
 from marshmallow import Schema, fields
 
@@ -32,6 +33,8 @@ from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              UpdateDepositPermission)
 from cap.modules.records.permissions import (AdminRecordPermission,
                                              UpdateRecordPermission)
+
+from invenio_jsonschemas import current_jsonschemas
 
 from . import common
 
@@ -42,6 +45,9 @@ class RecordSchema(common.CommonRecordSchema):
     can_update = fields.Method('can_user_update', dump_only=True)
     can_admin = fields.Method('can_user_admin', dump_only=True)
 
+    draft_id = fields.String(attribute='metadata._deposit.id',
+                              dump_only=True)
+
     def can_user_update(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return UpdateRecordPermission(deposit).can()
@@ -50,6 +56,25 @@ class RecordSchema(common.CommonRecordSchema):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return AdminRecordPermission(deposit).can()
 
+class RecordFormSchema(RecordSchema):
+    """Schema for records v1 in JSON."""
+
+    schemas = fields.Method('get_record_schemas', dump_only=True)
+
+    def get_record_schemas(self, obj):
+        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
+
+        schema = current_jsonschemas.get_schema(
+                    deposit.schema.record_path,
+                    with_refs=True,
+                    resolved=True
+                )
+        uiSchema = deposit.schema.deposit_options
+
+        return dict(
+            schema=copy.deepcopy(schema),
+            uiSchema=uiSchema
+        )
 
 class DepositSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON."""

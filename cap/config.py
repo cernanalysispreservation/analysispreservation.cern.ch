@@ -390,7 +390,9 @@ RECORDS_REST_ENDPOINTS['recid'].update({
         'application/json': ('cap.modules.records.serializers'
                              ':record_json_v1_response'),
         'application/basic+json': ('cap.modules.records.serializers'
-                                   ':basic_json_v1_response')
+                                   ':basic_json_v1_response'),
+        'application/form+json': ('cap.modules.records.serializers'
+                                   ':record_form_json_v1_response'),
     },
     'search_serializers': {
         'application/json': ('cap.modules.records.serializers'
@@ -575,7 +577,9 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_response'),
         'application/permissions+json': ('cap.modules.records.serializers'
-                                         ':permissions_json_v1_response')
+                                         ':permissions_json_v1_response'),
+        'application/form+json': ('cap.modules.deposit.serializers'
+                                         ':deposit_form_json_v1_response')
     },
     'search_serializers': {
         'application/json': ('cap.modules.deposit.serializers'

@@ -30,17 +30,20 @@ from invenio_records_rest.serializers.response import (record_responsify,
                                                        search_responsify)
 
 from .json import DepositSerializer
-from .schemas.json import DepositSchema
+from .schemas.json import DepositSchema, DepositFormSchema
 
 # Serializers
 # ===========
 # CAP JSON serializer version 1.0.0
 deposit_json_v1 = DepositSerializer(DepositSchema)
+deposit_form_json_v1 = DepositSerializer(DepositFormSchema)
 
 # Records-REST serializers
 # ========================
 # JSON record serializer for individual records.
 deposit_json_v1_response = record_responsify(deposit_json_v1,
+                                             'application/json')
+deposit_form_json_v1_response = record_responsify(deposit_form_json_v1,
                                              'application/json')
 deposit_json_v1_search = search_responsify(deposit_json_v1, 'application/json')
 
