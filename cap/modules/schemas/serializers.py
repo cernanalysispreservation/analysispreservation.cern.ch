@@ -71,9 +71,14 @@ class SchemaSerializer(Schema):
 
     def build_links(self, obj):
         """Construct schema links."""
+        deposit_path = url_for('invenio_jsonschemas.get_schema',
+                schema_path=obj.deposit_path)
+        record_path = url_for('invenio_jsonschemas.get_schema',
+                schema_path=obj.record_path)
+
         links = {
-            'deposit': current_jsonschemas.path_to_url(obj.deposit_path),
-            'record': current_jsonschemas.path_to_url(obj.record_path)
+            'deposit': url_to_api_url(deposit_path),
+            'record': url_to_api_url(record_path)
         }
         links['self'] = url_to_api_url(
             url_for('cap_schemas.schemas',

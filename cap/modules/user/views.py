@@ -65,7 +65,8 @@ def get_user_deposit_groups():
 
     dep_groups = [{
         'name': schema.fullname,
-        'deposit_group': schema.name
+        'deposit_group': schema.name,
+        'schema_path': schema.deposit_path
     } for schema in schemas]
 
     return dep_groups
