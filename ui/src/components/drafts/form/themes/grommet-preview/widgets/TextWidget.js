@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import { connect } from "react-redux";
-import { formDataChange } from "../../../../../../actions/drafts";
+import { formDataChange } from "../../../../../../actions/draftItem";
 
 class TextWidget extends React.Component {
   constructor() {
@@ -33,7 +33,7 @@ TextWidget.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    formData: state.drafts.getIn(["current_item", "formData"])
+    formData: state.draftItem.get("formData")
   };
 }
 

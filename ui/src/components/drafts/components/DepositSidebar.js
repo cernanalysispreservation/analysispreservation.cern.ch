@@ -10,7 +10,7 @@ import Sidebar from "grommet/components/Sidebar";
 
 import AddIcon from "grommet/components/icons/base/Add";
 
-import { toggleFilemanagerLayer } from "../../../actions/drafts";
+import { toggleFilemanagerLayer } from "../../../actions/draftItem";
 
 import SectionHeader from "./SectionHeader";
 import DepositFilesList from "./DepositFilesList";
@@ -45,10 +45,7 @@ class DepositSidebar extends React.Component {
             label="Files | Data | Source Code"
             icon={this._renderAddFileIcon()}
           />
-          <DepositFilesList
-            files={this.props.files || []}
-            draft_id={this.props.draft_id}
-          />
+          <DepositFilesList files={this.props.files} />
         </Box>
       </Sidebar>
     );
@@ -56,18 +53,13 @@ class DepositSidebar extends React.Component {
 }
 
 DepositSidebar.propTypes = {
-  showSidebar: PropTypes.bool,
   toggleFilemanagerLayer: PropTypes.func,
-  draft_id: PropTypes.string,
-  match: PropTypes.object,
   files: PropTypes.object
 };
 
 function mapStateToProps(state) {
   return {
-    showSidebar: state.drafts.get("showSidebar"),
-    files: state.drafts.getIn(["current_item", "files"]),
-    draft_id: state.drafts.getIn(["current_item", "id"])
+    files: state.draftItem.get("bucket")
   };
 }
 

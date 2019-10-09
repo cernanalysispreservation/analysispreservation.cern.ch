@@ -32,27 +32,15 @@ class DepositFilesList extends React.Component {
   }
 
   render() {
-    return (
-      <span>
-        <FileManager
-          item_id={this.props.item_id}
-          files={this.props.files}
-          bucket={this.props.bucket}
-          activeLayer={this.props.fileManagerLayerActive}
-          key="_file_manager"
-        />
-
-        <FileList files={this.props.files} />
-      </span>
-    );
+    return [
+      <FileManager key="filesManager" files={this.props.files} />,
+      <FileList key="filesList" files={this.props.files} />
+    ];
   }
 }
 
 DepositFilesList.propTypes = {
-  fileManagerLayerActive: PropTypes.bool,
-  item_id: PropTypes.string,
-  files: PropTypes.object,
-  bucket: PropTypes.object
+  files: PropTypes.object
 };
 
 export default DepositFilesList;

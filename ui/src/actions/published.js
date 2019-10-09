@@ -1,5 +1,4 @@
 import axios from "axios";
-import { fetchAndAssignSchema } from "./common";
 
 export const PUBLISHED_ITEM_REQUEST = "PUBLISHED_ITEM_REQUEST";
 export const PUBLISHED_ITEM_SUCCESS = "PUBLISHED_ITEM_SUCCESS";
@@ -31,9 +30,13 @@ export function getPublishedItem(id) {
 
     let uri = `/api/records/${id}`;
     axios
-      .get(uri)
+      .get(uri, {
+        headers: {
+          Accept: "application/form+json",
+          "Cache-Control": "no-cache"
+        }
+      })
       .then(response => {
-        dispatch(fetchAndAssignSchema(response.data.metadata.$schema));
         dispatch(publishedItemSuccess(response.data));
       })
       .catch(error => {

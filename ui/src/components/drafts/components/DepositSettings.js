@@ -23,7 +23,8 @@ import {
   getDraftById,
   handlePermissions,
   clearError
-} from "../../../actions/drafts";
+} from "../../../actions/draftItem";
+
 import AddIcon from "grommet/components/icons/base/Add";
 import Spinning from "grommet/components/icons/Spinning";
 
@@ -97,18 +98,36 @@ class DepositSettings extends React.Component {
   }
 
   render() {
-    let permissions = this.props.permissions;
-    let grouped = _groupBy(permissions, function(permission) {
-      return permission.identity;
+    let permissions = this.props.permissions || {};
+
+    let access = {};
+    Object.keys(permissions).map(action => {
+      permissions[action].users.map(user => {
+        if (!access[user])
+          access[user] = {
+            actions: [],
+            type: "user"
+          };
+        access[user].actions.push(action);
+      });
+
+      permissions[action].roles.map(role => {
+        if (!access[role])
+          access[role] = {
+            actions: [],
+            type: "role"
+          };
+        access[role].actions.push(action);
+      });
     });
 
     let error = this.props.error ? this.props.error.message : null;
-    let owner = this.props.draft ? this.props.draft._deposit.owners[0] : null;
+    let owner = this.props.created_by;
     let draft_id = this.props.draft_id
       ? this.props.draft_id
       : this.props.match.params.draft_id;
 
-    let users = _sortBy(Object.keys(grouped));
+    let users_roles = _sortBy(Object.keys(access));
 
     return (
       <Box>
@@ -178,121 +197,71 @@ class DepositSettings extends React.Component {
               <Table>
                 <TableHeader labels={["User/Role", "Read", "Write", "Admin"]} />
                 <tbody>
-                  {users.map((key, index) => (
-                    <TableRow key={`${key}-${index}`}>
-                      <td>
-                        {key}
-                        {owner && owner === key ? (
-                          <strong> (owner)</strong>
-                        ) : null}
-                      </td>
-                      <td>
-                        {this.permissionExists(grouped[key], "deposit-read") ? (
+                  {users_roles.map((key, index) => {
+                    let { actions: actions = [], type: type } = access[key];
+                    let canRead = actions.indexOf("deposit-read") > -1;
+                    let canUpdate = actions.indexOf("deposit-update") > -1;
+                    let canAdmin = actions.indexOf("deposit-admin") > -1;
+
+                    return (
+                      <TableRow key={`${key}-${index}`}>
+                        <td>
+                          {key}
+                          {owner && owner === key ? (
+                            <strong> (owner)</strong>
+                          ) : null}
+                        </td>
+                        <td>
                           <CheckBox
                             toggle={true}
-                            checked={true}
+                            checked={canRead ? true : false}
                             disabled={owner && owner === key}
                             onChange={() =>
                               this.props.handlePermissions(
                                 draft_id,
-                                grouped[key][0]["type"],
+                                type,
                                 key,
                                 "deposit-read",
-                                "remove"
+                                canRead ? "remove" : "add"
                               )
                             }
                           />
-                        ) : (
+                        </td>
+                        <td>
                           <CheckBox
                             toggle={true}
-                            checked={false}
+                            checked={canUpdate ? true : false}
                             disabled={owner && owner === key}
                             onChange={() =>
                               this.props.handlePermissions(
                                 draft_id,
-                                grouped[key][0]["type"],
-                                key,
-                                "deposit-read",
-                                "add"
-                              )
-                            }
-                          />
-                        )}
-                      </td>
-                      <td>
-                        {this.permissionExists(
-                          grouped[key],
-                          "deposit-update"
-                        ) ? (
-                          <CheckBox
-                            toggle={true}
-                            checked={true}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                grouped[key][0]["type"],
+                                type,
                                 key,
                                 "deposit-update",
-                                "remove"
+                                canUpdate ? "remove" : "add"
                               )
                             }
                           />
-                        ) : (
+                        </td>
+                        <td>
                           <CheckBox
                             toggle={true}
-                            checked={false}
+                            checked={canAdmin ? true : false}
                             disabled={owner && owner === key}
                             onChange={() =>
                               this.props.handlePermissions(
                                 draft_id,
-                                grouped[key][0]["type"],
-                                key,
-                                "deposit-update",
-                                "add"
-                              )
-                            }
-                          />
-                        )}
-                      </td>
-                      <td>
-                        {this.permissionExists(
-                          grouped[key],
-                          "deposit-admin"
-                        ) ? (
-                          <CheckBox
-                            toggle={true}
-                            checked={true}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                grouped[key][0]["type"],
+                                type,
                                 key,
                                 "deposit-admin",
-                                "remove"
+                                canAdmin ? "remove" : "add"
                               )
                             }
                           />
-                        ) : (
-                          <CheckBox
-                            toggle={true}
-                            checked={false}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                grouped[key][0]["type"],
-                                key,
-                                "deposit-admin",
-                                "add"
-                              )
-                            }
-                          />
-                        )}
-                      </td>
-                    </TableRow>
-                  ))}
+                        </td>
+                      </TableRow>
+                    );
+                  })}
                 </tbody>
               </Table>
             </Box>
@@ -318,11 +287,12 @@ DepositSettings.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    draft_id: state.drafts.getIn(["current_item", "id"]),
-    draft: state.drafts.getIn(["current_item", "data"]),
-    permissions: state.drafts.getIn(["current_item", "permissions"]),
-    error: state.drafts.getIn(["current_item", "error"]),
-    loading: state.drafts.getIn(["current_item", "loading"])
+    draft_id: state.draftItem.get("id"),
+    created_by: state.draftItem.get("created_by"),
+    draft: state.draftItem.get("data"),
+    permissions: state.draftItem.get("access"),
+    error: state.draftItem.get("error"),
+    loading: state.draftItem.get("loading")
   };
 }
 

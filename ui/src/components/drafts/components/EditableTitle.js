@@ -9,7 +9,7 @@ import Label from "grommet/components/Label";
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
 
-import { updateGeneralTitle } from "../../../actions/drafts";
+import { updateGeneralTitle } from "../../../actions/draftItem";
 
 class EditableTitle extends React.Component {
   constructor(props) {
@@ -23,8 +23,9 @@ class EditableTitle extends React.Component {
   }
 
   _focusInput = () => {
+    let { general_title } = this.props.metadata;
     this.setState({
-      titleValue: this.props.general_title || "Untitled document",
+      titleValue: general_title || "Untitled document",
       editTitle: true
     });
   };
@@ -63,6 +64,7 @@ class EditableTitle extends React.Component {
   };
 
   render() {
+    let { general_title } = this.props.metadata;
     return this.state.editTitle ? (
       <Box direction="row" wrap={false}>
         <Label margin="small" direction="row">
@@ -108,7 +110,7 @@ class EditableTitle extends React.Component {
         >
           <Label align="start" pad="none" margin="none">
             {" "}
-            {this.props.general_title || "Untitled document"}
+            {general_title || "Untitled document"}
           </Label>
         </Box>
       </Box>
@@ -117,18 +119,16 @@ class EditableTitle extends React.Component {
 }
 
 EditableTitle.propTypes = {
-  general_title: PropTypes.string,
+  metadata: PropTypes.object,
   updateGeneralTitle: PropTypes.func,
   anaType: PropTypes.string
 };
 
 function mapStateToProps(state) {
   return {
-    general_title: state.drafts.getIn([
-      "current_item",
-      "general_title",
-      "title"
-    ])
+    metadata: state.draftItem.get("metadata"),
+    loading: state.draftItem.get("loading"),
+    generalTitleLoading: state.draftItem.get("generalTitleLoading")
   };
 }
 

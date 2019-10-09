@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
@@ -47,30 +46,7 @@ class PublishedSidebar extends React.Component {
 
 PublishedSidebar.propTypes = {
   match: PropTypes.object,
-  draft_id: PropTypes.string,
-  schemas: PropTypes.object,
-  schemaId: PropTypes.string,
-  formData: PropTypes.object,
-  schemasLoading: PropTypes.bool,
-  getPublishedItem: PropTypes.func,
-  item: PropTypes.object,
-  schema: PropTypes.object,
-  uiSchema: PropTypes.object
+  history: PropTypes.object
 };
 
-function mapStateToProps(state) {
-  return {
-    item: state.published.getIn(["current_item", "data"]),
-    schema: state.published.getIn(["current_item", "schema"]),
-    uiSchema: state.published.getIn(["current_item", "uiSchema"])
-  };
-}
-
-function mapDispatchToProps() {
-  return {};
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(PublishedSidebar));
+export default withRouter(PublishedSidebar);

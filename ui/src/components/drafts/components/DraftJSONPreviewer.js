@@ -9,7 +9,7 @@ import View from "grommet/components/icons/base/View";
 
 import ReactJson from "react-json-view";
 
-import { togglePreviewer } from "../../../actions/drafts";
+import { togglePreviewer } from "../../../actions/draftItem";
 
 import SectionHeader from "./SectionHeader";
 
@@ -44,14 +44,14 @@ class DepositPreviewer extends React.Component {
 
 DepositPreviewer.propTypes = {
   showPreviewer: PropTypes.bool,
-  data: PropTypes.object,
+  formData: PropTypes.object,
   togglePreviewer: PropTypes.func
 };
 
 function mapStateToProps(state) {
   return {
-    showPreviewer: state.drafts.get("showPreviewer"),
-    formData: state.drafts.getIn(["current_item", "formData"])
+    showPreviewer: state.draftItem.get("showPreviewer"),
+    formData: state.draftItem.get("formData")
   };
 }
 

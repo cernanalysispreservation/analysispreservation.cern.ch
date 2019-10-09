@@ -12,21 +12,22 @@ import DraftEditor from "./DraftEditor";
 import PermissionDenied from "../errors/403";
 
 // Actions
-import { getDraftById } from "../../actions/drafts";
+import { getDraftByIdAndInitForm } from "../../actions/draftItem";
 
 class DraftsItemIndex extends React.Component {
   componentDidMount() {
     let { draft_id } = this.props.match.params;
 
+    if (draft_id == this.props.id) return;
     if (draft_id) this.props.getDraftById(draft_id);
   }
 
   render() {
-    if (this.props.error && this.props.error.status == 403)
+    if (this.props.errors && this.props.errors.status == 403)
       return (
         <PermissionDenied
-          status={this.props.error.status}
-          message={this.props.error.message}
+          status={this.props.errors.status}
+          message={this.props.errors.message}
         />
       );
 
@@ -52,13 +53,14 @@ DraftsItemIndex.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    error: state.drafts.getIn(["current_item", "error"])
+    id: state.draftItem.get("id"),
+    errors: state.draftItem.get("errors")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDraftById: id => dispatch(getDraftById(id))
+    getDraftById: id => dispatch(getDraftByIdAndInitForm(id))
   };
 }
 

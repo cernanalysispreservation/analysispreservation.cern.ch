@@ -5,8 +5,6 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 
-import { toggleFilemanagerLayer } from "../../../actions/drafts";
-
 import objectPath from "object-path";
 
 // Customized RJSF component ( Grommet )
@@ -29,10 +27,12 @@ class DepositForm extends React.Component {
 
   _validate(formData, errors) {
     this.props.errors.map(error => {
-      let errorObj = objectPath.get(errors, error.field);
-      errorObj.addError(error.message);
+      if (error.field) {
+        let errorObj = objectPath.get(errors, error.field);
+        errorObj.addError(error.message);
+      }
     });
-
+    console.log("valisdateee", errors, this.props.errors);
     return errors;
   }
 
@@ -93,10 +93,8 @@ class DepositForm extends React.Component {
               fields={fields}
               uiSchema={this.props.uiSchema}
               liveValidate={false}
-              noValidate={!this.props.validate}
-              validate={
-                this.props.customValidation ? this._validate.bind(this) : null
-              }
+              noValidate={false}
+              validate={this._validate.bind(this)}
               onError={() => {}}
               transformErrors={this.transformErrors.bind(this)}
               formData={this.props.formData}
@@ -117,33 +115,12 @@ DepositForm.propTypes = {
   description: PropTypes.string,
   schema: PropTypes.object,
   selectSchema: PropTypes.string,
-  validate: PropTypes.bool,
-  liveValidate: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
   formData: PropTypes.object,
-  customValidation: PropTypes.bool,
   schemas: PropTypes.object,
   onChange: PropTypes.func
 };
 
-function mapStateToProps(state) {
-  return {
-    showSidebar: state.drafts.get("showSidebar"),
-    liveValidate: state.drafts.get("liveValidate"),
-    validate: state.drafts.get("validate"),
-    data: state.drafts.get("data")
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DepositForm);
+export default DepositForm;

@@ -7,7 +7,7 @@ import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 
 import Edit from "grommet/components/icons/base/FormEdit";
-import { toggleFilemanagerLayer } from "../../../../../../actions/drafts";
+import { toggleFilemanagerLayer } from "../../../../../../actions/draftItem";
 
 class CapFile extends React.Component {
   constructor(props) {

@@ -1,8 +1,4 @@
-import PropTypes from "prop-types";
-
 import React from "react";
-
-import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 
@@ -20,14 +16,4 @@ class PublishedIndex extends React.Component {
   }
 }
 
-PublishedIndex.propTypes = {
-  startDeposit: PropTypes.func
-};
-
-function mapStateToProps(state) {
-  return {
-    groups: state.auth.getIn(["currentUser", "depositGroups"])
-  };
-}
-
-export default withRouter(connect(mapStateToProps)(PublishedIndex));
+export default withRouter(PublishedIndex);

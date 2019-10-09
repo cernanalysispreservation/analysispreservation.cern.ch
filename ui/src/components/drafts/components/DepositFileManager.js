@@ -16,7 +16,8 @@ import {
   toggleFilemanagerLayer,
   uploadFile,
   uploadViaUrl
-} from "../../../actions/drafts";
+} from "../../../actions/files";
+
 import LinkIcon from "grommet/components/icons/base/Link";
 
 import FileList from "./FileList";
@@ -86,7 +87,7 @@ class FileManager extends React.Component {
                 File Manager (<Anchor
                   label="bucket"
                   icon={<LinkIcon size="xsmall" />}
-                  href={this.props.links.get("bucket")}
+                  href={this.props.links.bucket}
                   size="small"
                 />)
               </Title>
@@ -130,7 +131,7 @@ class FileManager extends React.Component {
                               alignItems: "center"
                             }}
                             onDrop={acceptedFiles => {
-                              let bucket_url = this.props.links.get("bucket");
+                              let bucket_url = this.props.links.bucket;
                               bucket_url = bucket_url.replace(
                                 ".cern.ch/",
                                 ".cern.ch/api/"
@@ -169,7 +170,7 @@ class FileManager extends React.Component {
                                   fill={true}
                                   onClick={() => {
                                     this.props.uploadViaUrl(
-                                      this.props.draft_id,
+                                      this.props.id,
                                       this.state.formData,
                                       "url"
                                     );
@@ -210,7 +211,7 @@ class FileManager extends React.Component {
                                 fill={true}
                                 onClick={() => {
                                   this.props.uploadViaUrl(
-                                    this.props.draft_id,
+                                    this.props.id,
                                     this.state.formData,
                                     "repo"
                                   );
@@ -277,16 +278,18 @@ FileManager.propTypes = {
   files: PropTypes.object,
   uploadFile: PropTypes.func,
   uploadViaUrl: PropTypes.func,
-  draft_id: PropTypes.string
+  id: PropTypes.string
 };
 
 function mapStateToProps(state) {
   return {
-    activeLayer: state.drafts.get("fileManagerActiveLayer"),
-    selectableLayer: state.drafts.get("fileManagerLayerSelectable"),
-    selectableActionLayer: state.drafts.get("fileManagerLayerSelectableAction"),
-    links: state.drafts.getIn(["current_item", "links"]),
-    draft_id: state.drafts.getIn(["current_item", "id"])
+    activeLayer: state.draftItem.get("fileManagerActiveLayer"),
+    selectableLayer: state.draftItem.get("fileManagerLayerSelectable"),
+    selectableActionLayer: state.draftItem.get(
+      "fileManagerLayerSelectableAction"
+    ),
+    links: state.draftItem.get("links"),
+    id: state.draftItem.get("id")
   };
 }
 
@@ -294,8 +297,7 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (draft_id, url, type) =>
-      dispatch(uploadViaUrl(draft_id, url, type))
+    uploadViaUrl: (id, url, type) => dispatch(uploadViaUrl(id, url, type))
   };
 }
 

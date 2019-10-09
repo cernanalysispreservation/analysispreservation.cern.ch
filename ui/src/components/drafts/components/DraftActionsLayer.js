@@ -8,7 +8,7 @@ import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 
-import { toggleActionsLayer } from "../../../actions/drafts";
+import { toggleActionsLayer } from "../../../actions/draftItem";
 
 class DraftActionsLayer extends React.Component {
   renderAction(action) {
@@ -109,7 +109,7 @@ DraftActionsLayer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    actionsLayer: state.drafts.get("actionsLayer")
+    actionsLayer: state.draftItem.get("actionsLayer")
   };
 }
 

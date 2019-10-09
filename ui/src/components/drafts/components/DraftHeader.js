@@ -17,7 +17,13 @@ class DraftHeader extends React.Component {
         direction="row"
       >
         <Route
-          path={["/drafts/:draft_id/edit", "/drafts/create/:schema_id"]}
+          path="/drafts/:draft_id/edit"
+          render={props => (
+            <DraftEditorHeader {...props} formRef={this.props.formRef} />
+          )}
+        />
+        <Route
+          path="/drafts/create/:schema_id"
           render={props => (
             <DraftEditorHeader {...props} formRef={this.props.formRef} />
           )}
