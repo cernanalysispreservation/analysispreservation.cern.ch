@@ -32,6 +32,8 @@ from invenio_access.permissions import authenticated_user
 from invenio_cache import current_cache
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_search import current_search
+from invenio_search import current_search_client as es
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.exc import IntegrityError
@@ -40,13 +42,18 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
 from cap.types import json_type
-from invenio_search import current_search
-from invenio_search import current_search_client as es
 
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import resolved_schemas_serializer, schema_serializer
 
 ES_FORBIDDEN = r' ,"\<*>|?'
+
+# map attributes when use_deposit_as_record flag on
+SERVE_DEPOSIT_AS_RECORD_MAP = {
+    'record_schema': 'deposit_schema',
+    'record_mapping': 'deposit_mapping',
+    'record_options': 'deposit_options'
+}
 
 
 class Schema(db.Model):
@@ -111,22 +118,19 @@ class Schema(db.Model):
 
         super(Schema, self).__init__(*args, **kwargs)
 
-    def serialize(self, resolve=False):
-        """Serialize schema model."""
-        serializer = resolved_schemas_serializer if resolve else schema_serializer  # noqa
-        return serializer.dump(self).data
+    def __getattribute__(self, attr):
+        """Map record attribute to deposit one,
+        if use_deposit_as_record is ```True```."""
+
+        if attr in SERVE_DEPOSIT_AS_RECORD_MAP.keys(
+        ) and self.use_deposit_as_record:
+            attr = SERVE_DEPOSIT_AS_RECORD_MAP.get(attr)
+
+        return object.__getattribute__(self, attr)
 
     def __str__(self):
         """Stringify schema object."""
         return '{name}-v{version}'.format(name=self.name, version=self.version)
-
-    @validates('name')
-    def validate_name(self, key, name):
-        """Validate if name is ES compatible."""
-        if any(x in ES_FORBIDDEN for x in name):
-            raise ValueError('Name cannot contain the following characters'
-                             '[, ", *, \\, <, | , , , > , ?]')
-        return name
 
     @property
     def version(self):
@@ -180,6 +184,19 @@ class Schema(db.Model):
         """Get ES records aliases."""
         name = name_to_es_name(self.name)
         return ['records', 'records-{}'.format(name)]
+
+    @validates('name')
+    def validate_name(self, key, name):
+        """Validate if name is ES compatible."""
+        if any(x in ES_FORBIDDEN for x in name):
+            raise ValueError('Name cannot contain the following characters'
+                             '[, ", *, \\, <, | , , , > , ?]')
+        return name
+
+    def serialize(self, resolve=False):
+        """Serialize schema model."""
+        serializer = resolved_schemas_serializer if resolve else schema_serializer  # noqa
+        return serializer.dump(self).data
 
     def update(self, **kwargs):
         """Update schema instance."""

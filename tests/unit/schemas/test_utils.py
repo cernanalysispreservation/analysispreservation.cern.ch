@@ -60,7 +60,7 @@ def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
             }
         },
         is_indexed=True,
-        use_deposit_as_record=True)
+        use_deposit_as_record=False)
 
     add_schema_from_fixture(data=data)
 
@@ -106,7 +106,7 @@ def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_sche
             }
         },
         is_indexed=True,
-        use_deposit_as_record=True)
+        use_deposit_as_record=False)
     db.session.add(
         Schema(**{
             'name': 'new-schema',
