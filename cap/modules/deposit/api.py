@@ -29,11 +29,11 @@ import copy
 from functools import wraps
 
 import requests
+from celery import shared_task
 from flask import current_app, request
 from flask_login import current_user
-
-from invenio_db import db
 from invenio_access.models import ActionRoles, ActionUsers
+from invenio_db import db
 from invenio_deposit.api import Deposit, index, preserve
 from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
@@ -48,7 +48,6 @@ from jsonschema.validators import Draft4Validator
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
-from celery import shared_task
 
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
@@ -60,7 +59,6 @@ from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .utils import ensure_content_length, name_git_record
 from .errors import (DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
 from .fetchers import cap_deposit_fetcher
@@ -68,7 +66,7 @@ from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
                           DepositUpdateActionNeed, UpdateDepositPermission)
-
+from .utils import ensure_content_length, name_git_record
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -151,8 +149,7 @@ def save_files_to_record(record_id, response, filename, total):
     record.files[filename].file.set_contents(
         response,
         default_location=record.files.bucket.location.uri,
-        size=total
-    )
+        size=total)
     db.session.commit()
 
 
@@ -314,6 +311,22 @@ class CAPDeposit(Deposit):
             # optionally we might need to do: deposit.files.flush()
             deposit.commit()
             return deposit
+
+    def _prepare_edit(self, record):
+        """Update selected keys for edit method.
+
+        Override method from ```invenio_deposit.api:Deposit``` class.
+        Copy deposit metadata instead of record metadata.
+
+        :param record: The published record.
+        """
+        data = self.dumps()
+
+        # Keep current record revision for merging.
+        data['_deposit']['pid']['revision_id'] = record.revision_id
+        data['_deposit']['status'] = 'draft'
+
+        return data
 
     @mark_as_action
     def edit(self, *args, **kwargs):
