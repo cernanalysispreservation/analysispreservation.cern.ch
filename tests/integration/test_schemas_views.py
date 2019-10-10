@@ -560,18 +560,20 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
             'title': 'deposit_options'
         },
         'record_schema': {},
-        'record_options': {
-            'title': 'record_options'
-        },
-        'record_mapping': {
-            'doc': {
-                'properties': {
-                    "title": {
-                        "type": "text"
+        'record_options':
+            {  # same as deposit_options because use_deposit_as_record == True
+                'title': 'deposit_options'
+            },
+        'record_mapping':
+            {  # same as deposit_mapping because use_deposit_as_record == True
+                'doc': {
+                    'properties': {
+                        "keyword": {
+                            "type": "keyword"
+                        }
                     }
                 }
-            }
-        },
+            },
         'deposit_mapping': {
             'doc': {
                 'properties': {

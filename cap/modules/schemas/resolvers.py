@@ -60,13 +60,13 @@ def resolve_by_path(path):
     if has_request_context() and not ReadSchemaPermission(schema).can():
         abort(403)
 
-    if type_ == current_app.config['SCHEMAS_DEPOSIT_PREFIX'] or \
-            schema.use_deposit_as_record:
+    if type_ == current_app.config['SCHEMAS_DEPOSIT_PREFIX']:
         jsonschema = schema.deposit_options if options \
             else schema.deposit_schema
     else:
         jsonschema = schema.record_options if options \
             else schema.record_schema
+
     return jsonschema
 
 
