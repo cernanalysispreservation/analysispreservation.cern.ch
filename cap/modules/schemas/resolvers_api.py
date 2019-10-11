@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2016, 2017 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,32 +21,17 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Record serialization."""
+"""Resolver for JSON Schemas."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_deposit.serializers import json_file_response
-from invenio_records_rest.serializers.response import (record_responsify,
-                                                       search_responsify)
+import jsonresolver
 
-from .json import DepositSerializer
-from .schemas.json import DepositSchema, DepositFormSchema
+from .resolvers import resolve_by_path
 
-# Serializers
-# ===========
-# CAP JSON serializer version 1.0.0
-deposit_json_v1 = DepositSerializer(DepositSchema)
-deposit_form_json_v1 = DepositSerializer(DepositFormSchema)
 
-# Records-REST serializers
-# ========================
-# JSON record serializer for individual records.
-deposit_json_v1_response = record_responsify(deposit_json_v1,
-                                             'application/json')
-deposit_form_json_v1_response = record_responsify(deposit_form_json_v1,
-                                                  'application/json')
-deposit_json_v1_search = search_responsify(deposit_json_v1, 'application/json')
-
-# Files-REST serializers
-# JSON Files serializers for deposit files
-files_response = json_file_response
+@jsonresolver.route('/api/schemas/<path:path>',
+                    host='analysispreservation.cern.ch')
+def resolve_api(path):
+    """Resolve CAP JSON schemas."""
+    return resolve_by_path(path)

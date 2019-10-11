@@ -179,7 +179,8 @@ def test_get_records_default_serializer(client, superuser,
             'self':
                 'http://analysispreservation.cern.ch/api/records/{}'.format(
                     recid),
-        }
+        },
+        'draft_id': deposit.pid.pid_value
     }
 
 
@@ -290,7 +291,8 @@ def test_get_record_when_superuser_returns_record(client, db, users,
             'self':
                 'http://analysispreservation.cern.ch/api/records/{}'.format(
                     recid),
-        }
+        },
+        'draft_id': deposit.pid.pid_value
     }
 
 

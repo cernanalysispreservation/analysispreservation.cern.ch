@@ -87,3 +87,6 @@ ui/package-lock.json
 
 # Celery
 celerybeat-schedule.db
+
+# VS Code specific
+.vscode

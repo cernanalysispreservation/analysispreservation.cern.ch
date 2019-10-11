@@ -41,6 +41,11 @@ from .permissions import ReadSchemaPermission
                     host='analysispreservation.cern.ch')
 def resolve(path):
     """Resolve CAP JSON schemas."""
+    return resolve_by_path(path)
+
+
+def resolve_by_path(path):
+    """Resolve CAP JSON schemas."""
     try:
         options, type_, name, major, minor, patch = parse_path(path)
         schema = Schema.query \

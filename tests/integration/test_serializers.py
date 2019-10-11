@@ -372,5 +372,6 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'self':
                 'http://analysispreservation.cern.ch/api/records/{}'.format(
                     recid),
-        }
+        },
+        'draft_id': deposit.pid.pid_value
     }
