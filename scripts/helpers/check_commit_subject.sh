@@ -1,11 +1,11 @@
 #!/bin/bash
 
 component=(
-"ALICE"
-"ATLAS"
-"CMS"
-"LHCb"
-"UI"
+"alice"
+"atlas"
+"cms"
+"lhcb"
+"ui"
 "access"
 "deposit"
 "devops"
