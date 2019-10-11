@@ -28,6 +28,7 @@ from flask.views import MethodView
 from flask_login import current_user
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from jsonref import JsonRefError
 
 from cap.modules.access.utils import login_required
 
@@ -63,7 +64,10 @@ class SchemaAPI(MethodView):
             if not ReadSchemaPermission(schema).can():
                 abort(403)
 
-            response = schema.serialize(resolve=resolve)
+            try:
+                response = schema.serialize(resolve=resolve)
+            except JsonRefError:
+                abort(404)
 
         else:
             schemas = get_schemas_for_user()

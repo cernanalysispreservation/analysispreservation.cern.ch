@@ -46,7 +46,8 @@ permissions_json_v1 = PermissionsJSONSerializer(PermissionsDepositSchema)
 # ========================
 # JSON record serializer for individual records.
 record_json_v1_response = record_responsify(record_json_v1, 'application/json')
-record_form_json_v1_response = record_responsify(record_form_json_v1, 'application/json')
+record_form_json_v1_response = record_responsify(record_form_json_v1,
+                                                 'application/json')
 record_json_v1_search = search_responsify(record_json_v1, 'application/json')
 basic_json_v1_response = record_responsify(basic_json_v1,
                                            'application/basic+json')

@@ -46,7 +46,7 @@ class RecordSchema(common.CommonRecordSchema):
     can_admin = fields.Method('can_user_admin', dump_only=True)
 
     draft_id = fields.String(attribute='metadata._deposit.id',
-                              dump_only=True)
+                             dump_only=True)
 
     def can_user_update(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
@@ -55,6 +55,7 @@ class RecordSchema(common.CommonRecordSchema):
     def can_user_admin(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return AdminRecordPermission(deposit).can()
+
 
 class RecordFormSchema(RecordSchema):
     """Schema for records v1 in JSON."""
@@ -75,6 +76,7 @@ class RecordFormSchema(RecordSchema):
             schema=copy.deepcopy(schema),
             uiSchema=uiSchema
         )
+
 
 class DepositSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON."""

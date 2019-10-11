@@ -46,10 +46,12 @@ def test_me_when_superuser_returns_correct_user_data(
     assert json.loads(resp.data) == {
         "deposit_groups": [{
             "deposit_group": "cms",
-            "name": 'CMS analysis'
+            "name": "CMS analysis",
+            "schema_path": "deposits/records/cms-v1.0.0.json"
         }, {
             "deposit_group": "lhcb",
-            "name": 'LHCb analysis'
+            "name": 'LHCb analysis',
+            "schema_path": "deposits/records/lhcb-v1.0.0.json"
         }],
         "email":
         superuser.email,
@@ -73,7 +75,8 @@ def test_me_when_cms_user_returns_correct_user_data(client, create_schema,
     assert json.loads(resp.data) == {
         "deposit_groups": [{
             "deposit_group": "cms",
-            "name": 'CMS analysis'
+            "name": "CMS analysis",
+            "schema_path": "deposits/records/cms-v1.0.0.json"
         }],
         "email": user.email,
         "id": user.id

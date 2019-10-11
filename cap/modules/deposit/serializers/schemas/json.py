@@ -35,6 +35,7 @@ from cap.modules.deposit.permissions import (AdminDepositPermission,
 from cap.modules.records.serializers.schemas import common
 from invenio_jsonschemas import current_jsonschemas
 
+
 class DepositSchema(common.CommonRecordSchema):
     """Schema for deposit v1 in JSON."""
     type = fields.Str(default='deposit')
