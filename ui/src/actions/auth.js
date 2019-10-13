@@ -22,6 +22,7 @@ export const CREATE_TOKEN_ERROR = "CREATE_TOKEN_ERROR";
 export const REVOKE_TOKEN_SUCCESS = "REVOKE_TOKEN_SUCCESS";
 export const REVOKE_TOKEN_ERROR = "REVOKE_TOKEN_ERROR";
 
+export const INTEGRATIONS_UPDATE = "INTEGRATIONS_UPDATE";
 
 export function initCurrentUserRequest() {
   return { type: INIT_CURRENT_USER_REQUEST };
@@ -110,7 +111,6 @@ export function loginLocalUser(data) {
   };
 }
 
-
 export function initCurrentUser(next = undefined) {
   return function(dispatch) {
     dispatch(initCurrentUserRequest());
@@ -139,6 +139,21 @@ export function initCurrentUser(next = undefined) {
         dispatch(clearAuth());
         dispatch(initCurrentUserError());
       });
+  };
+}
+
+export function updateIntegrations() {
+  return function(dispatch) {
+    axios
+      .get("/api/me")
+      .then(function(response) {
+        let { profile: { services: integrations = {} } = {} } = response.data;
+        dispatch({
+          type: INTEGRATIONS_UPDATE,
+          integrations
+        });
+      })
+      .catch(function() {});
   };
 }
 

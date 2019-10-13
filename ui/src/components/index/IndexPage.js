@@ -10,8 +10,10 @@ import SearchPage from "../search/SearchPage";
 import Header from "../partials/Header";
 
 import Dashboard from "../dashboard/Dashboard";
-import SettingsIndex from "../settings/SettingsIndex";
+
 import DraftsItemIndex from "../drafts/DraftsItemIndex";
+import SettingsIndex from "../settings";
+
 import PublishedIndex from "../published/PublishedIndex";
 import GrommetFooter from "../footer/Footer";
 import NotFoundPage from "../errors/404";
@@ -28,7 +30,7 @@ class IndexPage extends React.Component {
         <Box flex={true}>
           <Switch>
             <Route path="/drafts/:draft_id" component={DraftsItemIndex} />
-            <Route path="/" component={Dashboard} />
+            <Route exact path="/" component={Dashboard} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/drafts" component={SearchPage} />
             <Route path="/published" component={PublishedIndex} />

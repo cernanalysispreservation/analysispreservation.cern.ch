@@ -51,6 +51,7 @@ def authorize(name):
     configs = OAUTH_SERVICES.get(name.upper(), {})
     extra_data_method = configs.get('extra_data_method')
 
+    # TOFIX Add error handlers for reject, auth errors, etc
     extra_data = {}
     if (extra_data_method):
         extra_data = extra_data_method(client, token)
@@ -60,18 +61,19 @@ def authorize(name):
 
     db.session.add(_token)
 
-    if (get_oauth_profile):
-        profile = UserProfile.get_by_userid(current_user.id)
-        if not profile:
-            profile = UserProfile(user_id=current_user.id)
-            db.session.add(profile)
+    # Add extra data to user profile.
+    # If user profile doesn't exist yet, it creates one.
+    profile = UserProfile.get_by_userid(current_user.id)
+    if not profile:
+        profile = UserProfile(user_id=current_user.id)
+        db.session.add(profile)
 
-        profile_data = get_oauth_profile(name, token=_token, client=client)
+    profile_data = get_oauth_profile(name, token=_token, client=client)
 
-        profile_services = profile.extra_data.get("services", {})
-        profile_services[name] = profile_data
-        profile.extra_data = {"services": profile_services}
-        flag_modified(profile, "extra_data")
+    profile_services = profile.extra_data.get("services", {})
+    profile_services[name] = profile_data
+    profile.extra_data = {"services": profile_services}
+    flag_modified(profile, "extra_data")
 
     db.session.commit()
 
@@ -102,7 +104,7 @@ def get_oauth_profile(name, token=None, client=None):
         _token = OAuth2Token.get(name=name, user_id=current_user.id)
 
     if not _token:
-        return jsonify({"message": 
+        return jsonify({"message":
                         "Your account is not connected to the service"}), 403
 
     extra_data = _token.extra_data
@@ -122,7 +124,7 @@ def get_oauth_profile(name, token=None, client=None):
         orcid_id = extra_data.get('orcid_id')
         if orcid_id:
             resp = _client.get("/{}/record".format(orcid_id),
-                              headers={'Accept': 'application/json'})
+                               headers={'Accept': 'application/json'})
 
     if resp:
         profile = resp.json()

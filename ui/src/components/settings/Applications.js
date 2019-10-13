@@ -103,9 +103,9 @@ class SettingsIndex extends React.Component {
 
   render() {
     return (
-      <Box full={true} colorIndex="light-2">
+      <Box flex={true} colorIndex="light-1">
         {this.state.layer.active ? this.getLayer() : null}
-        <Box colorIndex="neutral-1-a">
+        <Box flex={false} colorIndex="neutral-1-a">
           <Header
             size="small"
             pad={{ horizontal: "small" }}
@@ -124,9 +124,9 @@ class SettingsIndex extends React.Component {
           </Header>
         </Box>
 
-        <Box pad="medium" align="center">
+        <Box flex={true} colorIndex="light-3" margin="medium">
           {!this.props.tokens.isEmpty() ? (
-            <Box colorIndex="light-2" align="center">
+            <Box flex={true}>
               {this.state.showToast ? (
                 <Toast
                   status="warning"
@@ -150,23 +150,25 @@ class SettingsIndex extends React.Component {
                 <tbody>
                   {this.props.tokens.map((token, keyy) => {
                     return token && token.t_id ? (
-                      <TableRow key={token.t_id}>
-                        {[
-                          <td key="id">{token.t_id}</td>,
-                          <td key="name">{token.name}</td>,
-                          <td key="access_token">{token.access_token}</td>,
-                          <td key="action">
-                            <Anchor
-                              icon={<CloseIcon />}
-                              onClick={this._revokeToken.bind(
-                                this,
-                                token.t_id,
-                                keyy
-                              )}
-                            />
-                          </td>
-                        ]}
-                      </TableRow>
+                      <Box flex={true}>
+                        <TableRow key={token.t_id}>
+                          {[
+                            <td key="id">{token.t_id}</td>,
+                            <td key="name">{token.name}</td>,
+                            <td key="access_token">{token.access_token}</td>,
+                            <td key="action">
+                              <Anchor
+                                icon={<CloseIcon />}
+                                onClick={this._revokeToken.bind(
+                                  this,
+                                  token.t_id,
+                                  keyy
+                                )}
+                              />
+                            </td>
+                          ]}
+                        </TableRow>
+                      </Box>
                     ) : null;
                   })}
                 </tbody>
