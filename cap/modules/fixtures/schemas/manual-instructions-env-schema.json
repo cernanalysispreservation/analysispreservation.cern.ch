@@ -1,32 +1,27 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
-    "title": "Manual Instructions Environment", 
-    "required": [
-      "environment_type", 
-      "instructions"
-    ], 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "title": "Manual Instructions Environment",
+    "required": ["environment_type", "instructions"],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "environment_type": {
-        "default": "manual-instructions-env", 
-        "enum": [
-          "manual-instructions-env"
-        ], 
-        "type": "string", 
+        "default": "manual-instructions-env",
+        "enum": ["manual-instructions-env"],
+        "type": "string",
         "title": "Process Type"
-      }, 
+      },
       "instructions": {
-        "type": "string", 
+        "type": "string",
         "title": "Instructions"
       }
     }
-  }, 
+  },
   "name": "manual-instructions-env-schema"
 }

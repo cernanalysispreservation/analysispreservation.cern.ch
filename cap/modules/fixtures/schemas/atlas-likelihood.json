@@ -1,340 +1,297 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
-    "description": "ATLAS Analysis Likelihood", 
-    "title": "Likelihood", 
-    "additionalProperties": true, 
+    "description": "ATLAS Analysis Likelihood",
+    "title": "Likelihood",
+    "additionalProperties": true,
     "definitions": {
       "sample": {
-        "additionalProperties": false, 
-        "required": [
-          "name", 
-          "data", 
-          "modifiers"
-        ], 
-        "type": "object", 
+        "additionalProperties": false,
+        "required": ["name", "data", "modifiers"],
+        "type": "object",
         "properties": {
           "modifiers": {
             "items": {
               "anyOf": [
                 {
                   "$ref": "#/definitions/modifier/histosys"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/lumi"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/normfactor"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/normsys"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/shapefactor"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/shapesys"
-                }, 
+                },
                 {
                   "$ref": "#/definitions/modifier/staterror"
-                }, 
+                },
                 {
                   "type": "object"
                 }
               ]
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "data": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "name": {
             "type": "string"
           }
         }
-      }, 
+      },
       "modifier": {
         "staterror": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
-              "minItems": 1, 
+              "minItems": 1,
               "items": {
                 "type": "number"
-              }, 
+              },
               "type": "array"
-            }, 
+            },
             "type": {
               "const": "staterror"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
-        }, 
+        },
         "shapesys": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
-              "minItems": 1, 
+              "minItems": 1,
               "items": {
                 "type": "number"
-              }, 
+              },
               "type": "array"
-            }, 
+            },
             "type": {
               "const": "shapesys"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
-        }, 
+        },
         "lumi": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
               "type": "null"
-            }, 
+            },
             "type": {
               "const": "lumi"
-            }, 
+            },
             "name": {
               "const": "lumi"
             }
           }
-        }, 
+        },
         "histosys": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
-              "required": [
-                "lo_data", 
-                "hi_data"
-              ], 
-              "type": "object", 
+              "required": ["lo_data", "hi_data"],
+              "type": "object",
               "properties": {
                 "lo_data": {
-                  "minItems": 1, 
+                  "minItems": 1,
                   "items": {
                     "type": "number"
-                  }, 
+                  },
                   "type": "array"
-                }, 
+                },
                 "hi_data": {
-                  "minItems": 1, 
+                  "minItems": 1,
                   "items": {
                     "type": "number"
-                  }, 
+                  },
                   "type": "array"
                 }
               }
-            }, 
+            },
             "type": {
               "const": "histosys"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
-        }, 
+        },
         "shapefactor": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
               "type": "null"
-            }, 
+            },
             "type": {
               "const": "shapefactor"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
-        }, 
+        },
         "normfactor": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
               "type": "null"
-            }, 
+            },
             "type": {
               "const": "normfactor"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
-        }, 
+        },
         "normsys": {
-          "additionalProperties": false, 
-          "required": [
-            "name", 
-            "type", 
-            "data"
-          ], 
-          "type": "object", 
+          "additionalProperties": false,
+          "required": ["name", "type", "data"],
+          "type": "object",
           "properties": {
             "data": {
-              "required": [
-                "lo", 
-                "hi"
-              ], 
-              "type": "object", 
+              "required": ["lo", "hi"],
+              "type": "object",
               "properties": {
                 "lo": {
                   "type": "number"
-                }, 
+                },
                 "hi": {
                   "type": "number"
                 }
               }
-            }, 
+            },
             "type": {
               "const": "normsys"
-            }, 
+            },
             "name": {
               "type": "string"
             }
           }
         }
-      }, 
+      },
       "parameter": {
-        "additionalProperties": false, 
-        "required": [
-          "name"
-        ], 
-        "type": "object", 
+        "additionalProperties": false,
+        "required": ["name"],
+        "type": "object",
         "properties": {
           "name": {
             "type": "string"
-          }, 
+          },
           "factors": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "bounds": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "items": {
-                "minItems": 2, 
-                "type": "number", 
+                "minItems": 2,
+                "type": "number",
                 "maxItems": 2
-              }, 
+              },
               "type": "array"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "inits": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "fixed": {
             "type": "boolean"
-          }, 
+          },
           "auxdata": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
-          }, 
+          },
           "sigmas": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "type": "number"
-            }, 
+            },
             "type": "array"
           }
         }
-      }, 
+      },
       "channel": {
-        "additionalProperties": false, 
-        "required": [
-          "name", 
-          "samples"
-        ], 
-        "type": "object", 
+        "additionalProperties": false,
+        "required": ["name", "samples"],
+        "type": "object",
         "properties": {
           "name": {
             "type": "string"
-          }, 
+          },
           "samples": {
-            "minItems": 1, 
+            "minItems": 1,
             "items": {
               "$ref": "#/definitions/sample"
-            }, 
+            },
             "type": "array"
           }
         }
       }
-    }, 
-    "$schema": "http://json-schema.org/draft-06/schema#", 
-    "type": "object", 
+    },
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "type": "object",
     "properties": {
       "channels": {
         "items": {
           "$ref": "#/definitions/channel"
-        }, 
+        },
         "type": "array"
-      }, 
+      },
       "parameters": {
         "items": {
           "$ref": "#/definitions/parameter"
-        }, 
+        },
         "type": "array"
       }
     }
-  }, 
+  },
   "name": "atlas-likelihood"
 }

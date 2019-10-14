@@ -1,28 +1,29 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "allow_all": true,
+  "fullname": "",
   "deposit_schema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "Add documentation", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "description": "Add documentation",
     "properties": {
       "url": {
-        "type": "string", 
+        "type": "string",
         "title": "URL"
-      }, 
+      },
       "keywords": {
-        "type": "string", 
+        "type": "string",
         "title": "Keywords"
-      }, 
+      },
       "comment": {
-        "type": "string", 
+        "type": "string",
         "title": "Comment"
       }
-    }, 
+    },
     "title": "Documentation"
-  }, 
+  },
   "name": "documentation"
 }

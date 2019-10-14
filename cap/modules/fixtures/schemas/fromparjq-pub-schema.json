@@ -1,41 +1,37 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
-    "title": "From Parameter JQ Publisher", 
-    "required": [
-      "publisher_type"
-    ], 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "title": "From Parameter JQ Publisher",
+    "required": ["publisher_type"],
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "tryExact": {
-        "default": true, 
+        "default": true,
         "type": "boolean"
-      }, 
+      },
       "publisher_type": {
-        "enum": [
-          "fromparjq-pub"
-        ], 
+        "enum": ["fromparjq-pub"],
         "type": "string"
-      }, 
+      },
       "glob": {
-        "default": false, 
+        "default": false,
         "type": "boolean"
-      }, 
+      },
       "relative_paths": {
-        "default": false, 
+        "default": false,
         "type": "boolean"
-      }, 
+      },
       "script": {
-        "default": ".", 
+        "default": ".",
         "type": "string"
       }
     }
-  }, 
+  },
   "name": "fromparjq-pub-schema"
 }

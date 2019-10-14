@@ -1,76 +1,68 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "CMS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
     "items": {
-      "type": "object", 
+      "type": "object",
       "properties": {
         "physics_objects": {
-          "type": "string", 
+          "type": "string",
           "title": "Physics Objects Available"
-        }, 
+        },
         "angle_relation": {
-          "pattern": "^[\\d\\.]+$", 
-          "type": "string", 
+          "pattern": "^[\\d\\.]+$",
+          "type": "string",
           "title": "Degrees"
-        }, 
+        },
         "transverse_mass": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "upper_range": {
-              "pattern": "^[\\d\\.]+$", 
-              "type": "string", 
+              "pattern": "^[\\d\\.]+$",
+              "type": "string",
               "title": ">"
-            }, 
+            },
             "lower_range": {
-              "pattern": "^[\\d\\.]+$", 
-              "type": "string", 
+              "pattern": "^[\\d\\.]+$",
+              "type": "string",
               "title": "<"
             }
-          }, 
+          },
           "title": "GeV"
-        }, 
+        },
         "charge_relation": {
-          "enum": [
-            "same_sign", 
-            "opposite_sign"
-          ], 
-          "type": "string", 
+          "enum": ["same_sign", "opposite_sign"],
+          "type": "string",
           "title": "Charge"
-        }, 
+        },
         "relation_type": {
-          "enum": [
-            "charge", 
-            "angle", 
-            "invariant_mass", 
-            "transverse_mass"
-          ], 
-          "type": "string", 
+          "enum": ["charge", "angle", "invariant_mass", "transverse_mass"],
+          "type": "string",
           "title": "Relation Type"
-        }, 
+        },
         "invariant_mass": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "upper_range": {
-              "pattern": "^[\\d\\.]+$", 
-              "type": "string", 
+              "pattern": "^[\\d\\.]+$",
+              "type": "string",
               "title": ">"
-            }, 
+            },
             "lower_range": {
-              "type": "number", 
+              "type": "number",
               "title": "<"
             }
-          }, 
+          },
           "title": "GeV"
         }
       }
-    }, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "array", 
+    },
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
     "title": "Relations"
-  }, 
+  },
   "name": "cms-physics-objects-relations"
 }

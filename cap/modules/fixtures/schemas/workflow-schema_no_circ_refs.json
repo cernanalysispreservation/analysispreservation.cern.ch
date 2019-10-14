@@ -1,27 +1,25 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
-    "title": "Yadage Workflow", 
-    "required": [
-      "stages"
-    ], 
+    "title": "Yadage Workflow",
+    "required": ["stages"],
     "properties": {
       "stages": {
         "items": {
           "type": "object"
-        }, 
-        "type": "array", 
+        },
+        "type": "array",
         "title": "Stages"
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "id": "yadage_workflow"
-  }, 
+  },
   "name": "workflow-schema_no_circ_refs"
 }
