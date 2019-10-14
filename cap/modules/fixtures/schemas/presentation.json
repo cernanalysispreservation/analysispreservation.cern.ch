@@ -1,19 +1,20 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "allow_all": true,
+  "fullname": "",
   "deposit_schema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
     "properties": {
       "url": {
-        "type": "string", 
+        "type": "string",
         "title": "URL"
       }
-    }, 
+    },
     "title": "Presentation"
-  }, 
+  },
   "name": "presentation"
 }

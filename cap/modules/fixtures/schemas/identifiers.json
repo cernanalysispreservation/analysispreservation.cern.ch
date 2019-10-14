@@ -1,24 +1,25 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": null,
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "allow_all": true,
+  "fullname": "",
   "deposit_schema": {
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "object", 
-    "description": "An issued identifier", 
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "description": "An issued identifier",
     "properties": {
       "scheme": {
-        "type": "string", 
+        "type": "string",
         "title": "Scheme"
-      }, 
+      },
       "identifier": {
-        "type": "string", 
+        "type": "string",
         "title": "Identifier"
       }
-    }, 
+    },
     "title": "Identifier"
-  }, 
+  },
   "name": "identifiers"
 }

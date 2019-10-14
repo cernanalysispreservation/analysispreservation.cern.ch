@@ -1,73 +1,73 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ALICE",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
     "items": {
-      "type": "object", 
+      "type": "object",
       "properties": {
         "ali_physics": {
-          "type": "string", 
+          "type": "string",
           "title": "Ali Physics"
-        }, 
+        },
         "run": {
           "items": {
-            "type": "object", 
+            "type": "object",
             "properties": {
               "run_numbers": {
                 "items": {
-                  "type": "string", 
+                  "type": "string",
                   "title": "Number"
-                }, 
-                "type": "array", 
+                },
+                "type": "array",
                 "title": "Run Number"
-              }, 
+              },
               "name": {
-                "type": "string", 
+                "type": "string",
                 "title": "Name"
               }
             }
-          }, 
-          "type": "array", 
+          },
+          "type": "array",
           "title": "Run"
-        }, 
+        },
         "dataset_aod": {
-          "type": "string", 
+          "type": "string",
           "title": "Dataset AOD"
-        }, 
+        },
         "run_id": {
-          "type": "string", 
+          "type": "string",
           "title": "Run ID"
-        }, 
+        },
         "configuration_files": {
-          "type": "string", 
+          "type": "string",
           "title": "Configuration Files"
-        }, 
+        },
         "wagon_names": {
-          "type": "string", 
+          "type": "string",
           "title": "Wagon Names"
-        }, 
+        },
         "dataset": {
-          "type": "string", 
+          "type": "string",
           "title": "Dataset"
-        }, 
+        },
         "reference_production": {
-          "type": "string", 
+          "type": "string",
           "title": "Reference Production"
-        }, 
+        },
         "train_id": {
-          "type": "string", 
+          "type": "string",
           "title": "Train ID"
-        }, 
+        },
         "wagon_paths": {
-          "type": "string", 
+          "type": "string",
           "title": "Wagon Paths"
         }
       }
-    }, 
+    },
     "type": "array"
-  }, 
+  },
   "name": "alice-datasets"
 }

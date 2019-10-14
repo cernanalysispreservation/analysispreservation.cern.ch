@@ -1,5 +1,5 @@
 {
-  "experiment": null,
+  "experiment": "LHCb",
   "use_deposit_as_record": true,
   "version": "0.0.1",
   "is_indexed": false,

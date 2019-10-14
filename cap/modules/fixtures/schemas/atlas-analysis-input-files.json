@@ -1,70 +1,70 @@
 {
-  "experiment": null, 
-  "use_deposit_as_record": true, 
-  "version": "0.0.1", 
-  "is_indexed": false, 
-  "fullname": "", 
+  "experiment": "ATLAS",
+  "use_deposit_as_record": true,
+  "version": "0.0.1",
+  "is_indexed": false,
+  "fullname": "",
   "deposit_schema": {
-    "title": "Inputs", 
+    "title": "Inputs",
     "items": {
-      "type": "object", 
+      "type": "object",
       "properties": {
         "files": {
-          "type": "object", 
+          "type": "object",
           "properties": {
             "data_inputfiles": {
               "items": {
                 "type": "string"
-              }, 
-              "type": "array", 
+              },
+              "type": "array",
               "title": "Data Input Files"
-            }, 
+            },
             "signal_inputfiles": {
               "items": {
                 "type": "string"
-              }, 
-              "type": "array", 
+              },
+              "type": "array",
               "title": "Signal Input Files"
-            }, 
+            },
             "signal_mcweight": {
-              "type": "number", 
+              "type": "number",
               "title": "Signal MC Weight"
-            }, 
+            },
             "bkg_mcinfo": {
               "items": {
-                "type": "object", 
+                "type": "object",
                 "properties": {
                   "inputfiles": {
                     "items": {
                       "type": "string"
-                    }, 
-                    "type": "array", 
+                    },
+                    "type": "array",
                     "title": "Background Input Files"
-                  }, 
+                  },
                   "name": {
                     "type": "string"
-                  }, 
+                  },
                   "weight": {
                     "type": "number"
                   }
                 }
-              }, 
-              "type": "array", 
+              },
+              "type": "array",
               "title": "Background MC Info"
             }
-          }, 
+          },
           "title": "Files"
-        }, 
+        },
         "title": {
-          "type": "string", 
+          "type": "string",
           "title": "Name"
         }
       }
-    }, 
-    "additionalProperties": false, 
-    "$schema": "http://json-schema.org/draft-04/schema#", 
-    "type": "array", 
+    },
+    "additionalProperties": false,
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "array",
     "id": "yadage_stage"
-  }, 
+  },
   "name": "atlas-analysis-input-files"
 }
