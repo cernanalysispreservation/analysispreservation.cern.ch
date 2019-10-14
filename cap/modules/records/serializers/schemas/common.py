@@ -102,9 +102,9 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 for index, user_id in enumerate(permission['users']):
                     user = User.query.filter_by(id=user_id).one()
                     permission['users'][index] = user.email
-            elif permission['roles']:
-                for index, role_id in enumerate(permission['users']):
+            if permission['roles']:
+                for index, role_id in enumerate(permission['roles']):
                     role = Role.query.filter_by(id=role_id).one()
-                    permission['users'][index] = role.name
+                    permission['roles'][index] = role.name
 
         return access
