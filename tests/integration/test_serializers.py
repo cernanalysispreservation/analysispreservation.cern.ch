@@ -31,6 +31,8 @@ from invenio_search import current_search
 from pytest import mark
 from six import BytesIO
 
+from conftest import _datastore
+
 
 def test_get_deposit_with_default_serializer(client, users,
                                              auth_headers_for_user,
@@ -50,6 +52,13 @@ def test_get_deposit_with_default_serializer(client, users,
     depid = deposit['_deposit']['id']
     metadata = deposit.get_record_metadata()
     file = deposit.files['file_1.txt']
+    role = _datastore.find_or_create_role('some-egroup@cern.ch')
+    deposit.edit_permissions([{
+        'email': role.name,
+        'type': 'egroup',
+        'op': 'add',
+        'action': 'deposit-read'
+    }])
 
     resp = client.get('/deposits/{}'.format(depid),
                       headers=[('Accept', 'application/json')] +
@@ -112,7 +121,7 @@ def test_get_deposit_with_default_serializer(client, users,
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 2,
+        'revision': 3,
         'schema': {
             'name': 'cms-analysis',
             'version': '1.0.0'
@@ -144,7 +153,7 @@ def test_get_deposit_with_default_serializer(client, users,
                 'users': [owner.email]
             },
             'deposit-read': {
-                'roles': [],
+                'roles': ['some-egroup@cern.ch'],
                 'users': [owner.email]
             }
         },
@@ -258,7 +267,6 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
     _, record = deposit.fetch_published()
     file = record.files['file_1.txt']
     metadata = record.get_record_metadata()
-
     resp = client.get('/records/{}'.format(recid),
                       headers=[('Accept', 'application/json')] +
                       auth_headers_for_user(owner))
