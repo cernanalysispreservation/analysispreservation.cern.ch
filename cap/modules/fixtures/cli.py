@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP Cli."""
 
 import json
@@ -43,6 +42,7 @@ from .utils import add_drafts_from_file
 @click.group()
 def fixtures():
     """Load fixtures."""
+    pass
 
 
 @fixtures.command('add')
@@ -60,6 +60,7 @@ def add(file, schema, egroup, user, limit):
 @fixtures.group()
 def cms():
     """CMS fixtures."""
+    pass
 
 
 @cms.command('sync-cadi')
@@ -79,7 +80,7 @@ def index_datasets(file):
         source = json.load(fp)
         cache_das_datasets_in_es_from_file(source)
 
-    print("Datasets indexed in Elasticsearch.")
+    click.secho("Datasets indexed in Elasticsearch.", fg='green')
 
 
 @cms.command('index-triggers')
@@ -91,12 +92,13 @@ def index_triggers(file):
         source = json.load(fp)
         cache_cms_triggers_in_es_from_file(source)
 
-    print("Triggers indexed in Elasticsearch.")
+    click.secho("Triggers indexed in Elasticsearch.", fg='green')
 
 
 @fixtures.command()
 @with_appcontext
-@click.option('--dir', '-d',
+@click.option('--dir',
+              '-d',
               type=click.Path(exists=True),
               default='cap/modules/fixtures/schemas')
 def schemas(dir):
@@ -109,7 +111,10 @@ def schemas(dir):
                     try:
                         json_content = json.load(f)
                     except ValueError:
-                        print("Not valid json in {} file".format(fullpath))
+                        click.secho(
+                            "Not a valid json in {} file".format(fullpath),
+                            fg='red',
+                            bold=True)
                         continue
 
                 add_schema_from_fixture(data=json_content)
