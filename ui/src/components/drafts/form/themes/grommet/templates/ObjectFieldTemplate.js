@@ -11,6 +11,8 @@ import FieldHeader from "../components/FieldHeader";
 import { Repeat } from "immutable";
 
 let ObjectFieldTemplate = function(props) {
+  let { uiSchema: { uiOptions = {} } = {} } = props;
+
   if (
     props.idSchema.$id == "root" &&
     props.uiSchema["ui:object"] != "tabView"

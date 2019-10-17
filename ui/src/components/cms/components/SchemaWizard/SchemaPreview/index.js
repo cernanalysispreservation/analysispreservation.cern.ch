@@ -42,15 +42,25 @@ class SchemaPreview extends React.Component {
             />
           )}
         </Header>
-
-        {this.state.view == "tree" ? (
-          <SchemaTree />
-        ) : (
-          <Box>
-            <JSONViewer title="Schema" data={this.props.schema} />
-            <JSONViewer title="UI Schema" data={this.props.uiSchema} />
-          </Box>
-        )}
+        <Box flex={true}>
+          {this.state.view == "tree" ? (
+            [
+              <Box
+                onClick={() =>
+                  this.props.selectProperty({ schema: [], uiSchema: [] })
+                }
+              >
+                Roots
+              </Box>,
+              <SchemaTree />
+            ]
+          ) : (
+            <Box>
+              <JSONViewer title="Schema" data={this.props.schema} />
+              <JSONViewer title="UI Schema" data={this.props.uiSchema} />
+            </Box>
+          )}
+        </Box>
       </Box>
     );
   }

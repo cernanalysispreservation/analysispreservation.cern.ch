@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 
 import Box from "grommet/components/Box";
@@ -10,15 +10,15 @@ import SchemaTreeItem from "./SchemaTreeItem";
 import HoverBox from "./HoverBox";
 import { addByPath } from "../../../../../../actions/schemaWizard";
 
-class SchemaTree extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+import ViewIcon from "grommet/components/icons/base/View";
 
+import { transformSchema } from "../../../../../drafts/DraftEditor";
+
+class SchemaTree extends React.Component {
   render() {
     return (
       <Form
-        schema={this.props.schema.toJS()}
+        schema={transformSchema(this.props.schema.toJS())}
         uiSchema={{}}
         formData={{}}
         showErrorList={false}
@@ -27,6 +27,7 @@ class SchemaTree extends React.Component {
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={_ArrayFieldTemplate}
         liveValidate={true}
+        widgets={widgets}
         validate={_validate}
         noHtml5Validate={true}
         formContext={{ schema: [], uiSchema: [] }}
@@ -49,6 +50,7 @@ let ArrayFieldTemplate = function(props) {
     schema: [...props.formContext.schema, ...schemaPath, "items"],
     uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"]
   };
+
   return (
     <Box flex={true}>
       <SchemaTreeItem type="array" {...props} path={_path} />
@@ -61,6 +63,7 @@ let ArrayFieldTemplate = function(props) {
             uiSchema={{}}
             formData={{}}
             tagName="div"
+            widgets={widgets}
             showErrorList={false}
             FieldTemplate={_FieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
@@ -81,6 +84,7 @@ let ArrayFieldTemplate = function(props) {
 let FieldTemplate = function(props) {
   const { schema, rawErrors = [], children, formContext } = props;
 
+  const [display, setDisplay] = useState(true);
   let path = {
     schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
     uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
@@ -110,25 +114,35 @@ let FieldTemplate = function(props) {
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
       <Box flex={true}>
+        <div
+          style={{ position: "absolute", padding: "15px", marginLeft: "-30px" }}
+          onClick={() => setDisplay(!display)}
+        >
+          <ViewIcon size="xsmall" />
+        </div>
+
         <SchemaTreeItem type="object" {...props} path={path} />
-        <Box flex={true} margin={{ left: "medium" }}>
-          <Form
-            schema={schema}
-            uiSchema={{}}
-            formData={{}}
-            showErrorList={false}
-            tagName="div"
-            FieldTemplate={_FieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            ArrayFieldTemplate={_ArrayFieldTemplate}
-            liveValidate={true}
-            validate={_validate}
-            noHtml5Validate={true}
-            formContext={path}
-          >
-            <span />
-          </Form>
-        </Box>
+        {display ? (
+          <Box flex={true} margin={{ left: "medium" }}>
+            <Form
+              schema={schema}
+              uiSchema={{}}
+              formData={{}}
+              showErrorList={false}
+              widgets={widgets}
+              tagName="div"
+              FieldTemplate={_FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              ArrayFieldTemplate={_ArrayFieldTemplate}
+              liveValidate={true}
+              validate={_validate}
+              noHtml5Validate={true}
+              formContext={path}
+            >
+              <span />
+            </Form>
+          </Box>
+        ) : null}
       </Box>
     );
   }
@@ -142,6 +156,21 @@ let FieldTemplate = function(props) {
   }
 
   return <SchemaTreeItem type="other" {...props} path={path} />;
+};
+
+let TextWidget = props => {
+  const { formContext, rawErrors } = props;
+
+  let path = {
+    schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
+    uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
+  };
+
+  return <SchemaTreeItem type="array" {...props} path={path} />;
+};
+
+const widgets = {
+  TextWidget: TextWidget
 };
 
 function mapDispatchToProps(dispatch) {

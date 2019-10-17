@@ -12,8 +12,11 @@ export const slugify = text => {
 export const _initSchemaStructure = (name, description) => ({
   schema: {
     title: name,
-    description: description
-  }
+    description: description,
+    type: "object",
+    properties: {}
+  },
+  uiSchema: {}
 });
 
 export const _addSchemaToLocalStorage = (_id, name, description) => {

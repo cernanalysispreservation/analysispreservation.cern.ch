@@ -11,6 +11,10 @@ class SelectContentType extends React.Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.props.getSchemas();
+  }
+
   render() {
     let that = this;
     return (
@@ -32,19 +36,25 @@ class SelectContentType extends React.Component {
         <Box colorIndex="light-2" pad="small">
           {this.props.list.size > 0 ? (
             this.props.list.entrySeq().map(([schemaId, schema]) => {
-              return (
-                <Box
-                  onClick={that.props.select.bind(this, schemaId)}
-                  margin="small"
-                  flex={true}
-                  pad="small"
-                  size="small"
-                  colorIndex="grey-4"
-                  key={schemaId}
-                >
-                  {schema.schema.title}
-                </Box>
-              );
+              return Object.keys(schema).map(schemaVersion => {
+                return (
+                  <Box
+                    onClick={that.props.select.bind(
+                      this,
+                      schemaId,
+                      schemaVersion
+                    )}
+                    margin="small"
+                    flex={true}
+                    pad="small"
+                    size="small"
+                    colorIndex="grey-4"
+                    key={schemaId}
+                  >
+                    {schemaId} {schemaVersion}
+                  </Box>
+                );
+              });
             })
           ) : (
             <Paragraph justify="center" align="center">

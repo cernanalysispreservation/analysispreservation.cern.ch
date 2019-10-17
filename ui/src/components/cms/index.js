@@ -14,7 +14,10 @@ class IndexPage extends React.Component {
       <Box flex={true}>
         <Switch>
           <Route exact path="/cms/" component={CMSIndex} />
-          <Route path="/cms/edit" component={SchemaWizard} />
+          <Route
+            path="/cms/edit/:schema_name?/:schema_version?"
+            component={SchemaWizard}
+          />
         </Switch>
       </Box>
     );

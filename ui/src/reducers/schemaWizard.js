@@ -18,105 +18,8 @@ const initialState = Map({
   selected: null,
   init: null,
   current: fromJS({
-    //   schema: {},
-    //   uiSchema: {}
-    // }),
-    schema: {
-      title: "boom",
-      description: "bloom",
-      type: "object",
-      properties: {
-        aaaa1: {
-          type: "string",
-          title: "AAAAAAA"
-        },
-        aaaaa1: {
-          type: "boolean",
-          title: "AAAAAAA"
-        },
-        bbbbbb1: {
-          type: "object",
-          properties: {
-            workflow_title: {
-              type: "string",
-              title: "Workflow Title"
-            },
-            workflow: {
-              oneOf: [
-                {
-                  type: "object",
-                  properties: {
-                    aaaa1: {
-                      type: "string",
-                      title: "AAAAAAA"
-                    },
-                    aaaaa1: {
-                      type: "boolean",
-                      title: "AAAAAAA"
-                    }
-                  }
-                },
-                { title: "afasdfsasfdas", type: "string" }
-              ]
-            }
-          }
-        },
-        cccc1: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              aaaa2: { type: "string" },
-              bbbb2: { type: "object", properties: {} }
-            }
-          }
-        },
-        ddddd1: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              aaaa2: { type: "string" },
-              bbbb2: { type: "object", properties: {} }
-            }
-          }
-        }
-      }
-    },
-    uiSchema: {
-      // "bbbbbb1": {
-      //   "ui:array": "AccordionArrayField"
-      // }
-      // "ui:object": "tabView",
-      "ui:options": {
-        view: {
-          container: "centered",
-          innerLayout: "centered",
-          vertical: "true"
-        }
-      },
-      aaaa1: {
-        "ui:options": {
-          view: {
-            // layout: "1/2"
-          }
-        }
-      },
-      bbbbbb1: {
-        "ui:object": "tabView",
-        "ui:options": {
-          full: true,
-          view: {
-            // container: "inline",
-            // padding: "small",
-            // layout: "1/2",
-            // innerLayout: "centered",
-            vertical: "true"
-            // sidebarColor: "grey-4"
-          }
-        }
-      }
-    }
+    schema: {},
+    uiSchema: {}
   }),
   field: null,
   propKeyEditor: null,
@@ -128,8 +31,8 @@ export default function schemaReducer(state = initialState, action) {
     case SCHEMA_INIT:
       return state
         .set("selected", action.id)
-        .set("init", Map(state.getIn(["list", action.id])))
-        .set("current", fromJS(state.getIn(["list", action.id])));
+        .set("init", Map(action.data))
+        .set("current", fromJS(action.data));
     case LIST_UPDATE:
       return state.set("list", Map(action.items));
 

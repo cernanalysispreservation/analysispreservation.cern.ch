@@ -1,13 +1,8 @@
 import axios from "axios";
+import { replace } from "react-router-redux";
 
 import exampleSchemas from "../components/schemas/static/example1";
-import {
-  slugify,
-  _initSchemaStructure,
-  _addSchemaToLocalStorage
-} from "../components/cms/utils";
-
-const SCHEMA_REST_URL = path => `/api/schemas${path}`;
+import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
 export const LIST_UPDATE = "LIST_UPDATE";
 
@@ -24,10 +19,11 @@ export const CURRENT_UPDATE_PATH = "CURRENT_UPDATE_PATH";
 export const CURRENT_UPDATE_SCHEMA_PATH = "CURRENT_UPDATE_SCHEMA_PATH";
 export const CURRENT_UPDATE_UI_SCHEMA_PATH = "CURRENT_UPDATE_UI_SCHEMA_PATH";
 
-export function schemaInit(id) {
+export function schemaInit(id, data) {
   return {
     type: SCHEMA_INIT,
-    id
+    id,
+    data
   };
 }
 
@@ -51,55 +47,107 @@ export function selectProperty(path) {
 
 export function getSchemas() {
   return function(dispatch) {
-    // dispatch(schemasListRequest());
+    axios
+      .get("/api/jsonschemas?resolve=1")
+      .then(resp => {
+        let schemas = resp.data;
+        let _schemas = {};
+        schemas.map(schema => {
+          _schemas[schema.name] = {
+            [schema.version]: schema
+          };
+        });
+        dispatch(listUpdate(_schemas));
+      })
+      .catch(err => {});
+  };
+}
 
+export function getSchema(name, version = null) {
+  let schemaLink;
+  if (version) schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1`;
+  else schemaLink = `/api/jsonschemas/${name}?resolve=1`;
+
+  return function(dispatch) {
+    axios
+      .get(schemaLink)
+      .then(resp => {
+        let schema = resp.data;
+        let { id, version, deposit_schema, deposit_options } = schema;
+
+        if (deposit_schema && deposit_options)
+          dispatch(
+            schemaInit(
+              { id, version },
+              { schema: deposit_schema, uiSchema: deposit_options }
+            )
+          );
+      })
+      .catch(err => {});
+  };
+}
+
+export function getSchemasLocalStorage() {
+  return function(dispatch) {
     let availableSchemas = localStorage.getItem("availableSchemas");
     availableSchemas = JSON.parse(availableSchemas);
-
-    console.log("availableSchema::", availableSchemas);
-    // let uri = SCHEMA_REST_URL("");
-
-    dispatch(listUpdate({}));
   };
 }
 
 export function createContentType(content_type) {
   return function(dispatch) {
-    // dispatch(schemasListRequest());
-
     let name = content_type.formData.name;
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
 
-    _initSchemaStructure(name, description);
-    let availableSchemas = _addSchemaToLocalStorage(_id, name, description);
-    console.log("availableSchema::", availableSchemas);
-
-    // let uri = SCHEMA_REST_URL("");
-
-    dispatch(listUpdate(availableSchemas));
+    dispatch(schemaInit({ id: _id }, _initSchemaStructure(name, description)));
+    dispatch(replace("/cms/edit"));
   };
 }
 
-export function selectContentType(id) {
-  return function(dispatch) {
+export function selectContentType(id, version) {
+  return function(dispatch, getState) {
+    let state = getState();
+    let data = state.schemaWizard.getIn(["list", id]);
+
+    if (data && data[version]) {
+      let { deposit_schema, deposit_options } = data[version];
+
+      if (deposit_schema && deposit_options)
+        dispatch(
+          schemaInit(
+            { id, version },
+            { schema: deposit_schema, uiSchema: deposit_options }
+          )
+        );
+      dispatch(replace("/cms/edit"));
+    } else console.log("select::", `ERROR: Schema '${id}' does not exists`);
+  };
+}
+
+export function fetchAndSelectContentType(id, version) {
+  return function(dispatch, getState) {
     // dispatch(schemasListRequest());
+    let state = getState();
+    let data = state.schemaWizard.getIn(["list", id]);
 
-    let availableSchemas = localStorage.getItem("availableSchemas") || "{}";
-    availableSchemas = JSON.parse(availableSchemas);
+    if (data && data[version]) {
+      let { deposit_schema, deposit_options } = data[version];
 
-    if (id in availableSchemas) dispatch(schemaInit(id));
-    // console.log("select::", availableSchemas[id])
-    else console.log("select::", `ERROR: Schema '${id}' does not exists`);
-
-    // dispatch(listUpdate(availableSchemas));
+      if (deposit_schema && deposit_options)
+        dispatch(
+          schemaInit(
+            { id, version },
+            { schema: deposit_schema, uiSchema: deposit_options }
+          )
+        );
+      dispatch(replace("/cms/edit"));
+    } else console.log("select::", `ERROR: Schema '${id}' does not exists`);
   };
 }
 
 export function selectFieldType(path, change) {
   return function(dispatch, getState) {
-    // const pathToChange = propKey ? [...path, propKey] : path;
-
     dispatch(updateByPath(path, change));
   };
 }
@@ -110,7 +158,6 @@ export function updateCurrentSchemaWithField(schema) {
     let path = state.getIn(["field", "path"]).toJS();
 
     const pathToChange = propKey ? [...path, propKey] : path;
-    console.log("prop::::", propKey, path, pathToChange);
     dispatch(updateSchemaByPath(pathToChange, schema));
   };
 }
