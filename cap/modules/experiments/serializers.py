@@ -24,8 +24,9 @@
 """Serializers for Reana models."""
 
 from __future__ import absolute_import, print_function
-from HTMLParser import HTMLParser
+
 import re
+from HTMLParser import HTMLParser
 
 from marshmallow import Schema, fields
 
@@ -34,7 +35,6 @@ parser = HTMLParser()
 
 class CADIField(fields.Field):
     """CADI html preprocessing field."""
-
     def _serialize(self, value, attr, obj):
         return '' if value is None \
             else parser.unescape(parser.unescape(value))
@@ -52,6 +52,10 @@ class CADISchema(Schema):
     twiki = CADIField(attribute='URL', default='', dump_only=True)
     status = CADIField(default='', dump_only=True)
     publication_status = CADIField(attribute='publicationStatus',
-                                   default='', dump_only=True)
+                                   default='',
+                                   dump_only=True)
     cadi_id = fields.Function(
         lambda entry: re.sub('^d', '', entry.get('code', '')), dump_only=True)
+
+
+cadi_serializer = CADISchema()

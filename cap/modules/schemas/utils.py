@@ -25,30 +25,10 @@
 
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from sqlalchemy.exc import IntegrityError
 
 from .models import Schema
 from .permissions import ReadSchemaPermission
-
-
-def add_schema_from_fixture(data=None):
-    """Add or update schema."""
-    allow_all = data.pop("allow_all", False)
-    name = data['name']
-
-    try:
-        schema = Schema.get(name=data['name'], version=data['version'])
-        print('{} already exist.'.format(name))
-
-    except JSONSchemaNotFound:
-        schema = Schema(**data)
-        db.session.add(schema)
-
-        print('{} added.'.format(name))
-
-    db.session.commit()
-
-    if allow_all:
-        schema.add_read_access_for_all_users()
 
 
 def get_schemas_for_user():

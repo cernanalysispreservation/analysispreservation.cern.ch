@@ -28,6 +28,10 @@ from __future__ import absolute_import, print_function
 import shutil
 from tempfile import SpooledTemporaryFile
 
+from flask import current_app
+from invenio_access.models import Role
+from invenio_db import db
+
 from cap.config import FILES_URL_MAX_SIZE
 
 
@@ -75,3 +79,11 @@ def extract_actions_from_class(record_class):
         method = getattr(record_class, name, None)
         if method and getattr(method, '__deposit_action__', False):
             yield method.__name__
+
+
+def add_read_permission_for_egroup(deposit, egroup):
+    """Add read permission for egroup."""
+    role = Role.query.filter_by(name=egroup).one()
+    deposit._add_egroup_permissions(role, ['deposit-read'], db.session)
+    deposit.commit()
+    db.session.commit()

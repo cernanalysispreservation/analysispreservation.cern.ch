@@ -21,100 +21,12 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""CAP Cli."""
-
-import json
-import os
+"""Fixtures Cli."""
 
 import click
-from flask_cli import with_appcontext
-
-from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
-from cap.modules.experiments.utils.cms import \
-    cache_cms_triggers_in_es_from_file  # noqa
-from cap.modules.experiments.utils.das import \
-    cache_das_datasets_in_es_from_file  # noqa
-from cap.modules.schemas.utils import add_schema_from_fixture
-
-from .utils import add_drafts_from_file
 
 
 @click.group()
 def fixtures():
     """Load fixtures."""
     pass
-
-
-@fixtures.command('add')
-@click.option('--egroup', '-e')
-@click.option('--schema', '-s', required=True)
-@click.option('--file', '-f', required=True, type=click.Path(exists=True))
-@click.option('--user', '-u', required=False)
-@click.option('--limit', '-n', type=int)
-@with_appcontext
-def add(file, schema, egroup, user, limit):
-    """Load drafts with metadata from file."""
-    add_drafts_from_file(file, schema, egroup, user, limit)
-
-
-@fixtures.group()
-def cms():
-    """CMS fixtures."""
-    pass
-
-
-@cms.command('sync-cadi')
-@click.option('--limit', '-n', type=int)
-@with_appcontext
-def sync_with_cadi_database(limit):
-    """Add/update CADI entries connecting with CADI database."""
-    synchronize_cadi_entries(limit)
-
-
-@cms.command('index-datasets')
-@click.option('--file', '-f', required=True, type=click.Path(exists=True))
-@with_appcontext
-def index_datasets(file):
-    """Load datasets from file and index in ES."""
-    with open(file, 'r') as fp:
-        source = json.load(fp)
-        cache_das_datasets_in_es_from_file(source)
-
-    click.secho("Datasets indexed in Elasticsearch.", fg='green')
-
-
-@cms.command('index-triggers')
-@click.option('--file', '-f', required=True, type=click.Path(exists=True))
-@with_appcontext
-def index_triggers(file):
-    """Load cms triggers from file and index in ES."""
-    with open(file, 'r') as fp:
-        source = json.load(fp)
-        cache_cms_triggers_in_es_from_file(source)
-
-    click.secho("Triggers indexed in Elasticsearch.", fg='green')
-
-
-@fixtures.command()
-@with_appcontext
-@click.option('--dir',
-              '-d',
-              type=click.Path(exists=True),
-              default='cap/modules/fixtures/schemas')
-def schemas(dir):
-    """Load default schemas."""
-    for root, dirs, files in os.walk(dir):
-        for file in files:
-            if file.endswith(".json"):
-                fullpath = os.path.join(root, file)
-                with open(fullpath, 'r') as f:
-                    try:
-                        json_content = json.load(f)
-                    except ValueError:
-                        click.secho(
-                            "Not a valid json in {} file".format(fullpath),
-                            fg='red',
-                            bold=True)
-                        continue
-
-                add_schema_from_fixture(data=json_content)

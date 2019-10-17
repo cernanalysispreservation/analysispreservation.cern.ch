@@ -121,6 +121,7 @@ def test_dashboard_view_returns_published_by_collaboration(
                                                    publish=True)
     published_by_another_collab = create_deposit(users['cms_user'],
                                                  'cms-v0.2.0',
+                                                 experiment='CMS',
                                                  publish=True)
 
     resp = client.get('/dashboard',

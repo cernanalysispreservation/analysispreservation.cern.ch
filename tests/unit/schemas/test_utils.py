@@ -23,13 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 from flask_security import login_user
-from pytest import mark
 
+from cap.modules.schemas.cli import add_schema_from_fixture
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import (AdminSchemaPermission,
                                              ReadSchemaPermission)
-from cap.modules.schemas.utils import (add_schema_from_fixture,
-                                       get_schemas_for_user)
 
 
 def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
