@@ -29,6 +29,7 @@ from flask_login import current_user
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonref import JsonRefError
+from sqlalchemy.exc import IntegrityError
 
 from cap.modules.access.utils import login_required
 
@@ -84,11 +85,16 @@ class SchemaAPI(MethodView):
         if errors:
             raise abort(400, errors)
 
-        schema = Schema(**serialized_data)
+        try:
+            with db.session.begin_nested():
+                with db.session.begin_nested():
+                    schema = Schema(**serialized_data)
+                    db.session.add(schema)
 
-        schema.give_admin_access_for_user(current_user)
-        db.session.add(schema)
-        db.session.commit()
+                schema.give_admin_access_for_user(current_user)
+
+        except IntegrityError:
+            raise abort(400, 'Error occured during saving schema in the db.')
 
         return jsonify(schema.serialize())
 

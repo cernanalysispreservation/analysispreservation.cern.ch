@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Cern Analysis Preservation utils for CADI database."""
 
 import json
@@ -38,7 +37,7 @@ from cap.modules.schemas.models import Schema
 from cap.modules.user.utils import get_existing_or_register_role
 
 from ..errors import ExternalAPIException
-from ..serializers import CADISchema
+from ..serializers import cadi_serializer
 from .common import generate_krb_cookie
 
 
@@ -60,12 +59,21 @@ def synchronize_cadi_entries(limit=None):
 
     :params int limit: number of entries to update
     """
+    def _cadi_deposit(cadi_id, cadi_info):
+        return {
+            '$ana_type': 'cms-analysis',
+            'cadi_info': cadi_info,
+            'general_title': cadi_id,
+            'basic_info': {
+                'cadi_id': cadi_id
+            }
+        }
+
     entries = get_all_from_cadi()
-    serializer = CADISchema()
     cms_admin_group = get_existing_or_register_role('cms-cap-admin@cern.ch')
 
     for entry in entries[:limit]:
-        cadi_info = serializer.dump(entry).data
+        cadi_info = cadi_serializer.dump(entry).data
         cadi_id = cadi_info['cadi_id']
 
         try:  # update if cadi deposit already exists
@@ -81,12 +89,14 @@ def synchronize_cadi_entries(limit=None):
 
                 print('Cadi entry {} updated.'.format(cadi_id))
 
-        except (DepositDoesNotExist):
-            cadi_deposit = build_cadi_deposit(cadi_id, cadi_info)
-            deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
+        except DepositDoesNotExist:
+            deposit = CAPDeposit.create(data=_cadi_deposit(cadi_id, cadi_info),
+                                        owner=None)
             deposit._add_experiment_permissions('CMS', ['deposit-read'])
             deposit._add_egroup_permissions(
-                cms_admin_group, ['deposit-read', 'deposit-update'], db.session)  # noqa
+                cms_admin_group,
+                ['deposit-read', 'deposit-update', 'deposit-admin'],
+                db.session)  # noqa
             deposit.commit()
             db.session.commit()
 
@@ -136,24 +146,12 @@ def get_all_from_cadi():
     all_entries = response.json()['data']
 
     # filter out inactive or superseded entries
-    entries = [entry for entry in all_entries
-               if entry['status'] not in ['Inactive', 'SUPERSEDED']]
+    entries = [
+        entry for entry in all_entries
+        if entry['status'] not in ['Inactive', 'SUPERSEDED']
+    ]
 
     return entries
-
-
-def build_cadi_deposit(cadi_id, cadi_info):
-    """Build CMS analysis deposit, based on CADI entry."""
-    schema = Schema.get_latest('deposits/records/cms-analysis').fullpath
-
-    return {
-        '$schema': schema,
-        'cadi_info': cadi_info,
-        'general_title': cadi_id,
-        'basic_info': {
-            'cadi_id': cadi_id
-        }
-    }
 
 
 def get_deposit_by_cadi_id(cadi_id):

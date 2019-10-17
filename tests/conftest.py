@@ -153,26 +153,31 @@ def location(db):
 def users(db):
     """Create users."""
     users = {
-        'cms_user': create_user_with_access(db.session, 'cms_user@cern.ch',
-                                            'cms-access'),
-        'cms_user2': create_user_with_access(db.session, 'cms_user2@cern.ch',
-                                             'cms-access'),
-        'alice_user': create_user_with_access(db.session, 'alice_user@cern.ch',
-                                              'alice-access'),
-        'alice_user2': create_user_with_access(db.session,
-                                               'alice_user2@cern.ch',
-                                               'alice-access'),
-        'atlas_user': create_user_with_access(db.session, 'atlas_user@cern.ch',
-                                              'atlas-access'),
-        'atlas_user2': create_user_with_access(db.session,
-                                               'atlas_user2@cern.ch',
-                                               'atlas-access'),
-        'lhcb_user': create_user_with_access(db.session, 'lhcb_user@cern.ch',
-                                             'lhcb-access'),
-        'lhcb_user2': create_user_with_access(db.session, 'lhcb_user2@cern.ch',
-                                              'lhcb-access'),
-        'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
-                                             'superuser-access'),
+        'cms_user':
+        create_user_with_access(db.session, 'cms_user@cern.ch', 'cms-access'),
+        'cms_user2':
+        create_user_with_access(db.session, 'cms_user2@cern.ch', 'cms-access'),
+        'alice_user':
+        create_user_with_access(db.session, 'alice_user@cern.ch',
+                                'alice-access'),
+        'alice_user2':
+        create_user_with_access(db.session, 'alice_user2@cern.ch',
+                                'alice-access'),
+        'atlas_user':
+        create_user_with_access(db.session, 'atlas_user@cern.ch',
+                                'atlas-access'),
+        'atlas_user2':
+        create_user_with_access(db.session, 'atlas_user2@cern.ch',
+                                'atlas-access'),
+        'lhcb_user':
+        create_user_with_access(db.session, 'lhcb_user@cern.ch',
+                                'lhcb-access'),
+        'lhcb_user2':
+        create_user_with_access(db.session, 'lhcb_user2@cern.ch',
+                                'lhcb-access'),
+        'superuser':
+        create_user_with_access(db.session, 'superuser@cern.ch',
+                                'superuser-access'),
     }
 
     db.session.commit()
@@ -229,6 +234,10 @@ def create_schema(db):
                             **kwargs)
             db.session.add(schema)
             db.session.commit()
+
+            if not schema.experiment:
+                schema.add_read_access_for_all_users()
+                db.session.commit()
 
         return schema
 
@@ -322,9 +331,6 @@ def create_deposit(app, db, es, location, create_schema):
             deposit_schema_url = current_jsonschemas.path_to_url(
                 schema.deposit_path)
 
-            if not experiment:
-                schema.add_read_access_for_all_users()
-
             metadata = metadata or minimal_metadata(deposit_schema_url)
             login_user(user)
             id_ = uuid4()
@@ -386,19 +392,25 @@ def schema(db):
 def cms_user_me_data(users):
     """CMS user data returned by /me endpoint."""
     return {
-        "collaborations": ["CMS", ],
-        "current_experiment": "CMS",
+        "collaborations": [
+            "CMS",
+        ],
+        "current_experiment":
+        "CMS",
         "deposit_groups": [{
             "deposit_group": "cms-questionnaire",
             "description": "Create a CMS Questionnaire",
             "name": "CMS Questionnaire"
         }, {
             "deposit_group": "cms-analysis",
-            "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+            "description":
+            "Create a CMS Analysis (analysis metadata, workflows, etc)",
             "name": "CMS Analysis"
         }],
-        "email": users['cms_user'].email,
-        "id": users['cms_user'].id
+        "email":
+        users['cms_user'].email,
+        "id":
+        users['cms_user'].id
     }
 
 

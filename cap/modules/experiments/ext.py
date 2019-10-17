@@ -21,17 +21,17 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Experiments module."""
 
 from __future__ import absolute_import, print_function
 
 import certifi
 
+from .cli import *
+
 
 class CAPExperiments(object):
     """Experiments extension."""
-
     def __init__(self, app=None):
         """Extension initialization."""
         if app:

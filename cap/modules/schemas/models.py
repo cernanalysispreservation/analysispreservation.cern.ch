@@ -32,16 +32,15 @@ from invenio_access.permissions import authenticated_user
 from invenio_cache import current_cache
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_search import current_search
+from invenio_search import current_search_client as es
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
-from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import validates
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
 from cap.types import json_type
-from invenio_search import current_search
-from invenio_search import current_search_client as es
 
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import resolved_schemas_serializer, schema_serializer
@@ -192,22 +191,18 @@ class Schema(db.Model):
         """Give read access to all authenticated users."""
         assert self.id
 
-        try:
-            db.session.add(
-                ActionSystemRoles.allow(SchemaReadAction(self.id),
-                                        role=authenticated_user))
-            db.session.flush()
-        except IntegrityError:
-            db.session.rollback()
+        db.session.add(
+            ActionSystemRoles.allow(SchemaReadAction(self.id),
+                                    role=authenticated_user))
+        db.session.flush()
 
     def give_admin_access_for_user(self, user):
         """Give admin access for users."""
-        try:
-            db.session.add(
-                ActionUsers.allow(SchemaAdminAction(self.id), user=user))
-            db.session.flush()
-        except IntegrityError:
-            db.session.rollback()
+        assert self.id
+
+        db.session.add(ActionUsers.allow(SchemaAdminAction(self.id),
+                                         user=user))
+        db.session.flush()
 
     @classmethod
     def get_latest(cls, name):
