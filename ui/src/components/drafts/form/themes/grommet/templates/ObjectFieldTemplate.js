@@ -8,6 +8,7 @@ import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 import TabField from "./TabField";
 
 import FieldHeader from "../components/FieldHeader";
+import { Repeat } from "immutable";
 
 let ObjectFieldTemplate = function(props) {
   if (
@@ -21,7 +22,7 @@ let ObjectFieldTemplate = function(props) {
           justifyContent:
             props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
               ? props.uiSchema["ui:options"].align
-              : "full"
+              : "center"
         }}
       >
         <Box
@@ -38,9 +39,9 @@ let ObjectFieldTemplate = function(props) {
                 props.uiSchema["ui:options"].display
                   ? props.uiSchema["ui:options"].display
                   : "flex",
-              gridTemplateColumns: "45% 45%",
-              gridColumnGap: "5%",
-              maxWidth: "100vw"
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gridColumnGap: "10px",
+              overflow: "auto"
             }}
           >
             {props.properties.map(prop => prop.content)}
@@ -67,14 +68,9 @@ let ObjectFieldTemplate = function(props) {
         <Box
           style={{
             display: "grid",
-            gridTemplateColumns:
-              props.uiSchema["ui:options"] && props.uiSchema["ui:options"].list
-                ? "45% 45%"
-                : null,
-            gridColumnGap:
-              props.uiSchema["ui:options"] && props.uiSchema["ui:options"].list
-                ? "5%"
-                : null
+            gridTemplateColumns: "repeat(4,1fr)",
+            gridColumnGap: "1fr",
+            maxWidth: "100%"
           }}
         >
           {props.properties.map(prop => prop.content)}

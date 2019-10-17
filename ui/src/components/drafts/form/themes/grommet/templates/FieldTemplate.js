@@ -25,12 +25,13 @@ let FieldTemplate = function(props) {
   // if the grid options exists in uiSchema pass it as prop
   // else set it full width
   if (props.uiSchema["ui:options"] && props.uiSchema["ui:options"].grid) {
-    gridColumns = props.uiSchema["ui:options"].grid.gridColumn
-      ? props.uiSchema["ui:options"].grid.gridColumn
+    gridColumns = props.uiSchema["ui:options"].grid.gridColumns
+      ? props.uiSchema["ui:options"].grid.gridColumns
       : "1/5";
   }
 
   if (["array", "object"].indexOf(props.schema.type) > -1) {
+    console.log("Title", props.schema.title, props.uiSchema["ui:options"]);
     if (props.id === "root") {
       gridColumns = null;
     }
@@ -38,7 +39,7 @@ let FieldTemplate = function(props) {
       <Box
         style={{
           borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null,
-          gridColumn: gridColumns
+          gridColumn: gridColumns ? gridColumns : "1 / 5"
         }}
       >
         {children}
@@ -59,7 +60,7 @@ let FieldTemplate = function(props) {
       key={id + label}
       error={rawErrors.length > 0 ? _errors : null}
       style={{
-        gridColumn: gridColumns
+        gridColumn: gridColumns ? gridColumns : "1 / 5"
       }}
     >
       {children}
