@@ -50,7 +50,7 @@ class AccordionObjectField extends React.Component {
               style={{
                 display: this.state.display,
                 gridTemplateColumns:
-                  this.state.display === "grid" ? "50% 50%" : null
+                  this.state.display === "grid" ? "repeat(4,1fr)" : null
               }}
             >
               {this.props.properties.map(prop => prop.content)}

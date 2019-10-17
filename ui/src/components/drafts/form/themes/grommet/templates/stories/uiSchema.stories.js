@@ -68,7 +68,7 @@ const objschema = {
       description: "Obj Description",
       properties: {
         basic_info: {
-          title: "Basic Information",
+          title: "Information1",
           required: ["analysis_title", "glance_id"],
           id: "basic_info",
           propertyOrder: 10,
@@ -111,7 +111,7 @@ const objschema = {
           }
         },
         information: {
-          title: "Information",
+          title: "Information 2",
           required: ["analysis_title", "glance_id"],
           id: "basic_info",
           propertyOrder: 10,
@@ -154,7 +154,7 @@ const objschema = {
           }
         },
         information1: {
-          title: "Information",
+          title: "Information 3",
           required: ["analysis_title", "glance_id"],
           id: "basic_info",
           propertyOrder: 10,
@@ -400,6 +400,7 @@ const objschemaui = {
 const objschemaui1 = {
   "ui:object": "tabView",
   "ui:options": {
+    display: "grid",
     full: true,
     view: {
       vertical: true,
@@ -417,14 +418,14 @@ const objschemaui1 = {
     general: {
       "ui:options": {
         grid: {
-          gridColumn: "1 / 2"
+          gridColumns: "2 / 3"
         }
       }
     },
     analysis_title: {
       "ui:options": {
         grid: {
-          gridColumn: "2 / 3"
+          gridColumn: "1 / 2"
         }
       }
     },
@@ -461,13 +462,42 @@ const objschemaui1 = {
     }
   },
   second: {
-    "ui:options": {
-      list: true
-    },
     basic_info: {
+      "ui:options": {
+        display: "grid",
+        grid: {
+          gridColumns: "1/3"
+        }
+      },
       "ui:object": "accordionObjectField",
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+      analysis_title: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/3"
+          }
+        }
+      },
+      glance_id: {
+        "ui:options": {
+          grid: {
+            gridColumns: "3/5"
+          }
+        }
+      },
+      abstract: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/3"
+          }
+        }
+      },
       people_info: {
+        "ui:options": {
+          grid: {
+            gridColumns: "3/5"
+          }
+        },
         items: {
           name: {
             "ui:options": {
@@ -481,6 +511,11 @@ const objschemaui1 = {
       }
     },
     information: {
+      "ui:options": {
+        grid: {
+          gridColumns: "3/5"
+        }
+      },
       "ui:object": "accordionObjectField",
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
       people_info: {
@@ -497,8 +532,35 @@ const objschemaui1 = {
       }
     },
     information1: {
+      "ui:options": {
+        display: "grid",
+        grid: {
+          gridColumns: "1/3"
+        }
+      },
       "ui:object": "accordionObjectField",
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+      analysis_title: {
+        "ui:options": {
+          grid: {
+            gridColumns: "1/2"
+          }
+        }
+      },
+      glance_id: {
+        "ui:options": {
+          grid: {
+            gridColumns: "2/4"
+          }
+        }
+      },
+      abstract: {
+        "ui:options": {
+          grid: {
+            gridColumns: "4/5"
+          }
+        }
+      },
       people_info: {
         items: {
           name: {

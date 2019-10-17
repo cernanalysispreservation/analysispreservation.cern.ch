@@ -101,50 +101,7 @@ const objschema = {
       }
     },
     information1: {
-      title: "Data Input",
-      required: ["analysis_title", "glance_id"],
-      id: "basic_info",
-      propertyOrder: 10,
-      type: "object",
-      properties: {
-        abstract: {
-          type: "string",
-          title: "Abstract"
-        },
-        people_info: {
-          items: {
-            type: "object",
-            properties: {
-              orcid: {
-                pattern: "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
-                type: "string",
-                title: "ORCID"
-              },
-              name: {
-                type: "string",
-                title: "Name"
-              },
-              email: {
-                type: "string",
-                title: "Email-Adress"
-              }
-            }
-          },
-          type: "array",
-          title: "People Involved"
-        },
-        glance_id: {
-          type: "string",
-          title: "Glance ID"
-        },
-        analysis_title: {
-          type: "string",
-          title: "Analysis Title"
-        }
-      }
-    },
-    information1: {
-      title: "Workflows",
+      title: "Data Information",
       required: ["analysis_title", "glance_id"],
       id: "basic_info",
       propertyOrder: 10,
@@ -191,14 +148,45 @@ const objschema = {
 
 const objschemaui = {
   "ui:options": {
-    size: "full",
-    align: "full",
+    size: "xxlarge",
+    align: "center",
     display: "grid"
   },
   basic_info: {
-    "ui:object": "accordionObjectField",
+    "ui:options": {
+      grid: {
+        gridColumns: "1/3"
+      }
+    },
+    // "ui:object": "accordionObjectField",
     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+    abstract: {
+      "ui:options": {
+        grid: {
+          // "gridColumns":'3/ 5'
+        }
+      }
+    },
+    glance_id: {
+      "ui:options": {
+        grid: {
+          gridColumns: "3/5"
+        }
+      }
+    },
+    analysis_title: {
+      "ui:options": {
+        grid: {
+          gridColumns: "1/3"
+        }
+      }
+    },
     people_info: {
+      "ui:options": {
+        grid: {
+          gridColumns: "1 / 5"
+        }
+      },
       items: {
         name: {
           "ui:options": {
@@ -212,9 +200,19 @@ const objschemaui = {
     }
   },
   information: {
-    "ui:object": "accordionObjectField",
+    "ui:options": {
+      grid: {
+        gridColumns: "3/5"
+      }
+    },
+    // "ui:object": "accordionObjectField",
     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
     people_info: {
+      "ui:options": {
+        grid: {
+          gridColumns: "1/5"
+        }
+      },
       items: {
         name: {
           "ui:options": {
@@ -228,9 +226,19 @@ const objschemaui = {
     }
   },
   information1: {
-    "ui:object": "accordionObjectField",
+    "ui:options": {
+      grid: {
+        gridColumns: "1/3"
+      }
+    },
+    // "ui:object": "accordionObjectField",
     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
     people_info: {
+      "ui:options": {
+        grid: {
+          gridColumns: "1/5"
+        }
+      },
       items: {
         name: {
           "ui:options": {
@@ -2024,10 +2032,15 @@ const schemaCMS = {
 const schemaCMSUI = {
   "ui:options": {
     display: "grid",
-    size: "xxlarge",
+    size: "xlarge",
     align: "center"
   },
   additional_resources: {
+    "ui:options": {
+      grid: {
+        gridColumns: "1/3"
+      }
+    },
     documentations: {
       items: {
         "ui:field": "CapFiles"
@@ -2105,14 +2118,33 @@ const schemaCMSUI = {
     "ui:array": "AccordionArrayField"
   },
   basic_info: {
+    "ui:options": {
+      grid: {
+        gridColumns: "1/3"
+      },
+      display: "grid"
+    },
     abstract: {
-      "ui:widget": "textarea"
+      "ui:widget": "textarea",
+      "ui:options": {
+        grid: {
+          gridColumns: "3/5"
+        }
+      }
     },
     ana_notes: {
-      "ui:array": "StringArrayField"
+      "ui:array": "StringArrayField",
+      "ui:options": {
+        grid: {
+          gridColumns: "1/5"
+        }
+      }
     },
     cadi_id: {
       "ui:options": {
+        grid: {
+          gridColumns: "1/3"
+        },
         autofill_fields: [
           [["paper"], ["cadi_info", "paper"]],
           [["name"], ["cadi_info", "name"]],
@@ -2131,6 +2163,11 @@ const schemaCMSUI = {
     "ui:order": ["cadi_id", "abstract", "conclusion", "*"]
   },
   cadi_info: {
+    "ui:options": {
+      grid: {
+        gridColumns: "3/5"
+      }
+    },
     contact: {
       "ui:readonly": true
     },
@@ -2193,6 +2230,11 @@ const schemaCMSUI = {
     "ui:order": ["*"]
   },
   input_data: {
+    "ui:options": {
+      grid: {
+        gridColumns: "1/3"
+      }
+    },
     json_files: {
       items: {
         "ui:field": "CapFiles"
@@ -2310,6 +2352,11 @@ const schemaCMSUI = {
     "ui:array": "AccordionArrayField"
   },
   ntuples_production: {
+    "ui:options": {
+      grid: {
+        gridColumns: "3/5"
+      }
+    },
     items: {
       code_base: {
         "ui:field": "CapFiles"
@@ -2333,6 +2380,11 @@ const schemaCMSUI = {
     "ui:array": "AccordionArrayField"
   },
   statistical_treatment: {
+    "ui:options": {
+      grid: {
+        gridColumns: "3/5"
+      }
+    },
     combine_datacard: {
       "ui:field": "CapFiles"
     },
@@ -3618,6 +3670,11 @@ const schemaATLAS = {
 };
 
 const schemaATLASUI = {
+  "ui:options": {
+    display: "grid",
+    size: "xlarge",
+    align: "center"
+  },
   basic_info: {
     glance_id: {
       "ui:options": {
@@ -4456,188 +4513,6 @@ const transformSchema = schema => {
     "display":"flex"
   }
  */
-
-// const schema = {
-//   items: {
-//     type: "object",
-//     properties: {
-//       ali_physics: {
-//         type: "string",
-//         title: "String Component"
-//       },
-//       combined_measurements: {
-//         type: "object",
-//         properties: {
-//           name: {
-//             enum: ["not_relevant", "blue", "likelihood", "other"],
-//             type: "string",
-//             description:
-//               "In case you combine measurements in your analysis: what method is used?",
-//             title: "Combined Measurements"
-//           },
-//           comments: {
-//             type: "string",
-//             title: "Additional comments"
-//           }
-//         },
-//         title: "Methods of Combined Measurements"
-//       },
-//       run: {
-//         items: {
-//           type: "object",
-//           properties: {
-//             run_numbers: {
-//               items: {
-//                 type: "string",
-//                 title: "Number"
-//               },
-//               type: "array",
-//               title: "Array of Strings Component"
-//             },
-//             name: {
-//               type: "string",
-//               title: "Embedded String Component"
-//             }
-//           }
-//         },
-//         type: "array",
-//         title: "Array Component"
-//       }
-//     }
-//   },
-//   type: "array",
-//   title: "Field Template",
-//   description: "Field Description"
-// };
-
-// const objschema = {
-//   type: "object",
-//   title: "Obj Title",
-//   description: "Obj Description",
-//   properties: {
-//     basic_info: {
-//       title: "Basic Information",
-//       required: ["analysis_title", "glance_id"],
-//       id: "basic_info",
-//       propertyOrder: 10,
-//       type: "object",
-//       properties: {
-//         abstract: {
-//           type: "string",
-//           title: "Abstract"
-//         },
-//         people_info: {
-//           items: {
-//             type: "object",
-//             properties: {
-//               orcid: {
-//                 pattern: "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
-//                 type: "string",
-//                 title: "ORCID"
-//               },
-//               name: {
-//                 type: "string",
-//                 title: "Name"
-//               },
-//               email: {
-//                 type: "string",
-//                 title: "Email-Adress"
-//               }
-//             }
-//           },
-//           type: "array",
-//           title: "People Involved"
-//         },
-//         glance_id: {
-//           type: "string",
-//           title: "Glance ID"
-//         },
-//         analysis_title: {
-//           type: "string",
-//           title: "Analysis Title"
-//         }
-//       }
-//     },
-//     information: {
-//       title: "Information",
-//       required: ["analysis_title", "glance_id"],
-//       id: "basic_info",
-//       propertyOrder: 10,
-//       type: "object",
-//       properties: {
-//         abstract: {
-//           type: "string",
-//           title: "Abstract"
-//         },
-//         people_info: {
-//           items: {
-//             type: "object",
-//             properties: {
-//               orcid: {
-//                 pattern: "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$",
-//                 type: "string",
-//                 title: "ORCID"
-//               },
-//               name: {
-//                 type: "string",
-//                 title: "Name"
-//               },
-//               email: {
-//                 type: "string",
-//                 title: "Email-Adress"
-//               }
-//             }
-//           },
-//           type: "array",
-//           title: "People Involved"
-//         },
-//         glance_id: {
-//           type: "string",
-//           title: "Glance ID"
-//         },
-//         analysis_title: {
-//           type: "string",
-//           title: "Analysis Title"
-//         }
-//       }
-//     }
-//   }
-// };
-
-// const objschemaui = {
-//   basic_info: {
-//     "ui:object": "accordionObjectField",
-//     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
-//     people_info: {
-//       items: {
-//         name: {
-//           "ui:options": {
-//             autofill_from: "/api/services/orcid?name=",
-//             autofill_fields: [
-//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-//             ]
-//           }
-//         }
-//       }
-//     }
-//   },
-//   information: {
-//     "ui:object": "accordionObjectField",
-//     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
-//     people_info: {
-//       items: {
-//         name: {
-//           "ui:options": {
-//             autofill_from: "/api/services/orcid?name=",
-//             autofill_fields: [
-//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-//             ]
-//           }
-//         }
-//       }
-//     }
-//   }
-// };
 
 class CleanFormStorie extends Component {
   render() {
