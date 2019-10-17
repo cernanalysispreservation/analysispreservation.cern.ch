@@ -74,14 +74,14 @@ class DepositForm extends React.Component {
   }
 
   render() {
-    let __uiSchema = {
-      ...this.props.uiSchema,
-      "ui:options": {
-        display: "flex",
-        size: "large",
-        align: "center"
-      }
-    };
+    // let __uiSchema = {
+    //   ...this.props.uiSchema,
+    //   "ui:options": {
+    //     display: "flex",
+    //     size: "large",
+    //     align: "center"
+    //   }
+    // };
 
     return (
       <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
@@ -98,7 +98,7 @@ class DepositForm extends React.Component {
             ErrorList={ErrorListTemplate}
             widgets={widgets}
             fields={fields}
-            uiSchema={__uiSchema || this.props.uiSchema}
+            uiSchema={this.props.uiSchema}
             liveValidate={false}
             noValidate={false}
             validate={this._validate.bind(this)}

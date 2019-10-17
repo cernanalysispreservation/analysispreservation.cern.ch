@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 
 import SchemaPreview from "../components/SchemaWizard/SchemaPreview";
+import { selectProperty } from "../../../actions/schemaWizard";
 
 function mapStateToProps(state) {
   return {
@@ -9,4 +10,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(SchemaPreview);
+function mapDispatchToProps(dispatch) {
+  return {
+    selectProperty: path => dispatch(selectProperty(path))
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SchemaPreview);

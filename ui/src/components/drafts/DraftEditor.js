@@ -21,7 +21,7 @@ import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import PermissionDenied from "../errors/403";
 
-const transformSchema = schema => {
+export const transformSchema = schema => {
   const schemaFieldsToRemove = [
     "_access",
     "_deposit",

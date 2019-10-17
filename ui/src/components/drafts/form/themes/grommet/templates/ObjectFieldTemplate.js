@@ -10,6 +10,8 @@ import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 import FieldHeader from "../components/FieldHeader";
 
 let ObjectFieldTemplate = function(props) {
+  let { uiSchema: { uiOptions = {} } = {} } = props;
+
   if (
     props.idSchema.$id == "root" &&
     props.uiSchema["ui:object"] != "tabView"
@@ -21,7 +23,7 @@ let ObjectFieldTemplate = function(props) {
           justifyContent:
             props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
               ? props.uiSchema["ui:options"].align
-              : "full"
+              : "center"
         }}
       >
         <Box

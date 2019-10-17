@@ -71,7 +71,10 @@ class SchemaAPI(MethodView):
 
         else:
             schemas = get_schemas_for_user()
-            response = [schema.serialize() for schema in schemas]
+            response = [
+                schema.serialize(resolve=resolve)
+                for schema in schemas
+            ]
 
         return jsonify(response)
 

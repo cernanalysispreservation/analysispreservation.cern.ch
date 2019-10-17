@@ -15,6 +15,24 @@ import Image7 from "./svg/SidebarTwoColLayout";
 import { commonSchema, schemaSchema, uiSchema } from "../../utils/schemas";
 import { Columns, Label } from "grommet";
 
+const GRID_COLUMNS_OPTIONS = [
+  "1/1",
+  "1/2",
+  "1/3",
+  "1/4",
+  "1/5",
+  "2/2",
+  "2/3",
+  "2/4",
+  "2/5",
+  "3/3",
+  "3/4",
+  "3/5"
+];
+
+const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
+const DISPALY_OPTIONS = ["flex", "grid", "full"];
+
 class CustomizeField extends React.Component {
   constructor(props) {
     super(props);
@@ -50,6 +68,106 @@ class CustomizeField extends React.Component {
       schema: props.schema ? props.schema.toJS() : {}
     };
   }
+
+  displayChange = new_display => {
+    if (DISPALY_OPTIONS.indexOf(new_display) < 0) return;
+
+    console.log("change  display");
+    console.log(display);
+
+    let { uiSchema } = this.props;
+    uiSchema = uiSchema.toJS();
+
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+    let { display, ...restUIOptions } = uiOptions;
+
+    display = new_display;
+
+    let _uiOptions = {};
+    if (new_display == "full") _uiOptions = { full: "true", ...restUIOptions };
+    else _uiOptions = { display, ...restUIOptions };
+
+    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+      ...rest,
+      "ui:options": _uiOptions
+    });
+  };
+
+  gridChange = new_grid => {
+    // if (new_grid.indexOf(['flex','grid'] < 0 ) ) return;
+
+    console.log("change  display");
+    console.log(new_grid);
+
+    let { uiSchema } = this.props;
+    uiSchema = uiSchema.toJS();
+
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+    let { grid = {}, ...restUIOptions } = uiOptions;
+
+    grid = { ...grid, ...new_grid };
+    let _uiOptions = { grid, ...restUIOptions };
+
+    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+      ...rest,
+      "ui:options": _uiOptions
+    });
+  };
+
+  gridColumnChange = new_gridColumn => {
+    // if (new_grid.indexOf(['flex','grid'] < 0 ) ) return;
+
+    let { uiSchema } = this.props;
+    uiSchema = uiSchema.toJS();
+
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+    let { grid = {}, ...restUIOptions } = uiOptions;
+    let { gridColumn, ...restGrid } = grid;
+
+    grid = { ...restGrid, gridColumn: new_gridColumn };
+    let _uiOptions = { grid, ...restUIOptions };
+
+    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+      ...rest,
+      "ui:options": _uiOptions
+    });
+  };
+
+  sizeChange = newSize => {
+    if (SIZE_OPTIONS.indexOf(newSize) < 0) return;
+
+    let { uiSchema } = this.props;
+    uiSchema = uiSchema.toJS();
+
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+    let { size, ...restUIOptions } = uiOptions;
+
+    size = newSize;
+    let _uiOptions = { size, ...restUIOptions };
+
+    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+      ...rest,
+      "ui:options": _uiOptions
+    });
+  };
+
+  alignChange = newAlign => {
+    if (["center", "start", "end"].indexOf(newAlign) < 0) return;
+
+    let { uiSchema } = this.props;
+    uiSchema = uiSchema.toJS();
+
+    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+    let { align, ...restUIOptions } = uiOptions;
+
+    align = newAlign;
+    let _uiOptions = { align, ...restUIOptions };
+
+    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+      ...rest,
+      "ui:options": _uiOptions
+    });
+  };
 
   render() {
     return (
@@ -88,6 +206,90 @@ class CustomizeField extends React.Component {
             <Label size="medium" margin="none">
               Field Layout
             </Label>
+          </Box>
+          <Box
+            direction="row"
+            wrap={true}
+            align="start"
+            justify="start"
+            flex={false}
+            colorIndex="light-1"
+          >
+            <Box
+              flex={false}
+              margin="small"
+              onClick={() => this.displayChange("grid")}
+            >
+              Grid
+            </Box>
+            <Box
+              flex={false}
+              margin="small"
+              onClick={() => this.displayChange("flex")}
+            >
+              Flex
+            </Box>
+            <Box
+              flex={false}
+              margin="small"
+              onClick={() => this.displayChange("full")}
+            >
+              Full
+            </Box>
+          </Box>
+          <Box
+            direction="row"
+            wrap={true}
+            align="start"
+            justify="start"
+            flex={false}
+            colorIndex="light-1"
+          >
+            {GRID_COLUMNS_OPTIONS.map(gridColumns => (
+              <Box
+                flex={false}
+                margin="small"
+                onClick={() => this.gridColumnChange(gridColumns)}
+              >
+                {gridColumns}
+              </Box>
+            ))}
+          </Box>
+          <Box
+            direction="row"
+            wrap={true}
+            align="start"
+            justify="start"
+            flex={false}
+            colorIndex="light-1"
+          >
+            {SIZE_OPTIONS.map(size => (
+              <Box
+                flex={false}
+                margin="small"
+                onClick={() => this.sizeChange(size)}
+              >
+                {size}
+              </Box>
+            ))}
+          </Box>
+          <Box
+            direction="row"
+            wrap={true}
+            align="start"
+            justify="start"
+            flex={false}
+            colorIndex="light-1"
+          >
+            {["center", "start", "end"].map(align => (
+              <Box
+                flex={false}
+                margin="small"
+                onClick={() => this.alignChange(align)}
+              >
+                {align}
+              </Box>
+            ))}
           </Box>
           <Box
             direction="row"
