@@ -89,9 +89,11 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         return result
 
     def get_created_by(self, obj):
-        user_id = obj['metadata']['_deposit']['created_by']
-        user = User.query.filter_by(id=user_id).one()
-        return user.email
+        user_id = obj['metadata']['_deposit'].get('created_by')
+        if user_id:
+            user = User.query.filter_by(id=user_id).one()
+            return user.email
+        return None
 
     def get_access(self, obj):
         """Return access object."""
