@@ -36,11 +36,7 @@ let ObjectFieldTemplate = function(props) {
         >
           <Box
             style={{
-              display:
-                props.uiSchema["ui:options"] &&
-                props.uiSchema["ui:options"].display
-                  ? props.uiSchema["ui:options"].display
-                  : "flex",
+              display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
               gridColumnGap: "10px",
               overflow: "auto"

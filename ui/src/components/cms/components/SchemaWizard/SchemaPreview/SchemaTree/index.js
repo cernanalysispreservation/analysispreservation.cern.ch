@@ -51,9 +51,14 @@ let ArrayFieldTemplate = function(props) {
     uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath, "items"]
   };
 
+  let __path = {
+    schema: [...props.formContext.schema, ...schemaPath, "items"],
+    uiSchema: [...props.formContext.uiSchema, ...uiSchemaPath]
+  };
+
   return (
     <Box flex={true}>
-      <SchemaTreeItem type="array" {...props} path={_path} />
+      <SchemaTreeItem type="array" {...props} path={__path} />
 
       <Box flex={true} margin={{ left: "medium" }}>
         <HoverBox addProperty={props.addProperty} key={props.id} path={_path}>

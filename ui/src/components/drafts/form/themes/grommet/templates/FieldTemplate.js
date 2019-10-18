@@ -31,10 +31,9 @@ let FieldTemplate = function(props) {
   }
 
   if (["array", "object"].indexOf(props.schema.type) > -1) {
-    console.log("Title", props.schema.title, props.uiSchema["ui:options"]);
-    if (props.id === "root") {
-      gridColumns = null;
-    }
+    // if (props.id === "root") {
+    //   gridColumns = null;
+    // }
     return (
       <Box
         style={{

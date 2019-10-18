@@ -31,7 +31,6 @@ const GRID_COLUMNS_OPTIONS = [
 ];
 
 const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
-const DISPALY_OPTIONS = ["flex", "grid", "full"];
 
 class CustomizeField extends React.Component {
   constructor(props) {
@@ -69,29 +68,29 @@ class CustomizeField extends React.Component {
     };
   }
 
-  displayChange = new_display => {
-    if (DISPALY_OPTIONS.indexOf(new_display) < 0) return;
+  // displayChange = new_display => {
+  //   if (DISPALY_OPTIONS.indexOf(new_display) < 0) return;
 
-    console.log("change  display");
-    console.log(display);
+  //   console.log("change  display");
+  //   console.log(display);
 
-    let { uiSchema } = this.props;
-    uiSchema = uiSchema.toJS();
+  //   let { uiSchema } = this.props;
+  //   uiSchema = uiSchema.toJS();
 
-    let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-    let { display, ...restUIOptions } = uiOptions;
+  //   let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
+  //   let { display, ...restUIOptions } = uiOptions;
 
-    display = new_display;
+  //   display = new_display;
 
-    let _uiOptions = {};
-    if (new_display == "full") _uiOptions = { full: "true", ...restUIOptions };
-    else _uiOptions = { display, ...restUIOptions };
+  //   let _uiOptions = {};
+  //   if (new_display == "full") _uiOptions = { full: "true", ...restUIOptions };
+  //   else _uiOptions = { display, ...restUIOptions };
 
-    this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
-      ...rest,
-      "ui:options": _uiOptions
-    });
-  };
+  //   this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
+  //     ...rest,
+  //     "ui:options": _uiOptions
+  //   });
+  // };
 
   gridChange = new_grid => {
     // if (new_grid.indexOf(['flex','grid'] < 0 ) ) return;
@@ -206,36 +205,6 @@ class CustomizeField extends React.Component {
             <Label size="medium" margin="none">
               Field Layout
             </Label>
-          </Box>
-          <Box
-            direction="row"
-            wrap={true}
-            align="start"
-            justify="start"
-            flex={false}
-            colorIndex="light-1"
-          >
-            <Box
-              flex={false}
-              margin="small"
-              onClick={() => this.displayChange("grid")}
-            >
-              Grid
-            </Box>
-            <Box
-              flex={false}
-              margin="small"
-              onClick={() => this.displayChange("flex")}
-            >
-              Flex
-            </Box>
-            <Box
-              flex={false}
-              margin="small"
-              onClick={() => this.displayChange("full")}
-            >
-              Full
-            </Box>
           </Box>
           <Box
             direction="row"

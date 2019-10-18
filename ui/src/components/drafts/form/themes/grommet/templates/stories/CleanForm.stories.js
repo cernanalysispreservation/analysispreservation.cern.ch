@@ -184,7 +184,7 @@ const objschemaui = {
     people_info: {
       "ui:options": {
         grid: {
-          gridColumns: "1 / 5"
+          gridColumns: "1 / 3"
         }
       },
       items: {
