@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """User blueprint in order to dispatch the login request."""
 
 from __future__ import absolute_import, print_function
@@ -34,12 +33,11 @@ from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-from cap.modules.schemas.utils import get_schemas_for_user
+from cap.modules.schemas.utils import get_indexed_schemas_for_user
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
-user_blueprint = Blueprint('cap_user', __name__,
-                           template_folder='templates')
+user_blueprint = Blueprint('cap_user', __name__, template_folder='templates')
 
 
 @user_blueprint.route('/me')
@@ -61,7 +59,7 @@ def get_user():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    schemas = get_schemas_for_user()
+    schemas = get_indexed_schemas_for_user(latest=True)
 
     dep_groups = [{
         'name': schema.fullname,
@@ -89,22 +87,21 @@ def login():
     if user and verify_password(password, user.password):
         try:
             login_user(user)
-            return jsonify({
-                "user": current_user.email,
-                "next": next
-            })
+            return jsonify({"user": current_user.email, "next": next})
         except Exception:
             return jsonify({
                 "error":
-                    "Something went wrong with the login. Please try again"
+                "Something went wrong with the login. Please try again"
             }), 400
     else:
         return jsonify({
             "error":
-                "The credentials you enter are not correct. Please try again"
+            "The credentials you enter are not correct. Please try again"
         }), 403
 
 
 if DEBUG:
-    user_blueprint.add_url_rule(
-        '/login/local', 'local_login', login, methods=['POST'])
+    user_blueprint.add_url_rule('/login/local',
+                                'local_login',
+                                login,
+                                methods=['POST'])

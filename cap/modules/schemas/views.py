@@ -36,7 +36,7 @@ from cap.modules.access.utils import login_required
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
 from .serializers import schema_serializer, update_schema_serializer
-from .utils import get_schemas_for_user
+from .utils import get_indexed_schemas_for_user, get_schemas_for_user
 
 blueprint = Blueprint(
     'cap_schemas',
@@ -53,6 +53,7 @@ class SchemaAPI(MethodView):
     def get(self, name=None, version=None):
         """Get all schemas that user has access to."""
         resolve = request.args.get('resolve', False)
+        latest = request.args.get('latest', False)
         if name:
             try:
                 if version:
@@ -71,11 +72,9 @@ class SchemaAPI(MethodView):
                 abort(404)
 
         else:
-            schemas = get_schemas_for_user()
+            schemas = get_schemas_for_user(latest=latest)
             response = [
-                schema.serialize(resolve=resolve)
-                for schema in schemas
-            ]
+                schema.serialize(resolve=resolve) for schema in schemas]
 
         return jsonify(response)
 
