@@ -122,9 +122,9 @@ class CustomizeField extends React.Component {
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { grid = {}, ...restUIOptions } = uiOptions;
-    let { gridColumn, ...restGrid } = grid;
+    let { gridColumns, ...restGrid } = grid;
 
-    grid = { ...restGrid, gridColumn: new_gridColumn };
+    grid = { ...restGrid, gridColumns: new_gridColumn };
     let _uiOptions = { grid, ...restUIOptions };
 
     this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
