@@ -336,11 +336,73 @@ def test_get_resolved_schemas(client, db, users, create_schema,
         'record_mapping': {},
         'record_options': {},
         'links': {
-            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
-            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
-            'record': u'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
+            'self':
+            'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
+            'deposit':
+            'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
+            'record':
+            'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
         }
     }
+
+
+def test_get_only_latest_version_of_schemas(client, db, users,
+                                            auth_headers_for_user):
+    cms_user = users['cms_user']
+    latest_schema = Schema(name='schema1', version='1.2.3', experiment='CMS')
+    latest_schema2 = Schema(name='schema2', version='3.0.0', experiment='CMS')
+    db.session.add(latest_schema)
+    db.session.add(latest_schema2)
+    db.session.add(Schema(name='schema1', experiment='CMS', version='1.1.0'))
+    db.session.add(Schema(name='schema2', experiment='CMS'))
+    db.session.add(Schema(name='schema3', experiment='LHCb'))
+    db.session.commit()
+
+    resp = client.get('/jsonschemas?latest=True',
+                      headers=auth_headers_for_user(cms_user))
+
+    assert resp.status_code == 200
+    assert resp.json == [{
+        'name': 'schema1',
+        'version': '1.2.3',
+        'deposit_options': {},
+        'record_schema': {},
+        'fullname': None,
+        'use_deposit_as_record': False,
+        'is_indexed': False,
+        'record_options': {},
+        'deposit_mapping': {},
+        'deposit_schema': {},
+        'record_mapping': {},
+        'links': {
+            'record':
+            'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
+            'self':
+            'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
+            'deposit':
+            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json'
+        },
+    }, {
+        'links': {
+            'record':
+            'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
+            'self':
+            'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
+            'deposit':
+            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json'
+        },
+        'deposit_options': {},
+        'record_schema': {},
+        'fullname': None,
+        'use_deposit_as_record': False,
+        'version': '3.0.0',
+        'is_indexed': False,
+        'record_options': {},
+        'deposit_mapping': {},
+        'deposit_schema': {},
+        'record_mapping': {},
+        'name': 'schema2'
+    }]
 
 
 def test_get_resolved_schemas_with_invalid_ref_should_404(

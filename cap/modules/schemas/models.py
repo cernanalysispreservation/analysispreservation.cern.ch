@@ -199,8 +199,8 @@ class Schema(db.Model):
 
     def update(self, **kwargs):
         """Update schema instance."""
-        Schema.query.filter_by(id=self.id).update(kwargs)
-        db.session.commit()
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
         return self
 

@@ -28,6 +28,7 @@ from cap.modules.schemas.cli import add_schema_from_fixture
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import (AdminSchemaPermission,
                                              ReadSchemaPermission)
+from cap.modules.schemas.utils import get_indexed_schemas_for_user
 
 
 def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
@@ -118,3 +119,43 @@ def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_sche
     schema = Schema.get('new-schema', version='1.1.1')
     for key, value in updated_data.items():
         assert getattr(schema, key) == value
+
+
+def test_get_indexed_schemas_for_user_when_latest(app, db, users):
+    db.session.add(
+        Schema(name='schema1',
+               version='1.3.1',
+               is_indexed=True,
+               experiment='CMS'))
+    db.session.add(
+        Schema(name='schema1',
+               version='2.5.7',
+               is_indexed=True,
+               experiment='CMS'))
+    db.session.add(
+        Schema(name='schema1',
+               version='3.0.0',
+               is_indexed=False,
+               experiment='CMS'))
+    db.session.add(
+        Schema(name='schema3',
+               version='1.3.1',
+               is_indexed=True,
+               experiment='LHCb'))
+    latest_schema1 = Schema(name='schema1',
+                            version='3.4.5',
+                            is_indexed=True,
+                            experiment='CMS')
+    latest_schema2 = Schema(name='schema2',
+                            version='3.0.0',
+                            is_indexed=True,
+                            experiment='CMS')
+    db.session.add(latest_schema1)
+    db.session.add(latest_schema2)
+    db.session.commit()
+
+    login_user(users['cms_user'])
+
+    schemas = get_indexed_schemas_for_user(latest=True)
+
+    assert schemas == [latest_schema1, latest_schema2]
