@@ -50,7 +50,16 @@ class SchemaPreview extends React.Component {
                   this.props.selectProperty({ schema: [], uiSchema: [] })
                 }
               >
-                Roots
+                <Box
+                  pad="small"
+                  style={{
+                    width: "100%",
+                    borderBottom: "1px solid black",
+                    fontSize: "1.3m"
+                  }}
+                >
+                  Root
+                </Box>
               </Box>,
               <SchemaTree />
             ]

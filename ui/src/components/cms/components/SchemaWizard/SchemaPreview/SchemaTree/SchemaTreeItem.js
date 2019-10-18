@@ -34,7 +34,11 @@ class SchemaTreeItem extends React.Component {
         ? this.props.path.schema[this.props.path.schema.length - 2]
         : this.props.path.schema[this.props.path.schema.length - 1];
     return (
-      <div style={{ borderBottom: "2px solid #64727d" }}>
+      <div
+        style={{
+          borderBottom: "2px solid #64727d"
+        }}
+      >
         <Box
           colorIndex={this.props.colorIndex || "light-2"}
           separator="all"

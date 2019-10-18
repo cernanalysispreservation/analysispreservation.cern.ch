@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PropTypes } from "prop-types";
 
 import Box from "grommet/components/Box";
+
 import { connect } from "react-redux";
 
 import Form from "react-jsonschema-form";
@@ -17,23 +18,25 @@ import { transformSchema } from "../../../../../drafts/DraftEditor";
 class SchemaTree extends React.Component {
   render() {
     return (
-      <Form
-        schema={transformSchema(this.props.schema.toJS())}
-        uiSchema={{}}
-        formData={{}}
-        showErrorList={false}
-        tagName="div"
-        FieldTemplate={_FieldTemplate}
-        ObjectFieldTemplate={ObjectFieldTemplate}
-        ArrayFieldTemplate={_ArrayFieldTemplate}
-        liveValidate={true}
-        widgets={widgets}
-        validate={_validate}
-        noHtml5Validate={true}
-        formContext={{ schema: [], uiSchema: [] }}
-      >
-        <span />
-      </Form>
+      <Box style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+        <Form
+          schema={transformSchema(this.props.schema.toJS())}
+          uiSchema={{}}
+          formData={{}}
+          showErrorList={false}
+          tagName="div"
+          FieldTemplate={_FieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          ArrayFieldTemplate={_ArrayFieldTemplate}
+          liveValidate={true}
+          widgets={widgets}
+          validate={_validate}
+          noHtml5Validate={true}
+          formContext={{ schema: [], uiSchema: [] }}
+        >
+          <span />
+        </Form>
+      </Box>
     );
   }
 }
@@ -118,12 +121,20 @@ let FieldTemplate = function(props) {
     );
   } else if (["object"].indexOf(schema.type) > -1) {
     _renderObjectArray = (
-      <Box flex={true}>
+      <Box flex={true} style={{ position: "relative", overflow: "visible" }}>
         <div
-          style={{ position: "absolute", padding: "15px", marginLeft: "-30px" }}
+          style={{
+            position: "absolute",
+            top: "15px",
+            left: "-15px",
+            cursor: "pointer"
+          }}
           onClick={() => setDisplay(!display)}
         >
-          <ViewIcon size="xsmall" />
+          <ViewIcon
+            size="xsmall"
+            colorIndex={display ? "grey-1" : "grey-3-a"}
+          />
         </div>
 
         <SchemaTreeItem type="object" {...props} path={path} />

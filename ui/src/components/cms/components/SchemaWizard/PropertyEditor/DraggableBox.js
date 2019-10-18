@@ -1,5 +1,5 @@
 import React from "react";
-import { useDrag } from "react-dnd";
+import { useDrag, DragSource } from "react-dnd";
 
 const style = index => ({
   border: "2px dashed #f6f6f6",
@@ -12,9 +12,16 @@ const style = index => ({
 });
 
 const DraggableBox = ({ data, children, key }) => {
+  const type =
+    data.default.schema.type === "array" ||
+    data.default.schema.type === "object"
+      ? "NESTED_TYPE"
+      : "FIELD_TYPE";
+
   const [, drag] = useDrag({
-    item: { type: "FIELD_TYPE", data }
+    item: { type: type, data }
   });
+
   return (
     <div ref={drag} style={style(key)}>
       {children}
