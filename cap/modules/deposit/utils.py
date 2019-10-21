@@ -25,23 +25,8 @@
 
 from __future__ import absolute_import, print_function
 
-import shutil
-from tempfile import SpooledTemporaryFile
-
-from flask import current_app
 from invenio_access.models import Role
 from invenio_db import db
-
-from cap.config import FILES_URL_MAX_SIZE
-
-
-def name_git_record(data, type):
-    """Create a name for the git repo / file downloaded."""
-    name = '{}_{}_{}'.format(data['owner'], data['repo'], data['branch'])
-
-    return name + '.tar.gz' \
-        if type == 'repo' \
-        else '{}_{}'.format(name, data['filename'])
 
 
 def clean_empty_values(data):
@@ -54,23 +39,6 @@ def clean_empty_values(data):
         k: v
         for k, v in ((k, clean_empty_values(v)) for k, v in data.items()) if v
     }
-
-
-def ensure_content_length(resp):
-    """
-    Add Content-Length when it is not present.
-
-    Streams content into a temp file, and replaces the original socket with it.
-    """
-    spool = SpooledTemporaryFile(FILES_URL_MAX_SIZE)
-    shutil.copyfileobj(resp.raw, spool)
-    resp.headers['Content-Length'] = str(spool.tell())
-    spool.seek(0)
-
-    # replace the original socket with temp file
-    resp.raw._fp.close()
-    resp.raw._fp = spool
-    return resp
 
 
 def extract_actions_from_class(record_class):

@@ -45,7 +45,7 @@ from ..test_responses.responses import orcid_id, orcid_name, zenodo, \
 from cap.views import ping
 from cap.modules.experiments.views.atlas import _get_glance_by_id
 from cap.modules.experiments.views.cms import _get_cadi
-from cap.modules.repoimporter.git_importer import _test_connection
+from cap.modules.repoimporter.api import _test_connection
 
 
 status_checks = [

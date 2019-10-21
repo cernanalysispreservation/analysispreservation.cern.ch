@@ -161,6 +161,7 @@ setup(
             'cap_services = cap.modules.services.views:blueprint',
             'cap_schemas = cap.modules.schemas.views:blueprint',
             'cap_auth = cap.modules.auth.views:blueprint',
+            'cap_repos = cap.modules.repoimporter.views:repos_bp',
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
@@ -186,16 +187,16 @@ setup(
             'schemas = cap.modules.schemas.resolvers',
         ],
         'invenio_db.models': [
-            # 'cap_reana_model = cap.modules.reana.models',
             'analysis_schema_model = cap.modules.schemas.models',
             'status_check_model = cap.modules.services.models',
             'auth = cap.modules.auth.models',
+            'git_model = cap.modules.repoimporter.models',
         ],
         'invenio_db.alembic': [
             'cap = cap:alembic',
         ],
         'invenio_config.module': [
-            'cap = cap.config',
+            'cap = cap.config'
         ]
     },
     extras_require=extras_require,
