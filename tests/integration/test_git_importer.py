@@ -65,7 +65,8 @@ def test_download_archive_from_url_master(client, db, get_git_attributes,
        the data, and then CAP is able to retrieve them from a bucket.
     """
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {'url': git_url, 'type': 'repo'}
+    data = {'url': git_url, 'type': 'repo',
+            'for_download': True, 'for_connection': False}
 
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
@@ -98,7 +99,8 @@ def test_download_archive_from_url_branch(client, db, get_git_attributes,
        and then CAP is able to retrieve them from a bucket.
     """
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {'url': git_url, 'type': 'repo'}
+    data = {'url': git_url, 'type': 'repo',
+            'for_download': True, 'for_connection': False}
 
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
@@ -127,7 +129,8 @@ def test_download_archive_from_url_branch(client, db, get_git_attributes,
 def test_download_file_from_url_master(client, db, get_git_attributes,
                                        json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {'url': git_url, 'type': 'url'}
+    data = {'url': git_url, 'type': 'url',
+            'for_download': True, 'for_connection': False}
 
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
@@ -154,7 +157,8 @@ def test_download_file_from_url_master(client, db, get_git_attributes,
 def test_download_file_from_url_branch(client, db, get_git_attributes,
                                        json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {'url': git_url, 'type': 'url'}
+    data = {'url': git_url, 'type': 'url',
+            'for_download': True, 'for_connection': False}
 
     if get_access_token(git) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
@@ -178,7 +182,8 @@ def test_download_gitlab_archive_private(client, db, get_git_attributes,
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {
         'url': 'https://gitlab.cern.ch/analysispreservation/test-private-repo',
-        'type': 'repo'
+        'type': 'repo',
+        'for_download': True, 'for_connection': False
     }
 
     if get_access_token('GITLAB') is None:

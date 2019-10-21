@@ -21,9 +21,7 @@ from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
 from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
-from invenio_records_rest.config import (RECORDS_REST_ENDPOINTS,
-                                         RECORDS_REST_FACETS,
-                                         RECORDS_REST_SORT_OPTIONS)
+from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
@@ -154,6 +152,8 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-qa.cern.ch'
 ]
 
+WEBHOOK_URL = 'https://analysispreservation.cern.ch/repos/event'
+
 if os.environ.get('DEV_HOST', False):
     APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
 
@@ -183,6 +183,10 @@ else:
 if DEBUG:
     REST_ENABLE_CORS = True
     APP_ENABLE_SECURE_HEADERS = False
+
+    WEBHOOK_URL = os.environ.get('CAP_WEBHOOK_URL')
+    if WEBHOOK_URL:
+        APP_ALLOWED_HOSTS.append(WEBHOOK_URL.split('//')[-1])
 
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))

@@ -27,8 +27,9 @@ from __future__ import absolute_import, print_function
 import pytest
 from mock import patch
 
-from cap.modules.repoimporter.git_importer import GitImporter
+from cap.modules.repoimporter.api import GitAPI
 from cap.modules.repoimporter.utils import parse_url, get_access_token
+from cap.modules.repoimporter.errors import GitCredentialsError, GitURLParsingError
 from cap.modules.repoimporter import utils
 
 
@@ -53,18 +54,18 @@ GITLAB_FILE_BRANCH = 'https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch
 
 
 def test_parse_url_with_wrong_url():
-    with pytest.raises(ValueError) as exc:
+    with pytest.raises(GitURLParsingError) as exc:
         parse_url('https://google.com')
 
 
 def test_importer_with_wrong_url():
-    with pytest.raises(ValueError) as exc:
-        git = GitImporter(url='https://google.com')
+    with pytest.raises(GitURLParsingError) as exc:
+        git = GitAPI.create(url='https://google.com')
 
 
 def test_importer_with_missing_attrs():
-    with pytest.raises(ValueError) as exc:
-        git = GitImporter(host=None, owner='CERN', repo='CERN')
+    with pytest.raises(GitCredentialsError) as exc:
+        git = GitAPI.create(host=None, owner='CERN', repo='CERN')
 
 
 @patch('cap.modules.repoimporter.utils.get_access_token')
@@ -86,7 +87,7 @@ def test_link_creation_from_attrs(app, host, owner, branch, git_archive, token_k
     if utils.get_access_token(token_key) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    repo = GitImporter(host=host, owner=owner, repo='test-repo', branch=branch)
+    repo = GitAPI.create(host=host, owner=owner, repo='test-repo', branch=branch)
     archive_url = repo.archive_repo_url()
     assert archive_url == git_archive.format(get_access_token(token_key))
 
@@ -102,7 +103,7 @@ def test_link_creation_from_attrs_branch(app, host, owner, git_archive, token_ke
     if utils.get_access_token(token_key) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    repo = GitImporter(host=host, owner=owner, repo='test-repo', branch='test-branch')
+    repo = GitAPI.create(host=host, owner=owner, repo='test-repo', branch='test-branch')
     archive_url = repo.archive_repo_url()
     assert archive_url == git_archive.format(get_access_token(token_key))
 
@@ -118,7 +119,7 @@ def test_link_creation_from_url(app, git_url, git_archive, token_key):
     if utils.get_access_token(token_key) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    repo = GitImporter(url=git_url)
+    repo = GitAPI.create(url=git_url)
     archive_url = repo.archive_repo_url()
     assert archive_url == git_archive.format(get_access_token(token_key))
 

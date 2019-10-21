@@ -139,6 +139,7 @@ pyasn1-modules==0.2.1     # via python-ldap
 pyasn1==0.4.3             # via pyasn1-modules, python-ldap
 pycparser==2.18           # via cffi
 pygithub==1.39
+pyngrok==1.4.2
 pygments==2.2.0           # via ipython
 pyjwt==1.6.4              # via invenio-accounts, invenio-oauth2server, pygithub
 pyopenssl==18.0.0         # via urllib3
