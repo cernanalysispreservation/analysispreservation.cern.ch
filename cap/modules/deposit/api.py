@@ -247,6 +247,7 @@ class CAPDeposit(Deposit):
     def publish(self, *args, **kwargs):
         """Simple file check before publishing."""
         with AdminDepositPermission(self).require(403):
+            # check if all deposit files has been uploaded
             for file_ in self.files:
                 if file_.data['checksum'] is None:
                     raise MultipartMissingParts()
@@ -332,7 +333,15 @@ class CAPDeposit(Deposit):
     def edit(self, *args, **kwargs):
         """Edit deposit."""
         with UpdateDepositPermission(self).require(403):
-            return super(CAPDeposit, self).edit(*args, **kwargs)
+            super(CAPDeposit, self).edit(*args, **kwargs)
+
+            # unlock the bucket, so files can be added/updated/deleted
+            # when user tries to edit file required by published record
+            # new version will be created
+            self.files.bucket.locked = False
+            db.session.commit()
+
+            return self
 
     @pop_from_data
     def update(self, *args, **kwargs):
