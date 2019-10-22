@@ -12,6 +12,7 @@ import Image4 from "./svg/TwoColLayoutField";
 import Image5 from "./svg/TabTwoColLayoutField";
 import Image6 from "./svg/SidebatLayout";
 import Image7 from "./svg/SidebarTwoColLayout";
+
 import { commonSchema, schemaSchema, uiSchema } from "../../utils/schemas";
 import { Columns, Label } from "grommet";
 
@@ -46,7 +47,6 @@ class CustomizeField extends React.Component {
 
   _onSchemaChange = data => {
     this.setState({ schema: data.formData }, () => {
-      console.log("))))))))))):::", data);
       this.props.onSchemaChange(
         this.props.path.get("path").toJS(),
         data.formData
@@ -56,7 +56,6 @@ class CustomizeField extends React.Component {
 
   _onUiSchemaChange = data => {
     this.setState({ uiSchema: data.formData }, () => {
-      console.log("))))))))))):::", data);
       this.props.onUiSchemaChange(
         this.props.path.get("uiPath").toJS(),
         data.formData
@@ -70,36 +69,7 @@ class CustomizeField extends React.Component {
     };
   }
 
-  // displayChange = new_display => {
-  //   if (DISPALY_OPTIONS.indexOf(new_display) < 0) return;
-
-  //   console.log("change  display");
-  //   console.log(display);
-
-  //   let { uiSchema } = this.props;
-  //   uiSchema = uiSchema.toJS();
-
-  //   let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
-  //   let { display, ...restUIOptions } = uiOptions;
-
-  //   display = new_display;
-
-  //   let _uiOptions = {};
-  //   if (new_display == "full") _uiOptions = { full: "true", ...restUIOptions };
-  //   else _uiOptions = { display, ...restUIOptions };
-
-  //   this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
-  //     ...rest,
-  //     "ui:options": _uiOptions
-  //   });
-  // };
-
   gridChange = new_grid => {
-    // if (new_grid.indexOf(['flex','grid'] < 0 ) ) return;
-
-    console.log("change  display");
-    console.log(new_grid);
-
     let { uiSchema } = this.props;
     uiSchema = uiSchema.toJS();
 
@@ -116,8 +86,6 @@ class CustomizeField extends React.Component {
   };
 
   gridColumnChange = new_gridColumn => {
-    // if (new_grid.indexOf(['flex','grid'] < 0 ) ) return;
-
     let { uiSchema } = this.props;
     uiSchema = uiSchema.toJS();
 

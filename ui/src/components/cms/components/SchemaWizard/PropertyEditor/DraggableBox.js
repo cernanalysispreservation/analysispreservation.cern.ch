@@ -1,5 +1,5 @@
 import React from "react";
-import { useDrag, DragSource } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 const style = index => ({
   border: "2px dashed #f6f6f6",

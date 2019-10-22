@@ -192,24 +192,6 @@ class TextWidget extends Component {
   }
 }
 
-class TextComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return this.props.readonly ? (
-      <RenderReadOnlyText value={this.props.value} />
-    ) : (
-      <TextWidget
-        formData={this.props.formData}
-        formDataChange={this.props.formDataChange}
-        {...this.props}
-      />
-    );
-  }
-}
-
 TextWidget.propTypes = {
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
@@ -240,4 +222,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TextComponent);
+)(TextWidget);

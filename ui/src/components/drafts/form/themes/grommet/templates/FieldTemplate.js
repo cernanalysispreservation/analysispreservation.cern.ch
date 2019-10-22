@@ -73,7 +73,7 @@ FieldTemplate.propTypes = {
   rawDescription: PropTypes.string,
   rawErrors: PropTypes.array,
   schema: PropTypes.object,
-  children: PropTypes.element
+  children: PropTypes.array
 };
 
 export default FieldTemplate;

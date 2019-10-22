@@ -7,6 +7,9 @@ import Button from "grommet/components/Button";
 
 import Trash from "grommet/components/icons/base/Trash";
 
+import { Provider } from "react-redux";
+import store from "../../../../../../store/configureStore";
+
 class FormLayer extends React.Component {
   constructor(props) {
     super(props);
@@ -17,36 +20,41 @@ class FormLayer extends React.Component {
       <Layer
         closer={true}
         align="right"
-        peek={true}
-        flush={true}
+        flush={false}
         onClose={this.props.onClose}
         overlayClose={true}
       >
-        <Box justify="center" align="center" pad="large">
-          <Box pad="large" size="large">
-            <Box>{this.props.properties}</Box>
+        <Provider store={store}>
+          <Box justify="center" align="center" pad="large">
+            <Box pad="large" size="large">
+              <Box>{this.props.properties}</Box>
 
-            <Box direction="row" justify="between" pad={{ vertical: "small" }}>
-              <Box>
-                <Button
-                  label="OK"
-                  primary={true}
-                  onClick={this.props.onClose}
-                />
-              </Box>
-              <Box>
-                {this.props.remove ? (
+              <Box
+                direction="row"
+                justify="between"
+                pad={{ vertical: "small" }}
+              >
+                <Box>
                   <Button
-                    label="Remove"
-                    plain={true}
-                    onClick={this.props.remove ? this.props.remove : null}
-                    icon={<Trash />}
+                    label="OK"
+                    primary={true}
+                    onClick={this.props.onClose}
                   />
-                ) : null}
+                </Box>
+                <Box>
+                  {this.props.remove ? (
+                    <Button
+                      label="Remove"
+                      plain={true}
+                      onClick={this.props.remove ? this.props.remove : null}
+                      icon={<Trash />}
+                    />
+                  ) : null}
+                </Box>
               </Box>
             </Box>
           </Box>
-        </Box>
+        </Provider>
       </Layer>
     ) : null;
   }

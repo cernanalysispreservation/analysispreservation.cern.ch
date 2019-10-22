@@ -32,7 +32,7 @@ class DepositForm extends React.Component {
         errorObj.addError(error.message);
       }
     });
-    console.log("valisdateee", errors, this.props.errors);
+
     return errors;
   }
 
@@ -74,15 +74,6 @@ class DepositForm extends React.Component {
   }
 
   render() {
-    // let __uiSchema = {
-    //   ...this.props.uiSchema,
-    //   "ui:options": {
-    //     display: "flex",
-    //     size: "large",
-    //     align: "center"
-    //   }
-    // };
-
     return (
       <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
         <SectionHeader label="Submission Form" />

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { connect, Provider } from "react-redux";
+import store from "../../store/configureStore";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -71,23 +72,27 @@ class SettingsIndex extends React.Component {
         }}
         align="right"
       >
-        <Box flex={true} size="medium" pad={{ vertical: "large" }}>
-          <Heading align="start" margin="small" tag="h3">
-            New OAuth Application
-          </Heading>
-          <Paragraph align="start" margin="none" />
-          <Form
-            schema={
-              this.state.layer.type == "token" ? tokenSchema : applicationSchema
-            }
-            onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
-            validate={true}
-          >
-            <Box flex={true} margin={{ vertical: "small" }}>
-              <Button label="Submit" type="submit" primary={true} />
-            </Box>
-          </Form>
-        </Box>
+        <Provider store={store}>
+          <Box flex={true} size="medium" pad={{ vertical: "large" }}>
+            <Heading align="start" margin="small" tag="h3">
+              New OAuth Application
+            </Heading>
+            <Paragraph align="start" margin="none" />
+            <Form
+              schema={
+                this.state.layer.type == "token"
+                  ? tokenSchema
+                  : applicationSchema
+              }
+              onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
+              validate={true}
+            >
+              <Box flex={true} margin={{ vertical: "small" }}>
+                <Button label="Submit" type="submit" primary={true} />
+              </Box>
+            </Form>
+          </Box>
+        </Provider>
       </Layer>
     );
   }

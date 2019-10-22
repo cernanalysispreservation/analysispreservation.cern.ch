@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
+import { connect, Provider } from "react-redux";
+import store from "../../../store/configureStore";
 
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
@@ -82,108 +83,152 @@ class FileManager extends React.Component {
         overlayClose={true}
         onClose={this.props.toggleFilemanagerLayer}
       >
-        <Box size={{ height: "large", width: "xxlarge" }}>
-          <Box flex={true}>
-            <Box flex={false} pad="small" colorIndex="light-2">
-              <Title>
-                File Manager (<Anchor
-                  label="bucket"
-                  icon={<LinkIcon size="xsmall" />}
-                  href={this.props.links.bucket}
-                  size="small"
-                />)
-              </Title>
-            </Box>
-            <Box
-              flex={false}
-              justify="center"
-              pad="small"
-              pp={{ horizontal: "small" }}
-              colorIndex="grey-2"
-            >
-              {this.props.selectableActionLayer
-                ? "Select or upload a file to be added to the project"
-                : "Upload and manage project files"}
-            </Box>
-            <Box flex={true} direction="row">
-              <Box flex={true}>
-                <FileList
-                  action={this.setSelected.bind(this)}
-                  files={this.props.files}
-                />
+        <Provider store={store}>
+          <Box size={{ height: "large", width: "xxlarge" }}>
+            <Box flex={true}>
+              <Box flex={false} pad="small" colorIndex="light-2">
+                <Title>
+                  File Manager (<Anchor
+                    label="bucket"
+                    icon={<LinkIcon size="xsmall" />}
+                    href={this.props.links.bucket}
+                    size="small"
+                  />)
+                </Title>
               </Box>
-              <Box flex={true} pad="small" colorIndex="grey-4-a">
-                <Tabs justify="start" onActive={this.clearFormData}>
-                  <Tab title="Upload File">
-                    <Box pad="medium">
-                      <Heading tag="h5" strong={true}>
-                        Upload from Local
-                      </Heading>
-                      <Box margin={{ bottom: "small" }}>
-                        <Box flex={true}>
-                          <Dropzone
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              flex: 1,
-                              height: "100px",
-                              padding: "30px 0",
-                              border: "2px dashed rgba(0, 0, 0, 0.25)",
-                              borderRadius: "4px",
-                              justifyContent: "center",
-                              alignContent: "center",
-                              alignItems: "center",
-                              cursor: "pointer"
-                            }}
-                            onDrop={acceptedFiles => {
-                              let bucket_url = this.props.links.bucket;
-                              bucket_url = bucket_url.replace(
-                                ".cern.ch/",
-                                ".cern.ch/api/"
-                              );
-
-                              if (acceptedFiles.length > 0)
-                                this.props.uploadFile(
-                                  bucket_url,
-                                  acceptedFiles[0]
-                                );
-                            }}
-                          >
-                            <Box
+              <Box
+                flex={false}
+                justify="center"
+                pad="small"
+                pp={{ horizontal: "small" }}
+                colorIndex="grey-2"
+              >
+                {this.props.selectableActionLayer
+                  ? "Select or upload a file to be added to the project"
+                  : "Upload and manage project files"}
+              </Box>
+              <Box flex={true} direction="row">
+                <Box flex={true}>
+                  <FileList
+                    action={this.setSelected.bind(this)}
+                    files={this.props.files}
+                  />
+                </Box>
+                <Box flex={true} pad="small" colorIndex="grey-4-a">
+                  <Tabs justify="start" onActive={this.clearFormData}>
+                    <Tab title="Upload File">
+                      <Box pad="medium">
+                        <Heading tag="h5" strong={true}>
+                          Upload from Local
+                        </Heading>
+                        <Box margin={{ bottom: "small" }}>
+                          <Box flex={true}>
+                            <Dropzone
                               style={{
                                 display: "flex",
-                                flexDirection: "row",
+                                flexDirection: "column",
+                                flex: 1,
+                                height: "100px",
+                                padding: "30px 0",
+                                border: "2px dashed rgba(0, 0, 0, 0.25)",
+                                borderRadius: "4px",
                                 justifyContent: "center",
-                                alignItems: "center"
+                                alignContent: "center",
+                                alignItems: "center",
+                                cursor: "pointer"
+                              }}
+                              onDrop={acceptedFiles => {
+                                let bucket_url = this.props.links.bucket;
+                                bucket_url = bucket_url.replace(
+                                  ".cern.ch/",
+                                  ".cern.ch/api/"
+                                );
+
+                                if (acceptedFiles.length > 0)
+                                  this.props.uploadFile(
+                                    bucket_url,
+                                    acceptedFiles[0]
+                                  );
                               }}
                             >
-                              <FormUploadIcon size="small" />
-                              <Paragraph margin="none">Browse files</Paragraph>
-                            </Box>
-                            <Paragraph margin="medium" size="large">
-                              OR
-                            </Paragraph>
-                            <Paragraph margin="none">
-                              Drop your files here
-                            </Paragraph>
-                            {/* Drop your files here, or click to select files to
+                              <Box
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                              >
+                                <FormUploadIcon size="small" />
+                                <Paragraph margin="none">
+                                  Browse files
+                                </Paragraph>
+                              </Box>
+                              <Paragraph margin="medium" size="large">
+                                OR
+                              </Paragraph>
+                              <Paragraph margin="none">
+                                Drop your files here
+                              </Paragraph>
+                              {/* Drop your files here, or click to select files to
                             upload. */}
-                          </Dropzone>
+                            </Dropzone>
+                          </Box>
                         </Box>
                       </Box>
-                    </Box>
-                  </Tab>
-                  <Tab title="Upload Github File">
-                    <Box pad="medium">
-                      <Heading tag="h5" strong={true}>
-                        Upload from CERN Gitlab/Github file URL
-                      </Heading>
-                      <Box>
-                        <Box flex={true}>
+                    </Tab>
+                    <Tab title="Upload Github File">
+                      <Box pad="medium">
+                        <Heading tag="h5" strong={true}>
+                          Upload from CERN Gitlab/Github file URL
+                        </Heading>
+                        <Box>
+                          <Box flex={true}>
+                            <CleanForm
+                              formData={this.state.formData}
+                              schema={schema}
+                              uiSchema={uiSchema}
+                              onChange={change => {
+                                this.formDataChange(change.formData);
+                              }}
+                            >
+                              <Box margin={{ top: "small" }}>
+                                {this.state.formData.length > 0 ? (
+                                  <Button
+                                    label="Upload"
+                                    primary={true}
+                                    fill={true}
+                                    onClick={() => {
+                                      this.props.uploadViaUrl(
+                                        this.props.id,
+                                        this.state.formData,
+                                        "url"
+                                      );
+                                    }}
+                                  />
+                                ) : (
+                                  <Button
+                                    label="Upload"
+                                    primary={true}
+                                    fill={true}
+                                  />
+                                )}
+                              </Box>
+                            </CleanForm>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Tab>
+                    <Tab title="Upload Github Repo">
+                      <Box pad="medium">
+                        <Heading tag="h5" strong={true}>
+                          Upload from Gitlab CERN/Github repository url
+                        </Heading>
+                        <Box direction="row">
                           <CleanForm
                             formData={this.state.formData}
                             schema={schema}
-                            uiSchema={uiSchema}
+                            uiSchema={uiSchemaRepoUpload}
                             onChange={change => {
                               this.formDataChange(change.formData);
                             }}
@@ -198,7 +243,7 @@ class FileManager extends React.Component {
                                     this.props.uploadViaUrl(
                                       this.props.id,
                                       this.state.formData,
-                                      "url"
+                                      "repo"
                                     );
                                   }}
                                 />
@@ -213,84 +258,44 @@ class FileManager extends React.Component {
                           </CleanForm>
                         </Box>
                       </Box>
-                    </Box>
-                  </Tab>
-                  <Tab title="Upload Github Repo">
-                    <Box pad="medium">
-                      <Heading tag="h5" strong={true}>
-                        Upload from Gitlab CERN/Github repository url
-                      </Heading>
-                      <Box direction="row">
-                        <CleanForm
-                          formData={this.state.formData}
-                          schema={schema}
-                          uiSchema={uiSchemaRepoUpload}
-                          onChange={change => {
-                            this.formDataChange(change.formData);
-                          }}
-                        >
-                          <Box margin={{ top: "small" }}>
-                            {this.state.formData.length > 0 ? (
-                              <Button
-                                label="Upload"
-                                primary={true}
-                                fill={true}
-                                onClick={() => {
-                                  this.props.uploadViaUrl(
-                                    this.props.id,
-                                    this.state.formData,
-                                    "repo"
-                                  );
-                                }}
-                              />
-                            ) : (
-                              <Button
-                                label="Upload"
-                                primary={true}
-                                fill={true}
-                              />
-                            )}
-                          </Box>
-                        </CleanForm>
-                      </Box>
-                    </Box>
-                  </Tab>
-                </Tabs>
+                    </Tab>
+                  </Tabs>
+                </Box>
               </Box>
+              {this.props.selectableActionLayer ? (
+                <Box colorIndex="light-2" direction="row" flex={false}>
+                  <Box
+                    colorIndex="light-2"
+                    pad="small"
+                    direction="row"
+                    flex={false}
+                  >
+                    <Button
+                      primary={true}
+                      label="Select File"
+                      onClick={
+                        this.state.selected
+                          ? () => this.actionWithFile(this.state.selected)
+                          : null
+                      }
+                    />
+                  </Box>
+                  <Box
+                    colorIndex="light-2"
+                    pad="small"
+                    direction="row"
+                    flex={false}
+                  >
+                    <Button
+                      label="Cancel"
+                      onClick={this.props.toggleFilemanagerLayer}
+                    />
+                  </Box>
+                </Box>
+              ) : null}
             </Box>
-            {this.props.selectableActionLayer ? (
-              <Box colorIndex="light-2" direction="row" flex={false}>
-                <Box
-                  colorIndex="light-2"
-                  pad="small"
-                  direction="row"
-                  flex={false}
-                >
-                  <Button
-                    primary={true}
-                    label="Select File"
-                    onClick={
-                      this.state.selected
-                        ? () => this.actionWithFile(this.state.selected)
-                        : null
-                    }
-                  />
-                </Box>
-                <Box
-                  colorIndex="light-2"
-                  pad="small"
-                  direction="row"
-                  flex={false}
-                >
-                  <Button
-                    label="Cancel"
-                    onClick={this.props.toggleFilemanagerLayer}
-                  />
-                </Box>
-              </Box>
-            ) : null}
           </Box>
-        </Box>
+        </Provider>
       </Layer>
     ) : null;
   }

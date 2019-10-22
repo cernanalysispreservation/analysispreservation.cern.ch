@@ -90,21 +90,17 @@ const formatted_date = time =>
 const PreviewUpload = ({ file, open, toggle, deleteFile }) => {
   let { links: { self: file_link = null } = {}, key: filePath } = file;
   file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
+
+  if (open) return null;
   return (
-    <Layer
-      closer={true}
-      align="right"
-      hidden={open}
-      overlayClose={true}
-      onClose={toggle}
-    >
+    <Layer closer={true} align="right" overlayClose={true} onClose={toggle}>
       <Box pad="large" flex={true} direction="column" align="center">
         <Heading tag="h4">{file.key}</Heading>
         <Box margin={{ vertical: "large" }}>{_getIcon(file.mimetype)}</Box>
         <Heading tag="h4" style={{ letterSpacing: "3px" }}>
           Tags
         </Heading>
-        <Box align="left">
+        <Box align="start">
           <Paragraph>
             Created: {formatted_date(new Date(file.created))}
           </Paragraph>
