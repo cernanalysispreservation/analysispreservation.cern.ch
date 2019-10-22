@@ -84,6 +84,7 @@ ui/package-lock.json
 # Pycharm specific
 .idea
 .idea_modules
+.style.yapf
 
 # VS Code specific
 .vscode

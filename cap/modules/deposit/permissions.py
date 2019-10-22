@@ -21,8 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-
 """CAP Deposit permissions."""
 
 from functools import partial
@@ -31,9 +29,11 @@ from flask import request
 from invenio_access.permissions import ParameterizedActionNeed, Permission
 from invenio_files_rest.models import Bucket
 from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 
+from cap.modules.records.permissions import RecordFilesPermission
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
 from cap.modules.schemas.resolvers import resolve_schema_by_url
@@ -106,7 +106,6 @@ class DepositPermission(Permission):
 
 class CreateDepositPermission(Permission):
     """Deposit create permission."""
-
     def __init__(self, record):
         """Initialize state."""
         _needs = set()
@@ -122,15 +121,16 @@ class CreateDepositPermission(Permission):
             try:
                 schema = resolve_schema_by_url(deposit['$schema'])
             except JSONSchemaNotFound:
-                raise WrongJSONSchemaError('Schema {} doesnt exist.'.
-                                           format(deposit['$schema']))
+                raise WrongJSONSchemaError('Schema {} doesnt exist.'.format(
+                    deposit['$schema']))
 
         elif '$ana_type' in deposit:
             try:
                 schema = Schema.get_latest(deposit['$ana_type'])
             except JSONSchemaNotFound:
-                raise WrongJSONSchemaError('Schema with name {} doesnt exist.'.
-                                           format(deposit['$ana_type']))
+                raise WrongJSONSchemaError(
+                    'Schema with name {} doesnt exist.'.format(
+                        deposit['$ana_type']))
 
         else:
             raise WrongJSONSchemaError(
@@ -141,7 +141,6 @@ class CreateDepositPermission(Permission):
 
 class ReadDepositPermission(DepositPermission):
     """Deposit read permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(ReadDepositPermission, self).__init__(record, 'read')
@@ -149,7 +148,6 @@ class ReadDepositPermission(DepositPermission):
 
 class UpdateDepositPermission(DepositPermission):
     """Deposit update permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(UpdateDepositPermission, self).__init__(record, 'update')
@@ -157,7 +155,6 @@ class UpdateDepositPermission(DepositPermission):
 
 class AdminDepositPermission(DepositPermission):
     """Deposit admin permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(AdminDepositPermission, self).__init__(record, 'admin')
@@ -165,7 +162,6 @@ class AdminDepositPermission(DepositPermission):
 
 class CloneDepositPermission(DepositPermission):
     """Clone deposit permission."""
-
     def __init__(self, record):
         """Initialize state."""
         super(CloneDepositPermission, self).__init__(record, 'read')
@@ -223,11 +219,22 @@ def files_permission_factory(obj, action=None):
     bucket_id = str(obj.id) if isinstance(obj, Bucket) else str(obj.bucket_id)
 
     try:
-        bucket = RecordsBuckets.query.filter_by(
-            bucket_id=bucket_id
-        ).one()
+        bucket = RecordsBuckets.query.filter_by(bucket_id=bucket_id).one()
+        record_type = _get_record_type(bucket.record.id)
 
-        return DepositFilesPermission(bucket.record, action)
+        return {
+            'recid': RecordFilesPermission(bucket.record, action),
+            'depid': DepositFilesPermission(bucket.record, action)
+        }[record_type]
 
-    except NoResultFound:
+    except (NoResultFound, KeyError):
         return Permission()
+
+
+def _get_record_type(record_metadata_uuid):
+    try:
+        pid = PersistentIdentifier.query.filter_by(
+            object_uuid=record_metadata_uuid).one()
+        return pid.pid_type
+    except NoResultFound:
+        return None

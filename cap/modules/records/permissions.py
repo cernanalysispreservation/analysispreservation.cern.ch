@@ -144,3 +144,54 @@ def delete_permission_factory(record):
 def admin_permission_factory(record):
     """Admin permission factory."""
     return Permission(record_admin_need(record.id))
+
+
+class RecordFilesPermission(Permission):
+    """Permission for files in records (read and update access)."""
+
+    access_actions = {
+        'read': [
+            'bucket-read',
+            'bucket-read-versions',
+            'object-read',
+            'object-read-version',
+            'multipart-read',
+        ],
+        'update': [
+            'bucket-read',
+            'bucket-read-versions',
+            'object-read',
+            'object-read-version',
+            'multipart-read',
+            'bucket-update',
+            'bucket-listmultiparts',
+            'object-delete',
+            'object-delete-version',
+            'multipart-delete',
+        ]
+    }
+
+    access_needs = {
+        "read": record_read_need,
+        "update": record_update_need,
+        "admin": record_admin_need,
+    }
+
+    def __init__(self, record, action):
+        """Constructor.
+
+        Args:
+            record: record to which access is requested.
+        """
+        _needs = set()
+        _needs.add(self.access_needs['admin'](record))
+        exp = record.json.get('_experiment')
+
+        if exp:
+            _needs.add(exp_need_factory(exp))
+
+        for access, actions in self.access_actions.items():
+            if action in actions:
+                _needs.add(self.access_needs[access](record))
+
+        super(RecordFilesPermission, self).__init__(*_needs)

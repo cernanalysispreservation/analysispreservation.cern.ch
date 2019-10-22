@@ -28,18 +28,11 @@ from __future__ import absolute_import, print_function
 import copy
 from functools import wraps
 
-import requests
 from celery import shared_task
 from flask import current_app, request
 from flask_login import current_user
-from invenio_access.models import ActionRoles, ActionUsers
-from invenio_db import db
-from invenio_deposit.api import Deposit, index, preserve
-from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
 from invenio_files_rest.models import Bucket, FileInstance, ObjectVersion
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
@@ -49,6 +42,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+import requests
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.git_importer import GitImporter
@@ -58,6 +52,12 @@ from cap.modules.schemas.resolvers import (resolve_schema_by_url,
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_db import db
+from invenio_deposit.api import Deposit, index, preserve
+from invenio_deposit.utils import mark_as_action
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
 
 from .errors import (DepositValidationError, FileUploadError,
                      UpdateDepositPermissionsError)
@@ -333,7 +333,7 @@ class CAPDeposit(Deposit):
     def edit(self, *args, **kwargs):
         """Edit deposit."""
         with UpdateDepositPermission(self).require(403):
-            super(CAPDeposit, self).edit(*args, **kwargs)
+            self = super(CAPDeposit, self).edit(*args, **kwargs)
 
             # unlock the bucket, so files can be added/updated/deleted
             # when user tries to edit file required by published record
