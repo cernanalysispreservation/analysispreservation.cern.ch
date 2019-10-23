@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0' # "3.0.0rc2"
+INVENIO_VERSION = '3.0.0'    # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -44,9 +44,7 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-extras_require['ldap'] = [
-    'python-ldap>=2.4.39'
-]
+extras_require['ldap'] = ['python-ldap>=2.4.39']
 
 # Do not include in all requirement
 extras_require['xrootd'] = [
@@ -72,7 +70,7 @@ install_requires = [
     'cachetools==3.1.0',
 
     # Pinned libraries
-    'celery==4.1.1',  # temporary fix
+    'celery==4.1.1',    # temporary fix
     # temporary pinned since there are 'connection closed' issues
     # on production server
     'urllib3[secure]==1.22',
@@ -95,7 +93,6 @@ install_requires = [
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
-
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
@@ -103,11 +100,10 @@ install_requires = [
 
 packages = find_packages()
 
-
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
+    exec (fp.read(), g)
     version = g['__version__']
 
 setup(
@@ -119,7 +115,8 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
+    url=
+    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',    # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
@@ -175,7 +172,6 @@ setup(
             'cap.modules.records.minters:cap_record_minter',
             'cap_deposit_minter = '
             'cap.modules.deposit.minters:cap_deposit_minter',
-
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '

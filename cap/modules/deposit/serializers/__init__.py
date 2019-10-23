@@ -25,12 +25,11 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_deposit.serializers import json_file_response
 from invenio_records_rest.serializers.response import (record_responsify,
                                                        search_responsify)
 
 from .json import DepositSerializer
-from .schemas.json import DepositSchema, DepositFormSchema
+from .schemas.json import DepositFormSchema, DepositSchema
 
 # Serializers
 # ===========
@@ -46,7 +45,3 @@ deposit_json_v1_response = record_responsify(deposit_json_v1,
 deposit_form_json_v1_response = record_responsify(deposit_form_json_v1,
                                                   'application/json')
 deposit_json_v1_search = search_responsify(deposit_json_v1, 'application/json')
-
-# Files-REST serializers
-# JSON Files serializers for deposit files
-files_response = json_file_response

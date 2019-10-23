@@ -536,9 +536,6 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
     'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
-    'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
-    'file_item_route': '/deposits/<{0}:pid_value>/files/<path:key>'.format(
-        _PID),
     'create_permission_factory_imp': check_oauth2_scope(
         lambda record: CreateDepositPermission(record).can(), write_scope.id),
     'read_permission_factory_imp': check_oauth2_scope(
