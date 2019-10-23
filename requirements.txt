@@ -54,7 +54,7 @@ flask-shell-ipython==0.3.1  # via invenio-app
 flask-sqlalchemy==2.3.2   # via flask-alembic, invenio-db
 flask-talisman==0.5.0     # via invenio-app
 flask-wtf==0.14.2         # via flask-security, invenio-accounts, invenio-oauth2server, invenio-userprofiles
-flask==0.12.4
+flask==1.0
 ftfy==4.4.3               # via invenio-records-rest
 functools32==3.2.3.post2  # via invenio-jsonschemas, jsonschema
 future==0.16.0            # via cookiecutter, invenio-accounts, invenio-oauth2server

@@ -60,7 +60,7 @@ setup_requires = [
 ]
 
 install_requires = [
-    'Flask==0.12.4',
+    'Flask==1.0',
     'Flask-Cli>=0.4.0',
     'Flask-Cache>=0.13.1',
     'Flask-Debugtoolbar>=0.10.1',
