@@ -530,9 +530,6 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
         'application/basic+json': ('cap.modules.records.serializers'
                                    ':basic_json_v1_search')
     },
-    'files_serializers': {
-        'application/json': ('cap.modules.deposit.serializers:files_response'),
-    },
     'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
     'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),

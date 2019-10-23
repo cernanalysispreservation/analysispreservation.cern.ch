@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0'    # "3.0.0rc2"
+INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -34,9 +34,7 @@ tests_require = [
 ]
 
 extras_require = {
-    'docs': [
-        'Sphinx>=1.5.1',
-    ],
+    'docs': ['Sphinx>=1.5.1', ],
     'tests': tests_require,
 }
 
@@ -70,7 +68,7 @@ install_requires = [
     'cachetools==3.1.0',
 
     # Pinned libraries
-    'celery==4.1.1',    # temporary fix
+    'celery==4.1.1',  # temporary fix
     # temporary pinned since there are 'connection closed' issues
     # on production server
     'urllib3[secure]==1.22',
@@ -116,15 +114,13 @@ setup(
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
     url=
-    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',    # noqa
+    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
     platforms='any',
     entry_points={
-        'console_scripts': [
-            'cap = cap.cli:cli',
-        ],
+        'console_scripts': ['cap = cap.cli:cli', ],
         'invenio_access.actions': [
             'cms_access = '
             'cap.modules.experiments.permissions:cms_access_action',
@@ -159,6 +155,7 @@ setup(
             'cap_schemas = cap.modules.schemas.views:blueprint',
             'cap_auth = cap.modules.auth.views:blueprint',
             'cap_repos = cap.modules.repoimporter.views:repos_bp',
+            'cap_records = cap.modules.records.views:create_cap_record_blueprint',  # noqa
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
@@ -189,12 +186,8 @@ setup(
             'auth = cap.modules.auth.models',
             'git_model = cap.modules.repoimporter.models',
         ],
-        'invenio_db.alembic': [
-            'cap = cap:alembic',
-        ],
-        'invenio_config.module': [
-            'cap = cap.config'
-        ]
+        'invenio_db.alembic': ['cap = cap:alembic', ],
+        'invenio_config.module': ['cap = cap.config']
     },
     extras_require=extras_require,
     install_requires=install_requires,
