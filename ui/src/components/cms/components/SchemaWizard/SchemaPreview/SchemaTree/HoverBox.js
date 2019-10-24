@@ -2,10 +2,9 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 
-function getStyle(backgroundColor, isOverCurrent) {
+function getStyle(isOverCurrent) {
   return {
     color: "white",
-    //backgroundColor,
     textAlign: "center",
     fontSize: "1rem",
     height: "100%",
@@ -13,12 +12,13 @@ function getStyle(backgroundColor, isOverCurrent) {
   };
 }
 
-function HoverBox({ path, propKey, addProperty, children }) {
+function HoverBox({ path, propKey, addProperty, children, index }) {
   // const [hasDropped, setHasDropped] = useState(false);
   // const [results, setResults] = useState({});
   // const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false);
+  // const ref = useRef(null);
   const [{ isOverCurrent }, drop] = useDrop({
-    accept: ["FIELD_TYPE", "NESTED_TYPE"],
+    accept: "FIELD_TYPE",
     drop: (item, monitor) => {
       const didDrop = monitor.didDrop();
       if (!didDrop) {
@@ -33,13 +33,8 @@ function HoverBox({ path, propKey, addProperty, children }) {
       isOverCurrent: monitor.isOver({ shallow: true })
     })
   });
-
-  let backgroundColor;
-  if (isOverCurrent) {
-    backgroundColor = "darkgreen";
-  }
   return (
-    <div ref={drop} style={getStyle(backgroundColor, isOverCurrent)}>
+    <div ref={drop} style={getStyle(isOverCurrent)} index={index}>
       {children}
     </div>
   );
@@ -49,7 +44,8 @@ HoverBox.propTypes = {
   children: PropTypes.element,
   path: PropTypes.array,
   addProperty: PropTypes.func,
-  propKey: PropTypes.string
+  propKey: PropTypes.string,
+  index: PropTypes.number
 };
 
 export default HoverBox;

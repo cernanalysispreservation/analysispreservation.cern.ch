@@ -11,7 +11,6 @@ import TreeIcon from "grommet/components/icons/base/Tree";
 class SchemaPreview extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = { view: "tree" };
   }
 

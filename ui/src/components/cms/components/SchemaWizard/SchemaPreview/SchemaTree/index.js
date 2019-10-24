@@ -22,7 +22,7 @@ class SchemaTree extends React.Component {
       <Box style={{ height: "100%", display: "flex", flexDirection: "column" }}>
         <Form
           schema={transformSchema(this.props.schema.toJS())}
-          uiSchema={{}}
+          uiSchema={this.props.uiSchema.toJS()}
           formData={{}}
           showErrorList={false}
           tagName="div"
