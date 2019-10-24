@@ -26,13 +26,20 @@
 
 from __future__ import absolute_import, print_function
 
-from flask import current_app, request
-
 from elasticsearch_dsl.query import Q
+from flask import current_app, request
+from flask_login import current_user
 from invenio_records_rest.errors import InvalidQueryRESTError
 from invenio_records_rest.sorter import default_sorter_factory
 
 from .facets import cap_facets_factory
+
+# if any of the keywords appears in a search url as a parameter,
+# will get resolved to a specified query if True or ~query if False
+KEYWORD_TO_QUERY = {
+        'by_bot': lambda: ~Q('exists', field='created_by'),
+        'by_me': lambda: Q('match', **{'created_by': current_user.id}),
+}
 
 
 def cap_search_factory(self, search, query_parser=None):
@@ -42,17 +49,32 @@ def cap_search_factory(self, search, query_parser=None):
     :param search: Elastic search DSL search instance.
     :returns: Tuple with search instance and URL arguments.
     """
-    def _default_parser(qstr=None):
+    def _default_parser(qstr=None, **kwargs):
         """Use of the Q() from elasticsearch_dsl."""
-        if qstr:
-            return Q('query_string', query=qstr)
-        return Q()
+        query = Q('query_string', query=qstr) if qstr else Q()
+
+        # resolve keywords to queries
+        for k, v in kwargs.items():
+            if k in KEYWORD_TO_QUERY:
+                if v == 'True':
+                    query = query & KEYWORD_TO_QUERY[k]()
+                elif v == 'False':
+                    query = query & ~KEYWORD_TO_QUERY[k]()
+
+        return query
 
     query_string = request.values.get('q')
+
+    # parse url params to search for keywords
+    query_keywords = {
+            k: request.values[k]
+            for k in KEYWORD_TO_QUERY.keys()
+            if k in request.values
+    }
     query_parser = query_parser or _default_parser
 
     try:
-        search = search.query(query_parser(query_string))
+        search = search.query(query_parser(query_string, **query_keywords))
     except SyntaxError:
         current_app.logger.debug(
             "Failed parsing query: {0}".format(
