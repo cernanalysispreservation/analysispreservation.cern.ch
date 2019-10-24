@@ -7,10 +7,11 @@ component=(
 "lhcb"
 "ui"
 "access"
-"deposit"
+"deposits"
 "devops"
 "docker"
 "docs"
+"files",
 "fixtures"
 "global"
 "records"
@@ -71,7 +72,7 @@ while read -r line; do
     then
         check_message=$(contains "${ADDR[0]}")
         if [ $check_message -eq 1 ]
-        then  
+        then
             commit_msg_component_error "${line}"
             commit_error=1
         fi
