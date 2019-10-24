@@ -36,6 +36,11 @@ from sqlalchemy.orm.exc import NoResultFound
 from .models import Schema
 from .permissions import ReadSchemaPermission
 
+try:
+    from functools import lru_cache
+except ImportError:
+    from functools32 import lru_cache
+
 
 @jsonresolver.route('/schemas/<path:path>',
                     host='analysispreservation.cern.ch')
@@ -96,6 +101,7 @@ def schema_name_to_url(schema_name):
     return url
 
 
+@lru_cache(maxsize=1024)
 def resolve_schema_by_url(url):
     """Get Schema object for given url."""
     path = current_jsonschemas.url_to_path(url)
