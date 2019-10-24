@@ -25,7 +25,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(updateUiSchemaByPath(path, schema))
   };
 }
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps

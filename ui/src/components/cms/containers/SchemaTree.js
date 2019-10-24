@@ -4,7 +4,8 @@ import SchemaTree from "../components/SchemaWizard/SchemaPreview/SchemaTree";
 
 function mapStateToProps(state) {
   return {
-    schema: state.schemaWizard.getIn(["current", "schema"])
+    schema: state.schemaWizard.getIn(["current", "schema"]),
+    uiSchema: state.schemaWizard.getIn(["current", "uiSchema"])
   };
 }
 
