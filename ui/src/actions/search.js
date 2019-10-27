@@ -38,16 +38,14 @@ const SEARCH_PATH_TO_INDEX = {
 
 const DEFAULT_INDEX = "records";
 
-export function fetchSearch() {
+export function fetchSearch(pathname, location_search) {
   return function(dispatch, getState) {
-    let pathname = getState().routing.location.pathname;
     let index =
       pathname in SEARCH_PATH_TO_INDEX
         ? SEARCH_PATH_TO_INDEX[pathname]
         : DEFAULT_INDEX;
     let searchApiUrl = `/api/${index}`;
 
-    let location_search = getState().routing.location.search;
     // If query exists, remove "?" from string, since
     // we construct later
     if (location_search[0] == "?") location_search = location_search.substr(1);

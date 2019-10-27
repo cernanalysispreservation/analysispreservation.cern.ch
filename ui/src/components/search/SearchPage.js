@@ -20,12 +20,14 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchSearch();
+    let { pathname, search } = this.props.location;
+    this.props.fetchSearch(pathname, search);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      this.props.fetchSearch();
+      let { pathname, search } = this.props.location;
+      this.props.fetchSearch(pathname, search);
     }
   }
 
@@ -145,13 +147,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: () => dispatch(fetchSearch())
+    fetchSearch: (pathname, location_search) =>
+      dispatch(fetchSearch(pathname, location_search))
   };
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SearchPage)
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(SearchPage));

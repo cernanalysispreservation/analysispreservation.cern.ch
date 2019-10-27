@@ -19,7 +19,6 @@ import Layer from "grommet/components/Layer";
 import SearchBar from "../search/SearchBar";
 
 import UserIcon from "grommet/components/icons/base/User";
-import { fetchSearch } from "../../actions/search";
 import config from "../../config";
 import { logout } from "../../actions/auth";
 
@@ -183,7 +182,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: query => dispatch(fetchSearch(query)),
     logout: () => dispatch(logout())
   };
 }
