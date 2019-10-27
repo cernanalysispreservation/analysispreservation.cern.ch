@@ -22,7 +22,6 @@ class JSONEditorWidget extends Component {
   }
 
   setJSON = data => {
-    // console.log("sertJSON::", data);
     this.props.onChange(data);
   };
 

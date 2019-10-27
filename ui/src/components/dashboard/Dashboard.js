@@ -6,8 +6,6 @@ import AnnotatedMeter from "grommet-addons/components/AnnotatedMeter";
 
 import Box from "grommet/components/Box";
 import Header from "grommet/components/Header";
-import Tiles from "grommet/components/Tiles";
-import Tile from "grommet/components/Tile";
 import Notification from "grommet/components/Notification";
 
 import { withRouter } from "react-router-dom";
@@ -20,7 +18,6 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    console.log("dashdashdash", this.props.results);
     return (
       <Box full={true} colorIndex="light-2">
         <Header

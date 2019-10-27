@@ -18,7 +18,6 @@ class PropKeyEditor extends React.Component {
   };
 
   _onPropertyKeyChange = ({ formData }) => {
-    console.log("_onPropertyKeyChange:::::::::::%%%%%%%%%%", this.props);
     if (this.props.type == "new")
       this.props.addProperty(this.props.path, formData);
     else this.props.addProperty(this.props.path, formData);

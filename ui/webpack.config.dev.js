@@ -74,14 +74,28 @@ export default {
           }
         ]
       },
+      // {
+      //   test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+      //   use: [
+      //     {
+      //       loader: "url-loader",
+      //       options: {
+      //         limit: 10000,
+      //         mimetype: "image/svg+xml"
+      //       }
+      //     }
+      //   ]
+      // },
       {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        test: /\.svg$/,
         use: [
           {
-            loader: "url-loader",
+            loader: "babel-loader"
+          },
+          {
+            loader: "react-svg-loader",
             options: {
-              limit: 10000,
-              mimetype: "image/svg+xml"
+              jsx: true // true outputs JSX tags
             }
           }
         ]

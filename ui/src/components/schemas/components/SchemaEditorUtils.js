@@ -19,8 +19,7 @@ import Tabs from "grommet/components/Tabs";
 import Tab from "grommet/components/Tab";
 
 import JSONSchemaEditor from "./JSONSchemaEditor";
-// import DiffsLayer from "./DiffsLayer";
-// import jsondiffpatch from "jsondiffpatch";
+
 let jsondiffpatch = require("jsondiffpatch").create();
 // require('jsondiffpatch/formatters-styles/html');
 import { formatters } from "jsondiffpatch";
@@ -49,11 +48,9 @@ class SchemaEditorUtils extends React.Component {
   }
 
   _getDiffs() {
-    console.log("_getDiffs::", this.props.original, this.props.updated);
     let _diff = jsondiffpatch.diff(this.props.original, this.props.updated);
-    // let _diff = jsondiffpatch.diff(this.props.schema.deposit, this.props.updated.get("deposit"));
+
     let visual = formatters.html.format(_diff, this.props.original);
-    console.log("visual:::", visual);
 
     return visual;
   }

@@ -1,45 +1,116 @@
-import { Map } from "immutable";
+import { Map, fromJS } from "immutable";
 
-import {
-  // WORKFLOW_STATUS_REQUEST,
-  // WORKFLOW_STATUS_SUCCESS,
-  // WORKFLOW_STATUS_ERROR,
-  CREATE_WORKFLOW_REQUEST,
-  CREATE_WORKFLOW_SUCCESS,
-  CREATE_WORKFLOW_ERROR,
-  GET_WORKFLOWS_REQUEST,
-  GET_WORKFLOWS_SUCCESS,
-  GET_WORKFLOWS_ERROR
-} from "../actions/workflows";
+import * as workflowActions from "../actions/workflows";
 
 const initialState = Map({
   loading: false,
   error: null,
-  runs: {}
+  list: fromJS([]),
+  past_list: {},
+  forRecord: {}
 });
 
 export default function workflowsReducer(state = initialState, action) {
   switch (action.type) {
-    // case WORKFLOW_STATUS_REQUEST:
-    //   return state.set("loading", true)
-    //               .set("error", null);
-    // case WORKFLOW_STATUS_SUCCESS:
-    //   return state.setIn(["status", action.workflow_id], action.data);
-    // case WORKFLOW_STATUS_ERROR:
-    //   return state.set("loading", false)
-    //               .set("error", action.error);
-    case CREATE_WORKFLOW_REQUEST:
-      return state.set("loading", true).set("error", null);
-    case CREATE_WORKFLOW_SUCCESS:
-      return state.set("runs", {}); // To be changed if we need to return message or info
-    case CREATE_WORKFLOW_ERROR:
-      return state.set("loading", false).set("error", action.error);
-    case GET_WORKFLOWS_REQUEST:
-      return state.set("loading", true).set("error", null);
-    case GET_WORKFLOWS_SUCCESS:
-      return state.set("runs", action.data);
-    case GET_WORKFLOWS_ERROR:
-      return state.set("loading", false).set("error", action.error);
+    case workflowActions.WORKFLOWS_REQUEST:
+      return state.set("loading", true);
+    case workflowActions.WORKFLOWS_SUCCESS:
+      return state.set("loading", false).set("list", fromJS(action.workflows));
+    case workflowActions.WORKFLOWS_ERROR:
+      return state.set("loading", false).set("errors", action.error);
+
+    case workflowActions.WORKFLOWS_RECORD_REQUEST:
+      return state;
+    case workflowActions.WORKFLOWS_RECORD_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOWS_RECORD_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_REQUEST:
+      return state.setIn(["items", action.workflow_id, "loading"], true);
+    case workflowActions.WORKFLOW_SUCCESS:
+      return state
+        .mergeIn(["items", action.workflow_id], action.data)
+        .setIn(["items", action.workflow_id, "loading"], false);
+    case workflowActions.WORKFLOW_ERROR:
+      return state
+        .setIn(["items", action.workflow_id, "loading"], false)
+        .setIn(["items", action.workflow_id, "error"], action.error);
+
+    case workflowActions.WORKFLOW_CREATE_REQUEST:
+      return state.set("loading", true);
+    case workflowActions.WORKFLOW_CREATE_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_CREATE_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_DELETE_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_DELETE_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_DELETE_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_START_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_START_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_START_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_STOP_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_STOP_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_STOP_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_CLONE_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_CLONE_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_CLONE_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_STATUS_REQUEST:
+      return state.setIn(["items", action.workflow_id, "loading"], true);
+    case workflowActions.WORKFLOW_STATUS_SUCCESS:
+      return state
+        .setIn(["items", action.workflow_id, "loading"], false)
+        .setIn(["items", action.workflow_id, "status"], fromJS(action.data));
+
+    case workflowActions.WORKFLOW_STATUS_ERROR:
+      return state
+        .setIn(["items", action.workflow_id, "loading"], false)
+        .setIn(["items", action.workflow_id, "error"], fromJS(action.error));
+    case workflowActions.WORKFLOW_LOGS_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_LOGS_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_LOGS_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_FILES_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_FILES_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_FILES_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_FILE_UPLOAD_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_FILE_UPLOAD_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_FILE_UPLOAD_ERROR:
+      return state;
+
+    case workflowActions.WORKFLOW_FILE_DELETE_REQUEST:
+      return state;
+    case workflowActions.WORKFLOW_FILE_DELETE_SUCCESS:
+      return state;
+    case workflowActions.WORKFLOW_FILE_DELETE_ERROR:
+      return state;
+
     default:
       return state;
   }

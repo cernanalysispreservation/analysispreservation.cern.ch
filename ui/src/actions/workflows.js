@@ -1,175 +1,339 @@
 import axios from "axios";
-import { push } from "react-router-redux";
 
-// export const WORKFLOW_STATUS_REQUEST = "WORKFLOW_STATUS_REQUEST";
-// export const WORKFLOW_STATUS_SUCCESS = "WORKFLOW_STATUS_SUCCESS";
-// export const WORKFLOW_STATUS_ERROR = "WORKFLOW_STATUS_ERROR";
+const WORKFLOWS_API_URL = "/api/workflows";
+const REANA_WORKFLOWS_API_URL = `${WORKFLOWS_API_URL}/reana`;
 
-export const GET_WORKFLOWS_REQUEST = "GET_WORKFLOWS_REQUEST";
-export const GET_WORKFLOWS_SUCCESS = "GET_WORKFLOWS_SUCCESS";
-export const GET_WORKFLOWS_ERROR = "GET_WORKFLOWS_ERROR";
+const REANA_WORKFLOWS_FOR_RECORD = pid =>
+  `${WORKFLOWS_API_URL}/all/record/${pid}`;
+const REANA_WORKFLOWS_PING = `${REANA_WORKFLOWS_API_URL}/ping`;
+const REANA_WORKFLOWS_CREATE_URL = `${REANA_WORKFLOWS_API_URL}`;
+const REANA_WORKFLOWS_ITEM_URL = workflow_id =>
+  `${escape(REANA_WORKFLOWS_API_URL)}/${workflow_id}`;
+const REANA_WORKFLOWS_ITEM_FILES_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/files`;
+const REANA_WORKFLOWS_ITEM_LOGS_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/logs`;
+const REANA_WORKFLOWS_ITEM_START_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/start`;
+const REANA_WORKFLOWS_ITEM_STOP_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/stop`;
+const REANA_WORKFLOWS_ITEM_STATUS_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/status`;
+const REANA_WORKFLOWS_ITEM_CLONE_URL = workflow_id =>
+  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/clone`;
+const REANA_WORKFLOWS_ITEM_DOWNLOAD_URL = (workflow_id, path) =>
+  `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/${path}`;
 
-export const CREATE_WORKFLOW_REQUEST = "CREATE_WORKFLOW_REQUEST";
-export const CREATE_WORKFLOW_SUCCESS = "CREATE_WORKFLOW_SUCCESS";
-export const CREATE_WORKFLOW_ERROR = "CREATE_WORKFLOW_ERROR";
+export const WORKFLOWS_REQUEST = "WORKFLOWS_REQUEST";
+export const WORKFLOWS_SUCCESS = "WORKFLOWS_SUCCESS";
+export const WORKFLOWS_ERROR = "WORKFLOWS_ERROR";
 
-export const START_WORKFLOW_REQUEST = "START_WORKFLOW_REQUEST";
-export const START_WORKFLOW_SUCCESS = "START_WORKFLOW_SUCCESS";
-export const START_WORKFLOW_ERROR = "START_WORKFLOW_ERROR";
+export const WORKFLOWS_RECORD_REQUEST = "WORKFLOWS_RECORD_REQUEST";
+export const WORKFLOWS_RECORD_SUCCESS = "WORKFLOWS_RECORD_SUCCESS";
+export const WORKFLOWS_RECORD_ERROR = "WORKFLOWS_RECORD_ERROR";
 
-// export function workflowStatusRequest() {
-//   return {
-//     type: WORKFLOW_STATUS_REQUEST
-//   };
-// }
+export const WORKFLOW_REQUEST = "WORKFLOW_REQUEST";
+export const WORKFLOW_SUCCESS = "WORKFLOW_SUCCESS";
+export const WORKFLOW_ERROR = "WORKFLOW_ERROR";
 
-// export function workflowStatusSuccess(workflow_id, data) {
-//   return {
-//     type: WORKFLOW_STATUS_SUCCESS,
-//     workflow_id,
-//     data
-//   };
-// }
+export const WORKFLOW_CREATE_REQUEST = "WORKFLOW_CREATE_REQUEST";
+export const WORKFLOW_CREATE_SUCCESS = "WORKFLOW_CREATE_SUCCESS";
+export const WORKFLOW_CREATE_ERROR = "WORKFLOW_CREATE_ERROR";
 
-// export function workflowStatusError(error) {
-//   return {
-//     type: WORKFLOW_STATUS_ERROR,
-//     error
-//   };
-// }
+export const WORKFLOW_DELETE_REQUEST = "WORKFLOW_DELETE_REQUEST";
+export const WORKFLOW_DELETE_SUCCESS = "WORKFLOW_DELETE_SUCCESS";
+export const WORKFLOW_DELETE_ERROR = "WORKFLOW_DELETE_ERROR";
 
-export function createWorkflowRequest() {
-  return {
-    type: CREATE_WORKFLOW_REQUEST
-  };
-}
+export const WORKFLOW_START_REQUEST = "WORKFLOW_START_REQUEST";
+export const WORKFLOW_START_SUCCESS = "WORKFLOW_START_SUCCESS";
+export const WORKFLOW_START_ERROR = "WORKFLOW_START_ERROR";
 
-export function createWorkflowSuccess(data) {
-  return {
-    type: CREATE_WORKFLOW_SUCCESS,
-    data
-  };
-}
+export const WORKFLOW_STOP_REQUEST = "WORKFLOW_STOP_REQUEST";
+export const WORKFLOW_STOP_SUCCESS = "WORKFLOW_STOP_SUCCESS";
+export const WORKFLOW_STOP_ERROR = "WORKFLOW_STOP_ERROR";
 
-export function createWorkflowError(error) {
-  return {
-    type: CREATE_WORKFLOW_ERROR,
-    error
-  };
-}
+export const WORKFLOW_CLONE_REQUEST = "WORKFLOW_CLONE_REQUEST";
+export const WORKFLOW_CLONE_SUCCESS = "WORKFLOW_CLONE_SUCCESS";
+export const WORKFLOW_CLONE_ERROR = "WORKFLOW_CLONE_ERROR";
 
-export function startWorkflowRequest() {
-  return {
-    type: START_WORKFLOW_REQUEST
-  };
-}
+export const WORKFLOW_STATUS_REQUEST = "WORKFLOW_STATUS_REQUEST";
+export const WORKFLOW_STATUS_SUCCESS = "WORKFLOW_STATUS_SUCCESS";
+export const WORKFLOW_STATUS_ERROR = "WORKFLOW_STATUS_ERROR";
 
-export function startWorkflowSuccess(data) {
-  return {
-    type: START_WORKFLOW_SUCCESS,
-    data
-  };
-}
+export const WORKFLOW_LOGS_REQUEST = "WORKFLOW_LOGS_REQUEST";
+export const WORKFLOW_LOGS_SUCCESS = "WORKFLOW_LOGS_SUCCESS";
+export const WORKFLOW_LOGS_ERROR = "WORKFLOW_LOGS_ERROR";
 
-export function startWorkflowError(error) {
-  return {
-    type: START_WORKFLOW_ERROR,
-    error
-  };
-}
+export const WORKFLOW_FILES_REQUEST = "WORKFLOW_FILES_REQUEST";
+export const WORKFLOW_FILES_SUCCESS = "WORKFLOW_FILES_SUCCESS";
+export const WORKFLOW_FILES_ERROR = "WORKFLOW_FILES_ERROR";
 
-export function getWorkflowsRequest() {
-  return {
-    type: GET_WORKFLOWS_REQUEST
-  };
-}
+export const WORKFLOW_FILE_UPLOAD_REQUEST = "WORKFLOW_FILE_UPLOAD_REQUEST";
+export const WORKFLOW_FILE_UPLOAD_SUCCESS = "WORKFLOW_FILE_UPLOAD_SUCCESS";
+export const WORKFLOW_FILE_UPLOAD_ERROR = "WORKFLOW_FILE_UPLOAD_ERROR";
 
-export function getWorkflowsSuccess(data) {
-  return {
-    type: GET_WORKFLOWS_SUCCESS,
-    data
-  };
-}
+export const WORKFLOW_FILE_DELETE_REQUEST = "WORKFLOW_FILE_DELETE_REQUEST";
+export const WORKFLOW_FILE_DELETE_SUCCESS = "WORKFLOW_FILE_DELETE_SUCCESS";
+export const WORKFLOW_FILE_DELETE_ERROR = "WORKFLOW_FILE_DELETE_ERROR";
 
-export function getWorkflowsError(error) {
-  return {
-    type: GET_WORKFLOWS_ERROR,
-    error
-  };
-}
+export const workflowsRequest = () => ({ type: WORKFLOWS_REQUEST });
+export const workflowsSuccess = workflows => ({
+  type: WORKFLOWS_SUCCESS,
+  workflows
+});
+export const workflowsError = error => ({ type: WORKFLOWS_ERROR, error });
 
-export function createWorkflow(workflow, published_id, autostart) {
+export const workflowsRecordRequest = () => ({ type: WORKFLOWS_REQUEST });
+export const workflowsRecordSuccess = (record_id, workflows) => ({
+  type: WORKFLOWS_SUCCESS,
+  record_id,
+  workflows
+});
+export const workflowsRecordError = error => ({ type: WORKFLOWS_ERROR, error });
+
+export const workflowStatusRequest = workflow_id => ({
+  type: WORKFLOW_STATUS_REQUEST,
+  workflow_id
+});
+export const workflowStatusSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_STATUS_SUCCESS,
+  workflow_id,
+  data
+});
+export const workflowStatusError = error => ({
+  type: WORKFLOW_STATUS_ERROR,
+  error
+});
+
+export const workflowLogsRequest = workflow_id => ({
+  type: WORKFLOW_LOGS_REQUEST,
+  workflow_id
+});
+export const workflowLogsSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_LOGS_SUCCESS,
+  workflow_id,
+  data
+});
+export const workflowLogsError = error => ({
+  type: WORKFLOW_LOGS_ERROR,
+  error
+});
+
+export const workflowRequest = workflow_id => ({
+  type: WORKFLOW_REQUEST,
+  workflow_id
+});
+export const workflowSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_SUCCESS,
+  data,
+  workflow_id
+});
+export const workflowError = (error, workflow_id) => ({
+  type: WORKFLOW_ERROR,
+  error,
+  workflow_id
+});
+
+export const createWorkflowRequest = workflow_id => ({
+  type: WORKFLOW_CREATE_REQUEST,
+  workflow_id
+});
+export const createWorkflowSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_CREATE_SUCCESS,
+  data,
+  workflow_id
+});
+export const createWorkflowError = (error, workflow_id) => ({
+  type: WORKFLOW_CREATE_ERROR,
+  error,
+  workflow_id
+});
+
+export const startWorkflowRequest = workflow_id => ({
+  type: WORKFLOW_START_REQUEST,
+  workflow_id
+});
+export const startWorkflowSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_START_SUCCESS,
+  data,
+  workflow_id
+});
+export const startWorkflowError = (error, workflow_id) => ({
+  type: WORKFLOW_START_ERROR,
+  error,
+  workflow_id
+});
+
+export const stopWorkflowRequest = workflow_id => ({
+  type: WORKFLOW_STOP_REQUEST,
+  workflow_id
+});
+export const stopWorkflowSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_STOP_SUCCESS,
+  data,
+  workflow_id
+});
+export const stopWorkflowError = (error, workflow_id) => ({
+  type: WORKFLOW_STOP_ERROR,
+  error,
+  workflow_id
+});
+
+export const workflowFilesRequest = workflow_id => ({
+  type: WORKFLOW_FILES_REQUEST,
+  workflow_id
+});
+export const workflowFilesSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_FILES_SUCCESS,
+  data,
+  workflow_id
+});
+export const workflowFilesError = (error, workflow_id) => ({
+  type: WORKFLOW_FILES_ERROR,
+  error,
+  workflow_id
+});
+
+export const workflowFileUploadRequest = workflow_id => ({
+  type: WORKFLOW_FILES_REQUEST,
+  workflow_id
+});
+export const workflowFileUploadSuccess = (data, workflow_id) => ({
+  type: WORKFLOW_FILES_SUCCESS,
+  data,
+  workflow_id
+});
+export const workflowFileUploadError = (error, workflow_id) => ({
+  type: WORKFLOW_FILES_ERROR,
+  error,
+  workflow_id
+});
+
+export function reanaPing() {
   return dispatch => {
-    dispatch(createWorkflowRequest());
-    let uri = "/api/reana/create";
+    axios
+      .get(REANA_WORKFLOWS_PING)
+      .then(response => dispatch(startWorkflowSuccess(response.data)))
+      .catch(error => dispatch(startWorkflowError(error)));
+  };
+}
+
+// List Workflows
+export function getWorkflows() {
+  return dispatch => {
+    dispatch(workflowsRequest());
 
     axios
-      .post(uri, {
-        workflow_json: workflow.workflow,
-        workflow_name: workflow.workflow_title,
-        record_id: published_id
-      })
+      .get(REANA_WORKFLOWS_API_URL)
+      .then(response => dispatch(workflowsSuccess(response.data)))
+      .catch(error => dispatch(workflowsError(error)));
+  };
+}
+export function getRecordWorkflows(pid) {
+  return dispatch => {
+    dispatch(workflowsRequest());
+
+    axios
+      .get(REANA_WORKFLOWS_FOR_RECORD(pid))
+      .then(response => dispatch(workflowsSuccess(response.data)))
+      .catch(error => dispatch(workflowsError(error)));
+  };
+}
+
+// Create Workflow
+
+// Workflow Item
+export function getWorkflow(workflow_id) {
+  return dispatch => {
+    dispatch(workflowRequest(workflow_id));
+
+    axios
+      .get(REANA_WORKFLOWS_ITEM_URL(workflow_id))
+      .then(response => dispatch(workflowSuccess(response.data, workflow_id)))
+      .catch(error => dispatch(workflowError(error, workflow_id)));
+  };
+}
+export function createWorkflow(workflow, autostart = false) {
+  return dispatch => {
+    dispatch(createWorkflowRequest());
+
+    axios
+      .post(
+        REANA_WORKFLOWS_CREATE_URL, // workflow
+        {
+          workflow_json: workflow.workflow_json,
+          workflow_name: workflow.name,
+          pid: workflow.pid
+        }
+      )
       .then(response => {
         dispatch(createWorkflowSuccess(response.data));
-        dispatch(push(`/published/${published_id}/runs`));
+        // dispatch(push(`/published/${pid}/runs`));
         if (autostart) {
           let { workflow_id } = response.data;
           dispatch(startWorkflow(workflow_id));
         }
       })
-      .catch(error => {
-        dispatch(createWorkflowError(error));
-      });
+      .catch(error => dispatch(createWorkflowError(error)));
   };
 }
+export function deleteWorkflow(workflow_id) {
+  return dispatch => {
+    dispatch(startWorkflowRequest(workflow_id));
 
+    axios
+      .get(REANA_WORKFLOWS_ITEM_START_URL(workflow_id))
+      .then(response =>
+        dispatch(startWorkflowSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(startWorkflowError(error, workflow_id)));
+  };
+}
 export function startWorkflow(workflow_id) {
   return dispatch => {
-    dispatch(startWorkflowRequest());
-    let uri = `/api/reana/start/${workflow_id}`;
+    dispatch(startWorkflowRequest(workflow_id));
 
     axios
-      .get(uri)
-      .then(response => {
-        dispatch(startWorkflowSuccess(response.data));
-      })
-      .catch(error => {
-        dispatch(startWorkflowError(error));
-      });
+      .get(REANA_WORKFLOWS_ITEM_START_URL(workflow_id))
+      .then(response =>
+        dispatch(startWorkflowSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(startWorkflowError(error, workflow_id)));
   };
 }
-
-export function getWorkflows(published_id) {
+export function stopWorkflow(workflow_id) {
   return dispatch => {
-    dispatch(getWorkflowsRequest());
-    let uri = `/api/reana/jobs/${published_id}`;
+    dispatch(stopWorkflowRequest(workflow_id));
 
     axios
-      .get(uri)
-      .then(response => {
-        let _jobs = {};
-        response.data.map(job => (_jobs[job.reana_id] = job));
-        dispatch(getWorkflowsSuccess(_jobs));
-      })
-      .catch(error => {
-        dispatch(getWorkflowsError(error));
-      });
+      .get(REANA_WORKFLOWS_ITEM_STOP_URL(workflow_id))
+      .then(response =>
+        dispatch(stopWorkflowSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(stopWorkflowError(error, workflow_id)));
   };
 }
+export function getWorkflowStatus(workflow_id) {
+  return dispatch => {
+    dispatch(workflowStatusRequest(workflow_id));
 
-// export function rerunWorkflowStatus(workflow_id) {
-//   return dispatch => {
-//     dispatch(rerunStatusRequest());
+    axios
+      .get(REANA_WORKFLOWS_ITEM_STATUS_URL(workflow_id))
+      .then(response =>
+        dispatch(workflowStatusSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(workflowStatusError(error, workflow_id)));
+  };
+}
+export function getWorkflowLogs(workflow_id) {
+  return dispatch => {
+    dispatch(workflowLogsRequest(workflow_id));
 
-//     let uri = `/api/reana/status/${workflow_id}`;
-
-//     axios
-//       .get(uri)
-//       .then(response => {
-//         dispatch(rerunStatusSuccess(workflow_id, response.data));
-//       })
-//       .catch(error => {
-//         dispatch(rerunStatusError(error));
-//       });
-//   };
-// }
+    axios
+      .get(REANA_WORKFLOWS_ITEM_STATUS_URL(workflow_id))
+      .then(response =>
+        dispatch(workflowLogsSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(workflowLogsError(error, workflow_id)));
+  };
+}

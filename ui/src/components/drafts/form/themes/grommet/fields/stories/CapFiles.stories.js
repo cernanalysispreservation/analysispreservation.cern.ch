@@ -18,9 +18,7 @@ class CapFileComponent extends Component {
     };
   }
 
-  _onChange = value => {
-    console.log("Value", value);
-  };
+  _onChange = value => {};
 
   render() {
     return (

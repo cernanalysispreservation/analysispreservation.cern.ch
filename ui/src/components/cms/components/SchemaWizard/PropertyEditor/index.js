@@ -18,7 +18,6 @@ const renderPath = path => {
   let prev;
   let content;
   let result = [];
-  console.log(path);
 
   path &&
     path.map(item => {

@@ -22,7 +22,6 @@ const rootReducer = history =>
     workflows,
     status,
     schemaWizard,
-    routing: connectRouter(history),
     router: connectRouter(history)
   });
 

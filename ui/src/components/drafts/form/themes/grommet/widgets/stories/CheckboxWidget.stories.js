@@ -29,9 +29,7 @@ class CheckBoxComponent extends Component {
   }
 
   // TODO: figure out the onChange method inside the CheckBox Component
-  updateField = value => {
-    console.log("The updated field is ", value);
-  };
+  updateField = value => {};
 
   render() {
     return (
