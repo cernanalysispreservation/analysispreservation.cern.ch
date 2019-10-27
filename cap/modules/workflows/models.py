@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Workflows db models."""
 
 import uuid
@@ -33,52 +32,69 @@ from sqlalchemy_utils.types import UUIDType
 
 from cap.types import json_type
 
+from .serializers import reana_workflow_serializer
+
 
 class ReanaWorkflow(db.Model):
     """Model defining a REANA workflow."""
 
     __tablename__ = 'reana_workflows'
 
-    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4,
+    id = db.Column(UUIDType,
+                   primary_key=True,
+                   default=uuid.uuid4,
                    nullable=False)
-    rec_uuid = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id),
+    rec_uuid = db.Column(UUIDType,
+                         db.ForeignKey(RecordMetadata.id),
                          nullable=False)
 
     cap_user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
+    service = db.Column(db.Enum('reana', name='service'),
+                        unique=False,
+                        nullable=False)
+
     name = db.Column(db.String(100), unique=False, nullable=False)
+    workflow_name = db.Column(db.String(100), unique=False, nullable=False)
     name_run = db.Column(db.String(100), unique=False, nullable=False)
     status = db.Column(db.String(100), unique=False, nullable=False)
 
     # the following fields represent the creation part of a workflow
-    engine = db.Column(db.Enum('yadage', 'cwl', 'serial', name='engine'),
-                       unique=False, nullable=False)
-
-    specification = db.Column(
-        json_type,
-        default=lambda: dict(),
-        nullable=True
-    )
-
-    inputs = db.Column(
-        json_type,
-        default=lambda: dict(),
-        nullable=True
-    )
-
-    outputs = db.Column(
-        json_type,
-        default=lambda: dict(),
-        nullable=True
-    )
+    workflow_json = db.Column(json_type, default=lambda: dict(), nullable=True)
 
     # logging after the workflow runs
-    logs = db.Column(
-        json_type,
-        default=lambda: dict(),
-        nullable=True
-    )
+    logs = db.Column(json_type, default=lambda: dict(), nullable=True)
 
     user = db.relationship('User')
     record = db.relationship('RecordMetadata')
+
+    @classmethod
+    def get_user_workflows(cls, user_id):
+        """Get the latest version of schema with given name."""
+        workflows = cls.query \
+            .filter_by(cap_user_id=user_id) \
+            .all()
+
+        return workflows
+
+    @classmethod
+    def get_deposit_workflows(cls, depid):
+        """Get the latest version of schema with given name."""
+        workflows = cls.query \
+            .filter_by(rec_uuid=depid) \
+            .all()
+
+        return workflows
+
+
+    @classmethod
+    def get_workflow_by_id(cls, workflow_id):
+        """Get the latest version of schema with given name."""
+        return cls.query \
+            .filter_by(workflow_id=workflow_id) \
+            .one_or_none()
+
+    def serialize(self, resolve=False):
+        """Serialize schema model."""
+        return reana_workflow_serializer.dump(self).data

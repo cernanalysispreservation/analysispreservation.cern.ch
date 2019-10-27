@@ -31,6 +31,8 @@ from .errors import ExperimentIsNotValid
 from .models import ReanaWorkflow
 from cap.modules.records.api import CAPRecord
 
+from invenio_pidstore.resolver import Resolver
+
 
 def update_workflow(workflow, column, data):
     """Update a Reana column."""
@@ -45,9 +47,7 @@ def clone_workflow(workflow_id):
     wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
     return {
         'name': wf.name,
-        'workflow_json': wf.specification,
-        'parameters': wf.inputs,
-        'outputs': wf.outputs,
+        'workflow_json': wf.workflow_json
     }
 
 
@@ -57,9 +57,24 @@ def resolve_uuid(workflow_id):
     return workflow.rec_uuid
 
 
-def get_reana_token(uuid):
+def resolve_depid(depid):
+    """Resolve the workflow id into a UUID."""
+    resolver = Resolver(pid_type='depid',
+                        object_type='rec',
+                        getter=lambda x: x)
+
+    # deposit, rec_uuid = resolver.resolve(depid)
+    # workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    return resolver.resolve(depid)
+
+
+def get_reana_token(uuid, record=None):
     """Retrieve token based on experiment, by UUID."""
-    experiment = CAPRecord.get_record(uuid).get('_experiment')
+    if not record:
+        record = CAPRecord.get_record(uuid)
+
+    experiment = record.get('_experiment')
+    
     if not experiment:
         raise ExperimentIsNotValid('Experiment is not valid.')
 
