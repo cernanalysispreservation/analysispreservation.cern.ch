@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
+import FormField from "grommet/components/FormField";
 
 import JSONDropzone from "./components/JSONDropzone";
 import JSONEditorLayer from "./components/JSONEditorLayer";
@@ -9,6 +10,17 @@ import JSONEditorLayer from "./components/JSONEditorLayer";
 import CodeIcon from "grommet/components/icons/base/Code";
 
 import _isEmpty from "lodash/isEmpty";
+import { Anchor } from "grommet";
+
+// import jsonWorkerUrl from "file-loader!ace-builds/src-noconflict/worker-json";
+// ace.config.setModuleUrl("ace/mode/json_worker", jsonWorkerUrl);
+
+import AceEditor from "react-ace";
+import "ace-builds/webpack-resolver";
+// import "ace-builds";
+
+// import "ace-builds/src-noconflict/mode-java";
+// import "ace-builds/src-noconflict/theme-github";
 
 class JSONEditorWidget extends Component {
   constructor(props) {
@@ -17,7 +29,13 @@ class JSONEditorWidget extends Component {
   }
 
   setJSON = data => {
-    this.props.onChange(data);
+    let _data;
+    try {
+      _data = JSON.parse(data);
+    } catch (e) {
+      return;
+    }
+    this.props.onChange(_data);
   };
 
   toggleLayer = () => {
@@ -25,50 +43,59 @@ class JSONEditorWidget extends Component {
   };
 
   render() {
-    return (
-      <Box pad={{ horizontal: "medium" }} margin={{ bottom: "small" }}>
-        {_isEmpty(this.props.formData) ||
-        JSON.stringify(this.props.formData) === JSON.stringify({}) ? (
-          <JSONDropzone
-            setJSON={this.setJSON}
-            actionButtonOnClick={this.toggleLayer}
-          />
-        ) : (
-          <Box flex={true} size={{ vertical: "small" }}>
-            <Box colorIndex="light-2">
-              <Box
-                colorIndex="grey-3"
-                pad="small"
-                align="end"
-                direction="row"
-                justify="end"
-                align="center"
-              >
-                <CodeIcon size="xsmall" onClick={this.toggleLayer} />
-              </Box>
-              <div
-                style={{
-                  position: "relative",
-                  height: "auto",
-                  maxHeight: "200px",
-                  overflow: "scroll",
-                  textOverflow: "hidden"
-                }}
-              >
-                <pre> {JSON.stringify(this.props.formData, null, 4)} </pre>
-              </div>
-            </Box>
-          </Box>
-        )}
+    let {
+      id,
+      schema: { title: title = id, description: rawDescription = null } = {},
+      rawErrors
+    } = this.props;
+    let _errors;
 
-        {this.state.editorOpen ? (
-          <JSONEditorLayer
-            onClose={this.toggleLayer}
-            setJSON={this.setJSON}
-            value={this.props.formData}
-          />
-        ) : null}
-      </Box>
+    return (
+      <FormField
+        label={
+          <Box flex={true} justify="between" direction="row">
+            <Box flex={true}>
+              <span style={{ color: "#000" }}>{title}</span>
+              {rawDescription ? (
+                <span style={{ color: "#bbb" }}> &nbsp; {rawDescription}</span>
+              ) : null}
+            </Box>
+            <Anchor
+              label={
+                this.state.editorOpen
+                  ? "back to Editor"
+                  : "Import JSON/YAML file"
+              }
+              onClick={this.toggleLayer}
+            />
+          </Box>
+        }
+        key={id}
+      >
+        <Box
+          margin={{ horizontal: "medium", vertical: "small" }}
+          colorIndex="light-2"
+        >
+          {this.state.editorOpen ? (
+            <JSONDropzone
+              setJSON={this.setJSON}
+              actionButtonOnClick={this.toggleLayer}
+            />
+          ) : (
+            <Box flex={false}>
+              <AceEditor
+                mode="json"
+                theme="github"
+                width="100%"
+                name="UNIQUE_ID_OF_DIV"
+                value={JSON.stringify(this.props.formData, null, 4)}
+                onChange={this.setJSON}
+                editorProps={{ $blockScrolling: true }}
+              />
+            </Box>
+          )}
+        </Box>
+      </FormField>
     );
   }
 }

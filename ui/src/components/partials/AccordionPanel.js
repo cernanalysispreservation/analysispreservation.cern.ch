@@ -4,7 +4,6 @@ import classnames from "classnames";
 
 import AccordionPanel from "grommet/components/AccordionPanel";
 import Box from "grommet/components/Box";
-import Header from "grommet/components/Header";
 import Collapsible from "grommet/components/Collapsible";
 import CaretNextIcon from "grommet/components/icons/base/CaretNext";
 import { Heading } from "grommet";

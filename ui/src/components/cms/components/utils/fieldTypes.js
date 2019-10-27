@@ -50,8 +50,7 @@ const simple = {
     child: {},
     default: {
       schema: {
-        type: "boolean",
-        properties: {}
+        type: "boolean"
       },
       uiSchema: {}
     }

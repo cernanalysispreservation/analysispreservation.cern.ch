@@ -49,6 +49,7 @@
     "prism-react-renderer": "0.1.7",
     "query-string": "^5.1.0",
     "react": "^16.6.0",
+    "react-ace": "8.0.0",
     "react-dnd": "^9.3.4",
     "react-dnd-html5-backend": "9.3.4",
     "react-dom": "^16.8.0",

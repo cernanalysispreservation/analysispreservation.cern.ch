@@ -17,7 +17,7 @@ export default ComposedComponent => {
       }
     }
 
-    componentWillUpdate(nextProps) {
+    componentDidUpdate(nextProps) {
       if (!nextProps.isLoggedIn) {
         const path = `/login?next=${nextProps.history.location.pathname}`;
         this.props.history.push(path);
