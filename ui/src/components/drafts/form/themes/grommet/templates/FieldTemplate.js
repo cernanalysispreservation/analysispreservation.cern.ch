@@ -40,6 +40,12 @@ let FieldTemplate = function(props) {
           borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null,
           gridColumn: gridColumns ? gridColumns : "1 / 5"
         }}
+        flex={
+          props.uiSchema["ui:object"] &&
+          props.uiSchema["ui:object"] === "tabView"
+            ? true
+            : null
+        }
       >
         {children}
       </Box>
