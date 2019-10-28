@@ -41,7 +41,7 @@ def test_dashboard_view_returns_user_drafts(client, users, create_deposit,
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    user_drafts = [x['id'] for x in resp.json['user_drafts']]
+    user_drafts = [x['id'] for x in resp.json['user_drafts']['data']]
 
     assert len(user_drafts) == 1
     assert my_deposit['_deposit']['id'] in user_drafts
@@ -68,7 +68,7 @@ def test_dashboard_view_returns_user_published_analysis(
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    user_published = [x['id'] for x in resp.json['user_published']]
+    user_published = [x['id'] for x in resp.json['user_published']['data']]
 
     assert len(user_published) == 1
     assert user_published_deposit['control_number'] in user_published
@@ -97,7 +97,9 @@ def test_dashboard_view_returns_published_by_collaboration(
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    published_by_collab = [x['id'] for x in resp.json['published_by_collab']]
+    published_by_collab = [
+        x['id'] for x in resp.json['published_by_collab']['data']
+    ]
 
     assert len(published_by_collab) == 2
     assert my_deposit['_deposit']['id'] not in published_by_collab
@@ -126,7 +128,9 @@ def test_dashboard_view_returns_published_by_collaboration(
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    published_by_collab = [x['id'] for x in resp.json['published_by_collab']]
+    published_by_collab = [
+        x['id'] for x in resp.json['published_by_collab']['data']
+    ]
 
     assert len(published_by_collab) == 2
     assert my_deposit['_deposit']['id'] not in published_by_collab
@@ -159,7 +163,7 @@ def test_dashboard_view_returns_shared_with_user(action, client, users,
     current_search.flush_and_refresh('deposits')
 
     resp = client.get('/dashboard', headers=auth_headers_for_user(user))
-    shared_with_user = [x['id'] for x in resp.json['shared_with_user']]
+    shared_with_user = [x['id'] for x in resp.json['shared_with_user']['data']]
 
     assert len(shared_with_user) == 1
     assert my_deposit['_deposit']['id'] not in shared_with_user

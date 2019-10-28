@@ -5,7 +5,6 @@
 # CERN Analysis Preservation is free software; you can redistribute it
 # and/or modify it under the terms of the MIT License; see LICENSE file
 # for more details.
-
 """Blueprint used for loading templates.
 
 The sole purpose of this blueprint is to ensure that Invenio can find the
@@ -14,19 +13,23 @@ this file.
 """
 
 from __future__ import absolute_import, print_function
+
+import json
 from os.path import join
 
-from flask import Blueprint, jsonify
 from elasticsearch import ConnectionError
+from flask import Blueprint, jsonify
+from invenio_files_rest.models import Location
+from invenio_search import current_search
 from sqlalchemy.exc import OperationalError
 
-from invenio_search import current_search
-from invenio_files_rest.models import Location
-
 from cap.modules.access.utils import login_required
+from cap.modules.deposit.fetchers import cap_deposit_fetcher
 from cap.modules.deposit.search import CAPDepositSearch
+from cap.modules.deposit.serializers import deposit_json_v1
+from cap.modules.records.fetchers import cap_record_fetcher
 from cap.modules.records.search import CAPRecordSearch
-
+from cap.modules.records.serializers import record_json_v1
 
 blueprint = Blueprint(
     'cap',
@@ -42,13 +45,14 @@ def ping(service=None):
         if service is None:
             return 'Pong!', 200
         elif service == 'db':
-            location = Location.get_default()
+            Location.get_default()
         elif service == 'search':
-            version = current_search.cluster_version
+            current_search.cluster_version
         elif service == 'files':
             default_location = Location.get_default().uri
             test_file_path = join(default_location, 'test.txt')
-            f = open(test_file_path, 'r')
+            with open(test_file_path, 'r'):
+                pass
 
         return {'message': 'OK'}, 200
     except (OperationalError, IOError, ConnectionError) as err:
@@ -59,31 +63,43 @@ def ping(service=None):
 @login_required
 def dashboard():
     """Dashboard view."""
-    def serialize_records(records): return [{
-        'metadata': x['_source'],
-        'id': x['_source']['control_number']
-    } for x in records]
+    def _serialize_records(records, limit=5):
+        return json.loads(
+            record_json_v1.serialize_search(cap_record_fetcher,
+                                            records.to_dict()))['hits']['hits']  # noqa
 
-    def serialize_deposits(deposits): return [{
-        'metadata': x['_source'],
-        'id': x['_source']['_deposit']['id']
-    } for x in deposits]
+    def _serialize_deposits(deposits, limit=5):
+        return json.loads(
+            deposit_json_v1.serialize_search(
+                cap_deposit_fetcher, deposits.to_dict()))['hits']['hits']  # noqa
 
-    rs = CAPRecordSearch().sort_by_latest()
-    ds = CAPDepositSearch().sort_by_latest()
+    rs = CAPRecordSearch().extra(version=True).sort_by_latest()
+    ds = CAPDepositSearch().extra(version=True).sort_by_latest()
 
-    published_by_collab = rs.execute().hits.hits
-    user_published = rs.get_user_records().execute().hits.hits
+    published_by_collab = _serialize_records(rs.execute())
+    user_published = _serialize_records(rs.get_user_records().execute())
     user_published_count = rs.get_user_records().count()
-    user_drafts = ds.get_user_deposits().execute().hits.hits
+    user_drafts = _serialize_deposits(ds.get_user_deposits().execute())
     user_drafts_count = ds.get_user_deposits().count()
-    shared_with_user = ds.get_shared_with_user().execute().hits.hits
+    shared_with_user = _serialize_deposits(ds.get_shared_with_user().execute())
 
     return jsonify({
-        'published_by_collab': serialize_records(published_by_collab[:4]),
-        'user_published': serialize_records(user_published[:4]),
-        'user_drafts': serialize_deposits(user_drafts[:4]),
-        'shared_with_user': serialize_deposits(shared_with_user[:4]),
+        'published_by_collab': {
+            'data': published_by_collab,
+            'more': '/search?q='
+        },
+        'user_published': {
+            'data': user_published,
+            'more': '/search?by_me=True'
+        },
+        'user_drafts': {
+            'data': user_drafts,
+            'more': '/drafs?by_me=True'
+        },
+        'shared_with_user': {
+            'data': shared_with_user,
+            'more': '/drafts?by_me=False'
+        },
         'user_drafts_count': user_drafts_count,
         'user_published_count': user_published_count,
         'user_count': user_drafts_count + user_published_count
