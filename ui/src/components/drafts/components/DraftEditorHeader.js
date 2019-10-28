@@ -44,9 +44,7 @@ class DraftEditorHeader extends React.Component {
     const formData = this.props.formRef.current.props.formData;
     const { errors } = this.props.formRef.current.validate(formData);
 
-    let e = new Event("save");
-
-    this.props.formRef.current.onSubmit(e);
+    this.props.formRef.current.submit();
 
     if (errors.length > 0) {
       return false;

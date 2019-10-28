@@ -94,7 +94,7 @@ def dashboard():
         },
         'user_drafts': {
             'data': user_drafts,
-            'more': '/drafs?by_me=True'
+            'more': '/drafts?by_me=True'
         },
         'shared_with_user': {
             'data': shared_with_user,
