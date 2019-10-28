@@ -155,7 +155,7 @@ const objschemaui = {
   basic_info: {
     "ui:options": {
       grid: {
-        gridColumns: "1/3"
+        gridColumns: "3/5"
       }
     },
     // "ui:object": "accordionObjectField",
@@ -170,21 +170,21 @@ const objschemaui = {
     glance_id: {
       "ui:options": {
         grid: {
-          gridColumns: "3/5"
+          gridColumns: "2/5"
         }
       }
     },
     analysis_title: {
       "ui:options": {
         grid: {
-          gridColumns: "1/3"
+          gridColumns: "1/2"
         }
       }
     },
     people_info: {
       "ui:options": {
         grid: {
-          gridColumns: "1 / 3"
+          gridColumns: "1 / 5"
         }
       },
       items: {
@@ -202,7 +202,7 @@ const objschemaui = {
   information: {
     "ui:options": {
       grid: {
-        gridColumns: "3/5"
+        gridColumns: "1/3"
       }
     },
     // "ui:object": "accordionObjectField",
