@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP Query factory for REST API."""
 
 from __future__ import absolute_import, print_function
@@ -37,8 +36,8 @@ from .facets import cap_facets_factory
 # if any of the keywords appears in a search url as a parameter,
 # will get resolved to a specified query if True or ~query if False
 KEYWORD_TO_QUERY = {
-        'by_bot': lambda: ~Q('exists', field='created_by'),
-        'by_me': lambda: Q('match', **{'created_by': current_user.id}),
+    'by_bot': lambda: ~Q('exists', field='created_by'),
+    'by_me': lambda: Q('match', **{'created_by': current_user.id}),
 }
 
 
@@ -51,7 +50,8 @@ def cap_search_factory(self, search, query_parser=None):
     """
     def _default_parser(qstr=None, **kwargs):
         """Use of the Q() from elasticsearch_dsl."""
-        query = Q('query_string', query=qstr) if qstr else Q()
+        query = Q('query_string', query=qstr,
+                  default_operator='AND') if qstr else Q()
 
         # resolve keywords to queries
         for k, v in kwargs.items():
@@ -67,19 +67,17 @@ def cap_search_factory(self, search, query_parser=None):
 
     # parse url params to search for keywords
     query_keywords = {
-            k: request.values[k]
-            for k in KEYWORD_TO_QUERY.keys()
-            if k in request.values
+        k: request.values[k]
+        for k in KEYWORD_TO_QUERY.keys() if k in request.values
     }
     query_parser = query_parser or _default_parser
 
     try:
         search = search.query(query_parser(query_string, **query_keywords))
     except SyntaxError:
-        current_app.logger.debug(
-            "Failed parsing query: {0}".format(
-                request.values.get('q', '')),
-            exc_info=True)
+        current_app.logger.debug("Failed parsing query: {0}".format(
+            request.values.get('q', '')),
+                                 exc_info=True)
         raise InvalidQueryRESTError()
 
     search_index = search._index[0]
