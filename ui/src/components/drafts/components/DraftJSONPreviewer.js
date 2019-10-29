@@ -4,40 +4,42 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
+import Layer from "grommet/components/Layer";
 
-import View from "grommet/components/icons/base/View";
-
-import ReactJson from "react-json-view";
+import CloseIcon from "grommet/components/icons/base/Close";
 
 import { togglePreviewer } from "../../../actions/draftItem";
 
 import SectionHeader from "./SectionHeader";
 
+import AceEditor from "react-ace";
+import "ace-builds/webpack-resolver";
 class DepositPreviewer extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    return this.props.showPreviewer ? (
-      <Box flex={true} colorIndex="light-2">
-        <SectionHeader
-          label="Previewer"
-          icon={<View onClick={() => this.props.togglePreviewer()} />}
-        />
-        <Box pad="small" flex={true}>
-          <ReactJson src={this.props.formData} />
-        </Box>
-      </Box>
-    ) : (
-      <Box
-        flex={false}
-        pad="small"
-        colorIndex="light-2"
-        onClick={() => this.props.togglePreviewer()}
-      >
-        <View size="small" />
-      </Box>
+    return (
+      this.props.showPreviewer && (
+        <Layer margin="" flush={true} flex={true} colorIndex="light-2">
+          <SectionHeader
+            label="Previewer"
+            icon={<CloseIcon onClick={() => this.props.togglePreviewer()} />}
+          />
+          <Box size="xlarge" flex={true}>
+            <AceEditor
+              mode="json"
+              theme="github"
+              width="100%"
+              readOnly
+              name="UNIQUE_ID_OF_DIV"
+              value={JSON.stringify(this.props.formData, null, 4)}
+              editorProps={{ $blockScrolling: true }}
+            />
+          </Box>
+        </Layer>
+      )
     );
   }
 }

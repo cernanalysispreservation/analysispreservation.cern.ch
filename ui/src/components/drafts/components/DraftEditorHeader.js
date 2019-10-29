@@ -18,7 +18,6 @@ import {
 
 import EditableTitle from "./EditableTitle";
 
-import DragIcon from "grommet/components/icons/base/Drag";
 import DraftActionsLayer from "./DraftActionsLayer";
 
 import {
@@ -41,8 +40,23 @@ class DraftEditorHeader extends React.Component {
 
   _validateFormData() {
     // TOFIX maybe fetch formData from store instead of ref
-    const formData = this.props.formRef.current.props.formData;
+    const formData = this.props.formRef.current
+      ? this.props.formRef.current.props.formData
+      : null;
+
     const { errors } = this.props.formRef.current.validate(formData);
+
+    // let {
+    //   "current": {
+    //     props: {
+    //       "formData": formData = null,
+    //     } = {},
+    //     "validate": validate = null
+    //   } = {}
+    // } =  this.props.formRef;
+
+    // const { errors = []} = this.props.formRef.current && this.props.formRef.current.validate(formData);
+
 
     this.props.formRef.current.submit();
 
@@ -127,16 +141,12 @@ class DraftEditorHeader extends React.Component {
     return (
       <Box flex={true} wrap={false} direction="row">
         <Box
-          pad={{ horizontal: "small" }}
           justify="start"
           align="center"
           direction="row"
           flex={true}
           wrap={false}
         >
-          <Box margin={{ right: "small" }}>
-            <DragIcon size="xsmall" />
-          </Box>
           <EditableTitle anaType={this.props.match.params.schema_id} />
         </Box>
 
@@ -223,7 +233,8 @@ class DraftEditorHeader extends React.Component {
 DraftEditorHeader.propTypes = {
   match: PropTypes.object.isRequired,
   draft: PropTypes.object,
-  id: PropTypes.string
+  id: PropTypes.string,
+  formRef: PropTypes.object
 };
 
 function mapStateToProps(state) {

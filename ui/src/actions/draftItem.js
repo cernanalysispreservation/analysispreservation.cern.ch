@@ -1,5 +1,5 @@
 import axios from "axios";
-import { replace } from "react-router-redux";
+import { replace, push } from "react-router-redux";
 import { fetchAndAssignSchema } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
 
@@ -199,7 +199,7 @@ export function createDraft(data = {}, ana_type) {
       .then(() => {
         let state = getState();
         const draft_id = state.draftItem.get("id");
-        dispatch(replace(`/drafts/${draft_id}/edit`));
+        dispatch(push(`/drafts/${draft_id}/edit`));
       })
       .catch(error => {
         dispatch(createDraftError(error.response));
@@ -215,7 +215,12 @@ export function postCreateDraft(data = {}, ana_type) {
     data["$ana_type"] = ana_type.name;
 
     return axios
-      .post(uri, data)
+      .post(uri, data, {
+        headers: {
+          Accept: "application/form+json",
+          "Cache-Control": "no-cache"
+        }
+      })
       .then(response => {
         let draft = response.data;
         if (draft.id) {

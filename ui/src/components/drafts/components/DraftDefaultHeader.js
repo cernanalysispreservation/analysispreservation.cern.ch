@@ -5,13 +5,11 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 
-import { BackToEditAnchor, EditAnchor } from "./DraftActionsButtons";
+import { EditAnchor } from "./DraftActionsButtons";
 
 import EditableTitle from "./EditableTitle";
 
 import { Route } from "react-router-dom";
-
-import DragIcon from "grommet/components/icons/base/Drag";
 
 class DraftDefaultHeader extends React.Component {
   constructor(props) {
@@ -51,14 +49,6 @@ class DraftDefaultHeader extends React.Component {
 
     return (
       <Box flex={true} wrap={false} direction="row">
-        <Route
-          path="/drafts/:draft_id/settings"
-          render={() => (
-            <Box align="center" justify="center" colorIndex="neutral-1-a">
-              <BackToEditAnchor draft_id={this.props.draft_id} />
-            </Box>
-          )}
-        />
         <Box
           pad={{ horizontal: "small" }}
           justify="start"
@@ -67,9 +57,6 @@ class DraftDefaultHeader extends React.Component {
           flex={true}
           wrap={false}
         >
-          <Box margin={{ right: "small" }}>
-            <DragIcon size="xsmall" />
-          </Box>
           <EditableTitle />
         </Box>
 

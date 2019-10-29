@@ -7,7 +7,7 @@ import queryString from "query-string";
 import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
 import HowToSearchPage from "../about/HowToSearch";
 
-import { Header as GrommetHeader } from "grommet";
+import { Header as GrommetHeader, Heading } from "grommet";
 
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
@@ -21,17 +21,23 @@ import SearchBar from "../search/SearchBar";
 import UserIcon from "grommet/components/icons/base/User";
 import config from "../../config";
 import { logout } from "../../actions/auth";
+import DraftCreate from "../drafts/DraftCreate";
 
 class Header extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      show: false
+      show: false,
+      showCreate: false
     };
   }
 
   showLayer = () => {
     this.setState({ show: true });
+  };
+
+  toggleCreate = () => {
+    this.setState({ showCreate: !this.state.showCreate });
   };
 
   hideLayer = () => {
@@ -60,6 +66,9 @@ class Header extends React.Component {
   render() {
     return (
       <GrommetHeader fixed={false} size="small" colorIndex="neutral-1">
+        {this.state.showCreate ? (
+          <DraftCreate toggle={this.toggleCreate} />
+        ) : null}
         {this.state.show ? (
           <Layer
             closer={true}
@@ -116,26 +125,15 @@ class Header extends React.Component {
                   responsive={true}
                   size="small"
                 >
-                  <Menu
-                    colorIndex="neutral-1"
-                    responsive={true}
-                    label="Create"
-                    dropAlign={{ top: "bottom" }}
-                    size="small"
+                  <Box
+                    onClick={() => this.toggleCreate()}
+                    separator="all"
+                    pad={{ horizontal: "small" }}
                   >
-                    {this.props.groups ? (
-                      this.props.groups.map((group, index) => (
-                        <Anchor
-                          key={`${group.get("name")}-${index}`}
-                          label={`${group.get("name")}`}
-                          animateIcon={true}
-                          path={`/drafts/create/${group.get("deposit_group")}`}
-                        />
-                      ))
-                    ) : (
-                      <Box> No available schemas.</Box>
-                    )}
-                  </Menu>
+                    <Heading margin="none" tag="h4">
+                      Create
+                    </Heading>
+                  </Box>
                   <Menu
                     colorIndex="neutral-1"
                     dropAlign={{ top: "bottom" }}

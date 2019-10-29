@@ -1,24 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { connect } from "react-redux";
-
-import Box from "grommet/components/Box";
-
-import objectPath from "object-path";
-
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet/templates/FieldTemplate";
 import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
 import ErrorListTemplate from "./themes/grommet/templates/ErrorListTemplate";
 
-import SectionHeader from "../components/SectionHeader";
-
 import widgets from "./themes/grommet/widgets";
 import fields from "./themes/grommet/fields";
 
 import Form from "react-jsonschema-form";
+
+import Box from "grommet/components/Box";
+import objectPath from "object-path";
 
 class DepositForm extends React.Component {
   constructor(props) {
@@ -26,6 +21,8 @@ class DepositForm extends React.Component {
   }
 
   _validate(formData, errors) {
+    if (!Array.isArray(this.props.errors)) return errors;
+
     this.props.errors.map(error => {
       if (error.field) {
         let errorObj = objectPath.get(errors, error.field);
@@ -76,7 +73,6 @@ class DepositForm extends React.Component {
   render() {
     return (
       <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
-        <SectionHeader label="Submission Form" />
         <Box pad="none" flex={true}>
           <Form
             ref={this.props.formRef}
