@@ -63,27 +63,28 @@ def ping(service=None):
 @login_required
 def dashboard():
     """Dashboard view."""
-    def _serialize_records(records, limit=5):
+    def _serialize_records(records):
         return json.loads(
-            record_json_v1.serialize_search(cap_record_fetcher,
-                                            records.to_dict()))['hits']['hits']  # noqa
+            record_json_v1.serialize_search(
+                cap_record_fetcher,
+                records.to_dict()))['hits']['hits']    # noqa
 
-    def _serialize_deposits(deposits, limit=5):
-        # import ipdb; ipdb.set_trace()
+    def _serialize_deposits(deposits):
         return json.loads(
             deposit_json_v1.serialize_search(
-                cap_deposit_fetcher, deposits.to_dict()))['hits']['hits']  # noqa
+                cap_deposit_fetcher,
+                deposits.to_dict()))['hits']['hits']    # noqa
 
     rs = CAPRecordSearch().extra(version=True).sort_by_latest()
     ds = CAPDepositSearch().extra(version=True).sort_by_latest()
 
-    # import ipdb; ipdb.set_trace()
-    published_by_collab = _serialize_records(rs.execute())
-    user_published = _serialize_records(rs.get_user_records().execute())
+    published_by_collab = _serialize_records(rs[:5].execute())
+    user_published = _serialize_records(rs.get_user_records()[:5].execute())
     user_published_count = rs.get_user_records().count()
-    user_drafts = _serialize_deposits(ds.get_user_deposits().execute())
+    user_drafts = _serialize_deposits(ds.get_user_deposits()[:5].execute())
     user_drafts_count = ds.get_user_deposits().count()
-    shared_with_user = _serialize_deposits(ds.get_shared_with_user().execute())
+    shared_with_user = _serialize_deposits(
+        ds.get_shared_with_user()[:5].execute())
 
     return jsonify({
         'published_by_collab': {
