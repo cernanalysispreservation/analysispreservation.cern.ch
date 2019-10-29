@@ -259,6 +259,14 @@ RECORDS_REST_FACETS = {
                     'field': 'publication_status.keyword'
                 }
             },
+            'facet_cms_wg': {
+                'terms': {
+                    "script": {
+                        "inline":
+                        "doc.containsKey('cadi_id') ? doc['cadi_id.keyword'].value.substring(0,3) : null"  # noqa
+                        }
+                    }
+                },
             "particles": {
                 "nested": {
                     "path": "main_measurements.signal_event_selection"
@@ -297,6 +305,7 @@ RECORDS_REST_FACETS = {
             'type': terms_filter('_type'),
             'status': terms_filter('status.keyword'),
             'cadi_status': terms_filter('cadi_status'),
+            'cms_wg': terms_filter('cadi_id'),
             'publication_status': terms_filter('publication_status.keyword'),
             'conference': terms_filter('conference'),
             'physics_objects': nested_filter(
