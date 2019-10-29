@@ -95,8 +95,8 @@ class DraftEditor extends React.Component {
           </Layer>
         ) : null}
 
-        {
-          this.props.schemas && this.props.schemas.schema && (
+        {this.props.schemas &&
+          this.props.schemas.schema && (
             <Box
               direction="row"
               justify="between"
@@ -116,8 +116,7 @@ class DraftEditor extends React.Component {
               />
               <DraftJSONPreviewer />
             </Box>
-          )
-        }
+          )}
       </Box>
     );
   }

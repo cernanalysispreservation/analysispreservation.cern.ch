@@ -15,6 +15,7 @@ class _AccordionPanel extends AccordionPanel {
     const {
       a11yTitle,
       active,
+      noHeading,
       animate,
       className,
       children,
@@ -53,9 +54,14 @@ class _AccordionPanel extends AccordionPanel {
               responsive={false}
               className={`${CLASS_ROOT}__header`}
             >
-              <Heading tag="h6" margin="none">
-                {heading}
-              </Heading>
+              {noHeading ? (
+                heading
+              ) : (
+                <Heading tag="h6" margin="none">
+                  {heading}
+                </Heading>
+              )}
+
               <CaretNextIcon className={`${CLASS_ROOT}__control`} />
             </Box>
           </Box>

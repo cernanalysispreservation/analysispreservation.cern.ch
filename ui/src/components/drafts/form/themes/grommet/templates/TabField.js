@@ -9,6 +9,7 @@ import Split from "grommet/components/Split";
 
 import FieldHeader from "../components/FieldHeader";
 import { filter } from "lodash";
+import { Heading } from "grommet";
 
 class TabField extends React.Component {
   constructor(props) {
@@ -73,45 +74,54 @@ class TabField extends React.Component {
         <Box size={this.options && this.options.full ? "full" : "xxlarge"}>
           <Box flex={true} direction={this.view.vertical ? "row" : "column"}>
             <Box
+              fixed={true}
               size={this.view.vertical ? "small" : "auto"}
               flex={false}
-              colorIndex={this.view.sidebarColor || "accent-3"}
+              colorIndex={this.view.sidebarColor || "grey-4"}
               pad={{ between: this.view.vertical ? "none" : "small" }}
               direction={this.view.vertical ? "column" : "row"}
               wrap={true}
             >
-              {tabs.map(tab => (
-                <Box
-                  colorIndex={tab.name == this.state.active ? "light-1" : null}
-                  key={tab.key ? tab.key : tab.name}
-                  pad="small"
-                  onClick={this._onTabClick.bind(this, tab)}
-                >
-                  <Label size="small">
-                    {tab.title || tab.content.props.schema.title || "Untitled"}
-                  </Label>
-                </Box>
-              ))}
+              <Box flex={false}>
+                {tabs.map(tab => (
+                  <Box
+                    colorIndex={
+                      tab.name == this.state.active ? "light-1" : null
+                    }
+                    key={tab.key ? tab.key : tab.name}
+                    pad="small"
+                    onClick={this._onTabClick.bind(this, tab)}
+                  >
+                    <Heading tag="h5" margin="none" size="medium" strong>
+                      {tab.title ||
+                        tab.content.props.schema.title ||
+                        "Untitled"}
+                    </Heading>
+                  </Box>
+                ))}
+              </Box>
             </Box>
-            <Box
-              style={{
-                display: "grid",
-                overflow: "auto",
-                padding: "10px",
-                width: "100%",
-                height: "100%",
-                justifyContent: "center"
-              }}
-            >
+            <Box flex={true}>
               <Box
-                className="rjsf"
                 style={{
+                  display: "grid",
+                  overflow: "auto",
                   padding: "10px",
-                  overflow: "auto"
+                  width: "100%",
+                  height: "100%",
+                  justifyContent: "center"
                 }}
-                size={this.view.innerTab || "xlarge"}
               >
-                {active_tabs_content.map(item => item.content)}
+                <Box
+                  className="rjsf"
+                  style={{
+                    padding: "10px",
+                    overflow: "auto"
+                  }}
+                  size={this.view.innerTab || "xlarge"}
+                >
+                  {active_tabs_content.map(item => item.content)}
+                </Box>
               </Box>
             </Box>
           </Box>

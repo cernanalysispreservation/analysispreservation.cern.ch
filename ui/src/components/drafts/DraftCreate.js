@@ -66,10 +66,10 @@ class DraftCreate extends React.Component {
             <Box
               flex={false}
               size={{ height: "medium" }}
-              pad="small"
+              pad={{ horizontal: "large" }}
               margin={{ bottom: "large" }}
             >
-              <Paragraph margin="small">
+              <Paragraph margin="medium">
                 Select the content type you want to create, give a title to
                 distinguish from other records and start preserving
               </Paragraph>
@@ -136,7 +136,7 @@ class DraftCreate extends React.Component {
             <Box flex={false} pad="small">
               <Box
                 flex={false}
-                colorIndex="ok"
+                colorIndex="neutral-1"
                 size="small"
                 alignSelf="end"
                 align="center"

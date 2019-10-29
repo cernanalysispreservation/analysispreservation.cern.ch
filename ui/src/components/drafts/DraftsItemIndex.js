@@ -4,18 +4,18 @@ import { connect } from "react-redux";
 
 import { Switch, Route, withRouter } from "react-router-dom";
 
-import LinkPreviousIcon from 'grommet/components/icons/base/LinkPrevious';
-import PlayIcon from 'grommet/components/icons/base/Play';
-import TechnologyIcon from 'grommet/components/icons/base/Technology';
-import AppsIcon from 'grommet/components/icons/base/Apps';
-import SettingsOptionIcon from 'grommet/components/icons/base/SettingsOption';
+import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
+import PlayIcon from "grommet/components/icons/base/Play";
+import TechnologyIcon from "grommet/components/icons/base/Technology";
+import AppsIcon from "grommet/components/icons/base/Apps";
+import SettingsOptionIcon from "grommet/components/icons/base/SettingsOption";
 import { Anchor, Box } from "grommet";
 
 import DraftHeader from "./components/DraftHeader";
 
-
 // Draft containers
 import DraftIntegrations from "./components/DraftIntegrations";
+import DraftWorkflows from "./components/DraftWorkflows";
 import DraftSettings from "./components/DepositSettings";
 import DraftPreview from "./DraftPreview";
 import DraftEditor from "./DraftEditor";
@@ -57,27 +57,46 @@ class DraftsItemIndex extends React.Component {
       <Box flex={true} direction="row" wrap={false}>
         <Box flex={false} colorIndex="brand">
           <Anchor icon={<AppsIcon />} path={`/drafts/${draft_id}/edit`} />
-          <Anchor icon={<TechnologyIcon />} path={`/drafts/${draft_id}/integrations`} />
+          <Anchor
+            icon={<TechnologyIcon />}
+            path={`/drafts/${draft_id}/integrations`}
+          />
           <Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} />
-          <Anchor icon={<SettingsOptionIcon />} path={`/drafts/${draft_id}/settings`} />
-          
+          <Anchor
+            icon={<SettingsOptionIcon />}
+            path={`/drafts/${draft_id}/settings`}
+          />
         </Box>
         <Box flex={true}>
           <DraftHeader formRef={this.formRef} />
           <Box flex={true}>
-
-          <Switch>
-            <Route exact path={`/drafts/:draft_id`} component={DraftPreview} />
-            <Route path={`/drafts/:draft_id/edit`}
-              render={props => (
-                <DraftEditor {...props} formRef={this.formRef} />
-              )}
-            />} />
-            <Route path={`/drafts/:draft_id/settings`} component={DraftSettings} />
-            <Route path={`/drafts/:draft_id/integrations`} component={DraftIntegrations} />
-          </Switch>
+            <Switch>
+              <Route
+                exact
+                path={`/drafts/:draft_id`}
+                component={DraftPreview}
+              />
+              <Route
+                path={`/drafts/:draft_id/edit`}
+                render={props => (
+                  <DraftEditor {...props} formRef={this.formRef} />
+                )}
+              />} />
+              <Route
+                path={`/drafts/:draft_id/settings`}
+                component={DraftSettings}
+              />
+              <Route
+                path={`/drafts/:draft_id/integrations`}
+                component={DraftIntegrations}
+              />
+              <Route
+                path={`/drafts/:draft_id/workflows`}
+                component={DraftWorkflows}
+              />
+            </Switch>
           </Box>
-          </Box>
+        </Box>
         <Sidebar />
       </Box>
     );
@@ -102,7 +121,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default withRouter(connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DraftsItemIndex));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DraftsItemIndex)
+);

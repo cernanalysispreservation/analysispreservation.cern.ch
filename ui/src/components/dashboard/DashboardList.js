@@ -90,17 +90,15 @@ function DashboardList(props) {
                             - {schema.name}{" "}
                             {schema.version ? `v.${schema.version}` : null}
                           </span>
-                          <span
-                            style={{
-                              marginLeft: "10px",
-                              padding: "1px 2px",
-                              backgroundColor: "#666",
-                              color: "#fff",
-                              borderRadius: "2px"
-                            }}
-                          >
-                            {currentUser == created_by ? "owner" : null}
-                          </span>
+                          {listType == "drafts" && status == "published" ? (
+                            <Box
+                              justify="center"
+                              colorIndex="accent-3"
+                              style={{ padding: "1px", borderRadius: "2px" }}
+                            >
+                              published
+                            </Box>
+                          ) : null}
                         </Box>
                         <Box flex direction="row" wrap={false}>
                           <Box
@@ -118,11 +116,21 @@ function DashboardList(props) {
                         wrap={false}
                         justify="between"
                       >
-                        <Box>
-                          {listType == "drafts" && status == "published"
-                            ? status
-                            : null}
-                        </Box>
+                        {currentUser == created_by ? (
+                          <Box justify="center">
+                            <span
+                              style={{
+                                marginLeft: "10px",
+                                padding: "1px 2px",
+                                backgroundColor: "#666",
+                                color: "#fff",
+                                borderRadius: "2px"
+                              }}
+                            >
+                              owner
+                            </span>
+                          </Box>
+                        ) : null}
 
                         <Box justify="center" pad={{ horizontal: "small" }}>
                           <strong>last updated</strong>
