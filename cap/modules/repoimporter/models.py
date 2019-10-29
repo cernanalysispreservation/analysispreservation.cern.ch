@@ -37,6 +37,8 @@ class GitRepository(db.Model):
     """Information about a GitHub repository."""
 
     __tablename__ = 'git_connected_repositories'
+    __table_args__ = (db.UniqueConstraint('recid', 'git_repo_id', 'branch',
+                                          name='unique_ids_constraint'),)
 
     id = db.Column(db.Integer, primary_key=True)
     git_repo_id = db.Column(db.Integer, unique=False, index=True)
@@ -61,7 +63,7 @@ class GitRepository(db.Model):
     # check if the repo should be downloaded every time an event occurs
     # do not remove create_constraint, sqlalchemy bug workaround
     for_download = db.Column(db.Boolean(create_constraint=False),
-                             default=False)
+                             nullable=False, default=False)
 
     @classmethod
     def create_or_get(cls, git, data_url, user_id, record_id,
