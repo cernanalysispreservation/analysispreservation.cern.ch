@@ -152,7 +152,18 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-qa.cern.ch'
 ]
 
+# Webhooks & ngrok init
+# =====================
+# In order to debug webhooks, we need a tunnel to our local instance
+# so we make sure that we have an ngrok tunnel running, and add it
+# to the allowed hosts (to enable requests)
 WEBHOOK_URL = 'https://analysispreservation.cern.ch/repos/event'
+NGROK_HOST = os.environ.get('CAP_NGROK_URL')
+
+if NGROK_HOST:
+    APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
+    WEBHOOK_URL = '{}/repos/event'.format(NGROK_HOST)
+    print(' * Webhook url at {}'.format(WEBHOOK_URL))
 
 if os.environ.get('DEV_HOST', False):
     APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
@@ -183,10 +194,6 @@ else:
 if DEBUG:
     REST_ENABLE_CORS = True
     APP_ENABLE_SECURE_HEADERS = False
-
-    WEBHOOK_URL = os.environ.get('CAP_WEBHOOK_URL')
-    if WEBHOOK_URL:
-        APP_ALLOWED_HOSTS.append(WEBHOOK_URL.split('//')[-1])
 
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
