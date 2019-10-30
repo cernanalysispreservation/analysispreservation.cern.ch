@@ -20,13 +20,6 @@ class Dashboard extends React.Component {
   render() {
     return (
       <Box full={true} colorIndex="light-2">
-        <Header
-          size="small"
-          colorIndex="neutral-1-a"
-          pad="none"
-          wrap={true}
-          justify="center"
-        />
         {!this.props.permissions && (
           <Notification
             message="Your account has no permissions for the platform."

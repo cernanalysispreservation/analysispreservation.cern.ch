@@ -79,8 +79,9 @@ export const ShareAnchor = ({ action = null }) => (
 export const SaveAnchor = ({ action = null }) => (
   <Anchor
     icon={<SaveIcon size="xsmall" />}
+    primary={true}
     label={
-      <Label size="small" uppercase={true}>
+      <Label size="small" colorIndex="brand" uppercase={true}>
         Save
       </Label>
     }

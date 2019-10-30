@@ -709,6 +709,15 @@
     }
   },
   "deposit_options": {
+    "ui:object": "tabView",
+    "ui:options": {
+      "display": "grid",
+      "full": true,
+      "view": {
+        "vertical": true,
+        "sidebarColor": "grey-5-a"
+      }
+    },
     "statistical_treatment": {
       "combine_datacard": {
         "ui:field": "CapFiles"

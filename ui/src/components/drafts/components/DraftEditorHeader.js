@@ -28,7 +28,6 @@ import {
   createDraftError,
   updateDraft,
   publishDraft,
-  deleteDraft,
   discardDraft,
   editPublished,
   toggleActionsLayer,
@@ -200,22 +199,6 @@ class DraftEditorHeader extends React.Component {
               <Spinning />
             </Box>
           ) : null}
-          {isDraft ? (
-            <Menu
-              flex={false}
-              direction="row"
-              wrap={false}
-              responsive={false}
-              margin={{ vertical: "small", right: "large" }}
-              pad={{ horizontal: "small" }}
-              alignContent="center"
-              justify="center"
-              align="center"
-              colorIndex="neutral-4"
-            >
-              <ShareAnchor action={this._actionHandler("publish")} />
-            </Menu>
-          ) : null}
 
           {this.props.draft_id ? (
             <Menu
@@ -229,11 +212,6 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-              <SettingsAnchor draft_id={this.props.draft_id} />
-
-              {isDraft && !isPublishedOnce ? (
-                <DeleteAnchor action={this._actionHandler("delete")} />
-              ) : null}
 
               {isDraft && isPublishedOnce ? (
                 <DiscardAnchor action={this._actionHandler("discard")} />
