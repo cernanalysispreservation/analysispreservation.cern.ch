@@ -28,11 +28,13 @@ from __future__ import absolute_import, print_function
 
 import requests
 from flask import current_app
-from github import Github
+from github import Github, UnknownObjectException
 from gitlab import Gitlab
 
 from .errors import GitCredentialsError, GitClientNotFound
 from .utils import parse_url, get_access_token, create_webhook_secret
+from ..auth.ext import _fetch_token
+from ..deposit.errors import FileUploadError
 
 
 def _test_connection(client=None):
@@ -63,7 +65,7 @@ def _get_webhook_config(git_url):
 class GitAPI(object):
     """Base Git API class."""
 
-    def __init__(self, host, owner, repo, branch):
+    def __init__(self, host, owner, repo, branch, user_id):
         """Initialize an importer and extract the main attributes."""
         self.host = host
         self.branch = branch
@@ -81,35 +83,41 @@ class GitAPI(object):
         """.format(self.host, self.repo_full_name, self.branch)
 
     @staticmethod
-    def create(url=None,  # URL OR SPECIFIC ATTRIBUTES
-               host=None, owner=None,
-               repo=None, branch='master'):
+    def create(url=None, user_id=None):
         """Creates a GitHub/GitLab api instance, based on the provided args."""
-        if url:
-            _attrs = parse_url(url)
-            host, owner, repo, branch = (_attrs['host'], _attrs['owner'],
-                                         _attrs['repo'], _attrs['branch'])
-        elif not all([host, owner, repo]):
-            # no url and no attributes
+        if not url:
             raise GitCredentialsError
 
-        return GitHubAPI(host, owner, repo, branch) \
+        _attrs = parse_url(url)
+        host, owner, repo, branch = (_attrs['host'], _attrs['owner'],
+                                     _attrs['repo'], _attrs['branch'])
+
+        return GitHubAPI(host, owner, repo, branch, user_id) \
             if 'github' in host \
-            else GitLabAPI(host, owner, repo, branch)
+            else GitLabAPI(host, owner, repo, branch, user_id)
 
 
 class GitHubAPI(GitAPI):
     """GitHub-specific API class."""
     api_url = 'https://api.github.com'
 
-    def __init__(self, host, owner, repo, branch='master'):
+    def __init__(self, host, owner, repo, branch, user_id):
         """Initialize a GitHub API instance."""
-        super(GitHubAPI, self).__init__(host, owner, repo, branch)
-        self.token = get_access_token('GITHUB')
+        super(GitHubAPI, self).__init__(host, owner, repo, branch, user_id)
+        # self.token = get_access_token('github')
+        token_obj = _fetch_token('github', user_id)
+        if not token_obj:
+            raise FileUploadError(
+                'Connect to GitHub from the CAP interface to access and '
+                'download your repositories (Settings -> Integrations')
 
-        self.api = Github(self.token)
-        self.project = self.api.get_repo(self.repo_full_name)
-        self.repo_id = self.project.id
+        try:
+            self.token = token_obj.get('access_token')
+            self.api = Github(self.token)
+            self.project = self.api.get_repo(self.repo_full_name)
+            self.repo_id = self.project.id
+        except UnknownObjectException:
+            raise FileUploadError('Invalid repo URL. Please check again.')
 
     @classmethod
     def ping(cls):
@@ -124,6 +132,10 @@ class GitHubAPI(GitAPI):
         """Retrieve the last commit sha for this branch/repo."""
         branch = self.project.get_branch(self.branch)
         return branch.commit.sha
+
+    @property
+    def webhooks(self):
+        return list(self.project.get_hooks())
 
     def create_webhook(self):
         """Create and enable a webhook for the specific repo."""
@@ -158,14 +170,18 @@ class GitLabAPI(GitAPI):
     """GitLab-specific API class."""
     api_url = 'https://gitlab.cern.ch/api/v4/projects'
 
-    def __init__(self, host, owner, repo, branch='master'):
+    def __init__(self, host, owner, repo, branch, user_id):
         """Initialize a GitLab API instance."""
-        super(GitLabAPI, self).__init__(host, owner, repo, branch)
-        self.token = get_access_token('GITLAB')
+        super(GitLabAPI, self).__init__(host, owner, repo, branch, user_id)
+        self.token = get_access_token('gitlab')
+        # self.token = _fetch_token('gitlab', user_id)
 
-        self.api = Gitlab(host, private_token=self.token)
-        self.project = self.api.projects.get(self.repo_full_name)
-        self.repo_id = self.project.get_id()
+        try:
+            self.api = Gitlab(host, private_token=self.token)
+            self.project = self.api.projects.get(self.repo_full_name)
+            self.repo_id = self.project.get_id()
+        except UnknownObjectException:
+            raise FileUploadError('Invalid repo URL. Please check again.')
 
     @classmethod
     def ping(cls):
@@ -179,6 +195,10 @@ class GitLabAPI(GitAPI):
     def last_commit(self):
         branch = self.project.branches.get(self.branch)
         return branch.attributes['commit']['id']
+
+    @property
+    def webhooks(self):
+        return self.project.hooks.list()
 
     def create_webhook(self):
         """Create and enable a webhook for the specific repo."""

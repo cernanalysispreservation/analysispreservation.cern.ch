@@ -37,8 +37,6 @@ class Integrations extends React.Component {
     let _url;
     if (process.env.NODE_ENV === "development")
       _url = `http://localhost:5000/auth/connect/${service}?ui=1`;
-    if (service == "gitlab")
-      _url = `http://analysispreservation.cern.ch:5000/auth/connect/${service}?ui=1`;
     else _url = `/api/auth/connect/${service}?ui=1`;
 
     return (
