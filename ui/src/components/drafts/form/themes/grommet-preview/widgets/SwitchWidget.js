@@ -12,7 +12,7 @@ const SwitchWidget = function(props) {
       size={{ width: "xxlarge" }}
       justify="center"
       flex={false}
-      alignSelf="end"
+     alignSelf="end"
     >
       {props.value ? "Yes" : "No"}
     </Box>

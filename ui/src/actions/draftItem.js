@@ -226,11 +226,11 @@ export function postCreateDraft(data = {}, ana_type) {
         let draft = response.data;
         if (draft.id) {
           dispatch(createDraftSuccess(response.data));
-          cogoToast.success("Your form has been successfully submitted", {
+          cogoToast.success("You started a new analysis.", {
             position: "top-center",
-            heading: "Form saved",
+            heading: "",
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           });
         }
       })
@@ -242,7 +242,7 @@ export function postCreateDraft(data = {}, ana_type) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
         throw error;
@@ -336,7 +336,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
               position: "top-center",
               heading: "Draft updated",
               bar: { size: "0" },
-              hideAfter: 2
+              hideAfter: 3
             });
           })
           .catch(error => {
@@ -347,7 +347,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
                 position: "top-center",
                 heading: error.message,
                 bar: { size: "0" },
-                hideAfter: 2
+                hideAfter: 3
               }
             );
             throw error;
@@ -360,7 +360,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
         throw error;
@@ -382,7 +382,7 @@ export function discardDraft(draft_id) {
           position: "top-center",
           heading: "Data discarded",
           bar: { size: "0" },
-          hideAfter: 2
+          hideAfter: 3
         });
       })
       .catch(error => {
@@ -393,7 +393,7 @@ export function discardDraft(draft_id) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
       });
@@ -436,7 +436,7 @@ export function putUpdateDraft(data, draft_id) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
         throw error;
@@ -461,7 +461,7 @@ export function postPublishDraft(draft_id) {
           position: "top-center",
           heading: "Draft published",
           bar: { size: "0" },
-          hideAfter: 2
+          hideAfter: 3
         });
       })
       .catch(error => {
@@ -472,7 +472,7 @@ export function postPublishDraft(draft_id) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
         throw error.response;
@@ -512,7 +512,7 @@ export function deleteDraft(draft_id) {
           position: "top-center",
           heading: "Draft deleted",
           bar: { size: "0" },
-          hideAfter: 2
+          hideAfter: 3
         });
       })
       .catch(error => {
@@ -523,7 +523,7 @@ export function deleteDraft(draft_id) {
             position: "top-center",
             heading: error.message,
             bar: { size: "0" },
-            hideAfter: 2
+            hideAfter: 3
           }
         );
       });

@@ -11,7 +11,7 @@ class DraftHeader extends React.Component {
   render() {
     return (
       <Box
-        colorIndex="neutral-1-a"
+        colorIndex="grey-4"
         flex={false}
         justify="between"
         direction="row"

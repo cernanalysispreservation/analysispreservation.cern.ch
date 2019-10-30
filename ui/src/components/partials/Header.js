@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
+import Add from 'grommet/components/icons/base/Add';
 import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader, Heading } from "grommet";
@@ -65,7 +66,7 @@ class Header extends React.Component {
 
   render() {
     return (
-      <GrommetHeader fixed={false} size="small" colorIndex="neutral-1">
+        <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
         {this.state.showCreate ? (
           <DraftCreate toggle={this.toggleCreate} />
         ) : null}
@@ -107,10 +108,10 @@ class Header extends React.Component {
                   flex={true}
                   justify="center"
                   size={{ width: { max: "large" } }}
+                  margin={{ horizontal: "small"}}
                   colorIndex="neutral-1-t"
-                  margin={{ horizontal: "small" }}
                 >
-                  <SearchBar />
+                  <SearchBar/>
                 </Box>
                 <Anchor
                   icon={<CircleQuestionIcon />}
@@ -127,15 +128,14 @@ class Header extends React.Component {
                 >
                   <Box
                     onClick={() => this.toggleCreate()}
-                    separator="all"
                     pad={{ horizontal: "small" }}
+                    icon={<Add/>}
                   >
                     <Heading margin="none" tag="h4">
                       Create
                     </Heading>
                   </Box>
                   <Menu
-                    colorIndex="neutral-1"
                     dropAlign={{ top: "bottom" }}
                     icon={<UserIcon />}
                     size="small"

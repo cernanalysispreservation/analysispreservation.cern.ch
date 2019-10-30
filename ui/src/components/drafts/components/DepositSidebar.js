@@ -44,18 +44,18 @@ class DepositSidebar extends React.Component {
       <Sidebar full={false} size="medium" colorIndex="light-2">
         <Box flex={false}>
           <SectionHeader label="Info & Details" />
-          <Box flex={false} pad="small">
+          <Box flex={false} pad="small" style={{fontWeight: "100"}}>
             <Box direction="row" wrap={false} justify="between">
-              ID : <strong>{this.props.id}</strong>
+              ID  <span>{this.props.id}</span>
             </Box>
             <Box direction="row" wrap={false} justify="between">
-              Experiment: <strong>{this.props.experiment}</strong>
+              Status <span>{this.props.status}</span>
             </Box>
             <Box direction="row" wrap={false} justify="between">
-              Revision: <strong>{this.props.revision}</strong>
+              Experiment <span>{this.props.experiment}</span>
             </Box>
             <Box direction="row" wrap={false} justify="between">
-              Creator: <strong>{this.props.created_by}</strong>
+              Creator <span>{this.props.created_by}</span>
             </Box>
             <Box direction="row" wrap={false} justify="between">
               Created:{" "}
@@ -75,12 +75,6 @@ class DepositSidebar extends React.Component {
               justify="between"
               pad={{ vertical: "small" }}
             >
-              <Box
-                style={{ padding: "5px", borderRadius: "3px" }}
-                colorIndex={this.props.status == "draft" ? "brand" : "accent-2"}
-              >
-                <strong>{this.props.status}</strong>
-              </Box>
             </Box>
           </Box>
         </Box>

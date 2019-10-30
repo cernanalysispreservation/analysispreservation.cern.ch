@@ -71,7 +71,7 @@ class DepositForm extends React.Component {
 
   render() {
     return (
-      <Box size={{ width: { min: "large" } }} flex={true} wrap={false}>
+      <Box size={{ width: { min: "large" } }} flex={true} wrap={false} separator="vertical">
         <Box pad="none" flex={true}>
           <Form
             ref={this.props.formRef}
