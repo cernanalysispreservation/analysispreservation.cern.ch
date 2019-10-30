@@ -107,7 +107,7 @@ class DraftIntegrations extends React.Component {
                           {repo.event}
                         </Box>
                         <Box flex={true} align="center">
-                          <TimeAgo date={repo.updated} timeStyle="twitter" />
+                          <TimeAgo date={repo.updated} minPeriod="60" />
                         </Box>
                       </Box>
                     </Box>
