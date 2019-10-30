@@ -36,10 +36,11 @@ from .utils import _create_or_update_token
 from invenio_db import db
 
 
-def _fetch_token(name):
-    token = OAuth2Token.get(name=name, user_id=current_user.id)
-    if token:
-        return token.to_token()
+def _fetch_token(name, user_id=None):
+    if not user_id:
+        user_id = current_user.id
+    token = OAuth2Token.get(name=name, user_id=user_id)
+    return token.to_token() if token else None
 
 
 def _update_token(name, token):

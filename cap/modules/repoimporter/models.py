@@ -66,8 +66,8 @@ class GitRepository(db.Model):
                              nullable=False, default=False)
 
     @classmethod
-    def create_or_get(cls, git, data_url, user_id, record_id,
-                      name=None, for_download=False):
+    def create_or_get(cls, git, data_url, user_id, record_id, hook,
+                      hook_secret, name=None, for_download=False):
         """Create a new repository instance, using the API information."""
         repo = cls.get_by(git.repo_id, branch=git.branch)
 
@@ -80,6 +80,7 @@ class GitRepository(db.Model):
                        url=data_url,
                        recid=record_id,
                        user=user, user_id=user.id,
+                       hook=hook, hook_secret=hook_secret,
                        for_download=for_download,
                        repo_saved_name=name)
             db.session.add(repo)

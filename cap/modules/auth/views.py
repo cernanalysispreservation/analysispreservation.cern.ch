@@ -70,7 +70,10 @@ def authorize(name):
 
     profile_data = get_oauth_profile(name, token=_token, client=client)
 
-    profile_services = profile.extra_data.get("services", {})
+    if profile.extra_data:
+        profile_services = profile.extra_data.get("services", {})
+    else:
+        profile_services = {}
     profile_services[name] = profile_data
     profile.extra_data = {"services": profile_services}
     flag_modified(profile, "extra_data")

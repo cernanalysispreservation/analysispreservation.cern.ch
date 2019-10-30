@@ -29,7 +29,7 @@ from __future__ import absolute_import, print_function
 from flask import Blueprint, jsonify, request
 
 from .api import GitAPI
-from .errors import GitWebhooksIntegrationError, GitVerificationError
+from .errors import GitVerificationError
 from .models import GitRepository, GitRepositorySnapshots
 from .utils import verified_request, get_webhook_attrs
 
@@ -64,8 +64,11 @@ def get_webhook_event():
     # or update the saved file as well
     if repo.for_download:
         from cap.modules.repoimporter.fetcher import download_repo
-        download_repo.delay(repo.url, repo.recid,
-                            repo.repo_saved_name, ref=ref)
+
+        api = GitAPI.create(url=repo.url, user_id=repo.user_id)
+        archived_repo_url = api.archive_repo_url(ref=api.last_commit)
+        download_repo.delay(repo.recid, repo.repo_saved_name,
+                            repo.url, archived_repo_url)
 
     GitRepositorySnapshots.create(event, data, repo, ref=ref)
     return jsonify({'message': 'Snapshot of repo saved.'})
@@ -85,24 +88,3 @@ def get_repo_snapshots(repo_id):
                  for snap in snapshots]
 
     return jsonify(snap_list)
-
-
-def enable_webhook(repo_id, branch='master'):
-    """Enable a webhook by retrieving a repo and using the existing APIs."""
-    repo = GitRepository.get_by(repo_id, branch=branch)
-    if not repo.hook:
-        hook_id, hook_secret = GitAPI.create(url=repo.url).create_webhook()
-        repo.update_hook(hook_id, hook_secret)
-    else:
-        raise GitWebhooksIntegrationError
-
-
-def disable_webhook(repo_id, branch='master'):
-    """Disable the webhook of a repo."""
-    repo = GitRepository.get_by(repo_id, branch=branch)
-    try:
-        # delete the existing webhook and remove it from the db
-        GitAPI.create(url=repo.url).delete_webhook()
-        repo.update_hook()
-    except GitWebhooksIntegrationError:
-        raise

@@ -81,7 +81,7 @@ def parse_url(url):
 
 def get_access_token(git):
     """Get token from the environment variable."""
-    return current_app.config.get('{}_OAUTH_ACCESS_TOKEN'.format(git))
+    return current_app.config.get('{}_OAUTH_ACCESS_TOKEN'.format(git.upper()))
 
 
 def get_webhook_attrs(req):
