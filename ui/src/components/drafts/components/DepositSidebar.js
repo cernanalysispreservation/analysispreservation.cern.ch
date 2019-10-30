@@ -60,13 +60,13 @@ class DepositSidebar extends React.Component {
             <Box direction="row" wrap={false} justify="between">
               Created:{" "}
               <strong>
-                <TimeAgo date={this.props.created} />
+                <TimeAgo date={this.props.created} minPeriod="60" />
               </strong>
             </Box>
             <Box direction="row" wrap={false} justify="between">
               Last Updated:{" "}
               <strong>
-                <TimeAgo date={this.props.updated} />
+                <TimeAgo date={this.props.updated} minPeriod="60" />
               </strong>
             </Box>
             <Box

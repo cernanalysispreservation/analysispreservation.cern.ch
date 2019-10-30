@@ -28,67 +28,19 @@ class Dashboard extends React.Component {
         )}
         {this.props.results ? (
           <Box direction="row" wrap>
-            <Box
-              pad="large"
-              size={{ width: { min: "xlarge" } }}
-              flex={false}
-              basis="1/2"
-            >
+            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
               <DashboardList
                 listType="published"
-                items={this.props.results.published_by_collab.data}
+                collab_items={this.props.results.published_by_collab.data}
+                collab_items_title="collaboration"
+                mine={this.props.results.user_published.data}
                 header="published in collaboration"
                 urlDetailed="/published"
                 urlMore={this.props.results.published_by_collab.more}
                 emptyMessage="All analyses published on CAP by members of your collaboration."
               />
             </Box>
-            <Box
-              pad="large"
-              size={{ width: { min: "xlarge" } }}
-              flex={false}
-              basis="1/2"
-            >
-              <DashboardList
-                listType="draft"
-                items={this.props.results.shared_with_user.data}
-                header="shared with you"
-                urlDetailed="/drafts"
-                urlMore={this.props.results.shared_with_user.more}
-                emptyMessage="Draft analyses that your collaborators have given you read/write access to."
-              />
-            </Box>
-            <Box
-              pad="large"
-              size={{ width: { min: "xlarge" } }}
-              flex={false}
-              basis="1/2"
-            >
-              <DashboardList
-                listType="published"
-                items={this.props.results.published_by_collab.data}
-                header="latest from your group"
-                urlDetailed="/published"
-                urlMore={this.props.results.published_by_collab.more}
-                emptyMessage="All analyses published on CAP by members of your working group."
-              />
-            </Box>
-            <Box
-              pad="large"
-              size={{ width: { min: "xlarge" } }}
-              flex={false}
-              basis="1/2"
-            >
-              <DashboardList
-                listType="drafts"
-                items={this.props.results.user_drafts.data}
-                header="your drafts"
-                urlDetailed="/drafts"
-                urlMore={this.props.results.user_drafts.more}
-                emptyMessage="Your draft analyses. By default, only you can access them, but it is possible to give read/write access to other collaborators."
-              />
-            </Box>
-            <Box pad="medium" flex={false} basis="1/2">
+            <Box pad="small" flex={false} align="center">
               <AnnotatedMeter
                 legend={true}
                 type="circle"
@@ -108,19 +60,17 @@ class Dashboard extends React.Component {
                 ]}
               />
             </Box>
-            <Box
-              pad="large"
-              size={{ width: { min: "xlarge" } }}
-              flex={false}
-              basis="1/2"
-            >
+            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
               <DashboardList
-                listType="published"
-                items={this.props.results.user_published.data}
-                header="published by you"
-                urlDetailed="/published"
-                urlMore={this.props.results.user_published.more}
-                emptyMessage="Your published analyses. Once published on CAP, all members of your collaboration will have read access."
+                listType="draft"
+                collab_items={this.props.results.shared_with_user.data}
+                collab_items_title="shared"
+                show_all
+                mine={this.props.results.user_drafts.data}
+                header="drafts"
+                urlDetailed="/drafts"
+                urlMore={this.props.results.shared_with_user.more}
+                emptyMessage="Draft analyses that your collaborators have given you read/write access to."
               />
             </Box>
           </Box>
