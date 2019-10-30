@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Notification from "grommet/components/Notification";
+import Spinning from "grommet/components/icons/Spinning";
 
 import { withRouter } from "react-router-dom";
 import { fetchDashboard } from "../../actions/dashboard";
@@ -51,34 +52,37 @@ class Dashboard extends React.Component {
             status="warning"
           />
         )}
-
-        <Box direction="row" wrap align="center">
-          <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-            <DashboardList
-              listType="published"
-              list={lists["published"]}
-              loading={this.props.loading}
-              header="recently published"
-              emptyMessage="All analyses published on CAP by members of your collaboration."
-            />
+        {this.props.loading ? (
+          <Box flex align="center" justify="center">
+            <Spinning size="large" />
           </Box>
+        ) : (
+          <Box direction="row" wrap align="center">
+            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
+              <DashboardList
+                listType="published"
+                list={lists["published"]}
+                header="recently published"
+                emptyMessage="All analyses published on CAP by members of your collaboration."
+              />
+            </Box>
 
-          <DashboardMeter
-            total={this.props.results.user_count}
-            drafts={this.props.results.user_drafts_count}
-            published={this.props.results.user_published_count}
-          />
-
-          <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-            <DashboardList
-              listType="draft"
-              list={lists["drafts"]}
-              loading={this.props.loading}
-              header="drafts"
-              emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+            <DashboardMeter
+              total={this.props.results.user_count}
+              drafts={this.props.results.user_drafts_count}
+              published={this.props.results.user_published_count}
             />
+
+            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
+              <DashboardList
+                listType="draft"
+                list={lists["drafts"]}
+                header="drafts"
+                emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     );
   }

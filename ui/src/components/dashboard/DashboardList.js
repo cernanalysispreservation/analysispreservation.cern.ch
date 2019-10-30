@@ -62,16 +62,28 @@ function DashboardList(props) {
       </Box>
 
       <Box flex={false} size={{ height: "medium" }} colorIndex="light-1">
-        {props.loading ? (
-          <Box flex={true} justify="center" align="center">
-            <Spinning />
+        {list[activeList].list.length > 0 ? (
+          <Box>
+            <List>
+              {list[activeList].list.map((item, index) => (
+                <DashboardListItem
+                  key={index}
+                  listType={listType}
+                  item={item}
+                />
+              ))}
+            </List>
+            {list[activeList].list.length > 4 ? (
+              <Box align="center" style={{ marginTop: "-7px" }}>
+                <Anchor
+                  path={list[activeList].more}
+                  style={{ textDecoration: "none", color: "black" }}
+                >
+                  <MoreIcon />
+                </Anchor>
+              </Box>
+            ) : null}
           </Box>
-        ) : list[activeList].list.length > 0 ? (
-          <List>
-            {list[activeList].list.map((item, index) => (
-              <DashboardListItem key={index} listType={listType} item={item} />
-            ))}
-          </List>
         ) : (
           <Box flex={true} justify="center" align="center">
             <ListPlaceholder
@@ -81,14 +93,6 @@ function DashboardList(props) {
             />
           </Box>
         )}
-      </Box>
-      <Box align="center" margin={{ horizontal: "medium" }}>
-        <Anchor
-          path={list[activeList].more}
-          style={{ textDecoration: "none", color: "black" }}
-        >
-          <MoreIcon />
-        </Anchor>
       </Box>
     </Box>
   );
