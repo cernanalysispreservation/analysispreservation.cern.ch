@@ -114,7 +114,11 @@ class FileItem extends React.Component {
     return file ? (
       <ListItem
         key={file.key}
-        onClick={this.props.action ? this.props.action(file.key) : null}
+        onClick={
+          this.props.action
+            ? this.props.action(file.key)
+            : this.props.filePreview(file)
+        }
         justify="between"
         pad="none"
         flex={true}
@@ -124,11 +128,7 @@ class FileItem extends React.Component {
         ) : null}
         <Box direction="row" flex={true} justify="between" wrap={false}>
           <Box direction="row" flex={true} justify="between" wrap={false}>
-            <Box
-              direction="row"
-              flex={true}
-              onClick={() => this.props.filePreview(file)}
-            >
+            <Box direction="row" flex={true}>
               <Box justify="center" margin={{ horizontal: "small" }}>
                 {this._getIcon(file.mimetype)}
               </Box>

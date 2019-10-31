@@ -8,10 +8,7 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import Toast from "grommet/components/Toast";
 
-import { fetchAndAssignSchema } from "../../actions/common";
-
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
-import Sidebar from "./components/DepositSidebar";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -37,34 +34,7 @@ const transformSchema = schema => {
 };
 
 class DraftPreview extends React.Component {
-  componentDidMount() {
-    // Check if schemaId exist on state and fetch schema if needed
-    if (this.props.schemaId) {
-      // If form schemas are empty, then fetch
-      if (this.props.schemas == null) {
-        this.props.fetchAndAssignSchema(this.props.schemaId);
-      }
-      // If form schemas aren't empty and schemaId different than the one needed
-      // fetch and assign the correct schema
-      else if (this.props.schemaId != this.props.schemas.schemaId) {
-        this.props.fetchAndAssignSchema(this.props.schemaId);
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.schemaId) {
-      if (!this.props.schemasLoading) {
-        if (
-          this.props.schemas == null ||
-          this.props.schemaId != this.props.schemas.schemaId
-        ) {
-          this.props.fetchAndAssignSchema(this.props.schemaId);
-        }
-      }
-    }
-  }
-
+  s;
   render() {
     let _schema =
       this.props.schemas && this.props.schemas.schema
@@ -113,7 +83,6 @@ DraftPreview.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    schemaId: state.draftItem.get("schema"),
     schemas: state.draftItem.get("schemas"),
     // schemasLoading: state.draftItem.get("schemasLoading"),
 
@@ -122,11 +91,8 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchAndAssignSchema: (schemaURL, schemaID, schemaVersion) =>
-      dispatch(fetchAndAssignSchema(schemaURL, schemaID, schemaVersion))
-  };
+function mapDispatchToProps() {
+  return {};
 }
 
 export default connect(
