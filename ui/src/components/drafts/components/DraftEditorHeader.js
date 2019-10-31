@@ -31,7 +31,8 @@ import {
   deleteDraft,
   discardDraft,
   editPublished,
-  toggleActionsLayer
+  toggleActionsLayer,
+  // togglePreviewer
 } from "../../../actions/draftItem";
 
 class DraftEditorHeader extends React.Component {
@@ -57,8 +58,6 @@ class DraftEditorHeader extends React.Component {
     // } =  this.props.formRef;
 
     // const { errors = []} = this.props.formRef.current && this.props.formRef.current.validate(formData);
-
-
 
     const { errors } = this.props.formRef.current.validate(formData);
 

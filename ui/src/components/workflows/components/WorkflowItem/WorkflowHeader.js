@@ -66,6 +66,7 @@ class WorkflowsHeader extends React.Component {
                 direction="row"
                 justify="around"
                 wrap={false}
+                onClick={this.props.startWorkflow}
               >
                 <PlayFillIcon />
                 <span style={{ paddingLeft: "10px" }}>Run</span>

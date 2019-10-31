@@ -12,32 +12,33 @@ import {
 
 import { Button, Paragraph, Heading } from "grommet";
 
-const example_workflow = {
-  pid: "c78a782f7dc548ac8509be2a5589cc87",
-  name: "demo",
-  workflow_json: {
-    workflow: {
-      type: "serial",
-      specification: {
-        steps: [
-          {
-            environment: "python:2.7-slim",
-            commands: ['python "${helloworld}"']
-          }
-        ]
-      }
-    },
-    inputs: {
-      files: ["code/helloworld.py"],
-      parameters: {
-        helloworld: "code/helloworld.py"
-      }
-    },
-    outputs: {
-      files: ["results/results.txt"]
-    }
-  }
-};
+// This is an example workflow payload to create in REANA
+// const example_workflow = {
+//   pid: "c78a782f7dc548ac8509be2a5589cc87",
+//   name: "demo",
+//   workflow_json: {
+//     "workflow": {
+//       "type": "serial",
+//       "specification": {
+//         "steps": [
+//           {
+//             "environment": "python:2.7-slim",
+//             "commands": ["python '${helloworld}'"]
+//           }
+//         ]
+//       }
+//     },
+//     "inputs": {
+//       "files": ["code/helloworld.py"],
+//       "parameters": {
+//         "helloworld": "code/helloworld.py"
+//       }
+//     },
+//     "outputs": {
+//       "files": ["results/results.txt"]
+//     }
+//   }
+// };
 
 class WorkflowsItem extends React.Component {
   constructor(props) {
@@ -46,15 +47,20 @@ class WorkflowsItem extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match);
+    let { match: { params: { draft_id, id } = {} } = {} } = this.props;
+
     // let { params: {workflow_id} = {} } = this.props.match;
     // this.props.getWorkflowStatus(workflow_id);
   }
 
   _createREANAWorkflow = data => {
-    let { pid } = this.props;
+    let { match: { params: { draft_id, id } = {} } = {} } = this.props;
     let { formData = {} } = data;
-    formData["pid"] = pid;
+
+    // if PID exists, pass it in the payload to associate with record
+    // else a standalone workflow will be created for the user
+    if (draft_id) formData["pid"] = draft_id;
+
     this.props.createWorkflow(formData);
   };
 

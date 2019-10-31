@@ -3,8 +3,7 @@ import axios from "axios";
 const WORKFLOWS_API_URL = "/api/workflows";
 const REANA_WORKFLOWS_API_URL = `${WORKFLOWS_API_URL}/reana`;
 
-const REANA_WORKFLOWS_FOR_RECORD = pid =>
-  `${WORKFLOWS_API_URL}/all/record/${pid}`;
+const WORKFLOWS_FOR_RECORD = pid => `${WORKFLOWS_API_URL}/all/record/${pid}`;
 const REANA_WORKFLOWS_PING = `${REANA_WORKFLOWS_API_URL}/ping`;
 const REANA_WORKFLOWS_CREATE_URL = `${REANA_WORKFLOWS_API_URL}`;
 const REANA_WORKFLOWS_ITEM_URL = workflow_id =>
@@ -23,6 +22,8 @@ const REANA_WORKFLOWS_ITEM_CLONE_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/clone`;
 const REANA_WORKFLOWS_ITEM_DOWNLOAD_URL = (workflow_id, path) =>
   `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/${path}`;
+const REANA_WORKFLOWS_ITEM_UPLOAD_URL = (workflow_id, path) =>
+  `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/upload`;
 
 export const WORKFLOWS_REQUEST = "WORKFLOWS_REQUEST";
 export const WORKFLOWS_SUCCESS = "WORKFLOWS_SUCCESS";
@@ -35,6 +36,10 @@ export const WORKFLOWS_RECORD_ERROR = "WORKFLOWS_RECORD_ERROR";
 export const WORKFLOW_REQUEST = "WORKFLOW_REQUEST";
 export const WORKFLOW_SUCCESS = "WORKFLOW_SUCCESS";
 export const WORKFLOW_ERROR = "WORKFLOW_ERROR";
+
+export const RECORD_WORKFLOW_REQUEST = "RECORD_WORKFLOW_REQUEST";
+export const RECORD_WORKFLOW_SUCCESS = "RECORD_WORKFLOW_SUCCESS";
+export const RECORD_WORKFLOW_ERROR = "RECORD_WORKFLOW_ERROR";
 
 export const WORKFLOW_CREATE_REQUEST = "WORKFLOW_CREATE_REQUEST";
 export const WORKFLOW_CREATE_SUCCESS = "WORKFLOW_CREATE_SUCCESS";
@@ -83,13 +88,18 @@ export const workflowsSuccess = workflows => ({
 });
 export const workflowsError = error => ({ type: WORKFLOWS_ERROR, error });
 
-export const workflowsRecordRequest = () => ({ type: WORKFLOWS_REQUEST });
+export const workflowsRecordRequest = () => ({
+  type: WORKFLOWS_RECORD_REQUEST
+});
 export const workflowsRecordSuccess = (record_id, workflows) => ({
-  type: WORKFLOWS_SUCCESS,
+  type: WORKFLOWS_RECORD_SUCCESS,
   record_id,
   workflows
 });
-export const workflowsRecordError = error => ({ type: WORKFLOWS_ERROR, error });
+export const workflowsRecordError = error => ({
+  type: WORKFLOWS_RECORD_ERROR,
+  error
+});
 
 export const workflowStatusRequest = workflow_id => ({
   type: WORKFLOW_STATUS_REQUEST,
@@ -130,6 +140,20 @@ export const workflowSuccess = (data, workflow_id) => ({
 });
 export const workflowError = (error, workflow_id) => ({
   type: WORKFLOW_ERROR,
+  error,
+  workflow_id
+});
+export const recordWorkflowRequest = workflow_id => ({
+  type: RECORD_WORKFLOW_REQUEST,
+  workflow_id
+});
+export const recordWorkflowSuccess = (data, workflow_id) => ({
+  type: RECORD_WORKFLOW_SUCCESS,
+  data,
+  workflow_id
+});
+export const recordWorkflowError = (error, workflow_id) => ({
+  type: RECORD_WORKFLOW_ERROR,
   error,
   workflow_id
 });
@@ -195,16 +219,16 @@ export const workflowFilesError = (error, workflow_id) => ({
 });
 
 export const workflowFileUploadRequest = workflow_id => ({
-  type: WORKFLOW_FILES_REQUEST,
+  type: WORKFLOW_FILE_UPLOAD_REQUEST,
   workflow_id
 });
 export const workflowFileUploadSuccess = (data, workflow_id) => ({
-  type: WORKFLOW_FILES_SUCCESS,
+  type: WORKFLOW_FILE_UPLOAD_SUCCESS,
   data,
   workflow_id
 });
 export const workflowFileUploadError = (error, workflow_id) => ({
-  type: WORKFLOW_FILES_ERROR,
+  type: WORKFLOW_FILE_UPLOAD_ERROR,
   error,
   workflow_id
 });
@@ -224,19 +248,19 @@ export function getWorkflows() {
     dispatch(workflowsRequest());
 
     axios
-      .get(REANA_WORKFLOWS_API_URL)
+      .get(WORKFLOWS_API_URL)
       .then(response => dispatch(workflowsSuccess(response.data)))
       .catch(error => dispatch(workflowsError(error)));
   };
 }
 export function getRecordWorkflows(pid) {
   return dispatch => {
-    dispatch(workflowsRequest());
+    dispatch(workflowsRecordRequest());
 
     axios
-      .get(REANA_WORKFLOWS_FOR_RECORD(pid))
-      .then(response => dispatch(workflowsSuccess(response.data)))
-      .catch(error => dispatch(workflowsError(error)));
+      .get(WORKFLOWS_FOR_RECORD(pid))
+      .then(response => dispatch(workflowsRecordSuccess(pid, response.data)))
+      .catch(error => dispatch(workflowsRecordError(error)));
   };
 }
 
@@ -251,6 +275,19 @@ export function getWorkflow(workflow_id) {
       .get(REANA_WORKFLOWS_ITEM_URL(workflow_id))
       .then(response => dispatch(workflowSuccess(response.data, workflow_id)))
       .catch(error => dispatch(workflowError(error, workflow_id)));
+  };
+}
+
+export function getRecordWorkflow(workflow_id) {
+  return dispatch => {
+    dispatch(recordWorkflowRequest(workflow_id));
+
+    axios
+      .get(REANA_WORKFLOWS_ITEM_URL(workflow_id))
+      .then(response =>
+        dispatch(recordWorkflowSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(recordWorkflowError(error, workflow_id)));
   };
 }
 export function createWorkflow(workflow, autostart = false) {
@@ -294,7 +331,7 @@ export function startWorkflow(workflow_id) {
     dispatch(startWorkflowRequest(workflow_id));
 
     axios
-      .get(REANA_WORKFLOWS_ITEM_START_URL(workflow_id))
+      .post(REANA_WORKFLOWS_ITEM_START_URL(workflow_id))
       .then(response =>
         dispatch(startWorkflowSuccess(response.data, workflow_id))
       )
@@ -335,5 +372,33 @@ export function getWorkflowLogs(workflow_id) {
         dispatch(workflowLogsSuccess(response.data, workflow_id))
       )
       .catch(error => dispatch(workflowLogsError(error, workflow_id)));
+  };
+}
+export function getWorkflowFiles(workflow_id) {
+  return dispatch => {
+    dispatch(workflowFilesRequest(workflow_id));
+
+    axios
+      .get(REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id))
+      .then(response =>
+        dispatch(workflowFilesSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(workflowFilesError(error, workflow_id)));
+  };
+}
+export function uploadWorkflowFiles(workflow_id, data) {
+  return dispatch => {
+    dispatch(workflowFilesRequest(workflow_id));
+
+    let _data = {
+      files_to_upload: [data]
+    };
+
+    axios
+      .post(REANA_WORKFLOWS_ITEM_UPLOAD_URL(workflow_id), _data)
+      .then(response =>
+        dispatch(workflowFilesSuccess(response.data, workflow_id))
+      )
+      .catch(error => dispatch(workflowFilesError(error, workflow_id)));
   };
 }

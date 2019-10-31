@@ -27,7 +27,7 @@ class DepositSidebar extends React.Component {
   _renderAddFileIcon() {
     return (
       <Route
-        path="/drafts/:draft_id/edit"
+        path="/drafts/:draft_id/"
         render={() => (
           <Anchor
             onClick={this.props.toggleFilemanagerLayer}
@@ -60,13 +60,13 @@ class DepositSidebar extends React.Component {
             <Box direction="row" wrap={false} justify="between">
               Created:{" "}
               <strong>
-                <TimeAgo date={this.props.created} timeStyle="twitter" />
+                <TimeAgo date={this.props.created} />
               </strong>
             </Box>
             <Box direction="row" wrap={false} justify="between">
               Last Updated:{" "}
               <strong>
-                <TimeAgo date={this.props.updated} timeStyle="twitter" />
+                <TimeAgo date={this.props.updated} />
               </strong>
             </Box>
             <Box

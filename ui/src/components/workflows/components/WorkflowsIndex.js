@@ -15,7 +15,11 @@ class WorkflowsIndex extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getWorkflows();
+    let { match: { params: { draft_id, id } = {} } = {} } = this.props;
+
+    if (draft_id) this.props.getDraftWorkflows(draft_id);
+    else if (id) this.props.getWorkflows();
+    else this.props.getWorkflows();
   }
 
   goToWorkflowItem = workflow_id => {
@@ -24,8 +28,10 @@ class WorkflowsIndex extends React.Component {
   };
 
   render() {
+    let { match: { url, params: { draft_id, id } = {} } = {} } = this.props;
     let { workflows } = this.props;
-    workflows = workflows.toJS();
+
+    workflows = workflows;
 
     return (
       <Box>
@@ -59,7 +65,7 @@ class WorkflowsIndex extends React.Component {
                 colorIndex="light-1"
                 pad="small"
               >
-                <Anchor path="/workflows/create" label="Serial Workflow" />
+                <Anchor path={`${url}/create`} label="Serial Workflow" />
                 <REANALogo width="60" height="8" />
               </Box>
               <Box
@@ -70,7 +76,7 @@ class WorkflowsIndex extends React.Component {
                 colorIndex="light-1"
                 pad="small"
               >
-                <Anchor path="/workflows/create" label="Yadage Workflow" />
+                <Anchor path={`${url}/create`} label="Yadage Workflow" />
                 <REANALogo width="60" height="8" />
               </Box>
             </Box>
@@ -111,14 +117,14 @@ class WorkflowsIndex extends React.Component {
           <List>
             {workflows && workflows.size > 0 ? (
               workflows.map(workflow => (
-                <ListItem key={workflow.workflow_id}>
+                <ListItem key={workflow.get("workflow_id")}>
                   <Box flex="grow" direction="row" justify="between">
-                    <Box>{workflow.workflow_name}</Box>
-                    <Box>{workflow.status}</Box>
+                    <Box>{workflow.get("name")}</Box>
+                    <Box>{workflow.get("status")}</Box>
                     <Box>
                       <Anchor
                         label="View"
-                        path={`/workflows/${workflow.workflow_id}`}
+                        path={`${url}/${workflow.get("workflow_id")}`}
                       />
                     </Box>
                   </Box>

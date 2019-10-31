@@ -15,7 +15,7 @@ class WorkflowsLogs extends React.Component {
       <Box flex={false} size={{ height: "medium" }}>
         <Heading tag="h3">Logs</Heading>
         <LazyLog
-          url={`/api/workflows/reana/${workflow_id}/logs`}
+          url={`/api/workflows/reana/${this.props.workflow_id}/logs`}
           fetchOptions={{ credentials: "include" }}
         />
       </Box>

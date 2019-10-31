@@ -15,7 +15,7 @@ import DraftHeader from "./components/DraftHeader";
 
 // Draft containers
 import DraftIntegrations from "./components/DraftIntegrations";
-import DraftWorkflows from "./components/DraftWorkflows";
+import DraftWorkflows from "../workflows";
 import DraftSettings from "./components/DepositSettings";
 import DraftPreview from "./DraftPreview";
 import DraftEditor from "./DraftEditor";
@@ -92,7 +92,7 @@ class DraftsItemIndex extends React.Component {
               />
               <Route
                 path={`/drafts/:draft_id/workflows`}
-                component={DraftWorkflows}
+                render={props => <DraftWorkflows draft_id={draft_id} />}
               />
             </Switch>
           </Box>

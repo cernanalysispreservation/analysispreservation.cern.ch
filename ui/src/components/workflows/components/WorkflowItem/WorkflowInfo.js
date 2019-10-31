@@ -15,27 +15,37 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 
 class WorkflowsInfo extends React.Component {
-  componentDidMount() {
-    let { params: { workflow_id } = {} } = this.props.match;
-    this.props.getWorkflow(workflow_id);
-    // this.props.getWorkflowStatus(workflow_id);
-  }
-
   render() {
     let { workflow = null } = this.props;
-
+    let that = this;
     if (!workflow) return null;
     return (
       <Box flex={false} margin={{ vertical: "large" }}>
         <Heading tag="h3">Workflow Info</Heading>
-
         <Accordion openMulti={true}>
           <AccordionPanel heading="Inputs" headingColor="light-1">
             <Box colorIndex="light-2">
               <List>
                 {workflow
                   .getIn(["workflow_json", "inputs", "files"])
-                  .map(file => <ListItem>{file}</ListItem>)}
+                  .map(file => (
+                    <ListItem key={file}>
+                      <Box flex={true} direction="row" justify="between">
+                        <Box>{file}</Box>
+                        <Box>
+                          {this.props.filesToUpload[file] ? (
+                            <Box onClick={() => this.props.uploadFiles(file)}>
+                              UPLOAD
+                            </Box>
+                          ) : (
+                            <Box onClick={() => this.props.addTempFile(file)}>
+                              ADD FILE
+                            </Box>
+                          )}
+                        </Box>
+                      </Box>
+                    </ListItem>
+                  ))}
               </List>
             </Box>
           </AccordionPanel>
@@ -61,7 +71,7 @@ class WorkflowsInfo extends React.Component {
               <List>
                 {workflow
                   .getIn(["workflow_json", "outputs", "files"])
-                  .map(file => <ListItem>{file}</ListItem>)}
+                  .map(file => <ListItem key={file}>{file}</ListItem>)}
               </List>
             </Box>
           </AccordionPanel>
