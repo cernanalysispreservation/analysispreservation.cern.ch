@@ -88,6 +88,7 @@ class DraftEditor extends React.Component {
       this.props.schemas && this.props.schemas.schema
         ? transformSchema(this.props.schemas.schema)
         : null;
+
     return (
       <Box id="deposit-page" flex={true}>
         {this.props.schemas &&
