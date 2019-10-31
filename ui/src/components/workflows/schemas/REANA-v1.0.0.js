@@ -176,7 +176,8 @@ export const schema = {
   },
   title: "Create new REANA workflow",
   description:
-    "Start a new workflow and run it on the REANA cluster. Provide a name, inputs, specification, outputs and all the elements necessary  to run your ana "
+    "Start a new workflow and run it on the REANA cluster. Provide a name, inputs, specification, outputs and all the elements necessary  to run your ana ",
+  required: ["name", "workflow_json"]
 };
 
 export const uiSchema = {

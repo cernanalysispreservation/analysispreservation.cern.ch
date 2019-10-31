@@ -22,30 +22,37 @@ class GrommetForm extends React.Component {
   }
 
   _validate(formData, errors) {
+    if (!this.props.errors && !Array.isArray(this.props.errors)) return errors;
+
+    this.props.errors.map(error => {
+      if (error.field) {
+        let errorObj = objectPath.get(errors, error.field);
+        errorObj.addError(error.message);
+      }
+    });
+
     return errors;
   }
 
   render() {
-    return (
+    return this.props.schema ? (
       <Form
-        ref={form => {
-          this.form = form;
-        }}
-        schema={this.props.schema}
+        className={this.props.condenced ? "rjsf-condenced" : null}
+        style={{ marginBottom: "1em", ...this.props.styles }}
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={ArrayFieldTemplate}
-        showErrorList={
-          this.props.showErrorList ? this.props.showErrorList : false
-        }
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}
+        onError={error => {
+          console.log("onErorr:::", error);
+        }}
+        ref={this.props.formRef}
+        schema={this.props.schema}
         uiSchema={this.props.uiSchema}
-        liveValidate={this.props.liveValidate}
-        noValidate={!this.props.validate}
-        validate={this.props.customValidation ? this._validate : null}
-        onError={() => {}}
+        showErrorList={true}
+        noHtml5Validate={true}
         formData={this.props.formData}
         onBlur={this.props.onBlur}
         onChange={this.props.onChange}
@@ -53,11 +60,12 @@ class GrommetForm extends React.Component {
       >
         {this.props.children || <span />}
       </Form>
-    );
+    ) : null;
   }
 }
 
 GrommetForm.propTypes = {
+  errors: PropTypes.array,
   schema: PropTypes.object.isRequired,
   validate: PropTypes.bool,
   liveValidate: PropTypes.bool,
@@ -66,6 +74,7 @@ GrommetForm.propTypes = {
   formData: PropTypes.object,
   customValidation: PropTypes.bool,
   showErrorList: PropTypes.bool,
+  transformErrors: PropTypes.func,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
