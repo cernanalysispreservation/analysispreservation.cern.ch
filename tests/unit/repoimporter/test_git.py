@@ -29,7 +29,7 @@ from mock import patch
 
 from cap.modules.repoimporter.api import GitAPI
 from cap.modules.repoimporter.utils import parse_url, get_access_token
-from cap.modules.repoimporter.errors import GitCredentialsError, GitURLParsingError
+from cap.modules.repoimporter.errors import GitURLParsingError
 from cap.modules.repoimporter import utils
 
 
@@ -69,52 +69,21 @@ def test_missing_env_variable(mocked_token, app):
     assert utils.get_access_token("GITHUB") is None
 
 
-@pytest.mark.parametrize('host, owner, branch, git_archive, token_key', [
-    ('https://github.com', 'cernanalysispreservation', 'master', GITHUB_ARCHIVE, 'GITHUB'),
-    ('https://github.com', 'cernanalysispreservation', 'test-branch', GITHUB_ARCHIVE_BRANCH, 'GITHUB'),
-    ('https://gitlab.cern.ch', 'pfokiano', 'master', GITLAB_ARCHIVE, 'GITLAB'),
-    ('https://gitlab.cern.ch', 'pfokiano', 'test-branch', GITLAB_ARCHIVE_BRANCH, 'GITLAB')
-])
-def test_link_creation_from_attrs(app, host, owner, branch, git_archive, token_key):
-    """Given the basic attributes required to access a Git client,
-       this test checks if the url creation works correctly.
-    """
-    if utils.get_access_token(token_key) is None:
-        pytest.skip("No access token found for Git integration. Skipping.")
-
-    repo = GitAPI.create(host=host, owner=owner, repo='test-repo', branch=branch)
-    archive_url = repo.archive_repo_url()
-    assert archive_url == git_archive.format(get_access_token(token_key))
-
-
-@pytest.mark.parametrize('host, owner, git_archive, token_key', [
-    ('https://github.com', 'cernanalysispreservation', GITHUB_ARCHIVE_BRANCH, 'GITHUB'),
-    ('https://gitlab.cern.ch', 'pfokiano', GITLAB_ARCHIVE_BRANCH, 'GITLAB'),
-])
-def test_link_creation_from_attrs_branch(app, host, owner, git_archive, token_key):
-    """Given the basic attributes required to access a Git client,
-       this test checks if the url creation works correctly.
-    """
-    if utils.get_access_token(token_key) is None:
-        pytest.skip("No access token found for Git integration. Skipping.")
-
-    repo = GitAPI.create(host=host, owner=owner, repo='test-repo', branch='test-branch')
-    archive_url = repo.archive_repo_url()
-    assert archive_url == git_archive.format(get_access_token(token_key))
-
-
+@pytest.mark.skip
+@patch('cap.modules.repoimporter.api._fetch_token',
+       return_value=dict(access_token='test'))
 @pytest.mark.parametrize('git_url, git_archive, token_key', [
     (GITHUB_TEST, GITHUB_ARCHIVE, 'GITHUB'),
     (GITLAB_TEST, GITLAB_ARCHIVE, 'GITLAB'),
     (GITHUB_TEST_BRANCH, GITHUB_ARCHIVE_BRANCH, 'GITHUB'),
     (GITLAB_TEST_BRANCH, GITLAB_ARCHIVE_BRANCH, 'GITLAB')
 ])
-def test_link_creation_from_url(app, git_url, git_archive, token_key):
+def test_link_creation_from_url(mock_token, app, git_url, git_archive, token_key):
     """Given a git url, this test checks if the url creation works correctly."""
     if utils.get_access_token(token_key) is None:
         pytest.skip("No access token found for Git integration. Skipping.")
 
-    repo = GitAPI.create(url=git_url)
+    repo = GitAPI.create(url=git_url, user_id=1)
     archive_url = repo.archive_repo_url()
     assert archive_url == git_archive.format(get_access_token(token_key))
 

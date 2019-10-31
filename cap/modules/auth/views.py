@@ -117,20 +117,20 @@ def get_oauth_profile(name, token=None, client=None):
     else:
         _client = current_auth.create_client(name)
 
-    if name == "github":
-        resp = _client.get("/user")
-    elif name == "zenodo":
-        resp = _client.get("api/")
-    elif name == "cern":
-        resp = _client.get("Me")
-    elif name == "orcid":
-        orcid_id = extra_data.get('orcid_id')
-        if orcid_id:
-            resp = _client.get("/{}/record".format(orcid_id),
-                               headers={'Accept': 'application/json'})
+    # return the user profile based on the service
+    user_path = {
+        'github': '/user',
+        'gitlab': 'user',
+        'zenodo': 'api/',
+        'cern': 'Me'
+    }
 
-    if resp:
-        profile = resp.json()
+    if name == 'orcid':
+        orcid_id = extra_data.get('orcid_id')
+        resp = _client.get("/{}/record".format(orcid_id),
+                           headers={'Accept': 'application/json'}) \
+            if orcid_id else None
     else:
-        profile = {}
-    return profile
+        resp = _client.get(user_path[name])
+
+    return resp.json() if resp else {}
