@@ -10,7 +10,10 @@ import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Label from "grommet/components/Label";
+import Button from "grommet/components/Button";
 import Spinning from "grommet/components/icons/Spinning";
+import Paragraph from "grommet/components/Paragraph";
+import Filter from "grommet/components/icons/base/Filter";
 
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
@@ -73,51 +76,68 @@ function DashboardList(props) {
           <Box direction="row">
             {show_all ? (
               <Box
-                colorIndex={selectedList === "all" ? "grey-3" : null}
                 pad={{ horizontal: "small" }}
-                style={{
-                  borderRadius: "3px"
-                }}
                 onClick={() => {
                   setitemsList(mine.concat(collab_items));
                   setselectedList("all");
                 }}
               >
-                all
+                <Paragraph
+                  margin="none"
+                  style={{
+                    color: selectedList === "all" ? "#000001" : "#808080",
+                    fontWeight: selectedList === "all" ? "600" : "400"
+                  }}
+                >
+                  all
+                </Paragraph>
               </Box>
             ) : null}
             <Box
-              colorIndex={selectedList === collab_items_title ? "grey-3" : null}
-              margin={{ horizontal: "small" }}
               pad={{ horizontal: "small" }}
-              style={{
-                borderRadius: "3px"
-              }}
               onClick={() => {
                 setitemsList(collab_items);
                 setselectedList(collab_items_title);
               }}
             >
-              {collab_items_title}
+              <Paragraph
+                margin="none"
+                style={{
+                  color:
+                    selectedList === collab_items_title ? "#000001" : "#808080",
+                  fontWeight:
+                    selectedList === collab_items_title ? "600" : "400"
+                }}
+              >
+                {collab_items_title}
+              </Paragraph>
             </Box>
             <Box
               pad={{ horizontal: "small" }}
-              colorIndex={selectedList === "mine" ? "grey-3" : null}
-              style={{
-                borderRadius: "3px"
-              }}
               onClick={() => {
                 setitemsList(mine);
                 setselectedList("mine");
               }}
             >
-              mine
+              <Paragraph
+                margin="none"
+                style={{
+                  color: selectedList === "mine" ? "#000001" : "#808080",
+                  fontWeight: selectedList === "mine" ? "600" : "400"
+                }}
+              >
+                mine
+              </Paragraph>
             </Box>
           </Box>
         </Box>
         <ReactTooltip />
       </Box>
-      <Box flex={true} colorIndex="light-1">
+      <Box
+        flex={true}
+        colorIndex="light-1"
+        style={{ height: "100%", maxHeight: "320px" }}
+      >
         <List>
           {itemsList.length > 0 ? (
             itemsList.map((item, index) => {
@@ -142,6 +162,9 @@ function DashboardList(props) {
                     flex={true}
                     justify="center"
                     onClick={() => push(`${props.urlDetailed}/${id}`)}
+                    style={{
+                      overflow: "auto"
+                    }}
                   >
                     <Box flex={false} direction="row" wrap={false}>
                       <Box flex={true} margin={{ right: "large" }}>
