@@ -28,6 +28,10 @@ import TextIcon from "grommet/components/icons/base/DocumentText";
 import CsvIcon from "grommet/components/icons/base/DocumentCsv";
 import HtmlIcon from "grommet/components/icons/base/StandardsHtml5";
 import VideoIcon from "grommet/components/icons/base/Video";
+import Code from "grommet/components/icons/base/Code";
+import CSSIcon from "grommet/components/icons/base/StandardsCss3";
+import PlatformReactjs from "grommet/components/icons/base/PlatformReactjs";
+import Cli from "grommet/components/icons/base/Cli";
 
 import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 
@@ -59,7 +63,10 @@ class FileItem extends React.Component {
         "octet-stream": <ServerIcon type="status" size="xsmall" />,
         pdf: <PdfIcon type="status" size="xsmall" />,
         pkcs8: <LockIcon type="status" size="xsmall" />,
-        zip: <ZipIcon type="status" size="xsmall" />
+        zip: <ZipIcon type="status" size="xsmall" />,
+        gzip: <ZipIcon type="status" size="xsmall" />,
+        "x-sh": <Cli type="status" size="xsmall" />,
+        javascript: <PlatformReactjs type="status" size="xsmall" />
       },
       audio: {
         default: <MusicIcon type="small" size="xsmall" />
@@ -76,7 +83,10 @@ class FileItem extends React.Component {
       text: {
         plain: <TextIcon type="status" size="xsmall" />,
         csv: <CsvIcon type="status" size="xsmall" />,
-        html: <HtmlIcon type="status" size="xsmall" />
+        json: <HtmlIcon type="status" size="xsmall" />,
+        html: <HtmlIcon type="status" size="xsmall" />,
+        css: <CSSIcon type="status" size="xsmall" />,
+        "x-python": <Code type="status" size="xsmall" />
       },
       video: {
         default: <VideoIcon type="status" size="xsmall" />
@@ -94,9 +104,10 @@ class FileItem extends React.Component {
 
   render() {
     let { file } = this.props;
-    
-    let { links: { self: file_link = null } = {}, key: filePath } = file.data || file;
-    
+
+    let { links: { self: file_link = null } = {}, key: filePath } =
+      file.data || file;
+
     // TO_RMEOVE after fixings links from backend
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
 
