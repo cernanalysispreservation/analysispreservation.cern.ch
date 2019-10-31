@@ -63,11 +63,6 @@ def test_importer_with_wrong_url():
         git = GitAPI.create(url='https://google.com')
 
 
-def test_importer_with_missing_attrs():
-    with pytest.raises(GitCredentialsError) as exc:
-        git = GitAPI.create(host=None, owner='CERN', repo='CERN')
-
-
 @patch('cap.modules.repoimporter.utils.get_access_token')
 def test_missing_env_variable(mocked_token, app):
     mocked_token.return_value = None
