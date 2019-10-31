@@ -173,11 +173,15 @@ class GitLabAPI(GitAPI):
     def __init__(self, host, owner, repo, branch, user_id):
         """Initialize a GitLab API instance."""
         super(GitLabAPI, self).__init__(host, owner, repo, branch, user_id)
-        self.token = get_access_token('gitlab')
-        # self.token = _fetch_token('gitlab', user_id)
+        token_obj = _fetch_token('gitlab', user_id)
+        if not token_obj:
+            raise FileUploadError(
+                'Connect to GitLab from the CAP interface to access and '
+                'download your repositories (Settings -> Integrations')
 
         try:
-            self.api = Gitlab(host, private_token=self.token)
+            self.token = token_obj.get('access_token')
+            self.api = Gitlab(host, oauth_token=self.token)
             self.project = self.api.projects.get(self.repo_full_name)
             self.repo_id = self.project.get_id()
         except UnknownObjectException:
@@ -187,7 +191,7 @@ class GitLabAPI(GitAPI):
     def ping(cls):
         """Ping the API."""
         token = get_access_token('GITLAB')
-        resp = requests.get(cls.api_url + '?private_token='.format(token),
+        resp = requests.get(cls.api_url + '?access_token='.format(token),
                             headers={'Content-Type': 'application/json'})
         return resp.json, resp.status_code
 
@@ -216,19 +220,18 @@ class GitLabAPI(GitAPI):
         if not ref:
             ref = self.branch
         return '{}/{}/repository/archive' \
-               '?sha={}&private_token={}'.format(self.api_url,
-                                                 self.project.id,
-                                                 ref,
-                                                 self.token)
+               '?sha={}&access_token={}'.format(self.api_url,
+                                                self.project.id,
+                                                ref, self.token)
 
     def archive_file_url(self, filepath):
         """Create url for single file download."""
         link = '{}/{}/repository/files/{}/raw' \
-               '?ref={}&private_token={}'.format(self.api_url,
-                                                 self.project.id,
-                                                 filepath,
-                                                 self.branch,
-                                                 self.token)
+               '?ref={}&access_token={}'.format(self.api_url,
+                                                self.project.id,
+                                                filepath,
+                                                self.branch,
+                                                self.token)
         return {
             'url': link,
             'size': None,

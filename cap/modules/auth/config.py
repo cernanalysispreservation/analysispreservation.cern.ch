@@ -69,7 +69,7 @@ OAUTH_SERVICES = {
         name='gitlab',
         access_token_url='https://gitlab.cern.ch/oauth/token',
         authorize_url='https://gitlab.cern.ch/oauth/authorize',
-        api_base_url='https://gitlab.cern.ch/',
+        api_base_url='https://gitlab.cern.ch/api/v4/',
         client_kwargs={'scope': 'api'},
     ),
 

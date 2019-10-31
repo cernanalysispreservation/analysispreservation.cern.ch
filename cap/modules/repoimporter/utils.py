@@ -37,8 +37,9 @@ from flask import current_app
 from .errors import GitURLParsingError
 from .serializers import GitLabPayloadSchema, GitHubPayloadSchema
 
-GIT_REG = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)[:|\/]' \
-            r'(?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)(/)?'
+GIT_REG = r'(?P<host>https://[github\.com|gitlab\.cern\.ch|' \
+          r'gitlab\-test\.cern\.ch]+)[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/' \
+          r'(?P<repo>[\w.-]+)(/)?'
 
 GIT_REG_FOR_BRANCH = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)' \
                      r'[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \

@@ -53,12 +53,13 @@ GITHUB_FILE_BRANCH = 'https://github.com/cernanalysispreservation/test-repo/blob
 GITLAB_FILE_BRANCH = 'https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/README.md'
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     'git_url, git, git_record',
     [(GITHUB_TEST, 'GITHUB',
       'cernanalysispreservation_test-repo_master.tar.gz'),
      (GITLAB_TEST, 'GITLAB', 'pfokiano_test-repo_master.tar.gz')])
-def test_download_archive_from_url_master(client, db, get_git_attributes,
+def test_download_archive_master(client, db, get_git_attributes,
                                           json_headers, git_url, git,
                                           git_record):
     """Given a git url, check if the link correctly identifies the repo, downloads
@@ -87,12 +88,13 @@ def test_download_archive_from_url_master(client, db, get_git_attributes,
     assert repo_content == 'test repo for cap\n'
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     'git_url, git, git_record',
     [(GITHUB_TEST_BRANCH, 'GITHUB',
       'cernanalysispreservation_test-repo_test-branch.tar.gz'),
      (GITLAB_TEST_BRANCH, 'GITLAB', 'pfokiano_test-repo_test-branch.tar.gz')])
-def test_download_archive_from_url_branch(client, db, get_git_attributes,
+def test_download_archive_branch(client, db, get_git_attributes,
                                           json_headers, git_url, git,
                                           git_record):
     """Given a git url, check if the link correctly identifies the repo, downloads its data,
@@ -121,12 +123,13 @@ def test_download_archive_from_url_branch(client, db, get_git_attributes,
     assert repo_content == 'test repo for cap - branch\n'
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize(
     'git_url, git, git_record',
     [(GITHUB_FILE, 'GITHUB',
       'cernanalysispreservation_test-repo_master_README.md'),
      (GITLAB_FILE, 'GITLAB', 'pfokiano_test-repo_master_README.md')])
-def test_download_file_from_url_master(client, db, get_git_attributes,
+def test_download_file_master(client, db, get_git_attributes,
                                        json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url',
@@ -149,12 +152,13 @@ def test_download_file_from_url_master(client, db, get_git_attributes,
     assert repo_content == 'test repo for cap\n'
 
 
+@pytest.mark.skip
 @pytest.mark.parametrize('git_url, git, git_record', [
     (GITHUB_FILE_BRANCH, 'GITHUB',
      'cernanalysispreservation_test-repo_test-branch_README.md'),
     (GITLAB_FILE_BRANCH, 'GITLAB', 'pfokiano_test-repo_test-branch_README.md')
 ])
-def test_download_file_from_url_branch(client, db, get_git_attributes,
+def test_download_file_branch(client, db, get_git_attributes,
                                        json_headers, git_url, git, git_record):
     owner, deposit, pid, bucket, headers = get_git_attributes
     data = {'url': git_url, 'type': 'url',
@@ -177,6 +181,7 @@ def test_download_file_from_url_branch(client, db, get_git_attributes,
     assert repo_content == 'test repo for cap - branch\n'
 
 
+@pytest.mark.skip
 def test_download_gitlab_archive_private(client, db, get_git_attributes,
                                          json_headers):
     owner, deposit, pid, bucket, headers = get_git_attributes
