@@ -44,7 +44,7 @@ def update_workflow(workflow, column, data):
 
 def clone_workflow(workflow_id):
     """Clone the attributes of a Reana workflow."""
-    wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
     return {
         'name': wf.name,
         'workflow_json': wf.workflow_json
@@ -53,7 +53,7 @@ def clone_workflow(workflow_id):
 
 def resolve_uuid(workflow_id):
     """Resolve the workflow id into a UUID."""
-    workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
+    workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
     return workflow.rec_uuid
 
 
@@ -74,7 +74,7 @@ def get_reana_token(uuid, record=None):
         record = CAPRecord.get_record(uuid)
 
     experiment = record.get('_experiment')
-    
+
     if not experiment:
         raise ExperimentIsNotValid('Experiment is not valid.')
 

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import { Switch, Route, withRouter } from "react-router-dom";
 
-import LinkPreviousIcon from "grommet/components/icons/base/LinkPrevious";
 import PlayIcon from "grommet/components/icons/base/Play";
 import TechnologyIcon from "grommet/components/icons/base/Technology";
 import AppsIcon from "grommet/components/icons/base/Apps";

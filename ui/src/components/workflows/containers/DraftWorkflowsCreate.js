@@ -4,7 +4,8 @@ import WorkflowsCreate from "../components/WorkflowsCreate";
 import {
   getWorkflowStatus,
   startWorkflow,
-  stopWorkflow
+  stopWorkflow,
+  createWorkflow
 } from "../../../actions/workflows";
 
 function mapStateToProps(state, props) {
@@ -18,6 +19,7 @@ function mapStateToProps(state, props) {
 function mapDispatchToProps(dispatch) {
   return {
     getWorkflowStatus: workflow_id => dispatch(getWorkflowStatus(workflow_id)),
+    createWorkflow: data => dispatch(createWorkflow(data)),
     startWorkflow: workflow_id => dispatch(startWorkflow(workflow_id)),
     stopWorkflow: workflow_id => dispatch(stopWorkflow(workflow_id))
   };

@@ -71,7 +71,7 @@ class ReanaWorkflow(db.Model):
 
     @classmethod
     def get_user_workflows(cls, user_id):
-        """Get the latest version of schema with given name."""
+        """Get user workflows."""
         workflows = cls.query \
             .filter_by(cap_user_id=user_id) \
             .all()
@@ -80,21 +80,20 @@ class ReanaWorkflow(db.Model):
 
     @classmethod
     def get_deposit_workflows(cls, depid):
-        """Get the latest version of schema with given name."""
+        """Get deposit workflows."""
         workflows = cls.query \
             .filter_by(rec_uuid=depid) \
             .all()
 
         return workflows
 
-
     @classmethod
     def get_workflow_by_id(cls, workflow_id):
-        """Get the latest version of schema with given name."""
+        """Get workflow by id."""
         return cls.query \
             .filter_by(workflow_id=workflow_id) \
             .one_or_none()
 
-    def serialize(self, resolve=False):
+    def serialize(self):
         """Serialize schema model."""
         return reana_workflow_serializer.dump(self).data

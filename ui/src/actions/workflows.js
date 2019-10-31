@@ -1,4 +1,5 @@
 import axios from "axios";
+import { push } from "react-router-redux";
 
 const WORKFLOWS_API_URL = "/api/workflows";
 const REANA_WORKFLOWS_API_URL = `${WORKFLOWS_API_URL}/reana`;
@@ -304,10 +305,10 @@ export function createWorkflow(workflow, autostart = false) {
         }
       )
       .then(response => {
+        let { workflow_id } = response.data;
         dispatch(createWorkflowSuccess(response.data));
-        // dispatch(push(`/published/${pid}/runs`));
+        dispatch(push(`/drafts/${workflow.pid}/workflows/${workflow_id}`));
         if (autostart) {
-          let { workflow_id } = response.data;
           dispatch(startWorkflow(workflow_id));
         }
       })

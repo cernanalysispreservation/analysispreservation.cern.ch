@@ -1,5 +1,5 @@
 import axios from "axios";
-import { replace, push } from "react-router-redux";
+import { push } from "react-router-redux";
 import { fetchAndAssignSchema } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
 import cogoToast from "cogo-toast";
@@ -486,7 +486,7 @@ export function publishDraft(draft_id) {
       .then(() => {
         let state = getState();
         const id = state.draftItem.get("recid");
-        dispatch(replace(`/published/${id}`));
+        dispatch(push(`/published/${id}`));
       })
       .catch(error => {
         dispatch(publishDraftError(error));
@@ -507,7 +507,7 @@ export function deleteDraft(draft_id) {
       .delete(links.self)
       .then(() => {
         dispatch(deleteDraftSuccess());
-        dispatch(replace("/"));
+        dispatch(push("/"));
         cogoToast.success("Your Draft has been deleted", {
           position: "top-center",
           heading: "Draft deleted",

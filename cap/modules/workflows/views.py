@@ -54,6 +54,8 @@ from cap.modules.records.api import CAPRecord
 
 from cap.modules.deposit.permissions import UpdateDepositPermission
 
+from cap.modules.experiments.errors import ExternalAPIException
+
 workflows_bp = Blueprint('cap_workflows', __name__, url_prefix='/workflows')
 
 
@@ -107,7 +109,7 @@ def ping_reana():
         status = 200 if resp == 'OK' else 400
         return jsonify({'message': resp}), status
     except Exception:
-        abort(400)
+        raise ExternalAPIException()
 
 
 @workflows_bp.route('/', methods=['GET'])

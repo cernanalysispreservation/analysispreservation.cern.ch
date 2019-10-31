@@ -90,7 +90,7 @@ install_requires = [
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
-
+    'coolname==1.1.0',
     'Authlib==0.12.1',
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',

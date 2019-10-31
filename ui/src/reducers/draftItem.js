@@ -1,8 +1,9 @@
-import { Map } from "immutable";
+import { Map, fromJS } from "immutable";
 
 import * as commonActions from "../actions/common"; // Common Actions
 import * as draftItemActions from "../actions/draftItem"; // Drafts Actions
 import * as filesActions from "../actions/files"; // Files Actions
+import * as workflowsActions from "../actions/workflows"; // Workflows Actions
 
 const initialState = Map({
   errors: [],
@@ -12,6 +13,8 @@ const initialState = Map({
   filePreviewEditLayer: true,
   filePreviewEdit: {},
 
+  workflows: fromJS([]),
+  workflows_items: fromJS({}),
   bucket: Map({}),
   formData: null,
   // From backend: deposit resource
@@ -58,12 +61,11 @@ export default function draftsReducer(state = initialState, action) {
       return state.set("schema", schemaId).set("schemas", schemas);
     case draftItemActions.FORM_DATA_CHANGE:
       return state.set("formData", action.data);
-    case filesActions.TOGGLE_FILEMANAGER_LAYER:
-      return state.set(
-        "fileManagerActiveLayer",
-        !state.get("fileManagerActiveLayer")
-      );
-
+    case draftItemActions.TOGGLE_FILEMANAGER_LAYER:
+      return state
+        .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
+        .set("fileManagerLayerSelectable", action.selectable)
+        .set("fileManagerLayerSelectableAction", action.action);
     // Draft Metadata
     case draftItemActions.DRAFTS_ITEM_SUCCESS:
       return state
@@ -212,6 +214,18 @@ export default function draftsReducer(state = initialState, action) {
         error: action.error.response.data
       });
 
+    // Draft workflows
+    case workflowsActions.WORKFLOWS_RECORD_SUCCESS:
+      return state.set("workflows", fromJS(action.workflows));
+    case workflowsActions.RECORD_WORKFLOW_SUCCESS:
+      return state
+        .mergeIn(["workflows_items", action.workflow_id], action.data)
+        .setIn(["workflows_items", action.workflow_id, "loading"], false);
+    case workflowsActions.WORKFLOW_FILES_SUCCESS:
+      return state.setIn(
+        ["workflows_items", action.workflow_id, "files"],
+        action.data.files
+      );
     default:
       return state;
   }
