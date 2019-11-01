@@ -163,7 +163,7 @@ function DashboardList(props) {
                     justify="center"
                     onClick={() => push(`${props.urlDetailed}/${id}`)}
                     style={{
-                      overflow: "auto"
+                      overflow: "visible"
                     }}
                   >
                     <Box flex={false} direction="row" wrap={false}>
