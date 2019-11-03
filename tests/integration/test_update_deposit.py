@@ -249,6 +249,7 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(
@@ -383,6 +384,7 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

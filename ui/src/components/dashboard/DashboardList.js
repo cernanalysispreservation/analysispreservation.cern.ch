@@ -4,16 +4,15 @@ import { connect } from "react-redux";
 import MoreIcon from "grommet/components/icons/base/More";
 import EditIcon from "grommet/components/icons/base/Edit";
 import UserAdminIcon from "grommet/components/icons/base/UserAdmin";
+import UserIcon from 'grommet/components/icons/base/User';
+
 import ReactTooltip from "react-tooltip";
 
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Label from "grommet/components/Label";
-import Button from "grommet/components/Button";
-import Spinning from "grommet/components/icons/Spinning";
 import Paragraph from "grommet/components/Paragraph";
-import Filter from "grommet/components/icons/base/Filter";
 
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
@@ -25,24 +24,21 @@ import TimeAgo from "react-timeago";
 import { push } from "connected-react-router";
 
 function DashboardList(props) {
-  const [itemsList, setitemsList] = useState([]);
-  const [selectedList, setselectedList] = useState("");
+  const [itemsList, setItemsList] = useState([]);
+  const [selectedList, setSelectedList] = useState("");
+  const [link, setLink] = useState("");
   let {
     header = "",
     emptyMessage = null,
-    collab_items = [],
-    collab_items_title = "",
-    mine = [],
-    show_all = false,
-    listType = "published",
-    currentUser,
+    datasets = {},
     push
   } = props;
 
   useEffect(
     () => {
-      setitemsList(collab_items);
-      setselectedList(collab_items_title);
+      setItemsList(datasets.all ? datasets.all.data: []);
+      setSelectedList('all');
+      setLink(datasets.all ? datasets.all.more : '');
       return () => {
         console.log("Return");
       };
@@ -59,14 +55,10 @@ function DashboardList(props) {
           direction="row"
           pad="small"
           justify="between"
-          style={{
-            borderRadius: "3px"
-          }}
         >
           <Heading
             tag="h5"
             uppercase={true}
-            align="left"
             justify="center"
             margin="none"
             data-tip={emptyMessage}
@@ -74,69 +66,33 @@ function DashboardList(props) {
             {header}
           </Heading>
           <Box direction="row">
-            {show_all ? (
-              <Box
+              {Object.entries(datasets).map( ([key, value]) => {
+              return (<Box
                 pad={{ horizontal: "small" }}
                 onClick={() => {
-                  setitemsList(mine.concat(collab_items));
-                  setselectedList("all");
+                  setItemsList(value.data);
+                  setSelectedList(key);
+                    setLink(value.more);
                 }}
               >
                 <Paragraph
                   margin="none"
-                  style={{
-                    color: selectedList === "all" ? "#000001" : "#808080",
-                    fontWeight: selectedList === "all" ? "600" : "400"
-                  }}
+                
                 >
-                  all
+                    <span style={{fontWeight: selectedList === key ? "bold": "lighter"}}>{key}</span>
                 </Paragraph>
               </Box>
-            ) : null}
-            <Box
-              pad={{ horizontal: "small" }}
-              onClick={() => {
-                setitemsList(collab_items);
-                setselectedList(collab_items_title);
-              }}
-            >
-              <Paragraph
-                margin="none"
-                style={{
-                  color:
-                    selectedList === collab_items_title ? "#000001" : "#808080",
-                  fontWeight:
-                    selectedList === collab_items_title ? "600" : "400"
-                }}
-              >
-                {collab_items_title}
-              </Paragraph>
-            </Box>
-            <Box
-              pad={{ horizontal: "small" }}
-              onClick={() => {
-                setitemsList(mine);
-                setselectedList("mine");
-              }}
-            >
-              <Paragraph
-                margin="none"
-                style={{
-                  color: selectedList === "mine" ? "#000001" : "#808080",
-                  fontWeight: selectedList === "mine" ? "600" : "400"
-                }}
-              >
-                mine
-              </Paragraph>
-            </Box>
+              );}
+              )}
           </Box>
         </Box>
         <ReactTooltip />
       </Box>
       <Box
-        flex={true}
+        flex
         colorIndex="light-1"
-        style={{ height: "100%", maxHeight: "320px" }}
+        size={{height: {max: "medium"}}}
+        style={{ height: "100%"}}
       >
         <List>
           {itemsList.length > 0 ? (
@@ -145,145 +101,79 @@ function DashboardList(props) {
                 id,
                 can_admin,
                 can_update,
+                is_owner,
                 metadata = {},
-                schema,
-                status,
-                created_by,
                 updated
               } = item;
               let {
-                general_title = "Untitled",
+                general_title = "Analysis",
                 basic_info: { abstract = "" } = {}
               } = metadata;
 
               return (
                 <ListItem key={`${item.id}-${index}`}>
                   <Box
-                    flex={true}
-                    justify="center"
+                    justify="between"
+                    direction="row"
                     onClick={() => push(`${props.urlDetailed}/${id}`)}
                     style={{
                       overflow: "visible"
                     }}
+                    flex
                   >
-                    <Box flex={false} direction="row" wrap={false}>
-                      <Box flex={true} margin={{ right: "large" }}>
-                        <Box
-                          flex={false}
-                          align="center"
-                          justify="start"
-                          direction="row"
-                          wrap
-                        >
+                      <Box margin={{ right: "medium" }} style={{overflow: "visible"}} flex>
+                        <Box direction="row" >
                           <Heading strong tag="h6" margin="none" truncate>
                             {general_title}
                           </Heading>
-                          <span
-                            style={{
-                              paddingLeft: "4px",
-                              fontWeight: "600",
-                              color: "#666"
-                            }}
-                          >
-                            {" "}
-                            - {schema.name}{" "}
-                            {/* {schema.version ? `v.${schema.version}` : null} */}
-                          </span>
-                          {listType == "drafts" && status == "published" ? (
-                            <Box
-                              justify="center"
-                              colorIndex="accent-3"
-                              style={{ padding: "1px", borderRadius: "2px" }}
-                            >
-                              published
-                            </Box>
-                          ) : null}
-                        </Box>
-                        <Box flex direction="row" wrap={false}>
-                          <Box flex={false}>
-                            <Label size="small" truncate={true}>
-                              {abstract}
-                            </Label>
-                          </Box>
-                        </Box>
-                      </Box>
-
-                      <Box
-                        flex={false}
-                        direction="row"
-                        wrap={false}
-                        justify="between"
-                      >
-                        {/* {currentUser == created_by ? (
-                          <Box justify="center">
-                            <span
-                              style={{
-                                marginLeft: "10px",
-                                padding: "1px 2px",
-                                backgroundColor: "#666",
-                                color: "#fff",
-                                borderRadius: "2px"
-                              }}
-                            >
-                              owner
-                            </span>
-                          </Box>
-                        ) : null} */}
-
-                        <Box
-                          align="center"
-                          justify="center"
-                          direction="row"
-                          margin={{ horizontal: "small" }}
-                        >
-                          {can_update ? (
-                            <span style={{ padding: "2px" }}>
-                              <EditIcon size="xsmall" data-tip="edit record" />
+                          <Box justify="end" pad={{horizontal: "small"}}>
+                          {!is_owner && (can_update || can_admin)  ? (
+                            <span>
+                              <EditIcon size="xsmall" data-tip="contributor" />
                             </span>
                           ) : null}
-                          {can_admin ? (
-                            <span style={{ padding: "2px" }}>
-                              <UserAdminIcon
-                                size="xsmall"
-                                data-tip="record owner"
-                              />
+                          {is_owner ? (
+                            <span>
+                              <UserIcon size="xsmall" data-tip="owner" />
                             </span>
                           ) : null}
                         </Box>
                         <ReactTooltip />
+                        </Box>
+                        <Box flex style={{overflow: "visible"}}>
+                            <Label size="small" margin="none" truncate>
+                                <i>{abstract || ""}</i>
+                            </Label>
+                        </Box>
+                      </Box>
+
                         <Box
                           justify="center"
                           textAlign="right"
-                          style={{
-                            fontWeight: "400",
-                            color: "#666"
-                          }}
+                          style={{fontWeight: "light"}}
                         >
-                          <span>updated</span>
-                          <TimeAgo date={updated} minPeriod="60" />
+                            <span>updated</span>
+                            <TimeAgo date={updated} minPeriod="60" />
                         </Box>
-                      </Box>
-                    </Box>
                   </Box>
                 </ListItem>
               );
             })
           ) : (
-            <Box flex={true} justify="center" align="center">
+            <Box flex justify="center" align="center">
               <ListPlaceholder
                 unfilteredTotal={0}
                 pad="large"
                 emptyMessage={props.emptyMessage || "No analysis."}
               />
-              <Spinning />
             </Box>
           )}
         </List>
       </Box>
-      {props.collab_items.length > 0 ? (
+      {itemsList.length > 0 ? (
         <Box align="center" margin={{ horizontal: "medium" }}>
           <Anchor
-            path={props.urlMore}
+            path={link}
             style={{ textDecoration: "none", color: "black" }}
           >
             <MoreIcon />

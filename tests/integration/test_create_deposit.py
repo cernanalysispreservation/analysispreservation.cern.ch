@@ -221,6 +221,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

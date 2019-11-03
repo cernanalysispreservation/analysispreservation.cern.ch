@@ -77,7 +77,7 @@ def test_dashboard_view_returns_user_published_analysis(
     assert other_user_published_deposit['control_number'] not in user_published
 
 
-def test_dashboard_view_returns_published_by_collaboration(
+def test_dashboard_view_returns_publishedoration(
         client, users, create_deposit, auth_headers_for_user):
     my_deposit = create_deposit(users['lhcb_user'],
                                 'lhcb-v0.2.0',
@@ -97,20 +97,20 @@ def test_dashboard_view_returns_published_by_collaboration(
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    published_by_collab = [
-        x['id'] for x in resp.json['published_by_collab']['data']
+    published = [
+        x['id'] for x in resp.json['published']['data']
     ]
 
-    assert len(published_by_collab) == 2
-    assert my_deposit['_deposit']['id'] not in published_by_collab
-    assert user_published_deposit['control_number'] in published_by_collab
+    assert len(published) == 2
+    assert my_deposit['_deposit']['id'] not in published
+    assert user_published_deposit['control_number'] in published
     assert published_by_member_of_collab[
-        'control_number'] in published_by_collab
+        'control_number'] in published
     assert published_by_another_collab[
-        'control_number'] not in published_by_collab
+        'control_number'] not in published
 
 
-def test_dashboard_view_returns_published_by_collaboration(
+def test_dashboard_view_returns_publishedoration(
         client, users, create_deposit, auth_headers_for_user):
     my_deposit = create_deposit(users['lhcb_user'],
                                 'lhcb-v0.2.0',
@@ -128,21 +128,21 @@ def test_dashboard_view_returns_published_by_collaboration(
 
     resp = client.get('/dashboard',
                       headers=auth_headers_for_user(users['lhcb_user']))
-    published_by_collab = [
-        x['id'] for x in resp.json['published_by_collab']['data']
+    published = [
+        x['id'] for x in resp.json['published']['data']
     ]
 
-    assert len(published_by_collab) == 2
-    assert my_deposit['_deposit']['id'] not in published_by_collab
-    assert user_published_deposit['control_number'] in published_by_collab
+    assert len(published) == 2
+    assert my_deposit['_deposit']['id'] not in published
+    assert user_published_deposit['control_number'] in published
     assert published_by_member_of_collab[
-        'control_number'] in published_by_collab
+        'control_number'] in published
     assert published_by_another_collab[
-        'control_number'] not in published_by_collab
+        'control_number'] not in published
 
 
 @mark.parametrize("action", [("deposit-read"), ("deposit-admin")])
-def test_dashboard_view_returns_shared_with_user(action, client, users,
+def test_dashboard_view_returns_drafts(action, client, users,
                                                  create_deposit, json_headers,
                                                  auth_headers_for_user):
     user, other_user = users['lhcb_user'], users['lhcb_user2']
@@ -163,12 +163,12 @@ def test_dashboard_view_returns_shared_with_user(action, client, users,
     current_search.flush_and_refresh('deposits')
 
     resp = client.get('/dashboard', headers=auth_headers_for_user(user))
-    shared_with_user = [x['id'] for x in resp.json['shared_with_user']['data']]
+    drafts = [x['id'] for x in resp.json['drafts']['data']]
 
-    assert len(shared_with_user) == 1
-    assert my_deposit['_deposit']['id'] not in shared_with_user
-    assert user_published_deposit['control_number'] not in shared_with_user
-    assert other_user_deposit['_deposit']['id'] in shared_with_user
+    assert len(drafts) == 2
+    assert my_deposit['_deposit']['id'] in drafts
+    assert user_published_deposit['control_number'] not in drafts
+    assert other_user_deposit['_deposit']['id'] in drafts
 
 
 def test_dashboard_view_returns_user_counts_properly(client, users,

@@ -217,59 +217,6 @@ def test_get_deposit_with_default_serializer(client, users,
                       auth_headers_for_user(owner))
 
     assert resp.status_code == 200
-
-    # OLD SERIALIZER RESPONSE
-    #        assert resp.json['links'] == {
-    #                'bucket': '{}/files/{}'.format(deposit.files.bucket),
-    #                'clone': '{}/deposits/{}/actions/clone'.format(depid),
-    #                'discard': '{}/deposits/{}/actions/discard'.format(depid),
-    #                'edit': '{}/deposits/{}/actions/edit'.format(depid),
-    #                'files': '{}/deposits/{}/files'.format(depid),
-    #                'html': '{}/drafts/{}'.format(depid),
-    #                'permissions': '{}/deposits/{}/permissions'.format(depid),
-    #                'publish': '{}/deposits/{}/publish'.format(depid),
-    #                'self': '{}/deposits/{}'.format(depid),
-    #                'upload': '{}/deposits/{}/upload'.format(depid)
-    #            }
-
-    #    assert resp.json == {
-    #        'access': [{
-    #            'action': 'deposit-read',
-    #            'identity': user.email,
-    #            'type': 'user'
-    #        }, {
-    #            'action': 'deposit-update',
-    #            'identity': user.email,
-    #            'type': 'user'
-    #        }, {
-    #            'action': 'deposit-admin',
-    #            'identity': user.email,
-    #            'type': 'user'
-    #        }],
-    #        #            'can_admin': True,
-    #        #            'can_update': True,
-    #        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-    #        'id': depid,
-    #        'metadata': {
-    #            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
-    #            'basic_info': {
-    #                'analysis_number': 'dream_team'
-    #            },
-    #            '_deposit': {
-    #                'created_by': user.id,
-    #                'id': depid,
-    #                'owners': [user.email],
-    #                'status': 'draft'
-    #            },
-    #            '_experiment': 'CMS',
-    #            '_files': []
-    #        },
-    #        'revision': 1,
-    #        'schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
-    #        'status': 'draft',
-    #        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-    #    }
-
     assert resp.json['hits']['hits'] == [{
         'id': depid,
         'type': 'deposit',
@@ -311,6 +258,7 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

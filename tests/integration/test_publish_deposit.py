@@ -166,6 +166,7 @@ def test_deposit_publish_changes_status_and_creates_record(
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

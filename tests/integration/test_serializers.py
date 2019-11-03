@@ -159,6 +159,7 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(
@@ -371,6 +372,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         }],
         'can_admin': True,
         'can_update': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

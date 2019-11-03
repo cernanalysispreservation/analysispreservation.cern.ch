@@ -30,6 +30,7 @@ from cap.modules.deposit.serializers import deposit_json_v1
 from cap.modules.records.fetchers import cap_record_fetcher
 from cap.modules.records.search import CAPRecordSearch
 from cap.modules.records.serializers import record_json_v1
+from cap.modules.workflows.utils import get_user_workflows
 
 blueprint = Blueprint(
     'cap',
@@ -78,18 +79,23 @@ def dashboard():
     rs = CAPRecordSearch().extra(version=True).sort_by_latest()
     ds = CAPDepositSearch().extra(version=True).sort_by_latest()
 
-    published_by_collab = _serialize_records(rs[:5].execute())
+    published = _serialize_records(rs[:5].execute())
+    drafts = _serialize_deposits(ds[:5].execute())
     user_published = _serialize_records(rs.get_user_records()[:5].execute())
     user_published_count = rs.get_user_records().count()
     user_drafts = _serialize_deposits(ds.get_user_deposits()[:5].execute())
     user_drafts_count = ds.get_user_deposits().count()
-    shared_with_user = _serialize_deposits(
-        ds.get_shared_with_user()[:5].execute())
+
+    user_workflows = get_user_workflows()
 
     return jsonify({
-        'published_by_collab': {
-            'data': published_by_collab,
+        'published': {
+            'data': published,
             'more': '/search?q='
+        },
+        'drafts': {
+            'data': drafts,
+            'more': '/drafts?q='
         },
         'user_published': {
             'data': user_published,
@@ -99,9 +105,9 @@ def dashboard():
             'data': user_drafts,
             'more': '/drafts?by_me=True'
         },
-        'shared_with_user': {
-            'data': shared_with_user,
-            'more': '/drafts?by_me=False'
+        'user_workflows': {
+            'data': user_workflows,
+            'more': '/drafts?by_me=True'
         },
         'user_drafts_count': user_drafts_count,
         'user_published_count': user_published_count,

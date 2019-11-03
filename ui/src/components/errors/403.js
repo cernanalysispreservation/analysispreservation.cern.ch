@@ -7,16 +7,10 @@ import PropTypes from "prop-types";
 
 const PermissionDenied = props => {
   return (
-    <Box flex={true}>
+    <Box flex>
       <Box
-        align="center"
-        full="horizontal"
-        pad="medium"
-        colorIndex="neutral-1-a"
-      />
-      <Box
-        fill={true}
-        flex={true}
+        fill
+        flex
         colorIndex="light-2"
         justify="center"
         align="center"
@@ -24,14 +18,14 @@ const PermissionDenied = props => {
         <Label>
           {props.status} {props.statusText}
         </Label>
-        <Label>{props.message}</Label>
+        <span>{props.message}</span>
         <Anchor
           icon={<FormPreviousLinkIcon />}
           label="Go back to dashboard"
           path="/"
           size="small"
         />
-      </Box>
+    </Box>
     </Box>
   );
 };

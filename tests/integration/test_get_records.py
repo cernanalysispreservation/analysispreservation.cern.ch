@@ -170,6 +170,7 @@ def test_get_records_default_serializer(client, superuser,
         }],
         'can_admin': True,
         'can_update': True,
+       'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(
@@ -282,6 +283,7 @@ def test_get_record_when_superuser_returns_record(client, db, users,
         }],
         'can_admin': True,
         'can_update': True,
+       'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

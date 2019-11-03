@@ -104,6 +104,7 @@ def test_edit_record(client, create_deposit, superuser,
         },
         'can_update': True,
         'can_admin': True,
+        'is_owner': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

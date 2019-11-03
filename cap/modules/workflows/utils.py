@@ -21,17 +21,16 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Workflows utils."""
 from flask import current_app
-
+from flask_login import current_user
 from invenio_db import db
+from invenio_pidstore.resolver import Resolver
+
+from cap.modules.records.api import CAPRecord
 
 from .errors import ExperimentIsNotValid
 from .models import ReanaWorkflow
-from cap.modules.records.api import CAPRecord
-
-from invenio_pidstore.resolver import Resolver
 
 
 def update_workflow(workflow, column, data):
@@ -45,10 +44,14 @@ def update_workflow(workflow, column, data):
 def clone_workflow(workflow_id):
     """Clone the attributes of a Reana workflow."""
     wf = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
-    return {
-        'name': wf.name,
-        'workflow_json': wf.workflow_json
-    }
+    return {'name': wf.name, 'workflow_json': wf.workflow_json}
+
+
+def get_user_workflows():
+    """."""
+    workflows = ReanaWorkflow.get_user_workflows(current_user.id)
+
+    return [workflow.serialize() for workflow in workflows]
 
 
 def resolve_uuid(workflow_id):

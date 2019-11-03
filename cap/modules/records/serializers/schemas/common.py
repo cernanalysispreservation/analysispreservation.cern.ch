@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Marshmallow Schemas."""
 
+from flask_login import current_user
 from invenio_accounts.models import Role, User
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
@@ -57,6 +58,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     experiment = fields.Str(attribute='metadata._experiment', dump_only=True)
     status = fields.Str(attribute='metadata._deposit.status', dump_only=True)
     created_by = fields.Method('get_created_by', dump_only=True)
+    is_owner = fields.Method('is_current_user_owner', dump_only=True)
 
     metadata = fields.Method('get_metadata', dump_only=True)
 
@@ -69,6 +71,12 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     updated = fields.Str(dump_only=True)
 
     revision = fields.Integer(dump_only=True)
+
+    def is_current_user_owner(self, obj):
+        user_id = obj['metadata']['_deposit'].get('created_by')
+        if user_id and current_user:
+            return user_id == current_user.id
+        return False
 
     def get_files(self, obj):
         return obj['metadata'].get('_files', [])
