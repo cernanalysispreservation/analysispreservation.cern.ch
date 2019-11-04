@@ -109,11 +109,22 @@ export function uploadFile(bucket_link, file) {
     oReq.send(file);
   };
 }
-export function uploadViaUrl(draft_id, urlToGrab, type) {
+export function uploadViaUrl(
+  draft_id,
+  urlToGrab,
+  type,
+  download = true,
+  connection = false
+) {
   return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = urlToGrab.map(url => {
-      return { url: url, type: type };
+      return {
+        url: url,
+        type: type,
+        for_download: download,
+        for_connection: connection
+      };
     });
 
     // TOFIX !!!WARNING!!! Change this so as to send the data in one request.
