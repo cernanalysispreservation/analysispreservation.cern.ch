@@ -161,6 +161,11 @@ class FileItem extends React.Component {
               <Menu
                 responsive={true}
                 size="small"
+                style={
+                  ["fetching", "upload", "error"].indexOf(file.status) > -1
+                    ? { pointerEvents: "none" }
+                    : null
+                }
                 inline={false}
                 icon={<MoreIcon size="xsmall" />}
               >
