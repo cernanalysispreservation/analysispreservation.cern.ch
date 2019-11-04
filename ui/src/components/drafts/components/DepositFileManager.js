@@ -103,9 +103,11 @@ class FileManager extends React.Component {
                 pp={{ horizontal: "small" }}
                 colorIndex="grey-2"
               >
-                {this.props.selectableActionLayer
-                  ? "Select or upload a file to be added to the project"
-                  : "Upload and manage project files"}
+                {this.props.message
+                  ? this.props.message
+                  : this.props.selectableActionLayer
+                    ? "Select or upload a file to be added to the project"
+                    : "Upload and manage project files"}
               </Box>
               <Box flex={true} direction="row">
                 <Box flex={true}>
@@ -177,7 +179,10 @@ class FileManager extends React.Component {
                         </Box>
                       </Box>
                     </Tab>
-                    <Tab title="Upload Github File">
+                    <Tab
+                      title="Upload Github File"
+                      activeIndex={this.props.active || 0}
+                    >
                       <Box pad="medium">
                         <Heading tag="h5" strong={true}>
                           Upload from CERN Gitlab/Github file URL

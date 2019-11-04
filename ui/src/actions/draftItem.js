@@ -78,10 +78,17 @@ export const publishDraftError = error => ({
 
 export const initForm = () => ({ type: INIT_FORM });
 
-export const toggleFilemanagerLayer = (selectable = false, action = null) => ({
+export const toggleFilemanagerLayer = (
+  selectable = false,
+  action = null,
+  active = null,
+  message = null
+) => ({
   type: TOGGLE_FILEMANAGER_LAYER,
   selectable,
-  action
+  action,
+  active,
+  message
 });
 
 export const toggleActionsLayer = () => ({ type: TOGGLE_ACTIONS_LAYER });

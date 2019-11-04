@@ -47,11 +47,11 @@ class DepositAccess extends React.Component {
       inputValue: value
     });
 
-    let url =
-      this.state.type === "user"
-        ? `/api/services/ldap/user/mail?query=${value}`
-        : `/api/services/ldap/egroup/mail?query=${value}&sf=mail`;
-    this.fetchLdapData(url);
+    // let url =
+    //   this.state.type === "user"
+    //     ? `/api/services/ldap/user/mail?query=${value}`
+    //     : `/api/services/ldap/egroup/mail?query=${value}&sf=mail`;
+    // this.fetchLdapData(url);
   };
 
   handleChange = event => {

@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import PropTypes from "prop-types";
 
@@ -10,6 +12,7 @@ import AddIcon from "grommet/components/icons/base/FormAdd";
 import AccordionPanel from "../../partials/AccordionPanel";
 
 import TimeAgo from "react-timeago";
+import { toggleFilemanagerLayer } from "../../../actions/files";
 
 const repositories = [
   {
@@ -57,7 +60,7 @@ class DraftIntegrations extends React.Component {
           </Box>
           <Box flex={false} margin={{ left: "medium" }}>
             <Button
-              onClick={() => {}}
+              onClick={this.props.toggleFilemanagerLayer}
               primary
               colorIndex="accent-2"
               icon={<AddIcon />}
@@ -125,16 +128,24 @@ class DraftIntegrations extends React.Component {
 }
 
 DraftIntegrations.propTypes = {
-  match: PropTypes.object,
-  error: PropTypes.object,
-  getDraftById: PropTypes.func,
-  loading: PropTypes.bool,
-  clearError: PropTypes.func,
-  draft_id: PropTypes.string,
-  draft: PropTypes.object,
-  getUsers: PropTypes.func,
-  permissions: PropTypes.array,
-  handlePermissions: PropTypes.func
+  repos: PropTypes.object
 };
 
-export default DraftIntegrations;
+function mapStateToProps(state) {
+  return {
+    repos: state.draftItem.get("repos")
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleFilemanagerLayer: () =>
+      dispatch(toggleFilemanagerLayer(null, null, 3, "message"))
+  };
+}
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DraftIntegrations)
+);
