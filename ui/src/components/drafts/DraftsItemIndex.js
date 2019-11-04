@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { Switch, Route, withRouter } from "react-router-dom";
-import DocumentIcon from 'grommet/components/icons/base/Document';
 
 import PlayIcon from "grommet/components/icons/base/Play";
 import ConnectIcon from "grommet/components/icons/base/Connect";
-import AppsIcon from "grommet/components/icons/base/Apps";
-import SettingsOptionIcon from "grommet/components/icons/base/SettingsOption";
+import DocumentIcon from 'grommet/components/icons/base/Document';
+import AnnounceIcon from "grommet/components/icons/base/Announce";
 import { Anchor, Box } from "grommet";
 import ReactTooltip from "react-tooltip";
 
@@ -32,7 +31,7 @@ import PermissionDenied from "../errors/403";
 import TrashIcon from "grommet/components/icons/base/Trash";
 
 // Actions
-import { getDraftByIdAndInitForm, deleteDraft, toggleActionsLayer} from "../../actions/draftItem";
+import { getDraftByIdAndInitForm, deleteDraft, publishDraft, toggleActionsLayer} from "../../actions/draftItem";
   
 import ShareIcon from "grommet/components/icons/base/Share";
 
@@ -54,6 +53,10 @@ class DraftsItemIndex extends React.Component {
 
   _deleteDraft() {
     this.props.deleteDraft(this.props.draft_id);
+  }
+
+  _publishData() {
+    this.props.publishDraft(this.props.draft_id);
   }
 
   _actionHandler = type => () => {
@@ -90,18 +93,25 @@ class DraftsItemIndex extends React.Component {
             path={`/drafts/${draft_id}/settings`}
             data-tip="Share with others"
           />
-
-              {isDraft && !isPublishedOnce ? (
-                  <Anchor
-                      icon={<TrashIcon/>}
-                      onClick={this._actionHandler("delete")}
-                      data-tip="Delete your analysis"
-                  />
-              ) : null}
+          {isDraft ? (
+              <Anchor
+                  icon={<AnnounceIcon/>}
+                  onClick={this._actionHandler("publish")}
+                  data-tip="Publish"
+              />
+          ) : null}
+          {isDraft && !isPublishedOnce ? (
+              <Anchor
+                  icon={<TrashIcon/>}
+                  onClick={this._actionHandler("delete")}
+                  data-tip="Delete your analysis"
+              />
+          ) : null}
         <DraftActionsLayer
           key="action-layer"
           type={this.state.actionType}
           deleteDraft={this._deleteDraft.bind(this)}
+          publishData={this._publishData.bind(this)}
         />
         </Box>
         <Box flex={true}>
@@ -158,6 +168,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getDraftById: id => dispatch(getDraftByIdAndInitForm(id)),
     deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
+    publishDraft: draft_id => dispatch(publishDraft(draft_id)),
     toggleActionsLayer: () => dispatch(toggleActionsLayer())
   };
 }

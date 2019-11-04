@@ -41,16 +41,17 @@ class DraftActionsLayer extends React.Component {
       case "publish":
         return (
           <Paragraph>
-            Your analysis will now be visible to all members of collaboration.
-            Proceed?
+            By publishing your work, you create a versioned snapsot of the record that <b>becomes visible to all</b> the members of your collaboration.<br/><br/> 
+            <b>Are you sure you want to publish?</b>
           </Paragraph>
         );
       case "delete":
         return (
             <Paragraph>
-                This will <b>permanently</b> delete this analysis and all related data (<b>including files and workflows</b>).<br/><br/>
-                Already published versions of the analysis <b>will not</b> be affected.<br/><br/>
-                <b>Are you sure you want to delete this draft?</b> </Paragraph> 
+                    This will <b>permanently</b> delete this analysis and all related data (<b>including files and workflows</b>).<br/><br/>
+                        Already published versions of the analysis <b>will not</b> be affected.<br/><br/>
+                        <b>Are you sure you want to delete this draft?</b>
+                    </Paragraph> 
         );
       case "discard":
         return (
@@ -72,14 +73,15 @@ class DraftActionsLayer extends React.Component {
       >
         <Box
           justify="center"
+            align="cener"
           flex={true}
           wrap={false}
           pad="medium"
           size="medium"
         >
-            <Box pad="small" alignContent="center">
+        <Box alignContent="center" pad="small">
           {this.renderMessage(this.props.type)}
-      </Box>
+        </Box>
           <Box direction="row" justify="center" align="center">
             <Box>
               <Button

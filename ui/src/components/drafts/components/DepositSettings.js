@@ -18,33 +18,6 @@ class DepositSettings extends React.Component {
         pad="medium"
       >
         <Box flex={true}>
-          <Box
-            flex={false}
-            pad="medium"
-            colorIndex="light-2"
-            direction="row"
-            wrap={false}
-            margin={{ vertical: "medium", bottom: "large" }}
-          >
-            <Box flex>
-              <Heading tag="h4">Publish to collaboration</Heading>
-              <Paragraph margin="none">
-                Create a versioned snapsot of the record and make it available
-                to the CMS members within CERN Analysis Preservation
-              </Paragraph>
-            </Box>
-            <Box flex={false}>
-              <Button
-                onClick={() => {}}
-                primary
-                colorIndex="accent-2"
-                label="Publish"
-              />
-              <Box pad={{ vertical: "small" }}>
-                Current Published Version: <strong>Not published yet</strong>
-              </Box>
-            </Box>
-          </Box>
           <DepositAccess />
         </Box>
       </Box>
