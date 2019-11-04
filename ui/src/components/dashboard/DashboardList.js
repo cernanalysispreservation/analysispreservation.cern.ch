@@ -27,7 +27,7 @@ function DashboardList(props) {
         <Box
           flex={true}
           direction="row"
-          pad={{ vertical: "small" }}
+          pad="small"
           justify="between"
         >
           <Heading
@@ -50,7 +50,9 @@ function DashboardList(props) {
               >
                 <Label
                   margin="none"
-                  style={{ fontWeight: activeList == type ? "600" : "300" }}
+                    size="small"
+                    style={{color: activeList == type ? 'black': 'lightgrey'}}
+                    uppercase
                 >
                   {type}
                 </Label>
@@ -74,7 +76,7 @@ function DashboardList(props) {
               ))}
             </List>
             {list[activeList].list.length > 4 ? (
-              <Box align="center" style={{ marginTop: "-7px" }}>
+              <Box align="center" style={{ marginTop: "-9px" }}>
                 <Anchor
                   path={list[activeList].more}
                   style={{ textDecoration: "none", color: "black" }}

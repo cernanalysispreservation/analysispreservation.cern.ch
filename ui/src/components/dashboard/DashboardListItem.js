@@ -62,7 +62,9 @@ function DashboardListItem(props) {
             <ReactTooltip />
           </Box>
           <Box flex={true} style={{ overflow: "visible" }}>
-            <Label size="small" margin="none" truncate>
+              <Label size="small" margin="none" truncate
+                    style={{color: abstract ? 'black': 'lightgrey'}}
+              >
               <i>{abstract || "No abstract provided"}</i>
             </Label>
           </Box>

@@ -84,7 +84,7 @@ class TabField extends React.Component {
                     <AnalysisReuseMode innerProps={prop.content.props} />
                   ) : null
               )}
-              <Box flex={true} pad={{ vertical: "medium" }}>
+              <Box flex={true} pad={{ vertical: "none"}}>
                 {tabs.map(
                   tab =>
                     tab.name === "analysis_reuse_mode" ? null : (
