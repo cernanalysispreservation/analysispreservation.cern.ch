@@ -59,7 +59,7 @@ class DraftDefaultHeader extends React.Component {
         >
           <EditableTitle />
         </Box>
-
+        {this.props.canUpdate ? (
         <Route
           exact
           path="/drafts/:draft_id"
@@ -75,7 +75,7 @@ class DraftDefaultHeader extends React.Component {
               <EditAnchor draft_id={this.props.draft_id} />
             </Box>
           )}
-        />
+        /> ) : null}
       </Box>
     );
   }
@@ -91,6 +91,7 @@ function mapStateToProps(state) {
   return {
     draft_id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
+    canUpdate: state.draftItem.get("can_update"),
     draft: state.draftItem.get("data"),
     errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),
