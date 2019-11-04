@@ -27,6 +27,7 @@ import FileList from "./FileList";
 
 import CleanForm from "../form/CleanForm";
 
+import parseGithubUrl from "parse-github-url";
 import Dropzone from "react-dropzone";
 import CheckBox from "grommet/components/CheckBox";
 
@@ -57,6 +58,7 @@ class FileManager extends React.Component {
     this.state = {
       selected: null,
       formData: [],
+      repo_branch: null,
       for_download: true,
       for_connection: false
     };
@@ -239,12 +241,20 @@ class FileManager extends React.Component {
                             uiSchema={uiSchemaRepoUpload}
                             onChange={change => {
                               this.formDataChange(change.formData);
+
+                              if (change.formData.length) {
+                                let repo = parseGithubUrl(change.formData[0]);
+                                this.setState({ repo_branch: repo.branch });
+                              } else {
+                                this.setState({ repo_branch: null });
+                              }
                             }}
                           >
                             <Box margin={{ top: "small" }}>
                               <Box style={{ marginBottom: "5px" }}>
                                 <CheckBox
                                   label="Download repo to record"
+                                  checked={true}
                                   toggle={true}
                                   onChange={event => {
                                     this.setState({
@@ -255,7 +265,13 @@ class FileManager extends React.Component {
                               </Box>
                               <Box style={{ marginBottom: "5px" }}>
                                 <CheckBox
-                                  label="Connect the repo to my account (for real-time updates)"
+                                  label={
+                                    this.state.repo_branch
+                                      ? `Connect the repo (branch ${
+                                          this.state.repo_branch
+                                        }) to my account (for real-time updates)`
+                                      : "Connect the repo to my account (for real-time updates)"
+                                  }
                                   toggle={true}
                                   onChange={event => {
                                     this.setState({
