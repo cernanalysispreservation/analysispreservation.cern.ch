@@ -28,6 +28,7 @@ import FileList from "./FileList";
 import CleanForm from "../form/CleanForm";
 
 import Dropzone from "react-dropzone";
+import CheckBox from "grommet/components/CheckBox";
 
 const schema = {
   type: "string"
@@ -55,7 +56,9 @@ class FileManager extends React.Component {
     super(props);
     this.state = {
       selected: null,
-      formData: []
+      formData: [],
+      for_download: true,
+      for_connection: false
     };
   }
 
@@ -239,6 +242,29 @@ class FileManager extends React.Component {
                             }}
                           >
                             <Box margin={{ top: "small" }}>
+                              <Box style={{ marginBottom: "5px" }}>
+                                <CheckBox
+                                  label="Download repo to record"
+                                  toggle={true}
+                                  onChange={event => {
+                                    this.setState({
+                                      for_download: event.target.checked
+                                    });
+                                  }}
+                                />
+                              </Box>
+                              <Box style={{ marginBottom: "5px" }}>
+                                <CheckBox
+                                  label="Connect the repo to my account (for real-time updates)"
+                                  toggle={true}
+                                  onChange={event => {
+                                    this.setState({
+                                      for_connection: event.target.checked
+                                    });
+                                  }}
+                                />
+                              </Box>
+
                               {this.state.formData.length > 0 ? (
                                 <Button
                                   label="Upload"
@@ -248,7 +274,9 @@ class FileManager extends React.Component {
                                     this.props.uploadViaUrl(
                                       this.props.id,
                                       this.state.formData,
-                                      "repo"
+                                      "repo",
+                                      this.state.for_download,
+                                      this.state.for_connection
                                     );
                                   }}
                                 />
