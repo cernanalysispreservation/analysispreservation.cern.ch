@@ -727,8 +727,7 @@
           "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
         },
         "ui:field": "ImportDataField"
-      },
-      "ui:object": "accordionObjectField"
+      }
     },
     "auxiliary_measurements": {
       "items": {
@@ -738,8 +737,7 @@
             "ui:field": "CapFiles"
           }
         }
-      },
-      "ui:array": "AccordionArrayField"
+      }
     },
     "main_measurements": {
       "items": {
@@ -798,8 +796,7 @@
         "analysis_code": {
           "ui:field": "CapFiles"
         }
-      },
-      "ui:array": "AccordionArrayField"
+      }
     },
     "basic_info": {
       "ui:order": ["cadi_id", "abstract", "conclusion", "*"],
@@ -822,7 +819,6 @@
       "abstract": {
         "ui:widget": "textarea"
       },
-      "ui:object": "accordionObjectField",
       "ana_notes": {
         "ui:array": "StringArrayField"
       }
@@ -831,7 +827,6 @@
       "ui:widget": "switch"
     },
     "input_data": {
-      "ui:object": "accordionObjectField",
       "mc_sig_datasets": {
         "items": {
           "ui:options": {
@@ -907,7 +902,6 @@
       "created": {
         "ui:readonly": true
       },
-      "ui:object": "accordionObjectField",
       "paper": {
         "ui:readonly": true
       },
@@ -935,8 +929,7 @@
     "systematic_uncertainties": {
       "items": {
         "ui:order": ["type", "physics_object", "*"]
-      },
-      "ui:array": "AccordionArrayField"
+      }
     },
     "ui:order": [
       "analysis_reuse_mode",
@@ -949,7 +942,6 @@
       "statistical_treatment"
     ],
     "additional_resources": {
-      "ui:object": "accordionObjectField",
       "presentations": {
         "items": {
           "ui:options": {
@@ -992,7 +984,6 @@
       "code_base": {
         "ui:field": "CapFiles"
       },
-      "ui:object": "accordionObjectField",
       "processing_steps": {
         "items": {
           "ui:order": ["configuration_file", "run_instructions", "output_data"],
@@ -1029,8 +1020,7 @@
           },
           "ui:array": "AccordionArrayField"
         }
-      },
-      "ui:array": "AccordionArrayField"
+      }
     },
     "ntuples_production": {
       "items": {
@@ -1056,8 +1046,7 @@
             }
           }
         }
-      },
-      "ui:array": "AccordionArrayField"
+      }
     }
   }
 }

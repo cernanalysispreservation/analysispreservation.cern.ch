@@ -171,23 +171,25 @@
     }
   },
   "deposit_options": {
+    "ui:object": "tabView",
+    "ui:options": {
+      "full": true
+    },
     "ui:order": [
       "basic_info",
       "glance_info",
+      "input_datasets",
       "workflows",
       "likelihoods",
       "limits",
       "*"
     ],
     "input_datasets": {
-      "ui:array": "AccordionArrayField",
       "ui:options": {
         "enableArrayUtils": true
       }
     },
-    "publications": {
-      "ui:array": "AccordionArrayField"
-    },
+    "publications": {},
     "basic_info": {
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
       "people_info": {
@@ -218,17 +220,9 @@
             [["gitlab_group"], ["glance_info", "gitlab_group"]]
           ]
         }
-      },
-      "ui:object": "accordionObjectField"
-    },
-    "limits": {
-      "ui:object": "accordionObjectField"
-    },
-    "likelihoods": {
-      "ui:field": "accordion_jsoneditor"
+      }
     },
     "glance_info": {
-      "ui:object": "accordionObjectField",
       "id": {
         "ui:readonly": true
       },
@@ -272,10 +266,9 @@
       }
     },
     "workflows": {
-      "ui:array": "AccordionArrayField",
+      "ui:array": "default",
       "items": {
         "ui:order": ["workflow_title", "*"],
-
         "workflow": {
           "ui:title": "Workflow",
           "ui:field": "jsoneditor"
