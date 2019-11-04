@@ -194,6 +194,11 @@ export default function draftsReducer(state = initialState, action) {
         mimetype: action.data.mimetype,
         data: action.data
       });
+    case filesActions.UPLOAD_ACTION_SUCCESS:
+      return state.setIn(["bucket", action.filename], {
+        key: action.filename,
+        status: "fetching"
+      });
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["bucket", action.filename], {
         key: action.filename,

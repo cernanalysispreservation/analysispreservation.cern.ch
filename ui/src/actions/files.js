@@ -8,6 +8,7 @@ export const BUCKET_ITEM_ERROR = "BUCKET_ITEM_ERROR";
 
 export const UPLOAD_FILE_REQUEST = "UPLOAD_FILE_REQUEST";
 export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
+export const UPLOAD_ACTION_SUCCESS = "UPLOAD_ACTION_SUCCESS";
 export const UPLOAD_FILE_ERROR = "UPLOAD_FILE_ERROR";
 
 export const DELETE_FILE_REQUEST = "DELETE_FILE_REQUEST";
@@ -72,6 +73,9 @@ export function uploadFileRequest(filename) {
 export function uploadFileSuccess(filename, data) {
   return { type: UPLOAD_FILE_SUCCESS, filename, data };
 }
+export function uploadActionSuccess(filename) {
+  return { type: UPLOAD_ACTION_SUCCESS, filename };
+}
 export function uploadFileError(filename, error) {
   return { type: UPLOAD_FILE_ERROR, filename, error };
 }
@@ -134,8 +138,8 @@ export function uploadViaUrl(
       dispatch(uploadFileRequest(filename)),
         axios
           .post(uri, d)
-          .then(response => {
-            dispatch(uploadFileSuccess(filename, response.data));
+          .then(() => {
+            dispatch(uploadActionSuccess(filename));
           })
           .catch(error => {
             dispatch(uploadFileError(d.url, error));
