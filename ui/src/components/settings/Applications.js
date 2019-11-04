@@ -9,10 +9,10 @@ import Anchor from "grommet/components/Anchor";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";
+import TableHeader from "grommet/components/TableHeader";
 import TableRow from "grommet/components/TableRow";
 import Toast from "grommet/components/Toast";
 import Label from "grommet/components/Label";
-import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";
 
 import AddIcon from "grommet/components/icons/base/Add";
@@ -88,7 +88,7 @@ class SettingsIndex extends React.Component {
               validate={true}
             >
               <Box flex={true} margin={{ vertical: "small" }}>
-                <Button label="Submit" type="submit" primary={true} />
+                <Button label="Create token" type="submit" primary={true} />
               </Box>
             </Form>
           </Box>
@@ -103,114 +103,106 @@ class SettingsIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true} colorIndex="light-1">
-        {this.state.layer.active ? this.getLayer() : null}
-        <Box flex={false} colorIndex="neutral-1-a">
-          <Header
-            size="small"
-            pad={{ horizontal: "small" }}
-            wrap={true}
-            justify="between"
-          >
-            <Label margin="small" pad="none">
-              Your OAuth Tokens
-            </Label>
-            <Button
-              size="small"
-              label="Add Token"
-              icon={<AddIcon />}
-              onClick={this.activateLayer.bind(this, "token")}
-            />
-          </Header>
-        </Box>
-
-        <Box flex={true} colorIndex="light-3" margin="medium">
-          {!this.props.tokens.isEmpty() ? (
-            <Box flex={true}>
-              {this.state.showToast ? (
-                <Toast
-                  status="warning"
-                  onClose={() => {
-                    this.setState({ showToast: false });
-                  }}
+        <Box flex>
+            {this.state.layer.active ? this.getLayer() : null}
+            <Box pad="none">
+                <Box
+                    flex={true}
+                    direction="row"
+                    pad="small"
+                    justify="between"
                 >
-                  Do not share any personal access token. It gives full access
-                  to your account.
-                </Toast>
-              ) : null}
-              <Table>
-                <thead key="token_header">
-                  <tr>
-                    <th>ID</th>
-                    <th>NAME</th>
-                    <th>API KEY</th>
-                    <th>REVOKE</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {this.props.tokens.map((token, keyy) => {
-                    return token && token.t_id ? (
-                      <Box flex={true}>
-                        <TableRow key={token.t_id}>
-                          {[
-                            <td key="id">{token.t_id}</td>,
-                            <td key="name">{token.name}</td>,
-                            <td key="access_token">{token.access_token}</td>,
-                            <td key="action">
-                              <Anchor
-                                icon={<CloseIcon />}
-                                onClick={this._revokeToken.bind(
-                                  this,
-                                  token.t_id,
-                                  keyy
-                                )}
-                              />
-                            </td>
-                          ]}
-                        </TableRow>
-                      </Box>
-                    ) : null;
-                  })}
-                </tbody>
-              </Table>
+                    <Label
+                        uppercase={true}
+                        align="start"
+                        justify="center"
+                        margin="none"
+                    >
+                        Your OAuth Tokens
+                    </Label>
+                    <Box align="center">
+                        <Anchor
+                            icon={<AddIcon size="xsmall" />}
+                            label={<Label size="medium" uppercase>Add token</Label>}
+                            onClick={this.activateLayer.bind(this, "token")}
+                        />
+                    </Box>
+                </Box>
+                <Box colorIndex="light-1" >
+                    <Box>
+                        {!this.props.tokens.isEmpty() ? (
+                            <Box flex>
+                                {this.state.showToast ? (
+                                    <Toast
+                                        status="warning"
+                                        onClose={() => {
+                                            this.setState({ showToast: false });
+                                        }}
+                                    >
+                                        Do not share any personal access token. It gives full access
+                                        to your account.
+                                    </Toast>
+                                ) : null}
+                                <Table>
+                                    <TableHeader key="token_header" uppercase labels={['ID','Name', 'API key', 'Revoke']}/>
+                                    <tbody>
+                                        {this.props.tokens.map((token, key) => { return token && token.t_id ? (
+                                            <TableRow key={token.t_id}>
+                                                <td key="id">{token.t_id}</td>
+                                                <td key="name">{token.name}</td>
+                                                <td key="access_token">{token.access_token}</td>
+                                                <td key="action">
+                                                    <Anchor
+                                                        icon={<CloseIcon size="xsmall"/>}
+                                                        size="xsmall"
+                                                        onClick={this._revokeToken.bind(this,token.t_id,key)}
+                                                    />
+                                                </td>
+                                            </TableRow>
+                                        ) : null;
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </Box>
+                        ) : (
+                            <ListPlaceholder
+                                label="Add token"
+                                primary={true}
+                                a11yTitle="Add item"
+                                emptyMessage="You do not have any items at the moment."
+                                unfilteredTotal={0}
+                            />
+                        )}
+                    </Box>
+                </Box>
             </Box>
-          ) : (
-            <ListPlaceholder
-              label="Add token"
-              primary={true}
-              a11yTitle="Add item"
-              emptyMessage="You do not have any items at the moment."
-              unfilteredTotal={0}
-            />
-          )}
         </Box>
-      </Box>
     );
   }
 }
 
 SettingsIndex.propTypes = {
-  tokens: PropTypes.object,
-  getUsersAPIKeys: PropTypes.func,
-  createToken: PropTypes.func,
-  revokeToken: PropTypes.func
+    tokens: PropTypes.object,
+    getUsersAPIKeys: PropTypes.func,
+    createToken: PropTypes.func,
+    revokeToken: PropTypes.func
 };
 
 function mapStateToProps(state) {
-  return {
-    tokens: state.auth.get("tokens")
-  };
+    return {
+        tokens: state.auth.get("tokens")
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    getUsersAPIKeys: () => dispatch(getUsersAPIKeys()),
-    createToken: data => dispatch(createToken(data)),
-    revokeToken: (t_id, key) => dispatch(revokeToken(t_id, key))
-  };
+    return {
+        getUsersAPIKeys: () => dispatch(getUsersAPIKeys()),
+        createToken: data => dispatch(createToken(data)),
+        revokeToken: (t_id, key) => dispatch(revokeToken(t_id, key))
+    };
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(SettingsIndex);

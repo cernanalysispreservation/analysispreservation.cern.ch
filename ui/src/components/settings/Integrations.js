@@ -8,7 +8,9 @@ import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
 import Label from "grommet/components/Label";
+import Anchor from "grommet/components/Anchor";
 import Header from "grommet/components/Header";
+import AddIcon from "grommet/components/icons/base/Add";
 
 import OauthPopup from "./components/OAuthPopup";
 import { updateIntegrations } from "../../actions/auth";
@@ -41,7 +43,10 @@ class Integrations extends React.Component {
 
     return (
       <OauthPopup url={_url} loginCallBack={this.loginCallBack}>
-        <div>Connect</div>
+          <div><Anchor icon={<AddIcon size="xsmall" />}
+          label={<Label size="small" uppercase>connect</Label>}
+      /></div>
+                            
       </OauthPopup>
     );
   }
@@ -50,35 +55,42 @@ class Integrations extends React.Component {
     this.props.updateIntegrations();
   };
 
-  render() {
-    return (
-      <Box flex={true} colorIndex="light-1">
-        <Box flex={false} colorIndex="neutral-1-a">
-          <Header
-            size="small"
-            pad={{ horizontal: "small" }}
-            wrap={true}
-            justify="between"
-          >
-            <Label margin="small" pad="none">
-              Integrations
-            </Label>
-          </Header>
-        </Box>
-
-        <Box flex={true}>
-          <List>
-            {Object.keys(INTEGRATIONS).map(service => (
-              <ListItem key={service} justify="between" separator="horizontal">
-                <span className="secondary">{INTEGRATIONS[service].title}</span>
-                {this.props.integrations && this.props.integrations[service]
-                  ? "Connected"
-                  : this.renderOAuthPopup(service)}
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Box>
+    render() {
+        return (
+            <Box flex>
+                <Box pad="none">
+                    <Box
+                        flex={true}
+                        direction="row"
+                        pad="small"
+                    >
+                        <Label
+                            uppercase
+                            align="start"
+                            justify="center"
+                            margin="none"
+                        >
+                            Integrations with other services
+                        </Label>
+                    </Box>
+                </Box>
+                <Box colorIndex="light-1" >
+                    <Box>
+                        <Box flex>
+                            <List>
+                                {Object.keys(INTEGRATIONS).map(service => (
+                                    <ListItem key={service} justify="between">
+                                        <Label size="small" uppercase>{INTEGRATIONS[service].title}</Label>
+                                        {this.props.integrations && this.props.integrations[service]
+                                                ? "Connected"
+                                                : this.renderOAuthPopup(service)}
+                                            </ListItem>
+                                ))}
+                            </List>
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
     );
   }
 }
