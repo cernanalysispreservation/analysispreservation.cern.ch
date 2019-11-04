@@ -45,6 +45,7 @@
     "node-sass": "4.12.0",
     "object-assign": "4.1.0",
     "object-path": "0.11.4",
+    "parse-github-url": "1.0.2",
     "pluralize": "7.0.0",
     "pretty-bytes": "^4.0.2",
     "prism-react-renderer": "0.1.7",
