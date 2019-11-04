@@ -100,7 +100,7 @@ class PublishedPreview extends React.Component {
                   </Box>
                 }
                 uppercase={false}
-                action={<EditAnchor draft_id={this.props.draft_id} />}
+                action={this.props.canUpdate ? <EditAnchor draft_id={this.props.draft_id} /> : null}
               />
               <Box flex={true} direction="row" justify="between">
                 <Box flex={false} pad="medium">
@@ -144,6 +144,7 @@ const mapStateToProps = state => {
   return {
     id: state.published.get("id"),
     draft_id: state.published.get("draft_id"),
+    canUpdate: state.published.get("can_update"),
     metadata: state.published.get("metadata"),
     files: state.published.get("files"),
     schemas: state.published.get("schemas"),
