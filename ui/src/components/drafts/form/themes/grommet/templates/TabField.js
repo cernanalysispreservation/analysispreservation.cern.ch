@@ -2,11 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
 import { filter } from "lodash";
-import { Heading, Paragraph } from "grommet";
-import ReactTooltip from "react-tooltip";
-import CircleQuestion from "grommet/components/icons/base/CircleQuestion";
-import SwitchWidget from "../widgets/SwitchWidget";
+import AnalysisReuseMode from "../components/AnalysisReuseMode";
 
 class TabField extends React.Component {
   constructor(props) {
@@ -16,7 +14,7 @@ class TabField extends React.Component {
       components => components.name != "analysis_reuse_mode"
     );
     this.options = { ...props.uiSchema["ui:options"] };
-    this.view = this.options.view || { vertical: true, sidebarColor: "brand" };
+    this.view = this.options.view || { vertical: true, sidebarColor: "grey-3" };
     let active;
     if (this.options.initTab) active = this.options.initTab;
     else if (this.options.tabs && this.options.tabs.length > 0)
@@ -81,45 +79,12 @@ class TabField extends React.Component {
               wrap={true}
             >
               {this.props.properties.map(
-                (prop, index) =>
+                prop =>
                   prop.name === "analysis_reuse_mode" ? (
-                    <Box
-                      key={index}
-                      pad="small"
-                      align="center"
-                      separator="bottom"
-                    >
-                      <Box>
-                        <Paragraph>
-                          Reuse mode{" "}
-                          <CircleQuestion
-                            size="xsmall"
-                            data-tip
-                            data-for="reuseMode"
-                          />
-                        </Paragraph>
-                        <ReactTooltip id="reuseMode" place="right">
-                          <Paragraph margin="none" style={{ color: "#fff" }}>
-                            Turn this mode on if you want to capture additional
-                            information:
-                          </Paragraph>
-                          <Paragraph margin="none" style={{ color: "#fff" }}>
-                            about main and auxiliary measurements, systematic
-                            uncertainties,
-                          </Paragraph>
-                          <Paragraph margin="none" style={{ color: "#fff" }}>
-                            background estimates and final state particles
-                          </Paragraph>
-                        </ReactTooltip>
-                        <SwitchWidget
-                          {...prop.content.props}
-                          id="analysis_reuse_mode"
-                        />
-                      </Box>
-                    </Box>
+                    <AnalysisReuseMode innerProps={prop.content.props} />
                   ) : null
               )}
-              <Box flex={false}>
+              <Box flex={true} pad={{ vertical: "medium" }}>
                 {tabs.map(
                   tab =>
                     tab.name === "analysis_reuse_mode" ? null : (
@@ -141,6 +106,7 @@ class TabField extends React.Component {
                 )}
               </Box>
             </Box>
+
             <Box flex={true}>
               <Box
                 style={{
@@ -158,7 +124,7 @@ class TabField extends React.Component {
                     padding: "10px",
                     overflow: "auto"
                   }}
-                  size={this.view.innerTab || "xlarge"}
+                  size={{ width: this.view.innerTab || "xlarge" }}
                 >
                   {active_tabs_content.map(item => item.content)}
                 </Box>

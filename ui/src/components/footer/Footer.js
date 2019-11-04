@@ -8,11 +8,12 @@ import Anchor from "grommet/components/Anchor";
 class GrommetFooter extends React.Component {
   render() {
     return (
-      <Footer justify="center" colorIndex="neutral-1-a">
+      <Footer size="small" justify="center" colorIndex="neutral-1-a">
         <Box
           direction="row"
           align="center"
           justify="center"
+          size=""
           pad={{ between: "medium" }}
         >
           <Paragraph margin="none">
