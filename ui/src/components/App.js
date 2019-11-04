@@ -38,7 +38,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.loadingInit) return <Box>Loadiing....</Box>;
+    if (this.props.loadingInit) return <Box>loading....</Box>;
     return (
       <Grommet>
         <Box flex={false} full={true}>
