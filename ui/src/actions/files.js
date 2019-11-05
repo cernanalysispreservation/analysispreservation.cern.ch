@@ -16,11 +16,18 @@ export const DELETE_FILE_SUCCESS = "DELETE_FILE_SUCCESS";
 export const DELETE_FILE_ERROR = "DELETE_FILE_ERROR";
 
 // File Manager
-export function toggleFilemanagerLayer(selectable = false, action = null) {
+export function toggleFilemanagerLayer(
+  selectable = false,
+  action = null,
+  active = 0,
+  message = null
+) {
   return {
     type: TOGGLE_FILEMANAGER_LAYER,
     selectable,
-    action
+    action,
+    active,
+    message
   };
 }
 

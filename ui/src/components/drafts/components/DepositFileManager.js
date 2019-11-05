@@ -57,6 +57,7 @@ class FileManager extends React.Component {
     super(props);
     this.state = {
       selected: null,
+      activeIndex: props.active,
       formData: [],
       repo_branch: null,
       for_download: true,
@@ -69,6 +70,12 @@ class FileManager extends React.Component {
     this.props.toggleFilemanagerLayer();
   };
 
+  componentDidUpdate(prevProps) {
+    if (this.props.active !== prevProps.active) {
+      if (this.state.activeIndex !== this.props.active)
+        this.setState({ activeIndex: this.props.active });
+    }
+  }
   setSelected = key => this.setState({ selected: key });
 
   formDataChange = data => {
@@ -122,7 +129,12 @@ class FileManager extends React.Component {
                   />
                 </Box>
                 <Box flex={true} pad="small" colorIndex="grey-4-a">
-                  <Tabs justify="start" onActive={this.clearFormData}>
+                  <Tabs
+                    justify="start"
+                    onActive={this.clearFormData}
+                    activeIndex={this.state.activeIndex}
+                    onActive={index => this.setState({ activeIndex: index })}
+                  >
                     <Tab title="Upload File">
                       <Box pad="medium">
                         <Heading tag="h5" strong={true}>
@@ -184,10 +196,7 @@ class FileManager extends React.Component {
                         </Box>
                       </Box>
                     </Tab>
-                    <Tab
-                      title="Upload Github File"
-                      activeIndex={this.props.active || 0}
-                    >
+                    <Tab title="Upload Github File">
                       <Box pad="medium">
                         <Heading tag="h5" strong={true}>
                           Upload from CERN Gitlab/Github file URL
@@ -254,11 +263,11 @@ class FileManager extends React.Component {
                               <Box style={{ marginBottom: "5px" }}>
                                 <CheckBox
                                   label="Download repo to record"
-                                  checked={true}
+                                  checked={this.state.for_download}
                                   toggle={true}
-                                  onChange={event => {
+                                  onChange={() => {
                                     this.setState({
-                                      for_download: event.target.checked
+                                      for_download: !this.state.for_download
                                     });
                                   }}
                                 />
@@ -272,10 +281,11 @@ class FileManager extends React.Component {
                                         }) to my account (for real-time updates)`
                                       : "Connect the repo to my account (for real-time updates)"
                                   }
+                                  checked={this.state.for_connection}
                                   toggle={true}
-                                  onChange={event => {
+                                  onChange={() => {
                                     this.setState({
-                                      for_connection: event.target.checked
+                                      for_connection: !this.state.for_connection
                                     });
                                   }}
                                 />
@@ -364,6 +374,7 @@ FileManager.propTypes = {
 function mapStateToProps(state) {
   return {
     activeLayer: state.draftItem.get("fileManagerActiveLayer"),
+    active: state.draftItem.get("fileManagerLayerActiveIndex"),
     selectableLayer: state.draftItem.get("fileManagerLayerSelectable"),
     selectableActionLayer: state.draftItem.get(
       "fileManagerLayerSelectableAction"

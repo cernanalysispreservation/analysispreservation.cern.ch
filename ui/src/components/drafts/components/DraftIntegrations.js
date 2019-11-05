@@ -140,7 +140,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () =>
-      dispatch(toggleFilemanagerLayer(null, null, 3, "message"))
+      dispatch(toggleFilemanagerLayer(null, null, 2, "message"))
   };
 }
 export default withRouter(
