@@ -39,7 +39,7 @@ const uiSchema = {
   "ui:placeholder": "Please provide a Github or Gitlab CERN file url",
   "ui:widget": "tags",
   "ui:options": {
-    pattern: /(http:\/\/|https:\/\/|root:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
+    pattern: /(http:\/\/|https:\/\/|root:\/\/)(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)?(\/.*)?$/
   }
 };
 
@@ -48,7 +48,7 @@ const uiSchemaRepoUpload = {
     "Please provide a valid Github or Gitlab CERN repository url",
   "ui:widget": "tags",
   "ui:options": {
-    pattern: /(http:\/\/|https:\/\/)(github\.com|gitlab\.cern\.ch)?(\/.*)?$/
+    pattern: /(http:\/\/|https:\/\/)(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)?(\/.*)?$/
   }
 };
 
@@ -84,6 +84,23 @@ class FileManager extends React.Component {
 
   clearFormData = () => {
     this.setState({ formData: [] });
+  };
+
+  setRepoDownloadOption = isChecked => {
+    this.setState({ for_download: isChecked });
+  };
+
+  setRepoConnectionOption = isChecked => {
+    this.setState({ for_connection: isChecked });
+  };
+
+  changeConnectionSwitchLabel = data => {
+    // adds branch information to the 2nd switch on repo upload
+    if (data.length) {
+      this.setState({ repo_branch: parseGithubUrl(data[0]).branch });
+    } else {
+      this.setState({ repo_branch: null });
+    }
   };
 
   render() {
@@ -221,7 +238,9 @@ class FileManager extends React.Component {
                                       this.props.uploadViaUrl(
                                         this.props.id,
                                         this.state.formData,
-                                        "url"
+                                        "url",
+                                        true,
+                                        false // default for file
                                       );
                                     }}
                                   />
@@ -250,13 +269,7 @@ class FileManager extends React.Component {
                             uiSchema={uiSchemaRepoUpload}
                             onChange={change => {
                               this.formDataChange(change.formData);
-
-                              if (change.formData.length) {
-                                let repo = parseGithubUrl(change.formData[0]);
-                                this.setState({ repo_branch: repo.branch });
-                              } else {
-                                this.setState({ repo_branch: null });
-                              }
+                              this.changeConnectionSwitchLabel(change.formData);
                             }}
                           >
                             <Box margin={{ top: "small" }}>
@@ -265,10 +278,10 @@ class FileManager extends React.Component {
                                   label="Download repo to record"
                                   checked={this.state.for_download}
                                   toggle={true}
-                                  onChange={() => {
-                                    this.setState({
-                                      for_download: !this.state.for_download
-                                    });
+                                  onChange={event => {
+                                    this.setRepoDownloadOption(
+                                      event.target.checked
+                                    );
                                   }}
                                 />
                               </Box>
@@ -283,10 +296,10 @@ class FileManager extends React.Component {
                                   }
                                   checked={this.state.for_connection}
                                   toggle={true}
-                                  onChange={() => {
-                                    this.setState({
-                                      for_connection: !this.state.for_connection
-                                    });
+                                  onChange={event => {
+                                    this.setRepoConnectionOption(
+                                      event.target.checked
+                                    );
                                   }}
                                 />
                               </Box>
@@ -388,7 +401,8 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (id, url, type) => dispatch(uploadViaUrl(id, url, type))
+    uploadViaUrl: (id, url, type, download, connection) =>
+      dispatch(uploadViaUrl(id, url, type, download, connection))
   };
 }
 
