@@ -205,10 +205,11 @@ FileItem.propTypes = {
   action: PropTypes.func,
   deleteFile: PropTypes.func,
   bucket_id: PropTypes.string,
-  filePreview: PropTypes.func
+  filePreview: PropTypes.func,
+  status: PropTypes.string
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = () => {
   return {};
 };
 

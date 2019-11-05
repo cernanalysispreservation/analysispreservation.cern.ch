@@ -5,11 +5,7 @@ import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 
 import JSONDropzone from "./components/JSONDropzone";
-import JSONEditorLayer from "./components/JSONEditorLayer";
 
-import CodeIcon from "grommet/components/icons/base/Code";
-
-import _isEmpty from "lodash/isEmpty";
 import { Anchor } from "grommet";
 
 // import jsonWorkerUrl from "file-loader!ace-builds/src-noconflict/worker-json";
@@ -45,10 +41,8 @@ class JSONEditorWidget extends Component {
   render() {
     let {
       id,
-      schema: { title: title = id, description: rawDescription = null } = {},
-      rawErrors
+      schema: { title: title = id, description: rawDescription = null } = {}
     } = this.props;
-    let _errors;
 
     return (
       <FormField
@@ -105,7 +99,9 @@ JSONEditorWidget.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   id: PropTypes.string,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  schema: PropTypes.object,
+  formData: PropTypes.object
 };
 
 export default JSONEditorWidget;

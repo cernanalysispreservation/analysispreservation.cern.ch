@@ -56,9 +56,10 @@ export default function draftsReducer(state = initialState, action) {
         ...state.get("schemaErrors"),
         action.error
       ]);
-    case commonActions.FETCH_SCHEMA_SUCCESS:
-      const { schemaId, ...schemas } = action.schema;
+    case commonActions.FETCH_SCHEMA_SUCCESS: {
+      let { schemaId, ...schemas } = action.schema;
       return state.set("schema", schemaId).set("schemas", schemas);
+    }
     case draftItemActions.FORM_DATA_CHANGE:
       return state.set("formData", action.data);
     case draftItemActions.TOGGLE_FILEMANAGER_LAYER:

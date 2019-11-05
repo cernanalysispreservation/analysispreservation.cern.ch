@@ -71,7 +71,12 @@ class DepositForm extends React.Component {
 
   render() {
     return (
-      <Box size={{ width: { min: "large" } }} flex={true} wrap={false} separator="vertical">
+      <Box
+        size={{ width: { min: "large" } }}
+        flex={true}
+        wrap={false}
+        separator="vertical"
+      >
         <Box pad="none" flex={true}>
           <Form
             ref={this.props.formRef}
@@ -112,7 +117,9 @@ DepositForm.propTypes = {
   properties: PropTypes.object,
   formData: PropTypes.object,
   schemas: PropTypes.object,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  errors: PropTypes.array,
+  formRef: PropTypes.object
 };
 
 export default DepositForm;

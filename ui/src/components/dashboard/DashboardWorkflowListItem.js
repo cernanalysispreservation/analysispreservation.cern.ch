@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
@@ -47,6 +48,11 @@ function DashboardWorkflowListItem(props) {
     </ListItem>
   );
 }
+
+DashboardWorkflowListItem.propTypes = {
+  item: PropTypes.object,
+  push: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

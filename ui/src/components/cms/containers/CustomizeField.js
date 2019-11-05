@@ -5,7 +5,7 @@ import {
   updateUiSchemaByPath
 } from "../../../actions/schemaWizard";
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   const _path = state.schemaWizard.getIn(["field", "path"]);
   const _uiPath = state.schemaWizard.getIn(["field", "uiPath"]);
   if (_path)

@@ -10,9 +10,8 @@ const SwitchWidget = function(props) {
       style={{ overflow: "hidden" }}
       justify="center"
       size={{ width: "xxlarge" }}
-      justify="center"
       flex={false}
-     alignSelf="end"
+      alignSelf="end"
     >
       {props.value ? "Yes" : "No"}
     </Box>

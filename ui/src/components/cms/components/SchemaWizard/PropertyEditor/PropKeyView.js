@@ -34,7 +34,8 @@ PropKeyView.propTypes = {
   cancel: PropTypes.func,
   onFormSchemaChange: PropTypes.func,
   field: PropTypes.object,
-  path: PropTypes.array
+  path: PropTypes.array,
+  propKey: PropTypes.array
 };
 
 export default PropKeyView;

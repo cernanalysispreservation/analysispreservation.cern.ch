@@ -56,7 +56,8 @@ class DefaultArrayField extends React.Component {
 
 DefaultArrayField.propTypes = {
   items: PropTypes.array,
-  options: PropTypes.object
+  options: PropTypes.object,
+  readonly: PropTypes.bool
 };
 
 export default DefaultArrayField;

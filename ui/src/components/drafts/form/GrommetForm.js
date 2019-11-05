@@ -9,7 +9,7 @@ import ErrorListTemplate from "./themes/grommet/templates/ErrorListTemplate";
 
 import widgets from "./themes/grommet/widgets";
 import fields from "./themes/grommet/fields";
-
+import objectPath from "object-path";
 import Form from "react-jsonschema-form";
 
 class GrommetForm extends React.Component {
@@ -45,9 +45,6 @@ class GrommetForm extends React.Component {
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}
-        onError={error => {
-          console.log("onErorr:::", error);
-        }}
         ref={this.props.formRef}
         schema={this.props.schema}
         uiSchema={this.props.uiSchema}
@@ -78,7 +75,11 @@ GrommetForm.propTypes = {
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.element,
+  formRef: PropTypes.object,
+  styles: PropTypes.object,
+  condenced: PropTypes.bool,
+  hideErrorList: PropTypes.bool
 };
 
 export default GrommetForm;

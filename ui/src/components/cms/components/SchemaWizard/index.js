@@ -45,7 +45,10 @@ class SchemaWizard extends React.Component {
 
 SchemaWizard.propTypes = {
   current: PropTypes.object,
-  onFieldTypeSelect: PropTypes.func
+  onFieldTypeSelect: PropTypes.func,
+  field: PropTypes.object,
+  getSchema: PropTypes.func,
+  match: PropTypes.object
 };
 
 export default SchemaWizard;

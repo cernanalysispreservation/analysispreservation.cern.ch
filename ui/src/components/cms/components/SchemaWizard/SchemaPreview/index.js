@@ -46,6 +46,7 @@ class SchemaPreview extends React.Component {
           {this.state.view == "tree" ? (
             [
               <Box
+                key="root"
                 onClick={() =>
                   this.props.selectProperty({ schema: [], uiSchema: [] })
                 }
@@ -61,7 +62,7 @@ class SchemaPreview extends React.Component {
                   Root
                 </Box>
               </Box>,
-              <SchemaTree />
+              <SchemaTree key="schemaTree" />
             ]
           ) : (
             <Box>
@@ -77,7 +78,8 @@ class SchemaPreview extends React.Component {
 
 SchemaPreview.propTypes = {
   schema: PropTypes.object,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  selectProperty: PropTypes.func
 };
 
 export default SchemaPreview;

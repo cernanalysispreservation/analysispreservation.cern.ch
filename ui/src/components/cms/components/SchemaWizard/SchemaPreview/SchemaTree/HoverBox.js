@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDrop } from "react-dnd";
+import PropTypes from "prop-types";
 
 function getStyle(backgroundColor, isOverCurrent) {
   return {
@@ -13,10 +14,10 @@ function getStyle(backgroundColor, isOverCurrent) {
 }
 
 function HoverBox({ path, propKey, addProperty, children }) {
-  const [hasDropped, setHasDropped] = useState(false);
-  const [results, setResults] = useState({});
-  const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false);
-  const [{ isOver, isOverCurrent, resultss }, drop] = useDrop({
+  // const [hasDropped, setHasDropped] = useState(false);
+  // const [results, setResults] = useState({});
+  // const [hasDroppedOnChild, setHasDroppedOnChild] = useState(false);
+  const [{ isOverCurrent }, drop] = useDrop({
     accept: ["FIELD_TYPE", "NESTED_TYPE"],
     drop: (item, monitor) => {
       const didDrop = monitor.didDrop();
@@ -24,8 +25,8 @@ function HoverBox({ path, propKey, addProperty, children }) {
         addProperty(path, item.data.default);
         return { item, path, propKey };
       }
-      setHasDropped(true);
-      setHasDroppedOnChild(didDrop);
+      // setHasDropped(true);
+      // setHasDroppedOnChild(didDrop);
     },
     collect: monitor => ({
       isOver: monitor.isOver(),
@@ -43,5 +44,12 @@ function HoverBox({ path, propKey, addProperty, children }) {
     </div>
   );
 }
+
+HoverBox.propTypes = {
+  children: PropTypes.element,
+  path: PropTypes.array,
+  addProperty: PropTypes.func,
+  propKey: PropTypes.string
+};
 
 export default HoverBox;

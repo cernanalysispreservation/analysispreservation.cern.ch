@@ -6,6 +6,8 @@ import Box from "grommet/components/Box";
 
 import ErrorListTemplate from "../ErrorListTemplate";
 
+import PropTypes from "prop-types";
+
 const single = [
   {
     stack: "Error Message"
@@ -39,6 +41,10 @@ class ErrorListTemplateStorie extends Component {
     );
   }
 }
+
+ErrorListTemplateStorie.propTypes = {
+  errors: PropTypes.array
+};
 
 storiesOf("Error List Template", module)
   .add("Single Error Message", () => (

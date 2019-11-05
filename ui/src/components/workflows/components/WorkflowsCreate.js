@@ -47,14 +47,13 @@ class WorkflowsItem extends React.Component {
   }
 
   componentDidMount() {
-    let { match: { params: { draft_id, id } = {} } = {} } = this.props;
-
+    // let { match: { params: { draft_id, id } = {} } = {} } = this.props;
     // let { params: {workflow_id} = {} } = this.props.match;
     // this.props.getWorkflowStatus(workflow_id);
   }
 
   _createREANAWorkflow = data => {
-    let { match: { params: { draft_id, id } = {} } = {} } = this.props;
+    let { match: { params: { draft_id } = {} } = {} } = this.props;
     let { formData = {} } = data;
 
     // if PID exists, pass it in the payload to associate with record
@@ -108,7 +107,9 @@ class WorkflowsItem extends React.Component {
 WorkflowsItem.propTypes = {
   isLoggedIn: PropTypes.bool,
   history: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  createWorkflow: PropTypes.func,
+  pid: PropTypes.string
 };
 
 export default WorkflowsItem;

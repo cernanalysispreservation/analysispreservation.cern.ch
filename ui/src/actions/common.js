@@ -86,7 +86,7 @@ export function fetchAndAssignSchema(
   };
 }
 
-export function fetchSchemaByNameVersion(name = null, _version = null) {
+export function fetchSchemaByNameVersion(name = null) {
   return dispatch => {
     axios
       .get(`/api/jsonschemas/${name}`)

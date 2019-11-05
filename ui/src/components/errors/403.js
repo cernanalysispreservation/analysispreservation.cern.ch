@@ -8,13 +8,7 @@ import PropTypes from "prop-types";
 const PermissionDenied = props => {
   return (
     <Box flex>
-      <Box
-        fill
-        flex
-        colorIndex="light-2"
-        justify="center"
-        align="center"
-      >
+      <Box fill flex colorIndex="light-2" justify="center" align="center">
         <Label>
           {props.status} {props.statusText}
         </Label>
@@ -25,14 +19,15 @@ const PermissionDenied = props => {
           path="/"
           size="small"
         />
-    </Box>
+      </Box>
     </Box>
   );
 };
 
 PermissionDenied.propTypes = {
   status: PropTypes.number,
-  message: PropTypes.string
+  message: PropTypes.string,
+  statusText: PropTypes.string
 };
 
 export default PermissionDenied;

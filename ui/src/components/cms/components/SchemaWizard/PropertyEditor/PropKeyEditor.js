@@ -65,7 +65,10 @@ PropKeyEditor.propTypes = {
   cancel: PropTypes.func,
   onFormSchemaChange: PropTypes.func,
   field: PropTypes.object,
-  path: PropTypes.array
+  path: PropTypes.array,
+  addProperty: PropTypes.func,
+  schema: PropTypes.object,
+  type: PropTypes.string
 };
 
 export default PropKeyEditor;

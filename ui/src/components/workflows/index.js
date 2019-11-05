@@ -55,7 +55,7 @@ WorkflowsPage.propTypes = {
   match: PropTypes.object
 };
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {};
 }
 

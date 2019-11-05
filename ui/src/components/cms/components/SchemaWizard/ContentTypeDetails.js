@@ -28,7 +28,9 @@ ContentTypeDetails.propTypes = {
   cancel: PropTypes.func,
   onFormSchemaChange: PropTypes.func,
   field: PropTypes.object,
-  path: PropTypes.array
+  path: PropTypes.array,
+  propKeyEditor: PropTypes.object,
+  addProperty: PropTypes.func
 };
 
 export default ContentTypeDetails;

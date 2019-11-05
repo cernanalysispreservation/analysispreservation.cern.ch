@@ -13,7 +13,6 @@ class GrommetFooter extends React.Component {
           direction="row"
           align="center"
           justify="center"
-          size=""
           pad={{ between: "medium" }}
         >
           <Paragraph margin="none">

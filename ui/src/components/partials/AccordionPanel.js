@@ -23,7 +23,6 @@ class _AccordionPanel extends AccordionPanel {
       headingColor,
       pad
     } = this.props;
-    const { intl } = this.context;
 
     const classes = classnames(CLASS_ROOT, className, {
       [`${CLASS_ROOT}--active`]: active

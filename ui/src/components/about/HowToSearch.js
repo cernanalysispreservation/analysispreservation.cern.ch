@@ -2,19 +2,8 @@ import React from "react";
 
 import Box from "grommet/components/Box";
 import Tiles from "grommet/components/Tiles";
-import Tile from "grommet/components/Tile";
-import Heading from "grommet/components/Heading";
 
-function CustomTile(props) {
-  return (
-    <Tile basis={props.basis || "1/3"} pad="large">
-      <Heading tag="h5">{props.header}</Heading>
-      <code style={{ color: "#C094bf" }}>
-        <span>{props.code}</span>
-      </code>
-    </Tile>
-  );
-}
+import CustomTile from "./CustomTile";
 
 class HowToSearchPage extends React.Component {
   render() {

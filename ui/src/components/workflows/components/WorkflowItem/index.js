@@ -87,7 +87,12 @@ WorkflowsItem.propTypes = {
   isLoggedIn: PropTypes.bool,
   history: PropTypes.object,
   match: PropTypes.object,
-  toggleFilemanagerLayer: PropTypes.func
+  toggleFilemanagerLayer: PropTypes.func,
+  uploadWorkflowFiles: PropTypes.func,
+  getWorkflowFiles: PropTypes.func,
+  startWorkflow: PropTypes.func,
+  workflow: PropTypes.object,
+  getWorkflow: PropTypes.func
 };
 
 export default WorkflowsItem;

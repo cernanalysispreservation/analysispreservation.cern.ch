@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import SelectFieldType from "../components/SchemaWizard/PropertyEditor/SelectFieldType";
 import { selectFieldType } from "../../../actions/schemaWizard";
 
-function mapStateToProps(state, props) {
+function mapStateToProps(state) {
   const _path = state.schemaWizard.getIn(["field", "path"]);
   const _uiPath = state.schemaWizard.getIn(["field", "uiPath"]);
 

@@ -10,6 +10,8 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import PropTypes from "prop-types";
+
 class TextComponent extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +58,9 @@ class TextComponent extends Component {
   }
 }
 
+TextComponent.propTypes = {
+  error: PropTypes.object
+};
 storiesOf("Text", module)
   .add("default", () => <TextComponent />)
   .add("error", () => <TextComponent error="Display error message" />);

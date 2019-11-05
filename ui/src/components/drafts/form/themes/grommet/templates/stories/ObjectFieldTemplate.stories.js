@@ -5,6 +5,7 @@ import Grommet from "grommet/components/Grommet";
 import Box from "grommet/components/Box";
 
 import ObjectFieldTemplate from "../ObjectFieldTemplate";
+import PropTypes from "prop-types";
 
 const accordion = {
   "ui:object": "accordionObjectField"
@@ -48,6 +49,10 @@ class ObjectFieldTemplateStorie extends Component {
     );
   }
 }
+
+ObjectFieldTemplateStorie.propTypes = {
+  uiSchema: PropTypes.object
+};
 
 storiesOf("Object Field Template", module)
   .add("Layer", () => <ObjectFieldTemplateStorie uiSchema={layer} />)

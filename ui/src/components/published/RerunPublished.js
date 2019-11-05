@@ -135,7 +135,10 @@ class RerunPublished extends React.Component {
 }
 
 RerunPublished.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object,
+  createWorkflow: PropTypes.func,
+  history: PropTypes.object,
+  published: PropTypes.published
 };
 
 const mapStateToProps = state => {

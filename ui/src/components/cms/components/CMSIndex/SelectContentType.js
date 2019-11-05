@@ -69,7 +69,8 @@ class SelectContentType extends React.Component {
 
 SelectContentType.propTypes = {
   list: PropTypes.object,
-  select: PropTypes.func
+  select: PropTypes.func,
+  getSchemas: PropTypes.func
 };
 
 export default SelectContentType;

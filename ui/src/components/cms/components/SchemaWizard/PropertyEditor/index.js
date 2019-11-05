@@ -4,13 +4,7 @@ import Box from "grommet/components/Box";
 
 import { PropTypes } from "prop-types";
 import CustomizeField from "../../../containers/CustomizeField";
-import Header from "grommet/components/Header";
-import Accordion from "grommet/components/Accordion";
-import AccordionPanel from "../../../../partials/AccordionPanel";
 
-import SelectFieldType from "../../../containers/SelectFieldType";
-import PropKeyEditor from "./PropKeyEditor";
-import PropKeyView from "./PropKeyView";
 import AddIcon from "grommet/components/icons/base/FormAdd";
 import { Heading } from "grommet";
 

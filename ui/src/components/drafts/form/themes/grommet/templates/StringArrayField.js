@@ -63,7 +63,8 @@ class StringArrayField extends React.Component {
 
 StringArrayField.propTypes = {
   items: PropTypes.array,
-  onAddClick: PropTypes.func
+  onAddClick: PropTypes.func,
+  readonly: PropTypes.bool
 };
 
 export default StringArrayField;

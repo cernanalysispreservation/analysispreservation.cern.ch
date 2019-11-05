@@ -46,5 +46,6 @@ SectionHeader.propTypes = {
   label: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   icon: PropTypes.element,
   status: PropTypes.element,
-  action: PropTypes.element
+  action: PropTypes.element,
+  uppercase: PropTypes.bool
 };

@@ -55,7 +55,8 @@ class PublishedItemIndex extends React.Component {
 PublishedItemIndex.propTypes = {
   startDeposit: PropTypes.func,
   getPublishedItem: PropTypes.func,
-  item: PropTypes.object
+  item: PropTypes.object,
+  match: PropTypes.object
 };
 
 const mapStateToProps = state => {

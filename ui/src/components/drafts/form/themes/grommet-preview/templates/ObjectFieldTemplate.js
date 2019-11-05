@@ -9,7 +9,7 @@ let ObjectFieldTemplate = function(props) {
   const { properties, title, uiSchema, idSchema, formData } = props;
 
   function allPropsEmpty(obj) {
-    for (var key in obj) if (obj[key] !== undefined) return false;
+    for (let key in obj) if (obj[key] !== undefined) return false;
     return true;
   }
 
@@ -48,7 +48,8 @@ ObjectFieldTemplate.propTypes = {
   title: PropTypes.string,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.array
+  properties: PropTypes.array,
+  formData: PropTypes.object
 };
 
 export default ObjectFieldTemplate;

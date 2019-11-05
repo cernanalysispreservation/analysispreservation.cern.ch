@@ -43,7 +43,8 @@ JSONEditorWidget.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   id: PropTypes.string,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  formData: PropTypes.object
 };
 
 export default JSONEditorWidget;

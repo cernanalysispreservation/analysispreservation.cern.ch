@@ -8,10 +8,9 @@ import TabField from "./TabField";
 import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 
 import FieldHeader from "../components/FieldHeader";
-import { Repeat } from "immutable";
 
 let ObjectFieldTemplate = function(props) {
-  let { uiSchema: { uiOptions = {} } = {} } = props;
+  //let { uiSchema: { uiOptions = {} } = {} } = props;
 
   if (
     props.idSchema.$id == "root" &&
@@ -100,7 +99,8 @@ ObjectFieldTemplate.propTypes = {
   required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.array
+  properties: PropTypes.array,
+  schema: PropTypes.object
 };
 
 export default ObjectFieldTemplate;

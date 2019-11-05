@@ -17,7 +17,7 @@ import "ace-builds/src-noconflict/theme-github";
 class WorkflowsInfo extends React.Component {
   render() {
     let { workflow = null } = this.props;
-    let that = this;
+    // let that = this;
     if (!workflow) return null;
     return (
       <Box flex={false} margin={{ vertical: "large" }}>
@@ -84,7 +84,11 @@ class WorkflowsInfo extends React.Component {
 WorkflowsInfo.propTypes = {
   isLoggedIn: PropTypes.bool,
   history: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  filesToUpload: PropTypes.object,
+  uploadFiles: PropTypes.func,
+  addTempFile: PropTypes.func,
+  workflow: PropTypes.object
 };
 
 export default WorkflowsInfo;

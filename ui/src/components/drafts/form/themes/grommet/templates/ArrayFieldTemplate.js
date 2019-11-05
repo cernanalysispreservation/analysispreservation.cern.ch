@@ -117,7 +117,8 @@ ArrayFieldTemplate.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   required: PropTypes.bool,
-  items: PropTypes.array
+  items: PropTypes.array,
+  readonly: PropTypes.bool
 };
 
 export default ArrayFieldTemplate;

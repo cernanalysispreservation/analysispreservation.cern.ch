@@ -40,7 +40,8 @@ ArrayFieldTemplate.propTypes = {
   onAddClick: PropTypes.func,
   title: PropTypes.string,
   description: PropTypes.string,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  items: PropTypes.array
 };
 
 export default ArrayFieldTemplate;

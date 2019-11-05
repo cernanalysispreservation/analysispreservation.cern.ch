@@ -38,7 +38,9 @@ SwitchWidget.propTypes = {
   value: PropTypes.string,
   options: PropTypes.object,
   rawErrors: PropTypes.object,
-  schema: PropTypes.object
+  schema: PropTypes.object,
+  readonly: PropTypes.bool,
+  formData: PropTypes.string
 };
 
 export default SwitchWidget;

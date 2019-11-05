@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
+import Label from "grommet/components/Label";
 
 import FormLayer from "../components/FormLayer";
 

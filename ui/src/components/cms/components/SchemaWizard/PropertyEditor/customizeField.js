@@ -13,8 +13,8 @@ import Image5 from "./svg/TabTwoColLayoutField";
 import Image6 from "./svg/SidebatLayout";
 import Image7 from "./svg/SidebarTwoColLayout";
 
-import { commonSchema, schemaSchema, uiSchema } from "../../utils/schemas";
-import { Columns, Label } from "grommet";
+import { schemaSchema } from "../../utils/schemas";
+import { Label } from "grommet";
 
 const GRID_COLUMNS_OPTIONS = [
   "1/1",
@@ -36,6 +36,12 @@ const SIZE_OPTIONS = ["small", "large", "xlarge", "xxlarge", "full"];
 const ALIGN_OPTIONS = ["center", "start", "end"];
 
 class CustomizeField extends React.Component {
+  static getDerivedStateFromProps(props) {
+    return {
+      schema: props.schema ? props.schema.toJS() : {}
+    };
+  }
+
   constructor(props) {
     super(props);
 
@@ -63,12 +69,6 @@ class CustomizeField extends React.Component {
     });
   };
 
-  static getDerivedStateFromProps(props) {
-    return {
-      schema: props.schema ? props.schema.toJS() : {}
-    };
-  }
-
   gridChange = new_grid => {
     let { uiSchema } = this.props;
     uiSchema = uiSchema.toJS();
@@ -91,9 +91,12 @@ class CustomizeField extends React.Component {
 
     let { "ui:options": uiOptions = {}, ...rest } = uiSchema;
     let { grid = {}, ...restUIOptions } = uiOptions;
-    let { gridColumns, ...restGrid } = grid;
 
-    grid = { ...restGrid, gridColumns: new_gridColumn };
+    // delete previous gridColumns
+    delete grid.gridColumns;
+
+    grid = { ...grid, gridColumns: new_gridColumn };
+
     let _uiOptions = { grid, ...restUIOptions };
 
     this.props.onUiSchemaChange(this.props.path.get("uiPath").toJS(), {
@@ -185,8 +188,9 @@ class CustomizeField extends React.Component {
             colorIndex="light-1"
           >
             {this.props.path.toJS().path.length > 0 &&
-              GRID_COLUMNS_OPTIONS.map(gridColumns => (
+              GRID_COLUMNS_OPTIONS.map((gridColumns, index) => (
                 <Box
+                  key={index}
                   flex={false}
                   margin="small"
                   onClick={() => this.gridColumnChange(gridColumns)}
@@ -246,8 +250,9 @@ class CustomizeField extends React.Component {
             colorIndex="light-1"
           >
             {this.props.path.toJS().path.length === 0 &&
-              SIZE_OPTIONS.map(size => (
+              SIZE_OPTIONS.map((size, index) => (
                 <Box
+                  key={index}
                   flex={false}
                   margin="small"
                   onClick={() => this.sizeChange(size)}
@@ -297,8 +302,9 @@ class CustomizeField extends React.Component {
             colorIndex="light-1"
           >
             {this.props.path.toJS().path.length === 0 &&
-              ALIGN_OPTIONS.map(align => (
+              ALIGN_OPTIONS.map((align, index) => (
                 <Box
+                  key={index}
                   flex={false}
                   margin="small"
                   onClick={() => this.alignChange(align)}
@@ -377,7 +383,12 @@ class CustomizeField extends React.Component {
 
 CustomizeField.propTypes = {
   field: PropTypes.object,
-  cancel: PropTypes.func
+  cancel: PropTypes.func,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object,
+  onSchemaChange: PropTypes.func,
+  onUiSchemaChange: PropTypes.func,
+  path: PropTypes.array
 };
 
 export default CustomizeField;

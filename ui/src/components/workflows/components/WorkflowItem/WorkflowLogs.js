@@ -8,8 +8,8 @@ import { LazyLog } from "react-lazylog";
 
 class WorkflowsLogs extends React.Component {
   render() {
-    let { match = {} } = this.props;
-    let { params: { workflow_id } = {} } = match;
+    // let { match = {} } = this.props;
+    // let { params: { workflow_id } = {} } = match;
 
     return (
       <Box flex={false} size={{ height: "medium" }}>
@@ -24,7 +24,8 @@ class WorkflowsLogs extends React.Component {
 }
 
 WorkflowsLogs.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object,
+  workflow_id: PropTypes.string
 };
 
 export default WorkflowsLogs;

@@ -12,12 +12,9 @@ import Spinning from "grommet/components/icons/Spinning";
 import {
   CreateAnchor,
   SaveAnchor,
-  SettingsAnchor,
-  ShareAnchor,
   DiscardAnchor,
-  DeleteAnchor,
   DraftMessage
-} from "./DraftActionsButtons";
+} from "./Buttons";
 
 import EditableTitle from "./EditableTitle";
 
@@ -30,7 +27,8 @@ import {
   publishDraft,
   discardDraft,
   editPublished,
-  toggleActionsLayer,
+  deleteDraft,
+  toggleActionsLayer
   // togglePreviewer
 } from "../../../actions/draftItem";
 
@@ -64,21 +62,20 @@ class DraftEditorHeader extends React.Component {
 
     let emptyObject = 0;
 
-    for (let [key, value] of Object.entries(formData)) {
-      if (_isEmpty(value)) {
+    Object.values(formData).map(formItem => {
+      if (_isEmpty(formItem)) {
         emptyObject++;
       } else {
-        for (let [innerKey, innerValue] of Object.entries(value)) {
-          if (_isEmpty(innerValue)) {
+        Object.values(formItem).map(value => {
+          if (_isEmpty(value)) {
             emptyObject++;
           }
-        }
+        });
       }
-    }
+    });
 
     let condition =
       _isEmpty(formData) || emptyObject === Object.entries(formData).length;
-
 
     if (errors.length > 0) {
       cogoToast.error("Make sure all the fields are properly filled in", {
@@ -212,7 +209,6 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-
               {isDraft && isPublishedOnce ? (
                 <DiscardAnchor action={this._actionHandler("discard")} />
               ) : null}
@@ -254,7 +250,22 @@ DraftEditorHeader.propTypes = {
   match: PropTypes.object.isRequired,
   draft: PropTypes.object,
   id: PropTypes.string,
-  formRef: PropTypes.object
+  formRef: PropTypes.object,
+  message: PropTypes.string,
+  loading: PropTypes.bool,
+  schemaErrors: PropTypes.array,
+  discardDraft: PropTypes.func,
+  updateDraft: PropTypes.func,
+  editPublished: PropTypes.func,
+  createDraft: PropTypes.func,
+  publishDraft: PropTypes.func,
+  formData: PropTypes.object,
+  toggleActionsLayer: PropTypes.func,
+  deleteDraft: PropTypes.func,
+  schema: PropTypes.object,
+  status: PropTypes.string,
+  draft_id: PropTypes.string,
+  recid: PropTypes.string
 };
 
 function mapStateToProps(state) {

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { replace } from "react-router-redux";
 
-import exampleSchemas from "../components/schemas/static/example1";
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
 export const LIST_UPDATE = "LIST_UPDATE";
@@ -14,10 +13,18 @@ export const CREATE_MODE_ENABLE = "CREATE_MODE_ENABLE";
 export const PROPERTY_SELECT = "PROPERTY_SELECT";
 
 export const SCHEMA_INIT = "SCHEMA_INIT";
+export const SCHEMA_ERROR = "SCHEMA_ERROR";
 
 export const CURRENT_UPDATE_PATH = "CURRENT_UPDATE_PATH";
 export const CURRENT_UPDATE_SCHEMA_PATH = "CURRENT_UPDATE_SCHEMA_PATH";
 export const CURRENT_UPDATE_UI_SCHEMA_PATH = "CURRENT_UPDATE_UI_SCHEMA_PATH";
+
+export function schemaError(error) {
+  return {
+    type: SCHEMA_ERROR,
+    payload: error
+  };
+}
 
 export function schemaInit(id, data) {
   return {
@@ -59,7 +66,9 @@ export function getSchemas() {
         });
         dispatch(listUpdate(_schemas));
       })
-      .catch(err => {});
+      .catch(err => {
+        dispatch(schemaError(err));
+      });
   };
 }
 
@@ -83,14 +92,16 @@ export function getSchema(name, version = null) {
             )
           );
       })
-      .catch(err => {});
+      .catch(err => {
+        dispatch(schemaError(err));
+      });
   };
 }
 
 export function getSchemasLocalStorage() {
-  return function(dispatch) {
-    let availableSchemas = localStorage.getItem("availableSchemas");
-    availableSchemas = JSON.parse(availableSchemas);
+  return function() {
+    //let availableSchemas = localStorage.getItem("availableSchemas");
+    let availableSchemas = JSON.parse(availableSchemas);
   };
 }
 
@@ -121,7 +132,7 @@ export function selectContentType(id, version) {
           )
         );
       dispatch(replace("/cms/edit"));
-    } else console.log("select::", `ERROR: Schema '${id}' does not exists`);
+    }
   };
 }
 
@@ -142,12 +153,12 @@ export function fetchAndSelectContentType(id, version) {
           )
         );
       dispatch(replace("/cms/edit"));
-    } else console.log("select::", `ERROR: Schema '${id}' does not exists`);
+    }
   };
 }
 
 export function selectFieldType(path, change) {
-  return function(dispatch, getState) {
+  return function(dispatch) {
     dispatch(updateByPath(path, change));
   };
 }

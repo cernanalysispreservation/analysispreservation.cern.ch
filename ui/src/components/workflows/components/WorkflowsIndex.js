@@ -28,10 +28,8 @@ class WorkflowsIndex extends React.Component {
   };
 
   render() {
-    let { match: { url, params: { draft_id, id } = {} } = {} } = this.props;
+    let { match: { url } = {} } = this.props;
     let { workflows } = this.props;
-
-    workflows = workflows;
 
     return (
       <Box>
@@ -98,12 +96,7 @@ class WorkflowsIndex extends React.Component {
             <Box flex={true} direction="row" wrap>
               <Box flex />
               <Box flex>
-                <Button
-                  label="Try it now!"
-                  primary
-                  colorIndex="brand"
-                  onClick={() => {}}
-                />
+                <Button label="Try it now!" primary onClick={() => {}} />
               </Box>
             </Box>
           </Box>
@@ -148,7 +141,10 @@ WorkflowsIndex.propTypes = {
   isLoggedIn: PropTypes.bool,
   history: PropTypes.object,
   match: PropTypes.object,
-  getWorkflows: PropTypes.func
+  getWorkflows: PropTypes.func,
+  workflows: PropTypes.object,
+  location: PropTypes.object,
+  getDraftWorkflows: PropTypes.func
 };
 
 export default WorkflowsIndex;

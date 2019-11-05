@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 
-import { Accordion, Paragraph, Heading, ListItem, List } from "grommet";
+import { Accordion, Paragraph, Heading } from "grommet";
 import AddIcon from "grommet/components/icons/base/FormAdd";
 import AccordionPanel from "../../partials/AccordionPanel";
 
@@ -62,7 +62,6 @@ class DraftIntegrations extends React.Component {
             <Button
               onClick={this.props.toggleFilemanagerLayer}
               primary
-              colorIndex="accent-2"
               icon={<AddIcon />}
               label="Connect your repo"
             />
@@ -76,9 +75,9 @@ class DraftIntegrations extends React.Component {
           </Box>
           <Box flex={false} colorIndex="light-2">
             <Accordion>
-              {repositories.map(repo => (
+              {repositories.map((repo, index) => (
                 <AccordionPanel
-                  key={repo.name}
+                  key={`${repo.name}-${index}`}
                   noHeading={true}
                   headingColor="light-2"
                   heading={
@@ -128,7 +127,8 @@ class DraftIntegrations extends React.Component {
 }
 
 DraftIntegrations.propTypes = {
-  repos: PropTypes.object
+  repos: PropTypes.object,
+  toggleFilemanagerLayer: PropTypes.func
 };
 
 function mapStateToProps(state) {

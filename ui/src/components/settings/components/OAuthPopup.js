@@ -1,5 +1,6 @@
 // import * as React from 'react'
 import React from "react";
+import PropTypes from "prop-types";
 
 export default class OauthPopup extends React.PureComponent {
   constructor(props) {
@@ -24,3 +25,12 @@ export default class OauthPopup extends React.PureComponent {
     return <div onClick={this.createPopup}> {this.props.children} </div>;
   }
 }
+
+OauthPopup.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.element,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  url: PropTypes.string,
+  loginCallBack: PropTypes.func
+};

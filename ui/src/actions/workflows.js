@@ -11,19 +11,19 @@ const REANA_WORKFLOWS_ITEM_URL = workflow_id =>
   `${escape(REANA_WORKFLOWS_API_URL)}/${workflow_id}`;
 const REANA_WORKFLOWS_ITEM_FILES_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/files`;
-const REANA_WORKFLOWS_ITEM_LOGS_URL = workflow_id =>
-  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/logs`;
+// const REANA_WORKFLOWS_ITEM_LOGS_URL = workflow_id =>
+//   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/logs`;
 const REANA_WORKFLOWS_ITEM_START_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/start`;
 const REANA_WORKFLOWS_ITEM_STOP_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/stop`;
 const REANA_WORKFLOWS_ITEM_STATUS_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/status`;
-const REANA_WORKFLOWS_ITEM_CLONE_URL = workflow_id =>
-  `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/clone`;
-const REANA_WORKFLOWS_ITEM_DOWNLOAD_URL = (workflow_id, path) =>
-  `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/${path}`;
-const REANA_WORKFLOWS_ITEM_UPLOAD_URL = (workflow_id, path) =>
+// const REANA_WORKFLOWS_ITEM_CLONE_URL = workflow_id =>
+//   `${REANA_WORKFLOWS_ITEM_URL(workflow_id)}/clone`;
+// const REANA_WORKFLOWS_ITEM_DOWNLOAD_URL = (workflow_id, path) =>
+//   `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/${path}`;
+const REANA_WORKFLOWS_ITEM_UPLOAD_URL = workflow_id =>
   `${REANA_WORKFLOWS_ITEM_FILES_URL(workflow_id)}/upload`;
 
 export const WORKFLOWS_REQUEST = "WORKFLOWS_REQUEST";
