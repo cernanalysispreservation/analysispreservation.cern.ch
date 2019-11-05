@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Toast from "grommet/components/Toast";
+
+import cogoToast from "cogo-toast";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 
@@ -34,7 +35,11 @@ const transformSchema = schema => {
 };
 
 class DraftPreview extends React.Component {
-  s;
+  showToaster(error) {
+    cogoToast.error(error, {
+      hideAfter: 0
+    });
+  }
   render() {
     let _schema =
       this.props.schemas && this.props.schemas.schema
@@ -43,9 +48,7 @@ class DraftPreview extends React.Component {
 
     return (
       <Box id="deposit-page" flex={true}>
-        {this.props.error ? (
-          <Toast status="critical">{this.props.error.message}</Toast>
-        ) : null}
+        {this.props.error ? this.showToaster(this.props.error.message) : null}
 
         <Box direction="row" flex={true} wrap={false}>
           {this.props.schemas && this.props.schemas.schema ? (

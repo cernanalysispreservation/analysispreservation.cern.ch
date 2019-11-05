@@ -17,7 +17,7 @@ import CheckBox from "grommet/components/CheckBox";
 import RadioButton from "grommet/components/RadioButton";
 import FormField from "grommet/components/FormField";
 import TextInput from "grommet/components/TextInput";
-import Toast from "grommet/components/Toast";
+import cogoToast from "cogo-toast";
 
 import { handlePermissions, clearError } from "../../../actions/draftItem";
 
@@ -82,6 +82,16 @@ class DepositAccess extends React.Component {
     return actionExists.length > 0 ? true : false;
   }
 
+  showToaster(error) {
+    const { hide } = cogoToast.error(error, {
+      hideAfter: 0,
+      onClick: () => {
+        this.props.clearError();
+        hide();
+      }
+    });
+  }
+
   render() {
     if (!this.props.draft_id) return null;
     let permissions = this.props.permissions || {};
@@ -117,12 +127,7 @@ class DepositAccess extends React.Component {
 
     return (
       <Box>
-        {error ? (
-          <Toast status="critical" onClose={() => this.props.clearError()}>
-            {error}
-          </Toast>
-        ) : null}
-
+        {error ? this.showToaster(error) : null}
         <Box
           flex={false}
           colorIndex="grey-2"

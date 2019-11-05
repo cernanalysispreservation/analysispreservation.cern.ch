@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Toast from "grommet/components/Toast";
+import cogoToast from "cogo-toast";
 
 import TagsInput from "react-tagsinput";
 
@@ -40,6 +40,19 @@ class TagsWidget extends Component {
     );
   }
 
+  showToaster(error) {
+    cogoToast.error(
+      <div>
+        {error} is not a valid url. Please provide a valid{" "}
+        <strong>Github</strong> or <strong>Gitlab CERN</strong> url.
+      </div>,
+      {
+        hideAfter: 3
+      }
+    );
+    this.clearError();
+  }
+
   onValidationReject = errors => this.setState({ errors: errors });
 
   clearError = () => {
@@ -50,12 +63,9 @@ class TagsWidget extends Component {
     let TAGS_REGEX = this.props.options.pattern;
     return (
       <Box>
-        {this.state.errors && this.state.errors.length > 0 ? (
-          <Toast status="critical" onClose={() => this.clearError()}>
-            {this.state.errors} is not a valid url. Please provide a valid
-            <strong>Github</strong> or <strong>Gitlab CERN</strong> url.
-          </Toast>
-        ) : null}
+        {this.state.errors && this.state.errors.length > 0
+          ? this.showToaster(this.state.errors)
+          : null}
         <TagsInput
           disabled={this.props.readonly}
           value={this.state.tags}

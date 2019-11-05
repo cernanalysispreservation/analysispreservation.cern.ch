@@ -9,7 +9,6 @@ import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
-import Toast from "grommet/components/Toast";
 import Label from "grommet/components/Label";
 import Header from "grommet/components/Header";
 import Heading from "grommet/components/Heading";

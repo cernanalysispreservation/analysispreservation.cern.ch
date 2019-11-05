@@ -70,7 +70,7 @@ class EditableTitle extends React.Component {
         <Label margin="small" direction="row">
           <input
             key="draft-input"
-            style={{ padding: 0, border: "1px solid #fff", borderRadius: 0 }}
+            style={{ padding: 0, border: "1px solid #006996", borderRadius: 0 }}
             onChange={this._onChange}
             value={this.state.titleValue}
           />
@@ -81,14 +81,14 @@ class EditableTitle extends React.Component {
             margin="none"
             onClick={this._update.bind(this)}
           >
-            <CheckmarkIcon colorIndex="light-1" size="xsmall" />
+            <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
           <Box
             pad={{ horizontal: "small" }}
             margin="none"
             onClick={this._unedit.bind(this)}
           >
-            <CloseIcon colorIndex="light-1" size="xsmall" />
+            <CloseIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
         </Box>
       </Box>
@@ -102,7 +102,7 @@ class EditableTitle extends React.Component {
           margin={{ right: "small" }}
           style={{
             border: this.state.hoverTitle
-              ? "1px solid #fff"
+              ? "1px solid #006996"
               : "1px solid transparent",
             marginLeft: "-1px",
             paddingLeft: "5px"
