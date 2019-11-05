@@ -14,6 +14,7 @@ const initialState = Map({
     published: { data: [], more: null },
     user_published: { data: [], more: null },
     user_drafts: { data: [], more: null },
+    user_workflows: { data: [], more: null },
     user_drafts_count: 0,
     user_published_count: 0,
     user_count: 0

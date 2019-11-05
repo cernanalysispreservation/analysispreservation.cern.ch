@@ -9,27 +9,18 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Label from "grommet/components/Label";
 
-import Spinning from "grommet/components/icons/Spinning";
-
 import List from "grommet/components/List";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 
-import DashboardListItem from "./DashboardListItem";
-
 function DashboardList(props) {
   const [activeList, setActiveList] = useState("all");
-  let { header = "", emptyMessage = null, listType, list } = props;
+  let { header = "", emptyMessage = null, listType, list, ListItem } = props;
 
   return (
     <Box flex={false}>
       <Box pad="none">
-        <Box
-          flex={true}
-          direction="row"
-          pad="small"
-          justify="between"
-        >
+        <Box flex={true} direction="row" pad="small" justify="between">
           <Heading
             tag="h5"
             uppercase={true}
@@ -50,9 +41,9 @@ function DashboardList(props) {
               >
                 <Label
                   margin="none"
-                    size="small"
-                    style={{color: activeList == type ? 'black': 'lightgrey'}}
-                    uppercase
+                  size="small"
+                  style={{ color: activeList == type ? "black" : "lightgrey" }}
+                  uppercase
                 >
                   {type}
                 </Label>
@@ -68,11 +59,7 @@ function DashboardList(props) {
           <Box>
             <List>
               {list[activeList].list.map((item, index) => (
-                <DashboardListItem
-                  key={index}
-                  listType={listType}
-                  item={item}
-                />
+                <ListItem key={index} item={item} listType={listType} />
               ))}
             </List>
             {list[activeList].list.length > 4 ? (

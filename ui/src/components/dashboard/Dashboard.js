@@ -10,7 +10,10 @@ import { withRouter } from "react-router-dom";
 import { fetchDashboard } from "../../actions/dashboard";
 
 import DashboardList from "./DashboardList";
+import DashboardListItem from "./DashboardListItem";
+import DashboardWorkflowListItem from "./DashboardWorkflowListItem";
 import DashboardMeter from "./components/DashboardMeter";
+import DashboardQuickSearch from "./DashboardQuickSearch";
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -38,6 +41,12 @@ class Dashboard extends React.Component {
           list: this.props.results.user_published.data,
           more: this.props.results.user_published.more
         }
+      },
+      workflows: {
+        all: {
+          list: this.props.results.user_workflows.data,
+          more: this.props.results.user_workflows.more
+        }
       }
     };
   };
@@ -57,29 +66,47 @@ class Dashboard extends React.Component {
             <Spinning size="large" />
           </Box>
         ) : (
-          <Box direction="row" wrap align="center">
-            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-              <DashboardList
-                listType="published"
-                list={lists["published"]}
-                header="recently published"
-                emptyMessage="All analyses published on CAP by members of your collaboration."
-              />
+          <Box>
+            <Box direction="row" wrap align="center">
+              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
+                <DashboardList
+                  listType="published"
+                  list={lists["published"]}
+                  header="recently published"
+                  ListItem={DashboardListItem}
+                  emptyMessage="All analyses published on CAP by members of your collaboration."
+                />
+              </Box>
+
+              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
+                <DashboardList
+                  listType="draft"
+                  list={lists["drafts"]}
+                  header="drafts"
+                  ListItem={DashboardListItem}
+                  emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+                />
+              </Box>
             </Box>
 
-            <DashboardMeter
-              total={this.props.results.user_count}
-              drafts={this.props.results.user_drafts_count}
-              published={this.props.results.user_published_count}
-            />
-
-            <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-              <DashboardList
-                listType="draft"
-                list={lists["drafts"]}
-                header="drafts"
-                emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+            <Box direction="row" wrap align="center" justify="between">
+              <Box pad="medium" size={{ width: { max: "xlarge" } }} flex={true}>
+                <DashboardList
+                  listType="workflows"
+                  list={lists["workflows"]}
+                  header="recent workflows"
+                  ListItem={DashboardWorkflowListItem}
+                  emptyMessage="Recent workflows attached to your content"
+                />
+              </Box>
+              <DashboardMeter
+                total={this.props.results.user_count}
+                drafts={this.props.results.user_drafts_count}
+                published={this.props.results.user_published_count}
               />
+              <Box pad="medium" size={{ width: { max: "xlarge" } }} flex={true}>
+                <DashboardQuickSearch />
+              </Box>
             </Box>
           </Box>
         )}
