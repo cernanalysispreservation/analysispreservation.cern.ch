@@ -65,7 +65,8 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
         .set("fileManagerLayerSelectable", action.selectable)
-        .set("fileManagerLayerSelectableAction", action.action);
+        .set("fileManagerLayerSelectableAction", action.action)
+        .set("fileManagerLayerActiveIndex", action.active);
     // Draft Metadata
     case draftItemActions.DRAFTS_ITEM_SUCCESS:
       return state
