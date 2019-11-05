@@ -117,16 +117,16 @@ def download_from_root(url):
 def download_metadata_and_connect(record_id, filename, url, user_id, api):
     """Save metadata to db and enable webhooks integration."""
     try:
-        # check if webhooks already exist
-        if not len(api.webhooks):
-            hook_id, hook_secret = api.create_webhook()
-            GitRepository.create_or_get(api, url, user_id, record_id,
-                                        hook_id, hook_secret, filename,
-                                        for_download=True)
-        else:
+        # check if webhooks already exist by checking id/branch
+        repo = GitRepository.create_or_get(api, url, user_id, record_id,
+                                           filename, for_download=True)
+        if repo.hook:
             raise FileUploadError(
                 'Operation aborted. Webhook already exists '
                 'for repo {}.'.format(url))
+
+        hook_id, hook_secret = api.create_webhook()
+        repo.update_hook(hook_id, hook_secret)
     except UnknownObjectException:
         raise FileUploadError(
             'Webhook integration aborted. The repo {} does not exist, '
