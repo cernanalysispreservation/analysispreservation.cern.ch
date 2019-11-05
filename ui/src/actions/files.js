@@ -120,13 +120,7 @@ export function uploadFile(bucket_link, file) {
     oReq.send(file);
   };
 }
-export function uploadViaUrl(
-  draft_id,
-  urlToGrab,
-  type,
-  download = true,
-  connection = false
-) {
+export function uploadViaUrl(draft_id, urlToGrab, type, download, connection) {
   return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = urlToGrab.map(url => {
