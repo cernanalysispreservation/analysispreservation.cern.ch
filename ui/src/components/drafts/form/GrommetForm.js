@@ -51,7 +51,7 @@ class GrommetForm extends React.Component {
         ref={this.props.formRef}
         schema={this.props.schema}
         uiSchema={this.props.uiSchema}
-        showErrorList={true}
+        showErrorList={!this.props.hideErrorList}
         noHtml5Validate={true}
         formData={this.props.formData}
         onBlur={this.props.onBlur}

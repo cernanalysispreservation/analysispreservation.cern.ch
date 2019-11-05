@@ -9,7 +9,8 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 
 import ListItem from "grommet/components/ListItem";
-import Toast from "grommet/components/Toast";
+
+import cogoToast from "cogo-toast";
 
 import Status from "grommet/components/icons/Status";
 import NoteIcon from "grommet/components/icons/base/Note";
@@ -102,6 +103,12 @@ class FileItem extends React.Component {
     }
   }
 
+  showToaster(error) {
+    cogoToast.error(error, {
+      hideAfter: 0
+    });
+  }
+
   render() {
     let { file } = this.props;
 
@@ -123,9 +130,7 @@ class FileItem extends React.Component {
         pad="none"
         flex={true}
       >
-        {file.status == "error" ? (
-          <Toast status="critical">{file.error.message}</Toast>
-        ) : null}
+        {file.status == "error" ? this.showToaster(file.error.message) : null}
         <Box direction="row" flex={true} justify="between" wrap={false}>
           <Box direction="row" flex={true} justify="between" wrap={false}>
             <Box direction="row" flex={true}>
