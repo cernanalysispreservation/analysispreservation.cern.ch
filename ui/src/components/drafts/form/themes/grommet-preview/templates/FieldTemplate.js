@@ -25,7 +25,8 @@ let FieldTemplate = function(props) {
 
 FieldTemplate.propTypes = {
   label: PropTypes.string,
-  children: PropTypes.oneOf([PropTypes.array, PropTypes.element])
+  children: PropTypes.oneOf([PropTypes.array, PropTypes.element]),
+  schema: PropTypes.object
 };
 
 export default FieldTemplate;

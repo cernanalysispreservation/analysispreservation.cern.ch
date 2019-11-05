@@ -7,6 +7,7 @@ import Grommet from "grommet/components/Grommet";
 import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
+import PropTypes from "prop-types";
 
 class RadioComponent extends Component {
   constructor(props) {
@@ -55,6 +56,11 @@ class RadioComponent extends Component {
     );
   }
 }
+
+RadioComponent.propTypes = {
+  error: PropTypes.object,
+  value: PropTypes.bool
+};
 
 storiesOf("Radio", module)
   .add("default", () => <RadioComponent error={null} />)

@@ -286,8 +286,9 @@ DepositAccess.propTypes = {
   draft_id: PropTypes.string,
   draft: PropTypes.object,
   getUsers: PropTypes.func,
-  permissions: PropTypes.array,
-  handlePermissions: PropTypes.func
+  permissions: PropTypes.object,
+  handlePermissions: PropTypes.func,
+  created_by: PropTypes.string
 };
 
 function mapStateToProps(state) {

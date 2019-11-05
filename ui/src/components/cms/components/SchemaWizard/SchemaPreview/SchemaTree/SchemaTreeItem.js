@@ -5,8 +5,6 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
 import FormAddIcon from "grommet/components/icons/base/FormAdd";
-import FormEditIcon from "grommet/components/icons/base/FormEdit";
-
 import { PropTypes } from "prop-types";
 import { selectProperty } from "../../../../../../actions/schemaWizard";
 
@@ -94,7 +92,12 @@ class SchemaTreeItem extends React.Component {
 SchemaTreeItem.propTypes = {
   schema: PropTypes.object,
   id: PropTypes.string,
-  path: PropTypes.array
+  path: PropTypes.array,
+  selectProperty: PropTypes.func,
+  addProperty: PropTypes.func,
+  addItem: PropTypes.func,
+  type: PropTypes.string,
+  colorIndex: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {

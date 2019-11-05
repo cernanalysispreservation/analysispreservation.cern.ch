@@ -2,7 +2,6 @@ import React from "react";
 import { PropTypes } from "prop-types";
 
 import Box from "grommet/components/Box";
-import { Heading } from "grommet";
 
 import Highlight, { defaultProps } from "prism-react-renderer";
 
@@ -29,9 +28,9 @@ class JSONViewer extends React.Component {
                 style={{ ...style, ...{ marginBottom: 0 } }}
               >
                 {tokens.map((line, i) => (
-                  <div {...getLineProps({ line, key: i })}>
+                  <div {...getLineProps({ line, key: i })} key={i}>
                     {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
+                      <span {...getTokenProps({ token, key })} key={key} />
                     ))}
                   </div>
                 ))}

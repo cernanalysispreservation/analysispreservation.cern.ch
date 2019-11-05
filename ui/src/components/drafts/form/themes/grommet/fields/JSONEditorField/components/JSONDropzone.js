@@ -116,7 +116,8 @@ JSONDropzone.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   id: PropTypes.string,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  setJSON: PropTypes.func
 };
 
 export default JSONDropzone;

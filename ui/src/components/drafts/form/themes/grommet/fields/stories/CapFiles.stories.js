@@ -9,6 +9,7 @@ import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 
 import fields from "../index";
+import PropTypes from "prop-types";
 
 class CapFileComponent extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class CapFileComponent extends Component {
     };
   }
 
-  _onChange = value => {};
+  // _onChange = value => {};
 
   render() {
     return (
@@ -44,6 +45,10 @@ class CapFileComponent extends Component {
     );
   }
 }
+
+CapFileComponent.propTypes = {
+  formData: PropTypes.object
+};
 
 storiesOf("Cap Files", module)
   .add("Default message", () => <CapFileComponent />)

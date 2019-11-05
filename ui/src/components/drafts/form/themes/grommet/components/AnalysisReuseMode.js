@@ -45,7 +45,8 @@ AnalysisReuseMode.propTypes = {
   required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.array
+  properties: PropTypes.array,
+  innerProps: PropTypes.object
 };
 
 export default AnalysisReuseMode;

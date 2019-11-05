@@ -1,5 +1,6 @@
 import React from "react";
 import { useDrag } from "react-dnd";
+import PropTypes from "prop-types";
 
 const style = index => ({
   border: "2px dashed #f6f6f6",
@@ -27,6 +28,12 @@ const DraggableBox = ({ data, children, key }) => {
       {children}
     </div>
   );
+};
+
+DraggableBox.propTypes = {
+  children: PropTypes.element,
+  data: PropTypes.object,
+  key: PropTypes.number
 };
 
 export default DraggableBox;

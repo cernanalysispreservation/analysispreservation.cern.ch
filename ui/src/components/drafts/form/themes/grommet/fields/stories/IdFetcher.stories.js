@@ -5,6 +5,7 @@ import Grommet from "grommet/components/Grommet";
 import Box from "grommet/components/Box";
 
 import fields from "../index";
+import PropTypes from "prop-types";
 
 const schema = {
   title: "Custom Title"
@@ -36,6 +37,10 @@ class IdFetcherStorie extends Component {
     );
   }
 }
+IdFetcherStorie.propTypes = {
+  schema: PropTypes.object,
+  rawDescription: PropTypes.string
+};
 
 storiesOf("ID Fetcher", module)
   .add("Default", () => <IdFetcherStorie />)

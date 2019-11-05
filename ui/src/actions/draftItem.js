@@ -451,7 +451,7 @@ export function putUpdateDraft(data, draft_id) {
   };
 }
 
-export function postPublishDraft(draft_id) {
+export function postPublishDraft() {
   return (dispatch, getState) => {
     dispatch(publishDraftRequest());
     let state = getState();
@@ -502,7 +502,7 @@ export function publishDraft(draft_id) {
   };
 }
 
-export function deleteDraft(draft_id) {
+export function deleteDraft() {
   return (dispatch, getState) => {
     dispatch(deleteDraftRequest());
     let state = getState();
@@ -615,12 +615,14 @@ export function getDraftByIdAndInitForm(draft_id) {
         }
       })
       .then(response => {
-        let { files, ...rest } = response.data;
         let {
           links: { bucket: bucket_link = null }
-        } = rest;
+        } = response.data;
 
-        dispatch(draftsItemSuccess(draft_id, { ...rest }));
+        // remove files field from the response data
+        delete response.data["files"];
+
+        dispatch(draftsItemSuccess(draft_id, { ...response.data }));
         if (bucket_link) dispatch(getBucketByUri(bucket_link));
       })
       .catch(error => {

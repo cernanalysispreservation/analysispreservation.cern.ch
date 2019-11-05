@@ -151,7 +151,10 @@ class RunsListItem extends React.Component {
 
 RunsListItem.propTypes = {
   match: PropTypes.object,
-  RunsListItem: PropTypes.func
+  RunsListItem: PropTypes.func,
+  startWorkflow: PropTypes.func,
+  reana_id: PropTypes.string,
+  run: PropTypes.object
 };
 
 const mapDispatchToProps = dispatch => {

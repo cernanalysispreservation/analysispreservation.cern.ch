@@ -70,7 +70,7 @@ class TabField extends React.Component {
         <Box size={this.options && this.options.full ? "full" : "xxlarge"}>
           <Box flex={true} direction={this.view.vertical ? "row" : "column"}>
             <Box
-              fixed={true}
+              fixed="true"
               size={this.view.vertical ? "small" : "auto"}
               flex={false}
               colorIndex={this.view.sidebarColor || "grey-4"}
@@ -79,20 +79,23 @@ class TabField extends React.Component {
               wrap={true}
             >
               {this.props.properties.map(
-                prop =>
+                (prop, index) =>
                   prop.name === "analysis_reuse_mode" ? (
-                    <AnalysisReuseMode innerProps={prop.content.props} />
+                    <AnalysisReuseMode
+                      key={index}
+                      innerProps={prop.content.props}
+                    />
                   ) : null
               )}
-              <Box flex={true} pad={{ vertical: "none"}}>
+              <Box flex={true} pad={{ vertical: "none" }}>
                 {tabs.map(
-                  tab =>
+                  (tab, index) =>
                     tab.name === "analysis_reuse_mode" ? null : (
                       <Box
                         colorIndex={
                           tab.name == this.state.active ? "light-1" : null
                         }
-                        key={tab.key ? tab.key : tab.name}
+                        key={index}
                         pad="small"
                         onClick={this._onTabClick.bind(this, tab)}
                       >

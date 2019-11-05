@@ -120,7 +120,8 @@ Dashboard.propTypes = {
   currentUser: PropTypes.object,
   results: PropTypes.object,
   history: PropTypes.object,
-  permissions: PropTypes.bool
+  permissions: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {

@@ -3,6 +3,7 @@ import React from "react";
 import AnnotatedMeter from "grommet-addons/components/AnnotatedMeter";
 
 import Box from "grommet/components/Box";
+import PropTypes from "prop-types";
 
 class DashboardMeter extends React.Component {
   render() {
@@ -31,5 +32,11 @@ class DashboardMeter extends React.Component {
     );
   }
 }
+
+DashboardMeter.propTypes = {
+  total: PropTypes.number,
+  drafts: PropTypes.number,
+  published: PropTypes.number
+};
 
 export default DashboardMeter;

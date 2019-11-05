@@ -13,6 +13,7 @@ import { ORCidIcon } from "./components/ORCidIcon";
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
 import axios from "axios";
+import SelectLabel from "./components/selectLabel";
 
 class ServiceIDGetter extends React.Component {
   constructor(props) {
@@ -289,11 +290,11 @@ class ServiceIDGetter extends React.Component {
                 options={[
                   {
                     value: "orcid",
-                    label: selectLabel(<ORCidIcon />, "ORCID")
+                    label: SelectLabel(<ORCidIcon />, "ORCID")
                   },
                   {
                     value: "zenodo",
-                    label: selectLabel(<ZenodoIcon />, "Zenodo.org")
+                    label: SelectLabel(<ZenodoIcon />, "Zenodo.org")
                   }
                 ]}
                 onChange={this.onServiceChange}
@@ -325,18 +326,11 @@ class ServiceIDGetter extends React.Component {
 ServiceIDGetter.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.object,
+  schema: PropTypes.object,
+  id: PropTypes.string,
+  label: PropTypes.string,
+  rawDescription: PropTypes.string
 };
 
 export default ServiceIDGetter;
-
-const selectLabel = (icon, name) => (
-  <Box
-    flex={false}
-    direction="row"
-    pad={{ horizontal: "small", between: "small" }}
-  >
-    <Box>{icon} </Box>
-    <Box>{name}</Box>
-  </Box>
-);

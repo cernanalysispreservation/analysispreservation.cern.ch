@@ -11,7 +11,7 @@ import FileList from "../drafts/components/FileList";
 
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
-import { EditAnchor } from "../drafts/components/DraftActionsButtons";
+import { EditAnchor } from "../drafts/components/Buttons";
 import AnnounceIcon from "grommet/components/icons/base/Announce";
 
 import RunsIndex from "../published/RunsIndex";
@@ -100,7 +100,11 @@ class PublishedPreview extends React.Component {
                   </Box>
                 }
                 uppercase={false}
-                action={this.props.canUpdate ? <EditAnchor draft_id={this.props.draft_id} /> : null}
+                action={
+                  this.props.canUpdate ? (
+                    <EditAnchor draft_id={this.props.draft_id} />
+                  ) : null
+                }
               />
               <Box flex={true} direction="row" justify="between">
                 <Box flex={false} pad="medium">
@@ -137,7 +141,12 @@ PublishedPreview.propTypes = {
   getPublishedItem: PropTypes.func,
   item: PropTypes.object,
   schema: PropTypes.object,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  files: PropTypes.object,
+  metadata: PropTypes.object,
+  id: PropTypes.string,
+  status: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
 const mapStateToProps = state => {

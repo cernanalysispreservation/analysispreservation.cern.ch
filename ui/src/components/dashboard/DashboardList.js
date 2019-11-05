@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import MoreIcon from "grommet/components/icons/base/More";
 
@@ -86,5 +87,14 @@ function DashboardList(props) {
     </Box>
   );
 }
+
+DashboardList.propTypes = {
+  header: PropTypes.string,
+  emptyMessage: PropTypes.string,
+  listType: PropTypes.string,
+  list: PropTypes.object,
+  loading: PropTypes.bool,
+  ListItem: PropTypes.node
+};
 
 export default DashboardList;

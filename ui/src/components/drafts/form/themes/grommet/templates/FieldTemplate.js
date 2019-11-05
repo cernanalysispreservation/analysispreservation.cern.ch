@@ -5,14 +5,7 @@ import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 
 let FieldTemplate = function(props) {
-  const {
-    id,
-    label,
-    rawDescription,
-    rawErrors = [],
-    children,
-    uiSchema
-  } = props;
+  const { id, label, rawDescription, rawErrors = [], children } = props;
 
   let _errors = "";
   let gridColumns = null;
@@ -79,7 +72,8 @@ FieldTemplate.propTypes = {
   rawDescription: PropTypes.string,
   rawErrors: PropTypes.array,
   schema: PropTypes.object,
-  children: PropTypes.array
+  children: PropTypes.node,
+  uiSchema: PropTypes.object
 };
 
 export default FieldTemplate;

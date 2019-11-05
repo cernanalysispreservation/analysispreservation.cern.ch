@@ -10,6 +10,8 @@ import Box from "grommet/components/Box";
 import store from "../../../../../../../store/configureStore";
 import { Provider } from "react-redux";
 
+import PropTypes from "prop-types";
+
 const objschema = {
   type: "object",
   title: "Obj Title",
@@ -286,117 +288,117 @@ const objschema = {
     }
   }
 };
-const objschemaui = {
-  "ui:object": "tabView",
-  "ui:options": {
-    view: {
-      vertical: true,
-      sidebarColor: "brand"
-    }
-  },
-  basic_info: {
-    "ui:order": [
-      "general",
-      "analysis_title",
-      "glance_id",
-      "abstract",
-      "people_info"
-    ],
-    general: {
-      "ui:options": {
-        grid: {
-          gridColumn: "1 / 3"
-        }
-      }
-    },
-    analysis_title: {
-      "ui:options": {
-        grid: {
-          gridColumn: "3 / 4"
-        }
-      }
-    },
-    glance_id: {
-      "ui:options": {
-        grid: {
-          gridColumn: "4 / 5"
-        }
-      }
-    },
-    abstract: {
-      "ui:options": {
-        grid: {
-          gridColumn: "1 / 5"
-        }
-      }
-    },
-    people_info: {
-      "ui:options": {
-        grid: {
-          gridColumn: "2 / 5"
-        }
-      },
-      items: {
-        name: {
-          "ui:options": {
-            autofill_from: "/api/services/orcid?name=",
-            autofill_fields: [
-              [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-            ]
-          }
-        }
-      }
-    }
-  },
-  second: {
-    "ui:object": "accordionObjectField",
-    "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
-    people_info: {
-      items: {
-        name: {
-          "ui:options": {
-            autofill_from: "/api/services/orcid?name=",
-            autofill_fields: [
-              [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-            ]
-          }
-        }
-      }
-    }
-  },
-  third: {
-    "ui:object": "accordionObjectField",
-    "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
-    people_info: {
-      items: {
-        name: {
-          "ui:options": {
-            autofill_from: "/api/services/orcid?name=",
-            autofill_fields: [
-              [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-            ]
-          }
-        }
-      }
-    }
-  },
-  fourth: {
-    "ui:object": "accordionObjectField",
-    "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
-    people_info: {
-      items: {
-        name: {
-          "ui:options": {
-            autofill_from: "/api/services/orcid?name=",
-            autofill_fields: [
-              [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
-            ]
-          }
-        }
-      }
-    }
-  }
-};
+// const objschemaui = {
+//   "ui:object": "tabView",
+//   "ui:options": {
+//     view: {
+//       vertical: true,
+//       sidebarColor: "brand"
+//     }
+//   },
+//   basic_info: {
+//     "ui:order": [
+//       "general",
+//       "analysis_title",
+//       "glance_id",
+//       "abstract",
+//       "people_info"
+//     ],
+//     general: {
+//       "ui:options": {
+//         grid: {
+//           gridColumn: "1 / 3"
+//         }
+//       }
+//     },
+//     analysis_title: {
+//       "ui:options": {
+//         grid: {
+//           gridColumn: "3 / 4"
+//         }
+//       }
+//     },
+//     glance_id: {
+//       "ui:options": {
+//         grid: {
+//           gridColumn: "4 / 5"
+//         }
+//       }
+//     },
+//     abstract: {
+//       "ui:options": {
+//         grid: {
+//           gridColumn: "1 / 5"
+//         }
+//       }
+//     },
+//     people_info: {
+//       "ui:options": {
+//         grid: {
+//           gridColumn: "2 / 5"
+//         }
+//       },
+//       items: {
+//         name: {
+//           "ui:options": {
+//             autofill_from: "/api/services/orcid?name=",
+//             autofill_fields: [
+//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
+//             ]
+//           }
+//         }
+//       }
+//     }
+//   },
+//   second: {
+//     "ui:object": "accordionObjectField",
+//     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+//     people_info: {
+//       items: {
+//         name: {
+//           "ui:options": {
+//             autofill_from: "/api/services/orcid?name=",
+//             autofill_fields: [
+//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
+//             ]
+//           }
+//         }
+//       }
+//     }
+//   },
+//   third: {
+//     "ui:object": "accordionObjectField",
+//     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+//     people_info: {
+//       items: {
+//         name: {
+//           "ui:options": {
+//             autofill_from: "/api/services/orcid?name=",
+//             autofill_fields: [
+//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
+//             ]
+//           }
+//         }
+//       }
+//     }
+//   },
+//   fourth: {
+//     "ui:object": "accordionObjectField",
+//     "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
+//     people_info: {
+//       items: {
+//         name: {
+//           "ui:options": {
+//             autofill_from: "/api/services/orcid?name=",
+//             autofill_fields: [
+//               [["orcid"], ["basic_info", "people_info", "#", "orcid"]]
+//             ]
+//           }
+//         }
+//       }
+//     }
+//   }
+// };
 const objschemaui1 = {
   "ui:object": "tabView",
   "ui:options": {
@@ -4922,6 +4924,11 @@ class UiSchemaStorie extends Component {
     );
   }
 }
+
+UiSchemaStorie.propTypes = {
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object
+};
 
 storiesOf("UI Schema", module)
   // .add('Form Fields in Grid', () => <UiSchemaStorie uiSchema={objschemaui} schema={objschema} />)

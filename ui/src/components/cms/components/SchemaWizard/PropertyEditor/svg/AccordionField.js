@@ -1,18 +1,16 @@
 import React from "react";
-
 import SVGIcon from "grommet/components/SVGIcon";
+import PropTypes from "prop-types";
 
-const b = () => (
+const b = ({ size = "medium" }) => (
   <SVGIcon
-    viewBox="0 0 130 108"
     version="1.1"
     type="logo"
     a11yTitle="Locations Finder"
-    width="22"
-    height="22"
     viewBox="0 0 22 22"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    size={size}
   >
     <rect width="22" height="22" fill="#D8D8D8" />
     <rect x="2" y="4.7" width="18" height="4.5" fill="#FFFEFE" />
@@ -47,5 +45,9 @@ const b = () => (
     />
   </SVGIcon>
 );
+
+b.propTypes = {
+  size: PropTypes.string
+};
 
 export default b;

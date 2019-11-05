@@ -34,12 +34,7 @@ class DepositSettings extends React.Component {
               </Paragraph>
             </Box>
             <Box flex={false}>
-              <Button
-                onClick={() => {}}
-                primary
-                colorIndex="accent-2"
-                label="Publish"
-              />
+              <Button onClick={() => {}} primary label="Publish" />
               <Box pad={{ vertical: "small" }}>
                 Current Published Version: <strong>Not published yet</strong>
               </Box>

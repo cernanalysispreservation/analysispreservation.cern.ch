@@ -38,7 +38,7 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.props.loadingInit) return <Box>loading....</Box>;
+    if (this.props.loadingInit) return <Box>Loading....</Box>;
     return (
       <Grommet>
         <Box flex={false} full={true}>
@@ -61,7 +61,10 @@ class App extends React.Component {
 
 App.propTypes = {
   children: PropTypes.element,
-  initCurrentUser: PropTypes.func
+  initCurrentUser: PropTypes.func,
+  loadingInit: PropTypes.bool,
+  history: PropTypes.object,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {

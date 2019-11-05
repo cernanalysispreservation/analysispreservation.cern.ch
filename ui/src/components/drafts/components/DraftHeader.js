@@ -7,15 +7,12 @@ import { Route } from "react-router-dom";
 import DraftEditorHeader from "./DraftEditorHeader";
 import DraftDefaultHeader from "./DraftDefaultHeader";
 
+import PropTypes from "prop-types";
+
 class DraftHeader extends React.Component {
   render() {
     return (
-      <Box
-        colorIndex="grey-4"
-        flex={false}
-        justify="between"
-        direction="row"
-      >
+      <Box colorIndex="grey-4" flex={false} justify="between" direction="row">
         <Route
           path="/drafts/:draft_id/edit"
           render={props => (
@@ -37,5 +34,9 @@ class DraftHeader extends React.Component {
     );
   }
 }
+
+DraftHeader.propTypes = {
+  formRef: PropTypes.object
+};
 
 export default DraftHeader;

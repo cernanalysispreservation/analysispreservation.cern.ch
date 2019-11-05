@@ -16,6 +16,8 @@ import TimeAgo from "react-timeago";
 
 import { push } from "connected-react-router";
 
+import PropTypes from "prop-types";
+
 function DashboardListItem(props) {
   let {
     id,
@@ -83,6 +85,12 @@ function DashboardListItem(props) {
     </ListItem>
   );
 }
+
+DashboardListItem.propTypes = {
+  listType: PropTypes.string,
+  item: PropTypes.object,
+  push: PropTypes.func
+};
 
 function mapStateToProps(state) {
   return {

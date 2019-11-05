@@ -1,4 +1,4 @@
-import { Map, fromJS, List } from "immutable";
+import { Map, fromJS } from "immutable";
 
 import {
   SCHEMA_INIT,
@@ -7,10 +7,10 @@ import {
   CURRENT_UPDATE_UI_SCHEMA_PATH,
   LIST_UPDATE,
   PROPERTY_SELECT,
-  PROPERTY_SELECT_CLEAR,
   CREATE_MODE_ENABLE,
   ADD_PROPERTY,
-  ADD_PROPERTY_INIT
+  ADD_PROPERTY_INIT,
+  SCHEMA_ERROR
 } from "../actions/schemaWizard";
 
 const initialState = Map({
@@ -23,7 +23,8 @@ const initialState = Map({
   }),
   field: null,
   propKeyEditor: null,
-  editView: false
+  editView: false,
+  error: null
 });
 
 export default function schemaReducer(state = initialState, action) {
@@ -33,6 +34,8 @@ export default function schemaReducer(state = initialState, action) {
         .set("selected", action.id)
         .set("init", Map(action.data))
         .set("current", fromJS(action.data));
+    case SCHEMA_ERROR:
+      return state.set("error", action.payload);
     case LIST_UPDATE:
       return state.set("list", Map(action.items));
 
@@ -56,8 +59,8 @@ export default function schemaReducer(state = initialState, action) {
           uiPath: action.path.uiSchema
         }).set("editView", true)
       );
-    case PROPERTY_SELECT_CLEAR:
-      return state.set("field", null);
+    // case PROPERTY_SELECT_CLEAR:
+    //   return state.set("field", null);
     case CREATE_MODE_ENABLE:
       return state.set("field", null);
     case CURRENT_UPDATE_PATH:

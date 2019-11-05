@@ -54,7 +54,6 @@ class JSONEditorWidget extends Component {
                   <Box
                     colorIndex="grey-3"
                     pad="small"
-                    align="end"
                     direction="row"
                     justify="end"
                     align="center"
@@ -95,7 +94,12 @@ JSONEditorWidget.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func,
   id: PropTypes.string,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
+  formData: PropTypes.object,
+  title: PropTypes.string,
+  required: PropTypes.bool,
+  description: PropTypes.string,
+  schema: PropTypes.object
 };
 
 export default JSONEditorWidget;

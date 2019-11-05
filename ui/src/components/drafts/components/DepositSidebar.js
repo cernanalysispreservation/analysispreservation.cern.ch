@@ -44,9 +44,9 @@ class DepositSidebar extends React.Component {
       <Sidebar full={false} size="medium" colorIndex="light-2">
         <Box flex={false}>
           <SectionHeader label="Info & Details" />
-          <Box flex={false} pad="small" style={{fontWeight: "100"}}>
+          <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
             <Box direction="row" wrap={false} justify="between">
-              ID  <span>{this.props.id}</span>
+              ID <span>{this.props.id}</span>
             </Box>
             <Box direction="row" wrap={false} justify="between">
               Status <span>{this.props.status}</span>
@@ -69,13 +69,6 @@ class DepositSidebar extends React.Component {
                 <TimeAgo date={this.props.updated} minPeriod="60" />
               </strong>
             </Box>
-            <Box
-              direction="row"
-              wrap={false}
-              justify="between"
-              pad={{ vertical: "small" }}
-            >
-            </Box>
           </Box>
         </Box>
         <Box flex={true}>
@@ -92,7 +85,13 @@ class DepositSidebar extends React.Component {
 
 DepositSidebar.propTypes = {
   toggleFilemanagerLayer: PropTypes.func,
-  files: PropTypes.object
+  files: PropTypes.object,
+  created_by: PropTypes.string,
+  updated: PropTypes.string,
+  created: PropTypes.string,
+  experiment: PropTypes.string,
+  status: PropTypes.string,
+  id: PropTypes.string
 };
 
 function mapStateToProps(state) {

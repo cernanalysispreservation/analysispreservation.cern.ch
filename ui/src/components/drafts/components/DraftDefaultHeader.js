@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 
-import { EditAnchor } from "./DraftActionsButtons";
+import { EditAnchor } from "./Buttons";
 
 import EditableTitle from "./EditableTitle";
 
@@ -60,22 +60,23 @@ class DraftDefaultHeader extends React.Component {
           <EditableTitle />
         </Box>
         {this.props.canUpdate ? (
-        <Route
-          exact
-          path="/drafts/:draft_id"
-          render={() => (
-            <Box
-              pad={{ horizontal: "small" }}
-              justify="end"
-              align="center"
-              direction="row"
-              flex={true}
-              wrap={false}
-            >
-              <EditAnchor draft_id={this.props.draft_id} />
-            </Box>
-          )}
-        /> ) : null}
+          <Route
+            exact
+            path="/drafts/:draft_id"
+            render={() => (
+              <Box
+                pad={{ horizontal: "small" }}
+                justify="end"
+                align="center"
+                direction="row"
+                flex={true}
+                wrap={false}
+              >
+                <EditAnchor draft_id={this.props.draft_id} />
+              </Box>
+            )}
+          />
+        ) : null}
       </Box>
     );
   }
@@ -84,7 +85,10 @@ class DraftDefaultHeader extends React.Component {
 DraftDefaultHeader.propTypes = {
   match: PropTypes.object.isRequired,
   draft: PropTypes.object,
-  id: PropTypes.string
+  id: PropTypes.string,
+  error: PropTypes.object,
+  draft_id: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {

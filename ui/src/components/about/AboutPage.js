@@ -9,8 +9,8 @@ import GrommetFooter from "../footer/Footer";
 class AboutPage extends React.Component {
   render() {
     return [
-      <Header />,
-      <Box flex={true}>
+      <Header key="header" />,
+      <Box key="mainBody" flex={true}>
         <Box align="center">
           <Box align="center" size="xxlarge">
             <Box margin={{ vertical: "medium" }}>
@@ -122,7 +122,7 @@ class AboutPage extends React.Component {
           </Box>
         </Box>
       </Box>,
-      <GrommetFooter />
+      <GrommetFooter key="footer" />
     ];
   }
 }

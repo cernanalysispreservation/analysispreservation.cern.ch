@@ -97,7 +97,8 @@ class FileList extends React.Component {
 FileList.propTypes = {
   action: PropTypes.func,
   selectableActionLayer: PropTypes.func,
-  files: PropTypes.object
+  files: PropTypes.object,
+  status: PropTypes.string
 };
 
 const mapStateToProps = state => {

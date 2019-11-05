@@ -15,8 +15,10 @@ class SelectFieldType extends React.Component {
     let { path: schemaPath, uiPath: uiSchemaPath } = this.props.path.toJS();
     let schema = this.props.schema ? this.props.schema.toJS() : {};
     let uiSchema = this.props.uiSchema ? this.props.uiSchema.toJS() : {};
-    let { ["properties"]: properties, ["items"]: items, ...rest } = schema;
+    let { ["properties"]: properties, ...rest } = schema;
     let { ...uiRest } = uiSchema;
+
+    //TODO: handle type change between objects <-> array by keeping properties
 
     let newType = type.default.schema.type;
     if (newType == "object") {
@@ -45,7 +47,7 @@ class SelectFieldType extends React.Component {
         </Paragraph>
         <Box flex={true}>
           {Object.entries(fields).map(([key, type]) => (
-            <Box>
+            <Box key={key}>
               <Heading tag="h4">{type.title}</Heading>
               <Box
                 direction="row"
@@ -83,7 +85,9 @@ class SelectFieldType extends React.Component {
 SelectFieldType.propTypes = {
   selectFieldType: PropTypes.func,
   path: PropTypes.array,
-  propKey: PropTypes.string
+  propKey: PropTypes.string,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object
 };
 
 export default SelectFieldType;

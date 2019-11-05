@@ -64,12 +64,6 @@ class FileManager extends React.Component {
       for_connection: false
     };
   }
-
-  actionWithFile = key => {
-    this.props.selectableActionLayer(key);
-    this.props.toggleFilemanagerLayer();
-  };
-
   componentDidUpdate(prevProps) {
     if (this.props.active !== prevProps.active) {
       if (this.state.activeIndex !== this.props.active)
@@ -77,6 +71,11 @@ class FileManager extends React.Component {
     }
   }
   setSelected = key => this.setState({ selected: key });
+
+  actionWithFile = key => {
+    this.props.selectableActionLayer(key);
+    this.props.toggleFilemanagerLayer();
+  };
 
   formDataChange = data => {
     this.setState({ formData: data });
@@ -131,7 +130,6 @@ class FileManager extends React.Component {
                 <Box flex={true} pad="small" colorIndex="grey-4-a">
                   <Tabs
                     justify="start"
-                    onActive={this.clearFormData}
                     activeIndex={this.state.activeIndex}
                     onActive={index => this.setState({ activeIndex: index })}
                   >
@@ -368,7 +366,9 @@ FileManager.propTypes = {
   files: PropTypes.object,
   uploadFile: PropTypes.func,
   uploadViaUrl: PropTypes.func,
-  id: PropTypes.string
+  id: PropTypes.string,
+  active: PropTypes.number,
+  message: PropTypes.string
 };
 
 function mapStateToProps(state) {

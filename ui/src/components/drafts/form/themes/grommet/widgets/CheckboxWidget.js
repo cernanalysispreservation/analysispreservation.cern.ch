@@ -57,7 +57,8 @@ CheckBoxWidget.propTypes = {
   value: PropTypes.string,
   options: PropTypes.object,
   rawErrors: PropTypes.object,
-  schema: PropTypes.object
+  schema: PropTypes.object,
+  readonly: PropTypes.bool
 };
 
 export default CheckBoxWidget;

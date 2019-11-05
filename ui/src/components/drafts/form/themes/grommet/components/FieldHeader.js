@@ -45,13 +45,14 @@ let FieldHeader = function(props) {
 
 FieldHeader.propTypes = {
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  description: PropTypes.string,
+  description: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   margin: PropTypes.string,
   onArrayAddClick: PropTypes.func,
-  required: PropTypes.bool,
+  required: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.object
+  properties: PropTypes.object,
+  readonly: PropTypes.bool
 };
 
 export default FieldHeader;

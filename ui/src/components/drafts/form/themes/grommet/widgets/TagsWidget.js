@@ -91,7 +91,8 @@ TagsWidget.propTypes = {
   options: PropTypes.object,
   tags: PropTypes.array,
   placeholder: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  readonly: PropTypes.bool
 };
 
 export default TagsWidget;

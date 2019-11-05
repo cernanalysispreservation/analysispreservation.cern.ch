@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
 
 import {
   initForm,
@@ -17,7 +16,6 @@ import {
 import { fetchSchemaByNameVersion } from "../../actions/common";
 
 import Form from "./form/Form";
-import Sidebar from "./components/DepositSidebar";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import PermissionDenied from "../errors/403";
 
@@ -123,12 +121,16 @@ DraftEditor.propTypes = {
   initForm: PropTypes.func,
   schemas: PropTypes.object,
   schemasLoading: PropTypes.bool,
+  schemaErrors: PropTypes.array,
   // schemaId: PropTypes.string,
   error: PropTypes.object,
   formData: PropTypes.object,
   draft_id: PropTypes.string,
   formDataChange: PropTypes.func,
-  fetchAndAssignSchema: PropTypes.func
+  fetchAndAssignSchema: PropTypes.func,
+  fetchSchemaByNameVersion: PropTypes.func,
+  formRef: PropTypes.object,
+  errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
 function mapStateToProps(state) {
@@ -147,8 +149,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSchemaByNameVersion: (name, version) =>
-      dispatch(fetchSchemaByNameVersion(name, version)),
+    fetchSchemaByNameVersion: name => dispatch(fetchSchemaByNameVersion(name)),
     initForm: () => dispatch(initForm()),
     formDataChange: data => dispatch(formDataChange(data)),
     clearErrorSuccess: () => dispatch(clearErrorSuccess())

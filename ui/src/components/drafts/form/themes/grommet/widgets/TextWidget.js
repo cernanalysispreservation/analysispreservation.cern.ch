@@ -4,21 +4,14 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import TextInput from "grommet/components/TextInput";
-import Paragraph from "grommet/components/Paragraph";
 
 import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/draftItem";
 import { fromJS } from "immutable";
 
 import Spinning from "grommet/components/icons/Spinning";
+import ReadOnlyText from "./ReadOnlyText";
 
-const RenderReadOnlyText = props => (
-  <Box flex={true} pad={props.pad || { horizontal: "medium" }}>
-    <Paragraph size="small" margin="none" style={{ color: "#a8a8a8" }}>
-      {props.value || "empty value from the user"}
-    </Paragraph>
-  </Box>
-);
 class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -187,7 +180,7 @@ class TextWidget extends Component {
         </Box>
       </Box>
     ) : (
-      <RenderReadOnlyText value={this.props.value} />
+      <ReadOnlyText value={this.props.value} />
     );
   }
 }

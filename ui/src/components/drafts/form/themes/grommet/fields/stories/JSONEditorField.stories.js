@@ -8,6 +8,8 @@ import FormField from "grommet/components/FormField";
 
 import fields from "../index";
 
+import PropTypes from "prop-types";
+
 const formData = {
   project: "CAP",
   location: "CERN",
@@ -43,6 +45,10 @@ class JSONEditorFieldStorie extends Component {
     );
   }
 }
+
+JSONEditorFieldStorie.propTypes = {
+  formData: PropTypes.object
+};
 
 storiesOf("JSON Editor Field", module)
   .add("Empty", () => <JSONEditorFieldStorie />)

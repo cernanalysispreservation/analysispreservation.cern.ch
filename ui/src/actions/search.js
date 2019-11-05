@@ -39,7 +39,7 @@ const SEARCH_PATH_TO_INDEX = {
 const DEFAULT_INDEX = "records";
 
 export function fetchSearch(pathname, location_search) {
-  return function(dispatch, getState) {
+  return function(dispatch) {
     let index =
       pathname in SEARCH_PATH_TO_INDEX
         ? SEARCH_PATH_TO_INDEX[pathname]

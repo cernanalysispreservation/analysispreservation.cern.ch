@@ -8,6 +8,8 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import PropTypes from "prop-types";
+
 class CheckBoxComponent extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +31,7 @@ class CheckBoxComponent extends Component {
   }
 
   // TODO: figure out the onChange method inside the CheckBox Component
-  updateField = value => {};
+  // updateField = value => {};
 
   render() {
     return (
@@ -57,6 +59,10 @@ class CheckBoxComponent extends Component {
     );
   }
 }
+
+CheckBoxComponent.propTypes = {
+  error: PropTypes.object
+};
 
 storiesOf("CheckBox", module)
   .add("default", () => <CheckBoxComponent error={null} />)

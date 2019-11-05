@@ -17,7 +17,7 @@ class WorkflowsHeader extends React.Component {
     if (!workflow) return null;
     return (
       <Box flex={false} pad="small" colorIndex="light-2">
-        <Box flex={false} wrap={false} direction="row" wrap>
+        <Box flex={false} direction="row" wrap>
           <Box flex>
             <Headline size="small" strong>
               {workflow.get("name")}
@@ -53,7 +53,6 @@ class WorkflowsHeader extends React.Component {
           <Box flex={true} justify="end">
             <Box
               margin={{ left: "large" }}
-              justify="end"
               onClick={() => this._runWorkflow}
               colorIndex="neutral-2"
               pad="none"
@@ -80,7 +79,8 @@ class WorkflowsHeader extends React.Component {
 }
 
 WorkflowsHeader.propTypes = {
-  workflow: PropTypes.bool
+  workflow: PropTypes.bool,
+  startWorkflow: PropTypes.func
 };
 
 export default WorkflowsHeader;

@@ -117,12 +117,7 @@ class SettingsIndex extends React.Component {
         {this.state.layer.active ? this.getLayer() : null}
         <Box pad="none">
           <Box flex={true} direction="row" pad="small" justify="between">
-            <Label
-              uppercase={true}
-              align="start"
-              justify="center"
-              margin="none"
-            >
+            <Label uppercase align="start" justify="center" margin="none">
               Your OAuth Tokens
             </Label>
             <Box align="center">
