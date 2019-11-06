@@ -60,3 +60,25 @@ label {
 .rjsf-condenced {
   height: auto;
 }
+
+.a {
+  background: #006996;
+  background: linear-gradient(
+    to top right,
+    #006996 0%,
+    #006996 50%,
+    rgba(0, 105, 150, 0.8) 50%,
+    rgba(0, 105, 150, 0.8) 100%
+  );
+}
+
+.b {
+  background: #006996;
+  background: linear-gradient(
+    to top left,
+    rgba(0, 105, 150, 0.8) 0%,
+    rgba(0, 105, 150, 0.8) 50%,
+    #006996 50%,
+    #006996 100%
+  );
+}
