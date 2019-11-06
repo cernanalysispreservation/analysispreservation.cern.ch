@@ -21,15 +21,14 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """CAP facets factory for REST API."""
 
 from __future__ import absolute_import, print_function
 
-from elasticsearch_dsl import Q
 from flask import current_app
 from werkzeug.datastructures import MultiDict
 
+from elasticsearch_dsl import Q
 from invenio_records_rest.facets import (_create_filter_dsl, _post_filter,
                                          _query_filter)
 
@@ -42,8 +41,24 @@ def nested_filter(path, field):
     :returns: Function that returns Nested query.
     """
     def inner(values):
-        return Q('nested', path=path, ignore_unmapped=True,
+        return Q('nested',
+                 path=path,
+                 ignore_unmapped=True,
                  query=Q('terms', **{field: values}))
+
+    return inner
+
+
+def prefix_filter(field):
+    """Create a prefix filter.
+
+    :param field: Field name.
+    :returns: Function that returns the Prefix query.
+    """
+    def inner(values):
+        return Q('bool',
+                 should=[Q('prefix', **{field: value}) for value in values])
+
     return inner
 
 
@@ -110,15 +125,15 @@ def cap_facets_factory(search, index):
 
     if facets is not None:
         # Aggregations.
-        search = _aggregations(search, facets.get("aggs", {}),
-                               urlkwargs, facets.get("post_filters", {}))
+        search = _aggregations(search, facets.get("aggs", {}), urlkwargs,
+                               facets.get("post_filters", {}))
 
         # Query filter
-        search, urlkwargs = _query_filter(
-            search, urlkwargs, facets.get("filters", {}))
+        search, urlkwargs = _query_filter(search, urlkwargs,
+                                          facets.get("filters", {}))
 
         # Post filter
-        search, urlkwargs = _post_filter(
-            search, urlkwargs, facets.get("post_filters", {}))
+        search, urlkwargs = _post_filter(search, urlkwargs,
+                                         facets.get("post_filters", {}))
 
     return (search, urlkwargs)

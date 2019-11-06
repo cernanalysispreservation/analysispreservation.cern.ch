@@ -425,6 +425,9 @@
           "type": "date",
           "copy_to": "updated"
         },
+        "cadi_id": {
+          "type": "keyword"
+        },
         "basic_info": {
           "type": "object",
           "properties": {
