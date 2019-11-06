@@ -42,7 +42,7 @@ services:
 - rabbitmq
 
 env:
-  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.0.1
+  - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.6.4
 
 before_install:
   - "./scripts/ci/prebuild.sh"

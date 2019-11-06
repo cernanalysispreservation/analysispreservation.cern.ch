@@ -34,7 +34,7 @@ from cap.modules.oauthclient.contrib.cern import disconnect_handler
 from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
                                                    signup_handler)
 from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter
+from cap.modules.search.facets import nested_filter, prefix_filter
 
 
 def _(x):
@@ -138,7 +138,7 @@ SCHEMAS_OPTIONS_PREFIX = 'options/'
 #: It should be changed before deploying.
 SECRET_KEY = 'CHANGE_ME'
 #: Max upload size for form data via application/mulitpart-formdata.
-MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MiB
+MAX_CONTENT_LENGTH = 100 * 1024 * 1024    # 100 MiB
 #: Sets cookie with the secure flag by default
 SESSION_COOKIE_SECURE = False
 #: Since HAProxy and Nginx route all requests no matter the host header
@@ -146,9 +146,12 @@ SESSION_COOKIE_SECURE = False
 #: should be set to the correct host and it is strongly recommended to only
 #: route correct hosts to the application.
 APP_ALLOWED_HOSTS = [
-    'localhost', 'analysispreservation.web.cern.ch',
-    'analysispreservation.cern.ch', 'analysispreservation-dev.web.cern.ch',
-    'analysispreservation-dev.cern.ch', 'analysispreservation-qa.web.cern.ch',
+    'localhost',
+    'analysispreservation.web.cern.ch',
+    'analysispreservation.cern.ch',
+    'analysispreservation-dev.web.cern.ch',
+    'analysispreservation-dev.cern.ch',
+    'analysispreservation-qa.web.cern.ch',
     'analysispreservation-qa.cern.ch'
 ]
 
@@ -231,171 +234,92 @@ SUPERUSER_EGROUPS = [
 # =======
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS = dict(records=dict(
-    bestmatch=dict(
-        title=_('Best match'),
-        fields=['_score'],
-        order=1,
-    ),
-    mostrecent=dict(
-        title=_('Most recent'),
-        fields=['_updated'],
-        default_order='desc',
-        order=2,
-    ),
+    bestmatch=dict(title=_('Best match'), fields=['_score'], order=1, ),
+    mostrecent=dict(title=_('Most recent'),
+                    fields=['_updated'],
+                    default_order='desc',
+                    order=2,
+                    ),
 ))
+
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 
 #: Record search facets.
 # for aggregations, only ones starting with facet_ will be displayed on a page
-RECORDS_REST_FACETS = {
-    'deposits': {
-        'aggs': {
-            'facet_status': {
-                'terms': {
-                    'field': 'status.keyword'
-                }
+CAP_FACETS = {
+    'aggs': {
+        'facet_type': {
+            'terms': {
+                'field': '_type'
+            }
+        },
+        'facet_cadi_status': {
+            'terms': {
+                'field': 'cadi_status'
+            }
+        },
+        'facet_publication_status': {
+            'terms': {
+                'field': 'publication_status.keyword'
+            }
+        },
+        'facet_cms_working_group': {
+            'terms': {
+                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"    # noqa
+            }
+        },
+        "particles": {
+            "nested": {
+                "path": "main_measurements.signal_event_selection"
+                ".physics_objects"
             },
-            'facet_type': {
-                'terms': {
-                    'field': '_type'
-                }
-            },
-            'facet_cadi_status': {
-                'terms': {
-                    'field': 'cadi_status'
-                }
-            },
-            'facet_publication_status': {
-                'terms': {
-                    'field': 'publication_status.keyword'
-                }
-            },
-            'facet_cms_wg': {
-                'terms': {
-                    "script": {
-                        "inline":
-                        "doc.containsKey('cadi_id') ? doc['cadi_id.keyword'].value.substring(0,3) : null"  # noqa
+            "aggs": {
+                "facet_physics_objects": {
+                    "terms": {
+                        "field": "main_measurements.signal_event_selection"
+                        ".physics_objects.object",
+                        "exclude": ""
+                    },
+                    "aggs": {
+                        "doc_count": {
+                            "reverse_nested": {}
+                        },
+                        "facet_physics_objects_type": {
+                            "terms": {
+                                "field": "main_measurements"
+                                ".signal_event_selection"
+                                ".physics_objects"
+                                ".object_type.keyword"
+                            },
+                            "aggs": {
+                                "doc_count": {
+                                    "reverse_nested": {}
+                                }
+                            }
                         }
                     }
                 },
-            "particles": {
-                "nested": {
-                    "path": "main_measurements.signal_event_selection"
-                            ".physics_objects"
-                },
-                "aggs": {
-                    "facet_physics_objects": {
-                        "terms": {
-                            "field": "main_measurements.signal_event_selection"
-                                     ".physics_objects.object",
-                            "exclude": ""
-                        },
-                        "aggs": {
-                            "doc_count": {
-                                "reverse_nested": {}
-                            },
-                            "facet_physics_objects_type": {
-                                "terms": {
-                                    "field": "main_measurements"
-                                             ".signal_event_selection"
-                                             ".physics_objects"
-                                             ".object_type.keyword"
-                                },
-                                "aggs": {
-                                    "doc_count": {
-                                        "reverse_nested": {}
-                                    }
-                                }
-                            }
-                        }
-                    },
-                }
-            },
+            }
         },
-        'post_filters': {
-            'type': terms_filter('_type'),
-            'status': terms_filter('status.keyword'),
-            'cadi_status': terms_filter('cadi_status'),
-            'cms_wg': terms_filter('cadi_id'),
-            'publication_status': terms_filter('publication_status.keyword'),
-            'conference': terms_filter('conference'),
-            'physics_objects': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection'
-                '.physics_objects.object'),
-            'physics_objects_type': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection.physics_objects'
-                '.object_type.keyword'),
-        }
     },
-    'records': {
-        'aggs': {
-            'facet_type': {
-                'terms': {
-                    'field': '_type'
-                }
-            },
-            'facet_cadi_status': {
-                'terms': {
-                    'field': 'cadi_status'
-                }
-            },
-            'facet_publication_status': {
-                'terms': {
-                    'field': 'publication_status.keyword'
-                }
-            },
-            "particles": {
-                "nested": {
-                    "path": "main_measurements.signal_event_selection"
-                            ".physics_objects"
-                },
-                "aggs": {
-                    "facet_physics_objects": {
-                        "terms": {
-                            "field": "main_measurements.signal_event_selection"
-                                     ".physics_objects.object",
-                            "exclude": ""
-                        },
-                        "aggs": {
-                            "doc_count": {
-                                "reverse_nested": {}
-                            },
-                            "facet_physics_objects_type": {
-                                "terms": {
-                                    "field": "main_measurements"
-                                             ".signal_event_selection"
-                                             ".physics_objects"
-                                             ".object_type.keyword"
-                                },
-                                "aggs": {
-                                    "doc_count": {
-                                        "reverse_nested": {}
-                                    }
-                                }
-                            }
-                        }
-                    },
-                }
-            },
-        },
-        'post_filters': {
-            'type': terms_filter('_type'),
-            'cadi_status': terms_filter('cadi_status'),
-            'publication_status': terms_filter('publication_status.keyword'),
-            'conference': terms_filter('conference'),
-            'physics_objects': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection'
-                '.physics_objects.object'),
-            'physics_objects_type': nested_filter(
-                'main_measurements.signal_event_selection.physics_objects',
-                'main_measurements.signal_event_selection.physics_objects'
-                '.object_type.keyword'),
-        }
+    'post_filters': {
+        'type': terms_filter('_type'),
+        'cms_working_group': prefix_filter('cadi_id'),
+        'publication_status': terms_filter('publication_status.keyword'),
+        'cadi_status': terms_filter('cadi_status'),
+        'conference': terms_filter('conference'),
+        'physics_objects': nested_filter(
+            'main_measurements.signal_event_selection.physics_objects',
+            'main_measurements.signal_event_selection'
+            '.physics_objects.object'),
+        'physics_objects_type': nested_filter(
+            'main_measurements.signal_event_selection.physics_objects',
+            'main_measurements.signal_event_selection.physics_objects'
+            '.object_type.keyword')
     }
 }
+
+RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
 
 #: Records REST API endpoints.
 RECORDS_REST_ENDPOINTS = copy.deepcopy(RECORDS_REST_ENDPOINTS)
@@ -404,8 +328,7 @@ RECORDS_REST_ENDPOINTS['recid'].update({
     'record_class': 'cap.modules.records.api:CAPRecord',
     'pid_fetcher': 'cap_record_fetcher',
     'search_class': 'cap.modules.records.search:CAPRecordSearch',
-    'search_factory_imp': 'cap.modules.search.query'
-                          ':cap_search_factory',
+    'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
     'record_serializers': {
         'application/json': ('cap.modules.records.serializers'
                              ':record_json_v1_response'),
@@ -505,10 +428,9 @@ CERN_APP_CREDENTIALS = {
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
 # and error flashing
 CERN_REMOTE_APP.update(
-    dict(
-        authorized_handler=authorized_signup_handler,
-        disconnect_handler=disconnect_handler,
-    ))
+    dict(authorized_handler=authorized_signup_handler,
+         disconnect_handler=disconnect_handler,
+         ))
 
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
@@ -525,9 +447,9 @@ JSONSCHEMAS_RESOLVE_SCHEMA = True
 
 JSONSCHEMAS_LOADER_CLS = json_loader_factory(
     JSONResolver(plugins=[
-        'cap.modules.schemas.resolvers',
-        'cap.modules.schemas.resolvers_api',
-    ], ))
+        'cap.modules.schemas.resolvers', 'cap.modules.schemas.resolvers_api'
+    ],
+                 ))
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
@@ -609,16 +531,14 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
                                    ':basic_json_v1_search')
     },
     'files_serializers': {
-        'application/json': ('cap.modules.deposit.serializers'
-                             ':files_response'),
+        'application/json': ('cap.modules.deposit.serializers:files_response'),
     },
     'search_class': 'cap.modules.deposit.search:CAPDepositSearch',
-    'search_factory_imp': 'cap.modules.search.query'
-                          ':cap_search_factory',
+    'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
-    'file_item_route':
-        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
+    'file_item_route': '/deposits/<{0}:pid_value>/files/<path:key>'.format(
+        _PID),
     'create_permission_factory_imp': check_oauth2_scope(
         lambda record: CreateDepositPermission(record).can(), write_scope.id),
     'read_permission_factory_imp': check_oauth2_scope(
@@ -675,9 +595,7 @@ REANA_ACCESS_TOKEN = {
 # Keytabs
 KEYTABS_LOCATION = os.environ.get('APP_KEYTABS_LOCATION', '/etc/keytabs')
 
-KRB_PRINCIPALS = {
-    'CADI': (CMS_USER_PRINCIPAL, CMS_USER_KEYTAB),
-}
+KRB_PRINCIPALS = {'CADI': (CMS_USER_PRINCIPAL, CMS_USER_KEYTAB)}
 
 CERN_CERTS_PEM = os.environ.get('APP_CERN_CERTS_PEM')
 

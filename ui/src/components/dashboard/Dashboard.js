@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
   render() {
     let lists = this._getList();
     return (
-      <Box full={true} colorIndex="light-2">
+      <Box full={true} colorIndex="light-2" pad={{horizontal: "small"}}>
         {!this.props.permissions && (
           <Notification
             message="Your account has no permissions to access the platform resources."
