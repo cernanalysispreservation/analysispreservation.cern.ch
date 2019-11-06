@@ -70,16 +70,6 @@ class Dashboard extends React.Component {
             <Box direction="row" wrap align="center">
               <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
                 <DashboardList
-                  listType="published"
-                  list={lists["published"]}
-                  header="recently published"
-                  ListItem={DashboardListItem}
-                  emptyMessage="All analyses published on CAP by members of your collaboration."
-                />
-              </Box>
-
-              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-                <DashboardList
                   listType="draft"
                   list={lists["drafts"]}
                   header="drafts"
@@ -87,25 +77,35 @@ class Dashboard extends React.Component {
                   emptyMessage="Draft analyses that your collaborators have given you read/write access to."
                 />
               </Box>
-            </Box>
-
-            <Box direction="row" wrap align="center" justify="between">
-              <Box pad="medium" size={{ width: { max: "xlarge" } }} flex={true}>
-                <DashboardList
-                  listType="workflows"
-                  list={lists["workflows"]}
-                  header="recent workflows"
-                  ListItem={DashboardWorkflowListItem}
-                  emptyMessage="Recent workflows attached to your content"
-                />
+              <Box pad="small" size={{ width: "small" }}>
+                <DashboardQuickSearch />
               </Box>
               <DashboardMeter
                 total={this.props.results.user_count}
                 drafts={this.props.results.user_drafts_count}
                 published={this.props.results.user_published_count}
               />
+
+            </Box>
+
+            <Box direction="row" wrap align="center" justify="between">
+              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
+                <DashboardList
+                  listType="published"
+                  list={lists["published"]}
+                  header="published in collaboration"
+                  ListItem={DashboardListItem}
+                  emptyMessage="All analyses published on CAP by members of your collaboration."
+                />
+              </Box>
               <Box pad="medium" size={{ width: { max: "xlarge" } }} flex={true}>
-                <DashboardQuickSearch />
+                <DashboardList
+                  listType="workflows"
+                  list={lists["workflows"]}
+                  header="workflows"
+                  ListItem={DashboardWorkflowListItem}
+                  emptyMessage="Recent workflows attached to your content"
+                />
               </Box>
             </Box>
           </Box>

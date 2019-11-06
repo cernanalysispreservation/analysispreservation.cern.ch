@@ -32,10 +32,7 @@ from cap.modules.records.search import CAPRecordSearch
 from cap.modules.records.serializers import record_json_v1
 from cap.modules.workflows.utils import get_user_workflows
 
-blueprint = Blueprint(
-    'cap',
-    __name__,
-)
+blueprint = Blueprint('cap', __name__, )
 
 
 @blueprint.route('/ping', methods=['GET'])
@@ -85,29 +82,46 @@ def dashboard():
     user_published_count = rs.get_user_records().count()
     user_drafts = _serialize_deposits(ds.get_user_deposits()[:5].execute())
     user_drafts_count = ds.get_user_deposits().count()
-
     user_workflows = get_user_workflows()
+    #
+    #    user_workflows = [
+    #        dict(name='demo-workflow#2',
+    #             engine='serial',
+    #             service='reana',
+    #             status='running',
+    #             record='Search for VH in the (l l, l nu, nu nu)'),
+    #        dict(name='workflow#3',
+    #             engine='yadage',
+    #             service='reana',
+    #             status='finished',
+    #             record='Open Data validation Mu MuMonitor 2010'),
+    #        dict(name='demo-workflow#1',
+    #             engine='serial',
+    #             service='reana',
+    #             status='finished',
+    #             record='Search for VH in the (l l, l nu, nu nu)'),
+    #        dict(name='workflow#2',
+    #             engine='yadage',
+    #             service='reana',
+    #             status='finished',
+    #             record='Open Data validation Mu MuMonitor 2010')
+    #    ]
 
     return jsonify({
         'published': {
-            'data': published,
-            'more': '/search?q='
+            'data': published, 'more': '/search?q='
         },
         'drafts': {
-            'data': drafts,
-            'more': '/drafts?q='
+            'data': drafts, 'more': '/drafts?q='
         },
         'user_published': {
-            'data': user_published,
-            'more': '/search?by_me=True'
+            'data': user_published, 'more': '/search?q=&by_me=True'
         },
         'user_drafts': {
-            'data': user_drafts,
-            'more': '/drafts?by_me=True'
+            'data': user_drafts, 'more': '/drafts?q=&by_me=True'
         },
         'user_workflows': {
-            'data': user_workflows,
-            'more': '/drafts?by_me=True'
+            'data': user_workflows, 'more': '#'
         },
         'user_drafts_count': user_drafts_count,
         'user_published_count': user_published_count,
