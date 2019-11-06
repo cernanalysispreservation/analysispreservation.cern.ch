@@ -8,7 +8,7 @@ export const ORCidIcon = () => (
     viewBox="0 0 270 270"
     version="1.1"
     type="logo"
-    a11yTitle="Zenodo"
+    a11yTitle="ORCID"
   >
     <path
       className="st0"
