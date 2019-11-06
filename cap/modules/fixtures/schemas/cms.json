@@ -714,6 +714,7 @@
       "display": "grid",
       "full": true,
       "view": {
+        "vertical": true,
         "sidebarColor": "grey-5-a"
       }
     },

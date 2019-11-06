@@ -84,7 +84,7 @@ class DraftsItemIndex extends React.Component {
             path={`/drafts/${draft_id}/integrations`}
             data-tip="Connect your repositories"
           />
-          <Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} data-tip="Run workflows" />
+          {/*<Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} data-tip="Run workflows" />*/}
           <Anchor
             icon={<ShareIcon/>}
             path={`/drafts/${draft_id}/settings`}
