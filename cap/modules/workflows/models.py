@@ -24,6 +24,7 @@
 """Workflows db models."""
 
 import uuid
+from datetime import datetime
 
 from invenio_accounts.models import User
 from invenio_db import db
@@ -48,7 +49,7 @@ class ReanaWorkflow(db.Model):
                          db.ForeignKey(RecordMetadata.id),
                          nullable=False)
 
-    cap_user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
     service = db.Column(db.Enum('reana', name='service'),
@@ -58,13 +59,17 @@ class ReanaWorkflow(db.Model):
     name = db.Column(db.String(100), unique=False, nullable=False)
     workflow_name = db.Column(db.String(100), unique=False, nullable=False)
     name_run = db.Column(db.String(100), unique=False, nullable=False)
-    status = db.Column(db.String(100), unique=False, nullable=False)
+    status = db.Column(db.Enum('created', 'queued', 'running',
+                               'stopped', 'failed', 'deleted',
+                               name='status'),
+                       unique=False, nullable=False)
 
     # the following fields represent the creation part of a workflow
     workflow_json = db.Column(json_type, default=lambda: dict(), nullable=True)
 
     # logging after the workflow runs
     logs = db.Column(json_type, default=lambda: dict(), nullable=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     user = db.relationship('User')
     record = db.relationship('RecordMetadata')
