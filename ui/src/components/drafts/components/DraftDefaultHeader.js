@@ -60,22 +60,22 @@ class DraftDefaultHeader extends React.Component {
           <EditableTitle />
         </Box>
         {this.props.canUpdate ? (
-        <Route
-          exact
-          path="/drafts/:draft_id"
-          render={() => (
-            <Box
-              pad={{ horizontal: "small" }}
-              justify="end"
-              align="center"
-              direction="row"
-              flex={true}
-              wrap={false}
-            >
-              <EditAnchor draft_id={this.props.draft_id} />
-            </Box>
-          )}
-        /> ) : null}
+          <Route
+            exact
+            path="/drafts/:draft_id"
+            render={() => (
+              <Box
+                pad={{ horizontal: "small" }}
+                justify="center"
+                align="center"
+                direction="row"
+                wrap={false}
+              >
+                <EditAnchor draft_id={this.props.draft_id} />
+              </Box>
+            )}
+          />
+        ) : null}
       </Box>
     );
   }

@@ -44,26 +44,67 @@ class DepositSidebar extends React.Component {
       <Sidebar full={false} size="medium" colorIndex="light-2">
         <Box flex={false}>
           <SectionHeader label="Info & Details" />
-          <Box flex={false} pad="small" style={{fontWeight: "100"}}>
-            <Box direction="row" wrap={false} justify="between">
-              ID  <span>{this.props.id}</span>
+          <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              separator="bottom"
+              pad="small"
+            >
+              ID <span>{this.props.id}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              separator="bottom"
+              pad="small"
+            >
               Status <span>{this.props.status}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              separator="bottom"
+              pad="small"
+            >
               Experiment <span>{this.props.experiment}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              separator="bottom"
+              pad="small"
+            >
               Creator <span>{this.props.created_by}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              separator="bottom"
+              pad="small"
+            >
               Created:{" "}
               <strong>
                 <TimeAgo date={this.props.created} minPeriod="60" />
               </strong>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+              pad="small"
+            >
               Last Updated:{" "}
               <strong>
                 <TimeAgo date={this.props.updated} minPeriod="60" />
@@ -74,8 +115,7 @@ class DepositSidebar extends React.Component {
               wrap={false}
               justify="between"
               pad={{ vertical: "small" }}
-            >
-            </Box>
+            />
           </Box>
         </Box>
         <Box flex={true}>

@@ -81,7 +81,7 @@ class WorkflowsItem extends React.Component {
               your code.
             </Paragraph>
           </Box>
-          <Box flex={false} margin={{ left: "large" }}>
+          <Box flex={false} margin={{ left: "large" }} align="end">
             <Button
               label="Create Workflow"
               primary

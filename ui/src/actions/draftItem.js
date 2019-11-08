@@ -361,6 +361,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
           });
       })
       .catch(error => {
+        dispatch(updateDraftError(error));
         cogoToast.error(
           "There is an error, please make sure you are connected",
           {

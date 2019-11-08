@@ -58,7 +58,11 @@ class DraftIntegrations extends React.Component {
               events and preserve you code
             </Paragraph>
           </Box>
-          <Box flex={false} margin={{ left: "medium" }}>
+          <Box
+            flex={false}
+            margin={{ left: "medium", vertical: "small" }}
+            align="end"
+          >
             <Button
               onClick={this.props.toggleFilemanagerLayer}
               primary
@@ -76,9 +80,9 @@ class DraftIntegrations extends React.Component {
           </Box>
           <Box flex={false} colorIndex="light-2">
             <Accordion>
-              {repositories.map(repo => (
+              {repositories.map((repo, index) => (
                 <AccordionPanel
-                  key={repo.name}
+                  key={index}
                   noHeading={true}
                   headingColor="light-2"
                   heading={
@@ -92,6 +96,7 @@ class DraftIntegrations extends React.Component {
                       <Box
                         margin={{ horizontal: "small" }}
                         direction="row"
+                        responsive={false}
                         wrap={false}
                         flex={false}
                         size="medium"

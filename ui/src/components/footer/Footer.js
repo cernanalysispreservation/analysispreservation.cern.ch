@@ -8,26 +8,30 @@ import Anchor from "grommet/components/Anchor";
 class GrommetFooter extends React.Component {
   render() {
     return (
-      <Footer size="small" justify="center" colorIndex="neutral-1-a">
+      <Footer size="small" justify="center" colorIndex="neutral-1" pad="small">
         <Box
           direction="row"
           align="center"
           justify="center"
-          size=""
           pad={{ between: "medium" }}
         >
           <Paragraph margin="none">
             Copyright 2018 © CERN. Created & Hosted by CERN. Powered by Invenio
             Software.
           </Paragraph>
-          <Menu direction="row" size="small" dropAlign={{ right: "right" }}>
+          <Box
+            direction="row"
+            responsive={false}
+            size="small"
+            justify="between"
+          >
             <Anchor
               label="Contact"
               href="mailto:analysis-preservation-support@cern.ch"
             />
             <Anchor label="About" path="/about" />
             <Anchor label="Status" path="/status" />
-          </Menu>
+          </Box>
         </Box>
       </Footer>
     );

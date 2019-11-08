@@ -33,7 +33,7 @@ class DepositSettings extends React.Component {
                 to the CMS members within CERN Analysis Preservation
               </Paragraph>
             </Box>
-            <Box flex={false}>
+            <Box flex={false} align="start" margin={{ vertical: "small" }}>
               <Button
                 onClick={() => {}}
                 primary

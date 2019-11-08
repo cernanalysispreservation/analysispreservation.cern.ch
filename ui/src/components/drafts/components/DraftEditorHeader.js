@@ -30,7 +30,7 @@ import {
   publishDraft,
   discardDraft,
   editPublished,
-  toggleActionsLayer,
+  toggleActionsLayer
   // togglePreviewer
 } from "../../../actions/draftItem";
 
@@ -78,7 +78,6 @@ class DraftEditorHeader extends React.Component {
 
     let condition =
       _isEmpty(formData) || emptyObject === Object.entries(formData).length;
-
 
     if (errors.length > 0) {
       cogoToast.error("Make sure all the fields are properly filled in", {
@@ -194,6 +193,7 @@ class DraftEditorHeader extends React.Component {
               flex={true}
               direction="row"
               align="center"
+              justify="center"
               margin={{ horizontal: "small" }}
             >
               <Spinning />
@@ -212,7 +212,6 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-
               {isDraft && isPublishedOnce ? (
                 <DiscardAnchor action={this._actionHandler("discard")} />
               ) : null}

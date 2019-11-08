@@ -42,7 +42,7 @@ class WorkflowsIndex extends React.Component {
           margin={{ bottom: "large" }}
           justify="between"
         >
-          <Box flex={false} size="medium">
+          <Box flex={false} margin={{ right: "small", vertical: "small" }}>
             <Box colorIndex="grey-2" pad="small">
               <Heading tag="h5" strong margin="none">
                 Create New Workflow
@@ -60,8 +60,10 @@ class WorkflowsIndex extends React.Component {
               <Box
                 flex={false}
                 direction="row"
+                responsive={false}
                 wrap
                 align="center"
+                justify="center"
                 colorIndex="light-1"
                 pad="small"
               >
@@ -71,8 +73,10 @@ class WorkflowsIndex extends React.Component {
               <Box
                 flex={false}
                 direction="row"
+                responsive={false}
                 wrap
                 align="center"
+                justify="center"
                 colorIndex="light-1"
                 pad="small"
               >
@@ -86,7 +90,7 @@ class WorkflowsIndex extends React.Component {
             flex={true}
             colorIndex="grey-4"
             pad="small"
-            margin={{ left: "large" }}
+            margin={{ vertical: "small" }}
           >
             <Heading tag="h5" margin="none">
               REANA Hello World Example
@@ -95,16 +99,19 @@ class WorkflowsIndex extends React.Component {
               Create now a simple workflow that runs on REANA cluster te now a
               simple workflow that run on REANA cluster
             </Paragraph>
-            <Box flex={true} direction="row" wrap>
-              <Box flex />
-              <Box flex>
-                <Button
-                  label="Try it now!"
-                  primary
-                  colorIndex="brand"
-                  onClick={() => {}}
-                />
-              </Box>
+            <Box
+              flex={true}
+              direction="row"
+              wrap
+              justify="end"
+              alignContent="end"
+            >
+              <Button
+                label="Try it now!"
+                primary
+                colorIndex="brand"
+                onClick={() => {}}
+              />
             </Box>
           </Box>
         </Box>
