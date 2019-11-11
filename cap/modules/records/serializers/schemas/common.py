@@ -24,11 +24,32 @@
 """CAP Marshmallow Schemas."""
 
 from flask_login import current_user
-from invenio_accounts.models import Role, User
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
+from invenio_accounts.models import Role, User
+
+LABELS = {
+    'physics_objects': {
+        'path': 'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
+        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    },
+    'cadi_id': {
+        'path': 'metadata.basic_info.cadi_id',
+        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    },
+    'cms_keywords': {
+        'path': 'metadata.additional_resources.keywords',
+        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    },
+    'version': {
+        'path': 'revision',
+        'condition': lambda obj: obj['metadata']['_deposit']['status'] == \
+        'published',
+        'formatter': 'v{}'
+    }
+}
 
 
 class StrictKeysMixin(object):
@@ -72,6 +93,8 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     updated = fields.Str(dump_only=True)
 
     revision = fields.Integer(dump_only=True)
+
+    labels = fields.Method('get_labels', dump_only=True)
 
     def is_current_user_owner(self, obj):
         user_id = obj['metadata']['_deposit'].get('created_by')
@@ -118,3 +141,42 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                     permission['roles'][index] = get_role_name_by_id(role_id)
 
         return access
+
+    def get_labels(self, obj):
+        """Get labels."""
+        labels = set()
+
+        for label in LABELS.values():
+            condition = label.get('condition')
+            if not condition or condition(obj):
+                labels = labels | _dot_access_helper(obj, label.get('path'),
+                                                     label.get('formatter'))
+
+        return list(labels)
+
+
+def _dot_access_helper(obj, dot_path, formatter):
+    formatter = formatter or "{}"
+    path = dot_path.split('.')
+    res = set()
+
+    def _nested(obj, path):
+        if not path:
+            return obj
+
+        if type(obj) is dict:
+            val = _nested(obj.get(path[0]), path[1:])
+
+            if val or val == 0:
+                res.add(formatter.format(val))
+
+        elif type(obj) is list:
+            for x in obj:
+                val = _nested(x, path)
+
+                if val or val == 0:
+                    res.add(formatter.format(val))
+
+    _nested(obj, path)
+
+    return res

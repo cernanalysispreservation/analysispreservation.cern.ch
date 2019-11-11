@@ -9,9 +9,10 @@ import ReactTooltip from "react-tooltip";
 import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
+import Button from "grommet/components/Button";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
-import UserAdminIcon from "grommet/components/icons/base/UserAdmin";
+import UserIcon from "grommet/components/icons/base/User";
 import EditIcon from "grommet/components/icons/base/Edit";
 
 class SearchResults extends React.Component {
@@ -24,26 +25,12 @@ class SearchResults extends React.Component {
       <Box full={true} colorIndex="light-1">
         <List>
           {this.props.results.map((item, index) => {
-            let { id, status, metadata = {} } = item;
+            let { id, is_owner, can_admin, can_update, updated, status, labels, metadata = {} } = item;
 
             let {
-              main_measurements: main_measurements = [],
               general_title: general_title,
               basic_info: { abstract: abstract } = {}
             } = metadata;
-            let objects = new Set();
-
-            if (main_measurements.length > 0) {
-              main_measurements.map(item => {
-                let {
-                  signal_event_selection: { physics_objects: physics_objects }
-                } = item;
-                physics_objects.map(
-                  ph_object =>
-                    ph_object.object ? objects.add(ph_object.object) : null
-                );
-              });
-            }
 
             return (
               <ListItem
@@ -70,7 +57,8 @@ class SearchResults extends React.Component {
                           }
                           style={{
                             textDecoration: "none",
-                            color: "black"
+                            color: "black",
+                              fontWeight: 500
                           }}
                           data-tip={general_title}
                         >
@@ -82,25 +70,25 @@ class SearchResults extends React.Component {
                         </Anchor>
                       </Label>
                       <Box align="center" justify="center">
-                        {(item.can_admin && (
-                          <UserAdminIcon
-                            size="xsmall"
-                            data-tip="You have admin access."
-                          />
-                        )) ||
-                          (item.can_edit && (
-                            <EditIcon
-                              size="xsmall"
-                              data-tip="You have write access."
-                            />
-                          ))}
+                          {!is_owner && (can_update || can_admin) ? (
+                              <span>
+                                  <EditIcon size="xsmall" data-tip="contributor" />
+                              </span>
+                          ) : null}
+                          {is_owner ? (
+                              <span>
+                                  <UserIcon size="xsmall" data-tip="owner" />
+                              </span>
+                          ) : null}
                       </Box>
                     </Box>
-                    {status === "published" ? (
-                      <Label size="small" uppercase={true}>
-                        <AnnounceIcon size="xsmall" /> Published
-                      </Label>
-                    ) : null}
+                    <Box direction="row">
+                        {labels.map(item => {
+                            return(
+                                <Box colorIndex="grey-4-a" style={{padding: "4px", marginRight: "3px", borderRadius: "3px", fontSize: "0.8em"}}> <span> {item} </span></Box>
+                            )
+                        })}
+                    </Box>
                   </Box>
                   <Box
                     basis="2/3"
