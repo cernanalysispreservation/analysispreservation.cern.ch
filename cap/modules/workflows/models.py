@@ -48,23 +48,30 @@ class ReanaWorkflow(db.Model):
                          db.ForeignKey(RecordMetadata.id),
                          nullable=False)
 
-    cap_user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
+
+    name = db.Column(db.String(100), unique=False, nullable=False)
+    workflow_name = db.Column(db.String(100), unique=False, nullable=False)
+    workflow_name_run = db.Column(db.String(100), unique=False, nullable=False)
 
     service = db.Column(db.Enum('reana', name='service'),
                         unique=False,
                         nullable=False)
-
-    name = db.Column(db.String(100), unique=False, nullable=False)
-    workflow_name = db.Column(db.String(100), unique=False, nullable=False)
-    name_run = db.Column(db.String(100), unique=False, nullable=False)
-    status = db.Column(db.String(100), unique=False, nullable=False)
+    status = db.Column(db.Enum('created', 'queued', 'running', 'stopped',
+                               'failed', 'deleted', name='status'),
+                       unique=False,
+                       nullable=False)
 
     # the following fields represent the creation part of a workflow
     workflow_json = db.Column(json_type, default=lambda: dict(), nullable=True)
 
     # logging after the workflow runs
     logs = db.Column(json_type, default=lambda: dict(), nullable=True)
+
+    created = db.Column(db.DateTime, server_default=db.func.now())
+    updated = db.Column(db.DateTime, server_default=db.func.now(),
+                        server_onupdate=db.func.now())
 
     user = db.relationship('User')
     record = db.relationship('RecordMetadata')
@@ -73,7 +80,7 @@ class ReanaWorkflow(db.Model):
     def get_user_workflows(cls, user_id):
         """Get user workflows."""
         workflows = cls.query \
-            .filter_by(cap_user_id=user_id) \
+            .filter_by(user_id=user_id) \
             .all()
 
         return workflows
