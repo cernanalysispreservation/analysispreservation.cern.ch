@@ -69,7 +69,7 @@ def pass_workflow(with_access=False, with_record=False, with_token=False):
                 workflow = ReanaWorkflow.get_workflow_by_id(workflow_id)
 
                 if with_access:
-                    if workflow.cap_user_id == current_user.id:
+                    if workflow.user_id == current_user.id:
                         if with_record:
                             deposit = CAPRecord.get_record(workflow.rec_uuid)
                             if deposit:
@@ -184,7 +184,7 @@ def create_reana_workflow():
         # the db, but also used in the serializer
         _workflow = {
             'service': 'reana',
-            'cap_user_id': current_user.id,
+            'user_id': current_user.id,
             'name': name,
             'workflow_name': workflow_name,
             'name_run': resp['workflow_name'],
