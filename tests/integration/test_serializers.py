@@ -84,6 +84,7 @@ def test_get_deposit_with_default_serializer(client, users,
                 'analysis_number': 'dream_team'
             }
         },
+        'labels': [],
         'files': [{
             'bucket': str(file.bucket),
             'checksum': file.file.checksum,
@@ -107,35 +108,26 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'is_owner': True,
         'links': {
-            'bucket':
-                'http://analysispreservation.cern.ch/api/files/{}'.format(
-                    deposit.files.bucket),
-            'clone':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
-                .format(depid),
-            'discard':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
-                .format(depid),
-            'edit':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
-                .format(depid),
-            'files':
-                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
-                format(depid),
-            'html':
-                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
-            'permissions':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
-                .format(depid),
-            'publish':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
-                .format(depid),
-            'self':
-                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
-                    depid),
-            'upload':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
-                .format(depid)
+            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
+            format(deposit.files.bucket),
+            'clone': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+            .format(depid),
+            'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+            .format(depid),
+            'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+            .format(depid),
+            'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
+            .format(depid),
+            'html': 'http://analysispreservation.cern.ch/drafts/{}'.format(
+                depid),
+            'permissions': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+            .format(depid),
+            'publish': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+            .format(depid),
+            'self': 'http://analysispreservation.cern.ch/api/deposits/{}'.
+            format(depid),
+            'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+            .format(depid)
         }
     }
 
@@ -175,6 +167,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
+        'labels': ['v0'],
         'created_by': owner.email,
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
@@ -206,14 +199,12 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         }],
         'is_owner': True,
         'links': {
-            'bucket':
-                'http://analysispreservation.cern.ch/api/files/{}'.format(
-                    record.files.bucket),
+            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
+            format(record.files.bucket),
             'html': 'http://analysispreservation.cern.ch/published/{}'.format(
                 recid),
-            'self':
-                'http://analysispreservation.cern.ch/api/records/{}'.format(
-                    recid),
+            'self': 'http://analysispreservation.cern.ch/api/records/{}'.
+            format(recid),
         },
         'draft_id': deposit.pid.pid_value
     }

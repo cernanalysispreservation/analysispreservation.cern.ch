@@ -26,11 +26,11 @@
 
 import json
 
-from invenio_search import current_search, current_search_client
-from pytest import mark
 from six import BytesIO
 
 from conftest import add_role_to_user
+from invenio_search import current_search, current_search_client
+from pytest import mark
 
 
 ######################
@@ -235,6 +235,7 @@ def test_get_deposit_with_default_serializer(client, users,
                 'analysis_number': 'dream_team'
             }
         },
+        'labels': [],
         'files': [{
             'bucket': str(file.bucket),
             'checksum': file.file.checksum,
@@ -258,35 +259,26 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'is_owner': True,
         'links': {
-            'bucket':
-                'http://analysispreservation.cern.ch/api/files/{}'.format(
-                    deposit.files.bucket),
-            'clone':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
-                .format(depid),
-            'discard':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
-                .format(depid),
-            'edit':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
-                .format(depid),
-            'files':
-                'http://analysispreservation.cern.ch/api/deposits/{}/files'.
-                format(depid),
-            'html':
-                'http://analysispreservation.cern.ch/drafts/{}'.format(depid),
-            'permissions':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
-                .format(depid),
-            'publish':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
-                .format(depid),
-            'self':
-                'http://analysispreservation.cern.ch/api/deposits/{}'.format(
-                    depid),
-            'upload':
-                'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
-                .format(depid)
+            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
+            format(deposit.files.bucket),
+            'clone': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
+            .format(depid),
+            'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
+            .format(depid),
+            'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
+            .format(depid),
+            'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
+            .format(depid),
+            'html': 'http://analysispreservation.cern.ch/drafts/{}'.format(
+                depid),
+            'permissions': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
+            .format(depid),
+            'publish': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
+            .format(depid),
+            'self': 'http://analysispreservation.cern.ch/api/deposits/{}'.
+            format(depid),
+            'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
+            .format(depid)
         }
     }]
 
