@@ -42,7 +42,7 @@ class DraftsItemIndex extends React.Component {
     let isPublishedOnce = this.props.recid ? true : false;
 
     return (
-      <Box flex={false} colorIndex="neutral-1-a" justify="between">
+      <Box flex={false} colorIndex="light-2" justify="between">
         <Box>
           <ReactTooltip />
           <Anchor

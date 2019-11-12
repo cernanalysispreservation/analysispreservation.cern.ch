@@ -68,10 +68,10 @@ class EditableTitle extends React.Component {
     let { general_title } = this.props.metadata;
     return this.state.editTitle ? (
       <Box flex={true} direction="row" wrap={false} pad="none">
-        <Label margin="small" direction="row">
+        <Label margin="none" direction="row">
           <input
             key="draft-input"
-            style={{ padding: 0, border: "1px solid #006996", borderRadius: 0 }}
+            style={{ padding: 0, border: "1px solid #fff", borderRadius: 0 }}
             onChange={this._onChange}
             value={this.state.titleValue}
           />
@@ -82,32 +82,30 @@ class EditableTitle extends React.Component {
             margin="none"
             onClick={this._update.bind(this)}
           >
-            <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
+            <CheckmarkIcon colorIndex="light-1" size="xsmall" />
           </Box>
           <Box margin="none" onClick={this._unedit.bind(this)}>
-            <CloseIcon colorIndex="neutral-1" size="xsmall" />
+            <CloseIcon colorIndex="light-1" size="xsmall" />
           </Box>
         </Box>
       </Box>
     ) : (
-      <Box flex={true} margin={{ top: "small" }} direction="row" wrap={false}>
+      <Box flex={true} direction="row" wrap={false}>
         <Box
           key="draft-title"
           onMouseEnter={this._hoverIn}
           onMouseLeave={this._hoverOut}
           onClick={this._focusInput}
-          margin={{ right: "small" }}
           pad="none"
           style={{
             border: this.state.hoverTitle
-              ? "1px solid #006996"
+              ? "1px solid #fff"
               : "1px solid transparent",
-            marginLeft: "-1px"
           }}
         >
-          <Title align="start" pad="none" margin="none">
+          <Label align="start" pad="none" margin="none">
             {general_title || "Untitled document"}
-          </Title>
+          </Label>
         </Box>
       </Box>
     );

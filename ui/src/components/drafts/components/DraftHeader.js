@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 class DraftHeader extends React.Component {
   render() {
     return (
-      <Box colorIndex="grey-2" flex={false} justify="between" direction="row">
+      <Box colorIndex="grey-3-a" flex={false} justify="between" direction="row">
         <DraftDefaultHeader />
         <Box size={{ width: "medium" }}>
           <Route

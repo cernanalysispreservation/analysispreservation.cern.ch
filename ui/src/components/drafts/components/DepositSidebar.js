@@ -42,8 +42,7 @@ class DepositSidebar extends React.Component {
   render() {
     return (
       <Sidebar full={false} size="medium" colorIndex="light-2">
-        <Box flex={false}>
-          <SectionHeader label="Info & Details" />
+        <Box flex={false} separator="bottom" pad="small">
           <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
             <Box direction="row" wrap={false} justify="between">
               ID <span>{this.props.id}</span>
@@ -71,7 +70,7 @@ class DepositSidebar extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box flex={true}>
+        <Box flex={true} pad="small">
           <SectionHeader
             label="Files | Data | Source Code"
             icon={this._renderAddFileIcon()}
