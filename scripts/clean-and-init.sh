@@ -26,7 +26,7 @@
 
 
 # Destroy db and indexes
-cap db drop --yes-i-know
+cap db destroy --yes-i-know
 
 # Flush redis cache
 redis-cli flushall

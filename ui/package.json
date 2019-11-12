@@ -79,7 +79,8 @@
     "redux-promises": "1.0.0",
     "redux-thunk": "2.3.0",
     "reselect": "^3.0.1",
-    "searchkit": "2.3.0"
+    "searchkit": "2.3.0",
+    "styled-components": "4.4.1"
   },
   "devDependencies": {
     "@storybook/addon-notes": "5.2.1",

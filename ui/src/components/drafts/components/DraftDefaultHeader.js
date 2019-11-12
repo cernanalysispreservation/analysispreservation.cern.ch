@@ -46,16 +46,8 @@ class DraftDefaultHeader extends React.Component {
     return (
       <Box flex={true} direction="row">
         <Box flex={true} wrap={false}>
-          <Box pad={{ horizontal: "small" }} flex={true} wrap={true}>
+          <Box pad="small"justify="center" flex={true} wrap={true}>
             <EditableTitle />
-            <Box
-              margin={{ vertical: "small", bottom: "medium" }}
-              size="xxlarge"
-            >
-              {this.props.draft.basic_info
-                ? this.props.draft.basic_info.abstract
-                : "No abstract"}
-            </Box>
           </Box>
         </Box>
       </Box>

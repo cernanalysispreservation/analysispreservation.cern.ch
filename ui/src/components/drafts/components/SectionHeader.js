@@ -11,7 +11,6 @@ export default function SectionHeader(props) {
       justify="center"
       alignContent="center"
       size="small"
-      colorIndex="grey-4"
       pad="none"
     >
       <Box
