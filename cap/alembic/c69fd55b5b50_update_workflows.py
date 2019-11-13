@@ -5,7 +5,7 @@
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-"""Update workdflows"""
+"""Update workflows"""
 
 from alembic import op
 import sqlalchemy as sa
@@ -29,8 +29,9 @@ def upgrade():
                   sa.Column('user_id', sa.Integer(), nullable=False))
     op.drop_column('reana_workflows', 'cap_user_id')
 
-    op.add_column('reana_workflows',
-                  sa.Column('workflow_name_run', sa.String(length=100), nullable=False))
+    op.add_column(
+        'reana_workflows',
+        sa.Column('workflow_name_run', sa.String(length=100), nullable=False))
     op.drop_column('reana_workflows', 'name_run')
 
     op.add_column('reana_workflows',
@@ -48,9 +49,9 @@ def upgrade():
     op.drop_constraint(u'fk_reana_workflows_cap_user_id_accounts_user',
                        'reana_workflows', type_='foreignkey')
 
-    op.create_foreign_key(op.f('fk_reana_workflows_user_id_accounts_user'),
-                          'reana_workflows', 'accounts_user', ['user_id'], ['id'])
-    op.create_unique_constraint(op.f('uq_status_checks_id'), 'status_checks', ['id'])
+    op.create_foreign_key(op.f(
+        'fk_reana_workflows_user_id_accounts_user'),
+        'reana_workflows', 'accounts_user', ['user_id'], ['id'])
     # ### end Alembic commands ###
 
 
@@ -77,7 +78,6 @@ def downgrade():
                           ['cap_user_id'], ['id'])
     op.drop_constraint(op.f('fk_reana_workflows_user_id_accounts_user'),
                        'reana_workflows', type_='foreignkey')
-    op.drop_constraint(op.f('uq_status_checks_id'),
-                       'status_checks', type_='unique')
-    # ### end Alembic commands ###
 
+    status_enum.drop(op.get_bind())
+    # ### end Alembic commands ###

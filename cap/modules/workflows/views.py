@@ -24,9 +24,10 @@
 """CAP REANA views."""
 from __future__ import absolute_import, print_function
 
-import os
 import io
 from functools import wraps
+from coolname import generate_slug
+from jsonschema.exceptions import ValidationError
 from flask import Blueprint, jsonify, request, abort, send_file
 from flask_login import current_user
 
@@ -35,25 +36,19 @@ from invenio_pidstore.resolver import Resolver
 from invenio_pidstore.errors import PIDDoesNotExistError
 
 from reana_client.api.client import (
-    ping, get_workflows, get_workflow_status, start_workflow,
-    get_workflow_logs, create_workflow, create_workflow_from_json,
-    delete_workflow, stop_workflow, delete_file, list_files, download_file,
-    upload_file)
+    ping, get_workflow_status, start_workflow, get_workflow_logs,
+    create_workflow, delete_workflow, stop_workflow, delete_file, list_files,
+    download_file, upload_file)
 from reana_client.errors import FileDeletionError, FileUploadError
-from jsonschema.exceptions import ValidationError
 
 from .models import ReanaWorkflow
 from .utils import (update_workflow, clone_workflow, get_reana_token,
-                    resolve_uuid, resolve_depid)
-from .serializers import (ReanaWorkflowSchema, ReanaAllWorkflowsSchema,
-                          ReanaWorkflowLogsSchema)
+                    resolve_uuid)
+from .serializers import ReanaWorkflowSchema, ReanaWorkflowLogsSchema
+
 from cap.modules.access.utils import login_required
-
-from coolname import generate_slug
 from cap.modules.records.api import CAPRecord
-
 from cap.modules.deposit.permissions import UpdateDepositPermission
-
 from cap.modules.experiments.errors import ExternalAPIException
 
 workflows_bp = Blueprint('cap_workflows', __name__, url_prefix='/workflows')

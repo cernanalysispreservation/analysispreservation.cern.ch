@@ -55,9 +55,6 @@ class ReanaWorkflow(db.Model):
     workflow_name = db.Column(db.String(100), unique=False, nullable=False)
     workflow_name_run = db.Column(db.String(100), unique=False, nullable=False)
 
-    service = db.Column(db.Enum('reana', name='service'),
-                        unique=False,
-                        nullable=False)
     status = db.Column(db.Enum('created', 'queued', 'running', 'stopped',
                                'failed', 'deleted', name='status'),
                        unique=False,
@@ -74,7 +71,10 @@ class ReanaWorkflow(db.Model):
                         server_onupdate=db.func.now())
 
     user = db.relationship('User')
-    record = db.relationship('RecordMetadata')
+    record = db.relationship(
+        'RecordMetadata',
+        backref=db.backref('reana_workflows', cascade='all, delete-orphan')
+    )
 
     @classmethod
     def get_user_workflows(cls, user_id):
