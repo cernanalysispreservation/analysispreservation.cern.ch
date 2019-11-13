@@ -45,16 +45,20 @@ class ReanaWorkflowSchema(Schema):
     status = fields.Str(dump_only=True)
     service = fields.Str(dump_only=True)
     workflow_json = fields.Dict(dump_only=True)
+
+    created = fields.DateTime(dump_only=True)
+    updated = fields.DateTime(dump_only=True)
+
     links = fields.Method('build_links', dump_only=True)
 
     def build_links(self, obj):
-        """Construct schema links."""
+        """Construct workflow links."""
         def url_with_wf(path):
             return url_to_api_url(
                 url_for(path, workflow_id=obj['workflow_id']))
 
         links = {
-            'self': url_with_wf('cap_workflows.get_workflow'),
+            'ui': url_for('cap_workflows.get_all_workflows_view'),
             'all': url_to_api_url(url_for(
                 'cap_workflows.get_all_reana_workflows', depid=obj['depid'])),
             'create':
@@ -65,33 +69,10 @@ class ReanaWorkflowSchema(Schema):
             'delete': url_with_wf('cap_workflows.delete_reana_workflow'),
             'files': url_with_wf('cap_workflows.list_reana_workflow_files'),
             'status': url_with_wf('cap_workflows.get_reana_workflow_status'),
-            'logs': url_with_wf('cap_workflows.get_reana_workflow_logs')
+            'logs': url_with_wf('cap_workflows.get_reana_workflow_logs'),
+            'self': url_with_wf('cap_workflows.get_workflow'),
         }
         return links
-
-
-class ReanaAllWorkflowsSchema(Schema):
-    """Schema for the REANA workflows of a single record."""
-
-    rec_uuid = fields.Str(dump_only=True)
-    current_workflows = fields.Method('get_current', dump_only=True)
-    deleted_workflows = fields.Method('get_deleted', dump_only=True)
-
-    def get_current(self, obj):
-        """Returns the non-deleted workflows."""
-        return [
-            {'name': wf['name'], 'id': wf['id'], 'status': wf['status']}
-            for wf in obj['workflows']
-            if wf['status'] != 'deleted'
-        ]
-
-    def get_deleted(self, obj):
-        """Returns the deleted workflows."""
-        return [
-            {'name': wf['name'], 'id': wf['id'], 'status': wf['status']}
-            for wf in obj['workflows']
-            if wf['status'] == 'deleted'
-        ]
 
 
 class ReanaWorkflowLogsSchema(Schema):
