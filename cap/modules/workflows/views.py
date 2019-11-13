@@ -190,6 +190,7 @@ def create_reana_workflow():
             'name_run': resp['workflow_name'],
             'workflow_id': resp['workflow_id'],
             'rec_uuid': str(rec_uuid),
+            'depid': _args.get('pid'),
             'status': 'created',
             'workflow_json': workflow_json,
         }
