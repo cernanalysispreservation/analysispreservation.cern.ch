@@ -118,7 +118,6 @@ class SearchFacets extends React.Component {
                           {category.replace("_", " ")}
                         </Heading>
                         <Box
-                          size="medium"
                           styles={{ maxHeight: "100px" }}
                           pad="none"
                           direction="column"
@@ -126,7 +125,7 @@ class SearchFacets extends React.Component {
                           {facets[category].buckets.map(field => (
                             <Box key={String(field.key)}>
                               <Box
-                                size="medium"
+                                responsive={false}
                                 direction="row"
                                 justify="between"
                                 align="center"

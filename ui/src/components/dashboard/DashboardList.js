@@ -20,7 +20,13 @@ function DashboardList(props) {
   return (
     <Box flex={false}>
       <Box pad="none">
-        <Box flex={true} direction="row" pad="small" justify="between">
+        <Box
+          flex={true}
+          direction="row"
+          pad="small"
+          justify="between"
+          responsive={false}
+        >
           <Heading
             tag="h5"
             uppercase={true}
@@ -32,7 +38,7 @@ function DashboardList(props) {
           >
             {header}
           </Heading>
-          <Box direction="row">
+          <Box direction="row" responsive={false}>
             {Object.keys(list).map(type => (
               <Box
                 key={type}

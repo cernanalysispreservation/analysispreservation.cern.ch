@@ -42,6 +42,7 @@ export default class SearchUtils extends React.Component {
         pad={{ horizontal: "small" }}
         justify="between"
         alignContent="center"
+        responsive={false}
       >
         <Box justify="center" align="start">
           <Label size="small" uppercase={true}>
@@ -49,7 +50,12 @@ export default class SearchUtils extends React.Component {
           </Label>
         </Box>
 
-        <Box align="center" justify="between" direction="row">
+        <Box
+          align="center"
+          justify="between"
+          direction="row"
+          responsive={false}
+        >
           <Button
             onClick={this._onPrevPage.bind(this)}
             icon={<PreviousIcon />}
