@@ -126,6 +126,7 @@ class SearchFacets extends React.Component {
                             <Box key={String(field.key)}>
                               <Box
                                 responsive={false}
+                                pad={{ horizontal: "small" }}
                                 direction="row"
                                 justify="between"
                                 align="center"
