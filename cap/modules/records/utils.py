@@ -71,3 +71,27 @@ def api_url_for(endpoint, pid, **kwargs):
                   **kwargs)
 
     return url_to_api_url(url)
+
+
+def reindex_by_schema_url(schema_url, pid_type):
+    """Reindex all records of given pid_type belonging to that schema."""
+    def _get_json_type():
+        """If postgres db return JSONB, else JSON."""
+        return JSONB if db.session.bind.dialect.name == 'postgresql' else JSON
+
+    indexer = RecordIndexer()
+
+    ids = (x[0] for x in RecordMetadata.query.filter(
+        RecordMetadata.json['$schema'] == cast(
+            schema_url, _get_json_type())).values(RecordMetadata.id))
+
+    filtered_by_pid_type = (x[0] for x in PersistentIdentifier.query.filter(
+        PersistentIdentifier.status == PIDStatus.REGISTERED,
+        PersistentIdentifier.object_type == 'rec', PersistentIdentifier.
+        pid_type == pid_type, PersistentIdentifier.object_uuid.in_(
+            ids)).values(PersistentIdentifier.object_uuid))
+
+    print('{} records will be reindexed...'.format(schema_url))
+
+    indexer.bulk_index(filtered_by_pid_type)
+    indexer.process_bulk_queue(es_bulk_kwargs={'raise_on_error': True})
