@@ -106,7 +106,10 @@
           "run",
           "ali_physics",
           "derived_dataset"
-        ]
+        ],
+        "derived_dataset": {
+          "ui:array": "AccordionArrayField"
+        }
       },
       "ui:array": "AccordionArrayField"
     }
