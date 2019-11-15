@@ -193,7 +193,9 @@
         "enableArrayUtils": true
       }
     },
-    "publications": {},
+    "publications": {
+      "ui:array": "AccordionArrayField"
+    },
     "basic_info": {
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
       "people_info": {
@@ -277,6 +279,14 @@
           "ui:title": "Workflow",
           "ui:field": "jsoneditor"
         }
+      }
+    },
+    "likelihoods": {
+      "channels": {
+        "ui:array": "AccordionArrayField"
+      },
+      "parameters": {
+        "ui:array": "AccordionArrayField"
       }
     }
   }
