@@ -28,7 +28,7 @@ import { RORIcon } from "../drafts/form/themes/grommet/fields/components/ROR";
 import { ReanaIcon } from "../drafts/form/themes/grommet/fields/components/ReanaIcon";
 import { CAPLogo } from "../drafts/form/themes/grommet/fields/components/CAP";
 import platform from "../../../images/image.png";
-import create from "../../../images/create.png";
+import front from "../../../images/template.png";
 import publish from "../../../images/publish.png";
 import reuse from "../../../images/reuse.png";
 
@@ -94,14 +94,16 @@ class WelcomePage extends React.Component {
           </Header>
           <Box flex justify="between" pad="small">
             <Box flex justify="between" direction="row">
-              <Box justify="center" pad="small">
-                <Heading strong>A service for scientific </Heading>
-                <Heading tag="h2">preservation</Heading>
-                <Heading tag="h2">reusability</Heading>
-                <Heading tag="h2">collaboration</Heading>
+              <Box flex justify="center" align="center" pad="small">
+                <Box>
+                  <Heading strong>A service for scientific </Heading>
+                  <Heading tag="h2">preservation</Heading>
+                  <Heading tag="h2">reusability</Heading>
+                  <Heading tag="h2">collaboration</Heading>
+                </Box>
               </Box>
               <Box flex justify="center" align="end" pad="large">
-                <Image src={platform} fit="contain" />
+                <Image src={front} fit="contain" />
               </Box>
             </Box>
             <Box direction="row" align="center" justify="between">
