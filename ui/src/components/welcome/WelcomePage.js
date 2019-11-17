@@ -28,7 +28,7 @@ import { RORIcon } from "../drafts/form/themes/grommet/fields/components/ROR";
 import { ReanaIcon } from "../drafts/form/themes/grommet/fields/components/ReanaIcon";
 import { CAPLogo } from "../drafts/form/themes/grommet/fields/components/CAP";
 import platform from "../../../images/image.png";
-import create from "../../../images/create.png";
+import front from "../../../images/template.png";
 import publish from "../../../images/publish.png";
 import reuse from "../../../images/reuse.png";
 
@@ -51,8 +51,8 @@ class WelcomePage extends React.Component {
 
   render() {
     return (
-      <Box colorIndex="neutral-1-a">
-        <Box full colorIndex="neutral-1-a">
+      <Box>
+        <Box full>
           <Header
             colorIndex="neutral-1"
             pad={{ vertical: "none", horizontal: "small" }}
@@ -94,14 +94,26 @@ class WelcomePage extends React.Component {
           </Header>
           <Box flex justify="between" pad="small">
             <Box flex justify="between" direction="row">
-              <Box justify="center" pad="small">
-                <Heading strong>A service for scientific </Heading>
-                <Heading tag="h2">preservation</Heading>
-                <Heading tag="h2">reusability</Heading>
-                <Heading tag="h2">collaboration</Heading>
+              <Box flex justify="center" align="start" pad="small">
+                <Box pad={{ horizontal: "medium" }}>
+                  <Heading
+                    strong
+                    style={{
+                      color: "#006996",
+                      letterSpacing: "5px",
+                      fontSize: "7em"
+                    }}
+                  >
+                    CAP
+                  </Heading>
+                  <Heading strong>A scientific platform for </Heading>
+                  <Heading tag="h2">preservation</Heading>
+                  <Heading tag="h2">reusability</Heading>
+                  <Heading tag="h2">collaboration</Heading>
+                </Box>
               </Box>
               <Box flex justify="center" align="end" pad="large">
-                <Image src={platform} fit="contain" />
+                <Image src={front} fit="contain" />
               </Box>
             </Box>
             <Box direction="row" align="center" justify="between">
@@ -114,205 +126,255 @@ class WelcomePage extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box
-          full
-          pad={{ vertical: "large", horizontal: "xlarge" }}
-          justify="center"
-        >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
+        <Box align="center" justify="center" pad="large">
+          <Heading
+            style={{ fontSize: "4em", color: "#006996", letterSpacing: "4px" }}
+            strong
           >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Create
-                </Heading>
-                <Label size="large"> provide your title</Label>
-                <Label size="large"> select your analysis category</Label>
-                <Label size="large"> start preserving </Label>
-              </Box>
-              <Box flex pad="medium">
-                {/* <Image src={create} fit="contain"/> */}
-                <video width="100%" height="100%" controls muted playsInline>
-                  <source
-                    src="https://www.youtube.com/watch?v=hPWj01Q1Jx0"
-                    type="video/mp4"
-                  />
-                </video>
-              </Box>
-            </Box>
-            <Box
-              flex
-              direction="row"
-              pad="large"
-              align="center"
-              justify="between"
-            >
-              <Box pad="small">
-                <Heading tag="h3">Forms</Heading>
-                <Paragraph margin="none">
-                  CAP provides form templates for CERN experiments (CMS, ATLAS,
-                  LHCB, ALICE)
-                </Paragraph>
-                <Paragraph margin="none">
-                  and also a dynamic builder for new forms
-                </Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3">Integrations</Heading>
-                <Paragraph margin="none">
-                  CAP provides collaborations with services such as
-                </Paragraph>
-                <Paragraph margin="none">ORCID, ZENODO, REANA, ROR</Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3">Files</Heading>
-                <Paragraph margin="none">
-                  CAP provides the opportunity to upload Github/Gitlab files or
-                  repositories
-                </Paragraph>
-                <Paragraph margin="none">
-                  and constantly update them <strong>if</strong> and{" "}
-                  <strong>when</strong> the users want to
-                </Paragraph>
-              </Box>
-            </Box>
-          </Box>
+            Discover the platform
+          </Heading>
+        </Box>
+        <Box align="center" justify="center">
+          <Paragraph size="large">
+            CERN Analysis Preservation (CAP) is a service for physicists to
+            preserve and document the various materials produced in the process
+            of their analyses, e.g. datasets, code, documentation, so that they
+            are reusable and understandable in the future. By using this tool,
+            researchers ensure these outputs are preserved and also findable and
+            accessible by their (internal) collaborators.
+          </Paragraph>
+          <Paragraph size="large">
+            CAP provides an integrated platform that allows researchers to
+            preserve and document the various materials produced in the process
+            of their research and experimentation (datasets, code,
+            documentation) so that they are reusable and understandable in the
+            future. By using this tool, researchers ensure these outputs are
+            preserved, findable and accessible by their collaborators.
+          </Paragraph>
         </Box>
         <Box
           full
           pad={{ vertical: "large", horizontal: "xlarge" }}
           justify="center"
         >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
-          >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Reuse
-                </Heading>
-                <Label size="large">
-                  search and select the analysis you want to edit
-                </Label>
-                <Label size="large">update any data or files</Label>
-                <Label size="large">save the changes</Label>
-              </Box>
-              <Box flex colorIndex="neutral-1" pad="large">
-                <Image src={reuse} fit="contain" />
-              </Box>
-            </Box>
+          <div className="a">
             <Box
-              direction="row"
-              pad={{ horizontal: "medium" }}
+              style={{ borderRadius: "5px", color: "#FFFF" }}
               justify="between"
+              pad={{ vertical: "medium" }}
             >
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Drafts
-                </Heading>
-                <Paragraph margin="none">
-                  Every analysis is first saved as a draft, and users can edit
-                  it as many times they want
-                </Paragraph>
+              <Box direction="row" size={{ height: "medium" }}>
+                <Box flex pad={{ horizontal: "medium" }} justify="start">
+                  <Heading
+                    tag="h1"
+                    strong
+                    style={{ letterSpacing: "3px", fontSize: "7em" }}
+                  >
+                    Create
+                  </Heading>
+                  <Box size={{ width: "medium" }}>
+                    <Label size="large">
+                      create your analysis by providing the title and the
+                      catergory
+                    </Label>
+                  </Box>
+                  {/* <Label size="large"> provide your title</Label>
+                  <Label size="large"> select your analysis category</Label>
+                  <Label size="large"> start preserving </Label> */}
+                </Box>
+                <Box flex pad="medium">
+                  <Image src={reuse} fit="contain" />
+                  {/* <video width="100%" height="100%" controls muted playsInline>
+                    <source
+                      src="https://www.youtube.com/watch?v=hPWj01Q1Jx0"
+                      type="video/mp4"
+                    />
+                  </video> */}
+                </Box>
               </Box>
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Published
-                </Heading>
-                <Paragraph margin="none">
-                  When the users select to publish their drafts, they generate
-                </Paragraph>
-                <Paragraph margin="none">
-                  a snapshot of the current draft, to share with their team
-                </Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Workflows
-                </Heading>
-                <Paragraph margin="none">
-                  When the users select to publish their drafts, they generate
-                </Paragraph>
-                <Paragraph margin="none">
-                  a snapshot of the current draft, to share with their team
-                </Paragraph>
+              <Box
+                flex
+                direction="row"
+                pad="large"
+                align="start"
+                justify="between"
+              >
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Forms
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    Though CAP, users can access form templates for CERN
+                    experiments (CMS, ATLAS, LHCB, ALICE) but also use a dynamic
+                    form builder to customize their own forms.
+                  </Paragraph>
+                </Box>
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Drafts
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    Every analysis firstly is saved as a draft. The authors can
+                    edit it as many times they want before plublishing. As draft
+                    the author is the only one with permission to access.
+                  </Paragraph>
+                </Box>
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Published
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    Published analysis are shared among the team members but
+                    also between specific scientists inside the organisation.
+                  </Paragraph>
+                </Box>
               </Box>
             </Box>
-          </Box>
+          </div>
         </Box>
         <Box
           full
           pad={{ vertical: "large", horizontal: "xlarge" }}
           justify="center"
         >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
-          >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Collaborate
-                </Heading>
-                <Label size="large">publish your personal work</Label>
-                <Label size="large">collaborate with team members</Label>
-                <Label size="large">disrupt your knowledge</Label>
-              </Box>
-              <Box flex colorIndex="neutral-1" pad="large">
-                <Image src={publish} fit="contain" />
-              </Box>
-            </Box>
+          <div className="a">
             <Box
-              flex
-              direction="row"
-              pad="large"
-              align="center"
+              style={{ borderRadius: "5px", color: "#FFFF" }}
               justify="between"
+              pad={{ vertical: "medium" }}
             >
-              <Box pad="small">
-                <Heading tag="h3">Publish</Heading>
-                <Label>
-                  users can publish their personal work and share it with their
-                  colleagues
-                </Label>
+              <Box direction="row" size={{ height: "medium" }}>
+                <Box flex pad={{ horizontal: "medium" }} justify="start">
+                  <Heading
+                    tag="h1"
+                    strong
+                    style={{ letterSpacing: "3px", fontSize: "7em" }}
+                  >
+                    Reuse
+                  </Heading>
+                  <Box>
+                    <Label size="large">
+                      edit your analysis and provide new data anytime{" "}
+                    </Label>
+                  </Box>
+                  {/* <Label size="large">
+                    search and select the analysis you want to edit
+                  </Label>
+                  <Label size="large">update any data or files</Label>
+                  <Label size="large">save the changes</Label> */}
+                </Box>
+                <Box flex pad="medium">
+                  <Image src={reuse} fit="contain" />
+                </Box>
               </Box>
-              <Box pad="small">
-                <Heading tag="h3" strong>
-                  Share
-                </Heading>
-                <Label>publish the analysis to your team or collegues</Label>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3" strong>
-                  Publish
-                </Heading>
-                <Label>
-                  the analysis now is in collaboration with your team
-                </Label>
+              <Box direction="row" pad="large" align="start" justify="between">
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Integrations
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    CAP provides collaborations with services such as ORCID,
+                    ZENODO, REANA, ROR
+                  </Paragraph>
+                </Box>
+
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Files
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    CAP provides the opportunity to upload Github/Gitlab files
+                    or repositories and constantly update them{" "}
+                    <strong>if</strong> and <strong>when</strong> the users want
+                    to
+                  </Paragraph>
+                </Box>
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Workflows
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    When the users select to publish their drafts, they generate
+                    a snapshot of the current draft, to share with their team
+                  </Paragraph>
+                </Box>
               </Box>
             </Box>
-          </Box>
+          </div>
+        </Box>
+        <Box
+          full
+          pad={{ vertical: "large", horizontal: "xlarge" }}
+          justify="center"
+        >
+          <div className="a">
+            <Box
+              style={{ borderRadius: "5px", color: "#FFFF" }}
+              justify="between"
+              pad={{ vertical: "medium" }}
+            >
+              <Box direction="row" size={{ height: "medium" }}>
+                <Box flex pad={{ horizontal: "medium" }} justify="start">
+                  <Heading
+                    tag="h1"
+                    strong
+                    style={{ letterSpacing: "3px", fontSize: "7em" }}
+                  >
+                    Collaborate
+                  </Heading>
+                  <Box size={{ width: "medium" }}>
+                    <Label size="large">
+                      share and co-work with your team and colleagues
+                    </Label>
+                  </Box>
+                  {/* <Label size="large">publish your personal work</Label>
+                  <Label size="large">collaborate with team members</Label>
+                  <Label size="large">disrupt your knowledge</Label> */}
+                </Box>
+                <Box flex pad="large">
+                  <Image src={publish} fit="contain" />
+                </Box>
+              </Box>
+              <Box
+                flex
+                direction="row"
+                pad="large"
+                align="start"
+                justify="between"
+              >
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Publish
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    Analysis can be publised either using the web user
+                    interface, or by the command-line client or by the REST API
+                  </Paragraph>
+                </Box>
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Content
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    There are 10 gigabytes of storage available to submit your
+                    n-tuples and output macros (for each of your individual
+                    analyses).
+                  </Paragraph>
+                </Box>
+                <Box pad="small">
+                  <Heading tag="h2" strong>
+                    Access
+                  </Heading>
+                  <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                    Access will always be restricted to members of the
+                    collaboration associated with an analysis. Permissions
+                    within a collaboration can be adjusted by the creator of the
+                    analysis, defaulting to creator-only access
+                  </Paragraph>
+                </Box>
+              </Box>
+            </Box>
+          </div>
         </Box>
       </Box>
     );
