@@ -76,7 +76,7 @@ def get_ror_by_org(org):
         resp, status = _ror(org, by='org')
         serialized = RORAffiliationSchema().dump(resp)
         return jsonify(serialized.data), status
-    except JSONDecodeError:
+    except ValueError:
         return jsonify({'message': 'Organization not found.'}), 404
     except ExternalAPIException:
         raise

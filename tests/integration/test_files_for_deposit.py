@@ -428,7 +428,7 @@ def test_file_upload_uploads_successfully(client, users, auth_headers_for_user,
                       headers=auth_headers_for_user(owner))
 
     assert resp.status_code == 200
-    assert resp.data == 'Hello world!'
+    assert resp.data == b'Hello world!'
 
 
 def test_put_header_tags(client, users, auth_headers_for_user, create_deposit):

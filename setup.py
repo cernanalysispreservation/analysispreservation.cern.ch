@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0' # "3.0.0rc2"
+INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -33,20 +33,13 @@ tests_require = [
     'selenium>=3.4.3',
 ]
 
-extras_require = {
-    'docs': [
-        'Sphinx>=1.5.1',
-    ],
-    'tests': tests_require,
-}
+extras_require = {'docs': ['Sphinx>=1.5.1'], 'tests': tests_require}
 
 extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-extras_require['ldap'] = [
-    'python-ldap>=2.4.39'
-]
+extras_require['ldap'] = ['python-ldap>=2.4.39']
 
 # Do not include in all requirement
 extras_require['xrootd'] = [
@@ -54,10 +47,7 @@ extras_require['xrootd'] = [
     'xrootdpyfs>=0.1.5',
 ]
 
-setup_requires = [
-    'Babel>=2.4.0',
-    'pytest-runner>=3.0.0,<5',
-]
+setup_requires = ['Babel>=2.4.0', 'pytest-runner>=3.0.0,<5']
 
 install_requires = [
     'Flask==0.12.4',
@@ -72,11 +62,11 @@ install_requires = [
     'cachetools==3.1.0',
 
     # Pinned libraries
-    'celery==4.1.1',  # temporary fix
+    'celery==4.3',
     # temporary pinned since there are 'connection closed' issues
     # on production server
     'urllib3[secure]==1.22',
-    'SQLAlchemy-Continuum==1.3.4',
+    'sqlalchemy==1.3',
 
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
@@ -90,19 +80,18 @@ install_requires = [
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
+    'invenio-indexer==1.0.1',
     'coolname==1.1.0',
     'Authlib==0.12.1',
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
-
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
 ]
 
 packages = find_packages()
-
 
 # Get the version string. Cannot be done with import!
 g = {}
@@ -119,15 +108,14 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
+    url=
+    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
     platforms='any',
     entry_points={
-        'console_scripts': [
-            'cap = cap.cli:cli',
-        ],
+        'console_scripts': ['cap = cap.cli:cli'],
         'invenio_access.actions': [
             'cms_access = '
             'cap.modules.experiments.permissions:cms_access_action',
@@ -175,7 +163,6 @@ setup(
             'cap.modules.records.minters:cap_record_minter',
             'cap_deposit_minter = '
             'cap.modules.deposit.minters:cap_deposit_minter',
-
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
@@ -193,12 +180,8 @@ setup(
             'auth = cap.modules.auth.models',
             'git_model = cap.modules.repoimporter.models',
         ],
-        'invenio_db.alembic': [
-            'cap = cap:alembic',
-        ],
-        'invenio_config.module': [
-            'cap = cap.config'
-        ]
+        'invenio_db.alembic': ['cap = cap:alembic'],
+        'invenio_config.module': ['cap = cap.config']
     },
     extras_require=extras_require,
     install_requires=install_requires,

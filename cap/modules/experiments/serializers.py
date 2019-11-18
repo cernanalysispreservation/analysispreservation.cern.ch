@@ -26,11 +26,11 @@
 from __future__ import absolute_import, print_function
 
 import re
-from HTMLParser import HTMLParser
 
 from marshmallow import Schema, fields
+from six.moves import html_parser
 
-parser = HTMLParser()
+parser = html_parser.HTMLParser()
 
 
 class CADIField(fields.Field):

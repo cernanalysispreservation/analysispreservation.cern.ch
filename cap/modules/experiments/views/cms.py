@@ -21,22 +21,21 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Theme blueprint in order for template and static files to be loaded."""
 
 from __future__ import absolute_import, print_function
 
 import re
-from urllib import unquote
 
 from flask import Blueprint, jsonify, request
 from invenio_search.proxies import current_search_client as es
+from six.moves.urllib.parse import unquote
 
 from ..permissions import cms_permission
+from ..serializers import CADISchema
 from ..utils.cadi import get_from_cadi_by_id
 from ..utils.cms import CMS_TRIGGERS_INDEX
 from ..utils.das import DAS_DATASETS_INDEX
-from ..serializers import CADISchema
 
 cms_bp = Blueprint(
     'cap_cms',
@@ -86,9 +85,7 @@ def get_datasets_suggestions():
             }
         }
 
-        res = es.search(index=alias,
-                        terminate_after=10,
-                        body=query)
+        res = es.search(index=alias, terminate_after=10, body=query)
 
         suggestions = res['suggest']['name-suggest'][0]['options']
         res = [x['_source']['name'] for x in suggestions]
