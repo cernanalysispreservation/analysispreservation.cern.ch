@@ -161,7 +161,7 @@ six==1.11.0               # via bleach, cryptography, elasticsearch-dsl, flask-b
 speaklater==1.3           # via flask-babelex, invenio-assets
 sqlalchemy-continuum==1.3.4
 sqlalchemy-utils[encrypted]==0.33.3  # via invenio-accounts, invenio-db, invenio-oauth2server, invenio-oauthclient, sqlalchemy-continuum, wtforms-alchemy
-sqlalchemy==1.2.8         # via alembic, flask-alembic, flask-sqlalchemy, invenio-db, sqlalchemy-continuum, sqlalchemy-utils, wtforms-alchemy
+sqlalchemy==1.3         # via alembic, flask-alembic, flask-sqlalchemy, invenio-db, sqlalchemy-continuum, sqlalchemy-utils, wtforms-alchemy
 traitlets==4.3.2          # via ipython
 ua-parser==0.8.0          # via invenio-accounts
 uritools==2.2.0           # via invenio-oauthclient

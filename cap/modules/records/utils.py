@@ -27,9 +27,15 @@ import random
 import string
 
 from flask import url_for
+from invenio_db import db
+from invenio_indexer.api import RecordIndexer
 from invenio_pidstore.errors import PIDDoesNotExistError
-from invenio_pidstore.models import PersistentIdentifier
+from invenio_pidstore.models import PersistentIdentifier, PIDStatus
+from invenio_records.models import RecordMetadata
 from six.moves.urllib import parse
+from sqlalchemy import cast
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.sqlite import JSON
 
 
 def generate_recid(experiment):
@@ -81,17 +87,21 @@ def reindex_by_schema_url(schema_url, pid_type):
 
     indexer = RecordIndexer()
 
-    ids = (x[0] for x in RecordMetadata.query.filter(
-        RecordMetadata.json['$schema'] == cast(
-            schema_url, _get_json_type())).values(RecordMetadata.id))
+    ids = [
+        x[0] for x in RecordMetadata.query.filter(
+            RecordMetadata.json['$schema'] == cast(
+                schema_url, _get_json_type())).values(RecordMetadata.id)
+    ]
 
-    filtered_by_pid_type = (x[0] for x in PersistentIdentifier.query.filter(
-        PersistentIdentifier.status == PIDStatus.REGISTERED,
-        PersistentIdentifier.object_type == 'rec', PersistentIdentifier.
-        pid_type == pid_type, PersistentIdentifier.object_uuid.in_(
-            ids)).values(PersistentIdentifier.object_uuid))
+    if ids:
+        filtered_by_pid_type = (
+            x[0] for x in PersistentIdentifier.query.filter(
+                PersistentIdentifier.object_type == 'rec', PersistentIdentifier
+                .pid_type == pid_type, PersistentIdentifier.status ==
+                PIDStatus.REGISTERED, PersistentIdentifier.object_uuid.in_(
+                    ids)).values(PersistentIdentifier.object_uuid))
 
-    print('{} records will be reindexed...'.format(schema_url))
+        print('{} records will be reindexed...'.format(schema_url))
 
-    indexer.bulk_index(filtered_by_pid_type)
-    indexer.process_bulk_queue(es_bulk_kwargs={'raise_on_error': True})
+        indexer.bulk_index(filtered_by_pid_type)
+        indexer.process_bulk_queue()

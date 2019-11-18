@@ -29,7 +29,7 @@ notifications:
 
 sudo: false
 
-dist: trusty
+dist: bionic
 
 language: python
 

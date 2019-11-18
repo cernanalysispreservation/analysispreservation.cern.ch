@@ -1,13 +1,16 @@
 """Initialize extension."""
 
 from __future__ import absolute_import, print_function
-from cap.modules.schemas.models import Schema
+
 from invenio_search import current_search
+
+from cap.modules.schemas.models import Schema
+
+from .receivers import handle_deposit_mapping_updated
 
 
 class CAPDeposit(object):
     """CAPDeposit extension."""
-
     def __init__(self, app=None):
         """Extension initialization."""
         if app:

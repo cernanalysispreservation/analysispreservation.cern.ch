@@ -37,6 +37,7 @@ from invenio_search import current_search_client as es
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.orm import validates
+from sqlalchemy.orm.base import NO_VALUE
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.utils import import_string
 
@@ -44,6 +45,7 @@ from cap.types import json_type
 
 from .permissions import SchemaAdminAction, SchemaReadAction
 from .serializers import resolved_schemas_serializer, schema_serializer
+from .signals import deposit_mapping_updated, record_mapping_updated
 
 ES_FORBIDDEN = r' ,"\<*>|?'
 
@@ -208,10 +210,29 @@ class Schema(db.Model):
         """Give read access to all authenticated users."""
         assert self.id
 
-        db.session.add(
-            ActionSystemRoles.allow(SchemaReadAction(self.id),
-                                    role=authenticated_user))
+        try:
+            ActionSystemRoles.query.filter(
+                ActionSystemRoles.action == 'schema-object-read',
+                ActionSystemRoles.argument == str(self.id),
+                ActionSystemRoles.role_name == 'authenticated_user').one()
+        except NoResultFound:
+            db.session.add(
+                ActionSystemRoles.allow(SchemaReadAction(self.id),
+                                        role=authenticated_user))
         db.session.flush()
+
+    def revoke_access_for_all_users(self):
+        """Revoke read access to all authenticated users."""
+        assert self.id
+
+        try:
+            db.session.delete(
+                ActionSystemRoles.query.filter(
+                    ActionSystemRoles.action == 'schema-object-read',
+                    ActionSystemRoles.argument == str(self.id),
+                    ActionSystemRoles.role_name == 'authenticated_user').one())
+        except NoResultFound:
+            pass
 
     def give_admin_access_for_user(self, user):
         """Give admin access for users."""
@@ -270,7 +291,69 @@ def name_to_es_name(name):
     return name.replace('/', '-')
 
 
-def create_index(index_name, mapping_body, aliases):
+@event.listens_for(Schema, 'after_insert')
+def after_insert_schema(target, value, schema):
+    """On schema insert, create corresponding indexes and aliases in ES."""
+    if schema.is_indexed:
+        _recreate_deposit_mapping_in_ES(schema, schema.deposit_mapping)
+        _recreate_record_mapping_in_ES(schema, schema.record_mapping)
+
+        # invenio search needs it
+        mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
+        current_cache.delete_memoized(import_string(mappings_imp))
+
+
+@event.listens_for(Schema.deposit_mapping, 'set')
+def after_deposit_mapping_updated(target, value, oldvalue, initiator):
+    """If deposit mapping field was updated:
+        * trigger mapping update in ES
+        * send signal
+
+        Skip if:
+        * triggered on creation of schema (not update)
+        * schema not indexed in ES
+        """
+    if oldvalue == NO_VALUE or not target.is_indexed:
+        return
+
+    _recreate_deposit_mapping_in_ES(target, value)
+
+    if target.use_deposit_as_record:
+        _recreate_record_mapping_in_ES(target, value)
+
+
+@event.listens_for(Schema.record_mapping, 'set')
+def after_record_mapping_updated(target, value, oldvalue, initiator):
+    """If record mapping field was updated:
+        * trigger mapping update in ES
+        * send signal
+
+        Skip if:
+        * triggered on creation of schema (not update)
+        * schema not indexed in ES
+        * flag use_deposit_as_record, so record mapping changes can be ignored
+        """
+    if oldvalue == NO_VALUE or not target.is_indexed or \
+            target.use_deposit_as_record:
+        return
+
+    _recreate_record_mapping_in_ES(target, value)
+
+
+@event.listens_for(Schema, 'after_delete')
+def before_delete_schema(mapper, connect, schema):
+    """On schema delete, delete corresponding indexes and aliases in ES."""
+    if schema.is_indexed:
+        for index in (schema.record_index, schema.deposit_index):
+            if es.indices.exists(index):
+                es.indices.delete(index)
+
+            # invenio search needs it
+            mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
+            current_cache.delete_memoized(import_string(mappings_imp))
+
+
+def _create_index(index_name, mapping_body, aliases):
     """Create index in elasticsearch, add under given aliases."""
     if not es.indices.exists(index_name):
         current_search.mappings[index_name] = {}  # invenio search needs it
@@ -289,34 +372,17 @@ def create_index(index_name, mapping_body, aliases):
                 }]})
 
 
-@event.listens_for(Schema, 'after_insert')
-def after_insert_schema(target, value, schema):
-    """On schema insert, create corresponding indexes and aliases in ES."""
-    if schema.is_indexed:
-        create_index(schema.deposit_index, schema.deposit_mapping,
-                     schema.deposit_aliases)
-        create_index(schema.record_index, schema.record_mapping,
-                     schema.record_aliases)
+def _recreate_deposit_mapping_in_ES(schema, mapping):
+    if es.indices.exists(schema.deposit_index):
+        es.indices.delete(index=schema.deposit_index)
 
-        # invenio search needs it
-        mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
-        current_cache.delete_memoized(import_string(mappings_imp))
+    _create_index(schema.deposit_index, mapping, schema.deposit_aliases)
+    deposit_mapping_updated.send(schema)
 
 
-@event.listens_for(Schema, 'after_delete')
-def before_delete_schema(mapper, connect, schema):
-    """On schema delete, delete corresponding indexes and aliases in ES."""
-    if schema.is_indexed:
-        for index in (schema.record_index, schema.deposit_index):
-            if es.indices.exists(index):
-                es.indices.delete(index)
+def _recreate_record_mapping_in_ES(schema, mapping):
+    if es.indices.exists(schema.record_index):
+        es.indices.delete(index=schema.record_index)
 
-            # invenio search needs it
-            mappings_imp = current_app.config.get('SEARCH_GET_MAPPINGS_IMP')
-            current_cache.delete_memoized(import_string(mappings_imp))
-
-
-@db.event.listens_for(Schema, 'before_update', propagate=True)
-def timestamp_before_update(mapper, connection, target):
-    """Update `updated` property with current time on `before_update` event."""
-    target.updated = datetime.utcnow()
+    _create_index(schema.record_index, mapping, schema.record_aliases)
+    record_mapping_updated.send(schema)
