@@ -54,13 +54,13 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
                       headers=auth_headers)
 
     assert resp.status_code == 200
-    assert resp.data == 'Original Hello world!'
+    assert resp.data == b'Original Hello world!'
 
     # member of collaboration cannot access file
     resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
                       headers=auth_headers_for_user(member_of_collaboration))
 
-    assert resp.status_code == 404    # TOFIX shouldnt be 403?
+    assert resp.status_code == 404  # TOFIX shouldnt be 403?
 
     # user can update and delete  a file
     resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),

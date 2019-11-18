@@ -36,7 +36,7 @@ def _filter_by_read_access(schemas_list):
 
 def _filter_only_latest(schemas_list):
     """Return only latest version of schemas."""
-    return [g.next() for k, g in groupby(schemas_list, lambda s: s.name)]
+    return [next(g) for k, g in groupby(schemas_list, lambda s: s.name)]
 
 
 def get_schemas_for_user(latest=True):

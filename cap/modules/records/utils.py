@@ -46,7 +46,7 @@ def random_pid(experiment):
     """Generate a random pid value for experiments."""
     def _generate_random_string(length):
         """Random string generator."""
-        chars = string.lowercase + string.digits
+        chars = string.ascii_lowercase + string.digits
         return ''.join((random.choice(chars)) for x in range(length))
 
     return 'CAP.{}.{}.{}'.format(experiment,

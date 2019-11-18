@@ -23,21 +23,22 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 addons:
-  postgresql: 9.4
+   postgresql: 9.4
+
 notifications:
   email: false
 
 sudo: false
 
-dist: trusty
+dist: bionic
 
 language: python
 
 python:
   - "2.7"
+  - "3.5"
 
 services:
-- postgresql
 - redis
 - rabbitmq
 
@@ -45,15 +46,13 @@ env:
   - REQUIREMENTS=lowest E2E="no" SQLALCHEMY_DATABASE_URI="postgresql+psycopg2://postgres@localhost:5432/cap" ES_VERSION=5.6.4
 
 before_install:
+  - "mkdir /tmp/elasticsearch"
+  - "wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz  | tar xz --directory=/tmp/elasticsearch --strip-components=1"
+  - "/tmp/elasticsearch/bin/elasticsearch &"
   - "./scripts/ci/prebuild.sh"
-  - mkdir /tmp/elasticsearch
-  - wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz  | tar xz --directory=/tmp/elasticsearch --strip-components=1
-  - "/tmp/elasticsearch/bin/elasticsearch-plugin install -b ingest-attachment"
-  - /tmp/elasticsearch/bin/elasticsearch &
-  - sleep 30
-  - travis_retry pip install coveralls
-  - travis_retry pip install kwalitee --pre
-  - echo ${TRAVIS_COMMIT_RANGE}
+  - "travis_retry pip install coveralls"
+  - "travis_retry pip install kwalitee --pre"
+  - "echo ${TRAVIS_COMMIT_RANGE}"
   - "travis_retry pip install --upgrade pip setuptools py"
   - "travis_retry pip install twine wheel coveralls requirements-builder"
   - "cat requirements.txt > .travis-lowest-requirements.txt"
@@ -64,6 +63,7 @@ install:
   - "travis_retry pip install -e .[docs,tests,ldap]"
 
 before_script:
+  - sleep 15
   - travis_retry pip install kwalitee GitPython --pre
 
 script:

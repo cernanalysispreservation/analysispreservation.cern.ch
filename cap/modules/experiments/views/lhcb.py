@@ -30,7 +30,7 @@ import codecs
 import json
 import os
 import re
-from urllib import unquote
+from six.moves.urllib.parse import unquote
 
 import requests
 from flask import Blueprint, current_app, jsonify, request
