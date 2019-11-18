@@ -31,6 +31,12 @@ import platform from "../../../images/image.png";
 import front from "../../../images/template.png";
 import publish from "../../../images/publish.png";
 import reuse from "../../../images/reuse.png";
+import Database from "grommet/components/icons/base/Database";
+import Refresh from "grommet/components/icons/base/Refresh";
+import Group from "grommet/components/icons/base/Group";
+import Question from "grommet/components/icons/base/CircleQuestion";
+
+import "../../styles/styles.scss";
 
 class WelcomePage extends React.Component {
   constructor(props) {
@@ -51,8 +57,8 @@ class WelcomePage extends React.Component {
 
   render() {
     return (
-      <Box colorIndex="neutral-1-a">
-        <Box full colorIndex="neutral-1-a">
+      <Box>
+        <Box full>
           <Header
             colorIndex="neutral-1"
             pad={{ vertical: "none", horizontal: "small" }}
@@ -94,12 +100,30 @@ class WelcomePage extends React.Component {
           </Header>
           <Box flex justify="between" pad="small">
             <Box flex justify="between" direction="row">
-              <Box flex justify="center" align="center" pad="small">
-                <Box>
-                  <Heading strong>A service for scientific </Heading>
-                  <Heading tag="h2">preservation</Heading>
-                  <Heading tag="h2">reusability</Heading>
-                  <Heading tag="h2">collaboration</Heading>
+              <Box flex justify="center" align="start" pad="small">
+                <Box pad={{ horizontal: "medium" }}>
+                  <Heading
+                    strong
+                    style={{
+                      color: "#006996",
+                      letterSpacing: "5px",
+                      fontSize: "7em"
+                    }}
+                  >
+                    CAP
+                  </Heading>
+                  <Heading strong style={{ letterSpacing: "3px" }}>
+                    A scientific platform to{" "}
+                  </Heading>
+                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
+                    preserve data
+                  </Heading>
+                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
+                    disrupt knowledge
+                  </Heading>
+                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
+                    connect scientists
+                  </Heading>
                 </Box>
               </Box>
               <Box flex justify="center" align="end" pad="large">
@@ -116,206 +140,182 @@ class WelcomePage extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box
-          full
-          pad={{ vertical: "large", horizontal: "xlarge" }}
-          justify="center"
-        >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
-          >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Create
-                </Heading>
-                <Label size="large"> provide your title</Label>
-                <Label size="large"> select your analysis category</Label>
-                <Label size="large"> start preserving </Label>
-              </Box>
-              <Box flex pad="medium">
-                {/* <Image src={create} fit="contain"/> */}
-                <video width="100%" height="100%" controls muted playsInline>
-                  <source
-                    src="https://www.youtube.com/watch?v=hPWj01Q1Jx0"
-                    type="video/mp4"
-                  />
-                </video>
-              </Box>
-            </Box>
+        <Box full direction="row">
+          <Box colorIndex="neutral-1" flex>
+            <Image src={front} fit="contain" />
+          </Box>
+          <Box flex justify="center">
             <Box
-              flex
               direction="row"
-              pad="large"
+              justify="center"
               align="center"
-              justify="between"
+              margin={{ vertical: "large" }}
             >
-              <Box pad="small">
-                <Heading tag="h3">Forms</Heading>
-                <Paragraph margin="none">
-                  CAP provides form templates for CERN experiments (CMS, ATLAS,
-                  LHCB, ALICE)
-                </Paragraph>
-                <Paragraph margin="none">
-                  and also a dynamic builder for new forms
-                </Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3">Integrations</Heading>
-                <Paragraph margin="none">
-                  CAP provides collaborations with services such as
-                </Paragraph>
-                <Paragraph margin="none">ORCID, ZENODO, REANA, ROR</Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3">Files</Heading>
-                <Paragraph margin="none">
-                  CAP provides the opportunity to upload Github/Gitlab files or
-                  repositories
-                </Paragraph>
-                <Paragraph margin="none">
-                  and constantly update them <strong>if</strong> and{" "}
-                  <strong>when</strong> the users want to
-                </Paragraph>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          full
-          pad={{ vertical: "large", horizontal: "xlarge" }}
-          justify="center"
-        >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
-          >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Reuse
-                </Heading>
-                <Label size="large">
-                  search and select the analysis you want to edit
-                </Label>
-                <Label size="large">update any data or files</Label>
-                <Label size="large">save the changes</Label>
-              </Box>
-              <Box flex colorIndex="neutral-1" pad="large">
-                <Image src={reuse} fit="contain" />
+              <Box direction="row" align="center">
+                <Box pad={{ horizontal: "medium" }}>
+                  <Database size="large" />
+                </Box>
+                <Box flex direction="column" pad={{ horizontal: "small" }}>
+                  <Heading tag="h2">Preserve your analysis</Heading>
+                  <Paragraph margin="none">
+                    Researchers can save their materials (code, data, docs), and
+                    enrich them with metadata from integrated services (ORCID,
+                    ROR).
+                  </Paragraph>
+                </Box>
               </Box>
             </Box>
             <Box
               direction="row"
-              pad={{ horizontal: "medium" }}
-              justify="between"
-            >
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Drafts
-                </Heading>
-                <Paragraph margin="none">
-                  Every analysis is first saved as a draft, and users can edit
-                  it as many times they want
-                </Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Published
-                </Heading>
-                <Paragraph margin="none">
-                  When the users select to publish their drafts, they generate
-                </Paragraph>
-                <Paragraph margin="none">
-                  a snapshot of the current draft, to share with their team
-                </Paragraph>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h2" strong>
-                  Workflows
-                </Heading>
-                <Paragraph margin="none">
-                  When the users select to publish their drafts, they generate
-                </Paragraph>
-                <Paragraph margin="none">
-                  a snapshot of the current draft, to share with their team
-                </Paragraph>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box
-          full
-          pad={{ vertical: "large", horizontal: "xlarge" }}
-          justify="center"
-        >
-          <Box
-            colorIndex="neutral-1"
-            style={{ borderRadius: "5px" }}
-            justify="between"
-            pad={{ vertical: "medium" }}
-          >
-            <Box direction="row" size={{ height: "medium" }}>
-              <Box flex pad={{ horizontal: "medium" }} justify="start">
-                <Heading
-                  tag="h1"
-                  strong
-                  style={{ letterSpacing: "3px", fontSize: "7em" }}
-                >
-                  Collaborate
-                </Heading>
-                <Label size="large">publish your personal work</Label>
-                <Label size="large">collaborate with team members</Label>
-                <Label size="large">disrupt your knowledge</Label>
-              </Box>
-              <Box flex colorIndex="neutral-1" pad="large">
-                <Image src={publish} fit="contain" />
-              </Box>
-            </Box>
-            <Box
-              flex
-              direction="row"
-              pad="large"
+              justify="center"
               align="center"
-              justify="between"
+              margin={{ vertical: "large" }}
             >
-              <Box pad="small">
-                <Heading tag="h3">Publish</Heading>
-                <Label>
-                  users can publish their personal work and share it with their
-                  colleagues
-                </Label>
+              <Box direction="row" align="center" justify="center">
+                <Box pad={{ horizontal: "medium" }}>
+                  <Refresh size="large" />
+                </Box>
+                <Box flex direction="column" pad={{ horizontal: "small" }}>
+                  <Heading tag="h2">Reuse</Heading>
+                  <Paragraph margin="none">
+                    By integrating workflows and git repositories, researchers
+                    can rerun their experiments and save the results remotely,
+                    in self-contained environments.
+                  </Paragraph>
+                </Box>
               </Box>
-              <Box pad="small">
-                <Heading tag="h3" strong>
-                  Share
-                </Heading>
-                <Label>publish the analysis to your team or collegues</Label>
-              </Box>
-              <Box pad="small">
-                <Heading tag="h3" strong>
-                  Publish
-                </Heading>
-                <Label>
-                  the analysis now is in collaboration with your team
-                </Label>
+            </Box>
+            <Box
+              direction="row"
+              justify="center"
+              align="center"
+              margin={{ vertical: "large" }}
+            >
+              <Box direction="row" align="center" justify="center">
+                <Box pad={{ horizontal: "medium" }}>
+                  <Group size="large" />
+                </Box>
+                <Box flex direction="column" pad={{ horizontal: "small" }}>
+                  <Heading tag="h2">Collaborate</Heading>
+                  <Paragraph margin="none">
+                    Through CAP, researchers can give collaborators access to
+                    their analyses, resulting in increased efficiency, better
+                    communication and lessened duplication of work.
+                  </Paragraph>
+                </Box>
               </Box>
             </Box>
           </Box>
         </Box>
+        <Box full justify="center" align="center" direction="row">
+          <Box flex justify="center" align="center" colorIndex="neutral-1">
+            <Heading style={{ fontSize: "4em" }} strong>
+              Discover the platform
+            </Heading>
+          </Box>
+          <Box flex align="center" justify="center">
+            <Paragraph size="large">
+              CERN Analysis Preservation (CAP) is a service for physicists to
+              preserve and document the various materials produced in the
+              process of their analyses, e.g. datasets, code, documentation, so
+              that they are reusable and understandable in the future. By using
+              this tool, researchers ensure these outputs are preserved and also
+              findable and accessible by their (internal) collaborators.
+            </Paragraph>
+            <Paragraph size="large">
+              CAP provides an integrated platform that allows researchers to
+              preserve and document the various materials produced in the
+              process of their research and experimentation (datasets, code,
+              documentation) so that they are reusable and understandable in the
+              future. By using this tool, researchers ensure these outputs are
+              preserved, findable and accessible by their collaborators.
+            </Paragraph>
+          </Box>
+        </Box>
+        <div className="a">
+          <Box
+            full
+            direction="row"
+            justify="between"
+            align="center"
+            pad="medium"
+          >
+            <Box
+              style={{
+                boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)",
+                background: "#FFFF",
+                borderRadius: "5px"
+              }}
+              size={{ height: "large", width: "medium" }}
+              pad="small"
+              align="center"
+            >
+              <Label style={{ color: "#006996", fontWeight: 600 }}>01.</Label>
+              <Database size="large" />
+              <Box margin={{ top: "medium" }} align="center">
+                <Heading strong>What can I submit</Heading>
+                <Paragraph>
+                  There are 10 gigabytes of storage available to submit your
+                  n-tuples and output macros (for each of your individual
+                  analyses).
+                </Paragraph>
+              </Box>
+            </Box>
+            <Box
+              style={{
+                boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)",
+                background: "#FFFF",
+                borderRadius: "5px"
+              }}
+              size={{ height: "large", width: "medium" }}
+              pad="small"
+              align="center"
+            >
+              <Label style={{ color: "#006996", fontWeight: 600 }}>02.</Label>
+              <Question size="large" />
+              <Box margin={{ top: "medium" }} align="center">
+                <Heading strong>How can I submit</Heading>
+                <Paragraph>
+                  The submission forms via the user interface
+                </Paragraph>
+                <Paragraph>The command-line client (cap-client)</Paragraph>
+                <Paragraph>The REST API (API docs)</Paragraph>
+              </Box>
+            </Box>
+            <Box
+              style={{
+                boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)",
+                background: "#FFFF",
+                borderRadius: "5px"
+              }}
+              size={{ height: "large", width: "medium" }}
+              pad="small"
+              align="center"
+            >
+              <Label style={{ color: "#006996", fontWeight: 600 }}>03.</Label>
+              <Group size="large" />
+              <Box margin={{ top: "medium" }} align="center">
+                <Heading strong>Who has access</Heading>
+                <Paragraph>
+                  only collaboration members have access to a collaboration’s
+                  area
+                </Paragraph>
+                <Paragraph margin="none">
+                  only a certain collaboration’s members have access to this
+                  collaboration’s analyses
+                </Paragraph>
+                <Paragraph>
+                  only members granted specific rights can see or edit a draft
+                  version of an analysis
+                </Paragraph>
+                <Paragraph margin="none">
+                  only the creator can see or edit an analysis with default
+                  permission settings
+                </Paragraph>
+              </Box>
+            </Box>
+          </Box>
+        </div>
       </Box>
     );
   }
