@@ -336,12 +336,9 @@ def test_get_resolved_schemas(client, db, users, create_schema,
         'record_mapping': {},
         'record_options': {},
         'links': {
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
         }
     }
 
@@ -375,21 +372,15 @@ def test_get_only_latest_version_of_schemas(client, db, users,
         'deposit_schema': {},
         'record_mapping': {},
         'links': {
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json'
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json'
         },
     }, {
         'links': {
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json'
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json'
         },
         'deposit_options': {},
         'record_schema': {},
@@ -527,6 +518,7 @@ def test_post(client, db, users, auth_headers_for_user, json_headers):
     }
 
 
+from six import PY3
 def test_post_when_validation_errors_returns_400(client, db, users,
                                                  auth_headers_for_user,
                                                  json_headers):
@@ -546,10 +538,13 @@ def test_post_when_validation_errors_returns_400(client, db, users,
                        headers=json_headers + auth_headers_for_user(owner))
 
     assert resp.status_code == 400
+
+    error_msg = "[] is not of type 'object'" if PY3 else "[] is not of type u'object'"  # noqa
+
     assert resp.json['message'] == {
         'deposit_schema': [{
-            'dependencies': ["[] is not of type u'object'"],
-            'properties': ["[] is not of type u'object'"]
+            'dependencies': [error_msg],
+            'properties': [error_msg]
         }],
         'name': ['Missing data for required field.'],
         'version': ['String does not match expected pattern.']

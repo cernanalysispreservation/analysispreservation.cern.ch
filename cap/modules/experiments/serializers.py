@@ -28,16 +28,19 @@ from __future__ import absolute_import, print_function
 import re
 
 from marshmallow import Schema, fields
-from six.moves import html_parser
 
-parser = html_parser.HTMLParser()
+try:
+    from HTMLParser import HTMLParser
+    unescape = HTMLParser().unescape
+except ImportError:
+    from html import unescape
 
 
 class CADIField(fields.Field):
     """CADI html preprocessing field."""
     def _serialize(self, value, attr, obj):
         return '' if value is None \
-            else parser.unescape(parser.unescape(value))
+            else unescape(unescape(value))
 
 
 class CADISchema(Schema):

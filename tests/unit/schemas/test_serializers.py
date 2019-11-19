@@ -22,6 +22,8 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Unit tests for schemas serializers."""
+from six import PY3
+
 from cap.modules.schemas.serializers import schema_serializer
 
 
@@ -59,14 +61,16 @@ def test_schema_serializer_validators_errors():
             is_indexed=True,
         ))
 
+    error_msg = "[] is not of type 'object'" if PY3 else "[] is not of type u'object'"  # noqa
+
     assert errors == {
         'deposit_schema': [{
-            'dependencies': ["[] is not of type u'object'"],
-            'properties': ["[] is not of type u'object'"]
+            'dependencies': [error_msg],
+            'properties': [error_msg]
         }],
         'name': ['Missing data for required field.'],
         'record_schema': [{
-            'dependencies': ["[] is not of type u'object'"]
+            'dependencies': [error_msg]
         }],
         'version': ['String does not match expected pattern.']
     }

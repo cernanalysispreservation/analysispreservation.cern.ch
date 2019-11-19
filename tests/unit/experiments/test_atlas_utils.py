@@ -21,38 +21,12 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Tests for atlas utils methods."""
 from __future__ import absolute_import, print_function
 
-import base64
-
 import responses
-from flask import current_app
-
 from cap.modules.experiments.views.atlas import get_glance_token
-
-
-@responses.activate
-def test_get_glance_token(app):
-    client_id = current_app.config.get('GLANCE_CLIENT_ID')
-    client_token = current_app.config.get('GLANCE_CLIENT_PASSWORD')
-    basic_auth = base64.b64encode('{}:{}'.format(client_id, client_token))
-    access_token = 'some-token'
-    responses.add(responses.POST,
-                  current_app.config.get('GLANCE_GET_TOKEN_URL'),
-                  status=200,
-                  json = {
-                      'access_token': access_token,
-                      'token_type': 'bearer',
-                      'expires_in': 3600
-                  })
-
-    assert get_glance_token() == access_token
-
-    assert responses.calls[0].request.body == 'grant_type=client_credentials'
-    assert responses.calls[0].request.headers['Authorization'] == \
-        'Basic {}'.format(basic_auth)
+from flask import current_app
 
 
 @responses.activate

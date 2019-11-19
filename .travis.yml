@@ -36,7 +36,7 @@ language: python
 
 python:
   - "2.7"
-  - "3.5"
+  - "3.6"
 
 services:
 - redis
@@ -59,8 +59,8 @@ before_install:
 
 install:
   - "travis_retry pip install -r .travis-${REQUIREMENTS}-requirements.txt"
+  - "travis_retry pip install -e .[all,docs,tests,ldap]"
   - "travis_retry pip install -r requirements-local-forks.txt"
-  - "travis_retry pip install -e .[docs,tests,ldap]"
 
 before_script:
   - sleep 15

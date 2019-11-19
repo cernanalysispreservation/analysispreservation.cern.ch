@@ -62,11 +62,8 @@ install_requires = [
     'cachetools==3.1.0',
 
     # Pinned libraries
-    'celery==4.3',
-    # temporary pinned since there are 'connection closed' issues
-    # on production server
     'urllib3[secure]==1.22',
-    'sqlalchemy==1.3',
+    'sqlalchemy==1.3.0',
 
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
@@ -80,7 +77,6 @@ install_requires = [
     'invenio-rest==1.0.0',
     'invenio-files-rest==1.0.0',
     'invenio-records-files==1.0.0a11',
-    'invenio-indexer==1.0.1',
     'coolname==1.1.0',
     'Authlib==0.12.1',
     # "raven" versions needed till we FIX dependecies on installation
@@ -96,7 +92,7 @@ packages = find_packages()
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
+    exec (fp.read(), g)
     version = g['__version__']
 
 setup(
