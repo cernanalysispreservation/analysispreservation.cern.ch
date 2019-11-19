@@ -21,13 +21,11 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Experiments common utils."""
 
-
-from subprocess import check_output, CalledProcessError
 from functools import wraps
 from os.path import join
+from subprocess import CalledProcessError, check_output
 
 from flask import current_app
 
@@ -59,17 +57,18 @@ def kinit(principal, keytab):
 
             kt = join(current_app.config.get('KEYTABS_LOCATION'), keytab)
             try:
-                check_output(
-                    'kinit -kt {} {}'.format(kt, principal), shell=True)
+                check_output('kinit -kt {} {}'.format(kt, principal),
+                             shell=True)
                 ret_val = func(*args, **kwargs)
                 check_output('kdestroy', shell=True)
 
                 return ret_val
             except CalledProcessError as err:
-                current_app.logger.error(err.message)
+                current_app.logger.error(err)
                 raise
 
         return wrapped_function
+
     return decorator
 
 

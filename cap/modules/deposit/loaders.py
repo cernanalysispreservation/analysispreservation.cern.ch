@@ -24,13 +24,14 @@
 """CAP Deposit loaders."""
 
 from flask import request
+
 from cap.modules.deposit.utils import clean_empty_values
 
 
 def json_v1_loader(data=None):
     """Load data from request and process URLs."""
     from copy import deepcopy
-    data = deepcopy(data or request.json)
+    data = deepcopy(data or request.get_json())
 
     # remove underscore prefixed fields
     data = {k: v for k, v in data.items() if not k.startswith('_')}

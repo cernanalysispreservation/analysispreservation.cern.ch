@@ -25,10 +25,11 @@
 import copy
 
 from flask import url_for
-from invenio_jsonschemas.proxies import current_jsonschemas
 from marshmallow import Schema, ValidationError, fields, pre_load, validate
+from six import iteritems
 
 from cap.utils import url_to_api_url
+from invenio_jsonschemas.proxies import current_jsonschemas
 
 from .validators import JSONSchemaValidator
 
@@ -72,9 +73,11 @@ class SchemaSerializer(Schema):
     def build_links(self, obj):
         """Construct schema links."""
         deposit_path = url_for('invenio_jsonschemas.get_schema',
-                               schema_path=obj.deposit_path, _external=True)
+                               schema_path=obj.deposit_path,
+                               _external=True)
         record_path = url_for('invenio_jsonschemas.get_schema',
-                              schema_path=obj.record_path, _external=True)
+                              schema_path=obj.record_path,
+                              _external=True)
 
         links = {
             'deposit': url_to_api_url(deposit_path),
@@ -95,7 +98,7 @@ class UpdateSchemaSerializer(SchemaSerializer):
     @pre_load
     def filter_out_fields_that_cannot_be_updated(self, data, **kwargs):
         """Remove non editable fields from serialized data."""
-        data = {k: v for k, v in data.iteritems() if k in EDITABLE_FIELDS}
+        data = {k: v for k, v in iteritems(data) if k in EDITABLE_FIELDS}
         if not data:
             raise ValidationError('Empty data')
 

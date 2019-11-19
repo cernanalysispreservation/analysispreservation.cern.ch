@@ -26,12 +26,12 @@
 from flask import Blueprint, abort, jsonify, request
 from flask.views import MethodView
 from flask_login import current_user
-from invenio_db import db
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonref import JsonRefError
 from sqlalchemy.exc import IntegrityError
 
 from cap.modules.access.utils import login_required
+from invenio_db import db
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission
@@ -74,13 +74,14 @@ class SchemaAPI(MethodView):
         else:
             schemas = get_schemas_for_user(latest=latest)
             response = [
-                schema.serialize(resolve=resolve) for schema in schemas]
+                schema.serialize(resolve=resolve) for schema in schemas
+            ]
 
         return jsonify(response)
 
     def post(self):
         """Create new schema."""
-        data = request.json
+        data = request.get_json()
 
         serialized_data, errors = schema_serializer.load(data)
 
@@ -108,7 +109,7 @@ class SchemaAPI(MethodView):
             abort(404)
 
         with AdminSchemaPermission(schema).require(403):
-            data = request.json
+            data = request.get_json()
             serialized_data, errors = update_schema_serializer.load(
                 data, partial=True)
 

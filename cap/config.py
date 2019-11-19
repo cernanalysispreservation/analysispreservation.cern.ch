@@ -14,6 +14,14 @@ import os
 from datetime import timedelta
 from os.path import dirname, join
 
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter, prefix_filter
 from flask import request
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
@@ -26,15 +34,6 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter, prefix_filter
 
 
 def _(x):
@@ -138,7 +137,7 @@ SCHEMAS_OPTIONS_PREFIX = 'options/'
 #: It should be changed before deploying.
 SECRET_KEY = 'CHANGE_ME'
 #: Max upload size for form data via application/mulitpart-formdata.
-MAX_CONTENT_LENGTH = 100 * 1024 * 1024    # 100 MiB
+MAX_CONTENT_LENGTH = 100 * 1024 * 1024  # 100 MiB
 #: Sets cookie with the secure flag by default
 SESSION_COOKIE_SECURE = False
 #: Since HAProxy and Nginx route all requests no matter the host header
@@ -146,12 +145,9 @@ SESSION_COOKIE_SECURE = False
 #: should be set to the correct host and it is strongly recommended to only
 #: route correct hosts to the application.
 APP_ALLOWED_HOSTS = [
-    'localhost',
-    'analysispreservation.web.cern.ch',
-    'analysispreservation.cern.ch',
-    'analysispreservation-dev.web.cern.ch',
-    'analysispreservation-dev.cern.ch',
-    'analysispreservation-qa.web.cern.ch',
+    'localhost', 'analysispreservation.web.cern.ch',
+    'analysispreservation.cern.ch', 'analysispreservation-dev.web.cern.ch',
+    'analysispreservation-dev.cern.ch', 'analysispreservation-qa.web.cern.ch',
     'analysispreservation-qa.cern.ch'
 ]
 
@@ -234,12 +230,17 @@ SUPERUSER_EGROUPS = [
 # =======
 #: Records sort/facets options
 RECORDS_REST_SORT_OPTIONS = dict(records=dict(
-    bestmatch=dict(title=_('Best match'), fields=['_score'], order=1, ),
-    mostrecent=dict(title=_('Most recent'),
-                    fields=['_updated'],
-                    default_order='desc',
-                    order=2,
-                    ),
+    bestmatch=dict(
+        title=_('Best match'),
+        fields=['_score'],
+        order=1,
+    ),
+    mostrecent=dict(
+        title=_('Most recent'),
+        fields=['_updated'],
+        default_order='desc',
+        order=2,
+    ),
 ))
 
 RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
@@ -265,19 +266,19 @@ CAP_FACETS = {
         },
         'facet_cms_working_group': {
             'terms': {
-                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"    # noqa
+                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"  # noqa
             }
         },
         "particles": {
             "nested": {
                 "path": "main_measurements.signal_event_selection"
-                ".physics_objects"
+                        ".physics_objects"
             },
             "aggs": {
                 "facet_physics_objects": {
                     "terms": {
                         "field": "main_measurements.signal_event_selection"
-                        ".physics_objects.object",
+                                 ".physics_objects.object",
                         "exclude": ""
                     },
                     "aggs": {
@@ -287,9 +288,9 @@ CAP_FACETS = {
                         "facet_physics_objects_type": {
                             "terms": {
                                 "field": "main_measurements"
-                                ".signal_event_selection"
-                                ".physics_objects"
-                                ".object_type.keyword"
+                                         ".signal_event_selection"
+                                         ".physics_objects"
+                                         ".object_type.keyword"
                             },
                             "aggs": {
                                 "doc_count": {
@@ -428,9 +429,10 @@ CERN_APP_CREDENTIALS = {
 # Update CERN OAuth handlers - due to REST - mostly only redirect urls
 # and error flashing
 CERN_REMOTE_APP.update(
-    dict(authorized_handler=authorized_signup_handler,
-         disconnect_handler=disconnect_handler,
-         ))
+    dict(
+        authorized_handler=authorized_signup_handler,
+        disconnect_handler=disconnect_handler,
+    ))
 
 CERN_REMOTE_APP['signup_handler']['view'] = signup_handler
 
@@ -448,8 +450,7 @@ JSONSCHEMAS_RESOLVE_SCHEMA = True
 JSONSCHEMAS_LOADER_CLS = json_loader_factory(
     JSONResolver(plugins=[
         'cap.modules.schemas.resolvers', 'cap.modules.schemas.resolvers_api'
-    ],
-                 ))
+    ], ))
 
 # WARNING: Do not share the secret key - especially do not commit it to
 # version control.
@@ -537,8 +538,8 @@ DEPOSIT_REST_ENDPOINTS['depid'].update({
     'search_factory_imp': 'cap.modules.search.query:cap_search_factory',
     'item_route': '/deposits/<{0}:pid_value>'.format(_PID),
     'file_list_route': '/deposits/<{0}:pid_value>/files'.format(_PID),
-    'file_item_route': '/deposits/<{0}:pid_value>/files/<path:key>'.format(
-        _PID),
+    'file_item_route':
+        '/deposits/<{0}:pid_value>/files/<path:key>'.format(_PID),
     'create_permission_factory_imp': check_oauth2_scope(
         lambda record: CreateDepositPermission(record).can(), write_scope.id),
     'read_permission_factory_imp': check_oauth2_scope(

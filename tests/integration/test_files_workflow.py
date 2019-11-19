@@ -1,6 +1,5 @@
-from six import BytesIO
-
 from cap.modules.deposit.api import CAPDeposit
+from six import BytesIO
 
 # -*- coding: utf-8 -*-
 #
@@ -73,7 +72,7 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
                       headers=auth_headers)
 
     assert resp.status_code == 200
-    assert resp.data == 'Updated Hello world!'
+    assert resp.data == b'Updated Hello world!'
 
     resp = client.delete('/files/{}/file_1.txt'.format(deposit_bucket),
                          headers=auth_headers)
@@ -163,7 +162,7 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
                       headers=auth_headers)
 
     assert resp.status_code == 200
-    assert resp.data == 'Hello new world!'
+    assert resp.data == b'Hello new world!'
 
     # user can upload a new version of file
     resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
@@ -174,7 +173,7 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
 
     resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
                       headers=auth_headers)
-    assert resp.data == 'After edit Hello world!'
+    assert resp.data == b'After edit Hello world!'
 
     # even delete it
     resp = client.delete('/files/{}/file_1.txt'.format(deposit_bucket),
@@ -193,7 +192,7 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
     # remains unchanged
     resp = client.get('/files/{}/file_1.txt'.format(record_bucket),
                       headers=auth_headers)
-    assert resp.data == 'Original Hello world!'
+    assert resp.data == b'Original Hello world!'
 
     # user cannot modify(add, update, delete) a record bucket
     resp = client.put('/files/{}/file_1.txt'.format(record_bucket),

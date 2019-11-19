@@ -105,8 +105,7 @@ def test_resolve_schema_when_schema_and_refs_belong_to_experiment(
             'type': 'object',
             'properties': {
                 'nested': {
-                    '$ref':
-                    'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v0.0.0.json',
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v0.0.0.json',
                 }
             }
         })
@@ -140,8 +139,7 @@ def test_resolve_schema_when_schema_in_refs_belongs_to_different_experiment_retu
             'type': 'object',
             'properties': {
                 'nested': {
-                    '$ref':
-                    'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/nested-schema-v1.0.0.json',
                 }
             }
         })
@@ -161,8 +159,7 @@ def test_resolve_schema_when_wrong_refs_returns_404(
             'type': 'object',
             'properties': {
                 'nested': {
-                    '$ref':
-                    'https://analysispreservation.cern.ch/schemas/deposits/records/wrong-schema-v1.0.0.json',
+                    '$ref': 'https://analysispreservation.cern.ch/schemas/deposits/records/wrong-schema-v1.0.0.json',  # noqa
                 }
             }
         })
