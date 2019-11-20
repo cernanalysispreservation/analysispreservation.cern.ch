@@ -10,7 +10,7 @@ angular-gettext-babel==0.3  # via invenio-search-ui
 appnope==0.1.0            # via ipython
 argparse==1.4.0           # via uwsgitop
 arrow==0.12.1             # via invenio-formatter, invenio-records-rest, jinja2-time
-asn1crypto==0.24.0        # via cryptography
+asn1crypto==1.0.0
 Authlib==0.12.1
 babel==2.6.0              # via angular-gettext-babel, flask-babelex, invenio-assets
 backports.functools-lru-cache==1.5  # via arrow
