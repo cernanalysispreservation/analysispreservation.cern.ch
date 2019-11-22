@@ -168,8 +168,6 @@ def test_get_records_default_serializer(client, superuser,
             'size': file.file.size,
             'version_id': str(file.version_id)
         }],
-        'can_admin': True,
-        'can_update': True,
        'is_owner': True,
         'links': {
             'bucket':
@@ -281,8 +279,6 @@ def test_get_record_when_superuser_returns_record(client, db, users,
             'size': file.file.size,
             'version_id': str(file.version_id)
         }],
-        'can_admin': True,
-        'can_update': True,
        'is_owner': True,
         'links': {
             'bucket':

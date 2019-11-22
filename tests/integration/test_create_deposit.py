@@ -28,12 +28,12 @@ from __future__ import absolute_import, print_function
 
 import json
 
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_records.api import RecordMetadata
-from pytest import mark, raises
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.schemas.models import Schema
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from pytest import mark, raises
 
 
 #######################
@@ -219,8 +219,6 @@ def test_create_deposit_set_fields_correctly(client, location, users,
                 'users': [owner.email]
             }
         },
-        'can_update': True,
-        'can_admin': True,
         'is_owner': True,
         'links': {
             'bucket':

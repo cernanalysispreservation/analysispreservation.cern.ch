@@ -29,17 +29,14 @@ import re
 
 import jsonresolver
 from flask import abort, current_app, has_request_context
+from sqlalchemy.orm.exc import NoResultFound
+
+from cachetools.func import lru_cache
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
-from sqlalchemy.orm.exc import NoResultFound
 
 from .models import Schema
 from .permissions import ReadSchemaPermission
-
-try:
-    from functools import lru_cache
-except ImportError:
-    from functools32 import lru_cache
 
 
 @jsonresolver.route('/schemas/<path:path>',

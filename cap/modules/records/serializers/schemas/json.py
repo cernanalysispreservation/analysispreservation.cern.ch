@@ -31,10 +31,7 @@ from invenio_jsonschemas import current_jsonschemas
 from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             UpdateDepositPermission)
-from cap.modules.records.permissions import (AdminRecordPermission,
-                                             UpdateRecordPermission)
+from cap.modules.records.permissions import UpdateRecordPermission
 
 from . import common
 
@@ -42,24 +39,15 @@ from . import common
 class RecordSchema(common.CommonRecordSchema):
     """Schema for records v1 in JSON."""
     type = fields.Str(default='record')
-    can_update = fields.Method('can_user_update', dump_only=True)
-    can_admin = fields.Method('can_user_admin', dump_only=True)
 
     draft_id = fields.String(attribute='metadata._deposit.id', dump_only=True)
-
-    def can_user_update(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        return UpdateRecordPermission(deposit).can()
-
-    def can_user_admin(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        return AdminRecordPermission(deposit).can()
 
 
 class RecordFormSchema(RecordSchema):
     """Schema for records v1 in JSON."""
 
     schemas = fields.Method('get_record_schemas', dump_only=True)
+    can_update = fields.Method('can_user_update', dump_only=True)
 
     def get_record_schemas(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
@@ -70,6 +58,10 @@ class RecordFormSchema(RecordSchema):
         uiSchema = deposit.schema.record_options
 
         return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema)
+
+    def can_user_update(self, obj):
+        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
+        return UpdateRecordPermission(deposit).can()
 
 
 class BasicDepositSchema(Schema):
@@ -83,7 +75,8 @@ class BasicDepositSchema(Schema):
     def get_metadata(self, obj):
         result = {
             k: v
-            for k, v in obj.get('metadata', {}).items() if k not in [
+            for k, v in obj.get('metadata', {}).items()
+            if k not in [
                 'control_number', '$schema', '_deposit', '_experiment',
                 '_access', '_files'
             ]

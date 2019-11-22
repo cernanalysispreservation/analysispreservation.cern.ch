@@ -158,8 +158,6 @@ def test_deposit_clone_works_correctly(client, users, auth_headers_for_user,
                 'users': [owner.email]
             }
         },
-        'can_update': True,
-        'can_admin': True,
         'links': {
             'bucket':
                 'http://analysispreservation.cern.ch/api/files/{}'.format(

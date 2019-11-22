@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import, print_function
 
+from cachetools import LRUCache, cached
+from cachetools.keys import hashkey
 from flask import current_app, request
 from invenio_records_files.links import default_bucket_link_factory
 
@@ -34,7 +36,8 @@ from .api import CAPDeposit
 from .utils import extract_actions_from_class
 
 
-def links_factory(pid, record=None):
+@cached(LRUCache(maxsize=1024), key=lambda pid, **kwargs: hashkey(str(pid)))
+def links_factory(pid, record=None, record_hit=None, **kwargs):
     """Deposit links factory."""
     links = {
         'self': api_url_for('depid_item', pid),

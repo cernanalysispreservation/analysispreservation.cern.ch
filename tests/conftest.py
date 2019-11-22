@@ -31,26 +31,12 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
 from flask import current_app
-from flask_principal import ActionNeed
-from flask_security import login_user
-from invenio_access.models import ActionRoles, ActionUsers
-from invenio_accounts.testutils import create_test_user
-from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
-from invenio_db import db as db_
-from invenio_deposit.minters import deposit_minter
-from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
-from invenio_indexer.api import RecordIndexer
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_jsonschemas.proxies import current_jsonschemas
-from invenio_oauth2server.models import Client, Token
-from invenio_search import current_search, current_search_client
-from invenio_pidstore.resolver import Resolver
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
+import pytest
 from cap.factory import create_api
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.experiments.permissions import exp_need_factory
@@ -60,6 +46,21 @@ from cap.modules.experiments.utils.das import (
     DAS_DATASETS_INDEX, cache_das_datasets_in_es_from_file)
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
+from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
+from flask_principal import ActionNeed
+from flask_security import login_user
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_accounts.testutils import create_test_user
+from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
+from invenio_db import db as db_
+from invenio_deposit.minters import deposit_minter
+from invenio_deposit.scopes import write_scope
+from invenio_indexer.api import RecordIndexer
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
+from invenio_oauth2server.models import Client, Token
+from invenio_pidstore.resolver import Resolver
+from invenio_search import current_search, current_search_client
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -152,31 +153,26 @@ def location(db):
 def users(db):
     """Create users."""
     users = {
-        'cms_user':
-        create_user_with_access(db.session, 'cms_user@cern.ch', 'cms-access'),
-        'cms_user2':
-        create_user_with_access(db.session, 'cms_user2@cern.ch', 'cms-access'),
-        'alice_user':
-        create_user_with_access(db.session, 'alice_user@cern.ch',
-                                'alice-access'),
-        'alice_user2':
-        create_user_with_access(db.session, 'alice_user2@cern.ch',
-                                'alice-access'),
-        'atlas_user':
-        create_user_with_access(db.session, 'atlas_user@cern.ch',
-                                'atlas-access'),
-        'atlas_user2':
-        create_user_with_access(db.session, 'atlas_user2@cern.ch',
-                                'atlas-access'),
-        'lhcb_user':
-        create_user_with_access(db.session, 'lhcb_user@cern.ch',
-                                'lhcb-access'),
-        'lhcb_user2':
-        create_user_with_access(db.session, 'lhcb_user2@cern.ch',
-                                'lhcb-access'),
-        'superuser':
-        create_user_with_access(db.session, 'superuser@cern.ch',
-                                'superuser-access'),
+        'cms_user': create_user_with_access(db.session, 'cms_user@cern.ch',
+                                            'cms-access'),
+        'cms_user2': create_user_with_access(db.session, 'cms_user2@cern.ch',
+                                             'cms-access'),
+        'alice_user': create_user_with_access(db.session, 'alice_user@cern.ch',
+                                              'alice-access'),
+        'alice_user2': create_user_with_access(db.session,
+                                               'alice_user2@cern.ch',
+                                               'alice-access'),
+        'atlas_user': create_user_with_access(db.session, 'atlas_user@cern.ch',
+                                              'atlas-access'),
+        'atlas_user2': create_user_with_access(db.session,
+                                               'atlas_user2@cern.ch',
+                                               'atlas-access'),
+        'lhcb_user': create_user_with_access(db.session, 'lhcb_user@cern.ch',
+                                             'lhcb-access'),
+        'lhcb_user2': create_user_with_access(db.session, 'lhcb_user2@cern.ch',
+                                              'lhcb-access'),
+        'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
+                                             'superuser-access'),
     }
 
     db.session.commit()
@@ -185,7 +181,7 @@ def users(db):
 
 
 @pytest.fixture()
-def superuser(db):
+def superuser(db, clear_caches):
     "Create superuser."
     superuser = create_user_with_access(db.session, 'superuser@cern.ch',
                                         'superuser-access')
@@ -193,6 +189,14 @@ def superuser(db):
     db.session.commit()
 
     return superuser
+
+
+@pytest.fixture('function')
+def clear_caches():
+    yield
+    get_user_email_by_id.cache_clear()
+    get_role_name_by_id.cache_clear()
+    resolve_schema_by_url.cache_clear()
 
 
 @pytest.fixture
@@ -209,10 +213,8 @@ def es(base_app):
 
 
 @pytest.fixture
-def create_schema(db):
+def create_schema(db, clear_caches):
     """Returns function to add a schema to db."""
-    resolve_schema_by_url.cache_clear()  # clear schemas resolver cache between the method calls
-
     def _add_schema(name,
                     deposit_schema=None,
                     is_indexed=True,
@@ -393,25 +395,19 @@ def schema(db):
 def cms_user_me_data(users):
     """CMS user data returned by /me endpoint."""
     return {
-        "collaborations": [
-            "CMS",
-        ],
-        "current_experiment":
-        "CMS",
+        "collaborations": ["CMS", ],
+        "current_experiment": "CMS",
         "deposit_groups": [{
             "deposit_group": "cms-questionnaire",
             "description": "Create a CMS Questionnaire",
             "name": "CMS Questionnaire"
         }, {
             "deposit_group": "cms-analysis",
-            "description":
-            "Create a CMS Analysis (analysis metadata, workflows, etc)",
+            "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
             "name": "CMS Analysis"
         }],
-        "email":
-        users['cms_user'].email,
-        "id":
-        users['cms_user'].id
+        "email": users['cms_user'].email,
+        "id": users['cms_user'].id
     }
 
 
@@ -477,7 +473,9 @@ def get_record_pid_uuid(app, users, create_deposit, create_schema):
     deposit = create_deposit(owner, 'test-v0.0.1')
     pid = deposit['_deposit']['id']
 
-    resolver = Resolver(pid_type='depid', object_type='rec', getter=lambda x: x)
+    resolver = Resolver(pid_type='depid',
+                        object_type='rec',
+                        getter=lambda x: x)
     _, uuid = resolver.resolve(pid)
     return pid, str(uuid)
 

@@ -21,20 +21,19 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """User module utils methods."""
 
-import ldap
 from flask import current_app
-from invenio_accounts.models import Role, User
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+import ldap
+from cachetools.func import lru_cache
+from invenio_accounts.models import Role, User
+
 from .errors import DoesNotExistInLDAP
 
-_datastore = LocalProxy(
-    lambda: current_app.extensions['security'].datastore
-)
+_datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
 
 def get_existing_or_register_user(mail):
@@ -43,8 +42,7 @@ def get_existing_or_register_user(mail):
         user = User.query.filter_by(email=mail).one()
     except NoResultFound:
         if does_user_exist_in_ldap(mail):
-            user = _datastore.create_user(email=mail,
-                                          active=True)
+            user = _datastore.create_user(email=mail, active=True)
         else:
             raise DoesNotExistInLDAP
 
@@ -68,14 +66,15 @@ def does_user_exist_in_ldap(mail):
     """Query ldap to check if user exists."""
     lc = ldap.initialize('ldap://xldap.cern.ch')
 
-    lc.search_ext(
-        'OU=Users,OU=Organic Units,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        '(&(cernAccountType=Primary)(mail={}))'.format(mail),
-        ['mail'],
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
+    lc.search_ext('OU=Users,OU=Organic Units,DC=cern,DC=ch',
+                  ldap.SCOPE_ONELEVEL,
+                  '(&(cernAccountType=Primary)(mail={}))'.format(mail),
+                  ['mail'],
+                  serverctrls=[
+                      ldap.controls.SimplePagedResultsControl(True,
+                                                              size=7,
+                                                              cookie='')
+                  ])
 
     res = lc.result()[1]
 
@@ -85,14 +84,26 @@ def does_user_exist_in_ldap(mail):
 def does_egroup_exist_in_ldap(mail):
     """Query ldap to check if user exists."""
     lc = ldap.initialize('ldap://xldap.cern.ch')
-    lc.search_ext(
-        'OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
-        ldap.SCOPE_ONELEVEL,
-        'mail={}'.format(mail),
-        ['mail'],
-        serverctrls=[ldap.controls.SimplePagedResultsControl(
-            True, size=7, cookie='')]
-    )
+    lc.search_ext('OU=e-groups,OU=Workgroups,DC=cern,DC=ch',
+                  ldap.SCOPE_ONELEVEL,
+                  'mail={}'.format(mail), ['mail'],
+                  serverctrls=[
+                      ldap.controls.SimplePagedResultsControl(True,
+                                                              size=7,
+                                                              cookie='')
+                  ])
     res = lc.result()[1]
 
     return mail in [x[1]['mail'][0] for x in res]
+
+
+@lru_cache(maxsize=1024)
+def get_user_email_by_id(user_id):
+    user = User.query.filter_by(id=user_id).one()
+    return user.email
+
+
+@lru_cache(maxsize=1024)
+def get_role_name_by_id(role_id):
+    role = Role.query.filter_by(id=role_id).one()
+    return role.name

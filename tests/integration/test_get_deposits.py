@@ -256,8 +256,6 @@ def test_get_deposit_with_default_serializer(client, users,
                 'users': [owner.email]
             }
         },
-        'can_update': True,
-        'can_admin': True,
         'is_owner': True,
         'links': {
             'bucket':

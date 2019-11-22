@@ -164,8 +164,6 @@ def test_deposit_publish_changes_status_and_creates_record(
                 'users': [owner.email]
             }
         },
-        'can_update': True,
-        'can_admin': True,
         'is_owner': True,
         'links': {
             'bucket':

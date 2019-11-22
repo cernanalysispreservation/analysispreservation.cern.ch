@@ -28,6 +28,7 @@ from invenio_accounts.models import Role, User
 from marshmallow import Schema, ValidationError, fields, validates_schema
 
 from cap.modules.schemas.resolvers import resolve_schema_by_url
+from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
 
 
 class StrictKeysMixin(object):
@@ -89,7 +90,8 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     def get_metadata(self, obj):
         result = {
             k: v
-            for k, v in obj.get('metadata', {}).items() if k not in [
+            for k, v in obj.get('metadata', {}).items()
+            if k not in [
                 'control_number', '$schema', '_deposit', '_experiment',
                 '_access', '_files'
             ]
@@ -110,11 +112,9 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         for permission in access.values():
             if permission['users']:
                 for index, user_id in enumerate(permission['users']):
-                    user = User.query.filter_by(id=user_id).one()
-                    permission['users'][index] = user.email
+                    permission['users'][index] = get_user_email_by_id(user_id)
             if permission['roles']:
                 for index, role_id in enumerate(permission['roles']):
-                    role = Role.query.filter_by(id=role_id).one()
-                    permission['roles'][index] = role.name
+                    permission['roles'][index] = get_role_name_by_id(role_id)
 
         return access

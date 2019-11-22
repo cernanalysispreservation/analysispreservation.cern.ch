@@ -102,8 +102,6 @@ def test_edit_record(client, create_deposit, superuser,
                 'users': [superuser.email]
             }
         },
-        'can_update': True,
-        'can_admin': True,
         'is_owner': True,
         'links': {
             'bucket':
