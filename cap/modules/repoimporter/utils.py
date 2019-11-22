@@ -37,48 +37,37 @@ from flask import current_app
 from .errors import GitURLParsingError
 from .serializers import GitLabPayloadSchema, GitHubPayloadSchema
 
-GIT_REG = r'(?P<host>https://[github\.com|gitlab\.cern\.ch|' \
-          r'gitlab\-test\.cern\.ch]+)[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/' \
-          r'(?P<repo>[\w.-]+)(/)?'
-
-GIT_REG_FOR_BRANCH = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)' \
-                     r'[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \
-                     r'/tree/(?P<branch>.+)'
-
-GIT_REG_FOR_FILE = r'(?P<host>https://[github\.com|gitlab\.cern\.ch' \
-                   r'|gitlab\-test\.cern\.ch]+)[:|\/]' \
-                   r'(?P<owner>[a-zA-Z][\w.-]+)\/' \
-                   r'(?P<repo>[\w.-]+)/blob/' \
-                   r'(?P<branch>[-a-zA-Z]+)/(?P<filepath>.+)'
+git_regex = re.compile('''
+    (?P<host>
+        https://(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch))
+    [:|\/]
+    (?P<owner>[\w-]+)\/
+    (?P<repo>[\w-]+)
+        (\.git|/tree/|/blob/)?/?
+    (?P<branch>[\w-]+)?/?
+    (?P<filepath>.+)?
+''', re.VERBOSE | re.MULTILINE | re.IGNORECASE)
 
 
 def parse_url(url):
     """Parse a git url, and extract the associated information."""
     url = url[:-4] if url.endswith('.git') else url
 
-    # select the correct regex according to the type of file
-    if 'tree' in url:
-        pattern = GIT_REG_FOR_BRANCH
-    elif 'blob' in url:
-        pattern = GIT_REG_FOR_FILE
-    else:
-        pattern = GIT_REG
-
-    match = re.search(pattern, url, re.IGNORECASE)
+    match = git_regex.search(url)
     if not match:
         raise GitURLParsingError
 
     url_results = match.groupdict()
-    url_results['branch'] = 'master' \
-        if 'branch' not in url_results.keys() else url_results['branch']
+
+    if url_results['branch'] is None:
+        url_results['branch'] = 'master'
 
     # if blob, we need to figure out if path/name are the same
     # else, we have a standard repo, so we know the path is owner/repo/branch
     if 'blob' in url:
         url_results['filename'] = url_results['filepath'].split('/')[-1]
     else:
-        url_results['filename'] = url_results['filepath'] = url_results['repo']
-
+        url_results['filename'] = url_results['filepath']  # already None
     return url_results
 
 
