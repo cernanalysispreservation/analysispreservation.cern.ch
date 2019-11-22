@@ -73,6 +73,15 @@ OAUTH_SERVICES = {
         client_kwargs={'scope': 'api'},
     ),
 
+    # used exclusively for testing
+    # "GITLAB-TEST":
+    # dict(
+    #     name='gitlab',
+    #     access_token_url='https://gitlab-test.cern.ch/oauth/token',
+    #     authorize_url='https://gitlab-test.cern.ch/oauth/authorize',
+    #     api_base_url='https://gitlab-test.cern.ch/api/v4/',
+    #     client_kwargs={'scope': 'api'},
+    # ),
     # *** Using invenio-oauthclient for CERN ***
     #
     # "CERN": dict(

@@ -30,7 +30,7 @@ from invenio_db import db
 from invenio_accounts.models import User
 
 from cap.types import json_type
-from .utils import get_access_token
+from cap.modules.auth.ext import _fetch_token
 
 
 class GitRepository(db.Model):
@@ -138,10 +138,10 @@ class GitRepositorySnapshots(db.Model):
                    '{self.repo.name}/legacy.tar.gz/{self.ref}'\
                 .format(self=self)
         else:
-            token = get_access_token('GITLAB')
+            token = _fetch_token('gitlab', self.repo.user_id)
             return 'https://gitlab.cern.ch/api/v4/projects/' \
                    '{self.repo.git_repo_id}/repository/archive?' \
-                   'sha={self.ref}&private_token={token}' \
+                   'sha={self.ref}&access_token={token}' \
                 .format(self=self, token=token)
 
     def __repr__(self):

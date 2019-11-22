@@ -211,6 +211,7 @@ class CAPDeposit(Deposit):
                 _, record = request.view_args.get('pid_value').data
                 approved_hosts = ('https://github',
                                   'https://gitlab.cern.ch',
+                                  'https://gitlab-test.cern.ch',
                                   'root://')
 
                 if data['url'].startswith(approved_hosts):
