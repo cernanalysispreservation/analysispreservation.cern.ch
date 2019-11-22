@@ -25,32 +25,10 @@
 
 from __future__ import absolute_import, print_function
 import pytest
-from mock import patch
 
 from cap.modules.repoimporter.api import GitAPI
-from cap.modules.repoimporter.utils import parse_url, get_access_token
+from cap.modules.repoimporter.utils import parse_url
 from cap.modules.repoimporter.errors import GitURLParsingError
-from cap.modules.repoimporter import utils
-
-
-GITHUB_TEST = 'https://github.com/cernanalysispreservation/test-repo'
-GITLAB_TEST = 'https://gitlab.cern.ch/pfokiano/test-repo'
-
-GITHUB_TEST_BRANCH = GITHUB_TEST + '/tree/test-branch'
-GITLAB_TEST_BRANCH = GITLAB_TEST + '/tree/test-branch'
-
-GITHUB_ARCHIVE = 'https://codeload.github.com/cernanalysispreservation/test-repo/legacy.tar.gz/master'
-GITLAB_ARCHIVE = 'https://gitlab.cern.ch/api/v4/projects/70646/repository/archive?sha=master&private_token={}'
-
-GITHUB_ARCHIVE_BRANCH = 'https://codeload.github.com/cernanalysispreservation/test-repo/legacy.tar.gz/test-branch'
-GITLAB_ARCHIVE_BRANCH = 'https://gitlab.cern.ch/api/v4/projects/70646/repository/archive' \
-                        '?sha=test-branch&private_token={}'
-
-GITHUB_FILE = 'https://github.com/cernanalysispreservation/test-repo/blob/master/README.md'
-GITLAB_FILE = 'https://gitlab.cern.ch/pfokiano/test-repo/blob/master/README.md'
-
-GITHUB_FILE_BRANCH = 'https://github.com/cernanalysispreservation/test-repo/blob/test-branch/README.md'
-GITLAB_FILE_BRANCH = 'https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/README.md'
 
 
 def test_parse_url_with_wrong_url():
@@ -60,52 +38,31 @@ def test_parse_url_with_wrong_url():
 
 def test_importer_with_wrong_url():
     with pytest.raises(GitURLParsingError) as exc:
-        git = GitAPI.create(url='https://google.com')
+        GitAPI.create(url='https://google.com')
 
 
-@patch('cap.modules.repoimporter.utils.get_access_token')
-def test_missing_env_variable(mocked_token, app):
-    mocked_token.return_value = None
-    assert utils.get_access_token("GITHUB") is None
-
-
-@pytest.mark.skip
-@patch('cap.modules.repoimporter.api._fetch_token',
-       return_value=dict(access_token='test'))
-@pytest.mark.parametrize('git_url, git_archive, token_key', [
-    (GITHUB_TEST, GITHUB_ARCHIVE, 'GITHUB'),
-    (GITLAB_TEST, GITLAB_ARCHIVE, 'GITLAB'),
-    (GITHUB_TEST_BRANCH, GITHUB_ARCHIVE_BRANCH, 'GITHUB'),
-    (GITLAB_TEST_BRANCH, GITLAB_ARCHIVE_BRANCH, 'GITLAB')
-])
-def test_link_creation_from_url(mock_token, app, git_url, git_archive, token_key):
-    """Given a git url, this test checks if the url creation works correctly."""
-    if utils.get_access_token(token_key) is None:
-        pytest.skip("No access token found for Git integration. Skipping.")
-
-    repo = GitAPI.create(url=git_url, user_id=1)
-    archive_url = repo.archive_repo_url()
-    assert archive_url == git_archive.format(get_access_token(token_key))
+def test_importer_with_scrambled_url():
+    with pytest.raises(GitURLParsingError) as exc:
+        GitAPIProvider.create('https://hubgit.com/cernanalysis/test')
 
 
 def test_parse_url_attrs():
     """Test the different url parsing combinations"""
-    # github
     attrs = parse_url('https://github.com/cernanalysispreservation/test-repo')
     assert attrs['host'] == 'https://github.com'
     assert attrs['owner'] == 'cernanalysispreservation'
     assert attrs['repo'] == 'test-repo'
     assert attrs['branch'] == 'master'
-    assert attrs['filepath'] == 'test-repo'
-    assert attrs['filename'] == 'test-repo'
+    assert attrs['filepath'] is None
+    assert attrs['filename'] is None
 
     attrs = parse_url('https://github.com/cernanalysispreservation/test-repo/tree/test-branch')
     assert attrs['host'] == 'https://github.com'
     assert attrs['owner'] == 'cernanalysispreservation'
     assert attrs['repo'] == 'test-repo'
     assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] == 'test-repo'
-    assert attrs['filename'] == 'test-repo'
+    assert attrs['filepath'] is None
+    assert attrs['filename'] is None
 
     attrs = parse_url('https://github.com/cernanalysispreservation/test-repo/blob/test-branch/README.md')
     assert attrs['host'] == 'https://github.com'
@@ -115,7 +72,6 @@ def test_parse_url_attrs():
     assert attrs['filepath'] == 'README.md'
     assert attrs['filename'] == 'README.md'
 
-    # gitlab
     attrs = parse_url('https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/new-dir/test-nested-file.txt')
     assert attrs['host'] == 'https://gitlab.cern.ch'
     assert attrs['owner'] == 'pfokiano'
@@ -129,5 +85,13 @@ def test_parse_url_attrs():
     assert attrs['owner'] == 'pfokiano'
     assert attrs['repo'] == 'test-repo'
     assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] == 'test-repo'
-    assert attrs['filename'] == 'test-repo'
+    assert attrs['filepath'] is None
+    assert attrs['filename'] is None
+
+    attrs = parse_url('https://github.com/cern/analysispreservation/blob/api-status-checks/docker/new/test.ini')
+    assert attrs['host'] == 'https://github.com'
+    assert attrs['owner'] == 'cern'
+    assert attrs['repo'] == 'analysispreservation'
+    assert attrs['branch'] == 'api-status-checks'
+    assert attrs['filepath'] == 'docker/new/test.ini'
+    assert attrs['filename'] == 'test.ini'
