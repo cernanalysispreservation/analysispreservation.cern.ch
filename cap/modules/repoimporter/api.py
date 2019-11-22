@@ -28,11 +28,12 @@ from __future__ import absolute_import, print_function
 
 import requests
 from flask import current_app
+from flask_login import current_user
 from github import Github, UnknownObjectException
 from gitlab import Gitlab
 
 from .errors import GitCredentialsError, GitClientNotFound
-from .utils import parse_url, get_access_token, create_webhook_secret
+from .utils import parse_url, create_webhook_secret
 from ..auth.ext import _fetch_token
 from ..deposit.errors import FileUploadError
 
@@ -104,8 +105,8 @@ class GitHubAPI(GitAPI):
     def __init__(self, host, owner, repo, branch, user_id):
         """Initialize a GitHub API instance."""
         super(GitHubAPI, self).__init__(host, owner, repo, branch, user_id)
-        # self.token = get_access_token('github')
         token_obj = _fetch_token('github', user_id)
+
         if not token_obj:
             raise FileUploadError(
                 'Connect to GitHub from the CAP interface to access and '
@@ -132,10 +133,6 @@ class GitHubAPI(GitAPI):
         """Retrieve the last commit sha for this branch/repo."""
         branch = self.project.get_branch(self.branch)
         return branch.commit.sha
-
-    @property
-    def webhooks(self):
-        return list(self.project.get_hooks())
 
     def create_webhook(self):
         """Create and enable a webhook for the specific repo."""
@@ -190,7 +187,7 @@ class GitLabAPI(GitAPI):
     @classmethod
     def ping(cls):
         """Ping the API."""
-        token = get_access_token('GITLAB')
+        token = _fetch_token('gitlab', current_user.id)
         resp = requests.get(cls.api_url + '?access_token='.format(token),
                             headers={'Content-Type': 'application/json'})
         return resp.json, resp.status_code
@@ -199,10 +196,6 @@ class GitLabAPI(GitAPI):
     def last_commit(self):
         branch = self.project.branches.get(self.branch)
         return branch.attributes['commit']['id']
-
-    @property
-    def webhooks(self):
-        return self.project.hooks.list()
 
     def create_webhook(self):
         """Create and enable a webhook for the specific repo."""

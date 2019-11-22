@@ -45,9 +45,11 @@ GIT_REG_FOR_BRANCH = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)' \
                      r'[:|\/](?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \
                      r'/tree/(?P<branch>.+)'
 
-GIT_REG_FOR_FILE = r'(?P<host>https://[github\.com|gitlab\.cern\.ch]+)[:|\/]' \
-                     r'(?P<owner>[a-zA-Z][\w.-]+)\/(?P<repo>[\w.-]+)' \
-                     r'/blob/(?P<branch>[-a-zA-Z]+)/(?P<filepath>.+)'
+GIT_REG_FOR_FILE = r'(?P<host>https://[github\.com|gitlab\.cern\.ch' \
+                   r'|gitlab\-test\.cern\.ch]+)[:|\/]' \
+                   r'(?P<owner>[a-zA-Z][\w.-]+)\/' \
+                   r'(?P<repo>[\w.-]+)/blob/' \
+                   r'(?P<branch>[-a-zA-Z]+)/(?P<filepath>.+)'
 
 
 def parse_url(url):
@@ -78,11 +80,6 @@ def parse_url(url):
         url_results['filename'] = url_results['filepath'] = url_results['repo']
 
     return url_results
-
-
-def get_access_token(git):
-    """Get token from the environment variable."""
-    return current_app.config.get('{}_OAUTH_ACCESS_TOKEN'.format(git.upper()))
 
 
 def get_webhook_attrs(req):
