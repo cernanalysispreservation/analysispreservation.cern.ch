@@ -16,11 +16,34 @@ import CheckBox from "grommet/components/CheckBox";
 class SearchFacets extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      categories: ""
+    };
   }
+
+  constructFacets = aggs => {
+    let facets = {};
+    let keys = Object.keys(aggs).filter(key => {
+      return typeof aggs[key] === "object";
+    });
+    for (let key of keys) {
+      let obj = {};
+      if (key.startsWith("facet_")) {
+        obj[key.replace("facet_", "")] =
+          "filtered" in aggs[key] ? aggs[key]["filtered"] : aggs[key];
+      } else {
+        obj = this.constructFacets(aggs[key]);
+      }
+      Object.assign(facets, obj);
+    }
+
+    return facets;
+  };
 
   _onChange(category, event) {
     const name = event.target ? event.target.name : null;
     let currentParams = queryString.parse(this.props.location.search);
+
     this._toggleAggs(category, name, currentParams);
   }
 
@@ -39,12 +62,49 @@ class SearchFacets extends React.Component {
     if (index == -1) _selectedAggregations[category].push(name);
     else _selectedAggregations[category].splice(index, 1);
 
-    this.updateHistory(_selectedAggregations);
+    this.updateHistory(_selectedAggregations, category);
   }
 
-  updateHistory(selectedAggs) {
-    let currentParams = queryString.parse(this.props.location.search);
+  updateHistory(selectedAggs, category) {
+    let facet = this.constructFacets(this.props.aggs);
+    let catType;
+    if (facet[category]) {
+      let temp = Object.keys(facet[category].buckets[0]).filter(name =>
+        name.startsWith("facet_")
+      );
+      temp.length ? (catType = temp[0].replace("facet_", "")) : null;
+    }
 
+    // remove nested filters if the parent is unchecked
+    let eligibleItems = [];
+
+    if (facet[category] && facet[category].buckets) {
+      selectedAggs[category].map(item => {
+        facet[category].buckets.map(bucket => {
+          if (item === bucket.key) {
+            let bucketListName = Object.keys(bucket).filter(b =>
+              b.startsWith("facet_")
+            );
+            if (bucket[bucketListName[0]]) {
+              bucket[bucketListName[0]].buckets.map(bucket_item =>
+                eligibleItems.push(bucket_item.key)
+              );
+            }
+          }
+        });
+      });
+
+      let intersect = [];
+
+      if (selectedAggs[catType]) {
+        intersect = eligibleItems.filter(item =>
+          selectedAggs[catType].includes(item)
+        );
+        selectedAggs[catType] = intersect;
+      }
+    }
+
+    let currentParams = queryString.parse(this.props.location.search);
     "page" in selectedAggs ? delete selectedAggs["page"] : null;
     "page" in currentParams ? delete currentParams["page"] : null;
 
@@ -71,27 +131,7 @@ class SearchFacets extends React.Component {
 
   render() {
     if (this.props.aggs) {
-      let constructFacets = function(aggs) {
-        let facets = {};
-        let keys = Object.keys(aggs).filter(key => {
-          return typeof aggs[key] === "object";
-        });
-
-        for (let key of keys) {
-          let obj = {};
-          if (key.startsWith("facet_")) {
-            obj[key.replace("facet_", "")] =
-              "filtered" in aggs[key] ? aggs[key]["filtered"] : aggs[key];
-          } else {
-            obj = constructFacets(aggs[key]);
-          }
-          Object.assign(facets, obj);
-        }
-
-        return facets;
-      };
-
-      let facets = constructFacets(this.props.aggs);
+      let facets = this.constructFacets(this.props.aggs);
       let categories = Object.keys(facets);
 
       return (
@@ -134,7 +174,6 @@ class SearchFacets extends React.Component {
                               >
                                 <CheckBox
                                   label={field.key}
-                                  id={field.key}
                                   key={field.key}
                                   name={String(field.key)}
                                   checked={
@@ -168,7 +207,7 @@ class SearchFacets extends React.Component {
                                             key={String(nested_field.key)}
                                             direction="row"
                                             justify="between"
-                                            align="left"
+                                            align="start"
                                             style={{ fontSize: "0.8em" }}
                                           >
                                             <CheckBox
