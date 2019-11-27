@@ -14,6 +14,7 @@ import Image from "grommet/components/Image";
 import LoginForm from "grommet/components/LoginForm";
 import Label from "grommet/components/Label";
 import Paragraph from "grommet/components/Paragraph";
+import Carousel from "grommet/components/Carousel";
 
 import Spinning from "grommet/components/icons/Spinning";
 
@@ -27,10 +28,9 @@ import { ORCIDLogo } from "../drafts/form/themes/grommet/fields/components/ORCID
 import { RORIcon } from "../drafts/form/themes/grommet/fields/components/ROR";
 import { ReanaIcon } from "../drafts/form/themes/grommet/fields/components/ReanaIcon";
 import { CAPLogo } from "../drafts/form/themes/grommet/fields/components/CAP";
-import platform from "../../../images/image.png";
 import front from "../../../images/template.png";
-import publish from "../../../images/publish.png";
-import reuse from "../../../images/reuse.png";
+import { LhcbIcon } from "../../../images/Lhcb";
+import { AliceIcon } from "../../../images/Alice";
 import Database from "grommet/components/icons/base/Database";
 import Refresh from "grommet/components/icons/base/Refresh";
 import Group from "grommet/components/icons/base/Group";
@@ -64,6 +64,7 @@ class WelcomePage extends React.Component {
             pad={{ vertical: "none", horizontal: "small" }}
             size="small"
             fixed
+            style={{ boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)" }}
           >
             <Box flex="grow" direction="row" justify="between" align="center">
               <Box direction="row">
@@ -129,14 +130,6 @@ class WelcomePage extends React.Component {
               <Box flex justify="center" align="end" pad="large">
                 <Image src={front} fit="contain" />
               </Box>
-            </Box>
-            <Box direction="row" align="center" justify="between">
-              <GithubIcon />
-              <GitlabIcon />
-              <ZenodoIcon size="large" />
-              <ORCIDLogo />
-              <RORIcon />
-              <ReanaIcon />
             </Box>
           </Box>
         </Box>
@@ -208,8 +201,15 @@ class WelcomePage extends React.Component {
           </Box>
         </Box>
         <Box full justify="center" align="center" direction="row">
-          <Box flex justify="center" align="center" colorIndex="neutral-1">
-            <Heading style={{ fontSize: "4em" }} strong>
+          <Box flex justify="center" align="center">
+            <Heading
+              style={{
+                fontSize: "4em",
+                color: "#006996",
+                letterSpacing: "2px"
+              }}
+              strong
+            >
               Discover the platform
             </Heading>
           </Box>
@@ -232,13 +232,204 @@ class WelcomePage extends React.Component {
             </Paragraph>
           </Box>
         </Box>
+        <Box full>
+          <Carousel>
+            <Box align="center" justify="center">
+              <div className="b">
+                <Box
+                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  justify="between"
+                  pad={{ vertical: "medium" }}
+                  size={{ width: "xxlarge", height: "xlarge" }}
+                >
+                  <Box direction="row">
+                    <Box flex pad={{ horizontal: "medium" }} justify="start">
+                      <Heading
+                        tag="h1"
+                        strong
+                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                      >
+                        Create
+                      </Heading>
+                      <Box>
+                        <Label size="large">
+                          create your analysis by providing the title and the
+                          catergory
+                        </Label>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box flex pad="large" align="center" justify="center">
+                    <Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Forms
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          Though CAP, users can access form templates for CERN
+                          experiments (CMS, ATLAS, LHCB, ALICE) but also use a
+                          dynamic form builder to customize their own forms.
+                        </Paragraph>
+                      </Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Drafts
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          Every analysis firstly is saved as a draft. The
+                          authors can edit it as many times they want before
+                          plublishing. As draft the author is the only one with
+                          permission to access.
+                        </Paragraph>
+                      </Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Published
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          Published analysis are shared among the team members
+                          but also between specific scientists inside the
+                          organisation.
+                        </Paragraph>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+            </Box>
+            <Box align="center" justify="center">
+              <div className="b">
+                <Box
+                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  justify="between"
+                  pad={{ vertical: "medium" }}
+                  size={{ width: "xxlarge", height: "xlarge" }}
+                >
+                  <Box direction="row">
+                    <Box flex pad={{ horizontal: "medium" }} justify="start">
+                      <Heading
+                        tag="h1"
+                        strong
+                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                      >
+                        Reuse
+                      </Heading>
+                      <Box>
+                        <Label size="large">
+                          edit your analysis and provide new data anytime{" "}
+                        </Label>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box flex pad="large" align="center" justify="center">
+                    <Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Integrations
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          CAP provides collaborations with services such as
+                          ORCID, ZENODO, REANA, ROR
+                        </Paragraph>
+                      </Box>
+
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Files
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          CAP provides the opportunity to upload Github/Gitlab
+                          files or repositories and constantly update them{" "}
+                          <strong>if</strong> and <strong>when</strong> the
+                          users want to
+                        </Paragraph>
+                      </Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Workflows
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          When the users select to publish their drafts, they
+                          generate a snapshot of the current draft, to share
+                          with their team
+                        </Paragraph>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+            </Box>
+            <Box align="center" justify="center">
+              <div className="b">
+                <Box
+                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  justify="between"
+                  pad={{ vertical: "medium" }}
+                  size={{ width: "xxlarge", height: "xlarge" }}
+                >
+                  <Box direction="row">
+                    <Box flex pad={{ horizontal: "medium" }} justify="start">
+                      <Heading
+                        tag="h1"
+                        strong
+                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                      >
+                        Collaborate
+                      </Heading>
+                      <Box>
+                        <Label size="large">
+                          share and co-work with your team and colleagues
+                        </Label>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box flex pad="large" align="center" justify="center">
+                    <Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Publish
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          Analysis can be publised either using the web user
+                          interface, or by the command-line client or by the
+                          REST API
+                        </Paragraph>
+                      </Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Content
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          There are 10 gigabytes of storage available to submit
+                          your n-tuples and output macros (for each of your
+                          individual analyses).
+                        </Paragraph>
+                      </Box>
+                      <Box pad="small">
+                        <Heading tag="h2" strong>
+                          Access
+                        </Heading>
+                        <Paragraph margin="none" style={{ color: "#FFFF" }}>
+                          Access will always be restricted to members of the
+                          collaboration associated with an analysis. Permissions
+                          within a collaboration can be adjusted by the creator
+                          of the analysis, defaulting to creator-only access
+                        </Paragraph>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </div>
+            </Box>
+          </Carousel>
+        </Box>
         <div className="a">
           <Box
             full
             direction="row"
             justify="between"
             align="center"
-            pad="medium"
+            pad="xlarge"
           >
             <Box
               style={{
@@ -270,6 +461,7 @@ class WelcomePage extends React.Component {
               size={{ height: "large", width: "medium" }}
               pad="small"
               align="center"
+              margin={{ horizontal: "small" }}
             >
               <Label style={{ color: "#006996", fontWeight: 600 }}>02.</Label>
               <Question size="large" />
@@ -316,6 +508,39 @@ class WelcomePage extends React.Component {
             </Box>
           </Box>
         </div>
+        <Box margin={{ vertical: "large" }}>
+          <Box align="center">
+            <Heading tag="h2">Integrations & Services</Heading>
+          </Box>
+          <Box align="center" justify="between">
+            <Box direction="row" align="center" justify="between" size="large">
+              <GithubIcon />
+              <GitlabIcon />
+              <ORCIDLogo />
+            </Box>
+            <Box direction="row" align="center" justify="between" size="large">
+              <ZenodoIcon size="large" />
+              <RORIcon />
+              <ReanaIcon />
+            </Box>
+          </Box>
+        </Box>
+        <Box margin={{ vertical: "large" }}>
+          <Box align="center">
+            <Heading tag="h2">Supported by</Heading>
+          </Box>
+          <Box align="center" justify="between">
+            <Box direction="row" align="center" justify="between" size="large">
+              <AliceIcon />
+              <LhcbIcon />
+              <GitlabIcon />
+            </Box>
+            <Box direction="row" align="center" justify="between" size="large">
+              <ZenodoIcon size="large" />
+              <RORIcon />
+            </Box>
+          </Box>
+        </Box>
       </Box>
     );
   }
