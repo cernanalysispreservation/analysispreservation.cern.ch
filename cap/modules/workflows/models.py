@@ -30,9 +30,8 @@ from invenio_db import db
 from invenio_records.models import RecordMetadata
 from sqlalchemy_utils.types import UUIDType
 
-from cap.types import json_type
-
 from .serializers import reana_workflow_serializer
+from cap.types import json_type
 
 
 class ReanaWorkflow(db.Model):
@@ -44,17 +43,19 @@ class ReanaWorkflow(db.Model):
                    primary_key=True,
                    default=uuid.uuid4,
                    nullable=False)
-    rec_uuid = db.Column(UUIDType,
-                         db.ForeignKey(RecordMetadata.id),
-                         nullable=False)
+    record_uuid = db.Column(UUIDType,
+                            db.ForeignKey(RecordMetadata.id),
+                            nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     workflow_id = db.Column(UUIDType, unique=True, nullable=False)
 
-    name = db.Column(db.String(100), unique=False, nullable=False)
-    workflow_name = db.Column(db.String(100), unique=False, nullable=False)
-    workflow_name_run = db.Column(db.String(100), unique=False, nullable=False)
-
+    name = db.Column(db.String(100),
+                     unique=False,
+                     nullable=False)
+    reana_name = db.Column(db.String(100),
+                           unique=False,
+                           nullable=False)
     status = db.Column(db.Enum('created', 'queued', 'running', 'stopped',
                                'failed', 'deleted', name='status'),
                        unique=False,
@@ -66,6 +67,7 @@ class ReanaWorkflow(db.Model):
     # logging after the workflow runs
     logs = db.Column(json_type, default=lambda: dict(), nullable=True)
 
+    run_number = db.Column(db.Integer, unique=False, nullable=False)
     created = db.Column(db.DateTime, server_default=db.func.now())
     updated = db.Column(db.DateTime, server_default=db.func.now(),
                         server_onupdate=db.func.now())
@@ -79,20 +81,16 @@ class ReanaWorkflow(db.Model):
     @classmethod
     def get_user_workflows(cls, user_id):
         """Get user workflows."""
-        workflows = cls.query \
+        return cls.query \
             .filter_by(user_id=user_id) \
             .all()
 
-        return workflows
-
     @classmethod
-    def get_deposit_workflows(cls, depid):
+    def get_deposit_workflows(cls, record_uuid):
         """Get deposit workflows."""
-        workflows = cls.query \
-            .filter_by(rec_uuid=depid) \
+        return cls.query \
+            .filter_by(record_uuid=record_uuid) \
             .all()
-
-        return workflows
 
     @classmethod
     def get_workflow_by_id(cls, workflow_id):

@@ -22,21 +22,24 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Workflows utils."""
-from flask import current_app
+from flask import current_app, abort
 from flask_login import current_user
+
 from invenio_db import db
 from invenio_pidstore.resolver import Resolver
-
-from cap.modules.records.api import CAPRecord
+from invenio_pidstore.errors import PIDDoesNotExistError
 
 from .errors import ExperimentIsNotValid
 from .models import ReanaWorkflow
+from ..records.api import CAPRecord
+
+from cap.config import _
 
 
-def update_workflow(workflow, column, data):
+def update_workflow(workflow_id, column, data):
     """Update a Reana column."""
     db.session.query(ReanaWorkflow) \
-        .filter(ReanaWorkflow.workflow_id == workflow) \
+        .filter(ReanaWorkflow.workflow_id == workflow_id) \
         .update({column: data})
     db.session.commit()
 
@@ -48,27 +51,25 @@ def clone_workflow(workflow_id):
 
 
 def get_user_workflows():
-    """."""
+    """Get the workflows of the current user."""
     workflows = ReanaWorkflow.get_user_workflows(current_user.id)
-
     return [workflow.serialize() for workflow in workflows]
 
 
-def resolve_uuid(workflow_id):
+def get_workflow_uuid(workflow_id):
     """Resolve the workflow id into a UUID."""
     workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).one()
-    return workflow.rec_uuid
+    return workflow.record_uuid
 
 
 def resolve_depid(depid):
-    """Resolve the workflow id into a UUID."""
-    resolver = Resolver(pid_type='depid',
-                        object_type='rec',
-                        getter=lambda x: x)
-
-    # deposit, rec_uuid = resolver.resolve(depid)
-    # workflow = ReanaWorkflow.query.filter_by(workflow_id=workflow_id).first()
-    return resolver.resolve(depid)
+    """Resolve the workflow id into a UUID. Returns the depid, and the UUID."""
+    try:
+        resolver = Resolver(pid_type='depid', object_type='rec', getter=_)
+        return resolver.resolve(depid)
+    except PIDDoesNotExistError:
+        abort(404, "You tried to create a workflow and connect "
+                   "it with a non-existing record")
 
 
 def get_reana_token(uuid, record=None):

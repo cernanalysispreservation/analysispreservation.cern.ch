@@ -37,3 +37,15 @@ class ExperimentIsNotValid(RESTException):
         super(ExperimentIsNotValid, self).__init__(**kwargs)
 
         self.description = description or self.description
+
+
+class ReanaWorkflowException(RESTException):
+    """REANA error."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(ReanaWorkflowException, self).__init__(**kwargs)
+
+        self.description = description or self.description

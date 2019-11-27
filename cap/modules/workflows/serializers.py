@@ -36,15 +36,17 @@ from cap.modules.records.utils import url_to_api_url
 class ReanaWorkflowSchema(Schema):
     """Schema for a single REANA workflow."""
 
-    name = fields.Str(dump_only=True)
-    run = fields.Str(attribute='name_run', dump_only=True)
-    workflow_name = fields.Str(attribute='name_run', dump_only=True)
-    workflow_id = fields.Str(dump_only=True)
+    name = fields.Str()
+    reana_name = fields.Str()
+    run_number = fields.Int()
+    workflow_id = fields.Str()
 
-    rec_uuid = fields.Str(dump_only=True)
-    status = fields.Str(dump_only=True)
-    service = fields.Str(dump_only=True)
-    workflow_json = fields.Dict(dump_only=True)
+    status = fields.Str()
+    workflow_json = fields.Dict()
+
+    record_uuid = fields.Str()
+    depid = fields.Str(dump_only=True)
+    user_id = fields.Int(load_only=True)
 
     created = fields.DateTime(dump_only=True)
     updated = fields.DateTime(dump_only=True)
@@ -55,12 +57,16 @@ class ReanaWorkflowSchema(Schema):
         """Construct workflow links."""
         def url_with_wf(path):
             return url_to_api_url(
-                url_for(path, workflow_id=obj['workflow_id']))
+                url_for(path, workflow_id=wf_id))
+
+        depid = obj['depid'] if 'depid' in obj.keys() else obj.depid
+        wf_id = obj['workflow_id'] if 'workflow_id' in obj.keys() \
+            else obj.workflow_id
 
         links = {
-            'ui': url_for('cap_workflows.get_all_workflows_view'),
+            # 'ui': TODO after updating UI
             'all': url_to_api_url(url_for(
-                'cap_workflows.get_all_reana_workflows', depid=obj['depid'])),
+                'cap_workflows.get_workflows_by_record', depid=depid)),
             'create':
                 url_to_api_url(url_for('cap_workflows.create_reana_workflow')),
             'clone': url_with_wf('cap_workflows.clone_reana_workflow'),
@@ -78,9 +84,10 @@ class ReanaWorkflowSchema(Schema):
 class ReanaWorkflowLogsSchema(Schema):
     """Schema for the REANA logs of a single workflow."""
 
-    workflow_name = fields.Str(dump_only=True)
+    name = fields.Str(dump_only=True)
+    reana_name = fields.Str(dump_only=True)
     workflow_id = fields.Str(dump_only=True)
-    rec_uuid = fields.Str(dump_only=True)
+    record_uuid = fields.Str(dump_only=True)
     logs = fields.Method('extract_logs', dump_only=True)
 
     def extract_logs(self, obj):
