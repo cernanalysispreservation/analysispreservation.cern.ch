@@ -3,20 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { Switch, Route, withRouter } from "react-router-dom";
-import DocumentIcon from 'grommet/components/icons/base/Document';
+import DocumentIcon from "grommet/components/icons/base/Document";
 
 import PlayIcon from "grommet/components/icons/base/Play";
 import ConnectIcon from "grommet/components/icons/base/Connect";
 import AppsIcon from "grommet/components/icons/base/Apps";
-import SettingsOptionIcon from "grommet/components/icons/base/SettingsOption";
+
 import { Anchor, Box } from "grommet";
 import ReactTooltip from "react-tooltip";
 
 import DraftHeader from "./components/DraftHeader";
-import {
-  ShareAnchor,
-  DeleteAnchor,
-} from "./components/DraftActionsButtons";
+import { ShareAnchor, DeleteAnchor } from "./components/DraftActionsButtons";
 
 // Draft containers
 import DraftIntegrations from "./components/DraftIntegrations";
@@ -24,17 +21,14 @@ import DraftWorkflows from "../workflows";
 import DraftSettings from "./components/DepositSettings";
 import DraftPreview from "./DraftPreview";
 import DraftEditor from "./DraftEditor";
-import DraftActionsLayer from "./components/DraftActionsLayer";
 
 import Sidebar from "./components/DepositSidebar";
 
 import PermissionDenied from "../errors/403";
-import TrashIcon from "grommet/components/icons/base/Trash";
-
 // Actions
-import { getDraftByIdAndInitForm, deleteDraft, toggleActionsLayer} from "../../actions/draftItem";
-  
-import ShareIcon from "grommet/components/icons/base/Share";
+import { getDraftByIdAndInitForm } from "../../actions/draftItem";
+
+import SettingIcon from "grommet/components/icons/base/SettingsOption";
 
 class DraftsItemIndex extends React.Component {
   constructor(props) {
@@ -52,15 +46,6 @@ class DraftsItemIndex extends React.Component {
     if (draft_id) this.props.getDraftById(draft_id);
   }
 
-  _deleteDraft() {
-    this.props.deleteDraft(this.props.draft_id);
-  }
-
-  _actionHandler = type => () => {
-    this.props.toggleActionsLayer();
-    this.setState({ actionType: type });
-  };
-
   render() {
     if (this.props.errors && this.props.errors.status == 403)
       return (
@@ -71,38 +56,27 @@ class DraftsItemIndex extends React.Component {
       );
 
     let { draft_id } = this.props.match.params;
-    let isDraft = this.props.status == "draft" ? true : false;
-    let isPublishedOnce = this.props.recid ? true : false;
 
     return (
       <Box flex={true} direction="row" wrap={false}>
         <Box flex={false} colorIndex="grey-4">
-        <ReactTooltip />
-          <Anchor icon={<DocumentIcon/>} path={`/drafts/${draft_id}/edit`} data-tip="Edit metadata" />
+          <ReactTooltip />
           <Anchor
-            icon={<ConnectIcon/>}
+            icon={<DocumentIcon />}
+            path={`/drafts/${draft_id}/edit`}
+            data-tip="Edit metadata"
+          />
+          <Anchor
+            icon={<ConnectIcon />}
             path={`/drafts/${draft_id}/integrations`}
             data-tip="Connect your repositories"
           />
           {/*<Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} data-tip="Run workflows" />*/}
           <Anchor
-            icon={<ShareIcon/>}
+            icon={<SettingIcon />}
             path={`/drafts/${draft_id}/settings`}
-            data-tip="Share with others"
+            data-tip="Analysis Settings"
           />
-
-              {isDraft && !isPublishedOnce ? (
-                  <Anchor
-                      icon={<TrashIcon/>}
-                      onClick={this._actionHandler("delete")}
-                      data-tip="Delete your analysis"
-                  />
-              ) : null}
-        <DraftActionsLayer
-          key="action-layer"
-          type={this.state.actionType}
-          deleteDraft={this._deleteDraft.bind(this)}
-        />
         </Box>
         <Box flex={true}>
           <DraftHeader formRef={this.formRef} />
@@ -148,17 +122,13 @@ DraftsItemIndex.propTypes = {
 function mapStateToProps(state) {
   return {
     id: state.draftItem.get("id"),
-    status: state.draftItem.get("status"),
-    errors: state.draftItem.get("errors"),
-    recid: state.draftItem.get("recid"),
+    errors: state.draftItem.get("errors")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDraftById: id => dispatch(getDraftByIdAndInitForm(id)),
-    deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
-    toggleActionsLayer: () => dispatch(toggleActionsLayer())
+    getDraftById: id => dispatch(getDraftByIdAndInitForm(id))
   };
 }
 
