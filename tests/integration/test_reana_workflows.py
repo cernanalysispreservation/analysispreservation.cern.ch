@@ -28,226 +28,356 @@ from __future__ import absolute_import, print_function
 
 import json
 from mock import patch
-from pytest import mark
 
-from reana_client.errors import FileDeletionError
+from flask_security import login_user
+from jsonschema.exceptions import ValidationError
 
-@mark.skip
+WORKFLOW_ID = 'abcd0123-0000-0000-abcd-000111222333'
+WORKFLOW_JSON = {
+    "workflow": {
+        "type": "serial",
+        "specification": {
+            "steps": [{
+                "environment": "python:2.7-slim",
+                "commands": ["python '${helloworld}'"]
+            }]
+        }
+    },
+    "inputs": {
+        "files": ["code/helloworld.py"],
+        "parameters": {"helloworld": "code/helloworld.py"}
+    },
+    "outputs": {
+        "files": ["results/results.txt"]
+    }
+}
+WORKFLOW_CREATE_RESPONSE = {
+    'message': 'Workflow workspace created',
+    'workflow_id': WORKFLOW_ID,
+    'workflow_name': 'demo.1'
+}
+WORKFLOW_STATUS = {
+    "created": "2019-11-26T11:21:28", "id": WORKFLOW_ID, "logs": "{}",
+    "name": "brown-jackdaw.1",
+    "progress": {
+        "current_command": None, "current_step_name": None,
+        "failed": {"job_ids": [], "total": 0},
+        "finished": {"job_ids": [], "total": 0},
+        "run_started_at": None,
+        "running": {"job_ids": [], "total": 0},
+        "total": {"job_ids": [], "total": 0}
+    }, "status": "created", "user": "9ee3a516-7e97-4e50-852f-636c0b881f3a"
+}
+WORKFLOW_LOGS = {
+    'logs': '{"workflow_logs": "this is a tracking log at 2019-09-12T12:34:18.074285", '
+            '"job_logs": {}, "engine_specific": null}',
+    'user': '9ee3a516-7e97-4e50-852f-636c0b881f3a',
+    'workflow_id': WORKFLOW_ID, 'name': 'demo.1'
+}
+WORKFLOW_FILES = [{
+    'last-modified': '2019-09-12T11:25:30',
+    'name': '_yadage/yadage_snapshot_backend.json', 'size': 2
+}, {
+    'last-modified': '2019-09-12T11:25:30',
+    'name': '_yadage/yadage_snapshot_workflow.json', 'size': 1943
+}]
+
+
 @patch('cap.modules.workflows.views.ping', return_value='not ok!')
 def test_reana_ping_not_ok(mock_ping, app, auth_headers_for_superuser, json_headers):
-    with app.test_client() as client:
-        resp = client.get('workflows/reana/ping', headers=auth_headers_for_superuser + json_headers)
-        assert resp.status_code == 400
-        assert resp.json['message'] == 'not ok!'
-
-
-@mark.skip
-@patch('cap.modules.workflows.views.ping', side_effect=Exception())
-def test_reana_ping_exception(mock_ping, app, auth_headers_for_superuser, json_headers):
     with app.test_client() as client:
         resp = client.get('workflows/reana/ping',
                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 400
+        assert resp.json['message'] == 'not ok!'
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.create_workflow_from_json')
+@patch('cap.modules.workflows.views.ping', side_effect=Exception())
+def test_reana_ping_exception(mock_ping, app, auth_headers_for_superuser,json_headers):
+    with app.test_client() as client:
+        resp = client.get('workflows/reana/ping',
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 503
+
+
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.generate_slug', return_value='slug-demo')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_create_reana_workflow(mock_token, mock_created, app, get_record_pid_uuid,
-                               auth_headers_for_superuser, json_headers):
-    pid, uuid = get_record_pid_uuid
-    mock_created.return_value = {
-        'message': 'Workflow workspace created',
-        'workflow_id': 'a5140d92-65e3-4fb0-a246-dc1f06cc2e13',
-        'workflow_name': 'demo.1'
-    }
+def test_create_reana_workflow(mock_token, mock_slug, mock_created, app,
+                               get_record_pid_uuid, auth_headers_for_superuser,
+                               json_headers):
 
-    mock_data = {
-        "pid": pid,
-        "workflow_name": "demo",
-        "workflow_engine": "serial",
-        "workflow_json": {"steps": [{"environment": "python:2.7-slim",
-                                     "commands": ["python \"${helloworld}\""]}]},
-        "parameters": {"files": ["code/helloworld.py"],
-                       "parameters": {"helloworld": "code/helloworld.py"}},
-        "outputs": {"files": ["results/results.txt"]}
-    }
+    pid, uuid = get_record_pid_uuid
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana/create', data=json.dumps(mock_data),
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
                            headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
         assert resp.json == {
-            "engine": "serial", "rec_uuid": uuid,
-            "status": "created", "workflow_name": "demo.1",
-            "workflow_id": "a5140d92-65e3-4fb0-a246-dc1f06cc2e13"
+            'name': 'demo', 'reana_name': 'slug-demo',
+            'status': 'created', 'run_number': 1,
+            'workflow_id': WORKFLOW_ID,
+            'workflow_json': WORKFLOW_JSON,
+            'record_uuid': str(uuid),
+            'depid': pid,
+            'links': {
+                'all': '/api/workflows/all/record/{}'.format(pid),
+                'create': '/api/workflows/reana',
+                'clone': '/api/workflows/reana/{}/clone'.format(WORKFLOW_ID),
+                'delete': '/api/workflows/reana/{}'.format(WORKFLOW_ID),
+                'files': '/api/workflows/reana/{}/files'.format(WORKFLOW_ID),
+                'logs': '/api/workflows/reana/{}/logs'.format(WORKFLOW_ID),
+                'self': '/api/workflows/reana/{}'.format(WORKFLOW_ID),
+                'start': '/api/workflows/reana/{}/start'.format(WORKFLOW_ID),
+                'status': '/api/workflows/reana/{}/status'.format(WORKFLOW_ID),
+                'stop': '/api/workflows/reana/{}/stop'.format(WORKFLOW_ID)
+            }
         }
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.create_workflow_from_json', side_effect=Exception())
+@patch('cap.modules.workflows.views.create_workflow', side_effect=ValidationError('Error'))
+@patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
+def test_create_reana_workflow_validation_error(mock_token, mock_created, app, get_record_pid_uuid,
+                                                auth_headers_for_superuser, json_headers):
+
+    pid, uuid = get_record_pid_uuid
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
+
+    with app.test_client() as client:
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+
+        assert resp.status_code == 400
+        assert resp.json['message'] == 'Error'
+
+
+@patch('cap.modules.workflows.views.create_workflow', side_effect=Exception())
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
 def test_create_reana_workflow_exception(mock_token, mock_created, app, get_record_pid_uuid,
                                          auth_headers_for_superuser, json_headers):
+
     pid, uuid = get_record_pid_uuid
-    mock_data = {
-        "pid": pid, "workflow_name": "demo", "workflow_engine": "yadage",
-        "workflow_json": {}, "parameters": {}, "outputs": {}
-    }
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana/create', data=json.dumps(mock_data),
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
                            headers=auth_headers_for_superuser + json_headers)
-        assert resp.status_code == 400
-        assert resp.json == {'message': 'An exception has occured while creating the workflow.'}
+        assert resp.status_code == 503
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.get_workflows')
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.generate_slug', return_value='slug-demo')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_get_all_workflows(mock_token, mock_get_all, app, get_record_pid_uuid,
-                           auth_headers_for_superuser, json_headers):
+def test_get_workflows_by_user(mock_token, mock_slug, mock_created, app,
+                               get_record_pid_uuid,auth_headers_for_superuser,
+                               json_headers):
+
     pid, uuid = get_record_pid_uuid
-    mock_get_all.return_value = [{
-        u'created': u'2019-09-12T14:56:35',
-        u'id': u'26db86dc-4f32-428e-b1cf-c84bbe190db9',
-        u'name': u'demo.2', u'size': u'512', u'status': u'created',
-        u'user': u'9ee3a516-7e97-4e50-852f-636c0b881f3a'
-    }, {
-        u'id': u'8cc0dfa5-473b-49cf-8636-4bd48a59b847',
-        u'name': u'demo.1', u'size': u'31K', u'status': u'deleted',
-        u'user': u'9ee3a516-7e97-4e50-852f-636c0b881f3a'
-    }]
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.get('workflows/reana/all/record/{}'.format(pid),
-                          headers=auth_headers_for_superuser + json_headers)
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
-        assert resp.json == {
-            "current_workflows": [{
-                "id": "26db86dc-4f32-428e-b1cf-c84bbe190db9",
-                "name": "demo.2", "status": "created"
-            }],
-            "deleted_workflows": [{
-                "id": "8cc0dfa5-473b-49cf-8636-4bd48a59b847",
-                "name": "demo.1", "status": "deleted"
-            }],
-            "rec_uuid": uuid
-        }
+
+        # retrieve workflow list
+        resp = client.get('workflows/', headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json[0]['workflow_id'] == WORKFLOW_ID
+        assert resp.json[0]['workflow_json'] == WORKFLOW_JSON
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.get_workflow_logs')
-@patch('cap.modules.workflows.views.resolve_uuid')
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.generate_slug', return_value='slug-demo')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_reana_workflow_logs(mock_token, mock_uuid, mock_logs, app, get_record_pid_uuid,
-                             auth_headers_for_superuser, json_headers):
+def test_get_workflows_by_record(mock_token, mock_slug, mock_created, app, get_record_pid_uuid,
+                                 auth_headers_for_superuser, json_headers):
+
     pid, uuid = get_record_pid_uuid
-    mock_workflow_id = 'b46e27ac-a40e-4e4e-97ee-30703e6f1406'
-    mock_uuid.return_value = uuid
-    mock_logs.return_value = {
-        'logs': '{"workflow_logs": "this is a tracking log at 2019-09-12T12:34:18.074285", '
-                '"job_logs": {}, "engine_specific": null}',
-        'user': '9ee3a516-7e97-4e50-852f-636c0b881f3a',
-        'workflow_id': mock_workflow_id, 'workflow_name': 'demo.3'
-    }
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.get('workflows/reana/{}/logs'.format(mock_workflow_id),
-                          headers=auth_headers_for_superuser + json_headers)
-
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
-        assert resp.json == {
-            "logs": {
-                "engine_specific": None,
-                "job_logs": {},
-                "workflow_logs": "this is a tracking log at 2019-09-12T12:34:18.074285"
-              },
-            "rec_uuid": uuid, "workflow_id": mock_workflow_id, "workflow_name": "demo.3"
-        }
+
+        # workflows found
+        resp = client.get('workflows/all/record/{}'.format(pid),
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json[0]['workflow_id'] == WORKFLOW_ID
+        assert resp.json[0]['workflow_json'] == WORKFLOW_JSON
+
+        # no workflows found
+        resp = client.get('workflows/all/record/{}'.format('FAKE-PID'),
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 404
 
 
-@mark.skip
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.generate_slug', return_value='slug-demo')
+@patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
+def test_clone_reana_workflow(mock_token, mock_slug, mock_created, app, get_record_pid_uuid,
+                              auth_headers_for_superuser, json_headers):
+
+    pid, uuid = get_record_pid_uuid
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
+
+    with app.test_client() as client:
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+
+        # clone workflow
+        resp = client.get('workflows/reana/{}/clone'.format(WORKFLOW_ID),
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json['name'] == 'demo'
+        assert resp.json['workflow_json'] == WORKFLOW_JSON
+
+
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.get_workflow_status', return_value=WORKFLOW_STATUS)
+@patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
+def test_reana_workflow_status(mock_token, mock_status, mock_create, app, get_record_pid_uuid,
+                               auth_headers_for_superuser, json_headers):
+
+    pid, uuid = get_record_pid_uuid
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
+
+    with app.test_client() as client:
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+
+        # get status
+        resp = client.get('workflows/reana/{}/status'.format(WORKFLOW_ID),
+                          headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json == WORKFLOW_STATUS
+
+
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.get_workflow_logs', return_value=WORKFLOW_LOGS)
+@patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
+def test_reana_workflow_logs(mock_token, mock_status, mock_create, app, users,
+                             get_record_pid_uuid, auth_headers_for_superuser, json_headers):
+
+    pid, uuid = get_record_pid_uuid
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
+
+    with app.test_request_context():
+        login_user(users['superuser'])
+
+        with app.test_client() as client:
+            # create workflow
+            resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                               headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 200
+
+            # get logs
+            resp = client.get('workflows/reana/{}/logs'.format(WORKFLOW_ID),
+                              headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 200
+            assert resp.json == {
+                'logs': {'engine_specific': None, 'job_logs': {},
+                         'workflow_logs': u'this is a tracking log at 2019-09-12T12:34:18.074285'},
+                'record_uuid': uuid,
+                'workflow_id': WORKFLOW_ID,
+                'name': 'demo.1'
+            }
+
+
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
 @patch('cap.modules.workflows.views.start_workflow', side_effect=Exception())
-@patch('cap.modules.workflows.views.resolve_uuid')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_start_exception(mock_token, mock_uuid, mock_start, app, get_record_pid_uuid,
+def test_workflow_start_exception(mock_token, mock_start, mock_create, app, get_record_pid_uuid,
                                   auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana/{}/start'.format(mock_workflow_id),
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
                            headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
 
+        # start workflow
+        resp = client.post('workflows/reana/{}/start'.format(WORKFLOW_ID),
+                           headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 400
-        assert resp.json == {'message': 'An exception has occured, most probably '
-                                        'the workflow cannot restart.'}
+        assert resp.json['message'] == 'An exception has occurred, most probably ' \
+                                       'the workflow cannot restart.'
 
 
-@mark.skip
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
 @patch('cap.modules.workflows.views.stop_workflow', side_effect=Exception())
-@patch('cap.modules.workflows.views.resolve_uuid')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_stop_exception(mock_token, mock_uuid, mock_stop, app, get_record_pid_uuid,
+def test_workflow_stop_exception(mock_token, mock_stop, mock_create, app, get_record_pid_uuid,
                                  auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana/{}/stop'.format(mock_workflow_id),
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+
+        # stop workflow
+        resp = client.post('workflows/reana/{}/stop'.format(WORKFLOW_ID),
                            headers=auth_headers_for_superuser + json_headers)
 
         assert resp.status_code == 400
-        assert resp.json == {'message': 'An exception has occured, most probably '
-                                        'the workflow is not running.'}
+        assert resp.json['message'] == 'An exception has occurred, most probably ' \
+                                       'the workflow is not running.'
 
 
-@mark.skip
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
 @patch('cap.modules.workflows.views.delete_workflow', side_effect=Exception())
-@patch('cap.modules.workflows.views.resolve_uuid')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_delete_exception(mock_token, mock_uuid, mock_start, app, get_record_pid_uuid,
-                                   auth_headers_for_superuser, json_headers):
+def test_workflow_delete_exception(mock_token, mock_start, mock_create, app,
+                                   get_record_pid_uuid, auth_headers_for_superuser,
+                                   json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.delete('workflows/reana/{}/delete'.format(mock_workflow_id),
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+
+        # delete workflow with exception
+        resp = client.delete('workflows/reana/{}/'.format(WORKFLOW_ID),
                              headers=auth_headers_for_superuser + json_headers)
-
         assert resp.status_code == 400
-        assert resp.json == {'message': 'Workflow {} does not exist. '
-                                        'Aborting deletion.'.format(mock_workflow_id)}
+        assert resp.json['message'] == 'Workflow {} does not exist. ' \
+                                       'Aborting deletion.'.format(WORKFLOW_ID)
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.list_files')
-@patch('cap.modules.workflows.views.resolve_uuid')
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.list_files', return_value=WORKFLOW_FILES)
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_list_files(mock_token, mock_uuid, mock_ls, app, get_record_pid_uuid,
+def test_workflow_list_files(mock_token, mock_ls, mock_create, app, get_record_pid_uuid,
                              auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
-    mock_uuid.return_value = uuid
-    mock_ls.return_value = [{
-        'last-modified': '2019-09-12T11:25:30',
-        'name': '_yadage/yadage_snapshot_backend.json', 'size': 2
-    }, {
-        'last-modified': '2019-09-12T11:25:30',
-        'name': '_yadage/yadage_snapshot_workflow.json', 'size': 1943
-    }, {
-        'last-modified': '2019-09-12T11:25:30',
-        'name': '_yadage/yadage_template.json', 'size': 1104
-    }]
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
     with app.test_client() as client:
-        resp = client.get('workflows/reana/{}/ls'.format(mock_workflow_id),
-                          headers=auth_headers_for_superuser + json_headers)
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
 
+        # list uploaded files
+        resp = client.get('workflows/reana/{}/files'.format(WORKFLOW_ID),
+                          headers=auth_headers_for_superuser + json_headers)
         assert resp.status_code == 200
         assert resp.json == {
             "files": [{
@@ -256,93 +386,89 @@ def test_workflow_list_files(mock_token, mock_uuid, mock_ls, app, get_record_pid
             }, {
                 "last-modified": "2019-09-12T11:25:30",
                 "name": "_yadage/yadage_snapshot_workflow.json", "size": 1943
-            }, {
-                "last-modified": "2019-09-12T11:25:30",
-                "name": "_yadage/yadage_template.json", "size": 1104
             }],
-            "rec_uuid": uuid, "workflow_id": mock_workflow_id
+            "record_uuid": uuid, "workflow_id": WORKFLOW_ID
         }
 
 
-@mark.skip
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
 @patch('cap.modules.workflows.views.list_files', side_effect=Exception())
-@patch('cap.modules.workflows.views.resolve_uuid')
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_list_files_exception(mock_token, mock_uuid, mock_ls, app, get_record_pid_uuid,
-                                       auth_headers_for_superuser, json_headers):
+def test_workflow_list_files_exception(mock_token, mock_ls, mock_create, app, users,
+                                       auth_headers_for_superuser, json_headers,
+                                       get_record_pid_uuid,):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
 
-    with app.test_client() as client:
-        resp = client.get('workflows/reana/{}/ls'.format(mock_workflow_id),
-                          headers=auth_headers_for_superuser + json_headers)
+    with app.test_request_context():
+        login_user(users['superuser'])
 
-        assert resp.status_code == 400
-        assert resp.json == {'message': 'File list from workflow {} could not be '
-                                        'retrieved. Aborting listing.'.format(mock_workflow_id)}
+        with app.test_client() as client:
+            # create workflow
+            resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                               headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 200
+
+            # list files with exception
+            resp = client.get('workflows/reana/{}/files'.format(WORKFLOW_ID),
+                              headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 400
+            assert resp.json['message'] == 'File list from workflow {} could not be ' \
+                                           'retrieved. Aborting listing.'.format(WORKFLOW_ID)
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.delete_file', side_effect=FileDeletionError())
-@patch('cap.modules.workflows.views.resolve_uuid')
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.download_file', side_effect=Exception())
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_delete_files_exception(mock_token, mock_uuid, mock_rm, app, get_record_pid_uuid,
-                                         auth_headers_for_superuser, json_headers):
+def test_workflow_download_file_exception(mock_token, mock_download, mock_create, app, users,
+                                          get_record_pid_uuid, auth_headers_for_superuser, json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
     mock_path = 'code/code.py'
 
-    with app.test_client() as client:
-        resp = client.delete('workflows/reana/{}/rm?file_path={}'.format(mock_workflow_id, mock_path),
-                             headers=auth_headers_for_superuser + json_headers)
+    with app.test_request_context():
+        login_user(users['superuser'])
 
-        assert resp.status_code == 400
-        assert resp.json == {'message': '{} did not match any existing file. '
-                                        'Aborting deletion.'.format(mock_path)}
+        with app.test_client() as client:
+            # create workflow
+            resp = client.post('workflows/reana', data=json.dumps(mock_data),
+                               headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 200
+
+            # download files with exception
+            resp = client.get('workflows/reana/{}/files/{}'.format(WORKFLOW_ID, mock_path),
+                              headers=auth_headers_for_superuser + json_headers)
+            assert resp.status_code == 400
+            assert resp.json['message'] == '{} did not match any existing file.' \
+                                           ' Aborting download.'.format(mock_path)
 
 
-@mark.skip
-@patch('cap.modules.workflows.views.resolve_uuid')
+@patch('cap.modules.workflows.views.create_workflow', return_value=WORKFLOW_CREATE_RESPONSE)
+@patch('cap.modules.workflows.views.upload_file', side_effect=KeyError())
 @patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_upload_files_with_errors(mock_token, mock_uuid, app, get_record_pid_uuid,
-                                           auth_headers_for_superuser, json_headers):
+def test_workflow_upload_files_exception(mock_token, mock_upload, mock_create, app,
+                                         get_record_pid_uuid, auth_headers_for_superuser,
+                                         json_headers):
     pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
-    mock_data = {
-        'files_to_upload': [
-            {'path': 'tmp/example1.txt', 'new_path': 'data/example1.txt'}
-        ]
+    mock_data = dict(name="demo", pid=pid, workflow_json=WORKFLOW_JSON)
+    mock_upload = {
+        'files_to_upload': [{
+            'path': 'tmp/example1.txt',
+            'new_path': 'data/example1.txt'
+        }]
     }
 
     with app.test_client() as client:
-        resp = client.post('workflows/reana/{}/upload'.format(mock_workflow_id),
-                           data=json.dumps(mock_data),
+        # create workflow
+        resp = client.post('workflows/reana', data=json.dumps(mock_data),
                            headers=auth_headers_for_superuser + json_headers)
-
         assert resp.status_code == 200
-        assert resp.json == {'workflow_id': mock_workflow_id,
+
+        # upload files with exception
+        resp = client.post('workflows/reana/{}/files/upload'.format(WORKFLOW_ID),
+                           data=json.dumps(mock_upload),
+                           headers=auth_headers_for_superuser + json_headers)
+        assert resp.status_code == 200
+        assert resp.json == {'workflow_id': WORKFLOW_ID,
                              'successful': [],
                              'errors': ['tmp/example1.txt']}
-
-
-@mark.skip
-@patch('cap.modules.workflows.views.download_file', side_effect=Exception())
-@patch('cap.modules.workflows.views.resolve_uuid')
-@patch('cap.modules.workflows.views.get_reana_token', return_value='test-token')
-def test_workflow_download_files_exception(mock_token, mock_uuid, mock_download, app, get_record_pid_uuid,
-                                           auth_headers_for_superuser, json_headers):
-    pid, uuid = get_record_pid_uuid
-    mock_uuid.return_value = uuid
-    mock_workflow_id = '7393815e-e3ef-4f7c-a0fe-a3a30a10ac2f'
-    mock_path = 'code/code.py'
-
-    with app.test_client() as client:
-        resp = client.get('workflows/reana/{}/download?file_path={}'.format(mock_workflow_id, mock_path),
-                          headers=auth_headers_for_superuser + json_headers)
-
-        assert resp.status_code == 400
-        assert resp.json == {'message': '{} did not match any existing file. '
-                                        'Aborting download.'.format(mock_path)}
