@@ -31,6 +31,8 @@ import { CAPLogo } from "../drafts/form/themes/grommet/fields/components/CAP";
 import front from "../../../images/template.png";
 import { LhcbIcon } from "../../../images/Lhcb";
 import { AliceIcon } from "../../../images/Alice";
+import { AtlasIcon } from "../../../images/Atlas";
+import { CmsIcon } from "../../../images/Cms";
 import Database from "grommet/components/icons/base/Database";
 import Refresh from "grommet/components/icons/base/Refresh";
 import Group from "grommet/components/icons/base/Group";
@@ -529,15 +531,26 @@ class WelcomePage extends React.Component {
           <Box align="center">
             <Heading tag="h2">Supported by</Heading>
           </Box>
-          <Box align="center" justify="between">
-            <Box direction="row" align="center" justify="between" size="large">
+          <Box align="center">
+            <Box
+              direction="row"
+              align="center"
+              justify="around"
+              size="medium"
+              margin={{ top: "medium" }}
+            >
               <AliceIcon />
               <LhcbIcon />
-              <GitlabIcon />
             </Box>
-            <Box direction="row" align="center" justify="between" size="large">
-              <ZenodoIcon size="large" />
-              <RORIcon />
+            <Box
+              direction="row"
+              align="center"
+              justify="around"
+              size="medium"
+              margin={{ top: "medium" }}
+            >
+              <AtlasIcon />
+              <CmsIcon />
             </Box>
           </Box>
         </Box>
