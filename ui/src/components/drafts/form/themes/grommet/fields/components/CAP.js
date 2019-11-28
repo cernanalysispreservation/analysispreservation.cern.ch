@@ -1,10 +1,10 @@
 import React from "react";
-
 import SVGIcon from "grommet/components/SVGIcon";
+import PropTypes from "prop-types";
 
-export const CAPLogo = () => (
+export const CAPLogo = ({ size = "medium" }) => (
   <SVGIcon
-    size="medium"
+    size={size}
     viewBox="0 0 62 62"
     version="1.1"
     type="logo"
@@ -169,3 +169,7 @@ export const CAPLogo = () => (
     </g>
   </SVGIcon>
 );
+
+CAPLogo.propTypes = {
+  size: PropTypes.string
+};

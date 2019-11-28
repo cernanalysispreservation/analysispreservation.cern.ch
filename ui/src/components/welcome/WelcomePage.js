@@ -4,19 +4,15 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
-import Anchor from "grommet/components/Anchor";
 import Menu from "grommet/components/Menu";
 import Button from "grommet/components/Button";
 import Heading from "grommet/components/Heading";
 import Header from "grommet/components/Header";
 import Title from "grommet/components/Title";
-import Image from "grommet/components/Image";
 import LoginForm from "grommet/components/LoginForm";
 import Label from "grommet/components/Label";
 import Paragraph from "grommet/components/Paragraph";
 import Carousel from "grommet/components/Carousel";
-
-import Spinning from "grommet/components/icons/Spinning";
 
 import { loginLocalUser } from "../../actions/auth";
 import LogIcon from "grommet/components/icons/base/Login";
@@ -28,11 +24,11 @@ import { ORCIDLogo } from "../drafts/form/themes/grommet/fields/components/ORCID
 import { RORIcon } from "../drafts/form/themes/grommet/fields/components/ROR";
 import { ReanaIcon } from "../drafts/form/themes/grommet/fields/components/ReanaIcon";
 import { CAPLogo } from "../drafts/form/themes/grommet/fields/components/CAP";
-import front from "../../../images/template.png";
 import { LhcbIcon } from "../../../images/Lhcb";
 import { AliceIcon } from "../../../images/Alice";
 import { AtlasIcon } from "../../../images/Atlas";
 import { CmsIcon } from "../../../images/Cms";
+import { HomeIcon } from "../../../images/Home";
 import Database from "grommet/components/icons/base/Database";
 import Refresh from "grommet/components/icons/base/Refresh";
 import Group from "grommet/components/icons/base/Group";
@@ -60,154 +56,115 @@ class WelcomePage extends React.Component {
   render() {
     return (
       <Box>
+        <Header
+          colorIndex="neutral-1"
+          pad={{ vertical: "none", horizontal: "small" }}
+          size="small"
+          fixed
+          style={{ boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)" }}
+        >
+          <Box flex="grow" direction="row" justify="between" align="center">
+            <Box direction="row">
+              <CAPLogo />
+              <Title> CAP</Title>
+            </Box>
+            <Box direction="row" align="center">
+              <Button plain label="Log in" href="/api/oauth/login/cern" />
+              {process.env.NODE_ENV === "development" ? (
+                <Menu
+                  dropAlign={{ top: "bottom" }}
+                  icon={<LogIcon />}
+                  size="small"
+                  closeOnClick={false}
+                >
+                  <LoginForm
+                    usernameType="email"
+                    defaultValues={{ username: "info@inveniosoftware.org" }}
+                    onSubmit={this.onFormSubmit}
+                  />
+                  {this.props.authError ? (
+                    <Box
+                      colorIndex="critical"
+                      margin={{ top: "small" }}
+                      pad="small"
+                    >
+                      {this.props.authError}
+                    </Box>
+                  ) : null}
+                </Menu>
+              ) : null}
+            </Box>
+          </Box>
+        </Header>
         <Box full>
-          <Header
-            colorIndex="neutral-1"
-            pad={{ vertical: "none", horizontal: "small" }}
-            size="small"
-            fixed
-            style={{ boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)" }}
-          >
-            <Box flex="grow" direction="row" justify="between" align="center">
-              <Box direction="row">
-                <CAPLogo />
-                <Title> CERN Analysis Preservation</Title>
-              </Box>
-              <Box direction="row" align="center">
-                <Button plain label="Log in" href="/api/oauth/login/cern" />
-                {process.env.NODE_ENV === "development" ? (
-                  <Menu
-                    dropAlign={{ top: "bottom" }}
-                    icon={<LogIcon />}
-                    size="small"
-                    closeOnClick={false}
-                  >
-                    <LoginForm
-                      usernameType="email"
-                      defaultValues={{ username: "info@inveniosoftware.org" }}
-                      onSubmit={this.onFormSubmit}
-                    />
-                    {this.props.authError ? (
-                      <Box
-                        colorIndex="critical"
-                        margin={{ top: "small" }}
-                        pad="small"
-                      >
-                        {this.props.authError}
-                      </Box>
-                    ) : null}
-                  </Menu>
-                ) : null}
-              </Box>
+          <Box flex direction="row" justify="between">
+            <Box
+              flex
+              pad={{ horizontal: "medium" }}
+              align="center"
+              justify="center"
+            >
+              <Heading
+                strong
+                style={{
+                  color: "#006996",
+                  letterSpacing: "5px",
+                  fontSize: "4em"
+                }}
+              >
+                CERN
+              </Heading>
+              <Heading
+                strong
+                style={{
+                  color: "#006996",
+                  letterSpacing: "5px",
+                  fontSize: "4em"
+                }}
+              >
+                Analysis
+              </Heading>
+              <Heading
+                strong
+                style={{
+                  color: "#006996",
+                  letterSpacing: "5px",
+                  fontSize: "4em"
+                }}
+              >
+                Preservation
+              </Heading>
             </Box>
-          </Header>
-          <Box flex justify="between" pad="small">
-            <Box flex justify="between" direction="row">
-              <Box flex justify="center" align="start" pad="small">
-                <Box pad={{ horizontal: "medium" }}>
-                  <Heading
-                    strong
-                    style={{
-                      color: "#006996",
-                      letterSpacing: "5px",
-                      fontSize: "7em"
-                    }}
-                  >
-                    CAP
-                  </Heading>
-                  <Heading strong style={{ letterSpacing: "3px" }}>
-                    A scientific platform to{" "}
-                  </Heading>
-                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
-                    preserve data
-                  </Heading>
-                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
-                    disrupt knowledge
-                  </Heading>
-                  <Heading tag="h2" style={{ letterSpacing: "3px" }}>
-                    connect scientists
-                  </Heading>
-                </Box>
-              </Box>
-              <Box flex justify="center" align="end" pad="large">
-                <Image src={front} fit="contain" />
+            <Box
+              flex
+              justify="center"
+              align="center"
+              pad="large"
+              colorIndex="neutral-1-a"
+            >
+              <HomeIcon />
+              <Box align="center" margin={{ top: "large" }}>
+                <Heading tag="h2" strong style={{ letterSpacing: "3px" }}>
+                  A scientific platform to{" "}
+                </Heading>
+                <Heading tag="h3" style={{ letterSpacing: "3px" }}>
+                  preserve data
+                </Heading>
+                <Heading tag="h3" style={{ letterSpacing: "3px" }}>
+                  disrupt knowledge
+                </Heading>
+                <Heading tag="h3" style={{ letterSpacing: "3px" }}>
+                  connect scientists
+                </Heading>
               </Box>
             </Box>
           </Box>
         </Box>
-        <Box full direction="row">
-          <Box colorIndex="neutral-1" flex>
-            <Image src={front} fit="contain" />
-          </Box>
-          <Box flex justify="center">
-            <Box
-              direction="row"
-              justify="center"
-              align="center"
-              margin={{ vertical: "large" }}
-            >
-              <Box direction="row" align="center">
-                <Box pad={{ horizontal: "medium" }}>
-                  <Database size="large" />
-                </Box>
-                <Box flex direction="column" pad={{ horizontal: "small" }}>
-                  <Heading tag="h2">Preserve your analysis</Heading>
-                  <Paragraph margin="none">
-                    Researchers can save their materials (code, data, docs), and
-                    enrich them with metadata from integrated services (ORCID,
-                    ROR).
-                  </Paragraph>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              direction="row"
-              justify="center"
-              align="center"
-              margin={{ vertical: "large" }}
-            >
-              <Box direction="row" align="center" justify="center">
-                <Box pad={{ horizontal: "medium" }}>
-                  <Refresh size="large" />
-                </Box>
-                <Box flex direction="column" pad={{ horizontal: "small" }}>
-                  <Heading tag="h2">Reuse</Heading>
-                  <Paragraph margin="none">
-                    By integrating workflows and git repositories, researchers
-                    can rerun their experiments and save the results remotely,
-                    in self-contained environments.
-                  </Paragraph>
-                </Box>
-              </Box>
-            </Box>
-            <Box
-              direction="row"
-              justify="center"
-              align="center"
-              margin={{ vertical: "large" }}
-            >
-              <Box direction="row" align="center" justify="center">
-                <Box pad={{ horizontal: "medium" }}>
-                  <Group size="large" />
-                </Box>
-                <Box flex direction="column" pad={{ horizontal: "small" }}>
-                  <Heading tag="h2">Collaborate</Heading>
-                  <Paragraph margin="none">
-                    Through CAP, researchers can give collaborators access to
-                    their analyses, resulting in increased efficiency, better
-                    communication and lessened duplication of work.
-                  </Paragraph>
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-        <Box full justify="center" align="center" direction="row">
-          <Box flex justify="center" align="center">
+        <Box full justify="center" direction="row">
+          <Box flex justify="center" align="center" colorIndex="neutral-1-a">
             <Heading
               style={{
-                fontSize: "4em",
-                color: "#006996",
+                fontSize: "3em",
                 letterSpacing: "2px"
               }}
               strong
@@ -215,7 +172,12 @@ class WelcomePage extends React.Component {
               Discover the platform
             </Heading>
           </Box>
-          <Box flex align="center" justify="center">
+          <Box
+            flex
+            pad={{ horizontal: "medium" }}
+            align="center"
+            justify="center"
+          >
             <Paragraph size="large">
               CERN Analysis Preservation (CAP) is a service for physicists to
               preserve and document the various materials produced in the
@@ -235,11 +197,90 @@ class WelcomePage extends React.Component {
           </Box>
         </Box>
         <Box full>
-          <Carousel>
-            <Box align="center" justify="center">
-              <div className="b">
+          <Box flex direction="row" justify="between">
+            <Box flex justify="center" align="center">
+              <Box
+                direction="row"
+                justify="center"
+                align="center"
+                margin={{ vertical: "large" }}
+              >
+                <Box direction="row" align="center">
+                  <Box pad={{ horizontal: "medium" }}>
+                    <Database size="large" />
+                  </Box>
+                  <Box flex direction="column" pad={{ horizontal: "small" }}>
+                    <Heading tag="h2">Preserve your analysis</Heading>
+                    <Paragraph margin="none">
+                      Researchers can save their materials (code, data, docs),
+                      and enrich them with metadata from integrated services
+                      (ORCID, ROR).
+                    </Paragraph>
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                direction="row"
+                justify="center"
+                align="center"
+                margin={{ vertical: "large" }}
+              >
+                <Box direction="row" align="center" justify="center">
+                  <Box pad={{ horizontal: "medium" }}>
+                    <Refresh size="large" />
+                  </Box>
+                  <Box flex direction="column" pad={{ horizontal: "small" }}>
+                    <Heading tag="h2">Reuse</Heading>
+                    <Paragraph margin="none">
+                      By integrating workflows and git repositories, researchers
+                      can rerun their experiments and save the results remotely,
+                      in self-contained environments.
+                    </Paragraph>
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                direction="row"
+                justify="center"
+                align="center"
+                margin={{ vertical: "large" }}
+              >
+                <Box direction="row" align="center" justify="center">
+                  <Box pad={{ horizontal: "medium" }}>
+                    <Group size="large" />
+                  </Box>
+                  <Box flex direction="column" pad={{ horizontal: "small" }}>
+                    <Heading tag="h2">Collaborate</Heading>
+                    <Paragraph margin="none">
+                      Through CAP, researchers can give collaborators access to
+                      their analyses, resulting in increased efficiency, better
+                      communication and lessened duplication of work.
+                    </Paragraph>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+            <Box
+              flex
+              pad={{ horizontal: "medium" }}
+              align="center"
+              colorIndex="neutral-1-a"
+              justify="center"
+            >
+              <CAPLogo size="huge" />
+            </Box>
+          </Box>
+        </Box>
+        <div className="b">
+          <Box full justify="center" align="center">
+            <Carousel>
+              <Box align="center" justify="center">
                 <Box
-                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  colorIndex="neutral-1"
+                  style={{
+                    borderRadius: "5px",
+                    boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)"
+                  }}
                   justify="between"
                   pad={{ vertical: "medium" }}
                   size={{ width: "xxlarge", height: "xlarge" }}
@@ -249,14 +290,13 @@ class WelcomePage extends React.Component {
                       <Heading
                         tag="h1"
                         strong
-                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                        style={{ letterSpacing: "3px", fontSize: "4em" }}
                       >
                         Create
                       </Heading>
                       <Box>
                         <Label size="large">
-                          create your analysis by providing the title and the
-                          catergory
+                          create your analysis by using the form templates
                         </Label>
                       </Box>
                     </Box>
@@ -297,12 +337,14 @@ class WelcomePage extends React.Component {
                     </Box>
                   </Box>
                 </Box>
-              </div>
-            </Box>
-            <Box align="center" justify="center">
-              <div className="b">
+              </Box>
+              <Box align="center" justify="center">
                 <Box
-                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  colorIndex="neutral-1"
+                  style={{
+                    borderRadius: "5px",
+                    boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)"
+                  }}
                   justify="between"
                   pad={{ vertical: "medium" }}
                   size={{ width: "xxlarge", height: "xlarge" }}
@@ -312,7 +354,7 @@ class WelcomePage extends React.Component {
                       <Heading
                         tag="h1"
                         strong
-                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                        style={{ letterSpacing: "3px", fontSize: "4em" }}
                       >
                         Reuse
                       </Heading>
@@ -359,12 +401,14 @@ class WelcomePage extends React.Component {
                     </Box>
                   </Box>
                 </Box>
-              </div>
-            </Box>
-            <Box align="center" justify="center">
-              <div className="b">
+              </Box>
+              <Box align="center" justify="center">
                 <Box
-                  style={{ borderRadius: "5px", color: "#FFFF" }}
+                  colorIndex="neutral-1"
+                  style={{
+                    borderRadius: "5px",
+                    boxShadow: "0px 3px 8px 1px rgba(0,0,0,0.2)"
+                  }}
                   justify="between"
                   pad={{ vertical: "medium" }}
                   size={{ width: "xxlarge", height: "xlarge" }}
@@ -374,7 +418,7 @@ class WelcomePage extends React.Component {
                       <Heading
                         tag="h1"
                         strong
-                        style={{ letterSpacing: "3px", fontSize: "7em" }}
+                        style={{ letterSpacing: "3px", fontSize: "4em" }}
                       >
                         Collaborate
                       </Heading>
@@ -421,10 +465,10 @@ class WelcomePage extends React.Component {
                     </Box>
                   </Box>
                 </Box>
-              </div>
-            </Box>
-          </Carousel>
-        </Box>
+              </Box>
+            </Carousel>
+          </Box>
+        </div>
         <div className="a">
           <Box
             full
@@ -446,7 +490,9 @@ class WelcomePage extends React.Component {
               <Label style={{ color: "#006996", fontWeight: 600 }}>01.</Label>
               <Database size="large" />
               <Box margin={{ top: "medium" }} align="center">
-                <Heading strong>What can I submit</Heading>
+                <Heading tag="h2" strong>
+                  What can I submit
+                </Heading>
                 <Paragraph>
                   There are 10 gigabytes of storage available to submit your
                   n-tuples and output macros (for each of your individual
@@ -468,7 +514,9 @@ class WelcomePage extends React.Component {
               <Label style={{ color: "#006996", fontWeight: 600 }}>02.</Label>
               <Question size="large" />
               <Box margin={{ top: "medium" }} align="center">
-                <Heading strong>How can I submit</Heading>
+                <Heading tag="h2" strong>
+                  How can I submit
+                </Heading>
                 <Paragraph>
                   The submission forms via the user interface
                 </Paragraph>
@@ -489,7 +537,9 @@ class WelcomePage extends React.Component {
               <Label style={{ color: "#006996", fontWeight: 600 }}>03.</Label>
               <Group size="large" />
               <Box margin={{ top: "medium" }} align="center">
-                <Heading strong>Who has access</Heading>
+                <Heading tag="h2" strong>
+                  Who has access
+                </Heading>
                 <Paragraph>
                   only collaboration members have access to a collaboration’s
                   area
