@@ -6,10 +6,16 @@ import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 
 import DepositAccess from "./DepositAccess";
-import { Paragraph, Heading } from "grommet";
+import { Paragraph, Heading, Anchor } from "grommet";
+import { connect } from "react-redux";
+// Actions
+import { postPublishDraft } from "../../../actions/draftItem";
 
 class DepositSettings extends React.Component {
   render() {
+    let isDraft = this.props.status === "draft" ? true : false;
+    let isPublishedOnce = this.props.recid ? true : false;
+
     return (
       <Box
         flex={true}
@@ -34,10 +40,25 @@ class DepositSettings extends React.Component {
               </Paragraph>
             </Box>
             <Box flex={false}>
-              <Button onClick={() => {}} primary label="Publish" />
-              <Box pad={{ vertical: "small" }}>
-                Current Published Version: <strong>Not published yet</strong>
-              </Box>
+              <React.Fragment>
+                <Button
+                  onClick={isDraft ? this.props.publishDraft : null}
+                  primary
+                  colorIndex="accent-2"
+                  label="Publish"
+                />
+                <Box pad={{ vertical: "small" }}>
+                  Current Published Version:{" "}
+                  {!isPublishedOnce ? (
+                    <strong>Not published yet</strong>
+                  ) : (
+                    <Anchor
+                      label={this.props.recid}
+                      path={`/published/${this.props.recid}`}
+                    />
+                  )}
+                </Box>
+              </React.Fragment>
             </Box>
           </Box>
           <DepositAccess />
@@ -57,7 +78,26 @@ DepositSettings.propTypes = {
   draft: PropTypes.object,
   getUsers: PropTypes.func,
   permissions: PropTypes.array,
-  handlePermissions: PropTypes.func
+  handlePermissions: PropTypes.func,
+  publishDraft: PropTypes.func,
+  status: PropTypes.string,
+  recid: PropTypes.string
 };
 
-export default DepositSettings;
+function mapStateToProps(state) {
+  return {
+    recid: state.draftItem.get("recid"),
+    status: state.draftItem.get("status")
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    publishDraft: () => dispatch(postPublishDraft())
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DepositSettings);

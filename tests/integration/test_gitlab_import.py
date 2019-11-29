@@ -117,7 +117,7 @@ def test_download_archive(mock_git_api, client, db, get_git_attributes, json_hea
     repo_file_name = tar_obj.getmembers()[1]
     repo_content = tar_obj.extractfile(repo_file_name).read()
 
-    assert repo_content == '# Test Project\n\n'
+    assert repo_content == b'# Test Project\n\n'
 
 
 @patch('cap.modules.repoimporter.api.GitLabAPI', return_value=MockGitlab())

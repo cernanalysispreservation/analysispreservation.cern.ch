@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { Switch, Route, withRouter } from "react-router-dom";
 import DocumentIcon from "grommet/components/icons/base/Document";
 
-import PlayIcon from "grommet/components/icons/base/Play";
 import ConnectIcon from "grommet/components/icons/base/Connect";
 import { Anchor, Box } from "grommet";
 import ReactTooltip from "react-tooltip";
@@ -47,7 +46,9 @@ class DraftsItemIndex extends React.Component {
     let { draft_id } = this.props.match.params;
 
     if (draft_id == this.props.id) return;
-    if (draft_id) this.props.getDraftById(draft_id);
+    if (draft_id) {
+      this.props.getDraftById(draft_id);
+    }
   }
 
   _deleteDraft() {
@@ -74,30 +75,26 @@ class DraftsItemIndex extends React.Component {
 
     return (
       <Box flex={true} direction="row" wrap={false}>
-        <Box flex={false} colorIndex="grey-4">
-          <ReactTooltip />
-          <Anchor
-            icon={<DocumentIcon />}
-            path={`/drafts/${draft_id}/edit`}
-            data-tip="Edit metadata"
-          />
-          <Anchor
-            icon={<ConnectIcon />}
-            path={`/drafts/${draft_id}/integrations`}
-            data-tip="Connect your repositories"
-          />
-          {/*<Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} data-tip="Run workflows" />*/}
-          <Anchor
-            icon={<PlayIcon />}
-            path={`/drafts/${draft_id}/workflows`}
-            data-tip="Run workflows"
-          />
-          <Anchor
-            icon={<ShareIcon />}
-            path={`/drafts/${draft_id}/settings`}
-            data-tip="Share with others"
-          />
-
+        <Box flex={false} colorIndex="grey-4" justify="between">
+          <Box>
+            <ReactTooltip />
+            <Anchor
+              icon={<DocumentIcon />}
+              path={`/drafts/${draft_id}/edit`}
+              data-tip="Edit metadata"
+            />
+            <Anchor
+              icon={<ConnectIcon />}
+              path={`/drafts/${draft_id}/integrations`}
+              data-tip="Connect your repositories"
+            />
+            {/*<Anchor icon={<PlayIcon />} path={`/drafts/${draft_id}/workflows`} data-tip="Run workflows" />*/}
+            <Anchor
+              icon={<ShareIcon />}
+              path={`/drafts/${draft_id}/settings`}
+              data-tip="Share with others"
+            />
+          </Box>
           {isDraft && !isPublishedOnce ? (
             <Anchor
               icon={<TrashIcon />}

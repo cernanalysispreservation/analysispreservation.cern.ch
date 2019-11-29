@@ -69,6 +69,8 @@ export default function draftsReducer(state = initialState, action) {
         .set("fileManagerLayerSelectableAction", action.action)
         .set("fileManagerLayerActiveIndex", action.active);
     // Draft Metadata
+    case draftItemActions.DRAFTS_ITEM_REQUEST:
+      return state.set(initialState).set("loading", true);
     case draftItemActions.DRAFTS_ITEM_SUCCESS:
       return state
         .set("formData", action.draft.metadata)
@@ -111,7 +113,7 @@ export default function draftsReducer(state = initialState, action) {
     case draftItemActions.DELETE_DRAFT_REQUEST:
       return state.set("loading", true);
     case draftItemActions.DELETE_DRAFT_SUCCESS:
-      return state.set(initialState);
+      return initialState;
     case draftItemActions.DELETE_DRAFT_ERROR:
       return state
         .set("loading", false)
