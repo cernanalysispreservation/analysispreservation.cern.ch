@@ -208,14 +208,28 @@ class CAPDeposit(Deposit):
         with UpdateDepositPermission(self).require(403):
             if request:
                 data = request.get_json()
-                _, record = request.view_args.get('pid_value').data
+
+                # retrieve the parameters and validate
+                url = data.get('url')
+                type_ = data.get('type')
+                download = data.get('download')
+                webhook = data.get('webhook')
+
+                if any(attr is None for attr in
+                       [url, type_, download, webhook]):
+                    raise FileUploadError(
+                        'Missing upload parameters. Please make sure that you '
+                        'are providing the url, data type (repo/file), the '
+                        '"download" and the "webhook" parameter, according '
+                        'to the documentation.')
+
+                _, rec = request.view_args.get('pid_value').data
                 approved_hosts = ('https://github',
                                   'https://gitlab.cern.ch',
-                                  'https://gitlab-test.cern.ch',
-                                  'root://')
+                                  'https://gitlab-test.cern.ch')
 
-                if data['url'].startswith(approved_hosts):
-                    fetch_from_git(data, record)
+                if url.startswith(approved_hosts):
+                    fetch_from_git(rec, url, type_, download, webhook)
                 else:
                     raise FileUploadError(
                         'Host error. Try again with a GitHub/GitLab link.')

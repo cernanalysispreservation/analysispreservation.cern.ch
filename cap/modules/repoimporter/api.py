@@ -32,10 +32,10 @@ from flask_login import current_user
 from github import Github, UnknownObjectException
 from gitlab import Gitlab
 
-from .errors import GitCredentialsError, GitClientNotFound
+from .errors import GitCredentialsError, GitClientNotFound, GitIntegrationError
 from .utils import parse_url, create_webhook_secret
-from ..auth.ext import _fetch_token
-from ..deposit.errors import FileUploadError
+from cap.modules.auth.ext import _fetch_token
+from cap.modules.deposit.errors import FileUploadError
 
 
 def _test_connection(client=None):
@@ -63,52 +63,41 @@ def _get_webhook_config(git_url):
         )
 
 
-class GitAPI(object):
-    """Base Git API class."""
-
-    def __init__(self, host, owner, repo, branch, user_id):
-        """Initialize an importer and extract the main attributes."""
-        self.host = host
-        self.branch = branch
-        self.owner = owner
-        self.repo = repo
-        self.repo_full_name = '{}/{}'.format(owner, repo)
-
-    def __repr__(self):
-        """Returns a string representation of the repo."""
-        return """
-        Git client info:
-            Host:\t{}
-            Repo:\t{}
-            Branch:\t{}
-        """.format(self.host, self.repo_full_name, self.branch)
+class GitAPIProvider(object):
+    """Base Git API factory."""
 
     @staticmethod
-    def create(url=None, user_id=None):
+    def create(url, user_id=None):
         """Creates a GitHub/GitLab api instance, based on the provided args."""
         if not url:
             raise GitCredentialsError
 
         _attrs = parse_url(url)
-        host, owner, repo, branch = (_attrs['host'], _attrs['owner'],
-                                     _attrs['repo'], _attrs['branch'])
+        host, owner, repo, branch = (
+            _attrs['host'], _attrs['owner'], _attrs['repo'], _attrs['branch'])
 
         return GitHubAPI(host, owner, repo, branch, user_id) \
             if 'github' in host \
             else GitLabAPI(host, owner, repo, branch, user_id)
 
 
-class GitHubAPI(GitAPI):
+class GitHubAPI(object):
     """GitHub-specific API class."""
     api_url = 'https://api.github.com'
 
-    def __init__(self, host, owner, repo, branch, user_id):
+    def __init__(self, host, owner, repo, branch, user_id=None):
         """Initialize a GitHub API instance."""
-        super(GitHubAPI, self).__init__(host, owner, repo, branch, user_id)
+        self.host = host
+        self.branch = branch
+        self.owner = owner
+        self.repo = repo
+        self.repo_full_name = '{}/{}'.format(owner, repo)
+
+        user_id = user_id if user_id else current_user.id
         token_obj = _fetch_token('github', user_id)
 
         if not token_obj:
-            raise FileUploadError(
+            raise GitIntegrationError(
                 'Connect to GitHub from the CAP interface to access and '
                 'download your repositories (Settings -> Integrations')
 
@@ -119,6 +108,14 @@ class GitHubAPI(GitAPI):
             self.repo_id = self.project.id
         except UnknownObjectException:
             raise FileUploadError('Invalid repo URL. Please check again.')
+
+    def __repr__(self):
+        """Returns a string representation of the repo."""
+        return """
+        Git client info:
+            host:\t{}
+            repo:\t{} - {}
+        """.format(self.host, self.repo_full_name, self.branch)
 
     @classmethod
     def ping(cls):
@@ -163,16 +160,23 @@ class GitHubAPI(GitAPI):
         }
 
 
-class GitLabAPI(GitAPI):
+class GitLabAPI(object):
     """GitLab-specific API class."""
     api_url = 'https://gitlab.cern.ch/api/v4/projects'
 
-    def __init__(self, host, owner, repo, branch, user_id):
+    def __init__(self, host, owner, repo, branch, user_id=None):
         """Initialize a GitLab API instance."""
-        super(GitLabAPI, self).__init__(host, owner, repo, branch, user_id)
+        self.host = host
+        self.branch = branch
+        self.owner = owner
+        self.repo = repo
+        self.repo_full_name = '{}/{}'.format(owner, repo)
+
+        user_id = user_id if user_id else current_user.id
         token_obj = _fetch_token('gitlab', user_id)
+
         if not token_obj:
-            raise FileUploadError(
+            raise GitIntegrationError(
                 'Connect to GitLab from the CAP interface to access and '
                 'download your repositories (Settings -> Integrations')
 
@@ -183,6 +187,14 @@ class GitLabAPI(GitAPI):
             self.repo_id = self.project.get_id()
         except UnknownObjectException:
             raise FileUploadError('Invalid repo URL. Please check again.')
+
+    def __repr__(self):
+        """Returns a string representation of the repo."""
+        return """
+           Git client info:
+               host:\t{}
+               repo:\t{} - {}
+           """.format(self.host, self.repo_full_name, self.branch)
 
     @classmethod
     def ping(cls):

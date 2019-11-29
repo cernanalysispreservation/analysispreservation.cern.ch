@@ -28,6 +28,9 @@ from __future__ import absolute_import, print_function
 
 from invenio_db import db
 from invenio_accounts.models import User
+from invenio_records.models import RecordMetadata
+
+from sqlalchemy_utils.types import UUIDType
 
 from cap.types import json_type
 from cap.modules.auth.ext import _fetch_token
@@ -37,17 +40,15 @@ class GitRepository(db.Model):
     """Information about a GitHub repository."""
 
     __tablename__ = 'git_connected_repositories'
-    __table_args__ = (db.UniqueConstraint('recid', 'git_repo_id', 'branch',
+    __table_args__ = (db.UniqueConstraint('record_uuid', 'repo_id', 'branch',
                                           name='unique_ids_constraint'),)
 
     id = db.Column(db.Integer, primary_key=True)
-    git_repo_id = db.Column(db.Integer, unique=False, index=True)
+    repo_id = db.Column(db.Integer, unique=False, index=True)
 
     # CAP relations
-    recid = db.Column(db.String(255), unique=False, nullable=False)
-    repo_saved_name = db.Column(db.String(255), nullable=True)
+    record_uuid = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-    user = db.relationship(User)
 
     # git specific attributes
     url = db.Column(db.String(255), nullable=False)
@@ -62,46 +63,43 @@ class GitRepository(db.Model):
 
     # check if the repo should be downloaded every time an event occurs
     # do not remove create_constraint, sqlalchemy bug workaround
-    for_download = db.Column(db.Boolean(create_constraint=False),
-                             nullable=False, default=False)
+    download = db.Column(db.Boolean(create_constraint=False),
+                         nullable=False, default=False)
+
+    user = db.relationship(User)
+    record = db.relationship(
+        RecordMetadata,
+        backref=db.backref("repositories", cascade="all, delete-orphan")
+    )
 
     @classmethod
-    def create_or_get(cls, git, data_url, user_id, record_id,
-                      name=None, for_download=False):
+    def create_or_get(cls, user_id, record_id, data_url,        # generic attrs
+                      repo_id, host, owner, repo_name, branch,  # git attrs
+                      download=False):
         """Create a new repository instance, using the API information."""
-        repo = cls.get_by(git.repo_id, branch=git.branch)
+        repo = cls.get_by(repo_id, branch=branch)
 
         if not repo:
             # avoid celery trouble with serializing
-            user = User.query.filter_by(id=user_id).first()
-            repo = cls(git_repo_id=git.repo_id,
-                       host=git.host, owner=git.owner,
-                       name=git.repo, branch=git.branch,
+            user = User.query.filter_by(id=user_id).one()
+            repo = cls(repo_id=repo_id,
+                       host=host, owner=owner,
+                       name=repo_name, branch=branch,
                        url=data_url,
-                       recid=record_id,
-                       user=user, user_id=user.id,
-                       for_download=for_download,
-                       repo_saved_name=name)
-            db.session.add(repo)
-            db.session.commit()
-
+                       record_uuid=record_id,
+                       user=user,
+                       download=download)
         return repo
 
     @classmethod
     def get_by(cls, repo_id, branch='master'):
         """Get a repo by its ID and branch if available."""
-        return cls.query.filter(cls.git_repo_id == repo_id,
+        return cls.query.filter(cls.repo_id == repo_id,
                                 cls.branch == branch).first()
-
-    def update_hook(self, hook_id=None, hook_secret=None):
-        """Update the hook of the retrieved repo."""
-        self.hook = hook_id
-        self.hook_secret = hook_secret
-        db.session.commit()
 
     def __repr__(self):
         """Get repository representation."""
-        return '<Repository {self.name}: {self.git_repo_id}>'.format(self=self)
+        return '<Repository {self.name}: {self.repo_id}>'.format(self=self)
 
 
 class GitRepositorySnapshots(db.Model):
@@ -121,7 +119,10 @@ class GitRepositorySnapshots(db.Model):
 
     # foreign keys (connecting to repo and events)
     repo_id = db.Column(db.Integer, db.ForeignKey(GitRepository.id))
-    repo = db.relationship(GitRepository)
+    repo = db.relationship(
+        GitRepository,
+        backref=db.backref("snapshots", cascade="all, delete-orphan")
+    )
 
     @staticmethod
     def create(event, data, repo, ref=None):
@@ -140,14 +141,14 @@ class GitRepositorySnapshots(db.Model):
         else:
             token = _fetch_token('gitlab', self.repo.user_id)
             return 'https://gitlab.cern.ch/api/v4/projects/' \
-                   '{self.repo.git_repo_id}/repository/archive?' \
+                   '{self.repo.repo_id}/repository/archive?' \
                    'sha={self.ref}&access_token={token}' \
                 .format(self=self, token=token)
 
     def __repr__(self):
         """Get repository representation."""
         return """
-        <Repository {self.repo.name}: {self.repo.git_repo_id}
+        <Repository {self.repo.name}: {self.repo.repo_id}
          event:\t{self.event_type}
          tags:\t{self.tag}
          url:\t{self.url}

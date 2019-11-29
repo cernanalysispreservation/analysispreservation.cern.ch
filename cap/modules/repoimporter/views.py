@@ -28,10 +28,10 @@ from __future__ import absolute_import, print_function
 
 from flask import Blueprint, jsonify, request
 
-from .api import GitAPI
+from .api import GitAPIProvider
 from .errors import GitVerificationError
 from .models import GitRepository, GitRepositorySnapshots
-from .utils import verified_request, get_webhook_attrs
+from .utils import verified_request, get_webhook_attrs, name_git_record
 
 
 repos_bp = Blueprint('cap_repos',
@@ -56,18 +56,20 @@ def get_webhook_event():
 
     # make sure that the request is identified
     if not verified_request(request, repo):
-        raise GitVerificationError('Could not verify the event from repo {}. '
-                                   'No changes were made'
-                                   .format(data['repo_id']))
+        raise GitVerificationError(
+            'Could not verify the event from repo {}. '
+            'No changes were made'.format(data['repo_id']))
 
     # 2 cases: we save just the metadata,
     # or update the saved file as well
     if repo.for_download:
         from cap.modules.repoimporter.fetcher import download_repo
 
-        api = GitAPI.create(url=repo.url, user_id=repo.user_id)
+        api = GitAPIProvider.create(url=repo.url, user_id=repo.user_id)
         archived_repo_url = api.archive_repo_url(ref=api.last_commit)
-        download_repo.delay(repo.recid, repo.repo_saved_name,
+
+        repo_full_name = name_git_record(repo.owner, repo.name, repo.branch)
+        download_repo.delay(repo.record_uuid, repo_full_name,
                             repo.url, archived_repo_url)
 
     GitRepositorySnapshots.create(event, data, repo, ref=ref)
@@ -78,7 +80,7 @@ def get_webhook_event():
 def get_repo_snapshots(repo_id):
     """Retrieve the list of changes, for a saved repo."""
     snapshots = GitRepositorySnapshots.query \
-        .filter(GitRepositorySnapshots.repo.has(git_repo_id=repo_id)) \
+        .filter(GitRepositorySnapshots.repo.has(repo_id=repo_id)) \
         .all()
 
     snap_list = [dict(event=snap.event_type,

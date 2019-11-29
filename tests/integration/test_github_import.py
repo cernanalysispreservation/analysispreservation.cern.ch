@@ -31,7 +31,6 @@ import responses
 
 from invenio_files_rest.models import ObjectVersion
 from cap.modules.repoimporter.models import GitRepository
-from cap.modules.deposit.errors import FileUploadError
 
 
 REPO = 'https://github.com/cernanalysispreservation/test-repo'
@@ -88,8 +87,8 @@ def test_download_archive(mock_git_api, client, db, get_git_attributes, json_hea
     data = {
         'url': REPO,
         'type': 'repo',
-        'for_download': True,
-        'for_connection': False
+        'download': True,
+        'webhook': False
     }
 
     responses.add(responses.GET,
@@ -126,8 +125,8 @@ def test_download_file(mock_git_api, client, db, get_git_attributes, json_header
     data = {
         'url': FILE,
         'type': 'url',
-        'for_download': True,
-        'for_connection': False
+        'download': True,
+        'webhook': False
     }
 
     responses.add(responses.GET,
@@ -163,8 +162,8 @@ def test_connect_repo(mock_git_api, client, db, get_git_attributes, json_headers
     data = {
         'url': REPO,
         'type': 'repo',
-        'for_download': False,
-        'for_connection': True
+        'download': False,
+        'webhook': True
     }
 
     resp = client.post('/deposits/{}/actions/upload'.format(pid),
@@ -172,7 +171,7 @@ def test_connect_repo(mock_git_api, client, db, get_git_attributes, json_headers
                        data=json.dumps(data))
     assert resp.status_code == 201
 
-    repo = GitRepository.query.filter_by(git_repo_id='repo-id').one()
+    repo = GitRepository.query.filter_by(repo_id='repo-id').one()
     assert repo
     assert repo.hook
 
@@ -184,8 +183,8 @@ def test_connect_already_connected_repo(mock_git_api, client, db, get_git_attrib
     data = {
         'url': REPO,
         'type': 'repo',
-        'for_download': False,
-        'for_connection': True
+        'download': False,
+        'webhook': True
     }
 
     url = '/deposits/{}/actions/upload'.format(pid)

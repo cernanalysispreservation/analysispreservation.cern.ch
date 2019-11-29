@@ -26,7 +26,7 @@
 from __future__ import absolute_import, print_function
 import pytest
 
-from cap.modules.repoimporter.api import GitAPI
+from cap.modules.repoimporter.api import GitAPIProvider
 from cap.modules.repoimporter.utils import parse_url
 from cap.modules.repoimporter.errors import GitURLParsingError
 
@@ -38,7 +38,7 @@ def test_parse_url_with_wrong_url():
 
 def test_importer_with_wrong_url():
     with pytest.raises(GitURLParsingError) as exc:
-        GitAPI.create(url='https://google.com')
+        GitAPIProvider.create('https://google.com')
 
 
 def test_importer_with_scrambled_url():
