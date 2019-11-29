@@ -85,16 +85,13 @@ def get_webhook_attrs(req):
     return event, serializer
 
 
-def name_git_record(data, type):
+def name_git_record(owner, repo, branch, filename=None, type_='repo'):
     """Create a name for the git repo / file downloaded."""
-    name = '{}_{}_{}'.format(data['owner'],
-                             data['repo'],
-                             data['branch'])
+    name = '{}_{}_{}'.format(owner, repo, branch)
 
-    if type == 'repo':
+    if type_ == 'repo':
         return '{}.tar.gz'.format(name)
-
-    return '{}_{}'.format(name, data['filename'])
+    return '{}_{}'.format(name, filename)
 
 
 def ensure_content_length(resp):

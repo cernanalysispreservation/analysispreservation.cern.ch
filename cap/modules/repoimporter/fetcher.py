@@ -33,13 +33,14 @@ from invenio_db import db
 from invenio_files_rest.models import FileInstance, ObjectVersion
 from github import UnknownObjectException
 
-from ..deposit.errors import FileUploadError
-from .api import GitAPI
+from .api import GitAPIProvider
 from .models import GitRepository
 from .utils import ensure_content_length, name_git_record, parse_url
 
+from cap.modules.deposit.errors import FileUploadError
 
-def fetch_from_git(data, record):
+
+def fetch_from_git(record, url, type_, download=True, webhook=False):
     """
     Fetches data from GitHub/GitLab.
 
@@ -49,38 +50,31 @@ def fetch_from_git(data, record):
     try:
         # use the name/branch to create  file key for the record
         # if it cannot be parsed, it is not a valid url
-        url_attrs = parse_url(data['url'])
-        name = name_git_record(url_attrs, data['type'])
+        url_attrs = parse_url(url)
+        name = name_git_record(
+            url_attrs.get('owner'), url_attrs.get('repo'),
+            url_attrs.get('branch'), url_attrs.get('filename'), type_)
+
     except ValueError:
-        raise FileUploadError('URL could not be parsed. Try again with '
-                              'correct GitHub / CERN GitLab link.')
+        raise FileUploadError(
+            'URL could not be parsed. Try again with '
+            'a correct GitHub / CERN GitLab link.')
+
     record_id = str(record.id)
     user_id = current_user.id
+    api = GitAPIProvider.create(url=url)
 
-    data_url = data['url']
-    for_download = data['for_download']
-    for_connection = data['for_connection']
-
-    # TODO fix ROOT integration
-    if data_url.startswith("root://"):
-        response, total = download_from_root(data_url)
-        save_files_to_record(record_id, response, data_url, name, total)
-        return
-
-    # connect the repo with webhooks to follow the new releases
-    api = GitAPI.create(url=data_url, user_id=user_id)
-
-    if for_download:
-        if data['type'] == 'repo':
+    if download:
+        if type_ == 'repo':
             archived_repo_url = api.archive_repo_url(ref=api.last_commit)
-            download_repo.delay(record_id, name, data_url, archived_repo_url)
+            download_repo.delay(record_id, name, url, archived_repo_url)
         else:
             archived_file_url = api.archive_file_url(url_attrs['filepath'])
-            download_file.delay(record_id, name, data_url, archived_file_url)
+            download_file.delay(record_id, name, url, archived_file_url)
 
-    # throw if no hooks
-    if for_connection:
-        download_metadata_and_connect(record_id, name, data_url, user_id, api)
+    # connect the repo with webhooks to follow the new releases
+    if webhook:
+        download_metadata_and_connect(record_id, url, user_id, api)
 
 
 def save_files_to_record(record_id, response, url, filename, total):
@@ -106,27 +100,32 @@ def save_files_to_record(record_id, response, url, filename, total):
     db.session.commit()
 
 
-def download_from_root(url):
-    """Get data from a ROOT integration."""
-    from xrootdpyfs.xrdfile import XRootDPyFile
-    response = XRootDPyFile(url, mode='r-')
-    total = response.size
-    return response, total
+def download_metadata_and_connect(record_id, url, user_id, api):
+    """
+    Save metadata to db and enable webhooks integration.
 
-
-def download_metadata_and_connect(record_id, filename, url, user_id, api):
-    """Save metadata to db and enable webhooks integration."""
+    By passing the connected git api, we can download the repo and associated
+    metadata, and create a webhook that will automatically update the db
+    if a repo remote changes.
+    """
     try:
-        # check if webhooks already exist by checking id/branch
-        repo = GitRepository.create_or_get(api, url, user_id, record_id,
-                                           filename, for_download=True)
-        if repo.hook:
-            raise FileUploadError(
-                'Operation aborted. Webhook already exists '
-                'for repo {}.'.format(url))
+        with db.session.begin_nested():
+            repo = GitRepository.create_or_get(user_id, record_id, url,
+                                               api.repo_id,
+                                               api.host, api.owner,
+                                               api.repo, api.branch,
+                                               download=True)
+            if repo.hook:
+                raise FileUploadError(
+                    'Operation aborted. Webhook already exists '
+                    'for repo {}.'.format(url))
 
-        hook_id, hook_secret = api.create_webhook()
-        repo.update_hook(hook_id, hook_secret)
+            hook_id, hook_secret = api.create_webhook()
+            repo.hook = hook_id
+            repo.hook_secret = hook_secret
+
+            db.session.add(repo)
+        db.session.commit()
     except UnknownObjectException:
         raise FileUploadError(
             'Webhook integration aborted. The repo {} does not exist, '

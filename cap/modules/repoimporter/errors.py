@@ -49,13 +49,6 @@ class GitCredentialsError(GitError):
                '(GitHub / CERN GitLab) or new credentials.'
 
 
-class RepositoryNotFoundError(GitError):
-    """No access to the repository."""
-
-    def __str__(self):
-        return 'No repository was found.'
-
-
 class RepositoryAccessError(RESTException):
     """No access to the repository."""
     code = 401
@@ -94,5 +87,15 @@ class GitVerificationError(RESTException):
     def __init__(self, description, **kwargs):
         """Initialize exception."""
         super(GitVerificationError, self).__init__(**kwargs)
+        self.description = description or self.description
 
+
+class GitIntegrationError(RESTException):
+    """Exception during uploading external urls."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super(GitIntegrationError, self).__init__(**kwargs)
         self.description = description or self.description
