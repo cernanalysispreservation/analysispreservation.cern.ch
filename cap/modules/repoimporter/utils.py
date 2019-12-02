@@ -58,7 +58,6 @@ def parse_url(url):
         raise GitURLParsingError
 
     url_results = match.groupdict()
-
     if url_results['branch'] is None:
         url_results['branch'] = 'master'
 

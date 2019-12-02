@@ -60,8 +60,8 @@ class FileManager extends React.Component {
       activeIndex: props.active,
       formData: [],
       repo_branch: null,
-      for_download: true,
-      for_connection: false
+      download: true,
+      webhook: false
     };
   }
   componentDidUpdate(prevProps) {
@@ -86,14 +86,14 @@ class FileManager extends React.Component {
   };
 
   setRepoDownloadOption = isChecked => {
-    this.setState({ for_download: isChecked });
+    this.setState({ download: isChecked });
   };
 
-  setRepoConnectionOption = isChecked => {
-    this.setState({ for_connection: isChecked });
+  setRepoWebhookOption = isChecked => {
+    this.setState({ webhook: isChecked });
   };
 
-  changeConnectionSwitchLabel = data => {
+  changeWebhookSwitchLabel = data => {
     // adds branch information to the 2nd switch on repo upload
     if (data.length) {
       this.setState({ repo_branch: parseGithubUrl(data[0]).branch });
@@ -267,7 +267,7 @@ class FileManager extends React.Component {
                             uiSchema={uiSchemaRepoUpload}
                             onChange={change => {
                               this.formDataChange(change.formData);
-                              this.changeConnectionSwitchLabel(change.formData);
+                              this.changeWebhookSwitchLabel(change.formData);
                             }}
                           >
                             <Box margin={{ top: "small" }}>
@@ -295,7 +295,7 @@ class FileManager extends React.Component {
                                   checked={this.state.for_connection}
                                   toggle={true}
                                   onChange={event => {
-                                    this.setRepoConnectionOption(
+                                    this.setRepoWebhookOption(
                                       event.target.checked
                                     );
                                   }}
@@ -312,8 +312,8 @@ class FileManager extends React.Component {
                                       this.props.id,
                                       this.state.formData,
                                       "repo",
-                                      this.state.for_download,
-                                      this.state.for_connection
+                                      this.state.download,
+                                      this.state.webhook
                                     );
                                   }}
                                 />
@@ -401,8 +401,8 @@ function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
     uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (id, url, type, download, connection) =>
-      dispatch(uploadViaUrl(id, url, type, download, connection))
+    uploadViaUrl: (id, url, type, download, webhook) =>
+      dispatch(uploadViaUrl(id, url, type, download, webhook))
   };
 }
 
