@@ -265,52 +265,19 @@ CAP_FACETS = {
         },
         'facet_cms_working_group': {
             'terms': {
-                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"  # noqa
-            }
-        },
-                "particles2": {
-            "nested": {
-                "path": "main_measurements.signal_event_selection"
-                        ".physics_objects"
-            },
-            "aggs": {
-                "facet_physics_objects2": {
-                    "terms": {
-                        "field": "main_measurements.signal_event_selection"
-                                 ".physics_objects.object",
-                        "exclude": ""
-                    },
-                    "aggs": {
-                        "doc_count": {
-                            "reverse_nested": {}
-                        },
-                        "facet_physics_objects_type2": {
-                            "terms": {
-                                "field": "main_measurements"
-                                         ".signal_event_selection"
-                                         ".physics_objects"
-                                         ".object_type.keyword"
-                            },
-                            "aggs": {
-                                "doc_count": {
-                                    "reverse_nested": {}
-                                }
-                            }
-                        }
-                    }
-                },
+                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"    # noqa
             }
         },
         "particles": {
             "nested": {
                 "path": "main_measurements.signal_event_selection"
-                        ".physics_objects"
+                ".physics_objects"
             },
             "aggs": {
                 "facet_physics_objects": {
                     "terms": {
                         "field": "main_measurements.signal_event_selection"
-                                 ".physics_objects.object",
+                        ".physics_objects.object",
                         "exclude": ""
                     },
                     "aggs": {
@@ -320,9 +287,9 @@ CAP_FACETS = {
                         "facet_physics_objects_type": {
                             "terms": {
                                 "field": "main_measurements"
-                                         ".signal_event_selection"
-                                         ".physics_objects"
-                                         ".object_type.keyword"
+                                ".signal_event_selection"
+                                ".physics_objects"
+                                ".object_type.keyword"
                             },
                             "aggs": {
                                 "doc_count": {
@@ -334,7 +301,6 @@ CAP_FACETS = {
                 },
             }
         },
-
     },
     'post_filters': {
         'type': terms_filter('_type'),
@@ -342,96 +308,16 @@ CAP_FACETS = {
         'publication_status': terms_filter('publication_status.keyword'),
         'cadi_status': terms_filter('cadi_status'),
         'conference': terms_filter('conference'),
-                'physics_objects': nested_filter(
+        'physics_objects': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection'
             '.physics_objects.object'),
         'physics_objects_type': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection.physics_objects'
-            '.object_type.keyword'),
-        'physics_objects2': nested_filter(
-            'main_measurements.signal_event_selection.physics_objects',
-            'main_measurements.signal_event_selection'
-            '.physics_objects.object'),
-        'physics_objects_type2': nested_filter(
-            'main_measurements.signal_event_selection.physics_objects',
-            'main_measurements.signal_event_selection.physics_objects'
-            '.object_type.keyword'),
+            '.object_type.keyword')
     }
 }
-# CAP_FACETS = {
-#     'aggs': {
-#         'facet_type': {
-#             'terms': {
-#                 'field': '_type'
-#             }
-#         },
-#         'facet_cadi_status': {
-#             'terms': {
-#                 'field': 'cadi_status'
-#             }
-#         },
-#         'facet_publication_status': {
-#             'terms': {
-#                 'field': 'publication_status.keyword'
-#             }
-#         },
-#         'facet_cms_working_group': {
-#             'terms': {
-#                 "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"    # noqa
-#             }
-#         },
-#         "particles": {
-#             "nested": {
-#                 "path": "main_measurements.signal_event_selection"
-#                 ".physics_objects"
-#             },
-#             "aggs": {
-#                 "facet_physics_objects": {
-#                     "terms": {
-#                         "field": "main_measurements.signal_event_selection"
-#                         ".physics_objects.object",
-#                         "exclude": ""
-#                     },
-#                     "aggs": {
-#                         "doc_count": {
-#                             "reverse_nested": {}
-#                         },
-#                         "facet_physics_objects_type": {
-#                             "terms": {
-#                                 "field": "main_measurements"
-#                                 ".signal_event_selection"
-#                                 ".physics_objects"
-#                                 ".object_type.keyword"
-#                             },
-#                             "aggs": {
-#                                 "doc_count": {
-#                                     "reverse_nested": {}
-#                                 }
-#                             }
-#                         }
-#                     }
-#                 },
-#             }
-#         },
-#     },
-#     'post_filters': {
-#         'type': terms_filter('_type'),
-#         'cms_working_group': prefix_filter('cadi_id'),
-#         'publication_status': terms_filter('publication_status.keyword'),
-#         'cadi_status': terms_filter('cadi_status'),
-#         'conference': terms_filter('conference'),
-#         'physics_objects': nested_filter(
-#             'main_measurements.signal_event_selection.physics_objects',
-#             'main_measurements.signal_event_selection'
-#             '.physics_objects.object'),
-#         'physics_objects_type': nested_filter(
-#             'main_measurements.signal_event_selection.physics_objects',
-#             'main_measurements.signal_event_selection.physics_objects'
-#             '.object_type.keyword')
-#     }
-# }
 
 RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
 
