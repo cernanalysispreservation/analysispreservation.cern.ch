@@ -43,44 +43,44 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
     assert deposit_bucket.locked is False
 
     # user can add new files
-    resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_1.txt'.format(pid),
                       input_stream=BytesIO(b'Original Hello world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 200
 
     # and access them
-    resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.get('/deposits/{}/files/file_1.txt'.format(pid),
                       headers=auth_headers)
 
     assert resp.status_code == 200
     assert resp.data == 'Original Hello world!'
 
     # member of collaboration cannot access file
-    resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.get('/deposits/{}/files/file_1.txt'.format(pid),
                       headers=auth_headers_for_user(member_of_collaboration))
 
-    assert resp.status_code == 404    # TOFIX shouldnt be 403?
+    assert resp.status_code == 404
 
     # user can update and delete  a file
-    resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_1.txt'.format(pid),
                       input_stream=BytesIO(b'Updated Hello world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 200
 
-    resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.get('/deposits/{}/files/file_1.txt'.format(pid),
                       headers=auth_headers)
 
     assert resp.status_code == 200
     assert resp.data == 'Updated Hello world!'
 
-    resp = client.delete('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.delete('/deposits/{}/files/file_1.txt'.format(pid),
                          headers=auth_headers)
 
     assert resp.status_code == 204
 
-    resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_1.txt'.format(pid),
                       input_stream=BytesIO(b'Original Hello world!'),
                       headers=auth_headers)
 
@@ -99,46 +99,48 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
 
     # record  has a differrent bucket, that is also locked
     _, record = deposit.fetch_published()
+    record_pid = record['control_number']
     record_bucket = record.files.bucket
+
     assert record_bucket != deposit_bucket
     assert record_bucket.locked is True
 
     # user and member of collaboration can access file for the published record
-    resp = client.get('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.get('/records/{}/files/file_1.txt'.format(record_pid),
                       headers=auth_headers)
 
     assert resp.status_code == 200
 
-    resp = client.get('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.get('/records/{}/files/file_1.txt'.format(record_pid),
                       headers=auth_headers_for_user(member_of_collaboration))
 
     assert resp.status_code == 200
 
     # user outside of collaboration cant access file for the published record
     resp = client.get(
-        '/files/{}/file_1.txt'.format(record_bucket),
+        '/records/{}/files/file_1.txt'.format(record_pid),
         headers=auth_headers_for_user(non_member_of_collaboration))
 
     assert resp.status_code == 404
 
-    resp = client.get('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.get('/records/{}/files/file_1.txt'.format(record_pid),
                       headers=auth_headers_for_user(member_of_collaboration))
 
     assert resp.status_code == 200
 
     # user cannot add/update/delete a file for deposit
-    resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_1.txt'.format(pid),
                       input_stream=BytesIO(b'Try another Hello world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 403
 
-    resp = client.delete('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.delete('/deposits/{}/files/file_1.txt'.format(pid),
                          headers=auth_headers)
 
     assert resp.status_code == 403
 
-    resp = client.put('/files/{}/file_2.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_2.txt'.format(pid),
                       input_stream=BytesIO(b'Try another Hello world!'),
                       headers=auth_headers)
 
@@ -153,37 +155,37 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
 
     # after edit, deposit deposit_bucket is unlocked again,
     # so he can add new files
-    resp = client.put('/files/{}/file_2.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_2.txt'.format(pid),
                       input_stream=BytesIO(b'Hello new world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 200
 
-    resp = client.get('/files/{}/file_2.txt'.format(deposit_bucket),
+    resp = client.get('/deposits/{}/files/file_2.txt'.format(pid),
                       headers=auth_headers)
 
     assert resp.status_code == 200
     assert resp.data == 'Hello new world!'
 
     # user can upload a new version of file
-    resp = client.put('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_1.txt'.format(pid),
                       input_stream=BytesIO(b'After edit Hello world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 200
 
-    resp = client.get('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.get('/deposits/{}/files/file_1.txt'.format(pid),
                       headers=auth_headers)
     assert resp.data == 'After edit Hello world!'
 
     # even delete it
-    resp = client.delete('/files/{}/file_1.txt'.format(deposit_bucket),
+    resp = client.delete('/deposits/{}/files/file_1.txt'.format(pid),
                          headers=auth_headers)
 
     assert resp.status_code == 204
 
     # user can upload a new files
-    resp = client.put('/files/{}/file_3.txt'.format(deposit_bucket),
+    resp = client.put('/deposits/{}/files/file_3.txt'.format(pid),
                       input_stream=BytesIO(b'Hello world!'),
                       headers=auth_headers)
 
@@ -191,23 +193,23 @@ def test_files_workflow(client, users, auth_headers_for_user, create_deposit):
 
     # original file with this name, referenced by bucket of published record,
     # remains unchanged
-    resp = client.get('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.get('/records/{}/files/file_1.txt'.format(record_pid),
                       headers=auth_headers)
     assert resp.data == 'Original Hello world!'
 
     # user cannot modify(add, update, delete) a record bucket
-    resp = client.put('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.put('/records/{}/files/file_1.txt'.format(record_pid),
                       input_stream=BytesIO(b'Updated Updated Hello world!'),
                       headers=auth_headers)
 
     assert resp.status_code == 403
 
-    resp = client.delete('/files/{}/file_1.txt'.format(record_bucket),
+    resp = client.delete('/records/{}/files/file_1.txt'.format(record_pid),
                          headers=auth_headers)
 
     assert resp.status_code == 403
 
-    resp = client.put('/files/{}/file_2.txt'.format(record_bucket),
+    resp = client.put('/records/{}/files/file_2.txt'.format(record_pid),
                       input_stream=BytesIO(b'Hello new world!'),
                       headers=auth_headers)
 

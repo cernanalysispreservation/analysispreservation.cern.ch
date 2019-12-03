@@ -15,7 +15,7 @@ readme = open('README.rst').read()
 
 DATABASE = "postgresql"
 ELASTICSEARCH = "elasticsearch5"
-INVENIO_VERSION = '3.0.0' # "3.0.0rc2"
+INVENIO_VERSION = '3.0.0'  # "3.0.0rc2"
 
 tests_require = [
     'check-manifest>=0.35',
@@ -34,9 +34,7 @@ tests_require = [
 ]
 
 extras_require = {
-    'docs': [
-        'Sphinx>=1.5.1',
-    ],
+    'docs': ['Sphinx>=1.5.1', ],
     'tests': tests_require,
 }
 
@@ -44,9 +42,7 @@ extras_require['all'] = []
 for reqs in extras_require.values():
     extras_require['all'].extend(reqs)
 
-extras_require['ldap'] = [
-    'python-ldap>=2.4.39'
-]
+extras_require['ldap'] = ['python-ldap>=2.4.39']
 
 # Do not include in all requirement
 extras_require['xrootd'] = [
@@ -95,7 +91,6 @@ install_requires = [
     # "raven" versions needed till we FIX dependecies on installation
     'raven[flask]>=5.0.0,<5.5',
     'invenio-logging[sentry]>=1.0.0b1',
-
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
@@ -103,11 +98,10 @@ install_requires = [
 
 packages = find_packages()
 
-
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
+    exec (fp.read(), g)
     version = g['__version__']
 
 setup(
@@ -119,15 +113,14 @@ setup(
     license='MIT',
     author='CERN',
     author_email='analysis-preservation-support@cern.ch',
-    url='https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
+    url=
+    'https://github.com/cernanalysispreservation/analysispreservation.cern.ch',  # noqa
     packages=packages,
     zip_safe=False,
     include_package_data=True,
     platforms='any',
     entry_points={
-        'console_scripts': [
-            'cap = cap.cli:cli',
-        ],
+        'console_scripts': ['cap = cap.cli:cli', ],
         'invenio_access.actions': [
             'cms_access = '
             'cap.modules.experiments.permissions:cms_access_action',
@@ -162,6 +155,7 @@ setup(
             'cap_schemas = cap.modules.schemas.views:blueprint',
             'cap_auth = cap.modules.auth.views:blueprint',
             'cap_repos = cap.modules.repoimporter.views:repos_bp',
+            'cap_records = cap.modules.records.views:create_cap_record_blueprint',  # noqa
             'invenio_oauthclient = invenio_oauthclient.views.client:blueprint',
         ],
         'invenio_celery.tasks': [
@@ -175,7 +169,6 @@ setup(
             'cap.modules.records.minters:cap_record_minter',
             'cap_deposit_minter = '
             'cap.modules.deposit.minters:cap_deposit_minter',
-
         ],
         'invenio_pidstore.fetchers': [
             'cap_record_fetcher = '
@@ -193,12 +186,8 @@ setup(
             'auth = cap.modules.auth.models',
             'git_model = cap.modules.repoimporter.models',
         ],
-        'invenio_db.alembic': [
-            'cap = cap:alembic',
-        ],
-        'invenio_config.module': [
-            'cap = cap.config'
-        ]
+        'invenio_db.alembic': ['cap = cap:alembic', ],
+        'invenio_config.module': ['cap = cap.config']
     },
     extras_require=extras_require,
     install_requires=install_requires,
