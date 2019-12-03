@@ -24,12 +24,10 @@ def upgrade():
     op.create_table('git_connected_repositories',
                     sa.Column('id',
                               sa.Integer(), nullable=False),
-                    sa.Column('git_repo_id',
+                    sa.Column('repo_id',
                               sa.Integer(), nullable=True),
-                    sa.Column('recid',
+                    sa.Column('record_uuid',
                               sa.String(length=255), nullable=False),
-                    sa.Column('repo_saved_name',
-                              sa.String(length=255), nullable=True),
                     sa.Column('user_id',
                               sa.Integer(), nullable=True),
                     sa.Column('url',
@@ -46,24 +44,26 @@ def upgrade():
                               sa.String(length=255), nullable=True),
                     sa.Column('hook_secret',
                               sa.String(length=32), nullable=True),
-                    sa.Column('for_download',
+                    sa.Column('download',
                               sa.Boolean(create_constraint=False),
                               nullable=False),
 
+                    sa.PrimaryKeyConstraint(
+                        'id',
+                        name=op.f('pk_git_connected_repositories')),
                     sa.ForeignKeyConstraint(
                         ['user_id'], [u'accounts_user.id'],
                         name=op.f('fk_git_connected_repositories'
                                   '_user_id_accounts_user')),
-                    sa.PrimaryKeyConstraint(
-                        'id', name=op.f('pk_git_connected_repositories')),
                     sa.UniqueConstraint(
-                        'recid', 'git_repo_id', 'branch',
+                        'record_uuid', 'repo_id', 'branch',
                         name='unique_ids_constraint')
                     )
 
-    op.create_index(op.f('ix_git_connected_repositories_git_repo_id'),
-                    'git_connected_repositories',
-                    ['git_repo_id'], unique=False)
+    op.create_index(
+        op.f('ix_git_connected_repositories_git_repo_id'),
+        'git_connected_repositories',
+        ['git_repo_id'], unique=False)
 
     op.create_table('git_repository_snapshots',
                     sa.Column('id',
