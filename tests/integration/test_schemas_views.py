@@ -25,6 +25,8 @@
 """Unit tests for schemas views."""
 import json
 
+from pytest import mark
+
 from cap.modules.schemas.models import Schema
 
 ########################
@@ -336,12 +338,9 @@ def test_get_resolved_schemas(client, db, users, create_schema,
         'record_mapping': {},
         'record_options': {},
         'links': {
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/test-analysis/1.0.0',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/test-analysis-v1.0.0.json',
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/test-analysis-v1.0.0.json',
         }
     }
 
@@ -375,21 +374,15 @@ def test_get_only_latest_version_of_schemas(client, db, users,
         'deposit_schema': {},
         'record_mapping': {},
         'links': {
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json'
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/schema1-v1.2.3.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/schema1/1.2.3',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema1-v1.2.3.json'
         },
     }, {
         'links': {
-            'record':
-            'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
-            'self':
-            'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
-            'deposit':
-            'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json'
+            'record': 'http://analysispreservation.cern.ch/api/schemas/records/schema2-v3.0.0.json',
+            'self': 'http://analysispreservation.cern.ch/api/jsonschemas/schema2/3.0.0',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/schema2-v3.0.0.json'
         },
         'deposit_options': {},
         'record_schema': {},
@@ -622,20 +615,62 @@ def test_put(client, db, auth_headers_for_user, users, json_headers):
             'title': 'deposit_options'
         },
         'record_schema': {},
-        'record_options':
-            {  # same as deposit_options because use_deposit_as_record == True
-                'title': 'deposit_options'
-            },
-        'record_mapping':
-            {  # same as deposit_mapping because use_deposit_as_record == True
-                'doc': {
-                    'properties': {
-                        "keyword": {
-                            "type": "keyword"
-                        }
+        'record_options': {  # same as deposit_options because use_deposit_as_record == True
+            'title': 'deposit_options'
+        },
+        'record_mapping': {  # same as deposit_mapping because use_deposit_as_record == True
+            'doc': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
                     }
                 }
-            },
+            }
+        },
+        'deposit_mapping': {
+            'doc': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        },
+        'links': {
+            'self': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/1.2.3',
+            'deposit': 'http://analysispreservation.cern.ch/api/schemas/deposits/records/cms-schema-v1.2.3.json',
+            'record': u'http://analysispreservation.cern.ch/api/schemas/records/cms-schema-v1.2.3.json',
+            #            'versions': u'http://analysispreservation.cern.ch/api/jsonschemas/cms-schema/versions'
+        }
+    }
+
+    resp = client.get('/jsonschemas/cms-schema/1.2.3',
+                      headers=json_headers + auth_headers_for_user(owner))
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'name': 'cms-schema',
+        'version': '1.2.3',
+        'fullname': 'New fullname',
+        'is_indexed': False,
+        'use_deposit_as_record': True,
+        'deposit_schema': {},
+        'deposit_options': {
+            'title': 'deposit_options'
+        },
+        'record_schema': {},
+        'record_options': {  # same as deposit_options because use_deposit_as_record == True
+            'title': 'deposit_options'
+        },
+        'record_mapping': {  # same as deposit_mapping because use_deposit_as_record == True
+            'doc': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        },
         'deposit_mapping': {
             'doc': {
                 'properties': {
@@ -693,6 +728,44 @@ def test_put_when_not_an_schema_owner_returns_403(client, db,
                       auth_headers_for_user(another_user))
 
     assert resp.status_code == 403
+
+
+@mark.skip
+def test_put_on_mappings_change_triggers_change_in_ES_and_reindexing(
+        client, db, auth_headers_for_superuser, json_headers, superuser):
+    schema = json.dumps(dict(name='cms-schema', version='1.0.0'))
+    new_schema = dict(
+        name='cms-schema',
+        version='1.0.0',
+        record_mapping={'doc': {
+            'properties': {
+                "title": {
+                    "type": "text"
+                }
+            }
+        }},
+        deposit_mapping={
+            'doc': {
+                'properties': {
+                    "keyword": {
+                        "type": "keyword"
+                    }
+                }
+            }
+        },
+        is_indexed=True)
+
+    resp = client.post('/jsonschemas/',
+                       data=schema,
+                       headers=json_headers + auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+
+    resp = client.put('/jsonschemas/cms-schema/1.0.0',
+                      data=json.dumps(new_schema),
+                      headers=json_headers + auth_headers_for_superuser)
+
+    assert resp.status_code == 200
 
 
 #####################################

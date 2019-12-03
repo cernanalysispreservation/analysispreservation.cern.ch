@@ -69,18 +69,19 @@ def add_schema_from_fixture(data=None):
         with db.session.begin_nested():
             with db.session.begin_nested():
                 try:
-                    schema = Schema.get(name=data['name'],
-                                        version=data['version'])
-                    click.secho('{} already exist in the db.'.format(
-                        str(name)))
-                    return
+                    schema = Schema.get(name=name, version=data['version'])
+                    schema.update(**data)
+                    msg, fg = '{} updated.'.format(str(name)), 'green'
 
                 except JSONSchemaNotFound:
                     schema = Schema(**data)
                     db.session.add(schema)
+                    msg, fg = '{} added.'.format(str(name)), 'green'
 
             if allow_all:
                 schema.add_read_access_for_all_users()
+            else:
+                schema.revoke_access_for_all_users()
 
     except IntegrityError:
         click.secho('Error occured during adding {} to the db. \n'.format(
@@ -89,4 +90,4 @@ def add_schema_from_fixture(data=None):
         return
 
     db.session.commit()
-    click.secho('{} has been added.'.format(str(name)), fg='green')
+    click.secho(msg, fg=fg)

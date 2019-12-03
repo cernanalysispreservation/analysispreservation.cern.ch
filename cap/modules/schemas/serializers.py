@@ -25,10 +25,10 @@
 import copy
 
 from flask import url_for
-from invenio_jsonschemas.proxies import current_jsonschemas
-from marshmallow import Schema, ValidationError, fields, pre_load, validate
 
 from cap.utils import url_to_api_url
+from invenio_jsonschemas.proxies import current_jsonschemas
+from marshmallow import Schema, ValidationError, fields, pre_load, validate
 
 from .validators import JSONSchemaValidator
 
@@ -102,6 +102,15 @@ class UpdateSchemaSerializer(SchemaSerializer):
         return data
 
 
+class SimplifiedSchemaSerializer(Schema):
+    """Simplified serializer for schema."""
+
+    name = fields.Str(dump_only=True, required=True)
+    version = fields.Str(dump_only=True, required=True,
+                         validate=validate.Regexp(regex=r"(\d+).(\d+).(\d+)"))
+    fullname = fields.Str(dump_only=True)
+
+
 class ResolvedSchemaSerializer(SchemaSerializer):
     """Schema serializer with resolved jsonschemas."""
 
@@ -125,5 +134,6 @@ class ResolvedSchemaSerializer(SchemaSerializer):
 
 
 schema_serializer = SchemaSerializer()
+simplified_schema_serializer = SimplifiedSchemaSerializer()
 update_schema_serializer = UpdateSchemaSerializer()
 resolved_schemas_serializer = ResolvedSchemaSerializer()

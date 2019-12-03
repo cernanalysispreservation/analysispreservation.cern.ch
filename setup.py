@@ -77,6 +77,7 @@ install_requires = [
     # on production server
     'urllib3[secure]==1.22',
     'SQLAlchemy-Continuum==1.3.4',
+    'SQLAlchemy==1.3.0',
 
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
@@ -103,11 +104,10 @@ install_requires = [
 
 packages = find_packages()
 
-
 # Get the version string. Cannot be done with import!
 g = {}
 with open(os.path.join('cap', 'version.py'), 'rt') as fp:
-    exec(fp.read(), g)
+    exec (fp.read(), g)
     version = g['__version__']
 
 setup(

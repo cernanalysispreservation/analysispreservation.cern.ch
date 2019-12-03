@@ -21,5 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Data model package."""
+
+from .receivers import handle_record_mapping_updated

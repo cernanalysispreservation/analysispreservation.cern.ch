@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2018 CERN.
+# Copyright (C) 2016 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,18 +21,15 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-# or submit itself to any jurisdiction.
-"""Unit tests for Cap general views."""
+"""Registered signal handlers for records module."""
+from invenio_jsonschemas.proxies import current_jsonschemas
 
-from flask import url_for
+from cap.modules.records.utils import reindex_by_schema_url
+from cap.modules.schemas.signals import deposit_mapping_updated
 
 
-def test_view_ping(app):
-    with app.test_request_context():
-        url = url_for('cap.ping')
-
-    with app.test_client() as client:
-        resp = client.get(url)
-
-        assert resp.status_code == 200
-        assert resp.data == 'Pong!'
+@deposit_mapping_updated.connect
+def handle_deposit_mapping_updated(schema):
+    """Reindex all the deposits when mapping in ES got updated."""
+    schema_url = current_jsonschemas.path_to_url(schema.deposit_path)
+    reindex_by_schema_url(schema_url, 'depid')
