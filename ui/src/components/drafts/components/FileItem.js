@@ -105,7 +105,7 @@ class FileItem extends React.Component {
 
   showToaster(error) {
     cogoToast.error(error, {
-      hideAfter: 0
+      hideAfter: 3
     });
   }
 
@@ -130,7 +130,6 @@ class FileItem extends React.Component {
         pad="none"
         flex={true}
       >
-        {file.status == "error" ? this.showToaster(file.error.message) : null}
         <Box direction="row" flex={true} justify="between" wrap={false}>
           <Box direction="row" flex={true} justify="between" wrap={false}>
             <Box direction="row" flex={true}>
@@ -180,6 +179,11 @@ class FileItem extends React.Component {
                   label={<Label size="small">Download</Label>}
                   href={file_link}
                   download
+                  onClick={
+                    file.status == "error"
+                      ? this.showToaster(file.error.message)
+                      : null
+                  }
                 />
                 {this.props.status !== "published" ? (
                   <Anchor
