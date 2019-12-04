@@ -17,7 +17,7 @@ const widgets = {
 };
 
 const FieldTemplate = props => {
-  const { schema, rawErrors = [], children, formContext } = props;
+  const { schema, uiSchema, rawErrors = [], children, formContext } = props;
 
   const [display, setDisplay] = useState(true);
   let path = {
@@ -69,12 +69,12 @@ const FieldTemplate = props => {
           <Box flex={true} margin={{ left: "medium" }}>
             <Form
               schema={schema}
-              uiSchema={{}}
+              uiSchema={uiSchema}
               formData={{}}
               showErrorList={false}
               widgets={widgets}
               tagName="div"
-              FieldTemplate={FieldTemplate}
+              FieldTemplate={_FieldTemplate}
               ObjectFieldTemplate={ObjectFieldTemplate}
               ArrayFieldTemplate={ArrayFieldTemplate}
               liveValidate={true}
@@ -106,6 +106,7 @@ FieldTemplate.propTypes = {
   children: PropTypes.element,
   formContext: PropTypes.object,
   rawErrors: PropTypes.array,
+  uiSchema: PropTypes.object,
   schema: PropTypes.object,
   addProperty: PropTypes.func
 };
@@ -116,7 +117,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
+let _FieldTemplate = connect(
   state => state,
   mapDispatchToProps
 )(FieldTemplate);
+
+export default _FieldTemplate;
