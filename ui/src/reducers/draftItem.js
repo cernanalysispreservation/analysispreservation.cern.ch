@@ -48,7 +48,7 @@ export default function draftsReducer(state = initialState, action) {
         .set("filePreviewEditLayer", !state.get("filePreviewEditLayer"))
         .set("filePreviewEdit", action.payload);
     case draftItemActions.INIT_FORM:
-      return state.merge(initialState);
+      return initialState;
     case draftItemActions.CLEAR_ERROR_SUCCESS:
       return state.set("errors", []);
     case commonActions.FETCH_SCHEMA_ERROR:
@@ -70,7 +70,7 @@ export default function draftsReducer(state = initialState, action) {
         .set("fileManagerLayerActiveIndex", action.active);
     // Draft Metadata
     case draftItemActions.DRAFTS_ITEM_REQUEST:
-      return state.set(initialState).set("loading", true);
+      return initialState.set("loading", true);
     case draftItemActions.DRAFTS_ITEM_SUCCESS:
       return state
         .set("formData", action.draft.metadata)
@@ -80,7 +80,7 @@ export default function draftsReducer(state = initialState, action) {
     case draftItemActions.CREATE_DRAFT_REQUEST:
       return state.set("loading", true);
     case draftItemActions.CREATE_DRAFT_SUCCESS:
-      return state
+      return initialState
         .set("loading", false)
         .set("formData", action.draft.metadata)
         .merge(Map(action.draft));
@@ -155,7 +155,10 @@ export default function draftsReducer(state = initialState, action) {
     case draftItemActions.GENERAL_TITLE_REQUEST:
       return state.set("generalTitleLoading", true);
     case draftItemActions.GENERAL_TITLE_SUCCESS:
-      return state.merge(Map(action.draft)).set("generalTitleLoading", false);
+      return state
+        .set("formData", action.draft.metadata)
+        .merge(Map(action.draft))
+        .set("generalTitleLoading", false);
     case draftItemActions.GENERAL_TITLE_ERROR:
       return state.set("generalTitleLoading", false);
 
