@@ -8,14 +8,14 @@
 
 import sqlalchemy as sa
 import sqlalchemy_utils
-from alembic import op
 from sqlalchemy.dialects import postgresql
 
+from alembic import op
 from cap.types import json_type
 
 # revision identifiers, used by Alembic.
 revision = 'a85d38b8e3e9'
-down_revision = '244808a5da06'
+down_revision = 'ab26511603a2'
 branch_labels = ()
 depends_on = None
 

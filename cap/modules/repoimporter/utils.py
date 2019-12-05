@@ -21,76 +21,47 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Importer utils."""
 from __future__ import absolute_import, print_function
-from tempfile import SpooledTemporaryFile
+
+import random
 import re
 import shutil
 import string
-import random
-import hashlib
-import hmac
+from tempfile import SpooledTemporaryFile
 
-from flask import current_app
+from flask import current_app, url_for
+from flask_login import current_user
+from invenio_db import db
+from sqlalchemy.orm.exc import NoResultFound
 
-from .errors import GitURLParsingError
-from .serializers import GitLabPayloadSchema, GitHubPayloadSchema
-
-git_regex = re.compile('''
-    (?P<host>
-        https://(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch))
-    [:|\/]
-    (?P<owner>[\w-]+)\/
-    (?P<repo>[\w-]+)
-        (\.git|/tree/|/blob/)?/?
-    (?P<branch>[\w-]+)?/?
-    (?P<filepath>.+)?
-''', re.VERBOSE | re.MULTILINE | re.IGNORECASE)
+from .errors import GitIntegrationError, GitURLParsingError
+from .models import GitRepository, GitWebhook, GitWebhookSubscriber
 
 
-def parse_url(url):
+def parse_git_url(url):
     """Parse a git url, and extract the associated information."""
-    url = url[:-4] if url.endswith('.git') else url
+    git_regex = re.compile(
+        '''
+        (?:https|http)://
+        (?P<host>(?:github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch))
+        [:|\/]
+        (?P<owner>[\w-]+)\/
+        (?P<repo>[\w\.-]+)
+            (?:\.git|/tree/|/blob/)?/?
+        (?P<branch>[\w-]+)?/?
+        (?P<filepath>.+)?
+    ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE)
 
-    match = git_regex.search(url)
-    if not match:
+    try:
+        host, owner, repo, branch, filepath = re.match(git_regex, url).groups()
+    except (ValueError, TypeError, AttributeError):
         raise GitURLParsingError
 
-    url_results = match.groupdict()
-    if url_results['branch'] is None:
-        url_results['branch'] = 'master'
+    branch = branch or 'master'  # default value for branch
+    filename = filepath.split('/')[-1] if filepath else None
 
-    # if blob, we need to figure out if path/name are the same
-    # else, we have a standard repo, so we know the path is owner/repo/branch
-    if 'blob' in url:
-        url_results['filename'] = url_results['filepath'].split('/')[-1]
-    else:
-        url_results['filename'] = url_results['filepath']  # already None
-    return url_results
-
-
-def get_webhook_attrs(req):
-    """GitHub/GitLab event and serializer, from the payload."""
-    if 'X-Gitlab-Event' in req.headers.keys():
-        event = req.headers.get('X-Gitlab-Event')
-        event = event.lower().split()[0]
-        serializer = GitLabPayloadSchema()
-    else:
-        event = req.headers.get('X-Github-Event')
-        serializer = GitHubPayloadSchema()
-
-    # return with payload
-    return event, serializer
-
-
-def name_git_record(owner, repo, branch, filename=None, type_='repo'):
-    """Create a name for the git repo / file downloaded."""
-    name = '{}_{}_{}'.format(owner, repo, branch)
-
-    if type_ == 'repo':
-        return '{}.tar.gz'.format(name)
-    return '{}_{}'.format(name, filename)
+    return host, owner, repo, branch, filepath, filename
 
 
 def ensure_content_length(resp):
@@ -110,22 +81,53 @@ def ensure_content_length(resp):
     return resp
 
 
-def create_webhook_secret():
-    """Create a random string to be used as a secret token for webhooks."""
-    choices = string.ascii_letters + string.digits
-    return ''.join(
-        random.choice(choices) for i in range(32))
+def create_webhook(record_id, host, api, subscriber_type, type_='push'):
+    """
+    Create webhook.
+
+    By passing the connected git api, we can download the repo and associated
+    metadata, and create a webhook that will automatically update the db
+    if a repo remote changes.
+    """
+    with db.session.begin_nested():
+        repo = GitRepository.create_or_get(api.repo_id, api.host, api.owner,
+                                           api.repo, api.branch)
+        try:
+            webhook = GitWebhook.query.filter_by(event_type=type_,
+                                                 repo_id=repo.id).one()
+        except NoResultFound:
+            hook_id, hook_secret = api.create_webhook()
+            webhook = GitWebhook(event_type=type_,
+                                 repo_id=repo.id,
+                                 external_id=hook_id,
+                                 secret=hook_secret)
+            db.session.add(webhook)
+
+        try:
+            GitWebhookSubscriber.query.filter_by(record_id=record_id,
+                                                 user_id=current_user.id,
+                                                 webhook_id=webhook.id,
+                                                 type=subscriber_type).one()
+            raise GitIntegrationError(
+                'Analysis already connected with this webhook.')
+        except NoResultFound:
+            subscriber = GitWebhookSubscriber(record_id=record_id,
+                                              type=subscriber_type,
+                                              user_id=current_user.id)
+            webhook.subscribers.append(subscriber)
+
+    db.session.commit()
 
 
-def verified_request(request, repo):
-    """Verify the webhook POST, by comparing saved and received secret keys."""
-    saved = repo.hook_secret
-
-    if 'github' in repo.host:
-        header = request.headers['X-Hub-Signature'].split('sha1=')[1]
-        received = hmac.new(bytes(saved), msg=request.data,
-                            digestmod=hashlib.sha1)
-        return hmac.compare_digest(received.hexdigest(), str(header))
+def get_webhook_url():
+    if current_app.config.get('DEBUG_MODE'):
+        assert 'WEBHOOK_NGROK_URL' in current_app.config
+        return current_app.config['WEBHOOK_NGROK_URL']
     else:
-        received = request.headers.get('X-Gitlab-Token')
-        return received == saved
+        return url_for(current_app.config['WEBHOOK_ENDPOINT'])
+
+
+def generate_secret():
+    """Create a random string to be used as a secret token for webhooks."""
+    chars = string.ascii_lowercase + string.digits
+    return ''.join(random.choice(chars) for i in range(32))

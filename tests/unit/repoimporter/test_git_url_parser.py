@@ -24,74 +24,44 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, print_function
+
 import pytest
+from pytest import mark
 
-from cap.modules.repoimporter.api import GitAPIProvider
-from cap.modules.repoimporter.utils import parse_url
 from cap.modules.repoimporter.errors import GitURLParsingError
+from cap.modules.repoimporter.factory import create_git_api
+from cap.modules.repoimporter.utils import parse_git_url
 
 
-def test_parse_url_with_wrong_url():
-    with pytest.raises(GitURLParsingError) as exc:
-        parse_url('https://google.com')
+def test_parse_git_url_with_wrong_url():
+    with pytest.raises(GitURLParsingError):
+        parse_git_url('https://google.com')
 
 
 def test_importer_with_wrong_url():
-    with pytest.raises(GitURLParsingError) as exc:
-        GitAPIProvider.create('https://google.com')
+    with pytest.raises(GitURLParsingError):
+        create_git_api(parse_git_url('https://google.com'))
 
 
 def test_importer_with_scrambled_url():
-    with pytest.raises(GitURLParsingError) as exc:
-        GitAPIProvider.create('https://hubgit.com/cernanalysis/test')
+    with pytest.raises(GitURLParsingError):
+        create_git_api(parse_git_url('https://hubgit.com/cernanalysis/test'))
 
 
-def test_parse_url_attrs():
+@mark.parametrize("url,parsed", [
+    ('https://github.com/cernanalysispreservation/test-repo',
+     ('github.com', 'cernanalysispreservation', 'test-repo', 'master', None,
+      None)),
+    ('https://github.com/cernanalysispreservation/test-repo/blob/test-branch/README.md',
+     ('github.com', 'cernanalysispreservation', 'test-repo', 'test-branch',
+      'README.md', 'README.md')),
+    ('https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/new-dir/test-nested-file.txt',
+     ('gitlab.cern.ch', 'pfokiano', 'test-repo', 'test-branch',
+      'new-dir/test-nested-file.txt', 'test-nested-file.txt')),
+    ('https://github.com/cern/analysispreservation/blob/api-status-checks/docker/new/test.ini',
+     ('github.com', 'cern', 'analysispreservation', 'api-status-checks',
+      'docker/new/test.ini', 'test.ini'))
+])
+def test_parse_git_url_attrs(url, parsed):
     """Test the different url parsing combinations"""
-    attrs = parse_url('https://github.com/cernanalysispreservation/test-repo')
-    assert attrs['host'] == 'https://github.com'
-    assert attrs['owner'] == 'cernanalysispreservation'
-    assert attrs['repo'] == 'test-repo'
-    assert attrs['branch'] == 'master'
-    assert attrs['filepath'] is None
-    assert attrs['filename'] is None
-
-    attrs = parse_url('https://github.com/cernanalysispreservation/test-repo/tree/test-branch')
-    assert attrs['host'] == 'https://github.com'
-    assert attrs['owner'] == 'cernanalysispreservation'
-    assert attrs['repo'] == 'test-repo'
-    assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] is None
-    assert attrs['filename'] is None
-
-    attrs = parse_url('https://github.com/cernanalysispreservation/test-repo/blob/test-branch/README.md')
-    assert attrs['host'] == 'https://github.com'
-    assert attrs['owner'] == 'cernanalysispreservation'
-    assert attrs['repo'] == 'test-repo'
-    assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] == 'README.md'
-    assert attrs['filename'] == 'README.md'
-
-    attrs = parse_url('https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/new-dir/test-nested-file.txt')
-    assert attrs['host'] == 'https://gitlab.cern.ch'
-    assert attrs['owner'] == 'pfokiano'
-    assert attrs['repo'] == 'test-repo'
-    assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] == 'new-dir/test-nested-file.txt'
-    assert attrs['filename'] == 'test-nested-file.txt'
-
-    attrs = parse_url('https://gitlab.cern.ch/pfokiano/test-repo/tree/test-branch')
-    assert attrs['host'] == 'https://gitlab.cern.ch'
-    assert attrs['owner'] == 'pfokiano'
-    assert attrs['repo'] == 'test-repo'
-    assert attrs['branch'] == 'test-branch'
-    assert attrs['filepath'] is None
-    assert attrs['filename'] is None
-
-    attrs = parse_url('https://github.com/cern/analysispreservation/blob/api-status-checks/docker/new/test.ini')
-    assert attrs['host'] == 'https://github.com'
-    assert attrs['owner'] == 'cern'
-    assert attrs['repo'] == 'analysispreservation'
-    assert attrs['branch'] == 'api-status-checks'
-    assert attrs['filepath'] == 'docker/new/test.ini'
-    assert attrs['filename'] == 'test.ini'
+    assert parsed == parse_git_url(url)

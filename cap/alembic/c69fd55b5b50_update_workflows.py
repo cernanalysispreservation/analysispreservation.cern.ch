@@ -4,12 +4,11 @@
 #
 # Invenio is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
-
 """Update workflows"""
 
-from alembic import op
 import sqlalchemy as sa
 
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'c69fd55b5b50'
@@ -17,8 +16,12 @@ down_revision = 'a85d38b8e3e9'
 branch_labels = ()
 depends_on = None
 
-status_enum = sa.Enum('created', 'queued', 'running',
-                      'stopped', 'failed', 'deleted',
+status_enum = sa.Enum('created',
+                      'queued',
+                      'running',
+                      'stopped',
+                      'failed',
+                      'deleted',
                       name='status')
 
 
@@ -34,24 +37,29 @@ def upgrade():
         sa.Column('workflow_name_run', sa.String(length=100), nullable=False))
     op.drop_column('reana_workflows', 'name_run')
 
-    op.add_column('reana_workflows',
-                  sa.Column('created', sa.DateTime(),
-                            server_default=sa.text(u'now()'),
-                            nullable=True)),
-    op.add_column('reana_workflows',
-                  sa.Column('updated', sa.DateTime(),
-                            server_default=sa.text(u'now()'),
-                            nullable=True)),
+    op.add_column(
+        'reana_workflows',
+        sa.Column('created',
+                  sa.DateTime(),
+                  server_default=sa.text(u'now()'),
+                  nullable=True)),
+    op.add_column(
+        'reana_workflows',
+        sa.Column('updated',
+                  sa.DateTime(),
+                  server_default=sa.text(u'now()'),
+                  nullable=True)),
 
     op.alter_column('reana_workflows',
                     sa.Column('status', status_enum, nullable=False))
 
     op.drop_constraint(u'fk_reana_workflows_cap_user_id_accounts_user',
-                       'reana_workflows', type_='foreignkey')
+                       'reana_workflows',
+                       type_='foreignkey')
 
-    op.create_foreign_key(op.f(
-        'fk_reana_workflows_user_id_accounts_user'),
-        'reana_workflows', 'accounts_user', ['user_id'], ['id'])
+    op.create_foreign_key(op.f('fk_reana_workflows_user_id_accounts_user'),
+                          'reana_workflows', 'accounts_user', ['user_id'],
+                          ['id'])
     # ### end Alembic commands ###
 
 
@@ -66,18 +74,18 @@ def downgrade():
     op.alter_column('reana_workflows',
                     sa.Column('status', sa.String(100), nullable=False))
 
-    op.add_column('reana_workflows', sa.Column('cap_user_id',
-                                               sa.INTEGER(),
-                                               autoincrement=False,
-                                               nullable=False))
+    op.add_column(
+        'reana_workflows',
+        sa.Column('cap_user_id',
+                  sa.INTEGER(),
+                  autoincrement=False,
+                  nullable=False))
     op.add_column('reana_workflows',
                   sa.Column('name_run', sa.String(length=100), nullable=False))
 
     op.create_foreign_key(u'fk_reana_workflows_cap_user_id_accounts_user',
-                          'reana_workflows', 'accounts_user',
-                          ['cap_user_id'], ['id'])
-    op.drop_constraint(op.f('fk_reana_workflows_user_id_accounts_user'),
-                       'reana_workflows', type_='foreignkey')
+                          'reana_workflows', 'accounts_user', ['cap_user_id'],
+                          ['id'])
 
     status_enum.drop(op.get_bind())
     # ### end Alembic commands ###

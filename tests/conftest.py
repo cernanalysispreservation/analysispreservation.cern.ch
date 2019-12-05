@@ -33,17 +33,21 @@ from uuid import uuid4
 
 from flask import current_app
 from invenio_files_rest.models import Location
+
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
 import pytest
 from cap.factory import create_api
+from cap.modules.auth.models import OAuth2Token
+from cap.modules.auth.utils import _create_or_update_token
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.experiments.utils.cms import (
     CMS_TRIGGERS_INDEX, cache_cms_triggers_in_es_from_file)
 from cap.modules.experiments.utils.das import (
     DAS_DATASETS_INDEX, cache_das_datasets_in_es_from_file)
+from cap.modules.repoimporter.models import GitRepository
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
@@ -403,7 +407,8 @@ def cms_user_me_data(users):
             "name": "CMS Questionnaire"
         }, {
             "deposit_group": "cms-analysis",
-            "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
+            "description": "Create a CMS Analysis (analysis metadata, \
+                            workflows, etc)",
             "name": "CMS Analysis"
         }],
         "email": users['cms_user'].email,
@@ -458,7 +463,7 @@ def cms_triggers_index(es):
 @pytest.fixture
 def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
     owner = users['cms_user']
-    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     pid = deposit['_deposit']['id']
     bucket = deposit.files.bucket
     headers = auth_headers_for_user(owner)
@@ -506,3 +511,49 @@ def add_role_to_user(user, rolename):
     role = _datastore.find_or_create_role(rolename)
 
     _datastore.add_role_to_user(user, role)
+
+
+@pytest.fixture
+def github_repo(db, github_token):
+    repo = GitRepository(external_id='226716001',
+                         host='github.com',
+                         owner='annatrz',
+                         name='test',
+                         branch='master')
+    db.session.add(repo)
+    db.session.commit()
+    return repo
+
+
+@pytest.fixture
+def gitlab_repo(db, gitlab_token):
+    repo = GitRepository(external_id='15785702',
+                         host='gitlab.com',
+                         owner='alibrandi',
+                         name='test',
+                         branch='master')
+    db.session.add(repo)
+    db.session.commit()
+    return repo
+
+
+@pytest.fixture
+def github_token(db, superuser):
+    token = OAuth2Token(name='github',
+                        user_id=superuser.id,
+                        token_type='bearer',
+                        access_token='some-token')
+    db.session.add(token)
+    db.session.commit()
+    return token
+
+
+@pytest.fixture
+def gitlab_token(db, superuser):
+    token = OAuth2Token(name='gitlab',
+                        user_id=superuser.id,
+                        token_type='bearer',
+                        access_token='some-token')
+    db.session.add(token)
+    db.session.commit()
+    return token

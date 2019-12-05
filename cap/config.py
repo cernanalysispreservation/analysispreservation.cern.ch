@@ -14,14 +14,7 @@ import os
 from datetime import timedelta
 from os.path import dirname, join
 
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter, prefix_filter
+import requests
 from flask import request
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
@@ -34,6 +27,15 @@ from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
+
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter, prefix_filter
 
 
 def _(x):
@@ -106,6 +108,10 @@ CELERY_BEAT_SCHEDULE = {
     'api_status_check_table_cleanup': {
         'task': 'cap.modules.services.views.status_checks.clear_status_table',
         'schedule': timedelta(days=3),
+    },
+    'ping_webhooks': {
+        'task': 'cap.modules.repoimporter.tasks.ping_webhooks',
+        'schedule': timedelta(hours=12),
     }
 }
 #: Accepted content types, used for serializing objects
@@ -150,19 +156,6 @@ APP_ALLOWED_HOSTS = [
     'analysispreservation-dev.cern.ch', 'analysispreservation-qa.web.cern.ch',
     'analysispreservation-qa.cern.ch'
 ]
-
-# Webhooks & ngrok init
-# =====================
-# In order to debug webhooks, we need a tunnel to our local instance
-# so we make sure that we have an ngrok tunnel running, and add it
-# to the allowed hosts (to enable requests)
-WEBHOOK_URL = 'https://analysispreservation.cern.ch/repos/event'
-NGROK_HOST = os.environ.get('CAP_NGROK_URL')
-
-if NGROK_HOST:
-    APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
-    WEBHOOK_URL = '{}/repos/event'.format(NGROK_HOST)
-    print(' * Webhook url at {}'.format(WEBHOOK_URL))
 
 if os.environ.get('DEV_HOST', False):
     APP_ALLOWED_HOSTS.append(os.environ.get('DEV_HOST'))
@@ -611,3 +604,22 @@ ZENODO_ACCESS_TOKEN = os.environ.get('APP_ZENODO_ACCESS_TOKEN', 'CHANGE_ME')
 # =========
 DEPOSIT_UI_ENDPOINT = '{scheme}://{host}/drafts/{pid_value}'
 RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'
+
+# Webhooks & ngrok init
+# =====================
+# In order to debug webhooks, we need a tunnel to our local instance
+# so we make sure that we have an ngrok tunnel running, and add it
+# to the allowed hosts (to enable requests)
+TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', False)
+if DEBUG_MODE == 'True' and TEST_WITH_NGROK is True:
+    try:
+        resp = requests.get('http://localhost:4040/api/tunnels',
+                            headers={'Content-Type': 'application/json'})
+        NGROK_HOST = resp.json()['tunnels'][0]['public_url']
+        APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
+        WEBHOOK_NGROK_URL = '{}/repos/event'.format(NGROK_HOST)
+        print('* Webhook url at {}'.format(WEBHOOK_NGROK_URL))
+    except (IndexError, KeyError):
+        print('Ngrok is not running.')
+
+WEBHOOK_ENDPOINT = 'cap_repos.get_webhook_event'

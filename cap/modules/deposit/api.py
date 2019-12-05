@@ -30,8 +30,15 @@ from functools import wraps
 
 from flask import current_app, request
 from flask_login import current_user
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_db import db
+from invenio_deposit.api import Deposit, has_status, index, preserve
+from invenio_deposit.utils import mark_as_action
 from invenio_files_rest.errors import MultipartMissingParts
-from invenio_files_rest.models import Bucket
+from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
+                                       ObjectVersionTag)
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
@@ -41,23 +48,20 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
+from cap.modules.deposit.errors import FileUploadError
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
-from cap.modules.repoimporter.fetcher import fetch_from_git
+from cap.modules.repoimporter.errors import GitError
+from cap.modules.repoimporter.factory import create_git_api
+from cap.modules.repoimporter.tasks import download_repo, download_repo_file
+from cap.modules.repoimporter.utils import create_webhook, parse_git_url
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
-from invenio_access.models import ActionRoles, ActionUsers
-from invenio_db import db
-from invenio_deposit.api import Deposit, index, preserve
-from invenio_deposit.utils import mark_as_action
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_jsonschemas.proxies import current_jsonschemas
 
-from .errors import (DepositValidationError, FileUploadError,
-                     UpdateDepositPermissionsError)
+from .errors import DepositValidationError, UpdateDepositPermissionsError
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
@@ -202,37 +206,62 @@ class CAPDeposit(Deposit):
 
             return super(CAPDeposit, self).publish(*args, **kwargs)
 
+    @has_status
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
-        """Upload action for file/repository."""
+        """Upload action for repositories files."""
         with UpdateDepositPermission(self).require(403):
             if request:
                 data = request.get_json()
+                _, rec = request.view_args.get('pid_value').data
+                record_uuid = str(rec.id)
 
                 # retrieve the parameters and validate
-                url = data.get('url')
-                type_ = data.get('type')
-                download = data.get('download')
-                webhook = data.get('webhook')
+                try:
+                    url = data['url']
+                    type_ = data['type']
+                    download = data['download']
+                    webhook = data['webhook']
+                except KeyError as e:
+                    raise FileUploadError('Missing {} parameter.'.format(
+                        e.message))
 
-                if any(attr is None for attr in
-                       [url, type_, download, webhook]):
-                    raise FileUploadError(
-                        'Missing upload parameters. Please make sure that you '
-                        'are providing the url, data type (repo/file), the '
-                        '"download" and the "webhook" parameter, according '
-                        'to the documentation.')
+                try:
+                    host, owner, repo, branch, filepath, filename = \
+                            parse_git_url(url)
+                    api = create_git_api(host, owner, repo, branch,
+                                         current_user.id)
 
-                _, rec = request.view_args.get('pid_value').data
-                approved_hosts = ('https://github',
-                                  'https://gitlab.cern.ch',
-                                  'https://gitlab-test.cern.ch')
+                    if download:
+                        if type_ == 'repo':
+                            download_repo.delay(record_uuid, host, owner, repo,
+                                                branch, url,
+                                                api.get_download_url())
 
-                if url.startswith(approved_hosts):
-                    fetch_from_git(rec, url, type_, download, webhook)
-                else:
-                    raise FileUploadError(
-                        'Host error. Try again with a GitHub/GitLab link.')
+                        elif type_ == 'file':
+                            if not filepath:
+                                raise FileUploadError(
+                                    'You need to provide a filepath.')
+
+                            download_url, size = \
+                                api.get_params_for_file_download(filepath)
+                            download_repo_file(record_uuid, host, owner, repo,
+                                               branch, filepath, url,
+                                               download_url, size, api.token)
+                        else:
+                            raise FileUploadError(
+                                'Type {} not allowed. (Try: repo|file).'.
+                                format(type_))
+
+                    if webhook:
+                        create_webhook(record_uuid,
+                                       url,
+                                       api,
+                                       subscriber_type='download'
+                                       if download else 'notify')
+                except GitError as e:
+                    raise FileUploadError(e.description)
+
             return self
 
     @index
@@ -477,6 +506,46 @@ class CAPDeposit(Deposit):
         else:
             raise DepositValidationError('You need to provide a valid schema.')
 
+    def save_file(self,
+                  content,
+                  filename,
+                  size,
+                  source_url=None,
+                  failed=False):
+        """Save file with given content in deposit bucket.
+
+           If downloading a content failed, file will be still created,
+           with tag ```failed```.
+
+           :param content: stream
+           :param filename: name that file will be saved with
+           :param size: size of content
+           :param source_url: original url that content was fetched from
+           :param failed: if failed during downloading the content
+        """
+        obj = ObjectVersion.create(bucket=self.files.bucket, key=filename)
+        obj.file = FileInstance.create()
+        self.files.flush()
+
+        if source_url:
+            self.files[filename]['source_url'] = source_url
+
+        if not failed:
+            self.files[filename].file.set_contents(
+                content,
+                default_location=self.files.bucket.location.uri,
+                size=size)
+
+            print('File {} saved ({}b).\n'.format(filename, size))
+        else:
+            ObjectVersionTag.create(object_version=obj,
+                                    key='status',
+                                    value='failed')
+            print('File {} not saved.\n'.format(filename))
+
+        self.files.flush()
+        db.session.commit()
+
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""
@@ -527,7 +596,7 @@ class CAPDeposit(Deposit):
             raise DepositValidationError('Empty deposit data.')
 
         try:
-            schema_url = data['$schema']
+            data['$schema']
 
         except KeyError:
             raise DepositValidationError('Schema not specified.')
