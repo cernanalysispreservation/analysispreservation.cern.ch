@@ -46,18 +46,21 @@ from invenio_indexer.api import RecordIndexer
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_oauth2server.models import Client, Token
-from invenio_search import current_search, current_search_client
 from invenio_pidstore.resolver import Resolver
+from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
 from cap.factory import create_api
+from cap.modules.auth.models import OAuth2Token
+from cap.modules.auth.utils import _create_or_update_token
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.experiments.utils.cms import (
     CMS_TRIGGERS_INDEX, cache_cms_triggers_in_es_from_file)
 from cap.modules.experiments.utils.das import (
     DAS_DATASETS_INDEX, cache_das_datasets_in_es_from_file)
+from cap.modules.repoimporter.models import GitRepository
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 
@@ -152,31 +155,26 @@ def location(db):
 def users(db):
     """Create users."""
     users = {
-        'cms_user':
-        create_user_with_access(db.session, 'cms_user@cern.ch', 'cms-access'),
-        'cms_user2':
-        create_user_with_access(db.session, 'cms_user2@cern.ch', 'cms-access'),
-        'alice_user':
-        create_user_with_access(db.session, 'alice_user@cern.ch',
-                                'alice-access'),
-        'alice_user2':
-        create_user_with_access(db.session, 'alice_user2@cern.ch',
-                                'alice-access'),
-        'atlas_user':
-        create_user_with_access(db.session, 'atlas_user@cern.ch',
-                                'atlas-access'),
-        'atlas_user2':
-        create_user_with_access(db.session, 'atlas_user2@cern.ch',
-                                'atlas-access'),
-        'lhcb_user':
-        create_user_with_access(db.session, 'lhcb_user@cern.ch',
-                                'lhcb-access'),
-        'lhcb_user2':
-        create_user_with_access(db.session, 'lhcb_user2@cern.ch',
-                                'lhcb-access'),
-        'superuser':
-        create_user_with_access(db.session, 'superuser@cern.ch',
-                                'superuser-access'),
+        'cms_user': create_user_with_access(db.session, 'cms_user@cern.ch',
+                                            'cms-access'),
+        'cms_user2': create_user_with_access(db.session, 'cms_user2@cern.ch',
+                                             'cms-access'),
+        'alice_user': create_user_with_access(db.session, 'alice_user@cern.ch',
+                                              'alice-access'),
+        'alice_user2': create_user_with_access(db.session,
+                                               'alice_user2@cern.ch',
+                                               'alice-access'),
+        'atlas_user': create_user_with_access(db.session, 'atlas_user@cern.ch',
+                                              'atlas-access'),
+        'atlas_user2': create_user_with_access(db.session,
+                                               'atlas_user2@cern.ch',
+                                               'atlas-access'),
+        'lhcb_user': create_user_with_access(db.session, 'lhcb_user@cern.ch',
+                                             'lhcb-access'),
+        'lhcb_user2': create_user_with_access(db.session, 'lhcb_user2@cern.ch',
+                                              'lhcb-access'),
+        'superuser': create_user_with_access(db.session, 'superuser@cern.ch',
+                                             'superuser-access'),
     }
 
     db.session.commit()
@@ -211,7 +209,8 @@ def es(base_app):
 @pytest.fixture
 def create_schema(db):
     """Returns function to add a schema to db."""
-    resolve_schema_by_url.cache_clear()  # clear schemas resolver cache between the method calls
+    resolve_schema_by_url.cache_clear(
+    )  # clear schemas resolver cache between the method calls
 
     def _add_schema(name,
                     deposit_schema=None,
@@ -393,25 +392,19 @@ def schema(db):
 def cms_user_me_data(users):
     """CMS user data returned by /me endpoint."""
     return {
-        "collaborations": [
-            "CMS",
-        ],
-        "current_experiment":
-        "CMS",
+        "collaborations": ["CMS", ],
+        "current_experiment": "CMS",
         "deposit_groups": [{
             "deposit_group": "cms-questionnaire",
             "description": "Create a CMS Questionnaire",
             "name": "CMS Questionnaire"
         }, {
             "deposit_group": "cms-analysis",
-            "description":
-            "Create a CMS Analysis (analysis metadata, workflows, etc)",
+            "description": "Create a CMS Analysis (analysis metadata, workflows, etc)",
             "name": "CMS Analysis"
         }],
-        "email":
-        users['cms_user'].email,
-        "id":
-        users['cms_user'].id
+        "email": users['cms_user'].email,
+        "id": users['cms_user'].id
     }
 
 
@@ -462,7 +455,7 @@ def cms_triggers_index(es):
 @pytest.fixture
 def get_git_attributes(app, users, auth_headers_for_user, create_deposit):
     owner = users['cms_user']
-    deposit = create_deposit(owner, 'test-analysis-v0.0.1', publish=True)
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
     pid = deposit['_deposit']['id']
     bucket = deposit.files.bucket
     headers = auth_headers_for_user(owner)
@@ -477,7 +470,9 @@ def get_record_pid_uuid(app, users, create_deposit, create_schema):
     deposit = create_deposit(owner, 'test-v0.0.1')
     pid = deposit['_deposit']['id']
 
-    resolver = Resolver(pid_type='depid', object_type='rec', getter=lambda x: x)
+    resolver = Resolver(pid_type='depid',
+                        object_type='rec',
+                        getter=lambda x: x)
     _, uuid = resolver.resolve(pid)
     return pid, str(uuid)
 
@@ -508,3 +503,49 @@ def add_role_to_user(user, rolename):
     role = _datastore.find_or_create_role(rolename)
 
     _datastore.add_role_to_user(user, role)
+
+
+@pytest.fixture
+def github_repo(db, github_token):
+    repo = GitRepository(external_id='226716001',
+                         host='github.com',
+                         owner='annatrz',
+                         name='test',
+                         branch='master')
+    db.session.add(repo)
+    db.session.commit()
+    return repo
+
+
+@pytest.fixture
+def gitlab_repo(db, gitlab_token):
+    repo = GitRepository(external_id='15785702',
+                         host='gitlab.com',
+                         owner='alibrandi',
+                         name='test',
+                         branch='master')
+    db.session.add(repo)
+    db.session.commit()
+    return repo
+
+
+@pytest.fixture
+def github_token(db, superuser):
+    token = OAuth2Token(name='github',
+                        user_id=superuser.id,
+                        token_type='bearer',
+                        access_token='some-token')
+    db.session.add(token)
+    db.session.commit()
+    return token
+
+
+@pytest.fixture
+def gitlab_token(db, superuser):
+    token = OAuth2Token(name='gitlab',
+                        user_id=superuser.id,
+                        token_type='bearer',
+                        access_token='some-token')
+    db.session.add(token)
+    db.session.commit()
+    return token

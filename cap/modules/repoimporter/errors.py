@@ -21,80 +21,42 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """GitHub errors."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_rest.errors import RESTException
-
 
 class GitError(Exception):
-    """General GitHub error."""
+    """General Git clients error."""
 
 
 class GitURLParsingError(GitError):
     """Git url error."""
-
-    def __str__(self):
-        return 'The git URL cannot be parsed, ' \
-               'provide a valid GitHub / GitLab URL.'
-
-
-class GitCredentialsError(GitError):
-    """Wrong credentials for Github/Gitlab error."""
-
-    def __str__(self):
-        return 'Instance could not be created.Try again using another url ' \
-               '(GitHub / CERN GitLab) or new credentials.'
-
-
-class RepositoryAccessError(RESTException):
-    """No access to the repository."""
-    code = 401
-
-    def __init__(self, description, **kwargs):
+    def __init__(self, **kwargs):
         """Initialize exception."""
-        super(RepositoryAccessError, self).__init__(**kwargs)
-        self.description = description or self.description
+        super(GitURLParsingError, self).__init__(**kwargs)
+        self.description = 'Invalid Git URL.'
 
 
-class GitClientNotFound(RESTException):
-    """Experiment not present."""
-    code = 500
-
-    def __init__(self, description, **kwargs):
+class GitHostNotSupported(GitError):
+    """API host not supported."""
+    def __init__(self, **kwargs):
         """Initialize exception."""
-        super(GitClientNotFound, self).__init__(**kwargs)
-        self.description = description or self.description
+        super(GitHostNotSupported, self).__init__(**kwargs)
+        self.description = 'Host not supported.'
 
 
-class GitWebhooksIntegrationError(RESTException):
-    """Experiment not present."""
-    code = 500
-
-    def __init__(self, description, **kwargs):
+class GitRepositoryNotFound(GitError):
+    """API host not supported."""
+    def __init__(self, **kwargs):
         """Initialize exception."""
-        super(GitWebhooksIntegrationError, self).__init__(**kwargs)
-        self.description = 'Webhooks integration failure.'
+        super(GitRepositoryNotFound, self).__init__(**kwargs)
+        self.description = 'This repository does not exist \
+                or you don\'t have access.'
 
 
-class GitVerificationError(RESTException):
+class GitIntegrationError(GitError):
     """Exception during uploading external urls."""
-
-    code = 500
-
-    def __init__(self, description, **kwargs):
-        """Initialize exception."""
-        super(GitVerificationError, self).__init__(**kwargs)
-        self.description = description or self.description
-
-
-class GitIntegrationError(RESTException):
-    """Exception during uploading external urls."""
-
-    code = 400
-
     def __init__(self, description, **kwargs):
         """Initialize exception."""
         super(GitIntegrationError, self).__init__(**kwargs)

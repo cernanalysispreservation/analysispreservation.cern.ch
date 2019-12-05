@@ -21,135 +21,142 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Models for Git repositories and snapshots."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_db import db
 from invenio_accounts.models import User
+from invenio_db import db
 from invenio_records.models import RecordMetadata
-
+from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import UUIDType
 
 from cap.types import json_type
-from cap.modules.auth.ext import _fetch_token
 
 
 class GitRepository(db.Model):
     """Information about a GitHub repository."""
 
-    __tablename__ = 'git_connected_repositories'
-    __table_args__ = (db.UniqueConstraint('record_uuid', 'repo_id', 'branch',
-                                          name='unique_ids_constraint'),)
-
     id = db.Column(db.Integer, primary_key=True)
-    repo_id = db.Column(db.Integer, unique=False, index=True)
+    external_id = db.Column(db.Integer, unique=False, nullable=False)
 
-    # CAP relations
-    record_uuid = db.Column(UUIDType, db.ForeignKey(RecordMetadata.id))
-    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
-
-    # git specific attributes
-    url = db.Column(db.String(255), nullable=False)
     host = db.Column(db.String(255), nullable=False)
     owner = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(255), nullable=False)
     branch = db.Column(db.String(255), nullable=False, default='master')
 
-    # enable/disable the hook through this field (hook id)
-    hook = db.Column(db.String(255), nullable=True)
-    hook_secret = db.Column(db.String(32), nullable=True)
-
-    # check if the repo should be downloaded every time an event occurs
-    # do not remove create_constraint, sqlalchemy bug workaround
-    download = db.Column(db.Boolean(create_constraint=False),
-                         nullable=False, default=False)
-
-    user = db.relationship(User)
-    record = db.relationship(
-        RecordMetadata,
-        backref=db.backref("repositories", cascade="all, delete-orphan")
-    )
+    __tablename__ = 'git_repository'
+    __table_args__ = db.UniqueConstraint(
+        'host',
+        'owner',
+        'name',
+        'branch',
+        name='uq_git_repository_unique_constraint'),
 
     @classmethod
-    def create_or_get(cls, user_id, record_id, data_url,        # generic attrs
-                      repo_id, host, owner, repo_name, branch,  # git attrs
-                      download=False):
-        """Create a new repository instance, using the API information."""
-        repo = cls.get_by(repo_id, branch=branch)
-
-        if not repo:
-            # avoid celery trouble with serializing
-            user = User.query.filter_by(id=user_id).one()
-            repo = cls(repo_id=repo_id,
-                       host=host, owner=owner,
-                       name=repo_name, branch=branch,
-                       url=data_url,
-                       record_uuid=record_id,
-                       user=user,
-                       download=download)
+    def create_or_get(cls, external_id, host, owner, name, branch='master'):
+        """."""
+        try:
+            repo = cls.query.filter_by(host=host,
+                                       owner=owner,
+                                       name=name,
+                                       branch=branch).one()
+        except NoResultFound:
+            repo = cls(external_id=external_id,
+                       host=host,
+                       owner=owner,
+                       name=name,
+                       branch=branch)
+            db.session.add(repo)
         return repo
 
-    @classmethod
-    def get_by(cls, repo_id, branch='master'):
-        """Get a repo by its ID and branch if available."""
-        return cls.query.filter(cls.repo_id == repo_id,
-                                cls.branch == branch).first()
 
-    def __repr__(self):
-        """Get repository representation."""
-        return '<Repository {self.name}: {self.repo_id}>'.format(self=self)
+class GitWebhook(db.Model):
+    """Webook for a Git repository."""
+
+    __tablename__ = 'git_webhook'
+    __table_args__ = db.UniqueConstraint(
+        'event_type', 'repo_id', name='uq_git_webhook_unique_constraint'),
+
+    id = db.Column(db.Integer, primary_key=True)
+    event_type = db.Column(db.String(255), nullable=False)
+
+    external_id = db.Column(db.String(255), nullable=False)
+    secret = db.Column(db.String(32), nullable=True)
+
+    repo_id = db.Column(db.Integer, db.ForeignKey(GitRepository.id))
+    repo = db.relationship(GitRepository,
+                           backref=db.backref("webhooks",
+                                              cascade="all, delete-orphan"))
 
 
-class GitRepositorySnapshots(db.Model):
+class GitWebhookSubscriber(db.Model):
+    """Records subscribed to the git repository events."""
+
+    __tablename__ = 'git_subscriber'
+    __table_args__ = db.UniqueConstraint(
+        'record_id',
+        'webhook_id',
+        name='uq_git_webhook_subscriber_unique_constraint'),
+
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.Enum('notify', 'download', name='git_event_type'),
+                     nullable=False)
+
+    status = db.Column(db.Enum('active', 'deleted', name='git_webhook_status'),
+                       nullable=False,
+                       default='active')
+
+    record_id = db.Column(UUIDType,
+                          db.ForeignKey(RecordMetadata.id),
+                          nullable=False)
+    record = db.relationship(RecordMetadata,
+                             backref=db.backref("webhooks",
+                                                cascade="all, delete-orphan"))
+
+    webhook_id = db.Column(db.Integer,
+                           db.ForeignKey(GitWebhook.id),
+                           nullable=False)
+    webhook = db.relationship(GitWebhook,
+                              backref=db.backref("subscribers",
+                                                 cascade="all, delete-orphan"))
+
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    user = db.relationship(User)
+
+    @property
+    def repo(self):
+        return self.webhook.repo
+
+
+class GitSnapshot(db.Model):
     """Snapshot information for a Git repo."""
 
-    __tablename__ = 'git_repository_snapshots'
+    __tablename__ = 'git_snapshot'
 
     id = db.Column(db.Integer, primary_key=True)
 
     # webhook payload / event
-    event_payload = db.Column(json_type, default={}, nullable=True)
-    event_type = db.Column(db.String(255), nullable=False)
+    payload = db.Column(json_type, default={}, nullable=True)
 
     # git specifics
     tag = db.Column(db.String(255), nullable=True)
     ref = db.Column(db.String(255), nullable=True)
 
     # foreign keys (connecting to repo and events)
-    repo_id = db.Column(db.Integer, db.ForeignKey(GitRepository.id))
-    repo = db.relationship(
-        GitRepository,
-        backref=db.backref("snapshots", cascade="all, delete-orphan")
-    )
+    webhook_id = db.Column(db.Integer,
+                           db.ForeignKey(GitWebhook.id),
+                           nullable=False)
+    webhook = db.relationship(GitWebhook,
+                              backref=db.backref("snapshots",
+                                                 cascade="all, delete-orphan"))
+    created = db.Column(db.DateTime, server_default=db.func.now())
 
     @staticmethod
-    def create(event, data, repo, ref=None):
-        snapshot = GitRepositorySnapshots(event_type=event, event_payload=data,
-                                          tag=data['commit'].get('tag'),
-                                          ref=ref, repo=repo)
+    def create(webhook, data):
+        snapshot = GitSnapshot(payload=data,
+                               webhook_id=webhook.id,
+                               tag=data['commit'].get('tag'),
+                               ref=data['commit']['id'])
         db.session.add(snapshot)
         db.session.commit()
-
-    @property
-    def download_url(self):
-        if 'github' in self.repo.host:
-            return 'https://codeload.github.com/{self.repo.owner}/' \
-                   '{self.repo.name}/legacy.tar.gz/{self.ref}'\
-                .format(self=self)
-        else:
-            token = _fetch_token('gitlab', self.repo.user_id)
-            return 'https://gitlab.cern.ch/api/v4/projects/' \
-                   '{self.repo.repo_id}/repository/archive?' \
-                   'sha={self.ref}&access_token={token}' \
-                .format(self=self, token=token)
-
-    def __repr__(self):
-        """Get repository representation."""
-        return """
-        <Repository {self.repo.name}: {self.repo.repo_id}
-         event:\t{self.event_type}
-         tags:\t{self.tag}
-         url:\t{self.url}
-        """.format(self=self)

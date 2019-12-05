@@ -33,6 +33,7 @@ redis-cli flushall
 
 # Init and create db and indexes
 cap db init
+cap alembic upgrade heads
 
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
@@ -40,17 +41,11 @@ if [[ -z "${DEBUG}" ]]; then
   curl -XDELETE http://localhost:9200/_all
 fi
 
-cap alembic upgrade heads
 # install schemas in db
 cap fixtures schemas
 
-# install demo users
+# install superuser only
 cap users create info@inveniosoftware.org -a --password infoinfo
-
-cap users create cms@inveniosoftware.org -a --password cmscms
-cap users create lhcb@inveniosoftware.org -a --password lhcblhcb
-cap users create atlas@inveniosoftware.org -a --password atlasatlas
-cap users create alice@inveniosoftware.org -a --password alicealice
 
 cap roles create cms-members@cern.ch
 cap roles create alice-member@cern.ch
@@ -59,17 +54,6 @@ cap roles create lhcb-general@cern.ch
 cap roles create analysis-preservation-support@cern.ch
 cap roles create data-preservation-admins@cern.ch
 
-
 cap roles add info@inveniosoftware.org analysis-preservation-support@cern.ch
 cap access allow superuser-access role analysis-preservation-support@cern.ch
 cap access allow superuser-access role data-preservation-admins@cern.ch
-
-cap roles add cms@inveniosoftware.org cms-members@cern.ch
-cap roles add alice@inveniosoftware.org alice-member@cern.ch
-cap roles add atlas@inveniosoftware.org atlas-active-members-all@cern.ch
-cap roles add lhcb@inveniosoftware.org lhcb-general@cern.ch
-
-cap access allow cms-access role cms-members@cern.ch
-cap access allow lhcb-access role lhcb-general@cern.ch
-cap access allow alice-access role alice-member@cern.ch
-cap access allow atlas-access role atlas-active-members-all@cern.ch

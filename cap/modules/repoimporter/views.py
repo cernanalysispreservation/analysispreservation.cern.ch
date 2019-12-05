@@ -21,72 +21,60 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Git repositories views."""
 
 from __future__ import absolute_import, print_function
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, abort, jsonify, request
+from sqlalchemy.orm.exc import NoResultFound
 
-from .api import GitAPIProvider
-from .errors import GitVerificationError
-from .models import GitRepository, GitRepositorySnapshots
-from .utils import verified_request, get_webhook_attrs, name_git_record
+from cap.modules.repoimporter.tasks import download_repo
 
+from .factory import create_git_api
+from .models import GitRepository, GitSnapshot, GitWebhook
+from .serializers import payload_serializer_factory
 
-repos_bp = Blueprint('cap_repos',
-                     __name__,
-                     url_prefix='/repos'
-                     )
+repos_bp = Blueprint('cap_repos', __name__, url_prefix='/repos')
 
 
 @repos_bp.route('/event', methods=['POST'])
 def get_webhook_event():
     """The route that webhooks will use to update the repo information."""
-    event, serializer = get_webhook_attrs(request)
-
-    # avoid the ping event from github on init
-    if event == 'ping':
-        return jsonify({'message': 'Ping event on init.'})
 
     payload = request.get_json()
+    serializer = payload_serializer_factory()
+
+    if not serializer:
+        abort(403)
+
     data = serializer.dump(payload).data
-    ref = data['commit']['id']
-    repo = GitRepository.get_by(data['repo_id'], branch=data['branch'])
 
-    # make sure that the request is identified
-    if not verified_request(request, repo):
-        raise GitVerificationError(
-            'Could not verify the event from repo {}. '
-            'No changes were made'.format(data['repo_id']))
+    try:
+        repo = GitRepository.query.filter_by(external_id=data['repo_id'],
+                                             branch=data['branch']).one()
+        api = create_git_api(repo.host, repo.owner, repo.name, repo.branch)
+        event = api.get_event_data()
 
-    # 2 cases: we save just the metadata,
-    # or update the saved file as well
-    if repo.for_download:
-        from cap.modules.repoimporter.fetcher import download_repo
+        if event == 'ping':
+            return jsonify({'message': 'Got it.'})
 
-        api = GitAPIProvider.create(url=repo.url, user_id=repo.user_id)
-        archived_repo_url = api.archive_repo_url(ref=api.last_commit)
+        webhook = GitWebhook.query.filter_by(event_type=event,
+                                             repo_id=repo.id).one()
+    except NoResultFound:
+        abort(404)
 
-        repo_full_name = name_git_record(repo.owner, repo.name, repo.branch)
-        download_repo.delay(repo.record_uuid, repo_full_name,
-                            repo.url, archived_repo_url)
+    if not api.is_request_trusted(webhook.secret):
+        abort(403)
 
-    GitRepositorySnapshots.create(event, data, repo, ref=ref)
+    for subscriber in webhook.subscribers:
+        # create api client with subscriber token
+        api = create_git_api(repo.host, repo.owner, repo.name, repo.branch,
+                             subscriber.user_id)
+        if subscriber.type == 'download':
+            download_repo.delay(str(subscriber.record_id), repo.host,
+                                repo.owner, repo.name, repo.branch, None,
+                                api.get_download_url())
+
+    GitSnapshot.create(webhook, data)
+
     return jsonify({'message': 'Snapshot of repo saved.'})
-
-
-@repos_bp.route('/<repo_id>/get-snapshots')
-def get_repo_snapshots(repo_id):
-    """Retrieve the list of changes, for a saved repo."""
-    snapshots = GitRepositorySnapshots.query \
-        .filter(GitRepositorySnapshots.repo.has(repo_id=repo_id)) \
-        .all()
-
-    snap_list = [dict(event=snap.event_type,
-                      tag=snap.tag,
-                      branch=snap.event_payload['branch'],
-                      url=snap.download_url)
-                 for snap in snapshots]
-
-    return jsonify(snap_list)

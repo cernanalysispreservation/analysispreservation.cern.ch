@@ -24,14 +24,17 @@
 # or submit itself to any jurisdiction.
 
 from __future__ import absolute_import, print_function
-from mock import patch
+
 import json
 import tarfile
+
 import responses
-
 from invenio_files_rest.models import ObjectVersion
-from cap.modules.repoimporter.models import GitRepository
+from mock import patch
 
+from cap.modules.repoimporter.models import (GitSnapshot, GitWebhook,
+                                             GitWebhookSubscriber)
+from cap.modules.repoimporter.serializers import GitLabPayloadSchema
 
 REPO = 'https://gitlab.cern.ch/pfokiano/test-repo'
 PRIVATE_REPO = 'https://gitlab.cern.ch/analysispreservation/test-private-repo'
@@ -60,6 +63,7 @@ FILE_BODY = 'Test Project'
 class MockGitlab(object):
     last_commit = 'test_sha1'
     repo_id = 'repo-id'
+    token = 'a1232123a'
 
     host = 'host'
     owner = 'owner'
@@ -69,32 +73,26 @@ class MockGitlab(object):
     def create_webhook(self):
         return 'hook-id', 'hook-secret'
 
-    def archive_repo_url(self, ref=None):
-        return 'https://example.com/repo'
+    def get_download_url(self):
+        return 'https://gitlab.cern.ch/repo'
 
-    def archive_file_url(self, path=None):
-        return {'url': 'https://example.com/file',
-                'size': None,
-                'token': 'test-token'}
+    def get_params_for_file_download(self, path=None):
+        return ('https://gitlab.cern.ch/file', None)
 
 
-@patch('cap.modules.repoimporter.api.GitLabAPI', return_value=MockGitlab())
+@patch('cap.modules.repoimporter.factory.GitLabAPI', return_value=MockGitlab())
 @responses.activate
-def test_download_archive(mock_git_api, client, db, get_git_attributes, json_headers):
+def test_download_archive(mock_git_api, client, db, get_git_attributes,
+                          json_headers):
     """
     Given a git url, check if the link correctly identifies the repo, downloads
     the data, and then CAP is able to retrieve them from a bucket.
     """
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {
-        'url': REPO,
-        'type': 'repo',
-        'download': True,
-        'webhook': False
-    }
+    data = {'url': REPO, 'type': 'repo', 'download': True, 'webhook': False}
 
     responses.add(responses.GET,
-                  'https://example.com/repo',
+                  'https://gitlab.cern.ch/repo',
                   body=REPO_BODY,
                   content_type='application/octet-stream',
                   headers={
@@ -112,27 +110,25 @@ def test_download_archive(mock_git_api, client, db, get_git_attributes, json_hea
     resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
     assert resp.status_code == 200
 
-    obj = ObjectVersion.get(bucket.id, 'pfokiano_test-repo_master.tar.gz')
+    obj = ObjectVersion.get(
+        bucket.id,
+        'repositories/gitlab.cern.ch/pfokiano/test-repo/master.tar.gz')
     tar_obj = tarfile.open(obj.file.uri)
     repo_file_name = tar_obj.getmembers()[1]
     repo_content = tar_obj.extractfile(repo_file_name).read()
 
-    assert repo_content == '# Test Project\n\n'
+    assert repo_content == b'# Test Project\n\n'
 
 
-@patch('cap.modules.repoimporter.api.GitLabAPI', return_value=MockGitlab())
+@patch('cap.modules.repoimporter.factory.GitLabAPI', return_value=MockGitlab())
 @responses.activate
-def test_download_file(mock_git_api, client, db, get_git_attributes, json_headers):
+def test_download_file(mock_git_api, client, db, get_git_attributes,
+                       json_headers):
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {
-        'url': FILE,
-        'type': 'url',
-        'download': True,
-        'webhook': False
-    }
+    data = {'url': FILE, 'type': 'file', 'download': True, 'webhook': False}
 
     responses.add(responses.GET,
-                  'https://example.com/file',
+                  'https://gitlab.cern.ch/file',
                   body=FILE_BODY,
                   content_type='text/plain',
                   headers={
@@ -150,44 +146,36 @@ def test_download_file(mock_git_api, client, db, get_git_attributes, json_header
     resp = client.get('/deposits/{}/files'.format(pid), headers=headers)
     assert resp.status_code == 200
 
-    obj = ObjectVersion.get(bucket.id, 'pfokiano_test-repo_master_README.md')
+    obj = ObjectVersion.get(
+        bucket.id,
+        'repositories/gitlab.cern.ch/pfokiano/test-repo/master/README.md')
     open_file = open(obj.file.uri)
     repo_content = open_file.read()
     assert repo_content == FILE_BODY
 
 
-@patch('cap.modules.repoimporter.api.GitLabAPI', return_value=MockGitlab())
+@patch('cap.modules.repoimporter.factory.GitLabAPI', return_value=MockGitlab())
 @responses.activate
-def test_connect_repo(mock_git_api, client, db, get_git_attributes, json_headers):
+def test_connect_repo(mock_git_api, client, db, get_git_attributes,
+                      json_headers):
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {
-        'url': REPO,
-        'type': 'repo',
-        'download': False,
-        'webhook': True
-    }
+    data = {'url': REPO, 'type': 'repo', 'download': False, 'webhook': True}
 
     resp = client.post('/deposits/{}/actions/upload'.format(pid),
                        headers=headers + json_headers,
                        data=json.dumps(data))
     assert resp.status_code == 201
 
-    repo = GitRepository.query.filter_by(repo_id='repo-id').one()
-    assert repo
-    assert repo.hook
+    hook = GitWebhookSubscriber.query.filter_by(record_id=deposit.id).one()
+    assert hook.webhook.repo.name == 'repo'
 
 
-@patch('cap.modules.repoimporter.api.GitLabAPI', return_value=MockGitlab())
+@patch('cap.modules.repoimporter.factory.GitLabAPI', return_value=MockGitlab())
 @responses.activate
 def test_connect_already_connected_repo(mock_git_api, client, db,
                                         get_git_attributes, json_headers):
     owner, deposit, pid, bucket, headers = get_git_attributes
-    data = {
-        'url': REPO,
-        'type': 'repo',
-        'download': False,
-        'webhook': True
-    }
+    data = {'url': REPO, 'type': 'repo', 'download': False, 'webhook': True}
 
     url = '/deposits/{}/actions/upload'.format(pid)
     data = json.dumps(data)
@@ -199,3 +187,36 @@ def test_connect_already_connected_repo(mock_git_api, client, db,
     # second upload - should fail
     resp = client.post(url, headers=headers + json_headers, data=data)
     assert resp.status_code == 400
+
+
+#@patch('cap.modules.repoimporter.views.download_repo')
+#@patch('cap.modules.repoimporter.factory.GitLabAPI.get_download_url',
+#       lambda x: 'https://gitlab.cern.ch/download_url')
+#def test_push_event(mock_download_repo, client, db, deposit, record,
+#                    gitlab_repo, gitlab_token, superuser):
+#    webhook = GitWebhook(event_type='push',
+#                         repo_id=gitlab_repo.id,
+#                         secret='alibrandi')
+#    db.session.add(webhook)
+#    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+#                                      user_id=superuser.id,
+#                                      type='download')
+#    webhook.subscribers.append(subscriber)
+#    db.session.commit()
+#
+#    resp = client.post('/repos/event',
+#                       headers=push_event_headers,
+#                       data=json.dumps(push_event_payload))
+#
+#    assert resp.status_code == 200
+#
+#    # snapshot was saved in the db
+#    snapshot = GitSnapshot.query.one()
+#    assert snapshot.payload == GitLabPayloadSchema().dump(
+#        push_event_payload).data
+#    assert snapshot.webhook_id == webhook.id
+#
+#    # download repo task was fired
+#    mock_download_repo.delay.assert_called_with(
+#        str(deposit.id), 'antrzcin', 'test', 'master', None,
+#        'https://gitlab.cern.ch/download_url')

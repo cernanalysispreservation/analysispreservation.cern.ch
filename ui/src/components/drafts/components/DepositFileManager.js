@@ -236,7 +236,7 @@ class FileManager extends React.Component {
                                       this.props.uploadViaUrl(
                                         this.props.id,
                                         this.state.formData,
-                                        "url",
+                                        "file",
                                         true,
                                         false // default for file
                                       );

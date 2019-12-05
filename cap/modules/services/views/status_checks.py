@@ -21,81 +21,104 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
-
 """CAP CERN services status checks."""
 
 from __future__ import absolute_import, print_function
 
-from invenio_db import db
 from celery import shared_task
 from flask import current_app, jsonify
+from invenio_db import db
 
-from . import blueprint
-from .orcid import _get_orcid
-from .zenodo import _get_zenodo_record
-from .cern import _ldap
-from .indico import _indico
-from .ror import _ror
-from ..models import StatusCheck
-from ..test_responses.responses import orcid_id, orcid_name, zenodo, \
-    ldap_egroup, ldap_mail, cms_cadi, atlas_glance, github, gitlab, indico, ror
-
-
-from cap.views import ping
 from cap.modules.experiments.views.atlas import _get_glance_by_id
 from cap.modules.experiments.views.cms import _get_cadi
-from cap.modules.repoimporter.api import _test_connection
+from cap.modules.repoimporter.github_api import test_github_connection
+from cap.modules.repoimporter.gitlab_api import test_gitlab_connection
+from cap.views import ping
 
+from ..models import StatusCheck
+from ..test_responses.responses import (atlas_glance, cms_cadi, github, gitlab,
+                                        indico, ldap_egroup, ldap_mail,
+                                        orcid_id, orcid_name, ror, zenodo)
+from . import blueprint
+from .cern import _ldap
+from .indico import _indico
+from .orcid import _get_orcid
+from .ror import _ror
+from .zenodo import _get_zenodo_record
 
 status_checks = [
     # EXTERNAL SERVICES
     {
         'func': _get_orcid,
-        'args': {'arg': 'Ilias Koutsakis'},
+        'args': {
+            'arg': 'Ilias Koutsakis'
+        },
         'should_return': orcid_name,
         'service': 'orcid_name',
         'log': 'Checking ORCID GET by name...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _get_orcid,
-        'args': {'arg': '0000-0003-0710-0576', 'by': 'orcid'},
+        'args': {
+            'arg': '0000-0003-0710-0576',
+            'by': 'orcid'
+        },
         'should_return': orcid_id,
         'service': 'orcid_id',
         'log': 'Checking ORCID GET by id...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _get_zenodo_record,
-        'args': {'zenodo_id': '3243963'},
+        'args': {
+            'zenodo_id': '3243963'
+        },
         'should_return': zenodo,
         'service': 'zenodo',
         'log': 'Checking ZENODO GET by record id...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _ldap,
-        'args': {'query': 'ilias.koutsakis@cern.ch', 'sf': None, 'by': 'mail'},
+        'args': {
+            'query': 'ilias.koutsakis@cern.ch',
+            'sf': None,
+            'by': 'mail'
+        },
         'should_return': ldap_mail,
         'service': 'ldap_mail',
         'log': 'Checking CERN LDAP by mail...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _ldap,
-        'args': {'query': 'sis-group-documentation',
-                 'sf': 'cn', 'by': 'egroup'},
+        'args': {
+            'query': 'sis-group-documentation',
+            'sf': 'cn',
+            'by': 'egroup'
+        },
         'should_return': ldap_egroup,
         'service': 'ldap_egroup',
         'log': 'Checking CERN LDAP by egroup...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _indico,
-        'args': {'event_id': '845049'},
+        'args': {
+            'event_id': '845049'
+        },
         'should_return': indico,
         'service': 'indico',
         'log': 'Checking Indico GET by event id...',
         'category': 'External Services',
-    }, {
+    },
+    {
         'func': _ror,
-        'args': {'item': 'https://ror.org/05a28rw58', 'by': 'org'},
+        'args': {
+            'item': 'https://ror.org/05a28rw58',
+            'by': 'org'
+        },
         'should_return': ror,
         'service': 'ror',
         'log': 'Checking ROR by org...',
@@ -105,22 +128,36 @@ status_checks = [
     # INTERNAL SERVICES
     {
         'func': ping,
-        'args': {'service': 'db'},
-        'should_return': {'message': 'OK'},
+        'args': {
+            'service': 'db'
+        },
+        'should_return': {
+            'message': 'OK'
+        },
         'service': 'cap_db',
         'log': 'Checking Postgres API...',
         'category': 'Internal Services',
-    }, {
+    },
+    {
         'func': ping,
-        'args': {'service': 'search'},
-        'should_return': {'message': 'OK'},
+        'args': {
+            'service': 'search'
+        },
+        'should_return': {
+            'message': 'OK'
+        },
         'service': 'cap_es',
         'log': 'Checking ElasticSearch API...',
         'category': 'Internal Services',
-    }, {
+    },
+    {
         'func': ping,
-        'args': {'service': 'files'},
-        'should_return': {'message': 'OK'},
+        'args': {
+            'service': 'files'
+        },
+        'should_return': {
+            'message': 'OK'
+        },
         'service': 'cap_files',
         'log': 'Checking Files API...',
         'category': 'Internal Services',
@@ -129,7 +166,9 @@ status_checks = [
     # EXPERIMENTS
     {
         'func': _get_glance_by_id,
-        'args': {'glance_id': '225'},
+        'args': {
+            'glance_id': '225'
+        },
         'should_return': atlas_glance,
         'service': 'atlas_glance',
         'log': 'Checking ATLAS Glance API...',
@@ -137,7 +176,9 @@ status_checks = [
     },
     {
         'func': _get_cadi,
-        'args': {'cadi_id': 'EXO-17-023'},
+        'args': {
+            'cadi_id': 'EXO-17-023'
+        },
         'should_return': cms_cadi,
         'service': 'cms_cadi',
         'log': 'Checking CMS CADI API...',
@@ -146,15 +187,16 @@ status_checks = [
 
     # GITHUB / GITLAB
     {
-        'func': _test_connection,
-        'args': {'client': 'github'},
+        'func': test_github_connection,
+        'args': {},
         'should_return': github,
         'service': 'github',
         'log': 'Checking GitHub API...',
         'category': 'Git',
-    }, {
-        'func': _test_connection,
-        'args': {'client': 'gitlab'},
+    },
+    {
+        'func': test_gitlab_connection,
+        'args': {},
         'should_return': gitlab,
         'service': 'gitlab',
         'log': 'Checking GitLab API...',
@@ -176,12 +218,11 @@ def _status_check():
         # if cmp(data, service['should_return']) == 0:
         if status == 200:
             msg = None
-            current_app.logger.info('{}\nStatus: {}'
-                                    .format(log, status))
+            current_app.logger.info('{}\nStatus: {}'.format(log, status))
         else:
             msg = resp
-            current_app.logger.info('{}\nStatus: {}\nReason:\n{}'
-                                    .format(log, status, msg))
+            current_app.logger.info('{}\nStatus: {}\nReason:\n{}'.format(
+                log, status, msg))
 
         logs.append({
             'service': name,
