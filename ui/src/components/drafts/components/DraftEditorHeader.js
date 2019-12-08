@@ -9,36 +9,18 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import Spinning from "grommet/components/icons/Spinning";
 
-import {
-  CreateAnchor,
-  SaveAnchor,
-  DiscardAnchor,
-  DraftMessage
-} from "./Buttons";
-
-import EditableTitle from "./EditableTitle";
-
-import DraftActionsLayer from "./DraftActionsLayer";
+import { SaveAnchor, DiscardAnchor, DraftMessage } from "./Buttons";
 
 import {
   createDraft,
   createDraftError,
   updateDraft,
-  publishDraft,
-  discardDraft,
   editPublished,
-  deleteDraft,
   toggleActionsLayer
   // togglePreviewer
 } from "../../../actions/draftItem";
 
 class DraftEditorHeader extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { actionType: null };
-  }
-
   _validateFormData = () => {
     // TOFIX maybe fetch formData from store instead of ref
     const formData = this.props.formRef.current
@@ -133,21 +115,8 @@ class DraftEditorHeader extends React.Component {
     }
   }
 
-  _publishData() {
-    this.props.publishDraft(this.props.draft_id);
-  }
-
-  _deleteDraft() {
-    this.props.deleteDraft(this.props.draft_id);
-  }
-
-  _discardData() {
-    this.props.discardDraft(this.props.draft_id);
-  }
-
   _actionHandler = type => () => {
-    this.props.toggleActionsLayer();
-    this.setState({ actionType: type });
+    this.props.toggleActionsLayer(type);
   };
 
   render() {
@@ -168,16 +137,6 @@ class DraftEditorHeader extends React.Component {
 
     return (
       <Box flex={true} wrap={false} direction="row">
-        <Box
-          justify="start"
-          align="center"
-          direction="row"
-          flex={true}
-          wrap={false}
-        >
-          <EditableTitle anaType={this.props.match.params.schema_id} />
-        </Box>
-
         <Box flex={true} justify="center" align="end">
           <DraftMessage
             key="draft-message"
@@ -197,7 +156,7 @@ class DraftEditorHeader extends React.Component {
             </Box>
           ) : null}
 
-          {this.props.draft_id ? (
+          {this.props.draft_id && (
             <Menu
               flex={false}
               direction="row"
@@ -209,38 +168,16 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-              {isDraft && isPublishedOnce ? (
-                <DiscardAnchor action={this._actionHandler("discard")} />
-              ) : null}
+              {/*
+                isDraft && isPublishedOnce ? (
+                  <DiscardAnchor action={this._actionHandler("discard")} />
+                ) : null
+              */}
 
               <SaveAnchor action={this._saveData.bind(this)} />
             </Menu>
-          ) : (
-            <Menu
-              flex={false}
-              direction="row"
-              wrap={false}
-              responsive={false}
-              size="small"
-              pad={{ horizontal: "small" }}
-              alignContent="center"
-              justify="center"
-              align="center"
-            >
-              <CreateAnchor
-                onClick={this._createDraft.bind(this, this.props.schema)}
-              />
-            </Menu>
           )}
         </Box>
-        <DraftActionsLayer
-          key="action-layer"
-          type={this.state.actionType}
-          saveData={this._saveData.bind(this)}
-          publishData={this._publishData.bind(this)}
-          deleteDraft={this._deleteDraft.bind(this)}
-          discardData={this._discardData.bind(this)}
-        />
       </Box>
     );
   }
@@ -291,12 +228,9 @@ function mapDispatchToProps(dispatch) {
     createDraft: (data, ana_type) => dispatch(createDraft(data, ana_type)),
     createDraftError: err => dispatch(createDraftError(err)),
     updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
-    publishDraft: draft_id => dispatch(publishDraft(draft_id)),
-    deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
-    discardDraft: draft_id => dispatch(discardDraft(draft_id)),
     editPublished: (data, schema, draft_id) =>
       dispatch(editPublished(data, schema, draft_id)),
-    toggleActionsLayer: () => dispatch(toggleActionsLayer())
+    toggleActionsLayer: type => dispatch(toggleActionsLayer(type))
   };
 }
 

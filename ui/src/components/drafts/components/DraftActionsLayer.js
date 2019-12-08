@@ -8,25 +8,31 @@ import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 
-import { toggleActionsLayer } from "../../../actions/draftItem";
+import {
+  publishDraft,
+  discardDraft,
+  deleteDraft,
+  toggleActionsLayer
+  // togglePreviewer
+} from "../../../actions/draftItem";
 
 class DraftActionsLayer extends React.Component {
   renderAction(action) {
     switch (action) {
-      case "save":
-        this.props.saveData();
-        this.props.toggleActionsLayer();
-        break;
+      // case "save":
+      //   this.props.saveData();
+      //   this.props.toggleActionsLayer();
+      //   break;
       case "publish":
-        this.props.publishData();
+        this.props.publishDraft(this.props.draft_id);
         this.props.toggleActionsLayer();
         break;
       case "delete":
-        this.props.deleteDraft();
+        this.props.deleteDraft(this.props.draft_id);
         this.props.toggleActionsLayer();
         break;
       case "discard":
-        this.props.discardData();
+        this.props.discardDraft(this.props.draft_id);
         this.props.toggleActionsLayer();
         break;
     }
@@ -34,10 +40,10 @@ class DraftActionsLayer extends React.Component {
 
   renderMessage(action) {
     switch (action) {
-      case "save":
-        return (
-          <Paragraph>Are you sure you want to save your changes?</Paragraph>
-        );
+      // case "save":
+      //   return (
+      //     <Paragraph>Are you sure you want to save your changes?</Paragraph>
+      //   );
       case "publish":
         return (
           <Paragraph>
@@ -47,10 +53,15 @@ class DraftActionsLayer extends React.Component {
         );
       case "delete":
         return (
-            <Paragraph>
-                This will <b>permanently</b> delete this analysis and all related data (<b>including files and workflows</b>).<br/><br/>
-                Already published versions of the analysis <b>will not</b> be affected.<br/><br/>
-                <b>Are you sure you want to delete this draft?</b> </Paragraph> 
+          <Paragraph>
+            This will <b>permanently</b> delete this analysis and all related
+            data (<b>including files and workflows</b>).<br />
+            <br />
+            Already published versions of the analysis <b>will not</b> be
+            affected.<br />
+            <br />
+            <b>Are you sure you want to delete this draft?</b>{" "}
+          </Paragraph>
         );
       case "discard":
         return (
@@ -77,9 +88,9 @@ class DraftActionsLayer extends React.Component {
           pad="medium"
           size="medium"
         >
-            <Box pad="small" alignContent="center">
-          {this.renderMessage(this.props.type)}
-      </Box>
+          <Box pad="small" alignContent="center">
+            {this.renderMessage(this.props.type)}
+          </Box>
           <Box direction="row" justify="center" align="center">
             <Box>
               <Button
@@ -104,7 +115,7 @@ class DraftActionsLayer extends React.Component {
 DraftActionsLayer.propTypes = {
   actionsLayer: PropTypes.bool,
   schemaId: PropTypes.object,
-  saveData: PropTypes.func,
+  // saveData: PropTypes.func,
   publishData: PropTypes.func,
   deleteDraft: PropTypes.func,
   discardData: PropTypes.func,
@@ -114,13 +125,18 @@ DraftActionsLayer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    actionsLayer: state.draftItem.get("actionsLayer")
+    actionsLayer: state.draftItem.get("actionsLayer"),
+    type: state.draftItem.get("actionsLayerType"),
+    draft_id: state.draftItem.get("id")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleActionsLayer: () => dispatch(toggleActionsLayer())
+    toggleActionsLayer: () => dispatch(toggleActionsLayer()),
+    publishDraft: draft_id => dispatch(publishDraft(draft_id)),
+    deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
+    discardDraft: draft_id => dispatch(discardDraft(draft_id))
   };
 }
 

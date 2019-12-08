@@ -10,6 +10,7 @@ import { EditAnchor } from "./Buttons";
 import EditableTitle from "./EditableTitle";
 
 import { Route } from "react-router-dom";
+import { Paragraph } from "grommet";
 
 class DraftDefaultHeader extends React.Component {
   constructor(props) {
@@ -48,35 +49,20 @@ class DraftDefaultHeader extends React.Component {
     if (this.props.error && this.props.error.status == 403) return null;
 
     return (
-      <Box flex={true} wrap={false} direction="row">
-        <Box
-          pad={{ horizontal: "small" }}
-          justify="start"
-          align="center"
-          direction="row"
-          flex={true}
-          wrap={false}
-        >
-          <EditableTitle />
+      <Box flex={true} direction="row">
+        <Box flex={true} wrap={false}>
+          <Box pad={{ horizontal: "small" }} flex={true} wrap={true}>
+            <EditableTitle />
+            <Box
+              margin={{ vertical: "small", bottom: "medium" }}
+              size="xxlarge"
+            >
+              {this.props.draft.basic_info
+                ? this.props.draft.basic_info.abstract
+                : "No abstract"}
+            </Box>
+          </Box>
         </Box>
-        {this.props.canUpdate ? (
-          <Route
-            exact
-            path="/drafts/:draft_id"
-            render={() => (
-              <Box
-                pad={{ horizontal: "small" }}
-                justify="end"
-                align="center"
-                direction="row"
-                flex={true}
-                wrap={false}
-              >
-                <EditAnchor draft_id={this.props.draft_id} />
-              </Box>
-            )}
-          />
-        ) : null}
       </Box>
     );
   }
@@ -96,7 +82,7 @@ function mapStateToProps(state) {
     draft_id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
     canUpdate: state.draftItem.get("can_update"),
-    draft: state.draftItem.get("data"),
+    draft: state.draftItem.get("metadata"),
     errors: state.draftItem.get("errors"),
     schema: state.draftItem.get("schema"),
     formData: state.draftItem.get("formData")

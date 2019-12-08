@@ -10,6 +10,7 @@ import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
 
 import { updateGeneralTitle } from "../../../actions/draftItem";
+import { Title } from "grommet";
 
 class EditableTitle extends React.Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class EditableTitle extends React.Component {
   render() {
     let { general_title } = this.props.metadata;
     return this.state.editTitle ? (
-      <Box direction="row" wrap={false}>
+      <Box flex={true} direction="row" wrap={false} pad="none">
         <Label margin="small" direction="row">
           <input
             key="draft-input"
@@ -83,35 +84,30 @@ class EditableTitle extends React.Component {
           >
             <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
-          <Box
-            pad={{ horizontal: "small" }}
-            margin="none"
-            onClick={this._unedit.bind(this)}
-          >
+          <Box margin="none" onClick={this._unedit.bind(this)}>
             <CloseIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
         </Box>
       </Box>
     ) : (
-      <Box pad="small" direction="row" wrap={false}>
+      <Box flex={true} margin={{ top: "small" }} direction="row" wrap={false}>
         <Box
           key="draft-title"
           onMouseEnter={this._hoverIn}
           onMouseLeave={this._hoverOut}
           onClick={this._focusInput}
           margin={{ right: "small" }}
+          pad="none"
           style={{
             border: this.state.hoverTitle
               ? "1px solid #006996"
               : "1px solid transparent",
-            marginLeft: "-1px",
-            paddingLeft: "5px"
+            marginLeft: "-1px"
           }}
         >
-          <Label align="start" pad="none" margin="none">
-            {" "}
+          <Title align="start" pad="none" margin="none">
             {general_title || "Untitled document"}
-          </Label>
+          </Title>
         </Box>
       </Box>
     );

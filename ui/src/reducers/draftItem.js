@@ -9,6 +9,7 @@ const initialState = Map({
   errors: [],
   schemaErrors: [],
   actionsLayer: false,
+  actionsLayerType: null,
   showPreviewer: false,
   filePreviewEditLayer: true,
   filePreviewEdit: {},
@@ -40,7 +41,9 @@ const initialState = Map({
 export default function draftsReducer(state = initialState, action) {
   switch (action.type) {
     case draftItemActions.TOGGLE_ACTIONS_LAYER:
-      return state.set("actionsLayer", !state.get("actionsLayer"));
+      return state
+        .set("actionsLayer", !state.get("actionsLayer"))
+        .set("actionsLayerType", action.actionType);
     case draftItemActions.TOGGLE_PREVIEWER:
       return state.set("showPreviewer", !state.get("showPreviewer"));
     case draftItemActions.TOGGLE_FILE_PREVIEW_EDIT:

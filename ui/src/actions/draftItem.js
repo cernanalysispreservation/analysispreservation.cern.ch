@@ -91,7 +91,10 @@ export const toggleFilemanagerLayer = (
   message
 });
 
-export const toggleActionsLayer = () => ({ type: TOGGLE_ACTIONS_LAYER });
+export const toggleActionsLayer = (actionType = null) => ({
+  type: TOGGLE_ACTIONS_LAYER,
+  actionType
+});
 export const togglePreviewer = () => ({ type: TOGGLE_PREVIEWER });
 export const toggleSidebar = () => ({ type: TOGGLE_SIDEBAR });
 export const toggleLiveValidate = () => ({ type: TOGGLE_LIVE_VALIDATE });
