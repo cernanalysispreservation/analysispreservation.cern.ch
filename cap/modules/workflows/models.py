@@ -56,7 +56,7 @@ class ReanaWorkflow(db.Model):
     workflow_name_run = db.Column(db.String(100), unique=False, nullable=False)
 
     status = db.Column(db.Enum('created', 'queued', 'running', 'stopped',
-                               'failed', 'deleted', name='status'),
+                               'failed', 'finished', 'deleted', name='status'),
                        unique=False,
                        nullable=False)
 

@@ -300,7 +300,7 @@ export function createWorkflow(workflow, autostart = false) {
         REANA_WORKFLOWS_CREATE_URL, // workflow
         {
           workflow_json: workflow.workflow_json,
-          workflow_name: workflow.name,
+          name: workflow.name,
           pid: workflow.pid
         }
       )

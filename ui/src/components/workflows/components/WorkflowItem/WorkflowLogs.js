@@ -12,15 +12,31 @@ class WorkflowsLogs extends React.Component {
     // let { params: { workflow_id } = {} } = match;
 
     return (
-      <Box flex={false} size={{ height: "medium" }}>
+      <Box flex={false}>
         <Heading tag="h3">Logs</Heading>
-        <LazyLog
-          url={`/api/workflows/reana/${this.props.workflow_id}/logs`}
-          fetchOptions={{ credentials: "include" }}
-        />
+
+        {renderLogs("Workflow Logs", "lasofdfogdsfas \nsadfasdfs \nfsadfsf")}
+        {renderLogs("Job Logs", "lasofdfogdsfas \nsadfasdfs \nfsadfsf")}
+        {renderLogs(
+          "Engine Specific Logs",
+          "lasofdfogdsfas \nsadfasdfs \nfsadfsf"
+        )}
       </Box>
     );
   }
+}
+
+function renderLogs(title, data) {
+  return (
+    <Box>
+      <Heading margin="small" tag="h5">
+        {title}
+      </Heading>
+      <Box colorIndex="grey-1" pad="small">
+        <pre style={{ fontSize: "11px" }}>{data}</pre>
+      </Box>
+    </Box>
+  );
 }
 
 WorkflowsLogs.propTypes = {
