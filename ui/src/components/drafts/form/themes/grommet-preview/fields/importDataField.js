@@ -11,17 +11,17 @@ class ImportDataField extends React.Component {
     super(props);
 
     this.state = {
-      link: "#"
+      link: null
     };
   }
 
   componentDidMount() {
-    let url = this.props.formData || undefined;
-    if (url) {
-      axios.get(url).then(res => {
+    let { $ref: refLink = null } = this.props.formData;
+    if (refLink) {
+      axios.get(refLink).then(res => {
         if (res.data && res.data.links) {
           this.setState({
-            link: res.data.links.html || "#"
+            link: res.data.links.html
           });
         }
       });
@@ -30,13 +30,15 @@ class ImportDataField extends React.Component {
 
   render() {
     return (
-      <Box wrap={true} pad="none">
-        <Anchor
-          label="view"
-          href={this.state.link}
-          style={{ textDecoration: "none" }}
-        />
-      </Box>
+      this.state.link && (
+        <Box wrap={true} pad="none">
+          <Anchor
+            label="view"
+            href={this.state.link}
+            style={{ textDecoration: "none" }}
+          />
+        </Box>
+      )
     );
   }
 }

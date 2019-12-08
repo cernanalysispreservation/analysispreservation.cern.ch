@@ -8,8 +8,10 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 
 import cogoToast from "cogo-toast";
+import { EditAnchor } from "../drafts/components/Buttons";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
+import SectionBox from "../partials/SectionBox";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -47,26 +49,50 @@ class DraftPreview extends React.Component {
         : null;
 
     return (
-      <Box id="deposit-page" flex={true}>
+      <Box
+        id="deposit-page"
+        flex={true}
+        pad="small"
+        direction="row"
+        wrap={true}
+      >
         {this.props.error ? this.showToaster(this.props.error.message) : null}
 
-        <Box direction="row" flex={true} wrap={false}>
-          {this.props.schemas && this.props.schemas.schema ? (
-            <Box flex={true}>
-              <Box flex={true}>
-                <Box flex={false} pad="medium">
-                  <JSONSchemaPreviewer
-                    formData={this.props.formData} // TOFIX: change to get from metadata
-                    schema={_schema}
-                    uiSchema={this.props.schemas.uiSchema || {}}
-                    onChange={() => {}}
-                  >
-                    <span />
-                  </JSONSchemaPreviewer>
-                </Box>
-              </Box>
-            </Box>
-          ) : null}
+        <Box flex={true} pad={{ between: "medium" }} direction="row">
+          <Box flex={true} size={{ width: { min: "medium" } }}>
+            <SectionBox
+              header="Metadata"
+              headerActions={
+                this.props.canUpdate ? (
+                  <EditAnchor draft_id={this.props.draft_id} />
+                ) : null
+              }
+              body={
+                this.props.schemas && this.props.schemas.schema ? (
+                  <Box flex={true} pad="small">
+                    <JSONSchemaPreviewer
+                      formData={this.props.formData} // TOFIX: change to get from metadata
+                      schema={_schema}
+                      uiSchema={this.props.schemas.uiSchema || {}}
+                      onChange={() => {}}
+                    >
+                      <span />
+                    </JSONSchemaPreviewer>
+                  </Box>
+                ) : null
+              }
+            />
+          </Box>
+          <Box flex={true} size={{ width: { min: "medium" } }}>
+            <SectionBox
+              header="Repositories"
+              body={<Box pad="small">blalasdfasdf</Box>}
+            />
+            <SectionBox
+              header="Workflows"
+              body={<Box pad="small">blalasdfasdf</Box>}
+            />
+          </Box>
         </Box>
       </Box>
     );
@@ -80,6 +106,7 @@ DraftPreview.propTypes = {
   schemaId: PropTypes.string,
   formData: PropTypes.object,
   schemasLoading: PropTypes.bool,
+  canUpdate: PropTypes.bool,
   fetchAndAssignSchema: PropTypes.func,
   error: PropTypes.object
 };
@@ -88,7 +115,7 @@ function mapStateToProps(state) {
   return {
     schemas: state.draftItem.get("schemas"),
     // schemasLoading: state.draftItem.get("schemasLoading"),
-
+    canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
     formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
   };
