@@ -5,12 +5,7 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 
-import { EditAnchor } from "./Buttons";
-
 import EditableTitle from "./EditableTitle";
-
-import { Route } from "react-router-dom";
-import { Paragraph } from "grommet";
 
 class DraftDefaultHeader extends React.Component {
   constructor(props) {

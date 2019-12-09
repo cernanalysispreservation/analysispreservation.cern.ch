@@ -1,31 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 
-import AddIcon from "grommet/components/icons/base/Add";
-
-import { Route } from "react-router-dom";
-
-import { Treebeard, decorators } from "react-treebeard";
-import Header from "./Header";
-import Toggle from "./Toggle";
-
-import _styles from "./styles";
-
-import { arrangeIntoTree } from "./utils";
-
-import DocumentTextIcon from "grommet/components/icons/base/DocumentText";
 import FolderIcon from "grommet/components/icons/base/Folder";
-import FolderOpenIcon from "grommet/components/icons/base/FolderOpen";
-import MoreIcon from "grommet/components/icons/base/More";
-import DocumentCsvIcon from "grommet/components/icons/base/DocumentCsv";
-import DocumentImageIcon from "grommet/components/icons/base/DocumentImage";
-import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
-import Document from "grommet/components/icons/base/DocumentImage";
-import ArchiveIcon from "grommet/components/icons/base/Archive";
-import DocumentZip from "grommet/components/icons/base/DocumentZip";
+
 import FileItem from "../FileItem";
 
 class TreeNode extends React.Component {
@@ -37,26 +16,6 @@ class TreeNode extends React.Component {
   onClick = () => {
     this.setState({ enabled: !this.state.enabled });
   };
-
-  _getIcon(type) {
-    const catToIcon = {
-      default: <Document type="status" size="small" />,
-      archive: <ArchiveIcon type="status" size="small" />,
-      configuration: <DocumentConfigIcon type="status" size="small" />,
-      //   dataset: <PieChartIcon type="status" size="small" />,
-      //   publication: <BookIcon type="status" size="small" />,
-      //   plot: <PieChartIcon type="status" size="small" />,
-      "image/png": <DocumentImageIcon type="status" size="small" />,
-      "text/plain": <DocumentImageIcon type="status" size="small" />,
-      "application/octet-stream": <DocumentZip type="status" size="small" />
-    };
-
-    return catToIcon[type] ? (
-      catToIcon[type]
-    ) : (
-      <Document type="status" size="xsmall" />
-    );
-  }
 
   render() {
     let { data } = this.props;
@@ -98,8 +57,8 @@ class TreeNode extends React.Component {
         {this.state.enabled && (
           <Box margin={{ left: "small" }}>
             {data.children &&
-              data.children.map(i => {
-                return <TreeNode data={i} />;
+              data.children.map((i, index) => {
+                return <TreeNode key={index} data={i} />;
               })}
           </Box>
         )}

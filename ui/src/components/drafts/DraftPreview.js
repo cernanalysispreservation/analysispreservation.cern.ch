@@ -134,7 +134,45 @@ class DraftPreview extends React.Component {
             />
             <SectionBox
               header="Workflows"
-              body={<Box pad="small">blalasdfasdf</Box>}
+              body={
+                <Box pad="small">
+                  <Box
+                    key="header"
+                    direction="row"
+                    wrap={false}
+                    justify="between"
+                    pad={{ between: "small" }}
+                    margin={{ bottom: "small" }}
+                  >
+                    <Box flex={false}>
+                      <strong>Engine</strong>
+                    </Box>
+                    <Box flex={true}>
+                      <strong>Workflow Name</strong>
+                    </Box>
+                    <Box flex={false}>
+                      <strong>Status</strong>
+                    </Box>
+                  </Box>
+                  {this.props.workflows && this.props.workflows.length ? (
+                    this.props.workflows.map((workflow, index) => (
+                      <Box
+                        key={index}
+                        direction="row"
+                        wrap={false}
+                        justify="between"
+                        pad={{ between: "small" }}
+                      >
+                        <Box flex={false}>{workflow.engine}</Box>
+                        <Box flex={true}>{workflow.name}</Box>
+                        <Box flex={false}>{workflow.status}</Box>
+                      </Box>
+                    ))
+                  ) : (
+                    <Box>No workflows yet</Box>
+                  )}
+                </Box>
+              }
             />
           </Box>
         </Box>

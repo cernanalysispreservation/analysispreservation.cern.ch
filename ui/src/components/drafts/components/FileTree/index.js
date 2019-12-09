@@ -7,11 +7,6 @@ import AddIcon from "grommet/components/icons/base/Add";
 
 import { Route } from "react-router-dom";
 
-import { Treebeard, decorators } from "react-treebeard";
-import Header from "./Header";
-import Toggle from "./Toggle";
-
-import _styles from "./styles";
 import TreeNode from "./TreeNode";
 
 import { arrangeIntoTree } from "./utils";

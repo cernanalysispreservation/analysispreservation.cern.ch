@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 
-import { LazyLog } from "react-lazylog";
+// import { LazyLog } from "react-lazylog";
 
 class WorkflowsLogs extends React.Component {
   render() {

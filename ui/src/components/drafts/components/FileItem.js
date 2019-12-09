@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
-import Menu from "grommet/components/Menu";
+// import Menu from "grommet/components/Menu";
 
-import ListItem from "grommet/components/ListItem";
+// import ListItem from "grommet/components/ListItem";
 
 import cogoToast from "cogo-toast";
 
@@ -16,7 +16,7 @@ import Status from "grommet/components/icons/Status";
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
 import DownloadIcon from "grommet/components/icons/base/Download";
-import MoreIcon from "grommet/components/icons/base/More";
+// import MoreIcon from "grommet/components/icons/base/More";
 import ImageIcon from "grommet/components/icons/base/Image";
 import ServerIcon from "grommet/components/icons/base/Servers";
 import PdfIcon from "grommet/components/icons/base/DocumentPdf";

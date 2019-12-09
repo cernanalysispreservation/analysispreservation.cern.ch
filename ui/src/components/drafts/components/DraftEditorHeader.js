@@ -9,7 +9,7 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import Spinning from "grommet/components/icons/Spinning";
 
-import { SaveAnchor, DiscardAnchor, DraftMessage } from "./Buttons";
+import { SaveAnchor, DraftMessage } from "./Buttons";
 
 import {
   createDraft,
@@ -120,10 +120,10 @@ class DraftEditorHeader extends React.Component {
   };
 
   render() {
-    let status = this.props.status;
+    // let status = this.props.status;
 
-    let isDraft = status == "draft" ? true : false;
-    let isPublishedOnce = this.props.recid ? true : false;
+    // let isDraft = status == "draft" ? true : false;
+    // let isPublishedOnce = this.props.recid ? true : false;
 
     // ******** NEEDED
     // if (
