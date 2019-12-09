@@ -124,7 +124,7 @@ def get_webhook_url():
         assert 'WEBHOOK_NGROK_URL' in current_app.config
         return current_app.config['WEBHOOK_NGROK_URL']
     else:
-        return url_for(current_app.config['WEBHOOK_ENDPOINT'])
+        return url_for(current_app.config['WEBHOOK_ENDPOINT'], _external=True)
 
 
 def generate_secret():
