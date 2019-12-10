@@ -105,7 +105,7 @@ class FileItem extends React.Component {
 
   showToaster(error) {
     cogoToast.error(error, {
-      hideAfter: 0
+      hideAfter: 3
     });
   }
 

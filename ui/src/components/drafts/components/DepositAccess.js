@@ -83,13 +83,10 @@ class DepositAccess extends React.Component {
   }
 
   showToaster(error) {
-    const { hide } = cogoToast.error(error, {
-      hideAfter: 0,
-      onClick: () => {
-        this.props.clearError();
-        hide();
-      }
+    cogoToast.error(error, {
+      hideAfter: 3
     });
+    this.props.clearError();
   }
 
   render() {

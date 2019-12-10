@@ -37,7 +37,7 @@ const transformSchema = schema => {
 class DraftPreview extends React.Component {
   showToaster(error) {
     cogoToast.error(error, {
-      hideAfter: 0
+      hideAfter: 3
     });
   }
   render() {

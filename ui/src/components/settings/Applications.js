@@ -65,7 +65,7 @@ class SettingsIndex extends React.Component {
       {
         position: "top-center",
         bar: { size: "0" },
-        hideAfter: 4
+        hideAfter: 3
       }
     );
     this.setState({ layer: { active: false } });

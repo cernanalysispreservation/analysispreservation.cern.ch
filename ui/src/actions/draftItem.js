@@ -244,7 +244,7 @@ export function postCreateDraft(data = {}, ana_type) {
       .catch(error => {
         dispatch(createDraftError(error.response));
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
@@ -349,7 +349,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
           .catch(error => {
             dispatch(updateDraftError(error));
             cogoToast.error(
-              "There is an error, please make sure you are connected",
+              "There is an error, please make sure you are connected and try again",
               {
                 position: "top-center",
                 heading: error.message,
@@ -362,7 +362,7 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
       })
       .catch(error => {
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
@@ -395,7 +395,7 @@ export function discardDraft(draft_id) {
       .catch(error => {
         dispatch(discardDraftError(error));
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
@@ -438,7 +438,7 @@ export function putUpdateDraft(data, draft_id) {
       .catch(error => {
         dispatch(updateDraftError(error));
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
@@ -474,7 +474,7 @@ export function postPublishDraft() {
       .catch(error => {
         dispatch(publishDraftError(error));
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
@@ -525,7 +525,7 @@ export function deleteDraft() {
       .catch(error => {
         dispatch(deleteDraftError(error.response));
         cogoToast.error(
-          "There is an error, please make sure you are connected",
+          "There is an error, please make sure you are connected and try again",
           {
             position: "top-center",
             heading: error.message,
