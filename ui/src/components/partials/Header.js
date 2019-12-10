@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
-import Add from 'grommet/components/icons/base/Add';
+import Add from "grommet/components/icons/base/Add";
 import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader, Heading } from "grommet";
@@ -66,7 +66,7 @@ class Header extends React.Component {
 
   render() {
     return (
-        <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
+      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
         {this.state.showCreate ? (
           <DraftCreate toggle={this.toggleCreate} />
         ) : null}
@@ -80,6 +80,7 @@ class Header extends React.Component {
             <HowToSearchPage />
           </Layer>
         ) : null}
+
         <Box
           flex={true}
           pad={{ horizontal: "small" }}
@@ -108,10 +109,10 @@ class Header extends React.Component {
                   flex={true}
                   justify="center"
                   size={{ width: { max: "large" } }}
-                  margin={{ horizontal: "small"}}
+                  margin={{ horizontal: "small" }}
                   colorIndex="neutral-1-t"
                 >
-                  <SearchBar/>
+                  <SearchBar />
                 </Box>
                 <Anchor
                   icon={<CircleQuestionIcon />}
@@ -129,7 +130,7 @@ class Header extends React.Component {
                   <Box
                     onClick={() => this.toggleCreate()}
                     pad={{ horizontal: "small" }}
-                    icon={<Add/>}
+                    icon={<Add />}
                   >
                     <Heading margin="none" tag="h4">
                       Create
@@ -166,7 +167,7 @@ class Header extends React.Component {
 Header.propTypes = {
   isLoggedIn: PropTypes.bool,
   logout: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
+  history: PropTypes.object,
   match: PropTypes.object,
   groups: PropTypes.object
 };

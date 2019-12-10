@@ -36,7 +36,7 @@ export function fetchServicesStatus() {
     dispatch(fetchServicesRequest());
 
     // fetch data
-    axios
+    return axios
       .get("/api/services/status")
       .then(response => {
         dispatch(fetchServicesSuccess(response.data));

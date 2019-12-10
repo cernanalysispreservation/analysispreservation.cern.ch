@@ -1,0 +1,530 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Find all the anchors in the Footer Footer Snapshot 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <GrommetFooter />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "align": "center",
+      "children": <Box
+        align="center"
+        announce={false}
+        direction="row"
+        focusable={true}
+        justify="center"
+        pad={
+                Object {
+                        "between": "medium",
+                      }
+        }
+        responsive={true}
+        tag="div"
+>
+        <Paragraph
+                margin="none"
+        >
+                Copyright 
+                2020
+                 © CERN. Created & Hosted by CERN. Powered by Invenio Software.
+        </Paragraph>
+        <Menu
+                closeOnClick={true}
+                direction="row"
+                dropAlign={
+                        Object {
+                                "right": "right",
+                              }
+                }
+                dropContainer={undefined}
+                pad="none"
+                size="small"
+        >
+                <Anchor
+                        animateIcon={true}
+                        href="mailto:analysis-preservation-support@cern.ch"
+                        label="Contact"
+                        method="push"
+                        tag="a"
+                />
+                <Anchor
+                        animateIcon={true}
+                        label="About"
+                        method="push"
+                        path="/about"
+                        tag="a"
+                />
+                <Anchor
+                        animateIcon={true}
+                        label="Status"
+                        method="push"
+                        path="/status"
+                        tag="a"
+                />
+        </Menu>
+</Box>,
+      "colorIndex": "neutral-1-a",
+      "direction": "row",
+      "justify": "center",
+      "responsive": false,
+      "size": "small",
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "align": "center",
+        "announce": false,
+        "children": Array [
+          <Paragraph
+            margin="none"
+>
+            Copyright 
+            2020
+             © CERN. Created & Hosted by CERN. Powered by Invenio Software.
+</Paragraph>,
+          <Menu
+            closeOnClick={true}
+            direction="row"
+            dropAlign={
+                        Object {
+                                    "right": "right",
+                                  }
+            }
+            dropContainer={undefined}
+            pad="none"
+            size="small"
+>
+            <Anchor
+                        animateIcon={true}
+                        href="mailto:analysis-preservation-support@cern.ch"
+                        label="Contact"
+                        method="push"
+                        tag="a"
+            />
+            <Anchor
+                        animateIcon={true}
+                        label="About"
+                        method="push"
+                        path="/about"
+                        tag="a"
+            />
+            <Anchor
+                        animateIcon={true}
+                        label="Status"
+                        method="push"
+                        path="/status"
+                        tag="a"
+            />
+</Menu>,
+        ],
+        "direction": "row",
+        "focusable": true,
+        "justify": "center",
+        "pad": Object {
+          "between": "medium",
+        },
+        "responsive": true,
+        "tag": "div",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              "Copyright ",
+              2020,
+              " © CERN. Created & Hosted by CERN. Powered by Invenio Software.",
+            ],
+            "margin": "none",
+          },
+          "ref": null,
+          "rendered": Array [
+            "Copyright ",
+            2020,
+            " © CERN. Created & Hosted by CERN. Powered by Invenio Software.",
+          ],
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              <Anchor
+                animateIcon={true}
+                href="mailto:analysis-preservation-support@cern.ch"
+                label="Contact"
+                method="push"
+                tag="a"
+/>,
+              <Anchor
+                animateIcon={true}
+                label="About"
+                method="push"
+                path="/about"
+                tag="a"
+/>,
+              <Anchor
+                animateIcon={true}
+                label="Status"
+                method="push"
+                path="/status"
+                tag="a"
+/>,
+            ],
+            "closeOnClick": true,
+            "direction": "row",
+            "dropAlign": Object {
+              "right": "right",
+            },
+            "dropContainer": undefined,
+            "pad": "none",
+            "size": "small",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "animateIcon": true,
+                "href": "mailto:analysis-preservation-support@cern.ch",
+                "label": "Contact",
+                "method": "push",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "animateIcon": true,
+                "label": "About",
+                "method": "push",
+                "path": "/about",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "animateIcon": true,
+                "label": "Status",
+                "method": "push",
+                "path": "/status",
+                "tag": "a",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": [Function],
+            },
+          ],
+          "type": [Function],
+        },
+      ],
+      "type": [Function],
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "align": "center",
+        "children": <Box
+          align="center"
+          announce={false}
+          direction="row"
+          focusable={true}
+          justify="center"
+          pad={
+                    Object {
+                              "between": "medium",
+                            }
+          }
+          responsive={true}
+          tag="div"
+>
+          <Paragraph
+                    margin="none"
+          >
+                    Copyright 
+                    2020
+                     © CERN. Created & Hosted by CERN. Powered by Invenio Software.
+          </Paragraph>
+          <Menu
+                    closeOnClick={true}
+                    direction="row"
+                    dropAlign={
+                              Object {
+                                        "right": "right",
+                                      }
+                    }
+                    dropContainer={undefined}
+                    pad="none"
+                    size="small"
+          >
+                    <Anchor
+                              animateIcon={true}
+                              href="mailto:analysis-preservation-support@cern.ch"
+                              label="Contact"
+                              method="push"
+                              tag="a"
+                    />
+                    <Anchor
+                              animateIcon={true}
+                              label="About"
+                              method="push"
+                              path="/about"
+                              tag="a"
+                    />
+                    <Anchor
+                              animateIcon={true}
+                              label="Status"
+                              method="push"
+                              path="/status"
+                              tag="a"
+                    />
+          </Menu>
+</Box>,
+        "colorIndex": "neutral-1-a",
+        "direction": "row",
+        "justify": "center",
+        "responsive": false,
+        "size": "small",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "align": "center",
+          "announce": false,
+          "children": Array [
+            <Paragraph
+              margin="none"
+>
+              Copyright 
+              2020
+               © CERN. Created & Hosted by CERN. Powered by Invenio Software.
+</Paragraph>,
+            <Menu
+              closeOnClick={true}
+              direction="row"
+              dropAlign={
+                            Object {
+                                          "right": "right",
+                                        }
+              }
+              dropContainer={undefined}
+              pad="none"
+              size="small"
+>
+              <Anchor
+                            animateIcon={true}
+                            href="mailto:analysis-preservation-support@cern.ch"
+                            label="Contact"
+                            method="push"
+                            tag="a"
+              />
+              <Anchor
+                            animateIcon={true}
+                            label="About"
+                            method="push"
+                            path="/about"
+                            tag="a"
+              />
+              <Anchor
+                            animateIcon={true}
+                            label="Status"
+                            method="push"
+                            path="/status"
+                            tag="a"
+              />
+</Menu>,
+          ],
+          "direction": "row",
+          "focusable": true,
+          "justify": "center",
+          "pad": Object {
+            "between": "medium",
+          },
+          "responsive": true,
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                "Copyright ",
+                2020,
+                " © CERN. Created & Hosted by CERN. Powered by Invenio Software.",
+              ],
+              "margin": "none",
+            },
+            "ref": null,
+            "rendered": Array [
+              "Copyright ",
+              2020,
+              " © CERN. Created & Hosted by CERN. Powered by Invenio Software.",
+            ],
+            "type": [Function],
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "children": Array [
+                <Anchor
+                  animateIcon={true}
+                  href="mailto:analysis-preservation-support@cern.ch"
+                  label="Contact"
+                  method="push"
+                  tag="a"
+/>,
+                <Anchor
+                  animateIcon={true}
+                  label="About"
+                  method="push"
+                  path="/about"
+                  tag="a"
+/>,
+                <Anchor
+                  animateIcon={true}
+                  label="Status"
+                  method="push"
+                  path="/status"
+                  tag="a"
+/>,
+              ],
+              "closeOnClick": true,
+              "direction": "row",
+              "dropAlign": Object {
+                "right": "right",
+              },
+              "dropContainer": undefined,
+              "pad": "none",
+              "size": "small",
+            },
+            "ref": null,
+            "rendered": Array [
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "animateIcon": true,
+                  "href": "mailto:analysis-preservation-support@cern.ch",
+                  "label": "Contact",
+                  "method": "push",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "animateIcon": true,
+                  "label": "About",
+                  "method": "push",
+                  "path": "/about",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+              Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "animateIcon": true,
+                  "label": "Status",
+                  "method": "push",
+                  "path": "/status",
+                  "tag": "a",
+                },
+                "ref": null,
+                "rendered": null,
+                "type": [Function],
+              },
+            ],
+            "type": [Function],
+          },
+        ],
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+  Symbol(enzyme.__childContext__): null,
+}
+`;

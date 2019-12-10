@@ -58,7 +58,8 @@ export function fetchSearch(pathname, location_search) {
     dispatch(toggleAggs(params));
     dispatch(searchRequest());
 
-    axios.get(searchUrl).then(response => {
+    // TODO: there is no catch block for the request
+    return axios.get(searchUrl).then(response => {
       let results = response.data;
       dispatch(searchSuccess(results));
     });

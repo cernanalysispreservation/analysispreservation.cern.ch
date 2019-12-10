@@ -17,7 +17,6 @@ import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 function DashboardList(props) {
   const [activeList, setActiveList] = useState("all");
   let { header = "", emptyMessage = null, listType, list, ListItem } = props;
-
   return (
     <Box flex={false}>
       <Box pad="none">
@@ -43,7 +42,7 @@ function DashboardList(props) {
                 <Label
                   margin="none"
                   size="small"
-                  style={{ color: activeList == type ? "black" : "lightgrey" }}
+                  style={{ color: activeList === type ? "black" : "lightgrey" }}
                   uppercase
                 >
                   {type}
@@ -94,7 +93,7 @@ DashboardList.propTypes = {
   listType: PropTypes.string,
   list: PropTypes.object,
   loading: PropTypes.bool,
-  ListItem: PropTypes.node
+  ListItem: PropTypes.func
 };
 
 export default DashboardList;

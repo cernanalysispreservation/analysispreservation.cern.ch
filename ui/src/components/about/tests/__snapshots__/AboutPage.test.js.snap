@@ -1,0 +1,3148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checking the About page Snapshot test 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <AboutPage />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": Array [
+        <withRouter(Connect(Header)) />,
+        <Box
+          announce={false}
+          direction="column"
+          flex={true}
+          focusable={true}
+          pad="none"
+          responsive={true}
+          tag="div"
+>
+          <Box
+                    align="center"
+                    announce={false}
+                    direction="column"
+                    focusable={true}
+                    pad="none"
+                    responsive={true}
+                    tag="div"
+          >
+                    <Box
+                              align="center"
+                              announce={false}
+                              direction="column"
+                              focusable={true}
+                              pad="none"
+                              responsive={true}
+                              size="xxlarge"
+                              tag="div"
+                    >
+                              <Box
+                                        announce={false}
+                                        direction="column"
+                                        focusable={true}
+                                        margin={
+                                                  Object {
+                                                            "vertical": "medium",
+                                                          }
+                                        }
+                                        pad="none"
+                                        responsive={true}
+                                        tag="div"
+                              >
+                                        <Heading
+                                                  tag="h2"
+                                        >
+                                                  What is it?
+                                        </Heading>
+                                        <Paragraph>
+                                                  CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                                        </Paragraph>
+                                        <Paragraph>
+                                                  To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                                        </Paragraph>
+                                        <Paragraph>
+                                                  CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                                   
+                                                  <a
+                                                            href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                                  >
+                                                            cernanalysispreservation.readthedocs.io/en/latest/
+                                                  </a>
+                                                   
+                                                  and the documentation for the CAP client at
+                                                   
+                                                  <a
+                                                            href="https://cap-client-test.readthedocs.io/en/latest"
+                                                  >
+                                                            cap-client-test.readthedocs.io/en/latest
+                                                  </a>
+                                                  .
+                                        </Paragraph>
+                                        <Paragraph>
+                                                  The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                                   
+                                                  <a
+                                                            href="http://www.reana.io/"
+                                                  >
+                                                            REANA
+                                                  </a>
+                                                  , which is a platform for reusable research data analyses. Another related service is the
+                                                   
+                                                  <a
+                                                            href="http://opendata.cern.ch/"
+                                                  >
+                                                            CERN Open Data portal
+                                                  </a>
+                                                  , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                                        </Paragraph>
+                                        <Heading
+                                                  tag="h2"
+                                        >
+                                                  What can I submit?
+                                        </Heading>
+                                        <Paragraph>
+                                                  There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                                        </Paragraph>
+                                        <Heading
+                                                  tag="h2"
+                                        >
+                                                  How can I submit?
+                                        </Heading>
+                                        <Box
+                                                  announce={false}
+                                                  direction="column"
+                                                  focusable={true}
+                                                  pad="none"
+                                                  responsive={true}
+                                                  tag="div"
+                                        >
+                                                  It is possible to interact with the service in three different ways: 
+                                                  <br />
+                                                  <ul>
+                                                            <li>
+                                                                      The submission forms via the user interface
+                                                            </li>
+                                                            <li>
+                                                                      The command-line client (
+                                                                      <a
+                                                                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                      >
+                                                                                cap-client
+                                                                      </a>
+                                                                      )
+                                                            </li>
+                                                            <li>
+                                                                      The REST API (
+                                                                      <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                      >
+                                                                                API docs
+                                                                      </a>
+                                                                      )
+                                                            </li>
+                                                  </ul>
+                                        </Box>
+                                        <Heading
+                                                  tag="h2"
+                                        >
+                                                  Who has access to my work?
+                                        </Heading>
+                                        <Box
+                                                  announce={false}
+                                                  direction="column"
+                                                  focusable={true}
+                                                  pad="none"
+                                                  responsive={true}
+                                                  size="large"
+                                                  tag="div"
+                                        >
+                                                  <Paragraph>
+                                                            As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                                  </Paragraph>
+                                                  <ul>
+                                                            <li>
+                                                                      only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                       
+                                                            </li>
+                                                            <li>
+                                                                      only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                       
+                                                            </li>
+                                                            <li>
+                                                                      only members granted specific rights can see or edit a draft version of an analysis
+                                                                       
+                                                            </li>
+                                                            <li>
+                                                                      only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                      <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                      >
+                                                                                documentation
+                                                                      </a>
+                                                                      .
+                                                                       
+                                                            </li>
+                                                  </ul>
+                                        </Box>
+                                        <Heading
+                                                  tag="h2"
+                                        >
+                                                  Contact
+                                        </Heading>
+                                        <Paragraph>
+                                                  Get in touch with us! Send us a message at 
+                                                  <a
+                                                            href="mailto:analysis-preservation-support@cern.ch"
+                                                  >
+                                                            analysis-preservation-support@cern.ch
+                                                  </a>
+                                        </Paragraph>
+                              </Box>
+                    </Box>
+          </Box>
+</Box>,
+        <GrommetFooter />,
+      ],
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": "header",
+        "nodeType": "function",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": "mainBody",
+        "nodeType": "class",
+        "props": Object {
+          "announce": false,
+          "children": <Box
+            align="center"
+            announce={false}
+            direction="column"
+            focusable={true}
+            pad="none"
+            responsive={true}
+            tag="div"
+>
+            <Box
+                        align="center"
+                        announce={false}
+                        direction="column"
+                        focusable={true}
+                        pad="none"
+                        responsive={true}
+                        size="xxlarge"
+                        tag="div"
+            >
+                        <Box
+                                    announce={false}
+                                    direction="column"
+                                    focusable={true}
+                                    margin={
+                                                Object {
+                                                            "vertical": "medium",
+                                                          }
+                                    }
+                                    pad="none"
+                                    responsive={true}
+                                    tag="div"
+                        >
+                                    <Heading
+                                                tag="h2"
+                                    >
+                                                What is it?
+                                    </Heading>
+                                    <Paragraph>
+                                                CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                                    </Paragraph>
+                                    <Paragraph>
+                                                To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                                    </Paragraph>
+                                    <Paragraph>
+                                                CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                                 
+                                                <a
+                                                            href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                                >
+                                                            cernanalysispreservation.readthedocs.io/en/latest/
+                                                </a>
+                                                 
+                                                and the documentation for the CAP client at
+                                                 
+                                                <a
+                                                            href="https://cap-client-test.readthedocs.io/en/latest"
+                                                >
+                                                            cap-client-test.readthedocs.io/en/latest
+                                                </a>
+                                                .
+                                    </Paragraph>
+                                    <Paragraph>
+                                                The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                                 
+                                                <a
+                                                            href="http://www.reana.io/"
+                                                >
+                                                            REANA
+                                                </a>
+                                                , which is a platform for reusable research data analyses. Another related service is the
+                                                 
+                                                <a
+                                                            href="http://opendata.cern.ch/"
+                                                >
+                                                            CERN Open Data portal
+                                                </a>
+                                                , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                                    </Paragraph>
+                                    <Heading
+                                                tag="h2"
+                                    >
+                                                What can I submit?
+                                    </Heading>
+                                    <Paragraph>
+                                                There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                                    </Paragraph>
+                                    <Heading
+                                                tag="h2"
+                                    >
+                                                How can I submit?
+                                    </Heading>
+                                    <Box
+                                                announce={false}
+                                                direction="column"
+                                                focusable={true}
+                                                pad="none"
+                                                responsive={true}
+                                                tag="div"
+                                    >
+                                                It is possible to interact with the service in three different ways: 
+                                                <br />
+                                                <ul>
+                                                            <li>
+                                                                        The submission forms via the user interface
+                                                            </li>
+                                                            <li>
+                                                                        The command-line client (
+                                                                        <a
+                                                                                    href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                        >
+                                                                                    cap-client
+                                                                        </a>
+                                                                        )
+                                                            </li>
+                                                            <li>
+                                                                        The REST API (
+                                                                        <a
+                                                                                    href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                        >
+                                                                                    API docs
+                                                                        </a>
+                                                                        )
+                                                            </li>
+                                                </ul>
+                                    </Box>
+                                    <Heading
+                                                tag="h2"
+                                    >
+                                                Who has access to my work?
+                                    </Heading>
+                                    <Box
+                                                announce={false}
+                                                direction="column"
+                                                focusable={true}
+                                                pad="none"
+                                                responsive={true}
+                                                size="large"
+                                                tag="div"
+                                    >
+                                                <Paragraph>
+                                                            As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                                </Paragraph>
+                                                <ul>
+                                                            <li>
+                                                                        only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                         
+                                                            </li>
+                                                            <li>
+                                                                        only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                         
+                                                            </li>
+                                                            <li>
+                                                                        only members granted specific rights can see or edit a draft version of an analysis
+                                                                         
+                                                            </li>
+                                                            <li>
+                                                                        only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                        <a
+                                                                                    href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                        >
+                                                                                    documentation
+                                                                        </a>
+                                                                        .
+                                                                         
+                                                            </li>
+                                                </ul>
+                                    </Box>
+                                    <Heading
+                                                tag="h2"
+                                    >
+                                                Contact
+                                    </Heading>
+                                    <Paragraph>
+                                                Get in touch with us! Send us a message at 
+                                                <a
+                                                            href="mailto:analysis-preservation-support@cern.ch"
+                                                >
+                                                            analysis-preservation-support@cern.ch
+                                                </a>
+                                    </Paragraph>
+                        </Box>
+            </Box>
+</Box>,
+          "direction": "column",
+          "flex": true,
+          "focusable": true,
+          "pad": "none",
+          "responsive": true,
+          "tag": "div",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "align": "center",
+            "announce": false,
+            "children": <Box
+              align="center"
+              announce={false}
+              direction="column"
+              focusable={true}
+              pad="none"
+              responsive={true}
+              size="xxlarge"
+              tag="div"
+>
+              <Box
+                            announce={false}
+                            direction="column"
+                            focusable={true}
+                            margin={
+                                          Object {
+                                                        "vertical": "medium",
+                                                      }
+                            }
+                            pad="none"
+                            responsive={true}
+                            tag="div"
+              >
+                            <Heading
+                                          tag="h2"
+                            >
+                                          What is it?
+                            </Heading>
+                            <Paragraph>
+                                          CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                            </Paragraph>
+                            <Paragraph>
+                                          To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                            </Paragraph>
+                            <Paragraph>
+                                          CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                           
+                                          <a
+                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                          >
+                                                        cernanalysispreservation.readthedocs.io/en/latest/
+                                          </a>
+                                           
+                                          and the documentation for the CAP client at
+                                           
+                                          <a
+                                                        href="https://cap-client-test.readthedocs.io/en/latest"
+                                          >
+                                                        cap-client-test.readthedocs.io/en/latest
+                                          </a>
+                                          .
+                            </Paragraph>
+                            <Paragraph>
+                                          The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                           
+                                          <a
+                                                        href="http://www.reana.io/"
+                                          >
+                                                        REANA
+                                          </a>
+                                          , which is a platform for reusable research data analyses. Another related service is the
+                                           
+                                          <a
+                                                        href="http://opendata.cern.ch/"
+                                          >
+                                                        CERN Open Data portal
+                                          </a>
+                                          , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                            </Paragraph>
+                            <Heading
+                                          tag="h2"
+                            >
+                                          What can I submit?
+                            </Heading>
+                            <Paragraph>
+                                          There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                            </Paragraph>
+                            <Heading
+                                          tag="h2"
+                            >
+                                          How can I submit?
+                            </Heading>
+                            <Box
+                                          announce={false}
+                                          direction="column"
+                                          focusable={true}
+                                          pad="none"
+                                          responsive={true}
+                                          tag="div"
+                            >
+                                          It is possible to interact with the service in three different ways: 
+                                          <br />
+                                          <ul>
+                                                        <li>
+                                                                      The submission forms via the user interface
+                                                        </li>
+                                                        <li>
+                                                                      The command-line client (
+                                                                      <a
+                                                                                    href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                      >
+                                                                                    cap-client
+                                                                      </a>
+                                                                      )
+                                                        </li>
+                                                        <li>
+                                                                      The REST API (
+                                                                      <a
+                                                                                    href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                      >
+                                                                                    API docs
+                                                                      </a>
+                                                                      )
+                                                        </li>
+                                          </ul>
+                            </Box>
+                            <Heading
+                                          tag="h2"
+                            >
+                                          Who has access to my work?
+                            </Heading>
+                            <Box
+                                          announce={false}
+                                          direction="column"
+                                          focusable={true}
+                                          pad="none"
+                                          responsive={true}
+                                          size="large"
+                                          tag="div"
+                            >
+                                          <Paragraph>
+                                                        As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                          </Paragraph>
+                                          <ul>
+                                                        <li>
+                                                                      only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                       
+                                                        </li>
+                                                        <li>
+                                                                      only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                       
+                                                        </li>
+                                                        <li>
+                                                                      only members granted specific rights can see or edit a draft version of an analysis
+                                                                       
+                                                        </li>
+                                                        <li>
+                                                                      only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                      <a
+                                                                                    href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                      >
+                                                                                    documentation
+                                                                      </a>
+                                                                      .
+                                                                       
+                                                        </li>
+                                          </ul>
+                            </Box>
+                            <Heading
+                                          tag="h2"
+                            >
+                                          Contact
+                            </Heading>
+                            <Paragraph>
+                                          Get in touch with us! Send us a message at 
+                                          <a
+                                                        href="mailto:analysis-preservation-support@cern.ch"
+                                          >
+                                                        analysis-preservation-support@cern.ch
+                                          </a>
+                            </Paragraph>
+              </Box>
+</Box>,
+            "direction": "column",
+            "focusable": true,
+            "pad": "none",
+            "responsive": true,
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "align": "center",
+              "announce": false,
+              "children": <Box
+                announce={false}
+                direction="column"
+                focusable={true}
+                margin={
+                                Object {
+                                                "vertical": "medium",
+                                              }
+                }
+                pad="none"
+                responsive={true}
+                tag="div"
+>
+                <Heading
+                                tag="h2"
+                >
+                                What is it?
+                </Heading>
+                <Paragraph>
+                                CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                </Paragraph>
+                <Paragraph>
+                                To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                </Paragraph>
+                <Paragraph>
+                                CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                 
+                                <a
+                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                >
+                                                cernanalysispreservation.readthedocs.io/en/latest/
+                                </a>
+                                 
+                                and the documentation for the CAP client at
+                                 
+                                <a
+                                                href="https://cap-client-test.readthedocs.io/en/latest"
+                                >
+                                                cap-client-test.readthedocs.io/en/latest
+                                </a>
+                                .
+                </Paragraph>
+                <Paragraph>
+                                The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                 
+                                <a
+                                                href="http://www.reana.io/"
+                                >
+                                                REANA
+                                </a>
+                                , which is a platform for reusable research data analyses. Another related service is the
+                                 
+                                <a
+                                                href="http://opendata.cern.ch/"
+                                >
+                                                CERN Open Data portal
+                                </a>
+                                , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                </Paragraph>
+                <Heading
+                                tag="h2"
+                >
+                                What can I submit?
+                </Heading>
+                <Paragraph>
+                                There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                </Paragraph>
+                <Heading
+                                tag="h2"
+                >
+                                How can I submit?
+                </Heading>
+                <Box
+                                announce={false}
+                                direction="column"
+                                focusable={true}
+                                pad="none"
+                                responsive={true}
+                                tag="div"
+                >
+                                It is possible to interact with the service in three different ways: 
+                                <br />
+                                <ul>
+                                                <li>
+                                                                The submission forms via the user interface
+                                                </li>
+                                                <li>
+                                                                The command-line client (
+                                                                <a
+                                                                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                >
+                                                                                cap-client
+                                                                </a>
+                                                                )
+                                                </li>
+                                                <li>
+                                                                The REST API (
+                                                                <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                >
+                                                                                API docs
+                                                                </a>
+                                                                )
+                                                </li>
+                                </ul>
+                </Box>
+                <Heading
+                                tag="h2"
+                >
+                                Who has access to my work?
+                </Heading>
+                <Box
+                                announce={false}
+                                direction="column"
+                                focusable={true}
+                                pad="none"
+                                responsive={true}
+                                size="large"
+                                tag="div"
+                >
+                                <Paragraph>
+                                                As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                </Paragraph>
+                                <ul>
+                                                <li>
+                                                                only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                 
+                                                </li>
+                                                <li>
+                                                                only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                 
+                                                </li>
+                                                <li>
+                                                                only members granted specific rights can see or edit a draft version of an analysis
+                                                                 
+                                                </li>
+                                                <li>
+                                                                only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                >
+                                                                                documentation
+                                                                </a>
+                                                                .
+                                                                 
+                                                </li>
+                                </ul>
+                </Box>
+                <Heading
+                                tag="h2"
+                >
+                                Contact
+                </Heading>
+                <Paragraph>
+                                Get in touch with us! Send us a message at 
+                                <a
+                                                href="mailto:analysis-preservation-support@cern.ch"
+                                >
+                                                analysis-preservation-support@cern.ch
+                                </a>
+                </Paragraph>
+</Box>,
+              "direction": "column",
+              "focusable": true,
+              "pad": "none",
+              "responsive": true,
+              "size": "xxlarge",
+              "tag": "div",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "announce": false,
+                "children": Array [
+                  <Heading
+                    tag="h2"
+>
+                    What is it?
+</Heading>,
+                  <Paragraph>
+                    CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+</Paragraph>,
+                  <Paragraph>
+                    To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+</Paragraph>,
+                  <Paragraph>
+                    CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                     
+                    <a
+                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                    >
+                                        cernanalysispreservation.readthedocs.io/en/latest/
+                    </a>
+                     
+                    and the documentation for the CAP client at
+                     
+                    <a
+                                        href="https://cap-client-test.readthedocs.io/en/latest"
+                    >
+                                        cap-client-test.readthedocs.io/en/latest
+                    </a>
+                    .
+</Paragraph>,
+                  <Paragraph>
+                    The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                     
+                    <a
+                                        href="http://www.reana.io/"
+                    >
+                                        REANA
+                    </a>
+                    , which is a platform for reusable research data analyses. Another related service is the
+                     
+                    <a
+                                        href="http://opendata.cern.ch/"
+                    >
+                                        CERN Open Data portal
+                    </a>
+                    , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+</Paragraph>,
+                  <Heading
+                    tag="h2"
+>
+                    What can I submit?
+</Heading>,
+                  <Paragraph>
+                    There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+</Paragraph>,
+                  <Heading
+                    tag="h2"
+>
+                    How can I submit?
+</Heading>,
+                  <Box
+                    announce={false}
+                    direction="column"
+                    focusable={true}
+                    pad="none"
+                    responsive={true}
+                    tag="div"
+>
+                    It is possible to interact with the service in three different ways: 
+                    <br />
+                    <ul>
+                                        <li>
+                                                            The submission forms via the user interface
+                                        </li>
+                                        <li>
+                                                            The command-line client (
+                                                            <a
+                                                                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                            >
+                                                                                cap-client
+                                                            </a>
+                                                            )
+                                        </li>
+                                        <li>
+                                                            The REST API (
+                                                            <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                            >
+                                                                                API docs
+                                                            </a>
+                                                            )
+                                        </li>
+                    </ul>
+</Box>,
+                  <Heading
+                    tag="h2"
+>
+                    Who has access to my work?
+</Heading>,
+                  <Box
+                    announce={false}
+                    direction="column"
+                    focusable={true}
+                    pad="none"
+                    responsive={true}
+                    size="large"
+                    tag="div"
+>
+                    <Paragraph>
+                                        As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                    </Paragraph>
+                    <ul>
+                                        <li>
+                                                            only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                             
+                                        </li>
+                                        <li>
+                                                            only a certain collaboration’s members have access to this collaboration’s analyses
+                                                             
+                                        </li>
+                                        <li>
+                                                            only members granted specific rights can see or edit a draft version of an analysis
+                                                             
+                                        </li>
+                                        <li>
+                                                            only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                            <a
+                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                            >
+                                                                                documentation
+                                                            </a>
+                                                            .
+                                                             
+                                        </li>
+                    </ul>
+</Box>,
+                  <Heading
+                    tag="h2"
+>
+                    Contact
+</Heading>,
+                  <Paragraph>
+                    Get in touch with us! Send us a message at 
+                    <a
+                                        href="mailto:analysis-preservation-support@cern.ch"
+                    >
+                                        analysis-preservation-support@cern.ch
+                    </a>
+</Paragraph>,
+                ],
+                "direction": "column",
+                "focusable": true,
+                "margin": Object {
+                  "vertical": "medium",
+                },
+                "pad": "none",
+                "responsive": true,
+                "tag": "div",
+              },
+              "ref": null,
+              "rendered": Array [
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "What is it?",
+                    "tag": "h2",
+                  },
+                  "ref": null,
+                  "rendered": "What is it?",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.",
+                  },
+                  "ref": null,
+                  "rendered": "CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.",
+                  },
+                  "ref": null,
+                  "rendered": "To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      "CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at",
+                      " ",
+                      <a
+                        href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+>
+                        cernanalysispreservation.readthedocs.io/en/latest/
+</a>,
+                      " ",
+                      "and the documentation for the CAP client at",
+                      " ",
+                      <a
+                        href="https://cap-client-test.readthedocs.io/en/latest"
+>
+                        cap-client-test.readthedocs.io/en/latest
+</a>,
+                      ".",
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "cernanalysispreservation.readthedocs.io/en/latest/",
+                        "href": "https://cernanalysispreservation.readthedocs.io/en/latest/",
+                      },
+                      "ref": null,
+                      "rendered": "cernanalysispreservation.readthedocs.io/en/latest/",
+                      "type": "a",
+                    },
+                    " ",
+                    "and the documentation for the CAP client at",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "cap-client-test.readthedocs.io/en/latest",
+                        "href": "https://cap-client-test.readthedocs.io/en/latest",
+                      },
+                      "ref": null,
+                      "rendered": "cap-client-test.readthedocs.io/en/latest",
+                      "type": "a",
+                    },
+                    ".",
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      "The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,",
+                      " ",
+                      <a
+                        href="http://www.reana.io/"
+>
+                        REANA
+</a>,
+                      ", which is a platform for reusable research data analyses. Another related service is the",
+                      " ",
+                      <a
+                        href="http://opendata.cern.ch/"
+>
+                        CERN Open Data portal
+</a>,
+                      ", which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.",
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "REANA",
+                        "href": "http://www.reana.io/",
+                      },
+                      "ref": null,
+                      "rendered": "REANA",
+                      "type": "a",
+                    },
+                    ", which is a platform for reusable research data analyses. Another related service is the",
+                    " ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "CERN Open Data portal",
+                        "href": "http://opendata.cern.ch/",
+                      },
+                      "ref": null,
+                      "rendered": "CERN Open Data portal",
+                      "type": "a",
+                    },
+                    ", which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.",
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "What can I submit?",
+                    "tag": "h2",
+                  },
+                  "ref": null,
+                  "rendered": "What can I submit?",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).",
+                  },
+                  "ref": null,
+                  "rendered": "There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "How can I submit?",
+                    "tag": "h2",
+                  },
+                  "ref": null,
+                  "rendered": "How can I submit?",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "announce": false,
+                    "children": Array [
+                      "It is possible to interact with the service in three different ways: ",
+                      <br />,
+                      <ul>
+                        <li>
+                                                The submission forms via the user interface
+                        </li>
+                        <li>
+                                                The command-line client (
+                                                <a
+                                                                        href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                >
+                                                                        cap-client
+                                                </a>
+                                                )
+                        </li>
+                        <li>
+                                                The REST API (
+                                                <a
+                                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                >
+                                                                        API docs
+                                                </a>
+                                                )
+                        </li>
+</ul>,
+                    ],
+                    "direction": "column",
+                    "focusable": true,
+                    "pad": "none",
+                    "responsive": true,
+                    "tag": "div",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "It is possible to interact with the service in three different ways: ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {},
+                      "ref": null,
+                      "rendered": null,
+                      "type": "br",
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <li>
+                            The submission forms via the user interface
+</li>,
+                          <li>
+                            The command-line client (
+                            <a
+                                                        href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                            >
+                                                        cap-client
+                            </a>
+                            )
+</li>,
+                          <li>
+                            The REST API (
+                            <a
+                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                            >
+                                                        API docs
+                            </a>
+                            )
+</li>,
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": "The submission forms via the user interface",
+                          },
+                          "ref": null,
+                          "rendered": "The submission forms via the user interface",
+                          "type": "li",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "The command-line client (",
+                              <a
+                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+>
+                                cap-client
+</a>,
+                              ")",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "The command-line client (",
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": "cap-client",
+                                "href": "https://cap-client.readthedocs.io/en/latest/?badge=latest#",
+                              },
+                              "ref": null,
+                              "rendered": "cap-client",
+                              "type": "a",
+                            },
+                            ")",
+                          ],
+                          "type": "li",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "The REST API (",
+                              <a
+                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+>
+                                API docs
+</a>,
+                              ")",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "The REST API (",
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": "API docs",
+                                "href": "https://cernanalysispreservation.readthedocs.io/en/latest/api.html",
+                              },
+                              "ref": null,
+                              "rendered": "API docs",
+                              "type": "a",
+                            },
+                            ")",
+                          ],
+                          "type": "li",
+                        },
+                      ],
+                      "type": "ul",
+                    },
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Who has access to my work?",
+                    "tag": "h2",
+                  },
+                  "ref": null,
+                  "rendered": "Who has access to my work?",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "announce": false,
+                    "children": Array [
+                      <Paragraph>
+                        As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+</Paragraph>,
+                      <ul>
+                        <li>
+                                                only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                 
+                        </li>
+                        <li>
+                                                only a certain collaboration’s members have access to this collaboration’s analyses
+                                                 
+                        </li>
+                        <li>
+                                                only members granted specific rights can see or edit a draft version of an analysis
+                                                 
+                        </li>
+                        <li>
+                                                only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                <a
+                                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                >
+                                                                        documentation
+                                                </a>
+                                                .
+                                                 
+                        </li>
+</ul>,
+                    ],
+                    "direction": "column",
+                    "focusable": true,
+                    "pad": "none",
+                    "responsive": true,
+                    "size": "large",
+                    "tag": "div",
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "class",
+                      "props": Object {
+                        "children": "As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:",
+                      },
+                      "ref": null,
+                      "rendered": "As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:",
+                      "type": [Function],
+                    },
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": Array [
+                          <li>
+                            only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                             
+</li>,
+                          <li>
+                            only a certain collaboration’s members have access to this collaboration’s analyses
+                             
+</li>,
+                          <li>
+                            only members granted specific rights can see or edit a draft version of an analysis
+                             
+</li>,
+                          <li>
+                            only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                            <a
+                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                            >
+                                                        documentation
+                            </a>
+                            .
+                             
+</li>,
+                        ],
+                      },
+                      "ref": null,
+                      "rendered": Array [
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses",
+                              " ",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses",
+                            " ",
+                          ],
+                          "type": "li",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "only a certain collaboration’s members have access to this collaboration’s analyses",
+                              " ",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "only a certain collaboration’s members have access to this collaboration’s analyses",
+                            " ",
+                          ],
+                          "type": "li",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "only members granted specific rights can see or edit a draft version of an analysis",
+                              " ",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "only members granted specific rights can see or edit a draft version of an analysis",
+                            " ",
+                          ],
+                          "type": "li",
+                        },
+                        Object {
+                          "instance": null,
+                          "key": undefined,
+                          "nodeType": "host",
+                          "props": Object {
+                            "children": Array [
+                              "only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  ",
+                              <a
+                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+>
+                                documentation
+</a>,
+                              ".",
+                              " ",
+                            ],
+                          },
+                          "ref": null,
+                          "rendered": Array [
+                            "only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  ",
+                            Object {
+                              "instance": null,
+                              "key": undefined,
+                              "nodeType": "host",
+                              "props": Object {
+                                "children": "documentation",
+                                "href": "https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access",
+                              },
+                              "ref": null,
+                              "rendered": "documentation",
+                              "type": "a",
+                            },
+                            ".",
+                            " ",
+                          ],
+                          "type": "li",
+                        },
+                      ],
+                      "type": "ul",
+                    },
+                  ],
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": "Contact",
+                    "tag": "h2",
+                  },
+                  "ref": null,
+                  "rendered": "Contact",
+                  "type": [Function],
+                },
+                Object {
+                  "instance": null,
+                  "key": undefined,
+                  "nodeType": "class",
+                  "props": Object {
+                    "children": Array [
+                      "Get in touch with us! Send us a message at ",
+                      <a
+                        href="mailto:analysis-preservation-support@cern.ch"
+>
+                        analysis-preservation-support@cern.ch
+</a>,
+                    ],
+                  },
+                  "ref": null,
+                  "rendered": Array [
+                    "Get in touch with us! Send us a message at ",
+                    Object {
+                      "instance": null,
+                      "key": undefined,
+                      "nodeType": "host",
+                      "props": Object {
+                        "children": "analysis-preservation-support@cern.ch",
+                        "href": "mailto:analysis-preservation-support@cern.ch",
+                      },
+                      "ref": null,
+                      "rendered": "analysis-preservation-support@cern.ch",
+                      "type": "a",
+                    },
+                  ],
+                  "type": [Function],
+                },
+              ],
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      Object {
+        "instance": null,
+        "key": "footer",
+        "nodeType": "class",
+        "props": Object {},
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+    ],
+    "type": Symbol(react.fragment),
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": Array [
+          <withRouter(Connect(Header)) />,
+          <Box
+            announce={false}
+            direction="column"
+            flex={true}
+            focusable={true}
+            pad="none"
+            responsive={true}
+            tag="div"
+>
+            <Box
+                        align="center"
+                        announce={false}
+                        direction="column"
+                        focusable={true}
+                        pad="none"
+                        responsive={true}
+                        tag="div"
+            >
+                        <Box
+                                    align="center"
+                                    announce={false}
+                                    direction="column"
+                                    focusable={true}
+                                    pad="none"
+                                    responsive={true}
+                                    size="xxlarge"
+                                    tag="div"
+                        >
+                                    <Box
+                                                announce={false}
+                                                direction="column"
+                                                focusable={true}
+                                                margin={
+                                                            Object {
+                                                                        "vertical": "medium",
+                                                                      }
+                                                }
+                                                pad="none"
+                                                responsive={true}
+                                                tag="div"
+                                    >
+                                                <Heading
+                                                            tag="h2"
+                                                >
+                                                            What is it?
+                                                </Heading>
+                                                <Paragraph>
+                                                            CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                                                </Paragraph>
+                                                <Paragraph>
+                                                            To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                                                </Paragraph>
+                                                <Paragraph>
+                                                            CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                                             
+                                                            <a
+                                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                                            >
+                                                                        cernanalysispreservation.readthedocs.io/en/latest/
+                                                            </a>
+                                                             
+                                                            and the documentation for the CAP client at
+                                                             
+                                                            <a
+                                                                        href="https://cap-client-test.readthedocs.io/en/latest"
+                                                            >
+                                                                        cap-client-test.readthedocs.io/en/latest
+                                                            </a>
+                                                            .
+                                                </Paragraph>
+                                                <Paragraph>
+                                                            The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                                             
+                                                            <a
+                                                                        href="http://www.reana.io/"
+                                                            >
+                                                                        REANA
+                                                            </a>
+                                                            , which is a platform for reusable research data analyses. Another related service is the
+                                                             
+                                                            <a
+                                                                        href="http://opendata.cern.ch/"
+                                                            >
+                                                                        CERN Open Data portal
+                                                            </a>
+                                                            , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                                                </Paragraph>
+                                                <Heading
+                                                            tag="h2"
+                                                >
+                                                            What can I submit?
+                                                </Heading>
+                                                <Paragraph>
+                                                            There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                                                </Paragraph>
+                                                <Heading
+                                                            tag="h2"
+                                                >
+                                                            How can I submit?
+                                                </Heading>
+                                                <Box
+                                                            announce={false}
+                                                            direction="column"
+                                                            focusable={true}
+                                                            pad="none"
+                                                            responsive={true}
+                                                            tag="div"
+                                                >
+                                                            It is possible to interact with the service in three different ways: 
+                                                            <br />
+                                                            <ul>
+                                                                        <li>
+                                                                                    The submission forms via the user interface
+                                                                        </li>
+                                                                        <li>
+                                                                                    The command-line client (
+                                                                                    <a
+                                                                                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                                    >
+                                                                                                cap-client
+                                                                                    </a>
+                                                                                    )
+                                                                        </li>
+                                                                        <li>
+                                                                                    The REST API (
+                                                                                    <a
+                                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                                    >
+                                                                                                API docs
+                                                                                    </a>
+                                                                                    )
+                                                                        </li>
+                                                            </ul>
+                                                </Box>
+                                                <Heading
+                                                            tag="h2"
+                                                >
+                                                            Who has access to my work?
+                                                </Heading>
+                                                <Box
+                                                            announce={false}
+                                                            direction="column"
+                                                            focusable={true}
+                                                            pad="none"
+                                                            responsive={true}
+                                                            size="large"
+                                                            tag="div"
+                                                >
+                                                            <Paragraph>
+                                                                        As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                                            </Paragraph>
+                                                            <ul>
+                                                                        <li>
+                                                                                    only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                                     
+                                                                        </li>
+                                                                        <li>
+                                                                                    only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                                     
+                                                                        </li>
+                                                                        <li>
+                                                                                    only members granted specific rights can see or edit a draft version of an analysis
+                                                                                     
+                                                                        </li>
+                                                                        <li>
+                                                                                    only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                                    <a
+                                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                                    >
+                                                                                                documentation
+                                                                                    </a>
+                                                                                    .
+                                                                                     
+                                                                        </li>
+                                                            </ul>
+                                                </Box>
+                                                <Heading
+                                                            tag="h2"
+                                                >
+                                                            Contact
+                                                </Heading>
+                                                <Paragraph>
+                                                            Get in touch with us! Send us a message at 
+                                                            <a
+                                                                        href="mailto:analysis-preservation-support@cern.ch"
+                                                            >
+                                                                        analysis-preservation-support@cern.ch
+                                                            </a>
+                                                </Paragraph>
+                                    </Box>
+                        </Box>
+            </Box>
+</Box>,
+          <GrommetFooter />,
+        ],
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": "header",
+          "nodeType": "function",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": "mainBody",
+          "nodeType": "class",
+          "props": Object {
+            "announce": false,
+            "children": <Box
+              align="center"
+              announce={false}
+              direction="column"
+              focusable={true}
+              pad="none"
+              responsive={true}
+              tag="div"
+>
+              <Box
+                            align="center"
+                            announce={false}
+                            direction="column"
+                            focusable={true}
+                            pad="none"
+                            responsive={true}
+                            size="xxlarge"
+                            tag="div"
+              >
+                            <Box
+                                          announce={false}
+                                          direction="column"
+                                          focusable={true}
+                                          margin={
+                                                        Object {
+                                                                      "vertical": "medium",
+                                                                    }
+                                          }
+                                          pad="none"
+                                          responsive={true}
+                                          tag="div"
+                            >
+                                          <Heading
+                                                        tag="h2"
+                                          >
+                                                        What is it?
+                                          </Heading>
+                                          <Paragraph>
+                                                        CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                                          </Paragraph>
+                                          <Paragraph>
+                                                        To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                                          </Paragraph>
+                                          <Paragraph>
+                                                        CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                                         
+                                                        <a
+                                                                      href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                                        >
+                                                                      cernanalysispreservation.readthedocs.io/en/latest/
+                                                        </a>
+                                                         
+                                                        and the documentation for the CAP client at
+                                                         
+                                                        <a
+                                                                      href="https://cap-client-test.readthedocs.io/en/latest"
+                                                        >
+                                                                      cap-client-test.readthedocs.io/en/latest
+                                                        </a>
+                                                        .
+                                          </Paragraph>
+                                          <Paragraph>
+                                                        The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                                         
+                                                        <a
+                                                                      href="http://www.reana.io/"
+                                                        >
+                                                                      REANA
+                                                        </a>
+                                                        , which is a platform for reusable research data analyses. Another related service is the
+                                                         
+                                                        <a
+                                                                      href="http://opendata.cern.ch/"
+                                                        >
+                                                                      CERN Open Data portal
+                                                        </a>
+                                                        , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                                          </Paragraph>
+                                          <Heading
+                                                        tag="h2"
+                                          >
+                                                        What can I submit?
+                                          </Heading>
+                                          <Paragraph>
+                                                        There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                                          </Paragraph>
+                                          <Heading
+                                                        tag="h2"
+                                          >
+                                                        How can I submit?
+                                          </Heading>
+                                          <Box
+                                                        announce={false}
+                                                        direction="column"
+                                                        focusable={true}
+                                                        pad="none"
+                                                        responsive={true}
+                                                        tag="div"
+                                          >
+                                                        It is possible to interact with the service in three different ways: 
+                                                        <br />
+                                                        <ul>
+                                                                      <li>
+                                                                                    The submission forms via the user interface
+                                                                      </li>
+                                                                      <li>
+                                                                                    The command-line client (
+                                                                                    <a
+                                                                                                  href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                                    >
+                                                                                                  cap-client
+                                                                                    </a>
+                                                                                    )
+                                                                      </li>
+                                                                      <li>
+                                                                                    The REST API (
+                                                                                    <a
+                                                                                                  href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                                    >
+                                                                                                  API docs
+                                                                                    </a>
+                                                                                    )
+                                                                      </li>
+                                                        </ul>
+                                          </Box>
+                                          <Heading
+                                                        tag="h2"
+                                          >
+                                                        Who has access to my work?
+                                          </Heading>
+                                          <Box
+                                                        announce={false}
+                                                        direction="column"
+                                                        focusable={true}
+                                                        pad="none"
+                                                        responsive={true}
+                                                        size="large"
+                                                        tag="div"
+                                          >
+                                                        <Paragraph>
+                                                                      As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                                        </Paragraph>
+                                                        <ul>
+                                                                      <li>
+                                                                                    only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                                     
+                                                                      </li>
+                                                                      <li>
+                                                                                    only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                                     
+                                                                      </li>
+                                                                      <li>
+                                                                                    only members granted specific rights can see or edit a draft version of an analysis
+                                                                                     
+                                                                      </li>
+                                                                      <li>
+                                                                                    only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                                    <a
+                                                                                                  href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                                    >
+                                                                                                  documentation
+                                                                                    </a>
+                                                                                    .
+                                                                                     
+                                                                      </li>
+                                                        </ul>
+                                          </Box>
+                                          <Heading
+                                                        tag="h2"
+                                          >
+                                                        Contact
+                                          </Heading>
+                                          <Paragraph>
+                                                        Get in touch with us! Send us a message at 
+                                                        <a
+                                                                      href="mailto:analysis-preservation-support@cern.ch"
+                                                        >
+                                                                      analysis-preservation-support@cern.ch
+                                                        </a>
+                                          </Paragraph>
+                            </Box>
+              </Box>
+</Box>,
+            "direction": "column",
+            "flex": true,
+            "focusable": true,
+            "pad": "none",
+            "responsive": true,
+            "tag": "div",
+          },
+          "ref": null,
+          "rendered": Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "class",
+            "props": Object {
+              "align": "center",
+              "announce": false,
+              "children": <Box
+                align="center"
+                announce={false}
+                direction="column"
+                focusable={true}
+                pad="none"
+                responsive={true}
+                size="xxlarge"
+                tag="div"
+>
+                <Box
+                                announce={false}
+                                direction="column"
+                                focusable={true}
+                                margin={
+                                                Object {
+                                                                "vertical": "medium",
+                                                              }
+                                }
+                                pad="none"
+                                responsive={true}
+                                tag="div"
+                >
+                                <Heading
+                                                tag="h2"
+                                >
+                                                What is it?
+                                </Heading>
+                                <Paragraph>
+                                                CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                                </Paragraph>
+                                <Paragraph>
+                                                To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                                </Paragraph>
+                                <Paragraph>
+                                                CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                                 
+                                                <a
+                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                                >
+                                                                cernanalysispreservation.readthedocs.io/en/latest/
+                                                </a>
+                                                 
+                                                and the documentation for the CAP client at
+                                                 
+                                                <a
+                                                                href="https://cap-client-test.readthedocs.io/en/latest"
+                                                >
+                                                                cap-client-test.readthedocs.io/en/latest
+                                                </a>
+                                                .
+                                </Paragraph>
+                                <Paragraph>
+                                                The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                                 
+                                                <a
+                                                                href="http://www.reana.io/"
+                                                >
+                                                                REANA
+                                                </a>
+                                                , which is a platform for reusable research data analyses. Another related service is the
+                                                 
+                                                <a
+                                                                href="http://opendata.cern.ch/"
+                                                >
+                                                                CERN Open Data portal
+                                                </a>
+                                                , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                                </Paragraph>
+                                <Heading
+                                                tag="h2"
+                                >
+                                                What can I submit?
+                                </Heading>
+                                <Paragraph>
+                                                There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                                </Paragraph>
+                                <Heading
+                                                tag="h2"
+                                >
+                                                How can I submit?
+                                </Heading>
+                                <Box
+                                                announce={false}
+                                                direction="column"
+                                                focusable={true}
+                                                pad="none"
+                                                responsive={true}
+                                                tag="div"
+                                >
+                                                It is possible to interact with the service in three different ways: 
+                                                <br />
+                                                <ul>
+                                                                <li>
+                                                                                The submission forms via the user interface
+                                                                </li>
+                                                                <li>
+                                                                                The command-line client (
+                                                                                <a
+                                                                                                href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                                >
+                                                                                                cap-client
+                                                                                </a>
+                                                                                )
+                                                                </li>
+                                                                <li>
+                                                                                The REST API (
+                                                                                <a
+                                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                                >
+                                                                                                API docs
+                                                                                </a>
+                                                                                )
+                                                                </li>
+                                                </ul>
+                                </Box>
+                                <Heading
+                                                tag="h2"
+                                >
+                                                Who has access to my work?
+                                </Heading>
+                                <Box
+                                                announce={false}
+                                                direction="column"
+                                                focusable={true}
+                                                pad="none"
+                                                responsive={true}
+                                                size="large"
+                                                tag="div"
+                                >
+                                                <Paragraph>
+                                                                As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                                </Paragraph>
+                                                <ul>
+                                                                <li>
+                                                                                only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                                 
+                                                                </li>
+                                                                <li>
+                                                                                only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                                 
+                                                                </li>
+                                                                <li>
+                                                                                only members granted specific rights can see or edit a draft version of an analysis
+                                                                                 
+                                                                </li>
+                                                                <li>
+                                                                                only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                                <a
+                                                                                                href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                                >
+                                                                                                documentation
+                                                                                </a>
+                                                                                .
+                                                                                 
+                                                                </li>
+                                                </ul>
+                                </Box>
+                                <Heading
+                                                tag="h2"
+                                >
+                                                Contact
+                                </Heading>
+                                <Paragraph>
+                                                Get in touch with us! Send us a message at 
+                                                <a
+                                                                href="mailto:analysis-preservation-support@cern.ch"
+                                                >
+                                                                analysis-preservation-support@cern.ch
+                                                </a>
+                                </Paragraph>
+                </Box>
+</Box>,
+              "direction": "column",
+              "focusable": true,
+              "pad": "none",
+              "responsive": true,
+              "tag": "div",
+            },
+            "ref": null,
+            "rendered": Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "class",
+              "props": Object {
+                "align": "center",
+                "announce": false,
+                "children": <Box
+                  announce={false}
+                  direction="column"
+                  focusable={true}
+                  margin={
+                                    Object {
+                                                      "vertical": "medium",
+                                                    }
+                  }
+                  pad="none"
+                  responsive={true}
+                  tag="div"
+>
+                  <Heading
+                                    tag="h2"
+                  >
+                                    What is it?
+                  </Heading>
+                  <Paragraph>
+                                    CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+                  </Paragraph>
+                  <Paragraph>
+                                    To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+                  </Paragraph>
+                  <Paragraph>
+                                    CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                                     
+                                    <a
+                                                      href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                                    >
+                                                      cernanalysispreservation.readthedocs.io/en/latest/
+                                    </a>
+                                     
+                                    and the documentation for the CAP client at
+                                     
+                                    <a
+                                                      href="https://cap-client-test.readthedocs.io/en/latest"
+                                    >
+                                                      cap-client-test.readthedocs.io/en/latest
+                                    </a>
+                                    .
+                  </Paragraph>
+                  <Paragraph>
+                                    The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                                     
+                                    <a
+                                                      href="http://www.reana.io/"
+                                    >
+                                                      REANA
+                                    </a>
+                                    , which is a platform for reusable research data analyses. Another related service is the
+                                     
+                                    <a
+                                                      href="http://opendata.cern.ch/"
+                                    >
+                                                      CERN Open Data portal
+                                    </a>
+                                    , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+                  </Paragraph>
+                  <Heading
+                                    tag="h2"
+                  >
+                                    What can I submit?
+                  </Heading>
+                  <Paragraph>
+                                    There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+                  </Paragraph>
+                  <Heading
+                                    tag="h2"
+                  >
+                                    How can I submit?
+                  </Heading>
+                  <Box
+                                    announce={false}
+                                    direction="column"
+                                    focusable={true}
+                                    pad="none"
+                                    responsive={true}
+                                    tag="div"
+                  >
+                                    It is possible to interact with the service in three different ways: 
+                                    <br />
+                                    <ul>
+                                                      <li>
+                                                                        The submission forms via the user interface
+                                                      </li>
+                                                      <li>
+                                                                        The command-line client (
+                                                                        <a
+                                                                                          href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                        >
+                                                                                          cap-client
+                                                                        </a>
+                                                                        )
+                                                      </li>
+                                                      <li>
+                                                                        The REST API (
+                                                                        <a
+                                                                                          href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                        >
+                                                                                          API docs
+                                                                        </a>
+                                                                        )
+                                                      </li>
+                                    </ul>
+                  </Box>
+                  <Heading
+                                    tag="h2"
+                  >
+                                    Who has access to my work?
+                  </Heading>
+                  <Box
+                                    announce={false}
+                                    direction="column"
+                                    focusable={true}
+                                    pad="none"
+                                    responsive={true}
+                                    size="large"
+                                    tag="div"
+                  >
+                                    <Paragraph>
+                                                      As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                                    </Paragraph>
+                                    <ul>
+                                                      <li>
+                                                                        only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                         
+                                                      </li>
+                                                      <li>
+                                                                        only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                         
+                                                      </li>
+                                                      <li>
+                                                                        only members granted specific rights can see or edit a draft version of an analysis
+                                                                         
+                                                      </li>
+                                                      <li>
+                                                                        only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                        <a
+                                                                                          href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                        >
+                                                                                          documentation
+                                                                        </a>
+                                                                        .
+                                                                         
+                                                      </li>
+                                    </ul>
+                  </Box>
+                  <Heading
+                                    tag="h2"
+                  >
+                                    Contact
+                  </Heading>
+                  <Paragraph>
+                                    Get in touch with us! Send us a message at 
+                                    <a
+                                                      href="mailto:analysis-preservation-support@cern.ch"
+                                    >
+                                                      analysis-preservation-support@cern.ch
+                                    </a>
+                  </Paragraph>
+</Box>,
+                "direction": "column",
+                "focusable": true,
+                "pad": "none",
+                "responsive": true,
+                "size": "xxlarge",
+                "tag": "div",
+              },
+              "ref": null,
+              "rendered": Object {
+                "instance": null,
+                "key": undefined,
+                "nodeType": "class",
+                "props": Object {
+                  "announce": false,
+                  "children": Array [
+                    <Heading
+                      tag="h2"
+>
+                      What is it?
+</Heading>,
+                    <Paragraph>
+                      CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.
+</Paragraph>,
+                    <Paragraph>
+                      To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.
+</Paragraph>,
+                    <Paragraph>
+                      CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at
+                       
+                      <a
+                                            href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+                      >
+                                            cernanalysispreservation.readthedocs.io/en/latest/
+                      </a>
+                       
+                      and the documentation for the CAP client at
+                       
+                      <a
+                                            href="https://cap-client-test.readthedocs.io/en/latest"
+                      >
+                                            cap-client-test.readthedocs.io/en/latest
+                      </a>
+                      .
+</Paragraph>,
+                    <Paragraph>
+                      The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,
+                       
+                      <a
+                                            href="http://www.reana.io/"
+                      >
+                                            REANA
+                      </a>
+                      , which is a platform for reusable research data analyses. Another related service is the
+                       
+                      <a
+                                            href="http://opendata.cern.ch/"
+                      >
+                                            CERN Open Data portal
+                      </a>
+                      , which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.
+</Paragraph>,
+                    <Heading
+                      tag="h2"
+>
+                      What can I submit?
+</Heading>,
+                    <Paragraph>
+                      There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).
+</Paragraph>,
+                    <Heading
+                      tag="h2"
+>
+                      How can I submit?
+</Heading>,
+                    <Box
+                      announce={false}
+                      direction="column"
+                      focusable={true}
+                      pad="none"
+                      responsive={true}
+                      tag="div"
+>
+                      It is possible to interact with the service in three different ways: 
+                      <br />
+                      <ul>
+                                            <li>
+                                                                  The submission forms via the user interface
+                                            </li>
+                                            <li>
+                                                                  The command-line client (
+                                                                  <a
+                                                                                        href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                                  >
+                                                                                        cap-client
+                                                                  </a>
+                                                                  )
+                                            </li>
+                                            <li>
+                                                                  The REST API (
+                                                                  <a
+                                                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                                  >
+                                                                                        API docs
+                                                                  </a>
+                                                                  )
+                                            </li>
+                      </ul>
+</Box>,
+                    <Heading
+                      tag="h2"
+>
+                      Who has access to my work?
+</Heading>,
+                    <Box
+                      announce={false}
+                      direction="column"
+                      focusable={true}
+                      pad="none"
+                      responsive={true}
+                      size="large"
+                      tag="div"
+>
+                      <Paragraph>
+                                            As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+                      </Paragraph>
+                      <ul>
+                                            <li>
+                                                                  only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                                   
+                                            </li>
+                                            <li>
+                                                                  only a certain collaboration’s members have access to this collaboration’s analyses
+                                                                   
+                                            </li>
+                                            <li>
+                                                                  only members granted specific rights can see or edit a draft version of an analysis
+                                                                   
+                                            </li>
+                                            <li>
+                                                                  only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                                  <a
+                                                                                        href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                                  >
+                                                                                        documentation
+                                                                  </a>
+                                                                  .
+                                                                   
+                                            </li>
+                      </ul>
+</Box>,
+                    <Heading
+                      tag="h2"
+>
+                      Contact
+</Heading>,
+                    <Paragraph>
+                      Get in touch with us! Send us a message at 
+                      <a
+                                            href="mailto:analysis-preservation-support@cern.ch"
+                      >
+                                            analysis-preservation-support@cern.ch
+                      </a>
+</Paragraph>,
+                  ],
+                  "direction": "column",
+                  "focusable": true,
+                  "margin": Object {
+                    "vertical": "medium",
+                  },
+                  "pad": "none",
+                  "responsive": true,
+                  "tag": "div",
+                },
+                "ref": null,
+                "rendered": Array [
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "What is it?",
+                      "tag": "h2",
+                    },
+                    "ref": null,
+                    "rendered": "What is it?",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.",
+                    },
+                    "ref": null,
+                    "rendered": "CERN Analysis Preservation (CAP) is a service for physicists to preserve and document the various materials produced in the process of their analyses, e.g. datasets, code, documentation, so that they are reusable and understandable in the future. By using this tool, researchers ensure these outputs are preserved and also findable and accessible by their (internal) collaborators.",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.",
+                    },
+                    "ref": null,
+                    "rendered": "To make the tool as easy to use as possible, an API and a dedicated client are available, as well as integrations with existing databases and platforms used by the collaborations. This shall help reducing the burden on the HEP researchers and to avoid duplication of information. The researchers remain in full control of their datasets while being able to preserve and share their data and materials easily with their colleagues.",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": Array [
+                        "CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at",
+                        " ",
+                        <a
+                          href="https://cernanalysispreservation.readthedocs.io/en/latest/"
+>
+                          cernanalysispreservation.readthedocs.io/en/latest/
+</a>,
+                        " ",
+                        "and the documentation for the CAP client at",
+                        " ",
+                        <a
+                          href="https://cap-client-test.readthedocs.io/en/latest"
+>
+                          cap-client-test.readthedocs.io/en/latest
+</a>,
+                        ".",
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "CAP is now in Beta phase. We welcome everyone to test and use the system. For more details about how to use CAP, the documentation for the service can be found at",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "cernanalysispreservation.readthedocs.io/en/latest/",
+                          "href": "https://cernanalysispreservation.readthedocs.io/en/latest/",
+                        },
+                        "ref": null,
+                        "rendered": "cernanalysispreservation.readthedocs.io/en/latest/",
+                        "type": "a",
+                      },
+                      " ",
+                      "and the documentation for the CAP client at",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "cap-client-test.readthedocs.io/en/latest",
+                          "href": "https://cap-client-test.readthedocs.io/en/latest",
+                        },
+                        "ref": null,
+                        "rendered": "cap-client-test.readthedocs.io/en/latest",
+                        "type": "a",
+                      },
+                      ".",
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": Array [
+                        "The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,",
+                        " ",
+                        <a
+                          href="http://www.reana.io/"
+>
+                          REANA
+</a>,
+                        ", which is a platform for reusable research data analyses. Another related service is the",
+                        " ",
+                        <a
+                          href="http://opendata.cern.ch/"
+>
+                          CERN Open Data portal
+</a>,
+                        ", which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.",
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "The CERN Analysis Preservation Framework includes another component, the Reusable Analyses service,",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "REANA",
+                          "href": "http://www.reana.io/",
+                        },
+                        "ref": null,
+                        "rendered": "REANA",
+                        "type": "a",
+                      },
+                      ", which is a platform for reusable research data analyses. Another related service is the",
+                      " ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "CERN Open Data portal",
+                          "href": "http://opendata.cern.ch/",
+                        },
+                        "ref": null,
+                        "rendered": "CERN Open Data portal",
+                        "type": "a",
+                      },
+                      ", which can be used to publish openly various materials, such as datasets, software, configuration files, etc. These services are being developed and operated by the CERN IT and the Scientific Information Service.",
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "What can I submit?",
+                      "tag": "h2",
+                    },
+                    "ref": null,
+                    "rendered": "What can I submit?",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).",
+                    },
+                    "ref": null,
+                    "rendered": "There are 10 gigabytes of storage available to submit your n-tuples and output macros (for each of your individual analyses).",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "How can I submit?",
+                      "tag": "h2",
+                    },
+                    "ref": null,
+                    "rendered": "How can I submit?",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "announce": false,
+                      "children": Array [
+                        "It is possible to interact with the service in three different ways: ",
+                        <br />,
+                        <ul>
+                          <li>
+                                                    The submission forms via the user interface
+                          </li>
+                          <li>
+                                                    The command-line client (
+                                                    <a
+                                                                              href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                                                    >
+                                                                              cap-client
+                                                    </a>
+                                                    )
+                          </li>
+                          <li>
+                                                    The REST API (
+                                                    <a
+                                                                              href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                                                    >
+                                                                              API docs
+                                                    </a>
+                                                    )
+                          </li>
+</ul>,
+                      ],
+                      "direction": "column",
+                      "focusable": true,
+                      "pad": "none",
+                      "responsive": true,
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "It is possible to interact with the service in three different ways: ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {},
+                        "ref": null,
+                        "rendered": null,
+                        "type": "br",
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <li>
+                              The submission forms via the user interface
+</li>,
+                            <li>
+                              The command-line client (
+                              <a
+                                                            href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                              >
+                                                            cap-client
+                              </a>
+                              )
+</li>,
+                            <li>
+                              The REST API (
+                              <a
+                                                            href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                              >
+                                                            API docs
+                              </a>
+                              )
+</li>,
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": "The submission forms via the user interface",
+                            },
+                            "ref": null,
+                            "rendered": "The submission forms via the user interface",
+                            "type": "li",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "The command-line client (",
+                                <a
+                                  href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+>
+                                  cap-client
+</a>,
+                                ")",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "The command-line client (",
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "children": "cap-client",
+                                  "href": "https://cap-client.readthedocs.io/en/latest/?badge=latest#",
+                                },
+                                "ref": null,
+                                "rendered": "cap-client",
+                                "type": "a",
+                              },
+                              ")",
+                            ],
+                            "type": "li",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "The REST API (",
+                                <a
+                                  href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+>
+                                  API docs
+</a>,
+                                ")",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "The REST API (",
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "children": "API docs",
+                                  "href": "https://cernanalysispreservation.readthedocs.io/en/latest/api.html",
+                                },
+                                "ref": null,
+                                "rendered": "API docs",
+                                "type": "a",
+                              },
+                              ")",
+                            ],
+                            "type": "li",
+                          },
+                        ],
+                        "type": "ul",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Who has access to my work?",
+                      "tag": "h2",
+                    },
+                    "ref": null,
+                    "rendered": "Who has access to my work?",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "announce": false,
+                      "children": Array [
+                        <Paragraph>
+                          As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:
+</Paragraph>,
+                        <ul>
+                          <li>
+                                                    only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                                                     
+                          </li>
+                          <li>
+                                                    only a certain collaboration’s members have access to this collaboration’s analyses
+                                                     
+                          </li>
+                          <li>
+                                                    only members granted specific rights can see or edit a draft version of an analysis
+                                                     
+                          </li>
+                          <li>
+                                                    only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                                                    <a
+                                                                              href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                                                    >
+                                                                              documentation
+                                                    </a>
+                                                    .
+                                                     
+                          </li>
+</ul>,
+                      ],
+                      "direction": "column",
+                      "focusable": true,
+                      "pad": "none",
+                      "responsive": true,
+                      "size": "large",
+                      "tag": "div",
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "class",
+                        "props": Object {
+                          "children": "As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:",
+                        },
+                        "ref": null,
+                        "rendered": "As we are preserving sensitive data, we apply safety measures and access control to all information added to CAP. Access will always be restricted to members of the collaboration associated with an analysis. Permissions within a collaboration can be adjusted by the creator of the analysis, defaulting to creator-only access. More specifically:",
+                        "type": [Function],
+                      },
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": Array [
+                            <li>
+                              only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses
+                               
+</li>,
+                            <li>
+                              only a certain collaboration’s members have access to this collaboration’s analyses
+                               
+</li>,
+                            <li>
+                              only members granted specific rights can see or edit a draft version of an analysis
+                               
+</li>,
+                            <li>
+                              only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  
+                              <a
+                                                            href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+                              >
+                                                            documentation
+                              </a>
+                              .
+                               
+</li>,
+                          ],
+                        },
+                        "ref": null,
+                        "rendered": Array [
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses",
+                                " ",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "only collaboration members have access to a collaboration’s area, can create analyses and can see shared analyses",
+                              " ",
+                            ],
+                            "type": "li",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "only a certain collaboration’s members have access to this collaboration’s analyses",
+                                " ",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "only a certain collaboration’s members have access to this collaboration’s analyses",
+                              " ",
+                            ],
+                            "type": "li",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "only members granted specific rights can see or edit a draft version of an analysis",
+                                " ",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "only members granted specific rights can see or edit a draft version of an analysis",
+                              " ",
+                            ],
+                            "type": "li",
+                          },
+                          Object {
+                            "instance": null,
+                            "key": undefined,
+                            "nodeType": "host",
+                            "props": Object {
+                              "children": Array [
+                                "only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  ",
+                                <a
+                                  href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access"
+>
+                                  documentation
+</a>,
+                                ".",
+                                " ",
+                              ],
+                            },
+                            "ref": null,
+                            "rendered": Array [
+                              "only the creator can see or edit an analysis with default permission settings For more detailed information please refer to our  ",
+                              Object {
+                                "instance": null,
+                                "key": undefined,
+                                "nodeType": "host",
+                                "props": Object {
+                                  "children": "documentation",
+                                  "href": "https://cernanalysispreservation.readthedocs.io/en/latest/project.html#project-access",
+                                },
+                                "ref": null,
+                                "rendered": "documentation",
+                                "type": "a",
+                              },
+                              ".",
+                              " ",
+                            ],
+                            "type": "li",
+                          },
+                        ],
+                        "type": "ul",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": "Contact",
+                      "tag": "h2",
+                    },
+                    "ref": null,
+                    "rendered": "Contact",
+                    "type": [Function],
+                  },
+                  Object {
+                    "instance": null,
+                    "key": undefined,
+                    "nodeType": "class",
+                    "props": Object {
+                      "children": Array [
+                        "Get in touch with us! Send us a message at ",
+                        <a
+                          href="mailto:analysis-preservation-support@cern.ch"
+>
+                          analysis-preservation-support@cern.ch
+</a>,
+                      ],
+                    },
+                    "ref": null,
+                    "rendered": Array [
+                      "Get in touch with us! Send us a message at ",
+                      Object {
+                        "instance": null,
+                        "key": undefined,
+                        "nodeType": "host",
+                        "props": Object {
+                          "children": "analysis-preservation-support@cern.ch",
+                          "href": "mailto:analysis-preservation-support@cern.ch",
+                        },
+                        "ref": null,
+                        "rendered": "analysis-preservation-support@cern.ch",
+                        "type": "a",
+                      },
+                    ],
+                    "type": [Function],
+                  },
+                ],
+                "type": [Function],
+              },
+              "type": [Function],
+            },
+            "type": [Function],
+          },
+          "type": [Function],
+        },
+        Object {
+          "instance": null,
+          "key": "footer",
+          "nodeType": "class",
+          "props": Object {},
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
+      "type": Symbol(react.fragment),
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+  Symbol(enzyme.__childContext__): null,
+}
+`;

@@ -30,6 +30,7 @@ export function getUsers() {
     axios
       .get("/api/users")
       .then(function(response) {
+        console.log("========", response);
         let users = response.data.hits.hits.map(item => ({
           email: item.email
         }));

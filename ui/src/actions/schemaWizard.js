@@ -64,6 +64,7 @@ export function getSchemas() {
             [schema.version]: schema
           };
         });
+
         dispatch(listUpdate(_schemas));
       })
       .catch(err => {

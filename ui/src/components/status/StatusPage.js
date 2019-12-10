@@ -79,7 +79,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 StatusPage.propTypes = {
-  error: PropTypes.bool,
+  error: PropTypes.object,
   services: PropTypes.object,
   fetchStatus: PropTypes.func
 };

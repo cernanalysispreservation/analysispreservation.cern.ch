@@ -1,0 +1,570 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardList Test Suite Take a DashboardList Snapshot 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Provider
+    store={
+        Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          }
+    }
+>
+    <BrowserRouter>
+        <Connect(DashboardListItem)
+            item={
+                Object {
+                    "access": Object {
+                      "deposit-admin": Object {
+                        "roles": Array [],
+                        "users": Array [
+                          "info@inveniosoftware.org",
+                        ],
+                      },
+                      "deposit-read": Object {
+                        "roles": Array [],
+                        "users": Array [
+                          "info@inveniosoftware.org",
+                        ],
+                      },
+                      "deposit-update": Object {
+                        "roles": Array [],
+                        "users": Array [
+                          "info@inveniosoftware.org",
+                        ],
+                      },
+                    },
+                    "can_admin": true,
+                    "can_update": true,
+                    "created": "2019-12-03T11:41:18.490459+00:00",
+                    "created_by": "info@inveniosoftware.org",
+                    "files": Array [],
+                    "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+                    "is_owner": true,
+                    "links": Object {},
+                    "metadata": Object {
+                      "general_title": "Cast",
+                    },
+                    "revision": 2,
+                    "schema": Object {
+                      "name": "lhcb-analysis",
+                      "version": "0.0.1",
+                    },
+                    "status": "draft",
+                    "type": "deposit",
+                    "updated": "2019-12-03T11:41:20.715169+00:00",
+                  }
+            }
+            listType="draft"
+        />
+    </BrowserRouter>
+</Provider>,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "function",
+    "props": Object {
+      "children": <BrowserRouter>
+        <Connect(DashboardListItem)
+                item={
+                        Object {
+                                "access": Object {
+                                  "deposit-admin": Object {
+                                    "roles": Array [],
+                                    "users": Array [
+                                      "info@inveniosoftware.org",
+                                    ],
+                                  },
+                                  "deposit-read": Object {
+                                    "roles": Array [],
+                                    "users": Array [
+                                      "info@inveniosoftware.org",
+                                    ],
+                                  },
+                                  "deposit-update": Object {
+                                    "roles": Array [],
+                                    "users": Array [
+                                      "info@inveniosoftware.org",
+                                    ],
+                                  },
+                                },
+                                "can_admin": true,
+                                "can_update": true,
+                                "created": "2019-12-03T11:41:18.490459+00:00",
+                                "created_by": "info@inveniosoftware.org",
+                                "files": Array [],
+                                "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+                                "is_owner": true,
+                                "links": Object {},
+                                "metadata": Object {
+                                  "general_title": "Cast",
+                                },
+                                "revision": 2,
+                                "schema": Object {
+                                  "name": "lhcb-analysis",
+                                  "version": "0.0.1",
+                                },
+                                "status": "draft",
+                                "type": "deposit",
+                                "updated": "2019-12-03T11:41:20.715169+00:00",
+                              }
+                }
+                listType="draft"
+        />
+</BrowserRouter>,
+      "value": Object {
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "storeState": Object {
+          "auth": Immutable.Map {
+            isLoggedIn: true,
+            currentUser: Immutable.Map {
+                        userId: 1,
+                        token: 1,
+                        permissions: true,
+                        depositGroups: Immutable.List [
+                        ],
+            },
+},
+          "dashboard": Immutable.Map {
+            loading: false,
+            error: null,
+            results: Object {
+                        "drafts": Object {
+                          "data": Array [],
+                          "more": null,
+                        },
+                        "published": Object {
+                          "data": Array [],
+                          "more": null,
+                        },
+                        "user_count": 0,
+                        "user_drafts": Object {
+                          "data": Array [],
+                          "more": null,
+                        },
+                        "user_drafts_count": 0,
+                        "user_published": Object {
+                          "data": Array [],
+                          "more": null,
+                        },
+                        "user_published_count": 0,
+                        "user_workflows": Object {
+                          "data": Array [],
+                          "more": null,
+                        },
+                      },
+},
+        },
+      },
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <Connect(DashboardListItem)
+          item={
+                    Object {
+                              "access": Object {
+                                "deposit-admin": Object {
+                                  "roles": Array [],
+                                  "users": Array [
+                                    "info@inveniosoftware.org",
+                                  ],
+                                },
+                                "deposit-read": Object {
+                                  "roles": Array [],
+                                  "users": Array [
+                                    "info@inveniosoftware.org",
+                                  ],
+                                },
+                                "deposit-update": Object {
+                                  "roles": Array [],
+                                  "users": Array [
+                                    "info@inveniosoftware.org",
+                                  ],
+                                },
+                              },
+                              "can_admin": true,
+                              "can_update": true,
+                              "created": "2019-12-03T11:41:18.490459+00:00",
+                              "created_by": "info@inveniosoftware.org",
+                              "files": Array [],
+                              "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+                              "is_owner": true,
+                              "links": Object {},
+                              "metadata": Object {
+                                "general_title": "Cast",
+                              },
+                              "revision": 2,
+                              "schema": Object {
+                                "name": "lhcb-analysis",
+                                "version": "0.0.1",
+                              },
+                              "status": "draft",
+                              "type": "deposit",
+                              "updated": "2019-12-03T11:41:20.715169+00:00",
+                            }
+          }
+          listType="draft"
+/>,
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": "1",
+        "nodeType": "class",
+        "props": Object {
+          "item": Object {
+            "access": Object {
+              "deposit-admin": Object {
+                "roles": Array [],
+                "users": Array [
+                  "info@inveniosoftware.org",
+                ],
+              },
+              "deposit-read": Object {
+                "roles": Array [],
+                "users": Array [
+                  "info@inveniosoftware.org",
+                ],
+              },
+              "deposit-update": Object {
+                "roles": Array [],
+                "users": Array [
+                  "info@inveniosoftware.org",
+                ],
+              },
+            },
+            "can_admin": true,
+            "can_update": true,
+            "created": "2019-12-03T11:41:18.490459+00:00",
+            "created_by": "info@inveniosoftware.org",
+            "files": Array [],
+            "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+            "is_owner": true,
+            "links": Object {},
+            "metadata": Object {
+              "general_title": "Cast",
+            },
+            "revision": 2,
+            "schema": Object {
+              "name": "lhcb-analysis",
+              "version": "0.0.1",
+            },
+            "status": "draft",
+            "type": "deposit",
+            "updated": "2019-12-03T11:41:20.715169+00:00",
+          },
+          "listType": "draft",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": [Function],
+      },
+      "type": [Function],
+    },
+    "type": Object {
+      "$$typeof": Symbol(react.provider),
+      "_context": Object {
+        "$$typeof": Symbol(react.context),
+        "Consumer": Object {
+          "$$typeof": Symbol(react.context),
+          "_calculateChangedBits": null,
+          "_context": [Circular],
+        },
+        "Provider": [Circular],
+        "_calculateChangedBits": null,
+        "_currentRenderer": null,
+        "_currentRenderer2": null,
+        "_currentValue": null,
+        "_currentValue2": null,
+        "_threadCount": 0,
+      },
+    },
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "function",
+      "props": Object {
+        "children": <BrowserRouter>
+          <Connect(DashboardListItem)
+                    item={
+                              Object {
+                                        "access": Object {
+                                          "deposit-admin": Object {
+                                            "roles": Array [],
+                                            "users": Array [
+                                              "info@inveniosoftware.org",
+                                            ],
+                                          },
+                                          "deposit-read": Object {
+                                            "roles": Array [],
+                                            "users": Array [
+                                              "info@inveniosoftware.org",
+                                            ],
+                                          },
+                                          "deposit-update": Object {
+                                            "roles": Array [],
+                                            "users": Array [
+                                              "info@inveniosoftware.org",
+                                            ],
+                                          },
+                                        },
+                                        "can_admin": true,
+                                        "can_update": true,
+                                        "created": "2019-12-03T11:41:18.490459+00:00",
+                                        "created_by": "info@inveniosoftware.org",
+                                        "files": Array [],
+                                        "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+                                        "is_owner": true,
+                                        "links": Object {},
+                                        "metadata": Object {
+                                          "general_title": "Cast",
+                                        },
+                                        "revision": 2,
+                                        "schema": Object {
+                                          "name": "lhcb-analysis",
+                                          "version": "0.0.1",
+                                        },
+                                        "status": "draft",
+                                        "type": "deposit",
+                                        "updated": "2019-12-03T11:41:20.715169+00:00",
+                                      }
+                    }
+                    listType="draft"
+          />
+</BrowserRouter>,
+        "value": Object {
+          "store": Object {
+            "clearActions": [Function],
+            "dispatch": [Function],
+            "getActions": [Function],
+            "getState": [Function],
+            "replaceReducer": [Function],
+            "subscribe": [Function],
+          },
+          "storeState": Object {
+            "auth": Immutable.Map {
+              isLoggedIn: true,
+              currentUser: Immutable.Map {
+                            userId: 1,
+                            token: 1,
+                            permissions: true,
+                            depositGroups: Immutable.List [
+                            ],
+              },
+},
+            "dashboard": Immutable.Map {
+              loading: false,
+              error: null,
+              results: Object {
+                            "drafts": Object {
+                              "data": Array [],
+                              "more": null,
+                            },
+                            "published": Object {
+                              "data": Array [],
+                              "more": null,
+                            },
+                            "user_count": 0,
+                            "user_drafts": Object {
+                              "data": Array [],
+                              "more": null,
+                            },
+                            "user_drafts_count": 0,
+                            "user_published": Object {
+                              "data": Array [],
+                              "more": null,
+                            },
+                            "user_published_count": 0,
+                            "user_workflows": Object {
+                              "data": Array [],
+                              "more": null,
+                            },
+                          },
+},
+          },
+        },
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": <Connect(DashboardListItem)
+            item={
+                        Object {
+                                    "access": Object {
+                                      "deposit-admin": Object {
+                                        "roles": Array [],
+                                        "users": Array [
+                                          "info@inveniosoftware.org",
+                                        ],
+                                      },
+                                      "deposit-read": Object {
+                                        "roles": Array [],
+                                        "users": Array [
+                                          "info@inveniosoftware.org",
+                                        ],
+                                      },
+                                      "deposit-update": Object {
+                                        "roles": Array [],
+                                        "users": Array [
+                                          "info@inveniosoftware.org",
+                                        ],
+                                      },
+                                    },
+                                    "can_admin": true,
+                                    "can_update": true,
+                                    "created": "2019-12-03T11:41:18.490459+00:00",
+                                    "created_by": "info@inveniosoftware.org",
+                                    "files": Array [],
+                                    "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+                                    "is_owner": true,
+                                    "links": Object {},
+                                    "metadata": Object {
+                                      "general_title": "Cast",
+                                    },
+                                    "revision": 2,
+                                    "schema": Object {
+                                      "name": "lhcb-analysis",
+                                      "version": "0.0.1",
+                                    },
+                                    "status": "draft",
+                                    "type": "deposit",
+                                    "updated": "2019-12-03T11:41:20.715169+00:00",
+                                  }
+            }
+            listType="draft"
+/>,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": "1",
+          "nodeType": "class",
+          "props": Object {
+            "item": Object {
+              "access": Object {
+                "deposit-admin": Object {
+                  "roles": Array [],
+                  "users": Array [
+                    "info@inveniosoftware.org",
+                  ],
+                },
+                "deposit-read": Object {
+                  "roles": Array [],
+                  "users": Array [
+                    "info@inveniosoftware.org",
+                  ],
+                },
+                "deposit-update": Object {
+                  "roles": Array [],
+                  "users": Array [
+                    "info@inveniosoftware.org",
+                  ],
+                },
+              },
+              "can_admin": true,
+              "can_update": true,
+              "created": "2019-12-03T11:41:18.490459+00:00",
+              "created_by": "info@inveniosoftware.org",
+              "files": Array [],
+              "import {  } from 'module'": "9f1ed8b130a84fbab36d2a515dc67cff",
+              "is_owner": true,
+              "links": Object {},
+              "metadata": Object {
+                "general_title": "Cast",
+              },
+              "revision": 2,
+              "schema": Object {
+                "name": "lhcb-analysis",
+                "version": "0.0.1",
+              },
+              "status": "draft",
+              "type": "deposit",
+              "updated": "2019-12-03T11:41:20.715169+00:00",
+            },
+            "listType": "draft",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+        "type": [Function],
+      },
+      "type": Object {
+        "$$typeof": Symbol(react.provider),
+        "_context": Object {
+          "$$typeof": Symbol(react.context),
+          "Consumer": Object {
+            "$$typeof": Symbol(react.context),
+            "_calculateChangedBits": null,
+            "_context": [Circular],
+          },
+          "Provider": [Circular],
+          "_calculateChangedBits": null,
+          "_currentRenderer": null,
+          "_currentRenderer2": null,
+          "_currentValue": null,
+          "_currentValue2": null,
+          "_threadCount": 0,
+        },
+      },
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromError": true,
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    Symbol(enzyme.__providerValues__): undefined,
+  },
+  Symbol(enzyme.__providerValues__): Map {},
+  Symbol(enzyme.__childContext__): null,
+}
+`;

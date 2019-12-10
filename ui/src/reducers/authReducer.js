@@ -22,7 +22,7 @@ import {
 const initialState = Map({
   isLoggedIn: false,
   currentUser: Map({}),
-  token: localStorage.getItem("token"),
+  // token: localStorage.getItem("token"),
   error: null,
   loading: false,
   loadingInit: true,

@@ -231,6 +231,7 @@ export function postCreateDraft(data = {}, ana_type) {
       })
       .then(response => {
         let draft = response.data;
+
         if (draft.id) {
           dispatch(createDraftSuccess(response.data));
           cogoToast.success("You started a new analysis.", {
@@ -308,7 +309,8 @@ export function patchGeneralTitle(draft_id, title) {
       })
       .catch(error => {
         dispatch(generalTitleError(error.response));
-        throw error;
+        // TODO: why throw the error
+        // throw error;
       });
   };
 }
@@ -381,7 +383,7 @@ export function discardDraft(draft_id) {
 
     let uri = `/api/deposits/${draft_id}/actions/discard`;
 
-    axios
+    return axios
       .post(uri)
       .then(response => {
         dispatch(discardDraftSuccess(draft_id, response.data));
@@ -458,7 +460,6 @@ export function postPublishDraft() {
 
     let links = state.draftItem.get("links");
     // let uri = `/api/deposits/${draft_id}/actions/publish`;
-
     return axios
       .post(links.publish)
       .then(response => {
@@ -509,8 +510,7 @@ export function deleteDraft() {
 
     let links = state.draftItem.get("links");
     // let uri = `/api/deposits/${draft_id}`;
-
-    axios
+    return axios
       .delete(links.self)
       .then(() => {
         dispatch(deleteDraftSuccess());
@@ -542,7 +542,6 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
     dispatch(draftsItemRequest());
 
     let uri = `/api/deposits/${draft_id}`;
-
     axios
       .get(uri, {
         headers: {
@@ -577,6 +576,7 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
 export function handlePermissions(draft_id, type, email, action, operation) {
   return dispatch => {
     dispatch(permissionsItemRequest());
+
     let data = _get_permissions_data(type, email, action, operation);
     let uri = `/api/deposits/${draft_id}/actions/permissions`;
     axios
@@ -607,7 +607,7 @@ export function getDraftByIdAndInitForm(draft_id) {
 
     let uri = `/api/deposits/${draft_id}`;
 
-    axios
+    return axios
       .get(uri, {
         headers: {
           Accept: "application/form+json",

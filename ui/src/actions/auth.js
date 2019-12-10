@@ -27,9 +27,11 @@ export const INTEGRATIONS_UPDATE = "INTEGRATIONS_UPDATE";
 export function initCurrentUserRequest() {
   return { type: INIT_CURRENT_USER_REQUEST };
 }
+
 export function initCurrentUserSuccess(user) {
   return { type: INIT_CURRENT_USER_SUCCESS, user };
 }
+
 export function initCurrentUserError(error) {
   return { type: INIT_CURRENT_USER_ERROR, error };
 }
@@ -37,9 +39,11 @@ export function initCurrentUserError(error) {
 export function loginRequest() {
   return { type: LOGIN_REQUEST };
 }
+
 export function loginSuccess(user) {
   return { type: LOGIN_SUCCESS, user };
 }
+
 export function loginError(error) {
   return { type: LOGIN_ERROR, error };
 }
@@ -47,6 +51,7 @@ export function loginError(error) {
 export function logoutRequest() {
   return { type: LOGOUT_REQUEST };
 }
+
 export function logoutSuccess() {
   return { type: LOGOUT_SUCCESS };
 }
@@ -54,6 +59,7 @@ export function logoutSuccess() {
 export function authenticated() {
   return { type: AUTHENTICATED };
 }
+
 export function unauthenticated() {
   return { type: UNAUTHENTICATED };
 }
@@ -61,9 +67,11 @@ export function unauthenticated() {
 export function apiKeyListRequest() {
   return { type: API_KEY_LIST_REQUEST };
 }
+
 export function apiKeyListSuccess(applications) {
   return { type: API_KEY_LIST_SUCCESS, applications };
 }
+
 export function apiKeyListError(error) {
   return { type: API_KEY_LIST_ERROR, error };
 }
@@ -71,6 +79,7 @@ export function apiKeyListError(error) {
 export function createTokenSuccess(token) {
   return { type: CREATE_TOKEN_SUCCESS, token };
 }
+
 export function createTokenError(error) {
   return { type: CREATE_TOKEN_ERROR, error };
 }
@@ -78,6 +87,7 @@ export function createTokenError(error) {
 export function revokeTokenSuccess(token) {
   return { type: REVOKE_TOKEN_SUCCESS, token };
 }
+
 export function revokeTokenError(error) {
   return { type: REVOKE_TOKEN_ERROR, error };
 }
@@ -88,7 +98,7 @@ export function loginLocalUser(data) {
 
     let uri = `/api/login/local?next=${data.next}`;
 
-    axios
+    return axios
       .post(uri, data)
       .then(function(response) {
         let token = "12345";
@@ -114,10 +124,11 @@ export function loginLocalUser(data) {
 export function initCurrentUser(next = undefined) {
   return function(dispatch) {
     dispatch(initCurrentUserRequest());
-    axios
+    return axios
       .get("/api/me")
       .then(function(response) {
         let { id, deposit_groups } = response.data;
+
         localStorage.setItem("token", id);
         dispatch(
           loginSuccess({
@@ -169,7 +180,7 @@ export function logout() {
   return function(dispatch) {
     dispatch(logoutRequest());
 
-    axios.get("/api/logout").then(function() {
+    return axios.get("/api/logout").then(function() {
       localStorage.clear();
       dispatch(logoutSuccess());
     });
@@ -192,8 +203,8 @@ export function getUsersAPIKeys() {
 
 export function createToken(data) {
   return function(dispatch) {
-    // dispatch(apiKeyListRequest());
-    axios
+    // dispatch(apiKeyListRequest())
+    return axios
       .post("/api/applications/tokens/new/", data)
       .then(function(response) {
         dispatch(createTokenSuccess(response.data));
@@ -207,7 +218,7 @@ export function createToken(data) {
 export function revokeToken(token_id, key) {
   return function(dispatch) {
     // dispatch(apiKeyListRequest());
-    axios
+    return axios
       .get(`/api/applications/tokens/${token_id}/revoke/`)
       .then(function() {
         dispatch(revokeTokenSuccess(key));

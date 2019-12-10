@@ -9,24 +9,27 @@ export function dashboardQueryRequest() {
     type: DASHBOARD_QUERY_REQUEST
   };
 }
+
 export function dashboardQuerySuccess(results) {
   return {
     type: DASHBOARD_QUERY,
     results
   };
 }
+
 export function dashboardQueryError(error) {
   return {
     type: DASHBOARD_QUERY_ERROR,
     error
   };
 }
+
 export function fetchDashboard() {
   return dispatch => {
     dispatch(dashboardQueryRequest());
     let url = "/api/dashboard";
 
-    axios
+    return axios
       .get(url)
       .then(response => {
         let results = response.data;

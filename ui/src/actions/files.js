@@ -163,7 +163,7 @@ export function deleteFileByUri(file_uri = null, key = null) {
   return dispatch => {
     dispatch(deleteFileRequest(key));
 
-    axios
+    return axios
       .delete(file_uri)
       .then(dispatch(deleteFileSuccess(key)))
       .catch(error => {
@@ -174,6 +174,7 @@ export function deleteFileByUri(file_uri = null, key = null) {
 export function deleteFile(bucket, key) {
   return dispatch => {
     dispatch(deleteFileRequest(key));
+
     let uri = `/api/files/${bucket}/${key}`;
     axios
       .delete(uri)
