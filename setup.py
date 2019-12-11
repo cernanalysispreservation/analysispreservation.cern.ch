@@ -44,8 +44,8 @@ extras_require['ldap'] = ['python-ldap>=2.4.39']
 
 # Do not include in all requirement
 extras_require['xrootd'] = [
-    'invenio-xrootd>=1.0.0a6',
-    'xrootdpyfs>=0.1.5',
+    # 'invenio-xrootd>=1.0.0a6',
+    # 'xrootdpyfs>=0.1.5',
 ]
 
 setup_requires = ['Babel>=2.4.0', 'pytest-runner>=3.0.0,<5']
