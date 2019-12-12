@@ -22,7 +22,7 @@ function configureStoreProd(initialState) {
   ];
 
   const store = createStore(
-    rootReducer,
+    rootReducer(history),
     initialState,
     compose(applyMiddleware(...middlewares))
   );
