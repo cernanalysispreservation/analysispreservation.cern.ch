@@ -382,7 +382,7 @@ ACCOUNTS_REST_READ_USERS_LIST_PERMISSION_FACTORY = allow_all
 # Search
 # ======
 #: Default API endpoint for search UI.
-SEARCH_UI_SEARCH_API = '/api/deposits/'
+SEARCH_UI_SEARCH_API = '/api/deposits'
 
 #: Default ElasticSearch hosts
 es_user = os.environ.get('ELASTICSEARCH_USER')
@@ -487,7 +487,7 @@ DEPOSIT_DEFAULT_JSONSCHEMA = 'deposits/records/lhcb-v0.0.1.json'
 #: Default schemanform for deposit
 DEPOSIT_DEFAULT_SCHEMAFORM = 'json/deposits/records/lhcb-v0.0.1.json'
 #: Search api url for deposit
-DEPOSIT_SEARCH_API = '/api/deposits/'
+DEPOSIT_SEARCH_API = '/api/deposits'
 #: Files api url for deposit
 DEPOSIT_FILES_API = '/api/files'
 
