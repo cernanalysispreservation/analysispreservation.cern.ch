@@ -47,7 +47,7 @@ export function fetchSearch() {
       pathname in SEARCH_PATH_TO_INDEX
         ? SEARCH_PATH_TO_INDEX[pathname]
         : DEFAULT_INDEX;
-    let searchApiUrl = `/api/${index}`;
+    let searchApiUrl = `/api/${index}/`;
 
     // If query exists, remove "?" from string, since
     // we construct later
