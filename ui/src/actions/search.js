@@ -1,6 +1,8 @@
 import axios from "axios";
 import queryString from "query-string";
 
+import { history } from "../store/configureStore";
+
 export const QUERY_CHANGED = "QUERY_CHANGED";
 export const ADD_AGGS = "ADD_AGGS";
 export const REMOVE_AGGS = "REMOVE_AGGS";
@@ -38,8 +40,9 @@ const SEARCH_PATH_TO_INDEX = {
 
 const DEFAULT_INDEX = "records";
 
-export function fetchSearch(pathname, location_search) {
+export function fetchSearch() {
   return function(dispatch) {
+    let { location: { pathname, search } = {} } = history;
     let index =
       pathname in SEARCH_PATH_TO_INDEX
         ? SEARCH_PATH_TO_INDEX[pathname]
@@ -48,10 +51,10 @@ export function fetchSearch(pathname, location_search) {
 
     // If query exists, remove "?" from string, since
     // we construct later
-    if (location_search[0] == "?") location_search = location_search.substr(1);
+    if (search[0] == "?") search = search.substr(1);
 
-    let params = queryString.parse(location_search);
-    let searchUrl = `${searchApiUrl}?${location_search}`;
+    let params = queryString.parse(search);
+    let searchUrl = `${searchApiUrl}?${search}`;
 
     if (!("sort" in params)) searchUrl += "&sort=mostrecent";
 
