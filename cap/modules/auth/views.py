@@ -31,6 +31,12 @@ def connect(name):
 
     client = current_auth.create_client(name)
     redirect_uri = url_for('cap_auth.authorize', name=name, _external=True)
+
+    if not current_app.config['DEBUG']:
+        redirect_uri = redirect_uri.replace(
+            "/auth/authorize/",
+            "/api/auth/authorize/")
+
     # DEV FIX for 'CERN Gitlab' to work locally since you can't register
     # 'localhost' redirect_uri for testing
     #
