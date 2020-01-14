@@ -95,6 +95,7 @@ class GitLabAPI(object):
             raise GitIntegrationError(
                 'CERN Gitlab requires authorization - '
                 'connect your CERN account: Settings -> Integrations.')
+
         return token_obj.get('access_token')
 
     def is_request_trusted(self, secret):
@@ -114,10 +115,11 @@ class GitLabAPI(object):
             dict(url=url, push_events=True, token=secret))
         return hook.get_id(), secret
 
-    def delete_webhook(self):
-        """Delete the webhook from git. By convention, a single hook exists."""
-        hook = self.project.hooks.list()[0]
-        return self.project.hooks.delete(hook.get_id())
+    def ping_webhook(self, hook_id):
+        try:
+            self.project.hooks.get(hook_id)
+        except GitlabGetError:
+            raise GitError('Hook not found')
 
     def get_download_url(self):
         """Create url for repo download."""

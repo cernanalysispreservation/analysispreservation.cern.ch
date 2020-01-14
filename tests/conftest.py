@@ -31,26 +31,12 @@ import tempfile
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-import pytest
 from flask import current_app
-from flask_principal import ActionNeed
-from flask_security import login_user
-from invenio_access.models import ActionRoles, ActionUsers
-from invenio_accounts.testutils import create_test_user
-from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
-from invenio_db import db as db_
-from invenio_deposit.minters import deposit_minter
-from invenio_deposit.scopes import write_scope
 from invenio_files_rest.models import Location
-from invenio_indexer.api import RecordIndexer
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_jsonschemas.proxies import current_jsonschemas
-from invenio_oauth2server.models import Client, Token
-from invenio_pidstore.resolver import Resolver
-from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
 from werkzeug.local import LocalProxy
 
+import pytest
 from cap.factory import create_api
 from cap.modules.auth.models import OAuth2Token
 from cap.modules.auth.utils import _create_or_update_token
@@ -63,6 +49,20 @@ from cap.modules.experiments.utils.das import (
 from cap.modules.repoimporter.models import GitRepository
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
+from flask_principal import ActionNeed
+from flask_security import login_user
+from invenio_access.models import ActionRoles, ActionUsers
+from invenio_accounts.testutils import create_test_user
+from invenio_app.config import APP_DEFAULT_SECURE_HEADERS
+from invenio_db import db as db_
+from invenio_deposit.minters import deposit_minter
+from invenio_deposit.scopes import write_scope
+from invenio_indexer.api import RecordIndexer
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_jsonschemas.proxies import current_jsonschemas
+from invenio_oauth2server.models import Client, Token
+from invenio_pidstore.resolver import Resolver
+from invenio_search import current_search, current_search_client
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -520,7 +520,7 @@ def github_repo(db, github_token):
 @pytest.fixture
 def gitlab_repo(db, gitlab_token):
     repo = GitRepository(external_id='15785702',
-                         host='gitlab.com',
+                         host='gitlab.cern.ch',
                          owner='alibrandi',
                          name='test',
                          branch='master')
