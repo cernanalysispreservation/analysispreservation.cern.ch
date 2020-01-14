@@ -8,9 +8,9 @@
 
 import sqlalchemy as sa
 import sqlalchemy_utils
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
-from alembic import op
 from cap.types import json_type
 
 # revision identifiers, used by Alembic.
@@ -47,14 +47,11 @@ def upgrade():
                   nullable=True),
         sa.Column('logs', json_type, default=lambda: dict(), nullable=True),
         sa.ForeignKeyConstraint(
-            ['cap_user_id'], [u'accounts_user.id'],
-            name=op.f('fk_reana_workflows_cap_user_id_accounts_user')),
-        sa.ForeignKeyConstraint(
             ['rec_uuid'], [u'records_metadata.id'],
-            name=op.f('fk_reana_workflows_rec_uuid_records_metadata')),
-        sa.PrimaryKeyConstraint('id', name=op.f('pk_reana_workflows')),
+            name='fk_reana_workflows_rec_uuid_records_metadata'),
+        sa.PrimaryKeyConstraint('id', name=('pk_reana_workflows')),
         sa.UniqueConstraint('workflow_id',
-                            name=op.f('uq_reana_workflows_workflow_id')))
+                            name='uq_reana_workflows_workflow_id'))
     op.drop_table('reana')
 
 
@@ -92,8 +89,6 @@ def downgrade():
                   nullable=True),
         sa.ForeignKeyConstraint(['record_id'], [u'records_metadata.id'],
                                 name=u'fk_reana_record_id_records_metadata'),
-        sa.ForeignKeyConstraint(['user_id'], [u'accounts_user.id'],
-                                name=u'fk_reana_user_id_accounts_user'),
         sa.PrimaryKeyConstraint('id', name=u'pk_reana'),
         sa.UniqueConstraint('reana_id', name=u'uq_reana_reana_id'))
 
