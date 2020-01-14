@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Cern Analysis Preservation methods for DAS database connection."""
 
 from .common import recreate_es_index_from_source
@@ -43,8 +42,6 @@ DAS_DATASETS_INDEX = {
 
 def cache_das_datasets_in_es_from_file(source):
     """Cache datasets names from DAS in ES."""
-    recreate_es_index_from_source(
-        alias=DAS_DATASETS_INDEX['alias'],
-        mapping=DAS_DATASETS_INDEX['mappings'],
-        source=source
-    )
+    recreate_es_index_from_source(alias=DAS_DATASETS_INDEX['alias'],
+                                  mapping=DAS_DATASETS_INDEX['mappings'],
+                                  source=source)

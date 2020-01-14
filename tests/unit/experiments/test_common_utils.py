@@ -21,30 +21,27 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Tests for experiments module utils."""
 
 import subprocess
 
-from cap.modules.experiments.utils.common import kinit
 from mock import patch
 from pytest import raises
 
+from cap.modules.experiments.utils.common import kinit
 
-@patch('subprocess.check_output')
+
+@patch('cap.modules.experiments.utils.common.check_output')
 def test_kinit_decorator(subprocess_mock, app):
     @kinit('user@CERN.CH', 'user.keytab')
     def function(x):
         subprocess_mock.assert_called_with(
-            'kinit -kt /etc/keytabs/user.keytab user@CERN.CH',
-            shell=True
-        )
+            'kinit -kt /etc/keytabs/user.keytab user@CERN.CH', shell=True)
         return x
 
-    subprocess_mock.assert_not_called()
+    function('return_value')
 
-    with raises(subprocess.CalledProcessError, match='.* /etc/keytabs/user.keytab user@CERN.CH'):
-        function('return_value')
+    subprocess_mock.assert_called_with('kdestroy', shell=True)
 
 
 def test_kinit_decorator_when_non_existing_keytab_file(app):

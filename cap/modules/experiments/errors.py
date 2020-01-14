@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Exceptions for experiments related module."""
 
 from invenio_rest.errors import RESTException
@@ -40,3 +39,8 @@ class ExternalAPIException(RESTException):
         if response is not None:
             self.description = 'External API replied with an error:\n{0}\n{1}'\
                 .format(response.status_code, response.content)
+
+
+class DASHarvesterException(Exception):
+    """Error during harvesting DAS entries."""
+    pass

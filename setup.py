@@ -60,6 +60,8 @@ install_requires = [
     'PyGithub>=1.35',
     'python-gitlab>=1.0.2',
     'python-cern-sso-krb==1.3.3',
+    'python-gssapi==0.6.4',
+    'paramiko==2.7.1',
     'cachetools==3.1.0',
 
     # Pinned libraries

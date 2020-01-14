@@ -60,12 +60,12 @@ def kinit(principal, keytab):
                 check_output('kinit -kt {} {}'.format(kt, principal),
                              shell=True)
                 ret_val = func(*args, **kwargs)
-                check_output('kdestroy', shell=True)
-
                 return ret_val
             except CalledProcessError as err:
                 current_app.logger.error(err)
                 raise
+            finally:
+                check_output('kdestroy', shell=True)
 
         return wrapped_function
 
