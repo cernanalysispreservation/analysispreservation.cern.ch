@@ -47,10 +47,15 @@ class DraftActionsLayer extends React.Component {
         );
       case "delete":
         return (
-            <Paragraph>
-                This will <b>permanently</b> delete this analysis and all related data (<b>including files and workflows</b>).<br/><br/>
-                Already published versions of the analysis <b>will not</b> be affected.<br/><br/>
-                <b>Are you sure you want to delete this draft?</b> </Paragraph> 
+          <Paragraph>
+            This will <b>permanently</b> delete this analysis and all related
+            data (<b>including files and workflows</b>).<br />
+            <br />
+            Already published versions of the analysis <b>will not</b> be
+            affected.<br />
+            <br />
+            <b>Are you sure you want to delete this draft?</b>{" "}
+          </Paragraph>
         );
       case "discard":
         return (
@@ -77,9 +82,9 @@ class DraftActionsLayer extends React.Component {
           pad="medium"
           size="medium"
         >
-            <Box pad="small" alignContent="center">
-          {this.renderMessage(this.props.type)}
-      </Box>
+          <Box pad="small" alignContent="center">
+            {this.renderMessage(this.props.type)}
+          </Box>
           <Box direction="row" justify="center" align="center">
             <Box>
               <Button

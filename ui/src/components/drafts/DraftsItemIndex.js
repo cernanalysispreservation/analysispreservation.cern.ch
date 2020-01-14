@@ -96,17 +96,19 @@ class DraftsItemIndex extends React.Component {
             />
           </Box>
           {isDraft && !isPublishedOnce ? (
-            <Anchor
-              icon={<TrashIcon />}
-              onClick={this._actionHandler("delete")}
-              data-tip="Delete your analysis"
-            />
+            <Box>
+              <Anchor
+                icon={<TrashIcon />}
+                onClick={this._actionHandler("delete")}
+                data-tip="Delete your analysis"
+              />
+              <DraftActionsLayer
+                key="action-layer"
+                type={this.state.actionType}
+                deleteDraft={this._deleteDraft.bind(this)}
+              />
+            </Box>
           ) : null}
-          <DraftActionsLayer
-            key="action-layer"
-            type={this.state.actionType}
-            deleteDraft={this._deleteDraft.bind(this)}
-          />
         </Box>
         <Box flex={true}>
           <DraftHeader formRef={this.formRef} />
