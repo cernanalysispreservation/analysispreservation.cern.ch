@@ -33,7 +33,6 @@ from invenio_search import RecordsSearch
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist
-from cap.modules.schemas.models import Schema
 from cap.modules.user.utils import get_existing_or_register_role
 
 from ..errors import ExternalAPIException

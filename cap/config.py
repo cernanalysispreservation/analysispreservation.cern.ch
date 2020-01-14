@@ -16,6 +16,18 @@ from os.path import dirname, join
 
 import requests
 from flask import request
+from flask import request
+from jsonresolver import JSONResolver
+from jsonresolver.contrib.jsonref import json_loader_factory
+
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             CreateDepositPermission,
+                                             ReadDepositPermission)
+from cap.modules.oauthclient.contrib.cern import disconnect_handler
+from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
+                                                   signup_handler)
+from cap.modules.records.permissions import ReadRecordPermission
+from cap.modules.search.facets import nested_filter, prefix_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -25,8 +37,6 @@ from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
-from jsonresolver import JSONResolver
-from jsonresolver.contrib.jsonref import json_loader_factory
 
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              CreateDepositPermission,
@@ -112,6 +122,10 @@ CELERY_BEAT_SCHEDULE = {
     'ping_webhooks': {
         'task': 'cap.modules.repoimporter.tasks.ping_webhooks',
         'schedule': timedelta(hours=12),
+        },
+    'das_harvester': {
+        'task': 'cap.modules.experiments.tasks.cms.harvest_das',
+        'schedule': timedelta(days=1),
     }
 }
 #: Accepted content types, used for serializing objects
@@ -461,6 +475,7 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 #: Kerberos credentials
 CMS_USER_PRINCIPAL = os.environ.get('APP_CMS_USER_PRINCIPAL')
 CMS_USER_KEYTAB = os.environ.get('APP_CMS_USER_KEYTAB')
+
 #: CADI database
 CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/cadiLine/BPH-13-009'
 CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
@@ -568,6 +583,10 @@ INDEXER_REPLACE_REFS = False
 LHCB_DB_FILES_LOCATION = os.environ.get(
     'APP_LHCB_FILES_LOCATION',
     os.path.join(APP_ROOT, 'modules/experiments/static/example_lhcb/'))
+
+EXPERIMENTS_RESOURCES_LOCATION = os.environ.get(
+    'APP_EXPERIMENTS_RESOURCES_LOCATION',
+    os.path.join(APP_ROOT, 'modules/experiments/static'))
 
 # Disable JWT token
 ACCOUNTS_JWT_ENABLE = False
