@@ -124,15 +124,15 @@ class GitHubAPI(object):
 
         return hook.id, secret
 
+    def ping_webhook(self, hook_id):
+        try:
+            self.project.get_hook(hook_id)
+        except UnknownObjectException:
+            raise GitError('Hook not found.')
+
     def get_event_data(self):
         """Get event data from request payload."""
         return request.headers['X-Github-Event']
-
-    def delete_webhook(self):
-        """Delete the webhook from git. By convention, a single hook exists."""
-        hook = self.project.get_hooks().get_page(0)[0]
-        return requests.delete(
-            hook.url, headers={'Authorization': 'token {}'.format(self.token)})
 
     def get_download_url(self):
         """Create url for repo download."""

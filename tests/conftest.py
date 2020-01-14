@@ -40,7 +40,7 @@ from werkzeug.local import LocalProxy
 import pytest
 from cap.factory import create_api
 from cap.modules.auth.models import OAuth2Token
-from cap.modules.auth.utils import _create_or_update_token
+
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.experiments.utils.cms import (
@@ -50,7 +50,9 @@ from cap.modules.experiments.utils.das import (
 from cap.modules.repoimporter.models import GitRepository
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
+
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
+
 from flask_principal import ActionNeed
 from flask_security import login_user
 from invenio_access.models import ActionRoles, ActionUsers
@@ -528,7 +530,7 @@ def github_repo(db, github_token):
 @pytest.fixture
 def gitlab_repo(db, gitlab_token):
     repo = GitRepository(external_id='15785702',
-                         host='gitlab.com',
+                         host='gitlab.cern.ch',
                          owner='alibrandi',
                          name='test',
                          branch='master')

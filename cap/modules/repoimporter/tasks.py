@@ -27,7 +27,12 @@ from __future__ import absolute_import, print_function
 
 import requests
 from celery import shared_task
+from invenio_db import db
 
+from cap.modules.repoimporter.errors import GitError
+
+from .factory import create_git_api
+from .models import GitWebhookSubscriber
 from .utils import ensure_content_length
 
 
@@ -91,3 +96,18 @@ def download_repo_file(record_id, host, owner, repo, branch, filepath,
             download_url, response.status))
 
     record.save_file(response, filename, size, source_url)
+
+
+@shared_task
+def ping_webhooks():
+    subscribers = GitWebhookSubscriber.query.filter_by(status='active').all()
+
+    for subscriber in subscribers:
+        repo = subscriber.repo
+        api = create_git_api(repo.host, repo.owner, repo.branch,
+                             subscriber.user_id)
+        try:
+            api.ping_webhook(subscriber.webhook.external_id)
+        except GitError:
+            subscriber.status = 'deleted'
+            db.session.commit()
