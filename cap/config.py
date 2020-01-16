@@ -611,7 +611,7 @@ RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'
 # so we make sure that we have an ngrok tunnel running, and add it
 # to the allowed hosts (to enable requests)
 TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', False)
-if DEBUG_MODE == 'True' and TEST_WITH_NGROK is True:
+if DEBUG_MODE == 'True' and TEST_WITH_NGROK == 'True':
     try:
         resp = requests.get('http://localhost:4040/api/tunnels',
                             headers={'Content-Type': 'application/json'})

@@ -91,6 +91,41 @@ class GitSnapshotSerializerSchema(Schema):
     url = fields.Str(attribute='download_url', dump_only=True)
 
 
+class GitWebhookSubscriberSchema(Schema):
+    creator = fields.Str(attribute='user_id', dump_only=True)
+    type = fields.Str(dump_only=True)
+    status = fields.Str(dump_only=True)
+
+    webhook = fields.Method('get_webhook', dump_only=True)
+
+    owner = fields.Str(attribute='owner', dump_only=True)
+    name = fields.Str(attribute='name', dump_only=True)
+    branch = fields.Str(attribute='branch', dump_only=True)
+
+    snapshots = fields.Method('get_snapshots', dump_only=True)
+
+    def get_snapshots(self, obj):
+        return GitSnapshotSchema(many=True).dump(obj.snapshots).data
+
+    def get_webhook(self, obj):
+        return GitSnapshotSchema(many=True).dump(obj.snapshots).data
+
+
+class GitSnapshotSchema(Schema):
+    ref = fields.Str(dump_only=True)
+    webhook = fields.Str(attribute='branch', dump_only=True)
+    timestamp = fields.Str(attribute='payload.commit.timestamp',
+                           dump_only=True)
+    created = fields.Str(dump_only=True)
+
+
+class GitRepositorySchema(Schema):
+    host = fields.Str(dump_only=True)
+    owner = fields.Str(dump_only=True)
+    name = fields.Str(dump_only=True)
+    branch = fields.Str(dump_only=True)
+
+
 def payload_serializer_factory():
     """Return serializer instance based on request type."""
     if 'X-Gitlab-Event' in request.headers.keys():

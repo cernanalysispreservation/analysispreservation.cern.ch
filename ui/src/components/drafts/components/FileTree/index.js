@@ -57,10 +57,7 @@ class FileTree extends React.Component {
 
   constructTree = data => {
     let tree = { name: "All Files", id: 1, toggled: true };
-    let paths = [
-      [["Repositories", "invenio-github_master.zip"]],
-      [["Repositories", "invenio-github_v1.0.zip"]]
-    ];
+    let paths = [];
 
     Object.keys(data).map(k => {
       paths.push([k.split("/"), data[k]]);
@@ -75,11 +72,6 @@ class FileTree extends React.Component {
   }
 }
 
-{
-  /*<Treebeard data={this.state.data} onToggle={this.onToggle}
-                   decorators={{...decorators, Header, Toggle}} 
-    style={_styles} />*/
-}
 FileTree.propTypes = {
   showSidebar: PropTypes.bool,
   toggleFilemanagerLayer: PropTypes.func,

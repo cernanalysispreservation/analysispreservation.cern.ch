@@ -86,7 +86,51 @@ class DraftPreview extends React.Component {
           <Box flex={true} size={{ width: { min: "medium" } }}>
             <SectionBox
               header="Repositories"
-              body={<Box pad="small">blalasdfasdf</Box>}
+              body={
+                <Box pad="small">
+                  <Box
+                    key="header"
+                    direction="row"
+                    wrap={false}
+                    justify="between"
+                    pad={{ between: "small" }}
+                    margin={{ bottom: "small" }}
+                  >
+                    <Box flex={false}>
+                      <strong>Source</strong>
+                    </Box>
+                    <Box flex={true}>
+                      <strong>Repository</strong>
+                    </Box>
+                    <Box flex={false}>
+                      <strong>Branch/Ref</strong>
+                    </Box>
+                  </Box>
+                  {this.props.repositories && this.props.repositories.length ? (
+                    this.props.repositories.map((repo, index) => (
+                      <Box
+                        key={index}
+                        direction="row"
+                        wrap={false}
+                        justify="between"
+                        pad={{ between: "small" }}
+                      >
+                        <Box flex={false}>
+                          {repo.host.indexOf("github") > -1
+                            ? "Github"
+                            : "Gitlab"}
+                        </Box>
+                        <Box flex={true}>
+                          {repo.owner}/{repo.name}
+                        </Box>
+                        <Box flex={false}>{repo.branch}</Box>
+                      </Box>
+                    ))
+                  ) : (
+                    <Box>No repositories connected</Box>
+                  )}
+                </Box>
+              }
             />
             <SectionBox
               header="Workflows"
@@ -117,6 +161,7 @@ function mapStateToProps(state) {
     // schemasLoading: state.draftItem.get("schemasLoading"),
     canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
+    repositories: state.draftItem.get("repositories"),
     formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
   };
 }

@@ -14,27 +14,6 @@ import AccordionPanel from "../../partials/AccordionPanel";
 import TimeAgo from "react-timeago";
 import { toggleFilemanagerLayer } from "../../../actions/files";
 
-const repositories = [
-  {
-    name: "cernanalysispreservation/analysispreservation.cern.ch",
-    service: "github",
-    event: "onTrigger",
-    updated: "24/09/2019"
-  },
-  {
-    name: "cernanalysispreservation/analysispreservation.cern.ch",
-    service: "github",
-    event: "onPush",
-    updated: "22/09/2019"
-  },
-  {
-    name: "analysispreservation/cap-client",
-    service: "gitlab",
-    event: "onTrigger",
-    updated: "20/09/2019"
-  }
-];
-
 class DraftIntegrations extends React.Component {
   render() {
     return (
@@ -75,49 +54,87 @@ class DraftIntegrations extends React.Component {
           </Box>
           <Box flex={false} colorIndex="light-2">
             <Accordion>
-              {repositories.map((repo, index) => (
-                <AccordionPanel
-                  key={`${repo.name}-${index}`}
-                  noHeading={true}
-                  headingColor="light-2"
-                  heading={
-                    <Box
-                      flex={true}
-                      direction="row"
-                      wrap={false}
-                      justify="between"
-                    >
-                      <Box flex={true}>{repo.name}</Box>
+              {this.props.repos && this.props.repos.length ? (
+                this.props.repos.map((repo, index) => (
+                  <AccordionPanel
+                    key={`${repo.name}-${index}`}
+                    noHeading={true}
+                    headingColor="light-2"
+                    heading={
                       <Box
-                        margin={{ horizontal: "small" }}
+                        flex={true}
                         direction="row"
                         wrap={false}
-                        flex={false}
-                        size="medium"
-                        alignSelf="end"
+                        justify="between"
                       >
-                        <Box flex={true} align="center">
-                          <strong>
-                            {repo.service == "github"
-                              ? "Github"
-                              : repo.service == "gitlab"
-                                ? "CERN Gitlab"
-                                : null}
-                          </strong>
-                        </Box>
-                        <Box flex={true} align="center">
-                          {repo.event}
-                        </Box>
-                        <Box flex={true} align="center">
-                          <TimeAgo date={repo.updated} minPeriod="60" />
+                        <Box flex={true}>{repo.name}</Box>
+                        <Box
+                          margin={{ horizontal: "small" }}
+                          direction="row"
+                          wrap={false}
+                          flex={false}
+                          size="medium"
+                          alignSelf="end"
+                        >
+                          <Box flex={true} align="center">
+                            <strong>
+                              {repo.host.indexOf("github") > -1
+                                ? "Github"
+                                : repo.service == "gitlab"
+                                  ? "CERN Gitlab"
+                                  : null}
+                            </strong>
+                          </Box>
+                          <Box flex={true} align="center">
+                            {repo.branch}
+                          </Box>
+                          <Box flex={true} align="center">
+                            <TimeAgo date={repo.updated} minPeriod="60" />
+                          </Box>
                         </Box>
                       </Box>
+                    }
+                  >
+                    <Box>
+                      {repo.snapshots.map((snapshot, index) => (
+                        <Box
+                          key={index}
+                          direction="row"
+                          wrap={false}
+                          pad={{
+                            horizontal: "small",
+                            vertical: "small",
+                            between: "small"
+                          }}
+                        >
+                          <Box
+                            flex={false}
+                            direction="row"
+                            wrap={false}
+                            pad={{ between: "small" }}
+                          >
+                            <strong>Ref: </strong>
+                            <span>{snapshot.ref}</span>
+                          </Box>
+                          <Box
+                            flex={false}
+                            direction="row"
+                            wrap={false}
+                            pad={{ between: "small" }}
+                          >
+                            <strong>Datetime: </strong>
+                            <TimeAgo date={snapshot.timestamp} minPeriod="60" />
+                          </Box>
+                        </Box>
+                      ))}
                     </Box>
-                  }
-                >
-                  <Box>sfds</Box>
-                </AccordionPanel>
-              ))}
+                  </AccordionPanel>
+                ))
+              ) : (
+                <Box pad="medium" justify="center" align="center">
+                  No Repositories connected yet
+                </Box>
+              )}
             </Accordion>
           </Box>
         </Box>
@@ -133,7 +150,7 @@ DraftIntegrations.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    repos: state.draftItem.get("repos")
+    repos: state.draftItem.get("repositories")
   };
 }
 

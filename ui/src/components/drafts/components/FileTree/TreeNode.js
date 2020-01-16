@@ -31,7 +31,12 @@ import FileItem from "../FileItem";
 class TreeNode extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { enabled: false };
   }
+
+  onClick = () => {
+    this.setState({ enabled: !this.state.enabled });
+  };
 
   _getIcon(type) {
     const catToIcon = {
@@ -65,7 +70,9 @@ class TreeNode extends React.Component {
               justify="center"
               align="center"
               style={{ marginBottom: "3px" }}
+              onClick={this.onClick}
             >
+              {this.state.enabled ? "-" : "+"}
               <Box justify="center" align="center" flex={false}>
                 <FolderIcon size="xsmall" />
               </Box>
@@ -88,12 +95,14 @@ class TreeNode extends React.Component {
             />
           )}
         </Box>
-        <Box margin={{ left: "small" }}>
-          {data.children &&
-            data.children.map(i => {
-              return <TreeNode data={i} />;
-            })}
-        </Box>
+        {this.state.enabled && (
+          <Box margin={{ left: "small" }}>
+            {data.children &&
+              data.children.map(i => {
+                return <TreeNode data={i} />;
+              })}
+          </Box>
+        )}
       </Box>
     );
   }
