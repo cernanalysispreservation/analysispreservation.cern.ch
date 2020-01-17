@@ -1,18 +1,44 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of CERN Analysis Preservation Framework.
+# Copyright (C) 2016 CERN.
+#
+# CERN Analysis Preservation Framework is free software; you can redistribute
+# it and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# CERN Analysis Preservation Framework is distributed in the hope that it will
+# be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with CERN Analysis Preservation Framework; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+#
+
+"""Authentication views for CAP."""
+
 from flask import Blueprint, url_for, current_app, jsonify, \
-                  request, redirect, session
+                  request, redirect, session, abort
 from flask_login import current_user
 
-from cap.modules.access.utils import login_required
-
 from invenio_db import db
+from invenio_userprofiles.models import UserProfile
 from sqlalchemy.orm.attributes import flag_modified
 
-from .proxies import current_auth
+from .config import OAUTH_SERVICES, USER_PROFILE
 from .models import OAuth2Token
-
-from invenio_userprofiles.models import UserProfile
-from .config import OAUTH_SERVICES
+from .proxies import current_auth
 from .utils import _create_or_update_token
+
+from cap.modules.access.utils import login_required
 
 blueprint = Blueprint(
     'cap_auth',
@@ -59,7 +85,7 @@ def authorize(name):
 
     # TOFIX Add error handlers for reject, auth errors, etc
     extra_data = {}
-    if (extra_data_method):
+    if extra_data_method:
         extra_data = extra_data_method(client, token)
 
     _token = _create_or_update_token(name, token)
@@ -69,20 +95,20 @@ def authorize(name):
 
     # Add extra data to user profile.
     # If user profile doesn't exist yet, it creates one.
-    profile = UserProfile.get_by_userid(current_user.id)
-    if not profile:
-        profile = UserProfile(user_id=current_user.id)
-        db.session.add(profile)
+    _profile = UserProfile.get_by_userid(current_user.id)
+    if not _profile:
+        _profile = UserProfile(user_id=current_user.id)
+        db.session.add(_profile)
 
     profile_data = get_oauth_profile(name, token=_token, client=client)
 
-    if profile.extra_data:
-        profile_services = profile.extra_data.get("services", {})
+    if _profile.extra_data:
+        profile_services = _profile.extra_data.get("services", {})
     else:
         profile_services = {}
     profile_services[name] = profile_data
-    profile.extra_data = {"services": profile_services}
-    flag_modified(profile, "extra_data")
+    _profile.extra_data = {"services": profile_services}
+    flag_modified(_profile, "extra_data")
 
     db.session.commit()
 
@@ -101,42 +127,31 @@ def authorize(name):
 @blueprint.route('/profile/<name>')
 @login_required
 def profile(name):
-    profile = get_oauth_profile(name)
-
-    return jsonify(profile)
+    _profile = get_oauth_profile(name)
+    return jsonify(_profile)
 
 
 def get_oauth_profile(name, token=None, client=None):
-    if token:
-        _token = token
-    else:
-        _token = OAuth2Token.get(name=name, user_id=current_user.id)
+    _token = token if token \
+        else OAuth2Token.get(name=name, user_id=current_user.id)
 
     if not _token:
-        return jsonify({"message":
-                        "Your account is not connected to the service"}), 403
+        abort(403, "Your account is not connected to the service")
 
     extra_data = _token.extra_data
-
-    if client:
-        _client = client
-    else:
-        _client = current_auth.create_client(name)
-
-    # return the user profile based on the service
-    user_path = {
-        'github': '/user',
-        'gitlab': 'user',
-        'zenodo': 'api/',
-        'cern': 'Me'
-    }
+    _client = client if client else current_auth.create_client(name)
 
     if name == 'orcid':
-        orcid_id = extra_data.get('orcid_id')
-        resp = _client.get("/{}/record".format(orcid_id),
-                           headers={'Accept': 'application/json'}) \
-            if orcid_id else None
+        orcid = extra_data.get('orcid_id')
+        resp = None
+        if orcid:
+            resp = _client.get('/{}/record'.format(orcid),
+                               headers={'Accept': 'application/json'})
     else:
-        resp = _client.get(user_path[name])
+        resp = _client.get(USER_PROFILE[name]['path'])
 
-    return resp.json() if resp else {}
+    try:
+        res_json = USER_PROFILE[name]['serializer'].dump(resp.json()).data
+    except AttributeError:
+        res_json = {}
+    return res_json
