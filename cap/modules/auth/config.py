@@ -38,6 +38,9 @@
 # INVENIO_EXAMPLE_CLIENT_ID	OAuth Consumer Key
 # INVENIO_EXAMPLE_CLIENT_SECRET	OAuth Consumer Secret
 
+from .serializers import GitHubLoginSchema, GitLabLoginSchema, \
+    OrcidLoginSchema, ZenodoLoginSchema, CERNProfileSchema
+
 
 def orcid_extra_data(client, token):
     return {"orcid_name": token.get("name"), "orcid_id": token.get("orcid")}
@@ -104,4 +107,27 @@ OAUTH_SERVICES = {
              'token_endpoint_auth_method': 'client_secret_post'
          },
          extra_data_method=orcid_extra_data)
+}
+
+# return the user profile based on the service
+USER_PROFILE = {
+    'github': {
+        'path': '/user',
+        'serializer': GitHubLoginSchema()
+    },
+    'gitlab': {
+        'path': 'user',
+        'serializer': GitLabLoginSchema()
+    },
+    'zenodo': {
+        'path': 'api/',
+        'serializer': ZenodoLoginSchema()
+    },
+    'cern': {
+        'path': 'Me',
+        'serializer': CERNProfileSchema()
+    },
+    'orcid': {
+        'serializer': OrcidLoginSchema()
+    }
 }
