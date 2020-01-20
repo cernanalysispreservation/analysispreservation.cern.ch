@@ -67,6 +67,10 @@ def upgrade():
         sa.Column('status', webhook_status_enum, nullable=False),
         sa.Column('record_id', uuid.UUIDType(), nullable=False),
         sa.Column('webhook_id', sa.Integer(), nullable=True),
+        sa.Column('user_id', sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ['user_id'], [u'accounts_user.id'],
+            name='fk_git_subscriber_user_id_accounts_user'),
         sa.ForeignKeyConstraint(
             ['record_id'], [u'records_metadata.id'],
             name='fk_git_subscriber_record_id_records_metadata'),

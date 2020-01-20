@@ -20,6 +20,7 @@ status_enum = sa.Enum('created',
                       'running',
                       'stopped',
                       'failed',
+                      'finished',
                       'deleted',
                       name='reana_workflow_status')
 
