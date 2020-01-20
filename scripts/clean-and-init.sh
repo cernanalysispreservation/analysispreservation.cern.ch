@@ -33,6 +33,7 @@ redis-cli flushall
 
 # Init and create db and indexes
 cap db init
+cap alembic upgrade heads
 
 # Create default location for files
 if [[ -z "${DEBUG}" ]]; then
@@ -40,7 +41,6 @@ if [[ -z "${DEBUG}" ]]; then
   curl -XDELETE http://localhost:9200/_all
 fi
 
-cap alembic upgrade heads
 # install schemas in db
 cap fixtures schemas
 
