@@ -75,7 +75,6 @@ def harvest_das():
             raise DASHarvesterException
 
         query = "dataset status=*"
-        query = 'ls'
         cmd = 'export EOS_MGM_URL=root://eosmedia.cern.ch;' \
               't=$(mktemp);' \
               'eos cp {file_location} {file_location}.backup;' \
