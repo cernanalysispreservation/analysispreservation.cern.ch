@@ -24,6 +24,7 @@
 """Periodic tasks for CMS."""
 
 import os
+import socket
 
 import paramiko
 from celery import shared_task
@@ -57,39 +58,38 @@ def harvest_das():
     def _harvest_das_entries():
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())  # to fix
+        ip = socket.gethostbyname('lxplus.cern.ch')
 
-        ssh.connect('lxplus.cern.ch',
+        ssh.connect(ip,
                     username='cernapcms',
                     auth_timeout=100,
                     look_for_keys=False,
-                    gss_auth=True,
-                    gss_trust_dns=True,
-                    gss_deleg_creds=True,
-                    gss_kex=True)
+                    gss_auth=True)
 
         _, stdout, stderr = ssh.exec_command('sh ~/private/test.sh')
 
         if stdout.channel.recv_exit_status() != 0:
             current_app.logger.error(
-                f'DAS harvesting failed during generating GRID certificate.\n'
-                f'{stderr.read()}')
+                'DAS harvesting failed during generating GRID certificate.\n'
+                '{}'.format(stderr.read()))
             raise DASHarvesterException
 
         query = "dataset status=*"
-        cmd = f'export EOS_MGM_URL=root://eosmedia.cern.ch;' \
-              f't=$(mktemp);' \
-              f'eos cp {file_location} {file_location}.backup;' \
-              f'dasgoclient -query="{query}" > $t && ' \
-              f'eos cp $t {file_location}; out=$?;' \
-              f'rm -f $t;' \
-              f'exit $out;'
+        query = 'ls'
+        cmd = 'export EOS_MGM_URL=root://eosmedia.cern.ch;' \
+              't=$(mktemp);' \
+              'eos cp {file_location} {file_location}.backup;' \
+              'dasgoclient -query="{query}" > $t && ' \
+              'eos cp $t {file_location}; out=$?;' \
+              'rm -f $t;' \
+              'exit $out;'.format(file_location=file_location, query=query)
 
         _, stdout, stderr = ssh.exec_command(cmd)
 
         if stdout.channel.recv_exit_status() != 0:
             current_app.logger.error(
-                f'DAS harvesting failed during querying DAS client.\n'
-                f'{stderr.read()}')
+                'DAS harvesting failed during querying DAS client.\n'
+                '{}'.format(stderr.read()))
             raise DASHarvesterException
 
         current_app.logger.info('File with latest DAS entries saved.')
