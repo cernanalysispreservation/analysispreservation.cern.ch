@@ -119,9 +119,15 @@ class SearchPage extends React.Component {
     return (
       <Box flex={true}>
         {utils}
-        <Box flex={true} direction="row">
+        <Box flex={true} direction="row" colorIndex="light-2">
           {aggs}
-          {results}
+          <Box
+            flex={true}
+            size={{ width: { max: "xxlarge" } }}
+            colorIndex="light-1"
+          >
+            {results}
+          </Box>
         </Box>
       </Box>
     );

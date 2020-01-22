@@ -14,104 +14,128 @@ import ListItem from "grommet/components/ListItem";
 import { KeywordLabel } from "../StyledComponents";
 
 class SearchResults extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        return this.props.results.length > 0 ? (
-            <Box full={true} colorIndex="light-1">
-                <List>
-                    {this.props.results.map((item, index) => {
-                        let rights = '';
-                        let { id, is_owner, can_admin, can_update, updated, status, labels, metadata = {} } = item;
+  render() {
+    return this.props.results.length > 0 ? (
+      <Box
+        flex={true}
+        size={{ width: { max: "xxlarge" } }}
+        colorIndex="light-1"
+      >
+        <List>
+          {this.props.results.map((item, index) => {
+            let rights = "";
+            let {
+              id,
+              is_owner,
+              can_admin,
+              can_update,
+              updated,
+              status,
+              labels,
+              metadata = {}
+            } = item;
 
-                        let {
-                            general_title: general_title,
-                            basic_info: { abstract: abstract } = {}
-                        } = metadata;
+            let {
+              general_title: general_title,
+              basic_info: { abstract: abstract } = {}
+            } = metadata;
 
-                        if (!is_owner && (can_update || can_admin))
-                            rights = 'contributor';
-                        else if(is_owner)
-                            rights = 'owner';
+            if (!is_owner && (can_update || can_admin)) rights = "contributor";
+            else if (is_owner) rights = "owner";
 
+            return (
+              <ListItem key={`${id}-${index}`} separator="none" pad="none">
+                <Box
+                  separator="bottom"
+                  style={{ width: "100%" }}
+                  pad={{
+                    between: "small",
+                    horizontal: "medium",
+                    vertical: "small"
+                  }}
+                >
+                  <Box direction="row" justify="between">
+                    <Box>
+                      <Anchor
+                        path={
+                          status === "published"
+                            ? `/published/${id}`
+                            : `/drafts/${id}`
+                        }
+                        style={{ textDecoration: "none", color: "#666" }}
+                        reverse
+                        pad="none"
+                      >
+                        <Label size="medium">
+                          {general_title ? (
+                            <span> {general_title} </span>
+                          ) : (
+                            <span style={{ color: "#ccc" }}>
+                              No title provided
+                            </span>
+                          )}
+                        </Label>
+                      </Anchor>
+                    </Box>
+                    <Box direction="row">
+                      <ReactTooltip />
+                      <Box>
+                        <KeywordLabel> {rights} </KeywordLabel>
+                      </Box>
+                      {labels.map(item => {
                         return (
-                            <ListItem
-                                size={{width: "xxlarge"}}
-                                key={`${id}-${index}`}
-                                separator="none"
-                                pad="none"
-                            >
-                                <Box separator="bottom" style={{width: "100%"}} pad={{between: "small", horizontal: "medium", vertical: "small"}}>
-                                    <Box direction="row" justify="between">
-                                        <Box>
-                                            <Anchor
-                                                path={status === "published" ? `/published/${id}` : `/drafts/${id}`}
-                                                style={{textDecoration: "none", color: "#666"}}
-                                                reverse
-                                                pad="none"
-                                            >
-                                                <Label size="medium">
-                                                    {general_title ? (
-                                                        <span> {general_title} </span> 
-                                                    ) : (
-                                                        <span style={{ color: "#ccc" }}>
-                                                            No title provided
-                                                        </span>
-                                                    )}
-                                                </Label>
-                                            </Anchor>
-                                        </Box>
-                                        <Box direction="row">
-                                            <ReactTooltip />
-                                            <Box><KeywordLabel> {rights} </KeywordLabel></Box>
-                                            {labels.map(item => {
-                                                return(
-                                                    <Box> <KeywordLabel> {item} </KeywordLabel></Box>
-                                                )
-                                            })}
-                                        </Box>
-                                    </Box>
-                                    { abstract ? (
-                                    <Box>
-                                            <Truncate lines={3} ellipsis={<span>...</span>}>
-                                            {abstract}
-                                            </Truncate>
-                                </Box>) : null }
-                                    <Box direction="row" style={{color: "#ccc"}}>
-                                      <span>Updated&nbsp;</span>
-                                      <TimeAgo date={updated} minPeriod="60" />
-                                    </Box>
-                                </Box>
-                            </ListItem>
+                          <Box>
+                            {" "}
+                            <KeywordLabel> {item} </KeywordLabel>
+                          </Box>
                         );
-                    })}
-                </List>
-            </Box>
-        ) : null;
-    }
+                      })}
+                    </Box>
+                  </Box>
+                  {abstract ? (
+                    <Box>
+                      <Truncate lines={3} ellipsis={<span>...</span>}>
+                        {abstract}
+                      </Truncate>
+                    </Box>
+                  ) : null}
+                  <Box direction="row" style={{ color: "#ccc" }}>
+                    <span>Updated&nbsp;</span>
+                    <TimeAgo date={updated} minPeriod="60" />
+                  </Box>
+                </Box>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Box>
+    ) : null;
+  }
 }
 
 SearchResults.propTypes = {
-    results: PropTypes.array.isRequired,
-    history: PropTypes.object.isRequired,
-    userId: PropTypes.string,
-    size: PropTypes.string,
-    user_id: PropTypes.number
+  results: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  userId: PropTypes.string,
+  size: PropTypes.string,
+  user_id: PropTypes.number
 };
 
 function mapStateToProps(state) {
-    return {
-        user_id: state.auth.getIn(["currentUser", "userId"])
-    };
+  return {
+    user_id: state.auth.getIn(["currentUser", "userId"])
+  };
 }
 
 function mapDispatchToProps() {
-    return {};
+  return {};
 }
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(withRouter(SearchResults));
