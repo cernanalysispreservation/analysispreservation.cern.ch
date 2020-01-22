@@ -10,7 +10,6 @@ import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
 import CloseIcon from "grommet/components/icons/base/Close";
 
 import { updateGeneralTitle } from "../../../actions/draftItem";
-import { Title } from "grommet";
 
 class EditableTitle extends React.Component {
   constructor(props) {
@@ -100,7 +99,7 @@ class EditableTitle extends React.Component {
           style={{
             border: this.state.hoverTitle
               ? "1px solid #fff"
-              : "1px solid transparent",
+              : "1px solid transparent"
           }}
         >
           <Label align="start" pad="none" margin="none">
