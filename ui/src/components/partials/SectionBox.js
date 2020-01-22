@@ -31,11 +31,7 @@ function SectionBox(props) {
         <ReactTooltip />
       </Box>
 
-      <Box
-        flex={false}
-        size={{ height: { max: "medium" } }}
-        colorIndex="light-1"
-      >
+      <Box flex={false} size={{ height: { max: "large" } }}>
         {body}
       </Box>
       {more && (
