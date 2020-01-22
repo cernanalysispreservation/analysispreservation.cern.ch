@@ -14,7 +14,7 @@ let FieldTemplate = function(props) {
   return children.props && children.props.formData === undefined ? null : (
     <Box flex={true} direction="row">
       {label ? (
-        <Box>
+        <Box flex={true}>
           <FieldHeader title={label} />
         </Box>
       ) : null}

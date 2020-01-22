@@ -13,9 +13,9 @@ class TextWidget extends React.Component {
   render() {
     return (
       <Box
-        style={{ overflow: "hidden" }}
-        pad={{ horizontal: "medium" }}
+        style={{ overflow: "hidden", wordBreak: "break-all" }}
         size={{ width: "xxlarge" }}
+        pad={{ horizontal: "medium" }}
         justify="center"
         flex={false}
         alignSelf="end"
