@@ -5,6 +5,7 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import { filter } from "lodash";
 import AnalysisReuseMode from "../components/AnalysisReuseMode";
+import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class TabField extends React.Component {
   constructor(props) {
@@ -71,6 +72,7 @@ class TabField extends React.Component {
         prop => prop.name == this.state.active
       );
     }
+
     return (
       <Box
         flex={true}
@@ -103,20 +105,27 @@ class TabField extends React.Component {
                 {tabs.map(
                   (tab, index) =>
                     tab.name === "analysis_reuse_mode" ? null : (
-                      <Box
-                        colorIndex={
-                          tab.name == this.state.active ? "light-1" : null
-                        }
-                        key={index}
-                        pad="small"
-                        onClick={this._onTabClick.bind(this, tab)}
+                      <ErrorFieldIndicator
+                        errors={this.props.formContext.ref}
+                        id={tab.name}
+                        properties={this.props.properties}
+                        tab={true}
                       >
-                        <Heading tag="h5" margin="none" size="medium" strong>
-                          {tab.title ||
-                            tab.content.props.schema.title ||
-                            "Untitled"}
-                        </Heading>
-                      </Box>
+                        <Box
+                          colorIndex={
+                            tab.name == this.state.active ? "light-1" : null
+                          }
+                          key={index}
+                          pad="small"
+                          onClick={this._onTabClick.bind(this, tab)}
+                        >
+                          <Heading tag="h5" margin="none" size="medium" strong>
+                            {tab.title ||
+                              tab.content.props.schema.title ||
+                              "Untitled"}
+                          </Heading>
+                        </Box>
+                      </ErrorFieldIndicator>
                     )
                 )}
               </Box>
@@ -158,7 +167,8 @@ TabField.propTypes = {
   required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.array
+  properties: PropTypes.array,
+  formContext: PropTypes.object
 };
 
 export default TabField;

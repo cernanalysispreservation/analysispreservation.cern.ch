@@ -5,14 +5,7 @@ import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 
 let FieldTemplate = function(props) {
-  const {
-    id,
-    label,
-    rawDescription,
-    rawErrors = [],
-    children,
-    uiSchema
-  } = props;
+  const { id, label, rawDescription, children, uiSchema, formContext } = props;
 
   let _errors = "";
   let gridColumns = null;
@@ -21,10 +14,28 @@ let FieldTemplate = function(props) {
     return <React.Fragment />;
   }
 
-  if (rawErrors.length > 0)
-    rawErrors.map((error, index) => {
-      _errors += `(${index + 1}) ${error} `;
+  if (formContext.ref && formContext.ref.length > 0) {
+    formContext.ref.map(item => {
+      if (item.name) {
+        let splitted = item.name.split(".");
+        let name = splitted[splitted.length - 1];
+        let pro = item.property
+          .replace(/\[/g, "_")
+          .replace(/\]/g, "")
+          .replace(/\./g, "_");
+        let elementId = id.replace("root", "");
+
+        if (
+          label &&
+          pro === elementId &&
+          name.replace("_", " ").toLowerCase() ===
+            label.replace("_", " ").toLowerCase()
+        ) {
+          _errors = item.message;
+        }
+      }
     });
+  }
 
   // if the grid options exists in uiSchema pass it as prop
   // else set it full width
@@ -41,7 +52,6 @@ let FieldTemplate = function(props) {
     return (
       <Box
         style={{
-          borderLeft: rawErrors.length > 0 ? "2px #F04B37 solid" : null,
           gridColumn: gridColumns ? gridColumns : "1 / 5"
         }}
         flex={
@@ -67,7 +77,7 @@ let FieldTemplate = function(props) {
         </span>
       }
       key={id + label}
-      error={rawErrors.length > 0 ? _errors : null}
+      error={_errors.length > 0 ? _errors : null}
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5"
       }}
@@ -81,10 +91,10 @@ FieldTemplate.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
   rawDescription: PropTypes.string,
-  rawErrors: PropTypes.array,
   schema: PropTypes.object,
   children: PropTypes.node,
-  uiSchema: PropTypes.object
+  uiSchema: PropTypes.object,
+  formContext: PropTypes.object
 };
 
 export default FieldTemplate;

@@ -150,8 +150,8 @@ const objschema = {
 
 const objschemaui = {
   "ui:options": {
-    size: "xxlarge",
-    align: "center",
+    size: "large",
+    align: "full",
     display: "grid"
   },
   basic_info: {
@@ -4289,7 +4289,7 @@ const schemaLHCB = {
 
 const schemaLHCBUI = {
   "ui:options": {
-    size: "xlarge",
+    size: "xxlarge",
     align: "center",
     display: "grid"
   },

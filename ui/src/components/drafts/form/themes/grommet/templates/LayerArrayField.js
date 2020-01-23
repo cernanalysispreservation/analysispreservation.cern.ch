@@ -14,6 +14,7 @@ import FormUpIcon from "grommet/components/icons/base/FormUp";
 import FormDownIcon from "grommet/components/icons/base/FormDown";
 
 import pluralize from "pluralize";
+import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -47,7 +48,6 @@ class ArrayFieldTemplate extends React.Component {
 
     return stringify.reduce(reducer, "");
   };
-
   render() {
     return (
       <Box flex={false} size={{ height: { max: "small" } }}>
@@ -74,28 +74,36 @@ class ArrayFieldTemplate extends React.Component {
                     }
                   />
                   <Box flex={true} direction="row" wrap={false}>
-                    <Box
-                      flex={true}
-                      pad="small"
-                      onClick={this._showLayer.bind(this, element.index)}
+                    <ErrorFieldIndicator
+                      errors={this.props.formContext.ref}
+                      id={element.children.props.idSchema.$id}
                     >
-                      <ItemBrief
-                        index={element.index}
-                        item={element.children.props.formData}
-                        options={element.children.props.uiSchema["ui:options"]}
-                        label={
-                          this.stringifyItem(
-                            element.children.props.uiSchema["ui:options"],
-                            element.children.props.formData
-                          ) ||
-                          `${
-                            this.props.title
-                              ? pluralize.singular(this.props.title)
-                              : "Item"
-                          } #${element.index + 1}`
-                        }
-                      />
-                    </Box>
+                      <Box
+                        flex={true}
+                        pad="small"
+                        justify="center"
+                        onClick={this._showLayer.bind(this, element.index)}
+                      >
+                        <ItemBrief
+                          index={element.index}
+                          item={element.children.props.formData}
+                          options={
+                            element.children.props.uiSchema["ui:options"]
+                          }
+                          label={
+                            this.stringifyItem(
+                              element.children.props.uiSchema["ui:options"],
+                              element.children.props.formData
+                            ) ||
+                            `${
+                              this.props.title
+                                ? pluralize.singular(this.props.title)
+                                : "Item"
+                            } #${element.index + 1}`
+                          }
+                        />
+                      </Box>
+                    </ErrorFieldIndicator>
                     <Box direction="row" justify="between">
                       <Button
                         onClick={
@@ -159,7 +167,8 @@ ArrayFieldTemplate.propTypes = {
   properties: PropTypes.object,
   onAddClick: PropTypes.func,
   reorder: PropTypes.bool,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  formContext: PropTypes.object
 };
 
 export default ArrayFieldTemplate;

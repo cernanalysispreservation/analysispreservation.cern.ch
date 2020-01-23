@@ -220,8 +220,8 @@ class TextWidget extends Component {
             )}
           </Box>
           {this.state.error && (
-            <Box>
-              <span style={{ color: "red" }}>{this.state.error}</span>
+            <Box align="end">
+              <span style={{ color: "#F04B37" }}>{this.state.error}</span>
             </Box>
           )}
         </Box>

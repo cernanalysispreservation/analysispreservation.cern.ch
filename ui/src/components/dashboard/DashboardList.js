@@ -96,7 +96,7 @@ DashboardList.propTypes = {
   listType: PropTypes.string,
   list: PropTypes.object,
   loading: PropTypes.bool,
-  ListItem: PropTypes.node
+  ListItem: PropTypes.func
 };
 
 export default DashboardList;
