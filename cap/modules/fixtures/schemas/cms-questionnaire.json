@@ -658,6 +658,12 @@
       "_experiment": {
         "type": "string"
       },
+      "_fetched_from": {
+        "type": "string"
+      },
+      "_user_edited": {
+        "type": "boolean"
+      },
       "_access": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"

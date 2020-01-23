@@ -62,7 +62,9 @@ def synchronize_cadi_entries(limit=None):
         return {
             '$ana_type': 'cms-analysis',
             'cadi_info': cadi_info,
-            'general_title': cadi_id,
+            'general_title': cadi_info.get('name') or cadi_id,
+            '_fetched_from': 'cadi',
+            '_user_edited': False,
             'basic_info': {
                 'cadi_id': cadi_id
             }
@@ -147,7 +149,7 @@ def get_all_from_cadi():
     # filter out inactive or superseded entries
     entries = [
         entry for entry in all_entries
-        if entry['status'] not in ['Inactive', 'SUPERSEDED']
+        if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free']
     ]
 
     return entries

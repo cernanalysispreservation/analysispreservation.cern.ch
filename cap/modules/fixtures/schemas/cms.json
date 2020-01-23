@@ -387,6 +387,12 @@
       },
       "_experiment": {
         "type": "string"
+      },
+      "_fetched_from": {
+        "type": "string"
+      },
+      "_user_edited": {
+        "type": "boolean"
       }
     }
   },
@@ -413,6 +419,14 @@
         },
         "_experiment": {
           "type": "text"
+        },
+        "_fetched_from": {
+          "type": "text",
+          "copy_to": "fetched_from"
+        },
+        "_user_edited": {
+          "type": "boolean",
+          "copy_to": "user_edited"
         },
         "_created": {
           "type": "date",

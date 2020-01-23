@@ -28,6 +28,8 @@ const transformSchema = schema => {
     "$schema",
     "general_title",
     "_experiment",
+    "_fetched_from",
+    "_user_edited",
     "control_number"
   ];
 

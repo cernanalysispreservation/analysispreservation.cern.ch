@@ -16,18 +16,6 @@ from os.path import dirname, join
 
 import requests
 from flask import request
-from flask import request
-from jsonresolver import JSONResolver
-from jsonresolver.contrib.jsonref import json_loader_factory
-
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             CreateDepositPermission,
-                                             ReadDepositPermission)
-from cap.modules.oauthclient.contrib.cern import disconnect_handler
-from cap.modules.oauthclient.rest_handlers import (authorized_signup_handler,
-                                                   signup_handler)
-from cap.modules.records.permissions import ReadRecordPermission
-from cap.modules.search.facets import nested_filter, prefix_filter
 from flask_principal import RoleNeed
 from invenio_deposit import config as deposit_config
 from invenio_deposit.config import DEPOSIT_REST_SORT_OPTIONS
@@ -37,6 +25,8 @@ from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
 from invenio_records_rest.facets import terms_filter
 from invenio_records_rest.utils import allow_all, deny_all
+from jsonresolver import JSONResolver
+from jsonresolver.contrib.jsonref import json_loader_factory
 
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              CreateDepositPermission,
@@ -122,7 +112,7 @@ CELERY_BEAT_SCHEDULE = {
     'ping_webhooks': {
         'task': 'cap.modules.repoimporter.tasks.ping_webhooks',
         'schedule': timedelta(hours=12),
-        },
+    },
     'das_harvester': {
         'task': 'cap.modules.experiments.tasks.cms.harvest_das',
         'schedule': timedelta(days=1),
@@ -165,9 +155,12 @@ SESSION_COOKIE_SECURE = False
 #: should be set to the correct host and it is strongly recommended to only
 #: route correct hosts to the application.
 APP_ALLOWED_HOSTS = [
-    'localhost', 'analysispreservation.web.cern.ch',
-    'analysispreservation.cern.ch', 'analysispreservation-dev.web.cern.ch',
-    'analysispreservation-dev.cern.ch', 'analysispreservation-qa.web.cern.ch',
+    'localhost',
+    'analysispreservation.web.cern.ch',
+    'analysispreservation.cern.ch',
+    'analysispreservation-dev.web.cern.ch',
+    'analysispreservation-dev.cern.ch',
+    'analysispreservation-qa.web.cern.ch',
     'analysispreservation-qa.cern.ch'
 ]
 
@@ -266,11 +259,6 @@ CAP_FACETS = {
                 'field': 'cadi_status'
             }
         },
-        'facet_publication_status': {
-            'terms': {
-                'field': 'publication_status.keyword'
-            }
-        },
         'facet_cms_working_group': {
             'terms': {
                 "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"  # noqa
@@ -313,9 +301,7 @@ CAP_FACETS = {
     'post_filters': {
         'type': terms_filter('_type'),
         'cms_working_group': prefix_filter('cadi_id'),
-        'publication_status': terms_filter('publication_status.keyword'),
         'cadi_status': terms_filter('cadi_status'),
-        'conference': terms_filter('conference'),
         'physics_objects': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection'

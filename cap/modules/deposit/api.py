@@ -76,6 +76,8 @@ PRESERVE_FIELDS = (
     '_files',
     '_experiment',
     '_access',
+    '_user_edited',
+    '_fetched_from',
     'general_title',
     '$schema',
 )
@@ -137,6 +139,8 @@ class CAPDeposit(Deposit):
             '_deposit',
             '_access',
             '_experiment',
+            '_fetched_from',
+            '_user_edited',
             'general_title',
             '$schema',
         )
@@ -162,6 +166,8 @@ class CAPDeposit(Deposit):
             '/_access',
             '/_files',
             '/_experiment',
+            '/_fetched_from',
+            '/_user_edited',
             '/$schema',
         )
 
@@ -407,6 +413,11 @@ class CAPDeposit(Deposit):
     def commit(self, *args, **kwargs):
         """Synchronize files before commit."""
         self.files.flush()
+
+        # mark as manually edited
+        if current_user:
+            self['_user_edited'] = True
+
         return super(CAPDeposit, self).commit(*args, **kwargs)
 
     def _add_user_permissions(self, user, permissions, session):
