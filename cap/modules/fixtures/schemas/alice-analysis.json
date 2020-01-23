@@ -33,6 +33,12 @@
       "_experiment": {
         "type": "string"
       },
+      "_fetched_from": {
+        "type": "string"
+      },
+      "_user_edited": {
+        "type": "boolean"
+      },
       "_access": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
@@ -77,6 +83,14 @@
         "_experiment": {
           "type": "text"
         },
+        "_fetched_from": {
+          "type": "text",
+          "copy_to": "fetched_from"
+        },
+        "_user_edited": {
+          "type": "boolean",
+          "copy_to": "user_edited"
+        },
         "_created": {
           "type": "date",
           "copy_to": "created"
@@ -92,7 +106,7 @@
     }
   },
   "deposit_options": {
-    "ui:order": ["analysis_title", "train_analysis"],
+    "ui:order": ["analysis_title", "train_analysis", "*"],
     "train_analysis": {
       "items": {
         "ui:order": [
