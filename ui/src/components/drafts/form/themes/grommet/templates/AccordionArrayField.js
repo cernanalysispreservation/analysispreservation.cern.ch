@@ -10,6 +10,7 @@ import AddIcon from "grommet/components/icons/base/Add";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
+import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class AccordionArrayField extends React.Component {
   constructor(props) {
@@ -39,46 +40,51 @@ class AccordionArrayField extends React.Component {
 
   render() {
     return (
-      <Accordion key={this.props.header} animate={false} openMulti={false}>
-        <AccordionPanel heading={this.props.header}>
-          {this.props.items.length > 0 ? (
-            <Box pad="medium" colorIndex="light-2">
-              {this.props.items.map((element, index) => (
-                <Box key={index} direction="row" flex={true}>
-                  <Box flex={true}>{element.children}</Box>
-                  <Box flex={false}>
-                    <Button
-                      onClick={event =>
-                        element.onDropIndexClick(element.index)(event)
-                      }
-                      icon={this.props.readonly ? null : <FormTrashIcon />}
-                    />
+      <ErrorFieldIndicator
+        errors={this.props.formContext.ref}
+        id={this.props.idSchema.$id}
+      >
+        <Accordion key={this.props.header} animate={false} openMulti={false}>
+          <AccordionPanel heading={this.props.header}>
+            {this.props.items.length > 0 ? (
+              <Box pad="medium" colorIndex="light-2">
+                {this.props.items.map((element, index) => (
+                  <Box key={index} direction="row" flex={true}>
+                    <Box flex={true}>{element.children}</Box>
+                    <Box flex={false}>
+                      <Button
+                        onClick={event =>
+                          element.onDropIndexClick(element.index)(event)
+                        }
+                        icon={this.props.readonly ? null : <FormTrashIcon />}
+                      />
+                    </Box>
                   </Box>
-                </Box>
-              ))}
-              <Box justify="center" align="center">
-                <Button
-                  onClick={this._onAddClick.bind(this)}
-                  icon={<AddIcon />}
-                />
-              </Box>
-            </Box>
-          ) : (
-            <ListPlaceholder
-              addControl={
-                this.props.readonly ? null : (
+                ))}
+                <Box justify="center" align="center">
                   <Button
                     onClick={this._onAddClick.bind(this)}
                     icon={<AddIcon />}
                   />
-                )
-              }
-              emptyMessage="You do not have any items at the moment."
-              unfilteredTotal={0}
-            />
-          )}
-        </AccordionPanel>
-      </Accordion>
+                </Box>
+              </Box>
+            ) : (
+              <ListPlaceholder
+                addControl={
+                  this.props.readonly ? null : (
+                    <Button
+                      onClick={this._onAddClick.bind(this)}
+                      icon={<AddIcon />}
+                    />
+                  )
+                }
+                emptyMessage="You do not have any items at the moment."
+                unfilteredTotal={0}
+              />
+            )}
+          </AccordionPanel>
+        </Accordion>
+      </ErrorFieldIndicator>
     );
   }
 }
@@ -93,7 +99,8 @@ AccordionArrayField.propTypes = {
   properties: PropTypes.object,
   header: PropTypes.object,
   onAddClick: PropTypes.func,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  formContext: PropTypes.object
 };
 
 export default AccordionArrayField;

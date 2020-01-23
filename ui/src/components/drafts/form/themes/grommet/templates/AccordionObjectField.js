@@ -6,6 +6,7 @@ import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 
 import FieldHeader from "../components/FieldHeader";
+import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class AccordionObjectField extends React.Component {
   constructor(props) {
@@ -27,37 +28,42 @@ class AccordionObjectField extends React.Component {
       return <Box>{this.props.properties.map(prop => prop.content)}</Box>;
     } else {
       return (
-        <Accordion animate={false} openMulti={false}>
-          <AccordionPanel
-            heading={
-              <FieldHeader
-                title={this.props.title}
-                required={this.props.required}
-                description={this.props.description}
-              />
-            }
-          >
-            <Box
-              colorIndex="light-2"
-              pad="medium"
-              style={{
-                display:
-                  this.props.uiSchema["ui:options"] &&
-                  this.props.uiSchema["ui:options"].display
-                    ? this.props.uiSchema["ui:options"].display
-                    : "grid",
-                gridTemplateColumns:
-                  this.props.uiSchema["ui:options"] &&
-                  this.props.uiSchema["ui:options"].display &&
-                  this.props.uiSchema["ui:options"].display === "grid"
-                    ? "repeat(4,1fr)"
-                    : null
-              }}
+        <ErrorFieldIndicator
+          errors={this.props.formContext.ref}
+          id={this.props.idSchema.$id}
+        >
+          <Accordion animate={false} openMulti={false}>
+            <AccordionPanel
+              heading={
+                <FieldHeader
+                  title={this.props.title}
+                  required={this.props.required}
+                  description={this.props.description}
+                />
+              }
             >
-              {this.props.properties.map(prop => prop.content)}
-            </Box>
-          </AccordionPanel>
-        </Accordion>
+              <Box
+                colorIndex="light-2"
+                pad="medium"
+                style={{
+                  display:
+                    this.props.uiSchema["ui:options"] &&
+                    this.props.uiSchema["ui:options"].display
+                      ? this.props.uiSchema["ui:options"].display
+                      : "grid",
+                  gridTemplateColumns:
+                    this.props.uiSchema["ui:options"] &&
+                    this.props.uiSchema["ui:options"].display &&
+                    this.props.uiSchema["ui:options"].display === "grid"
+                      ? "repeat(4,1fr)"
+                      : null
+                }}
+              >
+                {this.props.properties.map(prop => prop.content)}
+              </Box>
+            </AccordionPanel>
+          </Accordion>
+        </ErrorFieldIndicator>
       );
     }
   }
@@ -69,7 +75,8 @@ AccordionObjectField.propTypes = {
   required: PropTypes.bool,
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
-  properties: PropTypes.array
+  properties: PropTypes.array,
+  formContext: PropTypes.object
 };
 
 export default AccordionObjectField;

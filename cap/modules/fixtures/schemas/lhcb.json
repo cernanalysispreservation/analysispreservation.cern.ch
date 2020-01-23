@@ -11,8 +11,7 @@
     "type": "object",
     "properties": {
       "_buckets": {
-        "$ref":
-          "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
       },
       "stripping_turbo_selection": {
         "items": {
@@ -93,13 +92,11 @@
           }
         },
         "type": "array",
-        "description":
-          "Please provide information about the steps of the analysis",
+        "description": "Please provide information about the steps of the analysis",
         "title": "ntuple/userDST-production"
       },
       "_files": {
-        "$ref":
-          "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
       },
       "basic_info": {
         "properties": {
@@ -195,8 +192,7 @@
         "title": "Basic Information",
         "type": "object",
         "id": "basic_info",
-        "description":
-          "Please provide some information relevant for all parts of the Analysis here"
+        "description": "Please provide some information relevant for all parts of the Analysis here"
       },
       "$ana_type": {
         "type": "string"
@@ -211,12 +207,10 @@
         "type": "boolean"
       },
       "_access": {
-        "$ref":
-          "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
       },
       "_deposit": {
-        "$ref":
-          "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
+        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
       },
       "additional_resources": {
         "title": "Additional Resources",
@@ -328,8 +322,7 @@
             "title": "Documentations"
           }
         },
-        "description":
-          "Please provide information about the additional resources of the analysis"
+        "description": "Please provide information about the additional resources of the analysis"
       },
       "$schema": {
         "type": "string"
@@ -544,6 +537,9 @@
     "ui:object": "tabView",
     "ui:options": {
       "full": true,
+      "size": "xlarge",
+      "align": "center",
+      "display": "flex",
       "view": {
         "vertical": true,
         "sidebarColor": "grey-5-a"

@@ -337,7 +337,6 @@ export function postAndPutPublished(data = {}, schema, draft_id) {
       .post(uri)
       .then(resp => {
         dispatch(editPublishedSuccess(draft_id, resp.data.metadata));
-
         return axios
           .put(`/api/deposits/${draft_id}`, data)
           .then(response => {

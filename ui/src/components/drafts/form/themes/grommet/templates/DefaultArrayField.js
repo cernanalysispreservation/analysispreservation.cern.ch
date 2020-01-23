@@ -9,6 +9,7 @@ import ListItem from "grommet/components/ListItem";
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
 import ArrayUtils from "../components/ArrayUtils";
+import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class DefaultArrayField extends React.Component {
   constructor(props) {
@@ -23,7 +24,15 @@ class DefaultArrayField extends React.Component {
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
                     <ListItem key={element.index} separator="none" pad="none">
-                      <Box flex={true}>{element.children}</Box>
+                      <Box flex={true} margin={{ bottom: "small" }}>
+                        <ErrorFieldIndicator
+                          errors={this.props.formContext.ref}
+                          id={element.children.props.idSchema.$id}
+                          hideIndicator
+                        >
+                          {element.children}
+                        </ErrorFieldIndicator>
+                      </Box>
                       {!this.props.readonly && (
                         <Button
                           onClick={event =>
@@ -57,7 +66,8 @@ class DefaultArrayField extends React.Component {
 DefaultArrayField.propTypes = {
   items: PropTypes.array,
   options: PropTypes.object,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  formContext: PropTypes.object
 };
 
 export default DefaultArrayField;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 // Customized RJSF component ( Grommet )
@@ -15,9 +15,12 @@ import Form from "react-jsonschema-form";
 import Box from "grommet/components/Box";
 import objectPath from "object-path";
 
-class DepositForm extends React.Component {
+class DepositForm extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      errors: []
+    };
   }
 
   _validate(formData, errors) {
@@ -29,11 +32,10 @@ class DepositForm extends React.Component {
         errorObj.addError(error.message);
       }
     });
-
     return errors;
   }
 
-  transformErrors(errors) {
+  transformErrors = errors => {
     errors.map(error => {
       error.name = error.property;
       if (error.message == "should be string") {
@@ -62,12 +64,17 @@ class DepositForm extends React.Component {
         // *** propagation only for the first level (not nested ones)
         // index == 0 ?
         errors.push({ property: "." + _path.join(".") });
+
         //: null;
       });
+
       return error;
     });
+
+    this.setState({ errors });
+
     return errors;
-  }
+  };
 
   render() {
     return (
@@ -89,10 +96,11 @@ class DepositForm extends React.Component {
             noValidate={false}
             validate={this._validate.bind(this)}
             onError={() => {}}
-            transformErrors={this.transformErrors.bind(this)}
+            transformErrors={this.transformErrors}
             formData={this.props.formData}
             onBlur={() => {}}
             onChange={this.props.onChange}
+            formContext={{ ref: this.state.errors }}
           >
             <span />
           </Form>
