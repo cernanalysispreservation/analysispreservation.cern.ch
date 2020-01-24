@@ -138,7 +138,7 @@ def test_get_records_default_serializer(client, superuser,
         'created_by': superuser.email,
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'labels': ['v0'],
+        'labels': [],
         'access': {
             'record-admin': {
                 'roles': [],
@@ -252,7 +252,7 @@ def test_get_record_when_superuser_returns_record(client, db, users,
         'created_by': owner.email,
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'labels': ['v0'],
+        'labels': [],
         'access': {
             'record-admin': {
                 'roles': [],

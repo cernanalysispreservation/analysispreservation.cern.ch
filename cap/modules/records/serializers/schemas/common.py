@@ -39,16 +39,16 @@ LABELS = {
         'path': 'metadata.basic_info.cadi_id',
         'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
     },
-    'cms_keywords': {
-        'path': 'metadata.additional_resources.keywords',
-        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
-    },
-    'version': {
-        'path': 'revision',
-        'condition': lambda obj: obj['metadata']['_deposit']['status'] == \
-        'published',
-        'formatter': 'v{}'
-    }
+    #    'cms_keywords': {
+    #        'path': 'metadata.additional_resources.keywords',
+    #        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    #    },
+    #    'version': {
+    #        'path': 'revision',
+    #      'condition': lambda obj: obj['metadata']['_deposit']['status'] == \
+    #        'published',
+    #        'formatter': 'v{}'
+    #    }
 }
 
 
