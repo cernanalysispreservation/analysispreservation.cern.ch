@@ -75,10 +75,17 @@ class BasicDepositSchema(Schema):
     def get_metadata(self, obj):
         result = {
             k: v
-            for k, v in obj.get('metadata', {}).items()
+            for k,
+            v in obj.get('metadata', {}).items()
             if k not in [
-                'control_number', '$schema', '_deposit', '_experiment',
-                '_access', '_files'
+                'control_number',
+                '$schema',
+                '_deposit',
+                '_experiment',
+                '_access',
+                '_files',
+                '_user_edited',
+                '_fetched_from'
             ]
         }
         return result

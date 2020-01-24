@@ -25,14 +25,11 @@
 """Integration tests for publishing deposits."""
 
 import json
-import re
 
-from flask_principal import ActionNeed
 from invenio_access.models import ActionRoles, ActionUsers
 from pytest import mark
 
 from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.user.utils import get_existing_or_register_role
 from conftest import _datastore
 
 
@@ -148,7 +145,7 @@ def test_deposit_publish_changes_status_and_creates_record(
         'created_by': owner.email,
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
-        'labels': ['v2'],
+        'labels': [],
         'metadata': {},
         'files': [],
         'access': {

@@ -167,7 +167,7 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
             'name': 'cms-analysis',
             'version': '1.0.0'
         },
-        'labels': ['v0'],
+        'labels': [],
         'created_by': owner.email,
         'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
