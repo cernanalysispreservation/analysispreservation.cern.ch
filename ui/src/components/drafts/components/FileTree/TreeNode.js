@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 
 import FolderIcon from "grommet/components/icons/base/Folder";
+import CaretNextIcon from "grommet/components/icons/base/CaretNext";
+import CaretDownIcon from "grommet/components/icons/base/CaretDown";
+
+import { FaCaretRight, FaCaretDown } from "react-icons/fa";
 
 import FileItem from "../FileItem";
 
@@ -17,32 +21,46 @@ class TreeNode extends React.Component {
     this.setState({ enabled: !this.state.enabled });
   };
 
-  render() {
-    let { data } = this.props;
+  _renderHeader = () => {
+    let { data, root } = this.props;
     const isDirectory = data.children ? true : false;
+
     return (
-      <Box>
-        <Box flex="shrink" justify="between" direction="row" wrap={false}>
+      <Box flex={true} justify="between" direction="row" wrap={false}>
+        <Box flex={true} direction="row" wrap={false}>
+          <Box style={{ marginRight: "5px", width: "15px" }}>
+            {isDirectory ? (
+              <Box onClick={this.onClick}>
+                {this.state.enabled ? (
+                  <FaCaretDown width="4" />
+                ) : (
+                  <FaCaretRight width="4" />
+                )}
+              </Box>
+            ) : null}
+          </Box>
           {isDirectory ? (
             <Box
               direction="row"
               justify="center"
               align="center"
-              style={{ marginBottom: "3px" }}
+              style={{
+                marginBottom: "3px",
+                fontWeight: "900"
+              }}
               onClick={this.onClick}
             >
-              {this.state.enabled ? "-" : "+"}
               <Box justify="center" align="center" flex={false}>
                 <FolderIcon size="xsmall" />
               </Box>
               <Box
-                pad={{ horizontal: "small" }}
+                style={{ paddingLeft: "5px" }}
                 direction="row"
                 wrap={false}
                 flex={true}
               >
                 <Box flex={true} justify="between">
-                  {truncateMiddleText(data.name)}
+                  {data.name && truncateMiddleText(data.name)}
                 </Box>
               </Box>
             </Box>
@@ -54,8 +72,18 @@ class TreeNode extends React.Component {
             />
           )}
         </Box>
-        {this.state.enabled && (
-          <Box margin={{ left: "small" }}>
+      </Box>
+    );
+  };
+
+  render() {
+    let { data, root } = this.props;
+    return (
+      <Box>
+        {!root ? this._renderHeader() : null}
+
+        {(this.state.enabled || root) && (
+          <Box style={{ marginLeft: data.children && !root ? "16px" : "0" }}>
             {data.children &&
               data.children.map((i, index) => {
                 return <TreeNode key={index} data={i} />;

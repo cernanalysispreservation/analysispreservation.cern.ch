@@ -51,7 +51,6 @@ class FileTree extends React.Component {
   };
 
   constructTree = data => {
-    let tree = { name: "All Files", id: 1, toggled: true };
     let paths = [];
 
     Object.keys(data).map(k => {
@@ -59,11 +58,12 @@ class FileTree extends React.Component {
     });
 
     let children = arrangeIntoTree(paths);
-    return { ...tree, children };
+
+    return { children };
   };
 
   render() {
-    return <TreeNode data={this.state.data} />;
+    return <TreeNode data={this.state.data} root />;
   }
 }
 

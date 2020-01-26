@@ -39,8 +39,7 @@ class DepositFilesList extends React.Component {
   render() {
     return [
       <FileManager key="filesManager" files={this.props.files} />,
-      // <FileList key="filesList" files={this.props.files} />,
-      <Box key="filesList" pad="small">
+      <Box key="filesList" style={{ paddingLeft: "3px", paddingRight: "10px" }}>
         <FileTree files={this.props.files.toJS()} />
       </Box>,
       <PreviewUpload key="_file_previewer" />

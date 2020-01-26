@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
-// import Menu from "grommet/components/Menu";
+import Menu from "grommet/components/Menu";
 
 // import ListItem from "grommet/components/ListItem";
 
@@ -33,7 +33,7 @@ import Code from "grommet/components/icons/base/Code";
 import CSSIcon from "grommet/components/icons/base/StandardsCss3";
 import PlatformReactjs from "grommet/components/icons/base/PlatformReactjs";
 import Cli from "grommet/components/icons/base/Cli";
-
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 
 import prettyBytes from "pretty-bytes";
@@ -48,6 +48,10 @@ const uploadStatusMap = {
 class FileItem extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      hover: false,
+      menu: false
+    };
   }
 
   _getIcon(mimetype) {
@@ -109,6 +113,12 @@ class FileItem extends React.Component {
     });
   }
 
+  _toggleHover = hover => {
+    this.setState({ hover });
+  };
+  _toggleMenu = () => {
+    this.setState({ menu: !this.state.menu });
+  };
   render() {
     let { file } = this.props;
 
@@ -126,63 +136,85 @@ class FileItem extends React.Component {
             ? this.props.action(file.key)
             : this.props.filePreview(file)
         }
-        justify="between"
         pad="none"
         flex={true}
+        onMouseOver={() => this._toggleHover(true)}
+        onMouseLeave={() => this._toggleHover(false)}
       >
         {file.status == "error" ? this.showToaster(file.error.message) : null}
-        <Box direction="row" flex={true} justify="between" wrap={false}>
-          <Box direction="row" flex={true} justify="between" wrap={false}>
-            <Box direction="row" flex={true}>
-              <Box justify="center" margin={{ horizontal: "small" }}>
-                {this._getIcon(file.mimetype)}
-              </Box>
-              <Box
+
+        <Box direction="row" flex={true} wrap={false}>
+          <Box direction="row" flex={true}>
+            <Box justify="center">{this._getIcon(file.mimetype)}</Box>
+
+            <Box
+              justify="center"
+              flex={true}
+              size="small"
+              style={{ padding: "0 5px" }}
+            >
+              <Label
                 justify="center"
-                flex={true}
-                width="100"
+                margin="none"
                 size="small"
-                margin={{ right: "small" }}
+                truncate={true}
               >
-                <Label
-                  justify="center"
-                  margin="none"
-                  size="small"
-                  truncate={true}
-                >
-                  {this.props.filename ? this.props.filename : filePath}{" "}
-                  {file.size ? (
-                    <strong>({prettyBytes(parseInt(file.size))})</strong>
-                  ) : null}
-                </Label>
-              </Box>
+                {this.props.filename ? this.props.filename : filePath}{" "}
+              </Label>
             </Box>
+          </Box>
+
+          <Box flex={false} direction="row" justify="end" align="center">
+            <span style={{ color: "#aaa" }}>
+              {file.size ? prettyBytes(parseInt(file.size)) : null}
+            </span>
+
             {file.status ? (
               <Box justify="center" margin={{ right: "small" }}>
                 <Status size="small" value={uploadStatusMap[file.status]} />
               </Box>
             ) : null}
-            <Box direction="row" justify="center" align="center">
-              <Anchor
-                size="small"
-                icon={<DownloadIcon size="xsmall" />}
-                label={<Label size="small" />}
-                href={file_link}
-                download
-              />
-              {this.props.status !== "published" ? (
-                <Anchor
-                  size="small"
-                  icon={<CloseIcon size="xsmall" />}
-                  label={<Label size="small" />}
-                  onClick={() => {
-                    this.props.deleteFile(file_link, filePath);
-                  }}
-                />
-              ) : null}
-            </Box>
+
+            {this.state.hover || this.state.menu ? (
+              <Box>
+                <Box
+                  onClick={this._toggleMenu}
+                  justify="center"
+                  align="center"
+                  style={{ padding: "5px 4px 5px 10px" }}
+                >
+                  {this.state.menu ? (
+                    <FaChevronUp style={{ width: "8px" }} />
+                  ) : (
+                    <FaChevronDown style={{ width: "8px" }} />
+                  )}
+                </Box>
+              </Box>
+            ) : null}
           </Box>
         </Box>
+
+        {this.state.menu ? (
+          <Box colorIndex="light-2" alignSelf="end" pad="small">
+            <Anchor
+              size="small"
+              icon={<DownloadIcon size="xsmall" />}
+              label={<Label size="small">Download</Label>}
+              href={file_link}
+              download
+            />
+            {this.props.status !== "published" ? (
+              <Anchor
+                size="small"
+                icon={<CloseIcon size="xsmall" />}
+                label={<Label size="small">Delete</Label>}
+                onClick={() => {
+                  this.props.deleteFile(file_link, filePath);
+                }}
+              />
+            ) : null}
+          </Box>
+        ) : null}
       </Box>
     ) : null;
   }
