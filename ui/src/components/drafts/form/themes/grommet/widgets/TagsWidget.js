@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import cogoToast from "cogo-toast";
 
 import TagsInput from "react-tagsinput";
 
@@ -13,59 +12,45 @@ class TagsWidget extends Component {
     super(props);
     this.state = {
       tags: [],
-      errors: []
+      errors: null
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(tags) {
-    this.setState({ tags });
-    return this.props.onChange(tags);
+    this.setState({ tags, errors: null });
+
+    let type = this.props.schema.type ? this.props.schema.type : "array";
+
+    if (type == "array") return this.props.onChange(tags);
+    else
+      return this.props.onChange(
+        tags.join(this.props.options.delimiter || ", ")
+      );
   }
 
   renderInput(props) {
     let { onChange, value, ...other } = props;
     return (
-      <Box direction="row" flex={true} align="start">
-        <Box size="medium">
-          <input
-            type="text"
-            style={{ border: "none" }}
-            onChange={onChange}
-            value={value}
-            {...other}
-          />
-        </Box>
-      </Box>
+      <input
+        type="text"
+        style={{ border: "none" }}
+        onChange={onChange}
+        value={value}
+        {...other}
+      />
     );
-  }
-
-  showToaster(error) {
-    cogoToast.error(
-      <div>
-        {error} is not a valid url. Please provide a valid{" "}
-        <strong>Github</strong> or <strong>Gitlab CERN</strong> url.
-      </div>,
-      {
-        hideAfter: 3
-      }
-    );
-    this.clearError();
   }
 
   onValidationReject = errors => this.setState({ errors: errors });
 
-  clearError = () => {
-    this.setState({ errors: [] });
-  };
-
   render() {
-    let TAGS_REGEX = this.props.options.pattern;
+    let TAGS_REGEX = this.props.options.pattern
+      ? new RegExp(this.props.options.pattern)
+      : null;
+
     return (
-      <Box>
-        {this.state.errors && this.state.errors.length > 0
-          ? this.showToaster(this.state.errors)
-          : null}
+      <Box pad={{ horizontal: "medium" }}>
         <TagsInput
           disabled={this.props.readonly}
           value={this.state.tags}
@@ -78,10 +63,14 @@ class TagsWidget extends Component {
           }}
           renderInput={this.renderInput}
           maxTags={10}
-          addOnPaste={true}
           validationRegex={TAGS_REGEX}
           onValidationReject={this.onValidationReject}
         />
+        {this.state.errors ? (
+          <Box style={{ color: "red" }}>
+            Error values: {this.state.errors.join(", ")}
+          </Box>
+        ) : null}
       </Box>
     );
   }

@@ -140,6 +140,19 @@ const advanced = {
         "ui:object": "accordionObjectField"
       }
     }
+  },
+  tags: {
+    title: "Tags Field",
+    description: "Add keywords, tags, etc",
+    child: {},
+    default: {
+      schema: {
+        type: "string"
+      },
+      uiSchema: {
+        "ui:widget": "tags"
+      }
+    }
   }
 };
 
