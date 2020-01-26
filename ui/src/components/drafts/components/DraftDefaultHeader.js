@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
+import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
+import AppsIcon from "grommet/components/icons/base/Apps";
 
 import EditableTitle from "./EditableTitle";
 
@@ -45,8 +47,20 @@ class DraftDefaultHeader extends React.Component {
 
     return (
       <Box flex={true} direction="row">
-        <Box flex={true} wrap={false}>
-          <Box pad="small"justify="center" flex={true} wrap={true}>
+        <Box direction="row" flex={true} wrap={false}>
+          <Anchor
+            path={{ path: `/drafts/${this.props.draft_id}`, index: true }}
+            data-tip="Overview"
+          >
+            <AppsIcon />
+          </Anchor>
+          <Box
+            pad="small"
+            justify="center"
+            flex={true}
+            wrap={true}
+            separator="left"
+          >
             <EditableTitle />
           </Box>
         </Box>
