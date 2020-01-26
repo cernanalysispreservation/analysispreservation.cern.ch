@@ -87,22 +87,24 @@ export function uploadFileError(filename, error) {
   return { type: UPLOAD_FILE_ERROR, filename, error };
 }
 // Semi - working file upload
-export function uploadFile(bucket_link, file) {
+export function uploadFile(bucket_link, file, filename, tags) {
   return dispatch => {
-    dispatch(uploadFileRequest(file.name));
+    let _filename = filename ? filename : file.name;
+    dispatch(uploadFileRequest(_filename));
     let bucket_id = bucket_link.split("/files/")[1];
     bucket_link = "/api/files/" + bucket_id;
-    let uri = `${bucket_link}/${file.name}`;
+    let uri = `${bucket_link}/${_filename}`;
 
     let oReq = new XMLHttpRequest();
     oReq.open("PUT", uri, true);
+    if (tags) oReq.setRequestHeader("X-CAP-File-Tags", tags);
     oReq.onload = function(oEvent) {
       try {
         let data = oEvent.target.response;
         data = JSON.parse(data);
-        dispatch(uploadFileSuccess(file.name, data));
+        dispatch(uploadFileSuccess(_filename, data));
       } catch (err) {
-        dispatch(uploadFileError(file.name, err.message));
+        dispatch(uploadFileError(_filename, err.message));
       }
     };
 
@@ -114,7 +116,7 @@ export function uploadFile(bucket_link, file) {
     };
 
     oReq.addEventListener("error", function() {
-      dispatch(uploadFileError(file.name, { message: "Error in uploading" }));
+      dispatch(uploadFileError(_filename, { message: "Error in uploading" }));
     });
 
     oReq.send(file);
@@ -136,16 +138,40 @@ export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
     data.map(d => {
       let filename = d.url.split("/").pop();
       d.type == "repo" ? (filename = `${filename}.tar.gz`) : filename;
-      dispatch(uploadFileRequest(filename)),
-        axios
-          .post(uri, d)
-          .then(() => {
-            dispatch(uploadActionSuccess(filename));
-          })
-          .catch(error => {
-            dispatch(uploadFileError(d.url, error));
-          });
+      dispatch(uploadFileRequest(filename));
+      return axios
+        .post(uri, d)
+        .then(() => {
+          return dispatch(uploadActionSuccess(filename));
+        })
+        .catch(error => {
+          return dispatch(uploadFileError(d.url, error));
+        });
     });
+  };
+}
+
+export function uploadViaRepoUrl(draft_id, urlToGrab, type, download, webhook) {
+  return () => {
+    let uri = `/api/deposits/${draft_id}/actions/upload`;
+    let data = {
+      url: urlToGrab,
+      type: type,
+      download: download,
+      webhook: webhook
+    };
+
+    let filename = data.url.split("/").pop();
+    data.type == "repo" ? (filename = `${filename}.tar.gz`) : filename;
+
+    return axios
+      .post(uri, data)
+      .then(resp => {
+        return { filename, data: resp.data };
+      })
+      .catch(error => {
+        throw { error };
+      });
   };
 }
 
