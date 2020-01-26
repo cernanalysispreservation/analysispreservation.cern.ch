@@ -1,17 +1,15 @@
 .cap-react-tagsinput {
   background-color: #fff;
   overflow: hidden;
-  padding-left: 5px;
-  padding-top: 5px;
-  height: 118px;
+  height: auto;
   overflow: auto;
 }
 
 .cap-react-tagsinput-tag {
-  background-color: #0a64a0;
+  color: #0a64a0;
   border-radius: 2px;
   border: 1px solid #0a64a0;
-  color: #fff;
+  // color: #fff;
   display: inline-block;
   font-size: 13px;
   font-weight: 400;
@@ -29,9 +27,15 @@
   content: " ×";
 }
 
-.cap-react-tagsinput-input {
+.cap-react-tagsinput-input:focus {
+  padding: 10px 0 !important;
+}
+
+.grommet .cap-react-tagsinput input.cap-react-tagsinput-input {
   background: transparent;
-  border: 0;
+  border: 0 !important;
+  border-bottom: 0 !important;
+  border-radius: 0 !important;
   color: #777;
   font-family: sans-serif;
   font-size: 13px;
@@ -40,4 +44,5 @@
   margin-top: 1px;
   outline: none;
   padding: 5px;
+  width: auto;
 }
