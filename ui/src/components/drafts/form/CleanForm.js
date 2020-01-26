@@ -24,9 +24,7 @@ class CleanForm extends React.Component {
   render() {
     return this.props.schema ? (
       <Form
-        ref={form => {
-          this.form = form;
-        }}
+        ref={this.props.formRef}
         schema={this.props.schema}
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
@@ -35,7 +33,7 @@ class CleanForm extends React.Component {
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}
-        tagName="div"
+        // tagName="div"
         uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
         liveValidate={this.props.liveValidate}
         noValidate={false}
