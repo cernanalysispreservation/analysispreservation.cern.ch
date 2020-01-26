@@ -45,26 +45,6 @@ class DraftsItemIndex extends React.Component {
       <Box flex={false} colorIndex="light-2" justify="between">
         <Box>
           <ReactTooltip />
-          <Anchor
-            path={{ path: `/drafts/${draft_id}`, index: true }}
-            data-tip="Overview"
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <AppsIcon />
-            </Box>
-          </Anchor>
           <Anchor path={`/drafts/${draft_id}/edit`} data-tip="Edit metadata">
             <Box
               justify="center"

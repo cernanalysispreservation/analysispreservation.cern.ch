@@ -40,6 +40,7 @@ class RepoField extends React.Component {
     if (value == "") this.setState({ repo: null, error: null });
     try {
       let repo = GitUrlParse(value);
+
       let { resource, owner, name } = repo;
 
       if (
@@ -195,6 +196,7 @@ class RepoField extends React.Component {
                   colorIndex="neutral-1"
                   style={{ padding: "5px", wordWrap: "nowrap" }}
                   flex={true}
+                  style={{ padding: "5px" }}
                 >
                   Upload snapshot
                 </Box>
@@ -283,7 +285,7 @@ class RepoField extends React.Component {
 RepoField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.array
+  formData: PropTypes.object
 };
 
 function mapStateToProps(state) {

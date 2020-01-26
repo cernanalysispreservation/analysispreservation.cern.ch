@@ -53,41 +53,44 @@ class DraftsItemIndex extends React.Component {
     let { draft_id } = this.props.match.params;
 
     return (
-      <Box flex={true} direction="row" wrap={false}>
-        <DraftsItemNav />
-        <Box flex={true}>
-          <DraftHeader formRef={this.formRef} />
-          <Box flex={true}>
-            <Switch>
-              <Route
-                exact
-                path={`/drafts/:draft_id`}
-                component={DraftPreview}
-              />
-              <Route
-                path={`/drafts/:draft_id/edit`}
-                render={props => (
-                  <DraftEditor {...props} formRef={this.formRef} />
-                )}
-              />} />
-              <Route
-                path={`/drafts/:draft_id/settings`}
-                component={DraftSettings}
-              />
-              <Route
-                path={`/drafts/:draft_id/integrations`}
-                component={DraftIntegrations}
-              />
-              <Route
-                path={`/drafts/:draft_id/workflows`}
-                render={props => (
-                  <DraftWorkflows draft_id={draft_id} {...props} />
-                )}
-              />
-            </Switch>
+      <Box flex={true} wrap={false} colorIndex="grey-3">
+        <DraftHeader formRef={this.formRef} />
+        <Box flex={true} direction="row">
+          <DraftsItemNav />
+
+          <Box flex={true} direction="row">
+            <Box flex={true} colorIndex="light-1" style={{ margin: "5px" }}>
+              <Switch>
+                <Route
+                  exact
+                  path={`/drafts/:draft_id`}
+                  component={DraftPreview}
+                />
+                <Route
+                  path={`/drafts/:draft_id/edit`}
+                  render={props => (
+                    <DraftEditor {...props} formRef={this.formRef} />
+                  )}
+                />} />
+                <Route
+                  path={`/drafts/:draft_id/settings`}
+                  component={DraftSettings}
+                />
+                <Route
+                  path={`/drafts/:draft_id/integrations`}
+                  component={DraftIntegrations}
+                />
+                <Route
+                  path={`/drafts/:draft_id/workflows`}
+                  render={props => (
+                    <DraftWorkflows draft_id={draft_id} {...props} />
+                  )}
+                />
+              </Switch>
+            </Box>
+            <Sidebar />
           </Box>
         </Box>
-        <Sidebar />
       </Box>
     );
   }

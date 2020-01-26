@@ -4,6 +4,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 import Box from "grommet/components/Box";
 
@@ -158,7 +159,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DraftEditor);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DraftEditor)
+);
