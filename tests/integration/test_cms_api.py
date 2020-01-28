@@ -157,7 +157,12 @@ def test_get_datasets_suggestions_returns_correct_suggestions(
 
     assert resp.json == ['dataset1', 'dataset2']
 
-    resp = client.get('/cms/datasets?query=another_',
+    resp = client.get('/cms/datasets?query=datasets',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == []
+
+    resp = client.get('/cms/datasets?query=*other_',
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == ['another_dataset']
