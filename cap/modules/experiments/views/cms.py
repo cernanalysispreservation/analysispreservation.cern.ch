@@ -35,7 +35,7 @@ from ..permissions import cms_permission
 from ..serializers import CADISchema
 from ..utils.cadi import get_from_cadi_by_id
 from ..utils.cms import CMS_TRIGGERS_INDEX
-from ..utils.das import DAS_DATASETS_INDEX
+from ..utils.das import DAS_DATASETS_INDEX, update_term_for_das_query
 
 cms_bp = Blueprint(
     'cap_cms',
@@ -70,24 +70,24 @@ def get_analysis_from_cadi(cadi_id):
 def get_datasets_suggestions():
     """Retrieve specific dataset names."""
     alias = DAS_DATASETS_INDEX['alias']
-    term = unquote(request.args.get('query'))
+    term = update_term_for_das_query(
+        unquote(request.args.get('query'))
+    )
     res = []
 
     if term:
         query = {
-            "suggest": {
-                "name-suggest": {
-                    "prefix": term,
-                    "completion": {
-                        "field": "name"
-                    }
+            "query": {
+                "query_string": {
+                    "default_field": "name",
+                    "query": term
                 }
             }
         }
 
         res = es.search(index=alias, terminate_after=10, body=query)
 
-        suggestions = res['suggest']['name-suggest'][0]['options']
+        suggestions = res['hits']['hits']
         res = [x['_source']['name'] for x in suggestions]
 
     return jsonify(res)

@@ -442,6 +442,9 @@
         "cadi_id": {
           "type": "keyword"
         },
+        "dataset": {
+          "type": "keyword"
+        },
         "basic_info": {
           "type": "object",
           "properties": {

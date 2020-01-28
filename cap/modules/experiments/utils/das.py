@@ -31,8 +31,18 @@ DAS_DATASETS_INDEX = {
         "doc": {
             "properties": {
                 "name": {
-                    "type": "completion",
-                    "analyzer": "standard"
+                    "type": "keyword",
+                    "normalizer": "lowercase_normalizer"
+                }
+            }
+        }
+    },
+    "settings": {
+        "analysis": {
+            "normalizer": {
+                "lowercase_normalizer": {
+                    "type": "custom",
+                    "filter": "lowercase"
                 }
             }
         }
@@ -40,8 +50,20 @@ DAS_DATASETS_INDEX = {
 }
 
 
+def update_term_for_das_query(term):
+    """Process term query, to make it work for DAS."""
+    if term == '':
+        return term
+
+    if not term.endswith('*'):
+        term = "{}*".format(term)
+
+    return term.replace('/', '\\/')
+
+
 def cache_das_datasets_in_es_from_file(source):
     """Cache datasets names from DAS in ES."""
     recreate_es_index_from_source(alias=DAS_DATASETS_INDEX['alias'],
                                   mapping=DAS_DATASETS_INDEX['mappings'],
+                                  settings=DAS_DATASETS_INDEX['settings'],
                                   source=source)

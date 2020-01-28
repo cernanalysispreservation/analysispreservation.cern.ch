@@ -91,7 +91,7 @@ def generate_krb_cookie(principal, kt, url):
     return generate(url)
 
 
-def recreate_es_index_from_source(alias, source, mapping=None):
+def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
     """
     Recreate index in ES, with documents passed in source.
 
@@ -110,7 +110,8 @@ def recreate_es_index_from_source(alias, source, mapping=None):
         old_index, new_index = ('{}-v2'.format(alias), '{}-v1'.format(alias))
 
     # create new index
-    es.indices.create(index=new_index, body=dict(mappings=mapping))
+    es.indices.create(index=new_index,
+                      body=dict(mappings=mapping, settings=settings))
 
     # index datasets from file under new index
     try:
