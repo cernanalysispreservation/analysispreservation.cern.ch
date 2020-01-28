@@ -96,7 +96,8 @@ class TextWidget extends Component {
   };
 
   updateValueOnSuggestion = ({ suggestion }) => {
-    this.autoFillOtherFields();
+    if (this.props.options && this.props.options.autofill_from )
+        this.autoFillOtherFields();
     return this.props.onChange(suggestion);
   };
 
