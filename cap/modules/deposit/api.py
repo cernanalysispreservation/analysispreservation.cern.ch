@@ -43,12 +43,13 @@ from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
 from jsonschema.exceptions import RefResolutionError
-from jsonschema.validators import Draft4Validator
+from jsonschema.validators import Draft4Validator, extend
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.modules.deposit.errors import FileUploadError
+from cap.modules.deposit.validators import DepositValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repoimporter.errors import GitError
@@ -501,7 +502,7 @@ class CAPDeposit(Deposit):
                 resolver = current_app.extensions[
                     'invenio-records'].ref_resolver_cls.from_schema(schema)
 
-                validator = Draft4Validator(schema, resolver=resolver)
+                validator = DepositValidator(schema, resolver=resolver)
 
                 result = {}
                 result['errors'] = [
@@ -603,11 +604,9 @@ class CAPDeposit(Deposit):
     @classmethod
     def _validate_data(cls, data):
         if not isinstance(data, dict) or data == {}:
-
             raise DepositValidationError('Empty deposit data.')
 
         try:
             data['$schema']
-
         except KeyError:
             raise DepositValidationError('Schema not specified.')

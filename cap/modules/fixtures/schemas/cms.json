@@ -156,6 +156,7 @@
           "cadi_id": {
             "pattern": "^[A-Za-z0-9]{3}-[0-9]{2}-[0-9]{3}$",
             "type": "string",
+            "x-validate-cadi-id": {},
             "placeholder": "e.g. JME-10-107",
             "title": "CADI ID"
           },
@@ -194,6 +195,7 @@
           "mc_bg_datasets": {
             "items": {
               "placeholder": "Path",
+              "x-validate-das-path": {},
               "type": "string"
             },
             "title": "Monte Carlo Background Datasets",
@@ -212,6 +214,7 @@
           "primary_datasets": {
             "items": {
               "type": "object",
+              "x-validate-cms-trigger": {},
               "properties": {
                 "ranges": {
                   "type": "object",
@@ -229,6 +232,7 @@
                 },
                 "path": {
                   "type": "string",
+                  "x-validate-das-path": {},
                   "title": "Path"
                 },
                 "year": {
@@ -264,6 +268,7 @@
           "mc_sig_datasets": {
             "items": {
               "placeholder": "Path",
+              "x-validate-das-path": {},
               "type": "string"
             },
             "title": "Monte Carlo Signal Datasets",

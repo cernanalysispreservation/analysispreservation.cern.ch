@@ -25,18 +25,15 @@
 
 from __future__ import absolute_import, print_function
 
-import re
-
-from elasticsearch.exceptions import NotFoundError
 from flask import Blueprint, abort, jsonify, request
-from invenio_search.proxies import current_search_client as es
 from six.moves.urllib.parse import unquote
 
 from ..permissions import cms_permission
+from ..search.cms_triggers import CMSTriggerSearch
+from ..search.das import DASSearch
 from ..serializers import CADISchema
 from ..utils.cadi import get_from_cadi_by_id
-from ..utils.cms import CMS_TRIGGERS_INDEX
-from ..utils.das import DAS_DATASETS_INDEX, update_term_for_das_query
+from ..utils.das import update_term_for_das_query
 
 cms_bp = Blueprint(
     'cap_cms',
@@ -70,28 +67,12 @@ def get_analysis_from_cadi(cadi_id):
 @cms_permission.require(403)
 def get_datasets_suggestions():
     """Retrieve specific dataset names."""
-    alias = DAS_DATASETS_INDEX['alias']
-    term = update_term_for_das_query(
-        unquote(request.args.get('query'))
-    )
-    res = []
+    query = update_term_for_das_query(unquote(request.args.get('query')))
 
-    if term:
-        query = {
-            "query": {
-                "query_string": {
-                    "default_field": "name",
-                    "query": term
-                }
-            }
-        }
+    search = DASSearch().prefix_search(query).sort('name')
+    results = search.execute()
 
-        res = es.search(index=alias, terminate_after=10, body=query)
-
-        suggestions = res['hits']['hits']
-        res = [x['_source']['name'] for x in suggestions]
-
-    return jsonify(res)
+    return jsonify([hit.name for hit in results])
 
 
 @cms_bp.route('/triggers', methods=['GET'])
@@ -99,39 +80,17 @@ def get_datasets_suggestions():
 def get_triggers_suggestions():
     """Retrieve specific dataset names."""
     try:
-        term = unquote(request.args.get('query'))
+        query = unquote(request.args.get('query'))
         dataset = unquote(request.args.get('dataset'))
-        dataset_prefix = re.search('/?([^/]+)*', dataset).group(1) or ''
     except TypeError:
         abort(
             400, 'You need to provide query and dataset(eg. /ZeroBias7/..) \
             as parameters.')
 
     year = request.args.get('year')
-    index = CMS_TRIGGERS_INDEX['alias']
 
-    # triggers are categorized by dataset prefix
-    query = {
-        "query": {
-            "bool": {
-                "must": [{
-                    "prefix": {
-                        "trigger": term
-                    }
-                }, {
-                    "term": {
-                        "dataset": dataset_prefix
-                    }
-                }]
-            }
-        }
-    }
+    search = CMSTriggerSearch().prefix_search(query, dataset, year)
+    results = search.execute()
 
-    # optional filtering by year
-    if year:
-        query['query']['bool']['must'].append({"term": {"year": year}})
-
-    res = es.search(index=index, body=query)
-    res = [sugg['_source']['trigger'] for sugg in res['hits']['hits']]
-
-    return jsonify(res)
+    # @TOFIX should use aggregations to return unique values
+    return jsonify(list(set(hit.trigger for hit in results)))

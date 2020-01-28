@@ -111,7 +111,8 @@ def get_from_cadi_by_id(cadi_id):
     :returns: entry from CADI
     :rtype dict
     """
-    url = current_app.config.get('CADI_GET_RECORD_URL').format(id=cadi_id)
+    url = current_app.config.get('CADI_GET_RECORD_URL').format(
+        id=cadi_id.upper())
 
     cookie = get_sso_cookie_for_cadi()
     response = requests.get(url, cookies=cookie)

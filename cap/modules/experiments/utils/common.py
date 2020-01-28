@@ -27,11 +27,10 @@ from functools import wraps
 from os.path import join
 from subprocess import CalledProcessError, check_output
 
-from flask import current_app
-
 import cern_sso
 from cachetools.func import ttl_cache
 from elasticsearch import helpers
+from flask import current_app
 from invenio_search.proxies import current_search_client as es
 
 
@@ -91,7 +90,7 @@ def generate_krb_cookie(principal, kt, url):
     return generate(url)
 
 
-def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
+def recreate_es_index_from_source(alias, source, mapping=None, settings=None):
     """
     Recreate index in ES, with documents passed in source.
 
@@ -102,7 +101,8 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
 
     :param str alias: Alias name
     :param List(dict) source:  List of documents to index
-    :param dict mapping: Mapping object
+    :param dict mapping: ES Mapping object
+    :param dict settings: ES Settings object
     """
     if es.indices.exists('{}-v1'.format(alias)):
         old_index, new_index = ('{}-v1'.format(alias), '{}-v2'.format(alias))
@@ -113,7 +113,7 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
     if es.indices.exists(new_index):
         es.indices.delete(index=new_index)
     es.indices.create(index=new_index,
-                      body=dict(mappings=mapping, settings=settings))
+                      body=dict(mappings=mapping, settings=settings or {}))
 
     # index datasets from file under new index
     try:

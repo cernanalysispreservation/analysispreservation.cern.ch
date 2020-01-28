@@ -94,15 +94,16 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 @patch('cap.modules.experiments.utils.cadi.generate_krb_cookie',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
-        app):
+    app):
     cadi_id = 'non-existing'
     # CADI API returns empty list, when no match with given id
     cadi_resp = dict(data=[])
 
-    responses.add(responses.GET,
-                  current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
-                  json=cadi_resp,
-                  status=200)
+    responses.add(
+        responses.GET,
+        current_app.config['CADI_GET_RECORD_URL'].format(id='NON-EXISTING'),
+        json=cadi_resp,
+        status=200)
 
     output = get_from_cadi_by_id(cadi_id)
 

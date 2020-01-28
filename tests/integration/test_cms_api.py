@@ -27,7 +27,6 @@
 from __future__ import absolute_import, print_function
 
 from mock import patch
-from pytest import mark
 
 from cap.modules.experiments.errors import ExternalAPIException
 
@@ -151,13 +150,19 @@ def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
 
 
 def test_get_datasets_suggestions_returns_correct_suggestions(
-        client, users, auth_headers_for_user, das_datasets_index):
-    resp = client.get('/cms/datasets?query=datas',
+    client, users, auth_headers_for_user, das_datasets_index):
+    resp = client.get('/cms/datasets?query=/datas*',
                       headers=auth_headers_for_user(users['cms_user']))
 
-    assert resp.json == ['dataset1', 'dataset2']
+    assert sorted(resp.json) == sorted(
+        ['/dataset1/run1', '/dataset2', '/dataset1/run2'])
 
-    resp = client.get('/cms/datasets?query=datasets',
+    resp = client.get('/cms/datasets?query=/dataset*/run',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert sorted(resp.json) == sorted(['/dataset1/run1', '/dataset1/run2'])
+
+    resp = client.get('/cms/datasets?query=/datasets',
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == []
@@ -200,7 +205,9 @@ def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_
     resp = client.get('/cms/triggers?query=&dataset=',
                       headers=auth_headers_for_user(users['cms_user']))
 
-    assert resp.json == []
+    assert sorted(resp.json) == sorted([
+        'Another_Trigger', 'Trigger2', 'Another_One', 'Trigger1', 'Trigger_2'
+    ])
 
 
 def test_get_triggers_suggestions_when_missing_params_throws_400(
@@ -212,16 +219,17 @@ def test_get_triggers_suggestions_when_missing_params_throws_400(
 
 
 def test_get_triggers_suggestions_returns_correct_suggestions(
-        client, users, auth_headers_for_user, cms_triggers_index):
+    client, users, auth_headers_for_user, cms_triggers_index):
     resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == []
 
-    resp = client.get('/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth',
-                      headers=auth_headers_for_user(users['cms_user']))
+    resp = client.get(
+        '/cms/triggers?query=trigg&dataset=/Dataset1/sth/sth/sth',
+        headers=auth_headers_for_user(users['cms_user']))
 
-    assert resp.json == ['Trigger1', 'Trigger_2']
+    assert sorted(resp.json) == sorted(['Trigger1', 'Trigger_2'])
 
     resp = client.get(
         '/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth&year=2012',

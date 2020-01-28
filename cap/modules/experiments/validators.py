@@ -21,27 +21,37 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""CAP Deposit loaders."""
+"""Experiment validators methods."""
 
-from copy import deepcopy
-
-from flask import current_app, request
-from invenio_rest.errors import FieldError
-from jsonschema import Draft4Validator, FormatChecker, validators
 from jsonschema.exceptions import ValidationError
 
-from cap.modules.deposit.utils import clean_empty_values
-from cap.modules.schemas.resolvers import (resolve_schema_by_url,
-                                           schema_name_to_url)
+from .search.cms_triggers import CMSTriggerSearch
+from .search.das import DASSearch
 
 
-def json_v1_loader(data=None):
-    """Load data from request and process URLs."""
-    data = deepcopy(data or request.get_json())
+def validate_cms_trigger(validator, value, instance, schema):
+    errors = []
+    path = instance.get('path')
+    year = instance.get('year')
+    for trigger in instance.get('triggers', []):
+        search = CMSTriggerSearch().exact_search(trigger['trigger'], path,
+                                                 year)
+        if search.count() == 0:
+            errors.append("{} is not a valid trigger for this dataset.".format(
+                trigger['trigger']))
 
-    # remove underscore prefixed fields
-    data = {k: v for k, v in data.items() if not k.startswith('_')}
+    if errors:
+        yield ValidationError(errors)
 
-    result = clean_empty_values(data)
 
-    return result
+def validate_das_path(validator, value, instance, schema):
+    search = DASSearch().exact_search(instance)
+
+    if search.count() == 0:
+        yield ValidationError("{} not found in DAS.".format(instance))
+
+
+def validate_cadi_id(validator, value, instance, schema):
+    from .utils.cadi import get_from_cadi_by_id
+    if not get_from_cadi_by_id(instance):
+        yield ValidationError("{} not found in CADI.".format(instance))
