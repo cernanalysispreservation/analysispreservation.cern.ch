@@ -231,6 +231,10 @@
                   "type": "string",
                   "title": "Path"
                 },
+                "year": {
+                  "type": "string",
+                  "title": "Year"
+                },
                 "triggers": {
                   "items": {
                     "type": "object",
@@ -480,6 +484,9 @@
                 "path": {
                   "type": "keyword",
                   "copy_to": "dataset"
+                },
+                "year": {
+                  "type": "keyword"
                 },
                 "triggers": {
                   "type": "object",
@@ -878,7 +885,7 @@
       ],
       "primary_datasets": {
         "items": {
-          "ui:order": ["path", "ranges", "triggers"],
+          "ui:order": ["path", "ranges", "year", "triggers"],
           "ui:options": {
             "stringify": ["path"]
           },
@@ -896,9 +903,10 @@
               },
               "trigger": {
                 "ui:options": {
-                  "suggestions": "/api/cms/triggers?dataset=&query=",
+                  "suggestions": "/api/cms/triggers?dataset=&year=&query=",
                   "params": {
-                    "dataset": ["input_data", "primary_datasets", "#", "path"]
+                    "dataset": ["input_data", "primary_datasets", "#", "path"],
+                    "year": ["input_data", "primary_datasets", "#", "year"]
                   }
                 }
               }

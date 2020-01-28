@@ -437,25 +437,38 @@ def das_datasets_index(es):
 @pytest.fixture
 def cms_triggers_index(es):
     """Example triggers under CMS triggers index."""
-    source = [{
-        'dataset': 'Dataset1',
-        'trigger': 'Trigger1'
-    }, {
-        'dataset': 'Dataset1',
-        'trigger': 'Trigger_2'
-    }, {
-        'dataset': 'Dataset1',
-        'trigger': 'Another_Trigger'
-    }, {
-        'dataset': 'Dataset2',
-        'trigger': 'Trigger1'
-    }, {
-        'dataset': 'Dataset2',
-        'trigger': 'Trigger2'
-    }, {
-        'dataset': 'Dataset2',
-        'trigger': 'Another_One'
-    }]
+    source = [
+        {
+            'dataset': 'Dataset1',
+            'year': 2011,
+            'trigger': 'Trigger1'
+        },
+        {
+            'dataset': 'Dataset1',
+            'year': 2012,
+            'trigger': 'Trigger_2'
+        },
+        {
+            'dataset': 'Dataset1',
+            'year': 2011,
+            'trigger': 'Another_Trigger'
+        },
+        {
+            'dataset': 'Dataset2',
+            'year': 2011,
+            'trigger': 'Trigger1'
+        },
+        {
+            'dataset': 'Dataset2',
+            'year': 2011,
+            'trigger': 'Trigger2'
+        },
+        {
+            'dataset': 'Dataset2',
+            'year': 2011,
+            'trigger': 'Another_One'
+        },
+    ]
 
     cache_cms_triggers_in_es_from_file(source)
 

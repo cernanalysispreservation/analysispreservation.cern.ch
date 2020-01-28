@@ -109,7 +109,9 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
     else:
         old_index, new_index = ('{}-v2'.format(alias), '{}-v1'.format(alias))
 
-    # create new index
+    # recreate new index
+    if es.indices.exists(new_index):
+        es.indices.delete(index=new_index)
     es.indices.create(index=new_index,
                       body=dict(mappings=mapping, settings=settings))
 
@@ -126,7 +128,7 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings={}):
         helpers.bulk(es, actions)
     except Exception as e:
         # delete index if sth went wrong
-        es.indices.delete(index=old_index)
+        es.indices.delete(index=new_index)
         raise e
 
     # add newly created index under das-datasets alias

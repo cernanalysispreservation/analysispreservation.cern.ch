@@ -81,7 +81,7 @@ class TextWidget extends Component {
 
         suggestions = suggestions.replace(
           `${param}=`,
-          `${param}=${data.getIn(path)}`
+          `${param}=${data.getIn(path, '') || ''}`
         );
       }
     }

@@ -86,9 +86,9 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
         'URL': 'https://twiki.cern.ch/twikiurl',
         'creatorName': 'Creator User',
         'publicationStatus': 'Free',
-        'name': 'Name',
         'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-        'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        'description':
+        'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
         'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
     mock_get_from_cadi_by_id.return_value = cadi_response
@@ -203,7 +203,14 @@ def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_
     assert resp.json == []
 
 
-@mark.skip
+def test_get_triggers_suggestions_when_missing_params_throws_400(
+        client, users, auth_headers_for_user, cms_triggers_index):
+    resp = client.get('/cms/triggers',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.status_code == 400
+
+
 def test_get_triggers_suggestions_returns_correct_suggestions(
         client, users, auth_headers_for_user, cms_triggers_index):
     resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
@@ -215,6 +222,18 @@ def test_get_triggers_suggestions_returns_correct_suggestions(
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == ['Trigger1', 'Trigger_2']
+
+    resp = client.get(
+        '/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth&year=2012',
+        headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == ['Trigger_2']
+
+    resp = client.get(
+        '/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth&year=2013',
+        headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == []
 
     resp = client.get(
         '/cms/triggers?query=Another&dataset=Dataset1/sth/sth/sth',
