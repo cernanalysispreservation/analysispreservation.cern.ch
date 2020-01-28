@@ -27,7 +27,8 @@ from __future__ import absolute_import, print_function
 
 import re
 
-from flask import Blueprint, jsonify, request
+from elasticsearch.exceptions import NotFoundError
+from flask import Blueprint, abort, jsonify, request
 from invenio_search.proxies import current_search_client as es
 from six.moves.urllib.parse import unquote
 
@@ -97,32 +98,40 @@ def get_datasets_suggestions():
 @cms_permission.require(403)
 def get_triggers_suggestions():
     """Retrieve specific dataset names."""
-    alias = CMS_TRIGGERS_INDEX['alias']
-    dataset = unquote(request.args.get('dataset'))
-    term = unquote(request.args.get('query'))
-    res = []
+    try:
+        term = unquote(request.args.get('query'))
+        dataset = unquote(request.args.get('dataset'))
+        dataset_prefix = re.search('/?([^/]+)*', dataset).group(1) or ''
+    except TypeError:
+        abort(
+            400, 'You need to provide query and dataset(eg. /ZeroBias7/..) \
+            as parameters.')
 
-    if dataset and term:
-        # triggers are categorized by dataset prefix
-        dataset_prefix = re.search('/?([^/]+)*', dataset).group(1)
+    year = request.args.get('year')
+    index = CMS_TRIGGERS_INDEX['alias']
 
-        query = {
-            "suggest": {
-                "trigger-suggest": {
-                    "prefix": term,
-                    "completion": {
-                        "field": "trigger",
-                        "contexts": {
-                            "dataset": dataset_prefix
-                        }
+    # triggers are categorized by dataset prefix
+    query = {
+        "query": {
+            "bool": {
+                "must": [{
+                    "prefix": {
+                        "trigger": term
                     }
-                }
+                }, {
+                    "term": {
+                        "dataset": dataset_prefix
+                    }
+                }]
             }
         }
+    }
 
-        res = es.search(index=alias, body=query)
+    # optional filtering by year
+    if year:
+        query['query']['bool']['must'].append({"term": {"year": year}})
 
-        suggestions = res['suggest']['trigger-suggest'][0]['options']
-        res = [x['_source']['trigger'] for x in suggestions]
+    res = es.search(index=index, body=query)
+    res = [sugg['_source']['trigger'] for sugg in res['hits']['hits']]
 
     return jsonify(res)

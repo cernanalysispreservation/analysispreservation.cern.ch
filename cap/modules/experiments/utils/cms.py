@@ -21,7 +21,6 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Cern Analysis Preservation CMS utils."""
 
 from .common import recreate_es_index_from_source
@@ -32,15 +31,10 @@ CMS_TRIGGERS_INDEX = {
         "doc": {
             "properties": {
                 "trigger": {
-                    "type": "completion",
-                    "analyzer": "standard",
-                    "contexts": [
-                        {
-                            "name": "dataset",
-                            "type": "category",
-                            "path": "dataset"
-                        }
-                    ]
+                    "type": "keyword",
+                },
+                "year": {
+                    "type": "keyword",
                 },
                 "dataset": {
                     "type": "keyword"
@@ -52,9 +46,13 @@ CMS_TRIGGERS_INDEX = {
 
 
 def cache_cms_triggers_in_es_from_file(source):
-    """Cache triggers names in ES, so can be used for autocompletion."""
-    recreate_es_index_from_source(
-        alias=CMS_TRIGGERS_INDEX['alias'],
-        mapping=CMS_TRIGGERS_INDEX['mappings'],
-        source=source
-    )
+    """Cache triggers names in ES, so can be used for autocompletion.
+
+    One index will be created for all the triggers,
+    and separate indexes for each year's triggers.
+
+    :param source: list of dict with dataset, year and trigger
+    """
+    recreate_es_index_from_source(alias=CMS_TRIGGERS_INDEX['alias'],
+                                  mapping=CMS_TRIGGERS_INDEX['mappings'],
+                                  source=source)
