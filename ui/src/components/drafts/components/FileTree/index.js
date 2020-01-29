@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Anchor from "grommet/components/Anchor";
+import Box from "grommet/components/Box";
 
 import AddIcon from "grommet/components/icons/base/Add";
 
@@ -63,7 +64,11 @@ class FileTree extends React.Component {
   };
 
   render() {
-    return <TreeNode data={this.state.data} root />;
+    return (
+      <Box style={{ marginLeft: "5px" }}>
+        <TreeNode data={this.state.data} root />
+      </Box>
+    );
   }
 }
 

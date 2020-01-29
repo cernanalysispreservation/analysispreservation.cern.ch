@@ -86,7 +86,7 @@ class FileManager extends React.Component {
         onClose={this.props.toggleFilemanagerLayer}
       >
         <Provider store={store}>
-          <Box size={{ height: "large", width: { min: "xxlarge" } }}>
+          <Box size={{ height: "xlarge", width: { min: "xxlarge" } }}>
             <Box flex={true}>
               <Box flex={true} direction="row">
                 {this._renderSidebar()}
@@ -103,30 +103,12 @@ class FileManager extends React.Component {
   }
 }
 
-// this.props.uploadViaUrl(
-//   this.props.id,
-//   this.state.formData,
-//   "file",
-//   true,
-//   false // default for file
-// );
-
-// this.props.uploadViaUrl(
-//   this.props.id,
-//   this.state.formData,
-//   "repo",
-//   this.state.download,
-//   this.state.webhook
-// );
-
 FileManager.propTypes = {
   activeLayer: PropTypes.bool,
   toggleFilemanagerLayer: PropTypes.func,
   selectableActionLayer: PropTypes.func,
   links: PropTypes.object,
   files: PropTypes.object,
-  uploadFile: PropTypes.func,
-  uploadViaUrl: PropTypes.func,
   id: PropTypes.string,
   active: PropTypes.number,
   message: PropTypes.string
@@ -147,10 +129,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    uploadFile: (bucket_url, file) => dispatch(uploadFile(bucket_url, file)),
-    uploadViaUrl: (id, url, type, download, webhook) =>
-      dispatch(uploadViaUrl(id, url, type, download, webhook))
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
   };
 }
 

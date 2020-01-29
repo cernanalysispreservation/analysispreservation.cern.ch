@@ -13,6 +13,7 @@ const initialState = Map({
   showPreviewer: false,
   filePreviewEditLayer: true,
   filePreviewEdit: {},
+  uploadFiles: Map({}),
 
   workflows: fromJS([]),
   workflows_items: fromJS({}),
@@ -193,24 +194,34 @@ export default function draftsReducer(state = initialState, action) {
         .set("error", [...state.get("errors"), action.error]);
 
     case filesActions.UPLOAD_FILE_REQUEST:
-      return state.setIn(["bucket", action.filename], {
+      return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
-        status: "uploading"
+        status: "uploading",
+        progress: 0
+      });
+    case filesActions.UPLOAD_FILE_PROGRESS:
+      return state.setIn(["uploadFiles", action.filename], {
+        key: action.filename,
+        status: "uploading",
+        progress: action.progress
       });
     case filesActions.UPLOAD_FILE_SUCCESS:
-      return state.setIn(["bucket", action.filename], {
-        key: action.filename,
-        status: "done",
-        mimetype: action.data.mimetype,
-        data: action.data
-      });
+      return state
+        .setIn(["uploadFiles", action.filename], {
+          key: action.filename,
+          status: "done",
+          progress: 1,
+          mimetype: action.data.mimetype,
+          data: action.data
+        })
+        .setIn(["bucket", action.filename], { ...action.data, status: "done" });
     case filesActions.UPLOAD_ACTION_SUCCESS:
-      return state.setIn(["bucket", action.filename], {
+      return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
         status: "fetching"
       });
     case filesActions.UPLOAD_FILE_ERROR:
-      return state.setIn(["bucket", action.filename], {
+      return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
         status: "error",
         error: action.error.response.data

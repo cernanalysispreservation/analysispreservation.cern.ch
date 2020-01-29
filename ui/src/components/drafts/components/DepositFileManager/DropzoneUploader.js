@@ -18,6 +18,7 @@ import CleanForm from "../../form/CleanForm";
 import Dropzone from "react-dropzone";
 
 import { Label } from "grommet";
+import FileUploadProgress from "./FileUploadProgress";
 
 const schema = {
   type: "object",
@@ -91,21 +92,7 @@ class FileManager extends React.Component {
   _renderUploadDetails() {
     let { name, size, type } = this.state.acceptedFiles[0];
     return (
-      <Box
-        pad="small"
-        margin={{ top: "large", bottom: "small", horizontal: "medium" }}
-        separator="all"
-      >
-        <Box
-          direction="row"
-          align="center"
-          pad={{ between: "small" }}
-          flex={true}
-          justify="between"
-        >
-          <Label size="small">{name}</Label>
-          {prettyBytes(size)}
-        </Box>
+      <Box flex={true} pad="small" colorIndex="light-1">
         <CleanForm
           formRef={f => (this.formRef = f)}
           formData={{
@@ -122,23 +109,54 @@ class FileManager extends React.Component {
             flex={true}
             pad={{ between: "small", vertical: "small" }}
             justify="end"
+            align="center"
           >
-            <Box
-              pad="small"
-              colorIndex="critical"
-              onClick={() =>
-                this.setState({ acceptedFiles: null, formData: {} })
-              }
-            >
-              Cancel
+            <Box>
+              <Box
+                direction="row"
+                align="center"
+                pad={{
+                  horizontal: "small",
+                  vertical: "none",
+                  between: "small"
+                }}
+                flex={false}
+                justify="between"
+                colorIndex="light-2"
+                separator="all"
+              >
+                <Label size="small" margin="none">
+                  <strong>File: </strong>
+                  {name}
+                </Label>
+                <Label size="small" margin="none">
+                  <strong>Size: </strong>
+                  {prettyBytes(size)}
+                </Label>
+              </Box>
             </Box>
             <Box
-              pad="small"
-              colorIndex="brand"
-              type="submit"
-              onClick={() => this.formRef.submit()}
+              direction="row"
+              flex={true}
+              pad={{ between: "small" }}
+              justify="end"
             >
-              Upload
+              <Box
+                pad="small"
+                colorIndex="critical"
+                onClick={() =>
+                  this.setState({ acceptedFiles: null, formData: {} })
+                }
+              >
+                Cancel
+              </Box>
+              <Box
+                pad="small"
+                colorIndex="brand"
+                onClick={() => this.formRef.submit()}
+              >
+                Upload
+              </Box>
             </Box>
           </Box>
         </CleanForm>
@@ -147,10 +165,7 @@ class FileManager extends React.Component {
   }
 
   _renderDropzone = () => (
-    <Box
-      pad={{ horizontal: "medium" }}
-      margin={{ top: "large", bottom: "small" }}
-    >
+    <Box>
       <Box flex={true}>
         <Dropzone
           style={styles.dropzone}
@@ -186,8 +201,16 @@ class FileManager extends React.Component {
   );
 
   render() {
-    if (this.state.acceptedFiles) return this._renderUploadDetails();
-    else return this._renderDropzone();
+    let _render = null;
+    if (this.state.acceptedFiles) _render = this._renderUploadDetails();
+    else _render = this._renderDropzone();
+
+    return (
+      <Box margin={{ top: "large", bottom: "small", horizontal: "medium" }}>
+        <FileUploadProgress key="upload-progress" />
+        {_render}
+      </Box>
+    );
   }
 }
 
