@@ -7,6 +7,7 @@ export const BUCKET_ITEM_SUCCESS = "BUCKET_ITEM_SUCCESS";
 export const BUCKET_ITEM_ERROR = "BUCKET_ITEM_ERROR";
 
 export const UPLOAD_FILE_REQUEST = "UPLOAD_FILE_REQUEST";
+export const UPLOAD_FILE_PROGRESS = "UPLOAD_FILE_PROGRESS";
 export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
 export const UPLOAD_ACTION_SUCCESS = "UPLOAD_ACTION_SUCCESS";
 export const UPLOAD_FILE_ERROR = "UPLOAD_FILE_ERROR";
@@ -77,6 +78,9 @@ export function getBucketByUri(uri = null) {
 export function uploadFileRequest(filename) {
   return { type: UPLOAD_FILE_REQUEST, filename };
 }
+export function uploadFileProgress(filename, progress) {
+  return { type: UPLOAD_FILE_PROGRESS, filename, progress };
+}
 export function uploadFileSuccess(filename, data) {
   return { type: UPLOAD_FILE_SUCCESS, filename, data };
 }
@@ -98,6 +102,18 @@ export function uploadFile(bucket_link, file, filename, tags) {
     let oReq = new XMLHttpRequest();
     oReq.open("PUT", uri, true);
     if (tags) oReq.setRequestHeader("X-CAP-File-Tags", tags);
+
+    oReq.upload.addEventListener(
+      "progress",
+      function(evt) {
+        if (evt.lengthComputable) {
+          let percentComplete = evt.loaded / evt.total;
+          dispatch(uploadFileProgress(_filename, percentComplete));
+        }
+      },
+      false
+    );
+
     oReq.onload = function(oEvent) {
       try {
         let data = oEvent.target.response;
@@ -122,6 +138,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
     oReq.send(file);
   };
 }
+
 export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
   return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;

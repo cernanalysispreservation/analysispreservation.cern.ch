@@ -169,11 +169,14 @@ class FileItem extends React.Component {
               {file.size ? prettyBytes(parseInt(file.size)) : null}
             </span>
 
-            {file.status ? (
-              <Box justify="center" margin={{ right: "small" }}>
-                <Status size="small" value={uploadStatusMap[file.status]} />
-              </Box>
-            ) : null}
+            <Box justify="center" style={{ width: "9px", marginLeft: "5px" }}>
+              {file.status ? (
+                <Box
+                  colorIndex={uploadStatusMap[file.status]}
+                  style={{ width: "9px", borderRadius: "50%", height: "9px" }}
+                />
+              ) : null}
+            </Box>
 
             {this.state.hover || this.state.menu ? (
               <Box>
