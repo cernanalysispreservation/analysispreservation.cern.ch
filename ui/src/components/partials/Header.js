@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
 import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
-import Add from 'grommet/components/icons/base/Add';
+import Add from "grommet/components/icons/base/Add";
 import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader, Heading } from "grommet";
@@ -23,6 +23,8 @@ import UserIcon from "grommet/components/icons/base/User";
 import config from "../../config";
 import { logout } from "../../actions/auth";
 import DraftCreate from "../drafts/DraftCreate";
+
+import CAPLogoLight from "../../img/cap-logo-light.svg";
 
 class Header extends React.Component {
   constructor(props, context) {
@@ -66,7 +68,7 @@ class Header extends React.Component {
 
   render() {
     return (
-        <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
+      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
         {this.state.showCreate ? (
           <DraftCreate toggle={this.toggleCreate} />
         ) : null}
@@ -84,15 +86,13 @@ class Header extends React.Component {
           flex={true}
           pad={{ horizontal: "small" }}
           direction="row"
+          align="center"
           responsive={false}
         >
           <Title style={{ fontWeight: "300" }} align="end">
-            <Anchor
-              href="#"
-              path="/"
-              label={config.project.name || "Project Name"}
-              style={{ textDecoration: "none" }}
-            />
+            <Anchor href="#" path="/" style={{ textDecoration: "none" }} />
+            <CAPLogoLight height="32px" />
+
             <Label
               size="small"
               style={{ marginTop: "-10px", marginLeft: "-5px" }}
@@ -108,10 +108,10 @@ class Header extends React.Component {
                   flex={true}
                   justify="center"
                   size={{ width: { max: "large" } }}
-                  margin={{ horizontal: "small"}}
+                  margin={{ horizontal: "small" }}
                   colorIndex="neutral-1-t"
                 >
-                  <SearchBar/>
+                  <SearchBar />
                 </Box>
                 <Anchor
                   icon={<CircleQuestionIcon />}
@@ -129,7 +129,7 @@ class Header extends React.Component {
                   <Box
                     onClick={() => this.toggleCreate()}
                     pad={{ horizontal: "small" }}
-                    icon={<Add/>}
+                    icon={<Add />}
                   >
                     <Heading margin="none" tag="h4">
                       Create
