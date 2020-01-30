@@ -106,14 +106,13 @@ class TextWidget extends Component {
       fieldsMap = this.props.options.autofill_fields,
       formData = fromJS(this.props.formData);
 
-    let { target: value } = event;
-    if (!value) return;
+    if (!event.target.value) return;
 
     this.setState({
       showSpinner: true
     });
 
-    axios.get(`${url}${value}`).then(({ data }) => {
+    axios.get(`${url}${event.target.value}`).then(({ data }) => {
       this.setState({
         showSpinner: false
       });
