@@ -66,4 +66,5 @@ def cache_das_datasets_in_es_from_file(source):
     recreate_es_index_from_source(alias=DAS_DATASETS_INDEX['alias'],
                                   mapping=DAS_DATASETS_INDEX['mappings'],
                                   settings=DAS_DATASETS_INDEX['settings'],
+                                  id_key='name',
                                   source=source)

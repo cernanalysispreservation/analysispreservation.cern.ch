@@ -78,7 +78,10 @@ def harvest_das():
         cmd = 'export EOS_MGM_URL=root://eosmedia.cern.ch;' \
               't=$(mktemp);' \
               'eos cp {file_location} {file_location}.backup;' \
-              'dasgoclient -query="{query}" > $t && ' \
+              'dasgoclient -query="{query} instance=prod/global" >> $t && ' \
+              'dasgoclient -query="{query} instance=prod/phys01" >> $t && ' \
+              'dasgoclient -query="{query} instance=prod/phys02" >> $t && ' \
+              'dasgoclient -query="{query} instance=prod/phys03" >> $t && ' \
               'eos cp $t {file_location}; out=$?;' \
               'rm -f $t;' \
               'exit $out;'.format(file_location=file_location, query=query)

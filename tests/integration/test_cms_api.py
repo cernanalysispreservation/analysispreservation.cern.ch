@@ -152,10 +152,15 @@ def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
 
 def test_get_datasets_suggestions_returns_correct_suggestions(
         client, users, auth_headers_for_user, das_datasets_index):
-    resp = client.get('/cms/datasets?query=datas',
+    resp = client.get('/cms/datasets?query=datas*1',
                       headers=auth_headers_for_user(users['cms_user']))
 
-    assert resp.json == ['dataset1', 'dataset2']
+    assert resp.json == ['dataset1']
+
+    resp = client.get('/cms/datasets?query=d*as*1',
+                      headers=auth_headers_for_user(users['cms_user']))
+
+    assert resp.json == ['dataset1']
 
     resp = client.get('/cms/datasets?query=datasets',
                       headers=auth_headers_for_user(users['cms_user']))
