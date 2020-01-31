@@ -29,7 +29,6 @@ decorator==4.3.0          # via ipython, traitlets, validators
 dojson==1.4.0             # via invenio-oaiserver
 elasticsearch-dsl==5.4.0  # via invenio-search
 elasticsearch==5.5.2      # via elasticsearch-dsl, invenio-search
-enum34==1.1.6             # via cryptography, invenio-pidstore, traitlets
 flask-admin==1.5.1        # via invenio-accounts, invenio-admin
 flask-alembic==2.0.1      # via invenio-db
 flask-assets==0.12        # via invenio-assets

@@ -22,44 +22,48 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from flask_security import login_user
-
 from cap.modules.schemas.cli import add_schema_from_fixture
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import (AdminSchemaPermission,
                                              ReadSchemaPermission)
 from cap.modules.schemas.utils import get_indexed_schemas_for_user
+from flask_security import login_user
 
 
 def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
         app, users):  # noqa
-    data = dict(
-        name='new-schema',
-        version='1.2.3',
-        experiment='CMS',
-        fullname='New fullname',
-        deposit_schema={'title': 'deposit_schema'},
-        deposit_options={'title': 'deposit_options'},
-        record_schema={'title': 'record_schema'},
-        record_options={'title': 'record_options'},
-        record_mapping={'doc': {
-            'properties': {
-                "title": {
-                    "type": "text"
-                }
-            }
-        }},
-        deposit_mapping={
-            'doc': {
-                'properties': {
-                    "keyword": {
-                        "type": "keyword"
+    data = dict(name='new-schema',
+                version='1.2.3',
+                experiment='CMS',
+                fullname='New fullname',
+                deposit_schema={'title': 'deposit_schema'},
+                deposit_options={'title': 'deposit_options'},
+                record_schema={'title': 'record_schema'},
+                record_options={'title': 'record_options'},
+                record_mapping={
+                    'mappings': {
+                        'doc': {
+                            'properties': {
+                                "title": {
+                                    "type": "text"
+                                }
+                            }
+                        }
                     }
-                }
-            }
-        },
-        is_indexed=True,
-        use_deposit_as_record=False)
+                },
+                deposit_mapping={
+                    'mappings': {
+                        'doc': {
+                            'properties': {
+                                "keyword": {
+                                    "type": "keyword"
+                                }
+                            }
+                        }
+                    }
+                },
+                is_indexed=True,
+                use_deposit_as_record=False)
 
     add_schema_from_fixture(data=data)
 
@@ -79,33 +83,38 @@ def test_add_schema_from_fixture_when_schema_does_not_exist_create_new_one(
 
 def test_add_schema_from_fixture_when_schema_already_exist_updates_json_for_schema(
         db):
-    updated_data = dict(
-        name='new-schema',
-        version='1.1.1',
-        experiment='LHCb',
-        fullname='New fullname',
-        deposit_schema={'title': 'deposit_schema'},
-        deposit_options={'title': 'deposit_options'},
-        record_schema={'title': 'record_schema'},
-        record_options={'title': 'record_options'},
-        record_mapping={'doc': {
-            'properties': {
-                "title": {
-                    "type": "text"
-                }
-            }
-        }},
-        deposit_mapping={
-            'doc': {
-                'properties': {
-                    "keyword": {
-                        "type": "keyword"
-                    }
-                }
-            }
-        },
-        is_indexed=True,
-        use_deposit_as_record=False)
+    updated_data = dict(name='new-schema',
+                        version='1.1.1',
+                        experiment='LHCb',
+                        fullname='New fullname',
+                        deposit_schema={'title': 'deposit_schema'},
+                        deposit_options={'title': 'deposit_options'},
+                        record_schema={'title': 'record_schema'},
+                        record_options={'title': 'record_options'},
+                        record_mapping={
+                            'mappings': {
+                                'doc': {
+                                    'properties': {
+                                        "title": {
+                                            "type": "text"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        deposit_mapping={
+                            'mappings': {
+                                'doc': {
+                                    'properties': {
+                                        "keyword": {
+                                            "type": "keyword"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        is_indexed=True,
+                        use_deposit_as_record=False)
     db.session.add(
         Schema(**{
             'name': 'new-schema',

@@ -275,9 +275,7 @@ def create_index(index_name, mapping_body, aliases):
     if not es.indices.exists(index_name):
         current_search.mappings[index_name] = {}  # invenio search needs it
 
-        es.indices.create(index=index_name,
-                          body={'mappings': mapping_body},
-                          ignore=False)
+        es.indices.create(index=index_name, body=mapping_body, ignore=False)
 
         for alias in aliases:
             es.indices.update_aliases(

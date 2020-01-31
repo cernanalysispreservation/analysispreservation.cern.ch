@@ -248,69 +248,55 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 #: Record search facets.
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
-    'aggs': {
-        'facet_type': {
-            'terms': {
-                'field': '_type'
-            }
-        },
-        'facet_cadi_status': {
-            'terms': {
-                'field': 'cadi_status'
-            }
-        },
-        'facet_cms_working_group': {
-            'terms': {
-                "script": "doc.containsKey('cadi_id') ? doc['cadi_id'].value?.substring(0,3) : null"  # noqa
+    "aggs": {
+        "facet_type": {"terms": {"field": "_type"}},
+        "facet_cadi_status": {"terms": {"field": "cadi_info.status"}},
+        "facet_cms_working_group": {
+            "terms": {
+                "script": "doc.containsKey('cadi_id') ? doc['basic_info.cadi_id'].value?.substring(0,3) : null"  # noqa
             }
         },
         "particles": {
             "nested": {
-                "path": "main_measurements.signal_event_selection"
-                        ".physics_objects"
+                "path": "main_measurements.signal_event_selection" ".physics_objects"
             },
             "aggs": {
                 "facet_physics_objects": {
                     "terms": {
                         "field": "main_measurements.signal_event_selection"
-                                 ".physics_objects.object",
-                        "exclude": ""
+                        ".physics_objects.object",
+                        "exclude": "",
                     },
                     "aggs": {
-                        "doc_count": {
-                            "reverse_nested": {}
-                        },
+                        "doc_count": {"reverse_nested": {}},
                         "facet_physics_objects_type": {
                             "terms": {
                                 "field": "main_measurements"
-                                         ".signal_event_selection"
-                                         ".physics_objects"
-                                         ".object_type.keyword"
+                                ".signal_event_selection"
+                                ".physics_objects"
+                                ".object_type.keyword"
                             },
-                            "aggs": {
-                                "doc_count": {
-                                    "reverse_nested": {}
-                                }
-                            }
-                        }
-                    }
+                            "aggs": {"doc_count": {"reverse_nested": {}}},
+                        },
+                    },
                 },
-            }
+            },
         },
     },
-    'post_filters': {
-        'type': terms_filter('_type'),
-        'cms_working_group': prefix_filter('cadi_id'),
-        'cadi_status': terms_filter('cadi_status'),
-        'physics_objects': nested_filter(
-            'main_measurements.signal_event_selection.physics_objects',
-            'main_measurements.signal_event_selection'
-            '.physics_objects.object'),
-        'physics_objects_type': nested_filter(
-            'main_measurements.signal_event_selection.physics_objects',
-            'main_measurements.signal_event_selection.physics_objects'
-            '.object_type.keyword')
-    }
+    "post_filters": {
+        "type": terms_filter("_type"),
+        "cms_working_group": prefix_filter("basic_info.cadi_id"),
+        "cadi_status": terms_filter("cadi_info.status"),
+        "physics_objects": nested_filter(
+            "main_measurements.signal_event_selection.physics_objects",
+            "main_measurements.signal_event_selection" ".physics_objects.object",
+        ),
+        "physics_objects_type": nested_filter(
+            "main_measurements.signal_event_selection.physics_objects",
+            "main_measurements.signal_event_selection.physics_objects"
+            ".object_type.keyword",
+        ),
+    },
 }
 
 RECORDS_REST_FACETS = {'deposits': CAP_FACETS, 'records': CAP_FACETS}
