@@ -1088,39 +1088,56 @@
     "title": "CMS Statistics Questionnaire."
   },
   "deposit_mapping": {
-    "cms-questionnaire-v0.0.1": {
-      "properties": {
-        "_deposit": {
-          "type": "object",
-          "properties": {
-            "created_by": {
-              "type": "integer",
-              "copy_to": "created_by"
-            },
-            "status": {
-              "type": "text",
-              "fields": {
-                "keyword": {
-                  "type": "keyword"
-                }
-              },
-              "copy_to": "status"
-            }
+    "settings": {
+      "analysis": {
+        "analyzer": {
+          "lowercase_whitespace_analyzer": {
+            "type": "custom",
+            "tokenizer": "whitespace",
+            "filter": ["lowercase"]
           }
+        }
+      }
+    },
+    "mappings": {
+      "cms-questionnaire-v0.0.1": {
+        "_all": {
+          "enabled": true,
+          "analyzer": "lowercase_whitespace_analyzer"
         },
-        "_experiment": {
-          "type": "text"
-        },
-        "_created": {
-          "type": "date",
-          "copy_to": "created"
-        },
-        "_updated": {
-          "type": "date",
-          "copy_to": "updated"
-        },
-        "created": {
-          "type": "date"
+        "properties": {
+          "_deposit": {
+            "type": "object",
+            "properties": {
+              "created_by": {
+                "type": "integer",
+                "copy_to": "created_by"
+              },
+              "status": {
+                "type": "text",
+                "fields": {
+                  "keyword": {
+                    "type": "keyword"
+                  }
+                },
+                "copy_to": "status"
+              }
+            }
+          },
+          "_experiment": {
+            "type": "text"
+          },
+          "_created": {
+            "type": "date",
+            "copy_to": "created"
+          },
+          "_updated": {
+            "type": "date",
+            "copy_to": "updated"
+          },
+          "created": {
+            "type": "date"
+          }
         }
       }
     }

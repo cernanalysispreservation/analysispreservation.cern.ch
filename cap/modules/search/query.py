@@ -40,6 +40,13 @@ KEYWORD_TO_QUERY = {
     'by_me': lambda: Q('match', **{'created_by': current_user.id}),
 }
 
+ESCAPE_CHAR_MAP = {
+    '/': r'\/',
+    '+': r'\+',
+    '-': r'\-',
+    '^': r'\^',
+}
+
 
 def cap_search_factory(self, search, query_parser=None):
     """Customize Parse query using Invenio-Query-Parser.
@@ -50,7 +57,13 @@ def cap_search_factory(self, search, query_parser=None):
     """
     def _default_parser(qstr=None, **kwargs):
         """Use of the Q() from elasticsearch_dsl."""
-        query = Q('query_string', query=qstr,
+        def _escape_qstr(qstr):
+            return ''.join((ESCAPE_CHAR_MAP.get(char, char) for char in qstr))
+
+        query = Q('query_string',
+                  query=_escape_qstr(qstr),
+                  analyzer="lowercase_whitespace_analyzer",
+                  analyze_wildcard=True,
                   default_operator='AND') if qstr else Q()
 
         # resolve keywords to queries

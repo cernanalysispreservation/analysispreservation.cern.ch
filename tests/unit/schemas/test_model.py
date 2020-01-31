@@ -22,12 +22,12 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_search import current_search
-from pytest import mark, raises
 from sqlalchemy.exc import IntegrityError
 
 from cap.modules.schemas.models import Schema
+from invenio_jsonschemas.errors import JSONSchemaNotFound
+from invenio_search import current_search
+from pytest import mark, raises
 
 
 def test_when_schema_with_same_name_and_version_raises_IntegrityError(db):
@@ -231,21 +231,28 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     schema = Schema(
         name='cms-schema',
         is_indexed=True,
-        record_mapping={'doc': {
-            'properties': {
-                "title": {
-                    "type": "text"
-                }
-            }
-        }},
-        deposit_mapping={
-            'doc': {
-                'properties': {
-                    "keyword": {
-                        "type": "keyword"
+        record_mapping={
+            'mappings': {
+                'doc': {
+                    'properties': {
+                        "title": {
+                            "type": "text"
+                        }
                     }
                 }
             }
+        },
+        deposit_mapping={
+            'mappings':
+                {
+                    'doc': {
+                        'properties': {
+                            "keyword": {
+                                "type": "keyword"
+                            }
+                        }
+                    }
+                }
         })
     db.session.add(schema)
     db.session.commit()
@@ -258,31 +265,34 @@ def test_on_save_mapping_is_created_and_index_name_added_to_mappings_map(
     assert es.indices.exists('records-cms-schema-v1.0.0')
 
     assert es.indices.get_mapping('records-cms-schema-v1.0.0') == {
-        'records-cms-schema-v1.0.0': {
-            'mappings': {
-                'doc': {
-                    'properties': {
-                        'title': {
-                            'type': 'text'
+        'records-cms-schema-v1.0.0':
+            {
+                'mappings': {
+                    'doc': {
+                        'properties': {
+                            'title': {
+                                'type': 'text'
+                            }
                         }
                     }
                 }
             }
-        }
     }
 
     assert es.indices.get_mapping('deposits-records-cms-schema-v1.0.0') == {
-        'deposits-records-cms-schema-v1.0.0': {
-            'mappings': {
-                'doc': {
-                    'properties': {
-                        'keyword': {
-                            'type': 'keyword'
+        'deposits-records-cms-schema-v1.0.0':
+            {
+                'mappings':
+                    {
+                        'doc': {
+                            'properties': {
+                                'keyword': {
+                                    'type': 'keyword'
+                                }
+                            }
                         }
                     }
-                }
             }
-        }
     }
 
     db.session.delete(schema)

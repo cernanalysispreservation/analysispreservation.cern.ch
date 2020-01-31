@@ -18,62 +18,58 @@ class HowToSearchPage extends React.Component {
         >
           <Tiles fill={true}>
             <CustomTile
-              header={
-                <span>
-                  For our search queries we use &nbsp;
-                  <a
-                    href="https://lucene.apache.org/core/2_9_4/queryparsersyntax.html"
-                    target="_blank"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Lucene Query
-                  </a>
-                  &nbsp;language
-                </span>
-              }
+                header={
+                    <span>To perform a free text search, simply enter a text string. This
+                            will search for given terms in the whole document
+                    </span>
+                    }
+              code="validation data 2011"
             />
             <CustomTile
-              header="To perform a free text search, simply enter a text string. This
-                            gonna search all the fields for the given term."
-            />
-            <CustomTile
-              header="If you look for a value in a specific field, prefix the value
-                            with the name or alias of this field "
+              header="To make more detailed query ask for terms in a specific fields"
               code="object:electron"
             />
             <CustomTile
-              header="To search for the whole phrase, dont forget to put it in quotes!"
+              header={
+                <span>
+                  To point to nested fields use <b> . </b>{" "}
+                  operator or one of many available aliases
+                </span>
+              }
+              code="researcher reviewer ananote arxiv status keyword dataset
+                            trigger object"
+            />
+            <CustomTile
+              header={
+                <span>
+                    To make your query more generic, use wildcards: <br/> 
+                    <b>? </b> &nbsp;for a single character <br/>
+                    <b> * </b> &nbsp; for multiple ones <br /> 
+                </span>
+              }
+                  code="/DoubleMu*/*/AOD"
+            />
+            <CustomTile
+                header={
+                    <span> To search for terms contatining special characters
+                    escape them with <b>/</b></span>
+                    }
+                    code="* ? . : ! ( ) { } [ ] &quot; ~"
+            />
+            <CustomTile
+                header={
+                    <span>To search for the whole phrase, put it in quotes. Keep in mind that <b>phrases are not analyzed</b>, hence all special characters (like wildcards or boolean operators) do not have any effect.</span>}
               code="researcher:&quot;John Doe&quot;"
             />
             <CustomTile
               header={
                 <span>
-                  You can use wildcards in your queries (<b>? </b> for a single
-                  character and <b> * </b> for multiple one). <br />Keep in mind
-                  that none of those can be used as a first character of search!
+                  To build more complex search criteria, use Boolean                  
+                  operators <b>AND</b>, <b>OR</b>, and <b>NOT</b>, grouped in parentheses. By default, search parser will join query terms with an <b>AND</b> operator.
                 </span>
               }
-              code="dataset:&quot;/MinimumBias/*&quot;"
-            />
-            <CustomTile
-              header={
-                <span>
-                  You can build more complex search criteria using Boolean
-                  operators <b>AND</b>, <b>OR</b>, and <b>NOT</b>.
-                </span>
-              }
-              code="dataset:&quot;/MinimumBias/Commissioning10-SD_EG-Jun14thSkim_v1/*&quot;
+              code="dataset:/MinimumBias/Commissioning10-SD_EG-Jun14thSkim_v1/*
                             AND trigger:(HLT_MinBiasBSC OR HLT_DiJetAve15U)"
-            />
-            <CustomTile
-              header={
-                <span>
-                  To point to nested fields in your analysis, use <b> . </b>{" "}
-                  operator or one of available aliases.
-                </span>
-              }
-              code="researcher reviewer ananote arxiv status keyword dataset
-                            trigger object"
             />
           </Tiles>
         </Box>
