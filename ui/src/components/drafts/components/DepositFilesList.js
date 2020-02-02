@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import FileManager from "./DepositFileManager";
-// import FileList from "./FileList";
 
 import ArchiveIcon from "grommet/components/icons/base/Archive";
 import DocumentConfigIcon from "grommet/components/icons/base/DocumentConfig";
@@ -41,8 +40,8 @@ class DepositFilesList extends React.Component {
       <FileManager key="filesManager" files={this.props.files} />,
       <Box key="filesList" style={{ paddingLeft: "3px", paddingRight: "10px" }}>
         <FileTree files={this.props.files.toJS()} />
-      </Box>,
-      <PreviewUpload key="_file_previewer" />
+      </Box>
+      // <PreviewUpload key="_file_previewer" />
     ];
   }
 }

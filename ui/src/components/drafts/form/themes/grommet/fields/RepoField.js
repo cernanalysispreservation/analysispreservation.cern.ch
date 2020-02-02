@@ -105,6 +105,7 @@ class RepoField extends React.Component {
         <Box
           pad={{ between: "small", horizontal: "small" }}
           margin="small"
+          key="error"
           separator="all"
           align="center"
           direction="row"
@@ -135,7 +136,7 @@ class RepoField extends React.Component {
           >
             {resource == "github.com" ? (
               <Box
-                direction="row"
+                direction="column"
                 pad={{ between: "small" }}
                 justify="center"
                 align="center"
@@ -145,7 +146,7 @@ class RepoField extends React.Component {
               </Box>
             ) : (
               <Box
-                direction="row"
+                direction="column"
                 pad={{ between: "small" }}
                 justify="center"
                 align="center"
@@ -155,7 +156,7 @@ class RepoField extends React.Component {
               </Box>
             )}
             <Box>
-              <Box>
+              <Box size={{ width: "small" }} style={{ wordBreak: "break-all" }}>
                 <Anchor path={href} label={`${owner}/${name}`} />
               </Box>
               <Box>
@@ -192,21 +193,24 @@ class RepoField extends React.Component {
                 <Box
                   onClick={() => this.uploadRepo("repo", true, false)}
                   colorIndex="neutral-1"
-                  style={{ padding: "5px" }}
+                  style={{ padding: "5px", wordWrap: "nowrap" }}
+                  flex={true}
                 >
                   Upload snapshot
                 </Box>
                 <Box
                   onClick={() => this.uploadRepo("repo", false, true)}
                   colorIndex="neutral-1-t"
-                  style={{ padding: "5px" }}
+                  style={{ padding: "5px", wordWrap: "nowrap" }}
+                  flex={true}
                 >
                   Connect repo
                 </Box>
                 <Box
                   onClick={() => this.uploadRepo("repo", true, true)}
                   colorIndex="brand"
-                  style={{ padding: "5px" }}
+                  style={{ padding: "5px", wordWrap: "nowrap" }}
+                  flex={true}
                 >
                   Upload snapshot & Connect
                 </Box>
@@ -242,6 +246,7 @@ class RepoField extends React.Component {
           margin="small"
           separator="all"
           direction="row"
+          key="message"
         >
           <StatusIcon size="small" value={_message.status} />
           <Label size="small">{_message.message}</Label>
@@ -249,24 +254,20 @@ class RepoField extends React.Component {
       );
 
     parts.push(
-      <Box direction="row" pad="small" justify="center" align="center">
-        <Box
-          justify="center"
-          align="center"
-          alignItems="center"
-          pad={{ horizontal: "small" }}
-        >
+      <Box
+        key="help"
+        direction="row"
+        pad="small"
+        justify="center"
+        align="center"
+      >
+        <Box justify="center" align="center" pad={{ horizontal: "small" }}>
           <span>
             <strong>Attach</strong> snapshot of a <strong>repository</strong> or
             a specific <strong>repository file</strong>.
           </span>
         </Box>
-        <Box
-          justify="center"
-          align="center"
-          alignItems="center"
-          pad={{ horizontal: "small" }}
-        >
+        <Box justify="center" align="center" pad={{ horizontal: "small" }}>
           <span>
             <strong>Connect</strong> a repo to this workspace -{" "}
             <strong>preserve changes automatically</strong>
@@ -282,7 +283,7 @@ class RepoField extends React.Component {
 RepoField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.array
 };
 
 function mapStateToProps(state) {
