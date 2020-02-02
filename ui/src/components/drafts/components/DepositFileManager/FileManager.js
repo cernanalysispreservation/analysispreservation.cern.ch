@@ -8,7 +8,7 @@ import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 
-import { toggleFilemanagerLayer, selectPath } from "../../../../actions/files";
+import { selectPath } from "../../../../actions/files";
 
 import FileTree from "../FileTree";
 
@@ -17,23 +17,6 @@ import DropzoneUploader from "./DropzoneUploader";
 import RepoUploader from "./RepoUploader";
 
 class FileManager extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selected: null,
-      formData: []
-    };
-  }
-
-  _onDirectoryClick = path => {
-    this.props.selectPath(path, "dir");
-  };
-
-  _onFileClick = path => {
-    this.props.selectPath(path, "file");
-    this.props.selectableActionLayer(path);
-  };
-
   _renderSidebar = () => {
     return (
       <Box flex={false} size={{ width: "medium" }}>
@@ -44,17 +27,13 @@ class FileManager extends React.Component {
         </Box>
         <Box flex={true} margin={{ top: "small", right: "small" }}>
           <FileTree
-            files={this.props.files.toJS()}
-            onDirectoryClick={
-              this.props.selectableActionLayer ? this._onDirectoryClick : null
-            }
-            onFileClick={
-              this.props.selectableActionLayer ? this._onFileClick : null
-            }
+            files={this.props.files}
+            onDirectoryClick={this.props.onDirectoryClick}
+            onFileClick={this.props.onFileClick}
           />
         </Box>
 
-        {this.props.selectableActionLayer ? (
+        {this.props.onSelect ? (
           <Box
             colorIndex="light-2"
             direction="row"
@@ -89,12 +68,16 @@ class FileManager extends React.Component {
                 <Button
                   primary={true}
                   label="Add to field"
-                  onClick={this.props.pathSelected ? this.props.onSelect : null}
+                  onClick={
+                    this.props.pathSelected
+                      ? () => this.props.onSelect(this.props.pathSelected)
+                      : null
+                  }
                 />
                 <Button
                   label="Cancel"
                   critical={true}
-                  onClick={this.props.toggleFilemanagerLayer}
+                  onClick={this.props.toggleLayer}
                 />
               </Box>
             </Box>
@@ -111,7 +94,7 @@ class FileManager extends React.Component {
         align="center"
         flush={true}
         overlayClose={true}
-        onClose={this.props.toggleFilemanagerLayer}
+        onClose={this.props.toggleLayer}
       >
         <Provider store={store}>
           <Box size={{ height: "xlarge", width: { min: "xxlarge" } }}>
@@ -133,33 +116,11 @@ class FileManager extends React.Component {
 
 FileManager.propTypes = {
   activeLayer: PropTypes.bool,
-  toggleFilemanagerLayer: PropTypes.func,
+  toggleLayer: PropTypes.func,
   selectableActionLayer: PropTypes.func,
   files: PropTypes.object,
   active: PropTypes.number,
   message: PropTypes.string
 };
 
-function mapStateToProps(state) {
-  return {
-    activeLayer: state.draftItem.get("fileManagerActiveLayer"),
-    active: state.draftItem.get("fileManagerLayerActiveIndex"),
-    selectableLayer: state.draftItem.get("fileManagerLayerSelectable"),
-    selectableActionLayer: state.draftItem.get(
-      "fileManagerLayerSelectableAction"
-    ),
-    pathSelected: state.draftItem.get("pathSelected")
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    selectPath: (path, type) => dispatch(selectPath(path, type))
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FileManager);
+export default FileManager;

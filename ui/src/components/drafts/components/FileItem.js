@@ -125,17 +125,12 @@ class FileItem extends React.Component {
     let { links: { self: file_link = null } = {}, key: filePath } =
       file.data || file;
 
-    // TO_RMEOVE after fixings links from backend
+    // TO_REMOVE after fixings links from backend
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
 
     return file ? (
       <Box
         key={file.key}
-        onClick={
-          this.props.action
-            ? this.props.action(file.key)
-            : this.props.filePreview(file)
-        }
         pad="none"
         flex={true}
         onMouseOver={() => this._toggleHover(true)}
@@ -144,7 +139,7 @@ class FileItem extends React.Component {
         {file.status == "error" ? this.showToaster(file.error.message) : null}
 
         <Box direction="row" flex={true} wrap={false}>
-          <Box direction="row" flex={true}>
+          <Box direction="row" flex={true} onClick={this.props.action}>
             <Box justify="center">{this._getIcon(file.mimetype)}</Box>
 
             <Box

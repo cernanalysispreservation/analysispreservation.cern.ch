@@ -66,7 +66,12 @@ class FileTree extends React.Component {
   render() {
     return (
       <Box style={{ marginLeft: "5px" }}>
-        <TreeNode data={this.state.data} root />
+        <TreeNode
+          data={this.state.data}
+          onDirectoryClick={this.props.onDirectoryClick}
+          onFileClick={this.props.onFileClick}
+          root
+        />
       </Box>
     );
   }

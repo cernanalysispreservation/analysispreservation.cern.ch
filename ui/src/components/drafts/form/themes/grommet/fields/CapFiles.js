@@ -6,69 +6,69 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import Anchor from "grommet/components/Anchor";
 
-import Edit from "grommet/components/icons/base/FormEdit";
-import { toggleFilemanagerLayer } from "../../../../../../actions/draftItem";
+import DepositFileManager from "../../../../components/DepositFileManager/FileManager";
+
+import { selectPath } from "../../../../../../actions/files";
 
 class CapFile extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      layerActive: false,
-      selected: {}
+      activeLayer: false,
+      selected: null
     };
   }
 
-  _toggleLayer() {
-    this.setState(prevState => ({ layerActive: !prevState.layerActive }));
-  }
+  _onChange = value => {
+    if (value.type == "file" && value.path) this.props.onChange(value.path);
+    this._toggleActiveLayer();
+  };
 
-  _selectItem(item) {
-    this.setState({ selected: item });
-  }
+  _toggleActiveLayer = () => {
+    this.setState({ activeLayer: !this.state.activeLayer });
+  };
 
-  _saveSelection() {
-    this.setState(
-      prevState => ({ layerActive: !prevState.layerActive }),
-      () => this.props.onChange(this.state.selected)
-    );
-  }
+  _onDirectoryClick = path => {
+    this.props.selectPath(path, "dir");
+  };
 
-  _onChange({ value }) {
-    this.props.onChange(value);
-  }
-
-  _toggleFileManager() {
-    this.props.toggleFilemanagerLayer(true, this.props.onChange);
-  }
+  _onFileClick = path => {
+    this.props.selectPath(path, "file");
+  };
 
   render() {
     return (
       <Box
-        pad="small"
+        pad={{ horizontal: "medium" }}
         flex={true}
         direction="row"
-        alignContent="center"
+        alignContent="start"
         align="center"
-        justify="center"
         wrap={false}
       >
         {this.props.formData ? (
           <React.Fragment>
-            <span>{this.props.formData}</span>
-            <Anchor
-              icon={<Edit />}
-              onClick={this._toggleFileManager.bind(this)}
-            />
+            <Box margin={{ right: "small" }}>{this.props.formData}</Box>
+            <Anchor label="Edit" onClick={this._toggleActiveLayer} />
           </React.Fragment>
         ) : (
           <React.Fragment>
             <Anchor
-              label="Open File Manager"
-              onClick={this._toggleFileManager.bind(this)}
+              label="Select or Upload a file"
+              onClick={this._toggleActiveLayer}
             />
           </React.Fragment>
         )}
+        <DepositFileManager
+          activeLayer={this.state.activeLayer}
+          toggleLayer={this._toggleActiveLayer}
+          files={this.props.files.toJS()}
+          onDirectoryClick={null}
+          onFileClick={this._onFileClick}
+          onSelect={this._onChange}
+          pathSelected={this.props.pathSelected}
+        />
       </Box>
     );
   }
@@ -82,17 +82,24 @@ CapFile.propTypes = {
   onChange: PropTypes.func,
   properties: PropTypes.object,
   toggleFilemanagerLayer: PropTypes.func,
-  formData: PropTypes.object
+  files: PropTypes.object,
+  formData: PropTypes.string
 };
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: (selectable = false, action) =>
-      dispatch(toggleFilemanagerLayer(selectable, action))
+    selectPath: (path, type) => dispatch(selectPath(path, type))
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    files: state.draftItem.get("bucket"),
+    pathSelected: state.draftItem.get("pathSelected")
   };
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(CapFile);

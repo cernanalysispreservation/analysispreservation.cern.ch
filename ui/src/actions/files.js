@@ -6,6 +6,7 @@ export const BUCKET_ITEM_REQUEST = "BUCKET_ITEM_REQUEST";
 export const BUCKET_ITEM_SUCCESS = "BUCKET_ITEM_SUCCESS";
 export const BUCKET_ITEM_ERROR = "BUCKET_ITEM_ERROR";
 
+export const PATH_SELECTED = "PATH_SELECTED";
 export const UPLOAD_FILE_REQUEST = "UPLOAD_FILE_REQUEST";
 export const UPLOAD_FILE_PROGRESS = "UPLOAD_FILE_PROGRESS";
 export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
@@ -75,6 +76,9 @@ export function getBucketByUri(uri = null) {
 }
 
 // File Item
+export function selectPath(path, path_type) {
+  return { type: PATH_SELECTED, path, path_type };
+}
 export function uploadFileRequest(filename) {
   return { type: UPLOAD_FILE_REQUEST, filename };
 }

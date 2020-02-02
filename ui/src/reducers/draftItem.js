@@ -14,6 +14,7 @@ const initialState = Map({
   filePreviewEditLayer: true,
   filePreviewEdit: {},
   uploadFiles: Map({}),
+  pathSelected: null,
 
   workflows: fromJS([]),
   workflows_items: fromJS({}),
@@ -71,7 +72,8 @@ export default function draftsReducer(state = initialState, action) {
         .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
         .set("fileManagerLayerSelectable", action.selectable)
         .set("fileManagerLayerSelectableAction", action.action)
-        .set("fileManagerLayerActiveIndex", action.active);
+        .set("fileManagerLayerActiveIndex", action.active)
+        .set("pathSelected", null);
     // Draft Metadata
     case draftItemActions.DRAFTS_ITEM_REQUEST:
       return initialState.set("loading", true);
@@ -192,7 +194,11 @@ export default function draftsReducer(state = initialState, action) {
       return state
         .set("loading", false)
         .set("error", [...state.get("errors"), action.error]);
-
+    case filesActions.PATH_SELECTED:
+      return state.set("pathSelected", {
+        type: action.path_type,
+        path: action.path
+      });
     case filesActions.UPLOAD_FILE_REQUEST:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,
