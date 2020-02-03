@@ -49,11 +49,10 @@ before_install:
   - "wget -O - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz  | tar xz --directory=/tmp/elasticsearch --strip-components=1"
   - "/tmp/elasticsearch/bin/elasticsearch &"
   - "./scripts/ci/prebuild.sh"
-  - "travis_retry pip install coveralls"
   - "travis_retry pip install kwalitee --pre"
   - "echo ${TRAVIS_COMMIT_RANGE}"
   - "travis_retry pip install --upgrade pip setuptools py"
-  - "travis_retry pip install twine wheel coveralls requirements-builder"
+  - "travis_retry pip install twine wheel requirements-builder"
   - "cat requirements.txt > .travis-lowest-requirements.txt"
 
 install:
@@ -67,6 +66,3 @@ before_script:
 
 script:
   - "./run-tests.sh"
-
-after_success:
-  - coveralls
