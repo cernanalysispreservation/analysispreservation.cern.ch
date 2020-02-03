@@ -82,7 +82,10 @@ def get_datasets_suggestions():
                     "default_field": "name",
                     "query": term
                 }
-            }
+            },
+            "sort": [{
+                "name": "asc"
+            }]
         }
 
         res = es.search(index=alias, terminate_after=10, body=query)
