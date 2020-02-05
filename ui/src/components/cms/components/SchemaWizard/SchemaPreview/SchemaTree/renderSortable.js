@@ -2,7 +2,7 @@ import React from "react";
 import SortableBox from "./SortableBox";
 
 const RenderSortable = (parent, card, i, moveCard) => {
-  if (card === undefined) {
+  if (card === undefined || card.prop === undefined) {
     return null;
   }
   return (

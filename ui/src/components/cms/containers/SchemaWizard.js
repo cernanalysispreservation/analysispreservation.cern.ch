@@ -8,7 +8,9 @@ import { withRouter } from "react-router-dom";
 function mapStateToProps(state) {
   return {
     current: state.schemaWizard.get("current"),
-    field: state.schemaWizard.get("field")
+    field: state.schemaWizard.get("field"),
+    selected: state.schemaWizard.get("selected"),
+    loader: state.schemaWizard.get("loader")
   };
 }
 

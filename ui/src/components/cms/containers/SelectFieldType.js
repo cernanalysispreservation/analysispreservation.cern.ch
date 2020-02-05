@@ -9,6 +9,7 @@ function mapStateToProps(state) {
 
   return {
     // propKey: state.schemaWizard.getIn(["field", "propKey"]),
+    selected: state.schemaWizard.get("selected"),
     path: state.schemaWizard.getIn(["field"]),
     schema: state.schemaWizard.getIn(["current", "schema", ...(_path || [])]),
     uiSchema: state.schemaWizard.getIn([

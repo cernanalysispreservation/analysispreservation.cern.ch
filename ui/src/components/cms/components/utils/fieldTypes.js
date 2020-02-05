@@ -95,7 +95,7 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:object": "tabView"
       }
     }
   },
@@ -109,7 +109,7 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:object": "layerObjectField"
       }
     }
   },
@@ -123,7 +123,13 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:servicesList": [
+          {
+            value: "zenodo",
+            label: "ZENODO"
+          }
+        ],
+        "ui:field": "idFetcher"
       }
     }
   },
@@ -137,7 +143,61 @@ const advanced = {
         properties: {}
       },
       uiSchema: {
-        "ui:object": "accordionObjectField"
+        "ui:servicesList": [
+          {
+            value: "orcid",
+            label: "ORCID"
+          }
+        ],
+        "ui:field": "idFetcher"
+      }
+    }
+  },
+  getterId: {
+    title: "Id Getter Field",
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    default: {
+      schema: {
+        type: "object",
+        properties: {}
+      },
+      uiSchema: {
+        "ui:servicesList": [
+          {
+            value: "orcid",
+            label: "ORCID"
+          },
+          {
+            value: "ror",
+            label: "ROR"
+          },
+          {
+            value: "zenodo",
+            label: "ZENODO"
+          }
+        ],
+        "ui:field": "idFetcher"
+      }
+    }
+  },
+  ror: {
+    title: "ROR Field",
+    description: "Data in JSON format, Grouped section",
+    child: {},
+    default: {
+      schema: {
+        type: "object",
+        properties: {}
+      },
+      uiSchema: {
+        "ui:servicesList": [
+          {
+            value: "ror",
+            label: "ROR"
+          }
+        ],
+        "ui:field": "idFetcher"
       }
     }
   },

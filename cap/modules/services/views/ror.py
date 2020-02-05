@@ -56,7 +56,7 @@ def _ror(item, by='org'):
 @login_required
 def get_ror_by_query():
     """Get ROR results for a specified query."""
-    args = request.get_json()
+    args = request.args
     query = args.get('query')
     if not query:
         raise RESTException(description='ROR Query not found.')
