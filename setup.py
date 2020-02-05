@@ -67,7 +67,6 @@ install_requires = [
     # Pinned libraries
     'urllib3[secure]==1.22',
     'sqlalchemy==1.3.0',
-    'kombu==4.3.0',  # TODO Temporary FIX
     # temporary pinned since there are 'fs' conslicts between
     # 'reana-commons' and 'invenio-files-rest'
     'fs==0.5.4',
