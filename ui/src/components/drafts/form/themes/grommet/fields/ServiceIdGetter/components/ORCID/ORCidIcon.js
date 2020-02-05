@@ -2,7 +2,7 @@ import React from "react";
 
 import SVGIcon from "grommet/components/SVGIcon";
 
-export const ORCidIcon = () => (
+const ORCidIcon = () => (
   <SVGIcon
     size="small"
     viewBox="0 0 270 270"
@@ -36,3 +36,5 @@ export const ORCidIcon = () => (
     </g>
   </SVGIcon>
 );
+
+export default ORCidIcon;

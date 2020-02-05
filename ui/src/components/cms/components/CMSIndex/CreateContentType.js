@@ -16,8 +16,8 @@ class Create extends React.Component {
 
   render() {
     return (
-      <Box size="large" colorIndex="brand">
-        <Header pad="small" justify="center" wrap={true}>
+      <Box size="large">
+        <Header pad="small" justify="center" wrap={true} colorIndex="neutral-1">
           <Label size="medium" margin="none">
             Create a new content type
           </Label>

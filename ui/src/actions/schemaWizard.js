@@ -1,5 +1,5 @@
 import axios from "axios";
-import { replace } from "react-router-redux";
+import { replace, push } from "react-router-redux";
 
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
@@ -12,6 +12,7 @@ export const CREATE_MODE_ENABLE = "CREATE_MODE_ENABLE";
 
 export const PROPERTY_SELECT = "PROPERTY_SELECT";
 
+export const SCHEMA_INIT_REQUEST = "SCHEMA_INIT_REQUEST";
 export const SCHEMA_INIT = "SCHEMA_INIT";
 export const SCHEMA_ERROR = "SCHEMA_ERROR";
 
@@ -23,6 +24,12 @@ export function schemaError(error) {
   return {
     type: SCHEMA_ERROR,
     payload: error
+  };
+}
+
+export function schemaInitRequest() {
+  return {
+    type: SCHEMA_INIT_REQUEST
   };
 }
 
@@ -55,7 +62,7 @@ export function selectProperty(path) {
 export function getSchemas() {
   return function(dispatch) {
     axios
-      .get("/api/jsonschemas?resolve=1")
+      .get("/api/jsonschemas")
       .then(resp => {
         let schemas = resp.data;
         let _schemas = {};
@@ -74,16 +81,17 @@ export function getSchemas() {
 
 export function getSchema(name, version = null) {
   let schemaLink;
+
   if (version) schemaLink = `/api/jsonschemas/${name}/${version}?resolve=1`;
   else schemaLink = `/api/jsonschemas/${name}?resolve=1`;
-
   return function(dispatch) {
+    dispatch(schemaInitRequest());
     axios
       .get(schemaLink)
       .then(resp => {
         let schema = resp.data;
-        let { id, version, deposit_schema, deposit_options } = schema;
-
+        let { id, version, deposit_schema, deposit_options, name } = schema;
+        id = id || name;
         if (deposit_schema && deposit_options)
           dispatch(
             schemaInit(
@@ -107,12 +115,13 @@ export function getSchemasLocalStorage() {
 
 export function createContentType(content_type) {
   return function(dispatch) {
+    dispatch(schemaInitRequest());
     let name = content_type.formData.name;
     let description = content_type.formData.description;
     const _id = slugify(Math.random().toString() + "_" + name);
 
     dispatch(schemaInit({ id: _id }, _initSchemaStructure(name, description)));
-    dispatch(replace("/cms/edit"));
+    dispatch(push("/cms/edit"));
   };
 }
 
@@ -121,24 +130,25 @@ export function selectContentType(id, version) {
     let state = getState();
     let data = state.schemaWizard.getIn(["list", id]);
 
-    if (data && data[version]) {
-      let { deposit_schema, deposit_options } = data[version];
+    // if (data && data[version]) {
+    //   let { deposit_schema, deposit_options } = data[version];
 
-      if (deposit_schema && deposit_options)
-        dispatch(
-          schemaInit(
-            { id, version },
-            { schema: deposit_schema, uiSchema: deposit_options }
-          )
-        );
-      dispatch(replace("/cms/edit"));
-    }
+    //   if (deposit_schema && deposit_options)
+    //     dispatch(
+    //       schemaInit(
+    //         { id, version },
+    //         { schema: deposit_schema, uiSchema: deposit_options }
+    //       )
+    //     );
+    //   }
+    dispatch(push(`/cms/edit/${id}`));
   };
 }
 
 export function fetchAndSelectContentType(id, version) {
   return function(dispatch, getState) {
     // dispatch(schemasListRequest());
+    dispatch(schemaInitRequest());
     let state = getState();
     let data = state.schemaWizard.getIn(["list", id]);
 

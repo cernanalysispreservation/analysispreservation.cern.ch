@@ -17,7 +17,6 @@ class CMSIndex extends React.Component {
         direction="row"
       >
         <SelectContentType />
-
         <CreateContentType />
       </Box>
     );
