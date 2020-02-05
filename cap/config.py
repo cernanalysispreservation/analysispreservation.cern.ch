@@ -85,6 +85,8 @@ ACCOUNTS_SESSION_REDIS_URL = 'redis://localhost:6379/1'
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 #: URL of message broker for Celery (default is RabbitMQ).
 CELERY_BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+#: Fix for connection reset by peer error: https://github.com/celery/celery/issues/4867
+CELERY_BROKER_HEARTBEAT = 0
 #: URL of backend for result storage (default is Redis).
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
 #: Scheduled tasks configuration (aka cronjobs).
