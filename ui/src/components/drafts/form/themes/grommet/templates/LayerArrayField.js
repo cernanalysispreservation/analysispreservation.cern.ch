@@ -56,12 +56,12 @@ class ArrayFieldTemplate extends React.Component {
             ? this.props.items.map(element => (
                 <ListItem
                   key={element.index}
-                  onClick={this._showLayer.bind(this, element.index)}
                   separator="none"
                   flex={true}
                   margin="none"
                   pad="none"
                   justify="between"
+                  onClick={() => {}}
                 >
                   <FormLayer
                     layerActive={this.state.layers[element.index]}
@@ -74,7 +74,11 @@ class ArrayFieldTemplate extends React.Component {
                     }
                   />
                   <Box flex={true} direction="row" wrap={false}>
-                    <Box flex={true} pad="small">
+                    <Box
+                      flex={true}
+                      pad="small"
+                      onClick={this._showLayer.bind(this, element.index)}
+                    >
                       <ItemBrief
                         index={element.index}
                         item={element.children.props.formData}
