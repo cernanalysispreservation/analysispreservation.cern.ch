@@ -15,6 +15,11 @@ class FormLayer extends React.Component {
     super(props);
   }
 
+  removeAndClose = () => {
+    this.props.remove();
+    this.props.onClose();
+  };
+
   render() {
     return this.props.layerActive ? (
       <Layer
@@ -46,7 +51,7 @@ class FormLayer extends React.Component {
                     <Button
                       label="Remove"
                       plain={true}
-                      onClick={this.props.remove ? this.props.remove : null}
+                      onClick={this.removeAndClose}
                       icon={<Trash />}
                     />
                   ) : null}
