@@ -24,6 +24,7 @@
 """Experiments common utils."""
 
 from functools import wraps
+from itertools import count, groupby
 from os.path import join
 from subprocess import CalledProcessError, check_output
 
@@ -90,7 +91,11 @@ def generate_krb_cookie(principal, kt, url):
     return generate(url)
 
 
-def recreate_es_index_from_source(alias, source, mapping=None, settings=None):
+def recreate_es_index_from_source(alias,
+                                  source,
+                                  mapping=None,
+                                  settings=None,
+                                  id_getter=None):
     """
     Recreate index in ES, with documents passed in source.
 
@@ -104,6 +109,11 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings=None):
     :param dict mapping: ES Mapping object
     :param dict settings: ES Settings object
     """
+    def _batches(iterable, chunk_size=10):
+        c = count()
+        for _, g in groupby(iterable, lambda _: next(c) // chunk_size):
+            yield g
+
     if es.indices.exists('{}-v1'.format(alias)):
         old_index, new_index = ('{}-v1'.format(alias), '{}-v2'.format(alias))
     else:
@@ -115,21 +125,22 @@ def recreate_es_index_from_source(alias, source, mapping=None, settings=None):
     es.indices.create(index=new_index,
                       body=dict(mappings=mapping, settings=settings or {}))
 
-    # index datasets from file under new index
-    try:
-        print("Indexing...")
-        actions = [{
-            "_index": new_index,
-            "_type": 'doc',
-            "_id": idx,
-            "_source": obj
-        } for idx, obj in enumerate(source)]
+    print("Indexing...", end='', flush=True)
 
-        helpers.bulk(es, actions)
-    except Exception as e:
-        # delete index if sth went wrong
-        es.indices.delete(index=new_index)
-        raise e
+    for batch in _batches(source, chunk_size=50000):
+        try:
+            actions = [{
+                '_id': id_getter(obj) if id_getter else None,
+                '_source': obj
+            } for obj in batch]
+            helpers.bulk(es, actions, index=new_index, doc_type='doc')
+            print('.', end='', flush=True)
+        except Exception as e:
+            es.indices.delete(
+                index=old_index)  # delete index if sth went wrong
+            raise e
+
+    print('')
 
     # add newly created index under das-datasets alias
     es.indices.put_alias(index=new_index, name=alias)

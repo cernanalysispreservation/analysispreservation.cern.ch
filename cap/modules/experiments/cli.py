@@ -56,7 +56,7 @@ def sync_with_cadi_database(limit):
 def index_datasets(file):
     """Load datasets from file and index in ES."""
     with open(file, 'r') as fp:
-        source = json.load(fp)
+        source = (dict(name=line.strip()) for line in fp)
         cache_das_datasets_in_es_from_file(source)
 
     click.secho("Datasets indexed in Elasticsearch.", fg='green')
@@ -66,9 +66,9 @@ def index_datasets(file):
 @click.option('--file', '-f', required=True, type=click.Path(exists=True))
 @with_appcontext
 def index_triggers(file):
-    """Load cms triggers from file and index in ES."""
+    """Load cms triggers from json file and index in ES."""
     with open(file, 'r') as fp:
-        source = json.load(fp)
+        source = (x for x in json.load(fp))
         cache_cms_triggers_in_es_from_file(source)
 
     click.secho("Triggers indexed in Elasticsearch.", fg='green')
