@@ -108,7 +108,7 @@ def reindex_das_entries():
         current_app.config['EXPERIMENTS_RESOURCES_LOCATION'], 'das.txt')
 
     with open(file_location, 'r') as fp:
-        source = tuple(dict(name=line.strip()) for line in fp)
+        source = (dict(name=line.strip()) for line in fp)
         cache_das_datasets_in_es_from_file(source)
 
     current_app.logger.info('DAS entries indexed succesfully.')
