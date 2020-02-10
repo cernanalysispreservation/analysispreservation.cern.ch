@@ -25,13 +25,9 @@
 
 from __future__ import absolute_import
 
-import responses
 from flask import current_app
-from invenio_search import current_search
-from mock import patch
-from mock.mock import MagicMock
-from pytest import mark, raises
 
+import responses
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.errors import ExternalAPIException
 from cap.modules.experiments.serializers import CADISchema
@@ -40,6 +36,10 @@ from cap.modules.experiments.utils.cadi import (get_all_from_cadi,
                                                 get_from_cadi_by_id,
                                                 synchronize_cadi_entries)
 from conftest import _datastore, assign_egroup_to_experiment
+from invenio_search import current_search
+from mock import patch
+from mock.mock import MagicMock
+from pytest import mark, raises
 
 
 @responses.activate
@@ -94,7 +94,7 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
 @patch('cap.modules.experiments.utils.cadi.generate_krb_cookie',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict(
-    app):
+        app):
     cadi_id = 'non-existing'
     # CADI API returns empty list, when no match with given id
     cadi_resp = dict(data=[])
@@ -121,7 +121,7 @@ def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
                   status=500)
 
-    with raises(ExternalAPIException) as e:
+    with raises(ExternalAPIException):
         get_from_cadi_by_id(cadi_id)
 
 
@@ -152,7 +152,7 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
                   json=cadi_resp,
                   status=200)
 
-    output = get_all_from_cadi()
+    output = list(get_all_from_cadi())
 
     # check that request to glance is called with correct url and cookie
     assert responses.calls[
@@ -171,13 +171,11 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
-    cadi_id = 'ANA-00-000'
-
     responses.add(responses.POST,
                   current_app.config['CADI_GET_ALL_URL'],
                   status=500)
 
-    with raises(ExternalAPIException) as e:
+    with raises(ExternalAPIException):
         get_all_from_cadi()
 
 
@@ -186,8 +184,6 @@ def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
        MagicMock(side_effect=ExternalAPIException()))
 def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_503(
         app):
-    cadi_id = 'ANA-00-000'
-
     with raises(ExternalAPIException):
         get_all_from_cadi()
 

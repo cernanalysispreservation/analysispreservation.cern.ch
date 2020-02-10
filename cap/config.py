@@ -454,6 +454,10 @@ LHCB_GETPLATFORM_URL = '{0}/getPlatform?app='.format(LHCB_ANA_DB)
 CMS_USER_PRINCIPAL = os.environ.get('APP_CMS_USER_PRINCIPAL')
 CMS_USER_KEYTAB = os.environ.get('APP_CMS_USER_KEYTAB')
 
+CMS_ADMIN_EGROUP = 'cms-cap-admin@cern.ch'
+CMS_COORDINATORS_EGROUP = 'cms-physics-coordinator@cern.ch'
+CMS_CONVENERS_EGROUP = 'cms-phys-conveners-{wg}@cern.ch'
+
 #: CADI database
 CADI_AUTH_URL = 'https://icms.cern.ch/tools/api/cadiLine/BPH-13-009'
 CADI_GET_CHANGES_URL = 'https://icms.cern.ch/tools/api/updatedCadiLines/'
