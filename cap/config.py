@@ -101,14 +101,6 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'cap.modules.experiments.tasks.cms.synchronize_with_cadi',
         'schedule': timedelta(days=1),
     },
-    'api_status_check': {
-        'task': 'cap.modules.services.views.status_checks.status_check',
-        'schedule': timedelta(hours=12),
-    },
-    'api_status_check_table_cleanup': {
-        'task': 'cap.modules.services.views.status_checks.clear_status_table',
-        'schedule': timedelta(days=3),
-    },
     'ping_webhooks': {
         'task': 'cap.modules.repoimporter.tasks.ping_webhooks',
         'schedule': timedelta(hours=12),
@@ -116,7 +108,7 @@ CELERY_BEAT_SCHEDULE = {
     'das_harvester': {
         'task': 'cap.modules.experiments.tasks.cms.harvest_das',
         'schedule': timedelta(days=1),
-    }
+    },
 }
 #: Accepted content types, used for serializing objects
 #: when sending tasks to Celery (json default in 4.0)
@@ -248,53 +240,67 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 #: Record search facets.
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
-    "aggs": {
-        "facet_type": {"terms": {"field": "_type"}},
-        "facet_cadi_status": {"terms": {"field": "cadi_info.status"}},
-        "facet_cms_working_group": {
-            "terms": {
-                "script": "doc.containsKey('cadi_id') ? doc['basic_info.cadi_id'].value?.substring(0,3) : null"  # noqa
+    'aggs': {
+        'facet_type': {
+            'terms': {
+                'field': '_type'
             }
         },
-        "particles": {
-            "nested": {
-                "path": "main_measurements.signal_event_selection" ".physics_objects"
+        'facet_cadi_status': {
+            'terms': {
+                'field': 'cadi_info.status'
+            }
+        },
+        'facet_cms_working_group': {
+            'terms': {
+                'script': 'doc.containsKey("cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
+            }
+        },
+        'particles': {
+            'nested': {
+                'path': 'main_measurements.signal_event_selection.physics_objects'  # noqa
             },
-            "aggs": {
-                "facet_physics_objects": {
-                    "terms": {
-                        "field": "main_measurements.signal_event_selection"
-                        ".physics_objects.object",
-                        "exclude": "",
+            'aggs': {
+                'facet_physics_objects': {
+                    'terms': {
+                        'field': 'main_measurements.signal_event_selection'
+                        '.physics_objects.object',
+                        'exclude': '',
                     },
-                    "aggs": {
-                        "doc_count": {"reverse_nested": {}},
-                        "facet_physics_objects_type": {
-                            "terms": {
-                                "field": "main_measurements"
-                                ".signal_event_selection"
-                                ".physics_objects"
-                                ".object_type.keyword"
+                    'aggs': {
+                        'doc_count': {
+                            'reverse_nested': {}
+                        },
+                        'facet_physics_objects_type': {
+                            'terms': {
+                                'field': 'main_measurements'
+                                '.signal_event_selection'
+                                '.physics_objects'
+                                '.object_type.keyword'
                             },
-                            "aggs": {"doc_count": {"reverse_nested": {}}},
+                            'aggs': {
+                                'doc_count': {
+                                    'reverse_nested': {}
+                                }
+                            },
                         },
                     },
                 },
             },
         },
     },
-    "post_filters": {
-        "type": terms_filter("_type"),
-        "cms_working_group": prefix_filter("basic_info.cadi_id"),
-        "cadi_status": terms_filter("cadi_info.status"),
-        "physics_objects": nested_filter(
-            "main_measurements.signal_event_selection.physics_objects",
-            "main_measurements.signal_event_selection" ".physics_objects.object",
+    'post_filters': {
+        'type': terms_filter('_type'),
+        'cms_working_group': prefix_filter('basic_info.cadi_id'),
+        'cadi_status': terms_filter('cadi_info.status'),
+        'physics_objects': nested_filter(
+            'main_measurements.signal_event_selection.physics_objects',
+            'main_measurements.signal_event_selection.physics_objects.object',
         ),
-        "physics_objects_type": nested_filter(
-            "main_measurements.signal_event_selection.physics_objects",
-            "main_measurements.signal_event_selection.physics_objects"
-            ".object_type.keyword",
+        'physics_objects_type': nested_filter(
+            'main_measurements.signal_event_selection.physics_objects',
+            'main_measurements.signal_event_selection.physics_objects'
+            '.object_type.keyword',
         ),
     },
 }
