@@ -24,6 +24,7 @@
 """Cern Analysis Preservation utils for CADI database."""
 
 import json
+from itertools import islice
 
 import requests
 from elasticsearch_dsl import Q
@@ -33,7 +34,10 @@ from invenio_search import RecordsSearch
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist
-from cap.modules.user.utils import get_existing_or_register_role
+from cap.modules.user.errors import DoesNotExistInLDAP
+from cap.modules.user.utils import (get_existing_or_register_role,
+                                    get_existing_or_register_user,
+                                    get_user_mail_from_ldap)
 
 from ..errors import ExternalAPIException
 from ..serializers import cadi_serializer
@@ -71,37 +75,66 @@ def synchronize_cadi_entries(limit=None):
         }
 
     entries = get_all_from_cadi()
-    cms_admin_group = get_existing_or_register_role('cms-cap-admin@cern.ch')
 
-    for entry in entries[:limit]:
+    for entry in islice(entries, limit):
         cadi_info = cadi_serializer.dump(entry).data
         cadi_id = cadi_info['cadi_id']
+        contact_name = cadi_info['contact'].split(' (')[0]
 
-        try:  # update if cadi deposit already exists
-            deposit = get_deposit_by_cadi_id(cadi_id)
+        with db.session.begin_nested():
+            try:  # update if cadi deposit already exists
+                deposit = get_deposit_by_cadi_id(cadi_id)
 
-            if deposit.get('cadi_info') == cadi_info:
-                print('No changes in cadi entry {}.'.format(cadi_id))
+                if deposit.get('cadi_info') == cadi_info:
+                    print('No changes in cadi entry {}.'.format(cadi_id))
 
-            else:
-                deposit['cadi_info'] = cadi_info
+                else:
+                    deposit['cadi_info'] = cadi_info
+                    deposit.commit()
+                    print('Cadi entry {} updated.'.format(cadi_id))
+
+            except DepositDoesNotExist:
+                cadi_deposit = _cadi_deposit(cadi_id, cadi_info)
+                deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
+
+                try:
+                    contact_mail = get_user_mail_from_ldap(contact_name)
+                    role = get_existing_or_register_user(contact_mail)
+                    deposit._add_user_permissions(
+                        role,
+                        ['deposit-read', 'deposit-update', 'deposit-admin'],
+                        db.session)
+                except DoesNotExistInLDAP:
+                    print('Couldnt give access to {} - not in LDAP'.format(
+                        contact_mail))
+
+                for group in get_cadi_admin_roles(cadi_id):
+                    deposit._add_egroup_permissions(
+                        group,
+                        ['deposit-read', 'deposit-update', 'deposit-admin'],
+                        db.session)
+
+                deposit._add_experiment_permissions('CMS', ['deposit-read'])
+
                 deposit.commit()
-                db.session.commit()
+                print('Cadi entry {} added.'.format(cadi_id))
 
-                print('Cadi entry {} updated.'.format(cadi_id))
+        db.session.commit()
 
-        except DepositDoesNotExist:
-            deposit = CAPDeposit.create(data=_cadi_deposit(cadi_id, cadi_info),
-                                        owner=None)
-            deposit._add_experiment_permissions('CMS', ['deposit-read'])
-            deposit._add_egroup_permissions(
-                cms_admin_group,
-                ['deposit-read', 'deposit-update', 'deposit-admin'],
-                db.session)  # noqa
-            deposit.commit()
-            db.session.commit()
 
-            print('Cadi entry {} added.'.format(cadi_id))
+def get_cadi_admin_roles(cadi_id):
+    roles = []
+    for egroup in (
+            current_app.config['CMS_COORDINATORS_EGROUP'],
+            current_app.config['CMS_ADMIN_EGROUP'],
+            current_app.config['CMS_CONVENERS_EGROUP'].format(wg=cadi_id[:3]),
+    ):
+        try:
+            roles.append(get_existing_or_register_role(egroup))
+        except DoesNotExistInLDAP:
+            pass
+
+    return roles
 
 
 def get_from_cadi_by_id(cadi_id):
@@ -148,10 +181,8 @@ def get_all_from_cadi():
     all_entries = response.json()['data']
 
     # filter out inactive or superseded entries
-    entries = [
-        entry for entry in all_entries
-        if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free']
-    ]
+    entries = (entry for entry in all_entries
+               if entry['status'] not in ['Inactive', 'SUPERSEDED', 'Free'])
 
     return entries
 
