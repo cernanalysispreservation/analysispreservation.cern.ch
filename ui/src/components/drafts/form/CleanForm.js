@@ -31,14 +31,14 @@ class CleanForm extends React.Component {
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={ArrayFieldTemplate}
-        showErrorList={true}
+        showErrorList={false}
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}
         tagName="div"
         uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
-        liveValidate={false}
-        noValidate={true}
+        liveValidate={this.props.liveValidate}
+        noValidate={false}
         onError={() => {}}
         formData={this.props.formData}
         onBlur={() => {}}

@@ -877,7 +877,13 @@
             "suggestions": "/api/cms/datasets?query="
           }
         },
-        "ui:array": "StringArrayField"
+        "ui:field": "PasteArrayField",
+        "ui:options": {
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+        }
       },
       "json_files": {
         "items": {
@@ -890,7 +896,13 @@
             "suggestions": "/api/cms/datasets?query="
           }
         },
-        "ui:array": "StringArrayField"
+        "ui:field": "PasteArrayField",
+        "ui:options": {
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+        }
       },
       "ui:order": [
         "primary_datasets",
@@ -900,8 +912,16 @@
         "*"
       ],
       "primary_datasets": {
+        "ui:field": "PasteArrayField",
+        "ui:options": {
+          "pasteTo": "path",
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+        },
         "items": {
-          "ui:order": ["path", "ranges", "year", "triggers"],
+          "ui:order": ["path", "year", "triggers", "*"],
           "ui:options": {
             "stringify": ["path"]
           },

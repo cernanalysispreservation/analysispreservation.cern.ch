@@ -9,6 +9,7 @@ import LayerArrayField from "./LayerArrayField";
 import AccordionArrayField from "./AccordionArrayField";
 import DefaultArrayField from "./DefaultArrayField";
 import StringArrayField from "./StringArrayField";
+import AddIcon from "grommet/components/icons/base/Add";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -39,35 +40,54 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event);
   }
 
-  _getArrayField(_label) {
+  _renderAddButton = () => (
+    <Box
+      onClick={this._onAddClick.bind(this)}
+      style={{ padding: "5px", margin: "10px 0" }}
+      colorIndex="light-1"
+      direction="row"
+      justify="center"
+      align="center"
+      flex={false}
+    >
+      <AddIcon size="xsmall" />{" "}
+      <span style={{ marginLeft: "5px" }}>Add Item</span>
+    </Box>
+  );
+
+  _getArrayField = _label => {
+    let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];
     if (this.formRenderType == "default") {
       return (
-        <Box className="grommetux-form-field">
-          {_label}
+        <Box className={_pastable ? "grommetux-form-field" : null}>
+          {_pastable && _label}
           <DefaultArrayField
             _onAddClick={this._onAddClick.bind(this)}
             {...this.props}
           />
+          {this._renderAddButton()}
         </Box>
       );
     } else if (this.formRenderType == "StringArrayField") {
       return (
-        <Box className="grommetux-form-field">
-          {_label}
+        <Box className={_pastable ? "grommetux-form-field" : null}>
+          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
           <StringArrayField
             _onAddClick={this._onAddClick.bind(this)}
             {...this.props}
           />
+          {this._renderAddButton()}
         </Box>
       );
     } else if (this.formRenderType == "LayerArrayField") {
       return (
-        <Box className="grommetux-form-field">
-          {_label}
+        <Box className={_pastable ? "grommetux-form-field" : null}>
+          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
           <LayerArrayField
             _onAddClick={this._onAddClick.bind(this)}
             {...this.props}
           />
+          {this._renderAddButton()}
         </Box>
       );
     } else if (this.formRenderType == "AccordionArrayField") {
@@ -93,7 +113,7 @@ class ArrayFieldTemplate extends React.Component {
     } else {
       return <div>{this.props.schema.items.type}</div>;
     }
-  }
+  };
 
   render() {
     let _label = (

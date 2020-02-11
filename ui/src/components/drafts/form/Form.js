@@ -85,7 +85,7 @@ class DepositForm extends React.Component {
             FieldTemplate={FieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
             ArrayFieldTemplate={ArrayFieldTemplate}
-            showErrorList={true}
+            showErrorList={false}
             ErrorList={ErrorListTemplate}
             widgets={widgets}
             fields={fields}
