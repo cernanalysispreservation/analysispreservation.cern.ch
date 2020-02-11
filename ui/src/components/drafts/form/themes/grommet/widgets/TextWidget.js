@@ -9,8 +9,9 @@ import { connect } from "react-redux";
 import { formDataChange } from "../../../../../../actions/draftItem";
 import { fromJS } from "immutable";
 
-import Spinning from "grommet/components/icons/Spinning";
 import ReadOnlyText from "./ReadOnlyText";
+import AsyncSelect from "react-select/async";
+import Spinning from "grommet/components/icons/Spinning";
 
 class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
@@ -44,7 +45,8 @@ class TextWidget extends Component {
     super();
     this.state = {
       suggestions: [],
-      showSpinner: false
+      showSpinner: false,
+      error: null
     };
   }
 
@@ -66,7 +68,7 @@ class TextWidget extends Component {
     });
   };
 
-  updateSuggestions = event => {
+  updateSuggestions = (value, cb = null) => {
     let suggestions = this.props.options.suggestions,
       data = fromJS(this.props.formData),
       params = this.props.options.params;
@@ -81,24 +83,34 @@ class TextWidget extends Component {
 
         suggestions = suggestions.replace(
           `${param}=`,
-          `${param}=${data.getIn(path, '') || ''}`
+          `${param}=${data.getIn(path, "") || ""}`
         );
       }
     }
 
-    axios.get(`${suggestions}${event.target.value}`).then(({ data }) => {
-      this.setState({
-        suggestions: data
+    axios
+      .get(`${suggestions}${value}`)
+      .then(({ data }) => {
+        if (cb) {
+          cb(data.map(value => ({ value, label: value })));
+        }
+      })
+      .catch(err => {
+        this.setState({
+          error:
+            err.response.status !== 500
+              ? err.response.data && err.response.data.message
+                ? err.response.data.message
+                : "Something went wrong with the request "
+              : "Something went wrong with the request "
+        });
       });
-    });
-
-    return this.props.onChange(event.target.value);
   };
 
-  updateValueOnSuggestion = ({ suggestion }) => {
-    if (this.props.options && this.props.options.autofill_from )
-        this.autoFillOtherFields();
-    return this.props.onChange(suggestion);
+  updateValueOnSuggestion = suggestion => {
+    if (this.props.options && this.props.options.autofill_from)
+      this.autoFillOtherFields();
+    return this.props.onChange(suggestion.value);
   };
 
   autoFillOtherFields = event => {
@@ -108,34 +120,43 @@ class TextWidget extends Component {
 
     if (!event.target.value) return;
 
-    this.setState({
-      showSpinner: true
-    });
+    this.setState({ showSpinner: true, error: null });
 
-    axios.get(`${url}${event.target.value}`).then(({ data }) => {
-      this.setState({
-        showSpinner: false
-      });
-      if (Object.keys(data).length !== 0) {
-        let _data = fromJS(data);
-        fieldsMap.map(el => {
-          let source = el[0],
-            destination = el[1];
+    axios
+      .get(`${url}${event.target.value}`)
+      .then(({ data }) => {
+        if (Object.keys(data).length !== 0) {
+          let _data = fromJS(data);
+          fieldsMap.map(el => {
+            let source = el[0],
+              destination = el[1];
 
-          // replace # with current path
-          destination = this._replace_hash_with_current_indexes(destination);
+            // replace # with current path
+            destination = this._replace_hash_with_current_indexes(destination);
 
-          formData = formData.setIn(destination, _data.getIn(source));
+            formData = formData.setIn(destination, _data.getIn(source));
+          });
+          this.setState({ showSpinner: false });
+          this.props.formDataChange(formData.toJS());
+        }
+      })
+      .catch(err => {
+        this.setState({
+          showSpinner: false,
+          error:
+            err.response.status !== 500
+              ? err.response.data && err.response.data.message
+                ? err.response.data.message
+                : "Something went wrong with the request "
+              : "Something went wrong with the request "
         });
-        this.props.formDataChange(formData.toJS());
-      }
-    });
+      });
   };
 
   // initiate ORCID search on Enter
   _searchOnEnter = event => {
     if (event.keyCode === 13) {
-      this.autoFillOtherFields();
+      this.autoFillOtherFields(event);
     } else {
       this.props.onKeyDown;
     }
@@ -144,39 +165,60 @@ class TextWidget extends Component {
   render() {
     return !this.props.readonly ? (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
-        <Box flex={true} direction="row">
+        <Box flex={true}>
           <Box full={{ horizontal: true }}>
-            <TextInput
-              id={this.props.id}
-              name={this.props.id}
-              placeHolder={this.props.placeholder}
-              onDOMChange={this._onChange}
-              {...(this.props.autofocus
-                ? {
-                    autoFocus: "true"
-                  }
-                : {})}
-              {...(this.props.options && this.props.options.suggestions
-                ? {
-                    suggestions: this.state.suggestions,
-                    onDOMChange: this.updateSuggestions,
-                    onSelect: this.updateValueOnSuggestion
-                  }
-                : {})}
-              {...(this.props.options && this.props.options.autofill_from
-                ? {
-                    onBlur: this.autoFillOtherFields
-                  }
-                : {})}
-              onKeyDown={this._searchOnEnter}
-              value={this.props.value || ""}
-            />
+            {this.props.options && this.props.options.suggestions ? (
+              <AsyncSelect
+                menuPosition="fixed"
+                isMulti={false}
+                onChange={this.updateValueOnSuggestion}
+                onInputChange={this._onInputChange}
+                isClearable
+                cacheOptions
+                defaultOptions
+                defaultValue={
+                  { label: this.props.value, value: this.props.value } || ""
+                }
+                value={{ label: this.props.value, value: this.props.value }}
+                loadOptions={this.updateSuggestions}
+              />
+            ) : (
+              <Box direction="row" flex={false}>
+                <Box flex={true}>
+                  <TextInput
+                    id={this.props.id}
+                    name={this.props.id}
+                    placeHolder={this.props.placeholder}
+                    onDOMChange={this._onChange}
+                    {...(this.props.autofocus
+                      ? {
+                          autoFocus: "true"
+                        }
+                      : {})}
+                    {...(this.props.options && this.props.options.autofill_from
+                      ? {
+                          onBlur: this.autoFillOtherFields
+                        }
+                      : {})}
+                    onKeyDown={this._searchOnEnter}
+                    value={this.props.value || ""}
+                  />
+                </Box>
+                <Box flex={false}>
+                  {this.state.showSpinner ? (
+                    <Box flex={false} align="end">
+                      <Spinning size="xsmall" />
+                    </Box>
+                  ) : null}
+                </Box>
+              </Box>
+            )}
           </Box>
-          {this.state.showSpinner ? (
-            <Box align="end">
-              <Spinning size="small" />
+          {this.state.error && (
+            <Box>
+              <span style={{ color: "red" }}>{this.state.error}</span>
             </Box>
-          ) : null}
+          )}
         </Box>
       </Box>
     ) : (
