@@ -106,7 +106,27 @@ class ArrayFieldTemplate extends React.Component {
         margin="none"
       />
     );
-    return this._getArrayField(_label);
+    return (
+      <Box
+        size={
+          this.props.uiSchema &&
+          this.props.uiSchema["ui:options"] &&
+          this.props.uiSchema["ui:options"].size
+            ? this.props.uiSchema["ui:options"].size
+            : "full"
+        }
+        style={{
+          display:
+            this.props.uiSchema &&
+            this.props.uiSchema["ui:options"] &&
+            this.props.uiSchema["ui:options"].display
+              ? this.props.uiSchema["ui:options"].display
+              : "grid"
+        }}
+      >
+        {this._getArrayField(_label)}
+      </Box>
+    );
   }
 }
 

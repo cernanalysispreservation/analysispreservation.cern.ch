@@ -861,7 +861,11 @@
         "ui:widget": "textarea"
       },
       "ana_notes": {
-        "ui:array": "StringArrayField"
+        "ui:array": "StringArrayField",
+        "ui:options": {
+          "size": "full",
+          "display": "grid"
+        }
       }
     },
     "analysis_reuse_mode": {

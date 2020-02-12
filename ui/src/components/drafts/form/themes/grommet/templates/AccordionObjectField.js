@@ -12,19 +12,12 @@ class AccordionObjectField extends React.Component {
     super(props);
 
     this.state = {
-      layerActive: false,
-      display: "flex"
+      layerActive: false
     };
 
     this._onClick = this._onClick.bind(this);
   }
-  componentDidMount() {
-    if (this.props.uiSchema["ui:options"]) {
-      this.setState({
-        display: this.props.uiSchema["ui:options"].display || "flex"
-      });
-    }
-  }
+
   _onClick() {
     this.setState({ layerActive: true });
   }
@@ -45,12 +38,20 @@ class AccordionObjectField extends React.Component {
             }
           >
             <Box
-              pad="medium"
               colorIndex="light-2"
+              pad="medium"
               style={{
-                display: this.state.display,
+                display:
+                  this.props.uiSchema["ui:options"] &&
+                  this.props.uiSchema["ui:options"].display
+                    ? this.props.uiSchema["ui:options"].display
+                    : "grid",
                 gridTemplateColumns:
-                  this.state.display === "grid" ? "repeat(4,1fr)" : null
+                  this.props.uiSchema["ui:options"] &&
+                  this.props.uiSchema["ui:options"].display &&
+                  this.props.uiSchema["ui:options"].display === "grid"
+                    ? "repeat(4,1fr)"
+                    : null
               }}
             >
               {this.props.properties.map(prop => prop.content)}

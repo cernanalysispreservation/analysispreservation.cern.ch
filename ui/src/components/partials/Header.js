@@ -90,9 +90,9 @@ class Header extends React.Component {
           responsive={false}
         >
           <Title style={{ fontWeight: "300" }} align="end">
-            <Anchor href="#" path="/" style={{ textDecoration: "none" }} />
-            <CAPLogoLight height="32px" />
-
+            <Anchor href="#" path="/" style={{ textDecoration: "none" }}>
+              <CAPLogoLight height="32px" />
+            </Anchor>
             <Label
               size="small"
               style={{ marginTop: "-10px", marginLeft: "-5px" }}
