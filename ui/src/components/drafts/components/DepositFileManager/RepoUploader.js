@@ -44,6 +44,7 @@ class RepoUploader extends React.Component {
           <CleanForm
             formData={this.state.formData}
             schema={{ type: "string" }}
+            showErrorList={false}
             uiSchema={uiSchema}
             onChange={change => {
               this.formDataChange(change.formData);

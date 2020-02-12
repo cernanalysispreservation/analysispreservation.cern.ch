@@ -9,11 +9,17 @@ import FileUploadProgressItem from "./FileUploadProgressItem";
 class FileManager extends React.Component {
   render() {
     return (
-      <Box>
-        {this.props.filesToUpload.toJS() &&
-          Object.keys(this.props.filesToUpload.toJS()).map(file => (
-            <FileUploadProgressItem key={file} file_key={file} />
-          ))}
+      <Box
+        flex={false}
+        style={{ maxHeight: "410px" }}
+        margin={{ bottom: "small" }}
+      >
+        <Box flex={true}>
+          {this.props.filesToUpload.toJS() &&
+            Object.keys(this.props.filesToUpload.toJS()).map(file => (
+              <FileUploadProgressItem key={file} file_key={file} />
+            ))}
+        </Box>
       </Box>
     );
   }

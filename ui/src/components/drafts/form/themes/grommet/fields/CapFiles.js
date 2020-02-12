@@ -34,7 +34,7 @@ class CapFile extends React.Component {
   };
 
   _onFileClick = path => {
-    this.props.selectPath(path, "file");
+    this._onChange({ path, type: "file" });
   };
 
   render() {
@@ -55,7 +55,7 @@ class CapFile extends React.Component {
         ) : (
           <React.Fragment>
             <Anchor
-              label="Select or Upload a file"
+              label="Select a file from your list to link here"
               onClick={this._toggleActiveLayer}
             />
           </React.Fragment>
