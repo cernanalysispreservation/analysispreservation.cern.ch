@@ -1177,11 +1177,6 @@
   version "0.6.7"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.7.tgz#53e9f1892f725b194d5e6a1684a7b394df592397"
 
-"@emotion/unitless@^0.7.0":
-  version "0.7.5"
-  resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.7.5.tgz#77211291c1900a700b8a78cfafda3160d76949ed"
-  integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
-
 "@emotion/utils@0.11.2":
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.11.2.tgz#713056bfdffb396b0a14f1c8f18e7b4d0d200183"
@@ -8188,13 +8183,6 @@ jsx-ast-utils@^2.0.0:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
-katex@^0.10.0-beta:
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/katex/-/katex-0.10.2.tgz#39973edbb65eda5b6f9e7f41648781e557dd4932"
-  integrity sha512-cQOmyIRoMloCoSIOZ1+gEwsksdJZ1EW4SWm3QzxSza/QsnZr6D4U1V9S4q+B/OLm2OQ8TCBecQ8MaIfnScI7cw==
-  dependencies:
-    commander "^2.19.0"
-
 keypress@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/keypress/-/keypress-0.2.1.tgz#1e80454250018dbad4c3fe94497d6e67b6269c77"
@@ -10804,13 +10792,6 @@ react-jsonschema-form@1.8.0:
     react-is "^16.8.4"
     react-lifecycles-compat "^3.0.4"
     shortid "^2.2.14"
-
-react-latex-next@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-latex-next/-/react-latex-next-1.1.0.tgz#8aa2e1ae9b9adb2e5d81d5bde62307b2160e80ee"
-  integrity sha512-26LofzaCxc0TPHiI5Y0dAcEHvW2y+vx7JpouO3CRZUv1Lw0RT4NgRbuZ9byGku1LNgEDuJFw9PFsmfoenbtbJg==
-  dependencies:
-    katex "^0.10.0-beta"
 
 react-lazylog@4.3.2:
   version "4.3.2"
