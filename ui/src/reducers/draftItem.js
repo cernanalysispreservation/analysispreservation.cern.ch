@@ -69,6 +69,10 @@ export default function draftsReducer(state = initialState, action) {
       return state.set("formData", action.data);
     case draftItemActions.TOGGLE_FILEMANAGER_LAYER:
       return state
+        .set(
+          "uploadFiles",
+          state.get("uploadFiles").filter(x => x.progress != 1)
+        )
         .set("fileManagerActiveLayer", !state.get("fileManagerActiveLayer"))
         .set("fileManagerLayerSelectable", action.selectable)
         .set("fileManagerLayerSelectableAction", action.action)
@@ -226,6 +230,8 @@ export default function draftsReducer(state = initialState, action) {
         key: action.filename,
         status: "fetching"
       });
+    case filesActions.UPLOAD_FILE_REMOVE:
+      return state.removeIn(["uploadFiles", action.filename]);
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,

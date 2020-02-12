@@ -29,7 +29,7 @@ class CleanForm extends React.Component {
         FieldTemplate={FieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
         ArrayFieldTemplate={ArrayFieldTemplate}
-        showErrorList={false}
+        showErrorList={this.props.showErrorList || true}
         ErrorList={ErrorListTemplate}
         widgets={widgets}
         fields={fields}

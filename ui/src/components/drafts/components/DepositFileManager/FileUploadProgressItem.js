@@ -5,10 +5,13 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Meter from "grommet/components/Meter";
+import Status from "grommet/components/icons/Status";
 
 class FileUploadProgressItem extends React.Component {
   render() {
     if (!this.props.file) return null;
+
+    let _progress = this.props.file.progress * 100;
     return (
       <Box
         style={{ padding: "4px 10px", marginBottom: "7px" }}
@@ -16,10 +19,18 @@ class FileUploadProgressItem extends React.Component {
         align="center"
         justify="between"
         separator="all"
+        pad={{ between: "small" }}
       >
         <Box flex={true}>{this.props.file.key}</Box>
         <Box flex={false}>
-          <Meter value={this.props.file.progress * 100} />
+          {_progress == 100 ? (
+            <Box flex={false} direction="row" wrap={false} align="center">
+              <span style={{ paddingRight: "5px" }}>File uploaded</span>
+              <Status value="ok" size="xsmall" />
+            </Box>
+          ) : (
+            <Meter value={_progress} />
+          )}
         </Box>
       </Box>
     );

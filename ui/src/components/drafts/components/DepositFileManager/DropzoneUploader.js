@@ -69,10 +69,14 @@ class FileManager extends React.Component {
     if (data.errors.length > 0) this.setState({ errors: data.formData });
     else {
       this.setState({ formData: data.formData });
-
-      let filename = `${data.formData.directory || ""}${
-        data.formData.filename
-      }`;
+      let _uploadDir;
+      if (data.formData && data.formData.directory) {
+        _uploadDir =
+          data.formData.directory.slice(-1) == "/"
+            ? data.formData.directory
+            : `${data.formData.directory}/`;
+      }
+      let filename = `${_uploadDir || ""}${data.formData.filename}`;
 
       let bucket_url = this.props.links.bucket;
       bucket_url = bucket_url.replace(".cern.ch/", ".cern.ch/api/");
@@ -82,6 +86,7 @@ class FileManager extends React.Component {
         filename,
         data.formData.file_tags
       );
+      this.setState({ acceptedFiles: null, formData: {} });
     }
   };
 
@@ -90,7 +95,7 @@ class FileManager extends React.Component {
   };
 
   _renderUploadDetails() {
-    let { name, size, type } = this.state.acceptedFiles[0];
+    let { name, size } = this.state.acceptedFiles[0];
     return (
       <Box flex={true} pad="small" colorIndex="light-1">
         <CleanForm
@@ -111,15 +116,10 @@ class FileManager extends React.Component {
             justify="end"
             align="center"
           >
-            <Box>
+            <Box flex={true}>
               <Box
-                direction="row"
-                align="center"
-                pad={{
-                  horizontal: "small",
-                  vertical: "none",
-                  between: "small"
-                }}
+                align="start"
+                pad={{ horizontal: "small", vertical: "none" }}
                 flex={false}
                 justify="between"
                 colorIndex="light-2"
@@ -137,7 +137,7 @@ class FileManager extends React.Component {
             </Box>
             <Box
               direction="row"
-              flex={true}
+              flex={false}
               pad={{ between: "small" }}
               justify="end"
             >
@@ -169,6 +169,7 @@ class FileManager extends React.Component {
       <Box flex={true}>
         <Dropzone
           style={styles.dropzone}
+          multiple={false}
           onDrop={acceptedFiles => {
             this.setState({
               acceptedFiles,
@@ -206,7 +207,7 @@ class FileManager extends React.Component {
     else _render = this._renderDropzone();
 
     return (
-      <Box margin={{ top: "large", bottom: "small", horizontal: "medium" }}>
+      <Box pad="large" colorIndex="light-1">
         <FileUploadProgress key="upload-progress" />
         {_render}
       </Box>

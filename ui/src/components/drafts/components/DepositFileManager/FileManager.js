@@ -1,29 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { connect, Provider } from "react-redux";
+import { Provider } from "react-redux";
 import store from "../../../../store/configureStore";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
-
-import { selectPath } from "../../../../actions/files";
 
 import FileTree from "../FileTree";
 
-import { Label } from "grommet";
+import { Label, Paragraph } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
-import RepoUploader from "./RepoUploader";
 
 class FileManager extends React.Component {
   _renderSidebar = () => {
     return (
-      <Box flex={false} size={{ width: "medium" }}>
+      <Box flex={false} size={{ width: "large" }}>
         <Box flex={false} pad="small" colorIndex="light-1" separator="bottom">
           <Label size="medium" margin="none">
             File Manager
           </Label>
+          <Paragraph margin="none">
+            Click on a file from the list to select it
+          </Paragraph>
         </Box>
         <Box flex={true} margin={{ top: "small", right: "small" }}>
           <FileTree
@@ -32,57 +31,6 @@ class FileManager extends React.Component {
             onFileClick={this.props.onFileClick}
           />
         </Box>
-
-        {this.props.onSelect ? (
-          <Box
-            colorIndex="light-2"
-            direction="row"
-            flex={false}
-            pad="small"
-            separator="top"
-          >
-            <Box>
-              <Label size="small">
-                <strong>
-                  {this.props.message
-                    ? this.props.message
-                    : "Please select a file from the list, to add it to the field"}
-                </strong>
-              </Label>
-              {this.props.pathSelected &&
-                this.props.pathSelected.type == "file" && (
-                  <Box>
-                    <Label size="small">
-                      <strong>Selected file:</strong>{" "}
-                      {this.props.pathSelected && this.props.pathSelected.path}
-                    </Label>
-                  </Box>
-                )}
-              <Box
-                colorIndex="light-2"
-                margin={{ top: "small" }}
-                pad={{ between: "small" }}
-                direction="row"
-                flex={false}
-              >
-                <Button
-                  primary={true}
-                  label="Add to field"
-                  onClick={
-                    this.props.pathSelected
-                      ? () => this.props.onSelect(this.props.pathSelected)
-                      : null
-                  }
-                />
-                <Button
-                  label="Cancel"
-                  critical={true}
-                  onClick={this.props.toggleLayer}
-                />
-              </Box>
-            </Box>
-          </Box>
-        ) : null}
       </Box>
     );
   };
@@ -97,14 +45,16 @@ class FileManager extends React.Component {
         onClose={this.props.toggleLayer}
       >
         <Provider store={store}>
-          <Box size={{ height: "xlarge", width: { min: "xxlarge" } }}>
+          <Box size={{ height: "xlarge", width: { min: "large" } }}>
             <Box flex={true}>
               <Box flex={true} direction="row">
-                {this._renderSidebar()}
-                <Box flex={true} colorIndex="grey-4">
-                  <DropzoneUploader />
-                  <RepoUploader />
-                </Box>
+                {this.props.onSelect ? (
+                  this._renderSidebar()
+                ) : (
+                  <Box flex={true}>
+                    <DropzoneUploader />
+                  </Box>
+                )}
               </Box>
             </Box>
           </Box>

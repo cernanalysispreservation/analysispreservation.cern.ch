@@ -114,13 +114,12 @@ class FileManager extends React.Component {
         onClose={this.props.toggleFilemanagerLayer}
       >
         <Provider store={store}>
-          <Box size={{ height: "xlarge", width: { min: "xxlarge" } }}>
+          <Box size="large">
             <Box flex={true}>
               <Box flex={true} direction="row">
-                {this._renderSidebar()}
+                {false ? this._renderSidebar() : null}
                 <Box flex={true} colorIndex="grey-4">
                   <DropzoneUploader />
-                  <RepoUploader />
                 </Box>
               </Box>
             </Box>

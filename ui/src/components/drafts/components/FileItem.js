@@ -131,6 +131,7 @@ class FileItem extends React.Component {
     return file ? (
       <Box
         key={file.key}
+        colorIndex={this.state.hover ? "light-2" : null}
         pad="none"
         flex={true}
         onMouseOver={() => this._toggleHover(true)}
