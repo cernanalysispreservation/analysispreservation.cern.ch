@@ -19,10 +19,22 @@
       "control_number": {
         "type": "string"
       },
-      "analysis_title": {
-        "type": "string",
-        "title": "Analysis Title"
+      "basic_info": {
+        "title": "Basic Information",
+        "id": "basic_info",
+        "type": "object",
+        "properties": {
+          "analysis_title": {
+            "type": "string",
+            "title": "Analysis Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        }
       },
+
       "_files": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
@@ -123,7 +135,23 @@
     }
   },
   "deposit_options": {
-    "ui:order": ["analysis_title", "train_analysis", "*"],
+    "ui:options": {
+      "display": "grid",
+      "size": "xlarge",
+      "align": "center",
+      "full": true,
+      "view": {
+        "vertical": true,
+        "sidebarColor": "grey-5-a"
+      }
+    },
+    "ui:order": ["basic_info", "train_analysis", "*"],
+    "basic_info": {
+      "description": {
+        "ui:widget": "textarea"
+      }
+    },
+    "ui:object": "tabView",
     "train_analysis": {
       "items": {
         "ui:order": [
@@ -142,7 +170,7 @@
           "ui:array": "AccordionArrayField"
         }
       },
-      "ui:array": "AccordionArrayField"
+      "ui:array": "default"
     }
   }
 }
