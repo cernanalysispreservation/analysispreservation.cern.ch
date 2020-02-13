@@ -10,9 +10,20 @@ class TabField extends React.Component {
   constructor(props) {
     super(props);
 
+    // keep track of every property that is hidden
+    this.props.properties.map((item, index) => {
+      if (
+        this.props.uiSchema[item.name]["ui:options"] &&
+        this.props.uiSchema[item.name]["ui:options"].hidden
+      ) {
+        this.props.properties.splice(index, 1);
+      }
+    });
+
     let init_tabs = props.properties.filter(
       components => components.name != "analysis_reuse_mode"
     );
+
     this.options = { ...props.uiSchema["ui:options"] };
     this.view = this.options.view || { vertical: true, sidebarColor: "grey-3" };
     let active;
@@ -35,7 +46,6 @@ class TabField extends React.Component {
   _onTabClick = tab => {
     this.setState({ active: tab.key ? tab.key : tab.name });
   };
-
   render() {
     let tabs = this.options.tabs ? this.options.tabs : this.props.properties;
     let active_tab = [];

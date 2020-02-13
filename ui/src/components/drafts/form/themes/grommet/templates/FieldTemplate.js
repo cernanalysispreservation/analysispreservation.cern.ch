@@ -5,10 +5,21 @@ import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 
 let FieldTemplate = function(props) {
-  const { id, label, rawDescription, rawErrors = [], children } = props;
+  const {
+    id,
+    label,
+    rawDescription,
+    rawErrors = [],
+    children,
+    uiSchema
+  } = props;
 
   let _errors = "";
   let gridColumns = null;
+
+  if (uiSchema["ui:options"] && uiSchema["ui:options"].hidden) {
+    return <React.Fragment />;
+  }
 
   if (rawErrors.length > 0)
     rawErrors.map((error, index) => {
