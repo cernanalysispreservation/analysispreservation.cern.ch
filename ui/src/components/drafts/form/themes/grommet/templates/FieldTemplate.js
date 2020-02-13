@@ -17,7 +17,7 @@ let FieldTemplate = function(props) {
   let _errors = "";
   let gridColumns = null;
 
-  if (uiSchema["ui:options"] && uiSchema["ui:options"].hidden) {
+  if (uiSchema && uiSchema["ui:options"] && uiSchema["ui:options"].hidden) {
     return <React.Fragment />;
   }
 

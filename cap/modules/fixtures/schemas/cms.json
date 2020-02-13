@@ -1004,7 +1004,7 @@
       }
     },
     "ntuples_production": {
-      "ui:array": "AccordionArrayField",
+      "ui:array": "default",
       "items": {
         "ui:order": ["code_base", "processing_steps"],
         "code_base": {
