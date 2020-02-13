@@ -18,11 +18,12 @@ class HowToSearchPage extends React.Component {
         >
           <Tiles fill={true}>
             <CustomTile
-                header={
-                    <span>To perform a free text search, simply enter a text string. This
-                            will search for given terms in the whole document
-                    </span>
-                    }
+              header={
+                <span>
+                  To perform a free text search, simply enter a text string.
+                  This will search for given terms in the whole document
+                </span>
+              }
               code="validation data 2011"
             />
             <CustomTile
@@ -32,8 +33,8 @@ class HowToSearchPage extends React.Component {
             <CustomTile
               header={
                 <span>
-                  To point to nested fields use <b> . </b>{" "}
-                  operator or one of many available aliases
+                  To point to nested fields use <b> . </b> operator or one of
+                  many available aliases
                 </span>
               }
               code="researcher reviewer ananote arxiv status keyword dataset
@@ -42,34 +43,33 @@ class HowToSearchPage extends React.Component {
             <CustomTile
               header={
                 <span>
-                    To make your query more generic, use wildcards: <br/> 
-                    <b>? </b> &nbsp;for a single character <br/>
-                    <b> * </b> &nbsp; for multiple ones <br /> 
+                  To make your query more generic, use wildcards: <br />
+                  <b>? </b> &nbsp;for a single character <br />
+                  <b> * </b> &nbsp; for multiple ones <br />
                 </span>
               }
-                  code="/DoubleMu*/*/AOD"
-            />
-            <CustomTile
-                header={
-                    <span> To search for terms contatining special characters
-                    escape them with <b>/</b></span>
-                    }
-                    code="* ? . : ! ( ) { } [ ] &quot; ~"
-            />
-            <CustomTile
-                header={
-                    <span>To search for the whole phrase, put it in quotes. Keep in mind that <b>phrases are not analyzed</b>, hence all special characters (like wildcards or boolean operators) do not have any effect.</span>}
-              code="researcher:&quot;John Doe&quot;"
+              code="/DoubleMu*/*/AOD"
             />
             <CustomTile
               header={
                 <span>
-                  To build more complex search criteria, use Boolean                  
-                  operators <b>AND</b>, <b>OR</b>, and <b>NOT</b>, grouped in parentheses. By default, search parser will join query terms with an <b>AND</b> operator.
+                  {" "}
+                  To search for terms contatining special characters escape them
+                  with <b>/</b>
                 </span>
               }
-              code="dataset:/MinimumBias/Commissioning10-SD_EG-Jun14thSkim_v1/*
-                            AND trigger:(HLT_MinBiasBSC OR HLT_DiJetAve15U)"
+              code="* ? . : ! ( ) { } [ ] &quot; ~"
+            />
+            <CustomTile
+              header={
+                <span>
+                  To search for the whole phrase, put it in quotes. Keep in mind
+                  that <b>phrases are not analyzed</b>, hence all special
+                  characters (like wildcards) do not have
+                  any effect.
+                </span>
+              }
+              code="researcher:&quot;John Doe&quot;"
             />
           </Tiles>
         </Box>
