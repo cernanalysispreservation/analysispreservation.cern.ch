@@ -200,7 +200,7 @@ def test_get_triggers_suggestions_when_no_query_passed_returns_empty_list(
     assert resp.json == []
 
 
-def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_empty_list(
+def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_all(
         client, users, auth_headers_for_user, cms_triggers_index):
     resp = client.get('/cms/triggers?query=&dataset=',
                       headers=auth_headers_for_user(users['cms_user']))
@@ -219,7 +219,7 @@ def test_get_triggers_suggestions_when_missing_params_throws_400(
 
 
 def test_get_triggers_suggestions_returns_correct_suggestions(
-    client, users, auth_headers_for_user, cms_triggers_index):
+        client, users, auth_headers_for_user, cms_triggers_index):
     resp = client.get('/cms/triggers?query=Sss&dataset=/Dataset1/sth/sth/sth',
                       headers=auth_headers_for_user(users['cms_user']))
 

@@ -468,6 +468,18 @@ def cms_triggers_index(es):
             'year': 2011,
             'trigger': 'Another_One'
         },
+
+        # some duplicates to check aggregations
+        {
+            'dataset': 'Dataset1',
+            'year': 2010,
+            'trigger': 'Trigger1'
+        },
+        {
+            'dataset': 'Dataset1',
+            'year': 2010,
+            'trigger': 'Trigger_2'
+        }
     ]
 
     cache_cms_triggers_in_es_from_file(source)
