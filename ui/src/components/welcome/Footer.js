@@ -1,12 +1,10 @@
 import React from "react";
 
 import Anchor from "grommet/components/Anchor";
-import Paragraph from "grommet/components/Paragraph";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Label from "grommet/components/Label";
 
-import { LhcbIcon } from "../drafts/form/themes/grommet/fields/components/Lhcb";
 import { AliceIcon } from "../drafts/form/themes/grommet/fields/components/Alice";
 import { AtlasIcon } from "../drafts/form/themes/grommet/fields/components/Atlas";
 import { CmsIcon } from "../drafts/form/themes/grommet/fields/components/Cms";

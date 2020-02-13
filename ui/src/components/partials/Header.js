@@ -20,7 +20,6 @@ import Layer from "grommet/components/Layer";
 import SearchBar from "../search/SearchBar";
 
 import UserIcon from "grommet/components/icons/base/User";
-import config from "../../config";
 import { logout } from "../../actions/auth";
 import DraftCreate from "../drafts/DraftCreate";
 

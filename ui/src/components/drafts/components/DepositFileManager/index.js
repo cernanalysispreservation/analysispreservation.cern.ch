@@ -14,7 +14,6 @@ import FileTree from "../FileTree";
 
 import { Label } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
-import RepoUploader from "./RepoUploader";
 
 class FileManager extends React.Component {
   constructor(props) {
@@ -117,7 +116,6 @@ class FileManager extends React.Component {
           <Box size="large">
             <Box flex={true}>
               <Box flex={true} direction="row">
-                {false ? this._renderSidebar() : null}
                 <Box flex={true} colorIndex="grey-4">
                   <DropzoneUploader />
                 </Box>

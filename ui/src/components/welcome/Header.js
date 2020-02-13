@@ -6,7 +6,6 @@ import { withRouter } from "react-router";
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
-import Button from "grommet/components/Button";
 import Label from "grommet/components/Label";
 
 import Header from "grommet/components/Header";
@@ -17,7 +16,6 @@ import { loginLocalUser } from "../../actions/auth";
 import LogIcon from "grommet/components/icons/base/Login";
 
 import CAPLogoDark from "../../img/cap-logo-dark.svg";
-import CERNLogo from "./img/cern-logo.svg";
 
 class WelcomePage extends React.Component {
   constructor(props) {
