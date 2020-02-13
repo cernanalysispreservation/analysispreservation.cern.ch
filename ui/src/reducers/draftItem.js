@@ -230,8 +230,6 @@ export default function draftsReducer(state = initialState, action) {
         key: action.filename,
         status: "fetching"
       });
-    case filesActions.UPLOAD_FILE_REMOVE:
-      return state.removeIn(["uploadFiles", action.filename]);
     case filesActions.UPLOAD_FILE_ERROR:
       return state.setIn(["uploadFiles", action.filename], {
         key: action.filename,

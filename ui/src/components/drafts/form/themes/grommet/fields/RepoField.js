@@ -40,7 +40,7 @@ class RepoField extends React.Component {
     if (value == "") this.setState({ repo: null, error: null });
     try {
       let repo = GitUrlParse(value);
-      let { resource, owner, name, href } = repo;
+      let { resource, owner, name } = repo;
 
       if (
         ["github.com", "gitlab.cern.ch", "gitlab-test.cern.ch"].indexOf(

@@ -10,7 +10,7 @@ import BookIcon from "grommet/components/icons/base/Book";
 import NoteIcon from "grommet/components/icons/base/Note";
 import Box from "grommet/components/Box";
 
-import PreviewUpload from "./PreviewUpload";
+// import PreviewUpload from "./PreviewUpload";
 
 import FileTree from "./FileTree";
 

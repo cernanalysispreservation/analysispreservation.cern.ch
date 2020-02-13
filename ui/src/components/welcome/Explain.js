@@ -24,7 +24,7 @@ const CustomTile = props => {
           <Box align="center" pad={{ between: "medium" }}>
             {props.content.map((item, index) => {
               return (
-                <Box textAlign="center" align="center">
+                <Box key={index} textAlign="center" align="center">
                   <Heading tag="h3">{item.header}</Heading>
                   <Paragraph size="small" margin="none">
                     {item.paragraph}{" "}

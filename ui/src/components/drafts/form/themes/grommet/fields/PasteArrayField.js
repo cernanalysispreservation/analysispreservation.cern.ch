@@ -67,8 +67,9 @@ class PasteArrayField extends React.Component {
   };
 
   render() {
-    let { ["ui:field"]: uiField = {}, ..._uiSchema } = this.props.uiSchema;
+    let _uiSchema = this.props.uiSchema;
 
+    delete _uiSchema["ui:field"];
     return (
       <FormField>
         <Box pad={{ horizontal: "medium" }}>
