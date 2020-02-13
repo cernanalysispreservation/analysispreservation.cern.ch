@@ -196,7 +196,7 @@ def get_deposit_by_cadi_id(cadi_id):
     """
     rs = RecordsSearch(index='deposits-records')
 
-    res = rs.query(Q('match', basic_info__cadi_id__keyword=cadi_id)) \
+    res = rs.query(Q('match', basic_info__cadi_id=cadi_id)) \
         .execute().hits.hits
 
     if not res:
