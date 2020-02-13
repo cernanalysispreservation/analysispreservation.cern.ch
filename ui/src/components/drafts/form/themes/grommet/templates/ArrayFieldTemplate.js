@@ -141,7 +141,7 @@ class ArrayFieldTemplate extends React.Component {
             this.props.uiSchema["ui:options"] &&
             this.props.uiSchema["ui:options"].display
               ? this.props.uiSchema["ui:options"].display
-              : "grid"
+              : "flex"
         }}
       >
         {this._getArrayField(_label)}
