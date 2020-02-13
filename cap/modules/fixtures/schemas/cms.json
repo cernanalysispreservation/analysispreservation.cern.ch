@@ -860,6 +860,9 @@
       "abstract": {
         "ui:widget": "textarea"
       },
+      "conclusion": {
+        "ui:widget": "textarea"
+      },
       "ana_notes": {
         "ui:array": "StringArrayField"
       }
