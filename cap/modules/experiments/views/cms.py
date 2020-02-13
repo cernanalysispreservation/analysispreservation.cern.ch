@@ -90,7 +90,8 @@ def get_triggers_suggestions():
     year = request.args.get('year')
 
     search = CMSTriggerSearch().prefix_search(query, dataset, year)
-    results = search.execute()
+    search.aggs.bucket('_triggers', 'terms', field='trigger.keyword')
 
-    # @TOFIX should use aggregations to return unique values
-    return jsonify(list(set(hit.trigger for hit in results)))
+    results = search.execute()
+    aggregations = results.aggregations._triggers.buckets
+    return jsonify([trigger.key for trigger in aggregations])

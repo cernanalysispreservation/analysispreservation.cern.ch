@@ -35,7 +35,12 @@ CMS_TRIGGERS_ES_CONFIG = {
             "properties": {
                 "trigger": {
                     "type": "keyword",
-                    "normalizer": "my_normalizer"
+                    "normalizer": "my_normalizer",
+                    "fields": {
+                        "keyword": {
+                            "type": "keyword"
+                        }
+                    }
                 },
                 "year": {
                     "type": "keyword",
@@ -52,7 +57,6 @@ CMS_TRIGGERS_ES_CONFIG = {
             "normalizer": {
                 "my_normalizer": {
                     "type": "custom",
-                    "char_filter": [],
                     "filter": "lowercase"
                 }
             }
