@@ -13,6 +13,8 @@ class TabField extends React.Component {
     // keep track of every property that is hidden
     this.props.properties.map((item, index) => {
       if (
+        this.props.uiSchema &&
+        this.props.uiSchema[item.name] &&
         this.props.uiSchema[item.name]["ui:options"] &&
         this.props.uiSchema[item.name]["ui:options"].hidden
       ) {
