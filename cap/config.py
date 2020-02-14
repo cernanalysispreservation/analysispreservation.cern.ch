@@ -241,19 +241,20 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
     'aggs': {
-        'facet_type': {
+        #        'facet_type': {
+        #            'terms': {
+        #                'field': '_type'
+        #            }
+        #        },
+        'facet_cms_working_group': {
             'terms': {
-                'field': '_type'
+                'size': 30,
+                'script': 'doc.containsKey("cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
             }
         },
         'facet_cadi_status': {
             'terms': {
                 'field': 'cadi_info.status'
-            }
-        },
-        'facet_cms_working_group': {
-            'terms': {
-                'script': 'doc.containsKey("cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
             }
         },
         'particles': {
@@ -290,7 +291,7 @@ CAP_FACETS = {
         },
     },
     'post_filters': {
-        'type': terms_filter('_type'),
+        #        'type': terms_filter('_type'),
         'cms_working_group': prefix_filter('basic_info.cadi_id'),
         'cadi_status': terms_filter('cadi_info.status'),
         'physics_objects': nested_filter(
