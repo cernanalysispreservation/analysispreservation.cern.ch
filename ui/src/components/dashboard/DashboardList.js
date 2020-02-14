@@ -15,13 +15,13 @@ import List from "grommet/components/List";
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
 
 function DashboardList(props) {
-  const [activeList, setActiveList] = useState("all");
+  const [activeList, setActiveList] = useState("mine");
   let { header = "", emptyMessage = null, listType, list, ListItem } = props;
 
   return (
-    <Box flex={false}>
-      <Box pad="none">
-        <Box flex={true} direction="row" pad="small" justify="between">
+    <Box flex={false} pad={{ vertical: "small" }}>
+      <Box>
+        <Box flex direction="row" pad="small" justify="between">
           <Heading
             tag="h5"
             uppercase={true}
@@ -55,7 +55,11 @@ function DashboardList(props) {
         <ReactTooltip />
       </Box>
 
-      <Box flex={false} size={{ height: "medium" }} colorIndex="light-1">
+      <Box
+        flex={false}
+        size={{ height: "medium", width: "xlarge" }}
+        colorIndex="light-1"
+      >
         {list[activeList].list.length > 0 ? (
           <Box>
             <List>
@@ -64,12 +68,12 @@ function DashboardList(props) {
               ))}
             </List>
             {list[activeList].list.length > 4 ? (
-              <Box align="center" style={{ marginTop: "-9px" }}>
+              <Box align="center">
                 <Anchor
                   path={list[activeList].more}
                   style={{ textDecoration: "none", color: "black" }}
                 >
-                  <MoreIcon />
+                  <span>. . .</span>
                 </Anchor>
               </Box>
             ) : null}
