@@ -541,6 +541,14 @@
     }
   },
   "deposit_options": {
+    "ui:object": "tabView",
+    "ui:options": {
+      "full": true,
+      "view": {
+        "vertical": true,
+        "sidebarColor": "grey-5-a"
+      }
+    },
     "stripping_turbo_selection": {
       "items": {
         "ui:order": [
@@ -553,7 +561,7 @@
           "ui:array": "StringArrayField"
         }
       },
-      "ui:array": "AccordionArrayField"
+      "ui:array": "default"
     },
     "ntuple_userdst_production": {
       "items": {
@@ -578,7 +586,7 @@
           }
         }
       },
-      "ui:array": "AccordionArrayField"
+      "ui:array": "default"
     },
     "user_analysis": {
       "docker_registries": {
@@ -596,7 +604,6 @@
           "ui:field": "CapFiles"
         }
       },
-      "ui:object": "accordionObjectField",
       "basic_scripts": {
         "scripts": {
           "items": {
@@ -619,7 +626,6 @@
       "additional_resources"
     ],
     "additional_resources": {
-      "ui:object": "accordionObjectField",
       "presentations": {
         "items": {
           "ui:options": {
@@ -695,7 +701,6 @@
           "suggestions": "/api/lhcb/analysis?query="
         }
       },
-      "ui:object": "accordionObjectField",
       "reviewers": {
         "items": {
           "ui:options": {
