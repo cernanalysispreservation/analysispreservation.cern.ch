@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
         }
       },
       workflows: {
-        all: {
+        mine: {
           list: this.props.results.user_workflows.data,
           more: this.props.results.user_workflows.more
         }
@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
   render() {
     let lists = this._getList();
     return (
-      <Box full={true} colorIndex="light-2" pad={{horizontal: "small"}}>
+      <Box colorIndex="light-2">
         {!this.props.permissions && (
           <Notification
             message="Your account has no permissions to access the platform resources."
@@ -66,47 +66,43 @@ class Dashboard extends React.Component {
             <Spinning size="large" />
           </Box>
         ) : (
-          <Box>
-            <Box direction="row" wrap align="center">
-              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-                <DashboardList
-                  listType="draft"
-                  list={lists["drafts"]}
-                  header="drafts"
-                  ListItem={DashboardListItem}
-                  emptyMessage="Draft analyses that your collaborators have given you read/write access to."
-                />
-              </Box>
-              <Box pad="small" size={{ width: "small" }}>
-                <DashboardQuickSearch />
-              </Box>
+          <Box colorIndex="light-2" full align="center">
+            <Box
+              direction="row"
+              wrap
+              align="center"
+              pad={{
+                between: "large",
+                horizontal: "large"
+              }}
+            >
               <DashboardMeter
                 total={this.props.results.user_count}
                 drafts={this.props.results.user_drafts_count}
                 published={this.props.results.user_published_count}
               />
-
-            </Box>
-
-            <Box direction="row" wrap align="center" justify="between">
-              <Box pad="medium" size={{ width: { min: "medium" } }} flex={true}>
-                <DashboardList
-                  listType="published"
-                  list={lists["published"]}
-                  header="published in collaboration"
-                  ListItem={DashboardListItem}
-                  emptyMessage="All analyses published on CAP by members of your collaboration."
-                />
-              </Box>
-              <Box pad="medium" size={{ width: { max: "xlarge" } }} flex={true}>
-                <DashboardList
-                  listType="workflows"
-                  list={lists["workflows"]}
-                  header="workflows"
-                  ListItem={DashboardWorkflowListItem}
-                  emptyMessage="Recent workflows attached to your content"
-                />
-              </Box>
+              <DashboardList
+                listType="draft"
+                list={lists["drafts"]}
+                header="drafts"
+                ListItem={DashboardListItem}
+                emptyMessage="Draft analyses that your collaborators have given you read/write access to."
+              />
+              <DashboardQuickSearch />
+              <DashboardList
+                listType="published"
+                list={lists["published"]}
+                header="published in collaboration"
+                ListItem={DashboardListItem}
+                emptyMessage="All analyses published on CAP by members of your collaboration."
+              />
+              <DashboardList
+                listType="workflows"
+                list={lists["workflows"]}
+                header="workflows"
+                ListItem={DashboardWorkflowListItem}
+                emptyMessage="Recent workflows attached to your content"
+              />
             </Box>
           </Box>
         )}

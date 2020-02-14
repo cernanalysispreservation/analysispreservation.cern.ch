@@ -49,25 +49,16 @@ function DashboardListItem(props) {
             <Heading strong tag="h6" margin="none" truncate>
               {general_title}
             </Heading>
-            <Box justify="center" pad={{ horizontal: "small" }}>
-              {!is_owner && (can_update || can_admin) ? (
-                <span>
-                  <EditIcon size="xsmall" data-tip="contributor" />
-                </span>
-              ) : null}
-              {is_owner ? (
-                <span>
-                  <UserIcon size="xsmall" data-tip="owner" />
-                </span>
-              ) : null}
-            </Box>
             <ReactTooltip />
           </Box>
           <Box flex={true} style={{ overflow: "visible" }}>
-              <Label size="small" margin="none" truncate
-                    style={{color: abstract ? 'none': 'lightgrey'}}
-              >
-              <i>{abstract || "No abstract provided"}</i>
+            <Label
+              size="small"
+              margin="none"
+              truncate
+              style={{ color: abstract ? "none" : "lightgrey" }}
+            >
+              {abstract || "No abstract provided"}
             </Label>
           </Box>
         </Box>
@@ -76,7 +67,7 @@ function DashboardListItem(props) {
           flex={false}
           justify="center"
           textAlign="right"
-          style={{ fontWeight: "light" }}
+          style={{ color: "#ccc", fontWeight: "light" }}
         >
           <span>updated</span>
           <TimeAgo date={updated} minPeriod="60" />
