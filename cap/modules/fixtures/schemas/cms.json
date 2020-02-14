@@ -120,26 +120,6 @@
     "$schema": "http://json-schema.org/draft-04/schema#",
     "type": "object",
     "properties": {
-      "statistical_treatment": {
-        "type": "object",
-        "properties": {
-          "combine_datacard": {
-            "x-cap-file": {},
-            "type": "string",
-            "description": "Add final combine datacards of the analysis",
-            "title": "Combine Datacard File"
-          },
-          "statistics_questionnaire": {
-            "properties": {
-              "$ref": {
-                "type": "string"
-              }
-            },
-            "title": "Statistics Questionnare"
-          }
-        },
-        "title": "Statistical Treatment"
-      },
       "_buckets": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
@@ -216,20 +196,6 @@
               "type": "object",
               "x-validate-cms-trigger": {},
               "properties": {
-                "ranges": {
-                  "type": "object",
-                  "properties": {
-                    "max": {
-                      "type": "number",
-                      "title": "Max"
-                    },
-                    "min": {
-                      "type": "number",
-                      "title": "Min"
-                    }
-                  },
-                  "title": "Ranges"
-                },
                 "path": {
                   "type": "string",
                   "x-validate-das-path": {},
@@ -758,17 +724,6 @@
         "sidebarColor": "grey-5-a"
       }
     },
-    "statistical_treatment": {
-      "combine_datacard": {
-        "ui:field": "CapFiles"
-      },
-      "statistics_questionnaire": {
-        "ui:options": {
-          "query": "/api/deposits/?type=cms-questionnaire-v0.0.1"
-        },
-        "ui:field": "ImportDataField"
-      }
-    },
     "auxiliary_measurements": {
       "items": {
         "ui:order": ["type", "links"],
@@ -1003,8 +958,7 @@
       "input_data",
       "ntuples_production",
       "*",
-      "additional_resources",
-      "statistical_treatment"
+      "additional_resources"
     ],
     "additional_resources": {
       "presentations": {
