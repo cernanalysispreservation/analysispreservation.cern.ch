@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import { matchPath } from "react-router";
 import { withRouter } from "react-router-dom";
-import AppsIcon from "grommet/components/icons/base/Apps";
 import DocumentIcon from "grommet/components/icons/base/Document";
 import PlayIcon from "grommet/components/icons/base/Play";
 

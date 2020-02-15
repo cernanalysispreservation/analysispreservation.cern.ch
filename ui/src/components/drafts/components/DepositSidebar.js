@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
-import Anchor from "grommet/components/Anchor";
 import Sidebar from "grommet/components/Sidebar";
 
 import AddIcon from "grommet/components/icons/base/Add";
@@ -29,11 +28,13 @@ class DepositSidebar extends React.Component {
       <Route
         path="/drafts/:draft_id/"
         render={() => (
-          <Anchor
+          <Box
+            colorIndex="light-2"
             onClick={this.props.toggleFilemanagerLayer}
-            size="xsmall"
-            icon={<AddIcon />}
-          />
+            style={{ padding: "5px" }}
+          >
+            <AddIcon size="small" />
+          </Box>
         )}
       />
     );
@@ -72,7 +73,8 @@ class DepositSidebar extends React.Component {
         </Box>
         <Box flex={true} pad="none" colorIndex="light-1">
           <SectionHeader
-            label="Files | Data | Source Code"
+            label="Files | Data | Repos"
+            uppercase={true}
             icon={this._renderAddFileIcon()}
           />
           <DepositFilesList files={this.props.files} />

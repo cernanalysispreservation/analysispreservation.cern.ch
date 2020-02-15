@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import EditIcon from "grommet/components/icons/base/Edit";
-import UserIcon from "grommet/components/icons/base/User";
-
 import ReactTooltip from "react-tooltip";
 
 import Box from "grommet/components/Box";
@@ -21,9 +18,9 @@ import PropTypes from "prop-types";
 function DashboardListItem(props) {
   let {
     id,
-    is_owner,
-    can_admin,
-    can_update,
+    // is_owner,
+    // can_admin,
+    // can_update,
     metadata = {},
     updated
   } = props.item;

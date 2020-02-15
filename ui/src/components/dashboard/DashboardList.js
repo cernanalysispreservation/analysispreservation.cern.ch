@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import MoreIcon from "grommet/components/icons/base/More";
-
 import ReactTooltip from "react-tooltip";
 
 import Anchor from "grommet/components/Anchor";
