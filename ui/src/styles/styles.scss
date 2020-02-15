@@ -62,6 +62,20 @@ label {
   height: auto;
 }
 
+.menuItem::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 1px;
+  background: #000;
+  transition: width 0.3s;
+}
+
+.menuItem:hover::after {
+  width: 100%;
+  transition: width 0.3s;
+}
+
 .a {
   background: #006996;
   background: linear-gradient(
