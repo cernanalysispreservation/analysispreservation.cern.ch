@@ -67,15 +67,21 @@ class WelcomePage extends React.Component {
               align="center"
               pad={{ horizontal: "medium" }}
             >
-              {Object.keys(this.props.nav).map(key => (
+              {Object.keys(this.props.nav).map((key, index) => (
                 <Box
+                  align="center"
+                  key={index}
                   onClick={() =>
                     this.props.scrollToRef(this.props.nav[key].ref)
                   }
+                  className="menuItem"
                 >
                   <Label>{this.props.nav[key].title}</Label>
                 </Box>
               ))}
+              <Anchor href="/api/oauth/login/cern">
+                <Label>Log in</Label>
+              </Anchor>
             </Menu>
             {process.env.NODE_ENV === "development" ? (
               <Menu
@@ -100,17 +106,6 @@ class WelcomePage extends React.Component {
                 ) : null}
               </Menu>
             ) : null}
-            <Menu
-              dropAlign={{ top: "bottom" }}
-              size="small"
-              direction="row"
-              align="center"
-              pad={{ horizontal: "medium" }}
-            >
-              <Anchor href="/api/oauth/login/cern">
-                <Label>Log in</Label>
-              </Anchor>
-            </Menu>
           </Box>
         </Box>
       </Header>
@@ -122,7 +117,9 @@ WelcomePage.propTypes = {
   loginLocalUser: PropTypes.func.isRequired,
   authLoading: PropTypes.bool.isRequired,
   authError: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object,
+  nav: PropTypes.object,
+  scrollToRef: PropTypes.func
 };
 
 function mapStateToProps(state) {
