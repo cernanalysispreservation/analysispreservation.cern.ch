@@ -12,9 +12,14 @@ function SectionBox(props) {
   let { headerActions, header = "", body, emptyMessage = null, more } = props;
 
   return (
-    <Box flex={false} colorIndex="light-2" margin={{ bottom: "small" }}>
+    <Box flex={false} margin={{ bottom: "small" }}>
       <Box pad="none">
-        <Box flex={false} direction="row" pad="small" justify="between">
+        <Box
+          flex={false}
+          direction="row"
+          pad={{ vertical: "small" }}
+          justify="between"
+        >
           <Heading
             tag="h5"
             uppercase={true}
@@ -31,7 +36,11 @@ function SectionBox(props) {
         <ReactTooltip />
       </Box>
 
-      <Box flex={false} size={{ height: { max: "large" } }}>
+      <Box
+        colorIndex="light-2"
+        flex={false}
+        size={{ height: { max: "large" } }}
+      >
         {body}
       </Box>
       {more && (

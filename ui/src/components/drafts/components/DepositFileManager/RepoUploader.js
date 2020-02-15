@@ -2,8 +2,6 @@ import React from "react";
 
 import Box from "grommet/components/Box";
 
-import HorizontalWithText from "../../../partials/HorizontalWithText";
-
 import CleanForm from "../../form/CleanForm";
 
 const uiSchema = {
@@ -33,36 +31,25 @@ class RepoUploader extends React.Component {
   };
 
   _renderRepoUpload = () => (
-    <Box pad={{ horizontal: "medium" }}>
-      <HorizontalWithText
-        text="Upload Repositories & Repository Files"
-        background="#e8e8e8"
-        color="#666"
-      />
-      <Box margin={{ top: "medium" }}>
-        <Box flex={true}>
-          <CleanForm
-            formData={this.state.formData}
-            schema={{ type: "string" }}
-            showErrorList={false}
-            uiSchema={uiSchema}
-            onChange={change => {
-              this.formDataChange(change.formData);
-            }}
-          >
-            <span />
-          </CleanForm>
-        </Box>
+    <Box>
+      <Box flex={true}>
+        <CleanForm
+          formData={this.state.formData}
+          schema={{ type: "string" }}
+          showErrorList={false}
+          uiSchema={uiSchema}
+          onChange={change => {
+            this.formDataChange(change.formData);
+          }}
+        >
+          <span />
+        </CleanForm>
       </Box>
     </Box>
   );
 
   render() {
-    return (
-      <Box flex={true} colorIndex="grey-4">
-        {this._renderRepoUpload()}
-      </Box>
-    );
+    return <Box flex={true}>{this._renderRepoUpload()}</Box>;
   }
 }
 

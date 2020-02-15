@@ -260,7 +260,7 @@ class RepoField extends React.Component {
         key="help"
         direction="row"
         pad="small"
-        justify="center"
+        justify="between"
         align="center"
       >
         <Box justify="center" align="center" pad={{ horizontal: "small" }}>

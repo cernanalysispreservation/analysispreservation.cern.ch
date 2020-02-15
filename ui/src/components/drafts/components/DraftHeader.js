@@ -2,9 +2,6 @@ import React from "react";
 
 import Box from "grommet/components/Box";
 
-import { Route } from "react-router-dom";
-
-import DraftEditorHeader from "./DraftEditorHeader";
 import DraftDefaultHeader from "./DraftDefaultHeader";
 import DraftActionsLayer from "./DraftActionsLayer";
 
@@ -21,14 +18,6 @@ class DraftHeader extends React.Component {
         separator="bottom"
       >
         <DraftDefaultHeader />
-        <Box size={{ width: "medium" }}>
-          <Route
-            path="/drafts/:draft_id/edit"
-            render={props => (
-              <DraftEditorHeader {...props} formRef={this.props.formRef} />
-            )}
-          />
-        </Box>
         <DraftActionsLayer />
       </Box>
     );

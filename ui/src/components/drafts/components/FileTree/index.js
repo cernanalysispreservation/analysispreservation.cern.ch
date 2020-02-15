@@ -11,7 +11,9 @@ import { Route } from "react-router-dom";
 import TreeNode from "./TreeNode";
 
 import { arrangeIntoTree } from "./utils";
+import HorizontalWithText from "../../../partials/HorizontalWithText";
 
+import { filter } from "lodash";
 class FileTree extends React.Component {
   constructor(props) {
     super(props);
@@ -64,14 +66,35 @@ class FileTree extends React.Component {
   };
 
   render() {
+    let repos = filter(this.state.data.children, { name: "repositories" });
     return (
       <Box style={{ marginLeft: "5px" }}>
-        <TreeNode
-          data={this.state.data}
-          onDirectoryClick={this.props.onDirectoryClick}
-          onFileClick={this.props.onFileClick}
-          root
-        />
+        <HorizontalWithText text="All Files" />
+        {this.state.data.children && this.state.data.children.length > 0 ? (
+          <TreeNode
+            data={this.state.data}
+            onDirectoryClick={this.props.onDirectoryClick}
+            onFileClick={this.props.onFileClick}
+            root
+          />
+        ) : (
+          <Box flex={true} pad="small" justify="center" align="center">
+            No files added yet
+          </Box>
+        )}
+        <HorizontalWithText text="All Repositories" />
+        {repos && repos.length > 0 ? (
+          <TreeNode
+            data={{ children: repos[0].children }}
+            onDirectoryClick={this.props.onDirectoryClick}
+            onFileClick={this.props.onFileClick}
+            root
+          />
+        ) : (
+          <Box flex={true} pad="small" justify="center" align="center">
+            No repositories added yet
+          </Box>
+        )}
       </Box>
     );
   }

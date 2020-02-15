@@ -19,6 +19,7 @@ import { fetchSchemaByNameVersion } from "../../actions/common";
 import Form from "./form/Form";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import PermissionDenied from "../errors/403";
+import DraftEditorHeader from "./components/DraftEditorHeader";
 
 export const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -94,24 +95,29 @@ class DraftEditor extends React.Component {
       <Box id="deposit-page" flex={true}>
         {this.props.schemas &&
           this.props.schemas.schema && (
-            <Box
-              direction="row"
-              justify="between"
-              alignContent="end"
-              flex={true}
-              wrap={false}
-            >
-              <Form
-                formRef={this.props.formRef}
-                formData={this.props.formData || {}}
-                schema={_schema}
-                uiSchema={this.props.schemas.uiSchema || {}}
-                onChange={change => {
-                  this.props.formDataChange(change.formData);
-                }}
-                errors={this.props.errors}
-              />
-              <DraftJSONPreviewer />
+            <Box flex={true}>
+              <Box flex={false} separator="bottom" style={{ padding: "5px" }}>
+                <DraftEditorHeader formRef={this.props.formRef} />
+              </Box>
+              <Box
+                direction="row"
+                justify="between"
+                alignContent="end"
+                flex={true}
+                wrap={false}
+              >
+                <Form
+                  formRef={this.props.formRef}
+                  formData={this.props.formData || {}}
+                  schema={_schema}
+                  uiSchema={this.props.schemas.uiSchema || {}}
+                  onChange={change => {
+                    this.props.formDataChange(change.formData);
+                  }}
+                  errors={this.props.errors}
+                />
+                <DraftJSONPreviewer />
+              </Box>
             </Box>
           )}
       </Box>

@@ -5,14 +5,13 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 
 import { Accordion, Paragraph, Heading } from "grommet";
-import AddIcon from "grommet/components/icons/base/FormAdd";
 import AccordionPanel from "../../partials/AccordionPanel";
 
 import TimeAgo from "react-timeago";
 import { toggleFilemanagerLayer } from "../../../actions/files";
+import RepoUploader from "./DepositFileManager/RepoUploader";
 
 class DraftIntegrations extends React.Component {
   render() {
@@ -21,13 +20,13 @@ class DraftIntegrations extends React.Component {
         flex={true}
         size={{ width: "xxlarge" }}
         alignSelf="center"
-        pad="medium"
+        pad="small"
       >
         <Box
           flex={false}
           direction="row"
           wrap={false}
-          margin={{ vertical: "medium", bottom: "large" }}
+          margin={{ vertical: "small", bottom: "large" }}
         >
           <Box flex>
             <Heading tag="h3">Repositories</Heading>
@@ -37,21 +36,15 @@ class DraftIntegrations extends React.Component {
               events and preserve you code
             </Paragraph>
           </Box>
-          <Box flex={false} margin={{ left: "medium" }}>
-            <Button
-              onClick={this.props.toggleFilemanagerLayer}
-              primary
-              icon={<AddIcon />}
-              label="Connect your repo"
-            />
+        </Box>
+        <Box margin={{ bottom: "medium" }}>
+          <Heading tag="h4">Add a new repository</Heading>
+          <Box pad="small" colorIndex="light-2">
+            <RepoUploader />
           </Box>
         </Box>
         <Box flex={false}>
-          <Box flex={false} pad="small" colorIndex="grey-2">
-            <Heading tag="h4" margin="none">
-              Connected Repositories
-            </Heading>
-          </Box>
+          <Heading tag="h4">Connected Repositories</Heading>
           <Box flex={false} colorIndex="light-2">
             <Accordion>
               {this.props.repos && this.props.repos.length ? (
