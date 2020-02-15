@@ -7,6 +7,10 @@ import CleanForm from "../../../CleanForm";
 import FieldHeader from "../components/FieldHeader";
 import { FormField, Layer } from "grommet";
 
+import LatexPreviewer from "../../../../../../components/latex/latex";
+
+import axios from "axios";
+
 class PasteArrayField extends React.Component {
   constructor(props) {
     super(props);
@@ -66,6 +70,35 @@ class PasteArrayField extends React.Component {
     this.setState({ importEnabled: !this.state.importEnabled });
   };
 
+  _enableLatex = () => {
+    let { items: { type } = {} } = this.props.schema;
+    let { ["ui:options"]: { pasteTo } = {} } = this.props.uiSchema;
+
+    let data = this.props.formData;
+    if (type == "object" && pasteTo) {
+      data = this.props.formData.map(item => item[pasteTo] || "");
+    }
+
+    if (!this.state.latexEnabled) {
+      axios
+        .post("/api/services/latex", {
+          title: this.props.schema.title || "Title goes here",
+          paths: data
+        })
+        .then(resp => {
+          this.setState({
+            latexData: resp.data.latex,
+            latexEnabled: !this.state.latexEnabled
+          });
+        });
+    } else {
+      this.setState({
+        latexData: null,
+        latexEnabled: !this.state.latexEnabled
+      });
+    }
+  };
+
   render() {
     let _uiSchema = this.props.uiSchema;
 
@@ -78,12 +111,20 @@ class PasteArrayField extends React.Component {
               title={this.props.schema.title}
               pasteable={true}
               enableImport={this._enableImport}
+              enableLatex={this._enableLatex}
+              latexEnabled={this.state.latexEnabled}
               importEnabled={this.state.importEnabled}
               required={this.props.required}
               readonly={this.props.readonly}
               description={this.props.schema.description}
               margin="none"
             />
+            {this.state.latexEnabled && (
+              <LatexPreviewer
+                data={this.state.latexData}
+                onClose={this._enableLatex}
+              />
+            )}
             {this.state.importEnabled && (
               <Layer
                 flush={true}

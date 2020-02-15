@@ -29,6 +29,26 @@ let FieldHeader = function(props) {
           </Paragraph>
         ) : null}
       </Box>
+      {props.enableLatex && (
+        <Box
+          flex={false}
+          align="center"
+          justify="start"
+          margin={{ right: "small" }}
+        >
+          <Anchor
+            alignSelf="center"
+            direction="row"
+            flex={false}
+            wrap={false}
+            align="start"
+            style={{ paddingTop: "4px", textDecoration: "underline" }}
+            onClick={props.enableLatex}
+          >
+            Export LaTeX
+          </Anchor>
+        </Box>
+      )}
       {props.pasteable && (
         <Box flex={false} align="center" justify="start">
           <Anchor
