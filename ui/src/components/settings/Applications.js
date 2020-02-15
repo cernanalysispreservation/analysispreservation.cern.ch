@@ -26,8 +26,6 @@ import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 
 import { applicationSchema, tokenSchema } from "./utils";
 
-import LatexPreviewer from "../latex/latex";
-
 class SettingsIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -116,7 +114,6 @@ class SettingsIndex extends React.Component {
   render() {
     return (
       <Box flex>
-        {this.state.layer.active ? <LatexPreviewer /> : null}
         <Box pad="none">
           <Box flex={true} direction="row" pad="small" justify="between">
             <Label uppercase align="start" justify="center" margin="none">
