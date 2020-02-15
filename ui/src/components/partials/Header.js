@@ -101,8 +101,13 @@ class Header extends React.Component {
           </Title>
 
           {this.props.isLoggedIn ? (
-            <Box direction="row" justify="between" flex={true}>
-              <Box flex={true} direction="row">
+            <Box
+              direction="row"
+              justify="between"
+              flex={true}
+              responsive={false}
+            >
+              <Box flex={true} direction="row" responsive={false}>
                 <Box
                   flex={true}
                   justify="center"
