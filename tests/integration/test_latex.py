@@ -28,11 +28,12 @@
 from __future__ import absolute_import, print_function
 import json
 
-LATEX_RESULT = '\\begin{array}{ |c| } \\hline\n\\textbf{Paths for Latex} \\\\ ' \
-               '\\hline\n/Electron/Run2010B-PromptReco-v2/RECO \\\\ \\hline\n' \
-               '/EG/Run2010A-Sep17ReReco\\_v2/RECO \\\\ \\hline\n' \
-               '/Photon/Run2010B-PromptReco-v2/RECO \\\\ ' \
-               '\\hline\n\n\\end{array}\n'
+LATEX_RESULT = '\n\\begin{table}\n    \\begin{tabular}{ | p{8cm} | }\n    ' \
+               '\\hline\n\n    \\textbf{Primary Datasets} \\\\ \\hline\n   ' \
+               ' /Electron/Run2010B-PromptReco-v2/RECO \\\\ \\hline\n    ' \
+               '/EG/Run2010A-Sep17ReReco\_v2/RECO \\\\ \\hline\n    ' \
+               '/Photon/Run2010B-PromptReco-v2/RECO \\\\ \\hline\n    ' \
+               '\n    \\end{tabular}\n\\end{table}'
 
 
 def test_latex(app, auth_headers_for_superuser, json_headers):
@@ -42,7 +43,7 @@ def test_latex(app, auth_headers_for_superuser, json_headers):
             '/EG/Run2010A-Sep17ReReco_v2/RECO',
             '/Photon/Run2010B-PromptReco-v2/RECO'
         ],
-        'title': 'Paths for Latex'
+        'title': 'Primary Datasets'
     }
 
     with app.test_client() as client:

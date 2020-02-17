@@ -28,13 +28,18 @@ from . import blueprint
 from cap.modules.access.utils import login_required
 from cap.modules.services.serializers.latex import PathValidator
 
-TEMPLATE = """\\begin{{array}}{{ |c| }} \hline
-\\textbf{{{title}}} \\\ \hline
-{joined_paths}
-\end{{array}}
-"""
+TEMPLATE = r"""
+\begin{{table}}
+    \begin{{tabular}}{{ | p{{8cm}} | }}
+    \hline
 
-NEW_LINE = ' \\\ \hline\n'
+    \textbf{{{title}}} \\ \hline
+    {joined_paths}
+    \end{{tabular}}
+\end{{table}}"""
+
+NEW_LINE = r""" \\ \hline
+    """
 
 
 def _latexify(paths, title):
@@ -42,9 +47,8 @@ def _latexify(paths, title):
     if errors != {}:
         abort(400, 'Dataset list contains invalid values. Aborting.')
 
-    paths_fixed = [path.replace('_', '\_') for path in paths]
-    joined = NEW_LINE.join(paths_fixed) + NEW_LINE  # noqa
-
+    paths_fixed = [path.replace('_', r'\_') for path in paths]
+    joined = NEW_LINE.join(paths_fixed) + NEW_LINE
     return TEMPLATE.format(title=title, joined_paths=joined)
 
 
