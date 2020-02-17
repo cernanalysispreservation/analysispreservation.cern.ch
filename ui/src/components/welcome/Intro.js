@@ -92,7 +92,7 @@ class WelcomePage extends React.Component {
                 <Box size="small">
                   <Paragraph align="center">
                     Run containerized workflows and easily reuse analysis
-                    elementys
+                    components
                   </Paragraph>
                 </Box>
               </Box>

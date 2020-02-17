@@ -9,16 +9,20 @@ import { TagCloud } from "react-tagcloud";
 import { withRouter } from "react-router";
 
 const data = [
-  { value: "from EXO group", count: 3, link: "/search?q=&cms_wg=EXO" },
+  {
+    value: "from EXO group",
+    count: 3,
+    link: "/search?q=&cms_working_group=EXO"
+  },
   { value: "see all drafts", count: 2, link: "/drafts?q=" },
   { value: "search for muon", count: 2, link: "/search?q=object:muon" },
-  { value: "by TOP group", count: 3, link: "/search?q=&cms_wg=TOP" },
+  { value: "by TOP group", count: 3, link: "/search?q=&cms_working_group=TOP" },
   {
     value: "all my published analysis",
     count: 1,
     link: "/search?q=&by_me=True"
   },
-  { value: "from QCD", count: 2, link: "/search?q=&cms_wg=QCD" },
+  { value: "from QCD", count: 2, link: "/search?q=&cms_working_group=QCD" },
   { value: "my drafts", count: 1, link: "/drafts?q=&by_me=True" },
   { value: "higgs boson", count: 3, link: "/search?q=higgs boson" },
   { value: "proton-proton", count: 3, link: "/search?q=proton-proton" },
@@ -34,7 +38,11 @@ const data = [
     count: 3,
     link: "/drafts?q=fetched_from:cadi NOT user_edited:true"
   },
-  { value: "all from HIG group", count: 2, link: "/search?q=&cms_wg=HIG" }
+  {
+    value: "all from HIG group",
+    count: 2,
+    link: "/search?q=&cms_working_group=HIG"
+  }
 ];
 
 class DashboardQuickSearch extends React.Component {

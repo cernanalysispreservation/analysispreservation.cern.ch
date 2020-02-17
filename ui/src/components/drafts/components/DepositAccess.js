@@ -108,7 +108,7 @@ class DepositAccess extends React.Component {
         if (!access[role])
           access[role] = {
             actions: [],
-            type: "role"
+            type: "egroup"
           };
         access[role].actions.push(action);
       });
