@@ -140,7 +140,7 @@ class Header extends React.Component {
                     </Heading>
                   </Box>
                   <Menu
-                    dropAlign={{ top: "bottom" }}
+                    dropAlign={{ top: "bottom", right: "right" }}
                     icon={<UserIcon />}
                     size="small"
                   >

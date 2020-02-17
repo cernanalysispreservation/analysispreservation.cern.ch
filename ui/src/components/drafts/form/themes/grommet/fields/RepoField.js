@@ -131,49 +131,30 @@ class RepoField extends React.Component {
           align="center"
         >
           <Box
-            flex={false}
+            flex
             pad={{ between: "medium" }}
+            margin={{ right: "medium" }}
             direction="row"
             justify="center"
             align="center"
           >
             {resource == "github.com" ? (
-              <Box
-                direction="column"
-                pad={{ between: "small" }}
-                justify="center"
-                align="center"
-              >
+              <Box direction="column" justify="center" align="center">
                 <FaGithub size="24" />
                 <Label size="small">Github</Label>
               </Box>
             ) : (
-              <Box
-                direction="column"
-                pad={{ between: "small" }}
-                justify="center"
-                align="center"
-              >
-                <FaGitlab size="16" />
+              <Box direction="column" justify="center" align="center">
+                <FaGitlab size="24" />
                 <Label size="small">CERN Gitlab</Label>
               </Box>
             )}
-            <Box>
+            <Box flex>
               <Box
                 size={{ width: "medium" }}
                 style={{ wordBreak: "break-all" }}
               >
-                <Anchor path={href} label={`${owner}/${name}`} />
-              </Box>
-              <Box>
-                {filepath ? (
-                  <Box size="small" flex>
-                    <span>
-                      You are ready to upload file <strong>{filepath}</strong>{" "}
-                      from the above repo
-                    </span>
-                  </Box>
-                ) : null}
+                <Anchor path={href} label={`${owner}/${name}/${filepath}`} />
               </Box>
             </Box>
           </Box>
@@ -181,13 +162,16 @@ class RepoField extends React.Component {
           <Box>
             {filepath ? (
               <Box>
-                <Box
+                <Anchor
+                  icon={<DownloadIcon size="xsmall" />}
                   onClick={() => this.uploadRepo("file", true, false)}
-                  colorIndex="brand"
-                  style={{ padding: "5px" }}
+                  flex
+                  primary
                 >
-                  Upload file snapshot
-                </Box>
+                  <Label size="small" uppercase>
+                    Upload file
+                  </Label>
+                </Anchor>
               </Box>
             ) : (
               <Box

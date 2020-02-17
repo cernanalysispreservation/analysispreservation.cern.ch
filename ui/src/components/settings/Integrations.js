@@ -10,6 +10,7 @@ import ListItem from "grommet/components/ListItem";
 import Label from "grommet/components/Label";
 import Anchor from "grommet/components/Anchor";
 import AddIcon from "grommet/components/icons/base/Add";
+import ConnectIcon from "grommet/components/icons/base/Connect";
 
 import OauthPopup from "./components/OAuthPopup";
 import { updateIntegrations } from "../../actions/auth";
@@ -44,7 +45,7 @@ class Integrations extends React.Component {
       <OauthPopup url={_url} loginCallBack={this.loginCallBack}>
         <div>
           <Anchor
-            icon={<AddIcon size="xsmall" />}
+            icon={<ConnectIcon size="xsmall" />}
             label={
               <Label size="small" uppercase>
                 connect

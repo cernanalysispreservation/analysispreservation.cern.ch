@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-import { Accordion, Paragraph, Heading } from "grommet";
+import { Accordion, Section, Paragraph, Heading } from "grommet";
 import AccordionPanel from "../../partials/AccordionPanel";
 
 import TimeAgo from "react-timeago";
@@ -30,16 +30,20 @@ class DraftIntegrations extends React.Component {
         >
           <Box flex>
             <Heading tag="h3">Repositories</Heading>
-            <Paragraph margin="none">
-              <strong>Download</strong> a snapshot of repository, that you'd
-              like to preserve with your analysis. You can point to the whole
-              repo, specific branch or even a single file - whatever your
-              analysis needs.<br />
-              <strong>Connect</strong> with repository, to make sure that your
-              analysis will keep updated on its changes. Every time changes are
-              pushed to a given branch, we'll download its latest version and
-              attach to your analysis.
-            </Paragraph>
+            <Box direction="row" pad={{ between: "medium" }}>
+              <Paragraph margin="none">
+                <strong>Download</strong> a snapshot of repository, that you'd
+                like to preserve with your analysis. You can point to the whole
+                repo, specific branch or even a single file - whatever your
+                analysis needs<br />
+              </Paragraph>
+              <Paragraph margin="none">
+                <strong>Connect</strong> repositories with analysis that are
+                still in progress, to keep them in sync. We'll make a new
+                snapshot on any changes pushed in this repository. This way your
+                analysis will be always up to date with your code
+              </Paragraph>{" "}
+            </Box>
           </Box>
         </Box>
         <Box margin={{ bottom: "medium" }}>

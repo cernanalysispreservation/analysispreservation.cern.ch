@@ -11,9 +11,9 @@ import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";
 import TableHeader from "grommet/components/TableHeader";
 import TableRow from "grommet/components/TableRow";
-import Label from "grommet/components/Label";
 import Heading from "grommet/components/Heading";
 import cogoToast from "cogo-toast";
+import { Label } from "grommet";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -123,7 +123,7 @@ class SettingsIndex extends React.Component {
               <Anchor
                 icon={<AddIcon size="xsmall" />}
                 label={
-                  <Label size="medium" uppercase>
+                  <Label size="small" uppercase>
                     Add token
                   </Label>
                 }
