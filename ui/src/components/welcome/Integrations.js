@@ -36,7 +36,8 @@ class Integrations extends React.Component {
                   <Paragraph size="large">
                     Attach code to your workspace. Connect your Github and CERN
                     Gitlab accounts, follow repository changes and automatically
-                    keep snapshots of your work and of the tools/libraries you use.
+                    keep snapshots of your work and of the tools/libraries you
+                    use.
                   </Paragraph>
                 </Box>
                 <Box
@@ -64,7 +65,7 @@ class Integrations extends React.Component {
                 justify="between"
               >
                 <Box align="center" pad="small" justify="center">
-                  <PIDFair height="110px" />
+                  <PIDFair />
                 </Box>
                 <Box align="end" pad="small">
                   <Heading tag="h2">Persistent Identifiers/FAIR data</Heading>
@@ -74,9 +75,9 @@ class Integrations extends React.Component {
                       F
                     </strong>indable <strong>A</strong>ccesible{" "}
                     <strong>I</strong>nteroperable <strong>R</strong>eusable).
-                    Use persistent identifiers (PIDs) to capture and connect your
-                    analysis components. Make your work citable by pushing it to
-                    external services that provide PIDs.
+                    Use persistent identifiers (PIDs) to capture and connect
+                    your analysis components. Make your work citable by pushing
+                    it to external services that provide PIDs.
                   </Paragraph>
                 </Box>
               </Box>

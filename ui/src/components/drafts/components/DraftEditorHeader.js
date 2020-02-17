@@ -19,6 +19,7 @@ import {
   toggleActionsLayer
   // togglePreviewer
 } from "../../../actions/draftItem";
+import { withRouter } from "react-router";
 
 class DraftEditorHeader extends React.Component {
   _validateFormData = () => {
@@ -234,7 +235,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DraftEditorHeader);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(DraftEditorHeader)
+);

@@ -9,7 +9,7 @@ import DepositAccess from "./DepositAccess";
 import { Paragraph, Heading, Anchor } from "grommet";
 import { connect } from "react-redux";
 // Actions
-import { postPublishDraft } from "../../../actions/draftItem";
+import { toggleActionsLayer } from "../../../actions/draftItem";
 
 class DepositSettings extends React.Component {
   render() {
@@ -93,7 +93,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    publishDraft: () => dispatch(postPublishDraft())
+    publishDraft: () => dispatch(toggleActionsLayer("publish"))
   };
 }
 
