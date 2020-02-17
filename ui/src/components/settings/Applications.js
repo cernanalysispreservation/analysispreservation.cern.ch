@@ -114,6 +114,7 @@ class SettingsIndex extends React.Component {
   render() {
     return (
       <Box flex>
+        {this.state.layer.active ? this.getLayer() : null}
         <Box pad="none">
           <Box flex={true} direction="row" pad="small" justify="between">
             <Label uppercase align="start" justify="center" margin="none">
