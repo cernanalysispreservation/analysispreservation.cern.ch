@@ -13,6 +13,7 @@ import ReadOnlyText from "./ReadOnlyText";
 import AsyncSelect from "react-select/async";
 import Spinning from "grommet/components/icons/Spinning";
 
+import debounce from "lodash/debounce";
 class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -107,7 +108,12 @@ class TextWidget extends Component {
       });
   };
 
-  updateValueOnSuggestion = suggestion => {
+  updateValueOnSuggestion = (suggestion, action) => {
+    if (action && action.action == "clear")
+      return this.props.onChange(undefined);
+
+    if (!suggestion || !suggestion.value) return;
+
     if (this.props.options && this.props.options.autofill_from)
       this.autoFillOtherFields();
     return this.props.onChange(suggestion.value);
@@ -166,7 +172,7 @@ class TextWidget extends Component {
     return !this.props.readonly ? (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
         <Box flex={true}>
-          <Box full={{ horizontal: true }}>
+          <Box flex={false}>
             {this.props.options && this.props.options.suggestions ? (
               <AsyncSelect
                 menuPosition="fixed"
@@ -175,12 +181,11 @@ class TextWidget extends Component {
                 onInputChange={this._onInputChange}
                 isClearable
                 cacheOptions
-                defaultOptions
-                defaultValue={
-                  { label: this.props.value, value: this.props.value } || ""
-                }
+                backspaceRemovesValue={true}
+                escapeClearsValue={true}
+                defaultOptions={false}
                 value={{ label: this.props.value, value: this.props.value }}
-                loadOptions={this.updateSuggestions}
+                loadOptions={debounce(this.updateSuggestions, 500)}
               />
             ) : (
               <Box direction="row" flex={false}>
