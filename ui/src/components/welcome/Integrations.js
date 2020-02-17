@@ -36,7 +36,7 @@ class Integrations extends React.Component {
                   <Paragraph size="large">
                     Attach code to your workspace. Connect your Github and CERN
                     Gitlab accounts, follow repository changes and automatically
-                    keep snapshots of your work and the tools/libraries you use
+                    keep snapshots of your work and of the tools/libraries you use.
                   </Paragraph>
                 </Box>
                 <Box
@@ -67,16 +67,16 @@ class Integrations extends React.Component {
                   <PIDFair height="110px" />
                 </Box>
                 <Box align="end" pad="small">
-                  <Heading tag="h2">PIDs/FAIR data</Heading>
+                  <Heading tag="h2">Persistent Identifiers/FAIR data</Heading>
                   <Paragraph align="end" size="large">
                     Preserve your analysis in a <strong>FAIR</strong> manner (<strong
                     >
                       F
                     </strong>indable <strong>A</strong>ccesible{" "}
                     <strong>I</strong>nteroperable <strong>R</strong>eusable).
-                    Make your work citable and ready to be integrated to the
-                    global PID “graph”, by connecting together scientific
-                    research components in a persistent way.
+                    Use persistent identifiers (PIDs) to capture and connect your
+                    analysis components. Make your work citable by pushing it to
+                    external services that provide PIDs.
                   </Paragraph>
                 </Box>
               </Box>
@@ -99,7 +99,7 @@ class Integrations extends React.Component {
                   <Paragraph size="large">
                     Make your research <strong>reusable</strong> and{" "}
                     <strong>reproducible</strong>. Create your containerized
-                    workflows, rerun whenever you want and save your results
+                    workflows, rerun whenever you want and save your results.
                   </Paragraph>
                 </Box>
                 <Box
