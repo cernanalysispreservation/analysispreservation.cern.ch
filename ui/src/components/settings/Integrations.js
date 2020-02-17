@@ -9,7 +9,6 @@ import ListItem from "grommet/components/ListItem";
 
 import Label from "grommet/components/Label";
 import Anchor from "grommet/components/Anchor";
-import AddIcon from "grommet/components/icons/base/Add";
 import ConnectIcon from "grommet/components/icons/base/Connect";
 
 import OauthPopup from "./components/OAuthPopup";
