@@ -55,6 +55,11 @@ class PasteArrayField extends React.Component {
       else _formData = values;
 
       this.props.onChange(_formData);
+
+      this.setState({
+        clipboardData: null,
+        importEnabled: !this.state.importEnabled
+      });
     }
   };
 
@@ -100,12 +105,17 @@ class PasteArrayField extends React.Component {
   };
 
   render() {
-    let _uiSchema = this.props.uiSchema;
+    let { ["ui:options"]: _uiOptions = {}, ..._uiSchema } = this.props.uiSchema;
 
-    delete _uiSchema["ui:field"];
+    let _pastableUISchema = {
+      "ui:options": { ..._uiOptions },
+      ..._uiSchema
+    };
+
+    delete _pastableUISchema["ui:field"];
     return (
       <FormField>
-        <Box pad={{ horizontal: "medium" }}>
+        <Box pad={{ horizontal: "medium" }} flex={true}>
           <Box>
             <FieldHeader
               title={this.props.schema.title}
@@ -202,7 +212,7 @@ class PasteArrayField extends React.Component {
           <Box>
             <CleanForm
               schema={this.props.schema}
-              uiSchema={{ ..._uiSchema, "ui:pastable": true }}
+              uiSchema={{ ..._pastableUISchema, "ui:pastable": true }}
               formData={this.props.formData}
               onChange={this._onChange}
               liveValidate={true}
