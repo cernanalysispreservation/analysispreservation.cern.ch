@@ -31,9 +31,14 @@ class DraftIntegrations extends React.Component {
           <Box flex>
             <Heading tag="h3">Repositories</Heading>
             <Paragraph margin="none">
-              Make the connection, follow and manage repositories. Create
-              snapshots of your Github and CERN Gitlab repositories on custom
-              events and preserve you code
+              <strong>Download</strong> a snapshot of repository, that you'd
+              like to preserve with your analysis. You can point to the whole
+              repo, specific branch or even a single file - whatever your
+              analysis needs.<br />
+              <strong>Connect</strong> with repository, to make sure that your
+              analysis will keep updated on its changes. Every time changes are
+              pushed to a given branch, we'll download its latest version and
+              attach to your analysis.
             </Paragraph>
           </Box>
         </Box>

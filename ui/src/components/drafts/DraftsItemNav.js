@@ -83,7 +83,8 @@ class DraftsItemIndex extends React.Component {
           </Anchor>
           <Anchor
             path={`/drafts/${draft_id}/workflows`}
-            data-tip="Run workflows"
+            data-tip="Run workflows - in BETA soon"
+            disabled
           >
             <Box
               justify="center"
