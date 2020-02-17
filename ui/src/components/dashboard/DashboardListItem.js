@@ -43,7 +43,7 @@ function DashboardListItem(props) {
       >
         <Box margin={{ right: "medium" }} style={{ overflow: "visible" }} flex>
           <Box direction="row">
-            <Heading strong tag="h6" margin="none" truncate>
+            <Heading tag="h6" margin="none" truncate>
               {general_title}
             </Heading>
             <ReactTooltip />

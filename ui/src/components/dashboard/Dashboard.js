@@ -54,7 +54,7 @@ class Dashboard extends React.Component {
   render() {
     let lists = this._getList();
     return (
-      <Box colorIndex="light-2">
+      <Box colorIndex="light-2" flex full>
         {!this.props.permissions && (
           <Notification
             message="Your account has no permissions to access the platform resources."
@@ -66,7 +66,7 @@ class Dashboard extends React.Component {
             <Spinning size="large" />
           </Box>
         ) : (
-          <Box colorIndex="light-2" full align="center">
+          <Box colorIndex="light-2" flex align="center">
             <Box
               direction="row"
               wrap

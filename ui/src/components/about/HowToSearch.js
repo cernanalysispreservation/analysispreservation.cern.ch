@@ -8,7 +8,7 @@ import CustomTile from "./CustomTile";
 class HowToSearchPage extends React.Component {
   render() {
     return (
-      <Box flex={true}>
+      <Box size={{ width: "xxlarge" }} flex={true}>
         <Box
           flex={true}
           full="horizontal"
@@ -65,8 +65,7 @@ class HowToSearchPage extends React.Component {
                 <span>
                   To search for the whole phrase, put it in quotes. Keep in mind
                   that <b>phrases are not analyzed</b>, hence all special
-                  characters (like wildcards) do not have
-                  any effect.
+                  characters (like wildcards) do not have any effect.
                 </span>
               }
               code="researcher:&quot;John Doe&quot;"

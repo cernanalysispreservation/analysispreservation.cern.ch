@@ -43,21 +43,38 @@ class DepositSidebar extends React.Component {
   render() {
     return (
       <Sidebar full={false} size="medium" colorIndex="light-2" separator="left">
-        <Box flex={false} separator="bottom" pad="none">
+        <Box flex={false} pad="none">
           <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              margin={{ bottom: "small" }}
+            >
               ID <span>{this.props.id}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              margin={{ bottom: "small" }}
+            >
               Status <span>{this.props.status}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
-              Experiment <span>{this.props.experiment}</span>
-            </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              margin={{ bottom: "small" }}
+            >
               Creator <span>{this.props.created_by}</span>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              margin={{ bottom: "small" }}
+            >
               Created:{" "}
               <strong>
                 <TimeAgo date={this.props.created} minPeriod="60" />

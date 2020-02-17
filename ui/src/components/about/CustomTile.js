@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const CustomTile = props => {
   return (
-    <Tile basis={props.basis || "1/3"} pad="large">
+    <Tile basis={props.basis || "1/2"} pad="large">
       <Heading tag="h5">{props.header}</Heading>
       <code style={{ color: "#C094bf" }}>
         <span>{props.code}</span>
