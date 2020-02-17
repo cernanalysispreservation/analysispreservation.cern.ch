@@ -120,7 +120,7 @@ def create_webhook(record_id, host, api, subscriber_type, type_='push'):
 
 
 def get_webhook_url():
-    if current_app.config.get('DEBUG_MODE'):
+    if current_app.config.get('DEBUG'):
         assert 'WEBHOOK_NGROK_URL' in current_app.config
         return current_app.config['WEBHOOK_NGROK_URL']
     else:
