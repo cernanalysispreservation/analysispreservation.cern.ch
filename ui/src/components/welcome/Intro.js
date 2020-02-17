@@ -45,7 +45,7 @@ class WelcomePage extends React.Component {
                   <br /> Analysis Preservation
                 </Heading>
                 <Heading tag="h3">
-                  preserve physics analyses to facilitate their future reuse
+                  capture, preserve and reuse physics analyses 
                 </Heading>
               </Box>
               <Box
@@ -72,7 +72,7 @@ class WelcomePage extends React.Component {
                 <Database size="medium" />
                 <Box size="small">
                   <Paragraph align="center">
-                    Collect elements needed to understand and rerun the analysis
+                    Collect and preserve elements needed to understand and rerun your analysis
                   </Paragraph>
                 </Box>
               </Box>
@@ -81,8 +81,8 @@ class WelcomePage extends React.Component {
                 <Group size="medium" />
                 <Box size="small">
                   <Paragraph align="center">
-                    Share analysis and components with users and your
-                    collaboration
+                    Share your analysis and components with other users, your
+                    collaboration or working group
                   </Paragraph>
                 </Box>
               </Box>

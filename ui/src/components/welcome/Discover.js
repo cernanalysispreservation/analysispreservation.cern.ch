@@ -21,21 +21,19 @@ class WelcomePage extends React.Component {
           <Box flex={true} align="center" justify="center" pad="medium">
             <Box size={{ width: "xxlarge" }} align="center">
               <Paragraph size="large">
-                CERN Analysis Preservation (CAP) is a service for physicists to
-                preserve and document the various materials produced in the
-                process of their analyses, e.g. datasets, code, documentation,
-                so that they are reusable and understandable in the future. By
-                using this tool, researchers ensure these outputs are preserved
-                and also findable and accessible by their (internal)
-                collaborators.
+                CERN Analysis Preservation (CAP) is a service for researchers to
+                preserve and document the various components of their physics
+                analyses, e.g. datasets, software, documentation, so that they
+                are reusable and understandable in the future. By using this tool,
+                researchers ensure these outputs are preserved, findable and
+                accessible by their collaborators for the long-term.
               </Paragraph>
               <Paragraph size="large">
-                CAP provides an integrated platform that allows researchers to
-                preserve and document the various materials produced in the
-                process of their research and experimentation (datasets, code,
-                documentation) so that they are reusable and understandable in
-                the future. By using this tool, researchers ensure these outputs
-                are preserved, findable and accessible by their collaborators.
+                CAP uses existing collaboration tools and a flexible data model,
+                and it is designed to be easily integrated into researchers' workflows.
+                CAP provides standard collaboration access restrictions so that
+                the individual users and collaborations are in full control of
+                sharing their results.
               </Paragraph>
             </Box>
           </Box>

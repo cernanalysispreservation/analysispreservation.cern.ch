@@ -48,7 +48,7 @@ class Explain extends React.Component {
           pad={{ horizontal: "large", between: "large", vertical: "large" }}
         >
           <Box flex={true} justify="center" align="center" pad="medium">
-            <Heading tag="h1">Start preserving...</Heading>
+            <Heading tag="h1">Start Preserving</Heading>
           </Box>
           <Box margin={{ bottom: "medium" }}>
             <Box
@@ -64,23 +64,23 @@ class Explain extends React.Component {
                   {
                     header: "Metadata",
                     paragraph:
-                      "your analysis description, input data, sources, referenced analysis, collaborators"
+                      "Your analysis description, input data, sources, referenced analyses, collaborators"
                   },
                   {
                     header: "Files",
-                    paragraph: "plots, tables, formulas, likelihoods"
+                    paragraph: "Plots, tables, formulas, likelihoods"
                   },
                   {
                     header: "Code",
-                    paragraph: "scripts, instructions, repositories"
+                    paragraph: "Scripts, instructions, repositories"
                   },
                   {
                     header: "Workflows",
-                    paragraph: "containerized images, workflows"
+                    paragraph: "Containerized images, workflows"
                   },
                   {
                     header: "Documentation",
-                    paragraph: "publications, presentations, conferences, notes"
+                    paragraph: "Publications, presentations, conferences, notes"
                   }
                 ]}
               />
@@ -90,17 +90,17 @@ class Explain extends React.Component {
                   {
                     header: "Web Interface",
                     paragraph:
-                      "just login from your browser and explore all the features!"
+                      "Login from your browser and explore all the features"
                   },
                   {
                     header: "Command line",
                     paragraph:
-                      "use our command line client to automate a preservation process and make it part of your everyday work cycle"
+                      "Use our command line client to automate the preservation process and make it part of your everyday work cycle"
                   },
                   {
                     header: "RESTful interface",
                     paragraph:
-                      "integrate CERN Analysis Preservation with your existing services and tools, by using our REST API"
+                      "Integrate CERN Analysis Preservation with your existing services and tools by using our REST API"
                   }
                 ]}
               />
@@ -110,22 +110,22 @@ class Explain extends React.Component {
                   {
                     header: "Researchers",
                     paragraph:
-                      "it doesn't matter on which stage of your analysis you are, it's never too early or too late to preserve your work!"
+                      "It doesn't matter on which stage of your analysis you are, it's never too early or too late to preserve your work"
                   },
                   {
                     header: "Collaborators",
                     paragraph:
-                      "share your work with others and invite to contributing"
+                      "Share your work with others and invite them to contribute"
                   },
                   {
                     header: "Reviewers",
                     paragraph:
-                      "access analysis, its code, results and papers from one place"
+                      "Access analyses and all their components from one central place"
                   },
                   {
                     header: "Students",
                     paragraph:
-                      "search through older analysis, share yours with supervisors, and finally preserve your work, so will never get lost!"
+                      "Search through older analyses, share with your supervisors, and preserve your work so that it never gets lost"
                   }
                 ]}
               />
