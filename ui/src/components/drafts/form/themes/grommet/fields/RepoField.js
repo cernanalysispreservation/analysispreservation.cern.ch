@@ -12,6 +12,8 @@ import { Box, Label, Anchor } from "grommet";
 import Status from "grommet/components/icons/Status";
 import { FaGithub, FaGitlab } from "react-icons/fa";
 import { StatusIcon } from "grommet/components/icons";
+import { DownloadIcon } from "grommet/components/icons";
+import ConnectIcon from "grommet/components/icons/base/Connect";
 
 class RepoField extends React.Component {
   constructor(props) {
@@ -152,28 +154,26 @@ class RepoField extends React.Component {
                 justify="center"
                 align="center"
               >
-                <FaGitlab size="24" />
+                <FaGitlab size="16" />
                 <Label size="small">CERN Gitlab</Label>
               </Box>
             )}
             <Box>
-              <Box size={{ width: "small" }} style={{ wordBreak: "break-all" }}>
+              <Box
+                size={{ width: "medium" }}
+                style={{ wordBreak: "break-all" }}
+              >
                 <Anchor path={href} label={`${owner}/${name}`} />
               </Box>
               <Box>
                 {filepath ? (
-                  <Box size="small" flex={true}>
+                  <Box size="small" flex>
                     <span>
                       You are ready to upload file <strong>{filepath}</strong>{" "}
                       from the above repo
                     </span>
                   </Box>
-                ) : (
-                  <Box size="small" flex={true}>
-                    Upload a snapshot or connect it with your workspace to
-                    preserve future changes automatically
-                  </Box>
-                )}
+                ) : null}
               </Box>
             </Box>
           </Box>
@@ -190,32 +190,34 @@ class RepoField extends React.Component {
                 </Box>
               </Box>
             ) : (
-              <Box flex={true} align="end" pad={{ between: "small" }}>
-                <Box
+              <Box
+                flex={true}
+                direction="row"
+                align="end"
+                pad={{ between: "small" }}
+              >
+                <Anchor
+                  icon={<DownloadIcon size="xsmall" />}
                   onClick={() => this.uploadRepo("repo", true, false)}
-                  colorIndex="neutral-1"
-                  style={{ padding: "5px", wordWrap: "nowrap" }}
+                  style={{ wordWrap: "nowrap" }}
                   flex={true}
-                  style={{ padding: "5px" }}
+                  primary
                 >
-                  Upload snapshot
-                </Box>
-                <Box
-                  onClick={() => this.uploadRepo("repo", false, true)}
-                  colorIndex="neutral-1-t"
-                  style={{ padding: "5px", wordWrap: "nowrap" }}
-                  flex={true}
-                >
-                  Connect repo
-                </Box>
-                <Box
+                  <Label size="small" uppercase>
+                    Download
+                  </Label>
+                </Anchor>
+                <Anchor
+                  icon={<ConnectIcon size="xsmall" />}
                   onClick={() => this.uploadRepo("repo", true, true)}
-                  colorIndex="brand"
-                  style={{ padding: "5px", wordWrap: "nowrap" }}
+                  style={{ wordWrap: "nowrap" }}
                   flex={true}
+                  primary
                 >
-                  Upload snapshot & Connect
-                </Box>
+                  <Label size="small" uppercase>
+                    Connect
+                  </Label>
+                </Anchor>
               </Box>
             )}
           </Box>
@@ -254,29 +256,6 @@ class RepoField extends React.Component {
           <Label size="small">{_message.message}</Label>
         </Box>
       );
-
-    parts.push(
-      <Box
-        key="help"
-        direction="row"
-        pad="small"
-        justify="between"
-        align="center"
-      >
-        <Box justify="center" align="center" pad={{ horizontal: "small" }}>
-          <span>
-            <strong>Attach</strong> snapshot of a <strong>repository</strong> or
-            a specific <strong>repository file</strong>.
-          </span>
-        </Box>
-        <Box justify="center" align="center" pad={{ horizontal: "small" }}>
-          <span>
-            <strong>Connect</strong> a repo to this workspace -{" "}
-            <strong>preserve changes automatically</strong>
-          </span>
-        </Box>
-      </Box>
-    );
 
     return parts;
   }
