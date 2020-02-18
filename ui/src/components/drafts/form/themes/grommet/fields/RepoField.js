@@ -39,7 +39,10 @@ class RepoField extends React.Component {
   _onChange = event => {
     let value = event.target.value;
 
-    if (value == "") this.setState({ repo: null, error: null });
+    if (value == "") {
+      this.setState({ repo: null, error: null, errors: null, data: null });
+      return;
+    }
     try {
       let repo = GitUrlParse(value);
 
@@ -54,12 +57,12 @@ class RepoField extends React.Component {
         this.setState({ repo, error: null });
       else
         this.setState({
-          repo: {},
+          repo: null,
           error: "Please provide a CERN Gitlab or Github URL"
         });
     } catch (err) {
       this.setState({
-        repo: {},
+        repo: null,
         error: "Please provide a CERN Gitlab or Github URL"
       });
     }
@@ -118,7 +121,8 @@ class RepoField extends React.Component {
         </Box>
       );
     } else if (this.state.repo) {
-      let { resource, owner, name, filepath, href } = this.state.repo || {};
+      let { resource, owner, name, filepath, href, ref } =
+        this.state.repo || {};
 
       parts.push(
         <Box
@@ -155,6 +159,10 @@ class RepoField extends React.Component {
                 style={{ wordBreak: "break-all" }}
               >
                 <Anchor path={href} label={`${owner}/${name}/${filepath}`} />
+                <Box direction="row" pad={{ between: "small" }}>
+                  <span>Branch/Ref: </span>{" "}
+                  <span>{ref && ref != "" ? ref : "(default branch)"}</span>
+                </Box>
               </Box>
             </Box>
           </Box>

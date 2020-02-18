@@ -71,7 +71,10 @@ class GitHubAPI(object):
     @property
     def last_commit(self):
         """Retrieve the last commit sha for this branch/repo."""
-        branch = self.project.get_branch(self.branch)
+        try:
+            branch = self.project.get_branch(self.branch)
+        except GithubException:
+            raise GitRepositoryNotFound
         return branch.commit.sha
 
     @property

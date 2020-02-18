@@ -72,7 +72,10 @@ class GitLabAPI(object):
 
     @property
     def last_commit(self):
-        branch = self.project.branches.get(self.branch)
+        try:
+            branch = self.project.branches.get(self.branch)
+        except GitlabGetError:
+            raise GitError('Branch/Ref not found')
         return branch.attributes['commit']['id']
 
     @property

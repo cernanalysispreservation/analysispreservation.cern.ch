@@ -67,12 +67,18 @@ class FileTree extends React.Component {
 
   render() {
     let repos = filter(this.state.data.children, { name: "repositories" });
+    let allFiles = {
+      children: filter(
+        this.state.data.children,
+        item => item.name != "repositories"
+      )
+    };
     return (
       <Box style={{ marginLeft: "5px" }}>
         <HorizontalWithText text="All Files" />
         {this.state.data.children && this.state.data.children.length > 0 ? (
           <TreeNode
-            data={this.state.data}
+            data={allFiles}
             onDirectoryClick={this.props.onDirectoryClick}
             onFileClick={this.props.onFileClick}
             root
