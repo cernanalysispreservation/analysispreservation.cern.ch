@@ -35,6 +35,8 @@ from flask_login import current_user
 from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
 
+from cap.modules.records.utils import url_to_api_url
+
 from .errors import GitIntegrationError, GitURLParsingError
 from .models import GitRepository, GitWebhook, GitWebhookSubscriber
 
@@ -120,11 +122,13 @@ def create_webhook(record_id, host, api, subscriber_type, type_='push'):
 
 
 def get_webhook_url():
+    """Return endpoint for repositories webhooks."""
     if current_app.config.get('DEBUG'):
         assert 'WEBHOOK_NGROK_URL' in current_app.config
         return current_app.config['WEBHOOK_NGROK_URL']
     else:
-        return url_for(current_app.config['WEBHOOK_ENDPOINT'], _external=True)
+        return url_to_api_url(
+            url_for(current_app.config['WEBHOOK_ENDPOINT'], _external=True))
 
 
 def generate_secret():
