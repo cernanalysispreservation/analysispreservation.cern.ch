@@ -3,13 +3,17 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+import Label from "grommet/components/Label";
 
 import DepositAccess from "./DepositAccess";
 import { Paragraph, Heading, Anchor } from "grommet";
 import { connect } from "react-redux";
 // Actions
 import { toggleActionsLayer } from "../../../actions/draftItem";
+
+import { AnnounceIcon } from "grommet/components/icons";
+
+import ReactTooltip from "react-tooltip";
 
 class DepositSettings extends React.Component {
   render() {
@@ -19,48 +23,72 @@ class DepositSettings extends React.Component {
     return (
       <Box
         flex={true}
-        size={{ width: "xlarge" }}
+        size={{ width: "xxlarge" }}
         alignSelf="center"
-        pad="medium"
+        pad="small"
       >
-        <Box flex={true}>
-          <Box
-            flex={false}
-            pad="medium"
-            colorIndex="light-2"
-            direction="row"
-            wrap={false}
-            margin={{ vertical: "medium", bottom: "large" }}
-          >
-            <Box flex>
-              <Heading tag="h4">Publish to collaboration</Heading>
-              <Paragraph margin="none">
-                Create a versioned snapsot of the record and make it available
-                to the CMS members within CERN Analysis Preservation
-              </Paragraph>
-            </Box>
-            <Box flex={false}>
-              <React.Fragment>
-                <Button
-                  onClick={isDraft ? this.props.publishDraft : null}
-                  primary
-                  colorIndex="accent-2"
-                  label="Publish"
-                />
-                <Box pad={{ vertical: "small" }}>
-                  Current Published Version:{" "}
-                  {!isPublishedOnce ? (
-                    <strong>Not published yet</strong>
-                  ) : (
+        <Box
+          flex={false}
+          direction="row"
+          wrap={false}
+          margin={{ vertical: "small", bottom: "large" }}
+        >
+          <Box flex>
+            <Heading tag="h3">Publish your analysis</Heading>
+            <Paragraph margin="none">
+              <strong>Publishing</strong> is the way to preserve your work
+              within CAP (and CAP only). <br /> It makes a snapshot of
+              everything that your analysis contains - metadata, files, plots,
+              repositories - assigning to it an unique versioned identifier.{" "}
+              <br /> All members of your collaboration can search and reference
+              published content. <br />Once published analysis cannot be
+              deleted, but can be modified and published again with a new
+              version tag.
+            </Paragraph>{" "}
+          </Box>
+          <Box flex align="center" justify="center">
+            <React.Fragment>
+              <Box margin="small">
+                <Paragraph margin="none">
+                  {isPublishedOnce ? (
                     <Anchor
-                      label={this.props.recid}
+                      data-tip="Latest published version"
+                      label={
+                        <Label size="medium" uppercase>
+                          {this.props.recid}
+                        </Label>
+                      }
+                      primary
                       path={`/published/${this.props.recid}`}
                     />
+                  ) : (
+                    <Anchor
+                      label={
+                        <Label size="medium" uppercase>
+                          not published yet
+                        </Label>
+                      }
+                      disabled
+                    />
                   )}
-                </Box>
-              </React.Fragment>
-            </Box>
+                </Paragraph>
+              </Box>
+              <Box align="center" pad={{ horizontal: "small" }} margin="small">
+                <Anchor
+                  icon={<AnnounceIcon size="xsmall" />}
+                  onClick={isDraft ? this.props.publishDraft : null}
+                  label={
+                    <Label size="medium" uppercase>
+                      Publish {isPublishedOnce ? "New Version" : null}
+                    </Label>
+                  }
+                />
+                <ReactTooltip />
+              </Box>
+            </React.Fragment>
           </Box>
+        </Box>
+        <Box flex={true}>
           <DepositAccess />
         </Box>
       </Box>

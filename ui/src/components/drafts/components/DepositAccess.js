@@ -9,6 +9,7 @@ import _sortBy from "lodash/sortBy";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
+import Heading from "grommet/components/Heading";
 import Label from "grommet/components/Label";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
@@ -125,147 +126,137 @@ class DepositAccess extends React.Component {
     return (
       <Box>
         {error ? this.showToaster(error) : null}
-        <Box
-          flex={false}
-          colorIndex="grey-2"
-          justify="between"
-          alignContent="center"
-          direction="row"
-          pad={{ horizontal: "small" }}
-          responsive={false}
-        >
-          <Label margin="small" style={{ overflow: "hidden" }}>
-            Access & Permissions
-          </Label>
-        </Box>
-        <Box flex={false} align="center" colorIndex="light-2">
-          <Box flex={false}>
-            <Box
-              flex={true}
-              pad={{ horizontal: "small" }}
-              alignSelf="start"
-              direction="row"
-              separator="bottom"
-              justify="center"
-            >
-              <Box direction="row" align="start" pad="small">
-                <RadioButton
-                  id="user"
-                  name="user"
-                  label="User email"
-                  value="user"
-                  checked={this.state.type === "user"}
-                  onChange={this.handleChange}
-                />
-                <RadioButton
-                  id="egroup"
-                  name="egroup"
-                  label="Egroup email"
-                  value="egroup"
-                  checked={this.state.type === "egroup"}
-                  onChange={this.handleChange}
-                />
-              </Box>
-              <Box direction="row" flex={true} justify="center" align="center">
-                <Box size="medium">
-                  <FormField>
-                    <TextInput
-                      placeHolder={`Type to  ADD access rights`}
-                      value={this.state.inputValue}
-                      onDOMChange={e =>
-                        this.onSuggestionsFetchRequested(e.target.value)
-                      }
-                      onSelect={this.onSuggestionSelect}
-                      suggestions={this.state.suggestions}
-                    />
-                  </FormField>
-                </Box>
-                {this.props.loading ? (
-                  <Box pad="small">
-                    <Spinning />
-                  </Box>
-                ) : (
-                  <Button
-                    icon={<AddIcon />}
-                    size="small"
-                    onClick={() => {
-                      this.addPermissions(draft_id);
-                    }}
+        <Box margin={{ bottom: "medium" }}>
+          <Heading tag="h3">Access & Permissions</Heading>
+          <Box pad="small" colorIndex="light-2">
+            <Box flex={false} pad={{ between: "small" }}>
+              <Box flex={true} direction="row" justify="center">
+                <Box direction="row" pad="small">
+                  <RadioButton
+                    id="user"
+                    name="user"
+                    label="User email"
+                    value="user"
+                    checked={this.state.type === "user"}
+                    onChange={this.handleChange}
                   />
-                )}
+                  <RadioButton
+                    id="egroup"
+                    name="egroup"
+                    label="Egroup email"
+                    value="egroup"
+                    checked={this.state.type === "egroup"}
+                    onChange={this.handleChange}
+                  />
+                </Box>
+                <Box
+                  direction="row"
+                  flex={true}
+                  justify="center"
+                  align="center"
+                >
+                  <Box size="medium">
+                    <FormField>
+                      <TextInput
+                        placeHolder={`Type to  ADD access rights`}
+                        value={this.state.inputValue}
+                        onDOMChange={e =>
+                          this.onSuggestionsFetchRequested(e.target.value)
+                        }
+                        onSelect={this.onSuggestionSelect}
+                        suggestions={this.state.suggestions}
+                      />
+                    </FormField>
+                  </Box>
+                  {this.props.loading ? (
+                    <Box pad="small">
+                      <Spinning />
+                    </Box>
+                  ) : (
+                    <Button
+                      icon={<AddIcon />}
+                      size="small"
+                      onClick={() => {
+                        this.addPermissions(draft_id);
+                      }}
+                    />
+                  )}
+                </Box>
               </Box>
-            </Box>
-            <Box>
-              <Table>
-                <TableHeader labels={["User/Role", "Read", "Write", "Admin"]} />
-                <tbody>
-                  {users_roles.map((key, index) => {
-                    let { actions: actions = [], type: type } = access[key];
-                    let canRead = actions.indexOf("deposit-read") > -1;
-                    let canUpdate = actions.indexOf("deposit-update") > -1;
-                    let canAdmin = actions.indexOf("deposit-admin") > -1;
+              <Box>
+                <Table>
+                  <TableHeader
+                    labels={["User/Role", "Read", "Write", "Admin"]}
+                  />
+                  <tbody>
+                    {users_roles.map((key, index) => {
+                      let { actions: actions = [], type: type } = access[key];
+                      let canRead = actions.indexOf("deposit-read") > -1;
+                      let canUpdate = actions.indexOf("deposit-update") > -1;
+                      let canAdmin = actions.indexOf("deposit-admin") > -1;
 
-                    return (
-                      <TableRow key={`${key}-${index}`}>
-                        <td>
-                          {key}
-                          {owner && owner === key ? (
-                            <strong> (owner)</strong>
-                          ) : null}
-                        </td>
-                        <td>
-                          <CheckBox
-                            toggle={true}
-                            checked={canRead ? true : false}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                type,
-                                key,
-                                "deposit-read",
-                                canRead ? "remove" : "add"
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <CheckBox
-                            toggle={true}
-                            checked={canUpdate ? true : false}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                type,
-                                key,
-                                "deposit-update",
-                                canUpdate ? "remove" : "add"
-                              )
-                            }
-                          />
-                        </td>
-                        <td>
-                          <CheckBox
-                            toggle={true}
-                            checked={canAdmin ? true : false}
-                            disabled={owner && owner === key}
-                            onChange={() =>
-                              this.props.handlePermissions(
-                                draft_id,
-                                type,
-                                key,
-                                "deposit-admin",
-                                canAdmin ? "remove" : "add"
-                              )
-                            }
-                          />
-                        </td>
-                      </TableRow>
-                    );
-                  })}
-                </tbody>
-              </Table>
+                      return (
+                        <TableRow key={`${key}-${index}`}>
+                          <td>
+                            {key}
+                            {owner && owner === key ? (
+                              <strong> (owner)</strong>
+                            ) : null}
+                          </td>
+                          <td>
+                            <CheckBox
+                              toggle={true}
+                              checked={canRead ? true : false}
+                              disabled={owner && owner === key}
+                              onChange={() =>
+                                this.props.handlePermissions(
+                                  draft_id,
+                                  type,
+                                  key,
+                                  "deposit-read",
+                                  canRead ? "remove" : "add"
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <CheckBox
+                              toggle={true}
+                              checked={canUpdate ? true : false}
+                              disabled={owner && owner === key}
+                              onChange={() =>
+                                this.props.handlePermissions(
+                                  draft_id,
+                                  type,
+                                  key,
+                                  "deposit-update",
+                                  canUpdate ? "remove" : "add"
+                                )
+                              }
+                            />
+                          </td>
+                          <td>
+                            <CheckBox
+                              toggle={true}
+                              checked={canAdmin ? true : false}
+                              disabled={owner && owner === key}
+                              onChange={() =>
+                                this.props.handlePermissions(
+                                  draft_id,
+                                  type,
+                                  key,
+                                  "deposit-admin",
+                                  canAdmin ? "remove" : "add"
+                                )
+                              }
+                            />
+                          </td>
+                        </TableRow>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Box>
             </Box>
           </Box>
         </Box>
