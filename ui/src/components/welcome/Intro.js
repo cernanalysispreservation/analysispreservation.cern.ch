@@ -82,7 +82,7 @@ class WelcomePage extends React.Component {
                 <Box size="small">
                   <Paragraph align="center">
                     Share your analysis and components with other users, your
-                    collaboration or working group
+                    collaboration or group
                   </Paragraph>
                 </Box>
               </Box>

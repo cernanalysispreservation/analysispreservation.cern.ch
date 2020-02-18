@@ -31,18 +31,22 @@ class DraftIntegrations extends React.Component {
           <Box flex>
             <Heading tag="h3">Repositories</Heading>
             <Box direction="row" pad={{ between: "medium" }}>
-              <Paragraph margin="none">
-                <strong>Download</strong> a snapshot of repository, that you'd
-                like to preserve with your analysis. You can point to the whole
-                repo, specific branch or even a single file - whatever your
-                analysis needs<br />
-              </Paragraph>
-              <Paragraph margin="none">
-                <strong>Connect</strong> repositories with analysis that are
-                still in progress, to keep them in sync. We'll make a new
-                snapshot on any changes pushed in this repository. This way your
-                analysis will be always up to date with your code
-              </Paragraph>{" "}
+              <Box basis="1/2">
+                <Paragraph margin="none">
+                  <strong>Download</strong> a snapshot of repository, that you'd
+                  like to preserve with your analysis. You can point to the
+                  whole repo, specific branch or even a single file - whatever
+                  your analysis needs<br />
+                </Paragraph>
+              </Box>
+              <Box basis="1/2">
+                <Paragraph margin="none">
+                  <strong>Connect</strong> repositories with analysis that are
+                  still in progress, to keep them in sync. We'll make a new
+                  snapshot on any changes pushed in this repository. This way
+                  your analysis will be always up to date with your code
+                </Paragraph>{" "}
+              </Box>
             </Box>
           </Box>
         </Box>
