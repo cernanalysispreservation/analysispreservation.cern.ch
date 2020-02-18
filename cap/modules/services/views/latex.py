@@ -29,14 +29,16 @@ from cap.modules.access.utils import login_required
 from cap.modules.services.serializers.latex import PathValidator
 
 TEMPLATE = r"""
-\begin{{table}}
-    \begin{{tabular}}{{ | p{{8cm}} | }}
-    \hline
+\usepackage{{tabularx}}
+
+\begin{{tabularx}}{{ 10cm }}{{|X|}}
+\hline
 
     \textbf{{{title}}} \\ \hline
     {joined_paths}
-    \end{{tabular}}
-\end{{table}}"""
+\hline
+\end{{tabularx}}
+"""
 
 NEW_LINE = r""" \\ \hline
     """

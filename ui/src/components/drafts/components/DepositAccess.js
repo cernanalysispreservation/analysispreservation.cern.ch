@@ -10,7 +10,6 @@ import _sortBy from "lodash/sortBy";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Heading from "grommet/components/Heading";
-import Label from "grommet/components/Label";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
 import TableHeader from "grommet/components/TableHeader";
