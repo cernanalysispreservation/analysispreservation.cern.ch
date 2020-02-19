@@ -70,10 +70,12 @@ def get_webhook_event():
         # create api client with subscriber token
         api = create_git_api(repo.host, repo.owner, repo.name, repo.branch,
                              subscriber.user_id)
+        host_without_protocol = repo.host.replace('https://', '')
+        host_without_protocol = host_without_protocol.replace('http://', '')
         if subscriber.type == 'download':
-            download_repo.delay(str(subscriber.record_id), repo.host,
-                                repo.owner, repo.name, repo.branch, None,
-                                api.get_download_url())
+            download_repo.delay(str(subscriber.record_id),
+                                host_without_protocol, repo.owner, repo.name,
+                                repo.branch, None, api.get_download_url())
 
     GitSnapshot.create(webhook, data)
 
