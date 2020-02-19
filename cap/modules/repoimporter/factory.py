@@ -32,7 +32,11 @@ def create_git_api(host, owner, repo, branch='master', user_id=None):
         return {
             'github.com': GitHubAPI,
             'gitlab.cern.ch': GitLabAPI,
-            'gitlab-test.cern.ch': GitLabAPI
+            'gitlab-test.cern.ch': GitLabAPI,
+            'http://gitlab.cern.ch': GitLabAPI,
+            'http://gitlab-test.cern.ch': GitLabAPI,
+            'https://gitlab.cern.ch': GitLabAPI,
+            'https://gitlab-test.cern.ch': GitLabAPI
         }[host](host, owner, repo, branch, user_id)
     except KeyError:
         raise GitHostNotSupported
