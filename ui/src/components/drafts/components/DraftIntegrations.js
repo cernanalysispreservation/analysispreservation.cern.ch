@@ -86,7 +86,7 @@ class DraftIntegrations extends React.Component {
                             <strong>
                               {repo.host.indexOf("github") > -1
                                 ? "Github"
-                                : repo.service == "gitlab"
+                                : repo.host.indexOf("gitlab") > -1
                                   ? "CERN Gitlab"
                                   : null}
                             </strong>

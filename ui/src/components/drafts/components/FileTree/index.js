@@ -76,7 +76,7 @@ class FileTree extends React.Component {
     return (
       <Box style={{ marginLeft: "5px" }}>
         <HorizontalWithText text="All Files" />
-        {this.state.data.children && this.state.data.children.length > 0 ? (
+        {allFiles.children && allFiles.children.length > 0 ? (
           <TreeNode
             data={allFiles}
             onDirectoryClick={this.props.onDirectoryClick}
