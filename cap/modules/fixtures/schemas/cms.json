@@ -870,28 +870,52 @@
     },
     "cadi_info": {
       "status": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "publication_status": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "pas": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "name": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "created": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "paper": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "contact": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "twiki": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "CADI ID"
+        }
       },
       "ui:order": [
         "name",
