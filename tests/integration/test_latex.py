@@ -28,13 +28,20 @@
 from __future__ import absolute_import, print_function
 import json
 
-LATEX_RESULT = '\n\\begin{table}\n    \\begin{tabular}{ | p{8cm} | }\n    ' \
-               '\\hline\n\n    \\textbf{Primary Datasets} \\\\ \\hline\n   ' \
-               ' /Electron/Run2010B-PromptReco-v2/RECO \\\\ \\hline\n    ' \
-               '/EG/Run2010A-Sep17ReReco\_v2/RECO \\\\ \\hline\n    ' \
-               '/Photon/Run2010B-PromptReco-v2/RECO \\\\ \\hline\n    ' \
-               '\n    \\end{tabular}\n\\end{table}'
+LATEX_RESULT = r"""
+\usepackage{tabularx}
 
+\begin{tabularx}{ 10cm }{|X|}
+\hline
+
+    \textbf{Primary Datasets} \\ \hline
+    /Electron/Run2010B-PromptReco-v2/RECO \\ \hline
+    /EG/Run2010A-Sep17ReReco\_v2/RECO \\ \hline
+    /Photon/Run2010B-PromptReco-v2/RECO \\ \hline
+    
+\hline
+\end{tabularx}
+"""
 
 def test_latex(app, auth_headers_for_superuser, json_headers):
     mock_data = {
