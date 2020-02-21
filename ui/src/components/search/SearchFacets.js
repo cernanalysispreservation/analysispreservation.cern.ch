@@ -129,6 +129,17 @@ class SearchFacets extends React.Component {
     return false;
   }
 
+  _filter_by_mine() {
+    let currentParams = queryString.parse(this.props.location.search);
+
+    if ("by_me" in currentParams) delete currentParams["by_me"];
+    else currentParams["by_me"] = "True";
+
+    this.props.history.replace({
+      search: `${queryString.stringify(currentParams)}`
+    });
+  }
+
   render() {
     if (this.props.aggs) {
       let facets = this.constructFacets(this.props.aggs);
@@ -138,6 +149,47 @@ class SearchFacets extends React.Component {
         <Sidebar full={false} colorIndex="light-2">
           <Box flex={true} justify="start">
             <Menu flex={true} primary={true}>
+              <Box>
+                <Box pad="small">
+                  <Heading
+                    pad="small"
+                    tag="h5"
+                    strong={false}
+                    uppercase={true}
+                    truncate={true}
+                    href="#"
+                  >
+                    filter by
+                  </Heading>
+                  <Box
+                    size="medium"
+                    styles={{ maxHeight: "100px" }}
+                    pad="none"
+                    direction="column"
+                  >
+                    <Box
+                      size="medium"
+                      direction="row"
+                      justify="between"
+                      align="center"
+                      style={{ fontSize: "0.8em" }}
+                    >
+                      <CheckBox
+                        label="created by me"
+                        checked={
+                          this.isAggSelected(
+                            this.props.selectedAggs["by_me"],
+                            "True"
+                          )
+                            ? true
+                            : false
+                        }
+                        onChange={this._filter_by_mine.bind(this)}
+                      />
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
               {categories.map(category => {
                 return (
                   <Box key={category}>
