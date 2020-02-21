@@ -227,7 +227,7 @@ class TextWidget extends Component {
         </Box>
       </Box>
     ) : (
-      <ReadOnlyText value={this.props.value} />
+      <ReadOnlyText value={this.props.value} props={this.props} />
     );
   }
 }

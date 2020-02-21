@@ -65,7 +65,8 @@
                 },
                 "email": {
                   "type": "string",
-                  "title": "Email-Adress"
+                  "title": "Email-Address",
+                  "format": "email"
                 }
               }
             },
@@ -123,7 +124,6 @@
       "publications": {
         "description": "Publications related to the analysis",
         "title": "Publications",
-        "default": [{}],
         "items": {
           "$ref":
             "https://analysispreservation.cern.ch/schemas/deposits/records/atlas-publication-v0.0.1.json"
@@ -220,12 +220,13 @@
       "*"
     ],
     "input_datasets": {
+      "ui:array": "default",
       "ui:options": {
         "enableArrayUtils": true
       }
     },
     "publications": {
-      "ui:array": "AccordionArrayField"
+      "ui:array": "default"
     },
     "basic_info": {
       "ui:order": ["analysis_title", "glance_id", "abstract", "people_info"],
@@ -261,28 +262,52 @@
     },
     "glance_info": {
       "id": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "short_title": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "full_title": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "pub_short_title": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "ref_code": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "creation_date": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "status": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "phase_0": {
-        "ui:readonly": true
+        "ui:readonly": true,
+        "ui:options": {
+          "parent": "GLANCE ID"
+        }
       },
       "ui:order": [
         "id",
@@ -313,6 +338,7 @@
       }
     },
     "likelihoods": {
+      "ui:options": { "hidden": true },
       "channels": {
         "ui:array": "AccordionArrayField"
       },
