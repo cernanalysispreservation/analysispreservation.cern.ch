@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit API."""
 
-from __future__ import absolute_import, print_function
-
 import copy
 from functools import wraps
 
@@ -43,7 +41,6 @@ from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
 from jsonschema.exceptions import RefResolutionError
-from jsonschema.validators import Draft4Validator, extend
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
@@ -230,8 +227,7 @@ class CAPDeposit(Deposit):
                     download = data['download']
                     webhook = data['webhook']
                 except KeyError as e:
-                    raise FileUploadError('Missing {} parameter.'.format(
-                        e.message))
+                    raise FileUploadError(f'Missing {e} parameter.')
 
                 try:
                     host, owner, repo, branch, filepath, filename = \
@@ -257,8 +253,7 @@ class CAPDeposit(Deposit):
                                                download_url, size, api.token)
                         else:
                             raise FileUploadError(
-                                'Type {} not allowed. (Try: repo|file).'.
-                                format(type_))
+                                f'Type {type_} not allowed. (Try: repo|file).')
 
                     if webhook:
                         create_webhook(record_uuid,
@@ -267,7 +262,7 @@ class CAPDeposit(Deposit):
                                        subscriber_type='download'
                                        if download else 'notify')
                 except GitError as e:
-                    raise FileUploadError(e.description)
+                    raise FileUploadError(str(e))
 
             return self
 
