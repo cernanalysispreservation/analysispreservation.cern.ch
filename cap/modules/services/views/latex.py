@@ -40,8 +40,7 @@ TEMPLATE = r"""
 \end{{tabularx}}
 """
 
-NEW_LINE = r""" \\ \hline
-    """
+NEW_LINE = " \\\\ \\hline\n    "
 
 
 def _latexify(paths, title):
