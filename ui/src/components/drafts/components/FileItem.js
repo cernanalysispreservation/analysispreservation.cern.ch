@@ -105,12 +105,6 @@ class FileItem extends React.Component {
     }
   }
 
-  showToaster(error) {
-    cogoToast.error(error, {
-      hideAfter: 3
-    });
-  }
-
   _toggleHover = hover => {
     this.setState({ hover });
   };
@@ -125,7 +119,6 @@ class FileItem extends React.Component {
 
     // TO_REMOVE after fixings links from backend
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
-
     return file ? (
       <Box
         key={file.key}
@@ -135,8 +128,6 @@ class FileItem extends React.Component {
         onMouseOver={() => this._toggleHover(true)}
         onMouseLeave={() => this._toggleHover(false)}
       >
-        {file.status == "error" ? this.showToaster(file.error.message) : null}
-
         <Box direction="row" flex={true} wrap={false}>
           <Box direction="row" flex={true} onClick={this.props.action}>
             <Box justify="center">{this._getIcon(file.mimetype)}</Box>
@@ -190,7 +181,6 @@ class FileItem extends React.Component {
             ) : null}
           </Box>
         </Box>
-
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
             <Anchor
@@ -200,11 +190,12 @@ class FileItem extends React.Component {
               href={file_link}
               download
             />
-            {this.props.status !== "published" ? (
+            {this.props.canUpdate ? (
               <Anchor
                 size="small"
                 icon={<CloseIcon size="xsmall" />}
                 label={<Label size="small">Delete</Label>}
+                disabled={this.props.status === "published"}
                 onClick={() => {
                   this.props.deleteFile(file_link, filePath);
                 }}
@@ -223,11 +214,15 @@ FileItem.propTypes = {
   deleteFile: PropTypes.func,
   bucket_id: PropTypes.string,
   filePreview: PropTypes.func,
-  status: PropTypes.string
+  status: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = state => {
+  return {
+    status: state.draftItem.get("status"),
+    canUpdate: state.draftItem.get("can_update")
+  };
 };
 
 const mapDispatchToProps = dispatch => {

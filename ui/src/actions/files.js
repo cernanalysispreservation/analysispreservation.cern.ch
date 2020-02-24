@@ -1,4 +1,5 @@
 import axios from "axios";
+import cogoToast from "cogo-toast";
 
 export const TOGGLE_FILEMANAGER_LAYER = "TOGGLE_FILEMANAGER_LAYER";
 
@@ -214,6 +215,9 @@ export function deleteFileByUri(file_uri = null, key = null) {
       .delete(file_uri)
       .then(dispatch(deleteFileSuccess(key)))
       .catch(error => {
+        cogoToast.error(error.response.data.message, {
+          hideAfter: 3
+        });
         dispatch(deleteFileError(key, error));
       });
   };

@@ -59,7 +59,6 @@ class DraftPreview extends React.Component {
         wrap={true}
       >
         {this.props.error ? this.showToaster(this.props.error.message) : null}
-
         <Box flex={true} pad={{ between: "medium" }} direction="row">
           <Box flex={true} size={{ width: { min: "medium" } }}>
             <SectionBox
