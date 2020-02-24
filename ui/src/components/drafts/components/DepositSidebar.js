@@ -24,20 +24,24 @@ class DepositSidebar extends React.Component {
   }
 
   _renderAddFileIcon() {
-    return (
-      <Route
-        path="/drafts/:draft_id/"
-        render={() => (
-          <Box
-            colorIndex="light-2"
-            onClick={this.props.toggleFilemanagerLayer}
-            style={{ padding: "5px" }}
-          >
-            <AddIcon size="small" />
-          </Box>
-        )}
-      />
-    );
+    if (this.props.status !== "published") {
+      if (this.props.canUpdate) {
+        return (
+          <Route
+            path="/drafts/:draft_id/"
+            render={() => (
+              <Box
+                colorIndex="light-2"
+                onClick={this.props.toggleFilemanagerLayer}
+                style={{ padding: "5px" }}
+              >
+                <AddIcon size="small" />
+              </Box>
+            )}
+          />
+        );
+      }
+    }
   }
 
   render() {
@@ -109,7 +113,8 @@ DepositSidebar.propTypes = {
   created: PropTypes.string,
   experiment: PropTypes.string,
   status: PropTypes.string,
-  id: PropTypes.string
+  id: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -121,7 +126,8 @@ function mapStateToProps(state) {
     revision: state.draftItem.get("revision"),
     created_by: state.draftItem.get("created_by"),
     created: state.draftItem.get("created"),
-    updated: state.draftItem.get("updated")
+    updated: state.draftItem.get("updated"),
+    canUpdate: state.draftItem.get("can_update")
   };
 }
 
