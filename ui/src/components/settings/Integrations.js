@@ -10,9 +10,10 @@ import ListItem from "grommet/components/ListItem";
 import Label from "grommet/components/Label";
 import Anchor from "grommet/components/Anchor";
 import ConnectIcon from "grommet/components/icons/base/Connect";
+import UnlinkIcon from "grommet/components/icons/base/Unlink";
 
 import OauthPopup from "./components/OAuthPopup";
-import { updateIntegrations } from "../../actions/auth";
+import { updateIntegrations, removeIntegrations } from "../../actions/auth";
 
 const INTEGRATIONS = {
   github: {
@@ -34,7 +35,7 @@ const INTEGRATIONS = {
 };
 
 class Integrations extends React.Component {
-  renderOAuthPopup(service) {
+  renderOAuthConnectPopup(service) {
     let _url;
     if (process.env.NODE_ENV === "development")
       _url = `http://localhost:5000/auth/connect/${service}?ui=1`;
@@ -56,8 +57,28 @@ class Integrations extends React.Component {
     );
   }
 
+  renderOAuthDisconnect(service) {
+    return (
+      <div>
+        <Anchor
+          icon={<UnlinkIcon size="xsmall" />}
+          onClick={() => this.logoutCallback(service)}
+          label={
+            <Label size="small" uppercase>
+              Disconnect
+            </Label>
+          }
+        />
+      </div>
+    );
+  }
+
   loginCallBack = () => {
     this.props.updateIntegrations();
+  };
+
+  logoutCallback = service => {
+    this.props.removeIntegrations(service);
   };
 
   render() {
@@ -80,8 +101,8 @@ class Integrations extends React.Component {
                       {INTEGRATIONS[service].title}
                     </Label>
                     {this.props.integrations && this.props.integrations[service]
-                      ? "Connected"
-                      : this.renderOAuthPopup(service)}
+                      ? this.renderOAuthDisconnect(service)
+                      : this.renderOAuthConnectPopup(service)}
                   </ListItem>
                 ))}
               </List>
@@ -95,7 +116,8 @@ class Integrations extends React.Component {
 
 Integrations.propTypes = {
   integrations: PropTypes.object,
-  updateIntegrations: PropTypes.func
+  updateIntegrations: PropTypes.func,
+  removeIntegrations: PropTypes.func
 };
 
 function mapStateToProps(state) {
@@ -106,7 +128,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateIntegrations: () => dispatch(updateIntegrations())
+    updateIntegrations: () => dispatch(updateIntegrations()),
+    removeIntegrations: service => dispatch(removeIntegrations(service))
   };
 }
 

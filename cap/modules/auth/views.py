@@ -51,9 +51,11 @@ blueprint = Blueprint(
 @login_required
 def connect(name):
     next_url = request.args.get('next')
-    session['next'] = next_url or None
     ui_flag = request.args.get('ui')
-    session['ui'] = ui_flag or None
+    session.update({
+        'next': next_url,
+        'ui': ui_flag
+    })
 
     client = current_auth.create_client(name)
     redirect_uri = url_for('cap_auth.authorize', name=name, _external=True)
@@ -70,6 +72,25 @@ def connect(name):
     # redirect_uri = redirect_uri.replace("http", 'https')
     # redirect_uri = redirect_uri.replace("cern.ch/", 'cern.ch/api/')
     return client.authorize_redirect(redirect_uri)
+
+
+@blueprint.route('/disconnect/<name>')
+@login_required
+def disconnect(name):
+    _profile = UserProfile.get_by_userid(current_user.id)
+    _token = OAuth2Token.get(name=name, user_id=current_user.id)
+
+    if _profile and _token:
+        del _profile.extra_data['services'][name]
+
+        flag_modified(_profile, "extra_data")
+        db.session.delete(_token)
+        db.session.commit()
+
+        return jsonify({'message': 'Disconnected from {} '
+                                   'successfully.'.format(name)}), 200
+    else:
+        abort(403, "Unable to disconnect from {} service.".format(name))
 
 
 @blueprint.route('/authorize/<name>')

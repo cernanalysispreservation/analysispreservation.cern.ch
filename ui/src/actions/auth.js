@@ -1,5 +1,6 @@
 import axios from "axios";
 import { history } from "../store/configureStore";
+import cogoToast from "cogo-toast";
 
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
@@ -154,6 +155,34 @@ export function updateIntegrations() {
         });
       })
       .catch(function() {});
+  };
+}
+
+export function removeIntegrations(service) {
+  return function(dispatch) {
+    axios
+      .get(`/api/auth/disconnect/${service}`)
+      .then(function() {
+        axios
+          .get("/api/me")
+          .then(function(response) {
+            let {
+              profile: { services: integrations = {} } = {}
+            } = response.data;
+            dispatch({
+              type: INTEGRATIONS_UPDATE,
+              integrations
+            });
+          })
+          .catch(function() {});
+      })
+      .catch(function(error) {
+        cogoToast.error(error.response.data.message, {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
+      });
   };
 }
 
