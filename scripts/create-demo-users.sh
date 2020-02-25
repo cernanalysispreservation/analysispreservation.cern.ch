@@ -31,6 +31,7 @@ cap users create cms@inveniosoftware.org -a --password cmscms
 cap users create lhcb@inveniosoftware.org -a --password lhcblhcb
 cap users create atlas@inveniosoftware.org -a --password atlasatlas
 cap users create alice@inveniosoftware.org -a --password alicealice
+cap users create random@inveniosoftware.org -a --password randomrandom
 
 cap roles create cms-members@cern.ch
 cap roles create alice-member@cern.ch

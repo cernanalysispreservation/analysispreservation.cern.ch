@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Notification from "grommet/components/Notification";
 import Spinning from "grommet/components/icons/Spinning";
 
 import { withRouter } from "react-router-dom";
@@ -55,12 +54,6 @@ class Dashboard extends React.Component {
     let lists = this._getList();
     return (
       <Box colorIndex="light-2" flex full>
-        {!this.props.permissions && (
-          <Notification
-            message="Your account has no permissions to access the platform resources."
-            status="warning"
-          />
-        )}
         {this.props.loading ? (
           <Box flex align="center" justify="center">
             <Spinning size="large" />
@@ -116,14 +109,12 @@ Dashboard.propTypes = {
   currentUser: PropTypes.object,
   results: PropTypes.object,
   history: PropTypes.object,
-  permissions: PropTypes.bool,
   loading: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     loading: state.dashboard.get("loading"),
-    permissions: state.auth.getIn(["currentUser", "permissions"]),
     results: state.dashboard.getIn(["results"])
   };
 }
