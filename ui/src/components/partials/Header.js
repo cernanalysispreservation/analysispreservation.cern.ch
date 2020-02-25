@@ -130,15 +130,17 @@ class Header extends React.Component {
                   responsive={true}
                   size="small"
                 >
-                  <Box
-                    onClick={() => this.toggleCreate()}
-                    pad={{ horizontal: "small" }}
-                    icon={<Add />}
-                  >
-                    <Heading margin="none" tag="h4">
-                      Create
-                    </Heading>
-                  </Box>
+                  {this.props.permissions && (
+                    <Box
+                      onClick={() => this.toggleCreate()}
+                      pad={{ horizontal: "small" }}
+                      icon={<Add />}
+                    >
+                      <Heading margin="none" tag="h4">
+                        Create
+                      </Heading>
+                    </Box>
+                  )}
                   <Menu
                     dropAlign={{ top: "bottom", right: "right" }}
                     icon={<UserIcon />}
@@ -172,13 +174,15 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
   match: PropTypes.object,
-  groups: PropTypes.object
+  groups: PropTypes.object,
+  permissions: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     isLoggedIn: state.auth.getIn(["isLoggedIn"]),
-    groups: state.auth.getIn(["currentUser", "depositGroups"])
+    groups: state.auth.getIn(["currentUser", "depositGroups"]),
+    permissions: state.auth.getIn(["currentUser", "permissions"])
   };
 }
 
