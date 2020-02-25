@@ -205,7 +205,7 @@ def test_get_triggers_suggestions_when_no_query_or_dataset_passed_returns_all(
     resp = client.get('/cms/triggers?query=&dataset=',
                       headers=auth_headers_for_user(users['cms_user']))
 
-    assert sorted(resp.json) == sorted([
+    assert resp.json == sorted([
         'Another_Trigger', 'Trigger2', 'Another_One', 'Trigger1', 'Trigger_2'
     ])
 
@@ -229,7 +229,7 @@ def test_get_triggers_suggestions_returns_correct_suggestions(
         '/cms/triggers?query=trigg&dataset=/Dataset1/sth/sth/sth',
         headers=auth_headers_for_user(users['cms_user']))
 
-    assert sorted(resp.json) == sorted(['Trigger1', 'Trigger_2'])
+    assert resp.json == sorted(['Trigger1', 'Trigger_2'])
 
     resp = client.get(
         '/cms/triggers?query=T&dataset=/Dataset1/sth/sth/sth&year=2012',
