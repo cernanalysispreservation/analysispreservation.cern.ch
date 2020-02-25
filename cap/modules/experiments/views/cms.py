@@ -90,7 +90,9 @@ def get_triggers_suggestions():
     year = request.args.get('year')
 
     search = CMSTriggerSearch().prefix_search(query, dataset, year)
-    search.aggs.bucket('_triggers', 'terms', field='trigger.keyword')
+    search.aggs.bucket('_triggers', 'terms',
+                       field='trigger.keyword',
+                       order={'_term': 'asc'})
 
     results = search.execute()
     aggregations = results.aggregations._triggers.buckets
