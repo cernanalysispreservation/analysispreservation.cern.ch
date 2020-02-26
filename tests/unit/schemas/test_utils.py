@@ -23,10 +23,11 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 from cap.modules.schemas.cli import add_schema_from_fixture
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 from cap.modules.schemas.permissions import (AdminSchemaPermission,
                                              ReadSchemaPermission)
-from cap.modules.schemas.utils import get_indexed_schemas_for_user
+from cap.modules.schemas.utils import (_filter_only_latest,
+                                       _filter_by_read_access)
 from flask_security import login_user
 
 
@@ -165,6 +166,16 @@ def test_get_indexed_schemas_for_user_when_latest(app, db, users):
 
     login_user(users['cms_user'])
 
-    schemas = get_indexed_schemas_for_user(latest=True)
+    # get indexed schemas for user
+    schemas = Schema.query \
+        .filter_by(is_indexed=True) \
+        .order_by(
+            Schema.name,
+            Schema.major.desc(), Schema.minor.desc(), Schema.patch.desc()
+        ).all()
+
+    schemas = _filter_only_latest(
+        _filter_by_read_access(schemas)
+    )
 
     assert schemas == [latest_schema1, latest_schema2]

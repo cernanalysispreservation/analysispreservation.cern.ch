@@ -27,7 +27,7 @@ import json
 
 from six import PY3
 
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 
 ########################
 # api/jsonschemas/  [GET]

@@ -62,7 +62,7 @@ from cap.modules.experiments.utils.cms import \
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file
 from cap.modules.repoimporter.models import GitRepository
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
 

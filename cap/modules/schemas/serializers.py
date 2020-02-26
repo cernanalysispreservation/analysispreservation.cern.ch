@@ -81,14 +81,15 @@ class SchemaSerializer(Schema):
 
         links = {
             'deposit': url_to_api_url(deposit_path),
-            'record': url_to_api_url(record_path)
+            'record': url_to_api_url(record_path),
+            'self': url_to_api_url(
+                url_for('cap_schemas.schemas',
+                        name=obj.name,
+                        version=obj.version,
+                        _method='PUT',
+                        _external=True
+                        ))
         }
-        links['self'] = url_to_api_url(
-            url_for('cap_schemas.schemas',
-                    name=obj.name,
-                    version=obj.version,
-                    _method='PUT',
-                    _external=True))
 
         return links
 

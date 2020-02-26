@@ -34,7 +34,7 @@ from sqlalchemy.exc import IntegrityError
 
 from cap.modules.fixtures.cli import fixtures
 
-from .models import Schema
+from .models.schemas import Schema
 
 
 @fixtures.command()

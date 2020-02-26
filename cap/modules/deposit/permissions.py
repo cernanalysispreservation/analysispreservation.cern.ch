@@ -34,7 +34,7 @@ from invenio_records_files.models import RecordsBuckets
 from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.records.permissions import RecordFilesPermission
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 

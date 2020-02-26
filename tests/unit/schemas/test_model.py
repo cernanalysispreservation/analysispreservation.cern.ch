@@ -24,7 +24,7 @@
 
 from sqlalchemy.exc import IntegrityError
 
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_search import current_search
 from pytest import mark, raises

@@ -23,20 +23,18 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """User blueprint in order to dispatch the login request."""
 
-from __future__ import absolute_import, print_function
-
 from flask import Blueprint, current_app, jsonify, request
 from flask_login import current_user, login_user
 from flask_security.utils import verify_password
 from flask_security.views import logout
+from invenio_userprofiles.models import UserProfile
 from werkzeug.local import LocalProxy
 
 from cap.config import DEBUG
 from cap.modules.access.utils import login_required
-
-from cap.modules.schemas.utils import get_indexed_schemas_for_user
-
-from invenio_userprofiles.models import UserProfile
+from cap.modules.schemas.models.schemas import Schema
+from cap.modules.schemas.utils import _filter_by_read_access, \
+    _filter_only_latest
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -68,7 +66,16 @@ def get_user():
 def get_user_deposit_groups():
     """Get Deposit Groups."""
     # Set deposit groups for user
-    schemas = get_indexed_schemas_for_user(latest=True)
+    schemas = Schema.query \
+        .filter_by(is_indexed=True) \
+        .order_by(
+            Schema.name,
+            Schema.major.desc(), Schema.minor.desc(), Schema.patch.desc()
+        ).all()
+
+    schemas = _filter_only_latest(
+        _filter_by_read_access(schemas)
+    )
 
     dep_groups = [{
         'name': schema.fullname,

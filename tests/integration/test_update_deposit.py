@@ -29,8 +29,6 @@ import json
 from invenio_search import current_search
 from pytest import mark
 
-from cap.modules.schemas.models import Schema
-from cap.modules.schemas.resolvers import schema_name_to_url
 from conftest import add_role_to_user
 
 # #######################################

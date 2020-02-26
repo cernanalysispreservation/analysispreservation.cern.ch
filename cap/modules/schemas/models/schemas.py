@@ -32,8 +32,8 @@ from invenio_access.permissions import authenticated_user
 from invenio_cache import current_cache
 from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
-from invenio_search import current_search
 from invenio_search import current_search_client as es
+
 from six.moves.urllib.parse import urljoin
 from sqlalchemy import UniqueConstraint, event
 from sqlalchemy.orm import validates
@@ -42,10 +42,11 @@ from werkzeug.utils import import_string
 
 from cap.types import json_type
 
-from .permissions import SchemaAdminAction, SchemaReadAction
-from .serializers import resolved_schemas_serializer, schema_serializer
-
-ES_FORBIDDEN = r' ,"\<*>|?'
+from cap.modules.schemas.permissions import SchemaAdminAction, SchemaReadAction
+from cap.modules.schemas.serializers import resolved_schemas_serializer, \
+    schema_serializer
+from cap.modules.schemas.utils import name_to_es_name, create_index, \
+    ES_FORBIDDEN
 
 # map attributes when use_deposit_as_record flag on
 SERVE_DEPOSIT_AS_RECORD_MAP = {
@@ -255,36 +256,6 @@ class Schema(db.Model):
             raise JSONSchemaNotFound("{}-v{}".format(name, version))
 
         return schema
-
-
-def name_to_es_name(name):
-    r"""Translate name to ES compatible name.
-
-    Replace '/' with '-'.
-    [, ", *, \\, <, | , , , > , ?] are forbidden.
-    """
-    if any(x in ES_FORBIDDEN for x in name):
-        raise AssertionError('Name cannot contain the following characters'
-                             '[, ", *, \\, <, | , , , > , ?]')
-
-    return name.replace('/', '-')
-
-
-def create_index(index_name, mapping_body, aliases):
-    """Create index in elasticsearch, add under given aliases."""
-    if not es.indices.exists(index_name):
-        current_search.mappings[index_name] = {}  # invenio search needs it
-
-        es.indices.create(index=index_name, body=mapping_body, ignore=False)
-
-        for alias in aliases:
-            es.indices.update_aliases(
-                {'actions': [{
-                    'add': {
-                        'index': index_name,
-                        'alias': alias
-                    }
-                }]})
 
 
 @event.listens_for(Schema, 'after_insert')

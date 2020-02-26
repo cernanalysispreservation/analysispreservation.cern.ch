@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Resolver for JSON Schemas."""
 
-from __future__ import absolute_import, print_function
-
 import jsonresolver
 
 from .resolvers import resolve_by_path

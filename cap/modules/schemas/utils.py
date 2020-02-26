@@ -25,8 +25,12 @@
 
 from itertools import groupby
 
-from .models import Schema
+from invenio_search import current_search, current_search_client as es
+
 from .permissions import ReadSchemaPermission
+
+
+ES_FORBIDDEN = r' ,"\<*>|?'
 
 
 def _filter_by_read_access(schemas_list):
@@ -39,38 +43,30 @@ def _filter_only_latest(schemas_list):
     return [next(g) for k, g in groupby(schemas_list, lambda s: s.name)]
 
 
-def get_schemas_for_user(latest=True):
-    """Return all schemas current user has read access to."""
-    schemas = Schema.query \
-                    .order_by(
-                        Schema.name,
-                        Schema.major.desc(),
-                        Schema.minor.desc(),
-                        Schema.patch.desc()) \
-                    .all()
+def name_to_es_name(name):
+    r"""Translate name to ES compatible name.
 
-    schemas = _filter_by_read_access(schemas)
+    Replace '/' with '-'.
+    [, ", *, \\, <, | , , , > , ?] are forbidden.
+    """
+    if any(x in ES_FORBIDDEN for x in name):
+        raise AssertionError('Name cannot contain the following characters'
+                             '[, ", *, \\, <, | , , , > , ?]')
 
-    if latest:
-        schemas = _filter_only_latest(schemas)
-
-    return schemas
+    return name.replace('/', '-')
 
 
-def get_indexed_schemas_for_user(latest=True):
-    """Return all indexed schemas current user has read access to."""
-    schemas = Schema.query \
-                    .filter_by(is_indexed=True) \
-                    .order_by(
-                        Schema.name,
-                        Schema.major.desc(),
-                        Schema.minor.desc(),
-                        Schema.patch.desc()) \
-                    .all()
+def create_index(index_name, mapping_body, aliases):
+    """Create index in elasticsearch, add under given aliases."""
+    if not es.indices.exists(index_name):
+        current_search.mappings[index_name] = {}  # invenio search needs it
 
-    schemas = _filter_by_read_access(schemas)
-
-    if latest:
-        schemas = _filter_only_latest(schemas)
-
-    return schemas
+        es.indices.create(index=index_name, body=mapping_body, ignore=False)
+        for alias in aliases:
+            es.indices.update_aliases(
+                {'actions': [{
+                    'add': {
+                        'index': index_name,
+                        'alias': alias
+                    }
+                }]})

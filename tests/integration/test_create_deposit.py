@@ -24,16 +24,11 @@
 # or submit itself to any jurisdiction.
 """Integration tests for deposit creation."""
 
-from __future__ import absolute_import, print_function
-
 import json
 
 from invenio_records.api import RecordMetadata
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.schemas.models import Schema
-from invenio_jsonschemas.errors import JSONSchemaNotFound
-from pytest import mark, raises
 
 
 #######################

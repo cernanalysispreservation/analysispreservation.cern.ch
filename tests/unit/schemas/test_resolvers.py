@@ -26,7 +26,7 @@
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from pytest import raises
 
-from cap.modules.schemas.models import Schema
+from cap.modules.schemas.models.schemas import Schema
 from cap.modules.schemas.resolvers import schema_name_to_url
 
 

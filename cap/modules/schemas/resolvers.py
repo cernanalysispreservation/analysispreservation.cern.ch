@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Resolver for JSON Schemas."""
 
-from __future__ import absolute_import, print_function
-
 import re
 
 import jsonresolver
@@ -35,7 +33,7 @@ from cachetools.func import lru_cache
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 
-from .models import Schema
+from .models.schemas import Schema
 from .permissions import ReadSchemaPermission
 
 
