@@ -183,7 +183,11 @@ setup(
             'git_model = cap.modules.repoimporter.models',
         ],
         'invenio_db.alembic': ['cap = cap:alembic'],
-        'invenio_config.module': ['cap = cap.config']
+        'invenio_config.module': [
+            'cap = cap.config',
+            'cap_records = cap.modules.records.config',
+            'cap_deposit = cap.modules.deposit.config',
+        ]
     },
     extras_require=extras_require,
     install_requires=install_requires,
