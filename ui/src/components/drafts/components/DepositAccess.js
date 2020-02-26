@@ -17,9 +17,8 @@ import CheckBox from "grommet/components/CheckBox";
 import RadioButton from "grommet/components/RadioButton";
 import FormField from "grommet/components/FormField";
 import TextInput from "grommet/components/TextInput";
-import cogoToast from "cogo-toast";
 
-import { handlePermissions, clearError } from "../../../actions/draftItem";
+import { handlePermissions } from "../../../actions/draftItem";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import Spinning from "grommet/components/icons/Spinning";
@@ -82,13 +81,6 @@ class DepositAccess extends React.Component {
     return actionExists.length > 0 ? true : false;
   }
 
-  showToaster(error) {
-    cogoToast.error(error, {
-      hideAfter: 3
-    });
-    this.props.clearError();
-  }
-
   render() {
     if (!this.props.draft_id) return null;
     let permissions = this.props.permissions || {};
@@ -114,7 +106,6 @@ class DepositAccess extends React.Component {
       });
     });
 
-    let error = this.props.error ? this.props.error.message : null;
     let owner = this.props.created_by;
     let draft_id = this.props.draft_id
       ? this.props.draft_id
@@ -124,7 +115,6 @@ class DepositAccess extends React.Component {
 
     return (
       <Box>
-        {error ? this.showToaster(error) : null}
         <Box margin={{ bottom: "medium" }}>
           <Heading tag="h3">Access & Permissions</Heading>
           <Box pad="small" colorIndex="light-2">
@@ -266,10 +256,8 @@ class DepositAccess extends React.Component {
 
 DepositAccess.propTypes = {
   match: PropTypes.object,
-  error: PropTypes.object,
   getDraftById: PropTypes.func,
   loading: PropTypes.bool,
-  clearError: PropTypes.func,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
   getUsers: PropTypes.func,
@@ -284,7 +272,6 @@ function mapStateToProps(state) {
     created_by: state.draftItem.get("created_by"),
     draft: state.draftItem.get("data"),
     permissions: state.draftItem.get("access"),
-    error: state.draftItem.get("error"),
     loading: state.draftItem.get("loading")
   };
 }
@@ -293,8 +280,7 @@ function mapDispatchToProps(dispatch) {
   return {
     // getDraftById: (id, fet) => dispatch(getDraftById(id, fet)),
     handlePermissions: (draft_id, type, email, action, operation) =>
-      dispatch(handlePermissions(draft_id, type, email, action, operation)),
-    clearError: () => dispatch(clearError())
+      dispatch(handlePermissions(draft_id, type, email, action, operation))
   };
 }
 
