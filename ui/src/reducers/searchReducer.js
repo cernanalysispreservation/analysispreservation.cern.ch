@@ -8,7 +8,8 @@ import {
   PAGE_CHANGE,
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
-  SEARCH_ERROR
+  SEARCH_ERROR,
+  UPDATE_EXPANDED_STATE
 } from "../actions/search";
 
 const initialState = Map({
@@ -20,7 +21,8 @@ const initialState = Map({
     total: 0
   }),
   error: Map({}),
-  loading: false
+  loading: false,
+  expanded: false
 });
 
 export default function searchReducer(state = initialState, action) {
@@ -42,6 +44,8 @@ export default function searchReducer(state = initialState, action) {
     // .set('aggs', fromJS(action.results.aggregations))
     case SEARCH_ERROR:
       return state;
+    case UPDATE_EXPANDED_STATE:
+      return state.set("expanded", action.value);
     default:
       return state;
   }

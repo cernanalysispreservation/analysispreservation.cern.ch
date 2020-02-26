@@ -6,10 +6,13 @@ import { withRouter } from "react-router";
 import queryString from "query-string";
 
 import Heading from "grommet/components/Heading";
+import Anchor from "grommet/components/Anchor";
 import Sidebar from "grommet/components/Sidebar";
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import CheckBox from "grommet/components/CheckBox";
+
+import ShowMore from "./ShowMore";
 
 // import FiltersPreview from './components/FiltersPreview';
 
@@ -23,6 +26,7 @@ class SearchFacets extends React.Component {
 
   constructFacets = aggs => {
     let facets = {};
+
     let keys = Object.keys(aggs).filter(key => {
       return typeof aggs[key] === "object";
     });
@@ -215,86 +219,118 @@ class SearchFacets extends React.Component {
                           pad="none"
                           direction="column"
                         >
-                          {facets[category].buckets.map(field => (
-                            <Box key={String(field.key)}>
-                              <Box
-                                size="medium"
-                                direction="row"
-                                justify="between"
-                                align="center"
-                                style={{ fontSize: "0.8em" }}
-                              >
-                                <CheckBox
-                                  label={field.key}
-                                  key={field.key}
-                                  name={String(field.key)}
-                                  checked={
-                                    this.isAggSelected(
-                                      this.props.selectedAggs[category],
-                                      field.key
-                                    )
-                                      ? true
-                                      : false
-                                  }
-                                  onChange={this._onChange.bind(this, category)}
-                                />
-                                <Box align="end">
-                                  {typeof field.doc_count === "object"
-                                    ? field.doc_count.doc_count
-                                    : field.doc_count}
+                          <ShowMore limit={11} items={facets[category].buckets}>
+                            {({
+                              current,
+                              showMore,
+                              showLess,
+                              filter,
+                              expanded
+                            }) => (
+                              <Box>
+                                {current.map(field => (
+                                  <Box key={String(field.key)}>
+                                    <Box
+                                      size="medium"
+                                      direction="row"
+                                      justify="between"
+                                      align="center"
+                                      style={{ fontSize: "0.8em" }}
+                                    >
+                                      <CheckBox
+                                        label={field.key}
+                                        key={field.key}
+                                        name={String(field.key)}
+                                        checked={
+                                          this.isAggSelected(
+                                            this.props.selectedAggs[category],
+                                            field.key
+                                          )
+                                            ? true
+                                            : false
+                                        }
+                                        onChange={this._onChange.bind(
+                                          this,
+                                          category
+                                        )}
+                                      />
+                                      <Box align="end">
+                                        {typeof field.doc_count === "object"
+                                          ? field.doc_count.doc_count
+                                          : field.doc_count}
+                                      </Box>
+                                    </Box>
+                                    <Box margin={{ left: "small" }}>
+                                      {this.isAggSelected(
+                                        this.props.selectedAggs[category],
+                                        field.key
+                                      ) &&
+                                        Object.keys(field)
+                                          .filter(key =>
+                                            key.startsWith("facet_")
+                                          )
+                                          .map(key => {
+                                            return field[key].buckets.map(
+                                              nested_field => (
+                                                <Box
+                                                  size="medium"
+                                                  key={String(nested_field.key)}
+                                                  direction="row"
+                                                  justify="between"
+                                                  align="start"
+                                                  style={{ fontSize: "0.8em" }}
+                                                >
+                                                  <CheckBox
+                                                    label={nested_field.key}
+                                                    key={nested_field.key}
+                                                    name={String(
+                                                      nested_field.key
+                                                    )}
+                                                    checked={
+                                                      this.isAggSelected(
+                                                        this.props.selectedAggs[
+                                                          key.replace(
+                                                            "facet_",
+                                                            ""
+                                                          )
+                                                        ],
+                                                        nested_field.key
+                                                      )
+                                                        ? true
+                                                        : false
+                                                    }
+                                                    onChange={this._onChange.bind(
+                                                      this,
+                                                      key.replace("facet_", "")
+                                                    )}
+                                                  />
+                                                  <Box align="end">
+                                                    {typeof nested_field.doc_count ===
+                                                    "object"
+                                                      ? nested_field.doc_count
+                                                          .doc_count
+                                                      : nested_field.doc_count}
+                                                  </Box>
+                                                </Box>
+                                              )
+                                            );
+                                          })}
+                                    </Box>
+                                  </Box>
+                                ))}
+                                <Box align="center">
+                                  {filter ? (
+                                    <Anchor
+                                      label={expanded ? "less" : "more"}
+                                      onClick={() => {
+                                        expanded ? showLess() : showMore();
+                                      }}
+                                    />
+                                  ) : null}
                                 </Box>
                               </Box>
-                              <Box margin={{ left: "small" }}>
-                                {this.isAggSelected(
-                                  this.props.selectedAggs[category],
-                                  field.key
-                                ) &&
-                                  Object.keys(field)
-                                    .filter(key => key.startsWith("facet_"))
-                                    .map(key => {
-                                      return field[key].buckets.map(
-                                        nested_field => (
-                                          <Box
-                                            size="medium"
-                                            key={String(nested_field.key)}
-                                            direction="row"
-                                            justify="between"
-                                            align="start"
-                                            style={{ fontSize: "0.8em" }}
-                                          >
-                                            <CheckBox
-                                              label={nested_field.key}
-                                              key={nested_field.key}
-                                              name={String(nested_field.key)}
-                                              checked={
-                                                this.isAggSelected(
-                                                  this.props.selectedAggs[
-                                                    key.replace("facet_", "")
-                                                  ],
-                                                  nested_field.key
-                                                )
-                                                  ? true
-                                                  : false
-                                              }
-                                              onChange={this._onChange.bind(
-                                                this,
-                                                key.replace("facet_", "")
-                                              )}
-                                            />
-                                            <Box align="end">
-                                              {typeof nested_field.doc_count ===
-                                              "object"
-                                                ? nested_field.doc_count
-                                                    .doc_count
-                                                : nested_field.doc_count}
-                                            </Box>
-                                          </Box>
-                                        )
-                                      );
-                                    })}
-                              </Box>
-                            </Box>
-                          ))}
+                            )}
+                          </ShowMore>
                         </Box>
                       </Box>
                     )}

@@ -13,6 +13,8 @@ export const SEARCH_REQUEST = "SEARCH_REQUEST";
 export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
 export const SEARCH_ERROR = "SEARCH_ERROR";
 
+export const UPDATE_EXPANDED_STATE = "UPDATE_EXPANDED_STATE";
+
 export function searchRequest() {
   return {
     type: SEARCH_REQUEST
@@ -23,6 +25,13 @@ export function searchSuccess(results) {
   return {
     type: SEARCH_SUCCESS,
     results
+  };
+}
+
+export function updateExpandState(value) {
+  return {
+    type: UPDATE_EXPANDED_STATE,
+    value
   };
 }
 
