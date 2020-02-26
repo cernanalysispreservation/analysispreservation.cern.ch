@@ -588,6 +588,7 @@ export function handlePermissions(draft_id, type, email, action, operation) {
         dispatch(permissionsItemSuccess(response.data.access));
       })
       .catch(error => {
+        cogoToast.error(error.response.data.message, { hideAfter: 3 });
         dispatch(permissionsItemError(error));
       });
   };
