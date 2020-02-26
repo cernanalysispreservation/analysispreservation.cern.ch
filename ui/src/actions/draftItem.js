@@ -50,7 +50,6 @@ export const EDIT_PUBLISHED_ERROR = "EDIT_PUBLISHED_ERROR";
 
 export const PERMISSIONS_ITEM_REQUEST = "PERMISSIONS_ITEM_REQUEST";
 export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
-export const PERMISSIONS_ITEM_ERROR = "PERMISSIONS_ITEM_ERROR";
 
 // TOFIX Consider using a HOC for error handling
 export const CLEAR_ERROR_SUCCESS = "CLEAR_ERROR_SUCCESS";
@@ -173,10 +172,6 @@ export const permissionsItemSuccess = permissions => ({
   type: PERMISSIONS_ITEM_SUCCESS,
   permissions
 });
-export const permissionsItemError = error => ({
-  type: PERMISSIONS_ITEM_ERROR,
-  error
-});
 
 export const clearErrorSuccess = () => ({ type: CLEAR_ERROR_SUCCESS });
 
@@ -196,12 +191,6 @@ export const clearErrorSuccess = () => ({ type: CLEAR_ERROR_SUCCESS });
 //       })
 //   };
 // }
-
-export function clearError() {
-  return dispatch => {
-    dispatch(clearErrorSuccess());
-  };
-}
 
 // Create Draft
 export function createDraft(data = {}, ana_type) {
@@ -589,7 +578,6 @@ export function handlePermissions(draft_id, type, email, action, operation) {
       })
       .catch(error => {
         cogoToast.error(error.response.data.message, { hideAfter: 3 });
-        dispatch(permissionsItemError(error));
       });
   };
 }

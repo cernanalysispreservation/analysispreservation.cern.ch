@@ -177,10 +177,6 @@ export default function draftsReducer(state = initialState, action) {
       return state.set("loading", true);
     case draftItemActions.PERMISSIONS_ITEM_SUCCESS:
       return state.set("access", action.permissions).set("loading", false);
-    case draftItemActions.PERMISSIONS_ITEM_ERROR:
-      return state
-        .set("loading", false)
-        .set("errors", action.error.response.data);
 
     // Files
     case filesActions.BUCKET_ITEM_REQUEST:

@@ -37,12 +37,10 @@ DraftWorkflows.propTypes = {
   error: PropTypes.object,
   getDraftById: PropTypes.func,
   loading: PropTypes.bool,
-  clearError: PropTypes.func,
   draft_id: PropTypes.string,
   draft: PropTypes.object,
   getUsers: PropTypes.func,
-  permissions: PropTypes.array,
-  handlePermissions: PropTypes.func
+  permissions: PropTypes.array
 };
 
 export default DraftWorkflows;
