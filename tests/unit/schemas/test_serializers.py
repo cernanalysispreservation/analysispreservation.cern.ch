@@ -22,12 +22,14 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Unit tests for schemas serializers."""
-from six import PY3
 
-from cap.modules.schemas.serializers import schema_serializer
+from cap.modules.schemas.serializers import schema_serializer, \
+    schema_template_serializer
 
 
 def test_schema_serializer_validators_errors():
+    error_msg = "[] is not of type 'object'"
+
     schema, errors = schema_serializer.load(
         dict(
             version='wrong-version.format',
@@ -61,8 +63,6 @@ def test_schema_serializer_validators_errors():
             is_indexed=True,
         ))
 
-    error_msg = "[] is not of type 'object'" if PY3 else "[] is not of type u'object'"  # noqa
-
     assert errors == {
         'deposit_schema': [{
             'dependencies': [error_msg],
@@ -74,3 +74,45 @@ def test_schema_serializer_validators_errors():
         }],
         'version': ['String does not match expected pattern.']
     }
+
+
+def test_template_serializer():
+    data = {
+        'name': 'es-template',
+        'mapping': {
+            "settings": {
+                "analysis": {
+                    "analyzer": {
+                        "lowercase_whitespace_analyzer": {
+                            "type": "custom",
+                            "tokenizer": "whitespace",
+                            "filter": ["lowercase"]
+                        }
+                    }
+                }
+            },
+            "mappings": {
+                "es-template-v0.0.1": {
+                    "_all": {
+                        "enabled": True,
+                        "analyzer": "lowercase_whitespace_analyzer"
+                    },
+                    "properties": {
+                        "_experiment": {
+                            "type": "text"
+                        },
+                        "_fetched_from": {
+                            "type": "text"
+                        },
+                        "_user_edited": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    schema, errors = schema_template_serializer.load(data)
+
+    assert schema == data
+    assert errors == {'prefix': ['Missing data for required field.']}
