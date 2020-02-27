@@ -58,7 +58,8 @@ SectionBox.propTypes = {
   body: PropTypes.node,
   headerActions: PropTypes.node,
   emptyMessage: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool.isRequired,
+  history: PropTypes.object
 };
 
 export default SectionBox;

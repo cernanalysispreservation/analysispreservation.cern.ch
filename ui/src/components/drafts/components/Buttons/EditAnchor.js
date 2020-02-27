@@ -1,24 +1,27 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
-import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
+import Anchor from "grommet/components/Anchor";
 import Edit from "grommet/components/icons/base/Edit";
 
-const EditAnchor = ({ history, draft_id = draft_id }) => {
+const EditAnchor = ({ draft_id = draft_id, icon = false }) => {
   return (
-    <Box pad={{ horizontal: "small" }}>
+    <Box pad={{ horizontal: "small" }} justify="end">
       <Anchor
-        icon={<Edit size="xsmall" />}
-        primary={true}
+        icon={icon ? <Edit size="xsmall" /> : null}
+        path={`/drafts/${draft_id}/edit`}
+        primary={icon}
         label={
-          <Label size="small" uppercase={true}>
-            Edit
-          </Label>
+          icon ? (
+            <Label size="small" uppercase={icon}>
+              Edit
+            </Label>
+          ) : (
+            "Edit"
+          )
         }
-        onClick={() => history.push(`/drafts/${draft_id}/edit`)}
       />
     </Box>
   );
@@ -26,7 +29,8 @@ const EditAnchor = ({ history, draft_id = draft_id }) => {
 
 EditAnchor.propTypes = {
   history: PropTypes.object,
-  draft_id: PropTypes.string
+  draft_id: PropTypes.string,
+  icon: PropTypes.bool
 };
 
-export default withRouter(EditAnchor);
+export default EditAnchor;

@@ -96,9 +96,11 @@ class DraftEditor extends React.Component {
         {this.props.schemas &&
           this.props.schemas.schema && (
             <Box flex={true}>
-              <Box flex={false} separator="bottom" style={{ padding: "5px" }}>
-                <DraftEditorHeader formRef={this.props.formRef} />
-              </Box>
+              {this.props.canUpdate && (
+                <Box flex={false} separator="bottom" style={{ padding: "5px" }}>
+                  <DraftEditorHeader formRef={this.props.formRef} />
+                </Box>
+              )}
               <Box
                 direction="row"
                 justify="between"
@@ -139,7 +141,8 @@ DraftEditor.propTypes = {
   fetchAndAssignSchema: PropTypes.func,
   fetchSchemaByNameVersion: PropTypes.func,
   formRef: PropTypes.object,
-  errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+  errors: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -152,7 +155,8 @@ function mapStateToProps(state) {
     metadata: state.draftItem.get("metadata"),
     formData: state.draftItem.get("formData"),
     errors: state.draftItem.get("errors"),
-    schemaErrors: state.draftItem.get("schemaErrors")
+    schemaErrors: state.draftItem.get("schemaErrors"),
+    canUpdate: state.draftItem.get("can_update")
   };
 }
 

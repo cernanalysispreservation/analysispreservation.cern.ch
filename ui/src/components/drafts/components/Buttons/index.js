@@ -8,3 +8,4 @@ export { default as SaveAnchor } from "./SaveAnchor";
 export { default as SettingsAnchor } from "./SettingsAnchor";
 export { default as ShareAnchor } from "./ShareAnchor";
 export { default as ShareAnchor2 } from "./ShareAnchor2";
+export { default as Anchors } from "./Anchors";
