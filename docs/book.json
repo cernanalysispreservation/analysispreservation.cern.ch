@@ -1,0 +1,27 @@
+{
+  "structure": {
+    "readme": "introduction.md"
+  },
+  "plugins": [
+    "insert-logo",
+    "back-to-top-button",
+    "copy-code-button",
+    "anchorjs",
+    "collapsible-menu",
+    "image-captions"
+  ],
+  "pluginsConfig": {
+    "insert-logo": {
+      "url": "https://awesome-workshop.github.io/cap-cms/fig/banner.png",
+      "style": "background: red; width: 100%;"
+    },
+    "anchorjs": {
+      "placement": "left",
+      "visible": "always"
+    },
+    "image-captions": {
+      "align": "center",
+      "caption": "Image - _CAPTION_"
+    }
+  }
+}

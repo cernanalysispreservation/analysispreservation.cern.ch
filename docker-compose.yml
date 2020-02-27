@@ -27,3 +27,7 @@ services:
     extends:
       file: docker-services.yml
       service: kibana
+  docs:
+    extends:
+      file: docker-services.yml
+      service: docs

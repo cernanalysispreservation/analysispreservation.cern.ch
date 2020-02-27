@@ -86,3 +86,12 @@ services:
     command: --broker=amqp://guest:guest@mq:5672/ --broker_api=http://guest:guest@mq:15672/api/
     ports:
       - "5555:5555"
+  docs:
+    build: ./docs/
+    image: cap-docs-general
+    environment:
+      - "DEBUG=True"
+    volumes:
+      - ./docs:/docs    
+    ports:
+      - "4000:80"
