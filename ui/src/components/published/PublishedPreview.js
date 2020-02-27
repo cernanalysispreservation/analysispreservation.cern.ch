@@ -104,7 +104,7 @@ class PublishedPreview extends React.Component {
                 uppercase={false}
                 action={
                   this.props.canUpdate ? (
-                    <EditAnchor draft_id={this.props.draft_id} />
+                    <EditAnchor draft_id={this.props.draft_id} icon />
                   ) : null
                 }
               />
