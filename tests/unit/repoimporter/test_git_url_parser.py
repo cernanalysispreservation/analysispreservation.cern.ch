@@ -49,18 +49,15 @@ def test_importer_with_scrambled_url():
 
 
 @mark.parametrize("url,parsed", [
-    ('https://github.com/cernanalysispreservation/test-repo',
-     ('github.com', 'cernanalysispreservation', 'test-repo', 'master', None,
-      None)),
-    ('https://github.com/cernanalysispreservation/test-repo/blob/test-branch/README.md',
-     ('github.com', 'cernanalysispreservation', 'test-repo', 'test-branch',
-      'README.md', 'README.md')),
-    ('https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/new-dir/test-nested-file.txt',
+    ('https://github.com/cap/test-repo',
+     ('github.com', 'cap', 'test-repo', None, None)),
+    ('https://github.com/cap/test-repo/blob/test-branch/README.md',
+     ('github.com', 'cap', 'test-repo', 'test-branch', 'README.md')),
+    ('https://gitlab.cern.ch/pfokiano/test-repo/blob/test-branch/dir/file.txt',
      ('gitlab.cern.ch', 'pfokiano', 'test-repo', 'test-branch',
-      'new-dir/test-nested-file.txt', 'test-nested-file.txt')),
-    ('https://github.com/cern/analysispreservation/blob/api-status-checks/docker/new/test.ini',
-     ('github.com', 'cern', 'analysispreservation', 'api-status-checks',
-      'docker/new/test.ini', 'test.ini'))
+      'dir/file.txt')),
+    ('https://github.com/cern/cap/blob/api-status-checks/docker/new/test.ini',
+     ('github.com', 'cern', 'cap', 'api-status-checks', 'docker/new/test.ini'))
 ])
 def test_parse_git_url_attrs(url, parsed):
     """Test the different url parsing combinations"""

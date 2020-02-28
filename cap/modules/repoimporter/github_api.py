@@ -21,9 +21,7 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Github importer class."""
-
-from __future__ import absolute_import, print_function
+"""Github interface class."""
 
 import hashlib
 import hmac
@@ -34,131 +32,130 @@ from github import Github, GithubException, UnknownObjectException
 
 from cap.modules.auth.ext import _fetch_token
 
-from .errors import GitError, GitIntegrationError, GitRepositoryNotFound
+from .errors import (GitError, GitIntegrationError, GitObjectNotFound,
+                     GitRequestWithInvalidSignature)
+from .interface import GitAPI
 from .utils import generate_secret, get_webhook_url
 
 
-def test_github_connection():
-    """Tests Github connection."""
-    return GitHubAPI.ping()
-
-
-class GitHubAPI(object):
+class GithubAPI(GitAPI):
     """GitHub-specific API class."""
-    api_url = 'https://api.github.com'
-
-    def __init__(self, host, owner, repo, branch, user_id=None):
+    def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
         """Initialize a GitHub API instance."""
         self.host = host
-        self.branch = branch
         self.owner = owner
         self.repo = repo
-        self.repo_full_name = '{}/{}'.format(owner, repo)
-        self.user_id = user_id
+        self.token = self._get_token(user_id)
+        self.api = Github(self.token)
 
-    @classmethod
-    def ping(cls):
-        """Ping the API."""
-        resp = requests.get(cls.api_url,
-                            headers={'Content-Type': 'application/json'})
-        return resp.json, resp.status_code
+        try:
+            self.project = self.api.get_repo(f'{self.owner}/{self.repo}',
+                                             lazy=False)
+        except UnknownObjectException:
+            raise GitObjectNotFound(
+                'This repository does not exist or you don\'t have access.')
+
+        self.branch, self.sha = self._get_branch_and_sha(branch_or_sha)
 
     def __repr__(self):
-        """Returns a string representation of the repo."""
-        return 'Git client for {}/{}/{}'.format(self.host, self.repo_full_name,
-                                                self.branch)
-
-    @property
-    def last_commit(self):
-        """Retrieve the last commit sha for this branch/repo."""
-        try:
-            branch = self.project.get_branch(self.branch)
-        except GithubException:
-            raise GitRepositoryNotFound
-        return branch.commit.sha
-
-    @property
-    def project(self):
-        try:
-            project = self.api.get_repo(self.repo_full_name)
-        except GithubException:
-            raise GitRepositoryNotFound
-        return project
+        """String representation."""
+        return f'API for {self.host}/{self.owner}/{self.repo}/{self.branch or self.sha}'  # noqa
 
     @property
     def repo_id(self):
+        return self.project.id
+
+    @property
+    def auth_headers(self):
+        return {'Authorization': f'token {self.token}'} if self.token else {}
+
+    def get_repo_download(self):
+        """Get repo download url."""
+        url = self.project.get_archive_link("tarball", ref=self.sha)
+        return url.split('?token=')[0]
+
+    def get_file_download(self, filepath):
+        """Get file download url and size."""
         try:
-            id_ = self.project.id
-        except GithubException:
-            raise GitRepositoryNotFound
-        return id_
+            file_desc = self.project.get_file_contents(filepath, ref=self.sha)
+        except UnknownObjectException:
+            raise GitObjectNotFound(f'File {filepath} does not exist')
 
-    @property
-    def api(self):
-        return Github(self.token)
+        if isinstance(file_desc, list):
+            raise GitError(
+                f'Downloading directories is currently not supported.')
 
-    @property
-    def token(self):
-        token_obj = _fetch_token('github',
-                                 self.user_id) if self.user_id else None
-        token = token_obj.get('access_token') if token_obj else None
-        return token
+        return file_desc.download_url.split('?token=')[0], file_desc.size
 
-    def is_request_trusted(self, secret):
-        """Verify if request comes from trusted source."""
-        header = request.headers['X-Hub-Signature'].split('sha1=')[1]
-        received = hmac.new(bytes(secret, 'utf-8'),
-                            msg=request.data,
-                            digestmod=hashlib.sha1)
-        return hmac.compare_digest(received.hexdigest(), str(header))
+    def verify_request(self, secret):
+        """Verify that request comes from trusted source."""
+        signature = request.headers['X-Hub-Signature'].replace('sha1=', '')
+        received = hmac.new(bytes(secret, 'utf-8'), request.data, hashlib.sha1)
 
-    def create_webhook(self):
+        if not hmac.compare_digest(received.hexdigest(), str(signature)):
+            raise GitRequestWithInvalidSignature
+
+    def create_webhook(self, _type='release'):
         """Create and enable a webhook for the specific repo."""
         url = get_webhook_url()
         secret = generate_secret()
+
         try:
-            hook = self.project.create_hook("web",
-                                            dict(url=url,
-                                                 content_type='json',
-                                                 secret=secret), ['push'],
-                                            active=True)
+            hook = self.project.create_hook(
+                name='web',
+                config=dict(
+                    url=url,
+                    content_type='json',
+                    secret=secret,
+                ),
+                events=[_type],
+                active=True,
+            )
         except UnknownObjectException:
-            raise GitRepositoryNotFound
+            raise GitIntegrationError(
+                'No permission to create webhook for this repository.')
+        except GithubException:
+            raise GitIntegrationError(
+                'Push webhook for this repository already exist')
 
         return hook.id, secret
 
     def ping_webhook(self, hook_id):
+        """Check if webhook still exist."""
         try:
             self.project.get_hook(hook_id)
         except UnknownObjectException:
-            raise GitError('Hook not found.')
+            raise GitObjectNotFound(
+                'Webhook not found or you don\'t have access.')
 
-    def get_event_data(self):
-        """Get event data from request payload."""
-        return request.headers['X-Github-Event']
+    def _get_token(self, user_id):
+        token_obj = _fetch_token('github', user_id) if user_id else None
+        if token_obj:
+            return token_obj.get('access_token')
+        else:
+            return None
 
-    def get_download_url(self):
-        """Create url for repo download."""
-        try:
-            ref = self.last_commit or self.branch
-            url = self.project.get_archive_link("tarball", ref=ref)
-        except UnknownObjectException:
-            raise GitIntegrationError(
-                'Does not exist or you don\'t have access.')
-        return url
+    def _get_branch_and_sha(self, branch_or_sha):
+        if not branch_or_sha:
+            # try default branch
+            try:
+                branch = self.project.get_branch(self.project.default_branch)
+                branch, sha = branch.name, branch.commit.sha
+            except GithubException:
+                raise GitObjectNotFound('Your repository is empty. '
+                                        'Make your initial commit first.')
+        else:
+            try:
+                # check if branch exists
+                branch = self.project.get_branch(branch_or_sha)
+                branch, sha = branch.name, branch.commit.sha
+            except GithubException:
+                # check if commit with this sha exists
+                try:
+                    sha = self.project.get_commit(branch_or_sha).sha
+                    branch = None
+                except GithubException:
+                    raise GitObjectNotFound(
+                        f'{branch_or_sha} does not match any branch or sha.')
 
-    def get_params_for_file_download(self, filepath):
-        """Get params for single file download."""
-        try:
-            file_desc = self.project.get_file_contents(filepath,
-                                                       ref=self.branch)
-        except GithubException:
-            raise GitIntegrationError(
-                'Does not exist or you don\'t have access.')
-
-        if isinstance(file_desc, list):
-            raise GitIntegrationError(
-                '{} is not a single file.'.format(filepath))
-
-        return file_desc.download_url + '?token={}'.format(
-            self.token), file_desc.size
+        return branch, sha

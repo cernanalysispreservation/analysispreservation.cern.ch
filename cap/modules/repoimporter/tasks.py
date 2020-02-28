@@ -41,12 +41,9 @@ from .utils import ensure_content_length
                  'max_retries': 5,
                  'countdown': 10
              })
-def download_repo(record_id, host, owner, repo, branch, source_url,
-                  download_url):
+def download_repo(record_id, filename, download_url, auth_headers=None):
     """Download a repository as a .tar file under record files."""
-    response = requests.get(download_url, stream=True)
-    filename = 'repositories/{}/{}/{}/{}.tar.gz'.format(
-        host, owner, repo, branch)
+    response = requests.get(download_url, stream=True, headers=auth_headers)
 
     # retrieve the data with the correct content length
     if 'Content-Length' not in response.headers:
@@ -62,10 +59,10 @@ def download_repo(record_id, host, owner, repo, branch, source_url,
     # so we can show it in UI (with tag FAILED)
     failed = True if response.status != 200 else False
     if failed:
-        print('Downloading content from {} failed ({}).'.format(
-            download_url, response.status))
+        print(f'Downloading content from {download_url}'
+              f'failed ({response.status}).')
 
-    record.save_file(response, filename, size, source_url, failed)
+    record.save_file(response, filename, size, failed)
 
 
 @shared_task(autoretry_for=(Exception, ),
@@ -73,14 +70,14 @@ def download_repo(record_id, host, owner, repo, branch, source_url,
                  'max_retries': 5,
                  'countdown': 10
              })
-def download_repo_file(record_id, host, owner, repo, branch, filepath,
-                       source_url, download_url, size, token):
-    """Download a single file from a git repo."""
-    filename = 'repositories/{}/{}/{}/{}/{}'.format(host, owner, repo, branch,
-                                                    filepath)
-    headers = {'Authorization': 'token {}'.format(token)} if token else {}
-
-    response = requests.get(download_url, stream=True, headers=headers).raw
+def download_repo_file(record_id,
+                       filename,
+                       download_url,
+                       size=None,
+                       auth_headers=None):
+    """Download a single file from a git repo under record files."""
+    response = requests.get(download_url, stream=True,
+                            headers=auth_headers).raw
 
     response.decode_content = True
     size = size or int(response.headers.get('Content-Length'))
@@ -92,10 +89,10 @@ def download_repo_file(record_id, host, owner, repo, branch, filepath,
     # so we can show it in UI (with tag FAILED)
     failed = True if response.status != 200 else False
     if failed:
-        print('Downloading content from {} failed ({}).'.format(
-            download_url, response.status))
+        print(f'Downloading content from {download_url}'
+              f'failed ({response.status}).')
 
-    record.save_file(response, filename, size, source_url)
+    record.save_file(response, filename, size, failed)
 
 
 @shared_task
@@ -104,10 +101,10 @@ def ping_webhooks():
 
     for subscriber in subscribers:
         repo = subscriber.repo
-        api = create_git_api(repo.host, repo.owner, repo.branch,
-                             subscriber.user_id)
+        api = create_git_api(repo.host, repo.owner, repo.name,
+                             subscriber.webhook.branch, subscriber.user_id)
         try:
             api.ping_webhook(subscriber.webhook.external_id)
-        except GitError:
+        except GitObjectNotFound:
             subscriber.status = 'deleted'
             db.session.commit()

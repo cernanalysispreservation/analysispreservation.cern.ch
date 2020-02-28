@@ -21,130 +21,131 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Gitlab importer API."""
-
-from __future__ import absolute_import, print_function
+"""Gitlab interface class."""
 
 import requests
 from flask import request
-from flask_login import current_user
 from gitlab import Gitlab
-from gitlab.exceptions import GitlabGetError
+from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError
 
 from cap.modules.auth.ext import _fetch_token
 
-from .errors import GitError, GitIntegrationError
+from .errors import (GitIntegrationError, GitObjectNotFound,
+                     GitRequestWithInvalidSignature, GitUnauthorizedRequest)
+from .interface import GitAPI
 from .utils import generate_secret, get_webhook_url
 
 
-def test_gitlab_connection():
-    """Tests Gitlab connection."""
-    return GitLabAPI.ping()
-
-
-class GitLabAPI(object):
-    """Cern GitLab-specific API class."""
-    api_url = 'https://gitlab.cern.ch/api/v4/projects'
-
-    def __init__(self, host, owner, repo, branch, user_id=None):
+class GitlabAPI(GitAPI):
+    """GitLab API class."""
+    def __init__(self, host, owner, repo, branch_or_sha=None, user_id=None):
         """Initialize a GitLab API instance."""
-        self.host = host if host.startswith('http') else 'https://{}'.format(
-            host)
-        self.api_url = '{}/api/v4/projects'.format(self.host)
-        self.branch = branch
+        self.host = host
         self.owner = owner
         self.repo = repo
-        self.repo_full_name = '{}/{}'.format(owner, repo)
-        self.user_id = user_id
+        self.token = self._get_token(user_id)
+        self.api = Gitlab(f'https://{self.host}', oauth_token=self.token)
+        self.api_url = f'https://{host}/api/v4/projects'
+
+        try:
+            self.project = self.api.projects.get(f'{owner}/{repo}', lazy=False)
+        except GitlabAuthenticationError:
+            raise GitUnauthorizedRequest(
+                'Gitlab requires authorization - '
+                'connect your CERN account: Settings -> Integrations.')
+
+        except GitlabGetError:
+            raise GitObjectNotFound(
+                'This repository does not exist or you don\'t have access.')
+
+        self.branch, self.sha = self._get_branch_and_sha(branch_or_sha)
 
     def __repr__(self):
-        """Returns a string representation of the repo."""
-        return 'Git client for {}/{}/{}'.format(self.host, self.repo_full_name,
-                                                self.branch)
-
-    @classmethod
-    def ping(cls):
-        """Ping the API."""
-        token = _fetch_token('gitlab', current_user.id)
-        resp = requests.get(cls.api_url + '?access_token='.format(token),
-                            headers={'Content-Type': 'application/json'})
-        return resp.json, resp.status_code
-
-    @property
-    def last_commit(self):
-        try:
-            branch = self.project.branches.get(self.branch)
-        except GitlabGetError:
-            raise GitError('Branch/Ref not found')
-        return branch.attributes['commit']['id']
-
-    @property
-    def project(self):
-        return self.api.projects.get(self.repo_full_name)
+        """String representation."""
+        return f'API for {self.host}/{self.owner}/{self.repo}/{self.branch or self.sha}'  # noqa
 
     @property
     def repo_id(self):
-        return self.project.get_id()
+        return self.project.id
 
     @property
-    def api(self):
-        return Gitlab(self.host, oauth_token=self.token)
+    def auth_headers(self):
+        return {'Private-Token': self.token} if self.token else {}
 
-    @property
-    def token(self):
-        token_obj = _fetch_token('gitlab',
-                                 self.user_id) if self.user_id else None
-        if not token_obj:
-            raise GitIntegrationError(
-                'CERN Gitlab requires authorization - '
-                'connect your CERN account: Settings -> Integrations.')
+    def get_repo_download(self):
+        """Get repo download url."""
+        return f'{self.api_url}/{self.repo_id}/repository/archive?sha={self.sha}'  # noqa
 
-        return token_obj.get('access_token')
+    def get_file_download(self, filepath):
+        """Get file download url and size."""
+        download_url = \
+                f'{self.api_url}/{self.repo_id}/repository/files/{filepath}/raw?ref={self.sha}'  # noqa
 
-    def is_request_trusted(self, secret):
-        """Verify if request comes from trusted source."""
-        return request.headers.get('X-Gitlab-Token') == secret
+        response = requests.head(download_url, headers=self.auth_headers)
+        if response.status_code != 200:
+            raise GitObjectNotFound(f'{filepath} is not a valid filepath.')
 
-    def get_event_data(self):
-        """Get event data from request payload."""
-        event = request.headers.get('X-Gitlab-Event', '')
-        return event.lower().split()[0]
+        return download_url, None
 
-    def create_webhook(self):
+    def verify_request(self, secret):
+        """Verify that request comes from trusted source."""
+        if request.headers.get('X-Gitlab-Token') != secret:
+            raise GitRequestWithInvalidSignature
+
+    def create_webhook(self, _type='release'):
         """Create and enable a webhook for the specific repo."""
         url = get_webhook_url()
         secret = generate_secret()
-        hook = self.project.hooks.create(
-            dict(url=url, push_events=True, token=secret))
-        return hook.get_id(), secret
+        try:
+            hook = self.project.hooks.create({
+                'url': url,
+                'push_events': True if _type == 'push' else False,
+                'tag_push_events': True if _type == 'release' else False,
+                'token': secret,
+            })
+        except GitlabAuthenticationError:
+            raise GitIntegrationError(
+                'No permission to create webhook for this repository.')
+
+        return hook.id, secret
 
     def ping_webhook(self, hook_id):
         try:
             self.project.hooks.get(hook_id)
         except GitlabGetError:
-            raise GitError('Hook not found')
+            raise GitObjectNotFound('Webhook not found')
+        except GitlabAuthenticationError:
+            raise GitObjectNotFound('No permission to this webhook')
 
-    def get_download_url(self):
-        """Create url for repo download."""
-        ref = self.last_commit or self.branch
-        download_url = '{}/{}/repository/archive?sha={}&access_token={}' \
-            .format(self.api_url, self.project.id, ref, self.token)
+    def _get_token(self, user_id):
+        token_obj = _fetch_token('gitlab', user_id) if user_id else None
+        if not token_obj:
+            return None
 
-        self._validate_download_url(download_url)
+        return token_obj.get('access_token')
 
-        return download_url
+    def _get_branch_and_sha(self, branch_or_sha):
+        if not branch_or_sha:
+            # try default branch
+            default_branch = self.project.default_branch
+            if not default_branch:
+                raise GitObjectNotFound('Your repository is empty. '
+                                        'Make your initial commit first.')
 
-    def get_params_for_file_download(self, filepath):
-        """Get params for single file download."""
-        download_url = '{}/{}/repository/files/{}/raw?ref={}&access_token={}'.format(  # noqa
-            self.api_url, self.project.id, filepath, self.branch, self.token)
-        self._validate_download_url(download_url)
-        size = None
-        return download_url, size
+            branch = self.project.branches.get(default_branch)
+            branch, sha = branch.name, branch.commit['id']
+        else:
+            try:
+                # check if branch exists
+                branch = self.project.branches.get(branch_or_sha)
+                branch, sha = branch.name, branch.commit['id']
+            except GitlabGetError:
+                # check if commit with this sha exists
+                try:
+                    sha = self.project.commits.get(branch_or_sha).id
+                    branch = None
+                except GitlabGetError:
+                    raise GitObjectNotFound(
+                        f'{branch_or_sha} does not match any branch or sha.')
 
-    def _validate_download_url(self, url):
-        response = requests.head(url)
-
-        if response.status_code != 200:
-            raise GitIntegrationError(
-                'Does not exist or you don\'t have access.')
+        return branch, sha

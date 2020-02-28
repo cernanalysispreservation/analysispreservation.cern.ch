@@ -67,37 +67,9 @@ class DraftIntegrations extends React.Component {
                     noHeading={true}
                     headingColor="light-2"
                     heading={
-                      <Box
-                        flex={true}
-                        direction="row"
-                        wrap={false}
-                        justify="between"
-                      >
-                        <Box flex={true}>{repo.name}</Box>
-                        <Box
-                          margin={{ horizontal: "small" }}
-                          direction="row"
-                          wrap={false}
-                          flex={false}
-                          size="medium"
-                          alignSelf="end"
-                        >
-                          <Box flex={true} align="center">
-                            <strong>
-                              {repo.host.indexOf("github") > -1
-                                ? "Github"
-                                : repo.host.indexOf("gitlab") > -1
-                                  ? "CERN Gitlab"
-                                  : null}
-                            </strong>
-                          </Box>
-                          <Box flex={true} align="center">
-                            {repo.branch}
-                          </Box>
-                          <Box flex={true} align="center">
-                            <TimeAgo date={repo.updated} minPeriod="60" />
-                          </Box>
-                        </Box>
+                      <Box flex direction="row" wrap={false}>
+                        <strong>{repo.name}</strong>
+                        {repo.branch ? " /" + repo.branch : null}
                       </Box>
                     }
                   >
@@ -106,6 +78,7 @@ class DraftIntegrations extends React.Component {
                         <Box
                           key={index}
                           direction="row"
+                          justify="between"
                           wrap={false}
                           pad={{
                             horizontal: "small",
@@ -119,8 +92,11 @@ class DraftIntegrations extends React.Component {
                             wrap={false}
                             pad={{ between: "small" }}
                           >
-                            <strong>Ref: </strong>
-                            <span>{snapshot.ref}</span>
+                            <strong>
+                              {snapshot.payload.release !== null
+                                ? snapshot.payload.release.tag
+                                : snapshot.payload.commit.slice(-1)[0].message}
+                            </strong>
                           </Box>
                           <Box
                             flex={false}
@@ -128,8 +104,19 @@ class DraftIntegrations extends React.Component {
                             wrap={false}
                             pad={{ between: "small" }}
                           >
-                            <strong>Datetime: </strong>
-                            <TimeAgo date={snapshot.timestamp} minPeriod="60" />
+                            <strong>
+                              {snapshot.payload.release !== null
+                                ? snapshot.payload.release.name
+                                : null}
+                            </strong>
+                          </Box>
+                          <Box
+                            flex={false}
+                            direction="row"
+                            wrap={false}
+                            pad={{ between: "small" }}
+                          >
+                            <TimeAgo date={snapshot.created} minPeriod="60" />
                           </Box>
                         </Box>
                       ))}
@@ -156,7 +143,7 @@ DraftIntegrations.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    repos: state.draftItem.get("repositories")
+    repos: state.draftItem.get("webhooks")
   };
 }
 

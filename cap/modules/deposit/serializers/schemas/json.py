@@ -25,15 +25,16 @@
 
 import copy
 
-from invenio_jsonschemas import current_jsonschemas
 from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              UpdateDepositPermission)
 from cap.modules.records.serializers.schemas import common
-from cap.modules.repoimporter.serializers import GitSnapshotSchema
+from cap.modules.repoimporter.serializers import (GitSnapshotSchema,
+                                                  GitWebhookSubscriberSchema)
 from cap.modules.workflows.serializers import ReanaWorkflowSchema
+from invenio_jsonschemas import current_jsonschemas
 
 
 class DepositSchema(common.CommonRecordSchema):
@@ -52,17 +53,17 @@ class DepositFormSchema(DepositSchema):
 
     schemas = fields.Method('get_deposit_schemas', dump_only=True)
 
-    repositories = fields.Method('get_repositories', dump_only=True)
+    webhooks = fields.Method('get_webhooks', dump_only=True)
     workflows = fields.Method('get_workflows', dump_only=True)
 
     can_update = fields.Method('can_user_update', dump_only=True)
     can_admin = fields.Method('can_user_admin', dump_only=True)
 
-    def get_repositories(self, obj):
+    def get_webhooks(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         webhooks = deposit.model.webhooks
 
-        return DepositRepositoriesSchema(many=True).dump(webhooks).data
+        return GitWebhookSubscriberSchema(many=True).dump(webhooks).data
 
     def get_workflows(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)

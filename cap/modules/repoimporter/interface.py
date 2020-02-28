@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,18 +21,34 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Git API factory."""
-from .errors import GitHostNotSupported
-from .github_api import GithubAPI
-from .gitlab_api import GitlabAPI
+"""Interface for Git API client classes."""
+
+from abc import ABCMeta
 
 
-def create_git_api(host, owner, repo, branch='master', user_id=None):
-    try:
-        return {
-            'github.com': GithubAPI,
-            'gitlab.cern.ch': GitlabAPI,
-            'gitlab-test.cern.ch': GitlabAPI,
-        }[host](host, owner, repo, branch, user_id)
-    except KeyError:
-        raise GitHostNotSupported
+class GitAPI:
+    """Interface for Git API client classes."""
+    __metaclass__ = ABCMeta
+
+    @property
+    def repo_id(self):
+        raise NotImplementedError
+
+    @property
+    def auth_headers(self):
+        raise NotImplementedError
+
+    def get_repo_download(self):
+        raise NotImplementedError
+
+    def get_file_download(self):
+        raise NotImplementedError
+
+    def verify_request(self):
+        raise NotImplementedError
+
+    def create_webhook(self):
+        raise NotImplementedError
+
+    def ping_webhook(self):
+        raise NotImplementedError

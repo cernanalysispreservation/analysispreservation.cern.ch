@@ -216,58 +216,69 @@ class CAPDeposit(Deposit):
     @has_status
     @mark_as_action
     def upload(self, pid=None, *args, **kwargs):
-        """Upload action for repositories files."""
+        """Upload action for repostiories.
+
+        Can upload a repository or its single file and/or create a webhook.
+        Expects json with params:
+        * `url`
+        * `webhook` (true|false)
+        * `event_type` (release|push)'.
+        """
         with UpdateDepositPermission(self).require(403):
             if request:
                 data = request.get_json()
                 _, rec = request.view_args.get('pid_value').data
                 record_uuid = str(rec.id)
+                data = request.get_json()
+                webhook = data.get('webhook', False)
+                # TOFIX currently never passed from UI
+                event_type = data.get('event_type', 'release')
 
                 # retrieve the parameters and validate
                 try:
                     url = data['url']
-                    type_ = data['type']
-                    download = data['download']
-                    webhook = data['webhook']
-                except KeyError as e:
-                    raise FileUploadError('Missing {} parameter.'.format(
-                        e.message))
+                except KeyError:
+                    raise FileUploadError(f'Missing url parameter.')
 
                 try:
-                    host, owner, repo, branch, filepath, filename = \
+                    host, owner, repo, branch, filepath = \
                             parse_git_url(url)
                     api = create_git_api(host, owner, repo, branch,
                                          current_user.id)
 
-                    if download:
-                        if type_ == 'repo':
-                            download_repo.delay(record_uuid, host, owner, repo,
-                                                branch, url,
-                                                api.get_download_url())
+                    if filepath:
+                        download_repo_file(
+                            record_uuid, f'repositories/{host}/{owner}/{repo}/'
+                            f'{api.branch or api.sha}/{filepath}',
+                            *api.get_file_download(filepath), api.auth_headers)
+                    else:
+                        filename = f'repositories/{host}/{owner}/{repo}' \
+                                f'/{api.branch or api.sha}.tar.gz'
+                        if webhook:
+                            # TOFIX create serializer
+                            if event_type == 'release':
+                                if branch:
+                                    raise FileUploadError(
+                                        'You cannot create a release webhook'
+                                        ' for a specific branch or sha.')
 
-                        elif type_ == 'file':
-                            if not filepath:
+                                filename = f'repositories/{host}/{owner}/' \
+                                           f'{repo}.tar.gz'
+
+                            if event_type == 'push' and \
+                                    api.branch is None and api.sha:
                                 raise FileUploadError(
-                                    'You need to provide a filepath.')
+                                    'You cannot create a push webhook'
+                                    ' for a specific sha.')
 
-                            download_url, size = \
-                                api.get_params_for_file_download(filepath)
-                            download_repo_file(record_uuid, host, owner, repo,
-                                               branch, filepath, url,
-                                               download_url, size, api.token)
-                        else:
-                            raise FileUploadError(
-                                'Type {} not allowed. (Try: repo|file).'.
-                                format(type_))
+                            create_webhook(record_uuid, api, event_type)
 
-                    if webhook:
-                        create_webhook(record_uuid,
-                                       url,
-                                       api,
-                                       subscriber_type='download'
-                                       if download else 'notify')
+                        download_repo.delay(record_uuid, filename,
+                                            api.get_repo_download(),
+                                            api.auth_headers)
+
                 except GitError as e:
-                    raise FileUploadError(e.description)
+                    raise FileUploadError(str(e))
 
             return self
 
@@ -518,12 +529,7 @@ class CAPDeposit(Deposit):
         else:
             raise DepositValidationError('You need to provide a valid schema.')
 
-    def save_file(self,
-                  content,
-                  filename,
-                  size,
-                  source_url=None,
-                  failed=False):
+    def save_file(self, content, filename, size, failed=False):
         """Save file with given content in deposit bucket.
 
            If downloading a content failed, file will be still created,
@@ -532,15 +538,11 @@ class CAPDeposit(Deposit):
            :param content: stream
            :param filename: name that file will be saved with
            :param size: size of content
-           :param source_url: original url that content was fetched from
            :param failed: if failed during downloading the content
         """
         obj = ObjectVersion.create(bucket=self.files.bucket, key=filename)
         obj.file = FileInstance.create()
         self.files.flush()
-
-        if source_url:
-            self.files[filename]['source_url'] = source_url
 
         if not failed:
             self.files[filename].file.set_contents(

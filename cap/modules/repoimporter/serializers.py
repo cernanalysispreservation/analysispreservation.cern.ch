@@ -23,117 +23,169 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Serializers for git payloads."""
 
-from __future__ import absolute_import, print_function
-
+import pytz
 from flask import request
 from marshmallow import Schema, fields
 
 
-def get_commit(obj):
-    """Retrieve the commit-specific information."""
-    try:
-        head = obj['commits'][0]
-        return {
-            'id': head['id'],
-            'message': head['message'],
-            'timestamp': head['timestamp'],
-            'author': head['author'],
-            'added': head['added'],
-            'removed': head['removed'],
-            'modified': head['modified']
-        }
-    except KeyError:
-        return {}
-
-
-def get_branch(obj):
-    """Extract the branch name from the ref attribute."""
-    return obj['ref'].split('/')[-1] if 'ref' in obj.keys() else 'master'
-
-
 class GitHubPayloadSchema(Schema):
     """Serializer for a GitHub webhook payload."""
-    hook_id = fields.Str(attribute='hook_id', dump_only=True)
+    host = fields.Str(default='github.com')
     repo_id = fields.Str(attribute='repository.id', dump_only=True)
-    repo_name = fields.Str(attribute='repository.name', dump_only=True)
-    branch = fields.Function(get_branch, dump_only=True)
-    ref = fields.Str(dump_only=True)
+    branch = fields.Method('get_branch', dump_only=True)
+    event_type = fields.Method('get_event_type', dump_only=True)
 
-    sender = fields.Method('get_sender', dump_only=True)
-    commit = fields.Function(get_commit, dump_only=True)
+    author = fields.Method('get_author', dump_only=True)
+    commit = fields.Method('get_commit', dump_only=True)
+    release = fields.Method('get_release', dump_only=True)
 
-    def get_sender(self, obj):
-        sender = obj['sender']
-        return {'name': sender['login'], 'id': sender['id']}
+    link = fields.Method('get_link', dump_only=True)
+
+    def get_event_type(self, obj):
+        """Event type (push|relase|not-supported)."""
+        event_type = obj['X-Github-Event']
+        if event_type == 'release' and obj.get('action') != 'released':
+            event_type = 'not-supported'
+        return event_type
+
+    def get_author(self, obj):
+        """Sender information."""
+        return {
+            'name': obj['sender']['login'],
+            'id': obj['sender']['id'],
+        }
+
+    def get_branch(self, obj):
+        """Branch information (only for push event)."""
+        try:
+            return obj['ref'].split('/')[-1]
+        except KeyError:
+            return
+
+    def get_release(self, obj):
+        """Release-event-specific information."""
+        try:
+            return {
+                "tag": obj['release']['tag_name'],
+                "name": obj['release']['name']
+            }
+        except KeyError:
+            return
+
+    def get_commit(self, obj):
+        """Push-event-specific information."""
+        try:
+            return [{
+                'id': head['id'],
+                'message': head['message'],
+                'added': head['added'],
+                'removed': head['removed'],
+                'modified': head['modified']
+            } for head in obj['commits']]
+        except KeyError:
+            return
+
+    def get_link(self, obj):
+        """Link to github page."""
+        if 'release' in obj:
+            return obj['release']['html_url']
+        elif 'commits' in obj:
+            return obj['commits'][0]['url']
+        else:
+            return
 
 
 class GitLabPayloadSchema(Schema):
     """Serializer for a GitLab webhook payload."""
 
-    hook_id = fields.Str(attribute='hook_id', dump_only=True)
+    host = fields.Str(default='gitlab.cern.ch')
     repo_id = fields.Str(attribute='project_id', dump_only=True)
-    repo_name = fields.Str(attribute='project.name', dump_only=True)
-    event_type = fields.Str(attribute='event_name', dump_only=True)
-    branch = fields.Function(get_branch, dump_only=True)
-    ref = fields.Str(dump_only=True)
+    branch = fields.Method('get_branch', dump_only=True)
+    event_type = fields.Method('get_event_type', dump_only=True)
 
-    sender = fields.Method('get_sender', dump_only=True)
-    commit = fields.Function(get_commit, dump_only=True)
+    author = fields.Method('get_author', dump_only=True)
+    commit = fields.Method('get_commit', dump_only=True)
+    release = fields.Method('get_release', dump_only=True)
 
-    def get_sender(self, obj):
-        return {'name': obj['user_username'], 'id': obj['user_id']}
+    link = fields.Method('get_link', dump_only=True)
 
+    def get_event_type(self, obj):
+        """Event type (push|relase|not-supported)."""
+        map_events = {
+            'push': 'push',
+            'tag_push': 'release',
+        }
+        return map_events.get(obj['event_name'], 'not-supported')
 
-class GitSnapshotSerializerSchema(Schema):
-    event = fields.Str(attribute='event_type', dump_only=True)
-    tag = fields.Str(dump_only=True)
-    branch = fields.Str(attribute='event_payload.branch', dump_only=True)
-    url = fields.Str(attribute='download_url', dump_only=True)
+    def get_author(self, obj):
+        """Sender information."""
+        return {
+            'name': obj['user_username'],
+            'id': obj['user_id'],
+        }
 
+    def get_branch(self, obj):
+        """Branch information (only for push event)."""
+        if obj['event_name'] == 'push':
+            return obj['ref'].split('/')[-1]
 
-class GitWebhookSubscriberSchema(Schema):
-    creator = fields.Str(attribute='user_id', dump_only=True)
-    type = fields.Str(dump_only=True)
-    status = fields.Str(dump_only=True)
+    def get_commit(self, obj):
+        """Push-event-specific information."""
+        if obj['event_name'] == 'push':
+            try:
+                return [{
+                    'id': head['id'],
+                    'message': head['message'],
+                    'added': head['added'],
+                    'removed': head['removed'],
+                    'modified': head['modified']
+                } for head in obj['commits']]
+            except KeyError:
+                return
 
-    webhook = fields.Method('get_webhook', dump_only=True)
+    def get_link(self, obj):
+        """Link to gitlab page."""
+        try:
+            return obj['commits'][0]['url']
+        except (KeyError, IndexError):
+            return
 
-    owner = fields.Str(attribute='owner', dump_only=True)
-    name = fields.Str(attribute='name', dump_only=True)
-    branch = fields.Str(attribute='branch', dump_only=True)
-
-    snapshots = fields.Method('get_snapshots', dump_only=True)
-
-    def get_snapshots(self, obj):
-        return GitSnapshotSchema(many=True).dump(obj.snapshots).data
-
-    def get_webhook(self, obj):
-        return GitSnapshotSchema(many=True).dump(obj.snapshots).data
+    def get_release(self, obj):
+        """Release-event-specific information."""
+        if obj['event_name'] == 'tag_push':
+            return {
+                'tag': obj['ref'].split('/')[-1],
+                'name': obj['message'],
+            }
+        return
 
 
 class GitSnapshotSchema(Schema):
-    ref = fields.Str(dump_only=True)
-    webhook = fields.Str(attribute='branch', dump_only=True)
-    timestamp = fields.Str(attribute='payload.commit.timestamp',
-                           dump_only=True)
-    created = fields.Str(dump_only=True)
+    """Serializer for GitSnapshot model for UI."""
+    payload = fields.Dict(dump_only=True)
+    created = fields.Function(
+        lambda obj: pytz.utc.localize(obj.created).isoformat(), dump_only=True)
 
 
-class GitRepositorySchema(Schema):
-    host = fields.Str(dump_only=True)
-    owner = fields.Str(dump_only=True)
-    name = fields.Str(dump_only=True)
-    branch = fields.Str(dump_only=True)
+class GitWebhookSubscriberSchema(Schema):
+    """Serializer for GitWebhookSubscriber model for UI."""
+    host = fields.Str(attribute='repo.host', dump_only=True)
+    owner = fields.Str(attribute='repo.owner', dump_only=True)
+    name = fields.Str(attribute='repo.name', dump_only=True)
+    branch = fields.Str(attribute='webhook.branch', dump_only=True)
+
+    event_type = fields.Str(attribute='webhook.event_type', dump_only=True)
+
+    snapshots = fields.Nested(GitSnapshotSchema,
+                              attribute='webhook.snapshots',
+                              many=True)
 
 
 def payload_serializer_factory():
-    """Return serializer instance based on request type."""
+    """Return serializer instance based on a request type."""
     if 'X-Gitlab-Event' in request.headers.keys():
         return GitLabPayloadSchema()
     elif 'X-Github-Event' in request.headers.keys():
         return GitHubPayloadSchema()
     else:
         return None
-
-
-git_snapshot_serializer = GitSnapshotSerializerSchema(many=True)

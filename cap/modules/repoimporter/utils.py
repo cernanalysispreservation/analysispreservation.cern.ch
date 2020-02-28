@@ -60,10 +60,7 @@ def parse_git_url(url):
     except (ValueError, TypeError, AttributeError):
         raise GitURLParsingError
 
-    branch = branch or 'master'  # default value for branch
-    filename = filepath.split('/')[-1] if filepath else None
-
-    return host, owner, repo, branch, filepath, filename
+    return host, owner, repo, branch, filepath
 
 
 def ensure_content_length(resp):
@@ -83,7 +80,7 @@ def ensure_content_length(resp):
     return resp
 
 
-def create_webhook(record_id, host, api, subscriber_type, type_='push'):
+def create_webhook(record_id, api, type_='release'):
     """
     Create webhook.
 
@@ -92,29 +89,34 @@ def create_webhook(record_id, host, api, subscriber_type, type_='push'):
     if a repo remote changes.
     """
     with db.session.begin_nested():
+        # release event cannot be on branch
+        branch = None if type_ == 'release' else api.branch
+
         repo = GitRepository.create_or_get(api.repo_id, api.host, api.owner,
-                                           api.repo, api.branch)
+                                           api.repo)
         try:
             webhook = GitWebhook.query.filter_by(event_type=type_,
-                                                 repo_id=repo.id).one()
+                                                 repo_id=repo.id,
+                                                 branch=branch).one()
         except NoResultFound:
-            hook_id, hook_secret = api.create_webhook()
+            hook_id, hook_secret = api.create_webhook(type_)
             webhook = GitWebhook(event_type=type_,
                                  repo_id=repo.id,
+                                 branch=branch,
                                  external_id=hook_id,
                                  secret=hook_secret)
             db.session.add(webhook)
 
         try:
-            GitWebhookSubscriber.query.filter_by(record_id=record_id,
-                                                 user_id=current_user.id,
-                                                 webhook_id=webhook.id,
-                                                 type=subscriber_type).one()
+            GitWebhookSubscriber.query.filter_by(
+                record_id=record_id,
+                user_id=current_user.id,
+                webhook_id=webhook.id,
+            ).one()
             raise GitIntegrationError(
-                'Analysis already connected with this webhook.')
+                f'Analysis already connected with {type_} webhook.')
         except NoResultFound:
             subscriber = GitWebhookSubscriber(record_id=record_id,
-                                              type=subscriber_type,
                                               user_id=current_user.id)
             webhook.subscribers.append(subscriber)
 

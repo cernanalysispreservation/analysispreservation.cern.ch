@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import, print_function
 
+from datetime import datetime
+
 from invenio_accounts.models import User
 from invenio_db import db
 from invenio_records.models import RecordMetadata
@@ -43,30 +45,21 @@ class GitRepository(db.Model):
     host = db.Column(db.String(255), nullable=False)
     owner = db.Column(db.String(255), nullable=False)
     name = db.Column(db.String(255), nullable=False)
-    branch = db.Column(db.String(255), nullable=False, default='master')
 
     __tablename__ = 'git_repository'
     __table_args__ = db.UniqueConstraint(
-        'host',
-        'owner',
-        'name',
-        'branch',
-        name='uq_git_repository_unique_constraint'),
+        'host', 'owner', 'name', name='uq_git_repository_unique_constraint'),
 
     @classmethod
-    def create_or_get(cls, external_id, host, owner, name, branch='master'):
+    def create_or_get(cls, external_id, host, owner, name):
         """."""
         try:
-            repo = cls.query.filter_by(host=host,
-                                       owner=owner,
-                                       name=name,
-                                       branch=branch).one()
+            repo = cls.query.filter_by(host=host, owner=owner, name=name).one()
         except NoResultFound:
             repo = cls(external_id=external_id,
                        host=host,
                        owner=owner,
-                       name=name,
-                       branch=branch)
+                       name=name)
             db.session.add(repo)
         return repo
 
@@ -79,9 +72,10 @@ class GitWebhook(db.Model):
         'event_type', 'repo_id', name='uq_git_webhook_unique_constraint'),
 
     id = db.Column(db.Integer, primary_key=True)
+    branch = db.Column(db.String(255), nullable=True)
     event_type = db.Column(db.String(255), nullable=False)
 
-    external_id = db.Column(db.String(255), nullable=False)
+    external_id = db.Column(db.Integer, nullable=False)
     secret = db.Column(db.String(32), nullable=True)
 
     repo_id = db.Column(db.Integer, db.ForeignKey(GitRepository.id))
@@ -100,8 +94,6 @@ class GitWebhookSubscriber(db.Model):
         name='uq_git_webhook_subscriber_unique_constraint'),
 
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.Enum('notify', 'download', name='git_event_type'),
-                     nullable=False)
 
     status = db.Column(db.Enum('active', 'deleted', name='git_webhook_status'),
                        nullable=False,
@@ -139,10 +131,6 @@ class GitSnapshot(db.Model):
     # webhook payload / event
     payload = db.Column(json_type, default={}, nullable=True)
 
-    # git specifics
-    tag = db.Column(db.String(255), nullable=True)
-    ref = db.Column(db.String(255), nullable=True)
-
     # foreign keys (connecting to repo and events)
     webhook_id = db.Column(db.Integer,
                            db.ForeignKey(GitWebhook.id),
@@ -150,13 +138,5 @@ class GitSnapshot(db.Model):
     webhook = db.relationship(GitWebhook,
                               backref=db.backref("snapshots",
                                                  cascade="all, delete-orphan"))
-    created = db.Column(db.DateTime, server_default=db.func.now())
 
-    @staticmethod
-    def create(webhook, data):
-        snapshot = GitSnapshot(payload=data,
-                               webhook_id=webhook.id,
-                               tag=data['commit'].get('tag'),
-                               ref=data['commit']['id'])
-        db.session.add(snapshot)
-        db.session.commit()
+    created = db.Column(db.DateTime, default=datetime.utcnow)

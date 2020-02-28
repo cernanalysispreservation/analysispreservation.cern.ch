@@ -21,43 +21,61 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""GitHub errors."""
-
-from __future__ import absolute_import, print_function
+"""Git exceptions."""
 
 
 class GitError(Exception):
     """General Git clients error."""
+    def __init__(self, *args):
+        """Initialize exception."""
+        super().__init__(*args)
 
 
 class GitURLParsingError(GitError):
     """Git url error."""
-    def __init__(self, **kwargs):
+    def __init__(self, message=None, **kwargs):
         """Initialize exception."""
-        super(GitURLParsingError, self).__init__(**kwargs)
-        self.description = 'Invalid Git URL.'
+        message = message or 'Invalid git URL.'
+        super().__init__(message, **kwargs)
+
+
+class GitRequestWithInvalidSignature(GitError):
+    """Git request with invalid signature."""
+    def __init__(self, message=None, **kwargs):
+        """Initialize exception."""
+        message = message or 'Signatures for this request don\'t match.'
+        super().__init__(message, **kwargs)
 
 
 class GitHostNotSupported(GitError):
     """API host not supported."""
-    def __init__(self, **kwargs):
+    def __init__(self, message=None, **kwargs):
         """Initialize exception."""
-        super(GitHostNotSupported, self).__init__(**kwargs)
-        self.description = 'Host not supported.'
-
-
-class GitRepositoryNotFound(GitError):
-    """API host not supported."""
-    def __init__(self, **kwargs):
-        """Initialize exception."""
-        super(GitRepositoryNotFound, self).__init__(**kwargs)
-        self.description = 'This repository does not exist \
-                or you don\'t have access.'
+        message = message or 'Host not supported'
+        super().__init__(message, **kwargs)
 
 
 class GitIntegrationError(GitError):
-    """Exception during uploading external urls."""
-    def __init__(self, description, **kwargs):
+    """Exception during connecting analysis with repository."""
+    def __init__(self, message=None, **kwargs):
         """Initialize exception."""
-        super(GitIntegrationError, self).__init__(**kwargs)
-        self.description = description or self.description
+        self.message = message or \
+            'Error occured during connecting analysis with repository.'
+        super().__init__(message, **kwargs)
+
+
+class GitUnauthorizedRequest(GitError):
+    """User not authorized."""
+    def __init__(self, message=None, **kwargs):
+        """Initialize exception."""
+        self.message = message or \
+            'User not authorized.'
+        super().__init__(message, **kwargs)
+
+
+class GitObjectNotFound(GitError):
+    """Git Webhook does not exist."""
+    def __init__(self, message=None, **kwargs):
+        """Initialize exception."""
+        self.message = message or 'Object not found.'
+        super().__init__(message, **kwargs)

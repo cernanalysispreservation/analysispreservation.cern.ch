@@ -612,7 +612,7 @@ RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'
 # In order to debug webhooks, we need a tunnel to our local instance
 # so we make sure that we have an ngrok tunnel running, and add it
 # to the allowed hosts (to enable requests)
-TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', False)
+TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', 'False')
 if DEBUG_MODE == 'True' and TEST_WITH_NGROK == 'True':
     try:
         resp = requests.get('http://localhost:4040/api/tunnels',
@@ -621,7 +621,9 @@ if DEBUG_MODE == 'True' and TEST_WITH_NGROK == 'True':
         APP_ALLOWED_HOSTS.append(NGROK_HOST.split('//')[-1])
         WEBHOOK_NGROK_URL = '{}/repos/event'.format(NGROK_HOST)
         print('* Webhook url at {}'.format(WEBHOOK_NGROK_URL))
-    except (IndexError, KeyError):
-        print('Ngrok is not running.')
+    except Exception as e:
+        print('Cannot fetch ngrok host.\n'
+              'Use CAP_TEST_WITH_NGROK=False if dont want to use it.\n'
+              f'Exception: {str(e)}.')
 
 WEBHOOK_ENDPOINT = 'cap_repos.get_webhook_event'

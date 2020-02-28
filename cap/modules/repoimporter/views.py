@@ -26,12 +26,13 @@
 from __future__ import absolute_import, print_function
 
 from flask import Blueprint, abort, jsonify, request
+from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.repoimporter.tasks import download_repo
 
 from .factory import create_git_api
-from .models import GitRepository, GitSnapshot, GitWebhook
+from .models import GitSnapshot, GitWebhook
 from .serializers import payload_serializer_factory
 
 repos_bp = Blueprint('cap_repos', __name__, url_prefix='/repos')
@@ -42,41 +43,53 @@ def get_webhook_event():
     """The route that webhooks will use to update the repo information."""
 
     payload = request.get_json()
-    serializer = payload_serializer_factory()
+    payload.update(request.headers)  # info about type of event inside headers
 
+    serializer = payload_serializer_factory()
     if not serializer:
         abort(403)
 
-    data = serializer.dump(payload).data
+    try:
+        data = serializer.dump(payload).data
+    except Exception:
+        abort(400, 'Server was unable to serialize this request')
+
+    if data["event_type"] == 'ping':
+        return jsonify({'message': 'Got it.'})
 
     try:
-        repo = GitRepository.query.filter_by(external_id=data['repo_id'],
-                                             branch=data['branch']).one()
-        api = create_git_api(repo.host, repo.owner, repo.name, repo.branch)
-        event = api.get_event_data()
-
-        if event == 'ping':
-            return jsonify({'message': 'Got it.'})
-
-        webhook = GitWebhook.query.filter_by(event_type=event,
-                                             repo_id=repo.id).one()
+        webhook = GitWebhook.query.filter_by(
+            branch=data['branch'],
+            event_type=data["event_type"],
+        ).join(GitWebhook.repo).filter_by(
+            external_id=data.pop('repo_id'),
+            host=data.pop('host'),
+        ).one()
     except NoResultFound:
-        abort(404)
-
-    if not api.is_request_trusted(webhook.secret):
-        abort(403)
+        abort(404, 'This webhook was not registered in our system.')
 
     for subscriber in webhook.subscribers:
-        # create api client with subscriber token
-        api = create_git_api(repo.host, repo.owner, repo.name, repo.branch,
+        api = create_git_api(webhook.repo.host, webhook.repo.owner,
+                             webhook.repo.name, webhook.branch,
                              subscriber.user_id)
-        host_without_protocol = repo.host.replace('https://', '')
-        host_without_protocol = host_without_protocol.replace('http://', '')
-        if subscriber.type == 'download':
-            download_repo.delay(str(subscriber.record_id),
-                                host_without_protocol, repo.owner, repo.name,
-                                repo.branch, None, api.get_download_url())
+        try:
+            api.verify_request(webhook.secret)
+        except GitRequestWithInvalidSignature:
+            abort(403)
 
-    GitSnapshot.create(webhook, data)
+        if webhook.branch:
+            path = f'repositories/{api.host}/{api.owner}/{api.repo}/{webhook.branch}.tar.gz'  # noqa
+        else:
+            path = f'repositories/{api.host}/{api.owner}/{api.repo}.tar.gz'
 
-    return jsonify({'message': 'Snapshot of repo saved.'})
+        download_repo.delay(
+            str(subscriber.record_id),
+            path,
+            api.get_repo_download(),
+            api.auth_headers,
+        )
+
+        webhook.snapshots.append(GitSnapshot(payload=data))
+        db.session.commit()
+
+    return jsonify({'message': 'Snapshot of repository was saved.'})

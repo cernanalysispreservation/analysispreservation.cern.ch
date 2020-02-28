@@ -105,6 +105,7 @@ def default_config():
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
                 SERVER_NAME='analysispreservation.cern.ch',
                 ACCESS_CACHE=None,
+                DEBUG_MODE=False,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken')
 
@@ -399,7 +400,9 @@ def schema(db):
 def cms_user_me_data(users):
     """CMS user data returned by /me endpoint."""
     return {
-        "collaborations": ["CMS", ],
+        "collaborations": [
+            "CMS",
+        ],
         "current_experiment": "CMS",
         "deposit_groups": [{
             "deposit_group": "cms-questionnaire",
@@ -423,7 +426,7 @@ def das_datasets_index(es):
         'name': '/dataset1/run1'
     }, {
         'name': '/dataset1/run2'
-    },{
+    }, {
         'name': '/dataset2'
     }, {
         'name': '/another_dataset'
@@ -583,3 +586,27 @@ def gitlab_token(db, superuser):
     db.session.add(token)
     db.session.commit()
     return token
+
+
+@pytest.fixture
+def git_repo_tar():
+    return b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03\xed\xd4\xc1N\x830\x18' \
+            b'\x07p\xce>\x05/\x80\xc2\xb7\xb6\xc0a\x07\x13w\xf4\xe2\x0b,-\x94' \
+            b'\xb9\x04(i\xbbE\xdf\xde\xa2^\xc4\xa0\x99a1\xcb\xfe\xbfKIK' \
+            b'\xd2~\xf9\xf7\xeb _\xb6\xbb\xd6(\xd9n\x9f\xb5\xac\xb5\x8d\x96' \
+            b'\x97\x06B\x88\xf71\x98\x8ea\x91E\xd9\x8a\x0bN\x82\xe7\x9c\x87' \
+            b'\xf9\x8c\xf1\x15\x8fvg8\xcb7\x07\xe7\xa5\r[Zc\xfcO\xff\xfd' \
+            b'\xb6>-\xeeBp\x8a+\xd3u\xba\xf7kE*WT\x88F5\xacH\xd3\xa6P\xaa\xccKQ' \
+            b'\xc9\xb4.\xa9\x0c\x93\xa9*$k\xea\x9b\xff>3,\xa7\xd2\xb6\x97' \
+            b'\xbdl_\xdd\xde\rV;m\x8f\xd2\xefM\x9fx\xed|b\xf5`\x92\xcf{q\xf7' \
+            b'\xe7=\xc6~\xc8s>\xdf\xff\xe1\xfbk\xffSF\xc4"\xbe`\x9d\xb3\xae' \
+            b'\xbc\xffO\xc8\xffis\xff\xf0\xb8\xb9\xed\xeaS\xf7\xf8x\xff\xd9|' \
+            b'\xfeD\xd3\xfc\x89\x8d\xf7\xe5\x1c\x05O]y\xfec\xcc\xf1\x18s\xdc' \
+            b'\x18\x1bWr\xc0\xeb\x0e\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00' \
+            b'\x00\x00\x00\x00pq\xde\x00h\xd6\xb3\xb6\x00(\x00\x00'
+
+
+@pytest.fixture
+def file_tar():
+    return b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03+I-.Q(J-\xc8WH' \
+            b'\xcb/RHN,\xe0\x02\x00\xeb\xd5!\xe0\x12\x00\x00\x00'
