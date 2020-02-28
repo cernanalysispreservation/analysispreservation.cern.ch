@@ -586,14 +586,44 @@ def github_release_webhook_sub(db, deposit, github_repo, superuser):
 
 @pytest.fixture
 def gitlab_repo(db, gitlab_token):
-    repo = GitRepository(external_id='15785702',
-                         host='gitlab.cern.ch',
-                         owner='alibrandi',
-                         name='test',
-                         branch='master')
+    repo = GitRepository(
+        external_id=12345,
+        host='gitlab.cern.ch',
+        owner='owner_name',
+        name='myrepository',
+    )
     db.session.add(repo)
     db.session.commit()
     return repo
+
+
+@pytest.fixture
+def gitlab_push_webhook_sub(db, gitlab_repo, deposit, superuser):
+    webhook = GitWebhook(event_type='push',
+                         repo_id=gitlab_repo.id,
+                         external_id=666,
+                         branch='mybranch',
+                         secret='mysecretsecret')
+    db.session.add(webhook)
+    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+                                      user_id=superuser.id)
+    webhook.subscribers.append(subscriber)
+    db.session.commit()
+    return subscriber
+
+
+@pytest.fixture
+def gitlab_release_webhook_sub(db, deposit, gitlab_repo, superuser):
+    webhook = GitWebhook(event_type='release',
+                         repo_id=gitlab_repo.id,
+                         external_id=666,
+                         secret='mysecretsecret')
+    db.session.add(webhook)
+    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+                                      user_id=superuser.id)
+    webhook.subscribers.append(subscriber)
+    db.session.commit()
+    return subscriber
 
 
 @pytest.fixture
