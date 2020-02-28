@@ -544,14 +544,44 @@ def add_role_to_user(user, rolename):
 
 @pytest.fixture
 def github_repo(db, github_token):
-    repo = GitRepository(external_id='226716001',
-                         host='github.com',
-                         owner='annatrz',
-                         name='test',
-                         branch='master')
+    repo = GitRepository(
+        external_id=12345,
+        host='github.com',
+        owner='owner',
+        name='repository',
+    )
     db.session.add(repo)
     db.session.commit()
     return repo
+
+
+@pytest.fixture
+def github_push_webhook_sub(db, github_repo, deposit, superuser):
+    webhook = GitWebhook(event_type='push',
+                         repo_id=github_repo.id,
+                         external_id=666,
+                         branch='mybranch',
+                         secret='mysecretsecret')
+    db.session.add(webhook)
+    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+                                      user_id=superuser.id)
+    webhook.subscribers.append(subscriber)
+    db.session.commit()
+    return subscriber
+
+
+@pytest.fixture
+def github_release_webhook_sub(db, deposit, github_repo, superuser):
+    webhook = GitWebhook(event_type='release',
+                         repo_id=github_repo.id,
+                         external_id=666,
+                         secret='mysecretsecret')
+    db.session.add(webhook)
+    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+                                      user_id=superuser.id)
+    webhook.subscribers.append(subscriber)
+    db.session.commit()
+    return subscriber
 
 
 @pytest.fixture
