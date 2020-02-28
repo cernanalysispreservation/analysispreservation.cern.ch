@@ -29,8 +29,8 @@ import tarfile
 from invenio_files_rest.models import ObjectVersion
 
 import responses
-from cap.modules.git.github_api import Github
-from cap.modules.git.models import GitSnapshot
+from cap.modules.repos.github_api import Github
+from cap.modules.repos.models import GitSnapshot
 from mock import Mock, patch
 
 ping_headers = {

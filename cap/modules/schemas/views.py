@@ -26,12 +26,12 @@
 from flask import Blueprint, abort, jsonify, request
 from flask.views import MethodView
 from flask_login import current_user
+from invenio_db import db
+from invenio_jsonschemas.errors import JSONSchemaNotFound
 from jsonref import JsonRefError
 from sqlalchemy.exc import IntegrityError
 
 from cap.modules.access.utils import login_required
-from invenio_db import db
-from invenio_jsonschemas.errors import JSONSchemaNotFound
 
 from .models import Schema
 from .permissions import AdminSchemaPermission, ReadSchemaPermission

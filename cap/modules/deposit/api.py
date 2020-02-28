@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit API."""
 
-from __future__ import absolute_import, print_function
-
 import copy
 from functools import wraps
 
@@ -43,7 +41,6 @@ from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
 from jsonschema.exceptions import RefResolutionError
-from jsonschema.validators import Draft4Validator, extend
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
@@ -52,10 +49,10 @@ from cap.modules.deposit.errors import FileUploadError
 from cap.modules.deposit.validators import DepositValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
-from cap.modules.repoimporter.errors import GitError
-from cap.modules.repoimporter.factory import create_git_api
-from cap.modules.repoimporter.tasks import download_repo, download_repo_file
-from cap.modules.repoimporter.utils import create_webhook, parse_git_url
+from cap.modules.repos.errors import GitError
+from cap.modules.repos.factory import create_git_api
+from cap.modules.repos.tasks import download_repo, download_repo_file
+from cap.modules.repos.utils import create_webhook, parse_git_url
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
@@ -226,7 +223,6 @@ class CAPDeposit(Deposit):
         """
         with UpdateDepositPermission(self).require(403):
             if request:
-                data = request.get_json()
                 _, rec = request.view_args.get('pid_value').data
                 record_uuid = str(rec.id)
                 data = request.get_json()
@@ -234,7 +230,6 @@ class CAPDeposit(Deposit):
                 # TOFIX currently never passed from UI
                 event_type = data.get('event_type', 'release')
 
-                # retrieve the parameters and validate
                 try:
                     url = data['url']
                 except KeyError:

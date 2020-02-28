@@ -31,8 +31,8 @@ from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              UpdateDepositPermission)
 from cap.modules.records.serializers.schemas import common
-from cap.modules.repoimporter.serializers import (GitSnapshotSchema,
-                                                  GitWebhookSubscriberSchema)
+from cap.modules.repos.serializers import (GitSnapshotSchema,
+                                           GitWebhookSubscriberSchema)
 from cap.modules.workflows.serializers import ReanaWorkflowSchema
 from invenio_jsonschemas import current_jsonschemas
 

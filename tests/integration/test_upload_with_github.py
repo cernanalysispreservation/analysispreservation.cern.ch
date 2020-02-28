@@ -34,8 +34,8 @@ from github import GithubException
 from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
 
-from cap.modules.git.github_api import Github, GithubAPI
-from cap.modules.git.models import GitWebhookSubscriber
+from cap.modules.repos.github_api import Github, GithubAPI
+from cap.modules.repos.models import GitWebhookSubscriber
 
 
 def test_upload_when_missing_params_returns_400(client, deposit,
@@ -254,7 +254,7 @@ def test_upload_for_record_so_bucket_is_locked_returns_403(
 
 @responses.activate
 @patch.object(GithubAPI, 'repo_id', 1)
-@patch('cap.modules.git.github_api.generate_secret',
+@patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo_and_creating_release_webhook(
@@ -334,7 +334,7 @@ def test_upload_when_repo_and_creating_release_webhook(
 
 @responses.activate
 @patch.object(GithubAPI, 'repo_id', 1)
-@patch('cap.modules.git.github_api.generate_secret',
+@patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo_and_creating_push_webhook(m_get_repo, client,

@@ -29,8 +29,7 @@ import requests
 from celery import shared_task
 from invenio_db import db
 
-from cap.modules.repoimporter.errors import GitError
-
+from .errors import GitObjectNotFound
 from .factory import create_git_api
 from .models import GitWebhookSubscriber
 from .utils import ensure_content_length

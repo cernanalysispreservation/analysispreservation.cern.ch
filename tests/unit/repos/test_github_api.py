@@ -2,10 +2,10 @@ from github import GithubException, UnknownObjectException
 from mock import Mock, patch
 from pytest import raises
 
-from cap.modules.git.errors import (GitError, GitIntegrationError,
-                                    GitObjectNotFound,
-                                    GitRequestWithInvalidSignature)
-from cap.modules.git.github_api import Github, GithubAPI
+from cap.modules.repos.errors import (GitError, GitIntegrationError,
+                                      GitObjectNotFound,
+                                      GitRequestWithInvalidSignature)
+from cap.modules.repos.github_api import Github, GithubAPI
 
 
 @patch.object(
@@ -269,7 +269,7 @@ def test_github_api_get_file_download(m_get_repo):
 
     assert api.get_file_download('README.md') == (
         'https://raw.githubusercontent.com/owner/repository'
-        '/mybranchsha/README.md')
+        '/mybranchsha/README.md', 21)
 
 
 @patch.object(Github, 'get_repo')
@@ -309,7 +309,7 @@ def test_github_api_get_file_download_when_filepath_is_a_directory_raises_GitErr
         api.get_file_download('dir')
 
 
-@patch('cap.modules.git.github_api.generate_secret',
+@patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_github_api_create_webhook(m_get_repo, app):
@@ -337,7 +337,7 @@ def test_github_api_create_webhook(m_get_repo, app):
     assert api.create_webhook() == (186091239, 'mysecret')
 
 
-@patch('cap.modules.git.github_api.generate_secret',
+@patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_github_api_create_webhook_when_webhook_already_exist_raises_GitIntegrationError(
@@ -368,7 +368,7 @@ def test_github_api_create_webhook_when_webhook_already_exist_raises_GitIntegrat
         api.create_webhook()
 
 
-@patch('cap.modules.git.github_api.generate_secret',
+@patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_github_api_create_webhook_when_no_permissions_to_create_a_webhook_raises_GitIntegrationError(

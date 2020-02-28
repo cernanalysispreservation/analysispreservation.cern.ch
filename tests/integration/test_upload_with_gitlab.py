@@ -28,14 +28,14 @@ from __future__ import absolute_import, print_function
 import json
 import tarfile
 
-from flask import current_app
-from invenio_files_rest.models import ObjectVersion
-
 import responses
-from cap.modules.git.models import GitWebhookSubscriber
+from flask import current_app
 from github import GithubException
 from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError
+from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
+
+from cap.modules.repos.models import GitWebhookSubscriber
 
 
 def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
@@ -51,7 +51,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
     assert resp.json == {'status': 400, 'message': 'Invalid git URL.'}
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_raises_an_error(
     m_gitlab, client, deposit, auth_headers_for_superuser, json_headers,
     git_repo_tar):
@@ -91,7 +91,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo(m_gitlab, client, deposit,
                           auth_headers_for_superuser, json_headers,
                           git_repo_tar):
@@ -152,7 +152,7 @@ def test_upload_for_record_so_bucket_is_locked_returns_403(
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.generate_secret',
+@patch('cap.modules.repos.gitlab_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo_and_creating_push_webhook(
@@ -221,11 +221,12 @@ def test_upload_when_repo_and_creating_push_webhook(
     repo = sub.webhook.repo
 
     assert sub.webhook.branch == 'mybranch'
-    assert (repo.host, repo.owner, repo.name) == ('gitlab.cern.ch', 'owner', 'repository')
+    assert (repo.host, repo.owner, repo.name) == ('gitlab.cern.ch', 'owner',
+                                                  'repository')
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.generate_secret',
+@patch('cap.modules.repos.gitlab_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo_and_creating_release_webhook(
@@ -269,13 +270,12 @@ def test_upload_when_repo_and_creating_release_webhook(
                   stream=True,
                   status=200)
 
-    resp = client.post(
-        f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
-        data=json.dumps({
-            'url': 'http://gitlab.cern.ch/owner/repository',
-            'webhook': True,
-        }))
+    resp = client.post(f'/deposits/{pid}/actions/upload',
+                       headers=auth_headers_for_superuser + json_headers,
+                       data=json.dumps({
+                           'url': 'http://gitlab.cern.ch/owner/repository',
+                           'webhook': True,
+                       }))
 
     assert resp.status_code == 201
 
@@ -294,12 +294,12 @@ def test_upload_when_repo_and_creating_release_webhook(
     repo = sub.webhook.repo
 
     assert sub.webhook.branch is None
-    assert (repo.host, repo.owner, repo.name) == ('gitlab.cern.ch', 'owner', 'repository')
-
+    assert (repo.host, repo.owner, repo.name) == ('gitlab.cern.ch', 'owner',
+                                                  'repository')
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo_file(m_gitlab, client, deposit,
                                auth_headers_for_superuser, json_headers):
     class MockBranchManager:

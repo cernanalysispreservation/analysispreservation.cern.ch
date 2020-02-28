@@ -61,7 +61,8 @@ from cap.modules.experiments.utils.cms import \
     cache_cms_triggers_in_es_from_file
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file
-from cap.modules.repoimporter.models import GitRepository
+from cap.modules.repos.models import (GitRepository, GitWebhook,
+                                      GitWebhookSubscriber)
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import resolve_schema_by_url
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
@@ -335,7 +336,9 @@ def create_deposit(app, db, es, location, create_schema):
         """
         # create schema for record
         with app.test_request_context():
-            schema = create_schema(schema_name, experiment=experiment)
+            schema = create_schema(schema_name,
+                                   experiment=experiment,
+                                   deposit_mapping=mapping)
             deposit_schema_url = current_jsonschemas.path_to_url(
                 schema.deposit_path)
 

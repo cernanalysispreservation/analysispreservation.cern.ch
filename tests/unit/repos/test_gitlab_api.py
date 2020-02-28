@@ -24,18 +24,19 @@
 """Tests for Gitlab API class."""
 
 import responses
-from cap.modules.git.errors import (GitIntegrationError, GitObjectNotFound,
-                                    GitRequestWithInvalidSignature,
-                                    GitUnauthorizedRequest)
-from cap.modules.git.gitlab_api import GitlabAPI
 from gitlab.exceptions import GitlabAuthenticationError, GitlabGetError
 from mock import Mock, patch
 from pytest import raises
 
+from cap.modules.repos.errors import (GitIntegrationError, GitObjectNotFound,
+                                      GitRequestWithInvalidSignature,
+                                      GitUnauthorizedRequest)
+from cap.modules.repos.gitlab_api import GitlabAPI
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_when_user_unauthorized_raises_GitUnauthorizedRequest(
-        m_gitlab):
+    m_gitlab):
     class MockProjectManager:
         def get(self, name, lazy):
             raise GitlabAuthenticationError('Unauthorized', 401)
@@ -46,9 +47,9 @@ def test_gitlab_api_when_user_unauthorized_raises_GitUnauthorizedRequest(
         GitlabAPI('gitlab.cern.ch', 'owner_name', 'non-existing-repo')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_when_repository_doesnt_exist_or_no_access_raises_GitObjectNotFound(
-        m_gitlab):
+    m_gitlab):
     class MockProjectManager:
         def get(self, name, lazy):
             raise GitlabGetError('Project Not Found', 404)
@@ -59,7 +60,7 @@ def test_gitlab_api_when_repository_doesnt_exist_or_no_access_raises_GitObjectNo
         GitlabAPI('gitlab.cern.ch', 'owner_name', 'non-existing-repo')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_with_branch(m_gitlab, gitlab_token, superuser):
     class MockBranchManager:
         def get(self, name):
@@ -93,7 +94,7 @@ def test_gitlab_api_with_branch(m_gitlab, gitlab_token, superuser):
         api) == 'API for gitlab.cern.ch/owner_name/myrepository/mybranch'
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_with_default_branch_when_no_branch_nor_sha_given(m_gitlab):
     class MockBranchManager:
         def get(self, name):
@@ -124,7 +125,7 @@ def test_gitlab_api_with_default_branch_when_no_branch_nor_sha_given(m_gitlab):
         api) == 'API for gitlab.cern.ch/owner_name/myrepository/defaultbranch'
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_when_just_created_repo_without_branches(m_gitlab):
     class MockProjectManager:
         def get(self, name, lazy):
@@ -136,7 +137,7 @@ def test_gitlab_api_when_just_created_repo_without_branches(m_gitlab):
         GitlabAPI('gitlab.cern.ch', 'owner_name', 'repo')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_with_sha(m_gitlab):
     class MockCommitManager:
         def get(self, sha):
@@ -170,7 +171,7 @@ def test_gitlab_api_with_sha(m_gitlab):
         api) == 'API for gitlab.cern.ch/owner_name/myrepository/mycommitsha'
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_when_commit_with_sha_or_branch_doesnt_exist(m_gitlab):
     class MockCommitManager:
         def get(self, sha):
@@ -197,7 +198,7 @@ def test_gitlab_api_when_commit_with_sha_or_branch_doesnt_exist(m_gitlab):
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_get_repo_download(m_gitlab, superuser, gitlab_token):
     class MockBranchManager:
         def get(self, name):
@@ -219,7 +220,7 @@ def test_gitlab_api_get_repo_download(m_gitlab, superuser, gitlab_token):
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_get_file_download(m_gitlab, superuser, gitlab_token):
     class MockBranchManager:
         def get(self, name):
@@ -245,15 +246,15 @@ def test_gitlab_api_get_file_download(m_gitlab, superuser, gitlab_token):
 
     assert api.get_file_download('README.md') == (
         'https://gitlab.cern.ch/api/v4/projects/123/repository/files/'
-        'README.md/raw?ref=mybranchsha')
+        'README.md/raw?ref=mybranchsha', None)
 
     assert responses.calls[0].request.headers['Private-Token'] == 'some-token'
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_get_file_download_when_file_does_not_exist_or_directory_raises_GitObjectNotFound(
-        m_gitlab, superuser, gitlab_token):
+    m_gitlab, superuser, gitlab_token):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -282,9 +283,9 @@ def test_gitlab_api_get_file_download_when_file_does_not_exist_or_directory_rais
     assert responses.calls[0].request.headers['Private-Token'] == 'some-token'
 
 
-@patch('cap.modules.git.gitlab_api.generate_secret',
+@patch('cap.modules.repos.gitlab_api.generate_secret',
        Mock(return_value='mysecret'))
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_create_push_webhook(m_gitlab, app):
     app.config['DEBUG'] = False
 
@@ -317,9 +318,9 @@ def test_gitlab_api_create_push_webhook(m_gitlab, app):
     assert api.create_webhook('push') == (12345, 'mysecret')
 
 
-@patch('cap.modules.git.gitlab_api.generate_secret',
+@patch('cap.modules.repos.gitlab_api.generate_secret',
        Mock(return_value='mysecret'))
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_create_release_webhook(m_gitlab, app):
     app.config['DEBUG'] = False
 
@@ -352,9 +353,9 @@ def test_gitlab_api_create_release_webhook(m_gitlab, app):
     assert api.create_webhook() == (12345, 'mysecret')
 
 
-@patch('cap.modules.git.gitlab_api.generate_secret',
+@patch('cap.modules.repos.gitlab_api.generate_secret',
        Mock(return_value='mysecret'))
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_create_webhook_when_no_permissions_to_create_a_webhook_raises_GitIntegrationError(
         m_gitlab, app):
     class MockHooksManager:
@@ -381,10 +382,10 @@ def test_gitlab_api_create_webhook_when_no_permissions_to_create_a_webhook_raise
         api.create_webhook() == (12345, 'mysecret')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab', Mock())
+@patch('cap.modules.repos.gitlab_api.Gitlab', Mock())
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_verify_request_when_sha_and_secret_match(
-        m_get_branch_and_sha, app):
+    m_get_branch_and_sha, app):
     with app.test_request_context('/',
                                   headers={'X-Gitlab-Token': 'mysecretsecret'
                                            }):
@@ -392,10 +393,10 @@ def test_gitlab_api_verify_request_when_sha_and_secret_match(
         api.verify_request('mysecretsecret')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab', Mock())
+@patch('cap.modules.repos.gitlab_api.Gitlab', Mock())
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_verify_request_when_sha_and_secret_dont_match_raises_GitRequestWithInvalidSignature(
-        m_get_branch_and_sha, app):
+    m_get_branch_and_sha, app):
     with app.test_request_context('/',
                                   headers={'X-Gitlab-Token': 'notmysecret'}):
         api = GitlabAPI('gitlab.com', 'owner', 'repository')
@@ -404,7 +405,7 @@ def test_gitlab_api_verify_request_when_sha_and_secret_dont_match_raises_GitRequ
             api.verify_request('mysecretsecret')
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_ping_webhook(m_get_branch_and_sha, m_gitlab):
     class MockHooksManager:
@@ -423,10 +424,10 @@ def test_gitlab_api_ping_webhook(m_get_branch_and_sha, m_gitlab):
     api.ping_webhook(123)
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_ping_webhook_when_hook_doesnt_exist_raises_GitObjectNotFound(
-        m_get_branch_and_sha, m_gitlab):
+    m_get_branch_and_sha, m_gitlab):
     class MockHooksManager:
         def get(self, id):
             raise GitlabGetError('Not Found', 404)
@@ -443,10 +444,10 @@ def test_gitlab_api_ping_webhook_when_hook_doesnt_exist_raises_GitObjectNotFound
         api.ping_webhook(123)
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_ping_webhook_when_user_have_no_permission_raises_GitObjectNotFound(
-        m_get_branch_and_sha, m_gitlab):
+    m_get_branch_and_sha, m_gitlab):
     class MockHooksManager:
         def get(self, id):
             raise GitlabAuthenticationError('Unauthorized', 401)
@@ -463,7 +464,7 @@ def test_gitlab_api_ping_webhook_when_user_have_no_permission_raises_GitObjectNo
         api.ping_webhook(123)
 
 
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_repo_id(m_get_branch_and_sha, m_gitlab):
     class MockProjectManager:

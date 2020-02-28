@@ -7,8 +7,6 @@
 # for more details.
 """Default configuration for CERN Analysis Preservation."""
 
-from __future__ import absolute_import, print_function
-
 import copy
 import os
 from datetime import timedelta
@@ -102,7 +100,7 @@ CELERY_BEAT_SCHEDULE = {
         'schedule': timedelta(days=1),
     },
     'ping_webhooks': {
-        'task': 'cap.modules.repoimporter.tasks.ping_webhooks',
+        'task': 'cap.modules.repos.tasks.ping_webhooks',
         'schedule': timedelta(hours=12),
     },
     'das_harvester': {

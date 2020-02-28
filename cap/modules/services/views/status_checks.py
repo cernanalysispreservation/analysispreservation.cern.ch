@@ -31,8 +31,6 @@ from invenio_db import db
 
 from cap.modules.experiments.views.atlas import _get_glance_by_id
 from cap.modules.experiments.views.cms import _get_cadi
-from cap.modules.repoimporter.github_api import test_github_connection
-from cap.modules.repoimporter.gitlab_api import test_gitlab_connection
 from cap.views import ping
 
 from ..models import StatusCheck
@@ -183,25 +181,7 @@ status_checks = [
         'service': 'cms_cadi',
         'log': 'Checking CMS CADI API...',
         'category': 'Experiments',
-    },
-
-    # GITHUB / GITLAB
-    {
-        'func': test_github_connection,
-        'args': {},
-        'should_return': github,
-        'service': 'github',
-        'log': 'Checking GitHub API...',
-        'category': 'Git',
-    },
-    {
-        'func': test_gitlab_connection,
-        'args': {},
-        'should_return': gitlab,
-        'service': 'gitlab',
-        'log': 'Checking GitLab API...',
-        'category': 'Git',
-    },
+    }
 ]
 
 

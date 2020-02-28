@@ -21,7 +21,7 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Git repositories views."""
+"""Repositories module views."""
 
 from __future__ import absolute_import, print_function
 
@@ -29,18 +29,18 @@ from flask import Blueprint, abort, jsonify, request
 from invenio_db import db
 from sqlalchemy.orm.exc import NoResultFound
 
-from cap.modules.repoimporter.tasks import download_repo
-
+from .errors import GitRequestWithInvalidSignature
 from .factory import create_git_api
 from .models import GitSnapshot, GitWebhook
 from .serializers import payload_serializer_factory
+from .tasks import download_repo
 
 repos_bp = Blueprint('cap_repos', __name__, url_prefix='/repos')
 
 
 @repos_bp.route('/event', methods=['POST'])
 def get_webhook_event():
-    """The route that webhooks will use to update the repo information."""
+    """Endpoint for registered webhook events to send push notifications."""
 
     payload = request.get_json()
     payload.update(request.headers)  # info about type of event inside headers

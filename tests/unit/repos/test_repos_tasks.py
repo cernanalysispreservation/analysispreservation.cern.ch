@@ -3,15 +3,15 @@ import tarfile
 from invenio_files_rest.models import ObjectVersion
 
 import responses
-from cap.modules.git.errors import GitObjectNotFound
-from cap.modules.git.models import GitWebhookSubscriber
-from cap.modules.git.tasks import (download_repo, download_repo_file,
+from cap.modules.repos.errors import GitObjectNotFound
+from cap.modules.repos.models import GitWebhookSubscriber
+from cap.modules.repos.tasks import (download_repo, download_repo_file,
                                    ping_webhooks)
 from mock import Mock, patch
 
 
-@patch('cap.modules.git.factory.GithubAPI')
-@patch('cap.modules.git.factory.GitlabAPI')
+@patch('cap.modules.repos.factory.GithubAPI')
+@patch('cap.modules.repos.factory.GitlabAPI')
 def test_ping_webhooks_when_webhook_exist_status_stays_active(
         m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
         superuser):
@@ -40,8 +40,8 @@ def test_ping_webhooks_when_webhook_exist_status_stays_active(
         gitlab_push_webhook_sub.id).status == 'active'
 
 
-@patch('cap.modules.git.factory.GithubAPI')
-@patch('cap.modules.git.factory.GitlabAPI')
+@patch('cap.modules.repos.factory.GithubAPI')
+@patch('cap.modules.repos.factory.GitlabAPI')
 def test_ping_webhooks_when_webhook_doesnt_exists_change_subscriber_status_to_deleted(
         m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
         superuser):
@@ -85,6 +85,7 @@ def test_download_repo_file(deposit, file_tar):
         deposit.id,
         'repositories/github.com/owner/repository/mybranch/README.md',
         'https://raw.githubusercontent.com/owner/repository/mybranchsha/README.md',  # noqa
+        18,
         {'Authorization': 'token mysecretsecret'},
     )
 
@@ -119,6 +120,7 @@ def test_download_repo_file_when_failed_creates_empty_file_object_with_failed_ta
         deposit.id,
         'repositories/github.com/owner/repository/mybranch/README.md',
         'https://raw.githubusercontent.com/owner/repository/mybranchsha/README.md',  # noqa
+        18,
         {'Authorization': 'token mysecretsecret'},
     )
 

@@ -26,11 +26,11 @@
 import json
 import tarfile
 
-from invenio_files_rest.models import ObjectVersion
-
 import responses
-from cap.modules.git.models import GitSnapshot
+from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
+
+from cap.modules.repos.models import GitSnapshot
 
 push_headers = {
     "Content-Type": "application/json",
@@ -173,7 +173,7 @@ tag_push_payload_shortened = {
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
                                                 gitlab_push_webhook_sub,
                                                 git_repo_tar):
@@ -251,7 +251,7 @@ def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
 
 
 @responses.activate
-@patch('cap.modules.git.gitlab_api.Gitlab')
+@patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
                                                    gitlab_release_webhook_sub,
                                                    git_repo_tar):
