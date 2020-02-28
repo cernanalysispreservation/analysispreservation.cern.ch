@@ -35,58 +35,68 @@ from sqlalchemy.exc import IntegrityError
 from cap.modules.fixtures.cli import fixtures
 
 from .models.schemas import Schema
+from .models.templates import Template
 
 
 @fixtures.command()
 @with_appcontext
-@click.option('--dir',
-              '-d',
+@click.option('--dir', '-d',
               type=click.Path(exists=True),
               default='cap/modules/fixtures/schemas')
 def schemas(dir):
     """Load default schemas."""
+    load_from_files(dir, fixture='schema')
+
+
+@fixtures.command()
+@with_appcontext
+@click.option('--dir', '-d',
+              type=click.Path(exists=True),
+              default='cap/modules/fixtures/templates')
+def templates(dir):
+    """Load default templates."""
+    load_from_files(dir, fixture='template')
+
+
+def load_from_files(dir, fixture='schema'):
+    """Read the path containing the json files, and extract all of them."""
     for root, dirs, files in os.walk(dir):
-        for file in files:
-            if file.endswith(".json"):
-                fullpath = os.path.join(root, file)
-                with open(fullpath, 'r') as f:
-                    try:
-                        json_content = json.load(f)
-                        add_schema_from_fixture(data=json_content)
-                    except ValueError:
-                        click.secho(
-                            "Not valid json in {} file".format(fullpath),
-                            fg='red')
-                        continue
+
+        json_files = [file for file in files if file.endswith(".json")]
+        for file in json_files:
+            fullpath = os.path.join(root, file)
+            with open(fullpath, 'r') as f:
+                try:
+                    json_content = json.load(f)
+                    add_from_fixture(data=json_content, fixture=fixture)
+                except ValueError:
+                    click.secho(f'Not valid json in {fullpath} file', fg='red')
+                    continue
 
 
-def add_schema_from_fixture(data=None):
-    """Add or update schema."""
+def add_from_fixture(data=None, fixture='schema'):
     allow_all = data.pop("allow_all", False)
-    name = data['name']
+    name = str(data['name'])
+    version = data['version']
 
     try:
         with db.session.begin_nested():
             with db.session.begin_nested():
+                db_model = Schema if fixture == 'schema' else Template
                 try:
-                    schema = Schema.get(name=data['name'],
-                                        version=data['version'])
-                    click.secho('{} already exist in the db.'.format(
-                        str(name)))
+                    schema = db_model.get(name=name, version=version)
+                    click.secho(f'{name} already exists in the db.')
                     return
-
                 except JSONSchemaNotFound:
-                    schema = Schema(**data)
+                    schema = db_model(**data)
                     db.session.add(schema)
 
             if allow_all:
                 schema.add_read_access_for_all_users()
 
     except IntegrityError:
-        click.secho('Error occured during adding {} to the db. \n'.format(
-            str(name)),
-                    fg='red')
+        click.secho(f'Error while adding {name} to the db.\n', fg='red')
         return
 
     db.session.commit()
-    click.secho('{} has been added.'.format(str(name)), fg='green')
+    click.secho(f'{name} has been added.', fg='green')

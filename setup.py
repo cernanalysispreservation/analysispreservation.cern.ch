@@ -173,7 +173,7 @@ setup(
         ],
         'invenio_db.models': [
             'cap_reana_model = cap.modules.workflows.models',
-            'analysis_schema_model = cap.modules.schemas.models.schemas',
+            'schemas_schema_model = cap.modules.schemas.models.schemas',
             'schemas_template_model = cap.modules.schemas.models.templates',
             'status_check_model = cap.modules.services.models',
             'auth = cap.modules.auth.models',

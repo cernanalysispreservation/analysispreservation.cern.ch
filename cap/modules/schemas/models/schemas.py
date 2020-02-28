@@ -48,6 +48,8 @@ from cap.modules.schemas.serializers import resolved_schemas_serializer, \
 from cap.modules.schemas.utils import name_to_es_name, create_index, \
     ES_FORBIDDEN
 
+from .versions import SchemaVersion
+
 # map attributes when use_deposit_as_record flag on
 SERVE_DEPOSIT_AS_RECORD_MAP = {
     'record_schema': 'deposit_schema',
@@ -56,19 +58,13 @@ SERVE_DEPOSIT_AS_RECORD_MAP = {
 }
 
 
-class Schema(db.Model):
+class Schema(db.Model, SchemaVersion):
     """Model defining analysis JSON schemas."""
 
     id = db.Column(db.Integer, primary_key=True)
 
     name = db.Column(db.String(128), unique=False, nullable=False)
     fullname = db.Column(db.String(128), unique=False, nullable=True)
-
-    # version
-    major = db.Column(db.Integer, unique=False, nullable=False, default=1)
-    minor = db.Column(db.Integer, unique=False, nullable=False, default=0)
-    patch = db.Column(db.Integer, unique=False, nullable=False, default=0)
-
     experiment = db.Column(db.String(128), unique=False, nullable=True)
 
     deposit_schema = db.Column(json_type,
@@ -103,7 +99,7 @@ class Schema(db.Model):
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
     updated = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 
-    __tablename__ = 'schema'
+    __tablename__ = 'schemas_schema'
     __table_args__ = (UniqueConstraint('name',
                                        'major',
                                        'minor',
