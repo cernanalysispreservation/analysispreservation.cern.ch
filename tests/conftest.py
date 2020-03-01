@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Pytest configuration."""
 
-from __future__ import absolute_import, print_function
-
 import os
 import shutil
 import tempfile
@@ -328,7 +326,8 @@ def create_deposit(app, db, es, location, create_schema):
                         metadata=None,
                         experiment=None,
                         files={},
-                        publish=False):
+                        publish=False,
+                        mapping=None):
         """Create a new deposit for given user and schema name.
 
         e.g cms-analysis-v0.0.1,

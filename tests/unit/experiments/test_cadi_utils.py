@@ -258,12 +258,29 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
 def test_get_deposit_by_cadi_id_returns_correct_deposit(
         app, es, create_deposit, superuser):
     cadi_id = 'ANA-00-001'
-    deposit = create_deposit(superuser, 'cms-analysis', {
-        '$ana_type': 'cms-analysis',
-        'basic_info': {
-            'cadi_id': cadi_id
-        }
-    })
+    deposit = create_deposit(superuser,
+                             'cms-analysis', {
+                                 '$ana_type': 'cms-analysis',
+                                 'basic_info': {
+                                     'cadi_id': cadi_id
+                                 }
+                             },
+                             mapping={
+                                 'mappings': {
+                                     'cms-analysis-v1.0.0': {
+                                         'properties': {
+                                             "basic_info": {
+                                                 "type": "object",
+                                                 "properties": {
+                                                     "cadi_id": {
+                                                         "type": "keyword"
+                                                     }
+                                                 }
+                                             }
+                                         }
+                                     }
+                                 }
+                             })
     create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
         'basic_info': {
@@ -274,17 +291,31 @@ def test_get_deposit_by_cadi_id_returns_correct_deposit(
     assert get_deposit_by_cadi_id(cadi_id) == deposit
 
 
-@mark.skip(
-    'it works in prod, just needs a specific mapping definition for tests,'
-    'where cadi_id is mapped as a kewyword, not as text with dynamic map')
 def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
         app, es, create_deposit, superuser):
-    create_deposit(superuser, 'cms-analysis', {
-        '$ana_type': 'cms-analysis',
-        'basic_info': {
-            'cadi_id': 'ANA-00-001'
-        }
-    })
+    create_deposit(superuser,
+                   'cms-analysis', {
+                       '$ana_type': 'cms-analysis',
+                       'basic_info': {
+                           'cadi_id': 'ANA-00-001'
+                       }
+                   },
+                   mapping={
+                       'mappings': {
+                           'cms-analysis-v1.0.0': {
+                               'properties': {
+                                   "basic_info": {
+                                       "type": "object",
+                                       "properties": {
+                                           "cadi_id": {
+                                               "type": "keyword"
+                                           }
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   })
 
     with raises(DepositDoesNotExist):
         get_deposit_by_cadi_id('ANA-00-002')
