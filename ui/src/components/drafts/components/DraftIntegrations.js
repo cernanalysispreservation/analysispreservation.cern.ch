@@ -36,7 +36,10 @@ class DraftIntegrations extends React.Component {
                   <strong>Download</strong> a snapshot of repository, that you'd
                   like to preserve with your analysis. You can point to the
                   whole repo, specific branch or even a single file - whatever
-                  your analysis needs<br />
+                  your analysis needs. Some repositories are private or
+                  restricted for CERN users only (like all the repos in CERN
+                  Gitlab) - to download those you need to connect your
+                  Github/Gitlab account first<br />
                 </Paragraph>
               </Box>
               <Box basis="1/2">
@@ -44,7 +47,9 @@ class DraftIntegrations extends React.Component {
                   <strong>Connect</strong> repositories with analysis that are
                   still in progress, to keep them in sync. We'll make a new
                   snapshot on any changes pushed in this repository. This way
-                  your analysis will be always up to date with your code
+                  your analysis will be always up to date with your code. Keep
+                  in mind that you cannot connect to public repositories (owner
+                  has to give you a specific access to do that).
                 </Paragraph>{" "}
               </Box>
             </Box>
