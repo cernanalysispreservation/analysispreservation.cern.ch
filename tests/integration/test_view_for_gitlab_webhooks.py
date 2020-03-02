@@ -305,7 +305,7 @@ def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
             'name': 'owner_name',
             'id': 1
         },
-        'link': 'https://gitlab.com/owner_name/myrepository/-/commit/ec70b17d01ac909b7d4d254d88a283214d91b9ac',
+        'link': 'https://gitlab.com/owner_name/myrepository/tags/v3.0.0',
         'release': {
             'tag': 'v3.0.0',
             'name': 'My release'

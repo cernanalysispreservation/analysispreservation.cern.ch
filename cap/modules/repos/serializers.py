@@ -145,10 +145,14 @@ class GitLabPayloadSchema(Schema):
 
     def get_link(self, obj):
         """Link to gitlab page."""
-        try:
-            return obj['commits'][0]['url']
-        except (KeyError, IndexError):
-            return
+        if obj['event_name'] == 'tag_push':
+            return f"{obj['project']['homepage']}" \
+                   f"{obj['ref'].replace('refs','')}"
+        else:
+            try:
+                return obj['commits'][0]['url']
+            except (KeyError, IndexError):
+                return
 
     def get_release(self, obj):
         """Release-event-specific information."""

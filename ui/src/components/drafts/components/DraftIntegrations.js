@@ -90,6 +90,9 @@ class DraftIntegrations extends React.Component {
                             vertical: "small",
                             between: "small"
                           }}
+                          onClick={() =>
+                            window.open(snapshot.payload.link, "_blank")
+                          }
                         >
                           <Box
                             flex={false}
