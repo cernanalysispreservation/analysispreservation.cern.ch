@@ -51,6 +51,8 @@ export const EDIT_PUBLISHED_ERROR = "EDIT_PUBLISHED_ERROR";
 export const PERMISSIONS_ITEM_REQUEST = "PERMISSIONS_ITEM_REQUEST";
 export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
 
+export const REMOVE_LOADING = "REMOVE_LOADING";
+
 // TOFIX Consider using a HOC for error handling
 export const CLEAR_ERROR_SUCCESS = "CLEAR_ERROR_SUCCESS";
 
@@ -73,6 +75,10 @@ export const publishDraftSuccess = (published_id, draft) => ({
 export const publishDraftError = error => ({
   type: PUBLISH_DRAFT_ERROR,
   error
+});
+
+export const remove_loading = () => ({
+  type: REMOVE_LOADING
 });
 
 export const initForm = () => ({ type: INIT_FORM });
@@ -576,6 +582,7 @@ export function handlePermissions(draft_id, type, email, action, operation) {
         dispatch(permissionsItemSuccess(response.data.access));
       })
       .catch(error => {
+        dispatch(remove_loading());
         cogoToast.error(error.response.data.message, { hideAfter: 3 });
       });
   };
