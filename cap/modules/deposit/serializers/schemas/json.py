@@ -27,7 +27,6 @@ import copy
 
 from marshmallow import Schema, fields
 
-from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.permissions import (AdminDepositPermission,
                                              UpdateDepositPermission)
 from cap.modules.records.serializers.schemas import common
@@ -52,7 +51,6 @@ class DepositFormSchema(DepositSchema):
     """Schema for deposit v1 in JSON."""
 
     schemas = fields.Method('get_deposit_schemas', dump_only=True)
-
     webhooks = fields.Method('get_webhooks', dump_only=True)
     workflows = fields.Method('get_workflows', dump_only=True)
 
@@ -60,26 +58,21 @@ class DepositFormSchema(DepositSchema):
     can_admin = fields.Method('can_user_admin', dump_only=True)
 
     def get_webhooks(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        webhooks = deposit.model.webhooks
-
+        webhooks = obj['deposit'].model.webhooks
         return GitWebhookSubscriberSchema(many=True).dump(webhooks).data
 
     def get_workflows(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        workflows = deposit.model.reana_workflows
-
+        workflows = obj['deposit'].model.reana_workflows
         return ReanaWorkflowSchema(many=True).dump(workflows).data
 
     def get_deposit_schemas(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-
-        schema = current_jsonschemas.get_schema(deposit.schema.deposit_path,
-                                                with_refs=True,
-                                                resolved=True)
-        uiSchema = deposit.schema.deposit_options
-
-        return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema)
+        ui_schema = obj['deposit'].schema.deposit_options
+        schema = current_jsonschemas.get_schema(
+            obj['deposit'].schema.deposit_path,
+            with_refs=True,
+            resolved=True
+        )
+        return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
 
     def can_user_update(self, obj):
         return UpdateDepositPermission(obj['deposit']).can()
