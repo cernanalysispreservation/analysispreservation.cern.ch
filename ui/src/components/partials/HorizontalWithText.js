@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 
 const HorizontalWithText = ({
@@ -29,6 +29,13 @@ const HorizontalWithText = ({
       <span style={styles.text}>{text}</span>
     </Box>
   );
+};
+
+HorizontalWithText.propTypes = {
+  text: PropTypes.string,
+  background: PropTypes.string,
+  color: PropTypes.string,
+  lineColor: PropTypes.string
 };
 
 export default HorizontalWithText;

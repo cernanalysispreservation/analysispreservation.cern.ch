@@ -7,7 +7,8 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
-import FileList from "../drafts/components/FileList";
+
+import FileTree from "../drafts/components/FileTree";
 
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
@@ -66,7 +67,12 @@ class PublishedPreview extends React.Component {
           <Sidebar full={false} size="medium" colorIndex="light-2">
             <SectionHeader label="Files | Data | Source Code" />
             <Box flex={true}>
-              <FileList files={this.props.files} status={this.props.status} />
+              <FileTree
+                files={this.props.files.toJS()}
+                status={this.props.status}
+                background="#f5f5f5"
+                color="#000"
+              />
             </Box>
           </Sidebar>
           {this.props.schemas ? (

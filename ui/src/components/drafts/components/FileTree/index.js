@@ -75,7 +75,11 @@ class FileTree extends React.Component {
     };
     return (
       <Box style={{ marginLeft: "5px" }}>
-        <HorizontalWithText text="All Files" />
+        <HorizontalWithText
+          text="All Files"
+          background={this.props.background}
+          color={this.props.color}
+        />
         {allFiles.children && allFiles.children.length > 0 ? (
           <TreeNode
             data={allFiles}
@@ -88,7 +92,11 @@ class FileTree extends React.Component {
             No files added yet
           </Box>
         )}
-        <HorizontalWithText text="All Repositories" />
+        <HorizontalWithText
+          text="All Repositories"
+          background={this.props.background}
+          color={this.props.color}
+        />
         {repos && repos.length > 0 ? (
           <TreeNode
             data={{ children: repos[0].children }}
@@ -111,7 +119,11 @@ FileTree.propTypes = {
   toggleFilemanagerLayer: PropTypes.func,
   id: PropTypes.string,
   match: PropTypes.object,
-  files: PropTypes.object
+  files: PropTypes.object,
+  background: PropTypes.string,
+  color: PropTypes.string,
+  onFileClick: PropTypes.func,
+  onDirectoryClick: PropTypes.func
 };
 
 export default FileTree;
