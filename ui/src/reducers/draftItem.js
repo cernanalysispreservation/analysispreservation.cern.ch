@@ -42,6 +42,8 @@ const initialState = Map({
 
 export default function draftsReducer(state = initialState, action) {
   switch (action.type) {
+    case draftItemActions.REMOVE_LOADING:
+      return state.set("loading", false);
     case draftItemActions.TOGGLE_ACTIONS_LAYER:
       return state
         .set("actionsLayer", !state.get("actionsLayer"))
