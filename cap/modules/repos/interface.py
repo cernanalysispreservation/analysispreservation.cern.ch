@@ -52,3 +52,6 @@ class GitAPI:
 
     def ping_webhook(self):
         raise NotImplementedError
+
+    def delete_webhook(self):
+        raise NotImplementedError

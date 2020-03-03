@@ -26,7 +26,6 @@
 import hashlib
 import hmac
 
-import requests
 from flask import request
 from github import Github, GithubException, UnknownObjectException
 
@@ -121,9 +120,18 @@ class GithubAPI(GitAPI):
         return hook.id, secret
 
     def ping_webhook(self, hook_id):
-        """Check if webhook still exist."""
+        """Check if webhook with given github id still exists."""
         try:
             self.project.get_hook(hook_id)
+        except UnknownObjectException:
+            raise GitObjectNotFound(
+                'Webhook not found or you don\'t have access.')
+
+    def delete_webhook(self, hook_id):
+        """Delete webhook with given github id."""
+        try:
+            hook = self.project.get_hook(hook_id)
+            hook.delete()
         except UnknownObjectException:
             raise GitObjectNotFound(
                 'Webhook not found or you don\'t have access.')

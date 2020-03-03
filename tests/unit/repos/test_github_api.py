@@ -393,6 +393,44 @@ def test_github_api_create_webhook_when_no_permissions_to_create_a_webhook_raise
         api.create_webhook()
 
 
+@patch.object(Github, 'get_repo')
+def test_github_api_delete_webhook(m_get_repo, app):
+    class MockProject:
+        def get_branch(self, name):
+            return Mock()
+
+        def get_hook(self, hook_id):
+            assert hook_id == 12345
+            return Mock(
+                url="https://api.github.com/repos/owner/repo/hooks/186091239",
+                id=12345,
+                delete=Mock(return_value=None))
+
+    m_get_repo.return_value = MockProject()
+
+    api = GithubAPI('github.com', 'owner', 'repository', 'my-branch')
+
+    api.delete_webhook(12345)
+
+
+@patch.object(Github, 'get_repo')
+def test_github_api_delete_webhook_when_hook_doesnt_exist_or_no_permission_raises_GitObjectNotFound(m_get_repo, app):
+    class MockProject:
+        def get_branch(self, name):
+            return Mock()
+
+        def get_hook(self, hook_id):
+            assert hook_id == 12345
+            raise UnknownObjectException(404, data={'message': 'Not Found'})
+
+    m_get_repo.return_value = MockProject()
+
+    api = GithubAPI('github.com', 'owner', 'repository', 'my-branch')
+
+    with raises(GitObjectNotFound):
+        api.delete_webhook(12345)
+
+
 @patch.object(Github, 'get_repo', Mock())
 def test_github_api_verify_request_when_sha_and_secret_match(app):
     with app.test_request_context(

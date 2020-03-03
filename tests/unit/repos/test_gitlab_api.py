@@ -382,6 +382,85 @@ def test_gitlab_api_create_webhook_when_no_permissions_to_create_a_webhook_raise
         api.create_webhook() == (12345, 'mysecret')
 
 
+@patch('cap.modules.repos.gitlab_api.Gitlab')
+def test_gitlab_api_delete_webhook(m_gitlab, app):
+    class MockHooksManager:
+        def delete(self, hook_id):
+            assert hook_id == 12345
+
+    class MockBranchManager:
+        def get(self, name):
+            m = Mock(commit=dict(id='mybranchsha'))
+            m.name = 'mybranch'
+            return m
+
+    class MockProjectManager:
+        def get(self, name, lazy):
+            return Mock(branches=MockBranchManager(),
+                        hooks=MockHooksManager(),
+                        id='123')
+
+    m_gitlab.return_value = Mock(projects=MockProjectManager())
+
+    api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch')
+
+    api.delete_webhook(12345)
+
+
+@patch('cap.modules.repos.gitlab_api.Gitlab')
+def test_gitlab_api_delete_webhook_when_webhook_does_not_exist_raises_GitObjectNotFound(
+        m_gitlab, app):
+    class MockHooksManager:
+        def delete(self, hook_id):
+            raise GitlabGetError('Not Found', 404)
+
+    class MockBranchManager:
+        def get(self, name):
+            m = Mock(commit=dict(id='mybranchsha'))
+            m.name = 'mybranch'
+            return m
+
+    class MockProjectManager:
+        def get(self, name, lazy):
+            return Mock(branches=MockBranchManager(),
+                        hooks=MockHooksManager(),
+                        id='123')
+
+    m_gitlab.return_value = Mock(projects=MockProjectManager())
+
+    api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch')
+
+    with raises(GitObjectNotFound):
+        api.delete_webhook(1245)
+
+
+@patch('cap.modules.repos.gitlab_api.Gitlab')
+def test_gitlab_api_delete_webhook_when_no_permission_to_webhook_raises_GitObjectNotFound(
+        m_gitlab, app):
+    class MockHooksManager:
+        def delete(self, hook_id):
+            raise GitlabAuthenticationError('Unauthorized', 401)
+
+    class MockBranchManager:
+        def get(self, name):
+            m = Mock(commit=dict(id='mybranchsha'))
+            m.name = 'mybranch'
+            return m
+
+    class MockProjectManager:
+        def get(self, name, lazy):
+            return Mock(branches=MockBranchManager(),
+                        hooks=MockHooksManager(),
+                        id='123')
+
+    m_gitlab.return_value = Mock(projects=MockProjectManager())
+
+    api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch')
+
+    with raises(GitObjectNotFound):
+        api.delete_webhook(1245)
+
+
 @patch('cap.modules.repos.gitlab_api.Gitlab', Mock())
 @patch.object(GitlabAPI, '_get_branch_and_sha', return_value=(None, None))
 def test_gitlab_api_verify_request_when_sha_and_secret_match(

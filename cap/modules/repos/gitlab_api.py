@@ -110,12 +110,22 @@ class GitlabAPI(GitAPI):
         return hook.id, secret
 
     def ping_webhook(self, hook_id):
+        """Check if webhook with given gitlab id still exists."""
         try:
             self.project.hooks.get(hook_id)
         except GitlabGetError:
             raise GitObjectNotFound('Webhook not found')
         except GitlabAuthenticationError:
             raise GitObjectNotFound('No permission to this webhook')
+
+    def delete_webhook(self, hook_id):
+        """Delete webhook with given gitlab id."""
+        try:
+            self.project.hooks.delete(hook_id)
+        except GitlabGetError:
+            raise GitObjectNotFound('Webhook not found')
+        except GitlabAuthenticationError:
+            raise GitObjectNotFound('No permission to delete this webhook')
 
     def _get_token(self, user_id):
         token_obj = _fetch_token('gitlab', user_id) if user_id else None
