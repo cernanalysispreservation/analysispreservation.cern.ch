@@ -258,6 +258,11 @@ def bearer_auth(token):
 
 
 @pytest.fixture
+def auth_headers_for_example_user(example_user, auth_headers_for_user):
+    return auth_headers_for_user(example_user)
+
+
+@pytest.fixture
 def auth_headers_for_user(base_app, db):
     """Return method to generate write token for user."""
     def _write_token(user):
@@ -369,15 +374,15 @@ def create_deposit(app, db, es, location, create_schema):
 
 
 @pytest.fixture
-def deposit(superuser, create_deposit):
+def deposit(example_user, create_deposit):
     """New deposit with files."""
-    return create_deposit(superuser, 'cms-analysis')
+    return create_deposit(example_user, 'cms-analysis')
 
 
 @pytest.fixture
-def record(superuser, create_deposit):
+def record(example_user, create_deposit):
     """Example record."""
-    return create_deposit(superuser,
+    return create_deposit(example_user,
                           'cms-analysis-v0.0.1',
                           experiment='CMS',
                           publish=True)
@@ -558,7 +563,7 @@ def github_repo(db, github_token):
 
 
 @pytest.fixture
-def github_push_webhook_sub(db, github_repo, deposit, superuser):
+def github_push_webhook_sub(db, github_repo, deposit, example_user):
     webhook = GitWebhook(event_type='push',
                          repo_id=github_repo.id,
                          external_id=666,
@@ -566,21 +571,21 @@ def github_push_webhook_sub(db, github_repo, deposit, superuser):
                          secret='mysecretsecret')
     db.session.add(webhook)
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
-                                      user_id=superuser.id)
+                                      user_id=example_user.id)
     webhook.subscribers.append(subscriber)
     db.session.commit()
     return subscriber
 
 
 @pytest.fixture
-def github_release_webhook_sub(db, deposit, github_repo, superuser):
+def github_release_webhook_sub(db, deposit, github_repo, example_user):
     webhook = GitWebhook(event_type='release',
                          repo_id=github_repo.id,
                          external_id=666,
                          secret='mysecretsecret')
     db.session.add(webhook)
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
-                                      user_id=superuser.id)
+                                      user_id=example_user.id)
     webhook.subscribers.append(subscriber)
     db.session.commit()
     return subscriber
@@ -600,7 +605,7 @@ def gitlab_repo(db, gitlab_token):
 
 
 @pytest.fixture
-def gitlab_push_webhook_sub(db, gitlab_repo, deposit, superuser):
+def gitlab_push_webhook_sub(db, gitlab_repo, deposit, example_user):
     webhook = GitWebhook(event_type='push',
                          repo_id=gitlab_repo.id,
                          external_id=666,
@@ -608,30 +613,30 @@ def gitlab_push_webhook_sub(db, gitlab_repo, deposit, superuser):
                          secret='mysecretsecret')
     db.session.add(webhook)
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
-                                      user_id=superuser.id)
+                                      user_id=example_user.id)
     webhook.subscribers.append(subscriber)
     db.session.commit()
     return subscriber
 
 
 @pytest.fixture
-def gitlab_release_webhook_sub(db, deposit, gitlab_repo, superuser):
+def gitlab_release_webhook_sub(db, deposit, gitlab_repo, example_user):
     webhook = GitWebhook(event_type='release',
                          repo_id=gitlab_repo.id,
                          external_id=666,
                          secret='mysecretsecret')
     db.session.add(webhook)
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
-                                      user_id=superuser.id)
+                                      user_id=example_user.id)
     webhook.subscribers.append(subscriber)
     db.session.commit()
     return subscriber
 
 
 @pytest.fixture
-def github_token(db, superuser):
+def github_token(db, example_user):
     token = OAuth2Token(name='github',
-                        user_id=superuser.id,
+                        user_id=example_user.id,
                         token_type='bearer',
                         access_token='some-token')
     db.session.add(token)
@@ -640,9 +645,14 @@ def github_token(db, superuser):
 
 
 @pytest.fixture
-def gitlab_token(db, superuser):
+def example_user(users):
+    return users['cms_user']
+
+
+@pytest.fixture
+def gitlab_token(db, example_user):
     token = OAuth2Token(name='gitlab',
-                        user_id=superuser.id,
+                        user_id=example_user.id,
                         token_type='bearer',
                         access_token='some-token')
     db.session.add(token)

@@ -39,12 +39,12 @@ from cap.modules.repos.models import GitWebhookSubscriber
 
 
 def test_upload_when_missing_params_returns_400(client, deposit,
-                                                auth_headers_for_superuser,
+                                                auth_headers_for_example_user,
                                                 json_headers):
     pid = deposit['_deposit']['id']
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({}))
 
     assert resp.status_code == 400
@@ -52,12 +52,12 @@ def test_upload_when_missing_params_returns_400(client, deposit,
 
 
 def test_upload_when_host_not_gitlab_nor_github_returns_400(
-    client, deposit, auth_headers_for_superuser, json_headers):
+    client, deposit, auth_headers_for_example_user, json_headers):
     pid = deposit['_deposit']['id']
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps(
             {'url': 'http://notsupported.com/owner/repository/mybranch'}))
 
@@ -87,12 +87,12 @@ def test_upload_when_user_doesnt_have_update_permission_returns_403(
     assert resp.status_code == 403
 
 
-def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
+def test_upload_when_wrong_url(client, deposit, auth_headers_for_example_user,
                                json_headers):
     pid = deposit['_deposit']['id']
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps(
                            {'url': 'http://github.com/verywrongurl'}))
 
@@ -100,7 +100,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
     assert resp.json == {'status': 400, 'message': 'Invalid git URL.'}
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps(
                            {'url': 'http://unknownhost.com/verywrongurl'}))
 
@@ -108,12 +108,12 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
     assert resp.json == {'status': 400, 'message': 'Invalid git URL.'}
 
 
-def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
-                               json_headers):
+def test_upload_when_wrong_url_2(client, deposit,
+                                 auth_headers_for_example_user, json_headers):
     pid = deposit['_deposit']['id']
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps(
                            {'url': 'http://github.com/verywrongurl'}))
 
@@ -124,7 +124,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhook_raises_an_error(
-    m_get_repo, client, deposit, auth_headers_for_superuser, json_headers,
+    m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockProject(object):
         def get_branch(self, name):
@@ -140,7 +140,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://github.com/owner/repository/mycommitsha',
             'webhook': True
@@ -156,7 +156,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_release_webhoo
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_raises_an_error(
-    m_get_repo, client, deposit, auth_headers_for_superuser, json_headers,
+    m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockProject(object):
         def get_branch(self, name):
@@ -172,7 +172,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://github.com/owner/repository/mycommitsha',
             'event_type': 'push',
@@ -189,7 +189,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo(m_get_repo, client, deposit,
-                          auth_headers_for_superuser, json_headers,
+                          auth_headers_for_example_user, json_headers,
                           git_repo_tar):
     class MockProject(object):
         def get_branch(self, name):
@@ -219,7 +219,7 @@ def test_upload_when_repo(m_get_repo, client, deposit,
                   status=200)
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://github.com/owner/repository/mybranch'
                        }))
@@ -239,12 +239,12 @@ def test_upload_when_repo(m_get_repo, client, deposit,
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_for_record_so_bucket_is_locked_returns_403(
-    m_get_repo, client, record, auth_headers_for_superuser, json_headers,
+    m_get_repo, client, record, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     pid = record['_deposit']['id']
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://github.com/owner/repository/mybranch'
                        }))
@@ -258,7 +258,7 @@ def test_upload_for_record_so_bucket_is_locked_returns_403(
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo_and_creating_release_webhook(
-    m_get_repo, client, deposit, auth_headers_for_superuser, json_headers,
+    m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockProject(object):
         @property
@@ -305,7 +305,7 @@ def test_upload_when_repo_and_creating_release_webhook(
                   status=200)
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://github.com/owner/repository',
                            'webhook': True,
@@ -337,11 +337,9 @@ def test_upload_when_repo_and_creating_release_webhook(
 @patch('cap.modules.repos.github_api.generate_secret',
        Mock(return_value='mysecret'))
 @patch.object(Github, 'get_repo')
-def test_upload_when_repo_and_creating_push_webhook(m_get_repo, client,
-                                                    deposit,
-                                                    auth_headers_for_superuser,
-                                                    json_headers,
-                                                    git_repo_tar):
+def test_upload_when_repo_and_creating_push_webhook(
+    m_get_repo, client, deposit, auth_headers_for_example_user, json_headers,
+    git_repo_tar):
     class MockProject(object):
         @property
         def default_branch(self):
@@ -387,7 +385,7 @@ def test_upload_when_repo_and_creating_push_webhook(m_get_repo, client,
                   status=200)
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://github.com/owner/repository',
                            'event_type': 'push',
@@ -419,7 +417,7 @@ def test_upload_when_repo_and_creating_push_webhook(m_get_repo, client,
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo_file(m_get_repo, client, deposit,
-                               auth_headers_for_superuser, json_headers):
+                               auth_headers_for_example_user, json_headers, file_tar):
     class MockProject(object):
         def get_branch(self, name):
             mock = Mock()
@@ -439,8 +437,7 @@ def test_upload_when_repo_file(m_get_repo, client, deposit,
     responses.add(
         responses.GET,
         'https://raw.githubusercontent.com/owner/repository/mybranchsha/README.md',  # noqa
-        body=b'\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\x03+I-.Q(J-\xc8WH' \
-            b'\xcb/RHN,\xe0\x02\x00\xeb\xd5!\xe0\x12\x00\x00\x00' ,
+        body=file_tar,
         content_type='text/plain',
         headers={
             'Content-Length': '18',
@@ -452,7 +449,7 @@ def test_upload_when_repo_file(m_get_repo, client, deposit,
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://github.com/owner/repository/blob/mybranch/README.md'
         }))

@@ -38,12 +38,12 @@ from mock import Mock, patch
 from cap.modules.repos.models import GitWebhookSubscriber
 
 
-def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
+def test_upload_when_wrong_url(client, deposit, auth_headers_for_example_user,
                                json_headers):
     pid = deposit['_deposit']['id']
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps(
                            {'url': 'http://gitlab.cern.ch/verywrongurl'}))
 
@@ -53,7 +53,7 @@ def test_upload_when_wrong_url(client, deposit, auth_headers_for_superuser,
 
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_raises_an_error(
-    m_gitlab, client, deposit, auth_headers_for_superuser, json_headers,
+    m_gitlab, client, deposit, auth_headers_for_example_user, json_headers,
     git_repo_tar):
     class MockCommitManager:
         def get(self, sha):
@@ -76,7 +76,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://gitlab.cern.ch/owner/repository/mycommitsha',
             'event_type': 'push',
@@ -93,7 +93,7 @@ def test_upload_when_user_gave_url_with_sha_and_tries_to_create_a_push_webhook_r
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo(m_gitlab, client, deposit,
-                          auth_headers_for_superuser, json_headers,
+                          auth_headers_for_example_user, json_headers,
                           git_repo_tar):
     class MockBranchManager:
         def get(self, name):
@@ -121,7 +121,7 @@ def test_upload_when_repo(m_gitlab, client, deposit,
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps(
             {'url': 'http://gitlab.cern.ch/owner/repository/mybranch'}))
 
@@ -139,12 +139,12 @@ def test_upload_when_repo(m_gitlab, client, deposit,
 
 @responses.activate
 def test_upload_for_record_so_bucket_is_locked_returns_403(
-    client, record, auth_headers_for_superuser, json_headers, git_repo_tar):
+    client, record, auth_headers_for_example_user, json_headers, git_repo_tar):
     pid = record['_deposit']['id']
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps(
             {'url': 'http://gitlab.cern.ch/owner/repository/mybranch'}))
 
@@ -197,7 +197,7 @@ def test_upload_when_repo_and_creating_push_webhook(
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://gitlab.cern.ch/owner/repository/mybranch',
             'event_type': 'push',
@@ -271,7 +271,7 @@ def test_upload_when_repo_and_creating_release_webhook(
                   status=200)
 
     resp = client.post(f'/deposits/{pid}/actions/upload',
-                       headers=auth_headers_for_superuser + json_headers,
+                       headers=auth_headers_for_example_user + json_headers,
                        data=json.dumps({
                            'url': 'http://gitlab.cern.ch/owner/repository',
                            'webhook': True,
@@ -301,7 +301,7 @@ def test_upload_when_repo_and_creating_release_webhook(
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_upload_when_repo_file(m_gitlab, client, deposit,
-                               auth_headers_for_superuser, json_headers):
+                               auth_headers_for_example_user, json_headers):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -332,7 +332,7 @@ def test_upload_when_repo_file(m_gitlab, client, deposit,
 
     resp = client.post(
         f'/deposits/{pid}/actions/upload',
-        headers=auth_headers_for_superuser + json_headers,
+        headers=auth_headers_for_example_user + json_headers,
         data=json.dumps({
             'url': 'http://gitlab.cern.ch/owner/repository/blob/mybranch/README.md'
         }))

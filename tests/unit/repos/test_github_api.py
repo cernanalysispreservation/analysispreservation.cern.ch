@@ -20,7 +20,7 @@ def test_github_api_when_project_doesnt_exist_or_no_access():
 
 @patch.object(Github, 'get_repo')
 def test_github_api_auth_headers_when_token_provided(m_get_repo, github_token,
-                                                     superuser):
+                                                     example_user):
     class MockProject:
         def get_branch(self, name):
             mock = Mock()
@@ -34,7 +34,7 @@ def test_github_api_auth_headers_when_token_provided(m_get_repo, github_token,
                     'owner',
                     'repository',
                     'my-branch',
-                    user_id=superuser.id)
+                    user_id=example_user.id)
 
     assert api.token == 'some-token'
     assert api.auth_headers == {'Authorization': 'token some-token'}
@@ -42,7 +42,7 @@ def test_github_api_auth_headers_when_token_provided(m_get_repo, github_token,
 
 @patch.object(Github, 'get_repo')
 def test_github_api_auth_headers_when_no_token_provided_returns_empty_dict(
-    m_get_repo, superuser):
+        m_get_repo, example_user):
     class MockProject:
         def get_branch(self, name):
             mock = Mock()
@@ -57,7 +57,7 @@ def test_github_api_auth_headers_when_no_token_provided_returns_empty_dict(
         'owner',
         'repository',
         'my-branch',
-        superuser.id,
+        example_user.id,
     )
 
     assert api.token is None
@@ -223,7 +223,7 @@ def test_github_api_when_just_created_repo_without_any_branches_raises_GitObject
 
 
 @patch.object(Github, 'get_repo')
-def test_github_api_get_repo_download(m_get_repo, superuser, github_token):
+def test_github_api_get_repo_download(m_get_repo, example_user, github_token):
     class MockProject:
         def get_branch(self, name):
             mock = Mock()
@@ -240,7 +240,7 @@ def test_github_api_get_repo_download(m_get_repo, superuser, github_token):
     m_get_repo.return_value = MockProject()
 
     api = GithubAPI('github.com', 'owner', 'repository', 'my-branch',
-                    superuser.id)
+                    example_user.id)
 
     assert api.get_repo_download() == (
         'https://codeload.github.com/owner/repository/'

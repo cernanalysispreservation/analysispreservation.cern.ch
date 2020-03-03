@@ -1,20 +1,20 @@
 import tarfile
 
-from invenio_files_rest.models import ObjectVersion
-
 import responses
+from invenio_files_rest.models import ObjectVersion
+from mock import Mock, patch
+
 from cap.modules.repos.errors import GitObjectNotFound
 from cap.modules.repos.models import GitWebhookSubscriber
 from cap.modules.repos.tasks import (download_repo, download_repo_file,
-                                   ping_webhooks)
-from mock import Mock, patch
+                                     ping_webhooks)
 
 
 @patch('cap.modules.repos.factory.GithubAPI')
 @patch('cap.modules.repos.factory.GitlabAPI')
 def test_ping_webhooks_when_webhook_exist_status_stays_active(
-        m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
-        superuser):
+    m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
+    example_user):
     m_gitlab_ping = Mock(return_value=None)
     m_github_ping = Mock(return_value=None)
     m_gitlab.return_value = Mock(ping_webhook=m_gitlab_ping)
@@ -26,9 +26,9 @@ def test_ping_webhooks_when_webhook_exist_status_stays_active(
     ping_webhooks.delay()
 
     m_github.assert_called_with('github.com', 'owner', 'repository',
-                                'mybranch', superuser.id)
+                                'mybranch', example_user.id)
     m_gitlab.assert_called_with('gitlab.cern.ch', 'owner_name', 'myrepository',
-                                'mybranch', superuser.id)
+                                'mybranch', example_user.id)
     m_github_ping.assert_called_with(
         github_push_webhook_sub.webhook.external_id)
     m_gitlab_ping.assert_called_with(
@@ -43,8 +43,8 @@ def test_ping_webhooks_when_webhook_exist_status_stays_active(
 @patch('cap.modules.repos.factory.GithubAPI')
 @patch('cap.modules.repos.factory.GitlabAPI')
 def test_ping_webhooks_when_webhook_doesnt_exists_change_subscriber_status_to_deleted(
-        m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
-        superuser):
+    m_gitlab, m_github, gitlab_push_webhook_sub, github_push_webhook_sub,
+    example_user):
     m_gitlab_ping = Mock(side_effect=GitObjectNotFound)
     m_github_ping = Mock(side_effect=GitObjectNotFound)
     m_gitlab.return_value = Mock(ping_webhook=m_gitlab_ping)
@@ -56,9 +56,9 @@ def test_ping_webhooks_when_webhook_doesnt_exists_change_subscriber_status_to_de
     ping_webhooks.delay()
 
     m_github.assert_called_with('github.com', 'owner', 'repository',
-                                'mybranch', superuser.id)
+                                'mybranch', example_user.id)
     m_gitlab.assert_called_with('gitlab.cern.ch', 'owner_name', 'myrepository',
-                                'mybranch', superuser.id)
+                                'mybranch', example_user.id)
 
     assert GitWebhookSubscriber.query.get(
         github_push_webhook_sub.id).status == 'deleted'

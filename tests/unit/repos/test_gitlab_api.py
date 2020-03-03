@@ -61,7 +61,7 @@ def test_gitlab_api_when_repository_doesnt_exist_or_no_access_raises_GitObjectNo
 
 
 @patch('cap.modules.repos.gitlab_api.Gitlab')
-def test_gitlab_api_with_branch(m_gitlab, gitlab_token, superuser):
+def test_gitlab_api_with_branch(m_gitlab, gitlab_token, example_user):
     class MockBranchManager:
         def get(self, name):
             assert name == 'mybranch'
@@ -81,7 +81,7 @@ def test_gitlab_api_with_branch(m_gitlab, gitlab_token, superuser):
                     'owner_name',
                     'myrepository',
                     'mybranch',
-                    user_id=superuser.id)
+                    user_id=example_user.id)
 
     assert api.host == 'gitlab.cern.ch'
     assert api.owner == 'owner_name'
@@ -199,7 +199,7 @@ def test_gitlab_api_when_commit_with_sha_or_branch_doesnt_exist(m_gitlab):
 
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
-def test_gitlab_api_get_repo_download(m_gitlab, superuser, gitlab_token):
+def test_gitlab_api_get_repo_download(m_gitlab, example_user, gitlab_token):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -213,7 +213,7 @@ def test_gitlab_api_get_repo_download(m_gitlab, superuser, gitlab_token):
     m_gitlab.return_value = Mock(projects=MockProjectManager())
 
     api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch',
-                    superuser.id)
+                    example_user.id)
 
     assert api.get_repo_download() == \
         'https://gitlab.cern.ch/api/v4/projects/123/repository/archive?sha=mybranchsha'
@@ -221,7 +221,7 @@ def test_gitlab_api_get_repo_download(m_gitlab, superuser, gitlab_token):
 
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
-def test_gitlab_api_get_file_download(m_gitlab, superuser, gitlab_token):
+def test_gitlab_api_get_file_download(m_gitlab, example_user, gitlab_token):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -242,7 +242,7 @@ def test_gitlab_api_get_file_download(m_gitlab, superuser, gitlab_token):
         status=200)
 
     api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch',
-                    superuser.id)
+                    example_user.id)
 
     assert api.get_file_download('README.md') == (
         'https://gitlab.cern.ch/api/v4/projects/123/repository/files/'
@@ -254,7 +254,7 @@ def test_gitlab_api_get_file_download(m_gitlab, superuser, gitlab_token):
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_gitlab_api_get_file_download_when_file_does_not_exist_or_directory_raises_GitObjectNotFound(
-    m_gitlab, superuser, gitlab_token):
+        m_gitlab, example_user, gitlab_token):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -275,7 +275,7 @@ def test_gitlab_api_get_file_download_when_file_does_not_exist_or_directory_rais
         status=404)
 
     api = GitlabAPI('gitlab.cern.ch', 'owner_name', 'myrepository', 'mybranch',
-                    superuser.id)
+                    example_user.id)
 
     with raises(GitObjectNotFound):
         api.get_file_download('README.md')

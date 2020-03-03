@@ -24,12 +24,10 @@
 # or submit itself to any jurisdiction.
 """Integration tests for GET deposits."""
 
-import json
-
 from six import BytesIO
 
 from conftest import add_role_to_user
-from invenio_search import current_search, current_search_client
+from invenio_search import current_search
 from pytest import mark
 
 
@@ -373,9 +371,9 @@ def test_get_deposit_when_user_is_member_of_egroup_with_read_or_admin_acces_can_
 
 
 def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_properly(
-        client, users, auth_headers_for_superuser, create_deposit):
+        client, example_user, auth_headers_for_example_user, create_deposit):
     deposit = create_deposit(
-        users['superuser'], 'cms', {
+        example_user, 'cms', {
             '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
             'basic_info': {
                 'analysis_number': 'dream_team',
@@ -386,7 +384,7 @@ def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_prope
 
     resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=[('Accept', 'application/basic+json')] +
-                      auth_headers_for_superuser)
+                      auth_headers_for_example_user)
 
     assert resp.status_code == 200
     assert resp.json == {
@@ -403,25 +401,25 @@ def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_prope
 
 
 def test_get_deposit_with_permissions_json_serializer_returns_serialized_permissions_properly(
-        client, auth_headers_for_superuser, deposit):
+        client, example_user, auth_headers_for_example_user, deposit):
     resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=[('Accept', 'application/permissions+json')] +
-                      auth_headers_for_superuser)
+                      auth_headers_for_example_user)
 
     assert resp.status_code == 200
     assert resp.json == {
         'permissions': {
             'deposit-admin': {
                 'roles': [],
-                'users': ['superuser@cern.ch']
+                'users': [example_user.email]
             },
             'deposit-read': {
                 'roles': [],
-                'users': ['superuser@cern.ch']
+                'users': [example_user.email]
             },
             'deposit-update': {
                 'roles': [],
-                'users': ['superuser@cern.ch']
+                'users': [example_user.email]
             }
         }
     }

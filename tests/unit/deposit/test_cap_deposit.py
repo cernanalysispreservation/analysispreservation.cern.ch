@@ -115,13 +115,13 @@ def test_add_user_permissions_set_access_object_properly(
 
 
 def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):
-    user = users['cms_user']
+    other_user = users['lhcb_user']
     assert not ActionUsers.query.filter_by(action='deposit-read',
                                            argument=str(deposit.id),
-                                           user_id=user.id).all()
+                                           user_id=other_user.id).all()
 
-    deposit._add_user_permissions(user, ['deposit-read'], db.session)
+    deposit._add_user_permissions(other_user, ['deposit-read'], db.session)
 
     assert ActionUsers.query.filter_by(action='deposit-read',
                                        argument=str(deposit.id),
-                                       user_id=user.id).one()
+                                       user_id=other_user.id).one()
