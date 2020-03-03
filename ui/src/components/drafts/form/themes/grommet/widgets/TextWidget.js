@@ -13,7 +13,10 @@ import ReadOnlyText from "./ReadOnlyText";
 import AsyncSelect from "react-select/async";
 import Spinning from "grommet/components/icons/Spinning";
 
+import RegExInput from "./RegExInput";
+
 import debounce from "lodash/debounce";
+
 class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -47,7 +50,8 @@ class TextWidget extends Component {
     this.state = {
       suggestions: [],
       showSpinner: false,
-      error: null
+      error: null,
+      success: false
     };
   }
 
@@ -55,7 +59,10 @@ class TextWidget extends Component {
   _onChange = _ref => {
     let value = _ref.target.value;
 
-    return this.props.onChange(value !== "" ? value : undefined);
+    this.props.onChange(value !== "" ? value : undefined);
+    this.setState({ error: null, showSpinner: value.length });
+
+    this._searchOnEnter(value);
   };
 
   _replace_hash_with_current_indexes = path => {
@@ -151,6 +158,7 @@ class TextWidget extends Component {
           this.setState({ showSpinner: false });
 
           this.props.formDataChange(formData.toJS());
+          this.setState({ success: true });
         }
       })
       .catch(err => {
@@ -160,25 +168,33 @@ class TextWidget extends Component {
             err.response.status !== 500
               ? err.response.data && err.response.data.message
                 ? err.response.data.message
-                : "Something went wrong with the request "
-              : "Something went wrong with the request "
+                : "Your request was not successful, please try again "
+              : "Make sure you follow the correct format"
         });
       });
   };
 
   // initiate ORCID search on Enter
-  _searchOnEnter = event => {
-    if (event.keyCode === 13) {
-      this.autoFillOtherFields(event);
-    } else {
-      this.props.onKeyDown;
-    }
-  };
+  _searchOnEnter = debounce(value => {
+    // if (event.keyCode === 13) {
+    //   this.autoFillOtherFields(event);
+    // } else {
+    //   this.props.onKeyDown;
+    // }
+
+    let event = {
+      target: {
+        value: value
+      }
+    };
+
+    this.autoFillOtherFields(event);
+  }, 1000);
 
   render() {
     return !this.props.readonly ? (
       <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
-        <Box flex={true}>
+        <Box flex={true} justify="center">
           <Box flex={false}>
             {this.props.options && this.props.options.suggestions ? (
               <AsyncSelect
@@ -197,31 +213,38 @@ class TextWidget extends Component {
             ) : (
               <Box direction="row" flex={false}>
                 <Box flex={true}>
-                  <TextInput
-                    id={this.props.id}
-                    name={this.props.id}
-                    placeHolder={this.props.placeholder}
-                    onDOMChange={this._onChange}
-                    {...(this.props.autofocus
-                      ? {
-                          autoFocus: "true"
-                        }
-                      : {})}
-                    {...(this.props.options && this.props.options.autofill_from
-                      ? {
-                          onBlur: this.autoFillOtherFields
-                        }
-                      : {})}
-                    onKeyDown={this._searchOnEnter}
-                    value={this.props.value || ""}
-                  />
+                  {this.props.schema.pattern ? (
+                    <RegExInput
+                      mask={this.props.schema.pattern.slice(1, -1)}
+                      id={this.props.id}
+                      name={this.props.id}
+                      value={this.props.value || ""}
+                      onChange={this._onChange}
+                    />
+                  ) : (
+                    <TextInput
+                      id={this.props.id}
+                      name={this.props.id}
+                      placeHolder={this.props.placeholder}
+                      onDOMChange={this._onChange}
+                      {...(this.props.autofocus
+                        ? {
+                            autoFocus: "true"
+                          }
+                        : {})}
+                      {...(this.props.options &&
+                      this.props.options.autofill_from
+                        ? {
+                            // onBlur: this.autoFillOtherFields
+                          }
+                        : {})}
+                      // onKeyDown={this._searchOnEnter}
+                      value={this.props.value || ""}
+                    />
+                  )}
                 </Box>
                 <Box flex={false}>
-                  {this.state.showSpinner ? (
-                    <Box flex={false} align="end">
-                      <Spinning size="xsmall" />
-                    </Box>
-                  ) : null}
+                  {this.state.showSpinner ? <Spinning size="small" /> : null}
                 </Box>
               </Box>
             )}
@@ -229,6 +252,13 @@ class TextWidget extends Component {
           {this.state.error && (
             <Box align="end">
               <span style={{ color: "#F04B37" }}>{this.state.error}</span>
+            </Box>
+          )}
+          {this.state.success && (
+            <Box align="end">
+              <span style={{ color: "#509137" }}>
+                Navigate to the next tab to review the fetched values.
+              </span>
             </Box>
           )}
         </Box>

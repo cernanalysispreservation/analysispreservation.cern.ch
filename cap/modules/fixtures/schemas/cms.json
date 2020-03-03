@@ -12,11 +12,13 @@
         "properties": {
           "main_measurements": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/cms-main-measurements-v0.0.1.json"
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/cms-main-measurements-v0.0.1.json"
             },
             "title": "Main Measurements Workflows",
             "type": "array",
-            "description": "Please provide information about the main measurements of your analysis",
+            "description":
+              "Please provide information about the main measurements of your analysis",
             "id": "main_measurements"
           },
           "final_results": {
@@ -30,10 +32,12 @@
                 "title": "Your Code"
               },
               "processing_steps": {
-                "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/cms-processing-v0.0.1.json"
+                "$ref":
+                  "https://analysispreservation.cern.ch/schemas/deposits/records/cms-processing-v0.0.1.json"
               }
             },
-            "description": "Please provide information necessary to generate final plots and tables for your analysis."
+            "description":
+              "Please provide information necessary to generate final plots and tables for your analysis."
           },
           "systematic_uncertainties": {
             "items": {
@@ -52,7 +56,8 @@
                 },
                 "physics_object": {
                   "type": "string",
-                  "description": "Choose from objects defined in main measurements",
+                  "description":
+                    "Choose from objects defined in main measurements",
                   "title": "Physics Object"
                 },
                 "statement": {
@@ -95,12 +100,14 @@
               }
             },
             "type": "array",
-            "description": "Provide details on auxiliary measurements used in the analysis",
+            "description":
+              "Provide details on auxiliary measurements used in the analysis",
             "title": "Auxiliary Measurements"
           },
           "background_estimations": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/cms-background-estimation-v0.0.1.json"
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/cms-background-estimation-v0.0.1.json"
             },
             "type": "array",
             "description": "Details on the background estimation methods",
@@ -114,13 +121,15 @@
     "type": "object",
     "properties": {
       "_buckets": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/buckets-v0.0.1.json"
       },
       "control_number": {
         "type": "string"
       },
       "_files": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
       },
       "basic_info": {
         "properties": {
@@ -129,7 +138,8 @@
             "type": "string",
             "x-validate-cadi-id": {},
             "placeholder": "e.g. JME-10-107",
-            "title": "CADI ID"
+            "title": "CADI ID",
+            "description": "ex ASD-12-123"
           },
           "abstract": {
             "type": "string",
@@ -152,11 +162,13 @@
         "title": "Basic Information",
         "type": "object",
         "id": "basic_info",
-        "description": "Please provide some information relevant for all parts of the Analysis here"
+        "description":
+          "Please provide some information relevant for all parts of the Analysis here"
       },
       "analysis_reuse_mode": {
         "type": "string",
-        "description": "please turn this mode on if you want to capture additional information about main and auxiliary measurements, systematic uncertainties, background estimates, final state particles",
+        "description":
+          "please turn this mode on if you want to capture additional information about main and auxiliary measurements, systematic uncertainties, background estimates, final state particles",
         "title": "Full reproducibility mode"
       },
       "input_data": {
@@ -235,10 +247,12 @@
         "title": "Input Data",
         "type": "object",
         "id": "input_data",
-        "description": "Please list all datasets and triggers relevant for your analysis here"
+        "description":
+          "Please list all datasets and triggers relevant for your analysis here"
       },
       "cadi_info": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/cms-cadi-info-v0.0.1.json"
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/cms-cadi-info-v0.0.1.json"
       },
       "ntuples_production": {
         "items": {
@@ -250,7 +264,8 @@
               "title": "Your Code"
             },
             "processing_steps": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/cms-processing-v0.0.1.json"
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/cms-processing-v0.0.1.json"
             }
           },
           "type": "object",
@@ -259,14 +274,17 @@
         },
         "title": "N-tuples Production",
         "type": "array",
-        "description": "Provide details on the intermediate n-tuples production",
+        "description":
+          "Provide details on the intermediate n-tuples production",
         "id": "ntuples_production"
       },
       "_access": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
       },
       "_deposit": {
-        "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/deposit-v0.0.1.json"
       },
       "additional_resources": {
         "title": "Additional Resources",
@@ -308,7 +326,8 @@
           },
           "publications": {
             "items": {
-              "$ref": "https://analysispreservation.cern.ch/schemas/deposits/records/publication-v0.0.1.json"
+              "$ref":
+                "https://analysispreservation.cern.ch/schemas/deposits/records/publication-v0.0.1.json"
             },
             "title": "Publications",
             "type": "array",
@@ -563,31 +582,38 @@
                       },
                       "electron_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "muon_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "tau_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "jet_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "photon_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "met_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "track_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.physics_objects.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.physics_objects.object_type"
                       },
                       "number": {
                         "type": "object",
@@ -635,31 +661,38 @@
                       },
                       "electron_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "muon_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "tau_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "jet_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "photon_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "met_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "track_type": {
                         "type": "keyword",
-                        "copy_to": "main_measurements.signal_event_selection.veto.object_type"
+                        "copy_to":
+                          "main_measurements.signal_event_selection.veto.object_type"
                       },
                       "number": {
                         "type": "object",
@@ -802,8 +835,10 @@
         },
         "ui:field": "PasteArrayField",
         "ui:options": {
-          "pasteDescription": "Paste your list here. Insert one dataset path per line",
-          "pastePlaceholder": "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
         }
       },
       "json_files": {
@@ -819,8 +854,10 @@
         },
         "ui:field": "PasteArrayField",
         "ui:options": {
-          "pasteDescription": "Paste your list here. Insert one dataset path per line",
-          "pastePlaceholder": "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
         }
       },
       "ui:order": [
@@ -834,8 +871,10 @@
         "ui:field": "PasteArrayField",
         "ui:options": {
           "pasteTo": "path",
-          "pasteDescription": "Paste your list here. Insert one dataset path per line",
-          "pastePlaceholder": "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
+          "pasteDescription":
+            "Paste your list here. Insert one dataset path per line",
+          "pastePlaceholder":
+            "ex.\n\n/B0ToJpsiKs_BFilter_TuneZ2star_8TeV-pythia6-evtgen/Summer12DR53X-PU_RD2_START53_V19F_ext1-v1/AODSIM \n\n/aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5/StoreResults-aabdelal_Pythia6_Tauola_WHTolnu2tau_14TeV_GEN_SIM_RECO_CMSSW_6_2_0_SLHC5-v1/USER \n\n/G1Jet_Pt-100To250_TuneCUETP8M1_13TeV-amcatnlo-pythia8/RunIISpring16MiniAODv2-premix_withHLT_80X_mcRun2_asymptotic_v14-v1/MINIAODSIM\n"
         },
         "items": {
           "ui:order": ["path", "year", "triggers", "*"],
