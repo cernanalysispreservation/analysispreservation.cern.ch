@@ -55,12 +55,14 @@ class DraftIntegrations extends React.Component {
             </Box>
           </Box>
         </Box>
-        <Box margin={{ bottom: "medium" }}>
-          <Heading tag="h4">Add a new repository</Heading>
-          <Box pad="small" colorIndex="light-2">
-            <RepoUploader />
+        {this.props.canUpdate && (
+          <Box margin={{ bottom: "medium" }}>
+            <Heading tag="h4">Add a new repository</Heading>
+            <Box pad="small" colorIndex="light-2">
+              <RepoUploader />
+            </Box>
           </Box>
-        </Box>
+        )}
         <Box flex={false}>
           <Heading tag="h4">Connected Repositories</Heading>
           <Box flex={false} colorIndex="light-2">
@@ -146,12 +148,14 @@ class DraftIntegrations extends React.Component {
 
 DraftIntegrations.propTypes = {
   repos: PropTypes.object,
-  toggleFilemanagerLayer: PropTypes.func
+  toggleFilemanagerLayer: PropTypes.func,
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
-    repos: state.draftItem.get("webhooks")
+    repos: state.draftItem.get("repositories"),
+    canUpdate: state.draftItem.get("can_update")
   };
 }
 
