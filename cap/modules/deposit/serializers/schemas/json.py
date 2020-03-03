@@ -23,19 +23,16 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Basic Schemas."""
 
-from __future__ import absolute_import, print_function
-
 import copy
 
 from invenio_jsonschemas import current_jsonschemas
-from marshmallow import fields, Schema
+from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.permissions import UpdateDepositPermission
+from cap.modules.deposit.permissions import (AdminDepositPermission,
+                                             UpdateDepositPermission)
 from cap.modules.records.serializers.schemas import common
-
 from cap.modules.repoimporter.serializers import GitSnapshotSchema
-
 from cap.modules.workflows.serializers import ReanaWorkflowSchema
 
 
@@ -49,23 +46,17 @@ class DepositSchema(common.CommonRecordSchema):
     cloned_from = fields.Dict(attribute='metadata._deposit.cloned_from.value',
                               dump_only=True)
 
-    # def can_user_update(self, obj):
-    #     deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-    #     return UpdateDepositPermission(deposit).can()
-
-    # def can_user_admin(self, obj):
-    #     deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-    #     return AdminDepositPermission(deposit).can()
-
 
 class DepositFormSchema(DepositSchema):
     """Schema for deposit v1 in JSON."""
 
     schemas = fields.Method('get_deposit_schemas', dump_only=True)
-    can_update = fields.Method('can_user_update', dump_only=True)
 
     repositories = fields.Method('get_repositories', dump_only=True)
     workflows = fields.Method('get_workflows', dump_only=True)
+
+    can_update = fields.Method('can_user_update', dump_only=True)
+    can_admin = fields.Method('can_user_admin', dump_only=True)
 
     def get_repositories(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
@@ -90,8 +81,10 @@ class DepositFormSchema(DepositSchema):
         return dict(schema=copy.deepcopy(schema), uiSchema=uiSchema)
 
     def can_user_update(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
-        return UpdateDepositPermission(deposit).can()
+        return UpdateDepositPermission(obj['deposit']).can()
+
+    def can_user_admin(self, obj):
+        return AdminDepositPermission(obj['deposit']).can()
 
 
 class DepositRepositoriesSchema(Schema):

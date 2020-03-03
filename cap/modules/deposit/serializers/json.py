@@ -28,6 +28,7 @@ from __future__ import absolute_import, print_function
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
 
+from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.links import links_factory as deposit_links_factory
 
 
@@ -43,6 +44,7 @@ class DepositSerializer(JSONSerializer):
         result = super(DepositSerializer, self).preprocess_record(
             pid, record, links_factory=deposit_links_factory)
 
+        result['deposit'] = CAPDeposit.get_record(pid.object_uuid)
         return result
 
     def preprocess_search_hit(self, pid, record_hit, links_factory=None):
