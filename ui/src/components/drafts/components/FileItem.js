@@ -2,19 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Route } from "react-router-dom";
 
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
 
-// import ListItem from "grommet/components/ListItem";
-
-import cogoToast from "cogo-toast";
-
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
 import DownloadIcon from "grommet/components/icons/base/Download";
-// import MoreIcon from "grommet/components/icons/base/More";
 import ImageIcon from "grommet/components/icons/base/Image";
 import ServerIcon from "grommet/components/icons/base/Servers";
 import PdfIcon from "grommet/components/icons/base/DocumentPdf";
@@ -32,6 +29,7 @@ import CSSIcon from "grommet/components/icons/base/StandardsCss3";
 import PlatformReactjs from "grommet/components/icons/base/PlatformReactjs";
 import Cli from "grommet/components/icons/base/Cli";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+
 import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 
 import prettyBytes from "pretty-bytes";
@@ -131,7 +129,6 @@ class FileItem extends React.Component {
         <Box direction="row" flex={true} wrap={false}>
           <Box direction="row" flex={true} onClick={this.props.action}>
             <Box justify="center">{this._getIcon(file.mimetype)}</Box>
-
             <Box
               justify="center"
               flex={true}
@@ -190,17 +187,22 @@ class FileItem extends React.Component {
               href={file_link}
               download
             />
-            {this.props.canUpdate ? (
-              <Anchor
-                size="small"
-                icon={<CloseIcon size="xsmall" />}
-                label={<Label size="small">Delete</Label>}
-                disabled={this.props.status === "published"}
-                onClick={() => {
-                  this.props.deleteFile(file_link, filePath);
-                }}
-              />
-            ) : null}
+            <Route
+              path="/drafts/:draft_id"
+              render={() =>
+                this.props.canUpdate && (
+                  <Anchor
+                    size="small"
+                    icon={<CloseIcon size="xsmall" />}
+                    label={<Label size="small">Delete</Label>}
+                    disabled={this.props.status === "published"}
+                    onClick={() => {
+                      this.props.deleteFile(file_link, filePath);
+                    }}
+                  />
+                )
+              }
+            />
           </Box>
         ) : null}
       </Box>
@@ -215,7 +217,8 @@ FileItem.propTypes = {
   bucket_id: PropTypes.string,
   filePreview: PropTypes.func,
   status: PropTypes.string,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
+  match: PropTypes.object
 };
 
 const mapStateToProps = state => {
@@ -233,7 +236,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FileItem);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(FileItem)
+);
