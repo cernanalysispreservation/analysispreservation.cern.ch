@@ -70,7 +70,7 @@ class EditableTitle extends React.Component {
         <Label margin="none" direction="row">
           <input
             key="draft-input"
-            style={{ padding: 0, border: "1px solid #fff", borderRadius: 0 }}
+            style={{ padding: 0, border: "1px solid #136994", borderRadius: 0 }}
             onChange={this._onChange}
             value={this.state.titleValue}
           />
@@ -81,10 +81,10 @@ class EditableTitle extends React.Component {
             margin="none"
             onClick={this._update.bind(this)}
           >
-            <CheckmarkIcon colorIndex="light-1" size="xsmall" />
+            <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
           <Box margin="none" onClick={this._unedit.bind(this)}>
-            <CloseIcon colorIndex="light-1" size="xsmall" />
+            <CloseIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
         </Box>
       </Box>
@@ -94,12 +94,13 @@ class EditableTitle extends React.Component {
           key="draft-title"
           onMouseEnter={this._hoverIn}
           onMouseLeave={this._hoverOut}
-          onClick={this._focusInput}
+          onClick={this.props.canUpdate ? this._focusInput : null}
           pad="none"
           style={{
-            border: this.state.hoverTitle
-              ? "1px solid #fff"
-              : "1px solid transparent"
+            border:
+              this.state.hoverTitle && this.props.canUpdate
+                ? "1px solid #136994"
+                : "1px solid transparent"
           }}
         >
           <Label align="start" pad="none" margin="none">
@@ -114,14 +115,16 @@ class EditableTitle extends React.Component {
 EditableTitle.propTypes = {
   metadata: PropTypes.object,
   updateGeneralTitle: PropTypes.func,
-  anaType: PropTypes.string
+  anaType: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     metadata: state.draftItem.get("metadata"),
     loading: state.draftItem.get("loading"),
-    generalTitleLoading: state.draftItem.get("generalTitleLoading")
+    generalTitleLoading: state.draftItem.get("generalTitleLoading"),
+    canUpdate: state.draftItem.get("can_update")
   };
 }
 
