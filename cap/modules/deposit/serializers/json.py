@@ -23,8 +23,6 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Basic Serializers."""
 
-from __future__ import absolute_import, print_function
-
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
 
@@ -41,7 +39,7 @@ class DepositSerializer(JSONSerializer):
         (bug in invenio doesn't pass correct one on deposit actions
         (e.g. /actions/publish)
         """
-        result = super(DepositSerializer, self).preprocess_record(
+        result = super().preprocess_record(
             pid, record, links_factory=deposit_links_factory)
 
         result['deposit'] = CAPDeposit.get_record(pid.object_uuid)
@@ -52,9 +50,6 @@ class DepositSerializer(JSONSerializer):
         pid = PersistentIdentifier.get(pid_type=pid.pid_type,
                                        pid_value=pid.pid_value)
 
-        result = super(DepositSerializer,
-                       self).preprocess_search_hit(pid,
-                                                   record_hit,
-                                                   links_factory=links_factory)
-
+        result = super().preprocess_search_hit(
+            pid, record_hit, links_factory=links_factory)
         return result
