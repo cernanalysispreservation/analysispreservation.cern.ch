@@ -16,6 +16,7 @@ component=(
 "fixtures"
 "global"
 "records"
+"repos"
 "schemas"
 "scripts"
 "search"
