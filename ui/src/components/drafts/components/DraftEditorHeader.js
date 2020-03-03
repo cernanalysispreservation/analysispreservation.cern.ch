@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { oneOfType } from "prop-types";
 
 import { connect } from "react-redux";
 import cogoToast from "cogo-toast";
@@ -22,6 +22,38 @@ import {
 import { withRouter } from "react-router";
 
 class DraftEditorHeader extends React.Component {
+  isEmptyValues = value => {
+    if (typeof value === "string") {
+      return value.trim().length === 0;
+    }
+    if (value === undefined || value === null) {
+      return true;
+    }
+
+    return value.length === 0;
+  };
+
+  isObjectEmpty = (obj, arr) => {
+    if (typeof obj !== "object") {
+      this.isEmptyValues(obj) ? null : arr.push(obj);
+    } else {
+      Object.values(obj).length > 0 &&
+        Object.values(obj).map(item => {
+          let checkedValue;
+          if (typeof item !== "object") {
+            checkedValue = this.isEmptyValues(item);
+          } else {
+            checkedValue = this.isObjectEmpty(item, arr);
+          }
+
+          if (checkedValue === false) {
+            arr.push(item);
+          }
+          return checkedValue;
+        });
+    }
+  };
+
   _validateFormData = () => {
     // TOFIX maybe fetch formData from store instead of ref
     const formData = this.props.formRef.current
@@ -39,26 +71,7 @@ class DraftEditorHeader extends React.Component {
 
     // const { errors = []} = this.props.formRef.current && this.props.formRef.current.validate(formData);
 
-    const { errors } = this.props.formRef.current.validate(formData);
-
-    this.props.formRef.current.submit();
-
-    let emptyObject = 0;
-
-    Object.values(formData).map(formItem => {
-      if (_isEmpty(formItem)) {
-        emptyObject++;
-      } else {
-        Object.values(formItem).map(value => {
-          if (_isEmpty(value)) {
-            emptyObject++;
-          }
-        });
-      }
-    });
-
-    let condition =
-      _isEmpty(formData) || emptyObject === Object.entries(formData).length;
+    const { errors = [] } = this.props.formRef.current.validate(formData);
 
     if (errors.length > 0) {
       cogoToast.error("Make sure all the fields are properly filled in", {
@@ -70,7 +83,20 @@ class DraftEditorHeader extends React.Component {
       return false;
     }
 
-    if (condition) {
+    this.props.formRef.current.submit();
+
+    // remove the general_title from the form validation
+    delete formData.general_title;
+
+    // consider that the form is firstly empty
+    // iterate through children to check if there empty
+    // if a children is an object then iterate through all the children
+    let emptyValuesArray = [];
+    Object.values(formData).map(item => {
+      this.isObjectEmpty(item, emptyValuesArray);
+    });
+
+    if (emptyValuesArray.length === 0) {
       cogoToast.warn(
         "Please add some content first, and try again saving again",
         {
