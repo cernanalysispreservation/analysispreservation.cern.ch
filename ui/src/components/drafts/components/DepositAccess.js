@@ -119,59 +119,61 @@ class DepositAccess extends React.Component {
           <Heading tag="h3">Access & Permissions</Heading>
           <Box pad="small" colorIndex="light-2">
             <Box flex={false} pad={{ between: "small" }}>
-              <Box flex={true} direction="row" justify="center">
-                <Box direction="row" pad="small">
-                  <RadioButton
-                    id="user"
-                    name="user"
-                    label="User email"
-                    value="user"
-                    checked={this.state.type === "user"}
-                    onChange={this.handleChange}
-                  />
-                  <RadioButton
-                    id="egroup"
-                    name="egroup"
-                    label="Egroup email"
-                    value="egroup"
-                    checked={this.state.type === "egroup"}
-                    onChange={this.handleChange}
-                  />
-                </Box>
-                <Box
-                  direction="row"
-                  flex={true}
-                  justify="center"
-                  align="center"
-                >
-                  <Box size="medium">
-                    <FormField>
-                      <TextInput
-                        placeHolder={`Type to  ADD access rights`}
-                        value={this.state.inputValue}
-                        onDOMChange={e =>
-                          this.onSuggestionsFetchRequested(e.target.value)
-                        }
-                        onSelect={this.onSuggestionSelect}
-                        suggestions={this.state.suggestions}
-                      />
-                    </FormField>
-                  </Box>
-                  {this.props.loading ? (
-                    <Box pad="small">
-                      <Spinning />
-                    </Box>
-                  ) : (
-                    <Button
-                      icon={<AddIcon />}
-                      size="small"
-                      onClick={() => {
-                        this.addPermissions(draft_id);
-                      }}
+              {this.props.canAdmin && (
+                <Box flex={true} direction="row" justify="center">
+                  <Box direction="row" pad="small">
+                    <RadioButton
+                      id="user"
+                      name="user"
+                      label="User email"
+                      value="user"
+                      checked={this.state.type === "user"}
+                      onChange={this.handleChange}
                     />
-                  )}
+                    <RadioButton
+                      id="egroup"
+                      name="egroup"
+                      label="Egroup email"
+                      value="egroup"
+                      checked={this.state.type === "egroup"}
+                      onChange={this.handleChange}
+                    />
+                  </Box>
+                  <Box
+                    direction="row"
+                    flex={true}
+                    justify="center"
+                    align="center"
+                  >
+                    <Box size="medium">
+                      <FormField>
+                        <TextInput
+                          placeHolder={`Type to  ADD access rights`}
+                          value={this.state.inputValue}
+                          onDOMChange={e =>
+                            this.onSuggestionsFetchRequested(e.target.value)
+                          }
+                          onSelect={this.onSuggestionSelect}
+                          suggestions={this.state.suggestions}
+                        />
+                      </FormField>
+                    </Box>
+                    {this.props.loading ? (
+                      <Box pad="small">
+                        <Spinning />
+                      </Box>
+                    ) : (
+                      <Button
+                        icon={<AddIcon />}
+                        size="small"
+                        onClick={() => {
+                          this.addPermissions(draft_id);
+                        }}
+                      />
+                    )}
+                  </Box>
                 </Box>
-              </Box>
+              )}
               <Box>
                 <Table>
                   <TableHeader
@@ -196,7 +198,9 @@ class DepositAccess extends React.Component {
                             <CheckBox
                               toggle={true}
                               checked={canRead ? true : false}
-                              disabled={owner && owner === key}
+                              disabled={
+                                !this.props.canAdmin || (owner && owner === key)
+                              }
                               onChange={() =>
                                 this.props.handlePermissions(
                                   draft_id,
@@ -212,7 +216,9 @@ class DepositAccess extends React.Component {
                             <CheckBox
                               toggle={true}
                               checked={canUpdate ? true : false}
-                              disabled={owner && owner === key}
+                              disabled={
+                                !this.props.canAdmin || (owner && owner === key)
+                              }
                               onChange={() =>
                                 this.props.handlePermissions(
                                   draft_id,
@@ -228,7 +234,9 @@ class DepositAccess extends React.Component {
                             <CheckBox
                               toggle={true}
                               checked={canAdmin ? true : false}
-                              disabled={owner && owner === key}
+                              disabled={
+                                !this.props.canAdmin || (owner && owner === key)
+                              }
                               onChange={() =>
                                 this.props.handlePermissions(
                                   draft_id,
@@ -263,7 +271,8 @@ DepositAccess.propTypes = {
   getUsers: PropTypes.func,
   permissions: PropTypes.object,
   handlePermissions: PropTypes.func,
-  created_by: PropTypes.string
+  created_by: PropTypes.string,
+  canAdmin: PropTypes.bools
 };
 
 function mapStateToProps(state) {
@@ -272,7 +281,8 @@ function mapStateToProps(state) {
     created_by: state.draftItem.get("created_by"),
     draft: state.draftItem.get("data"),
     permissions: state.draftItem.get("access"),
-    loading: state.draftItem.get("loading")
+    loading: state.draftItem.get("loading"),
+    canAdmin: state.draftItem.get("can_admin")
   };
 }
 
