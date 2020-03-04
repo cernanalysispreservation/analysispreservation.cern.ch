@@ -86,20 +86,3 @@ class DepositFormSchema(DepositSchema):
 
     def can_user_admin(self, obj):
         return AdminDepositPermission(obj['deposit']).can()
-
-
-class DepositRepositoriesSchema(Schema):
-    host = fields.Str(attribute='repo.host', dump_only=True)
-    owner = fields.Str(attribute='repo.owner', dump_only=True)
-    name = fields.Str(attribute='repo.name', dump_only=True)
-    branch = fields.Str(attribute='repo.branch', dump_only=True)
-
-    type = fields.Str(dump_only=True)
-    status = fields.Str(dump_only=True)
-    user = fields.Str(dump_only=True)
-
-    snapshots = fields.Method('get_snapshots', dump_only=True)
-    user = fields.Str(attribute='user.email', dump_only=True)
-
-    def get_snapshots(self, obj):
-        return GitSnapshotSchema(many=True).dump(obj.webhook.snapshots).data
