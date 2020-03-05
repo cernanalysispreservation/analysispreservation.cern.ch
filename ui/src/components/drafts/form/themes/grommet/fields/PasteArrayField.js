@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-import CleanForm from "../../../CleanForm";
+import Form from "../../../Form";
 import FieldHeader from "../components/FieldHeader";
 import { FormField, Layer } from "grommet";
 
 import LatexPreviewer from "../../../../../../components/latex/latex";
 
 import axios from "axios";
-import ErrorFieldIndicator from "../templates/ErrorFieldIndicator";
 
 class PasteArrayField extends React.Component {
   constructor(props) {
@@ -21,6 +20,7 @@ class PasteArrayField extends React.Component {
     };
 
     let { ["ui:options"]: uiOptions = {} } = this.props.uiSchema;
+
     this._delimiter = uiOptions.delimeter || "\n";
     this.pasteDesctiption =
       uiOptions.pasteDesctiption ||
@@ -114,119 +114,138 @@ class PasteArrayField extends React.Component {
     };
 
     delete _pastableUISchema["ui:field"];
+
+    let updatedFormContext = [];
+    updatedFormContext = this.props.formContext.ref.map(item => {
+      if (item.name && item.name.includes(this.props.name)) {
+        let tempName = item.name.substring(
+          item.name.indexOf("[") + 1,
+          item.name.indexOf("]")
+        );
+
+        return {
+          ...item,
+          name: "_" + tempName,
+          property: "_" + tempName,
+          message: item.message,
+          paste: true,
+          previous: item.name
+        };
+      }
+      return item;
+    });
+
     return (
       <FormField>
-        <ErrorFieldIndicator
-          errors={this.props.formContext.ref}
-          id={this.props.idSchema.$id}
-        >
-          <Box pad={{ horizontal: "medium" }} flex={true}>
-            <Box>
-              <FieldHeader
-                title={this.props.schema.title}
-                pasteable={true}
-                enableImport={this._enableImport}
-                enableLatex={this._enableLatex}
-                latexEnabled={this.state.latexEnabled}
-                importEnabled={this.state.importEnabled}
-                required={this.props.required}
-                readonly={this.props.readonly}
-                description={this.props.schema.description}
-                margin="none"
+        <Box pad={{ horizontal: "medium" }} flex={true}>
+          <Box>
+            <FieldHeader
+              title={this.props.schema.title}
+              pasteable={true}
+              enableImport={this._enableImport}
+              enableLatex={this._enableLatex}
+              latexEnabled={this.state.latexEnabled}
+              importEnabled={this.state.importEnabled}
+              required={this.props.required}
+              readonly={this.props.readonly}
+              description={this.props.schema.description}
+              margin="none"
+            />
+            {this.state.latexEnabled && (
+              <LatexPreviewer
+                data={this.state.latexData}
+                onClose={this._enableLatex}
               />
-              {this.state.latexEnabled && (
-                <LatexPreviewer
-                  data={this.state.latexData}
-                  onClose={this._enableLatex}
-                />
-              )}
-              {this.state.importEnabled && (
-                <Layer
-                  flush={true}
-                  closer={true}
-                  overlayClose={true}
-                  onClose={this._enableImport}
+            )}
+            {this.state.importEnabled && (
+              <Layer
+                flush={true}
+                closer={true}
+                overlayClose={true}
+                onClose={this._enableImport}
+              >
+                <Box
+                  flex={false}
+                  size="large"
+                  colorIndex="light-2"
+                  pad="medium"
                 >
                   <Box
-                    flex={false}
-                    size="large"
                     colorIndex="light-2"
-                    pad="medium"
+                    pad={{
+                      between: "small",
+                      vertical: "small",
+                      horizontal: "small"
+                    }}
+                    wrap={false}
+                    flex={true}
                   >
-                    <Box
-                      colorIndex="light-2"
-                      pad={{
-                        between: "small",
-                        vertical: "small",
-                        horizontal: "small"
-                      }}
-                      wrap={false}
-                      flex={true}
-                    >
-                      <Box flex={true}>
-                        <Box pad={{ vertical: "small" }}>
-                          {this.pasteDesctiption}
-                        </Box>
-                        <Box flex={true}>
-                          <textarea
-                            value={this.state.clipboardData}
-                            rows="20"
-                            placeholder={this.pastePlaceholder}
-                            style={{
-                              borderRadius: "0",
-                              backgroundColor: "#fff",
-                              height: "100%",
-                              width: "100%",
-                              maxWidth: "100%",
-                              minWidth: "100%",
-                              wordBreak: "break-all"
-                            }}
-                            onChange={this._onTextareaChange}
-                          />
-                        </Box>
+                    <Box flex={true}>
+                      <Box pad={{ vertical: "small" }}>
+                        {this.pasteDesctiption}
                       </Box>
+                      <Box flex={true}>
+                        <textarea
+                          value={this.state.clipboardData}
+                          rows="20"
+                          placeholder={this.pastePlaceholder}
+                          style={{
+                            borderRadius: "0",
+                            backgroundColor: "#fff",
+                            height: "100%",
+                            width: "100%",
+                            maxWidth: "100%",
+                            minWidth: "100%",
+                            wordBreak: "break-all"
+                          }}
+                          onChange={this._onTextareaChange}
+                        />
+                      </Box>
+                    </Box>
 
-                      <Box>
+                    <Box>
+                      <Box
+                        flex={false}
+                        align="end"
+                        direction="row"
+                        wrap={false}
+                        alignContent="end"
+                        justify="end"
+                        pad={{ between: "small" }}
+                      >
                         <Box
-                          flex={false}
-                          align="end"
                           direction="row"
+                          colorIndex="brand"
                           wrap={false}
-                          alignContent="end"
-                          justify="end"
-                          pad={{ between: "small" }}
+                          align="end"
+                          separator="all"
+                          style={{ padding: "5px" }}
+                          onClick={this._doBatchImport}
                         >
-                          <Box
-                            direction="row"
-                            colorIndex="brand"
-                            wrap={false}
-                            align="end"
-                            separator="all"
-                            style={{ padding: "5px" }}
-                            onClick={this._doBatchImport}
-                          >
-                            Import
-                          </Box>
+                          Import
                         </Box>
                       </Box>
                     </Box>
                   </Box>
-                </Layer>
-              )}
-            </Box>
-            <Box>
-              <CleanForm
-                schema={this.props.schema}
-                uiSchema={{ ..._pastableUISchema, "ui:pastable": true }}
-                formData={this.props.formData}
-                onChange={this._onChange}
-                liveValidate={true}
-              >
-                <span />
-              </CleanForm>
-            </Box>
+                </Box>
+              </Layer>
+            )}
           </Box>
-        </ErrorFieldIndicator>
+          <Box>
+            <Form
+              schema={this.props.schema}
+              uiSchema={{ ..._pastableUISchema, "ui:pastable": true }}
+              formData={this.props.formData}
+              onChange={this._onChange}
+              formContext={{
+                ref: updatedFormContext,
+                formRef: this.props.formContext.formRef
+              }}
+            >
+              <span />
+            </Form>
+          </Box>
+        </Box>
       </FormField>
     );
   }
@@ -235,7 +254,12 @@ class PasteArrayField extends React.Component {
 PasteArrayField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.array
+  formData: PropTypes.array,
+  formContext: PropTypes.object,
+  name: PropTypes.string,
+  required: PropTypes.bool,
+  readonly: PropTypes.bool,
+  schema: PropTypes.object
 };
 
 export default PasteArrayField;

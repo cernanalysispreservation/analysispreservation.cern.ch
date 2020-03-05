@@ -32,7 +32,7 @@ class DraftEditorHeader extends React.Component {
     return value.length === 0;
   };
 
-  // itertate through object values
+  // iterate through object values
   // if the value is not Object it calls isEmptyValues
   // if the values is an Object then recursive calls
   isObjectEmpty = (obj, arr) => {
@@ -91,6 +91,7 @@ class DraftEditorHeader extends React.Component {
 
     // if the form is empty display warning and return false
     // if not save it
+
     if (this._checkIfEmpty(formData)) {
       cogoToast.warn(
         "Please add some content first, and try again saving again",

@@ -17,17 +17,27 @@ let FieldTemplate = function(props) {
   if (formContext.ref && formContext.ref.length > 0) {
     formContext.ref.map(item => {
       if (item.name) {
+        item.name = item.paste ? item.previous : item.name;
+
         let splitted = item.name.split(".");
         let name = splitted[splitted.length - 1];
+
         let pro = item.property
           .replace(/\[/g, "_")
           .replace(/\]/g, "")
           .replace(/\./g, "_");
-        let elementId = id.replace("root", "");
+
+        let isThisId = item.paste
+          ? item.name
+              .replace(/\[/g, "_")
+              .replace(/\]/g, "")
+              .replace(/\./g, "_")
+              .includes(id.replace("root", ""))
+          : pro === id.replace("root", "");
 
         if (
           label &&
-          pro === elementId &&
+          isThisId &&
           name.replace("_", " ").toLowerCase() ===
             label.replace("_", " ").toLowerCase()
         ) {

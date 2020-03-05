@@ -15,6 +15,7 @@ import FormDownIcon from "grommet/components/icons/base/FormDown";
 
 import pluralize from "pluralize";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
+import { connect } from "react-redux";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -48,6 +49,16 @@ class ArrayFieldTemplate extends React.Component {
 
     return stringify.reduce(reducer, "");
   };
+
+  _deleteAndUpdate(element, event) {
+    element.onDropIndexClick(element.index)(event);
+    setTimeout(this.update, 100);
+  }
+
+  update = () => {
+    this.props.formContext.formRef.current.validate(this.props.formData);
+  };
+
   render() {
     return (
       <Box flex={false} size={{ height: { max: "small" } }}>
@@ -75,6 +86,7 @@ class ArrayFieldTemplate extends React.Component {
                   />
                   <Box flex={true} direction="row" wrap={false}>
                     <ErrorFieldIndicator
+                      formRef={this.props.formContext.formRef}
                       errors={this.props.formContext.ref}
                       id={element.children.props.idSchema.$id}
                     >
@@ -106,9 +118,9 @@ class ArrayFieldTemplate extends React.Component {
                     </ErrorFieldIndicator>
                     <Box direction="row" justify="between">
                       <Button
-                        onClick={
+                        onClick={event =>
                           element.hasRemove && !this.props.readonly
-                            ? element.onDropIndexClick(element.index)
+                            ? this._deleteAndUpdate(element, event)
                             : null
                         }
                         icon={this.props.readonly ? " " : <FormTrashIcon />}
@@ -171,4 +183,10 @@ ArrayFieldTemplate.propTypes = {
   formContext: PropTypes.object
 };
 
-export default ArrayFieldTemplate;
+function mapStateToProps(state) {
+  return {
+    formData: state.draftItem.get("formData")
+  };
+}
+
+export default connect(mapStateToProps)(ArrayFieldTemplate);

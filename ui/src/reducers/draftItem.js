@@ -15,7 +15,6 @@ const initialState = Map({
   filePreviewEdit: {},
   uploadFiles: Map({}),
   pathSelected: null,
-
   workflows: fromJS([]),
   workflows_items: fromJS({}),
   bucket: Map({}),

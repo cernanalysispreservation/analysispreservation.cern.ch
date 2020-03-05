@@ -38,15 +38,17 @@ class DepositForm extends Component {
   transformErrors = errors => {
     errors.map(error => {
       error.name = error.property;
-      if (error.message == "should be string") {
+
+      if (error.message === "should be string") {
         let errorMessages = objectPath.get(this.props.formData, error.property);
-        if (errorMessages == undefined) error.message = "Either edit or remove";
+        if (errorMessages === undefined)
+          error.message = "Either edit or remove";
       }
 
       let objPath = error.property.slice(1).split(".");
       objPath.map((path, index) => {
         let _path = objPath.slice(0, index + 1);
-        if (objPath.length == index + 1) return;
+        if (objPath.length === index + 1) return;
 
         const re = new RegExp("\\[.*?]");
         let isArray = re.test(path);
@@ -67,12 +69,9 @@ class DepositForm extends Component {
 
         //: null;
       });
-
       return error;
     });
-
     this.setState({ errors });
-
     return errors;
   };
 
@@ -100,7 +99,14 @@ class DepositForm extends Component {
             formData={this.props.formData}
             onBlur={() => {}}
             onChange={this.props.onChange}
-            formContext={{ ref: this.state.errors }}
+            formContext={{
+              formRef: this.props.formContext
+                ? this.props.formContext.formRef
+                : this.props.formRef,
+              ref: this.props.formContext
+                ? this.props.formContext.ref
+                : this.state.errors
+            }}
           >
             <span />
           </Form>

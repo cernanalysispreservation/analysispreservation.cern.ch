@@ -3,23 +3,24 @@ import Box from "grommet/components/Box";
 import PropTypes from "prop-types";
 
 const ErrorFieldIndicator = ({
-  errors,
+  errors = [],
   children,
   id,
   hideIndicator = false,
   tab = false,
   properties = {}
 }) => {
-  let errorList = [];
+  let errorList = {};
   let errorMessages = {};
 
   if (tab) {
     errors &&
       errors.map(errorItem => {
         let item = errorItem.property.split(".")[1];
+
         properties.map(prop => {
-          if (prop.name === item && !errorList.includes(item)) {
-            errorList.push(item);
+          if (prop.name === item && !errorList[item]) {
+            errorList[item] = "1px solid #f04b37";
           }
         });
       });
@@ -27,7 +28,7 @@ const ErrorFieldIndicator = ({
     return (
       <Box
         style={{
-          borderRight: errorList.includes(id) ? "1px solid #f04b37" : null
+          borderRight: errorList[id]
         }}
       >
         {children}
@@ -43,11 +44,9 @@ const ErrorFieldIndicator = ({
           .replace(/\]/g, "")
           .replace(/\./g, "_");
 
-        if (!errorList.includes(property)) {
-          if (item.message) {
-            errorMessages[property] = item.message;
-          }
-          errorList.push(property);
+        if (!errorList[property]) {
+          errorMessages[property] = item.message;
+          errorList[property] = hideIndicator ? undefined : "1px solid #f04b37";
         }
       });
   }
@@ -56,25 +55,16 @@ const ErrorFieldIndicator = ({
     <Box
       flex={!tab}
       style={{
-        borderLeft: hideIndicator
-          ? null
-          : errorList.includes(id)
-            ? "1px solid #f04b37"
-            : null
+        borderLeft: errorList[id]
       }}
     >
       {children}
-
       {hideIndicator &&
-        Object.entries(errorMessages).map(item => {
-          if (item[0] === id) {
-            return (
-              <Box style={{ color: "#f04b37", margin: "1px 0 8px 4px" }}>
-                {item[1]}
-              </Box>
-            );
-          }
-        })}
+        errorMessages[id] && (
+          <Box style={{ color: "#f04b37", margin: "1px 0 8px 4px" }}>
+            {errorMessages[id]}
+          </Box>
+        )}
     </Box>
   );
 };
@@ -85,7 +75,9 @@ ErrorFieldIndicator.propTypes = {
   children: PropTypes.element,
   tab: PropTypes.bool,
   properties: PropTypes.object,
-  hideIndicator: PropTypes.bool
+  hideIndicator: PropTypes.bool,
+  schema: PropTypes.object,
+  uiSchema: PropTypes.object
 };
 
 export default ErrorFieldIndicator;
