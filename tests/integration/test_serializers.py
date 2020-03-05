@@ -208,3 +208,22 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         },
         'draft_id': deposit.pid.pid_value
     }
+
+
+def test_webhook_serializer_on_deposits(client, example_user, auth_headers_for_example_user,
+                                        deposit, github_push_webhook_sub):
+    headers = [('Accept', 'application/repositories+json')] + auth_headers_for_example_user
+    pid = deposit['_deposit']['id']
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'webhooks': [{
+            'branch': 'mybranch',
+            'event_type': 'push',
+            'host': 'github.com',
+            'name': 'repository',
+            'owner': 'owner',
+            'snapshots': []
+        }]
+    }
