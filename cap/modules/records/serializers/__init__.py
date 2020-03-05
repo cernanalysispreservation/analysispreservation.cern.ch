@@ -31,7 +31,8 @@ from invenio_records_rest.serializers.response import (record_responsify,
 from .json import (BasicJSONSerializer, PermissionsJSONSerializer,
                    RecordSerializer)
 from .schemas.json import (BasicDepositSchema, PermissionsDepositSchema,
-                           RecordSchema, RecordFormSchema)
+                           RecordSchema, RecordFormSchema,
+                           RepositoriesDepositSchema)
 
 # Serializers
 # ===========
@@ -41,6 +42,8 @@ record_form_json_v1 = RecordSerializer(RecordFormSchema)
 
 basic_json_v1 = BasicJSONSerializer(BasicDepositSchema)
 permissions_json_v1 = PermissionsJSONSerializer(PermissionsDepositSchema)
+repositories_json_v1 = BasicJSONSerializer(RepositoriesDepositSchema)
+
 
 # Records-REST serializers
 # ========================
@@ -57,3 +60,5 @@ permissions_json_v1_response = record_responsify(
 # JSON record serializer for search results.
 basic_json_v1_search = search_responsify(basic_json_v1,
                                          'application/basic+json')
+repositories_json_v1_response = record_responsify(
+    repositories_json_v1, 'application/repositories+json')

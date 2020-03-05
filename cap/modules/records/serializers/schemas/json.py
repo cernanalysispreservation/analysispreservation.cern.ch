@@ -32,6 +32,7 @@ from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.records.permissions import UpdateRecordPermission
+from cap.modules.repos.serializers import GitWebhookSubscriberSchema
 
 from . import common
 
@@ -89,6 +90,18 @@ class BasicDepositSchema(Schema):
             ]
         }
         return result
+
+
+class RepositoriesDepositSchema(Schema):
+    """Schema for files in deposit."""
+
+    webhooks = fields.Method('get_webhooks', dump_only=True)
+
+    def get_webhooks(self, obj):
+        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
+        webhooks = deposit.model.webhooks
+
+        return GitWebhookSubscriberSchema(many=True).dump(webhooks).data
 
 
 class PermissionsDepositSchema(Schema):
