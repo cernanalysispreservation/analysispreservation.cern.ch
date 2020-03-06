@@ -81,45 +81,45 @@ def synchronize_cadi_entries(limit=None):
         cadi_id = cadi_info['cadi_id']
         contact_name = cadi_info['contact'].split(' (')[0]
 
-        with db.session.begin_nested():
-            try:  # update if cadi deposit already exists
-                deposit = get_deposit_by_cadi_id(cadi_id)
+        try:  # update if cadi deposit already exists
+            deposit = get_deposit_by_cadi_id(cadi_id)
 
-                if deposit.get('cadi_info') == cadi_info:
-                    print('No changes in cadi entry {}.'.format(cadi_id))
+            if deposit.get('cadi_info') == cadi_info:
+                print('No changes in cadi entry {}.'.format(cadi_id))
 
-                else:
-                    deposit['cadi_info'] = cadi_info
-                    deposit.commit()
-                    print('Cadi entry {} updated.'.format(cadi_id))
-
-            except DepositDoesNotExist:
-                cadi_deposit = _cadi_deposit(cadi_id, cadi_info)
-                deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
-
-                try:
-                    contact_mail = get_user_mail_from_ldap(contact_name)
-                    role = get_existing_or_register_user(contact_mail)
-                    deposit._add_user_permissions(
-                        role,
-                        ['deposit-read', 'deposit-update', 'deposit-admin'],
-                        db.session)
-                except DoesNotExistInLDAP:
-                    print('Couldnt give access to {} - not in LDAP'.format(
-                        contact_mail))
-
-                for group in get_cadi_admin_roles(cadi_id):
-                    deposit._add_egroup_permissions(
-                        group,
-                        ['deposit-read', 'deposit-update', 'deposit-admin'],
-                        db.session)
-
-                deposit._add_experiment_permissions('CMS', ['deposit-read'])
-
+            else:
+                deposit['cadi_info'] = cadi_info
                 deposit.commit()
-                print('Cadi entry {} added.'.format(cadi_id))
+                db.session.commit()
 
-        db.session.commit()
+                print('Cadi entry {} updated.'.format(cadi_id))
+
+        except DepositDoesNotExist:
+            cadi_deposit = _cadi_deposit(cadi_id, cadi_info)
+            deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
+            deposit._add_experiment_permissions('CMS', ['deposit-read'])
+
+            try:
+                contact_mail = get_user_mail_from_ldap(contact_name)
+                user = get_existing_or_register_user(contact_mail)
+                deposit._add_user_permissions(
+                    user,
+                    ['deposit-read', 'deposit-update', 'deposit-admin'],
+                    db.session)
+            except DoesNotExistInLDAP:
+                print('Couldnt give access to {} - not in LDAP'.format(
+                    contact_name))
+
+            for group in get_cadi_admin_roles(cadi_id):
+                deposit._add_egroup_permissions(
+                    group,
+                    ['deposit-read', 'deposit-update', 'deposit-admin'],
+                    db.session)
+
+            deposit.commit()
+            db.session.commit()
+
+            print('Cadi entry {} added.'.format(cadi_id))
 
 
 def get_cadi_admin_roles(cadi_id):
