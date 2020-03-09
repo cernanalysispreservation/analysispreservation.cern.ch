@@ -227,7 +227,6 @@ class CAPDeposit(Deposit):
                 record_uuid = str(rec.id)
                 data = request.get_json()
                 webhook = data.get('webhook', False)
-                # TOFIX currently never passed from UI
                 event_type = data.get('event_type', 'release')
 
                 try:
@@ -236,19 +235,18 @@ class CAPDeposit(Deposit):
                     raise FileUploadError(f'Missing url parameter.')
 
                 try:
-                    host, owner, repo, branch, filepath = \
-                            parse_git_url(url)
+                    host, owner, repo, branch, filepath = parse_git_url(url)
                     api = create_git_api(host, owner, repo, branch,
                                          current_user.id)
 
                     if filepath:
                         download_repo_file(
-                            record_uuid, f'repositories/{host}/{owner}/{repo}/'
-                            f'{api.branch or api.sha}/{filepath}',
-                            *api.get_file_download(filepath), api.auth_headers)
+                            record_uuid,
+                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
+                            *api.get_file_download(filepath),
+                            api.auth_headers,
+                        )
                     else:
-                        filename = f'repositories/{host}/{owner}/{repo}' \
-                                f'/{api.branch or api.sha}.tar.gz'
                         if webhook:
                             # TOFIX create serializer
                             if event_type == 'release':
@@ -257,8 +255,8 @@ class CAPDeposit(Deposit):
                                         'You cannot create a release webhook'
                                         ' for a specific branch or sha.')
 
-                                filename = f'repositories/{host}/{owner}/' \
-                                           f'{repo}.tar.gz'
+                                create_webhook(record_uuid, api, event_type)
+                                return self
 
                             if event_type == 'push' and \
                                     api.branch is None and api.sha:
@@ -268,9 +266,11 @@ class CAPDeposit(Deposit):
 
                             create_webhook(record_uuid, api, event_type)
 
-                        download_repo.delay(record_uuid, filename,
-                                            api.get_repo_download(),
-                                            api.auth_headers)
+                        download_repo.delay(
+                            record_uuid,
+                            f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
+                            api.get_repo_download(),
+                            api.auth_headers)
 
                 except GitError as e:
                     raise FileUploadError(str(e))
