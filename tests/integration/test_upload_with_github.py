@@ -313,23 +313,8 @@ def test_upload_when_repo_and_creating_release_webhook(
 
     assert resp.status_code == 201
 
-    # repo tar was saved
-    obj = ObjectVersion.get(deposit.files.bucket.id,
-                            'repositories/github.com/owner/repository.tar.gz')
-    tar_obj = tarfile.open(obj.file.uri)
-    repo_file_name = tar_obj.getmembers()[1]
-    repo_content = tar_obj.extractfile(repo_file_name).read()
-
-    assert repo_content == b'test repo for cap\n'
-
-    # webhook was created
-    sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id).one()
-    repo = sub.webhook.repo
-
-    assert sub.webhook.branch is None
-    assert sub.webhook.external_id == 186091239
-    assert (repo.host, repo.owner, repo.name) == ('github.com', 'owner',
-                                                  'repository')
+    # no file was saved
+    assert not deposit.files
 
 
 @responses.activate
@@ -417,7 +402,8 @@ def test_upload_when_repo_and_creating_push_webhook(
 @responses.activate
 @patch.object(Github, 'get_repo')
 def test_upload_when_repo_file(m_get_repo, client, deposit,
-                               auth_headers_for_example_user, json_headers, file_tar):
+                               auth_headers_for_example_user, json_headers,
+                               file_tar):
     class MockProject(object):
         def get_branch(self, name):
             mock = Mock()

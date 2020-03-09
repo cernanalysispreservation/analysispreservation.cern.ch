@@ -279,23 +279,8 @@ def test_upload_when_repo_and_creating_release_webhook(
 
     assert resp.status_code == 201
 
-    # repo tar was saved
-    obj = ObjectVersion.get(
-        deposit.files.bucket.id,
-        'repositories/gitlab.cern.ch/owner/repository.tar.gz')
-    tar_obj = tarfile.open(obj.file.uri)
-    repo_file_name = tar_obj.getmembers()[1]
-    repo_content = tar_obj.extractfile(repo_file_name).read()
-
-    assert repo_content == b'test repo for cap\n'
-
-    # webhook was created
-    sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id).one()
-    repo = sub.webhook.repo
-
-    assert sub.webhook.branch is None
-    assert (repo.host, repo.owner, repo.name) == ('gitlab.cern.ch', 'owner',
-                                                  'repository')
+    # no file was saved
+    assert not deposit.files
 
 
 @responses.activate
