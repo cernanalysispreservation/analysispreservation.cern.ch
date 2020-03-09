@@ -217,8 +217,8 @@ def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
 
     assert repo_content == b'test repo for cap\n'
 
-    snapshot = GitSnapshot.query.one()
-
+    snapshot = gitlab_push_webhook_sub.snapshots[0]
+    assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'branch': 'mybranch',
         'link': 'https://gitlab.cern.ch/owner_name/myrepository/-/commit/87735e015e2b4faf60415833478dacd3174b2d1c',
@@ -295,8 +295,8 @@ def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
 
     assert repo_content == b'test repo for cap\n'
 
-    snapshot = GitSnapshot.query.one()
-
+    snapshot = gitlab_release_webhook_sub.snapshots[0]
+    assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'branch': None,
         'commit': None,

@@ -68,6 +68,8 @@ def get_webhook_event():
     except NoResultFound:
         abort(404, 'This webhook was not registered in our system.')
 
+    snapshot = GitSnapshot(payload=data, webhook_id=webhook.id)
+
     for subscriber in webhook.subscribers:
         api = create_git_api(webhook.repo.host, webhook.repo.owner,
                              webhook.repo.name, webhook.branch,
@@ -89,7 +91,7 @@ def get_webhook_event():
             api.auth_headers,
         )
 
-        webhook.snapshots.append(GitSnapshot(payload=data))
+        subscriber.snapshots.append(snapshot)
         db.session.commit()
 
     return jsonify({'message': 'Snapshot of repository was saved.'})

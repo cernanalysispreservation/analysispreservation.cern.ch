@@ -84,6 +84,38 @@ class GitWebhook(db.Model):
                                               cascade="all, delete-orphan"))
 
 
+class GitSnapshot(db.Model):
+    """Snapshot information for a Git repo."""
+
+    __tablename__ = 'git_snapshot'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    # webhook payload / event
+    payload = db.Column(json_type, default={}, nullable=True)
+
+    webhook_id = db.Column(db.Integer,
+                           db.ForeignKey(GitWebhook.id),
+                           nullable=False)
+    webhook = db.relationship(GitWebhook,
+                              backref=db.backref("snapshots",
+                                                 cascade="all, delete-orphan"))
+
+    created = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class GitSubscriberSnapshots(db.Model):
+    """Connection model between snapshot and webhook subscribers."""
+    __tablename__ = 'git_subscriber_snapshots'
+
+    snapshot_id = db.Column(db.Integer,
+                            db.ForeignKey('git_snapshot.id'),
+                            primary_key=True)
+    subscriber_id = db.Column(db.Integer,
+                              db.ForeignKey('git_subscriber.id'),
+                              primary_key=True)
+
+
 class GitWebhookSubscriber(db.Model):
     """Records subscribed to the git repository events."""
 
@@ -116,27 +148,9 @@ class GitWebhookSubscriber(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
     user = db.relationship(User)
 
+    snapshots = db.relationship(GitSnapshot,
+                                secondary='git_subscriber_snapshots')
+
     @property
     def repo(self):
         return self.webhook.repo
-
-
-class GitSnapshot(db.Model):
-    """Snapshot information for a Git repo."""
-
-    __tablename__ = 'git_snapshot'
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    # webhook payload / event
-    payload = db.Column(json_type, default={}, nullable=True)
-
-    # foreign keys (connecting to repo and events)
-    webhook_id = db.Column(db.Integer,
-                           db.ForeignKey(GitWebhook.id),
-                           nullable=False)
-    webhook = db.relationship(GitWebhook,
-                              backref=db.backref("snapshots",
-                                                 cascade="all, delete-orphan"))
-
-    created = db.Column(db.DateTime, default=datetime.utcnow)
