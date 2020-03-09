@@ -174,11 +174,8 @@ DEBUG_TB_INTERCEPT_REDIRECTS = False
 # =======================================================================
 # =======================================================================
 
-DEBUG_MODE = os.environ.get('DEBUG_MODE', False)
-if DEBUG_MODE == 'True':
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG_MODE = os.environ.get('DEBUG_MODE')
+DEBUG = True if DEBUG_MODE == 'True' else False
 
 if DEBUG:
     REST_ENABLE_CORS = True
@@ -613,7 +610,7 @@ RECORDS_UI_ENDPOINT = '{scheme}://{host}/published/{pid_value}'
 # so we make sure that we have an ngrok tunnel running, and add it
 # to the allowed hosts (to enable requests)
 TEST_WITH_NGROK = os.environ.get('CAP_TEST_WITH_NGROK', 'False')
-if DEBUG_MODE == 'True' and TEST_WITH_NGROK == 'True':
+if DEBUG and TEST_WITH_NGROK == 'True':
     try:
         resp = requests.get('http://localhost:4040/api/tunnels',
                             headers={'Content-Type': 'application/json'})
