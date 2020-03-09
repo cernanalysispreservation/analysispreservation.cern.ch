@@ -104,7 +104,7 @@ def default_config():
                 JSONSCHEMAS_HOST='analysispreservation.cern.ch',
                 SERVER_NAME='analysispreservation.cern.ch',
                 ACCESS_CACHE=None,
-                DEBUG_MODE=False,
+                DEBUG=False,
                 TESTING=True,
                 APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken')
 
