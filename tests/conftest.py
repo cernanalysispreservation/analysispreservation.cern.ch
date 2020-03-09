@@ -563,6 +563,17 @@ def github_repo(db, github_token):
 
 
 @pytest.fixture
+def github_release_webhook(db, github_repo):
+    webhook = GitWebhook(event_type='release',
+                         repo_id=github_repo.id,
+                         external_id=666,
+                         secret='mysecretsecret')
+    db.session.add(webhook)
+    db.session.commit()
+    return webhook
+
+
+@pytest.fixture
 def github_push_webhook_sub(db, github_repo, deposit, example_user):
     webhook = GitWebhook(event_type='push',
                          repo_id=github_repo.id,

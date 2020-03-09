@@ -52,7 +52,7 @@ class DepositFormSchema(DepositSchema):
 
     schemas = fields.Method('get_deposit_schemas', dump_only=True)
     webhooks = fields.Method('get_webhooks', dump_only=True)
-    workflows = fields.Method('get_workflows', dump_only=True)
+    # workflows = fields.Method('get_workflows', dump_only=True)
 
     can_update = fields.Method('can_user_update', dump_only=True)
     can_admin = fields.Method('can_user_admin', dump_only=True)
@@ -61,9 +61,9 @@ class DepositFormSchema(DepositSchema):
         webhooks = obj['deposit'].model.webhooks
         return GitWebhookSubscriberSchema(many=True).dump(webhooks).data
 
-    def get_workflows(self, obj):
-        workflows = obj['deposit'].model.reana_workflows
-        return ReanaWorkflowSchema(many=True).dump(workflows).data
+    # def get_workflows(self, obj):
+    #     workflows = obj['deposit'].model.reana_workflows
+    #     return ReanaWorkflowSchema(many=True).dump(workflows).data
 
     def get_deposit_schemas(self, obj):
         ui_schema = obj['deposit'].schema.deposit_options

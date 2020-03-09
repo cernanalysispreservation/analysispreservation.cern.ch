@@ -27,6 +27,17 @@
 from invenio_files_rest.models import ObjectVersion
 from six import BytesIO
 
+import json
+import responses
+from pytest import mark
+from mock import Mock, patch
+
+from invenio_search import current_search
+from invenio_files_rest.models import ObjectVersion
+
+from cap.modules.repos.github_api import Github
+from cap.modules.schemas.models import Schema
+
 
 ###########################################
 # api/records/ [GET]
@@ -317,3 +328,133 @@ def test_get_record_when_user_is_not_member_of_collaboration_returns_403(
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.status_code == 403
+
+
+def test_get_record_with_form_json_serializer(
+        client, auth_headers_for_example_user, example_user, create_deposit, create_schema):
+    create_schema(
+        'test-schema',
+        experiment='CMS',
+        deposit_schema={'title': 'deposit-test-schema'},
+        deposit_options={'title': 'deposit-ui-test-schema'},
+        record_schema={'title': 'record-test-schema'},
+        record_options={'title': 'record-ui-test-schema'},
+        use_deposit_as_record=False)
+
+    deposit = create_deposit(example_user, 'test-schema',
+                             {'$ana_type': 'test-schema', 'my_field': 'mydata'},
+                             experiment='CMS',
+                             files={'readme': BytesIO(b'Hello!')},
+                             publish=True)
+    _, rec = deposit.fetch_published()
+    file = deposit.files['readme']
+    pid = deposit['control_number']
+
+    headers = auth_headers_for_example_user + [('Accept', 'application/form+json')]
+    resp = client.get(f'/records/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'access': {
+            'record-admin': {'roles': [], 'users': [example_user.email]},
+            'record-read': {'roles': [], 'users': [example_user.email,
+                                                   'cms_user2@cern.ch']},
+            'record-update': {'roles': [], 'users': [example_user.email]}},
+        'can_update': True, 'is_owner': True,
+        'created': rec.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': rec.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'created_by': example_user.email,
+        'experiment': rec['_experiment'],
+        'draft_id': rec['_deposit']['id'],
+        'id': pid,
+        # TOFIX shouldnt be deposit.files but record.files here!
+        'files': [{
+            'bucket': str(deposit.files.bucket),
+            'checksum': file.file.checksum,
+            'key': file.key,
+            'size': file.file.size,
+            'version_id': str(file.version_id)
+        }],
+        'links': {
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{str(rec.files.bucket)}',
+            'html': f'http://analysispreservation.cern.ch/published/{pid}',
+            'self': f'http://analysispreservation.cern.ch/api/records/{pid}'
+        },
+        'metadata': {
+            'my_field': 'mydata'
+        },
+        'revision': 0, 'status': 'published', 'type': 'record', 'labels': [],
+        'schema': {
+            'name': 'test-schema',
+            'version': '1.0.0'
+        },
+        'schemas': {
+            'schema': {
+                'title': 'record-test-schema',
+            },
+            'uiSchema': {
+                'title': 'record-ui-test-schema',
+            }
+        }
+    }
+
+
+def test_get_record_with_form_json_serializer_check_other_user_can_update(
+        client, users, auth_headers_for_user, create_deposit):
+    deposit = create_deposit(users['cms_user'],
+                             'cms-analysis',
+                             experiment='CMS')
+
+    other_user = users['cms_user2']
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }, {
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-update'
+    }]
+
+    deposit.edit_permissions(permissions)
+    deposit.publish()
+    _, rec = deposit.fetch_published()
+
+    pid = rec['control_number']
+    headers = auth_headers_for_user(users['cms_user2']) + [('Accept', 'application/form+json')]
+    resp = client.get(f'/records/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json['is_owner'] is False
+    assert resp.json['can_update'] is True
+    assert 'cms_user2@cern.ch' in resp.json['access']['record-update']['users']
+
+
+def test_get_record_with_form_json_serializer_check_other_user_can_admin(
+        client, users, auth_headers_for_user, create_deposit):
+    deposit = create_deposit(users['cms_user'],
+                             'cms-analysis',
+                             experiment='CMS')
+
+    other_user = users['cms_user2']
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-admin'
+    }]
+
+    deposit.edit_permissions(permissions)
+    deposit.publish()
+    _, rec = deposit.fetch_published()
+
+    pid = rec['control_number']
+    headers = auth_headers_for_user(users['cms_user2']) + [('Accept', 'application/form+json')]
+    resp = client.get(f'/records/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json['is_owner'] is False
+    assert resp.json['can_update'] is True
+    assert 'cms_user2@cern.ch' in resp.json['access']['record-admin']['users']

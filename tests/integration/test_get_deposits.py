@@ -24,11 +24,20 @@
 # or submit itself to any jurisdiction.
 """Integration tests for GET deposits."""
 
+import json
 from six import BytesIO
 
-from conftest import add_role_to_user
-from invenio_search import current_search
+import responses
 from pytest import mark
+from mock import Mock, patch
+
+from invenio_search import current_search
+from invenio_files_rest.models import ObjectVersion
+
+from cap.modules.repos.github_api import Github
+from cap.modules.repos.models import (GitRepository, GitWebhook,
+                                      GitWebhookSubscriber, GitSnapshot)
+from conftest import add_role_to_user
 
 
 ######################
@@ -423,3 +432,180 @@ def test_get_deposit_with_permissions_json_serializer_returns_serialized_permiss
             }
         }
     }
+
+
+def test_get_deposit_with_form_json_serializer(
+        client, db, auth_headers_for_example_user, example_user,
+        create_deposit, create_schema, file_tar, github_release_webhook):
+
+    # create schema
+    ###############
+    create_schema('test-schema', experiment='CMS',
+                  deposit_schema={
+                      'title': 'deposit-test-schema', 'type': 'object',
+                      'properties': {
+                            'title': {'type': 'string'},
+                            'date': {'type': 'string'}
+                      }},
+                  deposit_options={
+                      'title': 'ui-test-schema', 'type': 'object',
+                      'properties': {
+                          'title': {'type': 'string'},
+                          'field': {'type': 'string'}
+                      }})
+    deposit = create_deposit(example_user, 'test-schema',
+                             {
+                                 '$ana_type': 'test-schema',
+                                 'my_field': 'mydata'
+                             },
+                             experiment='CMS',
+                             # implicit file creation here
+                             files={'readme': BytesIO(b'Hello!')})
+
+    # create webhook subscribers and snapshots
+    #################
+    snapshot_payload = {
+        'event_type': 'release',
+        'branch': None,
+        'commit': None,
+        'author': {'name': 'owner', 'id': 1},
+        'link': 'https://github.com/owner/test/releases/tag/v1.0.0',
+        'release': {
+            'tag': 'v1.0.0',
+            'name': 'test release 1'
+        }}
+    subscriber = GitWebhookSubscriber(record_id=deposit.id,
+                                      user_id=example_user.id)
+    snapshot = GitSnapshot(payload=snapshot_payload)
+
+    github_release_webhook.snapshots.append(snapshot)
+    github_release_webhook.subscribers.append(subscriber)
+    db.session.commit()
+
+    # get the deposit
+    #################
+    pid = deposit['_deposit']['id']
+    metadata = deposit.get_record_metadata()
+    file = deposit.files['readme']
+
+    headers = auth_headers_for_example_user + [('Accept', 'application/form+json')]
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'access': {
+            'deposit-admin': {'roles': [], 'users': [example_user.email]},
+            'deposit-read': {'roles': [], 'users': [example_user.email]},
+            'deposit-update': {'roles': [], 'users': [example_user.email]}
+        },
+        'created_by': example_user.email,
+        'is_owner': True,
+        'can_admin': True,
+        'can_update': True,
+        'experiment': 'CMS',
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'id': pid,
+        'links': {
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}',
+            'clone': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/clone',
+            'discard': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/discard',
+            'edit': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/edit',
+            'files': f'http://analysispreservation.cern.ch/api/deposits/{pid}/files',
+            'html': f'http://analysispreservation.cern.ch/drafts/{pid}',
+            'permissions': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/permissions',
+            'publish': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/publish',
+            'self': f'http://analysispreservation.cern.ch/api/deposits/{pid}',
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/upload'
+        },
+        'metadata': {
+            'my_field': 'mydata'
+        },
+        'revision': 2, 'status': 'draft', 'type': 'deposit',
+        'labels': [],
+        'schema': {
+            'name': 'test-schema',
+            'version': '1.0.0'
+        },
+        'schemas': {
+            'schema': {
+                'title': 'deposit-test-schema',
+                'type': 'object',
+                'properties': {
+                    'date': {'type': 'string'},
+                    'title': {'type': 'string'}},
+                },
+            'uiSchema': {
+                'title': 'ui-test-schema',
+                'type': 'object',
+                'properties': {
+                    'field': {'type': 'string'},
+                    'title': {'type': 'string'}},
+                }
+        },
+        'files': [{
+            'bucket': str(file.bucket),
+            'checksum': file.file.checksum,
+            'key': file.key,
+            'size': file.file.size,
+            'version_id': str(file.version_id)
+        }],
+        'webhooks': [{
+            'branch': None,
+            'event_type': 'release',
+            'host': 'github.com',
+            'name': 'repository',
+            'owner': 'owner',
+            'snapshots': [{
+                'created': snapshot.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'payload': snapshot_payload
+            }]
+        }]
+    }
+
+
+def test_get_deposit_with_form_json_serializer_check_other_user_can_update(
+        client, users, auth_headers_for_user, deposit):
+    pid = deposit['_deposit']['id']
+    other_user = users['cms_user2']
+    headers = auth_headers_for_user(other_user) + [('Accept', 'application/form+json')]
+
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }, {
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-update'
+    }]
+    deposit.edit_permissions(permissions)
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json['can_admin'] is False
+    assert resp.json['can_update'] is True
+    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-read']['users']
+    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-update']['users']
+
+
+def test_get_deposit_with_form_json_serializer_check_other_user_can_admin(
+        client, users, auth_headers_for_user, deposit):
+    pid = deposit['_deposit']['id']
+    other_user = users['cms_user2']
+    headers = auth_headers_for_user(other_user) + [('Accept', 'application/form+json')]
+
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-admin'
+    }]
+    deposit.edit_permissions(permissions)
+    resp = client.get(f'/deposits/{pid}', headers=headers)
+
+    assert resp.status_code == 200
+    assert resp.json['can_admin'] is True
+    assert 'cms_user2@cern.ch' in resp.json['access']['deposit-admin']['users']
