@@ -170,9 +170,7 @@ class GitWebhookSubscriberSchema(Schema):
 
     event_type = fields.Str(attribute='webhook.event_type', dump_only=True)
 
-    snapshots = fields.Nested(GitSnapshotSchema,
-                              attribute='webhook.snapshots',
-                              many=True)
+    snapshots = fields.Nested(GitSnapshotSchema, many=True)
 
 
 gitlab_event_to_serializer = {
