@@ -154,7 +154,7 @@ DraftIntegrations.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    repos: state.draftItem.get("repositories"),
+    repos: state.draftItem.get("webhooks"),
     canUpdate: state.draftItem.get("can_update")
   };
 }
