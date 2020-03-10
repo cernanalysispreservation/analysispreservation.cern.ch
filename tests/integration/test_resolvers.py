@@ -25,8 +25,8 @@
 from pytest import mark
 
 
-def test_resolve_schema_when_user_doesnt_have_permission_to_schema_returns_403(
-        client, users, create_schema, auth_headers_for_user):
+def test_resolve_schema_returns_schema_without_checking_permissions(
+    client, users, create_schema, auth_headers_for_user):
     some_user = users['cms_user']
     create_schema('test-schema',
                   experiment='LHCb',
@@ -42,7 +42,7 @@ def test_resolve_schema_when_user_doesnt_have_permission_to_schema_returns_403(
     resp = client.get('/schemas/deposits/records/test-schema-v1.0.0',
                       headers=auth_headers_for_user(some_user))
 
-    assert resp.status_code == 403
+    assert resp.status_code == 200
 
 
 def test_resolve_schema_when_superuser_returns_schema(
