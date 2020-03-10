@@ -163,6 +163,7 @@ class GitSnapshotSchema(Schema):
 
 class GitWebhookSubscriberSchema(Schema):
     """Serializer for GitWebhookSubscriber model for UI."""
+    id = fields.Integer(dump_only=True)
     host = fields.Str(attribute='repo.host', dump_only=True)
     owner = fields.Str(attribute='repo.owner', dump_only=True)
     name = fields.Str(attribute='repo.name', dump_only=True)
