@@ -29,9 +29,10 @@ import tarfile
 from invenio_files_rest.models import ObjectVersion
 
 import responses
+from mock import Mock, patch
+
 from cap.modules.repos.github_api import Github
 from cap.modules.repos.models import GitSnapshot
-from mock import Mock, patch
 
 ping_headers = {
     "Content-Type": "application/json",
@@ -303,9 +304,8 @@ def test_get_webhook_event_view_when_ping(client):
 
 @responses.activate
 @patch.object(Github, 'get_repo')
-def test_get_webhook_event_view_when_push_event(m_get_repo, deposit, client,
-                                                github_push_webhook_sub,
-                                                git_repo_tar):
+def test_get_webhook_event_view_when_push_event(
+        m_get_repo, deposit, client, github_push_webhook_sub, git_repo_tar):
     class MockProject(object):
         def get_branch(self, name):
             mock = Mock()
@@ -351,7 +351,6 @@ def test_get_webhook_event_view_when_push_event(m_get_repo, deposit, client,
     assert repo_content == b'test repo for cap\n'
 
     snapshot = GitSnapshot.query.one()
-    print(snapshot.payload)
     assert snapshot.payload == {
         'link': 'https://github.com/owner/repo/commit/91fa363a384d5b4ac14b469847fdcb119112f139',
         'event_type': 'push',
@@ -363,11 +362,7 @@ def test_get_webhook_event_view_when_push_event(m_get_repo, deposit, client,
             'modified': ['dir/a.txt']
         }],
         'branch': 'mybranch',
-        'release': None,
-        'author': {
-            'name': 'owner',
-            'id': 1
-        }
+        'author': {'name': 'owner', 'id': 1}
     }
 
 
@@ -425,9 +420,7 @@ def test_get_webhook_event_view_when_release_event(m_get_repo, deposit, client,
 
     snapshot = GitSnapshot.query.one()
     assert snapshot.payload == {
-        'branch': None,
         'event_type': 'release',
-        'commit': None,
         'author': {
             'name': 'owner',
             'id': 1
@@ -437,4 +430,19 @@ def test_get_webhook_event_view_when_release_event(m_get_repo, deposit, client,
             'tag': 'v1.0.0',
             'name': 'test release 1'
         }
+    }
+
+
+def test_get_webhook_event_view_when_push_event_has_no_commits_throws_400(
+        deposit, client, github_push_webhook_sub, git_repo_tar):
+
+    push_payload_without_urls['commits'] = []
+    resp = client.post('/repos/event',
+                       headers=push_headers,
+                       data=json.dumps(push_payload_without_urls))
+
+    assert resp.status_code == 400
+    assert resp.json == {
+        'message': 'Server was unable to serialize this request',
+        'status': 400
     }
