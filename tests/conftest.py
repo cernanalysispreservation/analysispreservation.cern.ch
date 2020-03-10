@@ -376,7 +376,11 @@ def create_deposit(app, db, es, location, create_schema):
 @pytest.fixture
 def deposit(example_user, create_deposit):
     """New deposit with files."""
-    return create_deposit(example_user, 'cms-analysis')
+    return create_deposit(
+        example_user,
+        'cms-analysis',
+        experiment='CMS',
+    )
 
 
 @pytest.fixture

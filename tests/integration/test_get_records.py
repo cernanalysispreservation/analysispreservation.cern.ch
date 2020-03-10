@@ -458,3 +458,24 @@ def test_get_record_with_form_json_serializer_check_other_user_can_admin(
     assert resp.json['is_owner'] is False
     assert resp.json['can_update'] is True
     assert 'cms_user2@cern.ch' in resp.json['access']['record-admin']['users']
+
+
+def test_get_record_when_user_has_no_access_to_schema_can_still_see_record_that_got_access_to(
+    client, users, auth_headers_for_user, deposit):
+    other_user = users['lhcb_user2']
+
+    permissions = [{
+        'email': other_user.email,
+        'type': 'user',
+        'op': 'add',
+        'action': 'deposit-read'
+    }]
+    deposit.edit_permissions(permissions)
+    deposit.publish()
+    pid = deposit['control_number']
+
+    resp = client.get(f'/records/{pid}',
+                      headers=auth_headers_for_user(other_user) +
+                      [('Accept', 'application/form+json')])
+
+    assert resp.status_code == 200
