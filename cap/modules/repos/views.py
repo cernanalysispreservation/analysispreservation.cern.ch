@@ -45,7 +45,7 @@ def get_webhook_event():
     payload = request.get_json()
     payload.update(request.headers)  # info about type of event inside headers
 
-    serializer = payload_serializer_factory()
+    serializer = payload_serializer_factory(payload)
     if not serializer:
         abort(403)
 
@@ -59,7 +59,7 @@ def get_webhook_event():
 
     try:
         webhook = GitWebhook.query.filter_by(
-            branch=data['branch'],
+            branch=data.get('branch'),
             event_type=data["event_type"],
         ).join(GitWebhook.repo).filter_by(
             external_id=data.pop('repo_id'),

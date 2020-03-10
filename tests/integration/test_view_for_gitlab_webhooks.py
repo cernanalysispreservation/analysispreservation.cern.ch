@@ -29,6 +29,7 @@ import tarfile
 import responses
 from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
+from pytest import mark
 
 from cap.modules.repos.models import GitSnapshot
 
@@ -175,8 +176,7 @@ tag_push_payload_shortened = {
 @responses.activate
 @patch('cap.modules.repos.gitlab_api.Gitlab')
 def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
-                                                gitlab_push_webhook_sub,
-                                                git_repo_tar):
+                                                gitlab_push_webhook_sub, git_repo_tar):
     class MockBranchManager:
         def get(self, name):
             m = Mock(commit=dict(id='mybranchsha'))
@@ -218,7 +218,6 @@ def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
     assert repo_content == b'test repo for cap\n'
 
     snapshot = GitSnapshot.query.one()
-
     assert snapshot.payload == {
         'branch': 'mybranch',
         'link': 'https://gitlab.cern.ch/owner_name/myrepository/-/commit/87735e015e2b4faf60415833478dacd3174b2d1c',
@@ -242,7 +241,6 @@ def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
             'removed': [],
             'modified': []
         }],
-        'release': None,
         'author': {
             'name': 'owner_name',
             'id': 1
@@ -298,8 +296,6 @@ def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
     snapshot = GitSnapshot.query.one()
 
     assert snapshot.payload == {
-        'branch': None,
-        'commit': None,
         'event_type': 'release',
         'author': {
             'name': 'owner_name',
