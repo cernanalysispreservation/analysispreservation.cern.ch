@@ -45,14 +45,16 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
-from cap.modules.deposit.errors import FileUploadError
+from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import DepositValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
+from cap.modules.repos.models import GitWebhook, GitWebhookSubscriber
 from cap.modules.repos.tasks import download_repo, download_repo_file
-from cap.modules.repos.utils import create_webhook, parse_git_url
+from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
+                                     parse_git_url)
 from cap.modules.schemas.resolvers import (resolve_schema_by_url,
                                            schema_name_to_url)
 from cap.modules.user.errors import DoesNotExistInLDAP
@@ -212,7 +214,7 @@ class CAPDeposit(Deposit):
 
     @has_status
     @mark_as_action
-    def upload(self, pid=None, *args, **kwargs):
+    def upload(self, pid, *args, **kwargs):
         """Upload action for repostiories.
 
         Can upload a repository or its single file and/or create a webhook.
@@ -232,7 +234,7 @@ class CAPDeposit(Deposit):
                 try:
                     url = data['url']
                 except KeyError:
-                    raise FileUploadError(f'Missing url parameter.')
+                    raise FileUploadError('Missing url parameter.')
 
                 try:
                     host, owner, repo, branch, filepath = parse_git_url(url)
@@ -273,6 +275,28 @@ class CAPDeposit(Deposit):
 
                 except GitError as e:
                     raise FileUploadError(str(e))
+
+            return self
+
+    @has_status
+    @mark_as_action
+    def disconnect_webhook(self, pid, *args, **kwargs):
+        """Disconnect webhook for repostiories.
+
+        Expects json with subscriber id as a param:
+        """
+        with UpdateDepositPermission(self).require(403):
+            try:
+                data = request.get_json()
+                sub_id = data['subscriber_id']
+            except KeyError:
+                raise DisconnectWebhookError('Missing subscriber_id parameter')
+
+            try:
+                disconnect_subscriber(sub_id)
+            except NoResultFound:
+                raise DisconnectWebhookError(
+                    'This webhook was not registered with analysis.')
 
             return self
 

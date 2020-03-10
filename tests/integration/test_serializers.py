@@ -114,6 +114,8 @@ def test_get_deposit_with_default_serializer(client, users,
             .format(depid),
             'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
             .format(depid),
+            'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'
+            .format(depid),
             'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
             .format(depid),
             'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
@@ -210,15 +212,18 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
     }
 
 
-def test_webhook_serializer_on_deposits(client, example_user, auth_headers_for_example_user,
-                                        deposit, github_push_webhook_sub):
-    headers = [('Accept', 'application/repositories+json')] + auth_headers_for_example_user
+def test_webhook_serializer_on_deposits(client, example_user,
+                                        auth_headers_for_example_user, deposit,
+                                        github_push_webhook_sub):
+    headers = [('Accept', 'application/repositories+json')
+               ] + auth_headers_for_example_user
     pid = deposit['_deposit']['id']
     resp = client.get(f'/deposits/{pid}', headers=headers)
 
     assert resp.status_code == 200
     assert resp.json == {
         'webhooks': [{
+            'id': github_push_webhook_sub.id,
             'branch': 'mybranch',
             'event_type': 'push',
             'host': 'github.com',

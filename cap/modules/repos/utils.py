@@ -137,3 +137,9 @@ def generate_secret():
     """Create a random string to be used as a secret token for webhooks."""
     chars = string.ascii_lowercase + string.digits
     return ''.join(random.choice(chars) for i in range(32))
+
+
+def disconnect_subscriber(sub_id):
+    sub = GitWebhookSubscriber.query.filter_by(id=sub_id).one()
+    sub.status = 'deleted'
+    db.session.commit()

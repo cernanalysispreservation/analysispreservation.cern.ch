@@ -69,15 +69,14 @@ def get_webhook_event():
         abort(404, 'This webhook was not registered in our system.')
 
     snapshot = GitSnapshot(payload=data, webhook_id=webhook.id)
+    active_subs = [
+        sub for sub in webhook.subscribers if sub.status == 'active'
+    ]
 
-    for subscriber in webhook.subscribers:
-        api = create_git_api(
-            webhook.repo.host,
-            webhook.repo.owner,
-            webhook.repo.name,
-            webhook.branch,
-            subscriber.user_id,
-        )
+    for subscriber in active_subs:
+        api = create_git_api(webhook.repo.host, webhook.repo.owner,
+                             webhook.repo.name, webhook.branch,
+                             subscriber.user_id)
         try:
             api.verify_request(webhook.secret)
         except GitRequestWithInvalidSignature:

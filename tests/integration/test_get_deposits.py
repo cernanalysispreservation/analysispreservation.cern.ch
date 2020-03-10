@@ -306,6 +306,8 @@ def test_get_deposit_with_default_serializer(client, users,
             .format(depid),
             'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
             .format(depid),
+            'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'
+            .format(depid),
             'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
             .format(depid),
             'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
@@ -560,6 +562,7 @@ def test_get_deposit_with_form_json_serializer(
             'bucket': f'http://analysispreservation.cern.ch/api/files/{str(file.bucket)}',
             'clone': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/clone',
             'discard': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/discard',
+            'disconnect_webhook': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/disconnect_webhook',
             'edit': f'http://analysispreservation.cern.ch/api/deposits/{pid}/actions/edit',
             'files': f'http://analysispreservation.cern.ch/api/deposits/{pid}/files',
             'html': f'http://analysispreservation.cern.ch/drafts/{pid}',

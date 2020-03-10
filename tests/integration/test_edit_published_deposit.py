@@ -111,6 +111,8 @@ def test_edit_record(client, create_deposit, superuser,
             .format(depid),
             'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
             .format(depid),
+            'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'
+            .format(depid),
             'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
             .format(depid),
             'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'

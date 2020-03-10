@@ -128,7 +128,8 @@ class GitWebhookSubscriber(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    status = db.Column(db.Enum('active', 'deleted', name='git_webhook_status'),
+    status = db.Column(db.Enum('active', 'deleted',
+                               name='git_webhook_status'),
                        nullable=False,
                        default='active')
 

@@ -85,3 +85,15 @@ class FileUploadError(RESTException):
         super(FileUploadError, self).__init__(**kwargs)
 
         self.description = description or self.description
+
+
+class DisconnectWebhookError(RESTException):
+    """Exception during disconnecting webhook for analysis."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super().__init__(**kwargs)
+
+        self.description = description or 'Error during disconnecting webhook.'
