@@ -29,7 +29,6 @@ import json
 import tarfile
 
 import responses
-from flask import current_app
 from github import GithubException
 from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
@@ -379,15 +378,8 @@ def test_upload_when_repo_and_creating_push_webhook(
 
     assert resp.status_code == 201
 
-    # repo tar was saved
-    obj = ObjectVersion.get(
-        deposit.files.bucket.id,
-        'repositories/github.com/owner/repository/def-branch.tar.gz')
-    tar_obj = tarfile.open(obj.file.uri)
-    repo_file_name = tar_obj.getmembers()[1]
-    repo_content = tar_obj.extractfile(repo_file_name).read()
-
-    assert repo_content == b'test repo for cap\n'
+    # no file was saved
+    assert not deposit.files
 
     # webhook was created
     sub = GitWebhookSubscriber.query.filter_by(record_id=deposit.id).one()
