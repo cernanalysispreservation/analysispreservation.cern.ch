@@ -240,32 +240,31 @@ class CAPDeposit(Deposit):
                                          current_user.id)
 
                     if filepath:
+                        if webhook:
+                            raise FileUploadError(
+                                'You cannot create a webhook on a file')
+
                         download_repo_file(
                             record_uuid,
                             f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}/{filepath}',  # noqa
                             *api.get_file_download(filepath),
                             api.auth_headers,
                         )
-                    else:
-                        if webhook:
-                            # TOFIX create serializer
-                            if event_type == 'release':
-                                if branch:
-                                    raise FileUploadError(
-                                        'You cannot create a release webhook'
-                                        ' for a specific branch or sha.')
-
-                                create_webhook(record_uuid, api, event_type)
-                                return self
-
-                            if event_type == 'push' and \
-                                    api.branch is None and api.sha:
+                    elif webhook:
+                        if event_type == 'release':
+                            if branch:
                                 raise FileUploadError(
-                                    'You cannot create a push webhook'
-                                    ' for a specific sha.')
+                                    'You cannot create a release webhook'
+                                    ' for a specific branch or sha.')
 
-                            create_webhook(record_uuid, api, event_type)
+                        if event_type == 'push' and \
+                                api.branch is None and api.sha:
+                            raise FileUploadError(
+                                'You cannot create a push webhook'
+                                ' for a specific sha.')
 
+                        create_webhook(record_uuid, api, event_type)
+                    else:
                         download_repo.delay(
                             record_uuid,
                             f'repositories/{host}/{owner}/{repo}/{api.branch or api.sha}.tar.gz',  # noqa
