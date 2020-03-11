@@ -103,7 +103,7 @@ class DraftIntegrations extends React.Component {
                             pad={{ between: "small" }}
                           >
                             <strong>
-                              {snapshot.payload.release !== null
+                              {"release" in snapshot.payload
                                 ? snapshot.payload.release.tag
                                 : snapshot.payload.commit.slice(-1)[0].message}
                             </strong>
@@ -115,7 +115,7 @@ class DraftIntegrations extends React.Component {
                             pad={{ between: "small" }}
                           >
                             <strong>
-                              {snapshot.payload.release !== null
+                              {"release" in snapshot.payload
                                 ? snapshot.payload.release.name
                                 : null}
                             </strong>
