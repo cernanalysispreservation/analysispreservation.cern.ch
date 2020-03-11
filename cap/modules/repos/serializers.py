@@ -70,9 +70,14 @@ class GitHubPushPayloadSchema(GitHubPayloadSchema):
 
 class GitHubReleasePayloadSchema(GitHubPayloadSchema):
     """Serializer for a GitHub webhook payload, from a `release` event."""
-    event_type = fields.Str(default='release', dump_only=True)
+    event_type = fields.Method('get_event', dump_only=True)
     release = fields.Method('get_release', dump_only=True)
     link = fields.Method('get_link', dump_only=True)
+
+    def get_event(self, obj):
+        if obj['action'] != 'released':
+            raise ValueError('This event not supported')
+        return 'release'
 
     def get_release(self, obj):
         """Release-event-specific information."""
