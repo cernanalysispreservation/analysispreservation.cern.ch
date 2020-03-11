@@ -29,6 +29,7 @@ from datetime import datetime
 
 from invenio_accounts.models import User
 from invenio_db import db
+from invenio_files_rest.models import ObjectVersion
 from invenio_records.models import RecordMetadata
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy_utils.types import UUIDType
@@ -154,3 +155,9 @@ class GitWebhookSubscriber(db.Model):
     @property
     def repo(self):
         return self.webhook.repo
+
+
+ObjectVersion.snapshot_id = db.Column(db.Integer,
+                                      db.ForeignKey(GitSnapshot.id),
+                                      nullable=True)
+ObjectVersion.snapshot = db.relationship(GitSnapshot, backref='files')

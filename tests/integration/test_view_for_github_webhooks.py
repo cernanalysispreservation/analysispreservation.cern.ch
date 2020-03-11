@@ -351,6 +351,7 @@ def test_get_webhook_event_view_when_push_event(
     assert repo_content == b'test repo for cap\n'
 
     snapshot = github_push_webhook_sub.snapshots[0]
+    assert obj.snapshot_id == snapshot.id
     assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'link': 'https://github.com/owner/repo/commit/91fa363a384d5b4ac14b469847fdcb119112f139',
@@ -420,6 +421,7 @@ def test_get_webhook_event_view_when_release_event(m_get_repo, deposit, client,
     assert repo_content == b'test repo for cap\n'
 
     snapshot = github_release_webhook_sub.snapshots[0]
+    assert obj.snapshot_id == snapshot.id
     assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'event_type': 'release',

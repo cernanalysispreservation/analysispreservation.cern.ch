@@ -71,9 +71,13 @@ def get_webhook_event():
     snapshot = GitSnapshot(payload=data, webhook_id=webhook.id)
 
     for subscriber in webhook.subscribers:
-        api = create_git_api(webhook.repo.host, webhook.repo.owner,
-                             webhook.repo.name, webhook.branch,
-                             subscriber.user_id)
+        api = create_git_api(
+            webhook.repo.host,
+            webhook.repo.owner,
+            webhook.repo.name,
+            webhook.branch,
+            subscriber.user_id,
+        )
         try:
             api.verify_request(webhook.secret)
         except GitRequestWithInvalidSignature:
@@ -84,14 +88,15 @@ def get_webhook_event():
         else:
             path = f'repositories/{api.host}/{api.owner}/{api.repo}.tar.gz'
 
+        subscriber.snapshots.append(snapshot)
+        db.session.commit()
+
         download_repo.delay(
             str(subscriber.record_id),
             path,
             api.get_repo_download(),
             api.auth_headers,
+            snapshot.id,
         )
-
-        subscriber.snapshots.append(snapshot)
-        db.session.commit()
 
     return jsonify({'message': 'Snapshot of repository was saved.'})

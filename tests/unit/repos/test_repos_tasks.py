@@ -5,7 +5,7 @@ from invenio_files_rest.models import ObjectVersion
 from mock import Mock, patch
 
 from cap.modules.repos.errors import GitObjectNotFound
-from cap.modules.repos.models import GitWebhookSubscriber
+from cap.modules.repos.models import GitSnapshot, GitWebhookSubscriber
 from cap.modules.repos.tasks import (download_repo, download_repo_file,
                                      ping_webhooks)
 
@@ -164,6 +164,48 @@ def test_download_repo(deposit, git_repo_tar):
     obj = ObjectVersion.get(
         deposit.files.bucket.id,
         'repositories/github.com/owner/repository/mybranch.tar.gz')
+    tar_obj = tarfile.open(obj.file.uri)
+    repo_file_name = tar_obj.getmembers()[1]
+    repo_content = tar_obj.extractfile(repo_file_name).read()
+
+    assert repo_content == b'test repo for cap\n'
+
+
+@responses.activate
+def test_download_repo_from_snapshot(db, deposit, git_repo_tar,
+                                     github_release_webhook):
+
+    snapshot = GitSnapshot(payload={}, webhook_id=github_release_webhook.id)
+    db.session.commit()
+
+    responses.add(
+        responses.GET,
+        'https://codeload.github.com/owner/repository/legacy.tar.gz/mybranchsha',
+        body=git_repo_tar,
+        content_type='application/x-gzip',
+        headers={
+            'Transfer-Encoding': 'chunked',
+            'Content-Length': '287'
+        },
+        stream=True,
+        status=200)
+
+    download_repo(
+        deposit.id,
+        'repositories/github.com/owner/repository/mybranch.tar.gz',
+        'https://codeload.github.com/owner/repository/legacy.tar.gz/mybranchsha',  # noqa
+        {'Authorization': 'token mysecretsecret'},
+        snapshot.id)
+
+    assert responses.calls[0].request.headers[
+        'Authorization'] == 'token mysecretsecret'
+
+    obj = ObjectVersion.get(
+        deposit.files.bucket.id,
+        'repositories/github.com/owner/repository/mybranch.tar.gz')
+
+    assert obj.snapshot_id == snapshot.id
+
     tar_obj = tarfile.open(obj.file.uri)
     repo_file_name = tar_obj.getmembers()[1]
     repo_content = tar_obj.extractfile(repo_file_name).read()
