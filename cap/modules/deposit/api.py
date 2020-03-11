@@ -554,6 +554,8 @@ class CAPDeposit(Deposit):
         self.files.flush()
         db.session.commit()
 
+        return obj
+
     @classmethod
     def get_record(cls, id_, with_deleted=False):
         """Get record instance."""

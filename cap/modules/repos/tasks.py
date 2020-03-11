@@ -40,7 +40,11 @@ from .utils import ensure_content_length
                  'max_retries': 5,
                  'countdown': 10
              })
-def download_repo(record_id, filename, download_url, auth_headers=None):
+def download_repo(record_id,
+                  filename,
+                  download_url,
+                  auth_headers=None,
+                  from_snapshot_id=None):
     """Download a repository as a .tar file under record files."""
     response = requests.get(download_url, stream=True, headers=auth_headers)
 
@@ -61,7 +65,11 @@ def download_repo(record_id, filename, download_url, auth_headers=None):
         print(f'Downloading content from {download_url}'
               f'failed ({response.status}).')
 
-    record.save_file(response, filename, size, failed)
+    obj_ver = record.save_file(response, filename, size, failed)
+
+    if from_snapshot_id:
+        obj_ver.snapshot_id = from_snapshot_id
+        db.session.commit()
 
 
 @shared_task(autoretry_for=(Exception, ),

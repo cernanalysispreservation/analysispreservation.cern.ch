@@ -218,6 +218,7 @@ def test_get_webhook_event_view_when_push_event(m_gitlab, deposit, client,
     assert repo_content == b'test repo for cap\n'
 
     snapshot = gitlab_push_webhook_sub.snapshots[0]
+    assert obj.snapshot_id == snapshot.id
     assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'branch': 'mybranch',
@@ -295,6 +296,7 @@ def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
     assert repo_content == b'test repo for cap\n'
 
     snapshot = gitlab_release_webhook_sub.snapshots[0]
+    assert obj.snapshot_id == snapshot.id
     assert GitSnapshot.query.count() == 1
     assert snapshot.payload == {
         'event_type': 'release',
