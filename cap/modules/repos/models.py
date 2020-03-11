@@ -150,6 +150,7 @@ class GitWebhookSubscriber(db.Model):
     user = db.relationship(User)
 
     snapshots = db.relationship(GitSnapshot,
+                                order_by="desc(GitSnapshot.created)",
                                 secondary='git_subscriber_snapshots')
 
     @property

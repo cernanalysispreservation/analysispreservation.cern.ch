@@ -473,18 +473,33 @@ def test_get_deposit_with_form_json_serializer(
         'release': {
             'tag': 'v1.0.0',
             'name': 'test release 1'
-        }}
+        }
+    }
+    snapshot_payload2 = {
+        'event_type': 'release',
+        'branch': None,
+        'author': {
+            'name': 'owner',
+            'id': 1
+        },
+        'link': 'https://github.com/owner/test/releases/tag/v2.0.0',
+        'release': {
+            'tag': 'v2.0.0',
+            'name': 'test release 2'
+        }
+    }
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
                                       user_id=example_user.id)
     github_release_webhook.subscribers.append(subscriber)
 
     snapshot = GitSnapshot(payload=snapshot_payload)
+    snapshot2 = GitSnapshot(payload=snapshot_payload2)
     github_release_webhook.snapshots.append(snapshot)
+    github_release_webhook.snapshots.append(snapshot2)
     subscriber.snapshots.append(snapshot)
+    subscriber.snapshots.append(snapshot2)
     db.session.commit()
 
-    # get the deposit
-    #################
     pid = deposit['_deposit']['id']
     metadata = deposit.get_record_metadata()
     file = deposit.files['readme']
@@ -558,7 +573,12 @@ def test_get_deposit_with_form_json_serializer(
             'name': 'repository',
             'owner': 'owner',
             'snapshots': [{
-                'created': snapshot.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'created': snapshot2.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
+                'payload': snapshot_payload2
+            }, {
+                'created': snapshot.created.strftime(
+                    '%Y-%m-%dT%H:%M:%S.%f+00:00'),
                 'payload': snapshot_payload
             }]
         }]
