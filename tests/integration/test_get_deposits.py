@@ -476,10 +476,11 @@ def test_get_deposit_with_form_json_serializer(
         }}
     subscriber = GitWebhookSubscriber(record_id=deposit.id,
                                       user_id=example_user.id)
-    snapshot = GitSnapshot(payload=snapshot_payload)
-
-    github_release_webhook.snapshots.append(snapshot)
     github_release_webhook.subscribers.append(subscriber)
+
+    snapshot = GitSnapshot(payload=snapshot_payload)
+    github_release_webhook.snapshots.append(snapshot)
+    subscriber.snapshots.append(snapshot)
     db.session.commit()
 
     # get the deposit
