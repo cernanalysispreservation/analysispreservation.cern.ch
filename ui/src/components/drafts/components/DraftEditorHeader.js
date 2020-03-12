@@ -1,9 +1,8 @@
 import React from "react";
-import PropTypes, { oneOfType } from "prop-types";
+import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 import cogoToast from "cogo-toast";
-import _isEmpty from "lodash/isEmpty";
 
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
@@ -17,11 +16,11 @@ import {
   updateDraft,
   editPublished,
   toggleActionsLayer
-  // togglePreviewer
 } from "../../../actions/draftItem";
 import { withRouter } from "react-router";
 
 class DraftEditorHeader extends React.Component {
+  // checks if the value is empty undefined or null
   isEmptyValues = value => {
     if (typeof value === "string") {
       return value.trim().length === 0;
@@ -33,6 +32,9 @@ class DraftEditorHeader extends React.Component {
     return value.length === 0;
   };
 
+  // itertate through object values
+  // if the value is not Object it calls isEmptyValues
+  // if the values is an Object then recursive calls
   isObjectEmpty = (obj, arr) => {
     if (typeof obj !== "object") {
       this.isEmptyValues(obj) ? null : arr.push(obj);
@@ -54,22 +56,21 @@ class DraftEditorHeader extends React.Component {
     }
   };
 
+  //checks if the formData Object is an empty Object
+  // by going through the data values and calling the isObjectEmpty for each of them
+  _checkIfEmpty = data => {
+    let emptyValuesArray = [];
+    Object.values(data).map(item => {
+      this.isObjectEmpty(item, emptyValuesArray);
+    });
+    return emptyValuesArray.length === 0;
+  };
+
   _validateFormData = () => {
     // TOFIX maybe fetch formData from store instead of ref
     const formData = this.props.formRef.current
       ? this.props.formRef.current.props.formData
       : null;
-
-    // let {
-    //   "current": {
-    //     props: {
-    //       "formData": formData = null,
-    //     } = {},
-    //     "validate": validate = null
-    //   } = {}
-    // } =  this.props.formRef;
-
-    // const { errors = []} = this.props.formRef.current && this.props.formRef.current.validate(formData);
 
     const { errors = [] } = this.props.formRef.current.validate(formData);
 
@@ -88,15 +89,9 @@ class DraftEditorHeader extends React.Component {
     // remove the general_title from the form validation
     delete formData.general_title;
 
-    // consider that the form is firstly empty
-    // iterate through children to check if there empty
-    // if a children is an object then iterate through all the children
-    let emptyValuesArray = [];
-    Object.values(formData).map(item => {
-      this.isObjectEmpty(item, emptyValuesArray);
-    });
-
-    if (emptyValuesArray.length === 0) {
+    // if the form is empty display warning and return false
+    // if not save it
+    if (this._checkIfEmpty(formData)) {
       cogoToast.warn(
         "Please add some content first, and try again saving again",
         {
@@ -106,6 +101,7 @@ class DraftEditorHeader extends React.Component {
           hideAfter: 3
         }
       );
+      this.setState({ approved: false });
       return false;
     } else {
       return true;
@@ -147,17 +143,6 @@ class DraftEditorHeader extends React.Component {
   };
 
   render() {
-    // let status = this.props.status;
-
-    // let isDraft = status == "draft" ? true : false;
-    // let isPublishedOnce = this.props.recid ? true : false;
-
-    // ******** NEEDED
-    // if (
-    //   (this.props.errors && this.props.error.status == 403) ||
-    //   (this.props.schemaError && this.props.schemaError.status == 403)
-    // )
-    //   return null;
     if (this.props.schemaErrors.length > 0) {
       return null;
     }
@@ -195,12 +180,6 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-              {/*
-                isDraft && isPublishedOnce ? (
-                  <DiscardAnchor action={this._actionHandler("discard")} />
-                ) : null
-              */}
-
               <SaveAnchor action={this._saveData.bind(this)} />
             </Menu>
           )}
