@@ -126,8 +126,15 @@ class TextWidget extends Component {
 
     if (!event.target.value) return;
 
-    this.setState({ showSpinner: true, error: null });
+    fieldsMap.map(el => {
+      let destination = el[1];
 
+      // replace # with current path
+      destination = this._replace_hash_with_current_indexes(destination);
+      formData = formData.setIn(destination, undefined);
+    });
+
+    this.setState({ showSpinner: true, error: null });
     axios
       .get(`${url}${event.target.value}`)
       .then(({ data }) => {
@@ -139,10 +146,10 @@ class TextWidget extends Component {
 
             // replace # with current path
             destination = this._replace_hash_with_current_indexes(destination);
-
             formData = formData.setIn(destination, _data.getIn(source));
           });
           this.setState({ showSpinner: false });
+
           this.props.formDataChange(formData.toJS());
         }
       })
