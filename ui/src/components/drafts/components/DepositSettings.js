@@ -75,6 +75,12 @@ class DepositSettings extends React.Component {
               </Box>
               <Box align="center" pad={{ horizontal: "small" }} margin="small">
                 <Anchor
+                  data-tip={
+                    this.props.canUpdate
+                      ? null
+                      : "your account has no permissions to publish"
+                  }
+                  disabled={!this.props.canUpdate}
                   icon={<AnnounceIcon size="xsmall" />}
                   onClick={isDraft ? this.props.publishDraft : null}
                   label={
@@ -107,13 +113,15 @@ DepositSettings.propTypes = {
   permissions: PropTypes.array,
   publishDraft: PropTypes.func,
   status: PropTypes.string,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  canUpdate: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     recid: state.draftItem.get("recid"),
-    status: state.draftItem.get("status")
+    status: state.draftItem.get("status"),
+    canUpdate: state.draftItem.get("can_update")
   };
 }
 
