@@ -41,8 +41,13 @@ class DraftsItemIndex extends React.Component {
     let isPublishedOnce = this.props.recid ? true : false;
 
     return (
-      <Box flex={false} colorIndex="light-2" justify="between">
-        <Box>
+      <Box
+        flex={false}
+        colorIndex="light-2"
+        justify="between"
+        className="md-row"
+      >
+        <Box className="md-row" flex>
           <ReactTooltip />
           <Anchor path={`/drafts/${draft_id}/edit`} data-tip="Edit metadata">
             <Box
@@ -123,6 +128,7 @@ class DraftsItemIndex extends React.Component {
             </Box>
           </Anchor>
         </Box>
+
         {isDraft && !isPublishedOnce ? (
           <Anchor
             icon={<TrashIcon />}
