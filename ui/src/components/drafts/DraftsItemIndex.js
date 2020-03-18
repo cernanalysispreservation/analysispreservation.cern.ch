@@ -18,6 +18,7 @@ import DraftEditor from "./DraftEditor";
 import Sidebar from "./components/DepositSidebar";
 
 import PermissionDenied from "../errors/403";
+import Responsive from "grommet/utils/Responsive";
 
 // Actions
 import { getDraftByIdAndInitForm } from "../../actions/draftItem";
@@ -27,18 +28,31 @@ import DraftsItemNav from "./DraftsItemNav";
 class DraftsItemIndex extends React.Component {
   constructor(props) {
     super(props);
+    this._onResponsive = this._onResponsive.bind(this);
+    this.state = {
+      small: false
+    };
 
     // Create the ref for the form
     this.formRef = React.createRef();
   }
 
   componentDidMount() {
+    this._responsive = Responsive.start(this._onResponsive);
+
     let { draft_id } = this.props.match.params;
 
     if (draft_id == this.props.id) return;
     if (draft_id) {
       this.props.getDraftById(draft_id);
     }
+  }
+  componentWillUnmount() {
+    this._responsive.stop();
+  }
+
+  _onResponsive(small) {
+    this.setState({ small });
   }
 
   render() {
@@ -56,7 +70,7 @@ class DraftsItemIndex extends React.Component {
       <Box flex={true} wrap={false} colorIndex="grey-3">
         <DraftHeader formRef={this.formRef} />
         <Box flex={true} direction="row">
-          <DraftsItemNav />
+          <DraftsItemNav small={this.state.small} />
 
           <Box flex={true} direction="row">
             <Box flex={true} colorIndex="light-1" style={{ margin: "5px" }}>

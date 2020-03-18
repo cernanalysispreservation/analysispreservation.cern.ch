@@ -22,6 +22,9 @@ import {
 import ShareIcon from "grommet/components/icons/base/Share";
 
 class DraftsItemIndex extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   componentDidMount() {
     let { draft_id } = this.props.match.params;
 
@@ -42,7 +45,11 @@ class DraftsItemIndex extends React.Component {
 
     return (
       <Box flex={false} colorIndex="light-2" justify="between">
-        <Box>
+        <Box
+          direction={this.props.small ? "row" : "column"}
+          responsive={false}
+          justify="around"
+        >
           <ReactTooltip />
           <Anchor path={`/drafts/${draft_id}/edit`} data-tip="Edit metadata">
             <Box
@@ -123,13 +130,15 @@ class DraftsItemIndex extends React.Component {
             </Box>
           </Anchor>
         </Box>
-        {isDraft && !isPublishedOnce ? (
-          <Anchor
-            icon={<TrashIcon />}
-            onClick={this._actionHandler("delete")}
-            data-tip="Delete your analysis"
-          />
-        ) : null}
+        <Box align="center">
+          {isDraft && !isPublishedOnce ? (
+            <Anchor
+              icon={<TrashIcon />}
+              onClick={this._actionHandler("delete")}
+              data-tip="Delete your analysis"
+            />
+          ) : null}
+        </Box>
       </Box>
     );
   }
@@ -144,7 +153,8 @@ DraftsItemIndex.propTypes = {
   draft_id: PropTypes.string,
   id: PropTypes.string,
   toggleActionsLayer: PropTypes.func,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  small: PropTypes.bool
 };
 
 function mapStateToProps(state) {
