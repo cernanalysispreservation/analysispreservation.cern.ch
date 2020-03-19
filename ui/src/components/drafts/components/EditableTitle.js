@@ -66,7 +66,14 @@ class EditableTitle extends React.Component {
   render() {
     let { general_title } = this.props.metadata;
     return this.state.editTitle ? (
-      <Box flex={true} direction="row" wrap={false} pad="none">
+      <Box
+        flex={true}
+        direction="row"
+        wrap={false}
+        pad="none"
+        responsive={false}
+        className="jst-md-center"
+      >
         <Label margin="none" direction="row">
           <input
             key="draft-input"
@@ -75,7 +82,7 @@ class EditableTitle extends React.Component {
             value={this.state.titleValue}
           />
         </Label>
-        <Box margin="none" direction="row" align="center">
+        <Box margin="none" direction="row" align="center" responsive={false}>
           <Box
             pad={{ horizontal: "small" }}
             margin="none"
@@ -91,6 +98,7 @@ class EditableTitle extends React.Component {
     ) : (
       <Box flex={true} direction="row" wrap={false}>
         <Box
+          align="center"
           key="draft-title"
           onMouseEnter={this._hoverIn}
           onMouseLeave={this._hoverOut}

@@ -83,6 +83,9 @@ label {
     justify-content: space-around;
     align-items: center;
   }
+  .jst-md-center {
+    justify-content: center;
+  }
 }
 // small
 @media only screen and (min-width: 580px) {
@@ -91,6 +94,9 @@ label {
 @media only screen and (min-width: 720px) {
   .md-row {
     flex-direction: column !important;
+    justify-content: flex-start;
+  }
+  .jst-md-center {
     justify-content: flex-start;
   }
 }
