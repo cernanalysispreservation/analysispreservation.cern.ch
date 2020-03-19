@@ -42,7 +42,7 @@ class DraftsItemIndex extends React.Component {
   }
 
   render() {
-    if (this.props.errors && this.props.errors.status == 403)
+    if (this.props.errors && [403, 404].indexOf(this.props.errors.status) > -1)
       return (
         <PermissionDenied
           status={this.props.errors.status}
