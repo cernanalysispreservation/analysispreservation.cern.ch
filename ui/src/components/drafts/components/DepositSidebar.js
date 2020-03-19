@@ -54,22 +54,27 @@ class DepositSidebar extends React.Component {
               wrap={false}
               justify="between"
               margin={{ bottom: "small" }}
+              responsive={false}
             >
               ID <span>{this.props.id}</span>
             </Box>
+
             <Box
               direction="row"
               wrap={false}
               justify="between"
               margin={{ bottom: "small" }}
+              responsive={false}
             >
               Status <span>{this.props.status}</span>
             </Box>
+
             <Box
               direction="row"
               wrap={false}
               justify="between"
               margin={{ bottom: "small" }}
+              responsive={false}
             >
               Creator <span>{this.props.created_by}</span>
             </Box>
@@ -78,13 +83,19 @@ class DepositSidebar extends React.Component {
               wrap={false}
               justify="between"
               margin={{ bottom: "small" }}
+              responsive={false}
             >
               Created:{" "}
               <strong>
                 <TimeAgo date={this.props.created} minPeriod="60" />
               </strong>
             </Box>
-            <Box direction="row" wrap={false} justify="between">
+            <Box
+              direction="row"
+              wrap={false}
+              justify="between"
+              responsive={false}
+            >
               Last Updated:{" "}
               <strong>
                 <TimeAgo date={this.props.updated} minPeriod="60" />
