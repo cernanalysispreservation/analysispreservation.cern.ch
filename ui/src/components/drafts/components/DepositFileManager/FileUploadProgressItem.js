@@ -20,11 +20,18 @@ class FileUploadProgressItem extends React.Component {
         justify="between"
         separator="all"
         pad={{ between: "small" }}
+        responsive={false}
       >
         <Box flex={true}>{this.props.file.key}</Box>
         <Box flex={false}>
           {_progress == 100 ? (
-            <Box flex={false} direction="row" wrap={false} align="center">
+            <Box
+              flex={false}
+              direction="row"
+              wrap={false}
+              align="center"
+              responsive={false}
+            >
               <span style={{ paddingRight: "5px" }}>File uploaded</span>
               <Status value="ok" size="xsmall" />
             </Box>
