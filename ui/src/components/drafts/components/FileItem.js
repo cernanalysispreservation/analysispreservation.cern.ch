@@ -126,8 +126,13 @@ class FileItem extends React.Component {
         onMouseOver={() => this._toggleHover(true)}
         onMouseLeave={() => this._toggleHover(false)}
       >
-        <Box direction="row" flex={true} wrap={false}>
-          <Box direction="row" flex={true} onClick={this.props.action}>
+        <Box direction="row" flex={true} wrap={false} responsive={false}>
+          <Box
+            direction="row"
+            flex={true}
+            onClick={this.props.action}
+            responsive={false}
+          >
             <Box justify="center">{this._getIcon(file.mimetype)}</Box>
             <Box
               justify="center"
@@ -146,7 +151,13 @@ class FileItem extends React.Component {
             </Box>
           </Box>
 
-          <Box flex={false} direction="row" justify="end" align="center">
+          <Box
+            flex={false}
+            direction="row"
+            justify="end"
+            align="center"
+            responsive={false}
+          >
             <span style={{ color: "#aaa" }}>
               {file.size ? prettyBytes(parseInt(file.size)) : null}
             </span>
