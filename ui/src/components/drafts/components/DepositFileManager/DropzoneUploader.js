@@ -140,8 +140,10 @@ class FileManager extends React.Component {
               flex={false}
               pad={{ between: "small" }}
               justify="end"
+              align="center"
             >
               <Box
+                align="center"
                 pad="small"
                 colorIndex="critical"
                 onClick={() =>
@@ -151,6 +153,7 @@ class FileManager extends React.Component {
                 Cancel
               </Box>
               <Box
+                align="center"
                 pad="small"
                 colorIndex="brand"
                 onClick={() => this.formRef.submit()}
