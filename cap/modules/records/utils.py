@@ -26,10 +26,11 @@
 import random
 import string
 
-from flask import url_for
+from flask import current_app, url_for
+from six.moves.urllib import parse
+
 from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_pidstore.models import PersistentIdentifier
-from six.moves.urllib import parse
 
 
 def generate_recid(experiment):
@@ -56,6 +57,9 @@ def random_pid(experiment):
 
 def url_to_api_url(url):
     """Translate url to api url."""
+    if current_app.config['DEBUG'] is True:
+        return url
+
     parts = parse.urlsplit(url)
     api_url = parse.urlunsplit(
         (parts.scheme, parts.netloc, '/api' + parts.path, parts.query,

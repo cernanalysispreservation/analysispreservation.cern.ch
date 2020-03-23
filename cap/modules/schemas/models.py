@@ -139,7 +139,7 @@ class Schema(db.Model):
     @version.setter
     def version(self, string):
         """Set version."""
-        matched = re.match(r"(\d+).(\d+).(\d+)", string)
+        matched = re.match(r"(\d+)\.(\d+)\.(\d+)", string)
         if matched is None:
             raise ValueError(
                 'Version has to be passed as string <major>.<minor>.<patch>')
