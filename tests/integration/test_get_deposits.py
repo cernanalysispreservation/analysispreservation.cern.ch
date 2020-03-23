@@ -200,6 +200,40 @@ def test_get_deposits_with_basic_json_serializer_returns_serialized_deposit_prop
     }
 
 
+def test_get_deposit_published_with_basic_json_serializer_returns_recid(
+        client, users, auth_headers_for_user, create_deposit):
+    user = users['cms_user']
+    deposit = create_deposit(
+        user, 'cms', {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-v1.0.0.json',
+            'basic_info': {
+                'analysis_number': 'dream_team',
+                'people_info': [{}]
+            }
+        }, publish=True)
+
+    _, rec = deposit.fetch_published()
+    metadata = deposit.get_record_metadata()
+
+    resp = client.get(f'/deposits/{deposit["_deposit"]["id"]}',
+                      headers=[('Accept', 'application/basic+json')] +
+                      auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {
+            'basic_info': {
+                'people_info': [{}],
+                'analysis_number': 'dream_team'
+            }
+        },
+        'pid': deposit['_deposit']['id'],
+        'recid': deposit['_deposit']['pid']['value'],
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+    }
+
+
 def test_get_deposit_with_default_serializer(client, users,
                                              auth_headers_for_user,
                                              create_deposit):
