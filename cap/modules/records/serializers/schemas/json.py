@@ -69,6 +69,8 @@ class BasicDepositSchema(Schema):
     """Schema for deposit in JSON."""
 
     pid = fields.Str(attribute='pid.pid_value', dump_only=True)
+    recid = fields.Str(attribute='metadata._deposit.pid.value', dump_only=True)
+
     metadata = fields.Method('get_metadata', dump_only=True)
     created = fields.Str(dump_only=True)
     updated = fields.Str(dump_only=True)

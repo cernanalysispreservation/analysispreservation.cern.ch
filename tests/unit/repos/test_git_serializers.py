@@ -40,8 +40,10 @@ def test_webhook_subscriber_serializer(db, github_release_webhook_sub):
         }
     }
 
-    snapshot = GitSnapshot(payload=payload)
-    github_release_webhook_sub.webhook.snapshots.append(snapshot)
+    webhook_id = github_release_webhook_sub.webhook_id
+    snapshot = GitSnapshot(payload=payload, webhook_id=webhook_id)
+
+    github_release_webhook_sub.snapshots.append(snapshot)
     db.session.commit()
 
     serialized_data = GitWebhookSubscriberSchema().dump(github_release_webhook_sub).data
