@@ -58,7 +58,7 @@ class DraftsItemIndex extends React.Component {
         <Box flex={true} direction="row">
           <DraftsItemNav />
 
-          <Box flex={true} direction="row">
+          <Box flex={true} direction="row" className="lg-column">
             <Box flex={true} colorIndex="light-1" style={{ margin: "5px" }}>
               <Switch>
                 <Route

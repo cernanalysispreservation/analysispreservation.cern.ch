@@ -7,10 +7,11 @@ $vin-red: #ff0000;
   font-family: CAPFont;
   src: url("../fonts/Web-Regular.eot");
   src: url("../fonts/Web-Regular.eot") format("embedded-opentype"),
-    url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"),
-    url("../fonts/Web-Regular.woff") format("woff"),
-    url("../fonts/Web-RegularItalic.woff") format("woff");
+  url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"),
+  url("../fonts/Web-Regular.woff") format("woff"),
+  url("../fonts/Web-RegularItalic.woff") format("woff");
 }
+
 //@import '~grommet/scss/vanilla/index';
 
 /* Styles */
@@ -28,6 +29,7 @@ body .grommet {
   height: 100vh;
   overflow-y: scroll;
 }
+
 #app-main {
   height: 100%; /*allows both columns to span the full height of the browser window*/
   display: flex;
@@ -87,9 +89,15 @@ label {
     justify-content: center;
   }
 }
+
 // small
 @media only screen and (min-width: 580px) {
+  .md-column {
+    display: flex;
+    flex-direction: column !important;
+  }
 }
+
 // medium
 @media only screen and (min-width: 720px) {
   .md-row {
@@ -99,10 +107,29 @@ label {
   .jst-md-center {
     justify-content: flex-start;
   }
+  .lg-column {
+    flex-direction: column !important;
+  }
+  .lg-row {
+    width: auto !important;
+  }
 }
+
 // large
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1135px) {
+  .lg-column {
+    flex-direction: row !important;
+  }
+  .lg-row {
+    flex-direction: column !important;
+  }
 }
+
 // xlarge
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1330px) {
+  .md-column {
+    display: flex;
+    flex: 1;
+    flex-direction: row !important;
+  }
 }

@@ -49,6 +49,7 @@ class TabField extends React.Component {
   _onTabClick = tab => {
     this.setState({ active: tab.key ? tab.key : tab.name });
   };
+
   render() {
     let tabs = this.options.tabs ? this.options.tabs : this.props.properties;
     let active_tab = [];
@@ -82,10 +83,9 @@ class TabField extends React.Component {
         }}
       >
         <Box size={this.options && this.options.full ? "full" : "xxlarge"}>
-          <Box flex={true} direction={this.view.vertical ? "row" : "column"}>
+          <Box className="md-column">
             <Box
               fixed="true"
-              size={this.view.vertical ? "small" : "auto"}
               flex={false}
               colorIndex={this.view.sidebarColor || "grey-4"}
               pad={{ between: this.view.vertical ? "none" : "small" }}
