@@ -46,7 +46,13 @@ class DepositSidebar extends React.Component {
 
   render() {
     return (
-      <Sidebar full={false} size="medium" colorIndex="light-2" separator="left">
+      <Sidebar
+        full={false}
+        size="medium"
+        colorIndex="light-2"
+        separator="left"
+        className="lg-row"
+      >
         <Box flex={false} pad="none">
           <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
             <Box
