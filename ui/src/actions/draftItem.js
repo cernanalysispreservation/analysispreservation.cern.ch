@@ -106,12 +106,14 @@ export const toggleLiveValidate = () => ({ type: TOGGLE_LIVE_VALIDATE });
 export const toggleCustomValidation = () => ({
   type: TOGGLE_CUSTOM_VALIDATION
 });
+
 export function toggleFilePreviewEdit(payload = {}) {
   return {
     type: TOGGLE_FILE_PREVIEW_EDIT,
     payload
   };
 }
+
 export const toggleValidate = () => ({ type: TOGGLE_VALIDATE });
 
 export const formDataChange = data => ({ type: FORM_DATA_CHANGE, data });
@@ -213,6 +215,7 @@ export function createDraft(data = {}, ana_type) {
       });
   };
 }
+
 export function postCreateDraft(data = {}, ana_type) {
   return dispatch => {
     dispatch(createDraftRequest());
@@ -281,10 +284,8 @@ export function patchGeneralTitle(draft_id, title) {
   return (dispatch, getState) => {
     dispatch(generalTitleRequest());
 
-    const general_title = getState().draftItem.getIn([
-      "metadata",
-      "general_title"
-    ]);
+    const general_title = getState().draftItem.get("metadata").general_title;
+
     let uri = "/api/deposits/" + draft_id;
 
     let patch_data = [

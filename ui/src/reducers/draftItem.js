@@ -166,11 +166,9 @@ export default function draftsReducer(state = initialState, action) {
 
     case draftItemActions.GENERAL_TITLE_REQUEST:
       return state.set("generalTitleLoading", true);
-    case draftItemActions.GENERAL_TITLE_SUCCESS:
-      return state
-        .set("formData", action.draft.metadata)
-        .merge(Map(action.draft))
-        .set("generalTitleLoading", false);
+    case draftItemActions.GENERAL_TITLE_SUCCESS: {
+      return state.merge(Map(action.draft)).set("generalTitleLoading", false);
+    }
     case draftItemActions.GENERAL_TITLE_ERROR:
       return state.set("generalTitleLoading", false);
 
