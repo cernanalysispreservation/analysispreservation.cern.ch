@@ -44,6 +44,7 @@ class DraftPreview extends React.Component {
       hideAfter: 3
     });
   }
+
   render() {
     let _schema =
       this.props.schemas && this.props.schemas.schema
@@ -59,7 +60,12 @@ class DraftPreview extends React.Component {
         wrap={true}
       >
         {this.props.error ? this.showToaster(this.props.error.message) : null}
-        <Box flex={true} pad={{ between: "medium" }} direction="row">
+        <Box
+          flex={true}
+          pad={{ between: "medium" }}
+          direction="row"
+          className="width-100"
+        >
           <Box flex={true} size={{ width: { min: "medium" } }}>
             <SectionBox
               header="Metadata"

@@ -7,9 +7,9 @@ $vin-red: #ff0000;
   font-family: CAPFont;
   src: url("../fonts/Web-Regular.eot");
   src: url("../fonts/Web-Regular.eot") format("embedded-opentype"),
-  url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"),
-  url("../fonts/Web-Regular.woff") format("woff"),
-  url("../fonts/Web-RegularItalic.woff") format("woff");
+    url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"),
+    url("../fonts/Web-Regular.woff") format("woff"),
+    url("../fonts/Web-RegularItalic.woff") format("woff");
 }
 
 //@import '~grommet/scss/vanilla/index';
@@ -87,6 +87,9 @@ label {
   }
   .jst-md-center {
     justify-content: center;
+  }
+  .width-100 {
+    width: 100% !important;
   }
 }
 

@@ -19,6 +19,7 @@ function SectionBox(props) {
           direction="row"
           pad={{ vertical: "small" }}
           justify="between"
+          responsive={false}
         >
           <Heading
             tag="h5"
