@@ -8,6 +8,14 @@ import { Box } from "grommet";
 
 import DraftHeader from "./components/DraftHeader";
 
+import {
+  DRAFT_ITEM,
+  DRAFT_EDIT,
+  DRAFT_INTEGRATIONS,
+  DRAFT_SETTINGS,
+  DRAFT_WORKFLOWS
+} from "../Routes/paths";
+
 // Draft containers
 import DraftIntegrations from "./components/DraftIntegrations";
 import DraftWorkflows from "../workflows";
@@ -61,27 +69,20 @@ class DraftsItemIndex extends React.Component {
           <Box flex={true} direction="row" className="lg-column">
             <Box flex={true} colorIndex="light-1" style={{ margin: "5px" }}>
               <Switch>
+                <Route exact path={DRAFT_ITEM} component={DraftPreview} />
                 <Route
-                  exact
-                  path={`/drafts/:draft_id`}
-                  component={DraftPreview}
-                />
-                <Route
-                  path={`/drafts/:draft_id/edit`}
+                  path={DRAFT_EDIT}
                   render={props => (
                     <DraftEditor {...props} formRef={this.formRef} />
                   )}
                 />} />
+                <Route path={DRAFT_SETTINGS} component={DraftSettings} />
                 <Route
-                  path={`/drafts/:draft_id/settings`}
-                  component={DraftSettings}
-                />
-                <Route
-                  path={`/drafts/:draft_id/integrations`}
+                  path={DRAFT_INTEGRATIONS}
                   component={DraftIntegrations}
                 />
                 <Route
-                  path={`/drafts/:draft_id/workflows`}
+                  path={DRAFT_WORKFLOWS}
                   render={props => (
                     <DraftWorkflows draft_id={draft_id} {...props} />
                   )}

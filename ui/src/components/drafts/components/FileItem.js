@@ -35,6 +35,8 @@ import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 import prettyBytes from "pretty-bytes";
 import { deleteFileByUri } from "../../../actions/files";
 
+import { DRAFT_EDIT } from "../../Routes/paths";
+
 const uploadStatusMap = {
   uploading: "disabled",
   error: "critical",
@@ -199,7 +201,7 @@ class FileItem extends React.Component {
               download
             />
             <Route
-              path="/drafts/:draft_id"
+              path={DRAFT_EDIT}
               render={() =>
                 this.props.canUpdate && (
                   <Anchor

@@ -13,6 +13,8 @@ import TreeNode from "./TreeNode";
 import { arrangeIntoTree } from "./utils";
 import HorizontalWithText from "../../../partials/HorizontalWithText";
 
+import { DRAFT_EDIT } from "../../../Routes/paths";
+
 import { filter } from "lodash";
 class FileTree extends React.Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class FileTree extends React.Component {
   _renderAddFileIcon() {
     return (
       <Route
-        path="/drafts/:draft_id/edit"
+        path={DRAFT_EDIT}
         render={() => (
           <Anchor
             onClick={this.props.toggleFilemanagerLayer}

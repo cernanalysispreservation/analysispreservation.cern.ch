@@ -18,6 +18,8 @@ import { Route } from "react-router-dom";
 
 import TimeAgo from "react-timeago";
 
+import { DRAFT_EDIT } from "../../Routes/paths";
+
 class DepositSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -28,7 +30,7 @@ class DepositSidebar extends React.Component {
       if (this.props.canUpdate) {
         return (
           <Route
-            path="/drafts/:draft_id/"
+            path={DRAFT_EDIT}
             render={() => (
               <Box
                 colorIndex="light-2"

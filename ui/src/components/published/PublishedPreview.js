@@ -17,6 +17,7 @@ import AnnounceIcon from "grommet/components/icons/base/Announce";
 
 import RunsIndex from "../published/RunsIndex";
 import { Route } from "react-router-dom";
+import { PUBLISHED_RUNS } from "../Routes/paths";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -125,11 +126,7 @@ class PublishedPreview extends React.Component {
                     <span />
                   </JSONSchemaPreviewer>
                 </Box>
-                <Route
-                  exact
-                  path={`/published/:id/runs/`}
-                  component={RunsIndex}
-                />
+                <Route exact path={PUBLISHED_RUNS} component={RunsIndex} />
               </Box>
             </Box>
           ) : null}
