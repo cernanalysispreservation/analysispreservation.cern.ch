@@ -22,12 +22,11 @@ const SelectWidget = function(props) {
       value={props.value}
       onBlur={props.onBlur}
       onChange={_onChange}
-      style={{ height: "3.4em" }}
     />
   ) : (
-    <Box>
+    <Box pad={{ horizontal: "medium" }}>
       <Paragraph>
-        {`Selected Value: ${props.value || "user inserted no value"}`}
+        {`Selected Value:  ${props.value || " user inserted no value"}`}
       </Paragraph>
     </Box>
   );

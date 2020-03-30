@@ -8,29 +8,18 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import TagsWidgetReadMe from "./TagsWidgetReadMe.md";
+
 const label = "Input Label";
-const options = {
-  enumOptions: [
-    {
-      label: "Choice 1",
-      value: "Choice 1"
-    }
-  ]
-};
 
 class TagsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: "Input Label",
+      label: "Tags Input",
       tags: [],
       options: {
-        enumOptions: [
-          {
-            label: "Choice 1",
-            value: "Choice 1"
-          }
-        ]
+        pattern: /\w+$/
       }
     };
   }
@@ -53,11 +42,17 @@ class TagsComponent extends Component {
                 </span>
               }
               key="FORM_FIELD_SAMPLE"
+              error={this.props.error}
             >
               <Widgets.tags
-                options={options}
-                placeholder="Write your tag and press enter..."
+                options={this.state.options}
+                placeholder={
+                  this.props.readonly
+                    ? "readonly input"
+                    : "Write your tag and press enter..."
+                }
                 onChange={this._onChange}
+                readonly={this.props.readonly}
               />
             </FormField>
           </Box>
@@ -67,4 +62,12 @@ class TagsComponent extends Component {
   }
 }
 
-storiesOf("Tags", module).add("default", () => <TagsComponent error={null} />);
+storiesOf("Tags Input", module)
+  .addParameters({
+    readme: {
+      sidebar: TagsWidgetReadMe
+    }
+  })
+  .add("default", () => <TagsComponent />)
+  .add("readonly", () => <TagsComponent readonly />)
+  .add("error", () => <TagsComponent error={"Display Error Message"} />);

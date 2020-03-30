@@ -9,17 +9,23 @@ import Box from "grommet/components/Box";
 import FormField from "grommet/components/FormField";
 import PropTypes from "prop-types";
 
+import RadioWidgetReadMe from "./RadioWidgetReadMe.md";
+
 class RadioComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: "Input Label",
-      selected: "",
+      label: "Radio Input",
+      selected: this.props.value,
       options: {
         enumOptions: [
           {
             label: "Choice 1",
             value: "Choice 1"
+          },
+          {
+            label: "Choice 2",
+            value: "Choice 2"
           }
         ]
       }
@@ -46,8 +52,9 @@ class RadioComponent extends Component {
             >
               <Widgets.radio
                 options={this.state.options}
-                value={this.props.value}
+                value={this.state.selected}
                 onChange={this._onChange}
+                readonly={this.props.disabled}
               />
             </FormField>
           </Box>
@@ -59,10 +66,17 @@ class RadioComponent extends Component {
 
 RadioComponent.propTypes = {
   error: PropTypes.object,
-  value: PropTypes.bool
+  value: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
-storiesOf("Radio", module)
-  .add("default", () => <RadioComponent error={null} />)
-  .add("selected", () => <RadioComponent error={null} value="Choice 1" />)
+storiesOf("Radio Button", module)
+  .addParameters({
+    readme: {
+      sidebar: RadioWidgetReadMe
+    }
+  })
+  .add("default", () => <RadioComponent />)
+  .add("selected", () => <RadioComponent value="Choice 1" />)
+  .add("disabled", () => <RadioComponent disabled />)
   .add("error", () => <RadioComponent error={"Display error message"} />);

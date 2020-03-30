@@ -12,6 +12,8 @@ import FormField from "grommet/components/FormField";
 
 import PropTypes from "prop-types";
 
+import TextWidgetReadMe from "./TextWidgetReadMe.md";
+
 class TextComponent extends Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,8 @@ class TextComponent extends Component {
                 <Widgets.text
                   value={this.state.value}
                   onChange={this._onChange}
+                  readonly={this.props.readonly}
+                  options={{ parent: "CADI ID or something else" }}
                 />
               </FormField>
             </Box>
@@ -62,5 +66,11 @@ TextComponent.propTypes = {
   error: PropTypes.object
 };
 storiesOf("Text", module)
+  .addParameters({
+    readme: {
+      sidebar: TextWidgetReadMe
+    }
+  })
   .add("default", () => <TextComponent />)
+  .add("readonly", () => <TextComponent readonly />)
   .add("error", () => <TextComponent error="Display error message" />);

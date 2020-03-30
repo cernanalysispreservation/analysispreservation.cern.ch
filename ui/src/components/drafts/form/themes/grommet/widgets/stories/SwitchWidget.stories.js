@@ -8,18 +8,14 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import SwitchWidgetReadMe from "./SwitchWidgetReadMe.md";
+
 class SwitchComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: "Input Label",
-      value: "",
-      options: {
-        enumOptions: {
-          label: "Choice 1",
-          value: "Choice 1"
-        }
-      }
+      label: "Switch Input",
+      value: ""
     };
   }
 
@@ -42,9 +38,10 @@ class SwitchComponent extends Component {
               key="FORM_FIELD_SAMPLE"
             >
               <Widgets.switch
-                options={this.state.options}
                 schema={{ type: "string" }}
                 onChange={this._onChange}
+                formData={this.props.checked}
+                readonly={this.props.readonly}
               />
             </FormField>
           </Box>
@@ -54,6 +51,12 @@ class SwitchComponent extends Component {
   }
 }
 
-storiesOf("Switch", module).add("default", () => (
-  <SwitchComponent error={null} />
-));
+storiesOf("Switch", module)
+  .addParameters({
+    readme: {
+      sidebar: SwitchWidgetReadMe
+    }
+  })
+  .add("Default", () => <SwitchComponent />)
+  .add("Selected", () => <SwitchComponent checked="true" />)
+  .add("ReadOnly", () => <SwitchComponent readonly />);

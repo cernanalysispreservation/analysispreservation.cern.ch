@@ -1,6 +1,9 @@
-import { configure } from "@storybook/react";
+import { addDecorator, configure } from "@storybook/react";
+import { addReadme } from "storybook-readme";
 import "../src/styles/styles.scss";
 import "grommet/scss/hpinc/index.scss";
+
+addDecorator(addReadme);
 
 const req = require.context("../src/", true, /\.stories.js$/);
 

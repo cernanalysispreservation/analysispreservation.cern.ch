@@ -10,28 +10,44 @@ import FormField from "grommet/components/FormField";
 
 import PropTypes from "prop-types";
 
+import CheckboxWidgetReadMe from "./CheckboxWidgetReadMe.md";
+
 class CheckBoxComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: "Input Label",
+      label: "CheckBox Input",
       options: {
         enumOptions: [
           {
             label: "Choice 1",
             value: "Choice 1"
-          },
-          {
-            label: "Choice 2",
-            value: "Choice 2"
           }
         ]
       }
     };
   }
 
-  // TODO: figure out the onChange method inside the CheckBox Component
-  // updateField = value => {};
+  selectValue(value, selected, all) {
+    const at = all.indexOf(value);
+    const updated = selected.slice(0, at).concat(value, selected.slice(at));
+    // As inserting values at predefined index positions doesn't work with empty
+    // arrays, we need to reorder the updated selection to match the initial order
+    return updated.sort((a, b) => all.indexOf(a) > all.indexOf(b));
+  }
+
+  deselectValue(value, selected) {
+    return selected.filter(v => v !== value);
+  }
+
+  _onChange = () => {
+    // const all = this.state.options.enumOptions.map(({ value }) => value);
+    // if (event.target.checked) {
+    //   props.onChange(selectValue(event.target.value, props.value, all));
+    // } else {
+    //   props.onChange(deselectValue(event.target.value, props.value));
+    // }
+  };
 
   render() {
     return (
@@ -50,7 +66,10 @@ class CheckBoxComponent extends Component {
               <Widgets.checkboxes
                 options={this.state.options}
                 value="Choice 1"
-                onChange={e => this.updateField(e)}
+                readonly={this.props.disabled}
+                onChange={this._onChange}
+                selectValue={this.selectValue}
+                deselectValue={this.deselectValue}
               />
             </FormField>
           </Box>
@@ -61,9 +80,17 @@ class CheckBoxComponent extends Component {
 }
 
 CheckBoxComponent.propTypes = {
-  error: PropTypes.object
+  error: PropTypes.object,
+  disabled: PropTypes.bool
 };
 
 storiesOf("CheckBox", module)
-  .add("default", () => <CheckBoxComponent error={null} />)
+  .addParameters({
+    readme: {
+      sidebar: CheckboxWidgetReadMe
+    }
+  })
+  .add("default", () => <CheckBoxComponent />)
+  .add("selected", () => <CheckBoxComponent checked />)
+  .add("disabled", () => <CheckBoxComponent disabled />)
   .add("error", () => <CheckBoxComponent error={"Display error message"} />);

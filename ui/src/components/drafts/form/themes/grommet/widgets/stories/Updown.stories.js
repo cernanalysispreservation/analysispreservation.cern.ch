@@ -8,32 +8,15 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import UpDownWidgetReadMe from "./UpDownWidgetReadMe.md";
+
 class UpDownComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: "",
       label: "Input Label",
-      options: {
-        enumOptions: [
-          {
-            label: "Choice 1",
-            value: "Choice 1"
-          },
-          {
-            label: "Choice 2",
-            value: "Choice 2"
-          },
-          {
-            label: "Choice 3",
-            value: "Choice 3"
-          },
-          {
-            label: "Choice 4",
-            value: "Choice 4"
-          }
-        ]
-      }
+      emptyValue: "em"
     };
   }
 
@@ -53,11 +36,13 @@ class UpDownComponent extends Component {
                 </span>
               }
               key="FORM_FIELD_SAMPLE"
+              error={this.props.error}
             >
               <Widgets.updown
                 options={this.state.options}
                 value={this.state.value}
                 onChange={e => this.updateValue(e)}
+                readonly={this.props.readonly}
               />
             </FormField>
           </Box>
@@ -67,4 +52,12 @@ class UpDownComponent extends Component {
   }
 }
 
-storiesOf("UpDown", module).add("default", () => <UpDownComponent />);
+storiesOf("UpDown", module)
+  .addParameters({
+    readme: {
+      sidebar: UpDownWidgetReadMe
+    }
+  })
+  .add("Default", () => <UpDownComponent />)
+  .add("Read Only", () => <UpDownComponent readonly />)
+  .add("Error", () => <UpDownComponent error={"Display error message"} />);

@@ -8,6 +8,8 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import TextAreaWidgetReadMe from "./TextAreaWidgetReadMe.md";
+
 class TextAreaComponent extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +17,7 @@ class TextAreaComponent extends Component {
       label: "Input Label",
       value: "",
       options: {
-        emptyValue: "empty value placeholder"
+        emptyValue: ""
       }
     };
   }
@@ -36,11 +38,13 @@ class TextAreaComponent extends Component {
                 </span>
               }
               key="FORM_FIELD_SAMPLE"
+              error={this.props.error}
             >
               <Widgets.textarea
                 value={this.state.value}
                 onChange={this._onChange}
                 options={this.state.options}
+                readonly={this.props.readonly}
               />
             </FormField>
           </Box>
@@ -50,4 +54,12 @@ class TextAreaComponent extends Component {
   }
 }
 
-storiesOf("TextArea", module).add("default", () => <TextAreaComponent />);
+storiesOf("TextArea", module)
+  .addParameters({
+    readme: {
+      sidebar: TextAreaWidgetReadMe
+    }
+  })
+  .add("default", () => <TextAreaComponent />)
+  .add("Read Only", () => <TextAreaComponent readonly />)
+  .add("Error", () => <TextAreaComponent error={"Display error message"} />);
