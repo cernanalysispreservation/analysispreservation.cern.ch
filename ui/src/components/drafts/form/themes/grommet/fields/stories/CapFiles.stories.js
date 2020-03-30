@@ -50,8 +50,6 @@ CapFileComponent.propTypes = {
   formData: PropTypes.object
 };
 
-storiesOf("Cap Files", module)
-  .add("Default message", () => <CapFileComponent />)
-  .add("Custom message", () => (
-    <CapFileComponent formData={"Custom message"} />
-  ));
+storiesOf("Cap Files", module).add("Default message", () => (
+  <CapFileComponent />
+));

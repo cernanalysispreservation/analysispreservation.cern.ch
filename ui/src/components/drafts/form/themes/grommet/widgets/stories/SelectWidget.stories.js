@@ -8,13 +8,18 @@ import Box from "grommet/components/Box";
 
 import FormField from "grommet/components/FormField";
 
+import SelectWidgetReadMe from "./SelectWidgetReadMe.md";
+
 class SelectComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      label: "Input Description",
+      label: "Select Input",
       value: "",
+      readonly: this.props.readonly,
       options: {
+        inline: this.props.inline,
+        multiple: this.props.multiple,
         enumOptions: [
           {
             label: "Choice 1",
@@ -58,6 +63,7 @@ class SelectComponent extends Component {
                 options={this.state.options}
                 value={this.state.value}
                 onChange={e => this.updateValue(e)}
+                readonly={this.state.readonly}
               />
             </FormField>
           </Box>
@@ -67,4 +73,12 @@ class SelectComponent extends Component {
   }
 }
 
-storiesOf("Select", module).add("default", () => <SelectComponent />);
+storiesOf("Select Button", module)
+  .addParameters({
+    readme: {
+      sidebar: SelectWidgetReadMe
+    }
+  })
+  .add("Multiple", () => <SelectComponent />)
+  .add("Inline", () => <SelectComponent inline />)
+  .add("ReadOnly", () => <SelectComponent readonly />);
