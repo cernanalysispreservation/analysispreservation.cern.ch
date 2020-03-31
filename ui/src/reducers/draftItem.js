@@ -1,4 +1,4 @@
-import { Map, fromJS } from "immutable";
+import { Map, Set, fromJS } from "immutable";
 
 import * as commonActions from "../actions/common"; // Common Actions
 import * as draftItemActions from "../actions/draftItem"; // Drafts Actions
@@ -8,6 +8,7 @@ import * as workflowsActions from "../actions/workflows"; // Workflows Actions
 const initialState = Map({
   errors: [],
   schemaErrors: [],
+  formErrors: Set([]),
   actionsLayer: false,
   actionsLayerType: null,
   showPreviewer: false,
@@ -58,6 +59,8 @@ export default function draftsReducer(state = initialState, action) {
       return initialState;
     case draftItemActions.CLEAR_ERROR_SUCCESS:
       return state.set("errors", []);
+    case commonActions.FORM_ERRORS:
+      return state.set("formErrors", Set(action.errors));
     case commonActions.FETCH_SCHEMA_ERROR:
       return state.set("schemaErrors", [
         ...state.get("schemaErrors"),

@@ -7,34 +7,10 @@ import Box from "grommet/components/Box";
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema, formContext } = props;
 
-  let _errors = "";
   let gridColumns = null;
 
   if (uiSchema && uiSchema["ui:options"] && uiSchema["ui:options"].hidden) {
     return <React.Fragment />;
-  }
-
-  if (formContext.ref && formContext.ref.length > 0) {
-    formContext.ref.map(item => {
-      if (item.name) {
-        let splitted = item.name.split(".");
-        let name = splitted[splitted.length - 1];
-        let pro = item.property
-          .replace(/\[/g, "_")
-          .replace(/\]/g, "")
-          .replace(/\./g, "_");
-        let elementId = id.replace("root", "");
-
-        if (
-          label &&
-          pro === elementId &&
-          name.replace("_", " ").toLowerCase() ===
-            label.replace("_", " ").toLowerCase()
-        ) {
-          _errors = item.message;
-        }
-      }
-    });
   }
 
   // if the grid options exists in uiSchema pass it as prop
@@ -77,7 +53,19 @@ let FieldTemplate = function(props) {
         </span>
       }
       key={id + label}
-      error={_errors.length > 0 ? _errors : null}
+      error={
+        props.rawErrors && props.rawErrors.length ? (
+          <Box
+            style={{ maxWidth: "250px", fontSize: "11px", lineHeight: "12px" }}
+          >
+            {props.rawErrors.map((error, index) => [
+              <span key={index}>
+                {index + 1}. {error}
+              </span>
+            ])}
+          </Box>
+        ) : null
+      }
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5"
       }}

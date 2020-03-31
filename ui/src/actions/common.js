@@ -3,7 +3,12 @@ import axios from "axios";
 export const FETCH_SCHEMA_REQUEST = "FETCH_SCHEMA_REQUEST";
 export const FETCH_SCHEMA_SUCCESS = "FETCH_SCHEMA_SUCCESS";
 export const FETCH_SCHEMA_ERROR = "FETCH_SCHEMA_ERROR";
+export const FORM_ERRORS = "FORM_ERRORS";
 
+export const formErrorsChange = errors => ({
+  type: FORM_ERRORS,
+  errors
+});
 // TOFIX REMOVE AND ADD TO LOCALSTORAGE
 export const fetchSchemaRequest = () => ({ type: FETCH_SCHEMA_REQUEST });
 export const fetchSchemaSuccess = schema => ({

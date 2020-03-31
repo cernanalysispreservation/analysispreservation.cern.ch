@@ -19,7 +19,7 @@ class DefaultArrayField extends React.Component {
     return (
       <Box margin="none" size={{ height: { max: "small" } }}>
         {this.props.items.length > 0 && (
-          <Box margin={{ top: "small", bottom: "medium" }}>
+          <Box flex={true} margin={{ top: "small", bottom: "medium" }}>
             <List>
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
@@ -29,6 +29,7 @@ class DefaultArrayField extends React.Component {
                           errors={this.props.formContext.ref}
                           id={element.children.props.idSchema.$id}
                           hideIndicator
+                          formContext={this.props.formContext}
                         >
                           {element.children}
                         </ErrorFieldIndicator>

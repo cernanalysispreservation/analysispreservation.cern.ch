@@ -101,15 +101,20 @@ class TabField extends React.Component {
                     />
                   ) : null
               )}
-              <Box flex={true} pad={{ vertical: "none" }}>
+              <Box
+                flex={true}
+                pad={{ vertical: "none" }}
+                size={{ width: { max: "medium" } }}
+              >
                 {tabs.map(
                   (tab, index) =>
                     tab.name === "analysis_reuse_mode" ? null : (
                       <ErrorFieldIndicator
                         errors={this.props.formContext.ref}
-                        id={tab.name}
+                        id={tab.content.props.idSchema.$id}
                         properties={this.props.properties}
                         tab={true}
+                        key={index}
                       >
                         <Box
                           colorIndex={

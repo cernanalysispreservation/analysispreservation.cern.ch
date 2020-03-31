@@ -19,44 +19,29 @@ class StringArrayField extends React.Component {
     return (
       <Box size={{ height: { max: "small" } }}>
         {this.props.items.length > 0 && (
-          <Box margin={{ top: "small", bottom: "medium" }}>
+          <Box flex={true} margin={{ top: "small", bottom: "medium" }}>
             <List>
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
                     <ListItem key={element.index} separator="none" pad="none">
-                      <Box flex={true} direction="row">
-                        <ErrorFieldIndicator
-                          errors={this.props.formContext.ref}
-                          id={element.children.props.idSchema.$id}
-                          hideIndicator
-                        >
-                          <TextWidget
-                            {...element.children.props}
-                            options={
-                              element.children.props.uiSchema["ui:options"]
-                            }
-                            value={element.children.props.formData}
-                            autofocus="true"
-                            pad="none"
-                            onKeyDown={event => {
-                              if (
-                                event.key === "Backspace" &&
-                                !element.children.props.formData
-                              ) {
-                                element.onDropIndexClick(element.index)(event);
+                      <ErrorFieldIndicator
+                        errors={this.props.formContext.ref}
+                        id={element.children.props.idSchema.$id}
+                        formContext={this.props.formContext}
+                      >
+                        <Box flex={true} direction="row">
+                          {element.children}
+
+                          {!this.props.readonly && (
+                            <Button
+                              onClick={event =>
+                                element.onDropIndexClick(element.index)(event)
                               }
-                            }}
-                          />
-                        </ErrorFieldIndicator>
-                        {!this.props.readonly && (
-                          <Button
-                            onClick={event =>
-                              element.onDropIndexClick(element.index)(event)
-                            }
-                            icon={<FormTrashIcon />}
-                          />
-                        )}
-                      </Box>
+                              icon={<FormTrashIcon />}
+                            />
+                          )}
+                        </Box>
+                      </ErrorFieldIndicator>
                     </ListItem>
                   ))
                 : null}
@@ -68,6 +53,24 @@ class StringArrayField extends React.Component {
   }
 }
 
+// {JSON.stringify(element.children.props.errorSchema)}
+// <TextWidget
+//   {...element.children.props}
+//   options={
+//     element.children.props.uiSchema["ui:options"]
+//   }
+//   value={element.children.props.formData}
+//   autofocus="true"
+//   pad="none"
+//   onKeyDown={event => {
+//     if (
+//       event.key === "Backspace" &&
+//       !element.children.props.formData
+//     ) {
+//       element.onDropIndexClick(element.index)(event);
+//     }
+//   }}
+// />
 StringArrayField.propTypes = {
   items: PropTypes.array,
   onAddClick: PropTypes.func,

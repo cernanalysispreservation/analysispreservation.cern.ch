@@ -15,6 +15,8 @@ import Form from "react-jsonschema-form";
 import Box from "grommet/components/Box";
 import objectPath from "object-path";
 
+import _debounce from "lodash/debounce";
+
 class DepositForm extends Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,13 @@ class DepositForm extends Component {
   }
 
   _validate(formData, errors) {
+    // Example on how to add custom errors
+    // "errors" object is a representation of the schema field tree
+    // with an "addError" function attached to each property
+    // e.g.
+    // errors.basic_info.cadi_id.addError("boom");
+
+    // TODO:  Updates error list with ASYNC ERRORs
     if (!Array.isArray(this.props.errors)) return errors;
 
     this.props.errors.map(error => {
@@ -32,48 +41,21 @@ class DepositForm extends Component {
         errorObj.addError(error.message);
       }
     });
+
     return errors;
   }
 
   transformErrors = errors => {
-    errors.map(error => {
-      error.name = error.property;
+    return errors.map(error => {
+      // Update messages for undefined fields when required,
+      // from "should be string" ==> "Either edit or remove"
       if (error.message == "should be string") {
         let errorMessages = objectPath.get(this.props.formData, error.property);
         if (errorMessages == undefined) error.message = "Either edit or remove";
       }
 
-      let objPath = error.property.slice(1).split(".");
-      objPath.map((path, index) => {
-        let _path = objPath.slice(0, index + 1);
-        if (objPath.length == index + 1) return;
-
-        const re = new RegExp("\\[.*?]");
-        let isArray = re.test(path);
-        if (isArray) {
-          let arrayPathname, arrayPath;
-
-          arrayPathname = path.split("[", 1);
-          arrayPath = objPath.slice(0, index);
-          arrayPath.push(arrayPathname[0]);
-
-          errors.push({ property: "." + arrayPath.join(".") });
-        }
-
-        // *** Uncomment following lines if you want to add error
-        // *** propagation only for the first level (not nested ones)
-        // index == 0 ?
-        errors.push({ property: "." + _path.join(".") });
-
-        //: null;
-      });
-
       return error;
     });
-
-    this.setState({ errors });
-
-    return errors;
   };
 
   render() {
@@ -99,8 +81,12 @@ class DepositForm extends Component {
             transformErrors={this.transformErrors}
             formData={this.props.formData}
             onBlur={() => {}}
-            onChange={this.props.onChange}
-            formContext={{ ref: this.state.errors }}
+            extraErrors={this.props.extraErrors}
+            onChange={_debounce(this.props.onChange, 500)}
+            formContext={{
+              formRef: this.props.formRef,
+              ...this.props.formContext
+            }}
           >
             <span />
           </Form>
