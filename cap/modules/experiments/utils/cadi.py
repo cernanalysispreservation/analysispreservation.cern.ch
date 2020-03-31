@@ -78,61 +78,95 @@ def synchronize_cadi_entries(limit=None):
 
     for entry in islice(entries, limit):
         cadi_info = cadi_serializer.dump(entry).data
-        cadi_id = cadi_info['cadi_id']
-        contact_name = cadi_info['contact'].split(' (')[0]
+        cadi_id = cadi_info.pop('cadi_id')
 
         try:  # update if cadi deposit already exists
             deposit = get_deposit_by_cadi_id(cadi_id)
 
             if deposit.get('cadi_info') == cadi_info:
-                print('No changes in cadi entry {}.'.format(cadi_id))
+                current_app.logger.info(f'No changes in entry {cadi_id}.')
 
             else:
                 deposit['cadi_info'] = cadi_info
                 deposit.commit()
                 db.session.commit()
 
-                print('Cadi entry {} updated.'.format(cadi_id))
+                current_app.logger.info(f'Cadi entry {cadi_id} updated.')
 
         except DepositDoesNotExist:
-            cadi_deposit = _cadi_deposit(cadi_id, cadi_info)
-            deposit = CAPDeposit.create(data=cadi_deposit, owner=None)
-            deposit._add_experiment_permissions('CMS', ['deposit-read'])
-
             try:
-                contact_mail = get_user_mail_from_ldap(contact_name)
-                user = get_existing_or_register_user(contact_mail)
-                deposit._add_user_permissions(
-                    user,
-                    ['deposit-read', 'deposit-update', 'deposit-admin'],
-                    db.session)
-            except DoesNotExistInLDAP:
-                print('Couldnt give access to {} - not in LDAP'.format(
-                    contact_name))
+                with db.session.begin_nested():
+                    deposit = CAPDeposit.create(
+                        data=_cadi_deposit(cadi_id, cadi_info),
+                        owner=None,
+                    )
 
-            for group in get_cadi_admin_roles(cadi_id):
-                deposit._add_egroup_permissions(
-                    group,
-                    ['deposit-read', 'deposit-update', 'deposit-admin'],
-                    db.session)
+                    # give read access to members of CMS experiment
+                    deposit._add_experiment_permissions(
+                        'CMS',
+                        ['deposit-read'],
+                    )
 
-            deposit.commit()
-            db.session.commit()
+                    # give admin access to the contact person (if in ldap)
+                    owner = _get_owner_account(cadi_info['contact'])
+                    if owner:
+                        deposit._add_user_permissions(
+                            owner,
+                            [
+                                'deposit-read',
+                                'deposit-update',
+                                'deposit-admin',
+                            ],
+                            db.session,
+                        )
 
-            print('Cadi entry {} added.'.format(cadi_id))
+                    # give admin access to cms admin egroups
+                    admin_egroups = _get_admin_egroups(wg=cadi_id[:3])
+                    for role in admin_egroups:
+                        deposit._add_egroup_permissions(
+                            role,
+                            [
+                                'deposit-read',
+                                'deposit-update',
+                                'deposit-admin',
+                            ],
+                            db.session,
+                        )
+
+                    deposit.commit()
+
+                db.session.commit()
+
+                current_app.logger.info(f'Cadi entry {cadi_id} added.')
+
+            except Exception:
+                if deposit and deposit.id:
+                    deposit.indexer.delete(deposit)
+
+                current_app.logger.exception(f'Error during adding {cadi_id}.')
 
 
-def get_cadi_admin_roles(cadi_id):
+def _get_owner_account(contact):
+    contact_name = contact.split(' (')[0]
+    if contact_name:
+        try:
+            contact_mail = get_user_mail_from_ldap(contact_name)
+            return get_existing_or_register_user(contact_mail)
+        except DoesNotExistInLDAP:
+            current_app.logger.info(f'Couldnt find {contact_name} in LDAP.')
+
+
+def _get_admin_egroups(wg):
     roles = []
     for egroup in (
             current_app.config['CMS_COORDINATORS_EGROUP'],
             current_app.config['CMS_ADMIN_EGROUP'],
-            current_app.config['CMS_CONVENERS_EGROUP'].format(wg=cadi_id[:3]),
+            current_app.config['CMS_CONVENERS_EGROUP'].format(wg=wg),
     ):
         try:
             roles.append(get_existing_or_register_role(egroup))
         except DoesNotExistInLDAP:
-            pass
+            current_app.logger.info(f'Couldnt find {egroup} in LDAP.')
 
     return roles
 
