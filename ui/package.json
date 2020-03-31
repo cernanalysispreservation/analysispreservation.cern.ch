@@ -61,7 +61,7 @@
     "react-icons": "3.9.0",
     "react-json-editor-ajrm": "2.5.9",
     "react-json-view": "^1.16.1",
-    "react-jsonschema-form": "1.8.0",
+    "react-jsonschema-form": "v2.0.0-alpha.1",
     "react-lazylog": "4.3.2",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",

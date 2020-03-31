@@ -58,6 +58,10 @@ label {
   flex-direction: column;
   flex: 1;
   padding-bottom: 5px;
+
+  .grommetux-form-field {
+    margin-bottom: 0;
+  }
 }
 
 .rjsf-condenced {
