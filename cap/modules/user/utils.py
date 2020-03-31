@@ -99,6 +99,7 @@ def does_egroup_exist_in_ldap(mail):
 
 def get_existing_or_register_user(mail):
     """Get user instance - if not registered, add to the db."""
+    mail = mail.lower()
     try:
         user = User.query.filter_by(email=mail).one()
     except NoResultFound:
@@ -112,6 +113,7 @@ def get_existing_or_register_user(mail):
 
 def get_existing_or_register_role(mail):
     """Get role instance - if not registered, add to the db."""
+    mail = mail.lower()
     try:
         role = Role.query.filter_by(name=mail).one()
     except NoResultFound:
