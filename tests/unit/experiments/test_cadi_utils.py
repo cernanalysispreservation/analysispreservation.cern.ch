@@ -25,13 +25,9 @@
 
 from __future__ import absolute_import
 
-import responses
 from flask import current_app
-from invenio_search import current_search
-from mock import patch
-from mock.mock import MagicMock
-from pytest import mark, raises
 
+import responses
 from cap.modules.deposit.errors import DepositDoesNotExist
 from cap.modules.experiments.errors import ExternalAPIException
 from cap.modules.experiments.serializers import CADISchema
@@ -40,18 +36,24 @@ from cap.modules.experiments.utils.cadi import (get_all_from_cadi,
                                                 get_from_cadi_by_id,
                                                 synchronize_cadi_entries)
 from conftest import _datastore, assign_egroup_to_experiment
+from invenio_accounts.testutils import create_test_user
+from invenio_search import current_search
+from ldap import LDAPError
+from mock import patch
+from mock.mock import MagicMock
+from pytest import raises
 
 
 @responses.activate
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
 def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
-    cadi_id = 'ANA-00-000'
+    cadi_id = 'EXO-00-000'
     cadi_resp = {
         'data': [{
             u'Conference': '',
             u'conferenceStatus': '',
-            u'code': 'dANA-00-000',
+            u'code': 'dEXO-00-000',
             u'targetConference': None,
             u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
             u'updaterDate': '24/12/2014',
@@ -115,7 +117,7 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
-    cadi_id = 'ANA-00-000'
+    cadi_id = 'EXO-00-000'
 
     responses.add(responses.GET,
                   current_app.config['CADI_GET_RECORD_URL'].format(id=cadi_id),
@@ -130,7 +132,7 @@ def test_get_from_cadi_by_id_when_cadi_server_down_returns_503(app):
        MagicMock(side_effect=ExternalAPIException()))
 def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns_503(
         app):
-    cadi_id = 'ANA-00-000'
+    cadi_id = 'EXO-00-000'
 
     with raises(ExternalAPIException):
         get_from_cadi_by_id(cadi_id)
@@ -141,9 +143,9 @@ def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns
 def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_resp = dict(data=[
-        dict(code=u'dANA-00-001', status=u'Inactive'),
-        dict(code=u'dANA-00-002', status=u'PUB'),
-        dict(code=u'dANA-00-003', status=u'SUPERSEDED')
+        dict(code=u'dEXO-00-001', status=u'Inactive'),
+        dict(code=u'dEXO-00-002', status=u'PUB'),
+        dict(code=u'dEXO-00-003', status=u'SUPERSEDED')
     ])
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
@@ -160,11 +162,11 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     assert responses.calls[0].request._cookies == cookie
 
     # check that inactive|supseded analysis are not returned
-    assert dict(code='dANA-00-001', status='Inactive') not in output
-    assert dict(code='dANA-00-003', status='SUPERSEDED') not in output
+    assert dict(code='dEXO-00-001', status='Inactive') not in output
+    assert dict(code='dEXO-00-003', status='SUPERSEDED') not in output
 
     # check that inactive|supseded analysis are not returned
-    assert output == [dict(code='dANA-00-002', status='PUB')]
+    assert output == [dict(code='dEXO-00-002', status='PUB')]
 
 
 @responses.activate
@@ -192,7 +194,7 @@ def test_parse_cadi_entry():
     cadi_resp = {
         u'Conference': '',
         u'conferenceStatus': '',
-        u'code': 'dANA-00-000',
+        u'code': 'dEXO-00-000',
         u'targetConference': None,
         u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
         u'updaterDate': '24/12/2014',
@@ -226,13 +228,13 @@ def test_parse_cadi_entry():
         'pas': 'http://cms.cern.ch:80/pas.pdf',
         'publication_status': 'Free',
         'status': 'PUB',
-        'cadi_id': 'ANA-00-000'
+        'cadi_id': 'EXO-00-000'
     }
 
 
 def test_parse_cadi_entry_when_entry_missing_some_fields():
     cadi_resp = {
-        u'code': 'ANA-00-000',
+        u'code': 'EXO-00-000',
         u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
         u'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
         u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
@@ -251,13 +253,13 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
         'pas': '',
         'publication_status': '',
         'status': '',
-        'cadi_id': 'ANA-00-000'
+        'cadi_id': 'EXO-00-000'
     }
 
 
 def test_get_deposit_by_cadi_id_returns_correct_deposit(
         app, es, create_deposit, superuser):
-    cadi_id = 'ANA-00-001'
+    cadi_id = 'EXO-00-001'
     deposit = create_deposit(superuser,
                              'cms-analysis', {
                                  '$ana_type': 'cms-analysis',
@@ -284,7 +286,7 @@ def test_get_deposit_by_cadi_id_returns_correct_deposit(
     create_deposit(superuser, 'cms-analysis', {
         '$ana_type': 'cms-analysis',
         'basic_info': {
-            'cadi_id': 'ANA-00-002'
+            'cadi_id': 'EXO-00-002'
         }
     })
 
@@ -297,7 +299,7 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                    'cms-analysis', {
                        '$ana_type': 'cms-analysis',
                        'basic_info': {
-                           'cadi_id': 'ANA-00-001'
+                           'cadi_id': 'EXO-00-001'
                        }
                    },
                    mapping={
@@ -318,69 +320,154 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
                    })
 
     with raises(DepositDoesNotExist):
-        get_deposit_by_cadi_id('ANA-00-002')
+        get_deposit_by_cadi_id('EXO-00-002')
 
 
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
-@mark.skip('problem with app fixture that pushes app ctx. Needs to be fixed')
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       MagicMock(return_value=[dict(code=u'dANA-00-001', status=u'Free')]))
-def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one(
-        base_app, es, location, create_schema):
+       MagicMock(return_value=[{
+           u'Conference': '',
+           u'conferenceStatus': '',
+           u'code': 'dEXO-00-000',
+           u'targetConference': None,
+           u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+           u'updaterDate': '24/12/2014',
+           u'creatorDate': '14/12/2014',
+           u'PAS': 'http://cms.cern.ch:80/pas.pdf',
+           u'id': 1,
+           u'updaterName': 'Updater User',
+           u'targetPubPeriod': None,
+           u'targetDatePreApp': '19/12/2014',
+           u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+           u'contact': 'Contact User',
+           u'status': 'PUB',
+           u'URL': 'https://twiki.cern.ch/twikiurl',
+           u'creatorName': 'Creator User',
+           u'publicationStatus': 'Free',
+           u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
+           u'description': 'Projections for 2HDM Higgs studies',
+           u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+       }]))
+@patch('cap.modules.user.utils.does_user_exist_in_ldap',
+       MagicMock(return_value=True))
+@patch('cap.modules.user.utils.does_egroup_exist_in_ldap',
+       MagicMock(return_value=True))
+@patch('cap.modules.experiments.utils.cadi.get_user_mail_from_ldap',
+       MagicMock(return_value='owner@cern.ch'))
+def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_assigns_all_the_permissions_correctly(
+        base_app, db, es, location, create_schema):
     create_schema('cms-analysis', experiment='CMS', version='0.0.1')
-    group_with_r_access = assign_egroup_to_experiment('cms-members@cern.ch',
-                                                      'CMS')
-    group_with_rw_access = _datastore.find_or_create_role(
-        'cms-cap-admin@cern.ch')
+
+    owner = create_test_user('owner@cern.ch')
+    cms_members_group_with_r_access = assign_egroup_to_experiment(
+        'cms-members@cern.ch', 'CMS')
+    cms_admin_groups_with_admin_access = [
+        _datastore.find_or_create_role('cms-physics-coordinator@cern.ch'),
+        _datastore.find_or_create_role('cms-cap-admin@cern.ch'),
+        _datastore.find_or_create_role('cms-phys-conveners-EXO@cern.ch'),
+    ]
+    db.session.commit()
 
     # deposit with this cadi id doesn't exist
     with raises(DepositDoesNotExist):
-        get_deposit_by_cadi_id('ANA-00-001')
+        get_deposit_by_cadi_id('EXO-00-000')
 
     synchronize_cadi_entries()
 
     current_search.flush_and_refresh('deposits-records')
 
     # deposit with this cadi id created
-    deposit = get_deposit_by_cadi_id('ANA-00-001')
+    deposit = get_deposit_by_cadi_id('EXO-00-000')
 
-    assert deposit['cadi_info'] == {
-        'cadi_id': 'ANA-00-001',
-        'contact': '',
-        'created': '',
-        'description': '',
-        'name': '',
-        'paper': '',
-        'pas': '',
-        'publication_status': '',
-        'status': 'Free',
-        'twiki': ''
-    }  # sets cadi info correctly
-    assert deposit['basic_info']['cadi_id'] == 'ANA-00-001'  # sets cadi id
-    assert deposit['general_title'] == 'ANA-00-001'
-
-    # members of experiment got read access and cms-cap-admin egroup write access
-    assert deposit['_access']['deposit-read'] == {
-        'users': [],
-        'roles': [group_with_r_access.id, group_with_rw_access.id]
+    assert deposit == {
+        'cadi_info': {
+            'description': 'Projections for 2HDM Higgs studies',
+            'created': '14/12/2014',
+            'status': 'PUB',
+            'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
+            'paper': 'http://cms.cern.ch:80/paper.pdf',
+            'contact': 'Contact User',
+            'twiki': 'https://twiki.cern.ch/twikiurl',
+            'publication_status': 'Free',
+            'pas': 'http://cms.cern.ch:80/pas.pdf'
+        },
+        'general_title': '2HDM Higgs studies (H->ZZ and A->Zh)',
+        '_fetched_from': 'cadi',
+        '_user_edited': False,
+        'basic_info': {
+            'cadi_id': 'EXO-00-000'
+        },
+        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        '_deposit': {
+            'id': deposit['_deposit']['id'],
+            'status': 'draft',
+            'owners': []
+        },
+        '_experiment': 'CMS',
+        '_access': {
+            'deposit-read': {
+                'users': [owner.id],
+                'roles': [cms_members_group_with_r_access.id] +
+                [x.id for x in cms_admin_groups_with_admin_access]
+            },
+            'deposit-update': {
+                'users': [owner.id],
+                'roles': [x.id for x in cms_admin_groups_with_admin_access]
+            },
+            'deposit-admin': {
+                'users': [owner.id],
+                'roles': [x.id for x in cms_admin_groups_with_admin_access]
+            }
+        },
+        '_files': []
     }
-    assert deposit['_access']['deposit-update'] == {
-        'users': [],
-        'roles': [group_with_rw_access.id]
-    }
-    assert deposit['_access']['deposit-admin'] == {'users': [], 'roles': []}
 
-    # deposit doesnt have owner
-    assert deposit['_deposit']['owners'] == []
+
+@patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
+       MagicMock(return_value=[dict(code=u'dEXO-00-001', status=u'Free')]))
+@patch('cap.modules.user.utils.does_user_exist_in_ldap',
+       MagicMock(side_effect=LDAPError))
+@patch('cap.modules.user.utils.does_egroup_exist_in_ldap',
+       MagicMock(side_effect=LDAPError))
+def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_assigning_entry_was_not_saved_in_db_or_es(
+        base_app, db, es, location, create_schema):
+    create_schema('cms-analysis', experiment='CMS', version='0.0.1')
+
+    synchronize_cadi_entries()
+
+    current_search.flush_and_refresh('deposits-records')
+
+    with raises(DepositDoesNotExist):
+        get_deposit_by_cadi_id('EXO-00-001')
 
 
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       MagicMock(return_value=[dict(code=u'dANA-00-001', status=u'Free')]))
-@patch('cap.modules.user.utils.does_egroup_exist_in_ldap',
-       MagicMock(return_value=True))
+       MagicMock(return_value=[{
+           u'Conference': '',
+           u'conferenceStatus': '',
+           u'code': 'dEXO-00-000',
+           u'targetConference': None,
+           u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+           u'updaterDate': '24/12/2014',
+           u'creatorDate': '14/12/2014',
+           u'PAS': 'http://cms.cern.ch:80/pas.pdf',
+           u'id': 1,
+           u'updaterName': 'Updater User',
+           u'targetPubPeriod': None,
+           u'targetDatePreApp': '19/12/2014',
+           u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+           u'contact': 'Contact User',
+           u'status': 'PUB',
+           u'URL': 'https://twiki.cern.ch/twikiurl',
+           u'creatorName': 'Creator User',
+           u'publicationStatus': 'Free',
+           u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
+           u'description': 'Projections for 2HDM Higgs studies',
+           u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+       }]))
 def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
         appctx, db, es, superuser, create_deposit):
     create_deposit(
@@ -388,30 +475,55 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
             'version': '0.0.1',
             '$ana_type': 'cms-analysis',
             'basic_info': {
-                'cadi_id': 'ANA-00-001'
+                'cadi_id': 'EXO-00-001'
             }
         })
 
     # deposit with this cadi id already exists
-    deposit = get_deposit_by_cadi_id('ANA-00-001')
+    deposit = get_deposit_by_cadi_id('EXO-00-000')
+
     synchronize_cadi_entries()
 
-    # deposit with this cadi id created
-    updated_deposit = get_deposit_by_cadi_id('ANA-00-001')
+    updated_deposit = get_deposit_by_cadi_id('EXO-00-000')
 
-    assert updated_deposit['cadi_info'] == {
-        u'cadi_id': u'ANA-00-001',
-        u'contact': u'',
-        u'created': u'',
-        u'description': u'',
-        u'name': u'',
-        u'paper': u'',
-        u'pas': u'',
-        u'publication_status': u'',
-        u'status': u'Free',
-        u'twiki': u''
-    }  # sets cadi info correctly
-    assert updated_deposit['_access'] == deposit[
-        '_access']  # access didnt change
-    assert updated_deposit['_deposit']['owners'] == deposit['_deposit'][
-        'owners']  # deposit owner didn't change
+    assert updated_deposit == {
+        'version': '0.0.1',
+        'basic_info': {
+            'cadi_id': 'EXO-00-001'
+        },
+        '_deposit': {
+            'id': deposit['_deposit']['id'],
+            'status': 'draft',
+            'owners': [superuser.id],
+            'created_by': superuser.id
+        },
+        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+        '_experiment': None,
+        '_access': {
+            'deposit-read': {
+                'users': [superuser.id],
+                'roles': []
+            },
+            'deposit-update': {
+                'users': [superuser.id],
+                'roles': []
+            },
+            'deposit-admin': {
+                'users': [superuser.id],
+                'roles': []
+            }
+        },
+        '_user_edited': True,
+        '_files': [],
+        'cadi_info': {
+            'status': 'PUB',
+            'contact': 'Contact User',
+            'publication_status': 'Free',
+            'twiki': 'https://twiki.cern.ch/twikiurl',
+            'pas': 'http://cms.cern.ch:80/pas.pdf',
+            'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
+            'description': 'Projections for 2HDM Higgs studies',
+            'created': '14/12/2014',
+            'paper': 'http://cms.cern.ch:80/paper.pdf'
+        }
+    }

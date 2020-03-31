@@ -627,3 +627,5 @@ if DEBUG_MODE == 'True' and TEST_WITH_NGROK == 'True':
               f'Exception: {str(e)}.')
 
 WEBHOOK_ENDPOINT = 'cap_repos.get_webhook_event'
+
+LOGGING_FS_LOGFILE = os.environ.get('CAP_LOG_FILE')
