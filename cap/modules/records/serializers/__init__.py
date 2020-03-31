@@ -25,13 +25,13 @@
 
 from __future__ import absolute_import, print_function
 
+from invenio_records_rest.serializers.json import JSONSerializer
 from invenio_records_rest.serializers.response import (record_responsify,
                                                        search_responsify)
 
-from .json import (BasicJSONSerializer, PermissionsJSONSerializer,
-                   RecordSerializer)
+from .json import RecordSerializer
 from .schemas.json import (BasicDepositSchema, PermissionsDepositSchema,
-                           RecordSchema, RecordFormSchema,
+                           RecordFormSchema, RecordSchema,
                            RepositoriesDepositSchema)
 
 # Serializers
@@ -40,10 +40,9 @@ from .schemas.json import (BasicDepositSchema, PermissionsDepositSchema,
 record_json_v1 = RecordSerializer(RecordSchema)
 record_form_json_v1 = RecordSerializer(RecordFormSchema)
 
-basic_json_v1 = BasicJSONSerializer(BasicDepositSchema)
-permissions_json_v1 = PermissionsJSONSerializer(PermissionsDepositSchema)
-repositories_json_v1 = BasicJSONSerializer(RepositoriesDepositSchema)
-
+basic_json_v1 = JSONSerializer(BasicDepositSchema)
+permissions_json_v1 = JSONSerializer(PermissionsDepositSchema)
+repositories_json_v1 = JSONSerializer(RepositoriesDepositSchema)
 
 # Records-REST serializers
 # ========================

@@ -365,7 +365,7 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_
     cms_admin_groups_with_admin_access = [
         _datastore.find_or_create_role('cms-physics-coordinator@cern.ch'),
         _datastore.find_or_create_role('cms-cap-admin@cern.ch'),
-        _datastore.find_or_create_role('cms-phys-conveners-EXO@cern.ch'),
+        _datastore.find_or_create_role('cms-phys-conveners-exo@cern.ch'),
     ]
     db.session.commit()
 

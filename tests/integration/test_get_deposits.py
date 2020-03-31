@@ -24,20 +24,12 @@
 # or submit itself to any jurisdiction.
 """Integration tests for GET deposits."""
 
-import json
+from invenio_search import current_search
+from pytest import mark
 from six import BytesIO
 
-import responses
-from pytest import mark
-from mock import Mock, patch
-
-from invenio_search import current_search
-from invenio_files_rest.models import ObjectVersion
-
-from cap.modules.repos.github_api import Github
-from cap.modules.repos.models import (GitRepository, GitWebhook,
-                                      GitWebhookSubscriber, GitSnapshot)
-from conftest import add_role_to_user
+from cap.modules.repos.models import GitSnapshot, GitWebhookSubscriber
+from conftest import _datastore, add_role_to_user
 
 
 ######################
@@ -91,7 +83,7 @@ def test_get_deposits_doesnt_return_published_ones(client, db, users,
                                                    create_deposit):
     user = users['cms_user']
 
-    published = create_deposit(user, 'cms', publish=True)
+    create_deposit(user, 'cms', publish=True)
     deposit = create_deposit(user, 'cms-questionnaire')
 
     create_deposit(users['lhcb_user'], 'lhcb'),
@@ -446,7 +438,16 @@ def test_get_deposit_with_basic_json_serializer_returns_serialized_deposit_prope
 
 
 def test_get_deposit_with_permissions_json_serializer_returns_serialized_permissions_properly(
-        client, example_user, auth_headers_for_example_user, deposit):
+    client, db, example_user, auth_headers_for_example_user, deposit):
+    egroup = _datastore.find_or_create_role('my-egroup@cern.ch')
+    deposit._add_egroup_permissions(
+        egroup,
+        ['deposit-read', 'deposit-update'],
+        db.session,
+    )
+    deposit.commit()
+    db.session.commit()
+
     resp = client.get('/deposits/{}'.format(deposit['_deposit']['id']),
                       headers=[('Accept', 'application/permissions+json')] +
                       auth_headers_for_example_user)
@@ -459,11 +460,11 @@ def test_get_deposit_with_permissions_json_serializer_returns_serialized_permiss
                 'users': [example_user.email]
             },
             'deposit-read': {
-                'roles': [],
+                'roles': [egroup.name],
                 'users': [example_user.email]
             },
             'deposit-update': {
-                'roles': [],
+                'roles': [egroup.name],
                 'users': [example_user.email]
             }
         }
@@ -574,7 +575,9 @@ def test_get_deposit_with_form_json_serializer(
         'metadata': {
             'my_field': 'mydata'
         },
-        'revision': 2, 'status': 'draft', 'type': 'deposit',
+        'revision': 2,
+        'status': 'draft',
+        'type': 'deposit',
         'labels': [],
         'schema': {
             'name': 'test-schema',
@@ -585,16 +588,26 @@ def test_get_deposit_with_form_json_serializer(
                 'title': 'deposit-test-schema',
                 'type': 'object',
                 'properties': {
-                    'date': {'type': 'string'},
-                    'title': {'type': 'string'}},
+                    'date': {
+                        'type': 'string'
+                    },
+                    'title': {
+                        'type': 'string'
+                    }
                 },
+            },
             'uiSchema': {
                 'title': 'ui-test-schema',
                 'type': 'object',
                 'properties': {
-                    'field': {'type': 'string'},
-                    'title': {'type': 'string'}},
-                }
+                    'field': {
+                        'type': 'string'
+                    },
+                    'title': {
+                        'type': 'string'
+                    }
+                },
+            }
         },
         'files': [{
             'bucket': str(file.bucket),
@@ -604,6 +617,7 @@ def test_get_deposit_with_form_json_serializer(
             'version_id': str(file.version_id)
         }],
         'webhooks': [{
+            'id': github_release_webhook.id,
             'branch': None,
             'event_type': 'release',
             'host': 'github.com',
