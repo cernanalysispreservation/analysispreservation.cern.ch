@@ -27,15 +27,17 @@
 from uuid import uuid4
 
 from flask_security import login_user
-from invenio_access.models import ActionUsers
+from invenio_access.models import ActionRoles, ActionUsers
 from pytest import raises
+from sqlalchemy.exc import IntegrityError
 
 from cap.modules.deposit.api import CAPDeposit as Deposit
 from cap.modules.deposit.errors import DepositValidationError
+from conftest import _datastore
 
 
 def test_create_deposit_with_empty_data_raises_DepositValidationError(
-        app, users, location):
+    app, users, location):
     metadata = {}
 
     with app.test_request_context():
@@ -47,7 +49,7 @@ def test_create_deposit_with_empty_data_raises_DepositValidationError(
 
 
 def test_create_deposit_with_empty_schema_raises_DepositValidationError(
-        app, users, location):
+    app, users, location):
     metadata = {'$schema': ''}
 
     with app.test_request_context():
@@ -59,7 +61,7 @@ def test_create_deposit_with_empty_schema_raises_DepositValidationError(
 
 
 def test_create_deposit_with_wrong_schema_raises_DepositValidationError(
-        app, users, location):
+    app, users, location):
     metadata = {
         '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/non-existing-schema.json'  # noqa
     }
@@ -72,8 +74,8 @@ def test_create_deposit_with_wrong_schema_raises_DepositValidationError(
             Deposit.create(metadata, id_=id_)
 
 
-def test_add_user_permissions_set_access_object_properly(
-        app, db, users, create_deposit):
+def test_add_and_remove_user_permissions_set_access_object_properly_and_updates_actions_in_the_db(
+    app, db, users, create_deposit):
     owner, other_user = users['cms_user'], users['cms_user2']
     deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
 
@@ -91,12 +93,17 @@ def test_add_user_permissions_set_access_object_properly(
             'roles': []
         }
     }
+    assert not ActionUsers.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        user_id=other_user.id,
+    ).all()
 
-    deposit._add_user_permissions(other_user,
-                                  ['deposit-read', 'deposit-update'],
-                                  db.session)
-
-    deposit = Deposit.get_record(deposit.id)
+    deposit._add_user_permissions(
+        other_user,
+        ['deposit-read', 'deposit-update'],
+        db.session,
+    )
 
     assert deposit['_access'] == {
         'deposit-read': {
@@ -112,16 +119,112 @@ def test_add_user_permissions_set_access_object_properly(
             'roles': []
         }
     }
+    assert ActionUsers.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        user_id=other_user.id,
+    ).one()
+
+    deposit._remove_user_permissions(
+        other_user,
+        ['deposit-read', 'deposit-update'],
+        db.session,
+    )
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-update': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+    assert not ActionUsers.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        user_id=other_user.id,
+    ).all()
 
 
-def test_add_user_permissions_adds_action_to_db(app, db, users, deposit):
-    other_user = users['lhcb_user']
-    assert not ActionUsers.query.filter_by(action='deposit-read',
-                                           argument=str(deposit.id),
-                                           user_id=other_user.id).all()
+def test_add_and_remove_egroup_permissions_set_access_object_properly_and_updates_actions_in_the_db(
+    app, db, users, create_deposit):
+    owner = users['cms_user']
+    egroup = _datastore.find_or_create_role('my-egroup@cern.ch')
+    deposit = create_deposit(owner, 'alice-analysis-v0.0.1')
 
-    deposit._add_user_permissions(other_user, ['deposit-read'], db.session)
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-update': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+    assert not ActionRoles.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        role_id=egroup.id,
+    ).all()
 
-    assert ActionUsers.query.filter_by(action='deposit-read',
-                                       argument=str(deposit.id),
-                                       user_id=other_user.id).one()
+    deposit._add_egroup_permissions(
+        egroup,
+        ['deposit-read', 'deposit-update'],
+        db.session,
+    )
+
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id],
+            'roles': [egroup.id]
+        },
+        'deposit-update': {
+            'users': [owner.id],
+            'roles': [egroup.id]
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+    assert ActionRoles.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        role_id=egroup.id,
+    ).one()
+
+    deposit._remove_egroup_permissions(
+        egroup,
+        ['deposit-read', 'deposit-update'],
+        db.session,
+    )
+
+    assert deposit['_access'] == {
+        'deposit-read': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-update': {
+            'users': [owner.id],
+            'roles': []
+        },
+        'deposit-admin': {
+            'users': [owner.id],
+            'roles': []
+        }
+    }
+    assert not ActionRoles.query.filter_by(
+        action='deposit-read',
+        argument=str(deposit.id),
+        role_id=egroup.id,
+    ).all()
