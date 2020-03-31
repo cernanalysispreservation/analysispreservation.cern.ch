@@ -24,14 +24,9 @@
 # or submit itself to any jurisdiction.
 '''Integration tests for records serializers.'''
 
-import json
-
-from invenio_files_rest.models import ObjectVersion
 from six import BytesIO
 
 from conftest import _datastore
-from invenio_search import current_search
-from pytest import mark
 
 
 def test_get_deposit_with_default_serializer(client, users,
@@ -48,11 +43,11 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         files={'file_1.txt': BytesIO(b'Hello world!')},
         experiment='CMS')
+    role = _datastore.find_or_create_role('some-egroup@cern.ch')
 
     depid = deposit['_deposit']['id']
     metadata = deposit.get_record_metadata()
     file = deposit.files['file_1.txt']
-    role = _datastore.find_or_create_role('some-egroup@cern.ch')
     deposit.edit_permissions([{
         'email': role.name,
         'type': 'egroup',
@@ -60,9 +55,11 @@ def test_get_deposit_with_default_serializer(client, users,
         'action': 'deposit-read'
     }])
 
-    resp = client.get('/deposits/{}'.format(depid),
-                      headers=[('Accept', 'application/json')] +
-                      auth_headers_for_user(owner))
+    resp = client.get(
+        f'/deposits/{depid}',
+        headers=[('Accept', 'application/json')] +
+        auth_headers_for_user(owner),
+    )
 
     assert resp.status_code == 200
 
@@ -108,28 +105,17 @@ def test_get_deposit_with_default_serializer(client, users,
         },
         'is_owner': True,
         'links': {
-            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
-            format(deposit.files.bucket),
-            'clone': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/clone'
-            .format(depid),
-            'discard': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/discard'
-            .format(depid),
-            'disconnect_webhook': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/disconnect_webhook'
-            .format(depid),
-            'edit': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/edit'
-            .format(depid),
-            'files': 'http://analysispreservation.cern.ch/api/deposits/{}/files'
-            .format(depid),
-            'html': 'http://analysispreservation.cern.ch/drafts/{}'.format(
-                depid),
-            'permissions': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/permissions'
-            .format(depid),
-            'publish': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/publish'
-            .format(depid),
-            'self': 'http://analysispreservation.cern.ch/api/deposits/{}'.
-            format(depid),
-            'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
-            .format(depid)
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{deposit.files.bucket}',
+            'clone': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/clone',
+            'discard': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/discard',
+            'disconnect_webhook': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/disconnect_webhook',
+            'edit': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/edit',
+            'files': f'http://analysispreservation.cern.ch/api/deposits/{depid}/files',
+            'html': f'http://analysispreservation.cern.ch/drafts/{depid}',
+            'permissions': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/permissions',
+            'publish': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/publish',
+            'self': f'http://analysispreservation.cern.ch/api/deposits/{depid}',
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/upload',
         }
     }
 
@@ -155,9 +141,11 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
     _, record = deposit.fetch_published()
     file = record.files['file_1.txt']
     metadata = record.get_record_metadata()
-    resp = client.get('/records/{}'.format(recid),
-                      headers=[('Accept', 'application/json')] +
-                      auth_headers_for_user(owner))
+    resp = client.get(
+        f'/records/{recid}',
+        headers=[('Accept', 'application/json')] +
+        auth_headers_for_user(owner),
+    )
 
     assert resp.json == {
         'id': recid,
@@ -201,12 +189,9 @@ def test_default_record_serializer(client, users, auth_headers_for_user,
         }],
         'is_owner': True,
         'links': {
-            'bucket': 'http://analysispreservation.cern.ch/api/files/{}'.
-            format(record.files.bucket),
-            'html': 'http://analysispreservation.cern.ch/published/{}'.format(
-                recid),
-            'self': 'http://analysispreservation.cern.ch/api/records/{}'.
-            format(recid),
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{record.files.bucket}',
+            'html': f'http://analysispreservation.cern.ch/published/{recid}',
+            'self': f'http://analysispreservation.cern.ch/api/records/{recid}'
         },
         'draft_id': deposit.pid.pid_value
     }

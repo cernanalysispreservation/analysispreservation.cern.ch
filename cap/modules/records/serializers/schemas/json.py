@@ -27,12 +27,13 @@ from __future__ import absolute_import, print_function
 
 import copy
 
-from invenio_jsonschemas import current_jsonschemas
 from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.records.permissions import UpdateRecordPermission
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
+from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
+from invenio_jsonschemas import current_jsonschemas
 
 from . import common
 
@@ -78,9 +79,7 @@ class BasicDepositSchema(Schema):
     def get_metadata(self, obj):
         result = {
             k: v
-            for k,
-            v in obj.get('metadata', {}).items()
-            if k not in [
+            for k, v in obj.get('metadata', {}).items() if k not in [
                 'control_number',
                 '$schema',
                 '_deposit',
@@ -88,7 +87,7 @@ class BasicDepositSchema(Schema):
                 '_access',
                 '_files',
                 '_user_edited',
-                '_fetched_from'
+                '_fetched_from',
             ]
         }
         return result
@@ -109,7 +108,21 @@ class RepositoriesDepositSchema(Schema):
 class PermissionsDepositSchema(Schema):
     """Schema for files in deposit."""
 
-    permissions = fields.Raw()
+    permissions = fields.Method('get_access', dump_only=True)
+
+    def get_access(self, obj):
+        """Return access object."""
+        access = obj['metadata']['_access']
+
+        for permission in access.values():
+            if permission['users']:
+                for index, user_id in enumerate(permission['users']):
+                    permission['users'][index] = get_user_email_by_id(user_id)
+            if permission['roles']:
+                for index, role_id in enumerate(permission['roles']):
+                    permission['roles'][index] = get_role_name_by_id(role_id)
+
+        return access
 
 
 class FileSchemaV1(Schema):
