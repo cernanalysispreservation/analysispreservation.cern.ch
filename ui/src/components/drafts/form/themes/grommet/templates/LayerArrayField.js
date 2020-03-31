@@ -2,16 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
 import FormLayer from "../components/FormLayer";
 import ItemBrief from "../components/ItemBrief";
 
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
-import FormUpIcon from "grommet/components/icons/base/FormUp";
-import FormDownIcon from "grommet/components/icons/base/FormDown";
+import ArrayUtils from "../components/ArrayUtils";
 
 import pluralize from "pluralize";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
@@ -49,56 +46,6 @@ class ArrayFieldTemplate extends React.Component {
       reducer = (acc, val) => (item[val] ? `${acc} ${item[val]}` : acc);
 
     return stringify.reduce(reducer, "");
-  };
-
-  _deleteAndUpdate(element, event) {
-    element.onDropIndexClick(element.index)(event);
-    this.update(element.index);
-  }
-
-  _toErrorList(errorSchema, fieldName = "root") {
-    // XXX: We should transform fieldName as a full field path string.
-    let errorList = [];
-    if ("__errors" in errorSchema) {
-      errorList = errorList.concat(
-        errorSchema.__errors.map(stack => {
-          return `${fieldName}`;
-        })
-      );
-    }
-    return Object.keys(errorSchema).reduce((acc, key) => {
-      if (key !== "__errors") {
-        acc = acc.concat(
-          this._toErrorList(errorSchema[key], fieldName + "_" + key)
-        );
-      }
-      return acc;
-    }, errorList);
-  }
-
-  update = deleteIndex => {
-    let { rootId } = this.props.formContext;
-    let id = rootId
-      ? this.props.idSchema.$id.replace("root", rootId)
-      : this.props.idSchema.$id;
-
-    let _formErrors = this.props.formErrors.toJS().map(errorPath => {
-      if (errorPath.startsWith(id)) {
-        let strArr = errorPath.replace(id, "").split("_");
-        let i = parseInt(strArr[1]);
-        console.log("my index is : ", i);
-
-        if (i > deleteIndex) {
-          strArr[1] = `${i - 1}`;
-          return id + strArr.join("_");
-        }
-      }
-
-      return errorPath;
-    });
-
-    // // Use timeout to fire action on the next tick
-    setTimeout(() => this.props.formErrorsChange(_formErrors), 1);
   };
 
   render() {
@@ -158,44 +105,17 @@ class ArrayFieldTemplate extends React.Component {
                         />
                       </Box>
                     </ErrorFieldIndicator>
-                    <Box direction="row" justify="between">
-                      <Button
-                        onClick={event =>
-                          element.hasRemove && !this.props.readonly
-                            ? this._deleteAndUpdate(element, event)
-                            : null
-                        }
-                        icon={this.props.readonly ? " " : <FormTrashIcon />}
+                    {!this.props.readonly && (
+                      <ArrayUtils
+                        propId={this.props.idSchema.$id}
+                        hasRemove={element.hasRemove}
+                        hasMoveDown={element.hasMoveDown}
+                        hasMoveUp={element.hasMoveUp}
+                        onDropIndexClick={element.onDropIndexClick}
+                        onReorderClick={element.onReorderClick}
+                        index={element.index}
                       />
-                      {this.props.reorder
-                        ? [
-                            <Button
-                              key="down"
-                              onClick={
-                                element.hasMoveDown
-                                  ? element.onReorderClick(
-                                      element.index,
-                                      element.index + 1
-                                    )
-                                  : null
-                              }
-                              icon={<FormDownIcon margin="none" pad="none" />}
-                            />,
-                            <Button
-                              key="up"
-                              onClick={
-                                element.hasMoveUp
-                                  ? element.onReorderClick(
-                                      element.index,
-                                      element.index - 1
-                                    )
-                                  : null
-                              }
-                              icon={<FormUpIcon margin="none" pad="none" />}
-                            />
-                          ]
-                        : null}
-                    </Box>
+                    )}
                   </Box>
                 </ListItem>
               ))

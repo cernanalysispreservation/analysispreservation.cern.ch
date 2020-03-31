@@ -6,7 +6,6 @@ import Button from "grommet/components/Button";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
-import TextWidget from "../widgets/TextWidget";
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
@@ -53,24 +52,6 @@ class StringArrayField extends React.Component {
   }
 }
 
-// {JSON.stringify(element.children.props.errorSchema)}
-// <TextWidget
-//   {...element.children.props}
-//   options={
-//     element.children.props.uiSchema["ui:options"]
-//   }
-//   value={element.children.props.formData}
-//   autofocus="true"
-//   pad="none"
-//   onKeyDown={event => {
-//     if (
-//       event.key === "Backspace" &&
-//       !element.children.props.formData
-//     ) {
-//       element.onDropIndexClick(element.index)(event);
-//     }
-//   }}
-// />
 StringArrayField.propTypes = {
   items: PropTypes.array,
   onAddClick: PropTypes.func,

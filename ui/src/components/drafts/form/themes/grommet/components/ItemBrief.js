@@ -27,11 +27,6 @@ let ItemBrief = function(props) {
 };
 
 ItemBrief.propTypes = {
-  hasRemove: PropTypes.bool,
-  hasMoveDown: PropTypes.bool,
-  hasMoveUp: PropTypes.bool,
-  onDropIndexClick: PropTypes.func,
-  onReorderClick: PropTypes.func,
   label: PropTypes.string,
   item: PropTypes.object
 };

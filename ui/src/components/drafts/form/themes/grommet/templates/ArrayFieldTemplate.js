@@ -37,12 +37,17 @@ class ArrayFieldTemplate extends React.Component {
       this.formRenderType = "LayerArrayField";
     }
     let { ["ui:options"]: uiOptions = {} } = this.props.uiSchema;
+    this.uiOptionImport = uiOptions.import;
+    this.uiOptionLatex = uiOptions.latex;
     this._delimiter = uiOptions.delimeter || "\n";
     this.pasteDesctiption =
-      uiOptions.pasteDesctiption ||
-      "Paste your list here. Insert one item per line:";
+      this.uiOptionImport && this.uiOptionImport.description
+        ? this.uiOptionImport.description
+        : "Paste your list here. Insert one item per line:";
     this.pastePlaceholder =
-      uiOptions.pastePlaceholder || "ex.\n\nitem1 \n\nitem2 \n\nitem3\n";
+      this.uiOptionImport && this.uiOptionImport.placeholder
+        ? this.uiOptionImport.placeholder
+        : "ex.\n\nitem1 \n\nitem2 \n\nitem3\n";
   }
 
   _doBatchImport = () => {
@@ -62,7 +67,8 @@ class ArrayFieldTemplate extends React.Component {
 
     // Get form configurations/options
     let { items: { type } = {} } = this.props.schema;
-    let { ["ui:options"]: { pasteTo } = {} } = this.props.uiSchema;
+
+    let pasteTo = this.uiOptionImport.to;
 
     if (Array.isArray(values)) {
       let _formData = this.props.formData;
@@ -102,7 +108,7 @@ class ArrayFieldTemplate extends React.Component {
 
   _enableLatex = () => {
     let { items: { type } = {} } = this.props.schema;
-    let { ["ui:options"]: { pasteTo } = {} } = this.props.uiSchema;
+    let pasteTo = this.uiOptionImport.to;
 
     let data = this.props.formData;
     if (type == "object" && pasteTo) {
@@ -217,11 +223,11 @@ class ArrayFieldTemplate extends React.Component {
         readonly={this.props.readonly}
         description={this.props.description}
         onArrayAddClick={this._onAddClick.bind(this)}
-        pasteable={true}
-        enableImport={this._enableImport}
-        enableLatex={this._enableLatex}
-        latexEnabled={this.state.latexEnabled}
-        importEnabled={this.state.importEnabled}
+        pasteable={this.uiOptionImport}
+        enableImport={this.uiOptionImport && this._enableImport}
+        enableLatex={this.uiOptionLatex && this._enableLatex}
+        latexEnabled={this.uiOptionLatex && this.state.latexEnabled}
+        importEnabled={this.uiOptionLatex && this.state.importEnabled}
         margin="none"
       />
     );
@@ -243,6 +249,13 @@ class ArrayFieldTemplate extends React.Component {
               : "flex"
         }}
       >
+        {this.uiOptionLatex &&
+          this.state.latexEnabled && (
+            <LatexPreviewer
+              data={this.state.latexData}
+              onClose={this._enableLatex}
+            />
+          )}
         {this.state.importEnabled && (
           <Layer
             flush={true}
