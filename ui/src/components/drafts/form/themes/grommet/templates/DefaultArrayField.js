@@ -3,10 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import List from "grommet/components/List";
-import Button from "grommet/components/Button";
 import ListItem from "grommet/components/ListItem";
-
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
 import ArrayUtils from "../components/ArrayUtils";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
@@ -34,16 +31,8 @@ class DefaultArrayField extends React.Component {
                         </ErrorFieldIndicator>
                       </Box>
                       {!this.props.readonly && (
-                        <Button
-                          onClick={event =>
-                            element.onDropIndexClick(element.index)(event)
-                          }
-                          icon={<FormTrashIcon />}
-                        />
-                      )}
-                      {this.props.options &&
-                      this.props.options.enableArrayUtils ? (
                         <ArrayUtils
+                          propId={this.props.idSchema.$id}
                           hasRemove={element.hasRemove}
                           hasMoveDown={element.hasMoveDown}
                           hasMoveUp={element.hasMoveUp}
@@ -51,7 +40,7 @@ class DefaultArrayField extends React.Component {
                           onReorderClick={element.onReorderClick}
                           index={element.index}
                         />
-                      ) : null}
+                      )}
                     </ListItem>
                   ))
                 : null}
