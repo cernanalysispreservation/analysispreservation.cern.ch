@@ -82,17 +82,6 @@ class ArrayFieldTemplate extends React.Component {
       ? this.props.idSchema.$id.replace("root", rootId)
       : this.props.idSchema.$id;
 
-    console.log(
-      "UPDATING FROM LAYER FIELD",
-      id,
-      deleteIndex,
-      this.props.formErrors.toJS()
-    );
-    // const { errors = [], errorSchema } = this.props.formContext.formRef.current.validate(
-    //   this.props.formContext.formRef.current.state.formData
-    //   // this.props.formData
-    //   );
-
     let _formErrors = this.props.formErrors.toJS().map(errorPath => {
       if (errorPath.startsWith(id)) {
         let strArr = errorPath.replace(id, "").split("_");
@@ -108,13 +97,8 @@ class ArrayFieldTemplate extends React.Component {
       return errorPath;
     });
 
-    console.log("_formERRORs::", _formErrors);
-    // // this.props.formContext.formRef.current.submit();
-    // let _errorData = this._toErrorList(errorSchema);
-
     // // Use timeout to fire action on the next tick
     setTimeout(() => this.props.formErrorsChange(_formErrors), 1);
-    // console.log("UPDATING FROM LAYER FIELD", errors, errorSchema)
   };
 
   render() {

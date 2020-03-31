@@ -10,6 +10,8 @@ import AccordionArrayField from "./AccordionArrayField";
 import DefaultArrayField from "./DefaultArrayField";
 import StringArrayField from "./StringArrayField";
 import AddIcon from "grommet/components/icons/base/Add";
+import { Layer } from "grommet";
+import axios from "axios";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -22,7 +24,8 @@ class ArrayFieldTemplate extends React.Component {
     this.formRenderType = "default";
 
     this.state = {
-      layers: []
+      layers: [],
+      clipboardData: null
     };
     if ("ui:array" in this.props.uiSchema) {
       this.formRenderType = this.props.uiSchema["ui:array"];
@@ -33,7 +36,98 @@ class ArrayFieldTemplate extends React.Component {
     ) {
       this.formRenderType = "LayerArrayField";
     }
+    let { ["ui:options"]: uiOptions = {} } = this.props.uiSchema;
+    this._delimiter = uiOptions.delimeter || "\n";
+    this.pasteDesctiption =
+      uiOptions.pasteDesctiption ||
+      "Paste your list here. Insert one item per line:";
+    this.pastePlaceholder =
+      uiOptions.pastePlaceholder || "ex.\n\nitem1 \n\nitem2 \n\nitem3\n";
   }
+
+  _doBatchImport = () => {
+    let value = this.state.clipboardData;
+    if (!value) return;
+
+    let values = [];
+
+    // Replace multiple spaces with one
+    value = value.replace(/ +(?= )/g, "");
+    // Trim whitespaces from beginning/end
+    value = value.trim();
+    // Remove empty lines
+    value = value.replace(/^\s*[\r\n]/gm, "");
+    // Split string depending on the delimiter passed in the uiOptionns
+    values = value.split(this._delimiter);
+
+    // Get form configurations/options
+    let { items: { type } = {} } = this.props.schema;
+    let { ["ui:options"]: { pasteTo } = {} } = this.props.uiSchema;
+
+    if (Array.isArray(values)) {
+      let _formData = this.props.formData;
+      let _formDataLength = _formData.length;
+
+      let e = new Event("e");
+      setTimeout(() => {
+        values.map((value, index) => {
+          let _index = _formDataLength + index;
+          this.props.onAddClick(e);
+
+          if (type == "object" && pasteTo) {
+            value = { [pasteTo]: value };
+          }
+          this.props.items[_index].children.props.onChange(value);
+        });
+      }, 1);
+
+      this.setState({
+        clipboardData: null,
+        importEnabled: !this.state.importEnabled
+      });
+    }
+  };
+
+  _onTextareaChange = ({ target: { value } = {} }) => {
+    this.setState({ clipboardData: value });
+  };
+
+  _onChange = data => {
+    this.props.onChange(data.formData);
+  };
+
+  _enableImport = () => {
+    this.setState({ importEnabled: !this.state.importEnabled });
+  };
+
+  _enableLatex = () => {
+    let { items: { type } = {} } = this.props.schema;
+    let { ["ui:options"]: { pasteTo } = {} } = this.props.uiSchema;
+
+    let data = this.props.formData;
+    if (type == "object" && pasteTo) {
+      data = this.props.formData.map(item => item[pasteTo] || "");
+    }
+
+    if (!this.state.latexEnabled) {
+      axios
+        .post("/api/services/latex", {
+          title: this.props.schema.title || "Title goes here",
+          paths: data
+        })
+        .then(resp => {
+          this.setState({
+            latexData: resp.data.latex,
+            latexEnabled: !this.state.latexEnabled
+          });
+        });
+    } else {
+      this.setState({
+        latexData: null,
+        latexEnabled: !this.state.latexEnabled
+      });
+    }
+  };
 
   _onAddClick(event) {
     this.setState({ layers: this.state.layers.concat([true]) });
@@ -123,6 +217,11 @@ class ArrayFieldTemplate extends React.Component {
         readonly={this.props.readonly}
         description={this.props.description}
         onArrayAddClick={this._onAddClick.bind(this)}
+        pasteable={true}
+        enableImport={this._enableImport}
+        enableLatex={this._enableLatex}
+        latexEnabled={this.state.latexEnabled}
+        importEnabled={this.state.importEnabled}
         margin="none"
       />
     );
@@ -144,6 +243,72 @@ class ArrayFieldTemplate extends React.Component {
               : "flex"
         }}
       >
+        {this.state.importEnabled && (
+          <Layer
+            flush={true}
+            closer={true}
+            overlayClose={true}
+            onClose={this._enableImport}
+          >
+            <Box flex={false} size="large" colorIndex="light-2" pad="medium">
+              <Box
+                colorIndex="light-2"
+                pad={{
+                  between: "small",
+                  vertical: "small",
+                  horizontal: "small"
+                }}
+                wrap={false}
+                flex={true}
+              >
+                <Box flex={true}>
+                  <Box pad={{ vertical: "small" }}>{this.pasteDesctiption}</Box>
+                  <Box flex={true}>
+                    <textarea
+                      value={this.state.clipboardData}
+                      rows="20"
+                      placeholder={this.pastePlaceholder}
+                      style={{
+                        borderRadius: "0",
+                        backgroundColor: "#fff",
+                        height: "100%",
+                        width: "100%",
+                        maxWidth: "100%",
+                        minWidth: "100%",
+                        wordBreak: "break-all"
+                      }}
+                      onChange={this._onTextareaChange}
+                    />
+                  </Box>
+                </Box>
+
+                <Box>
+                  <Box
+                    flex={false}
+                    align="end"
+                    direction="row"
+                    wrap={false}
+                    alignContent="end"
+                    justify="end"
+                    pad={{ between: "small" }}
+                  >
+                    <Box
+                      direction="row"
+                      colorIndex="brand"
+                      wrap={false}
+                      align="end"
+                      separator="all"
+                      style={{ padding: "5px" }}
+                      onClick={this._doBatchImport}
+                    >
+                      Import
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </Layer>
+        )}
         {this._getArrayField(_label)}
       </Box>
     );
