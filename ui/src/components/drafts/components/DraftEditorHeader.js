@@ -18,6 +18,7 @@ import {
   toggleActionsLayer
 } from "../../../actions/draftItem";
 import { withRouter } from "react-router";
+import { formErrorsChange } from "../../../actions/common";
 
 class DraftEditorHeader extends React.Component {
   // checks if the value is empty undefined or null
@@ -66,13 +67,37 @@ class DraftEditorHeader extends React.Component {
     return emptyValuesArray.length === 0;
   };
 
+  _toErrorList(errorSchema, fieldName = "root") {
+    // XXX: We should transform fieldName as a full field path string.
+    let errorList = [];
+    if ("__errors" in errorSchema) {
+      errorList = errorList.concat(
+        errorSchema.__errors.map(stack => {
+          return `${fieldName}`;
+        })
+      );
+    }
+    return Object.keys(errorSchema).reduce((acc, key) => {
+      if (key !== "__errors") {
+        acc = acc.concat(
+          this._toErrorList(errorSchema[key], fieldName + "_" + key)
+        );
+      }
+      return acc;
+    }, errorList);
+  }
+
   _validateFormData = () => {
     // TOFIX maybe fetch formData from store instead of ref
     const formData = this.props.formRef.current
       ? this.props.formRef.current.props.formData
       : null;
 
-    const { errors = [] } = this.props.formRef.current.validate(formData);
+    const { errors = [], errorSchema } = this.props.formRef.current.validate(
+      formData
+    );
+
+    this.props.formRef.current.submit();
 
     if (errors.length > 0) {
       cogoToast.error("Make sure all the fields are properly filled in", {
@@ -81,12 +106,17 @@ class DraftEditorHeader extends React.Component {
         bar: { size: "0" },
         hideAfter: 5
       });
-      return false;
+
+      return { errorFlag: errors.length > 0, errorSchema };
     }
 
-    this.props.formRef.current.submit();
+    // return { errorFlag: errors.length > 0, errorSchema };
 
-    // remove the general_title from the form validation
+    // this.props.formRef.current.submit();
+
+    // remove the 'general_title' from the form validation
+    // since we tag the formData as empty if other than
+    // 'general_title' fields are missing
     delete formData.general_title;
 
     // if the form is empty display warning and return false
@@ -101,10 +131,10 @@ class DraftEditorHeader extends React.Component {
           hideAfter: 3
         }
       );
-      this.setState({ approved: false });
-      return false;
+      // this.setState({ approved: false });
+      return { errorFlag: true, errorSchema: [] };
     } else {
-      return true;
+      return { errorFlag: false, errorSchema: [] };
     }
   };
 
@@ -117,13 +147,28 @@ class DraftEditorHeader extends React.Component {
   };
 
   _saveData() {
-    if (this._validateFormData()) {
+    let { errorFlag, errorSchema = [] } = this._validateFormData();
+    // let _errorData = this._toErrorList(errorSchema);
+    // console.log("SAVE FORM::", errorFlag, errorSchema);
+    // console.log("_validateFormData::", errorSchema);
+    // console.log("_ERRORDATA::", _errorData);
+    // this.props.formErrorsChange(_errorData);
+
+    let _errorData = this._toErrorList(errorSchema);
+
+    // Use timeout to fire action on the next tick
+    setTimeout(() => this.props.formErrorsChange(_errorData), 1);
+
+    if (!errorFlag) {
       let status = this.props.status;
       if (status == "draft") {
         this.props
           .updateDraft({ ...this.props.formData }, this.props.draft_id)
           .finally(() => {
-            this._validateFormData();
+            let { errorFlag, errorSchema } = this._validateFormData();
+            let _errorData = this._toErrorList(errorSchema);
+            // this._validateFormData();
+            this.props.formErrorsChange(_errorData);
           });
       } else if (status == "published")
         this.props
@@ -133,7 +178,10 @@ class DraftEditorHeader extends React.Component {
             this.props.draft_id
           )
           .finally(() => {
-            this._validateFormData();
+            let { errorFlag, errorSchema } = this._validateFormData();
+            let _errorData = this._toErrorList(errorSchema);
+            // this._validateFormData();
+            this.props.formErrorsChange(_errorData);
           });
     }
   }
@@ -236,7 +284,8 @@ function mapDispatchToProps(dispatch) {
     updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id)),
     editPublished: (data, schema, draft_id) =>
       dispatch(editPublished(data, schema, draft_id)),
-    toggleActionsLayer: type => dispatch(toggleActionsLayer(type))
+    toggleActionsLayer: type => dispatch(toggleActionsLayer(type)),
+    formErrorsChange: errors => dispatch(formErrorsChange(errors))
   };
 }
 

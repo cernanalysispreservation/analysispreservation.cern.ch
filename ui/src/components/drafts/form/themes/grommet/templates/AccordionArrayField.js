@@ -43,6 +43,7 @@ class AccordionArrayField extends React.Component {
       <ErrorFieldIndicator
         errors={this.props.formContext.ref}
         id={this.props.idSchema.$id}
+        formContext={this.props.formContext}
       >
         <Accordion key={this.props.header} animate={false} openMulti={false}>
           <AccordionPanel heading={this.props.header}>

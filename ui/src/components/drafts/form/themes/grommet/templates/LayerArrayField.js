@@ -15,6 +15,8 @@ import FormDownIcon from "grommet/components/icons/base/FormDown";
 
 import pluralize from "pluralize";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
+import { connect } from "react-redux";
+import { formErrorsChange } from "../../../../../../actions/common";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -48,6 +50,73 @@ class ArrayFieldTemplate extends React.Component {
 
     return stringify.reduce(reducer, "");
   };
+
+  _deleteAndUpdate(element, event) {
+    element.onDropIndexClick(element.index)(event);
+    this.update(element.index);
+  }
+
+  _toErrorList(errorSchema, fieldName = "root") {
+    // XXX: We should transform fieldName as a full field path string.
+    let errorList = [];
+    if ("__errors" in errorSchema) {
+      errorList = errorList.concat(
+        errorSchema.__errors.map(stack => {
+          return `${fieldName}`;
+        })
+      );
+    }
+    return Object.keys(errorSchema).reduce((acc, key) => {
+      if (key !== "__errors") {
+        acc = acc.concat(
+          this._toErrorList(errorSchema[key], fieldName + "_" + key)
+        );
+      }
+      return acc;
+    }, errorList);
+  }
+
+  update = deleteIndex => {
+    let { rootId } = this.props.formContext;
+    let id = rootId
+      ? this.props.idSchema.$id.replace("root", rootId)
+      : this.props.idSchema.$id;
+
+    console.log(
+      "UPDATING FROM LAYER FIELD",
+      id,
+      deleteIndex,
+      this.props.formErrors.toJS()
+    );
+    // const { errors = [], errorSchema } = this.props.formContext.formRef.current.validate(
+    //   this.props.formContext.formRef.current.state.formData
+    //   // this.props.formData
+    //   );
+
+    let _formErrors = this.props.formErrors.toJS().map(errorPath => {
+      if (errorPath.startsWith(id)) {
+        let strArr = errorPath.replace(id, "").split("_");
+        let i = parseInt(strArr[1]);
+        console.log("my index is : ", i);
+
+        if (i > deleteIndex) {
+          strArr[1] = `${i - 1}`;
+          return id + strArr.join("_");
+        }
+      }
+
+      return errorPath;
+    });
+
+    console.log("_formERRORs::", _formErrors);
+    // // this.props.formContext.formRef.current.submit();
+    // let _errorData = this._toErrorList(errorSchema);
+
+    // // Use timeout to fire action on the next tick
+    setTimeout(() => this.props.formErrorsChange(_formErrors), 1);
+    // console.log("UPDATING FROM LAYER FIELD", errors, errorSchema)
+  };
+
   render() {
     return (
       <Box flex={false} size={{ height: { max: "small" } }}>
@@ -77,6 +146,7 @@ class ArrayFieldTemplate extends React.Component {
                     <ErrorFieldIndicator
                       errors={this.props.formContext.ref}
                       id={element.children.props.idSchema.$id}
+                      formContext={this.props.formContext}
                     >
                       <Box
                         flex={true}
@@ -106,9 +176,9 @@ class ArrayFieldTemplate extends React.Component {
                     </ErrorFieldIndicator>
                     <Box direction="row" justify="between">
                       <Button
-                        onClick={
+                        onClick={event =>
                           element.hasRemove && !this.props.readonly
-                            ? element.onDropIndexClick(element.index)
+                            ? this._deleteAndUpdate(element, event)
                             : null
                         }
                         icon={this.props.readonly ? " " : <FormTrashIcon />}
@@ -171,4 +241,19 @@ ArrayFieldTemplate.propTypes = {
   formContext: PropTypes.object
 };
 
-export default ArrayFieldTemplate;
+function mapStateToProps(state) {
+  return {
+    formErrors: state.draftItem.get("formErrors"),
+    formData: state.draftItem.get("formData")
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    formErrorsChange: errors => dispatch(formErrorsChange(errors))
+  };
+}
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ArrayFieldTemplate);

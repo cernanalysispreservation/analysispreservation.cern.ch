@@ -72,7 +72,7 @@ class DraftDefaultHeader extends React.Component {
 }
 
 DraftDefaultHeader.propTypes = {
-  match: PropTypes.object.isRequired,
+  // match: PropTypes.object.isRequired,
   draft: PropTypes.object,
   id: PropTypes.string,
   error: PropTypes.object,
