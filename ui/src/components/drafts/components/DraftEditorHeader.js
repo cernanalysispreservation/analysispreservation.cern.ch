@@ -110,13 +110,9 @@ class DraftEditorHeader extends React.Component {
       return { errorFlag: errors.length > 0, errorSchema };
     }
 
-    // return { errorFlag: errors.length > 0, errorSchema };
-
-    // this.props.formRef.current.submit();
-
     // remove the 'general_title' from the form validation
     // since we tag the formData as empty if other than
-    // 'general_title' fields are missing
+    // ['general_title'] fields are missing
     delete formData.general_title;
 
     // if the form is empty display warning and return false
@@ -131,7 +127,6 @@ class DraftEditorHeader extends React.Component {
           hideAfter: 3
         }
       );
-      // this.setState({ approved: false });
       return { errorFlag: true, errorSchema: [] };
     } else {
       return { errorFlag: false, errorSchema: [] };
@@ -148,11 +143,6 @@ class DraftEditorHeader extends React.Component {
 
   _saveData() {
     let { errorFlag, errorSchema = [] } = this._validateFormData();
-    // let _errorData = this._toErrorList(errorSchema);
-    // console.log("SAVE FORM::", errorFlag, errorSchema);
-    // console.log("_validateFormData::", errorSchema);
-    // console.log("_ERRORDATA::", _errorData);
-    // this.props.formErrorsChange(_errorData);
 
     let _errorData = this._toErrorList(errorSchema);
 

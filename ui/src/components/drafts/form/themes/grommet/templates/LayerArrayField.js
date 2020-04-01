@@ -12,8 +12,6 @@ import ArrayUtils from "../components/ArrayUtils";
 
 import pluralize from "pluralize";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
-import { connect } from "react-redux";
-import { formErrorsChange } from "../../../../../../actions/common";
 
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
@@ -145,19 +143,4 @@ ArrayFieldTemplate.propTypes = {
   formContext: PropTypes.object
 };
 
-function mapStateToProps(state) {
-  return {
-    formErrors: state.draftItem.get("formErrors"),
-    formData: state.draftItem.get("formData")
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    formErrorsChange: errors => dispatch(formErrorsChange(errors))
-  };
-}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ArrayFieldTemplate);
+export default ArrayFieldTemplate;

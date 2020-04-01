@@ -12,7 +12,7 @@ import StringArrayField from "./StringArrayField";
 import AddIcon from "grommet/components/icons/base/Add";
 import { Layer } from "grommet";
 import axios from "axios";
-
+import LatexPreviewer from "../../../../../../components/latex/latex";
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
@@ -96,10 +96,6 @@ class ArrayFieldTemplate extends React.Component {
 
   _onTextareaChange = ({ target: { value } = {} }) => {
     this.setState({ clipboardData: value });
-  };
-
-  _onChange = data => {
-    this.props.onChange(data.formData);
   };
 
   _enableImport = () => {

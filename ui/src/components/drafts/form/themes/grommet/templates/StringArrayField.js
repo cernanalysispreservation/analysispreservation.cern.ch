@@ -26,7 +26,7 @@ class StringArrayField extends React.Component {
                       <ErrorFieldIndicator
                         errors={this.props.formContext.ref}
                         id={element.children.props.idSchema.$id}
-                        formContext={this.props.formContext}
+                        hideIndicator
                       >
                         <Box flex={true} direction="row">
                           {element.children}
