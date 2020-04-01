@@ -62,6 +62,16 @@ label {
   .grommetux-form-field {
     margin-bottom: 0;
   }
+
+  .cap-grommet-input {
+    input {
+      border: 0 !important;
+    }
+    input:focus {
+      padding: "11px 23px";
+      border: 0 !important;
+    }
+  }
 }
 
 .rjsf-condenced {

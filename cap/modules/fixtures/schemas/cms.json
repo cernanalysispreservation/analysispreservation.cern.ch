@@ -138,7 +138,8 @@
             "type": "string",
             "x-validate-cadi-id": {},
             "placeholder": "e.g. JME-10-107",
-            "title": "CADI ID"
+            "title": "CADI ID",
+            "description": "e.g. JME-10-107"
           },
           "abstract": {
             "type": "string",
