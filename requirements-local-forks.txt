@@ -7,6 +7,7 @@ reana-commons==0.6.0
 -e git+git://github.com/cernanalysispreservation/invenio-jsonschemas.git@master#egg=invenio-jsonschemas
 -e git+git://github.com/cernanalysispreservation/invenio-search.git@master#egg=invenio-search
 -e git+git://github.com/cernanalysispreservation/invenio-userprofiles.git#egg=invenio-userprofiles
+-e git+git://github.com/cernanalysispreservation/invenio-logging.git@v1.2.0-without-invenio-base-des#egg=invenio-logging[sentry,sentry-sdk]
 -e git+git://github.com/Lilykos/flask-celeryext.git@master#egg=flask-celeryext
 # Install invenio-records from last commit before 1.1.0 version release
 -e git+git://github.com/inveniosoftware/invenio-records.git@a5d4efb1e1466aa571aeef013d699dca1452f7cd#egg=invenio-records

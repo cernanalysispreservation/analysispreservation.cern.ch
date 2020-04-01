@@ -626,3 +626,12 @@ if DEBUG and TEST_WITH_NGROK == 'True':
 WEBHOOK_ENDPOINT = 'cap_repos.get_webhook_event'
 
 LOGGING_FS_LOGFILE = os.environ.get('CAP_LOG_FILE')
+
+# SENTRY_DSN = 'CHANGE_ME'
+"""Set SENTRY_DSN environment variable."""
+
+LOGGING_SENTRY_PYWARNINGS = False
+"""Enable logging of Python warnings to Sentry."""
+
+LOGGING_SENTRY_CELERY = True
+"""Configure Celery to send logging to Sentry."""
