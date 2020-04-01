@@ -25,7 +25,7 @@ class DefaultArrayField extends React.Component {
                         <ErrorFieldIndicator
                           errors={this.props.formContext.ref}
                           id={element.children.props.idSchema.$id}
-                          formContext={this.props.formContext}
+                          hideIndicator
                         >
                           {element.children}
                         </ErrorFieldIndicator>

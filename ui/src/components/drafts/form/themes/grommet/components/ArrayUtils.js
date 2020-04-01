@@ -25,29 +25,30 @@ let ArrayUtils = function(props) {
   } = props;
 
   let _deleteAndUpdate = event => {
-    onDropIndexClick(index)(event);
     update(index);
+    onDropIndexClick(index)(event);
   };
 
-  let update = deleteIndex => {
-    let id = propId;
+  let update = dropIndex => {
+    let _formErrors = formErrors
+      .toJS()
+      .filter(errorPath => !errorPath.startsWith(`${propId}_${dropIndex}`))
+      .map(errorPath => {
+        if (errorPath.startsWith(propId)) {
+          let strArr = errorPath.replace(propId, "").split("_");
+          let i = parseInt(strArr[1]);
 
-    let _formErrors = formErrors.toJS().map(errorPath => {
-      if (errorPath.startsWith(id)) {
-        let strArr = errorPath.replace(id, "").split("_");
-        let i = parseInt(strArr[1]);
-
-        if (i > deleteIndex) {
-          strArr[1] = `${i - 1}`;
-          return id + strArr.join("_");
+          if (i > dropIndex) {
+            strArr[1] = `${i - 1}`;
+            return propId + strArr.join("_");
+          }
         }
-      }
 
-      return errorPath;
-    });
+        return errorPath;
+      });
 
     // Use timeout to fire action on the next tick
-    setTimeout(() => formErrorsChange(_formErrors), 1);
+    formErrorsChange(_formErrors);
   };
 
   return (
