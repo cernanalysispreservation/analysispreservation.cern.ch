@@ -13,7 +13,12 @@ import ReadOnlyText from "./ReadOnlyText";
 import AsyncSelect from "react-select/async";
 import Spinning from "grommet/components/icons/Spinning";
 
+import RegExInput from "./RegExInput";
+
 import debounce from "lodash/debounce";
+import ReactTooltip from "react-tooltip";
+import CircleQuestionIcon from "grommet/components/icons/base/CircleQuestion";
+
 class TextWidget extends Component {
   /* To use suggestions, add in options file for your schema, e.g
      * "my_field": {
@@ -47,7 +52,8 @@ class TextWidget extends Component {
     this.state = {
       suggestions: [],
       showSpinner: false,
-      error: null
+      error: null,
+      autofillSuccess: false
     };
   }
 
@@ -55,7 +61,7 @@ class TextWidget extends Component {
   _onChange = _ref => {
     let value = _ref.target.value;
 
-    return this.props.onChange(value !== "" ? value : undefined);
+    this.props.onChange(value !== "" ? value : undefined);
   };
 
   _replace_hash_with_current_indexes = path => {
@@ -151,6 +157,7 @@ class TextWidget extends Component {
           this.setState({ showSpinner: false });
 
           this.props.formDataChange(formData.toJS());
+          this.setState({ autofillSuccess: true });
         }
       })
       .catch(err => {
@@ -160,14 +167,13 @@ class TextWidget extends Component {
             err.response.status !== 500
               ? err.response.data && err.response.data.message
                 ? err.response.data.message
-                : "Something went wrong with the request "
+                : "Your request was not successful, please try again "
               : "Something went wrong with the request "
         });
       });
   };
 
-  // initiate ORCID search on Enter
-  _searchOnEnter = event => {
+  _onEnterAutofill = event => {
     if (event.keyCode === 13) {
       this.autoFillOtherFields(event);
     } else {
@@ -175,67 +181,152 @@ class TextWidget extends Component {
     }
   };
 
-  render() {
-    return !this.props.readonly ? (
-      <Box flex={true} pad={this.props.pad || { horizontal: "medium" }}>
-        <Box flex={true}>
-          <Box flex={false}>
-            {this.props.options && this.props.options.suggestions ? (
-              <AsyncSelect
-                menuPosition="fixed"
-                isMulti={false}
-                onChange={this.updateValueOnSuggestion}
-                onInputChange={this._onInputChange}
-                isClearable
-                cacheOptions
-                backspaceRemovesValue={true}
-                escapeClearsValue={true}
-                defaultOptions={false}
-                value={{ label: this.props.value, value: this.props.value }}
-                loadOptions={debounce(this.updateSuggestions, 500)}
-              />
-            ) : (
-              <Box direction="row" flex={false}>
-                <Box flex={true}>
-                  <TextInput
-                    id={this.props.id}
-                    name={this.props.id}
-                    placeHolder={this.props.placeholder}
-                    onDOMChange={this._onChange}
-                    {...(this.props.autofocus
-                      ? {
-                          autoFocus: "true"
-                        }
-                      : {})}
-                    {...(this.props.options && this.props.options.autofill_from
-                      ? {
-                          onBlur: this.autoFillOtherFields
-                        }
-                      : {})}
-                    onKeyDown={this._searchOnEnter}
-                    value={this.props.value || ""}
-                  />
-                </Box>
-                <Box flex={false}>
-                  {this.state.showSpinner ? (
-                    <Box flex={false} align="end">
-                      <Spinning size="xsmall" />
-                    </Box>
-                  ) : null}
-                </Box>
-              </Box>
-            )}
+  _renderAutofillButton = (enabled = true) => {
+    if (this.props.options && this.props.options.autofill_from) {
+      return (
+        <Box flex={false} pad={{ horizontal: "small" }}>
+          <Box
+            onClick={
+              enabled
+                ? () =>
+                    this.autoFillOtherFields({
+                      target: { value: this.props.value }
+                    })
+                : null
+            }
+            colorIndex={enabled ? "brand" : "grey-2"}
+            separator="all"
+            direction="row"
+            wrap={false}
+            justify="center"
+            align="center"
+            style={{ padding: "3px 5px" }}
+          >
+            Autofill
+            <ReactTooltip />
+            <Box
+              data-tip={this._renderAutofillTip()}
+              data-multiline={true}
+              style={{ paddingLeft: "5px" }}
+            >
+              <CircleQuestionIcon size="xsmall" />
+            </Box>
           </Box>
+        </Box>
+      );
+    } else return null;
+  };
+
+  _renderAutofillTip() {
+    if (this.props.options && this.props.options.autofill_fields) {
+      let result =
+        "Fetch from remote service and autofill following parts: <br/>";
+      this.props.options.autofill_fields.map(field => {
+        result += `${field[0].join(" > ")} : ${field[1].join(" > ")} <br/>`;
+      });
+      return result;
+    } else return "Fetch from remote service and autofill parts of the form";
+  }
+
+  render() {
+    if (this.props.readonly)
+      return <ReadOnlyText value={this.props.value} props={this.props} />;
+
+    let input = null;
+    if (this.props.options && this.props.options.suggestions) {
+      input = (
+        <AsyncSelect
+          menuPosition="fixed"
+          isMulti={false}
+          onChange={this.updateValueOnSuggestion}
+          onInputChange={this._onInputChange}
+          isClearable
+          cacheOptions
+          backspaceRemovesValue={true}
+          escapeClearsValue={true}
+          defaultOptions={false}
+          value={{ label: this.props.value, value: this.props.value }}
+          loadOptions={debounce(this.updateSuggestions, 500)}
+        />
+      );
+    } else if (this.props.schema.pattern) {
+      input = (
+        <RegExInput
+          style={{ flexDirection: "row", flexWrap: "nowrap" }}
+          mask={this.props.schema.pattern.slice(1, -1)}
+          id={this.props.id}
+          name={this.props.id}
+          value={this.props.value || ""}
+          onChange={this._onChange}
+          onBlur={
+            this.props.options &&
+            this.props.options.autofill_from &&
+            (!this.props.options.autofill_on ||
+              this.props.options.autofill_on.indexOf("onBlur") > -1)
+              ? this.autoFillOtherFields
+              : null
+          }
+          onKeyDown={
+            this.props.options &&
+            this.props.options.autofill_from &&
+            (!this.props.options.autofill_on ||
+              this.props.options.autofill_on.indexOf("onEnter") > -1)
+              ? this._onEnterAutofill
+              : null
+          }
+          buttons={
+            this.props.options &&
+            this.props.options.autofill_from &&
+            this.props.options.autofill_on &&
+            this.props.options.autofill_on.indexOf("onClick") > -1
+              ? enabled => this._renderAutofillButton(enabled)
+              : null
+          }
+        />
+      );
+    } else {
+      input = (
+        <TextInput
+          id={this.props.id}
+          name={this.props.id}
+          placeHolder={this.props.placeholder}
+          onDOMChange={this._onChange}
+          {...(this.props.autofocus
+            ? {
+                autoFocus: true
+              }
+            : {})}
+          {...(this.props.options && this.props.options.autofill_from
+            ? {
+                onBlur: this.autoFillOtherFields,
+                onKeyDown: this._onEnterAutofill
+              }
+            : {})}
+          value={this.props.value || ""}
+        />
+      );
+    }
+
+    return [
+      input,
+      <Box key="indicators" align="end" pad={{ horizontal: "small" }}>
+        <Box>
           {this.state.error && (
             <Box align="end">
               <span style={{ color: "#F04B37" }}>{this.state.error}</span>
             </Box>
           )}
+          {this.state.autofillSuccess && (
+            <Box align="end">
+              <span style={{ color: "#509137" }}>
+                Navigate to the next tab to review the fetched values.
+              </span>
+            </Box>
+          )}
         </Box>
+        <Box>{this.state.showSpinner ? <Spinning size="xsmall" /> : null}</Box>
       </Box>
-    ) : (
-      <ReadOnlyText value={this.props.value} props={this.props} />
-    );
+    ];
   }
 }
 
@@ -247,6 +338,7 @@ TextWidget.propTypes = {
   options: PropTypes.object,
   placeholder: PropTypes.string,
   formData: PropTypes.object,
+  schema: PropTypes.object,
   formDataChange: PropTypes.func,
   pad: PropTypes.string,
   readonly: PropTypes.bool,

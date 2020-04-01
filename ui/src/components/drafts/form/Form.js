@@ -69,6 +69,7 @@ class DepositForm extends Component {
             FieldTemplate={FieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
             ArrayFieldTemplate={ArrayFieldTemplate}
+            noHtml5Validate={true}
             showErrorList={false}
             ErrorList={ErrorListTemplate}
             widgets={widgets}
