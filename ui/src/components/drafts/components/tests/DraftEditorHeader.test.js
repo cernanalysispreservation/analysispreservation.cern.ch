@@ -1,6 +1,6 @@
 import React from "react";
 import Adapter from "enzyme-adapter-react-16";
-import { configure, shallow, mount, render } from "enzyme";
+import { configure, shallow, mount } from "enzyme";
 import configureStore from "redux-mock-store";
 import { Map, fromJS } from "immutable";
 
@@ -48,13 +48,13 @@ let store = mockStore({
   })
 });
 // error free validate
-const validate = jest.fn(formData => {
+const validate = jest.fn(() => {
   return {
     errors: []
   };
 });
 // validate to return errors
-const validateError = jest.fn(formData => {
+const validateError = jest.fn(() => {
   return {
     errors: ["one"]
   };

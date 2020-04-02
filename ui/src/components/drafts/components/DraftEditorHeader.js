@@ -72,7 +72,7 @@ class DraftEditorHeader extends React.Component {
     let errorList = [];
     if ("__errors" in errorSchema) {
       errorList = errorList.concat(
-        errorSchema.__errors.map(stack => {
+        errorSchema.__errors.map(() => {
           return `${fieldName}`;
         })
       );
@@ -155,9 +155,9 @@ class DraftEditorHeader extends React.Component {
         this.props
           .updateDraft({ ...this.props.formData }, this.props.draft_id)
           .finally(() => {
-            let { errorFlag, errorSchema } = this._validateFormData();
+            let { errorSchema } = this._validateFormData();
             let _errorData = this._toErrorList(errorSchema);
-            // this._validateFormData();
+
             this.props.formErrorsChange(_errorData);
           });
       } else if (status == "published")
@@ -168,9 +168,9 @@ class DraftEditorHeader extends React.Component {
             this.props.draft_id
           )
           .finally(() => {
-            let { errorFlag, errorSchema } = this._validateFormData();
+            let { errorSchema } = this._validateFormData();
             let _errorData = this._toErrorList(errorSchema);
-            // this._validateFormData();
+
             this.props.formErrorsChange(_errorData);
           });
     }
