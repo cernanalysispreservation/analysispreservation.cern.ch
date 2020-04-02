@@ -125,25 +125,31 @@ export function createContentType(content_type) {
   };
 }
 
-export function selectContentType(id, version) {
-  return function(dispatch, getState) {
-    let state = getState();
-    let data = state.schemaWizard.getIn(["list", id]);
-
-    // if (data && data[version]) {
-    //   let { deposit_schema, deposit_options } = data[version];
-
-    //   if (deposit_schema && deposit_options)
-    //     dispatch(
-    //       schemaInit(
-    //         { id, version },
-    //         { schema: deposit_schema, uiSchema: deposit_options }
-    //       )
-    //     );
-    //   }
+export function selectContentType(id) {
+  return function(dispatch) {
     dispatch(push(`/cms/edit/${id}`));
   };
 }
+
+// export function selectContentType(id, version=null) {
+//   return function(dispatch, getState) {
+//     let state = getState();
+//     let data = state.schemaWizard.getIn(["list", id]);
+
+//     if (data && data[version]) {
+//       let { deposit_schema, deposit_options } = data[version];
+
+//       if (deposit_schema && deposit_options)
+//         dispatch(
+//           schemaInit(
+//             { id, version },
+//             { schema: deposit_schema, uiSchema: deposit_options }
+//           )
+//         );
+//       }
+//     dispatch(push(`/cms/edit/${id}`));
+//   };
+// }
 
 export function fetchAndSelectContentType(id, version) {
   return function(dispatch, getState) {

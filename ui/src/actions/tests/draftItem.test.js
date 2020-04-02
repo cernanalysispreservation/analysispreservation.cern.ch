@@ -80,7 +80,7 @@ describe("Action Creators => draftItem", () => {
       { type: actions.GENERAL_TITLE_SUCCESS, draft }
     ];
 
-    axios.patch = jest.fn(uri => {
+    axios.patch = jest.fn(() => {
       return Promise.resolve({
         status: 200,
         data: response_data
@@ -107,7 +107,7 @@ describe("Action Creators => draftItem", () => {
       { type: actions.GENERAL_TITLE_SUCCESS, draft }
     ];
 
-    axios.patch = jest.fn(uri => {
+    axios.patch = jest.fn(() => {
       return Promise.resolve({
         status: 200,
         data: response_data_edit
@@ -135,7 +135,7 @@ describe("Action Creators => draftItem", () => {
       { type: actions.GENERAL_TITLE_ERROR, error }
     ];
 
-    axios.patch = jest.fn(uri => {
+    axios.patch = jest.fn(() => {
       return Promise.reject({
         error: undefined
       });
