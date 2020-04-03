@@ -190,7 +190,7 @@ class RxInputBase extends Component {
       setSelection(this.input, this.state.mask.selection);
   }
 
-  _onFocus(e) {
+  _onFocus() {
     // this.setState({ focus: true });
     // if (this.props.onFocus) this.props.onFocus(e);
   }
@@ -314,8 +314,8 @@ class RxInputBase extends Component {
     if (e.metaKey || e.altKey || e.ctrlKey || e.key === "Enter") {
       return;
     }
-    let selX = getSelection(this.input);
-    let oldMaskX = mask.getSelection();
+    getSelection(this.input);
+    mask.getSelection();
     e.preventDefault();
     this._updateMaskSelection();
 
@@ -370,7 +370,7 @@ class RxInputBase extends Component {
     return value === this.state.mask.emptyValue ? "" : value;
   }
 
-  selected(str, e) {
+  selected(str) {
     //console.log("Selected: "+str);
     if (!str.split("").find(c => (isMeta(c) ? c : undefined))) {
       const mask = this.state.mask;
