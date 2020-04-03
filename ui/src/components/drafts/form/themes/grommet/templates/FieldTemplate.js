@@ -53,24 +53,25 @@ let FieldTemplate = function(props) {
         </span>
       }
       key={id + label}
-      error={
-        props.rawErrors && props.rawErrors.length ? (
-          <Box
-            style={{ maxWidth: "250px", fontSize: "11px", lineHeight: "12px" }}
-          >
-            {props.rawErrors.map((error, index) => [
-              <span key={index}>
-                {index + 1}. {error}
-              </span>
-            ])}
-          </Box>
-        ) : null
-      }
+      error={props.rawErrors && props.rawErrors.length ? true : false}
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5"
       }}
     >
       {children}
+      {props.rawErrors && props.rawErrors.length ? (
+        <Box
+          style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
+          flex={true}
+          pad={{ horizontal: "medium" }}
+        >
+          {props.rawErrors.map((error, index) => [
+            <span key={index}>
+              {index + 1}. {error}
+            </span>
+          ])}
+        </Box>
+      ) : null}
     </FormField>
   );
 };
@@ -81,6 +82,7 @@ FieldTemplate.propTypes = {
   rawDescription: PropTypes.string,
   schema: PropTypes.object,
   children: PropTypes.node,
+  rawErrors: PropTypes.array,
   uiSchema: PropTypes.object
 };
 
