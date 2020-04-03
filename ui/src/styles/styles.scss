@@ -70,6 +70,12 @@ label {
   }
 }
 
+.cap-async-select-input {
+  > div > div {
+    border: 0 !important;
+  }
+}
+
 .rjsf-condenced {
   height: auto;
 }
