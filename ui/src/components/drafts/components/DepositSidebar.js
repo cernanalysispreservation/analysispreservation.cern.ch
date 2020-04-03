@@ -53,7 +53,7 @@ class DepositSidebar extends React.Component {
         separator="left"
         className="lg-row"
       >
-        <Box flex={false} pad="none">
+        <Box flex={false} pad="none" size={{ width: { min: "medium" } }}>
           <Box flex={false} pad="small" style={{ fontWeight: "100" }}>
             <Box
               direction="row"
