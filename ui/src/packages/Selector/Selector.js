@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { samples } from "../samples";
 import PropTypes from "prop-types";
+import { Box } from "grommet";
 
 import { utils } from "../utils";
 
@@ -31,21 +32,22 @@ class Selector extends Component {
 
   render() {
     return (
-      <ul className="nav nav-pills">
+      <Box direction="row" flex justify="around">
         {Object.keys(samples).map((label, i) => {
           return (
-            <li
+            <Box
               key={i}
               role="presentation"
-              className={this.state.current === label ? "active" : ""}
+              separator="all"
+              pad="small"
+              colorIndex={this.state.current === label ? "brand" : "light-1"}
+              onClick={this.onLabelClick(label)}
             >
-              <a href="#" onClick={this.onLabelClick(label)}>
-                {label}
-              </a>
-            </li>
+              {label}
+            </Box>
           );
         })}
-      </ul>
+      </Box>
     );
   }
 }

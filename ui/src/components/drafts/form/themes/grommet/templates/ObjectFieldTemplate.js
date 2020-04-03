@@ -23,7 +23,7 @@ let ObjectFieldTemplate = function(props) {
           justifyContent:
             props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
               ? props.uiSchema["ui:options"].align
-              : "center"
+              : "full"
         }}
       >
         <Box

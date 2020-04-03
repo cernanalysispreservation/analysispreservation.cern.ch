@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import Form from "../components/drafts/form/Form";
 import { Selector } from "./Selector";
 import { Editor } from "./Editor";
-
+import { Box, Heading, CheckBox } from "grommet";
 import { samples } from "./samples";
 import { utils } from "./utils";
+import { FaMoon, FaSun } from "react-icons/fa";
 
 function shouldRender(comp, nextProps, nextState) {
   const { props, state } = comp;
+
   return (
     !utils.deepEquals(props, nextProps) || !utils.deepEquals(state, nextState)
   );
@@ -35,7 +37,8 @@ class Playground extends Component {
         liveOmit: false
       },
       shareURL: null,
-      themeObj: {}
+      themeObj: {},
+      toggle: false
     };
   }
 
@@ -103,6 +106,12 @@ class Playground extends Component {
 
   setLiveSettings = ({ formData }) => this.setState({ liveSettings: formData });
 
+  toggleUpdate = () => {
+    this.setState({
+      toggle: !this.state.toggle
+    });
+  };
+
   render() {
     const {
       schema,
@@ -118,7 +127,7 @@ class Playground extends Component {
       transformErrors
     } = this.state;
 
-    const { themes } = this.props;
+    // const { themes } = this.props;
 
     // const FormComponent = withTheme(themeObj);
 
@@ -132,52 +141,71 @@ class Playground extends Component {
     if (extraErrors) {
       templateProps.extraErrors = extraErrors;
     }
+
     return (
-      <div className="container-fluid">
-        <div className="page-header">
-          <h1>Playground</h1>
-        </div>
-        <div className="row">
-          <div className="col-sm-8">
-            <Selector onSelected={this.load} themes={themes} />
-          </div>
-          <div className="col-sm-2">
+      <Box full colorIndex={this.state.toggle ? "grey-4-a" : "light-1"}>
+        <Box align="center">
+          <Heading>Playground</Heading>
+        </Box>
+        <Box margin={{ vertical: "medium" }} align="end">
+          <CheckBox
+            label={this.state.toggle ? <FaMoon /> : <FaSun />}
+            onClick={this.toggleUpdate}
+            toggle={true}
+            checked={this.state.toggle}
+          />
+        </Box>
+        <Box>
+          <Selector onSelected={this.load} />
+        </Box>
+        <Box
+          flex
+          direction="row"
+          pad={{ between: "small" }}
+          margin={{ top: "large" }}
+        >
+          <Box flex>
+            <Box flex direction="row">
+              <Box flex>
+                <Editor
+                  dark={this.state.toggle}
+                  title="JSONSchema"
+                  code={toJson(schema)}
+                  onChange={this.onSchemaEdited}
+                />
+              </Box>
+              <Box flex>
+                <Editor
+                  dark={this.state.toggle}
+                  title="UISchema"
+                  code={toJson(uiSchema)}
+                  onChange={this.onUISchemaEdited}
+                />
+              </Box>
+            </Box>
+            <Box flex>
+              <Editor
+                dark={this.state.toggle}
+                title="FormData"
+                code={toJson(formData)}
+                onChange={this.onFormDataEdited}
+              />
+            </Box>
+          </Box>
+          <Box flex>
             <Form
               formRef={{}}
-              formData={{}}
-              schema={{}}
-              uiSchema={{}}
+              formData={formData}
+              schema={schema}
+              uiSchema={uiSchema}
               onChange={e => {
                 console.log("-----", e);
               }}
               errors={{}}
             />
-          </div>
-          <div className="col-sm-7">
-            <Editor
-              title="JSONSchema"
-              code={toJson(schema)}
-              onChange={this.onSchemaEdited}
-            />
-          </div>
-          <div className="row">
-            <div className="col-sm-6">
-              <Editor
-                title="UISchema"
-                code={toJson(uiSchema)}
-                onChange={this.onUISchemaEdited}
-              />
-            </div>
-            <div className="col-sm-6">
-              <Editor
-                title="formData"
-                code={toJson(formData)}
-                onChange={this.onFormDataEdited}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
     );
   }
 }

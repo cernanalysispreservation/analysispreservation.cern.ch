@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import MonacoEditor from "react-monaco-editor";
+import { Box, Heading } from "grommet";
 import PropTypes from "prop-types";
 
 const monacoEditorOptions = {
@@ -20,12 +21,16 @@ class Editor extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.dark === !nextProps.dark) {
+      return true;
+    }
     if (this.state.valid) {
       return (
         JSON.stringify(JSON.parse(nextProps.code)) !==
         JSON.stringify(JSON.parse(this.state.code))
       );
     }
+
     return false;
   }
 
@@ -45,20 +50,21 @@ class Editor extends Component {
     const icon = this.state.valid ? "ok" : "remove";
     const cls = this.state.valid ? "valid" : "invalid";
     return (
-      <div className="panel panel-default">
-        <div className="panel-heading">
-          <span className={`${cls} glyphicon glyphicon-${icon}`} />
-          {" " + title}
-        </div>
-        <MonacoEditor
-          language="json"
-          value={this.state.code}
-          theme="vs-light"
-          onChange={this.onCodeChange}
-          height={400}
-          options={monacoEditorOptions}
-        />
-      </div>
+      <Box>
+        <Box colorIndex="light-2" align="center">
+          <Heading tag="h2">{title}</Heading>
+        </Box>
+        <Box>
+          <MonacoEditor
+            language="json"
+            value={this.state.code}
+            theme={this.props.dark ? "vs-dark" : "vs-light"}
+            onChange={this.onCodeChange}
+            height={400}
+            options={monacoEditorOptions}
+          />
+        </Box>
+      </Box>
     );
   }
 }
