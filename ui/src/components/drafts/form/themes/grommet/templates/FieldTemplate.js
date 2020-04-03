@@ -62,7 +62,7 @@ let FieldTemplate = function(props) {
       {props.rawErrors && props.rawErrors.length ? (
         <Box
           style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
-          flex={true}
+          flex={false}
           pad={{ horizontal: "medium" }}
         >
           {props.rawErrors.map((error, index) => [

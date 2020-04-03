@@ -3,11 +3,8 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
-import List from "grommet/components/List";
-import ListItem from "grommet/components/ListItem";
 
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
-import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class StringArrayField extends React.Component {
   constructor(props) {
@@ -16,37 +13,25 @@ class StringArrayField extends React.Component {
 
   render() {
     return (
-      <Box size={{ height: { max: "small" } }}>
-        {this.props.items.length > 0 && (
-          <Box flex={true} margin={{ top: "small", bottom: "medium" }}>
-            <List>
-              {this.props.items.length > 0
-                ? this.props.items.map(element => (
-                    <ListItem key={element.index} separator="none" pad="none">
-                      <ErrorFieldIndicator
-                        errors={this.props.formContext.ref}
-                        id={element.children.props.idSchema.$id}
-                        hideIndicator
-                      >
-                        <Box flex={true} direction="row">
-                          {element.children}
+      <Box flex={true} size={{ height: { max: "small" } }}>
+        <Box flex={false} margin={{ top: "small", bottom: "medium" }}>
+          {this.props.items.length > 0
+            ? this.props.items.map((element, index) => (
+                <Box flex={false} key={index} direction="row">
+                  {element.children}
 
-                          {!this.props.readonly && (
-                            <Button
-                              onClick={event =>
-                                element.onDropIndexClick(element.index)(event)
-                              }
-                              icon={<FormTrashIcon />}
-                            />
-                          )}
-                        </Box>
-                      </ErrorFieldIndicator>
-                    </ListItem>
-                  ))
-                : null}
-            </List>
-          </Box>
-        )}
+                  {!this.props.readonly && (
+                    <Button
+                      onClick={event =>
+                        element.onDropIndexClick(element.index)(event)
+                      }
+                      icon={<FormTrashIcon />}
+                    />
+                  )}
+                </Box>
+              ))
+            : null}
+        </Box>
       </Box>
     );
   }

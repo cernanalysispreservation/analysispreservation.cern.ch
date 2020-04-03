@@ -6,7 +6,6 @@ import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
 import ArrayUtils from "../components/ArrayUtils";
-import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class DefaultArrayField extends React.Component {
   constructor(props) {
@@ -21,14 +20,12 @@ class DefaultArrayField extends React.Component {
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
                     <ListItem key={element.index} separator="none" pad="none">
-                      <Box flex={true} margin={{ bottom: "small" }}>
-                        <ErrorFieldIndicator
-                          errors={this.props.formContext.ref}
-                          id={element.children.props.idSchema.$id}
-                          hideIndicator
-                        >
-                          {element.children}
-                        </ErrorFieldIndicator>
+                      <Box
+                        key={element.index}
+                        flex={true}
+                        margin={{ bottom: "small" }}
+                      >
+                        {element.children}
                       </Box>
                       {!this.props.readonly && (
                         <ArrayUtils
@@ -54,6 +51,7 @@ class DefaultArrayField extends React.Component {
 
 DefaultArrayField.propTypes = {
   items: PropTypes.array,
+  idSchema: PropTypes.object,
   options: PropTypes.object,
   readonly: PropTypes.bool,
   formContext: PropTypes.object
