@@ -63,6 +63,7 @@
     "react-json-view": "^1.16.1",
     "react-jsonschema-form": "v2.0.0-alpha.1",
     "react-lazylog": "4.3.2",
+    "react-monaco-editor": "0.35.0",
     "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
