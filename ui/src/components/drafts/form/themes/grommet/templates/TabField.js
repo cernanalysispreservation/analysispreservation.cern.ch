@@ -78,8 +78,7 @@ class TabField extends React.Component {
       <Box
         flex={true}
         style={{
-          display: "grid",
-          justifyContent: this.options && this.options.full ? " " : "center"
+          display: "grid"
         }}
       >
         <Box size={this.options && this.options.full ? "full" : "xxlarge"}>
