@@ -235,19 +235,21 @@ class TextWidget extends Component {
     let input = null;
     if (this.props.options && this.props.options.suggestions) {
       input = (
-        <AsyncSelect
-          menuPosition="fixed"
-          isMulti={false}
-          onChange={this.updateValueOnSuggestion}
-          onInputChange={this._onInputChange}
-          isClearable
-          cacheOptions
-          backspaceRemovesValue={true}
-          escapeClearsValue={true}
-          defaultOptions={false}
-          value={{ label: this.props.value, value: this.props.value }}
-          loadOptions={debounce(this.updateSuggestions, 500)}
-        />
+        <Box className="cap-async-select-input" pad={{ horizontal: "medium" }}>
+          <AsyncSelect
+            menuPosition="fixed"
+            isMulti={false}
+            onChange={this.updateValueOnSuggestion}
+            onInputChange={this._onInputChange}
+            isClearable
+            cacheOptions
+            backspaceRemovesValue={true}
+            escapeClearsValue={true}
+            defaultOptions={false}
+            value={{ label: this.props.value, value: this.props.value }}
+            loadOptions={debounce(this.updateSuggestions, 500)}
+          />
+        </Box>
       );
     } else if (this.props.schema.pattern) {
       input = (
