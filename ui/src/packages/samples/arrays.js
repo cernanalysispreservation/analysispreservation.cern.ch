@@ -128,12 +128,14 @@ module.exports = {
   },
   uiSchema: {
     listOfStrings: {
+      "ui:array": "StringArrayField",
       items: { "ui:emptyValue": "" }
     },
     multipleChoicesList: {
       "ui:widget": "checkboxes"
     },
     fixedItemsList: {
+      "ui:array": "AccordionArrayField",
       items: [{ "ui:widget": "textarea" }, { "ui:widget": "select" }],
       additionalItems: {
         "ui:widget": "updown"
