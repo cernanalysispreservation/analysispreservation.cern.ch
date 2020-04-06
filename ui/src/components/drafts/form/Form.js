@@ -74,7 +74,7 @@ class DepositForm extends Component {
             widgets={widgets}
             fields={fields}
             uiSchema={this.props.uiSchema}
-            liveValidate={false}
+            liveValidate={this.props.liveValidate || false}
             noValidate={false}
             validate={this._validate.bind(this)}
             onError={() => {}}

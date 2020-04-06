@@ -3,13 +3,6 @@ import AceEditor from "react-ace";
 import { Box, Heading } from "grommet";
 import PropTypes from "prop-types";
 
-const monacoEditorOptions = {
-  minimap: {
-    enabled: false
-  },
-  automaticLayout: true
-};
-
 class Editor extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +13,7 @@ class Editor extends Component {
     this.setState({ valid: true, code: props.code });
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     if (this.props.dark === !nextProps.dark) {
       return true;
     }
@@ -67,6 +60,11 @@ class Editor extends Component {
   }
 }
 
-Editor.propTypes = {};
+Editor.propTypes = {
+  dark: PropTypes.bool,
+  title: PropTypes.string,
+  onChange: PropTypes.func,
+  code: PropTypes.string
+};
 
 export default Editor;

@@ -60,7 +60,7 @@ module.exports = {
       full: true,
       view: {
         vertical: true,
-        sidebarColor: "brand"
+        sidebarColor: "grey-1"
       }
     },
     ntuples_production: {

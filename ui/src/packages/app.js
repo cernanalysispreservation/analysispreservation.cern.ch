@@ -36,6 +36,7 @@ class Playground extends Component {
         omitExtraData: false,
         liveOmit: false
       },
+      liveValidate: false,
       shareURL: null,
       themeObj: {},
       toggle: false
@@ -147,7 +148,21 @@ class Playground extends Component {
         <Box align="center">
           <Heading>Playground</Heading>
         </Box>
-        <Box margin={{ vertical: "medium" }} align="end">
+        <Box
+          margin={{ vertical: "medium" }}
+          justify="between"
+          direction="row"
+          pad={{ horizontal: "medium" }}
+        >
+          <Box>
+            <CheckBox
+              label="Live Validate"
+              onClick={() =>
+                this.setState({ liveValidate: !this.state.liveValidate })
+              }
+              checked={this.state.liveValidate}
+            />
+          </Box>
           <CheckBox
             label={this.state.toggle ? <FaMoon /> : <FaSun />}
             onClick={this.toggleUpdate}
@@ -198,6 +213,7 @@ class Playground extends Component {
               formData={formData}
               schema={schema}
               uiSchema={uiSchema}
+              liveValidate={this.state.liveValidate}
               onChange={this.onFormDataChange}
               errors={{}}
             />
