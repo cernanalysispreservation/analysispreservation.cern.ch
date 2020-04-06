@@ -38,14 +38,14 @@ export const samples = {
   References: references,
   Custom: custom,
   Errors: errors,
-  Examples: examples,
+  // Examples: examples,
   Large: large,
-  "Date & time": date,
+  // "Date & time": date,
   Validation: validation,
   Files: files,
-  Single: single,
-  "Custom Array": customArray,
-  "Custom Object": customObject,
+  // Single: single,
+  // "Custom Array": customArray,
+  // "Custom Object": customObject,
   Alternatives: alternatives,
   "Property dependencies": propertyDependencies,
   "Schema dependencies": schemaDependencies,
@@ -56,6 +56,6 @@ export const samples = {
   "Null fields": nullField,
   Nullable: nullable,
   ErrorSchema: errorSchema,
-  Defaults: defaults,
-  Accordion: accordion
+  Defaults: defaults
+  // Accordion: accordion
 };
