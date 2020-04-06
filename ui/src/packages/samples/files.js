@@ -3,19 +3,6 @@ module.exports = {
     title: "Files",
     type: "object",
     properties: {
-      file: {
-        type: "string",
-        format: "data-url",
-        title: "Single file"
-      },
-      files: {
-        type: "array",
-        title: "Multiple files",
-        items: {
-          type: "string",
-          format: "data-url"
-        }
-      },
       filesAccept: {
         type: "string",
         format: "data-url",
@@ -25,6 +12,7 @@ module.exports = {
   },
   uiSchema: {
     filesAccept: {
+      "ui:field": "CapFiles",
       "ui:options": { accept: ".pdf" }
     }
   },

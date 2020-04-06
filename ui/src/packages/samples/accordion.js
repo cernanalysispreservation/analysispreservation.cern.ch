@@ -55,8 +55,16 @@ module.exports = {
   },
   uiSchema: {
     "ui:object": "tabView",
+    "ui:options": {
+      display: "grid",
+      full: true,
+      view: {
+        vertical: true,
+        sidebarColor: "brand"
+      }
+    },
     ntuples_production: {
-      //   "ui:array": "AccordionArrayField"
+      "ui:array": "AccordionArrayField"
     },
     firstName: {
       "ui:autofocus": true,
