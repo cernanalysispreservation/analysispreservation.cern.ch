@@ -192,7 +192,7 @@ class Playground extends Component {
               />
             </Box>
           </Box>
-          <Box flex>
+          <Box flex pad="large" separator="all">
             <Form
               formRef={{}}
               formData={formData}

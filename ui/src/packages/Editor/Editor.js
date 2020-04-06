@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import MonacoEditor from "react-monaco-editor";
+import AceEditor from "react-ace";
 import { Box, Heading } from "grommet";
 import PropTypes from "prop-types";
 
@@ -55,10 +55,10 @@ class Editor extends Component {
           <Heading tag="h2">{title}</Heading>
         </Box>
         <Box>
-          <MonacoEditor
+          <AceEditor
             language="json"
             value={this.state.code}
-            theme={this.props.dark ? "vs-dark" : "vs-light"}
+            theme={this.props.dark ? "monokai" : "github"}
             onChange={this.onCodeChange}
             height={400}
             options={monacoEditorOptions}
