@@ -27,22 +27,24 @@ import nullField from "./null";
 import errorSchema from "./errorSchema";
 import defaults from "./defaults";
 import accordion from "./accordion";
+import fields from "./fields";
 
 export const samples = {
   Simple: simple,
-  Nested: nested,
+  // Nested: nested,
   Arrays: arrays,
   Numbers: numbers,
   Widgets: widgets,
+  Fields: fields,
   Ordering: ordering,
   References: references,
-  Custom: custom,
+  // Custom: custom,
   Errors: errors,
   // Examples: examples,
   Large: large,
   // "Date & time": date,
   Validation: validation,
-  Files: files,
+  // Files: files,
   // Single: single,
   // "Custom Array": customArray,
   // "Custom Object": customObject,

@@ -56,7 +56,7 @@ class Editor extends Component {
           <AceEditor
             language="json"
             value={this.state.code}
-            theme={this.props.dark ? "monokai" : "github"}
+            theme={this.props.dark ? "terminal" : "github"}
             onChange={this.onCodeChange}
             height={400}
             width="100%"
