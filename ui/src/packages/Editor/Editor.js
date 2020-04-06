@@ -47,8 +47,6 @@ class Editor extends Component {
 
   render() {
     const { title } = this.props;
-    const icon = this.state.valid ? "ok" : "remove";
-    const cls = this.state.valid ? "valid" : "invalid";
     return (
       <Box>
         <Box colorIndex="light-2" align="center">
@@ -61,7 +59,7 @@ class Editor extends Component {
             theme={this.props.dark ? "monokai" : "github"}
             onChange={this.onCodeChange}
             height={400}
-            options={monacoEditorOptions}
+            width="100%"
           />
         </Box>
       </Box>

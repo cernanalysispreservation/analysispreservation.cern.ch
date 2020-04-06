@@ -5,38 +5,54 @@ export default {
     title: "Widgets",
     type: "object",
     properties: {
-      stringFormats: {
+      radio: {
         type: "object",
-        title: "String formats",
+        title: "Radio field",
         properties: {
-          email: {
+          radio: {
             type: "string",
-            format: "email"
-          },
-          uri: {
-            type: "string",
-            format: "uri"
+            title: "Radio buttons",
+            enum: ["Choice 1", "Choice 2", "Choice 3"]
           }
         }
       },
-      boolean: {
+      updown: {
         type: "object",
-        title: "Boolean field",
+        title: "Updown field",
         properties: {
-          default: {
+          updown: {
+            type: "number",
+            title: "Updown buttons"
+          }
+        }
+      },
+      switch: {
+        type: "object",
+        title: "Switch field",
+        properties: {
+          switch: {
             type: "boolean",
-            title: "checkbox (default)",
-            description: "This is the checkbox-description"
-          },
-          radio: {
+            title: "Switch buttons"
+          }
+        }
+      },
+      checkbox: {
+        type: "object",
+        title: "Checbox field",
+        properties: {
+          checkbox: {
             type: "boolean",
-            title: "radio buttons",
-            description: "This is the radio-description"
-          },
+            title: "Checkbox buttons"
+          }
+        }
+      },
+      select: {
+        type: "object",
+        title: "Select field",
+        properties: {
           select: {
             type: "boolean",
-            title: "select box",
-            description: "This is the select-description"
+            title: "Select"
           }
         }
       },
@@ -46,23 +62,15 @@ export default {
         properties: {
           default: {
             type: "string",
-            title: "text input (default)"
+            title: "text input"
           },
           textarea: {
             type: "string",
             title: "textarea"
-          },
-          color: {
-            type: "string",
-            title: "color picker",
-            default: "#151ce6"
           }
         }
       },
-      secret: {
-        type: "string",
-        default: "I'm a hidden string."
-      },
+
       disabled: {
         type: "string",
         title: "A disabled field",
@@ -72,33 +80,33 @@ export default {
         type: "string",
         title: "A readonly field",
         default: "I am read-only."
-      },
-      readonly2: {
-        type: "string",
-        title: "Another readonly field",
-        default: "I am also read-only.",
-        readOnly: true
-      },
-      widgetOptions: {
-        title: "Custom widget with options",
-        type: "string",
-        default: "I am yellow"
-      },
-      selectWidgetOptions: {
-        title: "Custom select widget with options",
-        type: "string",
-        enum: ["foo", "bar"],
-        enumNames: ["Foo", "Bar"]
       }
     }
   },
   uiSchema: {
-    boolean: {
-      radio: {
-        "ui:widget": "radio"
-      },
+    select: {
       select: {
         "ui:widget": "select"
+      }
+    },
+    updown: {
+      updown: {
+        "ui:widget": "updown"
+      }
+    },
+    switch: {
+      switch: {
+        "ui:widget": "switch"
+      }
+    },
+    checkbox: {
+      checkbox: {
+        "ui:widget": "checkboxes"
+      }
+    },
+    radio: {
+      radio: {
+        "ui:widget": "radio"
       }
     },
     string: {
@@ -107,75 +115,23 @@ export default {
         "ui:options": {
           rows: 5
         }
-      },
-      color: {
-        "ui:widget": "color"
       }
-    },
-    secret: {
-      "ui:widget": "hidden"
     },
     disabled: {
       "ui:disabled": true
     },
     readonly: {
       "ui:readonly": true
-    },
-    widgetOptions: {
-      "ui:widget": ({ value, onChange, options }) => {
-        const { backgroundColor } = options;
-        return (
-          <input
-            className="form-control"
-            onChange={event => onChange(event.target.value)}
-            style={{ backgroundColor }}
-            value={value}
-          />
-        );
-      },
-      "ui:options": {
-        backgroundColor: "yellow"
-      }
-    },
-    selectWidgetOptions: {
-      "ui:widget": ({ value, onChange, options }) => {
-        const { enumOptions, backgroundColor } = options;
-        return (
-          <select
-            className="form-control"
-            style={{ backgroundColor }}
-            value={value}
-            onChange={event => onChange(event.target.value)}
-          >
-            {enumOptions.map(({ label, value }, i) => {
-              return (
-                <option key={i} value={value}>
-                  {label}
-                </option>
-              );
-            })}
-          </select>
-        );
-      },
-      "ui:options": {
-        backgroundColor: "pink"
-      }
     }
   },
   formData: {
-    stringFormats: {
-      email: "chuck@norris.net",
-      uri: "http://chucknorris.com/"
-    },
-    boolean: {
-      default: true,
-      radio: true,
-      select: true
+    updown: { updown: 12 },
+    radio: {
+      radio: true
     },
     string: {
       default: "Hello...",
       textarea: "... World"
-    },
-    secret: "I'm a hidden string."
+    }
   }
 };
