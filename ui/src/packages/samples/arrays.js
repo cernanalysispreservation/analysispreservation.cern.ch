@@ -128,7 +128,6 @@ module.exports = {
   },
   uiSchema: {
     listOfStrings: {
-      "ui:array": "StringArrayField",
       items: { "ui:emptyValue": "" }
     },
     multipleChoicesList: {

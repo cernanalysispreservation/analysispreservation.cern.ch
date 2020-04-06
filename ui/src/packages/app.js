@@ -198,9 +198,7 @@ class Playground extends Component {
               formData={formData}
               schema={schema}
               uiSchema={uiSchema}
-              onChange={e => {
-                console.log("-----", e);
-              }}
+              onChange={this.onFormDataChange}
               errors={{}}
             />
           </Box>
