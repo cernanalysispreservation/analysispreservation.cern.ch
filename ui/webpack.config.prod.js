@@ -4,10 +4,20 @@ import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
+import dotenv from "dotenv";
+
+const env = dotenv.config().parsed;
+
+// reduce it to a nice object, the same as before
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 const GLOBALS = {
   "process.env.NODE_ENV": JSON.stringify("production"),
-  __DEV__: false
+  __DEV__: false,
+  ...envKeys
 };
 
 export default {

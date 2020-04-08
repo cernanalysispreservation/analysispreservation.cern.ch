@@ -2,6 +2,8 @@ import axios from "axios";
 import { history } from "../store/configureStore";
 import cogoToast from "cogo-toast";
 
+import { piwik } from "../components/Root";
+
 export const AUTHENTICATED = "AUTHENTICATED";
 export const UNAUTHENTICATED = "UNAUTHENTICATED";
 
@@ -120,6 +122,8 @@ export function initCurrentUser(next = undefined) {
       .then(function(response) {
         let { id, deposit_groups } = response.data;
         localStorage.setItem("token", id);
+
+        if (piwik) piwik.setUserId(response.data.email);
         dispatch(
           loginSuccess({
             userId: id,

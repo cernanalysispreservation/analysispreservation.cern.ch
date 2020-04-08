@@ -6302,6 +6302,11 @@ dotenv-webpack@^1.7.0:
   dependencies:
     dotenv-defaults "^1.0.2"
 
+dotenv@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
 dotenv@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
@@ -11194,6 +11199,14 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
+piwik-react-router@0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/piwik-react-router/-/piwik-react-router-0.12.1.tgz#0caf984715a5b22c85610e0c02ae372b1ca37c41"
+  integrity sha512-Ebi7rBKV/S+YJ3UF/6t6n/wRx1/4yilR1caG/JhdefkYHh8gopqy2kxjaaD++LS9tTmtPNfokEHWbXTbw2W7OA==
+  dependencies:
+    url-join "^1.1.0"
+    warning "^3.0.0"
+
 pkg-dir@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-2.0.0.tgz#f6d5d1109e19d63edf428e0bd57e12777615334b"
@@ -14952,6 +14965,11 @@ uri-js@^4.2.2:
 urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
+
+url-join@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/url-join/-/url-join-1.1.0.tgz#741c6c2f4596c4830d6718460920d0c92202dc78"
+  integrity sha1-dBxsL0WWxIMNZxhGCSDQySIC3Hg=
 
 url-join@^4.0.0:
   version "4.0.1"
