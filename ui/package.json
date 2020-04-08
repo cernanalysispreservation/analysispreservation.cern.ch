@@ -1,10 +1,17 @@
 {
   "private": true,
   "name": "monorepo",
-  "workspaces": [
-    "cap-react",
-    "playground"
-  ],
+  "workspaces": {
+    "packages": [
+      "cap-react",
+      "playground"
+    ]
+  },
+  "devDependencies": {
+    "babel-eslint": "10.1.0",
+    "babel-loader": "8.1.0",
+    "babel-jest": "24.9.0"
+  },
   "scripts": {
     "cap": "yarn workspace cap-react start",
     "playground": "yarn workspace playground start"

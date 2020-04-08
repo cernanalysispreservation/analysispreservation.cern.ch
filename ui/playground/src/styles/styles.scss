@@ -1,0 +1,133 @@
+/* Variables */
+$vin-blue: #5bb7db;
+$vin-green: #60b044;
+$vin-red: #ff0000;
+
+//@import '~grommet/scss/vanilla/index';
+
+/* Styles */
+html,
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+body .grommet {
+  font: 14px CAPFont;
+}
+
+#app {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+#app-main {
+  height: 100%; /*allows both columns to span the full height of the browser window*/
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  height: 55.97px;
+  flex-shrink: 0;
+  display: inline-flex;
+}
+
+label {
+  margin-bottom: 0.15em;
+}
+
+#main-container {
+  flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
+  overflow-y: auto; /*adds scroll to this container*/
+  height: 100%;
+  display: flex;
+}
+
+.rjsf {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-bottom: 5px;
+
+  .grommetux-form-field {
+    margin-bottom: 0;
+  }
+}
+
+.rjsf-condenced {
+  height: auto;
+}
+
+.menuItem::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 1px;
+  background: #000;
+  transition: width 0.3s;
+}
+
+.menuItem:hover::after {
+  width: 100%;
+  transition: width 0.3s;
+}
+
+// xsmall
+@media only screen and (min-width: 320px) {
+  .md-row {
+    flex-direction: row !important;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .jst-md-center {
+    justify-content: center;
+  }
+  .width-100 {
+    width: 100% !important;
+  }
+}
+
+// small
+@media only screen and (min-width: 580px) {
+  .md-column {
+    display: flex;
+    flex-direction: column !important;
+  }
+}
+
+// medium
+@media only screen and (min-width: 720px) {
+  .md-row {
+    flex-direction: column !important;
+    justify-content: flex-start;
+  }
+  .jst-md-center {
+    justify-content: flex-start;
+  }
+  .lg-column {
+    flex-direction: column !important;
+  }
+  .lg-row {
+    width: auto !important;
+  }
+}
+
+// large
+@media only screen and (min-width: 1135px) {
+  .lg-column {
+    flex-direction: row !important;
+  }
+  .lg-row {
+    flex-direction: column !important;
+  }
+}
+
+// xlarge
+@media only screen and (min-width: 1330px) {
+  .md-column {
+    display: flex;
+    flex: 1;
+    flex-direction: row !important;
+  }
+}
