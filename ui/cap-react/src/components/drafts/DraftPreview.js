@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 
 import cogoToast from "cogo-toast";
-import { EditAnchor, Anchors } from "../drafts/components/Buttons";
+import { EditAnchor, Anchors } from "./components/Buttons";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import SectionBox from "../partials/SectionBox";

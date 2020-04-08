@@ -7,8 +7,8 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import { getPublishedItem } from "../../actions/published";
 
-import RerunPublished from "../published/RerunPublished";
-import RunsIndex from "../published/RunsIndex";
+import RerunPublished from "./RerunPublished";
+import RunsIndex from "./RunsIndex";
 
 import PublishedPreview from "./PublishedPreview";
 import { Route } from "react-router-dom";

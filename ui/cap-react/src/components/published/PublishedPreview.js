@@ -15,7 +15,7 @@ import SectionHeader from "../drafts/components/SectionHeader";
 import { EditAnchor } from "../drafts/components/Buttons";
 import AnnounceIcon from "grommet/components/icons/base/Announce";
 
-import RunsIndex from "../published/RunsIndex";
+import RunsIndex from "./RunsIndex";
 import { Route } from "react-router-dom";
 
 const transformSchema = schema => {
