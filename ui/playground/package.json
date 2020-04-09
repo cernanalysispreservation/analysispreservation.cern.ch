@@ -1,87 +1,27 @@
 {
-  "name": "playground",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@storybook/addon-actions": "5.1.11",
-    "@storybook/addon-knobs": "5.1.11",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "cap-react": "0.1.0",
-    "cogo-toast": "4.1.1",
-    "connected-react-router": "6.5.2",
-    "git-url-parse": "11.1.2",
-    "grommet": "^1.0.0",
-    "grommet-addons": "^0.6.0",
-    "grommet-css": "^1.6.0",
-    "grommet-icons": "^4.4.0",
-    "grommet-styles": "^0.2.0",
-    "history": "^4.7.2",
-    "immutability-helper": "3.0.1",
-    "lodash": "4.17.11",
-    "mini-css-extract-plugin": "0.4.4",
-    "node-sass": "4.12.0",
-    "object-assign": "4.1.0",
-    "object-path": "0.11.4",
-    "parse-github-url": "1.0.2",
-    "pluralize": "7.0.0",
-    "pretty-bytes": "^4.0.2",
-    "prism-react-renderer": "0.1.7",
-    "query-string": "^5.1.0",
-    "react": "^16.13.1",
-    "react-ace": "8.0.0",
-    "react-dnd": "^9.3.4",
-    "react-dnd-html5-backend": "9.3.4",
-    "react-dom": "^16.13.1",
-    "react-dropzone": "^4.2.9",
-    "react-icons": "3.9.0",
-    "react-json-editor-ajrm": "2.5.9",
-    "react-json-view": "^1.16.1",
-    "react-jsonschema-form": "v2.0.0-alpha.1",
-    "react-lazylog": "4.3.2",
-    "react-redux": "^6.0.0",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
-    "react-router-redux": "5.0.0-alpha.9",
-    "react-scripts": "3.4.1",
-    "react-select": "3.0.8",
-    "react-split-pane": "0.1.74",
-    "react-tagcloud": "2.0.0",
-    "react-tagsinput": "3.19.0",
-    "react-timeago": "4.4.0",
-    "react-tooltip": "^3.9.0",
-    "react-treebeard": "3.2.4",
-    "react-truncate": "^2.4.0",
-    "redux": "^4.0.1",
-    "redux-immutable": "^4.0.0",
-    "redux-logger": "3.0.6",
-    "redux-promise": "0.6.0",
-    "redux-promises": "1.0.0",
-    "redux-thunk": "2.3.0",
-    "reselect": "^3.0.1",
-    "searchkit": "2.3.0",
-    "styled-components": "^5.1.0"
-  },
+  "name": "react-redux-thunk-quick-start",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "webpack-dev-server --open",
+    "build": "webpack"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }

@@ -1,13 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-
+import React from "react";
+import Form from "cap-react/src/components/drafts/form/Form";
 import { Selector } from "./Selector";
 import { Editor } from "./Editor";
 import { Box, Heading, CheckBox } from "grommet";
 import { samples } from "./samples";
 import { utils } from "./utils";
 import { FaMoon, FaSun } from "react-icons/fa";
-import Form from "cap-react/src/components/drafts/form/Form";
 
 function shouldRender(comp, nextProps, nextState) {
   const { props, state } = comp;
@@ -19,7 +17,7 @@ function shouldRender(comp, nextProps, nextState) {
 
 const toJson = val => JSON.stringify(val, null, 2);
 
-class Playground extends Component {
+class Playground extends React.Component {
   constructor(props) {
     super(props);
     const { schema, uiSchema, formData, validate } = samples.Simple;
@@ -223,9 +221,5 @@ class Playground extends Component {
     );
   }
 }
-
-Playground.propTypes = {
-  name: PropTypes.string
-};
 
 export default Playground;
