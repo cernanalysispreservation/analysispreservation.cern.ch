@@ -11,6 +11,10 @@ import "./styles/styles.scss"; // Yep, that's right. You can import SASS/CSS fil
 
 import "grommet/scss/hpinc/index.scss";
 
+import * as Sentry from "@sentry/browser";
+
+if (process.env.SENTRY_UI_DSN) Sentry.init({ dsn: process.env.SENTRY_UI_DSN });
+
 render(
   <AppContainer>
     <Root store={store} history={history} />
