@@ -10,7 +10,6 @@ import CMSIndex from "./cms";
 
 import HowToSearchPage from "./about/HowToSearch";
 import AboutPage from "./about/AboutPage";
-import Playground from "../packages";
 import StatusPage from "./status/StatusPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 import requireAuth from "./auth/AuthorizationRequired";
@@ -46,7 +45,6 @@ class App extends React.Component {
           <Switch id="main-container">
             <Route path="/login" component={noRequireAuth(WelcomePage)} />
             <Route path="/about" component={AboutPage} />
-            <Route path="/playground" component={Playground} />
             <Route path="/status" component={StatusPage} />
             <Route path="/cms" component={CMSIndex} />
             <Route path="/search-tips" component={HowToSearchPage} />

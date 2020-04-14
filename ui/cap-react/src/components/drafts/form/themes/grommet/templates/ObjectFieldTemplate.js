@@ -19,7 +19,11 @@ let ObjectFieldTemplate = function(props) {
     return (
       <Box
         style={{
-          display: "grid"
+          display: "grid",
+          justifyContent:
+            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].align
+              ? props.uiSchema["ui:options"].align
+              : "center"
         }}
       >
         <Box

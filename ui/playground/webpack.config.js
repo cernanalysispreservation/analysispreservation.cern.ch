@@ -27,6 +27,22 @@ module.exports = {
         }
       },
       {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              limit: 10000,
+              mimetype: "application/font-woff"
+            }
+          }
+        ]
+      },
+      {
+        test: /\.eot(\?v=\d+.\d+.\d+)?$/,
+        use: ["file-loader"]
+      },
+      {
         test: /(\.css|\.scss|\.sass)$/,
         use: [
           "style-loader",

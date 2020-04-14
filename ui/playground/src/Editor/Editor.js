@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import AceEditor from "react-ace";
+import "ace-builds/webpack-resolver";
+import brace from "brace";
+import "brace/mode/json";
 import { Box, Heading } from "grommet";
 import PropTypes from "prop-types";
 
@@ -7,6 +10,7 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = { valid: true, code: props.code };
+    this.onCodeChange = this.onCodeChange.bind(this);
   }
 
   UNSAFE_componentWillReceiveProps(props) {
@@ -27,7 +31,7 @@ class Editor extends Component {
     return false;
   }
 
-  onCodeChange = code => {
+  onCodeChange(code) {
     try {
       const parsedCode = JSON.parse(code);
       this.setState({ valid: true, code }, () =>
@@ -36,7 +40,7 @@ class Editor extends Component {
     } catch (err) {
       this.setState({ valid: false, code });
     }
-  };
+  }
 
   render() {
     const { title } = this.props;
@@ -47,12 +51,13 @@ class Editor extends Component {
         </Box>
         <Box>
           <AceEditor
-            language="json"
-            value={this.state.code}
+            mode="json"
+            value={this.state.code || ""}
             theme={this.props.dark ? "terminal" : "github"}
             onChange={this.onCodeChange}
-            height={400}
             width="100%"
+            name="UNIQUE_ID_OF_DIV"
+            editorProps={{ $blockScrolling: true }}
           />
         </Box>
       </Box>
