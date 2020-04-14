@@ -2,7 +2,8 @@
   "private": true,
   "name": "monorepo",
   "workspaces": [
-    "cap-react"
+    "cap-react",
+    "playground"
   ],
   "scripts": {
     "cap": "yarn workspace cap-react start"
