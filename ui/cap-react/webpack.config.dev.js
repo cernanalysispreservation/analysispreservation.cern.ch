@@ -132,7 +132,7 @@ export default {
             loader: "sass-loader",
             options: {
               includePaths: [
-                "./node_modules",
+                "../node_modules",
                 path.resolve(__dirname, "src", "scss")
               ],
               sourceMap: true

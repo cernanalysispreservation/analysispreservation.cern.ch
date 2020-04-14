@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "monorepo",
+  "workspaces": [
+    "cap-react"
+  ],
+  "scripts": {
+    "cap": "yarn workspace cap-react start"
+  }
+}
