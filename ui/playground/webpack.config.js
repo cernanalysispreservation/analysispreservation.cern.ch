@@ -25,6 +25,35 @@ module.exports = {
           // attach the presets to the loader (most projects use .babelrc file instead)
           presets: ["@babel/preset-env", "@babel/preset-react"]
         }
+      },
+      {
+        test: /(\.css|\.scss|\.sass)$/,
+        use: [
+          "style-loader",
+          {
+            loader: "css-loader",
+            options: {
+              sourceMap: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: () => [require("autoprefixer")],
+              sourceMap: true
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              includePaths: [
+                "../node_modules",
+                path.resolve(__dirname, "src", "scss")
+              ],
+              sourceMap: true
+            }
+          }
+        ]
       }
     ]
   },

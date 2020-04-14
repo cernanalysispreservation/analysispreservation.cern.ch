@@ -9,6 +9,8 @@
     "build": "webpack"
   },
   "dependencies": {
+    "grommet": "^1.0.0",
+    "grommet-addons": "^0.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -20,6 +22,9 @@
     "html-webpack-plugin": "^4.2.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.0",
+    "css-loader": "1.0.0"
   }
 }
