@@ -203,6 +203,16 @@ export const clearErrorSuccess = () => ({ type: CLEAR_ERROR_SUCCESS });
 // Create Draft
 export function createDraft(data = {}, ana_type) {
   return (dispatch, getState) => {
+    if (!ana_type.name) {
+      cogoToast.warn("Make sure you selected a type for your analysis", {
+        position: "top-center",
+        heading: "Form is not ready",
+        bar: { size: "0" },
+        hideAfter: 3
+      });
+
+      return;
+    }
     return dispatch(postCreateDraft(data, ana_type))
       .then(() => {
         let state = getState();
@@ -244,15 +254,12 @@ export function postCreateDraft(data = {}, ana_type) {
       })
       .catch(error => {
         dispatch(createDraftError(error.response));
-        cogoToast.error(
-          "There is an error, please make sure you are connected and try again",
-          {
-            position: "top-center",
-            heading: error.message,
-            bar: { size: "0" },
-            hideAfter: 3
-          }
-        );
+        cogoToast.error(error.response.data.message, {
+          position: "top-center",
+          heading: "Something went wrong",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
         throw error;
       });
   };

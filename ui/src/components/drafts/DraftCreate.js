@@ -22,7 +22,10 @@ class DraftCreate extends React.Component {
     super(props);
     this.state = {
       title: "",
-      type: null
+      type:
+        this.props.contentTypes && this.props.contentTypes.size === 1
+          ? this.props.contentTypes.toJS()[0]["deposit_group"]
+          : null
     };
   }
 
