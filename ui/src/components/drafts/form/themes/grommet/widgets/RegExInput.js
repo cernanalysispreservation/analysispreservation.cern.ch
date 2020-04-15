@@ -1,5 +1,6 @@
 //component.js
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import { convertMask, RXInputMask, isMeta } from "incr-regex-package";
 import { Box } from "grommet";
@@ -447,6 +448,17 @@ class RxInputBase extends Component {
     return this.getInput(input, placeholder);
   }
 }
+
+RxInputBase.propTypes = {
+  placeholder: PropTypes.string,
+  mask: PropTypes.instanceOf(RegExp),
+  value: PropTypes.string,
+  selection: PropTypes.string,
+  onKeyDown: PropTypes.func,
+  name: PropTypes.string,
+  onChange: PropTypes.func,
+  size: PropTypes.number
+};
 
 //const LOG = (first, ...params) => {console.log(first, ...params); return first; }
 function strCmp1(a, b) {

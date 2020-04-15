@@ -83,14 +83,14 @@ class SearchResults extends React.Component {
                     </Box>
                     <Box direction="row">
                       <ReactTooltip />
-                      {rights &&
-                      <Box>
-                        <KeywordLabel> {rights} </KeywordLabel>
-                      </Box>
-                      }
-                      {labels.map(item => {
+                      {rights && (
+                        <Box>
+                          <KeywordLabel> {rights} </KeywordLabel>
+                        </Box>
+                      )}
+                      {labels.map((item, index) => {
                         return (
-                          <Box>
+                          <Box key={index}>
                             {" "}
                             <KeywordLabel> {item} </KeywordLabel>
                           </Box>

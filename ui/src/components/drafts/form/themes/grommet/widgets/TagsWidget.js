@@ -80,7 +80,8 @@ TagsWidget.propTypes = {
   tags: PropTypes.array,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  schema: PropTypes.object
 };
 
 export default TagsWidget;

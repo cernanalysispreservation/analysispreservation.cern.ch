@@ -46,7 +46,8 @@ class FileUploadProgressItem extends React.Component {
 
 FileUploadProgressItem.propTypes = {
   links: PropTypes.object,
-  uploadFile: PropTypes.func
+  uploadFile: PropTypes.func,
+  file: PropTypes.object
 };
 
 function mapStateToProps(state, props) {

@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const ReanaIcon = ({ size = "small" }) => (
@@ -131,3 +131,7 @@ export const ReanaIcon = ({ size = "small" }) => (
     </g>
   </SVGIcon>
 );
+
+ReanaIcon.propTypes = {
+  size: PropTypes.string
+};

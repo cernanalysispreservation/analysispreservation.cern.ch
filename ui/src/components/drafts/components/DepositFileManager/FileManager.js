@@ -70,7 +70,10 @@ FileManager.propTypes = {
   selectableActionLayer: PropTypes.func,
   files: PropTypes.object,
   active: PropTypes.number,
-  message: PropTypes.string
+  message: PropTypes.string,
+  onDirectoryClick: PropTypes.func,
+  onFileClick: PropTypes.func,
+  onSelect: PropTypes.func
 };
 
 export default FileManager;

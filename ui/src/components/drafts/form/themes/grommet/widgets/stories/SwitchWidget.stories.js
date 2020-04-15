@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
-
+import PropTypes from "prop-types";
 import Widgets from "../../widgets";
 
 import Grommet from "grommet/components/Grommet";
@@ -41,6 +41,7 @@ class SwitchComponent extends Component {
                 schema={{ type: "string" }}
                 onChange={this._onChange}
                 formData={this.props.checked}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.readonly}
               />
             </FormField>
@@ -50,6 +51,11 @@ class SwitchComponent extends Component {
     );
   }
 }
+
+SwitchComponent.propTypes = {
+  checked: PropTypes.bool,
+  readonly: PropTypes.bool
+};
 
 storiesOf("Switch", module)
   .addParameters({

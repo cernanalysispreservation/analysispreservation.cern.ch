@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const GitlabIcon = ({ size = "small" }) => (
@@ -72,3 +72,7 @@ export const GitlabIcon = ({ size = "small" }) => (
     />
   </SVGIcon>
 );
+
+GitlabIcon.propTypes = {
+  size: PropTypes.string
+};

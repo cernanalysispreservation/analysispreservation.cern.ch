@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const AtlasIcon = ({ size = "small" }) => (
@@ -19,3 +19,7 @@ export const AtlasIcon = ({ size = "small" }) => (
     />
   </SVGIcon>
 );
+
+AtlasIcon.propTypes = {
+  size: PropTypes.string
+};

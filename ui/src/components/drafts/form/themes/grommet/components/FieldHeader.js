@@ -77,7 +77,10 @@ FieldHeader.propTypes = {
   idSchema: PropTypes.object,
   uiSchema: PropTypes.object,
   properties: PropTypes.object,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  enableImport: PropTypes.func,
+  enableLatex: PropTypes.func,
+  pasteable: PropTypes.bool
 };
 
 export default FieldHeader;

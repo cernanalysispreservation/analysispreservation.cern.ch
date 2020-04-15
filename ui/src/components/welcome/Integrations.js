@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 
@@ -120,6 +120,8 @@ class Integrations extends React.Component {
   }
 }
 
-Integrations.propTypes = {};
+Integrations.propTypes = {
+  scrollToRef: PropTypes.func
+};
 
 export default Integrations;

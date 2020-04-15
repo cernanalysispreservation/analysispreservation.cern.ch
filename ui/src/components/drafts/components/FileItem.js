@@ -229,7 +229,8 @@ FileItem.propTypes = {
   filePreview: PropTypes.func,
   status: PropTypes.string,
   canUpdate: PropTypes.bool,
-  match: PropTypes.object
+  match: PropTypes.object,
+  filename: PropTypes.string
 };
 
 const mapStateToProps = state => {

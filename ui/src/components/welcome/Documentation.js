@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
@@ -47,8 +48,8 @@ class Documentation extends React.Component {
                 </Box>
                 <Heading tag="h2">User Guide</Heading>
                 <Paragraph align="center">
-                  Find out how you can use the CAP service to capture, preserve and
-                  reuse your analysis through user guides and stories.
+                  Find out how you can use the CAP service to capture, preserve
+                  and reuse your analysis through user guides and stories.
                 </Paragraph>
                 <Anchor
                   href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html"
@@ -76,8 +77,8 @@ class Documentation extends React.Component {
                 <Heading tag="h2">CLI Client</Heading>
                 <Paragraph align="center">
                   Learn how to interact with your analysis workspace via the
-                  command line interface, to make the preservation process part of
-                  your everyday work.
+                  command line interface, to make the preservation process part
+                  of your everyday work.
                 </Paragraph>
                 <Anchor
                   href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
@@ -103,8 +104,8 @@ class Documentation extends React.Component {
                 </Box>
                 <Heading tag="h2">RESTful API</Heading>
                 <Paragraph align="center">
-                  Try using our RESTful interface, to integrate CAP with
-                  your daily tools and services using HTTP requests.
+                  Try using our RESTful interface, to integrate CAP with your
+                  daily tools and services using HTTP requests.
                 </Paragraph>
                 <Anchor
                   href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
@@ -125,6 +126,8 @@ class Documentation extends React.Component {
   }
 }
 
-Documentation.propTypes = {};
+Documentation.propTypes = {
+  scrollToRef: PropTypes.func
+};
 
 export default Documentation;

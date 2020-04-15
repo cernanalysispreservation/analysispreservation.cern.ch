@@ -11,8 +11,7 @@ import { uploadViaRepoUrl } from "../../../../../../actions/files";
 import { Box, Label, Anchor } from "grommet";
 import Status from "grommet/components/icons/Status";
 import { FaGithub, FaGitlab } from "react-icons/fa";
-import { StatusIcon } from "grommet/components/icons";
-import { DownloadIcon } from "grommet/components/icons";
+import { StatusIcon, DownloadIcon } from "grommet/components/icons";
 import ConnectIcon from "grommet/components/icons/base/Connect";
 
 class RepoField extends React.Component {
@@ -256,7 +255,9 @@ class RepoField extends React.Component {
 RepoField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.object,
+  uploadViaRepoUrl: PropTypes.func,
+  id: PropTypes.string
 };
 
 function mapStateToProps(state) {

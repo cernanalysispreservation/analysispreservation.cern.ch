@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
@@ -24,16 +24,16 @@ class WelcomePage extends React.Component {
                 CERN Analysis Preservation (CAP) is a service for researchers to
                 preserve and document the various components of their physics
                 analyses, e.g. datasets, software, documentation, so that they
-                are reusable and understandable in the future. By using this tool,
-                researchers ensure these outputs are preserved, findable and
-                accessible by their collaborators for the long-term.
+                are reusable and understandable in the future. By using this
+                tool, researchers ensure these outputs are preserved, findable
+                and accessible by their collaborators for the long-term.
               </Paragraph>
               <Paragraph size="large">
                 CAP uses existing collaboration tools and a flexible data model,
-                and it is designed to be easily integrated into researchers' workflows.
-                CAP provides standard collaboration access restrictions so that
-                the individual users and collaborations are in full control of
-                sharing their results.
+                and it is designed to be easily integrated into researchers'
+                workflows. CAP provides standard collaboration access
+                restrictions so that the individual users and collaborations are
+                in full control of sharing their results.
               </Paragraph>
             </Box>
           </Box>
@@ -43,6 +43,8 @@ class WelcomePage extends React.Component {
   }
 }
 
-WelcomePage.propTypes = {};
+WelcomePage.propTypes = {
+  scrollToRef: PropTypes.func
+};
 
 export default WelcomePage;

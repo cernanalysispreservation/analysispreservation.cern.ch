@@ -246,7 +246,8 @@ DraftEditorHeader.propTypes = {
   schema: PropTypes.object,
   status: PropTypes.string,
   draft_id: PropTypes.string,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  formErrorsChange: PropTypes.func
 };
 
 function mapStateToProps(state) {

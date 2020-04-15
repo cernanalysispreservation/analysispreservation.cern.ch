@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
@@ -31,6 +32,11 @@ const Header = ({ onSelect, node }) => {
       </Box>
     </Box>
   );
+};
+
+Header.propTypes = {
+  onSelect: PropTypes.func,
+  node: PropTypes.object
 };
 
 export default Header;

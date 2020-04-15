@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
-
+import PropTypes from "prop-types";
 import Widgets from "../../widgets";
 
 import Grommet from "grommet/components/Grommet";
@@ -63,6 +63,7 @@ class SelectComponent extends Component {
                 options={this.state.options}
                 value={this.state.value}
                 onChange={e => this.updateValue(e)}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.state.readonly}
               />
             </FormField>
@@ -72,6 +73,12 @@ class SelectComponent extends Component {
     );
   }
 }
+
+SelectComponent.propTypes = {
+  readonly: PropTypes.bool,
+  inline: PropTypes.bool,
+  multiple: PropTypes.bool
+};
 
 storiesOf("Select Button", module)
   .addParameters({
