@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
@@ -45,7 +46,7 @@ class WelcomePage extends React.Component {
                   <br /> Analysis Preservation
                 </Heading>
                 <Heading tag="h3">
-                  capture, preserve and reuse physics analyses 
+                  capture, preserve and reuse physics analyses
                 </Heading>
               </Box>
               <Box
@@ -72,7 +73,8 @@ class WelcomePage extends React.Component {
                 <Database size="medium" />
                 <Box size="small">
                   <Paragraph align="center">
-                    Collect and preserve elements needed to understand and rerun your analysis
+                    Collect and preserve elements needed to understand and rerun
+                    your analysis
                   </Paragraph>
                 </Box>
               </Box>
@@ -104,6 +106,8 @@ class WelcomePage extends React.Component {
   }
 }
 
-WelcomePage.propTypes = {};
+WelcomePage.propTypes = {
+  scrollToRef: PropTypes.func
+};
 
 export default WelcomePage;

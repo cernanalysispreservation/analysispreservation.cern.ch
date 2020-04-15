@@ -134,7 +134,10 @@ FileManager.propTypes = {
   selectableActionLayer: PropTypes.func,
   files: PropTypes.object,
   active: PropTypes.number,
-  message: PropTypes.string
+  message: PropTypes.string,
+  selectPath: PropTypes.func,
+  pathSelected: PropTypes.object,
+  onSelect: PropTypes.func
 };
 
 function mapStateToProps(state) {

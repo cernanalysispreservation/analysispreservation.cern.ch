@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const LhcbIcon = ({ size = "small" }) => (
@@ -34,3 +34,7 @@ export const LhcbIcon = ({ size = "small" }) => (
     />
   </SVGIcon>
 );
+
+LhcbIcon.propTypes = {
+  size: PropTypes.string
+};

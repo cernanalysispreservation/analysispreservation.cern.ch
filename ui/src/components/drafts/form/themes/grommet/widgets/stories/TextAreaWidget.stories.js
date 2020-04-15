@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
-
+import PropTypes from "prop-types";
 import Widgets from "../../widgets";
 
 import Grommet from "grommet/components/Grommet";
@@ -44,6 +44,7 @@ class TextAreaComponent extends Component {
                 value={this.state.value}
                 onChange={this._onChange}
                 options={this.state.options}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.readonly}
               />
             </FormField>
@@ -53,6 +54,11 @@ class TextAreaComponent extends Component {
     );
   }
 }
+
+TextAreaComponent.propTypes = {
+  error: PropTypes.object,
+  readonly: PropTypes.bool
+};
 
 storiesOf("TextArea", module)
   .addParameters({

@@ -120,7 +120,10 @@ DraftActionsLayer.propTypes = {
   deleteDraft: PropTypes.func,
   discardData: PropTypes.func,
   type: PropTypes.string,
-  toggleActionsLayer: PropTypes.func
+  toggleActionsLayer: PropTypes.func,
+  publishDraft: PropTypes.func,
+  discardDraft: PropTypes.func,
+  draft_id: PropTypes.string
 };
 
 function mapStateToProps(state) {

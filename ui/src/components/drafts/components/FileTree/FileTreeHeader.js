@@ -107,7 +107,12 @@ let truncateMiddleText = (fullStr, strLen = 35, separator = "...") => {
 
 FileTreeHeader.propTypes = {
   selectPath: PropTypes.func,
-  pathSelected: PropTypes.object
+  pathSelected: PropTypes.object,
+  toggleCollapse: PropTypes.func,
+  onFileClick: PropTypes.func,
+  data: PropTypes.object,
+  enabled: PropTypes.bool,
+  onDirectoryClick: PropTypes.func
 };
 
 function mapStateToProps(state) {

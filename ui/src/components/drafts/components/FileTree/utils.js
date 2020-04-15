@@ -1,21 +1,21 @@
 export function arrangeIntoTree(paths) {
   // Adapted from http://brandonclapp.com/arranging-an-array-of-flat-paths-into-a-json-tree-like-structure/
-  var tree = [];
+  let tree = [];
 
-  for (var i = 0; i < paths.length; i++) {
-    var path = paths[i][0];
-    var pathData = paths[i][1];
-    var currentLevel = tree;
-    for (var j = 0; j < path.length; j++) {
-      var part = path[j];
+  for (let i = 0; i < paths.length; i++) {
+    let path = paths[i][0];
+    let pathData = paths[i][1];
+    let currentLevel = tree;
+    for (let j = 0; j < path.length; j++) {
+      let part = path[j];
 
-      var existingPath = findWhere(currentLevel, "name", part);
+      let existingPath = findWhere(currentLevel, "name", part);
 
       if (existingPath) {
         if (!existingPath.children) existingPath["children"] = [];
         currentLevel = existingPath.children;
       } else {
-        var newPart = { name: part, data: pathData };
+        let newPart = { name: part, data: pathData };
         if (path.length > j + 1) newPart["children"] = [];
 
         currentLevel.push(newPart);

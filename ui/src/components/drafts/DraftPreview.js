@@ -210,7 +210,9 @@ DraftPreview.propTypes = {
   schemasLoading: PropTypes.bool,
   canUpdate: PropTypes.bool,
   fetchAndAssignSchema: PropTypes.func,
-  error: PropTypes.object
+  error: PropTypes.object,
+  workflows: PropTypes.array,
+  repositories: PropTypes.array
 };
 
 function mapStateToProps(state) {

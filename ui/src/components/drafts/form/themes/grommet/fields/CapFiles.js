@@ -83,7 +83,9 @@ CapFile.propTypes = {
   properties: PropTypes.object,
   toggleFilemanagerLayer: PropTypes.func,
   files: PropTypes.object,
-  formData: PropTypes.string
+  formData: PropTypes.string,
+  selectPath: PropTypes.func,
+  pathSelected: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {

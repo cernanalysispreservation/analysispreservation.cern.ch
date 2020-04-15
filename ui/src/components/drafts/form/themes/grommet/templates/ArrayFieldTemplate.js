@@ -266,7 +266,8 @@ ArrayFieldTemplate.propTypes = {
   description: PropTypes.string,
   required: PropTypes.bool,
   items: PropTypes.array,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  formData: PropTypes.array
 };
 
 export default ArrayFieldTemplate;

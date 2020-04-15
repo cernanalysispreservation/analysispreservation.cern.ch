@@ -54,6 +54,7 @@ class RadioComponent extends Component {
                 options={this.state.options}
                 value={this.state.selected}
                 onChange={this._onChange}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.disabled}
               />
             </FormField>

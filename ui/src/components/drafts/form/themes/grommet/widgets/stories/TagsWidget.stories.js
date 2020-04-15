@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
-
+import PropTypes from "prop-types";
 import Widgets from "../../widgets";
 
 import Grommet from "grommet/components/Grommet";
@@ -52,6 +52,7 @@ class TagsComponent extends Component {
                     : "Write your tag and press enter..."
                 }
                 onChange={this._onChange}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.readonly}
               />
             </FormField>
@@ -61,6 +62,11 @@ class TagsComponent extends Component {
     );
   }
 }
+
+TagsComponent.propTypes = {
+  error: PropTypes.object,
+  readonly: PropTypes.bool
+};
 
 storiesOf("Tags Input", module)
   .addParameters({

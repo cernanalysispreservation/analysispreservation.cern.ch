@@ -50,6 +50,7 @@ class TextComponent extends Component {
                 <Widgets.text
                   value={this.state.value}
                   onChange={this._onChange}
+                  // eslint-disable-next-line react/no-unknown-property
                   readonly={this.props.readonly}
                   options={{ parent: "CADI ID or something else" }}
                 />
@@ -63,7 +64,8 @@ class TextComponent extends Component {
 }
 
 TextComponent.propTypes = {
-  error: PropTypes.object
+  error: PropTypes.object,
+  readonly: PropTypes.bool
 };
 storiesOf("Text", module)
   .addParameters({

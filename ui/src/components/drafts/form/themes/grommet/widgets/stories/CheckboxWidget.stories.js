@@ -66,6 +66,7 @@ class CheckBoxComponent extends Component {
               <Widgets.checkboxes
                 options={this.state.options}
                 value="Choice 1"
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.disabled}
                 onChange={this._onChange}
                 selectValue={this.selectValue}
@@ -81,7 +82,8 @@ class CheckBoxComponent extends Component {
 
 CheckBoxComponent.propTypes = {
   error: PropTypes.object,
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  readonly: PropTypes.bool
 };
 
 storiesOf("CheckBox", module)

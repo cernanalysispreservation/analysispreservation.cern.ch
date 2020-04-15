@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const TerminalIcon = ({ size = "small" }) => (
@@ -42,3 +42,7 @@ export const TerminalIcon = ({ size = "small" }) => (
     <g />
   </SVGIcon>
 );
+
+TerminalIcon.propTypes = {
+  size: PropTypes.string
+};

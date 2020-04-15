@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { storiesOf } from "@storybook/react";
-
+import PropTypes from "prop-types";
 import Widgets from "../../widgets";
 
 import Grommet from "grommet/components/Grommet";
@@ -42,6 +42,7 @@ class UpDownComponent extends Component {
                 options={this.state.options}
                 value={this.state.value}
                 onChange={e => this.updateValue(e)}
+                // eslint-disable-next-line react/no-unknown-property
                 readonly={this.props.readonly}
               />
             </FormField>
@@ -51,6 +52,11 @@ class UpDownComponent extends Component {
     );
   }
 }
+
+UpDownComponent.propTypes = {
+  readonly: PropTypes.bool,
+  error: PropTypes.object
+};
 
 storiesOf("UpDown", module)
   .addParameters({

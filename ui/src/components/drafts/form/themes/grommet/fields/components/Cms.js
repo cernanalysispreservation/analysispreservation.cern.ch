@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 import SVGIcon from "grommet/components/SVGIcon";
 
 export const CmsIcon = ({ size = "small" }) => (
@@ -193,3 +193,7 @@ export const CmsIcon = ({ size = "small" }) => (
     />
   </SVGIcon>
 );
+
+CmsIcon.propTypes = {
+  size: PropTypes.string
+};

@@ -55,7 +55,10 @@ CleanForm.propTypes = {
   formData: PropTypes.array,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  children: PropTypes.object
+  children: PropTypes.object,
+  showErrorList: PropTypes.bool,
+  liveValidate: PropTypes.bool,
+  formRef: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
 };
 
 export default CleanForm;

@@ -139,7 +139,8 @@ class FieldHeaderStorie extends Component {
 }
 FieldHeaderStorie.propTypes = {
   schema: PropTypes.object,
-  rawDescription: PropTypes.string
+  rawDescription: PropTypes.string,
+  enableLatex: PropTypes.bool
 };
 
 storiesOf("Field Header", module)

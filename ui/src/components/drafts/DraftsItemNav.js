@@ -150,7 +150,8 @@ DraftsItemIndex.propTypes = {
   draft_id: PropTypes.string,
   id: PropTypes.string,
   toggleActionsLayer: PropTypes.func,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  location: PropTypes.object
 };
 
 function mapStateToProps(state) {

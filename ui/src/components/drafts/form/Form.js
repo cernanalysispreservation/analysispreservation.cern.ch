@@ -109,7 +109,9 @@ DepositForm.propTypes = {
   schemas: PropTypes.object,
   onChange: PropTypes.func,
   errors: PropTypes.array,
-  formRef: PropTypes.object
+  formRef: PropTypes.object,
+  extraErrors: PropTypes.array,
+  formContext: PropTypes.object
 };
 
 export default DepositForm;
