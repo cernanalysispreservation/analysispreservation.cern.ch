@@ -990,7 +990,9 @@
       "cadi_info",
       "input_data",
       "ntuples_production",
+      "main_measurements",
       "*",
+      "final_results",
       "additional_resources"
     ],
     "additional_resources": {
