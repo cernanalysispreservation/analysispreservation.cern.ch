@@ -175,14 +175,6 @@ const generalTitleStateAfter = Map({
 });
 
 describe("DraftItem Reducers Test", () => {
-  it("Should return the initial State", () => {
-    const action = {
-      type: actions.INIT_FORM
-    };
-    expect(draftReducer(undefined, {})).toEqual(initialState);
-    expect(draftReducer(initialState, action)).toEqual(initialState);
-  });
-
   it("General Title Request", () => {
     const action = {
       type: actions.GENERAL_TITLE_REQUEST
