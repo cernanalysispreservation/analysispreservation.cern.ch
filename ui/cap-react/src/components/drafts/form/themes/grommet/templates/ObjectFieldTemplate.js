@@ -12,6 +12,10 @@ import FieldHeader from "../components/FieldHeader";
 let ObjectFieldTemplate = function(props) {
   //let { uiSchema: { uiOptions = {} } = {} } = props;
 
+  let sizeProps = {};
+  if (props.uiSchema["ui:options"] && props.uiSchema["ui:options"].size) {
+    sizeProps.size = props.uiSchema["ui:options"].size;
+  }
   if (
     props.idSchema.$id == "root" &&
     props.uiSchema["ui:object"] != "tabView"
@@ -26,13 +30,7 @@ let ObjectFieldTemplate = function(props) {
               : "center"
         }}
       >
-        <Box
-          size={
-            props.uiSchema["ui:options"] && props.uiSchema["ui:options"].size
-              ? props.uiSchema["ui:options"].size
-              : "full"
-          }
-        >
+        <Box {...sizeProps}>
           <Box
             style={{
               display: "grid",

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 import FormUploadIcon from "grommet/components/icons/base/FormUpload";
 
@@ -43,7 +42,10 @@ const schema = {
 const uiSchema = {
   file_tags: {
     "ui:widget": "tags",
-    "ui:options": { pattern: "^\\w{1,255}=(.{1,100})$", delimiter: ";" }
+    "ui:options": {
+      pattern: "^\\w{1,255}=(.{1,100})$",
+      delimiter: ";"
+    }
   }
 };
 
@@ -110,20 +112,19 @@ class FileManager extends React.Component {
           onSubmit={this._onSave}
         >
           <Box
-            direction="row"
+            direction="column"
             flex={true}
-            pad={{ between: "small", vertical: "small" }}
-            justify="end"
-            align="center"
+            pad={{ between: "medium", vertical: "small" }}
           >
             <Box flex={true}>
               <Box
-                align="start"
-                pad={{ horizontal: "small", vertical: "none" }}
-                flex={false}
-                justify="between"
+                flex
+                pad="small"
                 colorIndex="light-2"
                 separator="all"
+                style={{
+                  overflow: "hidden"
+                }}
               >
                 <Label size="small" margin="none">
                   <strong>File: </strong>
@@ -137,15 +138,17 @@ class FileManager extends React.Component {
             </Box>
             <Box
               direction="row"
-              flex={false}
-              pad={{ between: "small" }}
-              justify="end"
+              flex={true}
+              pad={{ between: "medium" }}
+              justify="between"
               align="center"
+              responsive={false}
             >
               <Box
                 align="center"
-                pad="small"
-                colorIndex="critical"
+                separator="all"
+                colorIndex="light-2"
+                pad={{ horizontal: "medium", vertical: "small" }}
                 onClick={() =>
                   this.setState({ acceptedFiles: null, formData: {} })
                 }
@@ -154,7 +157,7 @@ class FileManager extends React.Component {
               </Box>
               <Box
                 align="center"
-                pad="small"
+                pad={{ horizontal: "medium", vertical: "small" }}
                 colorIndex="brand"
                 onClick={() => this.formRef.submit()}
               >
@@ -183,11 +186,7 @@ class FileManager extends React.Component {
             });
           }}
         >
-          <Heading tag="h3" justify="center" align="center">
-            <Box direction="row" justify="center" align="center">
-              <FormUploadIcon size="medium" />
-            </Box>
-          </Heading>
+          <FormUploadIcon size="medium" />
           <Box justify="center" align="center" pad={{ between: "small" }}>
             <Paragraph margin="none">
               <strong>Drag and Drop your files here</strong>
@@ -223,8 +222,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     flex: 1,
-    height: "100px",
-    padding: "20px 0",
     backgroundColor: "#fff",
     borderRadius: "4px",
     justifyContent: "center",
@@ -252,7 +249,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FileManager);
+export default connect(mapStateToProps, mapDispatchToProps)(FileManager);
