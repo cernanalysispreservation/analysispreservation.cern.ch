@@ -21,7 +21,7 @@ services:
       service: frontend
     volumes:
       - static_data:/opt/cap/var/instance/static
-      - ./ui/dist:/html
+      - ./ui/cap-react/dist:/html
     links:
       # - web-ui
       - web-api

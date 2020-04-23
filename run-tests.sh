@@ -8,7 +8,7 @@
 
 # pydocstyle cap && \
 python setup.py test && \
-cd ui && yarn prebuild
+cd ui/cap-react && yarn prebuild
 
 #pydocstyle cap tests docs && \
 #isort -rc -c -df && \
