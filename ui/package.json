@@ -1,0 +1,8 @@
+{
+    "private": true,
+    "name":"cap-project",
+    "workspaces":["cap-react"],
+    "scripts":{
+        "cap":"yarn workspace cap-react start"
+    }
+}
