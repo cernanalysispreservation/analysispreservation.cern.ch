@@ -1,23 +1,81 @@
 {
+  "title": "CERN Analysis Preservation General Docs",
+  "description": "General Documentation for CERN Analysis Preservation",
   "structure": {
     "readme": "introduction.md"
   },
   "plugins": [
-    "insert-logo",
     "back-to-top-button",
-    "copy-code-button",
+    "github", "github-buttons", "toggle-chapters",
     "anchorjs",
-    "collapsible-menu",
+    "github",
+    "-fontsettings", "-sharing",
+    "folding-menu",
+    "codeblock-filename",
+    "theme-cap@git+https://github.com/cernanalysispreservation/gitbook-plugin-theme-cap.git",
+    "terminal",
+    "richquotes",
     "image-captions"
   ],
+  "variables": {
+    "toc_title": "General Documentation",
+    "themeCAP": {
+      "nav": [
+        {
+          "url": "https://analysispreservation.cern.ch/docs/general",
+          "name": "General"
+        },
+        {
+          "url": "https://analysispreservation.cern.ch/docs/cli",
+          "name": "CLI client"
+        },
+        {
+          "url": "https://analysispreservation.cern.ch/docs/api",
+          "name": "REST API"
+        }
+      ]
+    }
+  },
   "pluginsConfig": {
-    "insert-logo": {
-      "url": "https://awesome-workshop.github.io/cap-cms/fig/banner.png",
-      "style": "background: red; width: 100%;"
-    },
     "anchorjs": {
-      "placement": "left",
-      "visible": "always"
+      "placement": "right"
+    },
+    "github": {
+      "url": "https://github.com/cernanalysispreservation/analysispreservation.cern.ch"
+    },
+    "github-buttons": {
+      "buttons": [{
+        "user": "cernanalysispreservation",
+        "repo": "analysispreservation.cern.ch",
+        "type": "star",
+        "size": "small",
+        "count": true
+      }]
+    },
+    "theme-api": {
+      "languages": [
+        {
+          "lang": "python",
+          "name": "Python"
+        }
+      ]
+    },
+    "terminal": {
+      "copyButtons": true,
+      "fade": true,
+      "style": "flat"
+    },
+    "theme-cap": {
+      "search-placeholder": "Search the docs",
+      "logo": "./cap-logo-dark.png",
+      "favicon": "./favicon.ico",
+      "anchor-selector": "h1, h2, h3"
+    },
+    "richquotes": {
+      "star": {
+        "alert": "warning",
+        "picto": "fa-star"
+      }
     },
     "image-captions": {
       "align": "center",
