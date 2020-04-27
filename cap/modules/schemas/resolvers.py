@@ -28,15 +28,14 @@ from __future__ import absolute_import, print_function
 import re
 
 import jsonresolver
-from flask import abort, current_app, has_request_context
-from sqlalchemy.orm.exc import NoResultFound
-
 from cachetools.func import lru_cache
+from flask import current_app
+from invenio_db import db
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
+from sqlalchemy.orm.exc import NoResultFound
 
 from .models import Schema
-from .permissions import ReadSchemaPermission
 
 
 @jsonresolver.route('/schemas/<path:path>',
@@ -56,7 +55,7 @@ def resolve_by_path(path):
                        minor=minor,
                        patch=patch)\
             .one()
-    except (NoResultFound, AttributeError):
+    except (NoResultFound, AttributeError, TypeError):
         raise JSONSchemaNotFound(schema=path)
 
     if type_ == current_app.config['SCHEMAS_DEPOSIT_PREFIX']:
@@ -70,7 +69,17 @@ def resolve_by_path(path):
 
 
 def parse_path(string):
-    """Parse schema path."""
+    """Parse schema path.
+
+    Returns None if not a valid path
+
+    :param string: schema path
+    :type string: str
+
+    :return: tuple of
+    (is_options_schema, deposit|record, name, major, minor, patch)
+    :rtype: tuple or None
+    """
     pattern = re.compile(
         """
         (?P<options>{})?/?                      # check if options schema
@@ -79,12 +88,14 @@ def parse_path(string):
         -v(?P<major>\d+).                       # version
         (?P<minor>\d+).                         # version
         (?P<patch>\d+)                          # version
-    """.format(re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
-               re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
-               re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])),
+        """.format(re.escape(current_app.config['SCHEMAS_OPTIONS_PREFIX']),
+                   re.escape(current_app.config['SCHEMAS_RECORD_PREFIX']),
+                   re.escape(current_app.config['SCHEMAS_DEPOSIT_PREFIX'])),
         re.VERBOSE)
 
-    return re.match(pattern, string).groups()
+    match = re.match(pattern, string)
+
+    return match.groups() if match else None
 
 
 def schema_name_to_url(schema_name):
@@ -108,7 +119,9 @@ def resolve_schema_by_url(url):
                        minor=minor,
                        patch=patch)\
             .one()
-    except (NoResultFound, AttributeError):
+    except (NoResultFound, AttributeError, TypeError):
         raise JSONSchemaNotFound(schema=url)
+
+    db.session.expunge(schema)
 
     return schema
