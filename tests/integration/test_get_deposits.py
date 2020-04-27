@@ -253,7 +253,7 @@ def test_get_deposit_with_default_serializer(client, users,
     assert resp.json['hits']['hits'] == [{
         'id': depid,
         'type': 'deposit',
-        'revision': 2,
+        'revision': 1,
         'schema': {
             'name': 'cms-analysis',
             'version': '1.0.0'
@@ -575,7 +575,7 @@ def test_get_deposit_with_form_json_serializer(
         'metadata': {
             'my_field': 'mydata'
         },
-        'revision': 2,
+        'revision': 1,
         'status': 'draft',
         'type': 'deposit',
         'labels': [],

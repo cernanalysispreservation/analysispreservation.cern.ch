@@ -77,6 +77,7 @@ def synchronize_cadi_entries(limit=None):
     entries = get_all_from_cadi()
 
     for entry in islice(entries, limit):
+        deposit = None
         cadi_info = cadi_serializer.dump(entry).data
         cadi_id = cadi_info.pop('cadi_id')
 
@@ -97,9 +98,7 @@ def synchronize_cadi_entries(limit=None):
             try:
                 with db.session.begin_nested():
                     deposit = CAPDeposit.create(
-                        data=_cadi_deposit(cadi_id, cadi_info),
-                        owner=None,
-                    )
+                        data=_cadi_deposit(cadi_id, cadi_info))
 
                     # give read access to members of CMS experiment
                     deposit._add_experiment_permissions(
