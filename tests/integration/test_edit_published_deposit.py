@@ -76,7 +76,7 @@ def test_edit_record(client, create_deposit, superuser,
         'id': depid,
         'recid': deposit['control_number'],
         'type': 'deposit',
-        'revision': 3,
+        'revision': 2,
         'schema': {
             'name': 'test',
             'version': '1.0.0'

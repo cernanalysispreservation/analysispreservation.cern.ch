@@ -66,7 +66,7 @@ def test_get_deposit_with_default_serializer(client, users,
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 3,
+        'revision': 2,
         'schema': {
             'name': 'cms-analysis',
             'version': '1.0.0'

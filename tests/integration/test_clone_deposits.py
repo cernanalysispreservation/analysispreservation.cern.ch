@@ -131,7 +131,7 @@ def test_deposit_clone_works_correctly(client, users, auth_headers_for_user,
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 1,
+        'revision': 0,
         'schema': {
             'name': 'test-analysis',
             'version': '1.0.0'

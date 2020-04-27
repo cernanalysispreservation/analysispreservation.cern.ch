@@ -221,7 +221,7 @@ def test_update_deposit_cannot_update_underscore_prefixed_files(
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 2,
+        'revision': 1,
         'schema': {
             'name': 'lhcb',
             'version': '1.0.0'
@@ -348,7 +348,7 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 2,
+        'revision': 1,
         'schema': {
             'name': 'lhcb',
             'version': '1.0.0'

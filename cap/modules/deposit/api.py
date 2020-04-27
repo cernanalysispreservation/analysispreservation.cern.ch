@@ -24,6 +24,7 @@
 """Deposit API."""
 
 import copy
+import uuid
 from functools import wraps
 
 from flask import current_app, request
@@ -37,6 +38,7 @@ from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
                                        ObjectVersionTag)
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
+from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_rest.errors import FieldError
@@ -51,7 +53,6 @@ from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.records.api import CAPRecord
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
-from cap.modules.repos.models import GitWebhook, GitWebhookSubscriber
 from cap.modules.repos.tasks import download_repo, download_repo_file
 from cap.modules.repos.utils import (create_webhook, disconnect_subscriber,
                                      parse_git_url)
@@ -325,7 +326,7 @@ class CAPDeposit(Deposit):
     def _prepare_edit(self, record):
         """Update selected keys for edit method.
 
-        Override method from ```invenio_deposit.api:Deposit``` class.
+        Override method from `invenio_deposit.api:Deposit` class.
         Copy deposit metadata instead of record metadata.
 
         :param record: The published record.
@@ -551,7 +552,7 @@ class CAPDeposit(Deposit):
         """Save file with given content in deposit bucket.
 
            If downloading a content failed, file will be still created,
-           with tag ```failed```.
+           with tag `failed`.
 
            :param content: stream
            :param filename: name that file will be saved with
@@ -589,46 +590,132 @@ class CAPDeposit(Deposit):
         return deposit
 
     @classmethod
+    @index
     def create(cls, data, id_=None, owner=current_user):
-        """Create a deposit.
+        """Create a new deposit.
 
-        Adds bucket creation immediately on deposit creation.
+        :param data: metadata, need to contain $schema|$ana_type field
+        :type data: dict
+        :param id_: specify a UUID to use for the new record, instead of
+                    automatically generated
+        :type id_: `uuid.UUID`
+        :param owner: owner of a new deposit (will get all permissions)
+        :type owner: `invenio_accounts.models.User`
+
+        :warn: if user session owner will be automatically current_user
+
+        :return: newly created deposit
+        :rtype: `CAPDeposit`
+
+        Process:
+        * fill deposit metadata based on given data
+        * initialize the follow internal fields (underscore prefixed):
+            _experiment: 'experiment_of_given_schema'
+            _deposit: {
+                'id': pid_value,
+                'status': 'draft',
+                'owners': [owner_id],
+                'created_by': owner_id
+            }
+            _access: {
+                'deposit-admin': {
+                    'roles': [],
+                    'users': [owner.id]
+                },
+                'deposit-update': {
+                    'roles': [],
+                    'users': [owner.id]
+                },
+                'deposit-read': {
+                    'roles': [],
+                    'users': [owner.id]
+                }
+            }
+        * validate metadata against given schema (defined by $schema|$ana_type)
+        * create RecordMetadata instance
+        * create bucket for storing deposit files
+        * set owner permissions in the db
+        * index deposit in elasticsearch
         """
-        data = cls._preprocess_data(data)
+        if current_user and current_user.is_authenticated:
+            owner = current_user
 
-        cls._validate_data(data)
+        with db.session.begin_nested():
+            data = cls._preprocess_create_data(data, id_, owner)
 
-        deposit = super(CAPDeposit, cls).create(data, id_=id_)
-        deposit._create_buckets()
-        deposit._set_experiment()
-        deposit._init_owner_permissions(owner)
+            # create RecordMetadata instance
+            deposit = Record.create(data, id_=id_)
+            deposit.__class__ = cls
 
-        deposit.commit()
+            # create files bucket
+            bucket = Bucket.create()
+            RecordsBuckets.create(record=deposit.model, bucket=bucket)
 
-        return deposit
+            # give owner permissions to the deposit
+            if owner:
+                for permission in DEPOSIT_ACTIONS:
+                    db.session.add(
+                        ActionUsers.allow(DEPOSIT_ACTIONS_NEEDS(
+                            deposit.id)[permission],
+                                          user=owner))
+
+                    db.session.flush()
+
+            return deposit
 
     @classmethod
-    def _preprocess_data(cls, data):
-        # data can be sent without specifying particular version of schema,
-        # but just with a type, e.g. cms-analysis
-        # this be resolved to the last version of deposit schema of this type
+    def _preprocess_create_data(cls, data, uuid_, owner):
+        """Preprocess metadata for new deposit.
+
+        :param data: metadata, need to contain $schema|$ana_type field
+        :type data: dict
+        :param id_: specify a UUID to use for the new record, instead of
+                    automatically generated
+        :type id_: `uuid.UUID`
+        :param owner: owner of a new deposit (will get all permissions)
+        :type owner: `invenio_accounts.models.User`
+
+        :returns: processed metadata dictionary
+        :rtype: dict
+         """
+        if not isinstance(data, dict) or data == {}:
+            raise DepositValidationError('Empty deposit data.')
+
         if '$ana_type' in data:
             try:
                 ana_type = data.pop('$ana_type')
                 data['$schema'] = schema_name_to_url(ana_type)
             except JSONSchemaNotFound:
                 raise DepositValidationError(
-                    'Schema {} is not a valid deposit schema.'.format(
-                        ana_type))
-
-        return data
-
-    @classmethod
-    def _validate_data(cls, data):
-        if not isinstance(data, dict) or data == {}:
-            raise DepositValidationError('Empty deposit data.')
+                    f'Schema {ana_type} is not a valid deposit schema.')
+        elif '$schema' not in data:
+            raise DepositValidationError('Schema not specified.')
 
         try:
-            data['$schema']
-        except KeyError:
-            raise DepositValidationError('Schema not specified.')
+            schema = resolve_schema_by_url(data['$schema'])
+            data['_experiment'] = schema.experiment
+        except JSONSchemaNotFound:
+            raise DepositValidationError(
+                f'Schema {data["$schema"]} is not a valid deposit schema.')
+
+        # minting is done by invenio on POST action preprocessing,
+        # if method called programatically mint PID here
+        if '_deposit' not in data:
+            uuid_ = uuid_ or uuid.uuid4()
+            cls.deposit_minter(uuid_, data)
+
+        if owner:
+            data['_deposit']['owners'] = [owner.id]
+            data['_deposit']['created_by'] = owner.id
+            data['_access'] = {
+                permission: {
+                    'users': [owner.id],
+                    'roles': []
+                }
+                for permission in DEPOSIT_ACTIONS
+            }
+        else:
+            data['_deposit']['owners'] = []
+            data['_access'] = EMPTY_ACCESS_OBJECT
+
+        return data

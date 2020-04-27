@@ -25,14 +25,9 @@
 
 from copy import deepcopy
 
-from flask import current_app, request
-from invenio_rest.errors import FieldError
-from jsonschema import Draft4Validator, FormatChecker, validators
-from jsonschema.exceptions import ValidationError
+from flask import request
 
 from cap.modules.deposit.utils import clean_empty_values
-from cap.modules.schemas.resolvers import (resolve_schema_by_url,
-                                           schema_name_to_url)
 
 
 def json_v1_loader(data=None):

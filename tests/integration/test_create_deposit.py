@@ -189,7 +189,7 @@ def test_create_deposit_set_fields_correctly(client, location, users,
     assert resp.json == {
         'id': depid,
         'type': 'deposit',
-        'revision': 1,
+        'revision': 0,
         'schema': {
             'name': 'test-analysis',
             'version': '1.0.0'

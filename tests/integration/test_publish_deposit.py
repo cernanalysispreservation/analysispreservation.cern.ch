@@ -135,7 +135,7 @@ def test_deposit_publish_changes_status_and_creates_record(
         'id': depid,
         'recid': record['control_number'],
         'type': 'deposit',
-        'revision': 2,
+        'revision': 1,
         'schema': {
             'name': 'test',
             'version': '1.0.0'
