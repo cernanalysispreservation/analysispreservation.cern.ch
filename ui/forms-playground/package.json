@@ -3,22 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "cap-react": "0.1.0",
+    "grommet": "1.0.0",
+    "grommet-addons": "^0.6.0",
+    "node-sass": "^4.14.0",
     "react": "^16.13.1",
+    "react-ace": "8.0.0",
     "react-dom": "^16.13.1",
+    "react-redux": "^6.0.0",
     "react-scripts": "3.4.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-react": "^7.9.4",
     "babel-jest": "^24.9.0",
-    "html-webpack-plugin": "^4.2.0",
+    "css-loader": "1.0.0",
+    "file-loader": "1.1.11",
     "jest": "24.9.0",
-    "webpack": "4.42.0"
+    "postcss-loader": "3.0.0",
+    "react-app-rewire-babel-loader": "^0.1.1",
+    "react-app-rewire-sass-rule": "^2.1.1",
+    "react-app-rewire-scss": "^1.0.2",
+    "react-app-rewired": "^2.1.5",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.0",
+    "url-loader": "1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
