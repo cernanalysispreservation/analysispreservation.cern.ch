@@ -37,7 +37,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.records.utils import url_to_api_url
 
-from .errors import GitIntegrationError, GitURLParsingError
+from .errors import GitIntegrationError, GitURLParsingError, GitPRParsingError
 from .models import GitRepository, GitWebhook, GitWebhookSubscriber
 
 
@@ -50,13 +50,21 @@ def parse_git_url(url):
         [:|\/]
         (?P<owner>[\w-]+)\/
         (?P<repo>[\w\.-]+)
-            (?:\.git|/tree/|/blob/)?/?
-        (?P<branch>[\w-]+)?/?
+        (?:\.git|/tree/|/-/tree/|/blob/|/-/blob/|/releases/tag/|/-/tags/)?/?
+        (?P<branch>[\w.-]+)?/?
         (?P<filepath>.+)?
     ''', re.VERBOSE | re.MULTILINE | re.IGNORECASE)
 
     try:
         host, owner, repo, branch, filepath = re.match(git_regex, url).groups()
+
+        # need to avoid PRs, but if blob/ is there
+        # it can be a path inside the repo
+        if any(path in url for path in [f'{repo}/pull',
+                                        f'{repo}/-/merge_requests']) \
+                and f'blob/{branch}' not in url:
+            raise GitPRParsingError
+
     except (ValueError, TypeError, AttributeError):
         raise GitURLParsingError
 

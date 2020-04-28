@@ -39,6 +39,15 @@ class GitURLParsingError(GitError):
         super().__init__(message, **kwargs)
 
 
+class GitPRParsingError(GitError):
+    """Git url error."""
+    def __init__(self, message=None, **kwargs):
+        """Initialize exception."""
+        message = message or 'Pull/Merge requests are not accepted. ' \
+                             'Please merge first.'
+        super().__init__(message, **kwargs)
+
+
 class GitRequestWithInvalidSignature(GitError):
     """Git request with invalid signature."""
     def __init__(self, message=None, **kwargs):
