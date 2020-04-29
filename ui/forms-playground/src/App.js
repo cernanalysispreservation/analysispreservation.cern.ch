@@ -139,7 +139,7 @@ class Playground extends Component {
     }
 
     return (
-      <Box full colorIndex={this.state.toggle ? "grey-4-a" : "light-1"}>
+      <Box full colorIndex={this.state.toggle ? "grey-4-a" : "brand"}>
         <Box align="center">
           <Heading>Playground</Heading>
         </Box>

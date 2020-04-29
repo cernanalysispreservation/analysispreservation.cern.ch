@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import store from "cap-react/src/store/configureStore";
 import Grommet from "grommet/components/Grommet";
 
-// import "grommet/scss/hpinc/index.scss";
+import "grommet/scss/aruba/index.scss";
 import "cap-react/src/styles/styles.scss";
 
 import Playground from "./App";
