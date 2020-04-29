@@ -455,15 +455,15 @@ def test_get_deposit_with_permissions_json_serializer_returns_serialized_permiss
     assert resp.status_code == 200
     assert resp.json == {
         'permissions': {
-            'deposit-admin': {
+            'admin': {
                 'roles': [],
                 'users': [example_user.email]
             },
-            'deposit-read': {
+            'read': {
                 'roles': [egroup.name],
                 'users': [example_user.email]
             },
-            'deposit-update': {
+            'update': {
                 'roles': [egroup.name],
                 'users': [example_user.email]
             }

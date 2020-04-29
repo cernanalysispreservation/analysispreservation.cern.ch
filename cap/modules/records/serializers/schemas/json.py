@@ -112,15 +112,15 @@ class PermissionsDepositSchema(Schema):
 
     def get_access(self, obj):
         """Return access object."""
-        access = obj['metadata']['_access']
-
-        for permission in access.values():
-            if permission['users']:
-                for index, user_id in enumerate(permission['users']):
-                    permission['users'][index] = get_user_email_by_id(user_id)
-            if permission['roles']:
-                for index, role_id in enumerate(permission['roles']):
-                    permission['roles'][index] = get_role_name_by_id(role_id)
+        access = {
+            k.replace('deposit-', ''): {
+                'users': [get_user_email_by_id(user_id)
+                          for user_id in v['users']],
+                'roles': [get_role_name_by_id(role_id)
+                          for role_id in v['roles']]
+            }
+            for k, v in obj['metadata']['_access'].items()
+        }
 
         return access
 
