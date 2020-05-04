@@ -28,7 +28,7 @@
               "code_base": {
                 "x-cap-file": {},
                 "type": "string",
-                "description": "Include your code for n-tuple production",
+                "description": "Include your code for final results",
                 "title": "Your Code"
               },
               "processing_steps": {

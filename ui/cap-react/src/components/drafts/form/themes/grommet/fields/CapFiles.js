@@ -55,7 +55,11 @@ class CapFile extends React.Component {
         ) : (
           <React.Fragment>
             <Anchor
-              label="Select a file from your list to link here"
+              label={
+                (this.props.uiSchema &&
+                  this.props.uiSchema.capFilesDescription) ||
+                "Select a file or a repository from your list to link here"
+              }
               onClick={this._toggleActiveLayer}
             />
           </React.Fragment>
@@ -85,7 +89,8 @@ CapFile.propTypes = {
   files: PropTypes.object,
   formData: PropTypes.string,
   selectPath: PropTypes.func,
-  pathSelected: PropTypes.object
+  pathSelected: PropTypes.object,
+  uiSchema: PropTypes.object
 };
 
 function mapDispatchToProps(dispatch) {
