@@ -650,3 +650,5 @@ LOGGING_SENTRY_PYWARNINGS = False
 
 LOGGING_SENTRY_CELERY = True
 """Configure Celery to send logging to Sentry."""
+
+DB_EXTRA_PLUGINS = ['sqlalchemy_continuum.plugins.ActivityPlugin']
