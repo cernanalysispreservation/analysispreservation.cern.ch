@@ -1,8 +1,14 @@
 {
     "private": true,
     "name":"cap-project",
-    "workspaces":["cap-react"],
+    "workspaces":["cap-react", "forms-playground"],
     "scripts": {
         "cap":"yarn workspace cap-react start"
+    },
+    "devDependencies": {
+        "babel-loader": "8.1.0",
+        "webpack": "4.42.0"
     }
+
+
 }
