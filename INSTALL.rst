@@ -258,16 +258,24 @@ Finally, run the CAP development server and the React SPA app in debug mode:
 
 And in another shell the React SPA application developement server, also in debug mode - so that requests point to the above server http://localhost:5000 :
 
+First install all the dependencies in the ui root directory 
+
 .. code-block:: console
 
    $ cd <to-project-dir>/ui
+   $ yarn install
+
+Since the project utilizes a monorepo approach using yarn workspaces, it is advised to install the dependencies in the ui root directory.
+Afterwards, each workspace can be initiated from its own directory.
+
+.. code-block:: console
+
+   $ cd <to-project-dir>/ui/cap-react
    $ export ENABLE_BACKEND_PROXY=true
    $ yarn start
 
 If you go to http://localhost:3000, you should see an instance of CAP,
 similar to the production instance at https://analysispreservation.cern.ch.
-
-
 
 Recipes
 -------
