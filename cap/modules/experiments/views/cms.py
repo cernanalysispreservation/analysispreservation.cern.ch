@@ -24,6 +24,7 @@
 """Theme blueprint in order for template and static files to be loaded."""
 
 from __future__ import absolute_import, print_function
+import re
 
 from flask import Blueprint, abort, jsonify, request
 from six.moves.urllib.parse import unquote
@@ -35,6 +36,8 @@ from ..serializers import CADISchema
 from ..utils.cadi import get_from_cadi_by_id
 from ..utils.das import update_term_for_das_query
 
+CADI_REGEX = '[A-Za-z0-9]{3}-[0-9]{2}-[0-9]{3}'
+
 cms_bp = Blueprint(
     'cap_cms',
     __name__,
@@ -44,7 +47,6 @@ cms_bp = Blueprint(
 
 def _get_cadi(cadi_id):
     """Retrieve specific CADI analysis."""
-    cadi_id = unquote(cadi_id).upper()
     entry = get_from_cadi_by_id(cadi_id)
 
     if entry:
@@ -59,6 +61,13 @@ def _get_cadi(cadi_id):
 @cms_permission.require(403)
 def get_analysis_from_cadi(cadi_id):
     """Retrieve specific CADI analysis (route)."""
+    cadi_id = unquote(cadi_id).upper()
+    matched = re.match(CADI_REGEX, cadi_id)
+
+    if not matched:
+        abort(400, 'This CADI ID is invalid. Please provide an input '
+                   'in the form of [A-Z0-9]{3}-[0-9]{2}-[0-9]{3}')
+
     resp, status = _get_cadi(cadi_id)
     return jsonify(resp), status
 

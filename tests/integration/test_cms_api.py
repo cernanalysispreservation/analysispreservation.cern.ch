@@ -57,7 +57,7 @@ def test_get_cms_cadi_when_cms_user_returns_200(mock_get_from_cadi_by_id,
        return_value={})
 def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(
         mock_get_from_cadi_by_id, client, auth_headers_for_superuser):
-    resp = client.get('/cms/cadi/non-existing',
+    resp = client.get('/cms/cadi/ABC-12-1234',
                       headers=auth_headers_for_superuser)
 
     assert resp.json == {}
@@ -116,10 +116,23 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
 def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(
         mock_get_from_cadi_by_id, app, auth_headers_for_superuser):
     with app.test_client() as client:
-        resp = client.get('/cms/cadi/non-existing',
+        resp = client.get('/cms/cadi/ABC-12-1234',
                           headers=auth_headers_for_superuser)
 
     assert resp.status_code == 503
+
+
+def test_get_cms_cadi_when_cadi_not_matches_regex(app, auth_headers_for_superuser):
+    with app.test_client() as client:
+        resp = client.get('/cms/cadi/ABC-12-ABC',
+                          headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 400
+    assert resp.json == {
+        "message": "This CADI ID is invalid. Please provide an "
+                   "input in the form of [A-Z0-9]{3}-[0-9]{2}-[0-9]{3}",
+        "status": 400
+    }
 
 
 ##################
