@@ -4,12 +4,10 @@
     "workspaces":["cap-react", "forms-playground"],
     "scripts": {
         "cap":"yarn workspace cap-react start",
-        "forms":"yarn workspace forms-workspace start"
+        "forms":"yarn workspace forms-playground start"
     },
     "devDependencies": {
         "babel-loader": "8.1.0",
         "webpack": "4.42.0"
     }
-
-
 }
