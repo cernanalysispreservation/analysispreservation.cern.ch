@@ -8,17 +8,30 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "cap-react":"0.1.0",
+    "react-redux": "^6.0.0",
+    "react-ace": "8.0.0",
+    "grommet": "1.0.0",
+    "grommet-addons": "^0.6.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-app-rewired start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
     "babel-jest": "^24.9.0",
-    "jest": "24.9.0"
+    "jest": "24.9.0",
+    "postcss-loader": "3.0.0",
+    "react-app-rewired": "^2.1.5",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.0",
+    "url-loader": "1.1.1",
+    "css-loader": "1.0.0",
+    "customize-cra": "^0.9.1",
+    "file-loader": "1.1.11"
   },
   "eslintConfig": {
     "extends": "react-app"
