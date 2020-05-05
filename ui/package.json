@@ -3,7 +3,8 @@
     "name":"cap-project",
     "workspaces":["cap-react", "forms-playground"],
     "scripts": {
-        "cap":"yarn workspace cap-react start"
+        "cap":"yarn workspace cap-react start",
+        "forms":"yarn workspace forms-workspace start"
     },
     "devDependencies": {
         "babel-loader": "8.1.0",
