@@ -8,6 +8,9 @@
     },
     "devDependencies": {
         "babel-loader": "8.1.0",
-        "webpack": "4.42.0"
+        "webpack": "4.42.0",
+        "babel-jest": "^24.9.0",
+        "jest": "24.9.0",
+        "jest-cli": "24.9.0"
     }
 }
