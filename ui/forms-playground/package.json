@@ -22,8 +22,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-jest": "^24.9.0",
-    "jest": "24.9.0",
     "postcss-loader": "3.0.0",
     "react-app-rewired": "^2.1.5",
     "sass-loader": "7.1.0",
