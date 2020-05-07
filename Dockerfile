@@ -5,9 +5,7 @@
 # CERN Analysis Preservation is free software; you can redistribute it and/or modify it
 # under the terms of the MIT License; see LICENSE file for more details.
 
-FROM gitlab-registry.cern.ch/analysispreservation/base:python2-xrootd-go
-
-RUN yum -y install kstart krb5-server krb5-libs krb5-devel krb5-workstation
+FROM gitlab-registry.cern.ch/analysispreservation/base:python3
 
 # Install Invenio
 ENV WORKING_DIR=/opt/cap
@@ -31,8 +29,8 @@ RUN python -m site --user-site
 # Install/create static files
 RUN mkdir -p ${INVENIO_INSTANCE_PATH}
 
-RUN pip install --upgrade setuptools wheel uwsgi uwsgitop uwsgi-tools
-RUN pip install --upgrade pip==9.0.1
+
+RUN pip install --upgrade wheel uwsgi uwsgitop uwsgi-tools
 
 # RUN if [ "$DEBUG" = "True" ]; then pip install -r requirements-devel.txt; fi;
 RUN pip install -r requirements-local-forks.txt

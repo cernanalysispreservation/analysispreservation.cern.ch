@@ -23,18 +23,7 @@ services:
       - static_data:/opt/cap/var/instance/static
       - ./ui/cap-react/dist:/html
     links:
-      # - web-ui
       - web-api
-  # UI Application
-  # web-ui:
-  #   build: ./ui
-  #   image: cap/ui
-  #   volumes:
-  #     - './ui:/usr/src/app'
-  #     - '/usr/src/app/node_modules'
-  #   ports:
-  #     - "3000:3000"
-  #   image: cap-web-ui
   # API Rest Application
   web-api:
     extends:
@@ -42,6 +31,23 @@ services:
       service: app
     command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini
     image: cap-web-api
+    ports:
+      - "5000"
+    volumes:
+      - static_data:/opt/cap/var/instance/static
+      - ./var/data:/var/data
+    links:
+      - cache
+      - es
+      - mq
+      - db
+  # API Files Application
+  files-api:
+    extends:
+      file: docker-services.yml
+      service: app
+    command: uwsgi /opt/cap/var/instance/uwsgi_rest.ini
+    image: cap-files-api
     ports:
       - "5000"
     volumes:
