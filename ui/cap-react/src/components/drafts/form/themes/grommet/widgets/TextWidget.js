@@ -260,6 +260,9 @@ class TextWidget extends Component {
           name={this.props.id}
           value={this.props.value || ""}
           onChange={this._onChange}
+          warningMessage={
+            this.props.options && this.props.options.warningMessage
+          }
           onBlur={
             this.props.options &&
             this.props.options.autofill_from &&

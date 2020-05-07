@@ -142,6 +142,7 @@ class RxInputBase extends Component {
     };
     return {
       focus: false,
+      pending: false,
       value: this.props.value || "",
       selection: this.props.selection,
       mask: new RXInputMask(options)
@@ -192,14 +193,18 @@ class RxInputBase extends Component {
   }
 
   _onFocus() {
-    this.setState({ focus: true });
+    this.setState({ focus: true, pending: false });
     // if (this.props.onFocus) this.props.onFocus(e);
   }
 
   _onBlur(e) {
     // this.fireChange(e);
-    if (this.props.onBlur && this.state.mask.isDone() == "DONE")
+    if (this.props.onBlur && this.state.mask.isDone() == "DONE") {
       this.props.onBlur(e);
+    }
+    if (!(this.state.mask.isDone() == "DONE")) {
+      this.setState({ pending: true });
+    }
     this.setState({ focus: false });
   }
 
@@ -568,6 +573,12 @@ export default class RxInput extends RxInputBase {
           !this.state.focus || status ? null : [this._renderHelper(), myPopover]
         ]}
         buttons={this.props.buttons && this.props.buttons(status)}
+        warningMessage={
+          this.state.pending
+            ? this.props.warningMessage ||
+              "make sure your input follows the given pattern"
+            : null
+        }
       />
     );
   }
