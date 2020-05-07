@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-const InputWithButton = ({ input, buttons, onFocus = null, onBlur = null }) => (
-  <Box flex={false} key="input" onFocus={onFocus} onBlur={onBlur}>
+const InputWithButton = ({ input, buttons }) => (
+  <Box flex={false} key="input">
     <Box
       flex={true}
       direction="row"

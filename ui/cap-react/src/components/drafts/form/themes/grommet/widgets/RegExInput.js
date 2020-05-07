@@ -192,14 +192,15 @@ class RxInputBase extends Component {
   }
 
   _onFocus() {
-    // this.setState({ focus: true });
+    this.setState({ focus: true });
     // if (this.props.onFocus) this.props.onFocus(e);
   }
 
   _onBlur(e) {
-    this.fireChange(e);
-    // if (this.props.onBlur) this.props.onBlur(e);
-    // this.setState({ focus: false });
+    // this.fireChange(e);
+    if (this.props.onBlur && this.state.mask.isDone() == "DONE")
+      this.props.onBlur(e);
+    this.setState({ focus: false });
   }
 
   fireChange(e) {
@@ -437,8 +438,8 @@ class RxInputBase extends Component {
         onKeyDown={this._onKeyDown}
         onKeyPress={this._onKeyPress}
         onPaste={this._onPaste}
-        // onFocus={this._onFocus}
-        // onBlur={this._onBlur}
+        onFocus={this._onFocus}
+        onBlur={this._onBlur}
         placeholder={placeholder || this.state.mask.emptyValue}
         size={size || patternLength}
         value={this._getDisplayValue()}
@@ -457,7 +458,8 @@ RxInputBase.propTypes = {
   onKeyDown: PropTypes.func,
   name: PropTypes.string,
   onChange: PropTypes.func,
-  size: PropTypes.number
+  size: PropTypes.number,
+  onBlur: PropTypes.f
 };
 
 //const LOG = (first, ...params) => {console.log(first, ...params); return first; }
@@ -561,11 +563,6 @@ export default class RxInput extends RxInputBase {
     return (
       <InputWithButton
         key="regexinput"
-        onFocus={() => this.setState({ focus: true })}
-        onBlur={e => {
-          if (this.props.onBlur) this.props.onBlur(e);
-          this.setState({ focus: false });
-        }}
         input={[
           input,
           !this.state.focus || status ? null : [this._renderHelper(), myPopover]
