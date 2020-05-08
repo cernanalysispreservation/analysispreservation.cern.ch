@@ -17,9 +17,20 @@ function DashboardList(props) {
   let { header = "", emptyMessage = null, listType, list, ListItem } = props;
 
   return (
-    <Box flex={false} pad={{ vertical: "small" }}>
+    <Box
+      style={{
+        width: "100%"
+      }}
+      size={{ width: { max: "xxlarge", min: "medium" } }}
+    >
       <Box>
-        <Box flex direction="row" pad="small" justify="between">
+        <Box
+          flex
+          direction="row"
+          pad="small"
+          justify="between"
+          responsive={false}
+        >
           <Heading
             tag="h5"
             uppercase={true}
@@ -31,7 +42,7 @@ function DashboardList(props) {
           >
             {header}
           </Heading>
-          <Box direction="row">
+          <Box direction="row" responsive={false}>
             {Object.keys(list).map(type => (
               <Box
                 key={type}
@@ -55,7 +66,10 @@ function DashboardList(props) {
 
       <Box
         flex={false}
-        size={{ height: "medium", width: "xlarge" }}
+        size={{
+          height: "medium",
+          width: { max: "xxlarge", min: "medium" }
+        }}
         colorIndex="light-1"
       >
         {list[activeList].list.length > 0 ? (

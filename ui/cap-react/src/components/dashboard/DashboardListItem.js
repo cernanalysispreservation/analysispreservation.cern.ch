@@ -35,6 +35,7 @@ function DashboardListItem(props) {
     <ListItem key={`${id}`} onClick={() => props.push(itemUrl)}>
       <Box
         justify="between"
+        responsive={false}
         direction="row"
         style={{
           overflow: "visible"

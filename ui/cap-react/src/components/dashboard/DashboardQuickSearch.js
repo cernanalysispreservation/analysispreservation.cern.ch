@@ -52,9 +52,9 @@ class DashboardQuickSearch extends React.Component {
 
   render() {
     return (
-      <Box pad={{ vertical: "small" }} size={{ width: "small" }} flex={false}>
+      <Box size={{ width: { max: "xlarge" } }} flex={false}>
         <Box pad="none">
-          <Box flex={true} direction="row" pad="small" justify="center">
+          <Box flex={true} direction="row" pad="small" justify="start" >
             <Heading
               tag="h5"
               uppercase={true}
@@ -74,8 +74,7 @@ class DashboardQuickSearch extends React.Component {
           style={{ overflow: "hidden" }}
           flex={false}
           colorIndex="light-1"
-          wrap
-          size={{ height: "medium" }}
+          justify="center"
         >
           <TagCloud
             style={{ cursor: "pointer", padding: 5 }}

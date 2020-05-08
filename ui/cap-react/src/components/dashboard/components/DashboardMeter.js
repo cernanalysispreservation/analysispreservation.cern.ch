@@ -14,10 +14,10 @@ class DashboardMeter extends React.Component {
   render() {
     const { total, drafts, published } = this.props;
     return (
-      <Box pad="large" flex={false} align="center">
+      <Box flex={false} align="center" className="dashboard-meter">
         <AnnotatedMeter
           legend={true}
-          type="circle"
+          type="bar"
           defaultMessage="Your"
           max={total}
           series={[

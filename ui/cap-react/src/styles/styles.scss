@@ -94,6 +94,8 @@ label {
   transition: width 0.3s;
 }
 
+
+
 // xsmall
 @media only screen and (min-width: 320px) {
   .md-row {
@@ -107,10 +109,42 @@ label {
   .width-100 {
     width: 100% !important;
   }
+  
+  .sm-order-1{
+    order:2;  
+    margin: 50px 10px 50px 10px;
+  }
+  .sm-order-2{
+    order:1;
+    margin: 50px 10px 0px 10px;
+  }
+  .sm-order-3{
+    order:3;
+    margin: 0px 10px 50px 10px;
+  }
+  
+  .sm-order-4{
+    order:4;
+    margin: 0px 10px 50px 10px;
+  }
+
+  .dashboard-meter ul li {
+    flex-direction: row !important;
+  }
+  
+
 }
+
+
 
 // small
 @media only screen and (min-width: 580px) {
+  .sm-order-2{
+    order:1;
+  }
+  .sm-order-1{
+    order:2;
+  }
   .md-column {
     display: flex;
     flex-direction: column !important;
@@ -119,6 +153,22 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
+  .sm-order-1{
+    order:1;
+    margin: 0;
+  }
+  .sm-order-2{
+    order: 2;
+    margin:0;
+  }
+
+  .sm-order-3{
+    margin: 0;
+  }
+
+  .sm-order-4{
+    margin: 0;
+  }
   .md-row {
     flex-direction: column !important;
     justify-content: flex-start;

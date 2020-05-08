@@ -53,27 +53,21 @@ class Dashboard extends React.Component {
   render() {
     let lists = this._getList();
     return (
-      <Box colorIndex="light-2" flex full>
+      <Box colorIndex="light-2" flex full pad={{vertical:"small"}}>
         {this.props.loading ? (
           <Box flex align="center" justify="center">
             <Spinning size="large" />
           </Box>
         ) : (
-          <Box colorIndex="light-2" flex align="center">
+          <Box flex direction="row" wrap pad={{ horizontal: "small" }}>
             <Box
-              direction="row"
-              wrap
+              className="sm-order-1"
+              basis="1/2"
+              flex="grow"
+              pad={{ horizontal: "medium" }}
               align="center"
-              pad={{
-                between: "large",
-                horizontal: "large"
-              }}
+              justify="center"
             >
-              <DashboardMeter
-                total={this.props.results.user_count}
-                drafts={this.props.results.user_drafts_count}
-                published={this.props.results.user_published_count}
-              />
               <DashboardList
                 listType="draft"
                 list={lists["drafts"]}
@@ -81,7 +75,30 @@ class Dashboard extends React.Component {
                 ListItem={DashboardListItem}
                 emptyMessage="Draft analyses that your collaborators have given you read/write access to."
               />
+            </Box>
+            <Box
+              flex
+              basis="1/2"
+              pad={{ horizontal: "medium" }}
+              align="center"
+              justify="center"
+              className="sm-order-2"
+            >
+              <DashboardMeter
+                total={this.props.results.user_count}
+                drafts={this.props.results.user_drafts_count}
+                published={this.props.results.user_published_count}
+              />
               <DashboardQuickSearch />
+            </Box>
+            <Box
+              flex="grow"
+              basis="1/2"
+              pad={{ horizontal: "medium" }}
+              align="center"
+              justify="center"
+              className="sm-order-3"
+            >
               <DashboardList
                 listType="published"
                 list={lists["published"]}
@@ -89,6 +106,15 @@ class Dashboard extends React.Component {
                 ListItem={DashboardListItem}
                 emptyMessage="All analyses published on CAP by members of your collaboration."
               />
+            </Box>
+            <Box
+              flex="grow"
+              basis="1/2"
+              pad={{ horizontal: "medium" }}
+              align="center"
+              justify="center"
+              className="sm-order-4"
+            >
               <DashboardList
                 listType="workflows"
                 list={lists["workflows"]}
