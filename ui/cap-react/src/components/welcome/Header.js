@@ -20,16 +20,22 @@ import CAPLogoDark from "../../img/cap-logo-dark.svg";
 class WelcomePage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      showLogin: false
-    };
-  }
-
-  onFormSubmit = formData => {
     let {
       location: { state: { next: next = "/" } = {} }
     } = this.props.history;
-    formData["next"] = next;
+
+    this.state = {
+      showLogin: false,
+      next: next,
+      oauthLink: `/api/oauth/login/cern?next=${next}`
+    };
+  }
+
+  componentDidMount() {}
+
+  onFormSubmit = formData => {
+    // fetch the next from history
+    formData["next"] = this.state.next;
 
     this.props.loginLocalUser(formData);
   };
@@ -79,7 +85,7 @@ class WelcomePage extends React.Component {
                   <Label>{this.props.nav[key].title}</Label>
                 </Box>
               ))}
-              <Anchor href="/api/oauth/login/cern">
+              <Anchor href={this.state.oauthLink}>
                 <Label>Log in</Label>
               </Anchor>
             </Menu>

@@ -27,8 +27,10 @@ module.exports = async ({ config, mode }) => {
           loader: "sass-loader",
           options: {
             includePaths: [
-              "./node_modules",
-              "./node_modules/grommet/node_modules"
+              "../../node_modules",
+              "../node_modules",
+              "../../node_modules/grommet/node_modules",
+              "../node_modules/grommet/node_modules"
             ]
           }
         }

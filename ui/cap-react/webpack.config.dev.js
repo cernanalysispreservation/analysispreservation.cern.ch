@@ -42,6 +42,7 @@ export default {
     new HtmlWebpackPlugin({
       // Create HTML file that includes references to bundled CSS and JS.
       template: "src/index.ejs",
+      favicon: "src/favicon.ico",
       minify: {
         removeComments: true,
         collapseWhitespace: true
@@ -143,6 +144,7 @@ export default {
             options: {
               includePaths: [
                 "./node_modules",
+                "../node_modules",
                 path.resolve(__dirname, "src", "scss")
               ],
               sourceMap: true
