@@ -6,21 +6,38 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-import { Accordion, Paragraph, Heading } from "grommet";
+import { Accordion, Paragraph, Heading, Label, Anchor } from "grommet";
 import AccordionPanel from "../../partials/AccordionPanel";
 
 import TimeAgo from "react-timeago";
 import { toggleFilemanagerLayer } from "../../../actions/files";
 import RepoUploader from "./DepositFileManager/RepoUploader";
+import { FaGithub, FaGitlab } from "react-icons/fa";
+import { LinkIcon } from "grommet/components/icons/base";
 
 class DraftIntegrations extends React.Component {
+  renderResourceIcon = (resource) => {
+    return resource == "github.com" ? (
+      <Box margin={{ right: "large" }} direction="row" pad={{ between: "small" }} justify="center" align="center" responsive={false}>
+        <FaGithub size="18" />
+        <Label size="small">Github</Label>
+      </Box>
+    ) : (
+        <Box margin={{ right: "large" }} direction="row" pad={{ between: "small" }} justify="center" align="center" responsive={false}>
+          <FaGitlab size="18" />
+          <Label size="small">CERN Gitlab</Label>
+        </Box>
+      );
+  }
+
   render() {
     return (
       <Box
-        flex={true}
+        flex={false}
         size={{ width: "xxlarge" }}
         alignSelf="center"
         pad="small"
+        margin={{ vertical: "small", bottom: "large" }}
       >
         <Box
           flex={false}
@@ -28,7 +45,7 @@ class DraftIntegrations extends React.Component {
           wrap={false}
           margin={{ vertical: "small", bottom: "large" }}
         >
-          <Box flex>
+          <Box flex={true}>
             <Heading tag="h3">Repositories</Heading>
             <Box direction="row" pad={{ between: "medium" }}>
               <Box basis="1/2">
@@ -56,17 +73,25 @@ class DraftIntegrations extends React.Component {
           </Box>
         </Box>
         {this.props.canUpdate && (
-          <Box margin={{ bottom: "medium" }}>
+          <Box flex={false} margin={{ bottom: "medium" }}>
             <Heading tag="h4">Add a new repository</Heading>
-            <Box pad="small" colorIndex="light-2">
+            <Box flex={false} pad="small" colorIndex="light-2">
               <RepoUploader />
             </Box>
           </Box>
         )}
         <Box flex={false}>
           <Heading tag="h4">Connected Repositories</Heading>
-          <Box flex={false} colorIndex="light-2">
+          <Box flex={false} colorIndex="light-2" separator="vertical">
             <Accordion>
+              <Box separator="horizontal" pad="small" flex direction="row" wrap={false} align="center" justify="between" responsive={false} colorIndex="light-1">
+                <Box flex direction="row" align="center" wrap={false} >
+                  <strong>Repository</strong>
+                </Box>
+                <Box direction="row" wrap={false} flex={true} size={{ width: { max: "medium" } }}>
+                  <strong>Upload Event</strong>
+                </Box>
+              </Box>
               {this.props.repos && this.props.repos.length ? (
                 this.props.repos.map((repo, index) => (
                   <AccordionPanel
@@ -74,70 +99,79 @@ class DraftIntegrations extends React.Component {
                     noHeading={true}
                     headingColor="light-2"
                     heading={
-                      <Box flex direction="row" wrap={false}>
-                        <strong>{repo.name}</strong>
-                        {repo.branch ? " /" + repo.branch : null}
+                      <Box flex direction="row" align="center" justify="between" wrap={false} responsive={false}>
+                        <Box flex direction="row" align="center" wrap={false} responsive={false}>
+                          {this.renderResourceIcon(repo.host)}
+                          <strong>{repo.owner}/{repo.name}</strong>
+                        </Box>
+                        <Box direction="row" wrap={false} align="center" flex={true} pad={{ between: "small", horizontal: "small" }} size={{ width: { max: "medium" } }}>
+                          <Box direction="row" pad={{ horizontal: "small" }} align="center">
+                            {
+                              repo.event_type == "release" ?
+                                "on Release/Tag" :
+                                "on Push"
+                            }
+                          </Box>
+                          <Box>
+                            {repo.branch ? `(Branch/Ref: ${repo.branch})` : null}
+                          </Box>
+                        </Box>
                       </Box>
                     }
                   >
-                    <Box>
-                      {repo.snapshots.map((snapshot, index) => (
-                        <Box
-                          key={index}
-                          direction="row"
-                          justify="between"
-                          wrap={false}
-                          pad={{
-                            horizontal: "small",
-                            vertical: "small",
-                            between: "small"
-                          }}
-                          onClick={() =>
-                            window.open(snapshot.payload.link, "_blank")
-                          }
-                        >
+                    <Box colorIndex="light-1">
+                      {repo.snapshots.length > 0 ?
+                        repo.snapshots.map((snapshot, index) => (
                           <Box
-                            flex={false}
+                            key={index}
                             direction="row"
+                            justify="between"
                             wrap={false}
-                            pad={{ between: "small" }}
+                            separator="bottom"
+                            pad={{
+                              horizontal: "small",
+                              vertical: "small",
+                              between: "small"
+                            }}
                           >
-                            <strong>
-                              {"release" in snapshot.payload
-                                ? snapshot.payload.release.tag
-                                : snapshot.payload.commit.slice(-1)[0].message}
-                            </strong>
+                            <Box
+                              flex={false}
+                              direction="row"
+                              wrap={false}
+                              pad={{ between: "small" }}
+                            >
+                              <strong>
+                                {snapshot.payload.event_type == "release"
+                                  ? snapshot.payload.release.tag
+                                  : snapshot.payload.commit.slice(-1)[0].message}
+                              </strong>
+                              <TimeAgo date={snapshot.created} minPeriod="60" />
+                            </Box>
+                            <Box
+                              flex={false}
+                              direction="row"
+                              wrap={false}
+                            >
+                              <a target="_blank" href={snapshot.payload.link}>
+                                <Box pad={{ between: "small" }} direction="row" responsive={false} wrap={false} align="center">
+                                  <span>Link</span> <LinkIcon size="xsmall" />
+                                </Box>
+                              </a>
+                            </Box>
                           </Box>
-                          <Box
-                            flex={false}
-                            direction="row"
-                            wrap={false}
-                            pad={{ between: "small" }}
-                          >
-                            <strong>
-                              {"release" in snapshot.payload
-                                ? snapshot.payload.release.name
-                                : null}
-                            </strong>
-                          </Box>
-                          <Box
-                            flex={false}
-                            direction="row"
-                            wrap={false}
-                            pad={{ between: "small" }}
-                          >
-                            <TimeAgo date={snapshot.created} minPeriod="60" />
-                          </Box>
-                        </Box>
-                      ))}
+                        )) :
+                        <Box separator="bottom" pad="medium" justify="center" align="center">
+                          No snapshots were uploaded for this event
+                      </Box>
+                      }
                     </Box>
                   </AccordionPanel>
                 ))
               ) : (
-                <Box pad="medium" justify="center" align="center">
-                  No Repositories connected yet
-                </Box>
-              )}
+                  <Box separator="bottom" pad="medium" justify="center" align="center">
+                    No Repositories connected yet
+                  </Box>
+                )}
             </Accordion>
           </Box>
         </Box>

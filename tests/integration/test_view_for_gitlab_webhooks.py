@@ -288,7 +288,7 @@ def test_get_webhook_event_view_when_release_event(m_gitlab, deposit, client,
 
     obj = ObjectVersion.get(
         deposit.files.bucket.id,
-        'repositories/gitlab.cern.ch/owner_name/myrepository.tar.gz')
+        'repositories/gitlab.cern.ch/owner_name/myrepository/v3.0.0.tar.gz')
     tar_obj = tarfile.open(obj.file.uri)
     repo_file_name = tar_obj.getmembers()[1]
     repo_content = tar_obj.extractfile(repo_file_name).read()

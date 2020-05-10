@@ -14,6 +14,8 @@ export const UPLOAD_FILE_SUCCESS = "UPLOAD_FILE_SUCCESS";
 export const UPLOAD_ACTION_SUCCESS = "UPLOAD_ACTION_SUCCESS";
 export const UPLOAD_FILE_ERROR = "UPLOAD_FILE_ERROR";
 
+export const CREATE_WEBHOOK_SUCCESS = "CREATE_WEBHOOK_SUCCESS";
+
 export const DELETE_FILE_REQUEST = "DELETE_FILE_REQUEST";
 export const DELETE_FILE_SUCCESS = "DELETE_FILE_SUCCESS";
 export const DELETE_FILE_ERROR = "DELETE_FILE_ERROR";
@@ -95,6 +97,11 @@ export function uploadActionSuccess(filename) {
 export function uploadFileError(filename, error) {
   return { type: UPLOAD_FILE_ERROR, filename, error };
 }
+
+export function createWebhookSuccess(repo) {
+  return { type: CREATE_WEBHOOK_SUCCESS, repo };
+}
+
 // Semi - working file upload
 export function uploadFile(bucket_link, file, filename, tags) {
   return dispatch => {
@@ -110,7 +117,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
 
     oReq.upload.addEventListener(
       "progress",
-      function(evt) {
+      function (evt) {
         if (evt.lengthComputable) {
           let percentComplete = evt.loaded / evt.total;
           dispatch(uploadFileProgress(_filename, percentComplete));
@@ -119,7 +126,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
       false
     );
 
-    oReq.onload = function(oEvent) {
+    oReq.onload = function (oEvent) {
       try {
         let data = oEvent.target.response;
         data = JSON.parse(data);
@@ -129,14 +136,14 @@ export function uploadFile(bucket_link, file, filename, tags) {
       }
     };
 
-    oReq.onreadystatechange = function() {
+    oReq.onreadystatechange = function () {
       //Call a function when the state changes.
       if (oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
         // Request finished. Do processing here.
       }
     };
 
-    oReq.addEventListener("error", function() {
+    oReq.addEventListener("error", function () {
       dispatch(uploadFileError(_filename, { message: "Error in uploading" }));
     });
 
@@ -173,14 +180,13 @@ export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
   };
 }
 
-export function uploadViaRepoUrl(draft_id, urlToGrab, type, download, webhook) {
-  return () => {
+export function uploadViaRepoUrl(draft_id, urlToGrab, webhook, event_type, repo_info = null) {
+  return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = {
       url: urlToGrab,
-      type: type,
-      download: download,
-      webhook: webhook
+      webhook,
+      event_type
     };
 
     let filename = data.url.split("/").pop();
@@ -189,6 +195,19 @@ export function uploadViaRepoUrl(draft_id, urlToGrab, type, download, webhook) {
     return axios
       .post(uri, data)
       .then(resp => {
+        try {
+          dispatch(createWebhookSuccess({
+            event_type,
+            "host": repo_info.resource,
+            "owner": repo_info.owner,
+            "name": repo_info.name,
+            "ref": repo_info.ref,
+            "snapshots": []
+          }));
+        }
+        catch (err){
+          console.log("ERRORWEBHOOK::", err)
+        }
         return { filename, data: resp.data };
       })
       .catch(error => {

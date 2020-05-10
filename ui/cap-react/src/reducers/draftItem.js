@@ -249,6 +249,10 @@ export default function draftsReducer(state = initialState, action) {
         error: action.error.response.data
       });
 
+    // Draft integrations
+    case filesActions.CREATE_WEBHOOK_SUCCESS:
+      return state.set("webhooks", [...state.get("webhooks"), action.repo]);
+    
     // Draft workflows
     case workflowsActions.WORKFLOWS_RECORD_SUCCESS:
       return state.set("workflows", fromJS(action.workflows));

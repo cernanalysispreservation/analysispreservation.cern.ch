@@ -6,7 +6,7 @@ import CleanForm from "../../form/CleanForm";
 
 const uiSchema = {
   "ui:placeholder":
-    "Repository/File URL. Please provide a valid Github or CERN Gitlab url",
+    "Please provide a valid Github/CERN Gitlab repository or file URL",
   "ui:field": "repo",
   "ui:options": {
     type: "file",

@@ -413,7 +413,7 @@ def test_get_webhook_event_view_when_release_event(m_get_repo, deposit, client,
         'Authorization'] == 'token some-token'
 
     obj = ObjectVersion.get(deposit.files.bucket.id,
-                            'repositories/github.com/owner/repository.tar.gz')
+                            'repositories/github.com/owner/repository/v1.0.0.tar.gz')
 
     tar_obj = tarfile.open(obj.file.uri)
     repo_file_name = tar_obj.getmembers()[1]

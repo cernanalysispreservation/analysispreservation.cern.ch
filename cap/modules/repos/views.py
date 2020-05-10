@@ -85,7 +85,12 @@ def get_webhook_event():
         if webhook.branch:
             path = f'repositories/{api.host}/{api.owner}/{api.repo}/{webhook.branch}.tar.gz'  # noqa
         else:
-            path = f'repositories/{api.host}/{api.owner}/{api.repo}.tar.gz'
+            if data.get("event_type") == "release" and data.get('release',
+                                                                {}).get('tag'):
+                tag = data.get('release', {}).get('tag')
+                path = f'repositories/{api.host}/{api.owner}/{api.repo}/{tag}.tar.gz'  # noqa
+            else:
+                path = f'repositories/{api.host}/{api.owner}/{api.repo}.tar.gz'
 
         subscriber.snapshots.append(snapshot)
         db.session.commit()
