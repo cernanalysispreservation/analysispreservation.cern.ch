@@ -13,7 +13,14 @@ const ErrorFieldIndicator = ({
 }) => {
   // If there is an error that startsWith the "id", probably means that
   //  this is the parent of an erronous field
-  let isCurrentErrored = formErrors.some(error => error.startsWith(id));
+  let isCurrentErrored;
+  if (Array.isArray(id)) {
+    isCurrentErrored = formErrors.some(error => {
+      return id.filter(ids => error.startsWith(ids)).length > 0;
+    });
+  } else {
+    isCurrentErrored = formErrors.some(error => error.startsWith(id));
+  }
 
   if (!isCurrentErrored || hideIndicator) return children;
 
