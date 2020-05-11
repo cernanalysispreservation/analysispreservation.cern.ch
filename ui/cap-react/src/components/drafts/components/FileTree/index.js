@@ -14,6 +14,7 @@ import { arrangeIntoTree } from "./utils";
 import HorizontalWithText from "../../../partials/HorizontalWithText";
 
 import { filter } from "lodash";
+import RepoTree from "./RepoTree";
 class FileTree extends React.Component {
   constructor(props) {
     super(props);
@@ -73,6 +74,8 @@ class FileTree extends React.Component {
         item => item.name != "repositories"
       )
     };
+
+    console.log("RREOS::", repos)
     return (
       <Box style={{ marginLeft: "5px" }}>
         <HorizontalWithText
@@ -88,27 +91,18 @@ class FileTree extends React.Component {
             root
           />
         ) : (
-          <Box flex={true} pad="small" justify="center" align="center">
-            No files added yet
-          </Box>
-        )}
+            <Box flex={true} pad="small" justify="center" align="center">
+              No files added yet
+            </Box>
+          )}
         <HorizontalWithText
           text="All Repositories"
           background={this.props.background}
           color={this.props.color}
         />
-        {repos && repos.length > 0 ? (
-          <TreeNode
-            data={{ children: repos[0].children }}
-            onDirectoryClick={this.props.onDirectoryClick}
-            onFileClick={this.props.onFileClick}
-            root
-          />
-        ) : (
-          <Box flex={true} pad="small" justify="center" align="center">
-            No repositories added yet
-          </Box>
-        )}
+        <RepoTree repos={repos}
+          onDirectoryClick={this.props.onDirectoryClick}
+          onFileClick={this.props.onFileClick} />
       </Box>
     );
   }

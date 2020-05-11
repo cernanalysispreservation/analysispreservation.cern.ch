@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-import { Accordion, Paragraph, Heading, Label, Anchor } from "grommet";
+import { Accordion, Paragraph, Heading, Label } from "grommet";
 import AccordionPanel from "../../partials/AccordionPanel";
 
 import TimeAgo from "react-timeago";

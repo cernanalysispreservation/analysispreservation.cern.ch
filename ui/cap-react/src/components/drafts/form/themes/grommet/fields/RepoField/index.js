@@ -15,6 +15,7 @@ import { StatusIcon } from "grommet/components/icons";
 import { CloseIcon, TipIcon, RefreshIcon } from "grommet/components/icons/base";
 import RepoActions from "./RepoActions";
 
+// eslint-disable-next-line no-useless-escape
 const regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
 const acceptedResources = ["github.com", "gitlab.cern.ch", "gitlab-test.cern.ch"];
 

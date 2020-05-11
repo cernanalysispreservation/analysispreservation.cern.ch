@@ -17,6 +17,8 @@ import DepositFilesList from "./DepositFilesList";
 import { Route } from "react-router-dom";
 
 import TimeAgo from "react-timeago";
+import { RefreshIcon } from "grommet/components/icons/base";
+import { getBucketById } from "../../../actions/files";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -44,6 +46,32 @@ class DepositSidebar extends React.Component {
     }
   }
 
+  _renderRefreshFilesButton() {
+    if (this.props.status !== "published") {
+      if (this.props.canUpdate) {
+        return (
+          <Route
+            path="/drafts/:draft_id/"
+            render={() => (
+              <Box
+                colorIndex="light-2"
+                onClick={this._refreshFileList}
+                style={{ padding: "5px" }}
+              >
+                <RefreshIcon size="small" />
+              </Box>
+            )}
+          />
+        );
+      }
+    }
+  }
+
+  _refreshFileList = () => {
+    let { bucket } = this.props.links;
+    let bucket_id = bucket.split("/").pop();
+    this.props.getBucketById(bucket_id);
+  }
   render() {
     return (
       <Sidebar
@@ -113,7 +141,12 @@ class DepositSidebar extends React.Component {
           <SectionHeader
             label="Files | Data | Repos"
             uppercase={true}
-            icon={this._renderAddFileIcon()}
+            icon={
+              <Box direction="row" wrap={false} pad={{between: "small"}}>
+                {this._renderRefreshFilesButton()}
+                {this._renderAddFileIcon()}
+              </Box>
+            }
           />
           <DepositFilesList files={this.props.files} />
         </Box>
@@ -144,13 +177,15 @@ function mapStateToProps(state) {
     created_by: state.draftItem.get("created_by"),
     created: state.draftItem.get("created"),
     updated: state.draftItem.get("updated"),
-    canUpdate: state.draftItem.get("can_update")
+    canUpdate: state.draftItem.get("can_update"),
+    links: state.draftItem.get("links")
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer())
+    toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
+    getBucketById: bucket_id => dispatch(getBucketById(bucket_id)),
   };
 }
 
