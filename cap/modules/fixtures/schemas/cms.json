@@ -997,6 +997,7 @@
     ],
     "additional_resources": {
       "presentations": {
+        "ui:array": "default",
         "items": {
           "ui:options": {
             "stringify": ["conference"]
@@ -1084,6 +1085,7 @@
           "ui:field": "CapFiles"
         },
         "processing_steps": {
+          "ui:array": "default",
           "items": {
             "ui:order": [
               "configuration_file",
