@@ -20,6 +20,7 @@ class DraftDefaultHeader extends React.Component {
             <Anchor
               path={{ path: `/drafts/${this.props.draft_id}`, index: true }}
               data-tip="Overview"
+              data-place="right"
             >
               <AppsIcon />
             </Anchor>
