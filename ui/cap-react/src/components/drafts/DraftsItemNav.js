@@ -14,21 +14,13 @@ import ReactTooltip from "react-tooltip";
 import TrashIcon from "grommet/components/icons/base/Trash";
 
 // Actions
-import {
-  getDraftByIdAndInitForm,
-  toggleActionsLayer
-} from "../../actions/draftItem";
+import { toggleActionsLayer } from "../../actions/draftItem";
 
 import ShareIcon from "grommet/components/icons/base/Share";
 
-class DraftsItemIndex extends React.Component {
-  componentDidMount() {
-    let { draft_id } = this.props.match.params;
-
-    if (draft_id == this.props.id) return;
-    if (draft_id) {
-      this.props.getDraftById(draft_id);
-    }
+class DraftsItemNav extends React.Component {
+  constructor(props) {
+    super(props);
   }
 
   _actionHandler = type => () => {
@@ -49,7 +41,11 @@ class DraftsItemIndex extends React.Component {
       >
         <Box className="md-row" flex>
           <ReactTooltip />
-          <Anchor path={`/drafts/${draft_id}/edit`} data-tip="Edit metadata">
+          <Anchor
+            path={`/drafts/${draft_id}/edit`}
+            data-tip="Edit metadata"
+            data-place="right"
+          >
             <Box
               justify="center"
               align="center"
@@ -69,6 +65,7 @@ class DraftsItemIndex extends React.Component {
           <Anchor
             path={`/drafts/${draft_id}/integrations`}
             data-tip="Connect your repositories"
+            data-place="right"
           >
             <Box
               justify="center"
@@ -89,6 +86,7 @@ class DraftsItemIndex extends React.Component {
           <Anchor
             path={`/drafts/${draft_id}/workflows`}
             data-tip="Run workflows - in BETA soon"
+            data-place="right"
             disabled
           >
             <Box
@@ -110,6 +108,7 @@ class DraftsItemIndex extends React.Component {
           <Anchor
             path={`/drafts/${draft_id}/settings`}
             data-tip="Share with others"
+            data-place="right"
           >
             <Box
               justify="center"
@@ -141,7 +140,7 @@ class DraftsItemIndex extends React.Component {
   }
 }
 
-DraftsItemIndex.propTypes = {
+DraftsItemNav.propTypes = {
   getDraftById: PropTypes.func,
   match: PropTypes.object.isRequired,
   status: PropTypes.string,
@@ -165,7 +164,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDraftById: id => dispatch(getDraftByIdAndInitForm(id)),
     toggleActionsLayer: type => dispatch(toggleActionsLayer(type))
   };
 }
@@ -174,5 +172,5 @@ export default withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(DraftsItemIndex)
+  )(DraftsItemNav)
 );
