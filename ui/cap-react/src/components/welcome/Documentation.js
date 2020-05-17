@@ -52,7 +52,7 @@ class Documentation extends React.Component {
                   and reuse your analysis through user guides and stories.
                 </Paragraph>
                 <Anchor
-                  href="https://cernanalysispreservation.readthedocs.io/en/latest/project.html"
+                  href="/docs/general/"
                   target="_blank"
                 >
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
@@ -81,7 +81,7 @@ class Documentation extends React.Component {
                   of your everyday work.
                 </Paragraph>
                 <Anchor
-                  href="https://cap-client.readthedocs.io/en/latest/?badge=latest#"
+                  href="/docs/cli/"
                   target="_blank"
                 >
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
@@ -108,7 +108,7 @@ class Documentation extends React.Component {
                   daily tools and services using HTTP requests.
                 </Paragraph>
                 <Anchor
-                  href="https://cernanalysispreservation.readthedocs.io/en/latest/api.html"
+                  href="/docs/api/"
                   target="_blank"
                 >
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
