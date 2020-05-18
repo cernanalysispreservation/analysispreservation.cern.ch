@@ -21,7 +21,7 @@ from invenio_deposit.scopes import write_scope
 from invenio_deposit.utils import check_oauth2_scope
 from invenio_oauthclient.contrib.cern import REMOTE_APP as CERN_REMOTE_APP
 from invenio_records_rest.config import RECORDS_REST_ENDPOINTS
-from invenio_records_rest.facets import terms_filter
+from invenio_records_rest.facets import terms_filter, range_filter
 from invenio_records_rest.utils import allow_all, deny_all
 from jsonresolver import JSONResolver
 from jsonresolver.contrib.jsonref import json_loader_factory
@@ -252,9 +252,9 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 CAP_FACETS = {
     'aggs': {
         'facet_type': {
-           'terms': {
-               'field': '_type'
-           }
+            'terms': {
+                'field': '_type'
+            }
         },
         'facet_cms_working_group': {
             'terms': {
@@ -293,6 +293,9 @@ CAP_FACETS = {
         'facet_sm_analysis_characteristics': {
             'terms': {
                 'field': 'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'  # noqa
+            },
+            'meta': {
+                'title': 'SM Analysis Characteristics'
             }
         },
         'facet_interpretation': {
@@ -305,11 +308,30 @@ CAP_FACETS = {
             'terms': {
                 'size': 30,
                 'field': 'basic_info.analysis_keywords.further_search_categorisation.keyword'  # noqa
+            },
+            'meta': {
+                'title': 'Further Search Categorization'
             }
         },
         'facet_further_search_categorisation_heavy_ion': {
             'terms': {
                 'field': 'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'  # noqa
+            },
+            'meta': {
+                'title': 'Further Search Categorization Heavy Ion'
+            }
+        },
+
+        "facet_next_deadline_date": {
+            "date_histogram": {
+                "field": "analysis_context.next_deadline_date",
+                "interval": "year",
+                "format": "yyyy",
+                "min_doc_count": 1
+            },
+            'meta': {
+                'title': 'Next Deadline Date',
+                'type': 'range'
             }
         },
 
@@ -350,6 +372,11 @@ CAP_FACETS = {
         'type': terms_filter('_type'),
         'cms_working_group': prefix_filter('basic_info.cadi_id'),
         'cadi_status': terms_filter('cadi_info.status'),
+        'next_deadline_date': range_filter(
+            'analysis_context.next_deadline_date',
+            format='yyyy',
+            end_date_math='/y'
+        ),
 
         'collision_system': terms_filter(
             'basic_info.analysis_keywords.collision_system.keyword'),

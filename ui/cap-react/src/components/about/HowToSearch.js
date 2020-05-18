@@ -63,6 +63,16 @@ class HowToSearchPage extends React.Component {
             <CustomTile
               header={
                 <span>
+                  To search for a range of dates, put them in brackets, using the
+                  keyword <b>TO</b> between them.
+                  The dates follow the <b>YYYY-MM-DD</b> standard.
+                </span>
+              }
+              code="deadline:[2018-01-20 TO 2020-02-01]"
+            />
+            <CustomTile
+              header={
+                <span>
                   To search for the whole phrase, put it in quotes. Keep in mind
                   that <b>phrases are not analyzed</b>, hence all special
                   characters (like wildcards) do not have any effect.

@@ -29,14 +29,17 @@ import click
 from flask_cli import with_appcontext
 from invenio_db import db
 
+from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.errors import DepositDoesNotExist, \
     DepositValidationError
 from cap.modules.experiments.utils.cadi import synchronize_cadi_entries, \
     get_deposit_by_cadi_id
+from cap.modules.experiments.utils.questionnaire import \
+    extract_questionnaires_from_excel, remove_none_keys
 from cap.modules.experiments.utils.cms import \
     cache_cms_triggers_in_es_from_file, extract_keywords_from_excel
 from cap.modules.experiments.utils.das import \
-    cache_das_datasets_in_es_from_file  # noqa
+    cache_das_datasets_in_es_from_file
 from cap.modules.fixtures.cli import fixtures
 
 
@@ -112,3 +115,63 @@ def keywords(file):
     #     )
 
     click.secho("Keywords extracted and saved.", fg='green')
+
+
+def _questionnaire_data(data):
+    return {
+        '$ana_type': 'cms-stats-questionnaire',
+        'general_title':
+            f'{data.get("analysis_context").get("1.5 Title/References")}',
+        '_user_edited': False,
+        "analysis_context": data["analysis_context"],
+        "general_information": data["general_information"],
+        "multivariate_discriminants": data["multivariate_discriminants"],
+        "data_fitting": data["data_fitting"],
+        "confidence_intervals_limits": data["confidence_intervals_limits"],
+        "discovery": data["discovery"],
+        "unfolding": data["unfolding"],
+        "systematic_uncertainties": data["systematic_uncertainties"],
+        "parton_distribution_functions": data["parton_distribution_functions"],
+        "other_stats": data["other_stats"],
+        "comments_and_feedback": data["comments_and_feedback"]
+    }
+
+
+@cms.command('questions')
+@click.option('--file', '-f',
+              type=click.Path(exists=True),
+              required=True)
+@with_appcontext
+def questionnaires(file):
+    """Load and save CMS questionnaire data."""
+    try:
+        with db.session.begin_nested():
+            answers = extract_questionnaires_from_excel(file)
+            click.secho(f"Total Answers: {len(answers)}", fg='green')
+
+            for answer in answers:
+                try:
+                    extracted = remove_none_keys(_questionnaire_data(answer))
+                    deposit = CAPDeposit.create(
+                        data=extracted,
+                        owner=None
+                    )
+                    # give read access to members of CMS experiment
+                    deposit._add_experiment_permissions(
+                        'CMS',
+                        ['deposit-read'],
+                    )
+
+                    deposit.commit()
+                    click.secho(
+                        f"Success: {answer['_general_info']['serial']} - "
+                        f"{answer['_general_info']['user']}", fg='green')
+
+                except DepositValidationError:
+                    click.secho(f"Validation Error", fg='red')
+                    pass
+
+        db.session.commit()
+
+    except Exception:
+        pass

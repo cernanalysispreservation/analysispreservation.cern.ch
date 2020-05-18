@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 # or submit itself to any jurisdiction.
 """Integration tests for GET deposits."""
+from urllib import parse
 
 from invenio_search import current_search
 from pytest import mark
@@ -316,6 +317,217 @@ def test_get_deposit_with_default_serializer(client, users,
             .format(depid)
         }
     }]
+
+
+def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_deposit):
+    user = users['cms_user']
+    resp = client.get('/deposits/',
+                      headers=[('Accept', 'application/basic+json')] +
+                      auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+
+    aggs = resp.json['aggregations']
+
+    assert sorted(aggs.keys()) == sorted([
+        'facet_accelerator_parameters', 'facet_cadi_status', 'facet_cms_working_group',
+        'facet_collision_system', 'facet_final_states', 'facet_further_search_categorisation',
+        'facet_further_search_categorisation_heavy_ion', 'facet_interpretation',
+        'facet_next_deadline_date', 'facet_physics_theme', 'facet_sm_analysis_characteristics',
+        'facet_type', 'particles'
+    ])
+
+
+def test_get_deposits_with_facets_containing_meta(client, users, auth_headers_for_user, create_deposit):
+    user = users['cms_user']
+    resp = client.get('/deposits/',
+                      headers=[('Accept', 'application/basic+json')] +
+                      auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+
+    aggs = resp.json['aggregations']
+
+    assert aggs['facet_cms_working_group']['meta']['title'] == 'CMS Working Group'
+    assert aggs['facet_sm_analysis_characteristics']['meta']['title'] == 'SM Analysis Characteristics'
+
+    assert aggs['facet_next_deadline_date']['meta']['title'] == 'Next Deadline Date'
+    assert aggs['facet_next_deadline_date']['meta']['type'] == 'range'
+
+
+def test_get_deposits_with_facets_non_empty_buckets_keywords(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    user = users['cms_user']
+    create_schema('test-schema', experiment='CMS',
+                  deposit_schema={
+                      'title': 'deposit-test-schema', 'type': 'object',
+                      'basic_info': {
+                          'analysis_keywords': {'type': 'array'},
+                          'final_states': {'type': 'array'}
+                      }},
+                  deposit_options={
+                      'title': 'ui-test-schema', 'type': 'object',
+                      'basic_info': {
+                          'analysis_keywords': {'type': 'array'},
+                          'final_states': {'type': 'array'}
+                      }})
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'basic_info': {
+                           'analysis_keywords': {
+                               "collision_system": ["p-p", "p-Pb"],
+                               "final_states": ["B-hadrons", "C-hadrons"]
+                           }
+                       }
+                   },
+                   experiment='CMS')
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'basic_info': {
+                           'analysis_keywords': {
+                               "collision_system": ["p-p"],
+                               "final_states": ["B-hadrons", "Tracks"]
+                           }
+                       }
+                   },
+                   experiment='CMS')
+
+    resp = client.get('/deposits/',
+                      headers=[('Accept', 'application/basic+json')] +
+                      auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+
+    aggs = resp.json['aggregations']
+
+    assert aggs['facet_collision_system']['buckets'] == [
+        {'doc_count': 2, 'key': 'p-p'},
+        {'doc_count': 1, 'key': 'p-Pb'}
+    ]
+    assert aggs['facet_final_states']['buckets'] == [
+        {'doc_count': 2, 'key': 'B-hadrons'},
+        {'doc_count': 1, 'key': 'C-hadrons'},
+        {'doc_count': 1, 'key': 'Tracks'}
+    ]
+
+
+def test_get_deposits_with_facets_non_empty_buckets_dates(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    user = users['cms_user']
+    create_schema('test-schema', experiment='CMS',
+                  deposit_schema={
+                      'title': 'deposit-test-schema', 'type': 'object',
+                      'analysis_context': {
+                          'next_deadline_date': {'type': 'string'}
+                      }},
+                  deposit_options={
+                      'title': 'ui-test-schema', 'type': 'object',
+                      'analysis_context': {
+                          'next_deadline_date': {'type': 'string'}
+                      }})
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2030-01-01'
+                       }
+                   },
+                   experiment='CMS')
+
+    resp = client.get('/deposits/',
+                      headers=[('Accept', 'application/basic+json')] +
+                      auth_headers_for_user(user))
+
+    assert resp.status_code == 200
+
+    aggs = resp.json['aggregations']
+
+    assert aggs['facet_next_deadline_date']['buckets'] == [
+        {'doc_count': 1, 'key': 1893456000000, 'key_as_string': '2030'}
+    ]
+
+
+def test_get_deposits_with_range_query(
+        client, users, auth_headers_for_user, create_deposit, create_schema):
+    user = users['cms_user']
+    headers = auth_headers_for_user(user) + [('Accept', 'application/basic+json')]
+
+    create_schema('test-schema', experiment='CMS',
+                  deposit_schema={
+                      'title': 'deposit-test-schema', 'type': 'object',
+                      'analysis_context': {
+                          'next_deadline_date': {'type': 'string'}
+                      }},
+                  deposit_mapping={
+                      "settings": {
+                          "analysis": {
+                              "analyzer": {
+                                  "lowercase_whitespace_analyzer": {
+                                      "type": "custom",
+                                      "tokenizer": "whitespace",
+                                      "filter": ["lowercase"]
+                                  }
+                              }
+                          }
+                      },
+                      'mappings': {
+                          'test-schema-v1.0.0': {
+                              'properties': {
+                                  'next_deadline_date': {
+                                      'type': 'date'
+                                  },
+                                  "analysis_context": {
+                                      "type": "object",
+                                      "properties": {
+                                          'next_deadline_date': {
+                                              'type': 'date',
+                                              "format": "yyyy-MM-dd",
+                                              "copy_to": "next_deadline_date"
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  })
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2018-01-01'
+                       }
+                   },
+                   experiment='CMS')
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2018-02-01'
+                       }
+                   },
+                   experiment='CMS')
+    create_deposit(user, 'test-schema',
+                   {
+                       '$ana_type': 'test-schema',
+                       'analysis_context': {
+                           "next_deadline_date": '2017-01-01'
+                       }
+                   },
+                   experiment='CMS')
+
+    # url encoded
+    url = '/deposits/?q=next_deadline_date%3A%5B2018-01-01%20TO%202019-01-01%5D&sort=mostrecent'
+    resp = client.get(url, headers=headers)
+
+    assert resp.status_code == 200
+
+    hits = resp.json['hits']['hits']
+
+    assert len(hits) == 2
+    assert hits[0]['metadata']['analysis_context']['next_deadline_date'] == '2018-02-01'
+    assert hits[1]['metadata']['analysis_context']['next_deadline_date'] == '2018-01-01'
 
 
 ###########################
