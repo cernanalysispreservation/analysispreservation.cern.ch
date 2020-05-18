@@ -20,7 +20,7 @@ const initialState = Map({
     hits: [],
     total: 0
   }),
-  error: Map({}),
+  error: false,
   loading: false,
   expanded: false
 });
@@ -38,12 +38,21 @@ export default function searchReducer(state = initialState, action) {
     case PAGE_CHANGE:
       return state;
     case SEARCH_REQUEST:
-      return state.set("loading", true);
+      return state
+        .set(
+          "results",
+          fromJS({
+            hits: [],
+            total: 0
+          })
+        )
+        .set("error", false)
+        .set("loading", true);
     case SEARCH_SUCCESS:
       return state.set("results", fromJS(action.results)).set("loading", false);
     // .set('aggs', fromJS(action.results.aggregations))
     case SEARCH_ERROR:
-      return state;
+      return state.set("error", true).set("loading", false);
     case UPDATE_EXPANDED_STATE:
       return state.set("expanded", action.value);
     default:

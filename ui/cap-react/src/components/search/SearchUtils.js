@@ -37,19 +37,18 @@ export default class SearchUtils extends React.Component {
     let num_pages = Math.ceil(this.props.total / this.props.size);
     return (
       <Box
-        colorIndex="neutral-1-a"
+        colorIndex="light-2"
         direction="row"
-        pad={{ horizontal: "small" }}
         justify="between"
         alignContent="center"
+        responsive={false}
       >
-        <Box justify="center" align="start">
-          <Label size="small" uppercase={true}>
-            <strong>{this.props.total}</strong> results
-          </Label>
-        </Box>
-
-        <Box align="center" justify="between" direction="row">
+        <Box
+          align="center"
+          justify="between"
+          direction="row"
+          responsive={false}
+        >
           <Button
             onClick={this._onPrevPage.bind(this)}
             icon={<PreviousIcon />}

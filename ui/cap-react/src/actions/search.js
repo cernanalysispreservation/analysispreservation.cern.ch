@@ -70,10 +70,15 @@ export function fetchSearch() {
     dispatch(toggleAggs(params));
     dispatch(searchRequest());
 
-    axios.get(searchUrl).then(response => {
-      let results = response.data;
-      dispatch(searchSuccess(results));
-    });
+    axios
+      .get(searchUrl)
+      .then(response => {
+        let results = response.data;
+        dispatch(searchSuccess(results));
+      })
+      .catch(error => {
+        dispatch(searchError(error));
+      });
   };
 }
 

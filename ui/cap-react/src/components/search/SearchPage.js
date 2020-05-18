@@ -1,22 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
+import { FiSliders } from "react-icons/fi";
+import Empty from "../../img/empty_search.svg";
+
 import SearchFacets from "./SearchFacets";
 import SearchUtils from "./SearchUtils";
 import SearchResults from "./SearchResults";
+import SearchTag from "./SearchTag";
 
 import { fetchSearch } from "../../actions/search";
 import queryString from "query-string";
-import Spinning from "grommet/components/icons/Spinning";
-import { withRouter } from "react-router";
+
+import SearchResultHeading from "./SearchResultHeading";
+import SearchResultsLoading from "./SearchResultsLoading";
+import SearchFilterLayer from "./SearchFilterLayer";
 
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      layerActive: false
+    };
   }
 
   componentDidMount() {
@@ -43,6 +53,25 @@ class SearchPage extends React.Component {
     this.props.fetchSearch();
   }
 
+  _updateParams = item => {
+    let removableItem = this.props.location.search.includes(`&${item}`)
+      ? `&${item}`
+      : `?${item}`;
+
+    const location = {
+      search: this.props.location.search.replace(removableItem, "")
+    };
+    this.props.history.push(location);
+  };
+
+  _updateSearchQuery = () => {
+    const location = {
+      search: this.props.location.search.split("q=")[0]
+    };
+    location.search = location.search + "q=";
+    this.props.history.push(location);
+  };
+
   _changePage(page) {
     let currentParams = queryString.parse(this.props.location.search);
 
@@ -59,23 +88,27 @@ class SearchPage extends React.Component {
     let total = null;
     let results = null;
     let aggs = null;
+    let queryParams = [];
 
     let _results = {};
     let _aggs;
+
+    let searchQuery = "";
 
     if (this.props.results) {
       _results = this.props.results.toJS();
       _aggs = _results.aggregations;
     }
 
-    if (_aggs) {
-      aggs = (
-        <SearchFacets
-          aggs={_aggs}
-          selectedAggs={this.props.selectedAggs}
-          onChange={this._toggleAggs}
-        />
-      );
+    if (this.props.location && this.props.location.search) {
+      let splitted = this.props.location.search.split("q=");
+      searchQuery = splitted[1];
+      queryParams = splitted[0]
+        .replace("?", "")
+        .split("&")
+        .filter(item => item != "")
+        .filter(item => !item.includes("by_me"))
+        .filter(item => !item.includes("page"));
     }
 
     if (_results && _results.hits) {
@@ -98,34 +131,91 @@ class SearchPage extends React.Component {
           onPageSizeChange={this._changePageSize.bind(this)}
         />
       );
-      results =
-        total == 0 ? (
-          <Box flex={true} justify="center" align="center">
-            <Label>
-              No search results were found or you have no permission to see them
-            </Label>
+
+      results = this.props.loading ? (
+        <Box flex={false} justify="center" direction="row">
+          <Box justify="center" align="end">
+            <SearchResultsLoading />
           </Box>
-        ) : this.props.loading ? (
-          <Box flex={true} justify="center" direction="row">
-            <Box justify="center" align="center">
-              <Spinning size="large" />
-            </Box>
-          </Box>
-        ) : (
+        </Box>
+      ) : this.props.error ? (
+        <Box flex={false} justify="center" align="center">
+          <Empty />
+          <Label style={{ textAlign: "center" }}>
+            There was an error with your request <br />
+            pleaase try again
+          </Label>
+        </Box>
+      ) : total === 0 ? (
+        <Box flex={false} justify="center" align="center">
+          <Empty />
+          <Label style={{ textAlign: "center" }}>
+            No search results were found <br />or <br />you have no permission
+            to see them
+          </Label>
+        </Box>
+      ) : (
+        <Box align="end">
           <SearchResults results={_results.hits.hits || []} />
-        );
+          {utils}
+        </Box>
+      );
     }
 
     return (
-      <Box flex={true}>
-        {utils}
-        <Box flex={true} direction="row" colorIndex="light-2">
-          {aggs}
-          <Box
-            flex={true}
-            size={{ width: { max: "xxlarge" } }}
-            colorIndex="light-1"
-          >
+      <Box
+        flex={false}
+        align="center"
+        colorIndex="light-2"
+        style={{ minHeight: "100%" }}
+      >
+        <SearchFilterLayer
+          active={this.state.layerActive}
+          onClose={() => this.setState({ layerActive: false })}
+          properties={aggs}
+        />
+
+        <Box direction="row">
+          <Box id="sidebar">
+            <SearchFacets
+              aggs={_aggs}
+              selectedAggs={this.props.selectedAggs}
+              onChange={this._toggleAggs}
+            />
+          </Box>
+          <Box pad="medium">
+            <Box
+              direction="row"
+              align="start"
+              justify="between"
+              responsive={false}
+              margin={{ bottom: "small" }}
+            >
+              <SearchResultHeading results={_results.hits.total} />
+              <Box
+                colorIndex="brand"
+                id="sidebar_button"
+                pad="small"
+                align="center"
+                justify="center"
+                direction="row"
+                responsive={false}
+                onClick={() => this.setState({ layerActive: true })}
+              >
+                <Box style={{ margin: "0 5px" }}>
+                  <FiSliders />
+                </Box>
+                {queryParams.length > 0
+                  ? `Filters (${queryParams.length})`
+                  : "Filters"}
+              </Box>
+            </Box>
+            <SearchTag
+              query={queryParams}
+              onClick={this._updateParams}
+              searchQuery={searchQuery}
+              removeQuery={this._updateSearchQuery}
+            />
             {results}
           </Box>
         </Box>
@@ -140,14 +230,16 @@ SearchPage.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
-  results: PropTypes.object.isRequired
+  results: PropTypes.object.isRequired,
+  error: PropTypes.bool
 };
 
 function mapStateToProps(state) {
   return {
     results: state.search.getIn(["results"]),
     loading: state.search.getIn(["loading"]),
-    selectedAggs: state.search.getIn(["selectedAggs"])
+    selectedAggs: state.search.getIn(["selectedAggs"]),
+    error: state.search.getIn(["error"])
   };
 }
 

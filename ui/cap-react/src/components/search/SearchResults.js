@@ -4,9 +4,10 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import Truncate from "react-truncate";
 import TimeAgo from "react-timeago";
-import ReactTooltip from "react-tooltip";
+import { AiOutlineLink, AiOutlineMail } from "react-icons/ai";
 
 import Box from "grommet/components/Box";
+
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import List from "grommet/components/List";
@@ -20,22 +21,20 @@ class SearchResults extends React.Component {
 
   render() {
     return this.props.results.length > 0 ? (
-      <Box
-        flex={true}
-        size={{ width: { max: "xxlarge" } }}
-        colorIndex="light-1"
-      >
-        <List>
+      <Box size={{ width: { max: "xxlarge" } }} colorIndex="light-2">
+        <List className="search_result_box">
           {this.props.results.map((item, index) => {
-            let rights = "";
+            // let rights = "";
             let {
               id,
-              is_owner,
-              can_admin,
-              can_update,
+              // is_owner,
+              // can_admin,
+              // can_update,
               updated,
               status,
               labels,
+              created,
+              created_by,
               metadata = {}
             } = item;
 
@@ -44,22 +43,30 @@ class SearchResults extends React.Component {
               basic_info: { abstract: abstract } = {}
             } = metadata;
 
-            if (!is_owner && (can_update || can_admin)) rights = "contributor";
-            else if (is_owner) rights = "owner";
+            const timeOptions = {
+              day: "numeric",
+              month: "long",
+              year: "numeric"
+            };
+
+            // if (!is_owner && (can_update || can_admin)) rights = "contributor";
+            // else if (is_owner) rights = "owner";
 
             return (
               <ListItem key={`${id}-${index}`} separator="none" pad="none">
                 <Box
-                  separator="bottom"
-                  style={{ width: "100%" }}
-                  pad={{
-                    between: "small",
-                    horizontal: "medium",
-                    vertical: "small"
-                  }}
+                  colorIndex="light-1"
+                  margin={{ vertical: "small" }}
+                  style={{ width: "100%", borderRadius: "2px" }}
+                  pad="small"
                 >
-                  <Box direction="row" justify="between">
-                    <Box>
+                  <Box
+                    direction="row"
+                    align="center"
+                    justify="between"
+                    responsive={false}
+                  >
+                    <Box direction="row" flex responsive={false}>
                       <Anchor
                         path={
                           status === "published"
@@ -70,43 +77,94 @@ class SearchResults extends React.Component {
                         reverse
                         pad="none"
                       >
-                        <Label size="medium">
-                          {general_title ? (
-                            <span> {general_title} </span>
-                          ) : (
-                            <span style={{ color: "#ccc" }}>
-                              No title provided
-                            </span>
-                          )}
+                        <Label
+                          margin="none"
+                          size="medium"
+                          style={{ color: "rgb(0,0,0)" }}
+                        >
+                          {general_title || "No title provided"}
                         </Label>
+                        <AiOutlineLink
+                          size="18px"
+                          style={{
+                            color: "rgba(0,0,0,0.5)",
+                            marginLeft: "5px"
+                          }}
+                        />
                       </Anchor>
                     </Box>
-                    <Box direction="row">
-                      <ReactTooltip />
-                      {rights && (
-                        <Box>
-                          <Tag text={rights} />
-                        </Box>
-                      )}
+
+                    <Label
+                      margin="none"
+                      size="small"
+                      style={{ color: "rgba(0,0,0,0.3)" }}
+                    >
+                      {labels.map((item, index) => (
+                        <span key={index}> {item}</span>
+                      ))}
+                    </Label>
+                  </Box>
+                  <Box>
+                    <Label margin="none" size="small">
+                      {new Date(created).toLocaleString("en-GB", timeOptions)}
+                    </Label>
+                    <Box
+                      flex={false}
+                      direction="row"
+                      wrap
+                      margin={{ top: "small" }}
+                      responsive={false}
+                    >
                       {labels.map((item, index) => {
-                        return (
-                          <Box key={index}>
-                            <Tag text={item} />
-                          </Box>
-                        );
+                        return <Tag key={index} text={item} />;
                       })}
                     </Box>
                   </Box>
-                  {abstract ? (
-                    <Box>
-                      <Truncate lines={3} ellipsis={<span>...</span>}>
+
+                  {abstract && (
+                    <Box margin={{ top: "small" }}>
+                      <Truncate lines={2} ellipsis={<span>...</span>}>
                         {abstract}
                       </Truncate>
                     </Box>
-                  ) : null}
-                  <Box direction="row" style={{ color: "#ccc" }}>
-                    <span>Updated&nbsp;</span>
-                    <TimeAgo date={updated} minPeriod="60" />
+                  )}
+                  <Box
+                    direction="row"
+                    style={{ color: "rgba(0,0,0,0.3)", marginTop: "5px" }}
+                    justify="between"
+                    responsive={false}
+                  >
+                    <Box
+                      direction="row"
+                      align="center"
+                      justify="center"
+                      responsive={false}
+                    >
+                      {created_by && (
+                        <React.Fragment>
+                          <AiOutlineMail size="14px" />
+                          <Label
+                            margin="none"
+                            size="small"
+                            style={{
+                              color: "rgba(0,0,0,0.5)",
+                              marginLeft: "5px"
+                            }}
+                          >
+                            {created_by}
+                          </Label>
+                        </React.Fragment>
+                      )}
+                    </Box>
+                    <Box>
+                      <Label
+                        margin="none"
+                        size="small"
+                        style={{ color: "rgba(0,0,0,0.5)" }}
+                      >
+                        Updated <TimeAgo date={updated} minPeriod="60" />
+                      </Label>
+                    </Box>
                   </Box>
                 </Box>
               </ListItem>
