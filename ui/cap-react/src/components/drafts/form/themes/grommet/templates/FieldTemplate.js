@@ -55,8 +55,10 @@ let FieldTemplate = function(props) {
       key={id + label}
       error={props.rawErrors && props.rawErrors.length ? true : false}
       style={{
-        gridColumn: gridColumns ? gridColumns : "1 / 5"
+        gridColumn: gridColumns ? gridColumns : "1 / 5",
+        overflow:"visible"
       }}
+      
     >
       {children}
       {props.rawErrors && props.rawErrors.length ? (

@@ -83,8 +83,8 @@ class DashboardQuickSearch extends React.Component {
             maxSize={18}
             tags={data}
             colorOptions={{
-              luminosity: "random",
-              hue: "monochrome"
+              luminosity: "dark",
+              hue: "blue"
             }}
             align="center"
             onClick={tag => this.props.history.push(tag.link)}
