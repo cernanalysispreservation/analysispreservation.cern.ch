@@ -54,7 +54,7 @@ class DashboardQuickSearch extends React.Component {
     return (
       <Box size={{ width: { max: "xlarge" } }} flex={false}>
         <Box pad="none">
-          <Box flex={true} direction="row" pad="small" justify="start" >
+          <Box flex={true} direction="row" pad="small" justify="start">
             <Heading
               tag="h5"
               uppercase={true}
