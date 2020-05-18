@@ -22,16 +22,23 @@
     "themeCAP": {
       "nav": [
         {
-          "url": "https://analysispreservation.cern.ch/docs/general",
+          "url": "/docs/general",
           "name": "General"
         },
         {
-          "url": "https://analysispreservation.cern.ch/docs/cli",
+          "url": "/docs/cli",
           "name": "CLI client"
         },
         {
-          "url": "https://analysispreservation.cern.ch/docs/api",
-          "name": "REST API"
+          "url": "/docs/api",
+          "name": "REST API",
+          "target": "_blank"
+        },
+        {
+          "url": "/",
+          "name": "Take me to CAP",
+          "className": "cap-primary",
+          "target": "_blank"
         }
       ]
     }
