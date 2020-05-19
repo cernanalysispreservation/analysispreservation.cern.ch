@@ -53,13 +53,16 @@ class TextWidget extends Component {
       suggestions: [],
       showSpinner: false,
       error: null,
-      autofillSuccess: false
+      autofillSuccess: false,
+      enableWarningMessage: true
     };
   }
 
   // TOFIX onBlur, onFocus
   _onChange = _ref => {
     let value = _ref.target.value;
+
+    this.setState({ autofillSuccess: false, error: false });
 
     this.props.onChange(value !== "" ? value : undefined);
   };
@@ -139,8 +142,12 @@ class TextWidget extends Component {
       destination = this._replace_hash_with_current_indexes(destination);
       formData = formData.setIn(destination, undefined);
     });
+    this.props.formDataChange(formData.toJS());
 
     this.setState({ showSpinner: true, error: null });
+    //TOFIX
+    // the response from the serer when the id is not found is an empty
+    // object with statsus code 200, probably should be an error
     axios
       .get(`${url}${event.target.value}`)
       .then(({ data }) => {
@@ -154,10 +161,11 @@ class TextWidget extends Component {
             destination = this._replace_hash_with_current_indexes(destination);
             formData = formData.setIn(destination, _data.getIn(source));
           });
-          this.setState({ showSpinner: false });
 
           this.props.formDataChange(formData.toJS());
-          this.setState({ autofillSuccess: true });
+          this.setState({ autofillSuccess: true, showSpinner: false });
+        } else {
+          this.setState({ showSpinner: false, error: "result not found" });
         }
       })
       .catch(err => {
@@ -175,6 +183,7 @@ class TextWidget extends Component {
 
   _onEnterAutofill = event => {
     if (event.keyCode === 13) {
+      this.setState({ enableWarningMessage: false });
       this.autoFillOtherFields(event);
     } else {
       this.props.onKeyDown;
@@ -261,8 +270,11 @@ class TextWidget extends Component {
           value={this.props.value || ""}
           onChange={this._onChange}
           warningMessage={
-            this.props.options && this.props.options.warningMessage
+            this.state.enableWarningMessage &&
+            this.props.options &&
+            this.props.options.warningMessage
           }
+          enableWarningMessage={!this.props.rawErrors}
           onBlur={
             this.props.options &&
             this.props.options.autofill_from &&
@@ -348,7 +360,8 @@ TextWidget.propTypes = {
   pad: PropTypes.string,
   readonly: PropTypes.bool,
   autofocus: PropTypes.bool,
-  onKeyDown: PropTypes.func
+  onKeyDown: PropTypes.func,
+  rawErrors: PropTypes.array
 };
 
 function mapStateToProps(state) {

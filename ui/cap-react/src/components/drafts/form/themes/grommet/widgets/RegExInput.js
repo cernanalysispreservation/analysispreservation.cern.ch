@@ -574,7 +574,7 @@ export default class RxInput extends RxInputBase {
         ]}
         buttons={this.props.buttons && this.props.buttons(status)}
         warningMessage={
-          this.state.pending
+          this.state.pending && this.props.enableWarningMessage
             ? this.props.warningMessage ||
               "make sure your input follows the given pattern"
             : null
