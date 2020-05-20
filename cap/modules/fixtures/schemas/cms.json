@@ -141,6 +141,193 @@
             "title": "CADI ID",
             "description": "e.g. JME-10-107"
           },
+          "analysis_keywords": {
+            "type": "object",
+            "properties": {
+              "collision_system": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "p-p",
+                    "p-Pb",
+                    "Pb-Pb",
+                    "Xe-Xe",
+                    "Other (incl. Cosmic Rays)"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Collision system"
+              },
+              "accelerator_parameters": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "900 GeV",
+                    "2.76 TeV",
+                    "5.02 TeV",
+                    "5.44 TeV",
+                    "5.5 TeV",
+                    "7 TeV",
+                    "8 TeV",
+                    "8.16 TeV",
+                    "8.8 TeV",
+                    "13 TeV",
+                    "14 TeV",
+                    "27 TeV"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Accelerator Parameters"
+              },
+              "physics_theme": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "B-physics and similar",
+                    "Standard Model",
+                    "Searches for physics beyond the Standard Model",
+                    "Heavy Ion Physics",
+                    "Upgrade studies",
+                    "Physics objects and Detector performance"
+                  ]
+                },
+                "title": "Physics Theme"
+              },
+              "sm_analysis_characteristics": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Rare Production and Decays",
+                    "Measurement",
+                    "Cross Section",
+                    "Mass and/or width",
+                    "Couplings and/or properties",
+                    "Spectroscopy"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "SM: Analysis Characteristics"
+              },
+              "interpretation": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Simplified Model Spectrum",
+                    "Effective Field Theory",
+                    "Standard Model Fits inc. PDFs",
+                    "Generator and simulation tuning",
+                    "Combination"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Interpretation"
+              },
+              "final_states": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "B-hadrons",
+                    "C-hadrons",
+                    "Tracks",
+                    "Jets: 1 jet",
+                    "Jets: 2 jets",
+                    "Jets: >=3 jets",
+                    "Jets: all hadronic",
+                    "Jets: Boosted/substructure",
+                    "Jets: B-jets",
+                    "Jets: C-jets",
+                    "Jets: Forward jets",
+                    "Z boson",
+                    "W boson",
+                    "di-boson",
+                    "tri- and multi bosons",
+                    "Higgs bosons",
+                    "Top",
+                    "Single lepton",
+                    "Muon",
+                    "Electron",
+                    "Tau",
+                    "Photon",
+                    "Di-lepton; opposite charge",
+                    "Di-lepton; same charge",
+                    ">=3 leptons",
+                    "Missing energy/invisible",
+                    "Tagged proton",
+                    "Long-lived signature",
+                    "Detector performance",
+                    "ttbar+(anything but Higgs)",
+                    "HH",
+                    "ttbar+Higgs boson",
+                    "Option 33"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Final states"
+              },
+              "further_search_categorisation": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Supersymmetry",
+                    "Supersymmetry: GMSB",
+                    "Supersymmetry: RPV",
+                    "Supersymmetry: Squarks and gluinos",
+                    "Supersymmetry: Stops and sbottoms",
+                    "Supersymmetry: Charginos; neutralinos; winos; higgsinos",
+                    "Supersymmetry: Sleptons",
+                    "New Resonances",
+                    "Extra Dimensions",
+                    "Dark Matter & Dark sector",
+                    "Additional Higgs bosons",
+                    "Contact Interactions",
+                    "Lepton flavour violation",
+                    "Leptoquarks",
+                    "Long-lived particles",
+                    "Compositeness",
+                    "Excited fermions",
+                    "Heavy additional fermions"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Further search categorisation"
+              },
+              "further_categorisation_heavy_ion": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Particle distributions and correlations",
+                    "Open Heavy flavor",
+                    "Quarkonia",
+                    "Jet properties",
+                    "(Elliptic) flow and event properties",
+                    "Forward physics",
+                    "Ultra-peripheral collisions",
+                    "Initial stage"
+                  ]
+                },
+                "description": "(will be ORed inside this category)",
+                "title": "Further categorisation Heavy Ion results"
+              }
+            },
+            "id": "analysis_keywords",
+            "title": "Analysis Keywords"
+          },
           "abstract": {
             "type": "string",
             "title": "Abstract"
@@ -454,6 +641,83 @@
               "cadi_id": {
                 "type": "keyword",
                 "copy_to": "cadi_id"
+              },
+              "analysis_keywords": {
+                "type": "object",
+                "properties": {
+                  "collision_system": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "accelerator_parameters": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "physics_theme": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "final_states": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "sm_analysis_characteristics": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "interpretation": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "further_search_categorisation": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  },
+                  "further_search_categorisation_heavy_ion": {
+                    "type": "text",
+                    "analyzer": "lowercase_whitespace_analyzer",
+                    "fields": {
+                      "keyword": {
+                        "type": "keyword"
+                      }
+                    }
+                  }
+                }
               },
               "ana_notes": {
                 "type": "text",

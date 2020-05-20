@@ -22,9 +22,31 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Cern Analysis Preservation CMS utils."""
+import json
+import re
+import pandas as pd
 
 from ..search.cms_triggers import CMS_TRIGGERS_ES_CONFIG
 from .common import recreate_es_index_from_source
+
+CADI_ID_PATTERN = re.compile('^[A-Z0-9]{3}-[0-9]{2}-[0-9]{3}$')
+
+NEW_COLUMN_NAMES = {
+    'CADI line (e.g. HIG-12-028 for a paper, CMS-HIG-12-028 for a PAS). '
+    'Add only one per entry.': 'cadi_id',
+    'Collision system (will be ORed inside this category)': 'collision_system',
+    'Accelerator Parameters (will be ORed inside this category)':
+        'accelerator_parameters',
+    'Physics Theme': 'physics_theme',
+    'SM: Analysis Characteristics (will be ORed inside this category)':
+        'sm_analysis_characteristics',
+    'Interpretation (will be ORed inside this category)': 'interpretation',
+    'Final states (will be ORed inside this category)': 'final_states',
+    'Further search categorisation (will be ORed inside this category)':
+        'further_search_categorization',
+    'Further categorisation Heavy Ion results '
+    '(will be ORed inside this category)': 'further_categorisation_heavy_ion'
+}
 
 
 def cache_cms_triggers_in_es_from_file(source):
@@ -36,3 +58,32 @@ def cache_cms_triggers_in_es_from_file(source):
                                   mapping=CMS_TRIGGERS_ES_CONFIG['mappings'],
                                   settings=CMS_TRIGGERS_ES_CONFIG['settings'],
                                   source=source)
+
+
+def extract_keywords_from_excel(file):
+    df = pd.read_excel(file)
+    df.drop(['Timestamp', 'Email Address'], axis=1, inplace=True)
+    df.rename(columns=NEW_COLUMN_NAMES, inplace=True)
+
+    df_data = json.loads(df.T.to_json())
+
+    keys = [str(i) for i in range(len(df_data.keys()))]
+    data = [df_data[key] for key in keys]
+    data = [
+        {key: item[key] for key in item.keys() if item[key]}
+        for item in data
+    ]
+
+    for item in data:
+        if not CADI_ID_PATTERN.match(item['cadi_id']):
+            item['cadi_id'] = item['cadi_id']\
+                .replace('CMS-', '', 1)\
+                .replace('PAS-', '', 1)\
+                .replace('--', '-')\
+                .replace('/', '')
+
+        for key in item.keys():
+            if item[key] and key != 'cadi_id':
+                item[key] = item[key].split(', ')
+
+    return data

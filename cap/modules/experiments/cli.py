@@ -22,15 +22,19 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Cli."""
-
+import os
 import json
 
 import click
 from flask_cli import with_appcontext
+from invenio_db import db
 
-from cap.modules.experiments.utils.cadi import synchronize_cadi_entries
+from cap.modules.deposit.errors import DepositDoesNotExist, \
+    DepositValidationError
+from cap.modules.experiments.utils.cadi import synchronize_cadi_entries, \
+    get_deposit_by_cadi_id
 from cap.modules.experiments.utils.cms import \
-    cache_cms_triggers_in_es_from_file  # noqa
+    cache_cms_triggers_in_es_from_file, extract_keywords_from_excel
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file  # noqa
 from cap.modules.fixtures.cli import fixtures
@@ -72,3 +76,39 @@ def index_triggers(file):
         cache_cms_triggers_in_es_from_file(source)
 
     click.secho("Triggers indexed in Elasticsearch.", fg='green')
+
+
+@cms.command('keywords')
+@click.option('--file', '-f', required=True, type=click.Path(exists=True))
+@with_appcontext
+def keywords(file):
+    """Load CADI keywords and print not found IDs in a file."""
+    data = extract_keywords_from_excel(file)
+    not_found = []
+
+    for item in data:
+        cadi_id = item['cadi_id']
+        del item['cadi_id']
+
+        try:
+            deposit = get_deposit_by_cadi_id(cadi_id)
+            deposit['basic_info']['analysis_keywords'] = item
+
+            deposit.commit()
+            db.session.commit()
+            click.secho(f"CADI ID {cadi_id} was successful.", fg='green')
+
+        except DepositDoesNotExist:
+            not_found.append(cadi_id)
+            click.secho(f"CADI ID {cadi_id} not found.", fg='red')
+
+        except DepositValidationError:
+            click.secho(f"Validation Error on: {item}", fg='red')
+
+    # write_path = os.path.join(os.getcwd(), 'not-found.txt')
+    # with open(write_path, 'w') as out_file:
+    #     out_file.writelines(
+    #         f'{cadi_id}\n' for cadi_id in not_found
+    #     )
+
+    click.secho("Keywords extracted and saved.", fg='green')

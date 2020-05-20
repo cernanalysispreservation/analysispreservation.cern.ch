@@ -251,11 +251,11 @@ RECORDS_REST_SORT_OPTIONS.update(DEPOSIT_REST_SORT_OPTIONS)
 # for aggregations, only ones starting with facet_ will be displayed on a page
 CAP_FACETS = {
     'aggs': {
-        #        'facet_type': {
-        #            'terms': {
-        #                'field': '_type'
-        #            }
-        #        },
+        # 'facet_type': {
+        #    'terms': {
+        #        'field': '_type'
+        #    }
+        # },
         'facet_cms_working_group': {
             'terms': {
                 'size': 30,
@@ -267,6 +267,52 @@ CAP_FACETS = {
                 'field': 'cadi_info.status'
             }
         },
+
+        # keywords
+        'facet_collision_system': {
+            'terms': {
+                'field': 'basic_info.analysis_keywords.accelerator_parameters.keyword'  # noqa
+            }
+        },
+        'facet_accelerator_parameters': {
+            'terms': {
+                'field': 'basic_info.analysis_keywords.accelerator_parameters.keyword'  # noqa
+            }
+        },
+        'facet_physics_theme': {
+            'terms': {
+                'field': 'basic_info.analysis_keywords.physics_theme.keyword'
+            }
+        },
+        'facet_final_states': {
+            'terms': {
+                'size': 30,
+                'field': 'basic_info.analysis_keywords.final_states.keyword'
+            }
+        },
+        'facet_sm_analysis_characteristics': {
+            'terms': {
+                'field': 'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'  # noqa
+            }
+        },
+        'facet_interpretation': {
+            'terms': {
+                'size': 30,
+                'field': 'basic_info.analysis_keywords.interpretation.keyword'
+            }
+        },
+        'facet_further_search_categorisation': {
+            'terms': {
+                'size': 30,
+                'field': 'basic_info.analysis_keywords.further_search_categorisation.keyword'  # noqa
+            }
+        },
+        'facet_further_search_categorisation_heavy_ion': {
+            'terms': {
+                'field': 'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'  # noqa
+            }
+        },
+
         'particles': {
             'nested': {
                 'path': 'main_measurements.signal_event_selection.physics_objects'  # noqa
@@ -301,9 +347,27 @@ CAP_FACETS = {
         },
     },
     'post_filters': {
-        #        'type': terms_filter('_type'),
+        # 'type': terms_filter('_type'),
         'cms_working_group': prefix_filter('basic_info.cadi_id'),
         'cadi_status': terms_filter('cadi_info.status'),
+
+        'collision_system': terms_filter(
+            'basic_info.analysis_keywords.collision_system.keyword'),
+        'accelerator_parameters': terms_filter(
+            'basic_info.analysis_keywords.accelerator_parameters.keyword'),
+        'physics_theme': terms_filter(
+            'basic_info.analysis_keywords.physics_theme.keyword'),
+        'final_states': terms_filter(
+            'basic_info.analysis_keywords.final_states.keyword'),
+        'sm_analysis_characteristics': terms_filter(
+            'basic_info.analysis_keywords.sm_analysis_characteristics.keyword'),  # noqa
+        'interpretation': terms_filter(
+            'basic_info.analysis_keywords.interpretation.keyword'),
+        'further_search_categorisation': terms_filter(
+            'basic_info.analysis_keywords.further_search_categorisation.keyword'),  # noqa
+        'further_search_categorisation_heavy_ion': terms_filter(
+            'basic_info.analysis_keywords.further_search_categorisation_heavy_ion.keyword'),  # noqa
+
         'physics_objects': nested_filter(
             'main_measurements.signal_event_selection.physics_objects',
             'main_measurements.signal_event_selection.physics_objects.object',

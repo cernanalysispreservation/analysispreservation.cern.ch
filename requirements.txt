@@ -126,6 +126,7 @@ msgpack-python==0.5.6     # via invenio-celery
 node-semver==0.1.1        # via invenio-assets
 oauthlib==2.1.0           # via flask-oauthlib, invenio-oauth2server, requests-oauthlib
 ordereddict==1.1          # via invenio-query-parser
+pandas==1.0.1
 passlib==1.7.1            # via flask-security, invenio-accounts
 pathlib2==2.3.2           # via ipython, pickleshare
 pexpect==4.6.0            # via ipython
