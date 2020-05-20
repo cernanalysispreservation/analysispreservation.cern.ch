@@ -195,18 +195,19 @@ export function uploadViaRepoUrl(draft_id, urlToGrab, webhook, event_type, repo_
     return axios
       .post(uri, data)
       .then(resp => {
-        try {
-          dispatch(createWebhookSuccess({
-            event_type,
-            "host": repo_info.resource,
-            "owner": repo_info.owner,
-            "name": repo_info.name,
-            "ref": repo_info.ref,
-            "snapshots": []
-          }));
-        }
-        catch (err){
-          console.log("ERRORWEBHOOK::", err)
+        if (["push", "release"].indexOf(event_type) > -1) {
+          try {
+            dispatch(createWebhookSuccess({
+              event_type,
+              "host": repo_info.resource,
+              "owner": repo_info.owner,
+              "name": repo_info.name,
+              "ref": repo_info.ref,
+              "snapshots": []
+            }));
+          }
+          // eslint-disable-next-line no-empty
+          catch (err) {}
         }
         return { filename, data: resp.data };
       })

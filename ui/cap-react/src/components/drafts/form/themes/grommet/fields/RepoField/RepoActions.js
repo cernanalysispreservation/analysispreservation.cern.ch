@@ -95,7 +95,6 @@ class RepoActions extends React.Component {
 
   render() {
     let { resource, owner, name, ref, filepath } = this.props.repo || {};
-    console.log("ACTIONS: ", filepath)
     return (
       <Box
         flex={true}
@@ -135,7 +134,7 @@ class RepoActions extends React.Component {
                           size="small"
                           value={(ref && ref != "") ? ref : null}
                           emptyValue="-- ( will select default branch)"
-                          onUpdate={(value) => this.props.updateRepo("ref", value)}/></a>
+                          onUpdate={(value) => this.props.updateRepo("ref", value)} /></a>
                       </Box>
                     </Box>
                     {this.state.filetypeEnabled &&
@@ -146,8 +145,8 @@ class RepoActions extends React.Component {
                             size="small"
                             value={(filepath && filepath != "") ? filepath : null}
                             emptyValue="-- ( will select default branch)"
-                            onUpdate={(value) => this.props.updateRepo("filepath", value)}/></a>
-                            
+                            onUpdate={(value) => this.props.updateRepo("filepath", value)} /></a>
+
                         </Box>
                       </Box>
                     }
@@ -163,23 +162,29 @@ class RepoActions extends React.Component {
               <Heading strong tag="h5" margin={{ bottom: "small" }}>Select action:</Heading>
               {this.state.filetypeEnabled ? this.renderActionItem(
                 "Upload single file",
-                <span>Upload and preserve current snapshot of the whole repository on a <strong>branch</strong>, <strong>release/tag</strong> or <strong>ref</strong></span>,
+                <span>Upload and preserve the current snapshot of a <strong>file</strong></span>,
                 this.renderFileActions()
               ) :
                 [
                   this.renderActionItem(
                     "Upload snapshot of repository",
-                    <span>Upload and preserve current snapshot of the whole repository on a <strong>branch</strong>, <strong>release/tag</strong> or <strong>ref</strong></span>,
+                    <span>Upload and preserve the current snapshot of a repository on a <strong>branch</strong>, <strong>release/tag</strong> or <strong>ref</strong></span>,
                     this.renderRepoDownloadActions()
                   ),
                   this.renderActionItem(
                     "Automatically Upload on release",
-                    <span>Add a webhook and automatically upload repository, when a <strong>new version is released</strong> or <strong>tag</strong> is pushed</span>,
+                    <Box>
+                      <span>Create a webhook and give us permission to automatically upload a snapshot of a repository, when a <strong>new version is released</strong> or a <strong>tag</strong> is created</span>
+                      <Box colorIndex="light-2" style={{ padding: "3px" }}>** Only owners or accounts with write access to the repository are allowed to do this **</Box>
+                    </Box>,
                     this.renderRepoConnectActions("release")
                   ),
                   this.renderActionItem(
                     "Automatically Upload on push event",
-                    <span>Add a webhook and automatically upload repository when a <strong>push event</strong> takes place</span>,
+                    <Box>
+                      <span>Create a webhook and give us permission to automatically upload a snapshot of a repository, when a <strong>push event</strong> takes place</span>
+                      <Box colorIndex="light-2" style={{ padding: "3px" }}>** Only owners or accounts with write access to the repository are allowed to do this **</Box>
+                    </Box>,
                     this.renderRepoConnectActions("push")
                   )
                 ]

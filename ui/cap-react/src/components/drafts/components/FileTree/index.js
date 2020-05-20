@@ -75,7 +75,6 @@ class FileTree extends React.Component {
       )
     };
 
-    console.log("RREOS::", repos)
     return (
       <Box style={{ marginLeft: "5px" }}>
         <HorizontalWithText
