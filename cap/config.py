@@ -271,7 +271,7 @@ CAP_FACETS = {
         # keywords
         'facet_collision_system': {
             'terms': {
-                'field': 'basic_info.analysis_keywords.accelerator_parameters.keyword'  # noqa
+                'field': 'basic_info.analysis_keywords.collision_system.keyword'  # noqa
             }
         },
         'facet_accelerator_parameters': {
