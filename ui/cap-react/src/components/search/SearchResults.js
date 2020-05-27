@@ -11,7 +11,7 @@ import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
-import { KeywordLabel } from "../StyledComponents";
+import Tag from "../partials/Tag";
 
 class SearchResults extends React.Component {
   constructor(props) {
@@ -85,14 +85,13 @@ class SearchResults extends React.Component {
                       <ReactTooltip />
                       {rights && (
                         <Box>
-                          <KeywordLabel> {rights} </KeywordLabel>
+                          <Tag text={rights} />
                         </Box>
                       )}
                       {labels.map((item, index) => {
                         return (
                           <Box key={index}>
-                            {" "}
-                            <KeywordLabel> {item} </KeywordLabel>
+                            <Tag text={item} />
                           </Box>
                         );
                       })}

@@ -13,7 +13,8 @@ import FileTree from "../drafts/components/FileTree";
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
 import { EditAnchor } from "../drafts/components/Buttons";
-import AnnounceIcon from "grommet/components/icons/base/Announce";
+
+import Tag from "../partials/Tag";
 
 import RunsIndex from "../published/RunsIndex";
 import { Route } from "react-router-dom";
@@ -87,24 +88,15 @@ class PublishedPreview extends React.Component {
                     <Box>
                       {this.props.metadata && this.props.metadata.general_title}
                     </Box>
-                    <Box
-                      direction="row"
-                      align="center"
-                      pad={{ horizontal: "small", between: "small" }}
-                      margin="none"
-                      colorIndex="grey-3-a"
-                    >
-                      <span>{this.props.id}</span>
-                    </Box>
-                    <Box
-                      direction="row"
-                      align="center"
-                      pad={{ horizontal: "small", between: "small" }}
-                      margin="none"
-                      colorIndex="neutral-4-a"
-                    >
-                      <span>Published</span> <AnnounceIcon size="xsmall" />
-                    </Box>
+                    <Tag text={this.props.id} />
+                    <Tag
+                      text="Published"
+                      color={{
+                        bgcolor: "#f9f0ff",
+                        border: "rgba(146,109,146,1)",
+                        color: "rgba(146,109,146,1)"
+                      }}
+                    />
                   </Box>
                 }
                 uppercase={false}

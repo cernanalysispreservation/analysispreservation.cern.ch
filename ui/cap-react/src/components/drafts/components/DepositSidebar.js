@@ -20,6 +20,8 @@ import TimeAgo from "react-timeago";
 import { RefreshIcon } from "grommet/components/icons/base";
 import { getBucketById } from "../../../actions/files";
 
+import Tag from "../../partials/Tag";
+
 class DepositSidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +73,24 @@ class DepositSidebar extends React.Component {
     let { bucket } = this.props.links;
     let bucket_id = bucket.split("/").pop();
     this.props.getBucketById(bucket_id);
-  }
+  };
+
+  _getColorByStatus = status => {
+    let colors = {
+      draft: {
+        bgcolor: "#e6f7ff",
+        border: "rgba(0, 106, 147, 1)",
+        color: "rgba(0, 106, 147, 1)"
+      },
+      published: {
+        bgcolor: "#f9f0ff",
+        border: "rgba(146,109,146,1)",
+        color: "rgba(146,109,146,1)"
+      }
+    };
+
+    return colors[status];
+  };
   render() {
     return (
       <Sidebar
@@ -99,8 +118,13 @@ class DepositSidebar extends React.Component {
               justify="between"
               margin={{ bottom: "small" }}
               responsive={false}
+              align="center"
             >
-              Status <span>{this.props.status}</span>
+              <span>Status</span>
+              <Tag
+                text={this.props.status}
+                color={this._getColorByStatus(this.props.status)}
+              />
             </Box>
 
             <Box
@@ -142,7 +166,7 @@ class DepositSidebar extends React.Component {
             label="Files | Data | Repos"
             uppercase={true}
             icon={
-              <Box direction="row" wrap={false} pad={{between: "small"}}>
+              <Box direction="row" wrap={false} pad={{ between: "small" }}>
                 {this._renderRefreshFilesButton()}
                 {this._renderAddFileIcon()}
               </Box>
@@ -185,7 +209,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     toggleFilemanagerLayer: () => dispatch(toggleFilemanagerLayer()),
-    getBucketById: bucket_id => dispatch(getBucketById(bucket_id)),
+    getBucketById: bucket_id => dispatch(getBucketById(bucket_id))
   };
 }
 
