@@ -26,7 +26,7 @@ class Dashboard extends React.Component {
           list: this.props.results.drafts.data,
           more: this.props.results.drafts.more
         },
-        mine: {
+        yours: {
           list: this.props.results.user_drafts.data,
           more: this.props.results.user_drafts.more
         }
@@ -36,13 +36,13 @@ class Dashboard extends React.Component {
           list: this.props.results.published.data,
           more: this.props.results.published.more
         },
-        mine: {
+        yours: {
           list: this.props.results.user_published.data,
           more: this.props.results.user_published.more
         }
       },
       workflows: {
-        mine: {
+        yours: {
           list: this.props.results.user_workflows.data,
           more: this.props.results.user_workflows.more
         }
@@ -53,7 +53,7 @@ class Dashboard extends React.Component {
   render() {
     let lists = this._getList();
     return (
-      <Box colorIndex="light-2" flex full pad={{vertical:"small"}}>
+      <Box colorIndex="light-2" flex full pad={{ vertical: "small" }}>
         {this.props.loading ? (
           <Box flex align="center" justify="center">
             <Spinning size="large" />
