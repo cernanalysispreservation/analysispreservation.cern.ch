@@ -12,7 +12,13 @@ function AnalysisReuseMode(props) {
   return (
     <Box pad={{ horizontal: "small" }} colorIndex="light-2">
       <Box>
-        <Box direction="row" wrap={false} align="center" justify="between">
+        <Box
+          direction="row"
+          wrap={false}
+          align="center"
+          justify="start"
+          responsive={false}
+        >
           <Heading tag="h5" margin="small">
             <strong> Reuse mode </strong>
             <CircleQuestion size="xsmall" data-tip data-for="reuseMode" />
@@ -28,7 +34,9 @@ function AnalysisReuseMode(props) {
               </Paragraph>
             </ReactTooltip>
           </Heading>
-          <SwitchWidget {...props.innerProps} id="analysis_reuse_mode" />
+          <Box margin={{ left: "small" }}>
+            <SwitchWidget {...props.innerProps} id="analysis_reuse_mode" />
+          </Box>
         </Box>
         <Box flex="shrink" />
       </Box>

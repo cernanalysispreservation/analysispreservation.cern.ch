@@ -36,7 +36,7 @@ let ObjectFieldTemplate = function(props) {
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
               gridColumnGap: "10px",
-              overflow: "auto"
+              maxWidth: "100%"
             }}
           >
             {props.properties.map(prop => prop.content)}

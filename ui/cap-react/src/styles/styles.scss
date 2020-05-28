@@ -20,6 +20,7 @@ body {
   width: 100vw;
 }
 
+
 body .grommet {
   font: 14px CAPFont;
 }
@@ -57,6 +58,7 @@ label {
   flex-direction: column;
   flex: 1;
   padding-bottom: 5px;
+
 
   .cap-grommet-input {
     input {
@@ -340,9 +342,33 @@ label {
 }
 
 
+
 // xsmall
 @media only screen and (min-width: 320px) {
+
+  .small-row-large-column{
+    flex-direction: column !important;
+  }
   
+  #list{
+    display: flex;
+    width: 100%;
+    overflow:visible;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center
+  }
+  
+  #item{
+    min-width: 223px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  
+  #tabs-select-component .css-yk16xz-control{
+    border:0; 
+  }
   .md-row {
     flex-direction: row !important;
     justify-content: space-around;
@@ -377,6 +403,29 @@ label {
     flex-direction: row !important;
   }
 
+  
+  .md-column {
+    display: flex;
+    flex-direction: column !important;
+  }
+  .tabs-list-items{
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-around;
+  }
+
+  .tabs-list{
+    display:none !important;
+  }
+  .tabs-select-menu{
+    display: flex !important;
+    overflow: visible
+  }
+  .select-menu{
+    width:300px
+  }
+
+
   #sidebar{
     display: none;
   }
@@ -405,6 +454,9 @@ label {
 
 // small
 @media only screen and (min-width: 580px) {
+  .small-row-large-column{
+    flex-direction: row !important;
+  }
   .sm-order-2{
     order:1;
   }
@@ -425,6 +477,8 @@ label {
 
 // medium
 @media only screen and (min-width: 720px) {
+  
+
   .sm-order-1{
     order:1;
     margin: 0;
@@ -475,6 +529,62 @@ label {
 }
 
 
+@media only screen and (min-width: 800px) {
+  #list{
+    overflow-x:auto;
+    justify-content: flex-start;
+    max-width: 91vw;
+  }
+  .tabs-list-items{
+    display: flex !important;
+    flex-direction: row !important;
+  }
+  .tabs-list{
+    display:flex !important;
+  }
+
+  .tabs-select-menu{
+    display: none !important
+  }
+
+  
+  
+}
+
+@media only screen and (min-width: 850px) {
+  #list{max-width: 91.5vw;}
+  .xlarge_box{
+    width: 750px;
+  }
+  .justify-large{
+    justify-content: center
+  }
+  
+}
+@media only screen and (min-width: 910px) {
+  #list{max-width: 92vw;}
+ 
+}
+
+@media only screen and (min-width: 992px) {
+  #list{max-width: 92.5vw;}
+}
+
+@media only screen and (min-width: 1050px) {
+  #list{max-width: 93vw;}
+
+}
+// large
+@media only screen and (min-width: 1135px) {
+ 
+  .lg-row {
+    flex-direction: column !important;
+  }
+
+  #list{max-width: 93.5vw;}
+  
+}
+
 // large
 @media only screen and (min-width: 1179px) {
 
@@ -483,22 +593,45 @@ label {
     min-width: 800px !important;
   }
 
+
+}
+
+@media only screen and (min-width: 1220px) {
+  
+  #list{max-width: 94vw;}
+  
+}
+@media only screen and (min-width: 1320px) {
+  
+  #list{max-width: 94.5vw;}
+  
+}
+
+// xlarge
+@media only screen and (min-width: 1400px) {
   .lg-column {
     flex-direction: row !important;
   }
   .lg-row {
     flex-direction: column !important;
   }
-}
-
-// xlarge
-@media only screen and (min-width: 1330px) {
   .md-column {
     display: flex;
     flex: 1;
     flex-direction: row !important;
   }
-
-
-
+  .tabs-list-items{
+    flex-direction: column !important;
+    justify-content: flex-start;
+  }
+  .lg-column {
+    flex-direction: row !important;
+  }
+  #list{ align-items: flex-start; width:auto; max-width: 100%}
+  #item{align-items: flex-start;}
+  .small-row-large-column{
+    flex-direction: column !important;
+  }
 }
+
+

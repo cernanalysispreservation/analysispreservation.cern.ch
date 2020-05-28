@@ -6,6 +6,7 @@ import Heading from "grommet/components/Heading";
 import { filter } from "lodash";
 import AnalysisReuseMode from "../components/AnalysisReuseMode";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
+import Select from "react-select";
 
 class TabField extends React.Component {
   constructor(props) {
@@ -33,12 +34,22 @@ class TabField extends React.Component {
 
     // decide which tab will be active when mount
     let active;
+    let activeLabel;
 
-    if (this.options.initTab) active = this.options.initTab;
-    else active = availableTabs[0].name;
+    if (this.options.initTab) {
+      active = this.options.initTab;
+      activeLabel = this.options.initTab;
+    } else {
+      active = availableTabs[0].name;
+      activeLabel =
+        availableTabs[0].title ||
+        availableTabs[0].content.props.schema.title ||
+        active;
+    }
 
     this.state = {
       active,
+      activeLabel,
       analysis_mode,
       optionTabs: this.options.tabs
     };
@@ -51,7 +62,10 @@ class TabField extends React.Component {
   }
 
   _onTabClick = tab => {
-    this.setState({ active: tab.name });
+    this.setState({
+      active: tab.name,
+      activeLabel: tab.title || tab.content.props.schema.title || tab.name
+    });
   };
 
   _checkIfHidden = name => {
@@ -81,6 +95,9 @@ class TabField extends React.Component {
         !this._checkIfHidden(item.name) && item.name !== "analysis_reuse_mode"
     );
   };
+  updateValueOnClick = tab => {
+    this.setState({ active: tab.value, activeLabel: tab.label });
+  };
 
   render() {
     let idsList = [];
@@ -104,18 +121,19 @@ class TabField extends React.Component {
         flex={true}
         style={{
           display: "grid",
-          justifyContent: this.options && this.options.full ? " " : "center"
+          justifyContent: this.options && this.options.full ? " " : "center",
+          maxWidth: "100%"
         }}
       >
-        <Box size={this.options && this.options.full ? "full" : "xxlarge"}>
+        <Box>
           <Box className="md-column">
             <Box
               fixed="true"
-              flex={false}
               colorIndex={this.view.sidebarColor || "grey-4"}
               pad={{ between: this.view.vertical ? "none" : "small" }}
-              direction={this.view.vertical ? "column" : "row"}
-              wrap={true}
+              className="small-row-large-column"
+              align="center"
+              id="list"
             >
               {this.state.analysis_mode.length > 0 ? (
                 <AnalysisReuseMode
@@ -124,38 +142,62 @@ class TabField extends React.Component {
               ) : null}
 
               <Box
-                flex={true}
-                pad={{ vertical: "none" }}
-                size={{ width: { max: "medium" } }}
+                className="tabs-select-menu"
+                colorIndex={this.view.sidebarColor || "grey-4"}
               >
-                {tabs.map((tab, index) => (
-                  <ErrorFieldIndicator
-                    errors={this.props.formContext.ref}
-                    id={
-                      this.state.optionTabs
-                        ? tab.idsList
-                        : tab.content.props.idSchema.$id
-                    }
-                    properties={this.props.properties}
-                    tab={true}
-                    key={index}
-                  >
-                    <Box
-                      colorIndex={
-                        tab.name == this.state.active ? "light-1" : null
-                      }
-                      key={index}
-                      pad="small"
-                      onClick={this._onTabClick.bind(this, tab)}
-                    >
-                      <Heading tag="h5" margin="none" size="medium" strong>
-                        {tab.title ||
+                <Box pad="small">
+                  <Select
+                    id="tabs-select-component"
+                    className="select-menu"
+                    options={tabs.map(tab => {
+                      return {
+                        value: tab.name,
+                        label:
+                          tab.title ||
                           tab.content.props.schema.title ||
-                          "Untitled"}
-                      </Heading>
-                    </Box>
-                  </ErrorFieldIndicator>
-                ))}
+                          "Untitled"
+                      };
+                    })}
+                    onChange={this.updateValueOnClick}
+                    value={{
+                      label: this.state.activeLabel,
+                      value: this.state.active
+                    }}
+                  />
+                </Box>
+              </Box>
+              <Box className="tabs-list">
+                <Box pad={{ vertical: "none" }} className="tabs-list-items">
+                  {tabs.map((tab, index) => (
+                    <ErrorFieldIndicator
+                      errors={this.props.formContext.ref}
+                      id={
+                        this.state.optionTabs
+                          ? tab.idsList
+                          : tab.content.props.idSchema.$id
+                      }
+                      properties={this.props.properties}
+                      tab={true}
+                      key={index}
+                    >
+                      <Box
+                        colorIndex={
+                          tab.name == this.state.active ? "light-1" : null
+                        }
+                        key={index}
+                        pad="small"
+                        onClick={this._onTabClick.bind(this, tab)}
+                        id="item"
+                      >
+                        <Heading tag="h5" margin="none" size="medium" strong>
+                          {tab.title ||
+                            tab.content.props.schema.title ||
+                            "Untitled"}
+                        </Heading>
+                      </Box>
+                    </ErrorFieldIndicator>
+                  ))}
+                </Box>
               </Box>
             </Box>
 
@@ -163,20 +205,17 @@ class TabField extends React.Component {
               <Box
                 style={{
                   display: "grid",
-                  overflow: "auto",
                   padding: "10px",
                   width: "100%",
-                  height: "100%",
-                  justifyContent: "center"
+                  height: "100%"
                 }}
+                className="justify-large"
               >
                 <Box
-                  className="rjsf"
+                  className="rjsf xlarge_box"
                   style={{
-                    padding: "10px",
-                    overflow: "auto"
+                    padding: "10px"
                   }}
-                  size={{ width: this.view.innerTab || "xlarge" }}
                 >
                   {active_tabs_content.map(item => item.content)}
                 </Box>
