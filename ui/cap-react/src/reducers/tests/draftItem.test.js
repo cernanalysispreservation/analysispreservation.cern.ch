@@ -1,6 +1,6 @@
 import * as actions from "../../actions/draftItem";
 import draftReducer from "../draftItem";
-import { Map, fromJS } from "immutable";
+import { Map, fromJS, Set } from "immutable";
 
 // action draft
 const draft = {
@@ -62,7 +62,133 @@ const initialState = Map({
   schemas: null,
   status: null,
   type: null,
-  updated: null
+  updated: null,
+  formErrors: Set([])
+});
+const createDraftError = Map({
+  errors: ["this is an error message for create draft error"],
+  schemaErrors: [],
+  actionsLayer: false,
+  actionsLayerType: null,
+  showPreviewer: false,
+  filePreviewEditLayer: true,
+  filePreviewEdit: {},
+  uploadFiles: Map({}),
+  pathSelected: null,
+
+  workflows: fromJS([]),
+  workflows_items: fromJS({}),
+  bucket: Map({}),
+  formData: null,
+  // From backend: deposit resource
+  access: null,
+  can_admin: false,
+  can_update: false,
+  created: null,
+  loading: false,
+  created_by: null,
+  experiment: null,
+  files: Map({}),
+  id: null,
+  links: null,
+  metadata: {},
+  revision: null,
+  schema: null,
+  schemas: null,
+  status: null,
+  type: null,
+  updated: null,
+  formErrors: Set([])
+});
+const createDraftSuccess = Map({
+  errors: [],
+  schemaErrors: [],
+  actionsLayer: false,
+  actionsLayerType: null,
+  showPreviewer: false,
+  filePreviewEditLayer: true,
+  filePreviewEdit: {},
+  uploadFiles: Map({}),
+  pathSelected: null,
+
+  workflows: fromJS([]),
+  workflows_items: fromJS({}),
+  bucket: Map({}),
+  metadata: {
+    general_title: "This is the new title",
+    additional_resources: {
+      internal_discussions: "blah blah"
+    },
+    basic_info: {
+      abstract: "This is the abstract",
+      conclusion: "This is the conclusion",
+      ana_notes: ["AN-2121/212"]
+    }
+  },
+  formData: {
+    general_title: "This is the new title",
+    additional_resources: {
+      internal_discussions: "blah blah"
+    },
+    basic_info: {
+      abstract: "This is the abstract",
+      conclusion: "This is the conclusion",
+      ana_notes: ["AN-2121/212"]
+    }
+  },
+  // From backend: deposit resource
+  access: null,
+  can_admin: false,
+  can_update: false,
+  created: null,
+  loading: false,
+  created_by: null,
+  experiment: null,
+  files: Map({}),
+  id: null,
+  links: null,
+  revision: null,
+  schema: null,
+  schemas: null,
+  status: null,
+  type: null,
+  updated: null,
+  formErrors: Set([])
+});
+const loadingState = Map({
+  errors: [],
+  schemaErrors: [],
+  actionsLayer: false,
+  actionsLayerType: null,
+  showPreviewer: false,
+  filePreviewEditLayer: true,
+  filePreviewEdit: {},
+  uploadFiles: Map({}),
+  pathSelected: null,
+
+  workflows: fromJS([]),
+  workflows_items: fromJS({}),
+  bucket: Map({}),
+  formData: null,
+  // From backend: deposit resource
+  access: null,
+  can_admin: false,
+  can_update: false,
+  created: null,
+  loading: true,
+  created_by: null,
+  experiment: null,
+  files: Map({}),
+  id: null,
+  links: null,
+  metadata: {},
+  revision: null,
+  schema: null,
+  schemas: null,
+  status: null,
+  type: null,
+  updated: null,
+  formErrors: Set([])
 });
 const generalTitleStateBefore = Map({
   errors: [],
@@ -116,7 +242,8 @@ const generalTitleStateBefore = Map({
   schemas: null,
   status: null,
   type: null,
-  updated: null
+  updated: null,
+  formErrors: Set([])
 });
 const generalTitleStateAfter = Map({
   errors: [],
@@ -171,7 +298,8 @@ const generalTitleStateAfter = Map({
   status: null,
   type: null,
   updated: null,
-  generalTitleLoading: false
+  generalTitleLoading: false,
+  formErrors: Set([])
 });
 
 describe("DraftItem Reducers Test", () => {
@@ -199,5 +327,62 @@ describe("DraftItem Reducers Test", () => {
     };
     const state = initialState.set("generalTitleLoading", false);
     expect(draftReducer(initialState, action)).toEqual(state);
+  });
+
+  it("Create Draft Request", () => {
+    const action = {
+      type: actions.CREATE_DRAFT_REQUEST
+    };
+
+    expect(draftReducer(initialState, action)).toEqual(loadingState);
+  });
+
+  it("Create Draft Success", () => {
+    const action = {
+      type: actions.CREATE_DRAFT_SUCCESS,
+      draft
+    };
+
+    expect(draftReducer(initialState, action)).toEqual(createDraftSuccess);
+  });
+
+  it("Create Draft Error", () => {
+    const action = {
+      type: actions.CREATE_DRAFT_ERROR,
+      error: "this is an error message for create draft error"
+    };
+
+    expect(draftReducer(initialState, action)).toEqual(createDraftError);
+  });
+
+  it("Publish Draft Request", () => {
+    const action = {
+      type: actions.PUBLISH_DRAFT_REQUEST
+    };
+
+    expect(draftReducer(initialState, action)).toEqual(loadingState);
+  });
+
+  it("Publish Draft Success", () => {
+    const action = {
+      type: actions.PUBLISH_DRAFT_SUCCESS,
+      draft
+    };
+
+    // The only difference with the CREATE_DRAFT_SUCCESS is that the create add the metadata to the initialState
+    // while the publish success add the metadata to the existing state
+    expect(draftReducer(initialState, action)).toEqual(createDraftSuccess);
+  });
+
+  // the compared state remains the initial state
+  // since there is no reason to update the error in the state
+  // the error will be displayed in the toastetr
+  it("Publish Draft Error", () => {
+    const action = {
+      type: actions.PUBLISH_DRAFT_ERROR,
+      error: "This is an error"
+    };
+
+    expect(draftReducer(initialState, action)).toEqual(initialState);
   });
 });

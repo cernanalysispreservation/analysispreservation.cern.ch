@@ -67,14 +67,12 @@ export const draftsItemSuccess = (draft_id, draft) => ({
 export const draftsItemError = error => ({ type: DRAFTS_ITEM_ERROR, error });
 
 export const publishDraftRequest = () => ({ type: PUBLISH_DRAFT_REQUEST });
-export const publishDraftSuccess = (published_id, draft) => ({
+export const publishDraftSuccess = draft => ({
   type: PUBLISH_DRAFT_SUCCESS,
-  published_id,
   draft
 });
-export const publishDraftError = error => ({
-  type: PUBLISH_DRAFT_ERROR,
-  error
+export const publishDraftError = () => ({
+  type: PUBLISH_DRAFT_ERROR
 });
 
 export const remove_loading = () => ({
@@ -468,8 +466,7 @@ export function postPublishDraft() {
     return axios
       .post(links.publish)
       .then(response => {
-        let pid = response.data.id;
-        dispatch(publishDraftSuccess(pid, response.data));
+        dispatch(publishDraftSuccess(response.data));
         cogoToast.success("Your Draft has been successfully published", {
           position: "top-center",
           heading: "Draft published",
@@ -478,7 +475,7 @@ export function postPublishDraft() {
         });
       })
       .catch(error => {
-        dispatch(publishDraftError(error));
+        dispatch(publishDraftError());
         cogoToast.error(
           "There is an error, please make sure you are connected and try again",
           {
@@ -502,7 +499,7 @@ export function publishDraft(draft_id) {
         dispatch(push(`/published/${id}`));
       })
       .catch(error => {
-        dispatch(publishDraftError(error));
+        dispatch(publishDraftError());
         throw error;
       });
   };
