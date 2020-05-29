@@ -7,8 +7,7 @@ $vin-red: #ff0000;
   font-family: CAPFont;
   src: url("../fonts/Web-Regular.eot");
   src: url("../fonts/Web-Regular.eot") format("embedded-opentype"),
-    url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"),
-    url("../fonts/Web-Regular.woff") format("woff"),
+    url("../fonts/Web-RegularItalic.eot") format("embedded-opentype"), url("../fonts/Web-Regular.woff") format("woff"),
     url("../fonts/Web-RegularItalic.woff") format("woff");
 }
 //@import '~grommet/scss/vanilla/index';
@@ -68,6 +67,13 @@ label {
       padding: "11px 23px";
       border: 0 !important;
     }
+  }
+
+  input[type="date"] {
+    border: 0 !important;
+    flex: 1;
+    padding: 10px 23px !important;
+    margin: 0 5px;
   }
 }
 
@@ -380,22 +386,22 @@ label {
   .width-100 {
     width: 100% !important;
   }
-  
-  .sm-order-1{
-    order:2;  
+
+  .sm-order-1 {
+    order: 2;
     margin: 50px 10px 50px 10px;
   }
-  .sm-order-2{
-    order:1;
+  .sm-order-2 {
+    order: 1;
     margin: 50px 10px 0px 10px;
   }
-  .sm-order-3{
-    order:3;
+  .sm-order-3 {
+    order: 3;
     margin: 0px 10px 50px 10px;
   }
-  
-  .sm-order-4{
-    order:4;
+
+  .sm-order-4 {
+    order: 4;
     margin: 0px 10px 50px 10px;
   }
 
@@ -450,8 +456,6 @@ label {
   }
 }
 
-
-
 // small
 @media only screen and (min-width: 580px) {
   .small-row-large-column{
@@ -460,8 +464,8 @@ label {
   .sm-order-2{
     order:1;
   }
-  .sm-order-1{
-    order:2;
+  .sm-order-1 {
+    order: 2;
   }
   .md-column {
     display: flex;
@@ -483,16 +487,16 @@ label {
     order:1;
     margin: 0;
   }
-  .sm-order-2{
+  .sm-order-2 {
     order: 2;
-    margin:0;
-  }
-
-  .sm-order-3{
     margin: 0;
   }
 
-  .sm-order-4{
+  .sm-order-3 {
+    margin: 0;
+  }
+
+  .sm-order-4 {
     margin: 0;
   }
   .md-row {
