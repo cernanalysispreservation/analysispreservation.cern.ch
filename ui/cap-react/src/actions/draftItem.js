@@ -254,6 +254,7 @@ export function postCreateDraft(data = {}, ana_type) {
       })
       .catch(error => {
         dispatch(createDraftError(error.response));
+
         cogoToast.error(error.response.data.message, {
           position: "top-center",
           heading: "Something went wrong",

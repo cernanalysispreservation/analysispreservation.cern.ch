@@ -7,8 +7,10 @@ import { Map } from "immutable";
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-const draft_id = "84c9818192bb4b4aaf366846f83d0dad";
+const draft_id = "ca91ce9758c748a4b115ffdd706f2cda";
+const published_id = "ca91ce9758c748a4b115ffdd706f2cda";
 const new_title = "This is the new Title";
+
 const draft = {
   id: "ca91ce9758c748a4b115ffdd706f2cda",
   access: {},
@@ -30,6 +32,7 @@ const draft = {
   type: "deposit",
   updated: "2020-03-25T11:29:11.735378+00:00"
 };
+
 const response_data = {
   id: "ca91ce9758c748a4b115ffdd706f2cda",
   access: {},
@@ -72,7 +75,7 @@ const response_data_edit = {
   type: "deposit",
   updated: "2020-03-25T11:29:11.735378+00:00"
 };
-
+document.body.innerHTML = "<div id='ct-container'>" + "</div>";
 describe("Action Creators => draftItem", () => {
   it("Async Patch General Title Success", async () => {
     const expectedActions = [
@@ -154,5 +157,120 @@ describe("Action Creators => draftItem", () => {
       .catch(() => {
         expect(store.getActions()).toEqual(expectedActions);
       });
+  });
+
+  it("Async Create Draft Success", async () => {
+    const expectedActions = [
+      { type: actions.CREATE_DRAFT_REQUEST },
+      { type: actions.CREATE_DRAFT_SUCCESS, draft }
+    ];
+
+    axios.post = jest.fn(() => {
+      return Promise.resolve({
+        data: draft
+      });
+    });
+
+    const store = mockStore({
+      draftItem: Map({})
+    });
+
+    await store
+      .dispatch(
+        actions.postCreateDraft(
+          { general_title: new_title, $ana_type: "cms-analysis" },
+          { name: "cms-analysis" }
+        )
+      )
+      .then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it("Async Create Draft Error", async () => {
+    const error = {
+      data: { message: "This is an error message for the create process" }
+    };
+    const expectedActions = [
+      { type: actions.CREATE_DRAFT_REQUEST },
+      {
+        type: actions.CREATE_DRAFT_ERROR,
+        error
+      }
+    ];
+
+    axios.post = jest.fn(() => {
+      return Promise.reject({
+        response: {
+          data: { message: "This is an error message for the create process" }
+        }
+      });
+    });
+    const store = mockStore({
+      draftItem: Map({})
+    });
+
+    await store
+      .dispatch(
+        actions.postCreateDraft(
+          { general_title: new_title, $ana_type: "cms-analysis" },
+          { name: "cms-analysis" }
+        )
+      )
+      .catch(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+  });
+
+  it("Async Publish Draft Success", async () => {
+    document.body.append = "";
+    const expectedActions = [
+      { type: actions.PUBLISH_DRAFT_REQUEST },
+      { type: actions.PUBLISH_DRAFT_SUCCESS, published_id, draft }
+    ];
+
+    axios.post = jest.fn(() => {
+      return Promise.resolve({
+        data: draft
+      });
+    });
+
+    const store = mockStore({
+      draftItem: Map({
+        links: {
+          publish:
+            "http://localhost:3000/deposits/ff517e86453646adab77144c18933717/actions/publish"
+        }
+      })
+    });
+
+    await store.dispatch(actions.postPublishDraft()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it("Async Publish Draft Error", async () => {
+    const error = { error: "this is the error from the publish draft" };
+    const expectedActions = [
+      { type: actions.PUBLISH_DRAFT_REQUEST },
+      { type: actions.PUBLISH_DRAFT_ERROR, error }
+    ];
+
+    axios.post = jest.fn(() => {
+      return Promise.reject({
+        error: "this is the error from the publish draft"
+      });
+    });
+    const store = mockStore({
+      draftItem: Map({
+        links: {
+          publish:
+            "http://localhost:3000/deposits/ff517e86453646adab77144c18933717/actions/publish"
+        }
+      })
+    });
+    await store.dispatch(actions.postPublishDraft()).catch(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
   });
 });
