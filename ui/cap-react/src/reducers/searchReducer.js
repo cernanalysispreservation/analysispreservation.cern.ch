@@ -1,4 +1,4 @@
-import { Map, fromJS } from "immutable";
+import { Map, fromJS, Set } from "immutable";
 
 import {
   QUERY_CHANGED,
@@ -9,7 +9,8 @@ import {
   SEARCH_REQUEST,
   SEARCH_SUCCESS,
   SEARCH_ERROR,
-  UPDATE_EXPANDED_STATE
+  UPDATE_EXPANDED_STATE,
+  UPDATE_COLLAPSED_FACETS
 } from "../actions/search";
 
 const initialState = Map({
@@ -22,7 +23,8 @@ const initialState = Map({
   }),
   error: false,
   loading: false,
-  expanded: false
+  expanded: false,
+  collapsed: Set([])
 });
 
 export default function searchReducer(state = initialState, action) {
@@ -55,6 +57,8 @@ export default function searchReducer(state = initialState, action) {
       return state.set("error", true).set("loading", false);
     case UPDATE_EXPANDED_STATE:
       return state.set("expanded", action.value);
+    case UPDATE_COLLAPSED_FACETS:
+      return state.set("collapsed", fromJS(action.value));
     default:
       return state;
   }

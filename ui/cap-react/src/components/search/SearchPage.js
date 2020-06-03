@@ -87,7 +87,6 @@ class SearchPage extends React.Component {
     let utils;
     let total = null;
     let results = null;
-    let aggs = null;
     let queryParams = [];
 
     let _results = {};
@@ -172,7 +171,13 @@ class SearchPage extends React.Component {
         <SearchFilterLayer
           active={this.state.layerActive}
           onClose={() => this.setState({ layerActive: false })}
-          properties={aggs}
+          properties={
+            <SearchFacets
+              aggs={_aggs}
+              selectedAggs={this.props.selectedAggs}
+              onChange={this._toggleAggs}
+            />
+          }
         />
 
         <Box direction="row">

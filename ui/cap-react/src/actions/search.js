@@ -14,6 +14,7 @@ export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
 export const SEARCH_ERROR = "SEARCH_ERROR";
 
 export const UPDATE_EXPANDED_STATE = "UPDATE_EXPANDED_STATE";
+export const UPDATE_COLLAPSED_FACETS = "UPDATE_COLLAPSED_FACETS";
 
 export function searchRequest() {
   return {
@@ -35,6 +36,13 @@ export function updateExpandState(value) {
   };
 }
 
+export function updateCollapsedFacets(value) {
+  return {
+    type: UPDATE_COLLAPSED_FACETS,
+    value
+  };
+}
+
 export function searchError(error) {
   return {
     type: SEARCH_ERROR,
@@ -48,6 +56,20 @@ const SEARCH_PATH_TO_INDEX = {
 };
 
 const DEFAULT_INDEX = "records";
+
+export const updateCollapsableFacetArray = value => (dispatch, getState) => {
+  let state = getState();
+  let collapsed = state.search.get("collapsed").toJS();
+  let exists = collapsed.indexOf(value);
+
+  if (exists === -1) {
+    collapsed.push(value);
+  } else {
+    collapsed.splice(exists, 1);
+  }
+
+  dispatch(updateCollapsedFacets(collapsed));
+};
 
 export function fetchSearch() {
   return function(dispatch) {
