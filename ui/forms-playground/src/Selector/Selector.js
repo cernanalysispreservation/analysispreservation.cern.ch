@@ -32,7 +32,7 @@ class Selector extends Component {
 
   render() {
     return (
-      <Box direction="row" flex justify="around">
+      <Box direction="row" flex justify="between">
         {Object.keys(samples).map((label, i) => {
           return (
             <Box

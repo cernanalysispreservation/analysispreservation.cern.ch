@@ -22,6 +22,7 @@ const toJson = val => JSON.stringify(val, null, 2);
 class Playground extends Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
     const { schema, uiSchema, formData, validate } = samples.Simple;
     this.state = {
       form: false,
@@ -152,7 +153,7 @@ class Playground extends Component {
           <Box>
             <CheckBox
               label="Live Validate"
-              onClick={() =>
+              onChange={() =>
                 this.setState({ liveValidate: !this.state.liveValidate })
               }
               checked={this.state.liveValidate}
@@ -160,7 +161,7 @@ class Playground extends Component {
           </Box>
           <CheckBox
             label={this.state.toggle ? <FaMoon /> : <FaSun />}
-            onClick={this.toggleUpdate}
+            onChange={this.toggleUpdate}
             toggle={true}
             checked={this.state.toggle}
           />
@@ -204,13 +205,13 @@ class Playground extends Component {
           </Box>
           <Box flex pad="large" separator="all">
             <Form
-              formRef={{}}
+              formRef={this.formRef}
               formData={formData}
               schema={schema}
               uiSchema={uiSchema}
               liveValidate={this.state.liveValidate}
               onChange={this.onFormDataChange}
-              errors={{}}
+              errors={[]}
             />
           </Box>
         </Box>

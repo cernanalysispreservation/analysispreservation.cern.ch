@@ -51,7 +51,7 @@ class Editor extends Component {
             value={this.state.code}
             theme={this.props.dark ? "terminal" : "github"}
             onChange={this.onCodeChange}
-            height={400}
+            height="400px"
             width="100%"
           />
         </Box>

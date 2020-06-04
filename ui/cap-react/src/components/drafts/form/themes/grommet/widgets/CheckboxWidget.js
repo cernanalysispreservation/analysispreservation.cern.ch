@@ -5,7 +5,6 @@ import Box from "grommet/components/Box";
 import CheckBox from "grommet/components/CheckBox";
 
 function selectValue(value, selected = [], all) {
-  console.log("VALUEEEe:::", value, selected, all)
   const at = all.indexOf(value);
   const updated = selected.slice(0, at).concat(value, selected.slice(at));
   // As inserting values at predefined index positions doesn't work with empty
@@ -19,12 +18,11 @@ function deselectValue(value, selected) {
 
 const CheckBoxWidget = function (props) {
 
-  let { id, type, title, description, items = {}, rawErrors = [] } = props.schema;
+  let { type } = props.schema;
 
   // TOFIX onBlur, onFocus
   let _onChange = event => {
     if (props.schema.type == "boolean") {
-      console.log("EVENT:::", event.target, event.target.checked)
       props.onChange(event.target.checked);
       return;
     }

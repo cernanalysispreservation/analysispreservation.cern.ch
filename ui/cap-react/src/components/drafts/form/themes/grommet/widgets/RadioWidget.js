@@ -6,7 +6,7 @@ import RadioButton from "grommet/components/RadioButton";
 
 const RadioWidget = function(props) {
   let { onChange, options, value } = props;
-  let { id, type, title, description, items = {}, rawErrors = [] } = props.schema;
+  let { type } = props.schema;
   // TOFIX onBlur, onFocus
   let _onChange = function _onChange(_ref) {
     let _value = _ref.currentTarget.value;
