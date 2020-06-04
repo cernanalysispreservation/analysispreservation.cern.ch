@@ -57,6 +57,15 @@ def _get_cadi(cadi_id):
     return parsed, 200
 
 
+def _get_das(query, all_):
+    """Retrieve DAS datasets."""
+    search = DASSearch().prefix_search(query).sort('name')
+    results = search.scan() \
+        if all_ else search.execute()
+
+    return [hit.name for hit in results]
+
+
 @cms_bp.route('/cadi/<cadi_id>', methods=['GET'])
 @cms_permission.require(403)
 def get_analysis_from_cadi(cadi_id):
@@ -70,6 +79,29 @@ def get_analysis_from_cadi(cadi_id):
 
     resp, status = _get_cadi(cadi_id)
     return jsonify(resp), status
+
+
+@cms_bp.route('/primary-datasets', methods=['GET'])
+@cms_permission.require(403)
+def get_datasets_suggestions_primary():
+    """Retrieve specific dataset names."""
+    all_ = request.args.get('all')
+    query = update_term_for_das_query(
+        unquote(request.args.get('query')), '(/*/*/*AOD* OR /*/*/*RECO*) '
+                                            'AND NOT */*/*SIM*')
+
+    return jsonify(_get_das(query, all_))
+
+
+@cms_bp.route('/mc-datasets', methods=['GET'])
+@cms_permission.require(403)
+def get_datasets_suggestions_mc():
+    """Retrieve specific dataset names."""
+    all_ = request.args.get('all')
+    query = update_term_for_das_query(
+        unquote(request.args.get('query')), '/*/*/*SIM*')
+
+    return jsonify(_get_das(query, all_))
 
 
 @cms_bp.route('/datasets', methods=['GET'])

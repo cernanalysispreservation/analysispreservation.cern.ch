@@ -135,10 +135,94 @@ def test_get_cms_cadi_when_cadi_not_matches_regex(app, auth_headers_for_superuse
     }
 
 
-##################
-# api/cms/datasets
-##################
+############################
+# api/cms/datasets - new API
+############################
 def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(
+        client, users, auth_headers_for_user):
+    headers = auth_headers_for_user(users['lhcb_user'])
+
+    resp = client.get('/cms/mc-datasets?query=q', headers=headers)
+    assert resp.status_code == 403
+
+    resp = client.get('/cms/primary-datasets?query=q', headers=headers)
+    assert resp.status_code == 403
+
+
+def test_get_datasets_suggestions_when_cms_user_returns_200(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/primary-datasets?query=q', headers=headers)
+    assert resp.status_code == 200
+
+    resp = client.get('/cms/mc-datasets?query=q', headers=headers)
+    assert resp.status_code == 200
+
+
+def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/mc-datasets?query=', headers=headers)
+    assert resp.json == []
+
+    resp = client.get('/cms/primary-datasets?query=', headers=headers)
+    assert resp.json == []
+
+
+def test_get_primary_datasets_suggestions_returns_correct_suggestions(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/primary-datasets?query=/datas*', headers=headers)
+    assert sorted(resp.json) == sorted([
+        '/dataset1/run1/AOD',
+        '/dataset1/run2/AOD',
+        '/dataset2/run1/RECO',
+        '/dataset2/run2/RECO',
+        '/dataset5/run1/ALCARECO'
+    ])
+
+    resp = client.get('/cms/primary-datasets?query=/dataset*/run2', headers=headers)
+    assert sorted(resp.json) == sorted([
+        '/dataset1/run2/AOD',
+        '/dataset2/run2/RECO'
+    ])
+
+    # empty
+    resp = client.get('/cms/primary-datasets?query=/datasets', headers=headers)
+    assert resp.json == []
+
+
+def test_get_mc_datasets_suggestions_returns_correct_suggestions(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/mc-datasets?query=/datas*', headers=headers)
+    assert sorted(resp.json) == sorted([
+        '/dataset3/run1/AODSIM',
+        '/dataset3/run2/AODSIM',
+        '/dataset4/run1/AODSIM',
+        '/dataset4/run2/AODSIM',
+        '/dataset6/run1/SIM-GEN-AOD'
+    ])
+
+    resp = client.get('/cms/mc-datasets?query=/dataset*/run2', headers=headers)
+    assert sorted(resp.json) == sorted([
+        '/dataset3/run2/AODSIM',
+        '/dataset4/run2/AODSIM'
+    ])
+
+    # empty
+    resp = client.get('/cms/mc-datasets?query=/datasets', headers=headers)
+    assert resp.json == []
+
+
+###############################
+# api/cms/datasets - main API
+###############################
+def test_get_main_datasets_suggestions_when_user_from_outside_cms_returns_403(
         client, users, auth_headers_for_user):
     resp = client.get('/cms/datasets?query=q',
                       headers=auth_headers_for_user(users['lhcb_user']))
@@ -146,24 +230,24 @@ def test_get_datasets_suggestions_when_user_from_outside_cms_returns_403(
     assert resp.status_code == 403
 
 
-def test_get_datasets_suggestions_when_cms_user_returns_200(
-        client, users, auth_headers_for_user, das_datasets_index):
+def test_get_main_datasets_suggestions_when_cms_user_returns_200(
+        client, users, auth_headers_for_user, das_datasets_index_main):
     resp = client.get('/cms/datasets?query=q',
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.status_code == 200
 
 
-def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
-        client, users, auth_headers_for_user, das_datasets_index):
+def test_get_main_datasets_suggestions_when_no_query_passed_returns_empty_list(
+        client, users, auth_headers_for_user, das_datasets_index_main):
     resp = client.get('/cms/datasets?query=',
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == []
 
 
-def test_get_datasets_suggestions_returns_correct_suggestions(
-    client, users, auth_headers_for_user, das_datasets_index):
+def test_get_main_datasets_suggestions_returns_correct_suggestions(
+    client, users, auth_headers_for_user, das_datasets_index_main):
     resp = client.get('/cms/datasets?query=/datas*',
                       headers=auth_headers_for_user(users['cms_user']))
 

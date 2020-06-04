@@ -434,6 +434,37 @@ def cms_user_me_data(users):
 def das_datasets_index(es):
     """Example datasets under DAS datasets index."""
     source = [{
+        'name': '/dataset1/run1/AOD'
+    }, {
+        'name': '/dataset1/run2/AOD'
+    }, {
+        'name': '/dataset2/run1/RECO'
+    }, {
+        'name': '/dataset2/run2/RECO'
+    }, {
+        'name': '/dataset3/run1/AODSIM'
+    }, {
+        'name': '/dataset3/run2/AODSIM'
+    }, {
+        'name': '/dataset4/run1/AODSIM'
+    }, {
+        'name': '/dataset4/run2/AODSIM'
+    }, {
+        'name': '/dataset5/run1/ALCARECO'
+    }, {
+        'name': '/dataset6/run1/SIM-GEN-AOD'
+    }
+    ]
+
+    cache_das_datasets_in_es_from_file(source)
+
+    current_search.flush_and_refresh(DAS_DATASETS_ES_CONFIG['alias'])
+
+
+@pytest.fixture
+def das_datasets_index_main(es):
+    """Example datasets under DAS datasets index."""
+    source = [{
         'name': '/dataset1/run1'
     }, {
         'name': '/dataset1/run2'

@@ -1094,7 +1094,7 @@
       "mc_sig_datasets": {
         "items": {
           "ui:options": {
-            "suggestions": "/api/cms/datasets?query="
+            "suggestions": "/api/cms/mc-datasets?query="
           }
         },
         "ui:options": {
@@ -1116,7 +1116,7 @@
       "mc_bg_datasets": {
         "items": {
           "ui:options": {
-            "suggestions": "/api/cms/datasets?query="
+            "suggestions": "/api/cms/mc-datasets?query="
           }
         },
         "ui:options": {
@@ -1155,7 +1155,7 @@
           },
           "path": {
             "ui:options": {
-              "suggestions": "/api/cms/datasets?query="
+              "suggestions": "/api/cms/primary-datasets?query="
             }
           },
           "triggers": {

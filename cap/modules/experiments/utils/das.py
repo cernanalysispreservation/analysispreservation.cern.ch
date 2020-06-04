@@ -27,7 +27,7 @@ from ..search.das import DAS_DATASETS_ES_CONFIG
 from .common import recreate_es_index_from_source
 
 
-def update_term_for_das_query(term):
+def update_term_for_das_query(term, suffix=None):
     """Process term query, to make it work for DAS."""
     if term == '':
         return term
@@ -35,6 +35,7 @@ def update_term_for_das_query(term):
     if not term.endswith('*'):
         term = "{}*".format(term)
 
+    term = f'{term} AND {suffix}' if suffix else term
     return term.replace('/', '\\/')
 
 
