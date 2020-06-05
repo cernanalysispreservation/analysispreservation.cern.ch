@@ -27,7 +27,10 @@
 import json
 
 from invenio_search import current_search
+from invenio_records.api import RecordMetadata
 from pytest import mark
+
+from cap.modules.deposit.api import CAPDeposit
 
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.resolvers import schema_name_to_url
@@ -399,6 +402,117 @@ def test_patch_deposit_cannot_update_underscore_prefixed_fields(
             format(depid),
             'upload': 'http://analysispreservation.cern.ch/api/deposits/{}/actions/upload'
             .format(depid)
+        }
+    }
+
+
+def test_update_deposit_missing_required_field_validates_succesfully(
+        client, db, users, create_deposit, create_schema, json_headers, auth_headers_for_user):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {'type': 'string'},
+                          'abstract': {'type': 'string'}
+                      }
+                  })
+
+    deposit = create_deposit(owner, 'test-analysis',
+                             {
+                                 '$ana_type': 'test-analysis',
+                                 'title': 'test',
+                                 'abstract': 'test abstract'
+                             },
+                             experiment='CMS')
+    depid = deposit['_deposit']['id']
+
+    resp = client.put(f'/deposits/{depid}', headers=headers,
+                      data=json.dumps({
+                          'abstract': 'test'
+                      }))
+
+    assert resp.status_code == 200
+
+
+def test_update_deposit_with_required_field_success(
+        client, db, users, create_deposit, create_schema, json_headers, auth_headers_for_user):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {'type': 'string'}
+                      }
+                  })
+
+    deposit = create_deposit(owner, 'test-analysis',
+                             {
+                                 '$ana_type': 'test-analysis',
+                                 'title': 'test'
+                             },
+                             experiment='CMS')
+
+    depid = deposit['_deposit']['id']
+    resp = client.put(f'/deposits/{depid}', headers=headers,
+                      data=json.dumps({
+                          'title': 'test1'
+                      }))
+
+    metadata = deposit.get_record_metadata()
+
+    assert resp.status_code == 200
+    assert resp.json == {
+        'id': depid,
+        'type': 'deposit',
+        'revision': 1,
+        'schema': {
+            'name': 'test-analysis',
+            'version': '1.0.0'
+        },
+        'labels': [],
+        'files': [],
+        'experiment': 'CMS',
+        'status': 'draft',
+        'is_owner': True,
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {
+            'title': 'test1'
+        },
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'links': {
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{deposit.files.bucket}',
+            'clone': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/clone',
+            'discard': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/discard',
+            'disconnect_webhook': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/disconnect_webhook',
+            'edit': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/edit',
+            'files': f'http://analysispreservation.cern.ch/api/deposits/{depid}/files',
+            'html': f'http://analysispreservation.cern.ch/drafts/{depid}',
+            'permissions': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/permissions',
+            'publish': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/publish',
+            'self': f'http://analysispreservation.cern.ch/api/deposits/{depid}',
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/upload'
         }
     }
 

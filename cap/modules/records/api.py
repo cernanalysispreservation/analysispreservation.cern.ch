@@ -26,17 +26,23 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
 from invenio_records.models import RecordMetadata
 from invenio_records_files.api import Record
+from invenio_rest.errors import FieldError
+from jsonschema.exceptions import RefResolutionError
 from sqlalchemy.orm.exc import NoResultFound
 
 from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.records.errors import RecordValidationError
+from cap.modules.records.permissions import (RecordAdminActionNeed,
+                                             RecordReadActionNeed,
+                                             RecordUpdateActionNeed)
+from cap.modules.records.validators import RecordValidator
 
-from .permissions import (RecordAdminActionNeed, RecordReadActionNeed,
-                          RecordUpdateActionNeed)
 
 RECORD_ACTIONS = [
     'record-read',
@@ -160,3 +166,27 @@ class CAPRecord(Record):
                 )
             if ar.role.id not in data['_access']['record-read']['roles']:
                 data['_access']['record-read']['roles'].append(ar.role.id)
+
+    def validate(self, **kwargs):
+        """Validate data using schema with ``JSONResolver``."""
+        if '$schema' in self and self['$schema']:
+            try:
+                schema = self['$schema']
+                if not isinstance(schema, dict):
+                    schema = {'$ref': schema}
+                resolver = current_app.extensions['invenio-records']\
+                    .ref_resolver_cls.from_schema(schema)
+
+                validator = RecordValidator(schema, resolver=resolver)
+                errors = [
+                    FieldError(list(error.path), str(error.message))
+                    for error in validator.iter_errors(self)
+                ]
+
+                if errors:
+                    raise RecordValidationError(None, errors=errors)
+            except RefResolutionError:
+                raise RecordValidationError(
+                    f'Schema {self["$schema"]} not found.')
+        else:
+            raise RecordValidationError('You need to provide a valid schema.')

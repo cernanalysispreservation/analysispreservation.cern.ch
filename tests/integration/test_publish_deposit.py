@@ -195,6 +195,153 @@ def test_deposit_publish_changes_status_and_creates_record(
     assert resp.status_code == 200
 
 
+def test_deposit_publish_with_required_field_success(
+        client, users, auth_headers_for_user, json_headers, create_schema,
+        create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema(
+        'test-analysis',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'string'}
+            }
+        },
+        record_schema={
+            'type': 'object',
+            'required': ['title'],
+            'properties': {
+                'title': {'type': 'string'}
+            }
+        },
+        use_deposit_as_record=False)
+
+    deposit = create_deposit(owner, 'test-analysis',
+                             {
+                                 '$ana_type': 'test-analysis',
+                                 'title': 'test'
+                             },
+                             experiment='CMS')
+    depid = deposit['_deposit']['id']
+    metadata = deposit.get_record_metadata()
+
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+    _, record = deposit.fetch_published()
+
+    assert resp.status_code == 202
+    assert resp.json == {
+        'id': depid,
+        'recid': record['control_number'],
+        'type': 'deposit',
+        'revision': 1,
+        'schema': {
+            'name': 'test-analysis',
+            'version': '1.0.0'
+        },
+        'experiment': 'CMS',
+        'status': 'published',
+        'is_owner': True,
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {
+            'title': 'test'
+        },
+        'labels': [],
+        'files': [],
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'links': {
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{deposit.files.bucket}',
+            'clone': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/clone',
+            'discard': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/discard',
+            'disconnect_webhook': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/disconnect_webhook',
+            'edit': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/edit',
+            'files': f'http://analysispreservation.cern.ch/api/deposits/{depid}/files',
+            'html': f'http://analysispreservation.cern.ch/drafts/{depid}',
+            'permissions': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/permissions',
+            'publish': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/publish',
+            'self': f'http://analysispreservation.cern.ch/api/deposits/{depid}',
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/upload'
+        }
+    }
+
+
+def test_deposit_publish__with_record_schema_with_missing_required_field_fails(
+        client, users, auth_headers_for_user, json_headers, create_schema,
+        create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema(
+        'test-analysis',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'properties': {
+                'title': {'type': 'string'}
+            }
+        },
+        record_schema={
+            'type': 'object',
+            'required': ['title'],
+            'properties': {
+                'title': {'type': 'string'}
+            }
+        },
+        use_deposit_as_record=False)
+
+    deposit = create_deposit(owner, 'test-analysis', experiment='CMS')
+    depid = deposit['_deposit']['id']
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Validation error. Try again with valid data'
+    assert resp.json['errors'][0]['message'] == "'title' is a required property"
+
+
+def test_deposit_publish_with_missing_required_fields_fails(
+        client, users, auth_headers_for_user, json_headers, create_schema,
+        create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    create_schema(
+        'test-analysis',
+        experiment='CMS',
+        deposit_schema={
+            'type': 'object',
+            'required': ['title', 'abstract'],
+            'properties': {
+                'title': {'type': 'string'},
+                'abstract': {'type': 'string'},
+                'general': {'type': 'string'}
+            }
+        },
+        use_deposit_as_record=True)
+
+    deposit = create_deposit(owner, 'test-analysis', experiment='CMS')
+    depid = deposit['_deposit']['id']
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+
+    assert resp.status_code == 400
+    assert resp.json['message'] == 'Validation error. Try again with valid data'
+    assert resp.json['errors'][0]['message'] == "'title' is a required property"
+    assert resp.json['errors'][1]['message'] == "'abstract' is a required property"
+
+
 def test_deposit_publish_then_deposit_update_should_not_be_allowed(
         client, users, auth_headers_for_user, json_headers, create_deposit):
     owner = users['cms_user']
