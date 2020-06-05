@@ -44,13 +44,13 @@ from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_records_rest.errors import InvalidDataRESTError
 from invenio_rest.errors import FieldError
-from jsonschema.exceptions import RefResolutionError
+from jsonschema.exceptions import RefResolutionError, ValidationError
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.local import LocalProxy
 
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
-from cap.modules.deposit.validators import DepositValidator
+from cap.modules.deposit.validators import NoRequiredValidator
 from cap.modules.experiments.permissions import exp_need_factory
 from cap.modules.mail.utils import post_action_notifications
 from cap.modules.records.api import CAPRecord
@@ -229,12 +229,14 @@ class CAPDeposit(Deposit, Reviewable):
                 if file_.data['checksum'] is None:
                     raise MultipartMissingParts()
 
-            deposit = super(CAPDeposit, self).publish(*args, **kwargs)
+            try:
+                deposit = super(CAPDeposit, self).publish(*args, **kwargs)
+                post_action_notifications(
+                    "publish", deposit, host_url=request.host_url)
 
-            post_action_notifications(
-                "publish", deposit, host_url=request.host_url)
-
-            return deposit
+                return deposit
+            except ValidationError as e:
+                raise DepositValidationError(e.message)
 
     @has_status
     @mark_as_action
@@ -580,7 +582,7 @@ class CAPDeposit(Deposit, Reviewable):
                 resolver = current_app.extensions[
                     'invenio-records'].ref_resolver_cls.from_schema(schema)
 
-                validator = DepositValidator(schema, resolver=resolver)
+                validator = NoRequiredValidator(schema, resolver=resolver)
 
                 result = {}
                 result['errors'] = [
@@ -694,7 +696,9 @@ class CAPDeposit(Deposit, Reviewable):
             data = cls._preprocess_create_data(data, uuid_, owner)
 
             # create RecordMetadata instance
-            deposit = Record.create(data, id_=uuid_)
+            deposit = Record.create(data,
+                                    id_=uuid_,
+                                    validator=NoRequiredValidator)
             deposit.__class__ = cls
 
             # create files bucket

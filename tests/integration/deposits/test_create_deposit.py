@@ -289,3 +289,109 @@ def test_create_deposit_when_schema_with_refs_works_correctly(
         }))
 
     assert resp.status_code == 201
+
+
+def test_create_deposit_with_required_fields_success(
+        client, location, users, create_schema, auth_headers_for_user, json_headers):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {'type': 'string'},
+                          'abstract': {'type': 'string'}
+                      }
+                  })
+
+    resp = client.post('/deposits/', headers=headers,
+                       data=json.dumps(
+                           {
+                               '$ana_type': 'test-analysis',
+                               'title': 'test'
+                           }
+                       ))
+
+    metadata = RecordMetadata.query.first()
+    deposit = CAPDeposit.get_record(metadata.id)
+    depid = deposit['_deposit']['id']
+
+    assert resp.status_code == 201
+    assert resp.json == {
+        'id': depid,
+        'type': 'deposit',
+        'revision': 0,
+        'schema': {
+            'name': 'test-analysis',
+            'version': '1.0.0'
+        },
+        'labels': [],
+        'files': [],
+        'experiment': 'CMS',
+        'status': 'draft',
+        'is_owner': True,
+        'created_by': owner.email,
+        'created': metadata.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'updated': metadata.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
+        'metadata': {
+            'title': 'test'
+        },
+        'access': {
+            'deposit-admin': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-update': {
+                'roles': [],
+                'users': [owner.email]
+            },
+            'deposit-read': {
+                'roles': [],
+                'users': [owner.email]
+            }
+        },
+        'links': {
+            'bucket': f'http://analysispreservation.cern.ch/api/files/{deposit.files.bucket}',
+            'clone': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/clone',
+            'discard': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/discard',
+            'disconnect_webhook': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/disconnect_webhook',
+            'edit': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/edit',
+            'files': f'http://analysispreservation.cern.ch/api/deposits/{depid}/files',
+            'html': f'http://analysispreservation.cern.ch/drafts/{depid}',
+            'permissions': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/permissions',
+            'publish': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/publish',
+            'self': f'http://analysispreservation.cern.ch/api/deposits/{depid}',
+            'upload': f'http://analysispreservation.cern.ch/api/deposits/{depid}/actions/upload'
+        }
+    }
+
+
+def test_create_deposit_with_required_fields_not_filled_validates_succesfully(
+        client, location, users, create_schema, auth_headers_for_user, json_headers):
+    headers = auth_headers_for_user(users['cms_user']) + json_headers
+    create_schema('test-analysis',
+                  experiment='CMS',
+                  deposit_schema={
+                      'type': 'object',
+                      'required': ['title'],
+                      'properties': {
+                          'title': {
+                              'type': 'string'
+                          },
+                          'abstract': {
+                              'type': 'string'
+                          }
+                      }
+                  })
+
+    resp = client.post('/deposits/', headers=headers,
+                       data=json.dumps(
+                           {
+                               '$ana_type': 'test-analysis',
+                               'abstract': 'test'
+                           }
+                       ))
+
+    assert resp.status_code == 201

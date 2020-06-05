@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # This file is part of CERN Analysis Preservation Framework.
-# Copyright (C) 2016 CERN.
+# Copyright (C) 2018 CERN.
 #
 # CERN Analysis Preservation Framework is free software; you can redistribute
 # it and/or modify it under the terms of the GNU General Public License as
@@ -21,21 +21,21 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-"""Deposit validators."""
+"""Record errors."""
 
-from jsonschema import Draft4Validator
-from jsonschema.validators import extend
+from invenio_rest.errors import RESTValidationError
 
-from cap.modules.experiments.validators import (validate_cadi_id,
-                                                validate_cms_trigger,
-                                                validate_das_path)
 
-deposit_validators = dict(Draft4Validator.VALIDATORS)
+class RecordValidationError(RESTValidationError):
+    """Record validation error exception."""
 
-# deposit_validators['x-validate-cms-trigger'] = validate_cms_trigger
-# deposit_validators['x-validate-das-path'] = validate_das_path
-# deposit_validators['x-validate-cadi-id'] = validate_cadi_id
+    code = 400
 
-DepositValidator = extend(Draft4Validator, validators=deposit_validators)
-NoRequiredValidator = extend(Draft4Validator,
-                             validators={'required': lambda v, r, i, s: None})
+    description = "Validation error. Try again with valid data"
+
+    def __init__(self, description, errors=None, **kwargs):
+        """Initialize exception."""
+        super(RecordValidationError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+        self.errors = errors
