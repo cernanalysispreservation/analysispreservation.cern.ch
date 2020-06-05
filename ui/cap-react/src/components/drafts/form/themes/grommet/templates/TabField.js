@@ -206,10 +206,9 @@ class TabField extends React.Component {
                 style={{
                   display: "grid",
                   padding: "10px",
-                  width: "100%",
-                  height: "100%"
+                  width: "100%"
                 }}
-                className="justify-large"
+                className="justify-large tabs-scroll"
               >
                 <Box
                   className="rjsf xlarge_box"

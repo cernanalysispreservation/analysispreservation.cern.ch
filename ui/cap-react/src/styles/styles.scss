@@ -351,6 +351,9 @@ label {
 
 // xsmall
 @media only screen and (min-width: 320px) {
+  .tabs-scroll{
+    height:100% !important;
+  }
 
   .small-row-large-column{
     flex-direction: column !important;
@@ -613,6 +616,9 @@ label {
 
 // xlarge
 @media only screen and (min-width: 1400px) {
+  .tabs-scroll{
+    height:1vh !important;
+  }
   .lg-column {
     flex-direction: row !important;
   }
