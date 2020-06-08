@@ -5,34 +5,73 @@ import { connect } from "react-redux";
 
 import Anchor from "grommet/components/Anchor";
 import Box from "grommet/components/Box";
-import AppsIcon from "grommet/components/icons/base/Apps";
+import {
+  AiOutlineArrowLeft,
+  AiOutlineFolderOpen,
+  AiOutlineFolder
+} from "react-icons/ai";
 
 import EditableTitle from "./EditableTitle";
 
 class DraftDefaultHeader extends React.Component {
   render() {
     if (this.props.error && this.props.error.status == 403) return null;
-
     return (
       <Box flex={true} direction="row">
-        <Box direction="row" flex={true} wrap={false}>
-          <Box align="center">
+        <Box direction="row" flex={true} wrap={false} responsive={false}>
+          <Box align="center" justify="center" style={{ padding: "12px" }}>
             <Anchor
-              path={{ path: `/drafts/${this.props.draft_id}`, index: true }}
-              data-tip="Overview"
+              path={{ path: `/` }}
+              data-tip="Dashboard"
               data-place="right"
             >
-              <AppsIcon />
+              <AiOutlineArrowLeft
+                style={{ height: "24px", width: "24px", color: "black" }}
+              />
             </Anchor>
           </Box>
           <Box
-            pad="small"
             justify="center"
             flex={true}
             wrap={true}
             separator="left"
+            className="align-center-md"
+            pad={{ horizontal: "small" }}
           >
             <EditableTitle />
+          </Box>
+          <Box align="center" justify="center" pad={{ horizontal: "small" }}>
+            {this.props.expanded ? (
+              <Box
+                onClick={this.props.onClick}
+                direction="row"
+                responsive={false}
+                justify="center"
+                align="center"
+              >
+                <Box margin={{ right: "small" }}>
+                  <AiOutlineFolderOpen
+                    style={{ height: "24px", width: "24px", color: "black" }}
+                  />
+                </Box>
+                Files
+              </Box>
+            ) : (
+              <Box
+                onClick={this.props.onClick}
+                direction="row"
+                responsive={false}
+                justify="center"
+                align="center"
+              >
+                <Box margin={{ right: "small" }}>
+                  <AiOutlineFolder
+                    style={{ height: "24px", width: "24px", color: "black" }}
+                  />
+                </Box>
+                Files
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
@@ -45,7 +84,9 @@ DraftDefaultHeader.propTypes = {
   id: PropTypes.string,
   error: PropTypes.object,
   draft_id: PropTypes.string,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
+  expanded: PropTypes.bool,
+  onClick: PropTypes.func
 };
 
 function mapStateToProps(state) {

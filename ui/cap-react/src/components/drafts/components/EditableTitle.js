@@ -73,6 +73,7 @@ class EditableTitle extends React.Component {
         pad="none"
         responsive={false}
         className="jst-md-center"
+        aligm="center"
       >
         <Label margin="none" direction="row">
           <input
@@ -96,7 +97,13 @@ class EditableTitle extends React.Component {
         </Box>
       </Box>
     ) : (
-      <Box flex={true} direction="row" wrap={false}>
+      <Box
+        flex={true}
+        direction="row"
+        wrap={false}
+        className="jst-md-center"
+        justify="start"
+      >
         <Box
           align="center"
           key="draft-title"

@@ -12,6 +12,7 @@ import { Anchor, Box } from "grommet";
 import ReactTooltip from "react-tooltip";
 
 import TrashIcon from "grommet/components/icons/base/Trash";
+import AppsIcon from "grommet/components/icons/base/Apps";
 
 // Actions
 import { toggleActionsLayer } from "../../actions/draftItem";
@@ -41,6 +42,27 @@ class DraftsItemNav extends React.Component {
       >
         <Box className="md-row" flex>
           <ReactTooltip />
+          <Anchor
+            path={{ path: `/drafts/${draft_id}`, index: true }}
+            data-tip="Overview"
+            data-place="right"
+          >
+            <Box
+              justify="center"
+              align="center"
+              pad="small"
+              colorIndex={
+                matchPath(this.props.location.pathname, {
+                  path: "/drafts/:draft_id",
+                  exact: true
+                })
+                  ? "light-1"
+                  : null
+              }
+            >
+              <AppsIcon />
+            </Box>
+          </Anchor>
           <Anchor
             path={`/drafts/${draft_id}/edit`}
             data-tip="Edit metadata"

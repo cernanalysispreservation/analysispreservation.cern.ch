@@ -17,7 +17,10 @@ class DraftHeader extends React.Component {
         direction="row"
         separator="bottom"
       >
-        <DraftDefaultHeader />
+        <DraftDefaultHeader
+          expanded={this.props.expanded}
+          onClick={this.props.expandCollapse}
+        />
         <DraftActionsLayer />
       </Box>
     );
@@ -25,7 +28,9 @@ class DraftHeader extends React.Component {
 }
 
 DraftHeader.propTypes = {
-  formRef: PropTypes.object
+  formRef: PropTypes.object,
+  expanded: PropTypes.bool,
+  expandCollapse: PropTypes.func
 };
 
 export default DraftHeader;

@@ -16,6 +16,7 @@ import DraftPreview from "./DraftPreview";
 import DraftEditor from "./DraftEditor";
 
 import Sidebar from "./components/DepositSidebar";
+import RouteGuard from "../RouteGuard";
 
 import PermissionDenied from "../errors/403";
 
@@ -30,8 +31,10 @@ class DraftsItemIndex extends React.Component {
 
     // Create the ref for the form
     this.formRef = React.createRef();
+    this.state = {
+      expanded: false
+    };
   }
-
   componentDidMount() {
     let { draft_id } = this.props.match.params;
 
@@ -54,12 +57,39 @@ class DraftsItemIndex extends React.Component {
 
     return (
       <Box flex={true} wrap={false} colorIndex="grey-3">
-        <DraftHeader formRef={this.formRef} />
-        <Box flex={true} direction="row">
+        <RouteGuard
+          when={true}
+          navigate={path => this.props.history.push(path)}
+          shouldBlockNavigation={location => {
+            if (!location.pathname.startsWith("/drafts")) {
+              return true;
+            }
+            return false;
+          }}
+        />
+        <DraftHeader
+          formRef={this.formRef}
+          expanded={this.state.expanded}
+          expandCollapse={() =>
+            this.setState({ expanded: !this.state.expanded })
+          }
+        />
+        <Box
+          flex={true}
+          className="drafts-index-container"
+          style={{ position: "relative" }}
+        >
           <DraftsItemNav />
 
-          <Box flex={true} direction="row" className="lg-column">
-            <Box flex={true} colorIndex="light-1" style={{ margin: "5px" }}>
+          <Box flex={true} className="lg-column">
+            <Box
+              flex={true}
+              colorIndex="light-1"
+              style={{
+                margin: "5px"
+              }}
+              responsive={false}
+            >
               <Switch>
                 <Route
                   exact
@@ -88,7 +118,16 @@ class DraftsItemIndex extends React.Component {
                 />
               </Switch>
             </Box>
-            <Sidebar />
+            <Box colorIndex="light-1">
+              <Box
+                colorIndex="light-1"
+                className={
+                  this.state.expanded ? "full-sidebar" : "hide-sidebar"
+                }
+              >
+                <Sidebar />
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -104,7 +143,8 @@ DraftsItemIndex.propTypes = {
   message: PropTypes.string,
   draft_id: PropTypes.string,
   id: PropTypes.string,
-  recid: PropTypes.string
+  recid: PropTypes.string,
+  history: PropTypes.object
 };
 
 function mapStateToProps(state) {

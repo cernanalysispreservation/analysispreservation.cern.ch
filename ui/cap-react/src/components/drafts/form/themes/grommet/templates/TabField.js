@@ -120,9 +120,7 @@ class TabField extends React.Component {
       <Box
         flex={true}
         style={{
-          display: "grid",
-          justifyContent: this.options && this.options.full ? " " : "center",
-          maxWidth: "100%"
+          display: "grid"
         }}
       >
         <Box>
@@ -208,7 +206,7 @@ class TabField extends React.Component {
                   padding: "10px",
                   width: "100%"
                 }}
-                className="justify-large tabs-scroll"
+                className="justify-large  tab-scroll"
               >
                 <Box
                   className="rjsf xlarge_box"
