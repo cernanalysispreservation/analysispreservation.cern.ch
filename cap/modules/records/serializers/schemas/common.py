@@ -39,6 +39,10 @@ LABELS = {
         'path': 'metadata.basic_info.cadi_id',
         'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
     },
+    'cadi_id_': {
+        'path': 'metadata.analysis_context.cadi_id',
+        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    },
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
     #        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'

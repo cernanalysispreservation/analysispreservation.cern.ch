@@ -30,6 +30,9 @@
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
       },
+      "control_number": {
+        "type": "string"
+      },
       "$ana_type": {
         "type": "string"
       },
@@ -83,7 +86,7 @@
             "description":"If you don't have a CADI entry number yet, please fill this field with the title of the analysis and the applicable references (Analysis Note numbers, etc.)",
             "title":"1.5. Title and references (if CADI number not available)"
           },
-          "next_deadline_data":{
+          "next_deadline_date":{
             "type":"string",
             "format": "date",
             "description":"Please cite the preapproval date (if it has been set), or the closest next deadline (approval, freezing, etc.). It defaults to one week (assuming you fill it when freezing for preapproval)",
@@ -109,13 +112,13 @@
           "aware_twiki":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "description":"The main Statistics Committee TWiki page. The Frequently Asked Questions. The statistics-related references",
+            "description":"The main Statistics Committee <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatisticsCommittee'>TWiki</a> page. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/StatCom-FAQ'>Frequently Asked Questions</a>. The <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatisticsReferences'>statistics-related references</a>.",
             "title":"2.1. Are you aware that the Statistics Committee has a TWiki page which links a number of short documents describing recommendations for statistical techniques?"
           },
           "aware_sc_answer":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "description":"You can send your questions to the Statistics Discussions Hypernews forum, or to the Committee's mailing list cms-statistics-committee@cern.ch.",
+            "description":"You can send your questions to the <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/statistics.html'>Statistics Discussions Hypernews forum</a>, or to the Committee's mailing list cms-statistics-committee@cern.ch.",
             "title":"2.2. Are you aware that the Statistics Committee will make an effort to promptly answer your question on statistics issues?"
           },
           "hn_subscription":{
@@ -143,7 +146,7 @@
           "read_sc_twiki":{
             "type":"string",
             "enum": ["Yes", "No"],
-            "title":"3.1. Have you read the SC TWiki page on MVA recommendations?"
+            "title":"3.1. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/StatComRec-Selection'>SC TWiki page on MVA recommendations</a>?"
           },
           "mva_use":{
             "type":"string",
@@ -857,7 +860,7 @@
           "discovery_twiki": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "description": "Page on Search Procedures, page on Sensitivity Calculations, page on Look-Elsewhere Effect.",
+            "description": "Page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SearchProcedures'>Search Procedures</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/SensitivityCalculations'>Sensitivity Calculations</a>, page on <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/LookElsewhereEffect'>Look-Elsewhere Effect</a>.",
             "title": "6.1. Have you read the discovery-related TWiki pages on Search Procedures, Sensitivity Calculations, and Look-Elsewhere Effect (if applicable)?"
           },
           "discovery_related_statements": {
@@ -929,7 +932,7 @@
           "twiki": {
             "type": "string",
             "enum": ["Yes", "No"],
-            "title": "7.2. Have you read the SC TWiki page on recommendations for unfolding techniques?"
+            "title": "7.2. Have you read the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/view/CMS/ScrecUnfolding'>SC TWiki page on recommendations for unfolding techniques</a>?"
           },
           "correlation_neglect": {
             "type": "string",

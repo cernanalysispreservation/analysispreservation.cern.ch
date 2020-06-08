@@ -12,6 +12,9 @@ import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
 import Form from "react-jsonschema-form";
 
+import yaml from "js-yaml";
+import AceEditor from "react-ace";
+
 class JSONShemaPreviewer extends React.Component {
   constructor(props) {
     super(props);
@@ -23,31 +26,42 @@ class JSONShemaPreviewer extends React.Component {
 
   render() {
     return (
-      <Box>
-        {this.props.schema ? (
-          <Form
-            ref={form => {
-              this.form = form;
-            }}
-            schema={this.props.schema}
-            FieldTemplate={FieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            showErrorList={false}
-            widgets={widgets}
-            fields={fields}
-            uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
-            liveValidate={false}
-            noValidate={true}
-            onError={() => {}}
-            formData={this.props.formData}
-            onBlur={() => {}}
-            onChange={this.props.onChange}
-            onSubmit={this.props.onSubmit}
-          >
-            {this.props.children}
-          </Form>
-        ) : null}
+      <Box flex={true}>
+        {
+          this.props.schemaType.name && 
+          this.props.schemaType.name == "cms-stats-questionnaire" ?
+            <AceEditor
+              mode="yaml"
+              theme="github"
+              width="100%"
+              name="UNIQUE_ID_OF_DIV"
+              value={yaml.safeDump(this.props.formData)}
+              editorProps={{ $blockScrolling: true }}
+            />
+            : this.props.schema ? (
+              <Form
+                ref={form => {
+                  this.form = form;
+                }}
+                schema={this.props.schema}
+                FieldTemplate={FieldTemplate}
+                ObjectFieldTemplate={ObjectFieldTemplate}
+                ArrayFieldTemplate={ArrayFieldTemplate}
+                showErrorList={false}
+                widgets={widgets}
+                fields={fields}
+                uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
+                liveValidate={false}
+                noValidate={true}
+                onError={() => { }}
+                formData={this.props.formData}
+                onBlur={() => { }}
+                onChange={this.props.onChange}
+                onSubmit={this.props.onSubmit}
+              >
+                {this.props.children}
+              </Form>
+            ) : null}
       </Box>
     );
   }

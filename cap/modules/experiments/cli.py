@@ -117,11 +117,12 @@ def keywords(file):
     click.secho("Keywords extracted and saved.", fg='green')
 
 
-def _questionnaire_data(data):
+def _questionnaire_data(data, title=None):
     return {
         '$ana_type': 'cms-stats-questionnaire',
-        'general_title':
-            f'{data.get("analysis_context").get("1.5 Title/References")}',
+        # 'general_title':
+        #     title if title else
+        #     f'{data.get("analysis_context").get("1.5 Title/References")}',
         '_user_edited': False,
         "analysis_context": data["analysis_context"],
         "general_information": data["general_information"],
@@ -138,9 +139,7 @@ def _questionnaire_data(data):
 
 
 @cms.command('questions')
-@click.option('--file', '-f',
-              type=click.Path(exists=True),
-              required=True)
+@click.option('--file', '-f', type=click.Path(exists=True), required=True)
 @with_appcontext
 def questionnaires(file):
     """Load and save CMS questionnaire data."""
@@ -151,11 +150,16 @@ def questionnaires(file):
 
             for answer in answers:
                 try:
-                    extracted = remove_none_keys(_questionnaire_data(answer))
-                    deposit = CAPDeposit.create(
-                        data=extracted,
-                        owner=None
-                    )
+                    title = f"Statistics Questionnaire for " \
+                            f"{answer['analysis_context']['cadi_id']}" \
+                                if answer['analysis_context']['cadi_id'] \
+                                else None
+                    extracted = remove_none_keys(
+                        _questionnaire_data(answer, title=title))
+                    if title:
+                        extracted["general_title"] = title
+                    deposit = CAPDeposit.create(data=extracted, owner=None)
+
                     # give read access to members of CMS experiment
                     deposit._add_experiment_permissions(
                         'CMS',
@@ -165,10 +169,18 @@ def questionnaires(file):
                     deposit.commit()
                     click.secho(
                         f"Success: {answer['_general_info']['serial']} - "
-                        f"{answer['_general_info']['user']}", fg='green')
+                        f"{answer['_general_info']['user']}",
+                        fg='green')
+                    click.secho(f"{title}",
+                                fg='yellow')
 
-                except DepositValidationError:
+                except DepositValidationError as e:
+                    click.secho("---------------")
                     click.secho(f"Validation Error", fg='red')
+                    for err in e.errors:
+                        click.secho(f"{err.to_dict()}", fg='red')
+                    click.secho("---------------")
+
                     pass
 
         db.session.commit()

@@ -260,6 +260,9 @@ CAP_FACETS = {
             'terms': {
                 'size': 30,
                 'script': 'doc.containsKey("cadi_id") ? doc["basic_info.cadi_id"].value?.substring(0,3) : null'  # noqa
+            },
+            'meta': {
+                'title': 'CMS Working Group'
             }
         },
         'facet_cadi_status': {

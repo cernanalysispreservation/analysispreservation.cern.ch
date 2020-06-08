@@ -121,10 +121,11 @@ class PublishedPreview extends React.Component {
                 }
               />
               <Box flex={true} direction="row" justify="between">
-                <Box flex={false} pad="medium">
+                <Box flex={true} pad="medium">
                   <JSONSchemaPreviewer
                     formData={this.props.metadata.toJS()}
                     schema={_schema}
+                    schemaType={this.props.schemaType.toJS()}
                     uiSchema={{}}
                     onChange={() => {}}
                   >
@@ -171,6 +172,7 @@ const mapStateToProps = state => {
     metadata: state.published.get("metadata"),
     files: state.published.get("files"),
     schemas: state.published.get("schemas"),
+    schemaType: state.published.get("schema"),
     status: state.published.get("status")
   };
 };

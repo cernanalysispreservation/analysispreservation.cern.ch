@@ -398,7 +398,7 @@ def extract_questionnaires_from_excel(file):
             "wg": ans['1.3 Working Group'],
             "cadi_id": ans['1.4 CADI ID'],
             "title_references": ans['1.5 Title/References'],
-            "next_deadline_data": ans['1.6 Next deadline date'],
+            "next_deadline_date": ans['1.6 Next deadline date'],
             "analysis_summary": ans['1.7 Analysis Summary'],
             "related_cadi_ids": ans['1.8 Related CADI IDs']
         }
