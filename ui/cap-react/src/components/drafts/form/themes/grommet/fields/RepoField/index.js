@@ -17,7 +17,11 @@ import RepoActions from "./RepoActions";
 
 // eslint-disable-next-line no-useless-escape
 const regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
-const acceptedResources = ["github.com", "gitlab.cern.ch", "gitlab-test.cern.ch"];
+const acceptedResources = [
+  "github.com",
+  "gitlab.cern.ch",
+  "gitlab-test.cern.ch"
+];
 
 class RepoField extends React.Component {
   constructor(props) {
@@ -38,8 +42,14 @@ class RepoField extends React.Component {
   }
 
   _cleanRepo = () => {
-    this.setState({ formData: "", repo: null, error: null, errors: null, data: null });
-  }
+    this.setState({
+      formData: "",
+      repo: null,
+      error: null,
+      errors: null,
+      data: null
+    });
+  };
 
   _onChange = event => {
     let value = event.target.value;
@@ -89,15 +99,17 @@ class RepoField extends React.Component {
           },
           loading: false,
           data: null
-        })
+        });
         return;
       }
 
-      if (filepath) url = `${url}${filepath[0] == "/" ? filepath : "/" + filepath}`;
+      if (filepath)
+        url = `${url}${filepath[0] == "/" ? filepath : "/" + filepath}`;
       else {
         this.setState({
           errors: {
-            message: "You are trying to upload a file without filepath. Please add one above or upload the whole repository"
+            message:
+              "You are trying to upload a file without filepath. Please add one above or upload the whole repository"
           },
           loading: false,
           data: null
@@ -108,13 +120,13 @@ class RepoField extends React.Component {
 
     this.setState({ loading: true, errors: null, data: null }, () => {
       this.props
-        .uploadViaRepoUrl(
-          this.props.id,
-          url,
-          webhook,
-          event_type,
-          { resource, owner, name, ref, filepath }
-        )
+        .uploadViaRepoUrl(this.props.id, url, webhook, event_type, {
+          resource,
+          owner,
+          name,
+          ref,
+          filepath
+        })
         .then(data =>
           this.setState({
             data: data.data,
@@ -133,13 +145,19 @@ class RepoField extends React.Component {
   };
 
   _updateRepo = (key, value) => {
-    this.setState({ repo: { ...this.state.repo, ...{ [key]: value } } })
+    this.setState({ repo: { ...this.state.repo, ...{ [key]: value } } });
   };
 
   render() {
     let parts = [
       <Box key="repoUploadInput" pad="small" direction="row">
-        <Box flex={true} pad={{ horizontal: "small" }} direction="row" align="center" justify="between">
+        <Box
+          flex={true}
+          pad={{ horizontal: "small" }}
+          direction="row"
+          align="center"
+          justify="between"
+        >
           <Box flex={true}>
             <TextInput
               key="repoUploadInputInput"
@@ -148,12 +166,16 @@ class RepoField extends React.Component {
               value={this.state.formData}
               placeHolder={this.props.uiSchema["ui:placeholder"]}
               onDOMChange={this._onChange}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 if (event.keyCode === 13) e.preventDefault();
               }}
             />
           </Box>
-          <Box margin={{ left: "small" }} onClick={this._cleanRepo} flex={false}>
+          <Box
+            margin={{ left: "small" }}
+            onClick={this._cleanRepo}
+            flex={false}
+          >
             <CloseIcon size="xsmall" />
           </Box>
         </Box>
@@ -193,12 +215,14 @@ class RepoField extends React.Component {
     else if (this.state.errors) {
       _message = {
         status: "critical",
-        message: `${this.state.errors.message || "Something happened when creating the upload task"}`
+        message: `${this.state.errors.message ||
+          "Something happened when creating the upload task"}`
       };
     } else if (this.state.data) {
       _message = {
         status: "ok",
-        message: "Upload repository/file task was successfully created. It will show up on the file list on the right when the background task is finished."
+        message:
+          "Upload repository/file task was successfully created. It will show up on the file list on the right when the background task is finished."
       };
     }
 
@@ -210,26 +234,57 @@ class RepoField extends React.Component {
           separator="all"
           key="message"
         >
-          <Box margin={{vertical: "small"}} direction="row" wrap={false} pad={{ between: "small"}}>
+          <Box
+            margin={{ vertical: "small" }}
+            direction="row"
+            wrap={false}
+            pad={{ between: "small" }}
+          >
             <StatusIcon size="small" value={_message.status} />
             <Label size="small">{_message.message}</Label>
           </Box>
-          {
-            _message.status == "critical" && _message.message.indexOf("you don't have access") > -1 && (
-              <Box margin={{bottom: "small"}} colorIndex="light-2" direction="row" wrap="false" pad={{ between: "small", horizontal: "small", vertical: "small"}} align="center" >
-                <TipIcon size="small"/>
-                <span>It is possible that we don't not have permission to fetch the repository/file. Please connect your Github/CERN Gitlab account with your CAP account to give us permission to fetch it. This can be done from your profile settings page <a href="/settings#integrations" target="_blank">here</a> </span>
+          {_message.status == "critical" &&
+            _message.message.indexOf("you don't have access") > -1 && (
+              <Box
+                margin={{ bottom: "small" }}
+                colorIndex="light-2"
+                direction="row"
+                wrap="false"
+                pad={{
+                  between: "small",
+                  horizontal: "small",
+                  vertical: "small"
+                }}
+                align="center"
+              >
+                <TipIcon size="small" />
+                <span>
+                  It is possible that we don't not have permission to fetch the
+                  repository/file. Please connect your Github/CERN Gitlab
+                  account with your CAP account to give us permission to fetch
+                  it. This can be done from your profile settings page{" "}
+                  <a href="/settings#integrations" target="_blank">
+                    here
+                  </a>{" "}
+                </span>
               </Box>
-            )
-          }
-          {
-            _message.status == "ok" && (
-              <Box margin={{bottom: "small"}} colorIndex="light-2" direction="row" wrap="false" pad={{ between: "small", horizontal: "small", vertical: "small"}} align="center" >
-                <TipIcon size="small"/>
-                <span><strong>BETA</strong> You might need to refresh manually the list from the <RefreshIcon size="xsmall" /> button on the right</span>
-              </Box>
-            )
-          }
+            )}
+          {_message.status == "ok" && (
+            <Box
+              margin={{ bottom: "small" }}
+              colorIndex="light-2"
+              direction="row"
+              wrap="false"
+              pad={{ between: "small", horizontal: "small", vertical: "small" }}
+              align="center"
+            >
+              <TipIcon size="small" />
+              <span>
+                <strong>BETA</strong> You might need to refresh manually the
+                list from the <RefreshIcon size="xsmall" /> button on the right
+              </span>
+            </Box>
+          )}
         </Box>
       );
 
@@ -240,7 +295,9 @@ class RepoField extends React.Component {
 RepoField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object
+  formData: PropTypes.object,
+  uploadViaRepoUrl: PropTypes.func,
+  id: PropTypes.string
 };
 
 function mapStateToProps(state) {
