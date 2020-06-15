@@ -38,7 +38,8 @@ const initialState = Map({
   schemas: null,
   status: null,
   type: null,
-  updated: null
+  updated: null,
+  previewFields: []
 });
 
 export default function draftsReducer(state = initialState, action) {
@@ -252,7 +253,7 @@ export default function draftsReducer(state = initialState, action) {
     // Draft integrations
     case filesActions.CREATE_WEBHOOK_SUCCESS:
       return state.set("webhooks", [...state.get("webhooks"), action.repo]);
-    
+
     // Draft workflows
     case workflowsActions.WORKFLOWS_RECORD_SUCCESS:
       return state.set("workflows", fromJS(action.workflows));
@@ -265,6 +266,9 @@ export default function draftsReducer(state = initialState, action) {
         ["workflows_items", action.workflow_id, "files"],
         action.data.files
       );
+    case draftItemActions.UPDATE_PREVIEW_FIELDS_ARRAY:
+      return state.set("previewFields", action.payload);
+
     default:
       return state;
   }

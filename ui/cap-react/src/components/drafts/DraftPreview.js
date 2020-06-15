@@ -8,10 +8,17 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 
 import cogoToast from "cogo-toast";
-import { EditAnchor, Anchors } from "../drafts/components/Buttons";
+import { EditAnchor } from "../drafts/components/Buttons";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import SectionBox from "../partials/SectionBox";
+import InfoHeaderBox from "../partials/InfoHeaderBox";
+import InfoArrayBox from "../partials/InfoArrayBox";
+import DraftSchemaProgress from "./components/DraftSchemaProgress";
+import PermissionBox from "../partials/PermissionBox";
+
+import { BsCodeSlash } from "react-icons/bs";
+import { MdAttachFile } from "react-icons/md";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -38,6 +45,17 @@ const transformSchema = schema => {
   return schema;
 };
 
+const calculateCollaborators = access => {
+  if (!access) return "-";
+
+  const adminUsers = access["deposit-admin"].users;
+  const readUsers = access["deposit-read"].users;
+  const updateUsers = access["deposit-update"].users;
+  const allEmails = [...new Set([...adminUsers, ...readUsers, ...updateUsers])];
+
+  return allEmails.length;
+};
+
 class DraftPreview extends React.Component {
   showToaster(error) {
     cogoToast.error(error, {
@@ -46,6 +64,34 @@ class DraftPreview extends React.Component {
   }
 
   render() {
+    let infoData = [
+      {
+        title: "revision",
+        number: this.props.revision,
+        type: "info"
+      },
+      {
+        title: "collaborators",
+        number: calculateCollaborators(this.props.access),
+        type: "collaboration"
+      },
+      {
+        title: "repositories",
+        number: this.props.webhooks && this.props.webhooks.length,
+        type: "code"
+      },
+      {
+        title: "files",
+        number:
+          this.props.files && Object.entries(this.props.files.toJS()).length,
+        type: "file"
+      },
+      {
+        title: "schema version",
+        number: this.props.schema ? this.props.schema.version : "-",
+        type: "info"
+      }
+    ];
     let _schema =
       this.props.schemas && this.props.schemas.schema
         ? transformSchema(this.props.schemas.schema)
@@ -58,15 +104,49 @@ class DraftPreview extends React.Component {
         pad="small"
         direction="row"
         wrap={true}
+        colorIndex="light-2"
+        justify="center"
       >
         {this.props.error ? this.showToaster(this.props.error.message) : null}
         <Box
           flex={true}
           pad={{ between: "medium" }}
-          direction="row"
-          className="width-100"
+          direction="column"
+          style={{ width: "100%", maxWidth: "1200px" }}
         >
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+          <Box
+            direction="row"
+            responsive={false}
+            justify="between"
+            pad={{ horizontal: "medium" }}
+          >
+            {infoData.map((item, index) => (
+              <InfoHeaderBox key={index} {...item} />
+            ))}
+          </Box>
+          <Box pad={{ horizontal: "medium" }}>
+            <SectionBox
+              header="Metadata"
+              headerActions={
+                this.props.canUpdate ? (
+                  <EditAnchor draft_id={this.props.draft_id} />
+                ) : null
+              }
+              body={
+                this.props.schemas && this.props.schemas.schema ? (
+                  <Box flex={true} pad="small">
+                    <DraftSchemaProgress
+                      fields={this.props.fields}
+                      schema={_schema}
+                      uiSchema={this.props.schemas.uiSchema || {}}
+                      draft_id={this.props.match.params.draft_id}
+                    />
+                  </Box>
+                ) : null
+              }
+            />
+          </Box>
+          <Box pad={{ horizontal: "medium" }} id="hide-div">
             <SectionBox
               header="Metadata"
               headerActions={
@@ -78,7 +158,7 @@ class DraftPreview extends React.Component {
                 this.props.schemas && this.props.schemas.schema ? (
                   <Box flex={true} pad="small">
                     <JSONSchemaPreviewer
-                      formData={this.props.formData} // TOFIX: change to get from metadata
+                      formData={this.props.metadata}
                       schema={_schema}
                       uiSchema={this.props.schemas.uiSchema || {}}
                       onChange={() => {}}
@@ -90,108 +170,78 @@ class DraftPreview extends React.Component {
               }
             />
           </Box>
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+
+          <Box pad={{ horizontal: "medium" }}>
             <SectionBox
-              header="Repositories"
-              headerActions={
-                <Anchors
-                  draft_id={this.props.draft_id}
-                  tab="integrations"
-                  label={this.props.canUpdate ? "Manage" : "Show"}
-                />
-              }
+              header="Connected Repositories"
+              headerActions={null}
               body={
-                <Box pad="small">
-                  <Box
-                    key="header"
-                    direction="row"
-                    wrap={false}
-                    justify="between"
-                    pad={{ between: "small" }}
-                    margin={{ bottom: "small" }}
-                  >
-                    <Box flex={false}>
-                      <strong>Source</strong>
-                    </Box>
-                    <Box flex={true}>
-                      <strong>Repository</strong>
-                    </Box>
-                    <Box flex={false}>
-                      <strong>Branch/Ref</strong>
-                    </Box>
+                this.props.webhooks && this.props.webhooks.length > 0 ? (
+                  <Box flex={true} pad="small">
+                    <InfoArrayBox
+                      items={this.props.webhooks}
+                      type="repositories"
+                    />
                   </Box>
-                  {this.props.repositories && this.props.repositories.length ? (
-                    this.props.repositories.map((repo, index) => (
-                      <Box
-                        key={index}
-                        direction="row"
-                        wrap={false}
-                        justify="between"
-                        pad={{ between: "small" }}
-                      >
-                        <Box flex={false}>
-                          {repo.host.indexOf("github") > -1
-                            ? "Github"
-                            : "Gitlab"}
-                        </Box>
-                        <Box flex={true}>
-                          {repo.owner}/{repo.name}
-                        </Box>
-                        <Box flex={false}>{repo.branch}</Box>
-                      </Box>
-                    ))
-                  ) : (
-                    <Box>No repositories connected</Box>
-                  )}
-                </Box>
+                ) : (
+                  <Box align="center">
+                    <Box
+                      colorIndex="light-2"
+                      style={{ borderRadius: "50%" }}
+                      pad="small"
+                    >
+                      <BsCodeSlash size={25} />
+                    </Box>
+                    <Box pad="small">No connected repositories yet</Box>
+                  </Box>
+                )
               }
             />
+          </Box>
+
+          <Box pad={{ horizontal: "medium" }}>
             <SectionBox
-              header="Workflows"
-              headerActions={
-                <Anchors
-                  draft_id={this.props.draft_id}
-                  label={this.props.canUpdate ? "Manage" : "Show"}
-                />
-              }
+              header="Uploaded Files & Repositories"
+              headerActions={null}
               body={
-                <Box pad="small">
-                  <Box
-                    key="header"
-                    direction="row"
-                    wrap={false}
-                    justify="between"
-                    pad={{ between: "small" }}
-                    margin={{ bottom: "small" }}
-                  >
-                    <Box flex={false}>
-                      <strong>Engine</strong>
-                    </Box>
-                    <Box flex={true}>
-                      <strong>Workflow Name</strong>
-                    </Box>
-                    <Box flex={false}>
-                      <strong>Status</strong>
-                    </Box>
+                this.props.files &&
+                Object.entries(this.props.files.toJS()).length > 0 ? (
+                  <Box flex={true} pad="small">
+                    <InfoArrayBox
+                      type="files"
+                      items={Object.entries(this.props.files.toJS())}
+                    />
                   </Box>
-                  {this.props.workflows && this.props.workflows.length ? (
-                    this.props.workflows.map((workflow, index) => (
-                      <Box
-                        key={index}
-                        direction="row"
-                        wrap={false}
-                        justify="between"
-                        pad={{ between: "small" }}
-                      >
-                        <Box flex={false}>{workflow.engine}</Box>
-                        <Box flex={true}>{workflow.name}</Box>
-                        <Box flex={false}>{workflow.status}</Box>
-                      </Box>
-                    ))
-                  ) : (
-                    <Box>No workflows yet</Box>
-                  )}
-                </Box>
+                ) : (
+                  <Box align="center">
+                    <Box
+                      colorIndex="light-2"
+                      style={{ borderRadius: "50%" }}
+                      pad="small"
+                    >
+                      <MdAttachFile size={25} />
+                    </Box>
+                    <Box pad="small">No uploaded files/repositories yet</Box>
+                  </Box>
+                )
+              }
+            />
+          </Box>
+
+          <Box pad={{ horizontal: "medium" }}>
+            <SectionBox
+              header="Collaborators"
+              headerActions={null}
+              body={
+                this.props.access ? (
+                  <Box flex={true} pad="small">
+                    <PermissionBox access={this.props.access} />
+                  </Box>
+                ) : (
+                  <Box align="center">
+                    <Box pad="small">There are no collaborators yet.</Box>
+                  </Box>
+                )
               }
             />
           </Box>
@@ -212,25 +262,36 @@ DraftPreview.propTypes = {
   fetchAndAssignSchema: PropTypes.func,
   error: PropTypes.object,
   workflows: PropTypes.array,
-  repositories: PropTypes.array
+  repositories: PropTypes.array,
+  webhooks: PropTypes.array,
+  revision: PropTypes.string,
+  access: PropTypes.object,
+  files: PropTypes.object,
+  schema: PropTypes.object,
+  emptyPreviewFields: PropTypes.func,
+  metadata: PropTypes.object,
+  fields: PropTypes.array
 };
 
 function mapStateToProps(state) {
   return {
     schemas: state.draftItem.get("schemas"),
+    access: state.draftItem.get("access"),
+    schema: state.draftItem.get("schema"),
     // schemasLoading: state.draftItem.get("schemasLoading"),
     canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
     repositories: state.draftItem.get("repositories"),
+    webhooks: state.draftItem.get("webhooks"),
+    files: state.draftItem.get("bucket"),
+    revision: state.draftItem.get("revision"),
+    metadata: state.draftItem.get("metadata"),
+    fields: state.draftItem.get("previewFields"),
     formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
   };
 }
 
-function mapDispatchToProps() {
-  return {};
-}
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(DraftPreview);

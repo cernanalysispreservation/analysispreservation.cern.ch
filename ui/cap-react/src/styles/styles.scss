@@ -310,6 +310,10 @@ label {
   font-size: 1.4em;
 }
 
+#hide-div{
+  display: none
+}
+
 
 
 // xsmall
@@ -392,9 +396,7 @@ label {
     justify-content: center !important;
     align-items: center !important
   }
-  .width-100 {
-    width: 100% !important;
-  }
+  
 
   .sm-order-1 {
     order: 2;

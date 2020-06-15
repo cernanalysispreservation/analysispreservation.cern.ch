@@ -12,18 +12,18 @@ function SectionBox(props) {
   let { headerActions, header = "", body, emptyMessage = null, more } = props;
 
   return (
-    <Box flex={false} margin={{ bottom: "small" }}>
+    <Box flex={false} margin={{ bottom: "small" }} colorIndex="light-1">
       <Box pad="none">
         <Box
           flex={false}
           direction="row"
-          pad={{ vertical: "small" }}
+          pad="small"
           justify="between"
           responsive={false}
         >
           <Heading
-            tag="h5"
-            uppercase={true}
+            tag="h4"
+            // uppercase={true}
             align="start"
             justify="center"
             margin="none"
@@ -38,9 +38,9 @@ function SectionBox(props) {
       </Box>
 
       <Box
-        colorIndex="light-2"
+        colorIndex="light-1"
         flex={false}
-        size={{ height: { max: "large" } }}
+        // size={{ height: { max: "large" } }}
       >
         {body}
       </Box>

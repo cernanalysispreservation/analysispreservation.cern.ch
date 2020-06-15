@@ -51,6 +51,8 @@ export const EDIT_PUBLISHED_ERROR = "EDIT_PUBLISHED_ERROR";
 export const PERMISSIONS_ITEM_REQUEST = "PERMISSIONS_ITEM_REQUEST";
 export const PERMISSIONS_ITEM_SUCCESS = "PERMISSIONS_ITEM_SUCCESS";
 
+export const UPDATE_PREVIEW_FIELDS_ARRAY = "UPDATE_PREVIEW_FIELDS_ARRAY";
+
 export const REMOVE_LOADING = "REMOVE_LOADING";
 
 // TOFIX Consider using a HOC for error handling
@@ -113,6 +115,30 @@ export function toggleFilePreviewEdit(payload = {}) {
     payload
   };
 }
+
+export function updateFieldsArray(fields) {
+  return {
+    type: UPDATE_PREVIEW_FIELDS_ARRAY,
+    payload: fields
+  };
+}
+
+export const updatePreviewFieldsArray = item => (dispatch, getState) => {
+  let state = getState();
+  let previewFields = state.draftItem.get("previewFields");
+  let exists = 0;
+  previewFields.map(field => {
+    if (field.id === item.id) {
+      exists = 1;
+      field.content = item.content;
+    }
+  });
+  if (!exists) {
+    previewFields.push(item);
+  }
+
+  dispatch(updateFieldsArray(previewFields));
+};
 
 export const toggleValidate = () => ({ type: TOGGLE_VALIDATE });
 

@@ -21,7 +21,7 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in uiSchema)) {
     return (
-      <Box flex={true}>
+      <Box flex={true} colorIndex="light-2">
         <Box>
           <FieldHeader title={title} />
         </Box>
@@ -38,7 +38,7 @@ let ObjectFieldTemplate = function(props) {
             {title}
           </Heading>
         </Box>
-        {properties.map(prop => prop.content)}
+        <Box>{properties.map(prop => prop.content)}</Box>
       </Box>
     );
   }
