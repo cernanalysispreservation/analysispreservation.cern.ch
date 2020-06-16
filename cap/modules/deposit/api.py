@@ -39,6 +39,7 @@ from invenio_files_rest.models import (Bucket, FileInstance, ObjectVersion,
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.api import Record
+
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
 from invenio_records_rest.errors import InvalidDataRESTError
@@ -51,6 +52,7 @@ from werkzeug.local import LocalProxy
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import DepositValidator
 from cap.modules.experiments.permissions import exp_need_factory
+from cap.modules.mail.utils import send_mail_published
 from cap.modules.records.api import CAPRecord
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
@@ -217,7 +219,16 @@ class CAPDeposit(Deposit, Reviewable):
                 if file_.data['checksum'] is None:
                     raise MultipartMissingParts()
 
-            return super(CAPDeposit, self).publish(*args, **kwargs)
+            published = super(CAPDeposit, self).publish(*args, **kwargs)
+
+            if current_app.config['CAP_SEND_MAIL']:
+                send_mail_published(
+                    depid=published['_deposit']['id'],
+                    recid=published['_deposit']['pid']['value'],
+                    url=request.host_url
+                )
+
+            return published
 
     @has_status
     @mark_as_action

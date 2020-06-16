@@ -91,8 +91,15 @@ I18N_LANGUAGES = [('fr', _('French'))]
 #: Email address for support.
 SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 #: Disable email sending by default.
-MAIL_DEBUG = False
-MAIL_SUPPRESS_SEND = True
+CAP_SEND_MAIL = True
+
+# For Flask-mail variables, the defaults are used, found here:
+# https://pythonhosted.org/Flask-Mail/#configuring-flask-mail
+
+# Instructions on CERN configuration can be found here:
+# https://espace.cern.ch/mmmservices-help/AccessingYourMailbox/Pages/default.aspx
+# where there are the values for MAIL_TLS, MAIL_SERVER and MAIL_PORT, and
+# MAIL_USERNAME needs the full e-mail e.g. `user@cap.com`
 
 # Accounts
 # ========
