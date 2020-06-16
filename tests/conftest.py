@@ -106,7 +106,8 @@ def default_config():
                 ACCESS_CACHE=None,
                 DEBUG=False,
                 TESTING=True,
-                APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken')
+                APP_GITLAB_OAUTH_ACCESS_TOKEN='testtoken',
+                SUPPORT_EMAIL="analysis-preservation-support@cern.ch")
 
 
 @pytest.fixture(scope='session')
