@@ -32,8 +32,9 @@ class DraftsItemIndex extends React.Component {
     // Create the ref for the form
     this.formRef = React.createRef();
     this.state = {
-      expanded: false
+      expanded: window.innerWidth > 1450
     };
+    this.handleResize = this.handleResize.bind(this);
   }
   componentDidMount() {
     let { draft_id } = this.props.match.params;
@@ -41,6 +42,26 @@ class DraftsItemIndex extends React.Component {
     if (draft_id == this.props.id) return;
     if (draft_id) {
       this.props.getDraftById(draft_id);
+    }
+
+    window.addEventListener("resize", this.handleResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
+  }
+
+  handleResize() {
+    if (window.innerWidth > 1450) {
+      this.setState({
+        expanded: true
+      });
+    }
+
+    if (window.innerWidth <= 1450) {
+      this.setState({
+        expanded: false
+      });
     }
   }
 
