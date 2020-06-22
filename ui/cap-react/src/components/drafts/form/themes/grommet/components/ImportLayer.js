@@ -1,5 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+
+import TextInput from "grommet/components/TextInput";
+import FormField from "grommet/components/FormField";
+import CheckBox from "grommet/components/CheckBox";
+import InputWithButton from "../widgets/components/InputWithButton";
 
 import Box from "grommet/components/Box";
 
@@ -10,8 +16,10 @@ class ImportLayer extends React.Component {
     super(props);
 
     this.state = {
-      layers: [],
-      clipboardData: null
+      query: "",
+      fetchedResults: null,
+      error: null,
+      showTextArea: !this.props.options.listSuggestions
     };
 
     this.uiOptionImport = this.props.options;
@@ -25,15 +33,154 @@ class ImportLayer extends React.Component {
         : "ex.\n\nitem1 \n\nitem2 \n\nitem3\n";
   }
 
+  _fetchQuerySuggestions = () => {
+    let query = this.state.query;
+    let url = this.props.options.listSuggestions;
+
+    axios
+      .get(`${url}${query}`)
+      .then(({ data }) => {
+        this.setState({ fetchedResults: data });
+        this.props.updateAll(data, true);
+      })
+      .catch(err => this.setState({ error: err }));
+  };
+
   render() {
     return (
       <Layer
         flush={true}
         closer={true}
         overlayClose={true}
-        onClose={this._enableImport}
+        onClose={this.props.enableImport}
       >
-        <Box flex={false} size="large" colorIndex="light-2" pad="medium">
+        <Box flex={false} size="xlarge" colorIndex="light-2" pad="medium">
+          {this.props.options.listSuggestions && (
+            <Box
+              pad={{
+                between: "small",
+                vertical: "small",
+                horizontal: "small"
+              }}
+              wrap
+              flex
+            >
+              <Box pad={{ vertical: "small" }}>
+                Provide a pattern to fetch available paths
+              </Box>
+              <Box>
+                <InputWithButton
+                  buttons={
+                    <Box
+                      colorIndex="brand"
+                      pad={{ horizontal: "medium", vertical: "small" }}
+                      onClick={() => this._fetchQuerySuggestions()}
+                      justify="center"
+                    >
+                      fetch
+                    </Box>
+                  }
+                  input={
+                    <FormField>
+                      <TextInput
+                        id="pattern"
+                        name="pattern"
+                        placeHolder="Insert your pattern e.x /dataset/*"
+                        onDOMChange={e => {
+                          this.setState({
+                            query: e.target.value,
+                            fetchedResults: null,
+                            error: null
+                          });
+                          this.props.updateAll(
+                            this.state.fetchedResults || [],
+                            false
+                          );
+                        }}
+                      />
+                    </FormField>
+                  }
+                />
+              </Box>
+              <Box
+                align="center"
+                justify="center"
+                className="import_list_checkboxes"
+              >
+                {this.state.fetchedResults ? (
+                  this.state.fetchedResults.length > 0 ? (
+                    <Box style={{ width: "100%" }}>
+                      <Box
+                        pad={{ vertical: "small" }}
+                        margin={{ bottom: "small" }}
+                      >
+                        <CheckBox
+                          key="Select All"
+                          inline="true"
+                          name="Select All"
+                          label={`Select all (${
+                            this.state.fetchedResults.length
+                          })`}
+                          checked={
+                            this.props.data &&
+                            this.state.fetchedResults.filter(
+                              item => !this.props.data.includes(item)
+                            ).length === 0
+                          }
+                          onChange={() => {
+                            this.props.updateAll(
+                              this.state.fetchedResults,
+                              this.props.data &&
+                                this.state.fetchedResults.filter(
+                                  item => !this.props.data.includes(item)
+                                ).length > 0
+                            );
+                          }}
+                        />
+                      </Box>
+                      <Box
+                        style={{
+                          height: "100%",
+                          maxHeight: "300px",
+                          overflow: "auto"
+                        }}
+                      >
+                        {this.state.fetchedResults.map((item, index) => (
+                          <Box key={index} colorIndex="light-1">
+                            <Box
+                              align="start"
+                              style={{
+                                padding: "5px"
+                              }}
+                              margin={{ right: "small" }}
+                            >
+                              <CheckBox
+                                key={item}
+                                inline="true"
+                                name={item}
+                                label={item}
+                                checked={
+                                  this.props.data &&
+                                  this.props.data.includes(item)
+                                }
+                                onChange={() =>
+                                  this.props.updateClipboard(item)
+                                }
+                              />
+                            </Box>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  ) : this.state.error ? (
+                    <Box>Error message</Box>
+                  ) : (
+                    <Box>Your query did not return results</Box>
+                  )
+                ) : null}
+              </Box>
+            </Box>
+          )}
           <Box
             colorIndex="light-2"
             pad={{
@@ -44,27 +191,28 @@ class ImportLayer extends React.Component {
             wrap={false}
             flex={true}
           >
-            <Box flex={true}>
-              <Box pad={{ vertical: "small" }}>{this.pasteDesctiption}</Box>
+            {this.state.showTextArea && (
               <Box flex={true}>
-                <textarea
-                  value={this.props.data}
-                  rows="20"
-                  placeholder={this.pastePlaceholder}
-                  style={{
-                    borderRadius: "0",
-                    backgroundColor: "#fff",
-                    height: "100%",
-                    width: "100%",
-                    maxWidth: "100%",
-                    minWidth: "100%",
-                    wordBreak: "break-all"
-                  }}
-                  onChange={this.props.onDataChange}
-                />
+                <Box pad={{ vertical: "small" }}>{this.pasteDesctiption}</Box>
+                <Box flex={true}>
+                  <textarea
+                    value={this.props.data}
+                    rows="15"
+                    placeholder={this.pastePlaceholder}
+                    style={{
+                      borderRadius: "0",
+                      backgroundColor: "#fff",
+                      height: "100%",
+                      width: "100%",
+                      maxWidth: "100%",
+                      minWidth: "100%",
+                      wordBreak: "break-all"
+                    }}
+                    onChange={this.props.onDataChange}
+                  />
+                </Box>
               </Box>
-            </Box>
-
+            )}
             <Box>
               <Box
                 flex={false}
@@ -72,17 +220,30 @@ class ImportLayer extends React.Component {
                 direction="row"
                 wrap={false}
                 alignContent="end"
-                justify="end"
+                justify="between"
                 pad={{ between: "small" }}
               >
+                {this.props.options.listSuggestions && (
+                  <Box
+                    colorIndex="light-2"
+                    align="center"
+                    separator="all"
+                    pad={{ horizontal: "medium", vertical: "small" }}
+                    onClick={() =>
+                      this.setState({ showTextArea: !this.state.showTextArea })
+                    }
+                  >
+                    {this.state.showTextArea
+                      ? "Hide List"
+                      : "Add list manually"}
+                  </Box>
+                )}
                 <Box
-                  direction="row"
-                  colorIndex="brand"
-                  wrap={false}
-                  align="end"
+                  colorIndex={this.props.data ? "brand" : "grey-3"}
+                  align="center"
                   separator="all"
-                  style={{ padding: "5px" }}
-                  onClick={this.props.onImport}
+                  pad={{ horizontal: "medium", vertical: "small" }}
+                  onClick={this.props.data ? this.props.onImport : null}
                 >
                   Import
                 </Box>
@@ -99,7 +260,10 @@ ImportLayer.propTypes = {
   data: PropTypes.object,
   options: PropTypes.object,
   onImport: PropTypes.func,
-  onDataChange: PropTypes.func
+  onDataChange: PropTypes.func,
+  updateClipboard: PropTypes.func,
+  enableImport: PropTypes.func,
+  updateAll: PropTypes.func
 };
 
 export default ImportLayer;

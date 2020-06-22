@@ -327,14 +327,14 @@ label {
 }
 
 
-.search_facets .grommetux-check-box__control{
+.search_facets .grommetux-check-box__control, .import_list_checkboxes .grommetux-check-box__control{
   border-radius: 0px !important;
   border: 1px solid #666;
   height:16px !important;
   width:16px !important;
   margin-right: 8px !important;
 }
-.search_facets .grommetux-check-box__control-check{
+.search_facets .grommetux-check-box__control-check, .import_list_checkboxes .grommetux-check-box__control-check{
   height:16px !important;
   width:16px !important;
 

@@ -12,6 +12,7 @@ let FieldHeader = function(props) {
   return (
     <Box
       direction="row"
+      responsive={false}
       margin={props.margin ? props.margin : { vertical: "small" }}
     >
       <Box flex={true} justify="center">
@@ -39,6 +40,7 @@ let FieldHeader = function(props) {
           <Anchor
             alignSelf="center"
             direction="row"
+            responsive={false}
             flex={false}
             wrap={false}
             align="start"
