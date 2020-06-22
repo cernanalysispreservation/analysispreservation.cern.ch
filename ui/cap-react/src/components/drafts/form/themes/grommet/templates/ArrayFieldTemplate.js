@@ -25,7 +25,7 @@ class ArrayFieldTemplate extends React.Component {
 
     this.state = {
       layers: [],
-      clipboardData: null
+      clipboardData: ""
     };
     if ("ui:array" in this.props.uiSchema) {
       this.formRenderType = this.props.uiSchema["ui:array"];
@@ -86,6 +86,51 @@ class ArrayFieldTemplate extends React.Component {
     }
   };
 
+  _updateImportLayerAll = (items = [], add = true) => {
+    let updated = items.map(item => item + "\n");
+
+    if (!this.state.clipboardData) {
+      this.setState({ clipboardData: updated.join(",").replace(/,/g, "") });
+    } else {
+      if (add) {
+        this.setState({
+          clipboardData:
+            this.state.clipboardData +
+            updated
+              .filter(item => !this.state.clipboardData.includes(item))
+              .join(",")
+              .replace(/,/g, "")
+        });
+      } else {
+        let clips = this.state.clipboardData;
+        updated.map(item => {
+          if (this.state.clipboardData.includes(item)) {
+            clips = clips.replace(item, "");
+          }
+        });
+
+        this.setState({
+          clipboardData: clips
+        });
+      }
+    }
+  };
+
+  _updateImportLayerClipboard = item => {
+    if (this.state.clipboardData) {
+      if (!this.state.clipboardData.includes(item)) {
+        this.setState({
+          clipboardData: this.state.clipboardData + item + "\n"
+        });
+      } else {
+        this.setState({
+          clipboardData: this.state.clipboardData.replace(item + "\n", "")
+        });
+      }
+    } else {
+      this.setState({ clipboardData: item + "\n" });
+    }
+  };
   _onTextareaChange = ({ target: { value } = {} }) => {
     this.setState({ clipboardData: value });
   };
@@ -137,6 +182,7 @@ class ArrayFieldTemplate extends React.Component {
       justify="center"
       align="center"
       flex={false}
+      responsive={false}
     >
       <AddIcon size="xsmall" />{" "}
       <span style={{ marginLeft: "5px" }}>Add Item</span>
@@ -246,10 +292,13 @@ class ArrayFieldTemplate extends React.Component {
           )}
         {this.state.importEnabled && (
           <ImportLayer
+            enableImport={this.uiOptionImport && this._enableImport}
             options={this.uiOptionImport}
             data={this.state.clipboardData}
             onDataChange={this._onTextareaChange}
             onImport={this._doBatchImport}
+            updateAll={(items, add) => this._updateImportLayerAll(items, add)}
+            updateClipboard={item => this._updateImportLayerClipboard(item)}
           />
         )}
         {this._getArrayField(_label)}

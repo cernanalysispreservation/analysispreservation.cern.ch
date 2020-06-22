@@ -71,7 +71,12 @@ class ArrayFieldTemplate extends React.Component {
                         : null
                     }
                   />
-                  <Box flex={true} direction="row" wrap={false}>
+                  <Box
+                    flex={true}
+                    direction="row"
+                    wrap={false}
+                    responsive={false}
+                  >
                     <ErrorFieldIndicator
                       errors={this.props.formContext.ref}
                       id={element.children.props.idSchema.$id}

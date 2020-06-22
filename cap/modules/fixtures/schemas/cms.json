@@ -1101,6 +1101,7 @@
           "latex": "#",
           "import": {
             "to": "#",
+            "listSuggestions":"/api/cms/mc-datasets?query=",
             "description":
               "Paste your list here. Insert one dataset path per line",
             "placeholder":
@@ -1123,6 +1124,7 @@
           "latex": "#",
           "import": {
             "to": "#",
+            "listSuggestions":"/api/cms/mc-datasets?query=",
             "description":
               "Paste your list here. Insert one dataset path per line",
             "placeholder":
@@ -1142,6 +1144,7 @@
           "latex": "path",
           "import": {
             "to": "path",
+            "listSuggestions":"/api/cms/primary-datasets?query=",
             "description":
               "Paste your list here. Insert one dataset path per line",
             "placeholder":
