@@ -19,6 +19,7 @@ import Sidebar from "./components/DepositSidebar";
 import RouteGuard from "../RouteGuard";
 
 import PermissionDenied from "../errors/403";
+import MediaQuery from "react-responsive";
 
 // Actions
 import { getDraftByIdAndInitForm } from "../../actions/draftItem";
@@ -32,7 +33,7 @@ class DraftsItemIndex extends React.Component {
     // Create the ref for the form
     this.formRef = React.createRef();
     this.state = {
-      expanded: false
+      expanded: window.innerWidth > 1450
     };
   }
   componentDidMount() {
@@ -119,10 +120,18 @@ class DraftsItemIndex extends React.Component {
               </Switch>
             </Box>
             <Box colorIndex="light-1">
+              <MediaQuery
+                minWidth={1450}
+                onChange={matches => this.setState({ expanded: matches })}
+              >
+                <span />
+              </MediaQuery>
               <Box
                 colorIndex="light-1"
                 className={
-                  this.state.expanded ? "full-sidebar" : "hide-sidebar"
+                  this.state.expanded
+                    ? "sidebar-hide-small show-sidebar"
+                    : "sidebar-hide-small hide-sidebar"
                 }
               >
                 <Sidebar />

@@ -368,19 +368,22 @@ label {
     flex-direction: column !important;
   }
 
-  .full-sidebar{
+  .sidebar-hide-small{
     position:absolute;
     z-index: 5;
     top:0;
     bottom:0;
     left:0;
     right:0;
+  
   }
 
-  .hide-sidebar{ 
-    display:none !important;
-    width:0;
-    height:0;
+  .show-sidebar {
+    display:flex !important
+  }
+
+  .hide-sidebar{
+    display: none !important
   }
 
 
@@ -654,9 +657,9 @@ label {
 // xlarge
 
 @media only screen and (min-width: 1450px) {
-  .full-sidebar, .hide-sidebar{
-    position:unset !important;
 
+  .sidebar-hide-small{
+    position:unset !important;
   }
   .lg-column {
     flex-direction: row !important;
