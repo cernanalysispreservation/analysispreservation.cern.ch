@@ -23,6 +23,21 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP module utils."""
 from six.moves.urllib import parse
+from flask import abort
+from webargs.flaskparser import FlaskParser
+
+
+class ArgParser(FlaskParser):
+    DEFAULT_VALIDATION_STATUS = 400
+
+
+parser = ArgParser()
+use_args = parser.use_args
+
+
+@parser.error_handler
+def handle_error(error, *args, **kwargs):
+    abort(error.status_code, error.messages)
 
 
 def url_to_api_url(url):

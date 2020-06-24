@@ -171,6 +171,19 @@ def test_get_datasets_suggestions_when_no_query_passed_returns_empty_list(
     assert resp.json == []
 
 
+def test_get_datasets_suggestions_when_no_query_arg_returns_400(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/mc-datasets', headers=headers)
+    assert resp.status_code == 400
+    assert resp.json['message'] == {"query": ["Missing data for required field."]}
+
+    resp = client.get('/cms/primary-datasets', headers=headers)
+    assert resp.status_code == 400
+    assert resp.json['message'] == {"query": ["Missing data for required field."]}
+
+
 def test_get_primary_datasets_suggestions_returns_correct_suggestions(
         client, users, auth_headers_for_user, das_datasets_index):
     headers = auth_headers_for_user(users['cms_user'])
@@ -244,6 +257,15 @@ def test_get_main_datasets_suggestions_when_no_query_passed_returns_empty_list(
                       headers=auth_headers_for_user(users['cms_user']))
 
     assert resp.json == []
+
+
+def test_get_main_datasets_suggestions_when_no_query_arg_returns_400(
+        client, users, auth_headers_for_user, das_datasets_index):
+    headers = auth_headers_for_user(users['cms_user'])
+
+    resp = client.get('/cms/datasets', headers=headers)
+    assert resp.status_code == 400
+    assert resp.json['message'] == {"query": ["Missing data for required field."]}
 
 
 def test_get_main_datasets_suggestions_returns_correct_suggestions(

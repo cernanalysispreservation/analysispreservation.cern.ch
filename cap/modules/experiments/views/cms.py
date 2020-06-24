@@ -28,6 +28,7 @@ import re
 
 from flask import Blueprint, abort, jsonify, request
 from six.moves.urllib.parse import unquote
+from webargs import fields
 
 from ..permissions import cms_permission
 from ..search.cms_triggers import CMSTriggerSearch
@@ -35,6 +36,7 @@ from ..search.das import DASSearch
 from ..serializers import CADISchema
 from ..utils.cadi import get_from_cadi_by_id
 from ..utils.das import update_term_for_das_query
+from cap.utils import use_args
 
 CADI_REGEX = '[A-Za-z0-9]{3}-[0-9]{2}-[0-9]{3}'
 
@@ -82,33 +84,36 @@ def get_analysis_from_cadi(cadi_id):
 
 
 @cms_bp.route('/primary-datasets', methods=['GET'])
+@use_args({'query': fields.Str(required=True)})
 @cms_permission.require(403)
-def get_datasets_suggestions_primary():
+def get_datasets_suggestions_primary(args):
     """Retrieve specific dataset names."""
     all_ = request.args.get('all')
     query = update_term_for_das_query(
-        unquote(request.args.get('query')), '(/*/*/*AOD* OR /*/*/*RECO*) '
-                                            'AND NOT */*/*SIM*')
+        unquote(args.get('query')), '(/*/*/*AOD* OR /*/*/*RECO*) '
+                                    'AND NOT */*/*SIM*')
 
     return jsonify(_get_das(query, all_))
 
 
 @cms_bp.route('/mc-datasets', methods=['GET'])
+@use_args({'query': fields.Str(required=True)})
 @cms_permission.require(403)
-def get_datasets_suggestions_mc():
+def get_datasets_suggestions_mc(args):
     """Retrieve specific dataset names."""
     all_ = request.args.get('all')
     query = update_term_for_das_query(
-        unquote(request.args.get('query')), '/*/*/*SIM*')
+        unquote(args.get('query')), '/*/*/*SIM*')
 
     return jsonify(_get_das(query, all_))
 
 
 @cms_bp.route('/datasets', methods=['GET'])
+@use_args({'query': fields.Str(required=True)})
 @cms_permission.require(403)
-def get_datasets_suggestions():
+def get_datasets_suggestions(args):
     """Retrieve specific dataset names."""
-    query = update_term_for_das_query(unquote(request.args.get('query')))
+    query = update_term_for_das_query(unquote(args.get('query')))
 
     search = DASSearch().prefix_search(query).sort('name')
     results = search.execute()

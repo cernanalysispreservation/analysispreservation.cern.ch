@@ -87,6 +87,8 @@ install_requires = [
     'uWSGI==2.0.17',
     'uwsgi-tools==1.1.1',
     'uwsgitop==0.10',
+    # needed version for future use of arguments
+    'webargs==3.0.1',
 ]
 
 packages = find_packages()
