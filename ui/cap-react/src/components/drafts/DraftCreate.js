@@ -5,7 +5,6 @@ import store from "../../store/configureStore";
 
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
-import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 import Label from "grommet/components/Label";
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
@@ -108,11 +107,14 @@ class DraftCreate extends React.Component {
               </Box>
             </Box>
             <Box align="end">
-              <Button
-                label="Start Preserving"
+              <Box
+                align="center"
                 onClick={this._createDraft}
-                primary={true}
-              />
+                colorIndex="brand"
+                pad={{ horizontal: "medium", vertical: "small" }}
+              >
+                Start Preserving
+              </Box>
             </Box>
           </Box>
         </Provider>
