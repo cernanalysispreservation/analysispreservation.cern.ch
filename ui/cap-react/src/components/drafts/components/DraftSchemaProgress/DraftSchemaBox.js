@@ -84,7 +84,8 @@ const DraftSchemaBox = ({ item, draft_id, fields }) => {
 DraftSchemaBox.propTypes = {
   fields: PropTypes.array,
   item: PropTypes.array,
-  metadata: PropTypes.object
+  metadata: PropTypes.object,
+  draft_id: PropTypes.string
 };
 
 export default DraftSchemaBox;

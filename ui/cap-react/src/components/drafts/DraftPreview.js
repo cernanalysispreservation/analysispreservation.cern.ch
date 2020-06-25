@@ -10,7 +10,6 @@ import Box from "grommet/components/Box";
 import cogoToast from "cogo-toast";
 import { EditAnchor } from "../drafts/components/Buttons";
 
-import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import SectionBox from "../partials/SectionBox";
 import InfoHeaderBox from "../partials/InfoHeaderBox";
 import InfoArrayBox from "../partials/InfoArrayBox";
@@ -136,35 +135,11 @@ class DraftPreview extends React.Component {
                 this.props.schemas && this.props.schemas.schema ? (
                   <Box flex={true} pad="small">
                     <DraftSchemaProgress
-                      fields={this.props.fields}
+                      metadata={this.props.metadata}
                       schema={_schema}
                       uiSchema={this.props.schemas.uiSchema || {}}
                       draft_id={this.props.match.params.draft_id}
                     />
-                  </Box>
-                ) : null
-              }
-            />
-          </Box>
-          <Box pad={{ horizontal: "medium" }} id="hide-div">
-            <SectionBox
-              header="Metadata"
-              headerActions={
-                this.props.canUpdate ? (
-                  <EditAnchor draft_id={this.props.draft_id} />
-                ) : null
-              }
-              body={
-                this.props.schemas && this.props.schemas.schema ? (
-                  <Box flex={true} pad="small">
-                    <JSONSchemaPreviewer
-                      formData={this.props.metadata}
-                      schema={_schema}
-                      uiSchema={this.props.schemas.uiSchema || {}}
-                      onChange={() => {}}
-                    >
-                      <span />
-                    </JSONSchemaPreviewer>
                   </Box>
                 ) : null
               }
@@ -256,7 +231,6 @@ DraftPreview.propTypes = {
   draft_id: PropTypes.string,
   schemas: PropTypes.object,
   schemaId: PropTypes.string,
-  formData: PropTypes.object,
   schemasLoading: PropTypes.bool,
   canUpdate: PropTypes.bool,
   fetchAndAssignSchema: PropTypes.func,
@@ -269,8 +243,7 @@ DraftPreview.propTypes = {
   files: PropTypes.object,
   schema: PropTypes.object,
   emptyPreviewFields: PropTypes.func,
-  metadata: PropTypes.object,
-  fields: PropTypes.array
+  metadata: PropTypes.object
 };
 
 function mapStateToProps(state) {
@@ -285,9 +258,7 @@ function mapStateToProps(state) {
     webhooks: state.draftItem.get("webhooks"),
     files: state.draftItem.get("bucket"),
     revision: state.draftItem.get("revision"),
-    metadata: state.draftItem.get("metadata"),
-    fields: state.draftItem.get("previewFields"),
-    formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
+    metadata: state.draftItem.get("metadata")
   };
 }
 

@@ -38,8 +38,7 @@ const initialState = Map({
   schemas: null,
   status: null,
   type: null,
-  updated: null,
-  previewFields: []
+  updated: null
 });
 
 export default function draftsReducer(state = initialState, action) {
@@ -266,9 +265,6 @@ export default function draftsReducer(state = initialState, action) {
         ["workflows_items", action.workflow_id, "files"],
         action.data.files
       );
-    case draftItemActions.UPDATE_PREVIEW_FIELDS_ARRAY:
-      return state.set("previewFields", action.payload);
-
     default:
       return state;
   }

@@ -17,7 +17,8 @@ class JSONShemaPreviewer extends React.Component {
     super(props);
 
     this.state = {
-      formData: {}
+      formData: {},
+      fields: []
     };
   }
 
@@ -44,6 +45,9 @@ class JSONShemaPreviewer extends React.Component {
             onBlur={() => {}}
             onChange={this.props.onChange}
             onSubmit={this.props.onSubmit}
+            formContext={{
+              updateFields: item => this.props.updateFields(item)
+            }}
           >
             {this.props.children}
           </Form>
@@ -59,7 +63,8 @@ JSONShemaPreviewer.propTypes = {
   formData: PropTypes.object,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.node,
+  updateFields: PropTypes.func
 };
 
 export default JSONShemaPreviewer;

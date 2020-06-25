@@ -9,13 +9,10 @@ import ServerIcon from "grommet/components/icons/base/Servers";
 import PdfIcon from "grommet/components/icons/base/DocumentPdf";
 import ZipIcon from "grommet/components/icons/base/DocumentZip";
 import LockIcon from "grommet/components/icons/base/FormLock";
-import MusicIcon from "grommet/components/icons/base/Music";
-import BookIcon from "grommet/components/icons/base/Bookmark";
-import D3Icon from "grommet/components/icons/base/3d";
 import TextIcon from "grommet/components/icons/base/DocumentText";
 import CsvIcon from "grommet/components/icons/base/DocumentCsv";
 import HtmlIcon from "grommet/components/icons/base/StandardsHtml5";
-import VideoIcon from "grommet/components/icons/base/Video";
+
 import Code from "grommet/components/icons/base/Code";
 import CSSIcon from "grommet/components/icons/base/StandardsCss3";
 import PlatformReactjs from "grommet/components/icons/base/PlatformReactjs";
@@ -46,7 +43,10 @@ const InfoArrayBox = ({ items, type }) => {
       "text/json": <HtmlIcon type="status" size="xsmall" />,
       "text/html": <HtmlIcon type="status" size="xsmall" />,
       "text/css": <CSSIcon type="status" size="xsmall" />,
-      "text/x-python": <Code type="status" size="xsmall" />
+      "text/x-python": <Code type="status" size="xsmall" />,
+      "image/png": <ImageIcon type="status" size="xsmall" />,
+      "image/jpg": <ImageIcon type="status" size="xsmall" />,
+      "image/jpeg": <ImageIcon type="status" size="xsmall" />
     };
 
     return collection[resource];
