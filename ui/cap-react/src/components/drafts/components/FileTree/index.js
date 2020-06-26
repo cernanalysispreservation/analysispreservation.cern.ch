@@ -12,6 +12,7 @@ import TreeNode from "./TreeNode";
 
 import { arrangeIntoTree } from "./utils";
 import HorizontalWithText from "../../../partials/HorizontalWithText";
+import { DRAFT_EDIT } from "../../../Routes/paths";
 
 import { filter } from "lodash";
 import RepoTree from "./RepoTree";
@@ -30,7 +31,7 @@ class FileTree extends React.Component {
   _renderAddFileIcon() {
     return (
       <Route
-        path="/drafts/:draft_id/edit"
+        path={DRAFT_EDIT}
         render={() => (
           <Anchor
             onClick={this.props.toggleFilemanagerLayer}
@@ -90,18 +91,20 @@ class FileTree extends React.Component {
             root
           />
         ) : (
-            <Box flex={true} pad="small" justify="center" align="center">
-              No files added yet
-            </Box>
-          )}
+          <Box flex={true} pad="small" justify="center" align="center">
+            No files added yet
+          </Box>
+        )}
         <HorizontalWithText
           text="All Repositories"
           background={this.props.background}
           color={this.props.color}
         />
-        <RepoTree repos={repos}
+        <RepoTree
+          repos={repos}
           onDirectoryClick={this.props.onDirectoryClick}
-          onFileClick={this.props.onFileClick} />
+          onFileClick={this.props.onFileClick}
+        />
       </Box>
     );
   }

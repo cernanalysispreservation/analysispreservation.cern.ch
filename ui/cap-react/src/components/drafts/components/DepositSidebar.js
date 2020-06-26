@@ -20,6 +20,8 @@ import TimeAgo from "react-timeago";
 import { RefreshIcon } from "grommet/components/icons/base";
 import { getBucketById } from "../../../actions/files";
 
+import { DRAFT_EDIT } from "../../Routes/paths";
+
 import Tag from "../../partials/Tag";
 
 class DepositSidebar extends React.Component {
@@ -53,7 +55,7 @@ class DepositSidebar extends React.Component {
       if (this.props.canUpdate) {
         return (
           <Route
-            path="/drafts/:draft_id/"
+            path={DRAFT_EDIT}
             render={() => (
               <Box
                 colorIndex="light-2"
