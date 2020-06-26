@@ -6,11 +6,13 @@ import PublishedItemIndex from "./PublishedItemIndex";
 import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
 
+import { PUBLISHED_ITEM } from "../Routes/paths";
+
 class PublishedIndex extends React.Component {
   render() {
     return (
       <Box flex={true}>
-        <Route path={`/published/:id`} component={PublishedItemIndex} />
+        <Route path={PUBLISHED_ITEM} component={PublishedItemIndex} />
       </Box>
     );
   }

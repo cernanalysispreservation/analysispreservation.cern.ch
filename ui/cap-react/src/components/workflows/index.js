@@ -14,6 +14,8 @@ import DraftWorkflowsIndex from "./containers/DraftWorkflowsIndex";
 import DraftWorkflowsItem from "./containers/DraftWorkflowsItem";
 import DraftWorkflowsCreate from "./containers/DraftWorkflowsCreate";
 
+import { WORKFLOWS, WORKFLOWS_CREATE, WORKFLOWS_ITEM } from "../Routes/paths";
+
 import NotFoundPage from "../errors/404";
 
 class WorkflowsPage extends React.Component {
@@ -22,7 +24,7 @@ class WorkflowsPage extends React.Component {
   }
 
   render() {
-    let { match: { path, params = {} } = {} } = this.props;
+    let { match: { params = {} } = {} } = this.props;
 
     let _WorkflowsIndex, _WorkflowsItem, _WorkflowsCreate;
     if (params.draft_id) {
@@ -38,9 +40,9 @@ class WorkflowsPage extends React.Component {
       <Box flex={true} pad="medium" alignSelf="center">
         <Box flex="grow" size={{ width: { max: "xxlarge" } }}>
           <Switch>
-            <Route exact path={`${path}`} component={_WorkflowsIndex} />
-            <Route path={`${path}/create`} component={_WorkflowsCreate} />
-            <Route path={`${path}/:workflow_id`} component={_WorkflowsItem} />
+            <Route exact path={WORKFLOWS} component={_WorkflowsIndex} />
+            <Route path={WORKFLOWS_CREATE} component={_WorkflowsCreate} />
+            <Route path={WORKFLOWS_ITEM} component={_WorkflowsItem} />
             <Route component={NotFoundPage} />
           </Switch>
         </Box>

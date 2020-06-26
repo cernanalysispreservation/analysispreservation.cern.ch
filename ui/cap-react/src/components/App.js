@@ -6,11 +6,6 @@ import PropTypes from "prop-types";
 import WelcomePage from "./welcome/WelcomePage";
 import IndexPage from "./index/IndexPage";
 
-import CMSIndex from "./cms";
-
-import HowToSearchPage from "./about/HowToSearch";
-import AboutPage from "./about/AboutPage";
-import StatusPage from "./status/StatusPage";
 import noRequireAuth from "./auth/NoAuthorizationRequired";
 import requireAuth from "./auth/AuthorizationRequired";
 
@@ -19,6 +14,14 @@ import Grommet from "grommet/components/Grommet";
 
 import { initCurrentUser } from "../actions/auth";
 import { connect } from "react-redux";
+
+import { LOGIN, HOME, ABOUT, CMS, SEARCH_TIPS, STATUS } from "./Routes/paths";
+import {
+  CMSIndex,
+  AboutPage,
+  HowToSearchPage,
+  StatusPage
+} from "./Routes/Routes";
 
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
@@ -43,12 +46,12 @@ class App extends React.Component {
       <Grommet>
         <Box flex={false} full={true}>
           <Switch id="main-container">
-            <Route path="/login" component={noRequireAuth(WelcomePage)} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/status" component={StatusPage} />
-            <Route path="/cms" component={CMSIndex} />
-            <Route path="/search-tips" component={HowToSearchPage} />
-            <Route path="/" component={requireAuth(IndexPage)} />
+            <Route path={LOGIN} component={noRequireAuth(WelcomePage)} />
+            <Route path={ABOUT} component={AboutPage} />
+            <Route path={STATUS} component={StatusPage} />
+            <Route path={CMS} component={CMSIndex} />
+            <Route path={SEARCH_TIPS} component={HowToSearchPage} />
+            <Route path={HOME} component={requireAuth(IndexPage)} />
             {/*
             <Route component={NotFoundPage} />
              */}

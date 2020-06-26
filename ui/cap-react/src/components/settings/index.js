@@ -7,6 +7,7 @@ import { Switch, Route } from "react-router-dom";
 import SettingsIndex from "./Settings";
 import NotFoundPage from "../errors/404";
 import OAuthConnect from "./components/OAuthConnect";
+import { SETTINGS, SETTINGS_CONNECT } from "../Routes/paths";
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
@@ -15,8 +16,8 @@ class IndexPage extends React.Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/settings" component={SettingsIndex} />
-        <Route exact path="/settings/auth/connect" component={OAuthConnect} />
+        <Route exact path={SETTINGS} component={SettingsIndex} />
+        <Route exact path={SETTINGS_CONNECT} component={OAuthConnect} />
         <Route component={NotFoundPage} />
       </Switch>
     );

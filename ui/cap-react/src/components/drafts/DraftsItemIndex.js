@@ -26,6 +26,14 @@ import { getDraftByIdAndInitForm } from "../../actions/draftItem";
 
 import DraftsItemNav from "./DraftsItemNav";
 
+import {
+  DRAFT_ITEM,
+  DRAFT_EDIT,
+  DRAFT_INTEGRATIONS,
+  DRAFT_SETTINGS,
+  DRAFT_WORKFLOWS
+} from "../Routes/paths";
+
 class DraftsItemIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -92,27 +100,20 @@ class DraftsItemIndex extends React.Component {
               responsive={false}
             >
               <Switch>
+                <Route exact path={DRAFT_ITEM} component={DraftPreview} />
                 <Route
-                  exact
-                  path={`/drafts/:draft_id`}
-                  component={DraftPreview}
-                />
-                <Route
-                  path={`/drafts/:draft_id/edit`}
+                  path={DRAFT_EDIT}
                   render={props => (
                     <DraftEditor {...props} formRef={this.formRef} />
                   )}
                 />} />
+                <Route path={DRAFT_SETTINGS} component={DraftSettings} />
                 <Route
-                  path={`/drafts/:draft_id/settings`}
-                  component={DraftSettings}
-                />
-                <Route
-                  path={`/drafts/:draft_id/integrations`}
+                  path={DRAFT_INTEGRATIONS}
                   component={DraftIntegrations}
                 />
                 <Route
-                  path={`/drafts/:draft_id/workflows`}
+                  path={DRAFT_WORKFLOWS}
                   render={props => (
                     <DraftWorkflows draft_id={draft_id} {...props} />
                   )}
