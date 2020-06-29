@@ -8,6 +8,7 @@ import Heading from "grommet/components/Heading";
 import Layer from "grommet/components/Layer";
 import Label from "grommet/components/Label";
 import CheckmarkIcon from "grommet/components/icons/base/Checkmark";
+import Button from "../partials/Button";
 
 import FormField from "grommet/components/FormField";
 
@@ -107,14 +108,11 @@ class DraftCreate extends React.Component {
               </Box>
             </Box>
             <Box align="end">
-              <Box
-                align="center"
+              <Button
+                text="Start Preserving"
                 onClick={this._createDraft}
-                colorIndex="brand"
-                pad={{ horizontal: "medium", vertical: "small" }}
-              >
-                Start Preserving
-              </Box>
+                primary
+              />
             </Box>
           </Box>
         </Provider>

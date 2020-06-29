@@ -10,6 +10,7 @@ import InputWithButton from "../widgets/components/InputWithButton";
 import Box from "grommet/components/Box";
 
 import { Layer } from "grommet";
+import Button from "../../../../../partials/Button";
 
 class ImportLayer extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class ImportLayer extends React.Component {
       query: "",
       fetchedResults: null,
       error: null,
-      showTextArea: !this.props.options.listSuggestions
+      showTextArea: !this.props.options.listSuggestions,
+      buttonLoading: false
     };
 
     this.uiOptionImport = this.props.options;
@@ -36,14 +38,19 @@ class ImportLayer extends React.Component {
   _fetchQuerySuggestions = () => {
     let query = this.state.query;
     let url = this.props.options.listSuggestions;
+    this.setState({ buttonLoading: true });
 
     axios
       .get(`${url}${query}`)
       .then(({ data }) => {
         this.setState({ fetchedResults: data });
         this.props.updateAll(data, true);
+
+        this.setState({
+          buttonLoading: false
+        });
       })
-      .catch(err => this.setState({ error: err }));
+      .catch(err => this.setState({ error: err, buttonLoading: false }));
   };
 
   render() {
@@ -71,14 +78,12 @@ class ImportLayer extends React.Component {
               <Box>
                 <InputWithButton
                   buttons={
-                    <Box
-                      colorIndex="brand"
-                      pad={{ horizontal: "medium", vertical: "small" }}
+                    <Button
+                      text="fetch"
                       onClick={() => this._fetchQuerySuggestions()}
-                      justify="center"
-                    >
-                      fetch
-                    </Box>
+                      primary
+                      loading={this.state.buttonLoading}
+                    />
                   }
                   input={
                     <FormField>
@@ -224,29 +229,24 @@ class ImportLayer extends React.Component {
                 pad={{ between: "small" }}
               >
                 {this.props.options.listSuggestions && (
-                  <Box
-                    colorIndex="light-2"
-                    align="center"
-                    separator="all"
-                    pad={{ horizontal: "medium", vertical: "small" }}
+                  <Button
+                    secondary
+                    text={
+                      this.state.showTextArea
+                        ? "Hide List"
+                        : "Add list manually"
+                    }
                     onClick={() =>
                       this.setState({ showTextArea: !this.state.showTextArea })
                     }
-                  >
-                    {this.state.showTextArea
-                      ? "Hide List"
-                      : "Add list manually"}
-                  </Box>
+                  />
                 )}
-                <Box
-                  colorIndex={this.props.data ? "brand" : "grey-3"}
-                  align="center"
-                  separator="all"
-                  pad={{ horizontal: "medium", vertical: "small" }}
+                <Button
+                  text="Import"
+                  primary={this.props.data}
+                  disabled={!this.props.data}
                   onClick={this.props.data ? this.props.onImport : null}
-                >
-                  Import
-                </Box>
+                />
               </Box>
             </Box>
           </Box>

@@ -5,6 +5,8 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 import Header from "grommet/components/Header";
 
+import Button from "../../partials/Button";
+
 export default function SectionHeader(props) {
   return (
     <Header justify="center" alignContent="center" size="small" pad="none">
@@ -24,9 +26,13 @@ export default function SectionHeader(props) {
           {props.label} {props.status}
         </Label>
       </Box>
-      <Box flex={false} margin={{ horizontal: "small" }}>
-        {props.icon ? props.icon : null}
-      </Box>
+
+      <Button
+        icon={props.icon}
+        pad={{}}
+        margin={{ horizontal: "small" }}
+        background="#fff"
+      />
       {props.action ? (
         <Box flex={false} margin={{ horizontal: "small" }}>
           {props.action}

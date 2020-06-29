@@ -4,6 +4,8 @@ import Layer from "grommet/components/Layer";
 import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
 
+import Button from "../partials/Button";
+
 const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
   if (show) {
     return (
@@ -22,23 +24,8 @@ const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
             responsive={false}
             margin={{ top: "large" }}
           >
-            <Box
-              align="center"
-              separator="all"
-              colorIndex="light-2"
-              pad={{ horizontal: "medium", vertical: "small" }}
-              onClick={onCancel}
-            >
-              Cancel
-            </Box>
-            <Box
-              align="center"
-              pad={{ horizontal: "medium", vertical: "small" }}
-              colorIndex="brand"
-              onClick={onConfirm}
-            >
-              I am sure
-            </Box>
+            <Button text="Cancel" secondary onClick={onCancel} />
+            <Button text="I am sure" onClick={onConfirm} primary />
           </Box>
         </Box>
       </Layer>

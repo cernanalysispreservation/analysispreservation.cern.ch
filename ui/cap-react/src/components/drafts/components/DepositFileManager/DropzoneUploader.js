@@ -18,6 +18,7 @@ import Dropzone from "react-dropzone";
 
 import { Label } from "grommet";
 import FileUploadProgress from "./FileUploadProgress";
+import Button from "../../../partials/Button";
 
 const schema = {
   type: "object",
@@ -144,25 +145,18 @@ class FileManager extends React.Component {
               align="center"
               responsive={false}
             >
-              <Box
-                align="center"
-                separator="all"
-                colorIndex="light-2"
-                pad={{ horizontal: "medium", vertical: "small" }}
+              <Button
+                text="Cancel"
+                secondary
                 onClick={() =>
                   this.setState({ acceptedFiles: null, formData: {} })
                 }
-              >
-                Cancel
-              </Box>
-              <Box
-                align="center"
-                pad={{ horizontal: "medium", vertical: "small" }}
-                colorIndex="brand"
+              />
+              <Button
+                text="Upload"
+                primary
                 onClick={() => this.formRef.submit()}
-              >
-                Upload
-              </Box>
+              />
             </Box>
           </Box>
         </CleanForm>
@@ -193,9 +187,7 @@ class FileManager extends React.Component {
             </Paragraph>
             <HorizontalWithText text="OR" color="#666" />
             <Box margin={{ top: "medium" }}>
-              <Box colorIndex="brand" pad="small" margin="none">
-                Browse Files
-              </Box>
+              <Button text="Browse Files" primary />
             </Box>
           </Box>
         </Dropzone>
