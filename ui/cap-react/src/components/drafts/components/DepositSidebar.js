@@ -188,7 +188,9 @@ DepositSidebar.propTypes = {
   experiment: PropTypes.string,
   status: PropTypes.string,
   id: PropTypes.string,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
+  links: PropTypes.object,
+  getBucketById: PropTypes.func
 };
 
 function mapStateToProps(state) {

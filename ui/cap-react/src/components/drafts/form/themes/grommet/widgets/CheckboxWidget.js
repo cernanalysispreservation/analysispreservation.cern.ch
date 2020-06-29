@@ -16,8 +16,7 @@ function deselectValue(value, selected) {
   return selected.filter(v => v !== value);
 }
 
-const CheckBoxWidget = function (props) {
-
+const CheckBoxWidget = function(props) {
   let { type } = props.schema;
 
   // TOFIX onBlur, onFocus
@@ -38,17 +37,16 @@ const CheckBoxWidget = function (props) {
   // if (props.rawErrors && props.rawErrors.length > 0)
   //   _errors = props.rawErrors.map((error, index) => <span key={index}>{error}</span>);
 
-  let _optionSelected = (option) => {
+  let _optionSelected = option => {
     if (props.value || props.value === false || props.value === 0) {
-      if (type == "array" || type == "string" && props.value.indexOf) {
+      if (type == "array" || (type == "string" && props.value.indexOf)) {
         return props.value.indexOf(option) > -1;
-      }
-      else {
+      } else {
         return props.value == option || props.value === option;
       }
     }
     return false;
-  }
+  };
 
   let input;
 
@@ -64,41 +62,35 @@ const CheckBoxWidget = function (props) {
         onChange={_onChange}
       />
     );
+  } else {
+    input =
+      props.options.enumOptions.length > 0
+        ? props.options.enumOptions.map(item => (
+            <CheckBox
+              disabled={props.readonly}
+              key={props.id + item.value}
+              inline="true"
+              name={props.id + item.value}
+              label={item.label}
+              checked={_optionSelected(item.value)}
+              onChange={_onChange}
+            />
+          ))
+        : null;
   }
-  else {
-    input = props.options.enumOptions.length > 0
-      ? props.options.enumOptions.map(item => (
-        <CheckBox
-          disabled={props.readonly}
-          key={props.id + item.value}
-          inline="true"
-          name={props.id + item.value}
-          label={item.label}
-          checked={_optionSelected(item.value)}
-          onChange={_onChange}
-        />
-      ))
-      : null;
-  }
-  return (
-    <Box pad="medium">
-      {input}
-    </Box>
-  );
+  return <Box pad="medium">{input}</Box>;
 };
 
 CheckBoxWidget.propTypes = {
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   id: PropTypes.string,
-  value: PropTypes.oneOf([
-    PropTypes.string,
-    PropTypes.bool
-  ]),
+  value: PropTypes.oneOf([PropTypes.string, PropTypes.bool]),
   options: PropTypes.object,
   rawErrors: PropTypes.object,
   schema: PropTypes.object,
-  readonly: PropTypes.bool
+  readonly: PropTypes.bool,
+  label: PropTypes.string
 };
 
 export default CheckBoxWidget;
