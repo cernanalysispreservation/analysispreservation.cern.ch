@@ -113,15 +113,20 @@ class DraftPreview extends React.Component {
           direction="column"
           style={{ width: "100%", maxWidth: "1200px" }}
         >
-          <Box
-            direction="row"
-            responsive={false}
-            justify="between"
-            pad={{ horizontal: "medium" }}
-          >
-            {infoData.map((item, index) => (
-              <InfoHeaderBox key={index} {...item} />
-            ))}
+          <Box pad={{ horizontal: "medium" }}>
+            <Box
+              direction="row"
+              // justify="between"
+              responsive={false}
+              align="center"
+              colorIndex="light-1"
+            >
+              {infoData.map((item, index) => (
+                <Box key={index} colorIndex="light-1">
+                  <InfoHeaderBox {...item} />
+                </Box>
+              ))}
+            </Box>
           </Box>
           <Box pad={{ horizontal: "medium" }}>
             <SectionBox

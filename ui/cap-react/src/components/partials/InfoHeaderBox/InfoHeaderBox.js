@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
-import { AiFillInfoCircle } from "react-icons/ai";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import { MdPeopleOutline, MdAttachFile } from "react-icons/md";
 import { BsCode } from "react-icons/bs";
 
@@ -15,7 +15,6 @@ const InfoHeaderBox = ({
       info: (
         <Box
           style={{
-            background: "#FCECF3",
             borderRadius: "50%",
             width: "33px",
             height: "33px"
@@ -23,13 +22,12 @@ const InfoHeaderBox = ({
           align="center"
           justify="center"
         >
-          <AiFillInfoCircle size={25} color="#F8689E" />
+          <AiOutlineInfoCircle size={18} />
         </Box>
       ),
       collaboration: (
         <Box
           style={{
-            background: "#F0F0FF",
             borderRadius: "50%",
             width: "33px",
             height: "33px"
@@ -37,13 +35,12 @@ const InfoHeaderBox = ({
           align="center"
           justify="center"
         >
-          <MdPeopleOutline size={25} color="#6568FB" />
+          <MdPeopleOutline size={18} />
         </Box>
       ),
       code: (
         <Box
           style={{
-            background: "#FFF4EF",
             borderRadius: "50%",
             width: "33px",
             height: "33px"
@@ -51,21 +48,19 @@ const InfoHeaderBox = ({
           align="center"
           justify="center"
         >
-          <BsCode size={25} color="#FDC25B" />
+          <BsCode size={18} />
         </Box>
       ),
       file: (
         <Box
           style={{
-            background: "#E9F9E0",
-            borderRadius: "50%",
             width: "33px",
             height: "33px"
           }}
           align="center"
           justify="center"
         >
-          <MdAttachFile size={25} color="#509137" />
+          <MdAttachFile size={18} />
         </Box>
       )
     };
@@ -75,20 +70,20 @@ const InfoHeaderBox = ({
   return (
     <Box
       style={{
-        width: "100px",
-        height: "90px",
         borderRadius: "2px",
         padding: "7px"
       }}
-      direction="column"
       align="center"
-      justify="between"
+      justify="center"
       colorIndex="light-1"
+      direction="row"
     >
       {getIconByType(type)}
-      <Box direction="column" align="center" justify="center">
+      <Box direction="row" align="center" justify="between">
         <b>{number}</b>
-        <Box style={{ color: "rgba(0,0,0,0.4)" }}>{title}</Box>
+        <Box style={{ color: "rgba(0,0,0,0.4)", marginLeft: "5px" }}>
+          {title}
+        </Box>
       </Box>
     </Box>
   );
