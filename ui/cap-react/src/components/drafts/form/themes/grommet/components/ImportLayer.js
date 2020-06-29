@@ -78,12 +78,16 @@ class ImportLayer extends React.Component {
               <Box>
                 <InputWithButton
                   buttons={
-                    <Button
-                      text="fetch"
-                      onClick={() => this._fetchQuerySuggestions()}
-                      primary
-                      loading={this.state.buttonLoading}
-                    />
+                    <Box justify="center">
+                      <Button
+                        margin="0 0 0 5px"
+                        text="fetch"
+                        onClick={() => this._fetchQuerySuggestions()}
+                        primary
+                        size="large"
+                        loading={this.state.buttonLoading}
+                      />
+                    </Box>
                   }
                   input={
                     <FormField>

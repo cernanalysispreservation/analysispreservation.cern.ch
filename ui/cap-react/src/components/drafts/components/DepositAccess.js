@@ -8,7 +8,7 @@ import _filter from "lodash/filter";
 import _sortBy from "lodash/sortBy";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
 import Heading from "grommet/components/Heading";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";
@@ -17,6 +17,8 @@ import CheckBox from "grommet/components/CheckBox";
 import RadioButton from "grommet/components/RadioButton";
 import FormField from "grommet/components/FormField";
 import TextInput from "grommet/components/TextInput";
+
+import Button from "../../partials/Button";
 
 import { handlePermissions } from "../../../actions/draftItem";
 

@@ -5,11 +5,11 @@ import Box from "grommet/components/Box";
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 
-import Button from "grommet/components/Button";
-import AddIcon from "grommet/components/icons/base/Add";
+import Button from "../../../../../partials/Button";
+
+import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import ErrorFieldIndicator from "./ErrorFieldIndicator";
 
 class AccordionArrayField extends React.Component {
@@ -53,14 +53,18 @@ class AccordionArrayField extends React.Component {
                   <Box key={index} direction="row" flex={true}>
                     <Box flex={true}>{element.children}</Box>
                     <Box flex={false}>
-                      {!this.props.readonly && (
-                        <Button
-                          onClick={event =>
-                            element.onDropIndexClick(element.index)(event)
-                          }
-                          icon={<FormTrashIcon />}
-                        />
-                      )}
+                      <Button
+                        margin="0 0 0 5px"
+                        onClick={event =>
+                          element.onDropIndexClick(element.index)(event)
+                        }
+                        size="icon"
+                        icon={
+                          this.props.readonly ? null : (
+                            <AiOutlineDelete size={20} />
+                          )
+                        }
+                      />
                     </Box>
                   </Box>
                 ))}
@@ -68,7 +72,7 @@ class AccordionArrayField extends React.Component {
                   {!this.props.readonly && (
                     <Button
                       onClick={this._onAddClick.bind(this)}
-                      icon={<AddIcon />}
+                      icon={<AiOutlinePlus />}
                     />
                   )}
                 </Box>
@@ -78,8 +82,11 @@ class AccordionArrayField extends React.Component {
                 addControl={
                   this.props.readonly ? null : (
                     <Button
+                      background="#fff"
+                      hoverBackground="#f5f5f5"
                       onClick={this._onAddClick.bind(this)}
-                      icon={<AddIcon />}
+                      icon={<AiOutlinePlus />}
+                      size="icon"
                     />
                   )
                 }

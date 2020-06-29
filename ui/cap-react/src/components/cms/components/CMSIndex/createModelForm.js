@@ -1,7 +1,8 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
+import Button from "../../../partials/Button";
 
 import Form from "../../../drafts/form/GrommetForm";
 import PropTypes from "prop-types";
@@ -30,6 +31,7 @@ const createContentTypeUISchema = {
 class Create extends React.Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
   }
 
   render() {
@@ -39,6 +41,7 @@ class Create extends React.Component {
           schema={createContentTypeSchema}
           uiSchema={createContentTypeUISchema}
           onSubmit={this.props.onSubmit}
+          formRef={f => (this.formRef = f)}
         >
           <Box
             pad="small"
@@ -48,7 +51,12 @@ class Create extends React.Component {
             margin={{ top: "small" }}
             wrap={false}
           >
-            <Button label="Create" type="submit" primary={true} />
+            <Button text="Cancel" onClick={this.props.cancel} secondary />
+            <Button
+              text="Create"
+              primary
+              onClick={() => this.formRef.submit()}
+            />
           </Box>
         </Form>
       </Box>

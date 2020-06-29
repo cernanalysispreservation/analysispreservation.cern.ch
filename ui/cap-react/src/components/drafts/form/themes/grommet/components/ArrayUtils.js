@@ -2,13 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
+import Button from "../../../../../partials/Button";
+
 import FormUpIcon from "grommet/components/icons/base/FormUp";
 import FormDownIcon from "grommet/components/icons/base/FormDown";
 import { formErrorsChange } from "../../../../../../actions/common";
 import { connect } from "react-redux";
+
+import { AiOutlineDelete } from "react-icons/ai";
 
 let ArrayUtils = function(props) {
   const {
@@ -54,10 +56,13 @@ let ArrayUtils = function(props) {
   return (
     <Box direction="row" justify="between">
       <Button
-        margin="none"
-        pad="none"
+        background="#fff"
+        hoverBackground="rgb(238,238,238)"
         onClick={hasRemove ? _deleteAndUpdate : null}
-        icon={<FormTrashIcon margin="none" pad="none" />}
+        margin="0 0 0 5px"
+        icon={<AiOutlineDelete size={18} />}
+        size="iconMedium"
+        className="fieldTemplate-delete-btn"
       />
       {reorder ? (
         <React.Fragment>

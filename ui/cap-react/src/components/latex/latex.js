@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { Heading } from "grommet";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
+import Button from "../partials/Button";
 
 const LatexPreviewer = props => {
   const [copied, setCopied] = useState(false);
@@ -37,18 +38,14 @@ const LatexPreviewer = props => {
           />
         </Box>
         <Box>
-          <Box flex={true} margin={{ vertical: "small" }}>
+          <Box flex={true} margin={{ vertical: "small" }} align="center">
             <CopyToClipboard onCopy={_onCopy} text={decodeURI(props.data)}>
-              <Box
-                colorIndex={!copied ? "brand" : null}
-                justify="center"
-                align="center"
-                separator="all"
-                pad="small"
-              >
-                {copied ? <Checkmark /> : ""}
-                {copied ? "Copied" : "Copy to Clipboard"}
-              </Box>
+              <Button
+                primary={!copied}
+                disabled={copied}
+                icon={copied && <Checkmark />}
+                text={copied ? "Copied" : "Copy to Clipboard"}
+              />
             </CopyToClipboard>
           </Box>
         </Box>

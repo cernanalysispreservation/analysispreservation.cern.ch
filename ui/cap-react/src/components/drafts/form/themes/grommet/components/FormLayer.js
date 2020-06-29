@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Layer from "grommet/components/Layer";
-import Button from "grommet/components/Button";
 
-import Trash from "grommet/components/icons/base/Trash";
+import Button from "../../../../../partials/Button";
+
+import { AiOutlineDelete } from "react-icons/ai";
 
 import { Provider } from "react-redux";
 import store from "../../../../../../store/configureStore";
@@ -40,21 +41,21 @@ class FormLayer extends React.Component {
                 pad={{ vertical: "small" }}
               >
                 <Box>
+                  {this.props.remove ? (
+                    <Button
+                      text="Remove"
+                      plain={true}
+                      onClick={this.removeAndClose}
+                      icon={<AiOutlineDelete size={15} />}
+                    />
+                  ) : null}
+                </Box>
+                <Box>
                   <Button
-                    label="OK"
+                    text="Update"
                     primary={true}
                     onClick={this.props.onClose}
                   />
-                </Box>
-                <Box>
-                  {this.props.remove ? (
-                    <Button
-                      label="Remove"
-                      plain={true}
-                      onClick={this.removeAndClose}
-                      icon={<Trash />}
-                    />
-                  ) : null}
                 </Box>
               </Box>
             </Box>

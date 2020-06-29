@@ -12,7 +12,7 @@ import Anchor from "../partials/Anchor";
 import ReactTooltip from "react-tooltip";
 import Box from "grommet/components/Box";
 
-import TrashIcon from "grommet/components/icons/base/Trash";
+import { AiOutlineDelete } from "react-icons/ai";
 import AppsIcon from "grommet/components/icons/base/Apps";
 
 // Actions
@@ -142,7 +142,7 @@ class DraftsItemNav extends React.Component {
 
         {isDraft && !isPublishedOnce ? (
           <Anchor
-            icon={<TrashIcon />}
+            icon={<AiOutlineDelete size={28} />}
             onClick={this._actionHandler("delete")}
             data-tip="Delete your analysis"
           />

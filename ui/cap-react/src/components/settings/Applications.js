@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
 import Anchor from "../partials/Anchor";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
@@ -13,6 +13,8 @@ import TableRow from "grommet/components/TableRow";
 import Heading from "grommet/components/Heading";
 import cogoToast from "cogo-toast";
 import { Label } from "grommet";
+
+import Button from "../partials/Button";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -28,6 +30,8 @@ import { applicationSchema, tokenSchema } from "./utils";
 class SettingsIndex extends React.Component {
   constructor(props) {
     super(props);
+
+    this.formRef = React.createRef();
 
     this.state = {
       layer: {
@@ -68,6 +72,8 @@ class SettingsIndex extends React.Component {
       }
     );
     this.setState({ layer: { active: false } });
+
+    this.formRef.submit();
   }
 
   getLayer() {
@@ -83,20 +89,24 @@ class SettingsIndex extends React.Component {
         <Box flex={true} size="medium" pad={{ vertical: "large" }}>
           <Heading align="start" margin="small" tag="h3">
             New OAuth Application
-            </Heading>
+          </Heading>
           <Paragraph align="start" margin="none" />
           <Form
             schema={
-              this.state.layer.type == "token"
-                ? tokenSchema
-                : applicationSchema
+              this.state.layer.type == "token" ? tokenSchema : applicationSchema
             }
             onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
             validate={true}
             hideErrorList
+            formRef={f => (this.formRef = f)}
           >
-            <Box flex={true} margin={{ vertical: "small" }}>
-              <Button label="Create token" type="submit" primary={true} />
+            <Box flex={true} margin={{ vertical: "small" }} align="center">
+              <Button
+                text="Create token"
+                type="submit"
+                primary
+                onClick={() => this.formRef.submit()}
+              />
             </Box>
           </Form>
         </Box>
@@ -163,14 +173,14 @@ class SettingsIndex extends React.Component {
                   </Table>
                 </Box>
               ) : (
-                  <ListPlaceholder
-                    label="Add token"
-                    primary={true}
-                    a11yTitle="Add item"
-                    emptyMessage="You do not have any items at the moment."
-                    unfilteredTotal={0}
-                  />
-                )}
+                <ListPlaceholder
+                  label="Add token"
+                  primary={true}
+                  a11yTitle="Add item"
+                  emptyMessage="You do not have any items at the moment."
+                  unfilteredTotal={0}
+                />
+              )}
             </Box>
           </Box>
         </Box>

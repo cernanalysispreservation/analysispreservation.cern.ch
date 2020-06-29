@@ -42,7 +42,7 @@ class JSONShemaPreviewer extends React.Component {
             style={{ position: "absolute", right: "26px" }}
           >
             <Button
-              margin={{ left: "medium" }}
+              margin="0 10px"
               pad={{ vertical: "small", horizontal: "small" }}
               text="List"
               icon={<AiOutlineUnorderedList size={15} />}
@@ -50,31 +50,31 @@ class JSONShemaPreviewer extends React.Component {
                 this.setState({ uiObject: "" });
               }}
               background={
-                this.props.draft
-                  ? "#fff"
-                  : this.state.uiObject === ""
-                    ? "rgba(146,109,146,1)"
-                    : "#f5f5f5"
+                this.state.uiObject === "" ? "rgba(146,109,146,1)" : "#f5f5f5"
+              }
+              hoverColor={
+                this.state.uiObject === "" ? "rgba(146,109,146,.8)" : "#e6e6e6"
               }
               color={this.state.uiObject === "" ? "#f9f0ff" : "#000"}
-              primary={this.props.draft && this.state.uiObject === ""}
             />
 
             <Button
-              margin={{ left: "medium" }}
+              margin="0 10px"
               text="Tab"
               pad={{ vertical: "small", horizontal: "small" }}
               onClick={() => this.setState({ uiObject: "tabView" })}
               icon={<FaRegListAlt size={15} />}
+              hoverColor={
+                this.state.uiObject === "tabView"
+                  ? "rgba(146,109,146,.8)"
+                  : "#e6e6e6"
+              }
               background={
-                this.props.draft
-                  ? "#fff"
-                  : this.state.uiObject === "tabView"
-                    ? "rgba(146,109,146,1)"
-                    : "#f5f5f5"
+                this.state.uiObject === "tabView"
+                  ? "rgba(146,109,146,1)"
+                  : "#f5f5f5"
               }
               color={this.state.uiObject === "tabView" ? "#f9f0ff" : "#000"}
-              primary={this.props.draft && this.state.uiObject === "tabView"}
             />
           </Box>
         )}

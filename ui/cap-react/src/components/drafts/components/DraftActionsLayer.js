@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 
@@ -12,6 +11,7 @@ import equal from "deep-equal";
 import cleanDeep from "clean-deep";
 
 import Notification from "../../partials/Notification";
+import Button from "../../partials/Button";
 
 import {
   publishDraft,
@@ -111,20 +111,27 @@ class DraftActionsLayer extends React.Component {
           <Box pad="small" alignContent="center">
             {this.renderMessage(this.props.type)}
           </Box>
-          <Box direction="row" justify="center" align="center">
-            <Box>
-              <Button
-                label="Yes"
-                primary={true}
-                onClick={() => this.renderAction(this.props.type)}
-              />
-            </Box>
-            <Box colorIndex="grey-4-a" margin="small">
-              <Button
-                label="Cancel"
-                onClick={() => this.props.toggleActionsLayer()}
-              />
-            </Box>
+          <Box
+            direction="row"
+            justify="between"
+            align="center"
+            pad={{ horizontal: "small" }}
+          >
+            <Button
+              text="Cancel"
+              secondary
+              onClick={() => this.props.toggleActionsLayer()}
+            />
+
+            <Button
+              text={
+                this.props.type.charAt(0).toUpperCase() +
+                this.props.type.slice(1)
+              }
+              primary
+              critical={this.props.type === "delete"}
+              onClick={() => this.renderAction(this.props.type)}
+            />
           </Box>
         </Box>
       </Layer>

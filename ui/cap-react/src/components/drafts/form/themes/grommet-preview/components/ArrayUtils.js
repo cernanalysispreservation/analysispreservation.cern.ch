@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 
-import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import FormUpIcon from "grommet/components/icons/base/FormUp";
 import FormDownIcon from "grommet/components/icons/base/FormDown";
+import { AiOutlineDelete } from "react-icons/ai";
 
 let ArrayUtils = function(props) {
   const {
@@ -23,7 +23,7 @@ let ArrayUtils = function(props) {
         margin="none"
         pad="none"
         onClick={hasRemove ? onDropIndexClick(index) : null}
-        icon={<FormTrashIcon margin="none" pad="none" />}
+        icon={<AiOutlineDelete size={18} />}
       />
       {this.props.reorder ? (
         <React.Fragment>

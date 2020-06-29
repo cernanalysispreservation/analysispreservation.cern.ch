@@ -109,6 +109,7 @@ const CreateForm = props => {
           <Button
             text="Start Preserving"
             primary
+            disabled={!contentType}
             onClick={() => _createDraft()}
           />
         </Box>

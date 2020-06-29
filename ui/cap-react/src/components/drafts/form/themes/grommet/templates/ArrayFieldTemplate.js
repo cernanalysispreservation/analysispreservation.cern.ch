@@ -9,10 +9,11 @@ import LayerArrayField from "./LayerArrayField";
 import AccordionArrayField from "./AccordionArrayField";
 import DefaultArrayField from "./DefaultArrayField";
 import StringArrayField from "./StringArrayField";
-import AddIcon from "grommet/components/icons/base/Add";
+import { AiOutlinePlus } from "react-icons/ai";
 import axios from "axios";
 import LatexPreviewer from "../../../../../../components/latex/latex";
 import ImportLayer from "../components/ImportLayer";
+import Button from "../../../../../partials/Button";
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
@@ -173,22 +174,18 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event);
   }
 
-  _renderAddButton = () =>
-    !this.props.readonly && (
-      <Box
+  _renderAddButton = () => (
+    <Box align="center">
+      <Button
+        margin="5px 0 0 0 "
+        icon={<AiOutlinePlus size={20} />}
+        text="Add Item"
+        size="small"
         onClick={this._onAddClick.bind(this)}
-        style={{ padding: "5px", margin: "10px 0" }}
-        colorIndex="light-1"
-        direction="row"
-        justify="center"
-        align="center"
-        flex={false}
-        responsive={false}
-      >
-        <AddIcon size="xsmall" />{" "}
-        <span style={{ marginLeft: "5px" }}>Add Item</span>
-      </Box>
-    );
+        className="fieldTemplate-btn"
+      />
+    </Box>
+  );
 
   _getArrayField = _label => {
     let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];
@@ -221,7 +218,7 @@ class ArrayFieldTemplate extends React.Component {
     } else if (this.formRenderType == "LayerArrayField") {
       return (
         <Box>
-          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}              
+          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
           <Box flex={false}>
             <LayerArrayField
               _onAddClick={this._onAddClick.bind(this)}
@@ -269,7 +266,7 @@ class ArrayFieldTemplate extends React.Component {
         enableLatex={this.uiOptionLatex && this._enableLatex}
         latexEnabled={this.uiOptionLatex && this.state.latexEnabled}
         importEnabled={this.uiOptionLatex && this.state.importEnabled}
-        margin={{bottom: "small"}}
+        margin={{ bottom: "small" }}
       />
     );
 

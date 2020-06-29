@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import Layer from "grommet/components/Layer";
 import Button from "grommet/components/Button";
 
-import Trash from "grommet/components/icons/base/Trash";
+import { AiOutlineDelete } from "react-icons/ai";
 
 class FormLayer extends React.Component {
   constructor(props) {
@@ -28,21 +28,17 @@ class FormLayer extends React.Component {
 
             <Box direction="row" justify="between" pad={{ vertical: "small" }}>
               <Box>
-                <Button
-                  label="OK"
-                  primary={true}
-                  onClick={this.props.onClose}
-                />
-              </Box>
-              <Box>
                 {this.props.remove ? (
                   <Button
-                    label="Remove"
+                    text="Remove"
                     plain={true}
-                    onClick={this.props.remove ? this.props.remove : null}
-                    icon={<Trash />}
+                    onClick={this.removeAndClose}
+                    icon={<AiOutlineDelete size={15} />}
                   />
                 ) : null}
+              </Box>
+              <Box>
+                <Button text="OK" primary={true} onClick={this.props.onClose} />
               </Box>
             </Box>
           </Box>

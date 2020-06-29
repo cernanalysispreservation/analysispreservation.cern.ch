@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 
 import _debounce from "lodash/debounce";
 
-import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
-import NextIcon from "grommet/components/icons/base/Next";
-import PreviousIcon from "grommet/components/icons/base/Previous";
+import Button from "../partials/Button";
+
+import { AiOutlineRight, AiOutlineLeft } from "react-icons/ai";
 
 export default class SearchUtils extends React.Component {
   constructor(props) {
@@ -50,8 +50,10 @@ export default class SearchUtils extends React.Component {
           responsive={false}
         >
           <Button
+            size="iconSmall"
+            margin="0 5px"
             onClick={this._onPrevPage.bind(this)}
-            icon={<PreviousIcon />}
+            icon={<AiOutlineLeft size={15} />}
           />
           {this.props.total != 0 ? (
             <Label size="small" uppercase={true}>
@@ -60,8 +62,10 @@ export default class SearchUtils extends React.Component {
             </Label>
           ) : null}
           <Button
+            margin="0 5px"
+            size="iconSmall"
             onClick={this._onNextPage.bind(this, num_pages)}
-            icon={<NextIcon />}
+            icon={<AiOutlineRight size={15} />}
           />
         </Box>
       </Box>

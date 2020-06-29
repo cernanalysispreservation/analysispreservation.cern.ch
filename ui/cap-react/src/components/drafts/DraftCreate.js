@@ -10,7 +10,7 @@ class DraftCreate extends React.Component {
   render() {
     return (
       <Layer overlayClose closer flush onClose={this.props.toggle}>
-          <CreateForm />
+        <CreateForm />
       </Layer>
     );
   }
