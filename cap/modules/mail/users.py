@@ -24,11 +24,19 @@
 
 from invenio_access.models import ActionUsers
 from invenio_accounts.models import User
+from invenio_oauthclient.models import RemoteAccount
 from invenio_pidstore.resolver import Resolver
 
 resolver = Resolver(pid_type='depid',
                     object_type='rec',
                     getter=lambda x: x)
+
+experiment_groups = {
+    'cms': 'cms-members',
+    'atlas': 'atlas-active-members-all',
+    'alice': 'alice-member',
+    'lhcb': 'lhcb-general'
+}
 
 
 def get_all_users():
@@ -37,7 +45,16 @@ def get_all_users():
 
 
 def get_users_by_experiment(experiment):
-    pass
+    group = experiment_groups[experiment]
+    all_accounts = RemoteAccount.query.all()
+
+    users = [
+        account.user
+        for account in all_accounts
+        if group in account.extra_data['groups']
+    ]
+
+    return [user.email for user in users]
 
 
 def get_users_by_record(depid, role=None):
