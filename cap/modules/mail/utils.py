@@ -21,37 +21,55 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
+from datetime import datetime
 
 from celery import shared_task
 from flask import current_app
+from jinja2.exceptions import TemplateNotFound
 from invenio_mail.api import TemplatedMessage
 
 from cap.modules.mail.users import get_users_by_record
 
 
-def send_mail_published(depid, recid, url, sender=None, recipients=None):
+def send_mail_on_publish(depid, recid, url):
     subject = 'CERN Analysis Preservation: Published Analysis'
+    recipients = get_users_by_record(depid, role='admin')
 
-    if not sender:
-        sender = current_app.config.get('MAIL_USERNAME') or \
-                 current_app.config['SUPPORT_EMAIL']
+    # use this for testing, else we send mails to info@invenio
+    # recipients = [current_app.config.get('MAIL_DEFAULT_SENDER')]
 
-    if not recipients:
-        recipients = get_users_by_record(depid, role='admin')
-        # recipients = [current_app.config.get('MAIL_USERNAME')]
-
-    create_and_send('analysis_published.html',
-                    dict(recid=recid, url=url),
-                    dict(subject=subject,
-                         sender=sender,
-                         recipients=recipients)
-                    )
+    create_and_send.delay('analysis_published.html',
+                          dict(recid=recid, url=url),
+                          subject,
+                          recipients)
 
 
-@shared_task
-def create_and_send(template, ctx, mail_args):
-    msg = TemplatedMessage(template_html=template, ctx=ctx, **mail_args)
+@shared_task(autoretry_for=(Exception,),
+             retry_kwargs={
+                 'max_retries': 3,
+                 'countdown': 10
+             })
+def create_and_send(template, ctx, subject, recipients, sender=None):
+    sender = sender or current_app.config['MAIL_DEFAULT_SENDER']
+
     try:
+        assert recipients
+
+        msg = TemplatedMessage(
+            template_html=template,
+            ctx=ctx,
+            ** dict(sender=sender, bcc=recipients, subject=subject)
+        )
         current_app.extensions['mail'].send(msg)
+
+    except AssertionError:
+        current_app.logger.error(
+            f'Mail Error from {sender} with subject: {subject}.\n'
+            f'Empty recipient list.')
+        raise AssertionError
+
+    except TemplateNotFound:
+        raise TemplateNotFound
+
     except Exception as err:
         print(str(err))

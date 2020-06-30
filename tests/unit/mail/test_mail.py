@@ -22,8 +22,13 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Tests for mail."""
-from pytest import mark
-from cap.modules.mail.utils import send_mail_published
+from pytest import mark, raises
+from cap.modules.mail.utils import send_mail_on_publish, create_and_send
+
+
+def test_create_and_send_no_recipients_fails(app):
+    with raises(AssertionError):
+        create_and_send(None, None, 'Test subject', [])
 
 
 @mark.skip
@@ -36,14 +41,14 @@ def test_send_mail_published(app, users, create_deposit):
     with app.app_context():
         with app.extensions['mail'].record_messages() as outbox:
 
-            send_mail_published(
+            send_mail_on_publish(
                 depid=depid,
                 recid=recid,
                 url='test-url'
             )
 
             assert len(outbox) == 1
-            assert outbox[0].sender == app.config['SUPPORT_EMAIL']
+            assert outbox[0].sender == app.config['MAIL_DEFAULT_SENDER']
             assert outbox[0].html == f"""<html lang="en">
                 <head>
                     <title>CAP Mail Template</title>
