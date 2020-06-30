@@ -113,11 +113,12 @@ class DraftEditorHeader extends React.Component {
     // remove the 'general_title' from the form validation
     // since we tag the formData as empty if other than
     // ['general_title'] fields are missing
-    delete formData.general_title;
+    const formDataWithoutGeneralTitle = Object.assign({}, formData);
+    delete formDataWithoutGeneralTitle.general_title;
 
     // if the form is empty display warning and return false
     // if not save it
-    if (this._checkIfEmpty(formData)) {
+    if (this._checkIfEmpty(formDataWithoutGeneralTitle)) {
       cogoToast.warn(
         "Please add some content first, and try again saving again",
         {
