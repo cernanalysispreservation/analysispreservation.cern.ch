@@ -8,7 +8,11 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import Spinning from "grommet/components/icons/Spinning";
 
-import { SaveAnchor, DraftMessage } from "./Buttons";
+import { DraftMessage } from "./Buttons";
+
+import Anchors from "../../partials/Anchor";
+import SaveIcon from "grommet/components/icons/base/Save";
+import Label from "grommet/components/Label";
 
 import {
   createDraft,
@@ -218,7 +222,16 @@ class DraftEditorHeader extends React.Component {
               justify="center"
               align="center"
             >
-              <SaveAnchor action={this._saveData.bind(this)} />
+              <Anchors
+                label={
+                  <Label size="small" uppercase={true}>
+                    Save
+                  </Label>
+                }
+                onClick={this._saveData.bind(this)}
+                primary
+                icon={<SaveIcon size="xsmall" />}
+              />
             </Menu>
           )}
         </Box>

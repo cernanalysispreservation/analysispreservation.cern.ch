@@ -6,7 +6,7 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
 import DepositAccess from "./DepositAccess";
-import { Paragraph, Heading, Anchor } from "grommet";
+import { Paragraph, Heading } from "grommet";
 import { connect } from "react-redux";
 // Actions
 import { toggleActionsLayer } from "../../../actions/draftItem";
@@ -14,6 +14,8 @@ import { toggleActionsLayer } from "../../../actions/draftItem";
 import { AnnounceIcon } from "grommet/components/icons";
 
 import ReactTooltip from "react-tooltip";
+
+import Anchor from "../../partials/Anchor";
 
 class DepositSettings extends React.Component {
   render() {

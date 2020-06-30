@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 
 import cogoToast from "cogo-toast";
-import { EditAnchor, Anchors } from "../drafts/components/Buttons";
+
+import Anchor from "../partials/Anchor";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import SectionBox from "../partials/SectionBox";
@@ -71,7 +72,12 @@ class DraftPreview extends React.Component {
               header="Metadata"
               headerActions={
                 this.props.canUpdate ? (
-                  <EditAnchor draft_id={this.props.draft_id} />
+                  <Anchor
+                    pad={{ horizontal: "small" }}
+                    justify="end"
+                    path={`/drafts/${this.props.draft_id}/edit`}
+                    label={"Edit"}
+                  />
                 ) : null
               }
               body={
@@ -94,9 +100,10 @@ class DraftPreview extends React.Component {
             <SectionBox
               header="Repositories"
               headerActions={
-                <Anchors
-                  draft_id={this.props.draft_id}
-                  tab="integrations"
+                <Anchor
+                  pad={{ horizontal: "small" }}
+                  justify="end"
+                  path={`/drafts/${this.props.draft_id}/integrations`}
                   label={this.props.canUpdate ? "Manage" : "Show"}
                 />
               }
@@ -149,8 +156,10 @@ class DraftPreview extends React.Component {
             <SectionBox
               header="Workflows"
               headerActions={
-                <Anchors
-                  draft_id={this.props.draft_id}
+                <Anchor
+                  disabled
+                  pad={{ horizontal: "small" }}
+                  path={`/drafts/${this.props.draft_id}`}
                   label={this.props.canUpdate ? "Manage" : "Show"}
                 />
               }
