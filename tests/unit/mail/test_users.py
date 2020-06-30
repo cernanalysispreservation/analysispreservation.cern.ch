@@ -23,18 +23,14 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Tests for mail."""
 
-from cap.modules.mail.users import get_all_users, get_users_by_record
+from cap.modules.mail.users import get_all_users, get_users_by_record, \
+    get_users_by_experiment
 
 
 def test_get_all_user_mails(users):
     users = get_all_users()
 
     assert len(users) == 9
-    for experiment in ['atlas', 'cms', 'lhcb', 'alice']:
-        assert len([
-            user for user in users
-            if user.startswith(experiment)
-        ]) == 2
 
 
 def test_get_users_by_record(app, db, users, create_deposit):
@@ -59,4 +55,15 @@ def test_get_users_by_record(app, db, users, create_deposit):
     assert len(users_read) == 2
 
 
+def test_get_user_by_experiment(remote_accounts):
+    cms_users = get_users_by_experiment('cms')
+    assert len(cms_users) == 2
 
+    lhcb_users = get_users_by_experiment('lhcb')
+    assert len(lhcb_users) == 1
+
+    atlas_users = get_users_by_experiment('atlas')
+    assert len(atlas_users) == 1
+
+    alice_users = get_users_by_experiment('alice')
+    assert len(alice_users) == 1

@@ -44,6 +44,7 @@ from invenio_indexer.api import RecordIndexer
 from invenio_jsonschemas.errors import JSONSchemaNotFound
 from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_oauth2server.models import Client, Token
+from invenio_oauthclient.models import RemoteAccount
 from invenio_pidstore.resolver import Resolver
 from invenio_search import current_search, current_search_client
 from sqlalchemy_utils.functions import create_database, database_exists
@@ -183,6 +184,22 @@ def users(db):
     db.session.commit()
 
     return users
+
+
+@pytest.fixture()
+def remote_accounts(db, users):
+    """Create Remote Accounts for experiment groups."""
+    with db.session.begin_nested():
+        accounts = [
+            RemoteAccount.create(1, 'dev', dict(groups=['cms-members'])),
+            RemoteAccount.create(2, 'dev', dict(groups=['cms-members'])),
+            RemoteAccount.create(3, 'dev', dict(groups=['alice-member'])),
+            RemoteAccount.create(5, 'dev', dict(groups=['atlas-active-members-all'])),
+            RemoteAccount.create(7, 'dev', dict(groups=['lhcb-general']))
+        ]
+
+    db.session.commit()
+    return accounts
 
 
 @pytest.fixture()
