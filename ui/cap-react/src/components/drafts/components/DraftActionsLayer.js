@@ -8,11 +8,17 @@ import Button from "grommet/components/Button";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 
+import equal from "deep-equal";
+import cleanDeep from "clean-deep";
+
+import Notification from "../../partials/Notification";
+
 import {
   publishDraft,
   discardDraft,
   deleteDraft,
-  toggleActionsLayer
+  toggleActionsLayer,
+  updateDraft
   // togglePreviewer
 } from "../../../actions/draftItem";
 
@@ -24,7 +30,13 @@ class DraftActionsLayer extends React.Component {
       //   this.props.toggleActionsLayer();
       //   break;
       case "publish":
-        this.props.publishDraft(this.props.draft_id);
+        equal(cleanDeep(this.props.formData), this.props.metadata)
+          ? this.props.publishDraft(this.props.draft_id)
+          : this.props
+              .updateDraft({ ...this.props.formData }, this.props.draft_id)
+              .then(() => {
+                this.props.publishDraft(this.props.draft_id);
+              });
         this.props.toggleActionsLayer();
         break;
       case "delete":
@@ -46,10 +58,15 @@ class DraftActionsLayer extends React.Component {
       //   );
       case "publish":
         return (
-          <Paragraph>
-            Your analysis will now be visible to all members of collaboration.
-            Proceed?
-          </Paragraph>
+          <div>
+            {!equal(cleanDeep(this.props.formData), this.props.metadata) && (
+              <Notification text="Your analysis has unsaved changes. If you continue these changes will be saved and published." />
+            )}
+            <Paragraph>
+              Your analysis will now be visible to all members of collaboration.
+              Proceed?
+            </Paragraph>
+          </div>
         );
       case "delete":
         return (
@@ -123,14 +140,19 @@ DraftActionsLayer.propTypes = {
   toggleActionsLayer: PropTypes.func,
   publishDraft: PropTypes.func,
   discardDraft: PropTypes.func,
-  draft_id: PropTypes.string
+  draft_id: PropTypes.string,
+  updateDraft: PropTypes.func,
+  formData: PropTypes.object,
+  metadata: PropTypes.object
 };
 
 function mapStateToProps(state) {
   return {
     actionsLayer: state.draftItem.get("actionsLayer"),
     type: state.draftItem.get("actionsLayerType"),
-    draft_id: state.draftItem.get("id")
+    draft_id: state.draftItem.get("id"),
+    formData: state.draftItem.get("formData"),
+    metadata: state.draftItem.get("metadata")
   };
 }
 
@@ -139,7 +161,8 @@ function mapDispatchToProps(dispatch) {
     toggleActionsLayer: () => dispatch(toggleActionsLayer()),
     publishDraft: draft_id => dispatch(publishDraft(draft_id)),
     deleteDraft: draft_id => dispatch(deleteDraft(draft_id)),
-    discardDraft: draft_id => dispatch(discardDraft(draft_id))
+    discardDraft: draft_id => dispatch(discardDraft(draft_id)),
+    updateDraft: (data, draft_id) => dispatch(updateDraft(data, draft_id))
   };
 }
 

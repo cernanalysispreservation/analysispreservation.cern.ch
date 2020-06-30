@@ -123,7 +123,8 @@ function mapStateToProps(state) {
   return {
     recid: state.draftItem.get("recid"),
     status: state.draftItem.get("status"),
-    canUpdate: state.draftItem.get("can_update")
+    canUpdate: state.draftItem.get("can_update"),
+    formData: state.draftItem.get("formData")
   };
 }
 

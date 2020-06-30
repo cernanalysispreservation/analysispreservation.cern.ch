@@ -16,7 +16,7 @@ import DraftPreview from "./DraftPreview";
 import DraftEditor from "./DraftEditor";
 
 import Sidebar from "./components/DepositSidebar";
-import RouteGuard from "../RouteGuard";
+import DraftsRouteGuard from "./DraftsRouteGuard";
 
 import PermissionDenied from "../errors/403";
 import MediaQuery from "react-responsive";
@@ -58,16 +58,7 @@ class DraftsItemIndex extends React.Component {
 
     return (
       <Box flex={true} wrap={false} colorIndex="grey-3">
-        <RouteGuard
-          when={true}
-          navigate={path => this.props.history.push(path)}
-          shouldBlockNavigation={location => {
-            if (!location.pathname.startsWith("/drafts")) {
-              return true;
-            }
-            return false;
-          }}
-        />
+        <DraftsRouteGuard draft_id={draft_id} />
         <DraftHeader
           formRef={this.formRef}
           expanded={this.state.expanded}

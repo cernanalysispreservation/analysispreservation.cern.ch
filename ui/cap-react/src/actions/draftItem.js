@@ -432,6 +432,7 @@ export function putUpdateDraft(data, draft_id) {
       .put(links.self, data)
       .then(response => {
         dispatch(updateDraftSuccess(draft_id, response.data));
+
         cogoToast.success("Your Draft has been successfully submitted", {
           position: "top-center",
           heading: "Draft saved",

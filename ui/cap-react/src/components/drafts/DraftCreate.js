@@ -17,6 +17,11 @@ import { createDraft } from "../../actions/draftItem";
 
 import PropTypes from "prop-types";
 
+import equal from "deep-equal";
+import cleanDeep from "clean-deep";
+
+import Notification from "../partials/Notification";
+
 class DraftCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -53,6 +58,10 @@ class DraftCreate extends React.Component {
         <Provider store={store}>
           <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
             <Box size="xlarge">
+              {location.pathname.startsWith("/drafts/") &&
+                !equal(cleanDeep(this.props.formData), this.props.metadata) && (
+                  <Notification text="Your analysis has unsaved changes. Make sure to save the analysis before starting a new one" />
+                )}
               <Heading tag="h4">
                 Select the content type you want to create, give a title to
                 distinguish from other records and start preserving!
@@ -124,13 +133,17 @@ class DraftCreate extends React.Component {
 DraftCreate.propTypes = {
   contentTypes: PropTypes.object,
   toggle: PropTypes.func,
-  createDraft: PropTypes.func
+  createDraft: PropTypes.func,
+  formData: PropTypes.object,
+  metadata: PropTypes.object
 };
 
 function mapStateToProps(state) {
   return {
     id: state.draftItem.get("id"),
     errors: state.draftItem.get("errors"),
+    formData: state.draftItem.get("formData"),
+    metadata: state.draftItem.get("metadata"),
     contentTypes: state.auth.getIn(["currentUser", "depositGroups"])
   };
 }

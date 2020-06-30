@@ -11,9 +11,9 @@ const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
     return (
       <Layer closer={true} flush={true} overlayClose={true} onClose={onCancel}>
         <Box colorIndex="light-2" pad="large">
-          <Paragraph margin="none">You are about to exit your draft</Paragraph>
+          <Paragraph margin="none">You draft has unsaved changes</Paragraph>
           <Paragraph margin="none">
-            Make sure all your changes have been saved
+            Do you want to exit without saving?
           </Paragraph>
           <Box
             direction="row"
@@ -24,8 +24,8 @@ const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
             responsive={false}
             margin={{ top: "large" }}
           >
-            <Button text="Cancel" secondary onClick={onCancel} />
-            <Button text="I am sure" onClick={onConfirm} primary />
+            <Button text="Cancel" primary onClick={onCancel} />
+            <Button text="Exit" onClick={onConfirm} secondary />
           </Box>
         </Box>
       </Layer>
