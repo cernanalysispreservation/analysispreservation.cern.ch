@@ -8,7 +8,7 @@ import Box from "grommet/components/Box";
 
 import PropTypes from "prop-types";
 import SectionBox from "../SectionBox";
-import { Anchors } from "../../drafts/components/Buttons";
+import Anchor from "../Anchor";
 
 class SectionBoxStorie extends Component {
   constructor(props) {
@@ -35,13 +35,7 @@ storiesOf("Section Box", module)
   .addDecorator(withKnobs)
   .add("Default", () => {
     let props = {
-      headerActions: (
-        <Anchors
-          draft_id={"12"}
-          tab="integrations"
-          label={text("Label:", "Manage", "SECTION_BOX")}
-        />
-      ),
+      headerActions: <Anchor path={`/drafts/12/integrations`} label="Manage" />,
       header: text("Header:", "header", "SECTION_BOX"),
       body: (
         <Box pad="small">

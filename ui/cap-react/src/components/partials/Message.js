@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 import Spinning from "grommet/components/icons/Spinning";
 
-const DraftMessage = ({ message, loading }) => {
+const Message = ({ message, loading }) => {
   return message ? (
     <Box direction="row" pad={{ horizontal: "small" }} full="horizontal">
       {[
@@ -24,9 +24,9 @@ const DraftMessage = ({ message, loading }) => {
   ) : null;
 };
 
-DraftMessage.propTypes = {
+Message.propTypes = {
   message: PropTypes.string,
   loading: PropTypes.bool
 };
 
-export default DraftMessage;
+export default Message;

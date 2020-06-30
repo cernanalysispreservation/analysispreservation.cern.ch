@@ -12,7 +12,10 @@ import FileTree from "../drafts/components/FileTree";
 
 import JSONSchemaPreviewer from "../drafts/form/JSONSchemaPreviewer";
 import SectionHeader from "../drafts/components/SectionHeader";
-import { EditAnchor } from "../drafts/components/Buttons";
+
+import Anchor from "../partials/Anchor";
+import Label from "grommet/components/Label";
+import Edit from "grommet/components/icons/base/Edit";
 
 import Tag from "../partials/Tag";
 
@@ -102,7 +105,18 @@ class PublishedPreview extends React.Component {
                 uppercase={false}
                 action={
                   this.props.canUpdate ? (
-                    <EditAnchor draft_id={this.props.draft_id} icon />
+                    <Anchor
+                      pad={{ horizontal: "small" }}
+                      justify="end"
+                      primary
+                      path={`/drafts/${this.props.draft_id}/edit`}
+                      icon={<Edit size="xsmall" />}
+                      label={
+                        <Label size="small" uppercase>
+                          Edit
+                        </Label>
+                      }
+                    />
                   ) : null
                 }
               />
