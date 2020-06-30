@@ -91,7 +91,7 @@ I18N_LANGUAGES = [('fr', _('French'))]
 #: Email address for support.
 SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 #: Disable email sending by default.
-CAP_SEND_MAIL = True
+CAP_SEND_MAIL = False
 
 # For Flask-mail variables, the defaults are used, found here:
 # https://pythonhosted.org/Flask-Mail/#configuring-flask-mail
