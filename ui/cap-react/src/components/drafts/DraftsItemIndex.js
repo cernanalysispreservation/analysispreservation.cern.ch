@@ -62,7 +62,7 @@ class DraftsItemIndex extends React.Component {
           when={true}
           navigate={path => this.props.history.push(path)}
           shouldBlockNavigation={location => {
-            if (!location.pathname.startsWith("/drafts")) {
+            if (!location.pathname.startsWith(`/drafts/${draft_id}`)) {
               return true;
             }
             return false;

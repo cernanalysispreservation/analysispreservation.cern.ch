@@ -42,6 +42,8 @@ class DraftCreate extends React.Component {
     let data = {
       general_title: title
     };
+    // close the modal before creating the new draft
+    this.props.toggle();
 
     this.props.createDraft(data, { name: type });
   };
