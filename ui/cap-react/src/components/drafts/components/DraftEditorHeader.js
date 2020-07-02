@@ -8,7 +8,7 @@ import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import Spinning from "grommet/components/icons/Spinning";
 
-import { DraftMessage } from "./Buttons";
+import Message from "../../partials/Message";
 
 import Anchors from "../../partials/Anchor";
 import SaveIcon from "grommet/components/icons/base/Save";
@@ -192,7 +192,7 @@ class DraftEditorHeader extends React.Component {
     return (
       <Box flex={true} wrap={false} direction="row">
         <Box flex={true} justify="center" align="end">
-          <DraftMessage
+          <Message
             key="draft-message"
             message={this.props.message}
             loading={this.props.loading}
