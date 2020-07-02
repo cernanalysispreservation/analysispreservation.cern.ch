@@ -1,7 +1,8 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
+import Button from "../../../partials/Button";
 
 import Form from "../../../drafts/form/GrommetForm";
 import PropTypes from "prop-types";
@@ -47,8 +48,8 @@ class Create extends React.Component {
             direction="row"
             wrap={false}
           >
-            <Button label="Cancel" onClick={this.props.cancel} />
-            <Button label="Create" type="submit" primary={true} />
+            <Button text="Cancel" onClick={this.props.cancel} secondary />
+            <Button text="Create" type="submit" primary />
           </Box>
         </Form>
       </Box>
