@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
+import Button from "../../../../../partials/Button";
 
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 
@@ -22,6 +23,7 @@ class StringArrayField extends React.Component {
 
                   {!this.props.readonly && (
                     <Button
+                      background="#fff"
                       onClick={event =>
                         element.onDropIndexClick(element.index)(event)
                       }
