@@ -110,8 +110,9 @@ class DraftCreate extends React.Component {
             <Box align="end">
               <Button
                 text="Start Preserving"
-                onClick={this._createDraft}
+                onClick={this.state.type ? this._createDraft : null}
                 primary
+                disabled={this.state.type === null}
               />
             </Box>
           </Box>
