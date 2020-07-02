@@ -8,7 +8,7 @@ import _filter from "lodash/filter";
 import _sortBy from "lodash/sortBy";
 
 import Box from "grommet/components/Box";
-s;
+
 import Heading from "grommet/components/Heading";
 import Table from "grommet/components/Table";
 import TableRow from "grommet/components/TableRow";

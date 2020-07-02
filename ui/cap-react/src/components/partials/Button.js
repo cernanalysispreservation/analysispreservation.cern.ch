@@ -98,7 +98,7 @@ const Button = ({
           <Spinning size="xsmall" />
         </Box>
       )}
-      {icon && <Box margin={{ right: "small" }}>{icon}</Box>}
+      {icon && <Box margin={{ right: text ? "small" : "" }}>{icon}</Box>}
       {text}
     </ButtonWrapper>
   );

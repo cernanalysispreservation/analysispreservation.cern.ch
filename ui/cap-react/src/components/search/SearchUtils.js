@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 
 import _debounce from "lodash/debounce";
 
-import Button from "grommet/components/Button";
+// import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
+
+import Button from "../partials/Button";
 
 import NextIcon from "grommet/components/icons/base/Next";
 import PreviousIcon from "grommet/components/icons/base/Previous";
@@ -50,6 +52,7 @@ export default class SearchUtils extends React.Component {
           responsive={false}
         >
           <Button
+            pad={{ horizontal: "small", vertical: "small" }}
             onClick={this._onPrevPage.bind(this)}
             icon={<PreviousIcon />}
           />
@@ -60,6 +63,7 @@ export default class SearchUtils extends React.Component {
             </Label>
           ) : null}
           <Button
+            pad={{ horizontal: "small", vertical: "small" }}
             onClick={this._onNextPage.bind(this, num_pages)}
             icon={<NextIcon />}
           />
