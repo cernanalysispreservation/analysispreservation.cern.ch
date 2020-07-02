@@ -4,7 +4,7 @@ import { connect, Provider } from "react-redux";
 import store from "../../store/configureStore";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
 import Anchor from "grommet/components/Anchor";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
@@ -14,6 +14,8 @@ import TableRow from "grommet/components/TableRow";
 import Heading from "grommet/components/Heading";
 import cogoToast from "cogo-toast";
 import { Label } from "grommet";
+
+import Button from "../partials/Button";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -98,7 +100,12 @@ class SettingsIndex extends React.Component {
               hideErrorList
             >
               <Box flex={true} margin={{ vertical: "small" }}>
-                <Button label="Create token" type="submit" primary={true} />
+                <Button
+                  text="Create token"
+                  type="submit"
+                  primary
+                  onClick={this._onSubmit.bind(this, this.state.layer.type)}
+                />
               </Box>
             </Form>
           </Box>
