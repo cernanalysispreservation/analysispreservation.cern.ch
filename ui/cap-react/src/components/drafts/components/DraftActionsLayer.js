@@ -96,14 +96,17 @@ class DraftActionsLayer extends React.Component {
           <Box direction="row" justify="between" align="center">
             <Box colorIndex="grey-4-a" margin="small">
               <Button
-                text="cancel"
+                text="Cancel"
                 secondary
                 onClick={() => this.props.toggleActionsLayer()}
               />
             </Box>
             <Box>
               <Button
-                text={this.props.type}
+                text={
+                  this.props.type.charAt(0).toUpperCase() +
+                  this.props.type.slice(1)
+                }
                 primary
                 critical={this.props.type === "delete"}
                 onClick={() => this.renderAction(this.props.type)}
