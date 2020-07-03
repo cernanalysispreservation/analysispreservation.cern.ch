@@ -31,6 +31,7 @@ const createContentTypeUISchema = {
 class Create extends React.Component {
   constructor(props) {
     super(props);
+    this.formRef = React.createRef();
   }
 
   render() {
@@ -40,6 +41,7 @@ class Create extends React.Component {
           schema={createContentTypeSchema}
           uiSchema={createContentTypeUISchema}
           onSubmit={this.props.onSubmit}
+          formRef={f => (this.formRef = f)}
         >
           <Box
             pad="small"
@@ -49,7 +51,11 @@ class Create extends React.Component {
             wrap={false}
           >
             <Button text="Cancel" onClick={this.props.cancel} secondary />
-            <Button text="Create" type="submit" primary />
+            <Button
+              text="Create"
+              primary
+              onClick={() => this.formRef.submit()}
+            />
           </Box>
         </Form>
       </Box>
