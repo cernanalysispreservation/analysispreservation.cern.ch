@@ -28,21 +28,17 @@ class FormLayer extends React.Component {
 
             <Box direction="row" justify="between" pad={{ vertical: "small" }}>
               <Box>
-                <Button
-                  label="OK"
-                  primary={true}
-                  onClick={this.props.onClose}
-                />
-              </Box>
-              <Box>
                 {this.props.remove ? (
                   <Button
-                    label="Remove"
+                    text="Remove"
                     plain={true}
-                    onClick={this.props.remove ? this.props.remove : null}
+                    onClick={this.removeAndClose}
                     icon={<Trash />}
                   />
                 ) : null}
+              </Box>
+              <Box>
+                <Button text="OK" primary={true} onClick={this.props.onClose} />
               </Box>
             </Box>
           </Box>
