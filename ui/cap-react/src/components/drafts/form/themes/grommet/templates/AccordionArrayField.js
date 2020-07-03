@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import Accordion from "grommet/components/Accordion";
 import AccordionPanel from "grommet/components/AccordionPanel";
 
-import Button from "grommet/components/Button";
+import Button from "../../../../../partials/Button";
 import AddIcon from "grommet/components/icons/base/Add";
 
 import ListPlaceholder from "grommet-addons/components/ListPlaceholder";
@@ -54,6 +54,8 @@ class AccordionArrayField extends React.Component {
                     <Box flex={true}>{element.children}</Box>
                     <Box flex={false}>
                       <Button
+                        pad={{}}
+                        margin={{ left: "small" }}
                         onClick={event =>
                           element.onDropIndexClick(element.index)(event)
                         }
@@ -74,6 +76,7 @@ class AccordionArrayField extends React.Component {
                 addControl={
                   this.props.readonly ? null : (
                     <Button
+                      background="#fff"
                       onClick={this._onAddClick.bind(this)}
                       icon={<AddIcon />}
                     />
