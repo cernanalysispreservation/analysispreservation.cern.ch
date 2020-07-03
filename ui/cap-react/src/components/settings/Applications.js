@@ -32,6 +32,8 @@ class SettingsIndex extends React.Component {
   constructor(props) {
     super(props);
 
+    this.formRef = React.createRef();
+
     this.state = {
       layer: {
         active: false
@@ -71,6 +73,8 @@ class SettingsIndex extends React.Component {
       }
     );
     this.setState({ layer: { active: false } });
+
+    this.formRef.submit();
   }
 
   getLayer() {
@@ -98,13 +102,14 @@ class SettingsIndex extends React.Component {
               onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
               validate={true}
               hideErrorList
+              formRef={f => (this.formRef = f)}
             >
               <Box flex={true} margin={{ vertical: "small" }}>
                 <Button
                   text="Create token"
                   type="submit"
                   primary
-                  onClick={this._onSubmit.bind(this, this.state.layer.type)}
+                  onClick={() => this.formRef.submit()}
                 />
               </Box>
             </Form>
