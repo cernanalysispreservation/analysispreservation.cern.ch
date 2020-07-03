@@ -96,7 +96,7 @@ class DraftActionsLayer extends React.Component {
           <Box direction="row" justify="between" align="center">
             <Box colorIndex="grey-4-a" margin="small">
               <Button
-                text="Cancel"
+                text="cancel"
                 secondary
                 onClick={() => this.props.toggleActionsLayer()}
               />

@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "grommet/components/Box";
-import Label from "grommet/components/Button";
+import Label from "grommet/components/Label";
 import Anchor from "grommet/components/Anchor";
 import FormPreviousLinkIcon from "grommet/components/icons/base/FormPreviousLink";
 import PropTypes from "prop-types";
