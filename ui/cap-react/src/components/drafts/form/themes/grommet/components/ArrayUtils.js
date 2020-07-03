@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Button from "grommet/components/Button";
+
+import Button from "../../../../../partials/Button";
 
 import FormTrashIcon from "grommet/components/icons/base/FormTrash";
 import FormUpIcon from "grommet/components/icons/base/FormUp";
@@ -54,8 +55,9 @@ let ArrayUtils = function(props) {
   return (
     <Box direction="row" justify="between">
       <Button
+        background="#fff"
+        pad={{ horizontal: "small" }}
         margin="none"
-        pad="none"
         onClick={hasRemove ? _deleteAndUpdate : null}
         icon={<FormTrashIcon margin="none" pad="none" />}
       />
