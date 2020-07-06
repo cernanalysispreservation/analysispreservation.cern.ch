@@ -80,6 +80,7 @@ PRESERVE_FIELDS = (
     '_fetched_from',
     'general_title',
     '$schema',
+    'control_number'
 )
 
 DEPOSIT_ACTIONS = (

@@ -26,17 +26,23 @@
 
 from __future__ import absolute_import, print_function
 
+from flask import current_app
 from invenio_access.models import ActionRoles, ActionUsers
 from invenio_accounts.models import Role, User
 from invenio_db import db
+from invenio_pidstore.resolver import Resolver
 from invenio_records.models import RecordMetadata
+from invenio_records.errors import MissingModelError
+from invenio_records.signals import after_record_update, before_record_update
 from invenio_records_files.api import Record
+
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.orm.attributes import flag_modified
 
 from cap.modules.experiments.permissions import exp_need_factory
-
-from .permissions import (RecordAdminActionNeed, RecordReadActionNeed,
-                          RecordUpdateActionNeed)
+from cap.modules.records.permissions import (RecordAdminActionNeed,
+                                             RecordReadActionNeed,
+                                             RecordUpdateActionNeed)
 
 RECORD_ACTIONS = [
     'record-read',
@@ -49,6 +55,8 @@ DEPOSIT_TO_RECORD_ACTION_MAP = {
     'deposit-update': 'record-update',
     'deposit-admin': 'record-admin'
 }
+
+resolver = Resolver(pid_type='recid', object_type='rec', getter=lambda x: x)
 
 
 def RECORD_ACTION_NEEDS(id):
@@ -96,20 +104,34 @@ class CAPRecord(Record):
         for action, permission in data['_access'].items():
             for role in permission['roles']:
                 role = Role.query.filter_by(id=role).one()
-                db.session.add(
-                    ActionRoles.allow(
-                        RECORD_ACTION_NEEDS(id_)[action],
-                        role=role
+                try:
+                    ActionRoles.query.filter_by(
+                        action=action,
+                        argument=str(id_),
+                        role_id=role.id
+                    ).one()
+                except NoResultFound:
+                    db.session.add(
+                        ActionRoles.allow(
+                            RECORD_ACTION_NEEDS(id_)[action],
+                            role=role
+                        )
                     )
-                )
             for user in permission['users']:
                 user = User.query.filter_by(id=user).one()
-                db.session.add(
-                    ActionUsers.allow(
-                        RECORD_ACTION_NEEDS(id_)[action],
-                        user=user
+                try:
+                    ActionUsers.query.filter_by(
+                        action=action,
+                        argument=str(id_),
+                        user_id=user.id
+                    ).one()
+                except NoResultFound:
+                    db.session.add(
+                        ActionUsers.allow(
+                            RECORD_ACTION_NEEDS(id_)[action],
+                            user=user
+                        )
                     )
-                )
 
     @classmethod
     def _add_experiment_permissions(cls, data, id_):
@@ -144,3 +166,33 @@ class CAPRecord(Record):
                     )
                 )
                 data['_access']['record-read']['roles'].append(ar.role.id)
+
+    def commit(self, **kwargs):
+        """Store changes of the current record instance in the database."""
+        if self.model is None or self.model.json is None:
+            raise MissingModelError()
+
+        with db.session.begin_nested():
+            before_record_update.send(
+                current_app._get_current_object(),
+                record=self
+            )
+
+            data = self
+            _, id_ = resolver.resolve(self['control_number'])
+
+            self.validate(**kwargs)
+            self._add_deposit_permissions(data, id_)
+            if data['_experiment']:
+                self._add_experiment_permissions(data, id_)
+
+            self.model.json = dict(self)
+            flag_modified(self.model, 'json')
+
+            db.session.merge(self.model)
+
+        after_record_update.send(
+            current_app._get_current_object(),
+            record=self
+        )
+        return self

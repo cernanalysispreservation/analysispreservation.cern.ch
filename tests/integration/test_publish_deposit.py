@@ -195,6 +195,72 @@ def test_deposit_publish_changes_status_and_creates_record(
     assert resp.status_code == 200
 
 
+def test_deposit_publish_new_versions_have_correct_metadata(
+        client, users, auth_headers_for_user, json_headers, create_schema,
+        create_deposit):
+    owner = users['cms_user']
+    headers = auth_headers_for_user(owner)
+    deposit = create_deposit(
+        owner,
+        'cms-analysis',
+        {
+            '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+            'basic_info': {
+                'analysis_number': 'test',
+            }
+        },
+        experiment='CMS')
+    depid = deposit['_deposit']['id']
+
+    # 1st publish
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+    assert resp.status_code == 202
+
+    # edit deposit + 2nd publish
+    resp = client.post(f'/deposits/{depid}/actions/edit', headers=headers)
+    assert resp.status_code == 201
+
+    resp = client.put(f'/deposits/{depid}', headers=headers + json_headers,
+                      data=json.dumps({
+                          '$schema': 'https://analysispreservation.cern.ch/schemas'
+                                     '/deposits/records/cms-analysis-v1.0.0.json',
+                          'basic_info': {
+                              'analysis_number': 'test 2'
+                          }}
+                      ))
+    assert resp.status_code == 200
+
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+    assert resp.status_code == 202
+
+    # edit deposit + 3rd publish
+    resp = client.post(f'/deposits/{depid}/actions/edit', headers=headers)
+    assert resp.status_code == 201
+
+    resp = client.put(f'/deposits/{depid}', headers=headers + json_headers,
+                      data=json.dumps({
+                          '$schema': 'https://analysispreservation.cern.ch/schemas'
+                                     '/deposits/records/cms-analysis-v1.0.0.json',
+                          'basic_info': {
+                              'analysis_number': 'test 3'
+                          }}
+                      ))
+    assert resp.status_code == 200
+
+    resp = client.post(f'/deposits/{depid}/actions/publish', headers=headers)
+    assert resp.status_code == 202
+
+    # fetch latest version and check
+    _, record = deposit.fetch_published()
+    assert record['basic_info']['analysis_number'] == 'test 3'
+
+    # assert permissions + control number
+    assert 'control_number' in record.keys()
+    assert 'record-read' in record['_access'].keys()
+    assert 'record-update' in record['_access'].keys()
+    assert 'record-admin' in record['_access'].keys()
+
+
 def test_deposit_publish_then_deposit_update_should_not_be_allowed(
         client, users, auth_headers_for_user, json_headers, create_deposit):
     owner = users['cms_user']
