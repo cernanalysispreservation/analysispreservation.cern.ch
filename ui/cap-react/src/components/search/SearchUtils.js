@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import _debounce from "lodash/debounce";
 
-// import Button from "grommet/components/Button";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 

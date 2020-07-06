@@ -77,6 +77,7 @@ class AccordionArrayField extends React.Component {
                   this.props.readonly ? null : (
                     <Button
                       background="#fff"
+                      hoverBackground="#f5f5f5"
                       onClick={this._onAddClick.bind(this)}
                       icon={<AddIcon />}
                     />

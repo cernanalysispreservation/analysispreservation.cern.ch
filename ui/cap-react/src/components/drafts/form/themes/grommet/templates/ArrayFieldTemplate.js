@@ -13,6 +13,8 @@ import AddIcon from "grommet/components/icons/base/Add";
 import axios from "axios";
 import LatexPreviewer from "../../../../../../components/latex/latex";
 import ImportLayer from "../components/ImportLayer";
+
+import Button from "../../../../../partials/Button";
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
@@ -174,18 +176,14 @@ class ArrayFieldTemplate extends React.Component {
   }
 
   _renderAddButton = () => (
-    <Box
-      onClick={this._onAddClick.bind(this)}
-      style={{ padding: "5px", margin: "10px 0" }}
-      colorIndex="light-1"
-      direction="row"
-      justify="center"
-      align="center"
-      flex={false}
-      responsive={false}
-    >
-      <AddIcon size="xsmall" />{" "}
-      <span style={{ marginLeft: "5px" }}>Add Item</span>
+    <Box align="center" justify="center">
+      <Button
+        onClick={this._onAddClick.bind(this)}
+        icon={<AddIcon size="xsmall" />}
+        text="Add Item"
+        background="#fff"
+        hoverBackground="#f5f5f5"
+      />
     </Box>
   );
 

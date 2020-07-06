@@ -10,6 +10,10 @@ const ButtonWrapper = styled(Box)`
   background: ${props => props.background};
   color: ${props => props.color};
 
+  &:hover {
+    background: ${props => props.hoverBackground};
+  }
+
   ${({ primary }) =>
     primary &&
     css`
@@ -57,6 +61,7 @@ const Button = ({
   icon = null,
   background = "#f5f5f5",
   color = "#333",
+  hoverBackground = "",
   pad = { horizontal: "medium", vertical: "small" },
   margin = {
     horizontal: "",
@@ -88,6 +93,7 @@ const Button = ({
       tertiary={tertiary}
       critical={critical}
       background={background}
+      hoverBackground={hoverBackground}
       color={color}
       style={{
         position: "relative"
@@ -117,7 +123,8 @@ Button.propTypes = {
   color: PropTypes.string,
   pad: PropTypes.object,
   margin: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  hoverBackground: PropTypes.string
 };
 
 export default Button;

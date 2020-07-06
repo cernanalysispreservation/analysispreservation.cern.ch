@@ -46,7 +46,7 @@ class FormLayer extends React.Component {
                       text="Remove"
                       plain={true}
                       onClick={this.removeAndClose}
-                      icon={<Trash />}
+                      icon={<Trash size="xsmall" />}
                     />
                   ) : null}
                 </Box>

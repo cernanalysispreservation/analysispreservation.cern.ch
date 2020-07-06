@@ -56,6 +56,7 @@ let ArrayUtils = function(props) {
     <Box direction="row" justify="between">
       <Button
         background="#fff"
+        hoverBackground="rgb(238,238,238)"
         pad={{ horizontal: "small" }}
         margin="none"
         onClick={hasRemove ? _deleteAndUpdate : null}
