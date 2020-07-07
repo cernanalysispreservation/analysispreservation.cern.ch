@@ -8,6 +8,8 @@ import { Route } from "react-router-dom";
 import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
+import Layer from "grommet/components/Layer";
+import Heading from "grommet/components/Heading";
 
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -28,12 +30,16 @@ import Code from "grommet/components/icons/base/Code";
 import CSSIcon from "grommet/components/icons/base/StandardsCss3";
 import PlatformReactjs from "grommet/components/icons/base/PlatformReactjs";
 import Cli from "grommet/components/icons/base/Cli";
+import Info from "grommet/components/icons/base/CircleInformation";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 import { toggleFilePreviewEdit } from "../../../actions/draftItem";
 
 import prettyBytes from "pretty-bytes";
-import { deleteFileByUri } from "../../../actions/files";
+
+import { deleteFileByUri, getFileVersions } from "../../../actions/files";
+import Spinning from "grommet/components/icons/Spinning";
+import Tag from "../../partials/Tag";
 
 const uploadStatusMap = {
   uploading: "disabled",
@@ -46,7 +52,8 @@ class FileItem extends React.Component {
     super(props);
     this.state = {
       hover: false,
-      menu: false
+      menu: false,
+      fileInfo: false
     };
   }
 
@@ -117,6 +124,15 @@ class FileItem extends React.Component {
 
     // TO_REMOVE after fixings links from backend
     file_link = file_link ? file_link.replace("/files/", "/api/files/") : null;
+
+    const timeOptions = {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    };
+
+    let versions = this.props.versions.toJS();
+
     return file ? (
       <Box
         key={file.key}
@@ -189,8 +205,109 @@ class FileItem extends React.Component {
             ) : null}
           </Box>
         </Box>
+        {this.state.fileInfo && (
+          <Layer
+            closer
+            flush
+            overlayClose
+            onClose={() => this.setState({ fileInfo: false })}
+          >
+            <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
+              <Box direction="row" align="center" margin={{ bottom: "small" }}>
+                <Heading tag="h3">
+                  {this.props.filename ? this.props.filename : filePath}
+                </Heading>
+                <Box
+                  margin={{ left: "small" }}
+                  style={{ color: "rgba(0,0,0,0.4)" }}
+                >
+                  <Heading tag="h5">{file.checksum}</Heading>
+                </Box>
+              </Box>
+              <Box direction="row" wrap margin={{ bottom: "medium" }}>
+                {Object.entries(file.tags).map(item => (
+                  <Box key={item.version_id} style={{ margin: "0 5px 5px 0 " }}>
+                    <Tag text={`${item[0]}=${item[1]}`} />
+                  </Box>
+                ))}
+              </Box>
+              <Heading tag="h4">File Versions</Heading>
+              {this.props.versionLoading ? (
+                <Box align="center" justify="center">
+                  <Spinning />
+                </Box>
+              ) : (
+                versions
+                  .filter(item => item.key === this.props.filename)
+                  .map((item, index) => (
+                    <Box
+                      margin={{ vertical: "small" }}
+                      key={index}
+                      pad="small"
+                      direction="row"
+                      responsive={false}
+                      align="center"
+                      justify="between"
+                      flex
+                      colorIndex="light-2"
+                    >
+                      <Box direction="row" responsive={false} align="center">
+                        <Box margin={{ right: "small" }}>
+                          {this._getIcon(item.mimetype)}
+                        </Box>
+                        {item.checksum}
+                      </Box>
+                      <Box style={{ opacity: item.is_head ? 1 : 0 }}>
+                        <Tag
+                          text="latest"
+                          color={{
+                            bgcolor: "#f5f5f5",
+                            border: "#28a745",
+                            color: "#22863a"
+                          }}
+                        />
+                      </Box>
+                      <Box>
+                        {new Date(item.created).toLocaleString(
+                          "en-GB",
+                          timeOptions
+                        )}
+                      </Box>
+
+                      <Box>{prettyBytes(parseInt(file.size))}</Box>
+                      <Box
+                        onClick={() =>
+                          this.downloadVersionFile(item.links.self)
+                        }
+                      />
+                      <Box>
+                        <Anchor
+                          icon={<DownloadIcon size="xsmall" />}
+                          href={item.links.self.replace(
+                            "/files/",
+                            "/api/files/"
+                          )}
+                          download
+                        />
+                      </Box>
+                    </Box>
+                  ))
+              )}
+            </Box>
+          </Layer>
+        )}
+
         {this.state.menu ? (
           <Box colorIndex="light-2" alignSelf="end" pad="small">
+            <Anchor
+              size="small"
+              icon={<Info size="xsmall" />}
+              label={<Label size="small">Info</Label>}
+              onClick={() => {
+                this.props.getFileVersions();
+                this.setState({ fileInfo: true });
+              }}
+            />
             <Anchor
               size="small"
               icon={<DownloadIcon size="xsmall" />}
@@ -230,13 +347,18 @@ FileItem.propTypes = {
   status: PropTypes.string,
   canUpdate: PropTypes.bool,
   match: PropTypes.object,
-  filename: PropTypes.string
+  filename: PropTypes.string,
+  versions: PropTypes.array,
+  versionLoading: PropTypes.bool,
+  getFileVersions: PropTypes.func
 };
 
 const mapStateToProps = state => {
   return {
     status: state.draftItem.get("status"),
-    canUpdate: state.draftItem.get("can_update")
+    canUpdate: state.draftItem.get("can_update"),
+    versions: state.draftItem.get("fileVersions"),
+    versionLoading: state.draftItem.get("versionLoading")
   };
 };
 
@@ -244,7 +366,8 @@ const mapDispatchToProps = dispatch => {
   return {
     deleteFile: (file_uri, filepath) =>
       dispatch(deleteFileByUri(file_uri, filepath)),
-    filePreview: file => dispatch(toggleFilePreviewEdit(file.data || file))
+    filePreview: file => dispatch(toggleFilePreviewEdit(file.data || file)),
+    getFileVersions: () => dispatch(getFileVersions())
   };
 };
 

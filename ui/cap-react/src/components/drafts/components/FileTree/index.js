@@ -90,18 +90,20 @@ class FileTree extends React.Component {
             root
           />
         ) : (
-            <Box flex={true} pad="small" justify="center" align="center">
-              No files added yet
-            </Box>
-          )}
+          <Box flex={true} pad="small" justify="center" align="center">
+            No files added yet
+          </Box>
+        )}
         <HorizontalWithText
           text="All Repositories"
           background={this.props.background}
           color={this.props.color}
         />
-        <RepoTree repos={repos}
+        <RepoTree
+          repos={repos}
           onDirectoryClick={this.props.onDirectoryClick}
-          onFileClick={this.props.onFileClick} />
+          onFileClick={this.props.onFileClick}
+        />
       </Box>
     );
   }
