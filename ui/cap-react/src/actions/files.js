@@ -20,6 +20,10 @@ export const DELETE_FILE_REQUEST = "DELETE_FILE_REQUEST";
 export const DELETE_FILE_SUCCESS = "DELETE_FILE_SUCCESS";
 export const DELETE_FILE_ERROR = "DELETE_FILE_ERROR";
 
+export const FILE_VERSIONS_REQUEST = "FILE_VERSIONS_REQUEST";
+export const FILE_VERSIONS_SUCCESS = "FILE_VERSIONS_SUCCESS";
+export const FILE_VERSIONS_ERROR = "FILE_VERSIONS_ERROR";
+
 // File Manager
 export function toggleFilemanagerLayer(
   selectable = false,
@@ -35,6 +39,19 @@ export function toggleFilemanagerLayer(
     message
   };
 }
+
+export const fileVersionsRequest = () => ({
+  type: FILE_VERSIONS_REQUEST
+});
+
+export const fileVersionsSuccess = files => ({
+  type: FILE_VERSIONS_SUCCESS,
+  payload: files
+});
+
+export const fileVersionsError = () => ({
+  type: FILE_VERSIONS_ERROR
+});
 
 // Bucket
 export function bucketItemRequest() {
@@ -117,7 +134,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
 
     oReq.upload.addEventListener(
       "progress",
-      function (evt) {
+      function(evt) {
         if (evt.lengthComputable) {
           let percentComplete = evt.loaded / evt.total;
           dispatch(uploadFileProgress(_filename, percentComplete));
@@ -126,7 +143,7 @@ export function uploadFile(bucket_link, file, filename, tags) {
       false
     );
 
-    oReq.onload = function (oEvent) {
+    oReq.onload = function(oEvent) {
       try {
         let data = oEvent.target.response;
         data = JSON.parse(data);
@@ -136,14 +153,14 @@ export function uploadFile(bucket_link, file, filename, tags) {
       }
     };
 
-    oReq.onreadystatechange = function () {
+    oReq.onreadystatechange = function() {
       //Call a function when the state changes.
       if (oReq.readyState == XMLHttpRequest.DONE && oReq.status == 200) {
         // Request finished. Do processing here.
       }
     };
 
-    oReq.addEventListener("error", function () {
+    oReq.addEventListener("error", function() {
       dispatch(uploadFileError(_filename, { message: "Error in uploading" }));
     });
 
@@ -180,7 +197,13 @@ export function uploadViaUrl(draft_id, urlToGrab, type, download, webhook) {
   };
 }
 
-export function uploadViaRepoUrl(draft_id, urlToGrab, webhook, event_type, repo_info = null) {
+export function uploadViaRepoUrl(
+  draft_id,
+  urlToGrab,
+  webhook,
+  event_type,
+  repo_info = null
+) {
   return dispatch => {
     let uri = `/api/deposits/${draft_id}/actions/upload`;
     let data = {
@@ -197,17 +220,19 @@ export function uploadViaRepoUrl(draft_id, urlToGrab, webhook, event_type, repo_
       .then(resp => {
         if (["push", "release"].indexOf(event_type) > -1) {
           try {
-            dispatch(createWebhookSuccess({
-              event_type,
-              "host": repo_info.resource,
-              "owner": repo_info.owner,
-              "name": repo_info.name,
-              "ref": repo_info.ref,
-              "snapshots": []
-            }));
+            dispatch(
+              createWebhookSuccess({
+                event_type,
+                host: repo_info.resource,
+                owner: repo_info.owner,
+                name: repo_info.name,
+                ref: repo_info.ref,
+                snapshots: []
+              })
+            );
+          } catch (err) {
+            // eslint-disable-next-line no-empty
           }
-          // eslint-disable-next-line no-empty
-          catch (err) {}
         }
         return { filename, data: resp.data };
       })
@@ -283,3 +308,24 @@ export function deleteFile(bucket, key) {
 
 //   };
 // }
+
+export function getFileVersions() {
+  return (dispatch, getState) => {
+    // init request
+    dispatch(fileVersionsRequest());
+
+    let state = getState();
+
+    let versions_link = state.draftItem
+      .get("bucketFileLinks")
+      .versions.split("/files/")[1];
+    versions_link = "/api/files/" + versions_link;
+
+    axios
+      .get(versions_link)
+      .then(response => {
+        dispatch(fileVersionsSuccess(response.data.contents));
+      })
+      .catch(error => dispatch(fileVersionsError(error)));
+  };
+}

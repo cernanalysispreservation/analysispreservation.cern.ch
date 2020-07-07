@@ -38,7 +38,8 @@ const initialState = Map({
   schemas: null,
   status: null,
   type: null,
-  updated: null
+  updated: null,
+  fileVersions: fromJS([])
 });
 
 export default function draftsReducer(state = initialState, action) {
@@ -192,7 +193,9 @@ export default function draftsReducer(state = initialState, action) {
           action.bucket.contents.length > 0
             ? Map(action.bucket.contents.map(item => [item.key, item]))
             : Map({})
-        );
+        )
+        .set("bucketFileLinks", action.bucket.links);
+
     case filesActions.BUCKET_ITEM_ERROR:
       return state
         .set("loading", false)
@@ -265,6 +268,16 @@ export default function draftsReducer(state = initialState, action) {
         ["workflows_items", action.workflow_id, "files"],
         action.data.files
       );
+
+    //file Versions
+    case filesActions.FILE_VERSIONS_REQUEST:
+      return state.set("versionLoading", true);
+    case filesActions.FILE_VERSIONS_SUCCESS:
+      return state
+        .set("versionLoading", false)
+        .set("fileVersions", fromJS(action.payload));
+    case filesActions.FILE_VERSIONS_ERROR:
+      return state.set("versionLoading", false);
     default:
       return state;
   }

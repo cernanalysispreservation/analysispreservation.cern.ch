@@ -63,7 +63,8 @@ const initialState = Map({
   status: null,
   type: null,
   updated: null,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 const createDraftError = Map({
   errors: ["this is an error message for create draft error"],
@@ -98,7 +99,8 @@ const createDraftError = Map({
   status: null,
   type: null,
   updated: null,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 const createDraftSuccess = Map({
   errors: [],
@@ -153,7 +155,8 @@ const createDraftSuccess = Map({
   status: null,
   type: null,
   updated: null,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 const loadingState = Map({
   errors: [],
@@ -188,7 +191,8 @@ const loadingState = Map({
   status: null,
   type: null,
   updated: null,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 const generalTitleStateBefore = Map({
   errors: [],
@@ -243,7 +247,8 @@ const generalTitleStateBefore = Map({
   status: null,
   type: null,
   updated: null,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 const generalTitleStateAfter = Map({
   errors: [],
@@ -299,7 +304,8 @@ const generalTitleStateAfter = Map({
   type: null,
   updated: null,
   generalTitleLoading: false,
-  formErrors: Set([])
+  formErrors: Set([]),
+  fileVersions: fromJS([])
 });
 
 describe("DraftItem Reducers Test", () => {
