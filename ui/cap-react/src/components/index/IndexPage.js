@@ -14,6 +14,7 @@ import Dashboard from "../dashboard/Dashboard";
 import DraftsItemIndex from "../drafts/DraftsItemIndex";
 import SettingsIndex from "../settings";
 import WorkflowsIndex from "../workflows";
+import CreateIndex from "../create";
 
 import PublishedIndex from "../published/PublishedIndex";
 import GrommetFooter from "../footer/Footer";
@@ -37,6 +38,7 @@ class IndexPage extends React.Component {
             <Route path="/published" component={PublishedIndex} />
             <Route path="/settings" component={SettingsIndex} />
             <Route path="/workflows" component={WorkflowsIndex} />
+            <Route path="/create/:anatype?" component={CreateIndex} />
             <Route component={NotFoundPage} />
           </Switch>
         </Box>
