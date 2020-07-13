@@ -82,7 +82,7 @@ class DepositSettings extends React.Component {
                       ? null
                       : "your account has no permissions to publish"
                   }
-                  disabled={!this.props.canUpdate}
+                  disabled={!this.props.canUpdate || !isDraft}
                   icon={<AnnounceIcon size="xsmall" />}
                   onClick={isDraft ? this.props.publishDraft : null}
                   label={
