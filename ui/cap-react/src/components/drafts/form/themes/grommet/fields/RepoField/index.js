@@ -8,12 +8,11 @@ import TextInput from "grommet/components/TextInput";
 import { uploadViaRepoUrl } from "../../../../../../../actions/files";
 
 import { Box, Label } from "grommet";
-import Status from "grommet/components/icons/Status";
-
-import { StatusIcon } from "grommet/components/icons";
 
 import { CloseIcon, TipIcon, RefreshIcon } from "grommet/components/icons/base";
 import RepoActions from "./RepoActions";
+
+import Notification from "../../../../../../partials/Notification";
 
 // eslint-disable-next-line no-useless-escape
 const regex = /(https|http):\/\/(github\.com|gitlab\.cern\.ch|gitlab-test\.cern\.ch)[:|\/]([\w]+)\/([\w\.-]+)(\.git|\/tree\/|\/-\/tree\/|\/blob\/|\/-\/blob\/|\/releases\/tag\/|\/-\/tags\/)?\/?([\w.-]+)?\/?(.+)?/;
@@ -188,12 +187,8 @@ class RepoField extends React.Component {
           pad={{ between: "small", horizontal: "small" }}
           margin="small"
           key="error"
-          separator="all"
-          align="center"
-          direction="row"
         >
-          <Status size="small" value="critical" />
-          <Box>{this.state.error}</Box>
+          <Notification text={this.state.error} type="warning" />
         </Box>
       );
     } else if (this.state.repo) {
@@ -214,13 +209,13 @@ class RepoField extends React.Component {
       };
     else if (this.state.errors) {
       _message = {
-        status: "critical",
+        status: "error",
         message: `${this.state.errors.message ||
           "Something happened when creating the upload task"}`
       };
     } else if (this.state.data) {
       _message = {
-        status: "ok",
+        status: "success",
         message:
           "Upload repository/file task was successfully created. It will show up on the file list on the right when the background task is finished."
       };
@@ -234,55 +229,49 @@ class RepoField extends React.Component {
           separator="all"
           key="message"
         >
-          <Box
-            margin={{ vertical: "small" }}
-            direction="row"
-            wrap={false}
-            pad={{ between: "small" }}
-          >
-            <StatusIcon size="small" value={_message.status} />
-            <Label size="small">{_message.message}</Label>
+          <Box margin={{ vertical: "small" }} wrap={false}>
+            <Notification
+              type={_message.status}
+              text={<Label size="small">{_message.message}</Label>}
+            />
           </Box>
-          {_message.status == "critical" &&
+          {_message.status == "error" &&
             _message.message.indexOf("you don't have access") > -1 && (
               <Box
                 margin={{ bottom: "small" }}
                 colorIndex="light-2"
                 direction="row"
                 wrap="false"
-                pad={{
-                  between: "small",
-                  horizontal: "small",
-                  vertical: "small"
-                }}
-                align="center"
               >
-                <TipIcon size="small" />
-                <span>
-                  It is possible that we don't not have permission to fetch the
-                  repository/file. Please connect your Github/CERN Gitlab
-                  account with your CAP account to give us permission to fetch
-                  it. This can be done from your profile settings page{" "}
-                  <a href="/settings#integrations" target="_blank">
-                    here
-                  </a>{" "}
-                </span>
+                <Notification
+                  text={
+                    <span>
+                      It is possible that we don't not have permission to fetch
+                      the repository/file. Please connect your Github/CERN
+                      Gitlab account with your CAP account to give us permission
+                      to fetch it. This can be done from your profile settings
+                      page{" "}
+                      <a href="/settings#integrations" target="_blank">
+                        here
+                      </a>
+                    </span>
+                  }
+                  icon={<TipIcon size="small" />}
+                />
               </Box>
             )}
-          {_message.status == "ok" && (
-            <Box
-              margin={{ bottom: "small" }}
-              colorIndex="light-2"
-              direction="row"
-              wrap="false"
-              pad={{ between: "small", horizontal: "small", vertical: "small" }}
-              align="center"
-            >
-              <TipIcon size="small" />
-              <span>
-                <strong>BETA</strong> You might need to refresh manually the
-                list from the <RefreshIcon size="xsmall" /> button on the right
-              </span>
+          {_message.status == "success" && (
+            <Box margin={{ bottom: "small" }} colorIndex="light-2" wrap="false">
+              <Notification
+                icon={<TipIcon size="small" />}
+                text={
+                  <span>
+                    <strong>BETA</strong> You might need to refresh manually the
+                    list from the <RefreshIcon size="xsmall" /> button on the
+                    right
+                  </span>
+                }
+              />
             </Box>
           )}
         </Box>

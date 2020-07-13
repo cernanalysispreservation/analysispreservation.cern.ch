@@ -5,6 +5,7 @@ import { Box, Label, Heading, Paragraph } from "grommet";
 import { FaGithub, FaGitlab } from "react-icons/fa";
 import { DownloadIcon } from "grommet/components/icons";
 import ConnectIcon from "grommet/components/icons/base/Connect";
+import Notification from "../../../../../../partials/Notification";
 
 import EditableField from "../../../../../../partials/EditableField";
 import RepoAction from "./RepoAction";
@@ -74,17 +75,17 @@ class RepoActions extends React.Component {
         margin={{ bottom: "small" }}
         colorIndex="light-1"
       >
-        <Box flex={false}>
+        <Box>
           <Heading tag="h4" margin="none">
             {title}
           </Heading>
-          <Box size={{ width: "medium" }}>
+          <Box>
             <Paragraph size="small" margin="none">
               {description}
             </Paragraph>
           </Box>
         </Box>
-        <Box flex={false} align="end">
+        <Box align="end">
           {actions}
           {help && (
             <Box flex={false} margin={{ top: "small" }} direction="row">
@@ -266,9 +267,12 @@ class RepoActions extends React.Component {
                           a <strong>new version is released</strong> or a{" "}
                           <strong>tag</strong> is created
                         </span>
-                        <Box colorIndex="light-2" style={{ padding: "3px" }}>
-                          ** Only owners or accounts with write access to the
-                          repository are allowed to do this **
+                        <Box margin={{ vertical: "small" }}>
+                          <Notification
+                            padding="0 5px"
+                            text="Only owners or accounts with write access to the
+                          repository are allowed to do this"
+                          />
                         </Box>
                       </Box>,
                       <RepoAction
@@ -287,9 +291,12 @@ class RepoActions extends React.Component {
                           automatically upload a snapshot of a repository, when
                           a <strong>push event</strong> takes place
                         </span>
-                        <Box colorIndex="light-2" style={{ padding: "3px" }}>
-                          ** Only owners or accounts with write access to the
-                          repository are allowed to do this **
+                        <Box margin={{ vertical: "small" }}>
+                          <Notification
+                            padding="0 5px"
+                            text="Only owners or accounts with write access to the
+                          repository are allowed to do this"
+                          />
                         </Box>
                       </Box>,
                       <RepoAction

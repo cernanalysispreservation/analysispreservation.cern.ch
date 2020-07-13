@@ -1,15 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
-import { AiOutlineWarning } from "react-icons/ai";
+import styled, { css } from "styled-components";
+import {
+  AiOutlineWarning,
+  AiOutlineCloseCircle,
+  AiOutlineCheck,
+  AiOutlineNotification
+} from "react-icons/ai";
 import Box from "grommet/components/Box";
 
 const Wrapper = styled.div`
-  background: rgb(254, 247, 225);
+  background: ${props => props.background};
   border-radius: 3px;
-  padding: 10px;
+  padding: ${props => props.padding};
   display: flex;
   align-items: center;
+
+  ${({ type }) =>
+    type === "error" &&
+    css`
+      background: #ffebee;
+    `};
+  ${({ type }) =>
+    type === "warning" &&
+    css`
+      background: rgb(254, 247, 225);
+    `};
+  ${({ type }) =>
+    type === "success" &&
+    css`
+      background: #e6ffed;
+    `};
 `;
 
 const Text = styled.div`
@@ -19,11 +40,30 @@ const Text = styled.div`
   letter-spacing: 0.5px;
 `;
 
-const Notification = ({ text }) => {
+const getIconByType = type => {
+  const choices = {
+    error: <AiOutlineCloseCircle size={25} color="#f44336" />,
+    warning: <AiOutlineWarning size={25} color="rgb(232,134,34)" />,
+    success: <AiOutlineCheck size={25} color="#457352" />
+  };
+
+  return choices[type];
+};
+
+const Notification = ({
+  text,
+  type = "",
+  background = "#f5f5f5",
+  padding = "10px"
+}) => {
   return (
-    <Wrapper>
+    <Wrapper type={type} background={background} padding={padding}>
       <Box style={{ padding: "5px" }}>
-        <AiOutlineWarning size={25} color="rgb(232,134,34)" />
+        {getIconByType(type) ? (
+          getIconByType(type)
+        ) : (
+          <AiOutlineNotification size={25} />
+        )}
       </Box>
       <Box flex>
         <Text>{text}</Text>
@@ -33,7 +73,10 @@ const Notification = ({ text }) => {
 };
 
 Notification.propTypes = {
-  text: PropTypes.string
+  text: PropTypes.node,
+  type: PropTypes.string,
+  padding: PropTypes.string,
+  background: PropTypes.string
 };
 
 export default Notification;

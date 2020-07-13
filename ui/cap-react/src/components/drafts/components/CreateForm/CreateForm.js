@@ -46,7 +46,10 @@ const CreateForm = props => {
         <Box size="xlarge">
           {props.location.pathname.startsWith("/drafts/") &&
             !equal(cleanDeep(props.formData), props.metadata) && (
-              <Notification text="Your analysis has unsaved changes. Make sure to save the analysis before starting a new one" />
+              <Notification
+                type="warning"
+                text="Your analysis has unsaved changes. Make sure to save the analysis before starting a new one"
+              />
             )}
           <Heading tag="h4">
             Select the content type you want to create, give a title to
