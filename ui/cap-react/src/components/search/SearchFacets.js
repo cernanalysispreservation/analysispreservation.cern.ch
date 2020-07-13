@@ -195,12 +195,7 @@ class SearchFacets extends React.Component {
 
     return (
       <Sidebar full={false} colorIndex="light-2">
-        <Box
-          flex={false}
-          justify="start"
-          pad="medium"
-          className="search_toggles"
-        >
+        <Box flex={false} justify="start" pad="medium">
           <Box justify="end">
             <Box direction="row" align="end" responsive={false}>
               <Heading tag="h3" margin="none">
