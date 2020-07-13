@@ -60,7 +60,10 @@ class DraftActionsLayer extends React.Component {
         return (
           <div>
             {!equal(cleanDeep(this.props.formData), this.props.metadata) && (
-              <Notification text="Your analysis has unsaved changes. If you continue these changes will be saved and published." />
+              <Notification
+                type="warning"
+                text="Your analysis has unsaved changes. If you continue these changes will be saved and published."
+              />
             )}
             <Paragraph>
               Your analysis will now be visible to all members of collaboration.
