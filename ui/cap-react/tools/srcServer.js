@@ -49,6 +49,8 @@ browserSync({
       },
       process.env["ENABLE_BACKEND_PROXY"] === "true"
         ? historyApiFallback({
+            disableDotRule: true,
+            htmlAcceptHeaders: ["text/html", "application/xhtml+xml"],
             rewrites: [
               {
                 from: /published\/.*\..*\..*$/,

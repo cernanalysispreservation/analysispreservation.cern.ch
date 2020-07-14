@@ -21,6 +21,8 @@ import SearchResultHeading from "./SearchResultHeading";
 import SearchResultsLoading from "./SearchResultsLoading";
 import SearchFilterLayer from "./SearchFilterLayer";
 
+import Tag from "./SearchTag/Tag";
+
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
@@ -30,14 +32,12 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    let { pathname, search } = this.props.location;
-    this.props.fetchSearch(pathname, search);
+    this.props.fetchSearch(this.props.match);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.location.search !== prevProps.location.search) {
-      let { pathname, search } = this.props.location;
-      this.props.fetchSearch(pathname, search);
+      this.props.fetchSearch(this.props.match);
     }
   }
 
@@ -50,25 +50,41 @@ class SearchPage extends React.Component {
     };
 
     this.props.history.push(location);
-    this.props.fetchSearch();
+    this.props.fetchSearch(this.props.match);
   }
 
-  _updateParams = item => {
-    let removableItem = this.props.location.search.includes(`&${item}`)
-      ? `&${item}`
-      : `?${item}`;
+  _updateParams = (parent, child) => {
+    let currentParams = queryString.parse(this.props.location.search);
+
+    if (Array.isArray(currentParams[parent])) {
+      currentParams[parent] = currentParams[parent].filter(
+        item => item != child
+      );
+    } else {
+      delete currentParams[parent];
+    }
 
     const location = {
-      search: this.props.location.search.replace(removableItem, "")
+      search: queryString.stringify(currentParams)
     };
+
     this.props.history.push(location);
   };
 
-  _updateSearchQuery = () => {
+  _updateSearchQuery = (param, item) => {
+    let currentParams = queryString.parse(this.props.location.search);
+    if (param === "query") {
+      currentParams["q"] = "";
+    } else {
+      if (Array.isArray(currentParams[param])) {
+        currentParams[param] = currentParams[param].filter(i => i != item);
+      } else {
+        delete currentParams[param];
+      }
+    }
     const location = {
-      search: this.props.location.search.split("q=")[0]
+      search: queryString.stringify(currentParams)
     };
-    location.search = location.search + "q=";
     this.props.history.push(location);
   };
 
@@ -92,22 +108,9 @@ class SearchPage extends React.Component {
     let _results = {};
     let _aggs;
 
-    let searchQuery = "";
-
     if (this.props.results) {
       _results = this.props.results.toJS();
       _aggs = _results.aggregations;
-    }
-
-    if (this.props.location && this.props.location.search) {
-      let splitted = this.props.location.search.split("q=");
-      searchQuery = splitted[1];
-      queryParams = splitted[0]
-        .replace("?", "")
-        .split("&")
-        .filter(item => item != "")
-        .filter(item => !item.includes("by_me"))
-        .filter(item => !item.includes("page"));
     }
 
     if (_results && _results.hits) {
@@ -183,6 +186,7 @@ class SearchPage extends React.Component {
         <Box direction="row">
           <Box id="sidebar">
             <SearchFacets
+              removeType={this.props.match.params.anatype}
               aggs={_aggs}
               selectedAggs={this.props.selectedAggs}
               onChange={this._toggleAggs}
@@ -215,10 +219,31 @@ class SearchPage extends React.Component {
                   : "Filters"}
               </Box>
             </Box>
+            <Box
+              direction="row"
+              responsive={false}
+              align="center"
+              margin={{ bottom: "small" }}
+              wrap
+            >
+              {this.props.match.params.anatype && (
+                <Tag
+                  text={`Type: ${this.props.match.params.anatype}`}
+                  onClick={() => {
+                    this.props.history.push(
+                      `/search${this.props.location.search}`
+                    );
+                  }}
+                />
+              )}
+            </Box>
             <SearchTag
-              query={queryParams}
+              params={
+                this.props.location
+                  ? queryString.parse(this.props.location.search)
+                  : undefined
+              }
               onClick={this._updateParams}
-              searchQuery={searchQuery}
               removeQuery={this._updateSearchQuery}
             />
             {results}
@@ -233,6 +258,7 @@ SearchPage.propTypes = {
   loading: PropTypes.bool.isRequired,
   fetchSearch: PropTypes.func,
   history: PropTypes.object.isRequired,
+  match: PropTypes.object,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
   results: PropTypes.object.isRequired,
@@ -250,8 +276,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchSearch: (pathname, location_search) =>
-      dispatch(fetchSearch(pathname, location_search))
+    fetchSearch: match => dispatch(fetchSearch(match))
   };
 }
 
