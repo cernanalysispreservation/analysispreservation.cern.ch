@@ -1,10 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
-import { AiOutlineClose } from "react-icons/ai";
 
-const SearchTag = ({ query, onClick, searchQuery = null, removeQuery }) => {
-  if (!query) return null;
+import Tag from "./Tag";
+
+const SearchTag = ({ onClick, params = undefined, removeQuery }) => {
+  if (!params) return null;
+
+  const query = params["q"];
+
+  // if there are more than one types selected it will return an array
+  const types = Array.isArray(params["type"])
+    ? params["type"]
+    : params["type"]
+      ? [params["type"]]
+      : undefined;
+
+  delete params["q"];
+  delete params["type"];
 
   return (
     <Box
@@ -16,73 +29,47 @@ const SearchTag = ({ query, onClick, searchQuery = null, removeQuery }) => {
       wrap
       className="search_result_box"
     >
-      {searchQuery && (
-        <Box
-          direction="row"
-          responsive={false}
-          margin={{ right: "small", bottom: "small" }}
-          style={{ background: "#fff" }}
-        >
-          <Box
-            style={{
-              padding: "3px 15px",
-              border: "1px solid rgba(0,0,0,0.2)"
-            }}
-          >
-            {`Query: ${decodeURIComponent(searchQuery)}`}
-          </Box>
-          <Box
-            onClick={() => removeQuery()}
-            align="center"
-            justify="center"
-            style={{
-              padding: "3px 5px",
-              border: "1px solid rgba(0, 0, 0, 0.2)",
-              borderLeft: 0
-            }}
-          >
-            <AiOutlineClose />
-          </Box>
-        </Box>
+      {query && (
+        <Tag
+          text={`Query: ${decodeURIComponent(query)}`}
+          onClick={() => removeQuery("query", decodeURIComponent(query))}
+        />
       )}
-      {query.map((item, index) => (
-        <Box
-          key={index}
-          direction="row"
-          responsive={false}
-          margin={{ right: "small", bottom: "small" }}
-          style={{ background: "#f1f1f1" }}
-        >
-          <Box
-            style={{
-              padding: "3px 15px",
-              border: "1px solid rgba(0,0,0,0.2)"
-            }}
-          >
-            {`${item.split("=")[0]}:${decodeURIComponent(item.split("=")[1])}`}
-          </Box>
-          <Box
-            onClick={() => onClick(item)}
-            align="center"
-            justify="center"
-            style={{
-              padding: "3px 5px",
-              border: "1px solid rgba(0, 0, 0, 0.2)",
-              borderLeft: 0
-            }}
-          >
-            <AiOutlineClose />
-          </Box>
-        </Box>
-      ))}
+      {types &&
+        types.map(type => (
+          <Tag
+            key={type}
+            text={`Type: ${decodeURIComponent(type)}`}
+            onClick={() => removeQuery("type", decodeURIComponent(type))}
+          />
+        ))}
+      {Object.entries(params) &&
+        Object.entries(params).map(
+          (item, index) =>
+            Array.isArray(item[1]) ? (
+              item[1].map(second => (
+                <Tag
+                  background="#f1f1f1"
+                  key={index + second}
+                  text={`${item[0]}:${decodeURIComponent(second)}`}
+                  onClick={() => onClick(item[0], second)}
+                />
+              ))
+            ) : (
+              <Tag
+                background="#f1f1f1"
+                text={`${item[0]}:${decodeURIComponent(item[1])}`}
+                onClick={() => onClick(item[0], item[1])}
+              />
+            )
+        )}
     </Box>
   );
 };
 
 SearchTag.propTypes = {
-  query: PropTypes.string,
   onClick: PropTypes.func,
-  searchQuery: PropTypes.string,
+  params: PropTypes.object,
   removeQuery: PropTypes.func
 };
 

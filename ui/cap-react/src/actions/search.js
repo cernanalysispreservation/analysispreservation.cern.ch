@@ -71,7 +71,7 @@ export const updateCollapsableFacetArray = value => (dispatch, getState) => {
   dispatch(updateCollapsedFacets(collapsed));
 };
 
-export function fetchSearch() {
+export function fetchSearch(match) {
   return function(dispatch) {
     let { location: { pathname, search } = {} } = history;
     let index =
@@ -88,6 +88,10 @@ export function fetchSearch() {
     let searchUrl = `${searchApiUrl}?${search}`;
 
     if (!("sort" in params)) searchUrl += "&sort=mostrecent";
+    if (match.params.anatype) {
+      searchUrl += `&type=${match.params.anatype}`;
+      params.type = match.params.anatype;
+    }
 
     dispatch(toggleAggs(params));
     dispatch(searchRequest());

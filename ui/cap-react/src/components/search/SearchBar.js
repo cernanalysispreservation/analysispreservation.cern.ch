@@ -74,7 +74,9 @@ class SearchBar extends React.Component {
         {
           label: <Suggestions query={query} text="published" />,
           query,
-          pathname: "/search"
+          pathname: this.props.location.pathname.startsWith("/search/")
+            ? this.props.location.pathname
+            : "/search"
         }
       ]
     });

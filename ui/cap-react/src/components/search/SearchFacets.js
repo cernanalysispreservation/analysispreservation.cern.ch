@@ -163,6 +163,10 @@ class SearchFacets extends React.Component {
 
     if (this.props.aggs) {
       let facets = this.constructFacets(this.props.aggs);
+
+      if (this.props.removeType) {
+        delete facets.type;
+      }
       let categories = Object.keys(facets);
 
       facets_result = (
@@ -245,7 +249,8 @@ SearchFacets.propTypes = {
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  removeType: PropTypes.string
 };
 
 function mapStateToProps(state) {
