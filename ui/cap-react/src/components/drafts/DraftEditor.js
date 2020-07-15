@@ -81,7 +81,6 @@ class DraftEditor extends React.Component {
         <PermissionDenied
           status={this.props.schemaErrors[0].status}
           message={this.props.schemaErrors[0].message}
-          statusText={this.props.schemaErrors[0].statusText}
         />
       );
     }
