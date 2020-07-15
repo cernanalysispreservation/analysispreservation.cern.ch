@@ -227,7 +227,9 @@ class RepoField extends React.Component {
     }
 
     if (_message.status)
-      parts.push(
+      parts.splice(
+        1,
+        0,
         <Box
           pad={{ horizontal: "small" }}
           margin="small"
@@ -275,7 +277,11 @@ class RepoField extends React.Component {
               colorIndex="light-2"
               direction="row"
               wrap="false"
-              pad={{ between: "small", horizontal: "small", vertical: "small" }}
+              pad={{
+                between: "small",
+                horizontal: "small",
+                vertical: "small"
+              }}
               align="center"
             >
               <TipIcon size="small" />
