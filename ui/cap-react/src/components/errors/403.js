@@ -1,24 +1,75 @@
 import React from "react";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Button";
-import Anchor from "grommet/components/Anchor";
-import FormPreviousLinkIcon from "grommet/components/icons/base/FormPreviousLink";
+import Heading from "grommet/components/Heading";
+import { withRouter } from "react-router";
+import Button from "../partials/Button";
 import PropTypes from "prop-types";
 
-const PermissionDenied = props => {
+const PermissionDenied = ({ history, status = 404, message }) => {
+  const getTitle = () => {
+    const choices = {
+      403: "Permission Required",
+      404: "Page was not Found"
+    };
+
+    return choices[status];
+  };
+
+  const getMessage = () => {
+    const choices = {
+      404: (
+        <span>
+          The page your are looking for, either was removed <br /> or<br /> the
+          url path is not correct
+        </span>
+      ),
+      403: (
+        <span>
+          Your account has not the permissions to access the content of this
+          page
+        </span>
+      )
+    };
+
+    return choices[status];
+  };
   return (
-    <Box flex>
-      <Box fill flex colorIndex="light-2" justify="center" align="center">
-        <Label>
-          {props.status} {props.statusText}
-        </Label>
-        <span>{props.message}</span>
-        <Anchor
-          icon={<FormPreviousLinkIcon />}
-          label="Go back to dashboard"
-          path="/"
-          size="small"
-        />
+    <Box flex colorIndex="light-1" align="center" justify="center">
+      <Box style={{ color: "#006A93" }}>
+        <Box
+          direction="row"
+          align="center"
+          responsive={false}
+          pad="small"
+          style={{ letterSpacing: "1px" }}
+        >
+          <Heading>{status}</Heading>
+          <Box
+            style={{
+              height: "5px",
+              width: "20px",
+              background: "#006A93",
+              margin: "0 20px"
+            }}
+          />
+          <Heading>{getTitle()}</Heading>
+        </Box>
+        <Box margin={{ top: "medium" }} align="center">
+          <Label style={{ textAlign: "center", color: "#006a93", opacity: 1 }}>
+            {message ? message : getMessage()}
+          </Label>
+        </Box>
+        <Box
+          direction="row"
+          responsive={false}
+          justify="between"
+          margin={{ top: "large" }}
+          pad="medium"
+        >
+          <Button text="Previous" secondary onClick={() => history.goBack()} />
+          <Button text="Home" primary onClick={() => history.push("/")} />
+        </Box>
       </Box>
     </Box>
   );
@@ -27,7 +78,8 @@ const PermissionDenied = props => {
 PermissionDenied.propTypes = {
   status: PropTypes.number,
   message: PropTypes.string,
-  statusText: PropTypes.string
+  statusText: PropTypes.string,
+  history: PropTypes.object
 };
 
-export default PermissionDenied;
+export default withRouter(PermissionDenied);
