@@ -1143,6 +1143,14 @@
     }
   },
   "deposit_options": {
+    "ui:object": "tabView",
+    "ui:options": {
+      "full": true,
+      "view": {
+        "vertical": true,
+        "sidebarColor": "grey-5-a"
+      }
+    },
     "unfolding": {
       "event_weight_application": {
         "ui:order": ["name", "comments"]
