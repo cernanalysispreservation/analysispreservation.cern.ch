@@ -11,7 +11,8 @@ import FormPreview from "../../containers/FormPreview";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import SelectFieldType from "../../containers/SelectFieldType";
-import { Anchor } from "grommet";
+// import { Anchor } from "grommet";
+import Anchor from "../../../partials/Anchor";
 
 class SchemaWizard extends React.Component {
   componentDidMount() {
@@ -47,7 +48,7 @@ class SchemaWizard extends React.Component {
               !this.props.loader && (
                 <Box align="center" justify="center" flex>
                   Your form is not created properly, please try again
-                  <Anchor label="here" href="/cms" />
+                  <Anchor label="here" path="/cms" />
                 </Box>
               )}
           </Box>

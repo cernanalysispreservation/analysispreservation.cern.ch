@@ -13,7 +13,8 @@ const Anchors = ({
   pad = null,
   margin = null,
   align = "",
-  justify = ""
+  justify = "",
+  href = ""
 }) => {
   return (
     <Box pad={pad} align={align} justify={justify} margin={margin}>
@@ -24,6 +25,7 @@ const Anchors = ({
         onClick={onClick}
         path={path}
         disabled={disabled}
+        href={href}
       />
     </Box>
   );
@@ -39,7 +41,8 @@ Anchors.propTypes = {
   pad: PropTypes.object,
   align: PropTypes.string,
   justify: PropTypes.string,
-  margin: PropTypes.object
+  margin: PropTypes.object,
+  href: PropTypes.string
 };
 
 export default Anchors;
