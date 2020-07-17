@@ -3,7 +3,7 @@ import React from "react";
 import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 import Box from "grommet/components/Box";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../../../../../../../partials/Anchor";
 
 const Ror = ({ data } = data) => {
   return (
