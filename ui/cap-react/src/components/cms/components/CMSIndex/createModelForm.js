@@ -42,12 +42,12 @@ class Create extends React.Component {
         >
           <Box
             pad="small"
-            justify="between"
+            justify="end"
             align="center"
             direction="row"
+            margin={{ top: "small" }}
             wrap={false}
           >
-            <Button label="Cancel" onClick={this.props.cancel} />
             <Button label="Create" type="submit" primary={true} />
           </Box>
         </Form>
