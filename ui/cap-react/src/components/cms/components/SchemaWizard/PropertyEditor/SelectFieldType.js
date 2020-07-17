@@ -9,7 +9,7 @@ import DraggableBox from "./DraggableBox";
 import { PropTypes } from "prop-types";
 
 import fields from "../../utils/fieldTypes";
-import { Anchor } from "grommet";
+import Anchor from "../../../../partials/Anchor";
 import Download from "grommet/components/icons/base/Download";
 
 class SelectFieldType extends React.Component {
