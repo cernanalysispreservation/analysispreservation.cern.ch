@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Box, Label, Anchor } from "grommet";
+import { Box, Label } from "grommet";
+import Anchor from "../../../../../../partials/Anchor";
 
 const RepoAction = ({ icon = null, onClick = undefined, text = "" }) => {
   return (
