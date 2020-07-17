@@ -2,8 +2,9 @@ import React from "react";
 import { PropTypes } from "prop-types";
 
 import Box from "grommet/components/Box";
+import Header from "grommet/components/Header";
 import JSONViewer from "./JSONViewer";
-import { Header, Anchor } from "grommet";
+import Anchor from "../../../../partials/Anchor";
 import SchemaTree from "../../../containers/SchemaTree";
 import CodeIcon from "grommet/components/icons/base/Code";
 import TreeIcon from "grommet/components/icons/base/Tree";

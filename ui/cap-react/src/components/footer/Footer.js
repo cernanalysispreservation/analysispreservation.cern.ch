@@ -2,7 +2,7 @@ import React from "react";
 import Box from "grommet/components/Box";
 import Footer from "grommet/components/Footer";
 import Paragraph from "grommet/components/Paragraph";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 
 class GrommetFooter extends React.Component {
   render() {

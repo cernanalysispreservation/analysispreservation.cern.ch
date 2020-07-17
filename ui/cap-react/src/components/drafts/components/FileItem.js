@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Route } from "react-router-dom";
 
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../partials/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
 import Layer from "grommet/components/Layer";

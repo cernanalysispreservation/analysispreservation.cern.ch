@@ -5,7 +5,7 @@ import store from "../../store/configureStore";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 import Layer from "grommet/components/Layer";
 import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";

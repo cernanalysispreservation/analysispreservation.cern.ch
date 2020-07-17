@@ -8,8 +8,9 @@ import DocumentIcon from "grommet/components/icons/base/Document";
 import PlayIcon from "grommet/components/icons/base/Play";
 
 import ConnectIcon from "grommet/components/icons/base/Connect";
-import { Anchor, Box } from "grommet";
+import Anchor from "../partials/Anchor";
 import ReactTooltip from "react-tooltip";
+import Box from "grommet/components/Box";
 
 import TrashIcon from "grommet/components/icons/base/Trash";
 import AppsIcon from "grommet/components/icons/base/Apps";
@@ -42,112 +43,101 @@ class DraftsItemNav extends React.Component {
       >
         <Box className="md-row" flex>
           <ReactTooltip />
-          <Anchor
-            path={{ path: `/drafts/${draft_id}`, index: true }}
-            data-tip="Overview"
-            data-place="right"
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <AppsIcon />
-            </Box>
-          </Anchor>
-          <Anchor
-            path={`/drafts/${draft_id}/edit`}
-            data-tip="Edit metadata"
-            data-place="right"
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id/edit",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <DocumentIcon />
-            </Box>
-          </Anchor>
-          <Anchor
-            path={`/drafts/${draft_id}/integrations`}
-            data-tip="Connect your repositories"
-            data-place="right"
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id/integrations",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <ConnectIcon />
-            </Box>
-          </Anchor>
-          <Anchor
-            path={`/drafts/${draft_id}/workflows`}
-            data-tip="Run workflows - in BETA soon"
-            data-place="right"
-            disabled
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id/workflows",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <PlayIcon />
-            </Box>
-          </Anchor>
-          <Anchor
-            path={`/drafts/${draft_id}/settings`}
-            data-tip="Share with others"
-            data-place="right"
-          >
-            <Box
-              justify="center"
-              align="center"
-              pad="small"
-              colorIndex={
-                matchPath(this.props.location.pathname, {
-                  path: "/drafts/:draft_id/settings",
-                  exact: true
-                })
-                  ? "light-1"
-                  : null
-              }
-            >
-              <ShareIcon />
-            </Box>
-          </Anchor>
+          <Box data-tip="Overview" data-place="right">
+            <Anchor path={{ path: `/drafts/${draft_id}`, index: true }}>
+              <Box
+                justify="center"
+                align="center"
+                pad="small"
+                colorIndex={
+                  matchPath(this.props.location.pathname, {
+                    path: "/drafts/:draft_id",
+                    exact: true
+                  })
+                    ? "light-1"
+                    : null
+                }
+              >
+                <AppsIcon />
+              </Box>
+            </Anchor>
+          </Box>
+          <Box data-tip="Edit metadata" data-place="right">
+            <Anchor path={`/drafts/${draft_id}/edit`}>
+              <Box
+                justify="center"
+                align="center"
+                pad="small"
+                colorIndex={
+                  matchPath(this.props.location.pathname, {
+                    path: "/drafts/:draft_id/edit",
+                    exact: true
+                  })
+                    ? "light-1"
+                    : null
+                }
+              >
+                <DocumentIcon />
+              </Box>
+            </Anchor>
+          </Box>
+          <Box data-tip="Connect your repositories" data-place="right">
+            <Anchor path={`/drafts/${draft_id}/integrations`}>
+              <Box
+                justify="center"
+                align="center"
+                pad="small"
+                colorIndex={
+                  matchPath(this.props.location.pathname, {
+                    path: "/drafts/:draft_id/integrations",
+                    exact: true
+                  })
+                    ? "light-1"
+                    : null
+                }
+              >
+                <ConnectIcon />
+              </Box>
+            </Anchor>
+          </Box>
+          <Box data-tip="Run workflows - in BETA soon" data-place="right">
+            <Anchor path={`/drafts/${draft_id}/workflows`} disabled>
+              <Box
+                justify="center"
+                align="center"
+                pad="small"
+                colorIndex={
+                  matchPath(this.props.location.pathname, {
+                    path: "/drafts/:draft_id/workflows",
+                    exact: true
+                  })
+                    ? "light-1"
+                    : null
+                }
+              >
+                <PlayIcon />
+              </Box>
+            </Anchor>
+          </Box>
+          <Box data-tip="Share with others" data-place="right">
+            <Anchor path={`/drafts/${draft_id}/settings`}>
+              <Box
+                justify="center"
+                align="center"
+                pad="small"
+                colorIndex={
+                  matchPath(this.props.location.pathname, {
+                    path: "/drafts/:draft_id/settings",
+                    exact: true
+                  })
+                    ? "light-1"
+                    : null
+                }
+              >
+                <ShareIcon />
+              </Box>
+            </Anchor>
+          </Box>
         </Box>
 
         {isDraft && !isPublishedOnce ? (

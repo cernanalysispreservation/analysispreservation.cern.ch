@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 
-import { Anchor } from "grommet";
+import Anchor from "../../../../../partials/Anchor";
 
 let FieldHeader = function(props) {
   const { title, required, description } = props;

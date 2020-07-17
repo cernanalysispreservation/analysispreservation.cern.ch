@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
 
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../partials/Anchor";
 import Box from "grommet/components/Box";
 import {
   AiOutlineArrowLeft,
@@ -19,12 +19,14 @@ class DraftDefaultHeader extends React.Component {
     return (
       <Box flex={true} direction="row">
         <Box direction="row" flex={true} wrap={false} responsive={false}>
-          <Box align="center" justify="center" style={{ padding: "12px" }}>
-            <Anchor
-              path={{ path: `/` }}
-              data-tip="Dashboard"
-              data-place="right"
-            >
+          <Box
+            align="center"
+            justify="center"
+            style={{ padding: "12px" }}
+            data-tip="Dashboard"
+            data-place="right"
+          >
+            <Anchor path={{ path: `/` }}>
               <AiOutlineArrowLeft
                 style={{ height: "24px", width: "24px", color: "black" }}
               />

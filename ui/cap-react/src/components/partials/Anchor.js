@@ -8,23 +8,34 @@ const Anchors = ({
   icon = null,
   primary = false,
   onClick = null,
-  path = "",
+  path = undefined,
   disabled = false,
   pad = null,
   margin = null,
   align = "",
-  justify = ""
+  justify = "",
+  href = undefined,
+  download = null,
+  style = null,
+  children = null,
+  target = ""
 }) => {
   return (
     <Box pad={pad} align={align} justify={justify} margin={margin}>
       <Anchor
+        style={style}
         icon={icon}
         primary={primary}
         label={label}
         onClick={onClick}
         path={path}
         disabled={disabled}
-      />
+        href={href}
+        download={download}
+        target={target}
+      >
+        {children}
+      </Anchor>
     </Box>
   );
 };
@@ -39,7 +50,12 @@ Anchors.propTypes = {
   pad: PropTypes.object,
   align: PropTypes.string,
   justify: PropTypes.string,
-  margin: PropTypes.object
+  margin: PropTypes.object,
+  href: PropTypes.string,
+  download: PropTypes.string,
+  style: PropTypes.object,
+  children: PropTypes.node,
+  target: PropTypes.string
 };
 
 export default Anchors;

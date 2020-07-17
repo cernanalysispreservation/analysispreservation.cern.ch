@@ -2,7 +2,7 @@ import React from "react";
 
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../../../../../../../partials/Anchor";
 
 import ORCidIcon from "./ORCidIcon";
 

@@ -6,7 +6,7 @@ import FormField from "grommet/components/FormField";
 
 import JSONDropzone from "./components/JSONDropzone";
 
-import { Anchor } from "grommet";
+import Anchor from "../../../../../../partials/Anchor";
 
 // import jsonWorkerUrl from "file-loader!ace-builds/src-noconflict/worker-json";
 // ace.config.setModuleUrl("ace/mode/json_worker", jsonWorkerUrl);

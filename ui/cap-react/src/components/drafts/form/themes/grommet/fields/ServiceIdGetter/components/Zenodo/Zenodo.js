@@ -1,6 +1,6 @@
 import React from "react";
 
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../../../../../../../partials/Anchor";
 import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 

@@ -8,7 +8,7 @@ import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
 
 import Label from "grommet/components/Label";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 import ConnectIcon from "grommet/components/icons/base/Connect";
 import UnlinkIcon from "grommet/components/icons/base/Unlink";
 

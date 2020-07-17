@@ -13,9 +13,10 @@ import { Header as GrommetHeader, Heading } from "grommet";
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
 import Menu from "grommet/components/Menu";
-import Anchor from "grommet/components/Anchor";
 import Label from "grommet/components/Label";
 import Layer from "grommet/components/Layer";
+
+import Anchor from "../partials/Anchor";
 
 import SearchBar from "../search/SearchBar";
 
