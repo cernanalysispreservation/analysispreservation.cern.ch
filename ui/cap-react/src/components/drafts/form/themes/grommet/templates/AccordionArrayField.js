@@ -79,7 +79,7 @@ class AccordionArrayField extends React.Component {
                     />
                   )
                 }
-                emptyMessage="You do not have any items at the moment."
+                emptyMessage="Add a new item"
                 unfilteredTotal={0}
               />
             )}
