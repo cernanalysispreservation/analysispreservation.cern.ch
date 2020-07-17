@@ -36,12 +36,14 @@ class Footer extends React.Component {
                 <Anchor
                   icon={<SocialTwitterIcon />}
                   label={<Label>@analysispreserv</Label>}
-                  href="analysispreserv"
+                  target="_blank"
+                  href="https://twitter.com/analysispreserv"
                 />
                 <Anchor
                   icon={<SocialGithubIcon />}
                   label={<Label>@cernnanalysispreservation</Label>}
-                  href=""
+                  target="_blank"
+                  href="https://github.com/cernanalysispreservation/analysispreservation.cern.ch"
                 />
               </Box>
               <Box flex={true} align="end">
