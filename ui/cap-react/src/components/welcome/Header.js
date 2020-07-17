@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 import Box from "grommet/components/Box";
 import Menu from "grommet/components/Menu";
 import Label from "grommet/components/Label";
