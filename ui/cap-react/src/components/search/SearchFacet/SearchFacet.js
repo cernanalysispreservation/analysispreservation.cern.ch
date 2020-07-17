@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import Heading from "grommet/components/Heading";
 import CheckBox from "grommet/components/CheckBox";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../../partials/Anchor";
 import Box from "grommet/components/Box";
 import { AiOutlineUp, AiOutlineDown } from "react-icons/ai";
 import ShowMore from "../ShowMore";
