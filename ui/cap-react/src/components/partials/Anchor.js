@@ -17,7 +17,8 @@ const Anchors = ({
   href = undefined,
   download = null,
   style = null,
-  children = null
+  children = null,
+  target = ""
 }) => {
   return (
     <Box pad={pad} align={align} justify={justify} margin={margin}>
@@ -31,6 +32,7 @@ const Anchors = ({
         disabled={disabled}
         href={href}
         download={download}
+        target={target}
       >
         {children}
       </Anchor>
@@ -52,7 +54,8 @@ Anchors.propTypes = {
   href: PropTypes.string,
   download: PropTypes.string,
   style: PropTypes.object,
-  children: PropTypes.node
+  children: PropTypes.node,
+  target: PropTypes.string
 };
 
 export default Anchors;

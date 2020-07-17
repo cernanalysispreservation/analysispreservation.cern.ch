@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 import Label from "grommet/components/Label";
 import Paragraph from "grommet/components/Paragraph";
 
@@ -51,10 +51,7 @@ class Documentation extends React.Component {
                   Find out how you can use the CAP service to capture, preserve
                   and reuse your analysis through user guides and stories.
                 </Paragraph>
-                <Anchor
-                  href="/docs/general/"
-                  target="_blank"
-                >
+                <Anchor href="/docs/general/" target="_blank">
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
                     <Label margin="none">
                       General Docs <LinkIcon size="xsmall" />
@@ -80,10 +77,7 @@ class Documentation extends React.Component {
                   command line interface, to make the preservation process part
                   of your everyday work.
                 </Paragraph>
-                <Anchor
-                  href="/docs/cli/"
-                  target="_blank"
-                >
+                <Anchor href="/docs/cli/" target="_blank">
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
                     <Label margin="none">
                       CAP-client Guide <LinkIcon size="xsmall" />
@@ -107,10 +101,7 @@ class Documentation extends React.Component {
                   Try using our RESTful interface, to integrate CAP with your
                   daily tools and services using HTTP requests.
                 </Paragraph>
-                <Anchor
-                  href="/docs/api/"
-                  target="_blank"
-                >
+                <Anchor href="/docs/api/" target="_blank">
                   <Box pad="small" colorIndex="neutral-1-a" separator="all">
                     <Label margin="none">
                       API Guides & Docs <LinkIcon size="xsmall" />
