@@ -3,7 +3,7 @@ import Box from "grommet/components/Box";
 import Footer from "grommet/components/Footer";
 import Paragraph from "grommet/components/Paragraph";
 import Menu from "grommet/components/Menu";
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 
 class GrommetFooter extends React.Component {
   render() {
