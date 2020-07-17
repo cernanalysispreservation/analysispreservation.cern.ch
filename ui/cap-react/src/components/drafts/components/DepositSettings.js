@@ -53,16 +53,17 @@ class DepositSettings extends React.Component {
               <Box margin="small">
                 <Paragraph margin="none">
                   {isPublishedOnce ? (
-                    <Anchor
-                      data-tip="Latest published version"
-                      label={
-                        <Label size="medium" uppercase>
-                          {this.props.recid}
-                        </Label>
-                      }
-                      primary
-                      path={`/published/${this.props.recid}`}
-                    />
+                    <Box data-tip="Latest published version">
+                      <Anchor
+                        label={
+                          <Label size="medium" uppercase>
+                            {this.props.recid}
+                          </Label>
+                        }
+                        primary
+                        path={`/published/${this.props.recid}`}
+                      />
+                    </Box>
                   ) : (
                     <Anchor
                       label={
@@ -75,13 +76,17 @@ class DepositSettings extends React.Component {
                   )}
                 </Paragraph>
               </Box>
-              <Box align="center" pad={{ horizontal: "small" }} margin="small">
+              <Box
+                align="center"
+                pad={{ horizontal: "small" }}
+                margin="small"
+                data-tip={
+                  this.props.canUpdate
+                    ? null
+                    : "your account has no permissions to publish"
+                }
+              >
                 <Anchor
-                  data-tip={
-                    this.props.canUpdate
-                      ? null
-                      : "your account has no permissions to publish"
-                  }
                   disabled={!this.props.canUpdate || !isDraft}
                   icon={<AnnounceIcon size="xsmall" />}
                   onClick={isDraft ? this.props.publishDraft : null}
