@@ -8,7 +8,7 @@ import { AiOutlineLink, AiOutlineMail } from "react-icons/ai";
 
 import Box from "grommet/components/Box";
 
-import Anchor from "grommet/components/Anchor";
+import Anchor from "../partials/Anchor";
 import Label from "grommet/components/Label";
 import List from "grommet/components/List";
 import ListItem from "grommet/components/ListItem";
