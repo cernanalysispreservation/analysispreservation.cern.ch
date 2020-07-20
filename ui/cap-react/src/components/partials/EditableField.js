@@ -86,6 +86,7 @@ class EditableField extends React.Component {
             onChange={this._onChange}
             value={this.state.value}
             autoFocus={true}
+            onClick={e => e.stopPropagation()}
           />
         </Label>
         <Box margin="none" direction="row" align="center" responsive={false}>
@@ -107,6 +108,7 @@ class EditableField extends React.Component {
           align="center"
           key="draft-title"
           direction="row"
+          responsive={false}
           wrap={false}
           onMouseEnter={this._hoverIn}
           onMouseLeave={this._hoverOut}

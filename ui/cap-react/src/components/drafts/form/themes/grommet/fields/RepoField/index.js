@@ -156,6 +156,7 @@ class RepoField extends React.Component {
           direction="row"
           align="center"
           justify="between"
+          responsive={false}
         >
           <Box flex={true}>
             <TextInput
