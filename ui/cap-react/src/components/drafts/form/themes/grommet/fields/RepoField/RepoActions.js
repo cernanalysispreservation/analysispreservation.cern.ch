@@ -108,31 +108,25 @@ class RepoActions extends React.Component {
         colorIndex="light-2"
         justify="between"
         align="center"
+        responsive={false}
       >
         <Box
           flex
           pad={{ between: "medium" }}
           margin={{ right: "medium" }}
           direction="row"
+          responsive={false}
           justify="center"
           align="center"
         >
           <Box flex={true}>
-            <Box
-              justify="start"
-              pad={{
-                horizontal: "small",
-                vertical: "small",
-                between: "medium"
-              }}
-            >
+            <Box justify="start" pad="small">
               <Box>
                 <Heading strong tag="h5" margin="none">
                   You have selected the following repository:
                 </Heading>
 
                 <Box
-                  flex={false}
                   align="start"
                   pad="small"
                   separator="all"
@@ -140,12 +134,17 @@ class RepoActions extends React.Component {
                   margin={{ vertical: "small" }}
                 >
                   <Box
+                    responsive={false}
                     direction="row"
-                    wrap={false}
                     margin={{ bottom: "small" }}
                   >
                     {this.renderResourceIcon(resource)}
-                    <Label size="small" announce={true} margin="none">
+                    <Label
+                      size="small"
+                      announce={true}
+                      margin="none"
+                      style={{ wordBreak: "break-word" }}
+                    >
                       <a>
                         <strong>
                           {owner && owner != "" && name && name != ""
@@ -162,6 +161,7 @@ class RepoActions extends React.Component {
                       align="center"
                       justify="start"
                       direction="row"
+                      responsive={false}
                       wrap={false}
                     >
                       <Box colorIndex="grey-3" pad={{ horizontal: "small" }}>
@@ -191,6 +191,7 @@ class RepoActions extends React.Component {
                         align="center"
                         justify="start"
                         direction="row"
+                        responsive={false}
                         wrap={false}
                       >
                         <Box colorIndex="grey-3" pad={{ horizontal: "small" }}>
