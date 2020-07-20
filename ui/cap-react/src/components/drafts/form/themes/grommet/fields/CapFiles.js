@@ -36,6 +36,9 @@ class CapFile extends React.Component {
   _onFileClick = path => {
     this._onChange({ path, type: "file" });
   };
+  _removeData = () => {
+    this.props.onChange(undefined);
+  };
 
   render() {
     return (
@@ -48,10 +51,13 @@ class CapFile extends React.Component {
         wrap={false}
       >
         {this.props.formData ? (
-          <React.Fragment>
-            <Box margin={{ right: "small" }}>{this.props.formData}</Box>
-            <Anchor label="Edit" onClick={this._toggleActiveLayer} />
-          </React.Fragment>
+          <Box flex direction="row" responsive={false} justify="between">
+            <Box direction="row" responsive={false}>
+              <Box margin={{ right: "small" }}>{this.props.formData}</Box>
+              <Anchor label="Edit" onClick={this._toggleActiveLayer} />
+            </Box>
+            <Anchor label="Remove" onClick={this._removeData} />
+          </Box>
         ) : (
           <React.Fragment>
             <Anchor
