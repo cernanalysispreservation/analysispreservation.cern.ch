@@ -11,7 +11,7 @@ const RenderSortable = (parent, card, i, moveCard) => {
       key={card.id}
       index={i}
       id={card.id}
-      text={card.text}
+      text={card.name}
       moveCard={moveCard}
     >
       {card.prop.content}

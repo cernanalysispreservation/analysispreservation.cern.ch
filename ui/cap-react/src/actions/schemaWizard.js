@@ -256,3 +256,62 @@ export function addProperty(path, key) {
     key
   };
 }
+
+// delete item from schema and uiSchema
+export function deleteByPath(item) {
+  return function(dispatch, getState) {
+    let schema = getState()
+      .schemaWizard.getIn(["current", "schema"])
+      .toJS();
+
+    let uiSchema = getState()
+      .schemaWizard.getIn(["current", "uiSchema"])
+      .toJS();
+
+    const path = item.path;
+    const uiPath = item.uiPath;
+
+    // ********* schema **********
+
+    let itemToDelete = path.pop();
+    // if the last item is items then pop again since it is an array, in order to fetch the proper id
+    itemToDelete = itemToDelete === "items" ? path.pop() : itemToDelete;
+
+    // shallow copy schema object in order to navigate through the object
+    // but the changes will reflect to the original one --> schema
+    let tempSchema = Object.assign({}, schema);
+
+    // schema update
+    for (let p in path) {
+      tempSchema = tempSchema[path[p]];
+    }
+    delete tempSchema[itemToDelete];
+
+    // ********* uiSchema **********
+
+    if (uiPath.length === 1) {
+      // remove from the uiSchema
+      delete uiSchema[uiPath[0]];
+      // update the uiOrder array
+      uiSchema["ui:order"] = uiSchema["ui:order"].filter(
+        item => item !== uiPath[0]
+      );
+    } else {
+      let tempUiSchema = Object.assign({}, uiSchema);
+      const uiItemToDelete = uiPath.pop();
+      for (let i in uiPath) {
+        tempUiSchema = tempUiSchema[uiPath[i]];
+      }
+      // remove from the uiSchema
+      delete tempUiSchema[uiItemToDelete];
+      // update the uiOrder array
+      tempUiSchema["ui:order"] = tempUiSchema["ui:order"].filter(
+        item => item !== uiItemToDelete
+      );
+    }
+
+    // ********* update changes **********
+    dispatch(updateByPath({ schema: [], uiSchema: [] }, { schema, uiSchema }));
+    dispatch(enableCreateMode());
+  };
+}

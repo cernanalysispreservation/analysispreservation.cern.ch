@@ -1,9 +1,12 @@
 import React from "react";
 
 import Box from "grommet/components/Box";
+import Paragraph from "grommet/components/Paragraph";
 
 import Form from "../../../../drafts/form/GrommetForm";
 import { PropTypes } from "prop-types";
+import Button from "../../../../partials/Button";
+import Modal from "../../../../partials/Modal";
 
 import Image1 from "./svg/AccordionField";
 import Image2 from "./svg/TabObjectField";
@@ -47,7 +50,8 @@ class CustomizeField extends React.Component {
 
     this.state = {
       schema: props.schema ? props.schema.toJS() : {},
-      uiSchema: props.uiSchema ? props.uiSchema.toJS() : {}
+      uiSchema: props.uiSchema ? props.uiSchema.toJS() : {},
+      showDeleteLayer: false
     };
   }
 
@@ -143,7 +147,47 @@ class CustomizeField extends React.Component {
   render() {
     return (
       <Box flex={false}>
-        <Box flex={true} margin={{ bottom: "medium" }}>
+        {this.state.showDeleteLayer && (
+          <Modal
+            title="Delete Item"
+            separator
+            onClose={() => this.setState({ showDeleteLayer: false })}
+          >
+            <Box pad={{ vertical: "medium", horizontal: "small" }}>
+              <Box align="center" justify="center" colorIndex="light-1">
+                <Paragraph margin="none">
+                  Are you sure you want to delete
+                </Paragraph>
+                <Paragraph margin="none">
+                  {this.props.path
+                    .toJS()
+                    .path.filter(
+                      item => item != "properties" && item != "items"
+                    )
+                    .map(item => item)
+                    .join(" > ")}
+                </Paragraph>
+              </Box>
+
+              <Box margin={{ top: "medium" }} direction="row" justify="between">
+                <Button
+                  text="Cancel"
+                  secondary
+                  onClick={() => this.setState({ showDeleteLayer: false })}
+                />
+                <Button
+                  text="Delete"
+                  critical
+                  onClick={() => {
+                    this.props.deleteByPath(this.props.path.toJS());
+                    this.setState({ showDeleteLayer: false });
+                  }}
+                />
+              </Box>
+            </Box>
+          </Modal>
+        )}
+        <Box flex={true} margin={{ bottom: "small" }}>
           <Box
             colorIndex="accent-2"
             flex={false}
@@ -375,6 +419,24 @@ class CustomizeField extends React.Component {
             </Box>
           </Box>
         </Box>
+        <Box>
+          <Box
+            colorIndex="accent-2"
+            flex={false}
+            pad="small"
+            margin={{ top: "small" }}
+          >
+            <Label size="medium" margin="none">
+              Actions
+            </Label>
+          </Box>
+          <Button
+            text="Delete"
+            margin={{ top: "small" }}
+            critical
+            onClick={() => this.setState({ showDeleteLayer: true })}
+          />
+        </Box>
       </Box>
     );
   }
@@ -387,7 +449,8 @@ CustomizeField.propTypes = {
   uiSchema: PropTypes.object,
   onSchemaChange: PropTypes.func,
   onUiSchemaChange: PropTypes.func,
-  path: PropTypes.array
+  path: PropTypes.array,
+  deleteByPath: PropTypes.func
 };
 
 export default CustomizeField;

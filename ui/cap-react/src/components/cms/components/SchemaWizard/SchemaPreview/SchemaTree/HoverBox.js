@@ -8,7 +8,7 @@ function getStyle(isOverCurrent) {
     textAlign: "center",
     fontSize: "1rem",
     height: "100%",
-    border: isOverCurrent ? "1px dashed black " : null
+    border: isOverCurrent ? "1px dotted black " : null
   };
 }
 

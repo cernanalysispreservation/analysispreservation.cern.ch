@@ -4,44 +4,51 @@ import Box from "grommet/components/Box";
 import RenderSortable from "./renderSortable";
 import update from "immutability-helper";
 import { connect } from "react-redux";
-import {
-  addByPath,
-  updateUiSchemaByPath
-} from "../../../../../../actions/schemaWizard";
+import { updateUiSchemaByPath } from "../../../../../../actions/schemaWizard";
 
 const ObjectFieldTemplate = function(props) {
   const [cards, setCards] = useState([]);
   useEffect(
     () => {
-      cards.map((card, index) => {
-        card.prop = props.properties[index];
-      });
+      if (props.properties.length === cards.length) {
+        cards.map((card, index) => {
+          card.prop = props.properties[index];
+        });
+      }
     },
     [props.properties]
   );
 
-  // create a new array to keep track of the changes in the order
-  props.properties.map((prop, index) => {
-    if (index != cards.length) {
-      return;
-    }
-    let item = {
-      id: index + 1,
-      text: prop.name,
-      prop: prop
-    };
+  useEffect(
+    () => {
+      if (props.properties.length < cards.length) {
+        let temp = [];
+        props.properties.map((prop, index) => {
+          let item = {
+            id: index + 1,
+            name: prop.name,
+            prop: prop
+          };
 
-    setCards([...cards, item]);
-  });
+          temp.push(item);
+        });
+        setCards(temp);
+      }
+    },
+    [props.properties]
+  );
+
   // update the uiSchema after the cards update
   // removes the ids and updates the ui:orded with the new one
   // everytyhing else remains the same
   useEffect(
     () => {
-      let uiCards = cards.map(item => item.text);
+      let uiCards = cards.map(item => item.name);
+      let uiProperties = props.properties.map(item => item.name);
       let { ...rest } = props.uiSchema;
-      // when the ui:order is updated, the asterisk is appended in the end,
-      // in order to accept new added components and order them in the end of the list
+
+      uiCards = uiProperties.length < uiCards.length ? uiProperties : uiCards;
+
       props.onUiSchemaChange(
         props.formContext.uiSchema.length > 0 ? props.formContext.uiSchema : [],
         {
@@ -50,8 +57,23 @@ const ObjectFieldTemplate = function(props) {
         }
       );
     },
-    [cards, props.properties]
+    [props.properties, cards]
   );
+
+  // create a new array to keep track of the changes in the order
+  props.properties.map((prop, index) => {
+    if (index != cards.length) {
+      return;
+    }
+
+    let item = {
+      id: index + 1,
+      name: prop.name,
+      prop: prop
+    };
+
+    setCards([...cards, item]);
+  });
 
   const moveCard = useCallback(
     (dragIndex, hoverIndex) => {
@@ -87,7 +109,6 @@ ObjectFieldTemplate.propTypes = {
 
 function mapDispatchToProps(dispatch) {
   return {
-    addProperty: (path, data) => dispatch(addByPath(path, data)),
     onUiSchemaChange: (path, schema) =>
       dispatch(updateUiSchemaByPath(path, schema))
   };

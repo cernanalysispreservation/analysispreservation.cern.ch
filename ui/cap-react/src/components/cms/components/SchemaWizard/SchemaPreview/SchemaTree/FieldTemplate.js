@@ -19,7 +19,7 @@ const widgets = {
 const FieldTemplate = props => {
   const { schema, uiSchema, rawErrors = [], children, formContext } = props;
 
-  const [display, setDisplay] = useState(true);
+  const [display, setDisplay] = useState(false);
   let path = {
     schema: [...formContext.schema, ...(rawErrors[0].schema || [])],
     uiSchema: [...formContext.uiSchema, ...(rawErrors[0].uiSchema || [])]
