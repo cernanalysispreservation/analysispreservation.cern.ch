@@ -21,6 +21,8 @@ import SearchResultHeading from "./SearchResultHeading";
 import SearchResultsLoading from "./SearchResultsLoading";
 import SearchFilterLayer from "./SearchFilterLayer";
 
+import DocumentTitle from "../partials/Title";
+
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
@@ -162,69 +164,71 @@ class SearchPage extends React.Component {
     }
 
     return (
-      <Box
-        flex={false}
-        align="center"
-        colorIndex="light-2"
-        style={{ minHeight: "100%" }}
-      >
-        <SearchFilterLayer
-          active={this.state.layerActive}
-          onClose={() => this.setState({ layerActive: false })}
-          properties={
-            <SearchFacets
-              aggs={_aggs}
-              selectedAggs={this.props.selectedAggs}
-              onChange={this._toggleAggs}
-            />
-          }
-        />
+      <DocumentTitle title="Search">
+        <Box
+          flex={false}
+          align="center"
+          colorIndex="light-2"
+          style={{ minHeight: "100%" }}
+        >
+          <SearchFilterLayer
+            active={this.state.layerActive}
+            onClose={() => this.setState({ layerActive: false })}
+            properties={
+              <SearchFacets
+                aggs={_aggs}
+                selectedAggs={this.props.selectedAggs}
+                onChange={this._toggleAggs}
+              />
+            }
+          />
 
-        <Box direction="row">
-          <Box id="sidebar">
-            <SearchFacets
-              aggs={_aggs}
-              selectedAggs={this.props.selectedAggs}
-              onChange={this._toggleAggs}
-            />
-          </Box>
-          <Box pad="medium">
-            <Box
-              direction="row"
-              align="start"
-              justify="between"
-              responsive={false}
-              margin={{ bottom: "small" }}
-            >
-              <SearchResultHeading results={_results.hits.total} />
-              <Box
-                colorIndex="brand"
-                id="sidebar_button"
-                pad="small"
-                align="center"
-                justify="center"
-                direction="row"
-                responsive={false}
-                onClick={() => this.setState({ layerActive: true })}
-              >
-                <Box style={{ margin: "0 5px" }}>
-                  <FiSliders />
-                </Box>
-                {queryParams.length > 0
-                  ? `Filters (${queryParams.length})`
-                  : "Filters"}
-              </Box>
+          <Box direction="row">
+            <Box id="sidebar">
+              <SearchFacets
+                aggs={_aggs}
+                selectedAggs={this.props.selectedAggs}
+                onChange={this._toggleAggs}
+              />
             </Box>
-            <SearchTag
-              query={queryParams}
-              onClick={this._updateParams}
-              searchQuery={searchQuery}
-              removeQuery={this._updateSearchQuery}
-            />
-            {results}
+            <Box pad="medium">
+              <Box
+                direction="row"
+                align="start"
+                justify="between"
+                responsive={false}
+                margin={{ bottom: "small" }}
+              >
+                <SearchResultHeading results={_results.hits.total} />
+                <Box
+                  colorIndex="brand"
+                  id="sidebar_button"
+                  pad="small"
+                  align="center"
+                  justify="center"
+                  direction="row"
+                  responsive={false}
+                  onClick={() => this.setState({ layerActive: true })}
+                >
+                  <Box style={{ margin: "0 5px" }}>
+                    <FiSliders />
+                  </Box>
+                  {queryParams.length > 0
+                    ? `Filters (${queryParams.length})`
+                    : "Filters"}
+                </Box>
+              </Box>
+              <SearchTag
+                query={queryParams}
+                onClick={this._updateParams}
+                searchQuery={searchQuery}
+                removeQuery={this._updateSearchQuery}
+              />
+              {results}
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </DocumentTitle>
     );
   }
 }

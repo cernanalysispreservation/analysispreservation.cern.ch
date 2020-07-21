@@ -6,10 +6,14 @@ import Heading from "grommet/components/Heading";
 import Header from "../partials/Header";
 import GrommetFooter from "../footer/Footer";
 
+import DocumentTitle from "../partials/Title";
+
 class AboutPage extends React.Component {
   render() {
     return [
-      <Header key="header" />,
+      <DocumentTitle key="header" title="About">
+        <Header />
+      </DocumentTitle>,
       <Box
         key="mainBody"
         flex={true}
