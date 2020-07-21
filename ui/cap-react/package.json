@@ -75,6 +75,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "5.0.0-alpha.9",
     "react-select": "3.0.8",
+    "react-side-effect": "2.1.0",
     "react-split-pane": "0.1.74",
     "react-tagcloud": "2.0.0",
     "react-tagsinput": "3.19.0",

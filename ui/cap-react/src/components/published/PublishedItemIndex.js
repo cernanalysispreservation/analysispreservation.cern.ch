@@ -15,6 +15,8 @@ import { Route } from "react-router-dom";
 import { withRouter } from "react-router";
 import PublishedSidebar from "./components/PublishedSidebar";
 
+import DocumentTitle from "../partials/Title";
+
 class PublishedItemIndex extends React.Component {
   componentDidMount() {
     let { id } = this.props.match.params;
@@ -23,31 +25,33 @@ class PublishedItemIndex extends React.Component {
 
   render() {
     return (
-      <Box flex={true} direction="row">
-        <Route exact path={`/published/:id`} component={PublishedPreview} />
-        {this.props.item &&
-        this.props.item.metadata &&
-        this.props.item.metadata.workflows &&
-        this.props.item.metadata.workflows.length > 0 ? (
-          <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
-        ) : null}
-        {this.props.item &&
-        this.props.item.metadata &&
-        this.props.item.metadata.workflows &&
-        this.props.item.metadata.workflows.length > 0 ? (
-          <Route
-            exact
-            path={`/published/:id/runs/create`}
-            component={RerunPublished}
-          />
-        ) : null}
-        {this.props.item &&
-        this.props.item.metadata &&
-        this.props.item.metadata.workflows &&
-        this.props.item.metadata.workflows.length > 0 ? (
-          <PublishedSidebar />
-        ) : null}
-      </Box>
+      <DocumentTitle title={`${this.props.match.params.id} | Published`}>
+        <Box flex={true} direction="row">
+          <Route exact path={`/published/:id`} component={PublishedPreview} />
+          {this.props.item &&
+          this.props.item.metadata &&
+          this.props.item.metadata.workflows &&
+          this.props.item.metadata.workflows.length > 0 ? (
+            <Route exact path={`/published/:id/runs/`} component={RunsIndex} />
+          ) : null}
+          {this.props.item &&
+          this.props.item.metadata &&
+          this.props.item.metadata.workflows &&
+          this.props.item.metadata.workflows.length > 0 ? (
+            <Route
+              exact
+              path={`/published/:id/runs/create`}
+              component={RerunPublished}
+            />
+          ) : null}
+          {this.props.item &&
+          this.props.item.metadata &&
+          this.props.item.metadata.workflows &&
+          this.props.item.metadata.workflows.length > 0 ? (
+            <PublishedSidebar />
+          ) : null}
+        </Box>
+      </DocumentTitle>
     );
   }
 }

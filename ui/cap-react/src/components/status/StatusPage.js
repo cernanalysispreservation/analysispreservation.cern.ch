@@ -14,6 +14,8 @@ import { fetchServicesStatus } from "../../actions/status";
 import _groupBy from "lodash/groupBy";
 import Footer from "../footer/Footer";
 
+import DocumentTitle from "../partials/Title";
+
 class StatusPage extends Component {
   constructor(props) {
     super(props);
@@ -30,7 +32,9 @@ class StatusPage extends Component {
 
   render() {
     return [
-      <Header key="header" />,
+      <DocumentTitle key="header" title="Status">
+        <Header />
+      </DocumentTitle>,
       <Box key="body" flex={true}>
         <Box align="center">
           <Box align="center" size="large">

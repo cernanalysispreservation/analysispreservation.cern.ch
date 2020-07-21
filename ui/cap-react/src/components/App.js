@@ -21,6 +21,8 @@ import Grommet from "grommet/components/Grommet";
 import { initCurrentUser } from "../actions/auth";
 import { connect } from "react-redux";
 
+import DocumentTitle from "./partials/Title";
+
 // This is a class-based component because the current
 // version of hot reloading won't hot reload a stateless
 // component at the top-level.
@@ -43,18 +45,20 @@ class App extends React.Component {
     return (
       <Grommet>
         <Box flex={false} full={true}>
-          <Switch id="main-container">
-            <Route path="/login" component={noRequireAuth(WelcomePage)} />
-            <Route path="/about" component={AboutPage} />
-            <Route path="/policy" component={PolicyPage} />
-            <Route path="/status" component={StatusPage} />
-            <Route path="/cms" component={CMSIndex} />
-            <Route path="/search-tips" component={HowToSearchPage} />
-            <Route path="/" component={requireAuth(IndexPage)} />
-            {/*
+          <DocumentTitle title="Dashboard">
+            <Switch id="main-container">
+              <Route path="/login" component={noRequireAuth(WelcomePage)} />
+              <Route path="/about" component={AboutPage} />
+              <Route path="/policy" component={PolicyPage} />
+              <Route path="/status" component={StatusPage} />
+              <Route path="/cms" component={CMSIndex} />
+              <Route path="/search-tips" component={HowToSearchPage} />
+              <Route path="/" component={requireAuth(IndexPage)} />
+              {/*
             <Route component={NotFoundPage} />
              */}
-          </Switch>
+            </Switch>
+          </DocumentTitle>
         </Box>
       </Grommet>
     );
