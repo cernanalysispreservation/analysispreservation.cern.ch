@@ -22,7 +22,6 @@ import SearchResultsLoading from "./SearchResultsLoading";
 import SearchFilterLayer from "./SearchFilterLayer";
 
 import DocumentTitle from "../partials/Title";
-import Tag from "./SearchTag/Tag";
 
 
 class SearchPage extends React.Component {
@@ -179,6 +178,7 @@ class SearchPage extends React.Component {
             onClose={() => this.setState({ layerActive: false })}
             properties={
               <SearchFacets
+                removeType={this.props.match.params.anatype}
                 aggs={_aggs}
                 selectedAggs={this.props.selectedAggs}
                 onChange={this._toggleAggs}
@@ -220,39 +220,26 @@ class SearchPage extends React.Component {
                     ? `Filters (${queryParams.length})`
                     : "Filters"}
                 </Box>
-                <Box
-                  direction="row"
-                  responsive={false}
-                  align="center"
-                  margin={{ bottom: "small" }}
-                  wrap
-                >
-                  {this.props.match.params.anatype && (
-                    <Tag
-                      text={`Type: ${this.props.match.params.anatype}`}
-                      onClick={() => {
-                        this.props.history.push(
-                          `/search${this.props.location.search}`
-                        );
-                      }}
-                    />
-                  )}
-                </Box>
-                </Box>
-                <SearchTag
-                  params={
-                    this.props.location
-                      ? queryString.parse(this.props.location.search)
-                      : undefined
-                  }
-                  onClick={this._updateParams}
-                  removeQuery={this._updateSearchQuery}
-                />
-                {results}
               </Box>
-
+              <SearchTag
+                params={
+                  this.props.location
+                    ? queryString.parse(this.props.location.search)
+                    : undefined
+                }
+                anatype={this.props.match.params ? this.props.match.params.anatype : null}
+                removeAnatype={() => {
+                  this.props.history.push(
+                    `/search${this.props.location.search}`
+                  );
+                }}
+                onClick={this._updateParams}
+                removeQuery={this._updateSearchQuery}
+              />
+              {results}
             </Box>
           </Box>
+        </Box>
       </DocumentTitle>
     );
   }
