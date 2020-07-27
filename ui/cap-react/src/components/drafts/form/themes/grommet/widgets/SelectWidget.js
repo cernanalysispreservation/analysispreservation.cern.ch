@@ -81,6 +81,7 @@ const SelectWidget = function (props) {
               borderRadius: "2px",
               marginBottom: "10px",
               padding: "5px",
+              maxWidth: "100%",
               backgroundColor: _optionSelected(option.value) ? "#006996" : null,
               color: _optionSelected(option.value) ? "#fff" : null
             }}
