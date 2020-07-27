@@ -46,9 +46,9 @@ let FieldTemplate = function(props) {
     <FormField
       label={
         <span>
-          <span style={{ color: "#000" }}>{label}</span>
+          <span style={{ color: "#000" }} dangerouslySetInnerHTML={{ __html: label }} />
           {rawDescription ? (
-            <span style={{ color: "#bbb" }}> &nbsp; {rawDescription}</span>
+            <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
           ) : null}
         </span>
       }
