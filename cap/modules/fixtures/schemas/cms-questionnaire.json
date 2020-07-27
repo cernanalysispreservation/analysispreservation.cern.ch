@@ -804,7 +804,7 @@
                 "title": "5.9.1. If you choose \"Yes\" in the previous question, did you make a cross check with toys, e.g. checking the agreement of toy and asymptotics based upper limits for some exemplary values of new physics model parameters such as the mass of a new particle?"
               }
             },
-            "title": "5.9. Do you use asymptotic formulae from the paper https://arxiv.org/abs/1007.1727v3 for your confidence interval estimations?"
+            "title": "5.9. Do you use asymptotic formulae from the paper <a target='_blank' href='https://arxiv.org/abs/1007.1727v3'>https://arxiv.org/abs/1007.1727v3</a> for your confidence interval estimations?"
           },
           "toy_data": {
             "type": "object",
@@ -1270,6 +1270,7 @@
             "title": "9.3. Comparison of Your measurement to theory predictions for the interpretation of the results:"
           }
         },
+        "description": "Information about the use of parton distribution functions of the proton (PDF in this section) in your analysis. CMS PDF forum provides help for those topics and can be contacted via <a target='_blank' href='https://hypernews.cern.ch/HyperNews/CMS/get/pdfs.html'>HyperNews</a> or mailing list at <a href='mailto:cms-pdf-forum@cern.ch>cms-pdf-forum@cern.ch</a>. Useful information is provided in the <a target='_blank' href='https://twiki.cern.ch/twiki/bin/viewauth/CMS/PDFatCMS'>TWiki page</a>.",
         "title": "9. Parton Distribution Functions"
       },
       "other_stats": {
