@@ -25,15 +25,20 @@
 
 import copy
 
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_dump
 
-from cap.modules.deposit.permissions import (AdminDepositPermission,
-                                             UpdateDepositPermission)
+from cap.modules.deposit.permissions import (
+    AdminDepositPermission,
+    ReviewDepositPermission,
+    UpdateDepositPermission,
+)
 from cap.modules.records.serializers.schemas import common
 from cap.modules.repos.serializers import (GitSnapshotSchema,
                                            GitWebhookSubscriberSchema)
 from cap.modules.workflows.serializers import ReanaWorkflowSchema
 from invenio_jsonschemas import current_jsonschemas
+
+from cap.modules.deposit.review import ReviewSchema, user_can_review
 
 
 class DepositSchema(common.CommonRecordSchema):
@@ -49,6 +54,17 @@ class DepositSchema(common.CommonRecordSchema):
 
 class DepositFormSchema(DepositSchema):
     """Schema for deposit v1 in JSON."""
+    SKIP_VALUES = set([None])
+
+    @post_dump
+    def remove_skip_values(self, data):
+        keys = ["can_review", "review"]
+
+        for key in keys:
+            if data.get(key, '') is None:
+                del data[key]
+
+        return data
 
     schemas = fields.Method('get_deposit_schemas', dump_only=True)
     webhooks = fields.Method('get_webhooks', dump_only=True)
@@ -56,6 +72,9 @@ class DepositFormSchema(DepositSchema):
 
     can_update = fields.Method('can_user_update', dump_only=True)
     can_admin = fields.Method('can_user_admin', dump_only=True)
+    can_review = fields.Method('can_user_review', dump_only=True)
+    review = fields.Method('get_review', dump_only=True)
+    links = fields.Method('get_links_with_review', dump_only=True)
 
     def get_webhooks(self, obj):
         webhooks = obj['deposit'].model.webhooks
@@ -68,14 +87,39 @@ class DepositFormSchema(DepositSchema):
     def get_deposit_schemas(self, obj):
         ui_schema = obj['deposit'].schema.deposit_options
         schema = current_jsonschemas.get_schema(
-            obj['deposit'].schema.deposit_path,
-            with_refs=True,
-            resolved=True
-        )
+            obj['deposit'].schema.deposit_path, with_refs=True, resolved=True)
         return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
+
+    def get_review(self, obj):
+        if (obj['deposit'].schema_is_reviewable()
+                and (ReviewDepositPermission(obj['deposit']).can()
+                     or _can_user_review(obj))):
+            _reviews = obj.get("metadata", {}).get("_review", [])
+            return ReviewSchema(many=True).dump(_reviews).data
+        else:
+            return None
+
+    def get_links_with_review(self, obj):
+        links = obj['links']
+
+        if obj['deposit'].schema_is_reviewable():
+            links["review"] = links["publish"].replace("publish", "review")
+
+        return links
 
     def can_user_update(self, obj):
         return UpdateDepositPermission(obj['deposit']).can()
 
     def can_user_admin(self, obj):
         return AdminDepositPermission(obj['deposit']).can()
+
+    def can_user_review(self, obj):
+        if (obj['deposit'].schema_is_reviewable()
+                and _can_user_review(obj)):
+            return _can_user_review(obj)
+
+
+def _can_user_review(obj):
+    schema = obj['deposit']['$schema']
+    schema = schema.split("/schemas/")[1]
+    return user_can_review(schema)

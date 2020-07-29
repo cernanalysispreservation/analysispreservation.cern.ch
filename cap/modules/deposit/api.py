@@ -41,6 +41,7 @@ from invenio_jsonschemas.proxies import current_jsonschemas
 from invenio_records.api import Record
 from invenio_records.models import RecordMetadata
 from invenio_records_files.models import RecordsBuckets
+from invenio_records_rest.errors import InvalidDataRESTError
 from invenio_rest.errors import FieldError
 from jsonschema.exceptions import RefResolutionError
 from sqlalchemy.exc import IntegrityError
@@ -62,12 +63,16 @@ from cap.modules.user.errors import DoesNotExistInLDAP
 from cap.modules.user.utils import (get_existing_or_register_role,
                                     get_existing_or_register_user)
 
-from .errors import DepositValidationError, UpdateDepositPermissionsError
+from .errors import (DepositValidationError, UpdateDepositPermissionsError,
+                     ReviewError)
 from .fetchers import cap_deposit_fetcher
 from .minters import cap_deposit_minter
 from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositAdminActionNeed, DepositReadActionNeed,
-                          DepositUpdateActionNeed, UpdateDepositPermission)
+                          DepositUpdateActionNeed, ReviewDepositPermission,
+                          UpdateDepositPermission)
+
+from .review import Reviewable, user_can_review
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -75,6 +80,7 @@ PRESERVE_FIELDS = (
     '_deposit',
     '_buckets',
     '_files',
+    '_review',
     '_experiment',
     '_access',
     '_user_edited',
@@ -108,7 +114,7 @@ EMPTY_ACCESS_OBJECT = {
 }
 
 
-class CAPDeposit(Deposit):
+class CAPDeposit(Deposit, Reviewable):
     """Define API for changing deposit state."""
 
     deposit_fetcher = staticmethod(cap_deposit_fetcher)
@@ -322,6 +328,34 @@ class CAPDeposit(Deposit):
             # optionally we might need to do: deposit.files.flush()
             deposit.commit()
             return deposit
+
+    @index
+    @mark_as_action
+    def review(self, pid, *args, **kwargs):
+        """Review actions for a deposit.
+
+        Adds review and comments for a deposit.
+        """
+        with ReviewDepositPermission(self).require(403):
+            if self.schema_is_reviewable():
+                data = request.get_json()
+                if data is None:
+                    raise InvalidDataRESTError()
+
+                if "id" in data:
+                    self.update_review(data)
+                else:
+                    # TODO Fix with correct permissions class
+                    deposit_schema = self.get("$schema", None)
+                    deposit_wg = self.get("$schema", None)
+                    if user_can_review(deposit_schema):
+                        self.create_review(data)
+            else:
+                raise ReviewError(None)
+
+            self.commit()
+
+            return self
 
     def _prepare_edit(self, record):
         """Update selected keys for edit method.

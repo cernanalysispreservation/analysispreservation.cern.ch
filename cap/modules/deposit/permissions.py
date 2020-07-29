@@ -167,6 +167,13 @@ class CloneDepositPermission(DepositPermission):
         super(CloneDepositPermission, self).__init__(record, 'read')
 
 
+class ReviewDepositPermission(DepositPermission):
+    """Clone deposit permission."""
+    def __init__(self, record):
+        """Initialize state."""
+        super(ReviewDepositPermission, self).__init__(record, 'read')
+
+
 class DepositFilesPermission(Permission):
     """Permission for files in deposit records (read and update access)."""
 

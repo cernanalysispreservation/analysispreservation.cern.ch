@@ -28,6 +28,7 @@ export const transformSchema = schema => {
     "_cap_status",
     "_buckets",
     "_files",
+    "_review",
     "$ana_type",
     "$schema",
     "general_title",

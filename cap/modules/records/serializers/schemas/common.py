@@ -132,6 +132,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
                 '_experiment',
                 '_access',
                 '_files',
+                '_review',
                 '_fetched_from',
                 '_user_edited'
             ]

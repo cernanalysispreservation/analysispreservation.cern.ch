@@ -30,7 +30,9 @@ import copy
 from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
+from cap.modules.deposit.review import user_can_review
 from cap.modules.records.permissions import UpdateRecordPermission
+from cap.modules.records.utils import clean_api_url_for
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
 from invenio_jsonschemas import current_jsonschemas
@@ -50,6 +52,7 @@ class RecordFormSchema(RecordSchema):
 
     schemas = fields.Method('get_record_schemas', dump_only=True)
     can_update = fields.Method('can_user_update', dump_only=True)
+    links = fields.Method('get_links_with_review', dump_only=True)
 
     def get_record_schemas(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
@@ -64,6 +67,20 @@ class RecordFormSchema(RecordSchema):
     def can_user_update(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return UpdateRecordPermission(deposit).can()
+
+    def get_links_with_review(self, obj):
+        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
+
+        links = obj['links']
+
+        if (deposit.schema_is_reviewable() and
+                user_can_review(deposit.schema.name)):
+            links['review'] = clean_api_url_for(
+                'invenio_deposit_rest.depid_actions',
+                deposit.pid,
+                action="review")
+
+        return links
 
 
 class BasicDepositSchema(Schema):
@@ -86,6 +103,7 @@ class BasicDepositSchema(Schema):
                 '_experiment',
                 '_access',
                 '_files',
+                '_review',
                 '_user_edited',
                 '_fetched_from',
             ]
@@ -114,10 +132,10 @@ class PermissionsDepositSchema(Schema):
         """Return access object."""
         access = {
             k.replace('deposit-', ''): {
-                'users': [get_user_email_by_id(user_id)
-                          for user_id in v['users']],
-                'roles': [get_role_name_by_id(role_id)
-                          for role_id in v['roles']]
+                'users':
+                [get_user_email_by_id(user_id) for user_id in v['users']],
+                'roles':
+                [get_role_name_by_id(role_id) for role_id in v['roles']]
             }
             for k, v in obj['metadata']['_access'].items()
         }

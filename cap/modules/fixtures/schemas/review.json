@@ -1,0 +1,46 @@
+{
+    "name": "review",
+    "version": "0.0.1",
+    "fullname": "",
+    "experiment": null,
+    "is_indexed": false,
+    "use_deposit_as_record": true,
+    "allow_all": true,
+    "deposit_schema": {
+      "items": {
+        "type": "object",
+        "description": "Describe information needed for reviews in records.",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reviewer": {
+            "title": "Reviewer",
+            "description": "Reviewer",
+            "type": "number"
+          },
+          "body": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["approved", "request_changes", "declined"]
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "type": "array"
+    },
+    "deposit_mapping": {},
+    "deposit_options": {}
+  }
+  

@@ -30,6 +30,10 @@
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/file-v0.0.1.json"
       },
+      "_review": {
+        "$ref":
+          "https://analysispreservation.cern.ch/schemas/deposits/records/review-v0.0.1.json"
+      },
       "control_number": {
         "type": "string"
       },

@@ -75,3 +75,13 @@ def api_url_for(endpoint, pid, **kwargs):
                   **kwargs)
 
     return url_to_api_url(url)
+
+
+def clean_api_url_for(endpoint, pid, **kwargs):
+    """API URL builder."""
+    url = url_for('{0}'.format(endpoint),
+                  pid_value=pid.pid_value,
+                  _external=True,
+                  **kwargs)
+
+    return url_to_api_url(url)

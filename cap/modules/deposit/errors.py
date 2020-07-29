@@ -23,7 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """Deposit errors."""
 
-from invenio_rest.errors import RESTException, RESTValidationError
+from invenio_rest.errors import RESTException, RESTValidationError, FieldError
 
 
 class DepositDoesNotExist(Exception):
@@ -97,3 +97,29 @@ class DisconnectWebhookError(RESTException):
         super().__init__(**kwargs)
 
         self.description = description or 'Error during disconnecting webhook.'
+
+
+class ReviewError(RESTException):
+    """Exception during review for analysis."""
+
+    code = 400
+
+    def __init__(self, description, **kwargs):
+        """Initialize exception."""
+        super().__init__(**kwargs)
+
+        self.description = description or 'Review is not a possible action.'
+
+class ReviewValidationError(RESTValidationError):
+    """Review validation error exception."""
+
+    code = 400
+
+    description = "Validation error. Try again with valid data"
+
+    def __init__(self, description, errors=None, **kwargs):
+        """Initialize exception."""
+        super(ReviewValidationError, self).__init__(**kwargs)
+
+        self.description = description or self.description
+        self.errors = [FieldError(e[0], e[1]) for e in errors.items()]

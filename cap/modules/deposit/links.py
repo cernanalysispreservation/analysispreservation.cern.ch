@@ -58,6 +58,7 @@ def links_factory(pid, record=None, record_hit=None, **kwargs):
             f'Bucket link generation error for deposit: {pid.pid_value}')
 
     for action in extract_actions_from_class(CAPDeposit):
-        links[action] = api_url_for('depid_actions', pid, action=action)
+        if action != "review":
+            links[action] = api_url_for('depid_actions', pid, action=action)
 
     return links
