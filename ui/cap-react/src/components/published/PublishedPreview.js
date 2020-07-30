@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import _omit from "lodash/omit";
+import axios from "axios";
 
 import { connect } from "react-redux";
 
@@ -21,6 +22,9 @@ import Tag from "../partials/Tag";
 
 import RunsIndex from "../published/RunsIndex";
 import { Route } from "react-router-dom";
+import { ValidateIcon } from "grommet/components/icons/base";
+import DepositReviewCreateLayer from "../drafts/components/DepositReviewCreateLayer";
+import cogoToast from "cogo-toast";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -48,6 +52,44 @@ const transformSchema = schema => {
 };
 
 class PublishedPreview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      addReviewLayer: false,
+    }
+  }
+
+  toggleAddReview = () => {
+    this.setState({
+      addReviewLayer: !this.state.addReviewLayer,
+      reviewError: null
+    })
+  }
+
+  _addReview = (review) => {
+    let uri = this.props.review_link;
+    this.setState({ reviewError: null });
+    axios
+      .post(uri, review, {
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/form+json"
+        }
+      })
+      .then(() => {
+        cogoToast.success("Your review has been submitted", {
+          position: "top-center",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
+
+        this.setState({ reviewSuccess: true, addReviewLayer: false });
+      })
+      .catch(error => {
+        this.setState({ reviewError: error.response.data });
+      });
+  }
+
   _discoverSchema = item => {
     let type;
     return item.$ana_type
@@ -81,6 +123,15 @@ class PublishedPreview extends React.Component {
           </Sidebar>
           {this.props.schemas ? (
             <Box flex={true}>
+              {
+                this.state.addReviewLayer &&
+                <DepositReviewCreateLayer
+                  addReview={this._addReview}
+                  toggleAddReview={this.toggleAddReview}
+                  reviewSuccess={this.state.reviewSuccess}
+                  error={this.state.reviewError}
+                />
+              }
               <SectionHeader
                 label={
                   <Box
@@ -104,20 +155,36 @@ class PublishedPreview extends React.Component {
                 }
                 uppercase={false}
                 action={
-                  this.props.canUpdate ? (
-                    <Anchor
-                      pad={{ horizontal: "small" }}
-                      justify="end"
-                      primary
-                      path={`/drafts/${this.props.draft_id}/edit`}
-                      icon={<Edit size="xsmall" />}
-                      label={
-                        <Label size="small" uppercase>
-                          Edit
+                  <Box direction="row" wrap="false">
+                    {this.props.review_link ? (
+                      <Anchor
+                        pad={{ horizontal: "small" }}
+                        justify="end"
+                        primary
+                        onClick={this.toggleAddReview}
+                        icon={<ValidateIcon size="xsmall" />}
+                        label={
+                          <Label size="small" uppercase>
+                            Review
                         </Label>
-                      }
-                    />
-                  ) : null
+                        }
+                      />
+                    ) : null}
+                    {this.props.canUpdate ? (
+                      <Anchor
+                        pad={{ horizontal: "small" }}
+                        justify="end"
+                        primary
+                        path={`/drafts/${this.props.draft_id}/edit`}
+                        icon={<Edit size="xsmall" />}
+                        label={
+                          <Label size="small" uppercase>
+                            Edit
+                        </Label>
+                        }
+                      />
+                    ) : null}
+                  </Box>
                 }
               />
               <Box flex={true} direction="row" justify="between">
@@ -127,7 +194,7 @@ class PublishedPreview extends React.Component {
                     schema={_schema}
                     schemaType={this.props.schemaType.toJS()}
                     uiSchema={{}}
-                    onChange={() => {}}
+                    onChange={() => { }}
                   >
                     <span />
                   </JSONSchemaPreviewer>
@@ -173,6 +240,7 @@ const mapStateToProps = state => {
     files: state.published.get("files"),
     schemas: state.published.get("schemas"),
     schemaType: state.published.get("schema"),
+    review_link: state.published.getIn(["links", "review"]),
     status: state.published.get("status")
   };
 };

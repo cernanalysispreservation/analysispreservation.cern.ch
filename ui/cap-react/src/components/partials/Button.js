@@ -55,6 +55,7 @@ const Button = ({
   tertiary = false,
   critical = false,
   icon = null,
+  separator = null,
   background = "#f5f5f5",
   color = "#333",
   pad = { horizontal: "medium", vertical: "small" },
@@ -79,6 +80,7 @@ const Button = ({
         left: margin.left,
         bottom: margin.bottom
       }}
+      separator={separator}
       direction="row"
       responsive={false}
       onClick={loading ? null : onClick}

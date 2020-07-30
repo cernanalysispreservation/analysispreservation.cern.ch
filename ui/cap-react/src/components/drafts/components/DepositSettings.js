@@ -6,6 +6,7 @@ import Box from "grommet/components/Box";
 import Label from "grommet/components/Label";
 
 import DepositAccess from "./DepositAccess";
+import DepositReviews from "./DepositReviews";
 import { Paragraph, Heading } from "grommet";
 import { connect } from "react-redux";
 // Actions
@@ -24,7 +25,7 @@ class DepositSettings extends React.Component {
 
     return (
       <Box
-        flex={true}
+        flex={false}
         size={{ width: "xxlarge" }}
         alignSelf="center"
         pad="small"
@@ -35,7 +36,7 @@ class DepositSettings extends React.Component {
           wrap={false}
           margin={{ vertical: "small", bottom: "large" }}
         >
-          <Box flex>
+          <Box flex={false}>
             <Heading tag="h3">Publish your analysis</Heading>
             <Paragraph margin="none">
               <strong>Publishing</strong> is the way to preserve your work
@@ -101,8 +102,11 @@ class DepositSettings extends React.Component {
             </React.Fragment>
           </Box>
         </Box>
-        <Box flex={true}>
+        <Box flex={false}>
           <DepositAccess />
+        </Box>
+        <Box flex={false}>
+          <DepositReviews />
         </Box>
       </Box>
     );

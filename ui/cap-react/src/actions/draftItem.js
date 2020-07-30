@@ -44,6 +44,10 @@ export const DISCARD_DRAFT_REQUEST = "DISCARD_DRAFT_REQUEST";
 export const DISCARD_DRAFT_SUCCESS = "DISCARD_DRAFT_SUCCESS";
 export const DISCARD_DRAFT_ERROR = "DISCARD_DRAFT_ERROR";
 
+export const REVIEW_DRAFT_REQUEST = "REVIEW_DRAFT_REQUEST";
+export const REVIEW_DRAFT_SUCCESS = "REVIEW_DRAFT_SUCCESS";
+export const REVIEW_DRAFT_ERROR = "REVIEW_DRAFT_ERROR";
+
 export const EDIT_PUBLISHED_REQUEST = "EDIT_PUBLISHED_REQUEST";
 export const EDIT_PUBLISHED_SUCCESS = "EDIT_PUBLISHED_SUCCESS";
 export const EDIT_PUBLISHED_ERROR = "EDIT_PUBLISHED_ERROR";
@@ -157,6 +161,17 @@ export const discardDraftSuccess = (draft_id, draft) => ({
 });
 export const discardDraftError = error => ({
   type: DISCARD_DRAFT_ERROR,
+  error
+});
+
+export const reviewDraftRequest = () => ({ type: REVIEW_DRAFT_REQUEST });
+export const reviewDraftSuccess = (draft_id, draft) => ({
+  type: REVIEW_DRAFT_SUCCESS,
+  draft_id,
+  draft
+});
+export const reviewDraftError = error => ({
+  type: REVIEW_DRAFT_ERROR,
   error
 });
 
@@ -411,6 +426,33 @@ export function discardDraft(draft_id) {
   };
 }
 
+export function reviewDraft(draft_id, review) {
+  return dispatch => {
+    dispatch(reviewDraftRequest());
+
+    let uri = `/api/deposits/${draft_id}/actions/review`;
+
+    console.log("reviewDraft::", review)
+    return axios
+      .post(uri, review, { headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/form+json"
+      }})
+      .then(response => {
+        cogoToast.success("Your review has been discarded", {
+          position: "top-center",
+          heading: "Draft reviewed",
+          bar: { size: "0" },
+          hideAfter: 3
+        });
+        return dispatch(reviewDraftSuccess(draft_id, response.data));
+      })
+      .catch(error => {
+        return dispatch(reviewDraftError(error.response.data));
+      });
+  };
+}
+
 export function updateDraft(data, draft_id) {
   return dispatch => {
     return dispatch(putUpdateDraft(data, draft_id)).catch(error => {
@@ -568,10 +610,10 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         const e = error.response
           ? error.response.data
           : {
-              status: 400,
-              message:
-                "Something went wrong with your request. Please try again"
-            };
+            status: 400,
+            message:
+              "Something went wrong with your request. Please try again"
+          };
 
         dispatch(draftsItemError(e));
       });
@@ -634,10 +676,10 @@ export function getDraftByIdAndInitForm(draft_id) {
         const e = error.response
           ? error.response.data
           : {
-              status: 400,
-              message:
-                "Something went wrong with your request. Please try again"
-            };
+            status: 400,
+            message:
+              "Something went wrong with your request. Please try again"
+          };
 
         dispatch(draftsItemError(e));
       });
