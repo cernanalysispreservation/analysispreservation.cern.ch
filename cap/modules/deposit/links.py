@@ -49,9 +49,13 @@ def links_factory(pid, record=None, record_hit=None, **kwargs):
         )
     }
 
-    bucket_link = default_bucket_link_factory(pid)
-    if bucket_link:
-        links['bucket'] = url_to_api_url(bucket_link)
+    try:
+        bucket_link = default_bucket_link_factory(pid)
+        if bucket_link:
+            links['bucket'] = url_to_api_url(bucket_link)
+    except Exception:
+        current_app.logger.info(
+            f'Bucket link generation error for deposit: {pid.pid_value}')
 
     for action in extract_actions_from_class(CAPDeposit):
         links[action] = api_url_for('depid_actions', pid, action=action)

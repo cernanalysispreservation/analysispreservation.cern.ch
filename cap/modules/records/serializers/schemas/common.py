@@ -32,24 +32,30 @@ from invenio_accounts.models import Role, User
 
 LABELS = {
     'physics_objects': {
-        'path': 'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
-        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+        'path':
+        'metadata.main_measurements.signal_event_selection.physics_objects.object',  # noqa
+        'condition':
+        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
     },
     'cadi_id': {
-        'path': 'metadata.basic_info.cadi_id',
-        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+        'path':
+        'metadata.basic_info.cadi_id',
+        'condition':
+        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
     },
     'cadi_id_': {
-        'path': 'metadata.analysis_context.cadi_id',
-        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+        'path':
+        'metadata.analysis_context.cadi_id',
+        'condition':
+        lambda obj: obj.get('metadata', {}).get('_experiment') == 'CMS'
     },
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
-    #        'condition': lambda obj: obj['metadata']['_experiment'] == 'CMS'
+    #        'condition': lambda obj: obj.get('metadata',{})['_experiment'] == 'CMS'
     #    },
     #    'version': {
     #        'path': 'revision',
-    #      'condition': lambda obj: obj['metadata']['_deposit']['status'] == \
+    #      'condition': lambda obj: obj.get('metadata',{})['_deposit']['status'] == \
     #        'published',
     #        'formatter': 'v{}'
     #    }
@@ -101,16 +107,16 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
     labels = fields.Method('get_labels', dump_only=True)
 
     def is_current_user_owner(self, obj):
-        user_id = obj['metadata']['_deposit'].get('created_by')
+        user_id = obj.get('metadata', {})['_deposit'].get('created_by')
         if user_id and current_user:
             return user_id == current_user.id
         return False
 
     def get_files(self, obj):
-        return obj['metadata'].get('_files', [])
+        return obj.get('metadata', {}).get('_files', [])
 
     def get_schema(self, obj):
-        schema = resolve_schema_by_url(obj['metadata']['$schema'])
+        schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
         result = {'name': schema.name, 'version': schema.version}
         return result
 
@@ -133,7 +139,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
         return result
 
     def get_created_by(self, obj):
-        user_id = obj['metadata']['_deposit'].get('created_by')
+        user_id = obj.get('metadata', {})['_deposit'].get('created_by')
         if user_id:
             user = User.query.filter_by(id=user_id).one()
             return user.email
@@ -141,7 +147,7 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     def get_access(self, obj):
         """Return access object."""
-        access = obj['metadata']['_access']
+        access = obj.get('metadata', {})['_access']
 
         for permission in access.values():
             if permission['users']:

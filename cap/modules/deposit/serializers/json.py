@@ -23,7 +23,10 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 """CAP Basic Serializers."""
 
+from flask import current_app
+
 from invenio_pidstore.models import PersistentIdentifier
+from invenio_pidstore.errors import PIDDoesNotExistError
 from invenio_records_rest.serializers.json import JSONSerializer
 
 from cap.modules.deposit.api import CAPDeposit
@@ -47,9 +50,13 @@ class DepositSerializer(JSONSerializer):
 
     def preprocess_search_hit(self, pid, record_hit, links_factory=None):
         """Fetch PID object for records retrievals from ES."""
-        pid = PersistentIdentifier.get(pid_type=pid.pid_type,
-                                       pid_value=pid.pid_value)
+        try:
+            pid = PersistentIdentifier.get(pid_type=pid.pid_type,
+                                        pid_value=pid.pid_value)
 
-        result = super().preprocess_search_hit(
-            pid, record_hit, links_factory=links_factory)
-        return result
+            result = super().preprocess_search_hit(
+                pid, record_hit, links_factory=links_factory)
+            return result
+        except PIDDoesNotExistError:
+            current_app.logger.info(
+                f'PIDDoesNotExistError on search. Record:.')
