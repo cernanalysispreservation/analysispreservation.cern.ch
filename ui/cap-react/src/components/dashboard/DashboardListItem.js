@@ -16,14 +16,8 @@ import { push } from "connected-react-router";
 import PropTypes from "prop-types";
 
 function DashboardListItem(props) {
-  let {
-    id,
-    // is_owner,
-    // can_admin,
-    // can_update,
-    metadata = {},
-    updated
-  } = props.item;
+  let { id, metadata = {}, updated } = props.item;
+
   let {
     general_title = "Untitled",
     basic_info: { abstract = "" } = {}
@@ -66,7 +60,7 @@ function DashboardListItem(props) {
           style={{ color: "#ccc", fontWeight: "light" }}
         >
           <span>updated</span>
-          <TimeAgo date={updated} minPeriod="60" />
+          {updated && <TimeAgo date={updated} minPeriod="60" />}
         </Box>
       </Box>
     </ListItem>

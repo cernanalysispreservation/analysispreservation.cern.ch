@@ -82,7 +82,7 @@ ArrayUtils.propTypes = {
   hasMoveUp: PropTypes.bool,
   onDropIndexClick: PropTypes.func,
   onReorderClick: PropTypes.func,
-  index: PropTypes.string,
+  index: PropTypes.number,
   formErrors: PropTypes.array,
   formErrorsChange: PropTypes.func,
   propId: PropTypes.string

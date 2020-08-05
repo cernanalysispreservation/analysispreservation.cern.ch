@@ -59,27 +59,13 @@ const Button = ({
   background = "#f5f5f5",
   color = "#333",
   pad = { horizontal: "medium", vertical: "small" },
-  margin = {
-    horizontal: "",
-    vertical: "",
-    top: "",
-    right: "",
-    left: "",
-    bottom: ""
-  },
+  margin = {},
   loading = false
 }) => {
   return (
     <ButtonWrapper
       pad={{ horizontal: pad.horizontal, vertical: pad.vertical }}
-      margin={{
-        horizontal: margin.horizontal,
-        vertical: margin.vertical,
-        top: margin.top,
-        right: margin.right,
-        left: margin.left,
-        bottom: margin.bottom
-      }}
+      margin={margin}
       separator={separator}
       direction="row"
       responsive={false}
@@ -119,7 +105,8 @@ Button.propTypes = {
   color: PropTypes.string,
   pad: PropTypes.object,
   margin: PropTypes.object,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  separator: PropTypes.string
 };
 
 export default Button;

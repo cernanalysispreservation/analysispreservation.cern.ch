@@ -10,7 +10,6 @@ import { reviewDraft } from "../../../actions/draftItem";
 
 import AddIcon from "grommet/components/icons/base/Add";
 import { Layer } from "grommet";
-
 import DepositReviewItem from "./DepositReviewItem";
 
 import { BsFillCircleFill } from "react-icons/bs";
@@ -222,9 +221,9 @@ DepositReviews.propTypes = {
   handlePermissions: PropTypes.func,
   created_by: PropTypes.string,
   canAdmin: PropTypes.bool,
-  review: PropTypes.array,
+  reviewDraft: PropTypes.func,
   canReview: PropTypes.bool,
-  reviewDraft: PropTypes.func
+  review: PropTypes.object
 };
 
 function mapStateToProps(state) {

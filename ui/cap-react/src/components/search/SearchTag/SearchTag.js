@@ -4,7 +4,13 @@ import Box from "grommet/components/Box";
 
 import Tag from "./Tag";
 
-const SearchTag = ({ onClick, params = undefined, anatype, removeAnatype, removeQuery }) => {
+const SearchTag = ({
+  onClick,
+  params = undefined,
+  anatype,
+  removeAnatype,
+  removeQuery
+}) => {
   if (!params) return null;
 
   const query = params["q"];
@@ -35,12 +41,13 @@ const SearchTag = ({ onClick, params = undefined, anatype, removeAnatype, remove
           onClick={() => removeQuery("query", decodeURIComponent(query))}
         />
       )}
-      {anatype && removeAnatype && (
-        <Tag
-          text={`Type: ${decodeURIComponent(anatype)}`}
-          onClick={removeAnatype}
-        />
-      )}
+      {anatype &&
+        removeAnatype && (
+          <Tag
+            text={`Type: ${decodeURIComponent(anatype)}`}
+            onClick={removeAnatype}
+          />
+        )}
       {types &&
         types.map(type => (
           <Tag
@@ -62,12 +69,12 @@ const SearchTag = ({ onClick, params = undefined, anatype, removeAnatype, remove
                 />
               ))
             ) : (
-                <Tag
-                  background="#f1f1f1"
-                  text={`${item[0]}:${decodeURIComponent(item[1])}`}
-                  onClick={() => onClick(item[0], item[1])}
-                />
-              )
+              <Tag
+                background="#f1f1f1"
+                text={`${item[0]}:${decodeURIComponent(item[1])}`}
+                onClick={() => onClick(item[0], item[1])}
+              />
+            )
         )}
     </Box>
   );
@@ -76,7 +83,9 @@ const SearchTag = ({ onClick, params = undefined, anatype, removeAnatype, remove
 SearchTag.propTypes = {
   onClick: PropTypes.func,
   params: PropTypes.object,
-  removeQuery: PropTypes.func
+  removeQuery: PropTypes.func,
+  removeAnatype: PropTypes.func,
+  anatype: PropTypes.string
 };
 
 export default SearchTag;

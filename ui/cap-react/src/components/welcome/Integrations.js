@@ -121,7 +121,10 @@ class Integrations extends React.Component {
 }
 
 Integrations.propTypes = {
-  scrollToRef: PropTypes.func
+  scrollToRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
 export default Integrations;

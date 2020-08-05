@@ -71,7 +71,16 @@ class AboutPage extends React.Component {
                 analyses).
               </Paragraph>
               <Heading tag="h2">How can I submit?</Heading>
-              <Paragraph style={{ lineHeight: "180%" }}>
+              <Box
+                style={{
+                  lineHeight: "180%",
+                  margin: "24px 0",
+                  fontSize: "16px",
+                  fontWeight: 300,
+                  maxWidth: "576px",
+                  color: "#666"
+                }}
+              >
                 It is possible to interact with the service in three different
                 ways: <br />
                 <ul>
@@ -87,9 +96,18 @@ class AboutPage extends React.Component {
                     </a>)
                   </li>
                 </ul>
-              </Paragraph>
+              </Box>
               <Heading tag="h2">Who has access to my work?</Heading>
-              <Paragraph style={{ lineHeight: "180%" }}>
+              <Box
+                style={{
+                  lineHeight: "180%",
+                  margin: "24px 0",
+                  fontSize: "16px",
+                  fontWeight: 300,
+                  maxWidth: "576px",
+                  color: "#666"
+                }}
+              >
                 As we are preserving sensitive data, we apply safety measures
                 and access control to all information added to CAP. Access will
                 always be restricted to members of the collaboration associated
@@ -118,7 +136,7 @@ class AboutPage extends React.Component {
                     </a>.{" "}
                   </li>
                 </ul>
-              </Paragraph>
+              </Box>
               <Heading tag="h2">Contact</Heading>
               <Paragraph style={{ lineHeight: "180%" }}>
                 Get in touch with us! Send us a message at&nbsp;

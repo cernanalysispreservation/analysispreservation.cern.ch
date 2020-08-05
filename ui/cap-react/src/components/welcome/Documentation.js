@@ -118,7 +118,10 @@ class Documentation extends React.Component {
 }
 
 Documentation.propTypes = {
-  scrollToRef: PropTypes.func
+  scrollToRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
 export default Documentation;

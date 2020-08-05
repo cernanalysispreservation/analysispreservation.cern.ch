@@ -432,7 +432,6 @@ export function reviewDraft(draft_id, review) {
 
     let uri = `/api/deposits/${draft_id}/actions/review`;
 
-    console.log("reviewDraft::", review);
     return axios
       .post(uri, review, {
         headers: {

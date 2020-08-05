@@ -41,8 +41,16 @@ const NotFoundPage = ({ history }) => {
           margin={{ top: "large" }}
           pad="medium"
         >
-          <Button text="Previous" secondary onClick={() => history.goBack()} />
-          <Button text="Home" primary onClick={() => history.push("/")} />
+          <Button
+            text="Previous"
+            secondary={true}
+            onClick={() => history.goBack()}
+          />
+          <Button
+            text="Home"
+            primary={true}
+            onClick={() => history.push("/")}
+          />
         </Box>
       </Box>
     </Box>

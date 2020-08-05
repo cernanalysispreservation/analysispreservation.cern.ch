@@ -272,7 +272,7 @@ DepositAccess.propTypes = {
   permissions: PropTypes.object,
   handlePermissions: PropTypes.func,
   created_by: PropTypes.string,
-  canAdmin: PropTypes.bools
+  canAdmin: PropTypes.bool
 };
 
 function mapStateToProps(state) {

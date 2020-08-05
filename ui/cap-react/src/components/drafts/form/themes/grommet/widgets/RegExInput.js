@@ -435,6 +435,7 @@ class RxInputBase extends Component {
 
     let input = (
       <input
+        key="rx-input-base-input"
         className={this.inputClassName()}
         {...props}
         ref={setRef}
@@ -464,7 +465,7 @@ RxInputBase.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func,
   size: PropTypes.number,
-  onBlur: PropTypes.f
+  onBlur: PropTypes.func
 };
 
 //const LOG = (first, ...params) => {console.log(first, ...params); return first; }
@@ -538,6 +539,7 @@ export default class RxInput extends RxInputBase {
   _renderHelper() {
     return (
       <Box
+        key="popOver"
         id={this.props.name + "myPopover"}
         pad={{ horizontal: "medium" }}
         style={{ fontSize: "12px", marginTop: "10px", marginBottom: "10px" }}

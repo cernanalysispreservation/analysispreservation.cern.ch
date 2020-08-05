@@ -23,7 +23,6 @@ import SearchFilterLayer from "./SearchFilterLayer";
 
 import DocumentTitle from "../partials/Title";
 
-
 class SearchPage extends React.Component {
   constructor(props) {
     super(props);
@@ -158,11 +157,11 @@ class SearchPage extends React.Component {
           </Label>
         </Box>
       ) : (
-              <Box align="end">
-                <SearchResults results={_results.hits.hits || []} />
-                {utils}
-              </Box>
-            );
+        <Box align="end">
+          <SearchResults results={_results.hits.hits || []} />
+          {utils}
+        </Box>
+      );
     }
 
     return (
@@ -227,7 +226,11 @@ class SearchPage extends React.Component {
                     ? queryString.parse(this.props.location.search)
                     : undefined
                 }
-                anatype={this.props.match.params ? this.props.match.params.anatype : null}
+                anatype={
+                  this.props.match.params
+                    ? this.props.match.params.anatype
+                    : null
+                }
                 removeAnatype={() => {
                   this.props.history.push(
                     `/search${this.props.location.search}`

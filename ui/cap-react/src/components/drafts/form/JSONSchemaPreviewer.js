@@ -76,7 +76,8 @@ JSONShemaPreviewer.propTypes = {
   formData: PropTypes.object,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.node,
+  schemaType: PropTypes.object
 };
 
 export default JSONShemaPreviewer;

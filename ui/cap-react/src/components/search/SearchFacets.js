@@ -261,7 +261,7 @@ class SearchFacets extends React.Component {
 }
 
 SearchFacets.propTypes = {
-  aggs: PropTypes.object.isRequired,
+  aggs: PropTypes.object,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,

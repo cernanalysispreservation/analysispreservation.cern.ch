@@ -162,7 +162,6 @@ class RepoField extends React.Component {
             <TextInput
               key="repoUploadInputInput"
               name="repoUploadInputInput"
-              flex={true}
               value={this.state.formData}
               placeHolder={this.props.uiSchema["ui:placeholder"]}
               onDOMChange={this._onChange}
@@ -195,6 +194,7 @@ class RepoField extends React.Component {
     } else if (this.state.repo) {
       parts.push(
         <RepoActions
+          key="repo-actions"
           repo={this.state.repo}
           uploadRepo={this.uploadRepo}
           updateRepo={this._updateRepo}
@@ -287,7 +287,7 @@ class RepoField extends React.Component {
 RepoField.propTypes = {
   onChange: PropTypes.func,
   uiSchema: PropTypes.object,
-  formData: PropTypes.object,
+  formData: PropTypes.string,
   uploadViaRepoUrl: PropTypes.func,
   id: PropTypes.string
 };

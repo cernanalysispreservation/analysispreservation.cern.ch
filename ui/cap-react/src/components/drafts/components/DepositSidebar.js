@@ -143,10 +143,12 @@ class DepositSidebar extends React.Component {
               margin={{ bottom: "small" }}
               responsive={false}
             >
-              Created:{" "}
-              <strong>
-                <TimeAgo date={this.props.created} minPeriod="60" />
-              </strong>
+              Created:
+              {this.props.created && (
+                <strong>
+                  <TimeAgo date={this.props.created} minPeriod="60" />
+                </strong>
+              )}
             </Box>
             <Box
               direction="row"
@@ -154,10 +156,12 @@ class DepositSidebar extends React.Component {
               justify="between"
               responsive={false}
             >
-              Last Updated:{" "}
-              <strong>
-                <TimeAgo date={this.props.updated} minPeriod="60" />
-              </strong>
+              Last Updated:
+              {this.props.updated && (
+                <strong>
+                  <TimeAgo date={this.props.updated} minPeriod="60" />
+                </strong>
+              )}
             </Box>
           </Box>
         </Box>

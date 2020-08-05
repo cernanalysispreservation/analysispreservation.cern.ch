@@ -16,25 +16,36 @@ import { FormField } from "grommet";
 //     "enum": ["aa", "bb", "cc"]
 //   }
 // }
-const SelectWidget = function (props) {
-  let { id, type, title, description, items = {}, rawErrors = [] } = props.schema;
+const SelectWidget = function(props) {
+  let {
+    id,
+    type,
+    title,
+    description,
+    items = {},
+    rawErrors = []
+  } = props.schema;
   let _options = [];
   if (props.options && props.options.enumOptions)
     _options = props.options.enumOptions;
   else if (type == "boolean")
-    _options = [{value: true, label: "True"}, {value: false, label: "False"}];
+    _options = [
+      { value: true, label: "True" },
+      { value: false, label: "False" }
+    ];
   else if (type != "array")
-    _options = props.schema.enum.map(i=> ({value: i.value, label: i.value}));
+    _options = props.schema.enum.map(i => ({ value: i.value, label: i.value }));
   else
-    _options = items.enum.map(i=> ({value: i.value, label: i.value})) || [];
+    _options = items.enum.map(i => ({ value: i.value, label: i.value })) || [];
 
   const [filteredOptions, setFilteredOptions] = useState(_options);
 
   // TOFIX onBlur, onFocus
-  let _filterOptions = (event) => {
+  let _filterOptions = event => {
     let query = event.target.value;
-    let filtered_options = _options
-      .filter(i => i.value.toLowerCase().indexOf(query.toLowerCase()) > -1);
+    let filtered_options = _options.filter(
+      i => i.value.toLowerCase().indexOf(query.toLowerCase()) > -1
+    );
     setFilteredOptions(filtered_options);
   };
 
@@ -46,22 +57,19 @@ const SelectWidget = function (props) {
       if (valueIndex > -1) {
         let new_value = props.value.filter(e => e !== _value);
         props.onChange(new_value);
-      }
-      else {
+      } else {
         props.onChange([...props.value, _value]);
       }
-    }
-    else {
+    } else {
       props.onChange(_value);
     }
   };
 
-  let _optionSelected = (option) => {
+  let _optionSelected = option => {
     if (props.value || props.value === false || props.value === 0) {
-      if (type == "array" || type == "string" && props.value.indexOf) {
+      if (type == "array" || (type == "string" && props.value.indexOf)) {
         return props.value.indexOf(option) > -1;
-      }
-      else {
+      } else {
         return props.value == option || props.value === option;
       }
     }
@@ -70,35 +78,47 @@ const SelectWidget = function (props) {
 
   let _children = [
     !props.readonly ? (
-      <Box direction="row" responsive={false} wrap={true} margin={{ top: "small" }} pad={{ horizontal: "medium", between: "small" }}>
-        {filteredOptions && filteredOptions.map(option => (
-          <Box
-            key={option.value}
-            justify="center"
-            flex={false}
-            style={{
-              border: "1px solid #006996",
-              borderRadius: "2px",
-              marginBottom: "10px",
-              padding: "5px",
-              maxWidth: "100%",
-              backgroundColor: _optionSelected(option.value) ? "#006996" : null,
-              color: _optionSelected(option.value) ? "#fff" : null
-            }}
-            onClick={() => _onChange(option.value)}>{option.label}</Box>
-        ))}
+      <Box
+        key="box-select-widget"
+        direction="row"
+        responsive={false}
+        wrap={true}
+        margin={{ top: "small" }}
+        pad={{ horizontal: "medium", between: "small" }}
+      >
+        {filteredOptions &&
+          filteredOptions.map(option => (
+            <Box
+              key={option.value}
+              justify="center"
+              flex={false}
+              style={{
+                border: "1px solid #006996",
+                borderRadius: "2px",
+                marginBottom: "10px",
+                padding: "5px",
+                maxWidth: "100%",
+                backgroundColor: _optionSelected(option.value)
+                  ? "#006996"
+                  : null,
+                color: _optionSelected(option.value) ? "#fff" : null
+              }}
+              onClick={() => _onChange(option.value)}
+            >
+              {option.label}
+            </Box>
+          ))}
       </Box>
-
     ) : (
-        <Box pad={{ horizontal: "medium" }}>
-          <Paragraph>
-            {`Selected Value:  ${props.value || " user inserted no value"}`}
-          </Paragraph>
-        </Box>
-
-      ),
+      <Box pad={{ horizontal: "medium" }} key="box-select-widget">
+        <Paragraph>
+          {`Selected Value:  ${props.value || " user inserted no value"}`}
+        </Paragraph>
+      </Box>
+    ),
     rawErrors && rawErrors.length ? (
       <Box
+        key="box-select-widget-rawErrors"
         style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
         flex={false}
         pad={{ horizontal: "medium" }}
@@ -114,7 +134,6 @@ const SelectWidget = function (props) {
 
   if (type !== "array") return _children;
 
-
   return (
     <FormField
       label={
@@ -126,7 +145,11 @@ const SelectWidget = function (props) {
             ) : null}
           </Box>
           <Box flex={false} alignSelf="end">
-            <input onChange={_filterOptions} style={{ height: "24px", borderRadius: "0", padding: "0 5px" }} placeholder="Filter options" />
+            <input
+              onChange={_filterOptions}
+              style={{ height: "24px", borderRadius: "0", padding: "0 5px" }}
+              placeholder="Filter options"
+            />
           </Box>
         </Box>
       }
@@ -134,7 +157,6 @@ const SelectWidget = function (props) {
       error={rawErrors.length ? true : false}
     >
       {_children}
-
     </FormField>
   );
 };
@@ -143,7 +165,7 @@ SelectWidget.propTypes = {
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   id: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   options: PropTypes.object,
   schema: PropTypes.object,
   placeholder: PropTypes.string,

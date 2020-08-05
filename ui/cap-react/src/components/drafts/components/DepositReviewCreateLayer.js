@@ -149,6 +149,7 @@ class DepositReviewCreateLayer extends React.Component {
 }
 
 DepositReviewCreateLayer.propTypes = {
+  error: PropTypes.object,
   toggleAddReview: PropTypes.func,
   addReview: PropTypes.func
 };

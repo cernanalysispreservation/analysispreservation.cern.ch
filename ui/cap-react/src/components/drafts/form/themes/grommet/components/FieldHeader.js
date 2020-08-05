@@ -82,7 +82,7 @@ FieldHeader.propTypes = {
   readonly: PropTypes.bool,
   enableImport: PropTypes.func,
   enableLatex: PropTypes.func,
-  pasteable: PropTypes.bool
+  pasteable: PropTypes.object
 };
 
 export default FieldHeader;

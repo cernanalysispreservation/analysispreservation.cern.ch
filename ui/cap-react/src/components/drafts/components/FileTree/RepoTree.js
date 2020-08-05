@@ -8,7 +8,6 @@ import TreeNode from "./TreeNode";
 import { FaGithub, FaGitlab } from "react-icons/fa";
 
 class RepoTree extends React.Component {
-
   onToggle = (node, toggled) => {
     const { cursor, data } = this.state;
     if (cursor) {
@@ -24,16 +23,27 @@ class RepoTree extends React.Component {
   render() {
     let repos = this.props.repos;
 
-    return repos && repos.length > 0 ? repos[0].children.map(resource => (
-      <Box key={resource}>
-        {
-          resource.children.map(owner => (
+    return repos && repos.length > 0 ? (
+      repos[0].children.map(resource => (
+        <Box key={resource}>
+          {resource.children.map(owner => (
             <Box key={owner}>
               {owner.children.map(repo => (
                 <Box key={`${owner.name}/${repo.name}`}>
-                  <Box style={{ padding: "3px 1px" }} flex={true} direction="row" wrap="false" align="center">
-
-                    <Box style={{ marginRight: "4px" }}>{resource.name == "github.com" ? <FaGithub size="12" /> : <FaGitlab size="12" />}</Box>
+                  <Box
+                    style={{ padding: "3px 1px" }}
+                    flex={true}
+                    direction="row"
+                    wrap="false"
+                    align="center"
+                  >
+                    <Box style={{ marginRight: "4px" }}>
+                      {resource.name == "github.com" ? (
+                        <FaGithub size="12" />
+                      ) : (
+                        <FaGitlab size="12" />
+                      )}
+                    </Box>
                     <Box>{`${owner.name}/${repo.name}`}</Box>
                   </Box>
                   <TreeNode
@@ -45,19 +55,19 @@ class RepoTree extends React.Component {
                 </Box>
               ))}
             </Box>
-          ))
-        }
-      </Box>
-    )) : (
-        <Box flex={true} pad="small" justify="center" align="center">
-          No repositories added yet
+          ))}
         </Box>
-      );
+      ))
+    ) : (
+      <Box flex={true} pad="small" justify="center" align="center">
+        No repositories added yet
+      </Box>
+    );
   }
 }
 
 RepoTree.propTypes = {
-  repos: PropTypes.object,
+  repos: PropTypes.array,
   onFileClick: PropTypes.func,
   onDirectoryClick: PropTypes.func
 };

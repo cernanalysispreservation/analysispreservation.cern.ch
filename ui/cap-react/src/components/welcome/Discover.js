@@ -4,7 +4,7 @@ import Box from "grommet/components/Box";
 import Heading from "grommet/components/Heading";
 import Paragraph from "grommet/components/Paragraph";
 
-class WelcomePage extends React.Component {
+class Discover extends React.Component {
   render() {
     return (
       <span ref={this.props.scrollToRef}>
@@ -43,8 +43,11 @@ class WelcomePage extends React.Component {
   }
 }
 
-WelcomePage.propTypes = {
-  scrollToRef: PropTypes.func
+Discover.propTypes = {
+  scrollToRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
-export default WelcomePage;
+export default Discover;

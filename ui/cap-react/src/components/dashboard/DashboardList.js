@@ -80,6 +80,7 @@ function DashboardList(props) {
             <List id="anchor-no-style">
               {list[activeList].list.map((item, index) => (
                 <Anchor
+                  style={{ width: "100%" }}
                   key={index}
                   path={
                     listType == "draft"

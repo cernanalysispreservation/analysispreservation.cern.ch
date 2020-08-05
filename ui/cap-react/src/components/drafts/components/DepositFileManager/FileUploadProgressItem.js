@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Meter from "grommet/components/Meter";
-import Status from "grommet/components/icons/Status";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 class FileUploadProgressItem extends React.Component {
   render() {
@@ -33,7 +33,7 @@ class FileUploadProgressItem extends React.Component {
               responsive={false}
             >
               <span style={{ paddingRight: "5px" }}>File uploaded</span>
-              <Status value="ok" size="xsmall" />
+              <AiFillCheckCircle size={15} color="rgb(96,143,68)" />
             </Box>
           ) : (
             <Meter value={_progress} />

@@ -107,7 +107,10 @@ class WelcomePage extends React.Component {
 }
 
 WelcomePage.propTypes = {
-  scrollToRef: PropTypes.func
+  scrollToRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) })
+  ])
 };
 
 export default WelcomePage;

@@ -25,6 +25,7 @@ class SearchResults extends React.Component {
         <List className="search_result_box">
           {this.props.results.map((item, index) => {
             // let rights = "";
+
             let {
               id,
               // is_owner,
@@ -162,7 +163,11 @@ class SearchResults extends React.Component {
                         size="small"
                         style={{ color: "rgba(0,0,0,0.5)" }}
                       >
-                        Updated <TimeAgo date={updated} minPeriod="60" />
+                        {updated && (
+                          <React.Fragment>
+                            Updated <TimeAgo date={updated} minPeriod="60" />
+                          </React.Fragment>
+                        )}
                       </Label>
                     </Box>
                   </Box>
