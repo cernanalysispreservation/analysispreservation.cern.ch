@@ -641,16 +641,17 @@ class CAPDeposit(Deposit):
             owner = current_user
 
         with db.session.begin_nested():
-            data = cls._preprocess_create_data(data, id_, owner)
+            uuid_ = id_ or uuid.uuid4()
+
+            data = cls._preprocess_create_data(data, uuid_, owner)
 
             # create RecordMetadata instance
-            deposit = Record.create(data, id_=id_)
+            deposit = Record.create(data, id_=uuid_)
             deposit.__class__ = cls
 
             # create files bucket
             bucket = Bucket.create()
             RecordsBuckets.create(record=deposit.model, bucket=bucket)
-
             # give owner permissions to the deposit
             if owner:
                 for permission in DEPOSIT_ACTIONS:
@@ -701,7 +702,6 @@ class CAPDeposit(Deposit):
         # minting is done by invenio on POST action preprocessing,
         # if method called programatically mint PID here
         if '_deposit' not in data:
-            uuid_ = uuid_ or uuid.uuid4()
             cls.deposit_minter(uuid_, data)
 
         if owner:
