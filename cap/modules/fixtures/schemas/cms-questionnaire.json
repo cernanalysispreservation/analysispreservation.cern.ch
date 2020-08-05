@@ -58,6 +58,19 @@
           "wg":{
             "type":"string",
             "enum":[
+              "BPH",
+              "FTR",
+              "B2G",
+              "EXO",
+              "HIG",
+              "HIN",
+              "SMP",
+              "SUS",
+              "TOP",
+              "PPS",
+              "other"
+            ],
+            "enumNames":[
               "B physics and quarkonia (BPH)",
               "Future (FTR)",
               "Beyond-two-generations (B2G)",

@@ -363,6 +363,20 @@ new_names = {
         '11.3 suggestions'
 }
 
+WG_MAP = {
+    "B physics and quarkonia (BPH)": "BPH",
+    "Future (FTR)": "FTR",
+    "Beyond-two-generations (B2G)": "B2G",
+    "Exotica (EXO)": "EXO",
+    "Higgs physics (HIG)": "HIG",
+    "Heavy ions physics (HIN)": "HIN",
+    "Standard Model physics (SMP)": "SMP",
+    "Supersymmetry (SUS)": "SUS",
+    "Top physics (TOP)": "TOP",
+    "Physics of the CMS-Totem Precision Proton Spectometer (PPS)": "PPS",
+    "Other (please specify)": "other",
+}
+
 
 def extract_questionnaires_from_excel(file):
     df = pd.read_excel(file, header=None, index=False)
@@ -391,11 +405,15 @@ def extract_questionnaires_from_excel(file):
             'user': ans['Username']
         }
 
+        try:
+            _wg = WG_MAP[ans['1.3 Working Group']]
+        except Exception:
+            _wg = "other"
         # 1
         new_ans["analysis_context"] = {
             "name": ans['1.1 Name'],
             "email": ans['1.2 E-mail'],
-            "wg": ans['1.3 Working Group'],
+            "wg": _wg,
             "cadi_id": ans['1.4 CADI ID'],
             "title_references": ans['1.5 Title/References'],
             "next_deadline_date": ans['1.6 Next deadline date'],

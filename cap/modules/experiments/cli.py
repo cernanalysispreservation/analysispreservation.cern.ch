@@ -27,6 +27,8 @@ import json
 
 import click
 from flask_cli import with_appcontext
+from jsonschema.exceptions import ValidationError
+
 from invenio_db import db
 
 from cap.modules.deposit.api import CAPDeposit
@@ -41,6 +43,8 @@ from cap.modules.experiments.utils.cms import \
 from cap.modules.experiments.utils.das import \
     cache_das_datasets_in_es_from_file
 from cap.modules.fixtures.cli import fixtures
+
+from cap.modules.user.utils import get_existing_or_register_role
 
 
 @fixtures.group()
@@ -144,16 +148,16 @@ def _questionnaire_data(data, title=None):
 def questionnaires(file):
     """Load and save CMS questionnaire data."""
     try:
-        with db.session.begin_nested():
-            answers = extract_questionnaires_from_excel(file)
-            click.secho(f"Total Answers: {len(answers)}", fg='green')
+        answers = extract_questionnaires_from_excel(file)
+        click.secho(f"Total Answers: {len(answers)}", fg='green')
 
-            for answer in answers:
+        for answer in answers:
+            with db.session.begin_nested():
                 try:
                     title = f"Statistics Questionnaire for " \
                             f"{answer['analysis_context']['cadi_id']}" \
                                 if answer['analysis_context']['cadi_id'] \
-                                else None
+                                else "--"
                     extracted = remove_none_keys(
                         _questionnaire_data(answer, title=title))
                     if title:
@@ -166,13 +170,26 @@ def questionnaires(file):
                         ['deposit-read'],
                     )
 
+                    # give permission to stat committee
+                    admin_egroups = ["cms-statistics-committee@cern.ch"]
+                    for role in admin_egroups:
+                        _role = get_existing_or_register_role(role)
+                        deposit._add_egroup_permissions(
+                            _role,
+                            [
+                                'deposit-read',
+                                'deposit-update',
+                                'deposit-admin',
+                            ],
+                            db.session,
+                        )
+
                     deposit.commit()
                     click.secho(
                         f"Success: {answer['_general_info']['serial']} - "
                         f"{answer['_general_info']['user']}",
                         fg='green')
-                    click.secho(f"{title}",
-                                fg='yellow')
+                    click.secho(f"{title}", fg='yellow')
 
                 except DepositValidationError as e:
                     click.secho("---------------")
@@ -180,10 +197,14 @@ def questionnaires(file):
                     for err in e.errors:
                         click.secho(f"{err.to_dict()}", fg='red')
                     click.secho("---------------")
-
+                    pass
+                except ValidationError:
+                    click.secho("---------------")
+                    click.secho(f"Validation Error", fg='red')
+                    click.secho("---------------")
                     pass
 
-        db.session.commit()
+            db.session.commit()
 
     except Exception:
         pass
