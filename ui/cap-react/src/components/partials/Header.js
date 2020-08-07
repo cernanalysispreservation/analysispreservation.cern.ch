@@ -16,6 +16,8 @@ import Menu from "grommet/components/Menu";
 import Label from "grommet/components/Label";
 import Layer from "grommet/components/Layer";
 
+import Men from "./Menu";
+
 import Anchor from "../partials/Anchor";
 
 import SearchBar from "../search/SearchBar";
@@ -68,7 +70,12 @@ class Header extends React.Component {
 
   render() {
     return (
-      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
+      <GrommetHeader
+        fixed={false}
+        colorIndex="neutral-1"
+        size="small"
+        style={{ position: "relative" }}
+      >
         {this.state.showCreate ? (
           <DraftCreate toggle={this.toggleCreate} />
         ) : null}
@@ -100,6 +107,15 @@ class Header extends React.Component {
               <b>BETA</b>
             </Label>
           </Title>
+
+          <Men>
+            <Anchor
+              label="Settings"
+              href="#"
+              animateIcon={true}
+              path="/settings"
+            />
+          </Men>
 
           {this.props.isLoggedIn ? (
             <Box
