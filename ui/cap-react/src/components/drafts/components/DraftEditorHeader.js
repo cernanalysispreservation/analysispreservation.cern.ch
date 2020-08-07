@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import cogoToast from "cogo-toast";
 
 import Box from "grommet/components/Box";
-import Menu from "grommet/components/Menu";
 import Spinning from "grommet/components/icons/Spinning";
 
 import Message from "../../partials/Message";
@@ -214,18 +213,9 @@ class DraftEditorHeader extends React.Component {
           ) : null}
 
           {this.props.draft_id && (
-            <Menu
-              flex={false}
-              direction="row"
-              wrap={false}
-              responsive={false}
-              size="small"
-              pad={{ horizontal: "small" }}
-              alignContent="center"
-              justify="center"
-              align="center"
-            >
+            <Box justify="center" align="center">
               <Anchors
+                pad={{ horizontal: "small" }}
                 label={
                   <Label size="small" uppercase={true}>
                     Save
@@ -235,7 +225,7 @@ class DraftEditorHeader extends React.Component {
                 primary
                 icon={<SaveIcon size="xsmall" />}
               />
-            </Menu>
+            </Box>
           )}
         </Box>
       </Box>

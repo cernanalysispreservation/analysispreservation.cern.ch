@@ -86,20 +86,6 @@ label {
   height: auto;
 }
 
-.menuItem::after {
-  content: "";
-  display: block;
-  width: 0;
-  height: 1px;
-  background: #000;
-  transition: width 0.3s;
-}
-
-.menuItem:hover::after {
-  width: 100%;
-  transition: width 0.3s;
-}
-
 //  pagination
 #react-paginate ul {
   display: inline-block;
@@ -296,6 +282,11 @@ label {
 .search_facets .grommetux-check-box__label {
   line-height: 1.3 !important;
   font-size: 1.4em;
+}
+
+.not-underline,
+.not-underline:hover {
+  text-decoration: none !important;
 }
 
 #anchor-no-style .grommetux-anchor:hover,
@@ -586,6 +577,21 @@ label {
 @media only screen and (min-width: 1050px) {
   #list {
     max-width: 93vw;
+  }
+}
+@media only screen and (min-width: 1070px) {
+  .menuItem::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.3s;
+  }
+
+  .menuItem:hover::after {
+    width: 100%;
+    transition: width 0.3s;
   }
 }
 // large

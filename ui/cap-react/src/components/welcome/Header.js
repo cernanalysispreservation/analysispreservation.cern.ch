@@ -3,19 +3,21 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 
-import Anchor from "../partials/Anchor";
 import Box from "grommet/components/Box";
-import Menu from "grommet/components/Menu";
-import Label from "grommet/components/Label";
 
 import Header from "grommet/components/Header";
 
 import LoginForm from "grommet/components/LoginForm";
 
 import { loginLocalUser } from "../../actions/auth";
-import LogIcon from "grommet/components/icons/base/Login";
 
 import CAPLogoDark from "../../img/cap-logo-dark.svg";
+
+import Menu from "../partials/Menu";
+import MenuItem from "../partials/MenuItem";
+
+import MediaQuery from "react-responsive";
+import { AiOutlineLogin, AiOutlineMenu } from "react-icons/ai";
 
 class WelcomePage extends React.Component {
   constructor(props) {
@@ -66,51 +68,77 @@ class WelcomePage extends React.Component {
             </div>
           </Box>
           <Box direction="row" align="center" responsive={false}>
-            <Menu
-              dropAlign={{ top: "bottom" }}
-              size="small"
-              direction="row"
-              align="center"
-              pad={{ horizontal: "medium" }}
-            >
+            <MediaQuery minWidth={1070}>
               {Object.keys(this.props.nav).map((key, index) => (
-                <Box
-                  align="center"
-                  key={index}
-                  onClick={() =>
-                    this.props.scrollToRef(this.props.nav[key].ref)
-                  }
-                  className="menuItem"
-                >
-                  <Label>{this.props.nav[key].title}</Label>
+                <Box key={index}>
+                  <MenuItem
+                    title={this.props.nav[key].title}
+                    className="menuItem"
+                    background="transparent"
+                    href="#"
+                    onClick={() =>
+                      this.props.scrollToRef(this.props.nav[key].ref)
+                    }
+                  />
                 </Box>
               ))}
-              <Anchor href={this.state.oauthLink}>
-                <Label>Log in</Label>
-              </Anchor>
-            </Menu>
-            {process.env.NODE_ENV === "development" ? (
-              <Menu
-                dropAlign={{ top: "bottom" }}
-                icon={<LogIcon />}
-                size="small"
-                closeOnClick={false}
-              >
-                <LoginForm
-                  usernameType="email"
-                  defaultValues={{ username: "info@inveniosoftware.org" }}
-                  onSubmit={this.onFormSubmit}
-                />
-                {this.props.authError ? (
-                  <Box
-                    colorIndex="critical"
-                    margin={{ top: "small" }}
-                    pad="small"
-                  >
-                    {this.props.authError}
+              <MenuItem
+                title="Log in"
+                background="transparent"
+                href={this.state.oauthLink}
+                className="menuItem"
+              />
+            </MediaQuery>
+            <MediaQuery maxWidth={1069}>
+              <MenuItem
+                title="Log in"
+                href={this.state.oauthLink}
+                hovered
+                background="transparent"
+                icon={<AiOutlineLogin size={23} color="rgb(110,110,110)" />}
+              />
+              <Menu top={55} right={0} icon={<AiOutlineMenu size={23} />}>
+                {Object.keys(this.props.nav).map((key, index) => (
+                  <Box key={index}>
+                    <MenuItem
+                      title={this.props.nav[key].title}
+                      className="menuItem"
+                      href="#"
+                      hovered
+                      separator
+                      icon={this.props.nav[key].icon}
+                      onClick={() =>
+                        this.props.scrollToRef(this.props.nav[key].ref)
+                      }
+                    />
                   </Box>
-                ) : null}
+                ))}
               </Menu>
+            </MediaQuery>
+            {process.env.NODE_ENV === "development" ? (
+              <Box margin={{ left: "small" }}>
+                <Menu
+                  background="#f5f5f5"
+                  top={55}
+                  right={0}
+                  icon={<AiOutlineLogin size={23} />}
+                >
+                  <LoginForm
+                    usernameType="email"
+                    defaultValues={{ username: "info@inveniosoftware.org" }}
+                    onSubmit={this.onFormSubmit}
+                  />
+                  {this.props.authError ? (
+                    <Box
+                      colorIndex="critical"
+                      margin={{ top: "small" }}
+                      pad="small"
+                    >
+                      {this.props.authError}
+                    </Box>
+                  ) : null}
+                </Menu>
+              </Box>
             ) : null}
           </Box>
         </Box>
