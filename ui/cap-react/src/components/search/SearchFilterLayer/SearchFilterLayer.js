@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Layer from "grommet/components/Layer";
 import Box from "grommet/components/Box";
-import { Provider } from "react-redux";
-import store from "../../../store/configureStore";
 
 class SearchFilterLayer extends React.Component {
   constructor(props) {
@@ -21,11 +19,9 @@ class SearchFilterLayer extends React.Component {
           onClose={this.props.onClose}
           id="search_layer"
         >
-          <Provider store={store}>
-            <Box justify="center" align="center" colorIndex="light-2">
-              {this.props.properties}
-            </Box>
-          </Provider>
+          <Box justify="center" align="center" colorIndex="light-2">
+            {this.props.properties}
+          </Box>
         </Layer>
       );
     } else return null;

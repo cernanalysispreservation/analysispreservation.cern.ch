@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { connect, Provider } from "react-redux";
-import store from "../../store/configureStore";
+import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -81,28 +80,26 @@ class SettingsIndex extends React.Component {
         }}
         align="right"
       >
-        <Provider store={store}>
-          <Box flex={true} size="medium" pad={{ vertical: "large" }}>
-            <Heading align="start" margin="small" tag="h3">
-              New OAuth Application
+        <Box flex={true} size="medium" pad={{ vertical: "large" }}>
+          <Heading align="start" margin="small" tag="h3">
+            New OAuth Application
             </Heading>
-            <Paragraph align="start" margin="none" />
-            <Form
-              schema={
-                this.state.layer.type == "token"
-                  ? tokenSchema
-                  : applicationSchema
-              }
-              onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
-              validate={true}
-              hideErrorList
-            >
-              <Box flex={true} margin={{ vertical: "small" }}>
-                <Button label="Create token" type="submit" primary={true} />
-              </Box>
-            </Form>
-          </Box>
-        </Provider>
+          <Paragraph align="start" margin="none" />
+          <Form
+            schema={
+              this.state.layer.type == "token"
+                ? tokenSchema
+                : applicationSchema
+            }
+            onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
+            validate={true}
+            hideErrorList
+          >
+            <Box flex={true} margin={{ vertical: "small" }}>
+              <Button label="Create token" type="submit" primary={true} />
+            </Box>
+          </Form>
+        </Box>
       </Layer>
     );
   }
@@ -167,14 +164,14 @@ class SettingsIndex extends React.Component {
                   </Table>
                 </Box>
               ) : (
-                <ListPlaceholder
-                  label="Add token"
-                  primary={true}
-                  a11yTitle="Add item"
-                  emptyMessage="You do not have any items at the moment."
-                  unfilteredTotal={0}
-                />
-              )}
+                  <ListPlaceholder
+                    label="Add token"
+                    primary={true}
+                    a11yTitle="Add item"
+                    emptyMessage="You do not have any items at the moment."
+                    unfilteredTotal={0}
+                  />
+                )}
             </Box>
           </Box>
         </Box>

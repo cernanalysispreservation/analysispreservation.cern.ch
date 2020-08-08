@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { connect, Provider } from "react-redux";
-import store from "../../../../store/configureStore";
+import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
@@ -112,17 +111,15 @@ class FileManager extends React.Component {
         overlayClose={true}
         onClose={this.props.toggleFilemanagerLayer}
       >
-        <Provider store={store}>
-          <Box size="large">
-            <Box flex={true}>
-              <Box flex={true} direction="row">
-                <Box flex={true} colorIndex="grey-4">
-                  <DropzoneUploader />
-                </Box>
+        <Box size="large">
+          <Box flex={true}>
+            <Box flex={true} direction="row">
+              <Box flex={true} colorIndex="grey-4">
+                <DropzoneUploader />
               </Box>
             </Box>
           </Box>
-        </Provider>
+        </Box>
       </Layer>
     ) : null;
   }

@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { Provider } from "react-redux";
-import store from "cap-react/src/store/configureStore";
 import * as serviceWorker from "./serviceWorker";
 import Grommet from "grommet/components/Grommet";
 
@@ -12,11 +10,9 @@ import "grommet/scss/hpinc/index.scss";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <Grommet>
-        <App />
-      </Grommet>
-    </Provider>
+    <Grommet>
+      <App />
+    </Grommet>
   </React.StrictMode>,
   document.getElementById("root")
 );

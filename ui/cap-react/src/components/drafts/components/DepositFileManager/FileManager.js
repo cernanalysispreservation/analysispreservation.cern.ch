@@ -1,9 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Provider } from "react-redux";
-import store from "../../../../store/configureStore";
-
 import Box from "grommet/components/Box";
 import Layer from "grommet/components/Layer";
 
@@ -44,21 +41,19 @@ class FileManager extends React.Component {
         overlayClose={true}
         onClose={this.props.toggleLayer}
       >
-        <Provider store={store}>
-          <Box size={{ height: "xlarge", width: { min: "large" } }}>
-            <Box flex={true}>
-              <Box flex={true} direction="row">
-                {this.props.onSelect ? (
-                  this._renderSidebar()
-                ) : (
+        <Box size={{ height: "xlarge", width: { min: "large" } }}>
+          <Box flex={true}>
+            <Box flex={true} direction="row">
+              {this.props.onSelect ? (
+                this._renderSidebar()
+              ) : (
                   <Box flex={true}>
                     <DropzoneUploader />
                   </Box>
                 )}
-              </Box>
             </Box>
           </Box>
-        </Provider>
+        </Box>
       </Layer>
     ) : null;
   }
