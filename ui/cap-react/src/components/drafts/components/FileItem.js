@@ -8,8 +8,10 @@ import { Route } from "react-router-dom";
 import Anchor from "../../partials/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
+
 import Heading from "grommet/components/Heading";
+
+import Modal from "../../partials/Modal";
 
 import NoteIcon from "grommet/components/icons/base/Note";
 import CloseIcon from "grommet/components/icons/base/Close";
@@ -206,22 +208,19 @@ class FileItem extends React.Component {
           </Box>
         </Box>
         {this.state.fileInfo && (
-          <Layer
-            closer
-            flush
-            overlayClose
+          <Modal
+            title="File Versions"
             onClose={() => this.setState({ fileInfo: false })}
           >
             <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
               <Box direction="row" align="center" margin={{ bottom: "small" }}>
-                <Heading tag="h3">
-                  {this.props.filename ? this.props.filename : filePath}
-                </Heading>
-                <Box
-                  margin={{ left: "small" }}
-                  style={{ color: "rgba(0,0,0,0.4)" }}
-                >
-                  <Heading tag="h5">{file.checksum}</Heading>
+                <Box>
+                  <Heading tag="h3">
+                    {this.props.filename ? this.props.filename : filePath}
+                  </Heading>
+                  <Box style={{ color: "rgba(0,0,0,0.4)", marginLeft: "5px" }}>
+                    <Heading tag="h5">{file.checksum}</Heading>
+                  </Box>
                 </Box>
               </Box>
               <Box direction="row" wrap margin={{ bottom: "medium" }}>
@@ -231,7 +230,7 @@ class FileItem extends React.Component {
                   </Box>
                 ))}
               </Box>
-              <Heading tag="h4">File Versions</Heading>
+
               {this.props.versionLoading ? (
                 <Box align="center" justify="center">
                   <Spinning />
@@ -294,7 +293,7 @@ class FileItem extends React.Component {
                   ))
               )}
             </Box>
-          </Layer>
+          </Modal>
         )}
 
         {this.state.menu ? (

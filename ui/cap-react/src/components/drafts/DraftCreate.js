@@ -1,6 +1,6 @@
 import React from "react";
 
-import Layer from "grommet/components/Layer";
+import Modal from "../partials/Modal";
 
 import CreateForm from "./components/CreateForm";
 
@@ -9,9 +9,9 @@ import PropTypes from "prop-types";
 class DraftCreate extends React.Component {
   render() {
     return (
-      <Layer overlayClose closer flush onClose={this.props.toggle}>
+      <Modal onClose={this.props.toggle} title="Create Analysis">
         <CreateForm />
-      </Layer>
+      </Modal>
     );
   }
 }

@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Button from "../../partials/Button";
 import Heading from "grommet/components/Heading";
-import Layer from "grommet/components/Layer";
 
 import { BsFillCircleFill } from "react-icons/bs";
+import Modal from "../../partials/Modal";
 
 class DepositReviewCreateLayer extends React.Component {
   constructor() {
@@ -61,14 +61,8 @@ class DepositReviewCreateLayer extends React.Component {
 
   render() {
     return (
-      <Layer
-        flush
-        onClose={this.props.toggleAddReview}
-        overlayClose
-        closer={true}
-      >
-        <Box flex={false} size="large" pad="medium">
-          <Heading tag="h3">Add a review</Heading>
+      <Modal title="Add a review" onClose={this.props.toggleAddReview}>
+        <Box flex={false} size="large" pad="small">
           <Box pad={{ vertical: "medium" }}>
             <Box pad={{ between: "small" }}>
               <Box
@@ -120,7 +114,6 @@ class DepositReviewCreateLayer extends React.Component {
               >
                 <Button
                   text="Cancel"
-                  pad={{ horizontal: "small", vertical: "small" }}
                   onClick={this.toggleAddReview}
                   secondary
                 />
@@ -131,19 +124,13 @@ class DepositReviewCreateLayer extends React.Component {
                     this.state.reviewFormBody === null
                   }
                   primary
-                  pad={{ horizontal: "small", vertical: "small" }}
-                  onClick={
-                    this.state.reviewFormType === null ||
-                    this.state.reviewFormBody === null
-                      ? null
-                      : this._addReview
-                  }
+                  onClick={this._addReview}
                 />
               </Box>
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 }

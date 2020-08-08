@@ -2,14 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
 
 import Button from "../../../../../partials/Button";
 
 import { AiOutlineDelete } from "react-icons/ai";
 
-import { Provider } from "react-redux";
-import store from "../../../../../../store/configureStore";
+import Modal from "../../../../../partials/Modal";
 
 class FormLayer extends React.Component {
   constructor(props) {
@@ -23,45 +21,28 @@ class FormLayer extends React.Component {
 
   render() {
     return this.props.layerActive ? (
-      <Layer
-        closer={true}
-        align="center"
-        flush={true}
-        onClose={this.props.onClose}
-        overlayClose={true}
-      >
-        <Provider store={store}>
-          <Box justify="center" align="center" pad="large">
-            <Box pad="large" size="large">
-              <Box>{this.props.properties}</Box>
+      <Modal onClose={this.props.onClose}>
+        <Box justify="center" align="center" pad="small">
+          <Box pad="medium" size="large">
+            <Box>{this.props.properties}</Box>
 
-              <Box
-                direction="row"
-                justify="between"
-                pad={{ vertical: "small" }}
-              >
-                <Box>
-                  {this.props.remove ? (
-                    <Button
-                      text="Remove"
-                      plain={true}
-                      onClick={this.removeAndClose}
-                      icon={<AiOutlineDelete size={15} />}
-                    />
-                  ) : null}
-                </Box>
-                <Box>
+            <Box direction="row" justify="between" pad={{ vertical: "small" }}>
+              <Box>
+                {this.props.remove ? (
                   <Button
-                    text="Update"
-                    primary={true}
-                    onClick={this.props.onClose}
+                    text="Remove"
+                    onClick={this.removeAndClose}
+                    icon={<AiOutlineDelete size={15} />}
                   />
-                </Box>
+                ) : null}
+              </Box>
+              <Box>
+                <Button text="OK" primary onClick={this.props.onClose} />
               </Box>
             </Box>
           </Box>
-        </Provider>
-      </Layer>
+        </Box>
+      </Modal>
     ) : null;
   }
 }

@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
-import Layer from "grommet/components/Layer";
 
 import { toggleFilemanagerLayer, selectPath } from "../../../../actions/files";
 
@@ -13,6 +12,8 @@ import FileTree from "../FileTree";
 
 import { Label } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
+
+import Modal from "../../../partials/Modal";
 
 class FileManager extends React.Component {
   constructor(props) {
@@ -85,13 +86,13 @@ class FileManager extends React.Component {
                 flex={false}
               >
                 <Button
-                  primary={true}
+                  primary
                   label="Add to field"
                   onClick={this.props.pathSelected ? this.props.onSelect : null}
                 />
                 <Button
                   label="Cancel"
-                  critical={true}
+                  critical
                   onClick={this.props.toggleFilemanagerLayer}
                 />
               </Box>
@@ -104,14 +105,8 @@ class FileManager extends React.Component {
 
   render() {
     return this.props.activeLayer ? (
-      <Layer
-        closer={true}
-        align="center"
-        flush={true}
-        overlayClose={true}
-        onClose={this.props.toggleFilemanagerLayer}
-      >
-        <Box size="large">
+      <Modal onClose={this.props.toggleFilemanagerLayer} flush>
+        <Box size="medium">
           <Box flex={true}>
             <Box flex={true} direction="row">
               <Box flex={true} colorIndex="grey-4">
@@ -120,7 +115,7 @@ class FileManager extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     ) : null;
   }
 }

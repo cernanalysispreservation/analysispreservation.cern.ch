@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
+
 import Checkmark from "grommet/components/icons/base/Checkmark";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PropTypes from "prop-types";
 
-import { Heading } from "grommet";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
 import Button from "../partials/Button";
+
+import Modal from "../partials/Modal";
 
 const LatexPreviewer = props => {
   const [copied, setCopied] = useState(false);
@@ -18,15 +19,9 @@ const LatexPreviewer = props => {
   };
 
   return (
-    <Layer
-      overlayClose={true}
-      closer={true}
-      onClose={props.onClose}
-      align="center"
-    >
-      <Box flex={true} size="xlarge" pad={{ vertical: "large" }}>
+    <Modal onClose={props.onClose} title="LaTeX Code">
+      <Box flex={true} size="xlarge" pad={{ horizontal: "large" }}>
         <Box margin={{ vertical: "small" }}>
-          <Heading tag="h3">LaTeX Code</Heading>
           <AceEditor
             mode="latex"
             theme="github"
@@ -50,7 +45,7 @@ const LatexPreviewer = props => {
           </Box>
         </Box>
       </Box>
-    </Layer>
+    </Modal>
   );
 };
 

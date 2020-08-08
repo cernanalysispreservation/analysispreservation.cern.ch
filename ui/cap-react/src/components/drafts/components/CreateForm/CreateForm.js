@@ -42,8 +42,8 @@ const CreateForm = props => {
 
   return (
     <Box>
-      <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
-        <Box size="xlarge">
+      <Box pad="medium" size={{ width: "xlarge" }} wrap={false} flex>
+        <Box size="xlarge" colorIndex="light-1">
           {props.location.pathname.startsWith("/drafts/") &&
             !equal(cleanDeep(props.formData), cleanDeep(props.metadata)) && (
               <Notification
@@ -87,6 +87,7 @@ const CreateForm = props => {
                             flex
                             justify="between"
                             direction="row"
+                            responsive={false}
                             wrap={false}
                             style={{ overflow: "visible" }}
                           >

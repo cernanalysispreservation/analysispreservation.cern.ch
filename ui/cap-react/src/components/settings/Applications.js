@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 
 import Anchor from "../partials/Anchor";
-import Layer from "grommet/components/Layer";
+
 import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";
 import TableHeader from "grommet/components/TableHeader";
 import TableRow from "grommet/components/TableRow";
-import Heading from "grommet/components/Heading";
+
 import cogoToast from "cogo-toast";
 import { Label } from "grommet";
 
@@ -26,6 +26,8 @@ import Form from "../drafts/form/GrommetForm";
 import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 
 import { applicationSchema, tokenSchema } from "./utils";
+
+import Modal from "../partials/Modal";
 
 class SettingsIndex extends React.Component {
   constructor(props) {
@@ -78,18 +80,17 @@ class SettingsIndex extends React.Component {
 
   getLayer() {
     return (
-      <Layer
-        overlayClose={true}
-        closer={true}
+      <Modal
+        position="right"
+        full
+        separator
+        title="New OAuth Application"
+        animated
         onClose={() => {
           this.setState({ layer: { active: false } });
         }}
-        align="right"
       >
         <Box flex={true} size="medium" pad={{ vertical: "large" }}>
-          <Heading align="start" margin="small" tag="h3">
-            New OAuth Application
-          </Heading>
           <Paragraph align="start" margin="none" />
           <Form
             schema={
@@ -110,7 +111,7 @@ class SettingsIndex extends React.Component {
             </Box>
           </Form>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 

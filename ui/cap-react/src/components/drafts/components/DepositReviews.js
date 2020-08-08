@@ -9,10 +9,12 @@ import Heading from "grommet/components/Heading";
 import { reviewDraft } from "../../../actions/draftItem";
 
 import AddIcon from "grommet/components/icons/base/Add";
-import { Layer } from "grommet";
+
 import DepositReviewItem from "./DepositReviewItem";
 
 import { BsFillCircleFill } from "react-icons/bs";
+
+import Modal from "../../partials/Modal";
 
 class DepositReviews extends React.Component {
   constructor() {
@@ -85,9 +87,8 @@ class DepositReviews extends React.Component {
 
   renderCreateLayer() {
     return (
-      <Layer flush onClose={this.toggleAddReview} overlayClose closer={true}>
+      <Modal title="Add a review" onClose={this.toggleAddReview}>
         <Box flex={false} size="large" pad="medium">
-          <Heading tag="h3">Add a review</Heading>
           <Box pad={{ vertical: "medium" }}>
             <Box pad={{ between: "small" }}>
               <Box
@@ -139,7 +140,6 @@ class DepositReviews extends React.Component {
               >
                 <Button
                   text="Cancel"
-                  pad={{ horizontal: "small", vertical: "small" }}
                   onClick={this.toggleAddReview}
                   secondary
                 />
@@ -150,19 +150,13 @@ class DepositReviews extends React.Component {
                     this.state.reviewFormBody === null
                   }
                   primary
-                  pad={{ horizontal: "small", vertical: "small" }}
-                  onClick={
-                    this.state.reviewFormType === null ||
-                    this.state.reviewFormBody === null
-                      ? null
-                      : this.addReview
-                  }
+                  onClick={this.addReview}
                 />
               </Box>
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 

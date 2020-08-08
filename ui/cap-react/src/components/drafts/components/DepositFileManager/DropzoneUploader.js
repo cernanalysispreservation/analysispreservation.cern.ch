@@ -100,7 +100,11 @@ class FileManager extends React.Component {
   _renderUploadDetails() {
     let { name, size } = this.state.acceptedFiles[0];
     return (
-      <Box flex={true} pad="small" colorIndex="light-1">
+      <Box
+        flex={true}
+        pad={{ horizontal: "large", vertical: "medium" }}
+        colorIndex="light-1"
+      >
         <CleanForm
           formRef={f => (this.formRef = f)}
           formData={{
@@ -181,7 +185,7 @@ class FileManager extends React.Component {
           }}
         >
           <FormUploadIcon size="medium" />
-          <Box justify="center" align="center" pad={{ between: "small" }}>
+          <Box justify="center" align="center" pad="large">
             <Paragraph margin="none">
               <strong>Drag and Drop your files here</strong>
             </Paragraph>
@@ -201,7 +205,7 @@ class FileManager extends React.Component {
     else _render = this._renderDropzone();
 
     return (
-      <Box pad="large" colorIndex="light-1">
+      <Box colorIndex="light-1">
         <FileUploadProgress key="upload-progress" />
         {_render}
       </Box>

@@ -18,7 +18,6 @@ import {
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
 import Label from "grommet/components/Label";
-import Layer from "grommet/components/Layer";
 
 import Menu from "./Menu";
 import MenuItem from "./MenuItem";
@@ -32,6 +31,8 @@ import DraftCreate from "../drafts/DraftCreate";
 import MediaQuery from "react-responsive";
 
 import CAPLogoLight from "../../img/cap-logo-light.svg";
+
+import Modal from "../partials/Modal";
 
 class Header extends React.Component {
   constructor(props, context) {
@@ -82,17 +83,20 @@ class Header extends React.Component {
         style={{ position: "relative" }}
       >
         {this.state.showCreate ? (
-          <DraftCreate toggle={this.toggleCreate} />
+          <Box>
+            <DraftCreate toggle={this.toggleCreate} />
+          </Box>
         ) : null}
         {this.state.show ? (
-          <Layer
-            closer={true}
-            flush={true}
-            overlayClose={true}
-            onClose={this.hideLayer}
-          >
-            <HowToSearchPage />
-          </Layer>
+          <Box>
+            <Modal
+              onClose={this.hideLayer}
+              background="#f5f5f5"
+              title="How to Search"
+            >
+              <HowToSearchPage />
+            </Modal>
+          </Box>
         ) : null}
         <Box
           flex={true}

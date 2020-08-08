@@ -9,8 +9,8 @@ import InputWithButton from "../widgets/components/InputWithButton";
 
 import Box from "grommet/components/Box";
 
-import { Layer } from "grommet";
 import Button from "../../../../../partials/Button";
+import Modal from "../../../../../partials/Modal";
 
 class ImportLayer extends React.Component {
   constructor(props) {
@@ -55,18 +55,13 @@ class ImportLayer extends React.Component {
 
   render() {
     return (
-      <Layer
-        flush={true}
-        closer={true}
-        overlayClose={true}
-        onClose={this.props.enableImport}
-      >
-        <Box flex={false} size="xlarge" colorIndex="light-2" pad="medium">
+      <Modal onClose={this.props.enableImport} tag="h5" background="#f5f5f5">
+        <Box flex={false} size="xlarge" colorIndex="light-2">
           {this.props.options.listSuggestions && (
             <Box
               pad={{
                 between: "small",
-                vertical: "small",
+
                 horizontal: "small"
               }}
               wrap
@@ -255,7 +250,7 @@ class ImportLayer extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 }

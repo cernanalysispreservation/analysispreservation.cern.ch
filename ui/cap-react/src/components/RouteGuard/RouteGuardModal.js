@@ -1,17 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Layer from "grommet/components/Layer";
+
 import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
 
 import Button from "../partials/Button";
+import Modal from "../partials/Modal";
 
 const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
   if (show) {
     return (
-      <Layer closer={true} flush={true} overlayClose={true} onClose={onCancel}>
-        <Box colorIndex="light-2" pad="large">
-          <Box align="center" margin={{ top: "medium" }}>
+      <Modal
+        onClose={onCancel}
+        title="Do you want to exit without saving?"
+        tag="h6"
+        separator
+      >
+        <Box colorIndex="light-1" pad="medium">
+          <Box align="center" margin={{ top: "small" }}>
             <Paragraph margin="none">
               It seems that you have unsaved updated data in your draft
             </Paragraph>
@@ -34,7 +40,7 @@ const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
             <Button text="Exit without saving" onClick={onConfirm} tertiary />
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   } else {
     return null;
