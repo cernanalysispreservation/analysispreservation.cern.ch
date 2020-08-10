@@ -521,7 +521,8 @@ class CAPDeposit(Deposit, Reviewable):
                                   role=egroup))
             session.flush()
 
-            self['_access'][permission]['roles'].append(egroup.id)
+            if egroup.id not in self['_access'][permission]['roles']:
+                self['_access'][permission]['roles'].append(egroup.id)
 
     def _remove_egroup_permissions(self, egroup, permissions, session):
         for permission in permissions:
