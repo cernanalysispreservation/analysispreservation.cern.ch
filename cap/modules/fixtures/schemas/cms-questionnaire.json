@@ -22,6 +22,9 @@
       "_experiment": {
         "type": "string"
       },
+      "_fetched_from": {
+        "type": "string"
+      },
       "_access": {
         "$ref":
           "https://analysispreservation.cern.ch/schemas/deposits/records/access-v0.0.1.json"
@@ -1450,6 +1453,10 @@
           },
           "_experiment":{
             "type":"text"
+          },
+          "_fetched_from": {
+            "type": "text",
+            "copy_to": "fetched_from"
           },
           "_created":{
             "type":"date",

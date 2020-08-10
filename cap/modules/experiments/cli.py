@@ -128,6 +128,7 @@ def _questionnaire_data(data, title=None):
         #     title if title else
         #     f'{data.get("analysis_context").get("1.5 Title/References")}',
         '_user_edited': False,
+        '_fetched_from': 'cmsstatisticscommitteequestionnaire.web.cern.ch',
         "analysis_context": data["analysis_context"],
         "general_information": data["general_information"],
         "multivariate_discriminants": data["multivariate_discriminants"],
