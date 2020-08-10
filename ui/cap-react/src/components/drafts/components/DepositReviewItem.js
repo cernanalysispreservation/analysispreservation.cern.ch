@@ -5,172 +5,218 @@ import Box from "grommet/components/Box";
 import Button from "../../partials/Button";
 import Heading from "grommet/components/Heading";
 
-import AddIcon from "grommet/components/icons/base/Add";
-import { Paragraph } from "grommet";
-import { TrashIcon, ValidateIcon, IterationIcon } from "grommet/components/icons/base";
+import { AiOutlineCheck, AiOutlineDelete } from "react-icons/ai";
+import ShowMoreText from "../../partials/ShowMoreText";
+
+import Tag from "../../partials/Tag";
 
 class DepositReviewItem extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            actionBoxActive: false,
-            action: null,
-            reviewFormComment: ""
-        };
-    }
+  constructor() {
+    super();
+    this.state = {
+      actionBoxActive: false,
+      action: null,
+      reviewFormComment: ""
+    };
+  }
 
-    postReviewAction = (type) => {
-        let review = {
-            comment: this.state.reviewFormComment,
-            action: type,
-            id: this.props.review.id
-        };
-
-        this.setState({ error: null, loading: true });
-        this.props.reviewDraft(this.props.draft_id, review)
-            .then(data => {
-                if (data.type == "REVIEW_DRAFT_SUCCESS")
-                    this.setState({ addReviewLayer: false, loading: false });
-                else if (data.type == "REVIEW_DRAFT_ERROR")
-                    this.setState({ error: data.error, loading: false });
-            })
+  postReviewAction = type => {
+    let review = {
+      comment: this.state.reviewFormComment,
+      action: type,
+      id: this.props.review.id
     };
 
-    addComment = () => {
-        let review = {
-            comment: this.state.reviewFormComment,
-            action: "comment"
-        }
+    this.setState({ error: null, loading: true });
+    this.props.reviewDraft(this.props.draft_id, review).then(data => {
+      if (data.type == "REVIEW_DRAFT_SUCCESS")
+        this.setState({ addReviewLayer: false, loading: false });
+      else if (data.type == "REVIEW_DRAFT_ERROR")
+        this.setState({ error: data.error, loading: false });
+    });
+  };
 
-        this.setState({ error: null, loading: true });
-        this.props.reviewDraft(this.props.draft_id, review)
-            .then(data => {
-                if (data.type == "REVIEW_DRAFT_SUCCESS")
-                    this.setState({ addReviewLayer: false, loading: false });
-                else if (data.type == "REVIEW_DRAFT_ERROR")
-                    this.setState({ error: data.error, loading: false });
-            })
+  addComment = () => {
+    let review = {
+      comment: this.state.reviewFormComment,
+      action: "comment"
     };
 
-    onReviewCommentChange = e => this.setState({ reviewFormComment: e.target.value })
+    this.setState({ error: null, loading: true });
+    this.props.reviewDraft(this.props.draft_id, review).then(data => {
+      if (data.type == "REVIEW_DRAFT_SUCCESS")
+        this.setState({ addReviewLayer: false, loading: false });
+      else if (data.type == "REVIEW_DRAFT_ERROR")
+        this.setState({ error: data.error, loading: false });
+    });
+  };
 
-    renderReviewTypeHeading = (type) => {
-        const _types = {
-            "approved": "Approved",
-            "request_changes": "Changes Requested",
-            "declined": "Declined",
-        }
-        return (
-            <span>{_types[type]}</span>
-        )
-    }
+  onReviewCommentChange = e =>
+    this.setState({ reviewFormComment: e.target.value });
 
-    renderActionBox() {
-        return (
-            <Box pad={{ vertical: "small" }}>
-                <Box pad={{ between: "small" }}>
-                    <Box colorIndex="light-1">
-                        <textarea placeholder="Leave a comment" onChange={this.onReviewCommentChange} />
-                    </Box>
-                    {this.state.error &&
-                        <Box>
-                            <span style={{ color: "red" }}>Something went wrong while submitting the review</span>
-                            {this.state.error.errors.map(e => (
-                                <span>- {e.field}: {e.message.join(", ")}</span>
-                            ))}
-                        </Box>}
-                    <Box pad={{ between: "small" }} flex direction="row" justify="end">
-                        <Button
-                            secondary
-                            text={!this.state.reviewFormComment || this.state.reviewFormComment == "" ?
-                                "Resolve" : "Comment & Resolve"}
-                            pad={{ horizontal: "small", vertical: "small" }}
-                            onClick={this.toggleAddReview}
-                        />
-                        <Button
-                            text="Comment"
-                            primary
-                            pad={{ horizontal: "small", vertical: "small" }}
-                            onClick={this.addReview}
-                        />
-                    </Box>
-                </Box>
+  renderReviewTypeHeading = type => {
+    const _types = {
+      approved: "Approved",
+      request_changes: "Changes Requested",
+      declined: "Declined"
+    };
+    return <span>{_types[type]}</span>;
+  };
+
+  renderActionBox() {
+    return (
+      <Box pad={{ vertical: "small" }}>
+        <Box pad={{ between: "small" }}>
+          <Box colorIndex="light-1">
+            <textarea
+              placeholder="Leave a comment"
+              onChange={this.onReviewCommentChange}
+            />
+          </Box>
+          {this.state.error && (
+            <Box>
+              <span style={{ color: "red" }}>
+                Something went wrong while submitting the review
+              </span>
+              {this.state.error.errors.map((e, index) => (
+                <span key={index + e.field}>
+                  - {e.field}: {e.message.join(", ")}
+                </span>
+              ))}
             </Box>
-        )
-    }
+          )}
+          <Box pad={{ between: "small" }} flex direction="row" justify="end">
+            <Button
+              secondary
+              text={
+                !this.state.reviewFormComment ||
+                this.state.reviewFormComment == ""
+                  ? "Resolve"
+                  : "Comment & Resolve"
+              }
+              pad={{ horizontal: "small", vertical: "small" }}
+              onClick={this.toggleAddReview}
+            />
+            <Button
+              text="Comment"
+              primary
+              pad={{ horizontal: "small", vertical: "small" }}
+              onClick={this.addReview}
+            />
+          </Box>
+        </Box>
+      </Box>
+    );
+  }
 
-    render() {
-        let { review } = this.props;
-        return (
-            <Box separator="bottom" flex key={review.id}>
-                <Box direction="row" wrap={false} colorIndex="light-1" align="start" pad={{ horizontal: "small", vertical: "small", between: "small" }}>
-                    <Box flex={true}>
-                        <Heading tag="h5" margin={review.resolved ? "none" : null} >{this.renderReviewTypeHeading(review.type)} by <a href={`mailto:${review.reviewer}`}>{review.reviewer}</a></Heading>
-                        { review.resolved || !this.state.bodyEnabled && <Box colorIndex="light-2" pad={{horizontal:"small"}} separator="top"><Paragraph margin="small"> {review.body}</Paragraph></Box> }
-                    </Box>
-                    {
-                        review.resolved ?
-                            <Box pad={{between: "small" }} flex={false} direction="row" wrap={false} colorIndex="light-2"><ValidateIcon size="small" /></Box> :
-                            <Box>
-                                <Button
-                                    key="Resolve"
-                                    text="Resolve"
-                                    pad={{ horizontal: "small", vertical: null }}
-                                    separator="all"
-                                    icon={<ValidateIcon size="xsmall" />}
-                                    onClick={() => this.postReviewAction("resolve")}
-                                />
-                                <Button
-                                    key="Comment"
-                                    text="Comment"
-                                    separator="all"
-                                    pad={{ horizontal: "small", vertical: null }}
-                                    icon={<IterationIcon size="xsmall" />}
-                                    onClick={() => this.postReviewAction("comment")}
-                                />
-                                <Button
-                                    key="Delete"
-                                    text="Delete"
-                                    pad={{ horizontal: "small", vertical: null }}
-                                    separator="all"
-                                    icon={<AddIcon size="xsmall" />}
-                                    icon={<TrashIcon size="xsmall" />}
-                                    onClick={() => this.postReviewAction("delete")}
-                                />
-                            </Box>
-                    }
-                <Box flex={true} style={overlayStyles}></Box>
-
+  render() {
+    let { review } = this.props;
+    return (
+      <Box flex key={review.id}>
+        <Box
+          wrap={false}
+          colorIndex="light-1"
+          pad={{ horizontal: "small", vertical: "small", between: "small" }}
+        >
+          <Box flex={true}>
+            <Box direction="row">
+              <Heading tag="h5" margin={review.resolved ? "none" : null}>
+                {this.renderReviewTypeHeading(review.type)} by{" "}
+                <a href={`mailto:${review.reviewer}`}>{review.reviewer}</a>
+              </Heading>
+              {review.resolved && (
+                <Box margin={{ left: "small" }}>
+                  <Tag
+                    text="Resolved"
+                    color={{
+                      bgcolor: "#e6ffed",
+                      border: "#e6ffed",
+                      color: "#457352"
+                    }}
+                  />
                 </Box>
-                {
-                    this.state.actionBoxActive && (
-                        this.renderActionBox()
-                    )
-                }
+              )}
             </Box>
-        )
-    }
+            {!this.state.bodyEnabled && (
+              <Box
+                colorIndex={review.resolved ? "light-1" : "light-2"}
+                style={{
+                  fontStyle: review.resolved ? "italic" : "normal"
+                }}
+                pad={{ horizontal: "small" }}
+                margin={{ top: "small" }}
+              >
+                <Box
+                  margin="small"
+                  style={{
+                    margin: "12px 0",
+                    maxWidth: "100%",
+                    fontSize: "16px",
+                    fontWeight: 300,
+                    lineHeight: 1.375
+                  }}
+                >
+                  <ShowMoreText lines={10} more="Show More" less="Show less">
+                    {review.body}
+                  </ShowMoreText>
+                </Box>
+              </Box>
+            )}
+          </Box>
+          {!review.resolved && (
+            <Box direction="row" justify="between" margin={{ top: "small" }}>
+              {/* <Button
+                key="Comment"
+                text="Comment"
+                separator="all"
+                pad={{ horizontal: "small", vertical: null }}
+                icon={<IterationIcon size="xsmall" />}
+                onClick={() => this.postReviewAction("comment")}
+              /> */}
+              <Button
+                key="Delete"
+                text="Delete"
+                secondary
+                icon={<AiOutlineDelete size={15} />}
+                onClick={() => this.postReviewAction("delete")}
+              />
+              <Button
+                key="Resolve"
+                text="Resolve"
+                secondary
+                icon={<AiOutlineCheck size={15} />}
+                onClick={() => this.postReviewAction("resolve")}
+              />
+            </Box>
+          )}
+          <Box flex={true} style={overlayStyles} />
+        </Box>
+        {this.state.actionBoxActive && this.renderActionBox()}
+      </Box>
+    );
+  }
 }
 
 const overlayStyles = {
-    // width: "100%",
-    // height: "100%",
-    position: "absolute",
-    zIndex: 1000,
-    backgroundColor: "red"
-}
-DepositReviewItem.propTypes = {
-    match: PropTypes.object,
-    getDraftById: PropTypes.func,
-    loading: PropTypes.bool,
-    draft_id: PropTypes.string,
-    draft: PropTypes.object,
-    getUsers: PropTypes.func,
-    permissions: PropTypes.object,
-    handlePermissions: PropTypes.func,
-    created_by: PropTypes.string,
-    canAdmin: PropTypes.bool
+  // width: "100%",
+  // height: "100%",
+  position: "absolute",
+  zIndex: 1000,
+  backgroundColor: "red"
 };
-
+DepositReviewItem.propTypes = {
+  match: PropTypes.object,
+  getDraftById: PropTypes.func,
+  loading: PropTypes.bool,
+  draft_id: PropTypes.string,
+  draft: PropTypes.object,
+  getUsers: PropTypes.func,
+  permissions: PropTypes.object,
+  handlePermissions: PropTypes.func,
+  created_by: PropTypes.string,
+  canAdmin: PropTypes.bool,
+  reviewDraft: PropTypes.func,
+  review: PropTypes.object
+};
 
 export default DepositReviewItem;
