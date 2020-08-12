@@ -8,15 +8,22 @@ import { withRouter } from "react-router";
 import { initForm } from "../../actions/draftItem";
 import RouteGuard from "../RouteGuard";
 
-const DraftsRouteGuard = props => {
+const DraftsRouteGuard = ({
+  formData = {},
+  metadata = {},
+  history = {},
+  draft_id = "",
+  initDraftState = null
+}) => {
   // if the user updates the title from the draft page
-  if (props.metadata && props.metadata.general_title)
-    props.formData.general_title = props.metadata.general_title;
+  // formData is initialised as null, therefore the check to make sure
+  // that formData is object and has data
+  if (formData) formData.general_title = metadata.general_title;
 
   useEffect(() => {
     return () => {
       if (!location.pathname.startsWith(`/drafts/`)) {
-        props.initDraftState();
+        initDraftState();
       }
     };
   }, []);
@@ -27,9 +34,9 @@ const DraftsRouteGuard = props => {
       false: (
         <RouteGuard
           when={true}
-          navigate={path => props.history.push(path)}
+          navigate={path => history.push(path)}
           shouldBlockNavigation={location => {
-            if (!location.pathname.startsWith(`/drafts/${props.draft_id}`)) {
+            if (!location.pathname.startsWith(`/drafts/${draft_id}`)) {
               return true;
             }
             return false;
@@ -40,11 +47,7 @@ const DraftsRouteGuard = props => {
     return selectContent[equals];
   };
 
-  return (
-    <div>
-      {renderBasedOnData(equal(cleanDeep(props.formData), props.metadata))}
-    </div>
-  );
+  return <div>{renderBasedOnData(equal(cleanDeep(formData), metadata))}</div>;
 };
 
 DraftsRouteGuard.propTypes = {
