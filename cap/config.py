@@ -9,6 +9,7 @@
 
 import copy
 import os
+import json
 from datetime import timedelta
 from os.path import dirname, join
 
@@ -91,7 +92,9 @@ I18N_LANGUAGES = [('fr', _('French'))]
 #: Email address for support.
 SUPPORT_EMAIL = "analysis-preservation-support@cern.ch"
 #: Disable email sending by default.
-CAP_SEND_MAIL = False
+CAP_SEND_MAIL = True
+MAIL_DEFAULT_SENDER = SUPPORT_EMAIL
+
 
 # For Flask-mail variables, the defaults are used, found here:
 # https://pythonhosted.org/Flask-Mail/#configuring-flask-mail
@@ -216,6 +219,8 @@ DEBUG = True if DEBUG_MODE == 'True' else False
 if DEBUG:
     REST_ENABLE_CORS = True
     APP_ENABLE_SECURE_HEADERS = False
+    # CAP_SEND_MAIL = False
+
 
 # Path to app root dir
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -331,7 +336,6 @@ CAP_FACETS = {
                 'title': 'Further Search Categorization Heavy Ion'
             }
         },
-
         "facet_next_deadline_date": {
             "date_histogram": {
                 "field": "analysis_context.next_deadline_date",
@@ -344,7 +348,6 @@ CAP_FACETS = {
                 'type': 'range'
             }
         },
-
         'particles': {
             'nested': {
                 'path': 'main_measurements.signal_event_selection.physics_objects'  # noqa
@@ -751,3 +754,19 @@ LOGGING_SENTRY_PYWARNINGS = False
 
 LOGGING_SENTRY_CELERY = True
 """Configure Celery to send logging to Sentry."""
+
+
+def get_cms_stats_questionnaire_contacts():
+    file = os.environ.get('CMS_STATS_COMMITEE_AND_PAGS_FILE_LOCATION', "")
+
+    try:
+        with open(file, 'r') as fp:
+            file_json = fp.read()
+            data = json.loads(file_json)
+
+            return data
+    except FileNotFoundError:
+        return {}
+
+
+CMS_STATS_COMMITEE_AND_PAGS = get_cms_stats_questionnaire_contacts()

@@ -22,53 +22,93 @@
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
-from celery import shared_task
 from flask import current_app
-from jinja2.exceptions import TemplateNotFound
-from invenio_mail.api import TemplatedMessage
 
-from cap.modules.mail.users import get_users_by_record
+from .tasks import create_and_send
 
 
-def send_mail_on_publish(depid, recid, url):
-    subject = 'CERN Analysis Preservation: Published Analysis'
-    recipients = get_users_by_record(depid, role='admin')
-
-    # use this for testing, else we send mails to info@invenio
-    # recipients = [current_app.config.get('MAIL_DEFAULT_SENDER')]
-
-    create_and_send.delay('analysis_published.html',
-                          dict(recid=recid, url=url),
-                          subject,
-                          recipients)
-
-
-@shared_task(autoretry_for=(Exception,),
-             retry_kwargs={
-                 'max_retries': 3,
-                 'countdown': 10
-             })
-def create_and_send(template, ctx, subject, recipients, sender=None):
-    sender = sender or current_app.config['MAIL_DEFAULT_SENDER']
-
+def path_value_equals(element, JSON):
+    paths = element.split(".")
+    data = JSON
     try:
-        assert recipients
+        for i in range(0, len(paths)):
+            data = data[paths[i]]
+    except KeyError:
+        return None
 
-        msg = TemplatedMessage(
-            template_html=template,
-            ctx=ctx,
-            ** dict(sender=sender, bcc=recipients, subject=subject)
-        )
-        current_app.extensions['mail'].send(msg)
+    return data
 
-    except AssertionError:
-        current_app.logger.error(
-            f'Mail Error from {sender} with subject: {subject}.\n'
-            f'Empty recipient list.')
-        raise AssertionError
 
-    except TemplateNotFound:
-        raise TemplateNotFound
+def get_cms_stat_recipients(record, config):
+    data = current_app.config.get("CMS_STATS_COMMITEE_AND_PAGS")
+    key = path_value_equals(config.get("path", ""), record)
+    recipients = data.get(key, {}).get("contacts")
+    params = data.get(key, {}).get("params", {})
 
-    except Exception as err:
-        print(str(err))
+    message = \
+        "The primary (secondary) contact for reviewing your questionnaire" + \
+        f" is {params.get('primary', '-')} ({params.get('secondary', '-')})"
+
+    return message, recipients
+
+
+GENERATE_RECIPIENT_METHODS = {
+    "path_value_equals": path_value_equals,
+    "get_cms_stat_recipients": get_cms_stat_recipients
+}
+
+NOTIFICATION_RECEPIENT = {
+    "https://analysispreservation.cern.ch/schemas/deposits/"
+    "records/cms-stats-questionnaire-v0.0.1.json":
+    {
+        "publish": {
+            "type": "method",
+            "method": "get_cms_stat_recipients",
+            "path": "analysis_context.wg",
+        }
+    }
+}
+
+
+def generate_recipient_list(record, config):
+    _type = config.get("type")
+    if _type == "method":
+        func = GENERATE_RECIPIENT_METHODS.get(config.get("method"))
+        if func:
+            return func(record, config)
+    elif _type == "list":
+        return config.get("message", ""), config.get("data")
+    else:
+        return "", None
+
+
+def post_action_notifications(action=None, deposit=None, host_url=None):
+    """Method to run after a deposit action .
+    """
+    recid, record = deposit.fetch_published()
+    record_pid = recid.pid_value
+    schema = deposit.get("$schema")
+
+    recipients_config = NOTIFICATION_RECEPIENT.get(schema, {}).get(action)
+    if recipients_config:
+        message, recipients = generate_recipient_list(record,
+                                                      recipients_config)
+
+        if recipients:
+            if action == "publish":
+                send_mail_on_publish(recipients, record_pid, host_url,
+                                     record.revision_id, message)
+
+
+def send_mail_on_publish(recipients, recid, url, revision, message):
+    if revision > 0:
+        subject = \
+            "CERN Analysis Preservation: New Version of Published Analysis"
+        template = "mail/analysis_published_revision.html"
+    else:
+        subject = 'CERN Analysis Preservation: New Published Analysis'
+        template = "mail/analysis_published_new.html"
+
+    create_and_send.delay(template, dict(recid=recid, url=url,
+                                         message=message), subject, recipients)
+

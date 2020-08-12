@@ -52,7 +52,7 @@ from werkzeug.local import LocalProxy
 from cap.modules.deposit.errors import DisconnectWebhookError, FileUploadError
 from cap.modules.deposit.validators import DepositValidator
 from cap.modules.experiments.permissions import exp_need_factory
-from cap.modules.mail.utils import send_mail_on_publish
+from cap.modules.mail.utils import post_action_notifications
 from cap.modules.records.api import CAPRecord
 from cap.modules.repos.errors import GitError
 from cap.modules.repos.factory import create_git_api
@@ -219,16 +219,12 @@ class CAPDeposit(Deposit, Reviewable):
                 if file_.data['checksum'] is None:
                     raise MultipartMissingParts()
 
-            published = super(CAPDeposit, self).publish(*args, **kwargs)
+            deposit = super(CAPDeposit, self).publish(*args, **kwargs)
 
-            if current_app.config['CAP_SEND_MAIL']:
-                send_mail_on_publish(
-                    depid=published['_deposit']['id'],
-                    recid=published['_deposit']['pid']['value'],
-                    url=request.host_url
-                )
+            post_action_notifications(
+                "publish", deposit, host_url=request.host_url)
 
-            return published
+            return deposit
 
     @has_status
     @mark_as_action
