@@ -28,10 +28,10 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
 
   useEffect(
     () => {
-      return () => {
+      if (confirmedNavigation) {
         setShowModal(false);
         navigate(lastLocation.pathname);
-      };
+      }
     },
     [confirmedNavigation]
   );
