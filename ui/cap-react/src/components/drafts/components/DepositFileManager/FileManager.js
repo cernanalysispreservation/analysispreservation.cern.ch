@@ -47,10 +47,10 @@ class FileManager extends React.Component {
               {this.props.onSelect ? (
                 this._renderSidebar()
               ) : (
-                  <Box flex={true}>
-                    <DropzoneUploader />
-                  </Box>
-                )}
+                <Box flex={true}>
+                  <DropzoneUploader />
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
