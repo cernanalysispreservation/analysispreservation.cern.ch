@@ -1,5 +1,5 @@
 import axios from "axios";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import { fetchAndAssignSchema } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
 import cogoToast from "cogo-toast";
@@ -432,12 +432,14 @@ export function reviewDraft(draft_id, review) {
 
     let uri = `/api/deposits/${draft_id}/actions/review`;
 
-    console.log("reviewDraft::", review)
+    console.log("reviewDraft::", review);
     return axios
-      .post(uri, review, { headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/form+json"
-      }})
+      .post(uri, review, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/form+json"
+        }
+      })
       .then(response => {
         cogoToast.success("Your review has been discarded", {
           position: "top-center",
@@ -610,10 +612,10 @@ export function getDraftById(draft_id, fetchSchemaFlag = false) {
         const e = error.response
           ? error.response.data
           : {
-            status: 400,
-            message:
-              "Something went wrong with your request. Please try again"
-          };
+              status: 400,
+              message:
+                "Something went wrong with your request. Please try again"
+            };
 
         dispatch(draftsItemError(e));
       });
@@ -676,10 +678,10 @@ export function getDraftByIdAndInitForm(draft_id) {
         const e = error.response
           ? error.response.data
           : {
-            status: 400,
-            message:
-              "Something went wrong with your request. Please try again"
-          };
+              status: 400,
+              message:
+                "Something went wrong with your request. Please try again"
+            };
 
         dispatch(draftsItemError(e));
       });
