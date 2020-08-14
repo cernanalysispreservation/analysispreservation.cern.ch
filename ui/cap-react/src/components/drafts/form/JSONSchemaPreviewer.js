@@ -25,17 +25,20 @@ class JSONShemaPreviewer extends React.Component {
   }
 
   render() {
+    let { general_title, ..._formData = {}} = this.props.formData;
+
     return (
       <Box flex={true}>
         {
           this.props.schemaType.name && 
           this.props.schemaType.name == "cms-stats-questionnaire" ?
             <AceEditor
+              readOnly
               mode="yaml"
               theme="github"
               width="100%"
-              name="UNIQUE_ID_OF_DIV"
-              value={yaml.safeDump(this.props.formData)}
+              name={general_title || "draftPreviewerFormName"}
+              value={yaml.safeDump(_formData)}
               editorProps={{ $blockScrolling: true }}
             />
             : this.props.schema ? (

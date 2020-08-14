@@ -84,7 +84,7 @@ class DraftPreview extends React.Component {
                 this.props.schemas && this.props.schemas.schema ? (
                   <Box flex={true} pad="small">
                     <JSONSchemaPreviewer
-                      formData={this.props.formData} // TOFIX: change to get from metadata
+                      formData={this.props.metadata}
                       schema={_schema}
                       schemaType={this.props.schemaType}
                       uiSchema={this.props.schemas.uiSchema || {}}
@@ -216,7 +216,7 @@ DraftPreview.propTypes = {
   draft_id: PropTypes.string,
   schemas: PropTypes.object,
   schemaId: PropTypes.string,
-  formData: PropTypes.object,
+  metadata: PropTypes.object,
   schemasLoading: PropTypes.bool,
   canUpdate: PropTypes.bool,
   fetchAndAssignSchema: PropTypes.func,
@@ -233,7 +233,7 @@ function mapStateToProps(state) {
     canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
     repositories: state.draftItem.get("repositories"),
-    formData: state.draftItem.get("formData") // TOFIX: remove to get from metadata
+    metadata: state.draftItem.get("metadata")
   };
 }
 
