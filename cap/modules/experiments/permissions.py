@@ -21,11 +21,11 @@
 # In applying this license, CERN does not
 # waive the privileges and immunities granted to it by virtue of its status
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
-
 """Experiments permissions."""
 
 from flask_principal import ActionNeed
 from invenio_access.permissions import Permission
+from invenio_access import action_factory
 
 
 def exp_permission_factory(experiment):
@@ -45,6 +45,9 @@ lhcb_access_action = exp_need_factory('LHCb')
 alice_access_action = exp_need_factory('ALICE')
 atlas_access_action = exp_need_factory('ATLAS')
 
+cms_pag_convener_action = action_factory('cap-cms-pag-conveners',
+                                         parameter=True)
+cms_pag_convener_action_all = cms_pag_convener_action(None)
 
 cms_permission = exp_permission_factory('CMS')
 lhcb_permission = exp_permission_factory('LHCb')

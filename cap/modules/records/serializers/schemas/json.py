@@ -30,14 +30,17 @@ import copy
 from marshmallow import Schema, fields
 
 from cap.modules.deposit.api import CAPDeposit
-from cap.modules.deposit.review import user_can_review
 from cap.modules.records.permissions import UpdateRecordPermission
+from cap.modules.deposit.permissions import ReviewDepositPermission
+
 from cap.modules.records.utils import clean_api_url_for
 from cap.modules.repos.serializers import GitWebhookSubscriberSchema
 from cap.modules.user.utils import get_role_name_by_id, get_user_email_by_id
 from invenio_jsonschemas import current_jsonschemas
 
 from . import common
+
+from invenio_pidstore.resolver import Resolver
 
 
 class RecordSchema(common.CommonRecordSchema):
@@ -52,6 +55,7 @@ class RecordFormSchema(RecordSchema):
 
     schemas = fields.Method('get_record_schemas', dump_only=True)
     can_update = fields.Method('can_user_update', dump_only=True)
+    can_review = fields.Method('can_user_review', dump_only=True)
     links = fields.Method('get_links_with_review', dump_only=True)
 
     def get_record_schemas(self, obj):
@@ -68,13 +72,25 @@ class RecordFormSchema(RecordSchema):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
         return UpdateRecordPermission(deposit).can()
 
+    def can_user_review(self, obj):
+        deposit_pid = obj.get("metadata", {}).get("_deposit", {}).get("id")
+
+        resolver = Resolver(pid_type='depid',
+                            object_type='rec',
+                            getter=lambda x: x)
+
+        _, rec_uuid = resolver.resolve(deposit_pid)
+        deposit = CAPDeposit.get_record(rec_uuid)
+
+        return ReviewDepositPermission(deposit).can()
+
     def get_links_with_review(self, obj):
         deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
 
         links = obj['links']
 
-        if (deposit.schema_is_reviewable() and
-                user_can_review(deposit.schema.name)):
+        if (deposit.schema_is_reviewable()
+                and ReviewDepositPermission(deposit).can()):
             links['review'] = clean_api_url_for(
                 'invenio_deposit_rest.depid_actions',
                 deposit.pid,

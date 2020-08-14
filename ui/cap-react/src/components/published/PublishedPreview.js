@@ -156,7 +156,7 @@ class PublishedPreview extends React.Component {
                 uppercase={false}
                 action={
                   <Box direction="row" wrap="false">
-                    {this.props.review_link ? (
+                    {this.props.canReview ? (
                       <Anchor
                         pad={{ horizontal: "small" }}
                         justify="end"
@@ -236,6 +236,7 @@ const mapStateToProps = state => {
     id: state.published.get("id"),
     draft_id: state.published.get("draft_id"),
     canUpdate: state.published.get("can_update"),
+    canReview: state.published.get("can_review"),
     metadata: state.published.get("metadata"),
     files: state.published.get("files"),
     schemas: state.published.get("schemas"),

@@ -25,7 +25,7 @@
 
 import copy
 
-from marshmallow import Schema, fields, post_dump
+from marshmallow import fields, post_dump
 
 from cap.modules.deposit.permissions import (
     AdminDepositPermission,
@@ -33,12 +33,11 @@ from cap.modules.deposit.permissions import (
     UpdateDepositPermission,
 )
 from cap.modules.records.serializers.schemas import common
-from cap.modules.repos.serializers import (GitSnapshotSchema,
-                                           GitWebhookSubscriberSchema)
-from cap.modules.workflows.serializers import ReanaWorkflowSchema
+from cap.modules.repos.serializers import GitWebhookSubscriberSchema
+# from cap.modules.workflows.serializers import ReanaWorkflowSchema
 from invenio_jsonschemas import current_jsonschemas
 
-from cap.modules.deposit.review import ReviewSchema, user_can_review
+from cap.modules.deposit.review import ReviewSchema
 
 
 class DepositSchema(common.CommonRecordSchema):
@@ -92,8 +91,7 @@ class DepositFormSchema(DepositSchema):
 
     def get_review(self, obj):
         if (obj['deposit'].schema_is_reviewable()
-                and (ReviewDepositPermission(obj['deposit']).can()
-                     or _can_user_review(obj))):
+                and ReviewDepositPermission(obj['deposit']).can()):
             _reviews = obj.get("metadata", {}).get("_review", [])
             return ReviewSchema(many=True).dump(_reviews).data
         else:
@@ -114,12 +112,7 @@ class DepositFormSchema(DepositSchema):
         return AdminDepositPermission(obj['deposit']).can()
 
     def can_user_review(self, obj):
-        if (obj['deposit'].schema_is_reviewable()
-                and _can_user_review(obj)):
-            return _can_user_review(obj)
-
-
-def _can_user_review(obj):
-    schema = obj['deposit']['$schema']
-    schema = schema.split("/schemas/")[1]
-    return user_can_review(schema)
+        if obj['deposit'].schema_is_reviewable():
+            can_review = ReviewDepositPermission(obj['deposit']).can()
+            if can_review:
+                return True

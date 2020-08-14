@@ -32,13 +32,6 @@ from flask_login import current_user
 from .errors import ReviewError, ReviewValidationError
 from cap.modules.user.utils import get_user_email_by_id
 
-REVIEWERS_BY_SCHEMA = {
-    "deposits/records/cms-stats-questionnaire-v1.0.0.json": {
-        "users": [],
-        "roles": []
-    }
-}
-
 
 class ReviewSchema(Schema):
     """Schema for deposit review."""
@@ -122,6 +115,3 @@ class Reviewable(object):
 
             self["_review"] = reviews
 
-
-def user_can_review(schema):
-    return True

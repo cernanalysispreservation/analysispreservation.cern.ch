@@ -119,6 +119,8 @@ setup(
         'invenio_access.actions': [
             'cms_access = '
             'cap.modules.experiments.permissions:cms_access_action',
+            'cms_pag_convener_access = '
+            'cap.modules.experiments.permissions:cms_pag_convener_action_all',
             'lhcb_access = '
             'cap.modules.experiments.permissions:lhcb_access_action',
             'alice_access = '

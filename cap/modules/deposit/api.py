@@ -74,7 +74,7 @@ from .permissions import (AdminDepositPermission, CloneDepositPermission,
                           DepositUpdateActionNeed, ReviewDepositPermission,
                           UpdateDepositPermission)
 
-from .review import Reviewable, user_can_review
+from .review import Reviewable
 
 _datastore = LocalProxy(lambda: current_app.extensions['security'].datastore)
 
@@ -352,11 +352,7 @@ class CAPDeposit(Deposit, Reviewable):
                 if "id" in data:
                     self.update_review(data)
                 else:
-                    # TODO Fix with correct permissions class
-                    deposit_schema = self.get("$schema", None)
-                    deposit_wg = self.get("$schema", None)
-                    if user_can_review(deposit_schema):
-                        self.create_review(data)
+                    self.create_review(data)
             else:
                 raise ReviewError(None)
 

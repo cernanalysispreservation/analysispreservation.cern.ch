@@ -37,6 +37,7 @@ from cap.modules.records.permissions import RecordFilesPermission
 from cap.modules.schemas.models import Schema
 from cap.modules.schemas.permissions import ReadSchemaPermission
 from cap.modules.schemas.resolvers import resolve_schema_by_url
+from cap.modules.experiments.permissions import cms_pag_convener_action
 
 from .errors import WrongJSONSchemaError
 
@@ -89,7 +90,7 @@ class DepositPermission(Permission):
         "admin": deposit_admin_need,
     }
 
-    def __init__(self, deposit, action):
+    def __init__(self, deposit, action, extra_needs=None):
         """Constructor.
 
         Args:
@@ -97,6 +98,9 @@ class DepositPermission(Permission):
         """
         _needs = set()
         _needs.add(self.actions['admin'](deposit))
+
+        if extra_needs:
+            _needs.update(extra_needs)
 
         if action in self.actions:
             _needs.add(self.actions[action](deposit))
@@ -143,7 +147,22 @@ class ReadDepositPermission(DepositPermission):
     """Deposit read permission."""
     def __init__(self, record):
         """Initialize state."""
-        super(ReadDepositPermission, self).__init__(record, 'read')
+        extra_needs = self._get_schema_needs(record, 'read')
+        super(ReadDepositPermission, self).__init__(record, 'read',
+                                                    extra_needs)
+
+    def _get_schema_needs(self, deposit, action):
+        """Create deposit permissions are based on schema's permissions."""
+
+        if "/records/cms-stats-questionnaire" in deposit.get('$schema'):
+            _needs = set()
+            _needs.add(cms_pag_convener_action(None))
+
+            wg = deposit.get("analysis_context", {}).get("wg")
+            if wg:
+                _needs.add(cms_pag_convener_action(wg.lower()))
+
+            return _needs
 
 
 class UpdateDepositPermission(DepositPermission):
@@ -167,11 +186,9 @@ class CloneDepositPermission(DepositPermission):
         super(CloneDepositPermission, self).__init__(record, 'read')
 
 
-class ReviewDepositPermission(DepositPermission):
-    """Clone deposit permission."""
-    def __init__(self, record):
-        """Initialize state."""
-        super(ReviewDepositPermission, self).__init__(record, 'read')
+class ReviewDepositPermission(ReadDepositPermission):
+    """Review deposit permission."""
+    pass
 
 
 class DepositFilesPermission(Permission):
