@@ -16,6 +16,7 @@ import { withRouter } from "react-router";
 import PublishedSidebar from "./components/PublishedSidebar";
 
 import DocumentTitle from "../partials/Title";
+import PermissionDenied from "../errors/403";
 
 class PublishedItemIndex extends React.Component {
   componentDidMount() {
@@ -24,6 +25,13 @@ class PublishedItemIndex extends React.Component {
   }
 
   render() {
+    if (this.props.error && [403, 404].indexOf(this.props.error.status) > -1)
+      return (
+        <PermissionDenied
+          status={this.props.error.status}
+          message={this.props.error.message}
+        />
+      );
     return (
       <DocumentTitle title={`${this.props.match.params.id} | Published`}>
         <Box flex={true} direction="row">
@@ -60,13 +68,15 @@ PublishedItemIndex.propTypes = {
   startDeposit: PropTypes.func,
   getPublishedItem: PropTypes.func,
   item: PropTypes.object,
-  match: PropTypes.object
+  match: PropTypes.object,
+  error: PropTypes.object
 };
 
 const mapStateToProps = state => {
   return {
     groups: state.auth.getIn(["currentUser", "depositGroups"]),
-    item: state.published.getIn(["current_item", "data"])
+    item: state.published.getIn(["current_item", "data"]),
+    error: state.published.get("error")
   };
 };
 

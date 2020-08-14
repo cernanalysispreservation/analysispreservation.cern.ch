@@ -55,25 +55,25 @@ class PublishedPreview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      addReviewLayer: false,
-    }
+      addReviewLayer: false
+    };
   }
 
   toggleAddReview = () => {
     this.setState({
       addReviewLayer: !this.state.addReviewLayer,
       reviewError: null
-    })
-  }
+    });
+  };
 
-  _addReview = (review) => {
+  _addReview = review => {
     let uri = this.props.review_link;
     this.setState({ reviewError: null });
     axios
       .post(uri, review, {
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/form+json"
+          Accept: "application/form+json"
         }
       })
       .then(() => {
@@ -88,7 +88,7 @@ class PublishedPreview extends React.Component {
       .catch(error => {
         this.setState({ reviewError: error.response.data });
       });
-  }
+  };
 
   _discoverSchema = item => {
     let type;
@@ -123,15 +123,14 @@ class PublishedPreview extends React.Component {
           </Sidebar>
           {this.props.schemas ? (
             <Box flex={true}>
-              {
-                this.state.addReviewLayer &&
+              {this.state.addReviewLayer && (
                 <DepositReviewCreateLayer
                   addReview={this._addReview}
                   toggleAddReview={this.toggleAddReview}
                   reviewSuccess={this.state.reviewSuccess}
                   error={this.state.reviewError}
                 />
-              }
+              )}
               <SectionHeader
                 label={
                   <Box
@@ -166,7 +165,7 @@ class PublishedPreview extends React.Component {
                         label={
                           <Label size="small" uppercase>
                             Review
-                        </Label>
+                          </Label>
                         }
                       />
                     ) : null}
@@ -180,7 +179,7 @@ class PublishedPreview extends React.Component {
                         label={
                           <Label size="small" uppercase>
                             Edit
-                        </Label>
+                          </Label>
                         }
                       />
                     ) : null}
@@ -194,7 +193,7 @@ class PublishedPreview extends React.Component {
                     schema={_schema}
                     schemaType={this.props.schemaType.toJS()}
                     uiSchema={{}}
-                    onChange={() => { }}
+                    onChange={() => {}}
                   >
                     <span />
                   </JSONSchemaPreviewer>
