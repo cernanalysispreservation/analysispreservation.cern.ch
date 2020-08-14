@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 
 const Content = styled.div`
   border-radius: 3px;
-  min-width: 340px;
+  min-width: 320px;
   max-width: 90%;
   overflow: scroll;
   background: rgb(255, 255, 255);

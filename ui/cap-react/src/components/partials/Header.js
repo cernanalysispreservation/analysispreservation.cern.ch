@@ -70,7 +70,9 @@ class Header extends React.Component {
     return (
       <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
         {this.state.showCreate ? (
-          <DraftCreate toggle={this.toggleCreate} />
+          <Box>
+            <DraftCreate toggle={this.toggleCreate} />
+          </Box>
         ) : null}
         {this.state.show ? (
           <Layer
