@@ -49,6 +49,7 @@ const Body = styled.div`
 const Heading = styled.div`
   grid-column: 2/3;
   justify-self: center;
+  align-self: center;
 `;
 
 const CloseButton = styled.div`
