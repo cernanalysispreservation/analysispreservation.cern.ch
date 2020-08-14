@@ -87,6 +87,7 @@ PRESERVE_FIELDS = (
     '_access',
     '_user_edited',
     '_fetched_from',
+    'control_number',
     'general_title',
     '$schema',
 )
