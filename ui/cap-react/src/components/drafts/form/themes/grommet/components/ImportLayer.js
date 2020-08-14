@@ -11,6 +11,7 @@ import Box from "grommet/components/Box";
 
 import { Layer } from "grommet";
 import Button from "../../../../../partials/Button";
+import Modal from "../../../../../partials/Modal";
 
 class ImportLayer extends React.Component {
   constructor(props) {
@@ -55,26 +56,27 @@ class ImportLayer extends React.Component {
 
   render() {
     return (
-      <Layer
+      <Modal
         flush={true}
         closer={true}
         overlayClose={true}
         onClose={this.props.enableImport}
+        title="Provide a pattern to fetch available paths"
+        Tag="h5"
+        background="#f5f5f5"
+        separator
       >
         <Box flex={false} size="xlarge" colorIndex="light-2" pad="medium">
           {this.props.options.listSuggestions && (
             <Box
               pad={{
                 between: "small",
-                vertical: "small",
+
                 horizontal: "small"
               }}
               wrap
               flex
             >
-              <Box pad={{ vertical: "small" }}>
-                Provide a pattern to fetch available paths
-              </Box>
               <Box>
                 <InputWithButton
                   buttons={
@@ -251,7 +253,7 @@ class ImportLayer extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 }

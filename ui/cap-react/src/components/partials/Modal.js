@@ -18,6 +18,7 @@ const Content = styled.div`
   border-radius: 3px;
   min-width: 320px;
   max-width: 90%;
+  max-height: 90%;
   height: ${props => props.position.height};
   overflow: scroll;
   background: ${props => props.background};

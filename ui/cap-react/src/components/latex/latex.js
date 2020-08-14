@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
+
 import Checkmark from "grommet/components/icons/base/Checkmark";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PropTypes from "prop-types";
 
-import { Heading } from "grommet";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
 
