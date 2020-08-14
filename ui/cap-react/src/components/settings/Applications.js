@@ -25,6 +25,8 @@ import { getUsersAPIKeys, createToken, revokeToken } from "../../actions/auth";
 
 import { applicationSchema, tokenSchema } from "./utils";
 
+import Modal from "../partials/Modal";
+
 class SettingsIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +74,11 @@ class SettingsIndex extends React.Component {
 
   getLayer() {
     return (
-      <Layer
+      <Modal
+        position="right"
+        full
+        separator
+        title="New OAuth Application"
         overlayClose={true}
         closer={true}
         onClose={() => {
@@ -81,15 +87,10 @@ class SettingsIndex extends React.Component {
         align="right"
       >
         <Box flex={true} size="medium" pad={{ vertical: "large" }}>
-          <Heading align="start" margin="small" tag="h3">
-            New OAuth Application
-            </Heading>
           <Paragraph align="start" margin="none" />
           <Form
             schema={
-              this.state.layer.type == "token"
-                ? tokenSchema
-                : applicationSchema
+              this.state.layer.type == "token" ? tokenSchema : applicationSchema
             }
             onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
             validate={true}
@@ -100,7 +101,7 @@ class SettingsIndex extends React.Component {
             </Box>
           </Form>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 
@@ -164,14 +165,14 @@ class SettingsIndex extends React.Component {
                   </Table>
                 </Box>
               ) : (
-                  <ListPlaceholder
-                    label="Add token"
-                    primary={true}
-                    a11yTitle="Add item"
-                    emptyMessage="You do not have any items at the moment."
-                    unfilteredTotal={0}
-                  />
-                )}
+                <ListPlaceholder
+                  label="Add token"
+                  primary={true}
+                  a11yTitle="Add item"
+                  emptyMessage="You do not have any items at the moment."
+                  unfilteredTotal={0}
+                />
+              )}
             </Box>
           </Box>
         </Box>

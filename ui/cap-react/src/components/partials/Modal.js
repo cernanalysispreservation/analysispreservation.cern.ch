@@ -119,6 +119,11 @@ const Modal = ({
         left: 0,
         height: full ? "100%" : null
       },
+      right: {
+        top: 0,
+        right: 0,
+        height: full ? "100%" : null
+      },
       center: {
         top: "50%",
         left: "50%",
