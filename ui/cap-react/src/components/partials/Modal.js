@@ -50,7 +50,12 @@ const CloseButton = styled.div`
   grid-column: 3/4;
   justify-self: end;
   align-self: center;
+  display: flex;
+  align-items: center;
+  padding: 5px;
   &:hover {
+    background: rgba(228, 230, 235, 1);
+    border-radius: 50%;
     cursor: pointer;
   }
 `;
