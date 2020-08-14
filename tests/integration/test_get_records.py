@@ -361,7 +361,7 @@ def test_get_record_with_form_json_serializer(
                                                    'cms_user2@cern.ch']},
             'record-update': {'roles': [], 'users': [example_user.email]}},
         'can_update': True, 'is_owner': True,
-        'can_review': True,
+        'can_review': False,
         'created': rec.created.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'updated': rec.updated.strftime('%Y-%m-%dT%H:%M:%S.%f+00:00'),
         'created_by': example_user.email,

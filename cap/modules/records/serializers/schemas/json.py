@@ -82,11 +82,18 @@ class RecordFormSchema(RecordSchema):
         _, rec_uuid = resolver.resolve(deposit_pid)
         deposit = CAPDeposit.get_record(rec_uuid)
 
-        return ReviewDepositPermission(deposit).can()
+        return (deposit.schema_is_reviewable() 
+                and ReviewDepositPermission(deposit).can())
 
     def get_links_with_review(self, obj):
-        deposit = CAPDeposit.get_record(obj['pid'].object_uuid)
+        deposit_pid = obj.get("metadata", {}).get("_deposit", {}).get("id")
 
+        resolver = Resolver(pid_type='depid',
+                            object_type='rec',
+                            getter=lambda x: x)
+
+        _, rec_uuid = resolver.resolve(deposit_pid)
+        deposit = CAPDeposit.get_record(rec_uuid)
         links = obj['links']
 
         if (deposit.schema_is_reviewable()
