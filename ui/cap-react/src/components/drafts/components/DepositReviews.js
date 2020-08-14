@@ -13,6 +13,8 @@ import { Layer } from "grommet";
 import Status from "grommet/components/icons/Status";
 import DepositReviewItem from "./DepositReviewItem";
 
+import Modal from "../../partials/Modal";
+
 class DepositReviews extends React.Component {
   constructor() {
     super();
@@ -83,9 +85,14 @@ class DepositReviews extends React.Component {
 
   renderCreateLayer() {
     return (
-      <Layer flush onClose={this.toggleAddReview} overlayClose>
+      <Modal
+        title="Add a review"
+        Tag="h4"
+        flush
+        onClose={this.toggleAddReview}
+        overlayClose
+      >
         <Box pad="small">
-          <Heading tag="h4">Add a review</Heading>
           <Box pad={{ between: "small" }}>
             <Box
               flex
@@ -133,7 +140,7 @@ class DepositReviews extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     );
   }
 
