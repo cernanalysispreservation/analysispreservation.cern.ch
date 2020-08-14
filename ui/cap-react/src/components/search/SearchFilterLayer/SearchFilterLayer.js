@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import Layer from "grommet/components/Layer";
 import Box from "grommet/components/Box";
 
+import Modal from "../../partials/Modal";
 class SearchFilterLayer extends React.Component {
   constructor(props) {
     super(props);
@@ -11,18 +12,17 @@ class SearchFilterLayer extends React.Component {
   render() {
     if (this.props.active) {
       return (
-        <Layer
-          closer={true}
-          flush={true}
-          align="left"
-          overlayClose={true}
+        <Modal
+          background="#f5f5f5"
+          full
           onClose={this.props.onClose}
           id="search_layer"
+          position="left"
         >
           <Box justify="center" align="center" colorIndex="light-2">
             {this.props.properties}
           </Box>
-        </Layer>
+        </Modal>
       );
     } else return null;
   }

@@ -18,14 +18,19 @@ const Content = styled.div`
   border-radius: 3px;
   min-width: 320px;
   max-width: 90%;
+  height: ${props => props.position.height};
   overflow: scroll;
-  background: rgb(255, 255, 255);
+  background: ${props => props.background};
   display: flex;
   flex-direction: column;
+  overflow: auto;
+
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: ${props => props.position.top};
+  left: ${props => props.position.left};
+  right: ${props => props.position.right};
+  bottom: ${props => props.position.bottom};
+  transform: ${props => props.position.transform};
 `;
 
 const Header = styled.div`
@@ -65,7 +70,10 @@ const Modal = ({
   children,
   padding = "10px",
   title = "",
-  separator = false
+  separator = false,
+  position = "center",
+  background = "rgb(255,255,255)",
+  full = false
 }) => {
   const modal = useRef(null);
 
@@ -102,9 +110,29 @@ const Modal = ({
     },
     [modal]
   );
+
+  const getPositionByName = name => {
+    const choices = {
+      left: {
+        top: 0,
+        left: 0,
+        height: full ? "100%" : null
+      },
+      center: {
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)"
+      }
+    };
+    return choices[name];
+  };
   return (
     <Wrapper id="cap-modal">
-      <Content ref={modal}>
+      <Content
+        ref={modal}
+        position={getPositionByName(position)}
+        background={background}
+      >
         <Header separator={separator}>
           <Heading>
             <Tag>{title}</Tag>
@@ -125,7 +153,10 @@ Modal.propTypes = {
   children: PropTypes.node,
   padding: PropTypes.string,
   title: PropTypes.string,
-  separator: PropTypes.bool
+  separator: PropTypes.bool,
+  background: PropTypes.string,
+  position: PropTypes.string,
+  full: PropTypes.bool
 };
 
 export default Modal;
