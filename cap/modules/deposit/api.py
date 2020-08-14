@@ -210,6 +210,15 @@ class CAPDeposit(Deposit, Reviewable):
 
             return self.edit_permissions(data)
 
+    def _publish_edited(self):
+        record = super(CAPDeposit, self)._publish_edited()
+        record._add_deposit_permissions(record, record.id)
+
+        if record['_experiment']:
+            record._add_experiment_permissions(record, record.id)
+
+        return record
+
     @mark_as_action
     def publish(self, *args, **kwargs):
         """Simple file check before publishing."""

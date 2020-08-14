@@ -96,20 +96,34 @@ class CAPRecord(Record):
         for action, permission in data['_access'].items():
             for role in permission['roles']:
                 role = Role.query.filter_by(id=role).one()
-                db.session.add(
-                    ActionRoles.allow(
-                        RECORD_ACTION_NEEDS(id_)[action],
-                        role=role
+                try:
+                    ActionRoles.query.filter_by(
+                        action=action,
+                        argument=str(id_),
+                        role_id=role.id
+                    ).one()
+                except NoResultFound:
+                    db.session.add(
+                        ActionRoles.allow(
+                            RECORD_ACTION_NEEDS(id_)[action],
+                            role=role
+                        )
                     )
-                )
             for user in permission['users']:
                 user = User.query.filter_by(id=user).one()
-                db.session.add(
-                    ActionUsers.allow(
-                        RECORD_ACTION_NEEDS(id_)[action],
-                        user=user
+                try:
+                    ActionUsers.query.filter_by(
+                        action=action,
+                        argument=str(id_),
+                        user_id=user.id
+                    ).one()
+                except NoResultFound:
+                    db.session.add(
+                        ActionUsers.allow(
+                            RECORD_ACTION_NEEDS(id_)[action],
+                            user=user
+                        )
                     )
-                )
 
     @classmethod
     def _add_experiment_permissions(cls, data, id_):
@@ -129,6 +143,7 @@ class CAPRecord(Record):
                         user=au.user
                     )
                 )
+            if au.user.id not in data['_access']['record-read']['users']:
                 data['_access']['record-read']['users'].append(au.user.id)
 
         for ar in ActionRoles.query_by_action(exp_need).all():
@@ -143,4 +158,5 @@ class CAPRecord(Record):
                         role=ar.role
                     )
                 )
+            if ar.role.id not in data['_access']['record-read']['roles']:
                 data['_access']['record-read']['roles'].append(ar.role.id)
