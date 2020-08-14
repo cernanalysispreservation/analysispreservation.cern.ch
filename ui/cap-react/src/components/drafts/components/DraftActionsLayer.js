@@ -12,6 +12,7 @@ import equal from "deep-equal";
 import cleanDeep from "clean-deep";
 
 import Notification from "../../partials/Notification";
+import Modal from "../../partials/Modal";
 
 import {
   publishDraft,
@@ -94,21 +95,20 @@ class DraftActionsLayer extends React.Component {
 
   render() {
     return this.props.actionsLayer ? (
-      <Layer
-        closer={true}
-        align="center"
-        flush={true}
-        overlayClose={true}
+      <Modal
+        title="Publish"
+        Tag="h4"
         onClose={this.props.toggleActionsLayer}
+        separator
       >
         <Box
           justify="center"
           flex={true}
           wrap={false}
-          pad="medium"
+          pad={{ horizontal: "small" }}
           size="medium"
         >
-          <Box pad="small" alignContent="center">
+          <Box pad={{ horizontal: "small" }} alignContent="center">
             {this.renderMessage(this.props.type)}
           </Box>
           <Box direction="row" justify="center" align="center">
@@ -127,7 +127,7 @@ class DraftActionsLayer extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     ) : null;
   }
 }
