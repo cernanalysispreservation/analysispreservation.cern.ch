@@ -64,7 +64,6 @@ class ImportLayer extends React.Component {
         title="Provide a pattern to fetch available paths"
         Tag="h5"
         background="#f5f5f5"
-        separator
       >
         <Box flex={false} size="xlarge" colorIndex="light-2" pad="medium">
           {this.props.options.listSuggestions && (

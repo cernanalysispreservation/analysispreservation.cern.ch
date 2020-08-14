@@ -26,6 +26,8 @@ import DraftCreate from "../drafts/DraftCreate";
 
 import CAPLogoLight from "../../img/cap-logo-light.svg";
 
+import Modal from "../partials/Modal";
+
 class Header extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -75,14 +77,18 @@ class Header extends React.Component {
           </Box>
         ) : null}
         {this.state.show ? (
-          <Layer
+          <Modal
             closer={true}
             flush={true}
             overlayClose={true}
             onClose={this.hideLayer}
+            background="#f5f5f5"
+            title="How to Search"
           >
-            <HowToSearchPage />
-          </Layer>
+            <Box>
+              <HowToSearchPage />
+            </Box>
+          </Modal>
         ) : null}
         <Box
           flex={true}
