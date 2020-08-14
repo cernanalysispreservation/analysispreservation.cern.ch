@@ -9,6 +9,8 @@ import { Heading } from "grommet";
 import AceEditor from "react-ace";
 import "ace-builds/webpack-resolver";
 
+import Modal from "../partials/Modal";
+
 const LatexPreviewer = props => {
   const [copied, setCopied] = useState(false);
 
@@ -17,15 +19,15 @@ const LatexPreviewer = props => {
   };
 
   return (
-    <Layer
+    <Modal
       overlayClose={true}
       closer={true}
       onClose={props.onClose}
       align="center"
+      title="LaTeX Code"
     >
-      <Box flex={true} size="xlarge" pad={{ vertical: "large" }}>
+      <Box flex={true} size="xlarge" pad={{ horizontal: "large" }}>
         <Box margin={{ vertical: "small" }}>
-          <Heading tag="h3">LaTeX Code</Heading>
           <AceEditor
             mode="latex"
             theme="github"
@@ -53,7 +55,7 @@ const LatexPreviewer = props => {
           </Box>
         </Box>
       </Box>
-    </Layer>
+    </Modal>
   );
 };
 
