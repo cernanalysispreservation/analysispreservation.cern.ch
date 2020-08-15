@@ -50,28 +50,26 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
     cadi_id = 'EXO-00-000'
     cadi_resp = {
-        'data': [{
-            u'Conference': '',
-            u'conferenceStatus': '',
-            u'code': 'dEXO-00-000',
-            u'targetConference': None,
-            u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-            u'updaterDate': '24/12/2014',
-            u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-            u'id': 1,
-            u'updaterName': 'Updater User',
-            u'targetPubPeriod': None,
-            u'targetDatePreApp': '19/12/2014',
-            u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-            u'contact': 'Contact User',
-            u'status': 'PUB',
-            u'description': 'Description',
-            u'URL': 'https://twiki.cern.ch/twikiurl',
-            u'creatorName': 'Creator User',
-            u'publicationStatus': 'Free',
-            u'name': 'Name',
-            u'PAPER': 'http://cms.cern.ch:80/paper.pdf'
-        }]
+        u'Conference': '',
+        u'conferenceStatus': '',
+        u'code': 'dEXO-00-000',
+        u'targetConference': None,
+        u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+        u'updaterDate': '24/12/2014',
+        u'PAS': 'http://cms.cern.ch:80/pas.pdf',
+        u'id': 1,
+        u'updaterName': 'Updater User',
+        u'targetPubPeriod': None,
+        u'targetDatePreApp': '19/12/2014',
+        u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
+        u'contact': 'Contact User',
+        u'status': 'PUB',
+        u'description': 'Description',
+        u'URL': 'https://twiki.cern.ch/twikiurl',
+        u'creatorName': 'Creator User',
+        u'publicationStatus': 'Free',
+        u'name': 'Name',
+        u'PAPER': 'http://cms.cern.ch:80/paper.pdf'
     }
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
@@ -83,13 +81,13 @@ def test_get_from_cadi_by_id(mock_get_sso_cookie_for_cadi, app):
     output = get_from_cadi_by_id(cadi_id)
 
     # check that requst to glance is called with correct url and cookie
-    assert responses.calls[
-        0].request.url == 'https://icms.cern.ch/tools/api/cadiLine/{id}'.format(
-            id=cadi_id)
+    url = 'https://icms.cern.ch/tools/restplus/relay/' + \
+          'piggyback/cadi/history/capInfo/{id}'.format(id=cadi_id)
+    assert responses.calls[0].request.url == url
     assert responses.calls[0].request._cookies == cookie
 
     # check the response
-    assert output == cadi_resp['data'][0]
+    assert output == cadi_resp
 
 
 @responses.activate
@@ -99,7 +97,7 @@ def test_get_from_cadi_by_id_when_no_entry_with_given_cadi_id_returns_empty_dict
         app):
     cadi_id = 'non-existing'
     # CADI API returns empty list, when no match with given id
-    cadi_resp = dict(data=[])
+    cadi_resp = dict()
 
     responses.add(
         responses.GET,
@@ -142,14 +140,14 @@ def test_get_from_cadi_by_id_when_cadi_server_down_while_asking_for_auth_returns
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi')
 def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     cookie = dict(cookies_are='example_cookie')
-    cadi_resp = dict(data=[
+    cadi_resp = dict(_embedded=dict(cadiLineCapInfoList=[
         dict(code=u'dEXO-00-001', status=u'Inactive'),
         dict(code=u'dEXO-00-002', status=u'PUB'),
         dict(code=u'dEXO-00-003', status=u'SUPERSEDED')
-    ])
+    ]))
 
     mock_get_sso_cookie_for_cadi.return_value = cookie
-    responses.add(responses.POST,
+    responses.add(responses.GET,
                   current_app.config['CADI_GET_ALL_URL'],
                   json=cadi_resp,
                   status=200)
@@ -157,8 +155,9 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
     output = list(get_all_from_cadi())
 
     # check that request to glance is called with correct url and cookie
-    assert responses.calls[
-        0].request.url == 'https://icms.cern.ch/tools/api/viewCadiLines'
+    url = 'https://icms.cern.ch/tools/restplus/relay/piggyback/' + \
+          'cadi/history/capInfo'
+    assert responses.calls[0].request.url == url
     assert responses.calls[0].request._cookies == cookie
 
     # check that inactive|supseded analysis are not returned
@@ -173,7 +172,7 @@ def test_get_all_from_cadi(mock_get_sso_cookie_for_cadi, app):
 @patch('cap.modules.experiments.utils.cadi.get_sso_cookie_for_cadi',
        MagicMock(return_value=dict(cookies_are='example_cookie')))
 def test_get_all_from_cadi_when_cadi_server_down_returns_503(app):
-    responses.add(responses.POST,
+    responses.add(responses.GET,
                   current_app.config['CADI_GET_ALL_URL'],
                   status=500)
 
@@ -192,51 +191,135 @@ def test_get_all_from_cadi_when_cadi_server_down_while_asking_for_auth_returns_5
 
 def test_parse_cadi_entry():
     cadi_resp = {
-        u'Conference': '',
-        u'conferenceStatus': '',
-        u'code': 'dEXO-00-000',
-        u'targetConference': None,
-        u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-        u'updaterDate': '24/12/2014',
-        u'creatorDate': '14/12/2014',
-        u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-        u'id': 1,
-        u'updaterName': 'Updater User',
-        u'targetPubPeriod': None,
-        u'targetDatePreApp': '19/12/2014',
-        u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-        u'contact': 'Contact User',
-        u'status': 'PUB',
-        u'URL': 'https://twiki.cern.ch/twikiurl',
-        u'creatorName': 'Creator User',
-        u'publicationStatus': 'Free',
-        u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-        u'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
-        u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+        'conference':
+        '',
+        'conferenceStatus':
+        '',
+        'code':
+        'ANA-00-000',
+        'targetConference':
+        None,
+        'approvalTalk':
+        'https://indico.cern.ch/event/event.pdf',
+        'creationDate':
+        '2014-02-05',
+        'updateDate':
+        '2014-07-26',
+        'pas':
+        'http://cms.cern.ch:80/pas.pdf',
+        'id':
+        1,
+        'targetPubPeriod':
+        None,
+        'targetDatePreApp':
+        '19/12/2014',
+        'papertar':
+        'http://cms.cern.ch:80/paper.tgz',
+        'awg':
+        'HIG',
+        'contact': {
+            'cmsId': 1234,
+            'hrId': 5678,
+            'username': 'contact.user',
+            'email': 'contact.user@example.com'
+        },
+        'creator': {
+            'cmsId': 4321,
+            'hrId': 8765,
+            'username': 'creator.user',
+            'email': 'creator.user@example.com'
+        },
+        'updater': {
+            'cmsId': 4583,
+            'hrId': 411861,
+            'username': 'updater.user',
+            'email': 'updater.user@example.com'
+        },
+        'relatedNotesInfo': [{
+            'noteId':
+            'CMS AN-2014/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+        }, {
+            'noteId':
+            'CMS AN-2013/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+        }],
+        'status':
+        'PUB',
+        'url':
+        'https://twiki.cern.ch/twikiurl',
+        'creatorName':
+        'Creator User',
+        'publicationStatus':
+        'Free',
+        'paper':
+        'http://cms.cern.ch:80/paper.pdf',
+        'description':
+        'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        'name':
+        '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)',
+        'hepData':
+        '',
     }
 
     serializer = CADISchema()
     parsed = serializer.dump(cadi_resp).data
 
     assert parsed == {
-        'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
-        'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
-        'contact': 'Contact User',
-        'created': '14/12/2014',
-        'twiki': 'https://twiki.cern.ch/twikiurl',
-        'paper': 'http://cms.cern.ch:80/paper.pdf',
-        'pas': 'http://cms.cern.ch:80/pas.pdf',
-        'publication_status': 'Free',
-        'status': 'PUB',
-        'cadi_id': 'EXO-00-000'
+        'description':
+        'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+        'name':
+        '2HDM Higgs studies (H->ZZ and A->Zh)',
+        'contact':
+        'contact.user@example.com',
+        'creator':
+        'creator.user@example.com',
+        'updater':
+        'updater.user@example.com',
+        'created': '2014-02-05',
+        'updated': '2014-07-26',
+        'twiki':
+        'https://twiki.cern.ch/twikiurl',
+        'paper':
+        'http://cms.cern.ch:80/paper.pdf',
+        'paper_tar':
+        'http://cms.cern.ch:80/paper.tgz',
+        'pas':
+        'http://cms.cern.ch:80/pas.pdf',
+        'awg':
+        'HIG',
+        'publication_status':
+        'Free',
+        'status':
+        'PUB',
+        'cadi_id':
+        'ANA-00-000',
+        'conference':
+        '',
+        'hepData':
+        '',
+        'relatedNotes': [{
+            'id':
+            'AN-2014/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+        }, {
+            'id':
+            'AN-2013/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+        }]
     }
 
 
 def test_parse_cadi_entry_when_entry_missing_some_fields():
     cadi_resp = {
         u'code': 'EXO-00-000',
-        u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-        u'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        u'paper': 'http://cms.cern.ch:80/paper.pdf',
+        u'description':
+        'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
         u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
     }
 
@@ -244,16 +327,24 @@ def test_parse_cadi_entry_when_entry_missing_some_fields():
     parsed = serializer.dump(cadi_resp).data
 
     assert parsed == {
-        'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+        'description':
+        'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
         'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
         'contact': '',
+        'creator': '',
+        'updater': '',
         'created': '',
+        'updated': '',
         'twiki': '',
         'paper': 'http://cms.cern.ch:80/paper.pdf',
+        'paper_tar': '',
         'pas': '',
+        'hepData': '',
         'publication_status': '',
         'status': '',
-        'cadi_id': 'EXO-00-000'
+        'cadi_id': 'EXO-00-000',
+        'awg': '',
+        'conference': ''
     }
 
 
@@ -325,30 +416,81 @@ def test_get_deposit_by_cadi_id_when_no_match_raises_DepositDoesNotExist(
 
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
-@patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       MagicMock(return_value=[{
-           u'Conference': '',
-           u'conferenceStatus': '',
-           u'code': 'dEXO-00-000',
-           u'targetConference': None,
-           u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-           u'updaterDate': '24/12/2014',
-           u'creatorDate': '14/12/2014',
-           u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-           u'id': 1,
-           u'updaterName': 'Updater User',
-           u'targetPubPeriod': None,
-           u'targetDatePreApp': '19/12/2014',
-           u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-           u'contact': 'Contact User',
-           u'status': 'PUB',
-           u'URL': 'https://twiki.cern.ch/twikiurl',
-           u'creatorName': 'Creator User',
-           u'publicationStatus': 'Free',
-           u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-           u'description': 'Projections for 2HDM Higgs studies',
-           u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
-       }]))
+@patch(
+    'cap.modules.experiments.utils.cadi.get_all_from_cadi',
+    MagicMock(return_value=[{
+        'conference':
+        '',
+        'conferenceStatus':
+        '',
+        'code':
+        'EXO-00-000',
+        'targetConference':
+        None,
+        'approvalTalk':
+        'https://indico.cern.ch/event/event.pdf',
+        'creationDate':
+        '2014-02-05',
+        'updateDate':
+        '2014-07-26',
+        'pas':
+        'http://cms.cern.ch:80/pas.pdf',
+        'id':
+        1,
+        'targetPubPeriod':
+        None,
+        'targetDatePreApp':
+        '19/12/2014',
+        'papertar':
+        'http://cms.cern.ch:80/paper.tgz',
+        'awg':
+        'HIG',
+        'contact': {
+            'cmsId': 1234,
+            'hrId': 5678,
+            'username': 'contact.user',
+            'email': 'owner@cern.ch'
+        },
+        'creator': {
+            'cmsId': 4321,
+            'hrId': 8765,
+            'username': 'creator.user',
+            'email': 'creator.user@example.com'
+        },
+        'updater': {
+            'cmsId': 4583,
+            'hrId': 411861,
+            'username': 'updater.user',
+            'email': 'updater.user@example.com'
+        },
+        'relatedNotesInfo': [{
+            'noteId':
+            'CMS AN-2014/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+        }, {
+            'noteId':
+            'CMS AN-2013/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+        }],
+        'status':
+        'PUB',
+        'url':
+        'https://twiki.cern.ch/twikiurl',
+        'creatorName':
+        'Creator User',
+        'publicationStatus':
+        'Free',
+        'paper':
+        'http://cms.cern.ch:80/paper.pdf',
+        'description':
+        'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        'name':
+        '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)',
+        'hepData':
+        '',
+    }]))
 @patch('cap.modules.user.utils.does_user_exist_in_ldap',
        MagicMock(return_value=True))
 @patch('cap.modules.user.utils.does_egroup_exist_in_ldap',
@@ -382,15 +524,49 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_
 
     assert deposit == {
         'cadi_info': {
-            'description': 'Projections for 2HDM Higgs studies',
-            'created': '14/12/2014',
-            'status': 'PUB',
-            'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
-            'paper': 'http://cms.cern.ch:80/paper.pdf',
-            'contact': 'Contact User',
-            'twiki': 'https://twiki.cern.ch/twikiurl',
-            'publication_status': 'Free',
-            'pas': 'http://cms.cern.ch:80/pas.pdf'
+            'description':
+            'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+            'name':
+            '2HDM Higgs studies (H->ZZ and A->Zh)',
+            'contact':
+            'owner@cern.ch',
+            'creator':
+            'creator.user@example.com',
+            'updater':
+            'updater.user@example.com',
+            'created':
+            '2014-02-05',
+            'updated':
+            '2014-07-26',
+            'twiki':
+            'https://twiki.cern.ch/twikiurl',
+            'paper':
+            'http://cms.cern.ch:80/paper.pdf',
+            'paper_tar':
+            'http://cms.cern.ch:80/paper.tgz',
+            'pas':
+            'http://cms.cern.ch:80/pas.pdf',
+            'awg':
+            'HIG',
+            'publication_status':
+            'Free',
+            'status':
+            'PUB',
+            'conference':
+            '',
+            'hepData':
+            '',
+            'relatedNotes': [{
+                'id':
+                'AN-2014/000',
+                'url':
+                'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+            }, {
+                'id':
+                'AN-2013/000',
+                'url':
+                'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+            }]
         },
         'general_title': '2HDM Higgs studies (H->ZZ and A->Zh)',
         '_fetched_from': 'cadi',
@@ -398,7 +574,8 @@ def test_synchronize_cadi_entries_when_entry_doesnt_exist_creates_a_new_one_and_
         'basic_info': {
             'cadi_id': 'EXO-00-000'
         },
-        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
+        '$schema':
+        'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v0.0.1.json',
         '_deposit': {
             'id': deposit['_deposit']['id'],
             'status': 'draft',
@@ -445,29 +622,40 @@ def test_synchronize_cadi_entries_when_LDAP_error_occured_during_permissions_ass
 # @TOFIX schemas module still uses mappings from files, that's why we use existing schemas
 # this should be patched in schemas PR
 @patch('cap.modules.experiments.utils.cadi.get_all_from_cadi',
-       MagicMock(return_value=[{
-           u'Conference': '',
-           u'conferenceStatus': '',
-           u'code': 'dEXO-00-000',
-           u'targetConference': None,
-           u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-           u'updaterDate': '24/12/2014',
-           u'creatorDate': '14/12/2014',
-           u'PAS': 'http://cms.cern.ch:80/pas.pdf',
-           u'id': 1,
-           u'updaterName': 'Updater User',
-           u'targetPubPeriod': None,
-           u'targetDatePreApp': '19/12/2014',
-           u'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-           u'contact': 'Contact User',
-           u'status': 'PUB',
-           u'URL': 'https://twiki.cern.ch/twikiurl',
-           u'creatorName': 'Creator User',
-           u'publicationStatus': 'Free',
-           u'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-           u'description': 'Projections for 2HDM Higgs studies',
-           u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
-       }]))
+       MagicMock(
+           return_value=[{
+               u'conference': '',
+               u'conferenceStatus': '',
+               u'code': 'EXO-00-000',
+               u'targetConference': None,
+               u'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
+               u'creationDate': '2014-02-05',
+               u'updateDate': '2014-07-26',
+               u'pas': 'http://cms.cern.ch:80/pas.pdf',
+               u'id': 1,
+               u'updaterName': 'Updater User',
+               u'targetPubPeriod': None,
+               u'targetDatePreApp': '19/12/2014',
+               u'papertar': 'http://cms.cern.ch:80/paper.tgz',
+               u'creator': {
+                    'cmsId': 4321,
+                    'hrId': 8765,
+                    'username': 'creator.user',
+                    'email': 'creator.user@example.com'
+                },
+                u'contact': {
+                    'cmsId': 1234,
+                    'hrId': 5678,
+                    'username': 'contact.user',
+                    'email': 'contact.user@example.com'
+                },
+               u'status': 'PUB',
+               u'url': 'https://twiki.cern.ch/twikiurl',
+               u'publicationStatus': 'Free',
+               u'paper': 'http://cms.cern.ch:80/paper.pdf',
+               u'description': 'Projections for 2HDM Higgs studies',
+               u'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+           }]))
 def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
         appctx, db, es, superuser, create_deposit):
     create_deposit(
@@ -497,7 +685,8 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
             'owners': [superuser.id],
             'created_by': superuser.id
         },
-        '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+        '$schema':
+        'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
         '_experiment': None,
         '_access': {
             'deposit-read': {
@@ -517,13 +706,19 @@ def test_synchronize_cadi_entries_when_entry_exist_updates_cadi_info(
         '_files': [],
         'cadi_info': {
             'status': 'PUB',
-            'contact': 'Contact User',
+            'contact': 'contact.user@example.com',
+            'creator': 'creator.user@example.com',
             'publication_status': 'Free',
             'twiki': 'https://twiki.cern.ch/twikiurl',
             'pas': 'http://cms.cern.ch:80/pas.pdf',
             'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
             'description': 'Projections for 2HDM Higgs studies',
-            'created': '14/12/2014',
-            'paper': 'http://cms.cern.ch:80/paper.pdf'
+            'created': '2014-02-05',
+            'updated': '2014-07-26',
+            'updater': '',
+            'awg': '', 'conference': '',
+            'paper': 'http://cms.cern.ch:80/paper.pdf',
+            'paper_tar': 'http://cms.cern.ch:80/paper.tgz',
+            'hepData': ''
         }
     }

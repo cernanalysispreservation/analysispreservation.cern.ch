@@ -186,8 +186,7 @@ def get_from_cadi_by_id(cadi_id):
     if not response.ok:
         raise ExternalAPIException(response)
 
-    data = response.json()
-    entry = data['data'][0] if data['data'] else {}
+    entry = response.json()
 
     return entry
 
@@ -203,15 +202,14 @@ def get_all_from_cadi():
     url = current_app.config.get('CADI_GET_ALL_URL')
 
     cookie = get_sso_cookie_for_cadi()
-    response = requests.post(url=url,
-                             data=json.dumps({"selWGs": "all"}),
-                             headers={'Content-Type': 'application/json'},
-                             cookies=cookie)
+    response = requests.get(url=url, cookies=cookie)
 
     if not response.ok:
         raise ExternalAPIException(response)
 
-    all_entries = response.json()['data']
+    all_entries = response.json()
+    all_entries = all_entries.get("_embedded", {})
+    all_entries = all_entries.get("cadiLineCapInfoList", [])
 
     # filter out inactive or superseded entries
     entries = (entry for entry in all_entries

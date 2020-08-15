@@ -43,22 +43,41 @@ class CADIField(fields.Field):
             else unescape(unescape(value))
 
 
+class CADIRelatedNotes(Schema):
+    """Schema for CADI in JSON."""
+    id = fields.Function(
+        lambda entry: entry.get('noteId', '').replace('CMS ', ''),
+        dump_only=True)
+    url = CADIField(default='', dump_only=True)
+
+
 class CADISchema(Schema):
     """Schema for CADI in JSON."""
 
     name = CADIField(default='', dump_only=True)
     description = CADIField(default='', dump_only=True)
-    pas = CADIField(attribute='PAS', default='', dump_only=True)
-    paper = CADIField(attribute='PAPER', default='', dump_only=True)
-    created = CADIField(attribute='creatorDate', default='', dump_only=True)
-    contact = CADIField(default='', dump_only=True)
-    twiki = CADIField(attribute='URL', default='', dump_only=True)
+    pas = CADIField(attribute='pas', default='', dump_only=True)
+    paper = CADIField(attribute='paper', default='', dump_only=True)
+    paper_tar = CADIField(attribute='papertar', default='', dump_only=True)
+    created = CADIField(attribute='creationDate', default='', dump_only=True)
+    updated = CADIField(attribute='updateDate', default='', dump_only=True)
+    contact = CADIField(attribute='contact.email', default='', dump_only=True)
+    creator = CADIField(attribute='creator.email', default='', dump_only=True)
+    updater = CADIField(attribute='updater.email', default='', dump_only=True)
+    twiki = CADIField(attribute='url', default='', dump_only=True)
     status = CADIField(default='', dump_only=True)
     publication_status = CADIField(attribute='publicationStatus',
                                    default='',
                                    dump_only=True)
-    cadi_id = fields.Function(
-        lambda entry: re.sub('^d', '', entry.get('code', '')), dump_only=True)
+    awg = CADIField(default='', dump_only=True)
+    conference = CADIField(default='', dump_only=True)
+    hepData = CADIField(default='', dump_only=True)
+
+    cadi_id = CADIField(attribute='code', default='', dump_only=True)
+
+    relatedNotes = fields.Nested(CADIRelatedNotes,
+                                 attribute='relatedNotesInfo',
+                                 many=True)
 
 
 cadi_serializer = CADISchema()

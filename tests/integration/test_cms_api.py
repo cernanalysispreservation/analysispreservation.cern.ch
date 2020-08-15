@@ -67,28 +67,56 @@ def test_get_cms_cadi_when_non_existing_cadi_number_returns_empty_object(
 def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
         mock_get_from_cadi_by_id, client, auth_headers_for_superuser):
     cadi_response = {
-        'Conference': '',
+        'conference': '',
         'conferenceStatus': '',
-        'code': 'dANA-00-000',
+        'code': 'ANA-00-000',
         'targetConference': None,
         'approvalTalk': 'https://indico.cern.ch/event/event.pdf',
-        'updaterDate': '24/12/2014',
-        'creatorDate': '14/12/2014',
-        'PAS': 'http://cms.cern.ch:80/pas.pdf',
+        'creationDate': '2014-02-05',
+        'updateDate': '2014-07-26',
+        'pas': 'http://cms.cern.ch:80/pas.pdf',
         'id': 1,
-        'updaterName': 'Updater User',
         'targetPubPeriod': None,
         'targetDatePreApp': '19/12/2014',
-        'PAPERTAR': 'http://cms.cern.ch:80/paper.tgz',
-        'contact': 'Contact User',
+        'papertar': 'http://cms.cern.ch:80/paper.tgz',
+        'awg': 'HIG',
+        'contact': {
+            'cmsId': 1234,
+            'hrId': 5678,
+            'username': 'contact.user',
+            'email': 'contact.user@example.com'
+        },
+        'creator': {
+            'cmsId': 4321,
+            'hrId': 8765,
+            'username': 'creator.user',
+            'email': 'creator.user@example.com'
+        },
+        'updater': {
+            'cmsId': 4583,
+            'hrId': 411861,
+            'username': 'updater.user',
+            'email': 'updater.user@example.com'
+        },
+        'relatedNotesInfo': [{
+            'noteId':
+            'CMS AN-2014/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+        }, {
+            'noteId':
+            'CMS AN-2013/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+        }],
         'status': 'PUB',
-        'URL': 'https://twiki.cern.ch/twikiurl',
+        'url': 'https://twiki.cern.ch/twikiurl',
         'creatorName': 'Creator User',
         'publicationStatus': 'Free',
-        'PAPER': 'http://cms.cern.ch:80/paper.pdf',
-        'description':
-        'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
-        'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)'
+        'paper': 'http://cms.cern.ch:80/paper.pdf',
+        'description': 'Projections for 2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh) in 3000 fb-1',
+        'name': '2HDM Higgs studies (H-&gt;ZZ and A-&gt;Zh)',
+        'hepData': '',
     }
     mock_get_from_cadi_by_id.return_value = cadi_response
 
@@ -98,16 +126,50 @@ def test_get_cms_cadi_when_existing_cadi_number_returns_object_with_parsed_data(
     mock_get_from_cadi_by_id.assert_called_with('ANA-00-000')
 
     assert resp.json == {
-        'description': 'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
-        'name': '2HDM Higgs studies (H->ZZ and A->Zh)',
-        'contact': 'Contact User',
-        'created': '14/12/2014',
-        'twiki': 'https://twiki.cern.ch/twikiurl',
-        'paper': 'http://cms.cern.ch:80/paper.pdf',
-        'pas': 'http://cms.cern.ch:80/pas.pdf',
-        'publication_status': 'Free',
-        'status': 'PUB',
-        'cadi_id': 'ANA-00-000'
+        'description':
+        'Projections for 2HDM Higgs studies (H->ZZ and A->Zh) in 3000 fb-1',
+        'name':
+        '2HDM Higgs studies (H->ZZ and A->Zh)',
+        'contact':
+        'contact.user@example.com',
+        'creator':
+        'creator.user@example.com',
+        'updater':
+        'updater.user@example.com',
+        'created':
+        '2014-02-05',
+        'updated': '2014-07-26',
+        'twiki':
+        'https://twiki.cern.ch/twikiurl',
+        'paper':
+        'http://cms.cern.ch:80/paper.pdf',
+        'paper_tar':
+        'http://cms.cern.ch:80/paper.tgz',
+        'pas':
+        'http://cms.cern.ch:80/pas.pdf',
+        'awg':
+        'HIG',
+        'publication_status':
+        'Free',
+        'status':
+        'PUB',
+        'cadi_id':
+        'ANA-00-000',
+        'conference':
+        '',
+        'hepData':
+        '',
+        'relatedNotes': [{
+            'id':
+            'AN-2014/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2014%2F000'
+        }, {
+            'id':
+            'AN-2013/000',
+            'url':
+            'http://cms.cern.ch/noteInfo.jsp?cmsnoteid=CMS+AN-2013%2F000'
+        }]
     }
 
 
@@ -122,7 +184,8 @@ def test_get_cms_cadi_when_cadi_server_replied_with_an_error_returns_503(
     assert resp.status_code == 503
 
 
-def test_get_cms_cadi_when_cadi_not_matches_regex(app, auth_headers_for_superuser):
+def test_get_cms_cadi_when_cadi_not_matches_regex(app,
+                                                  auth_headers_for_superuser):
     with app.test_client() as client:
         resp = client.get('/cms/cadi/ABC-12-ABC',
                           headers=auth_headers_for_superuser)
@@ -130,7 +193,7 @@ def test_get_cms_cadi_when_cadi_not_matches_regex(app, auth_headers_for_superuse
     assert resp.status_code == 400
     assert resp.json == {
         "message": "This CADI ID is invalid. Please provide an "
-                   "input in the form of [A-Z0-9]{3}-[0-9]{2}-[0-9]{3}",
+        "input in the form of [A-Z0-9]{3}-[0-9]{2}-[0-9]{3}",
         "status": 400
     }
 
@@ -177,11 +240,15 @@ def test_get_datasets_suggestions_when_no_query_arg_returns_400(
 
     resp = client.get('/cms/mc-datasets', headers=headers)
     assert resp.status_code == 400
-    assert resp.json['message'] == {"query": ["Missing data for required field."]}
+    assert resp.json['message'] == {
+        "query": ["Missing data for required field."]
+    }
 
     resp = client.get('/cms/primary-datasets', headers=headers)
     assert resp.status_code == 400
-    assert resp.json['message'] == {"query": ["Missing data for required field."]}
+    assert resp.json['message'] == {
+        "query": ["Missing data for required field."]
+    }
 
 
 def test_get_primary_datasets_suggestions_returns_correct_suggestions(
@@ -190,18 +257,14 @@ def test_get_primary_datasets_suggestions_returns_correct_suggestions(
 
     resp = client.get('/cms/primary-datasets?query=/datas*', headers=headers)
     assert sorted(resp.json) == sorted([
-        '/dataset1/run1/AOD',
-        '/dataset1/run2/AOD',
-        '/dataset2/run1/RECO',
-        '/dataset2/run2/RECO',
-        '/dataset5/run1/ALCARECO'
+        '/dataset1/run1/AOD', '/dataset1/run2/AOD', '/dataset2/run1/RECO',
+        '/dataset2/run2/RECO', '/dataset5/run1/ALCARECO'
     ])
 
-    resp = client.get('/cms/primary-datasets?query=/dataset*/run2', headers=headers)
-    assert sorted(resp.json) == sorted([
-        '/dataset1/run2/AOD',
-        '/dataset2/run2/RECO'
-    ])
+    resp = client.get('/cms/primary-datasets?query=/dataset*/run2',
+                      headers=headers)
+    assert sorted(resp.json) == sorted(
+        ['/dataset1/run2/AOD', '/dataset2/run2/RECO'])
 
     # empty
     resp = client.get('/cms/primary-datasets?query=/datasets', headers=headers)
@@ -214,18 +277,14 @@ def test_get_mc_datasets_suggestions_returns_correct_suggestions(
 
     resp = client.get('/cms/mc-datasets?query=/datas*', headers=headers)
     assert sorted(resp.json) == sorted([
-        '/dataset3/run1/AODSIM',
-        '/dataset3/run2/AODSIM',
-        '/dataset4/run1/AODSIM',
-        '/dataset4/run2/AODSIM',
+        '/dataset3/run1/AODSIM', '/dataset3/run2/AODSIM',
+        '/dataset4/run1/AODSIM', '/dataset4/run2/AODSIM',
         '/dataset6/run1/SIM-GEN-AOD'
     ])
 
     resp = client.get('/cms/mc-datasets?query=/dataset*/run2', headers=headers)
-    assert sorted(resp.json) == sorted([
-        '/dataset3/run2/AODSIM',
-        '/dataset4/run2/AODSIM'
-    ])
+    assert sorted(resp.json) == sorted(
+        ['/dataset3/run2/AODSIM', '/dataset4/run2/AODSIM'])
 
     # empty
     resp = client.get('/cms/mc-datasets?query=/datasets', headers=headers)
@@ -265,11 +324,13 @@ def test_get_main_datasets_suggestions_when_no_query_arg_returns_400(
 
     resp = client.get('/cms/datasets', headers=headers)
     assert resp.status_code == 400
-    assert resp.json['message'] == {"query": ["Missing data for required field."]}
+    assert resp.json['message'] == {
+        "query": ["Missing data for required field."]
+    }
 
 
 def test_get_main_datasets_suggestions_returns_correct_suggestions(
-    client, users, auth_headers_for_user, das_datasets_index_main):
+        client, users, auth_headers_for_user, das_datasets_index_main):
     resp = client.get('/cms/datasets?query=/datas*',
                       headers=auth_headers_for_user(users['cms_user']))
 
