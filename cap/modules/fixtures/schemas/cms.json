@@ -789,6 +789,12 @@
               "publication_status": {
                 "type": "text",
                 "analyzer": "lowercase_whitespace_analyzer"
+              },
+              "created": {
+                "type": "text"
+              },
+              "updated": {
+                "type": "text"
               }
             }
           },
