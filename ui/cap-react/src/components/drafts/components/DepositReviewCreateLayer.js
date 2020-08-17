@@ -3,7 +3,6 @@ import React from "react";
 import Box from "grommet/components/Box";
 import Button from "../../partials/Button";
 import Heading from "grommet/components/Heading";
-import Layer from "grommet/components/Layer";
 
 import Status from "grommet/components/icons/Status";
 

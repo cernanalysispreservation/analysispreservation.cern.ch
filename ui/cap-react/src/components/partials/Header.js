@@ -77,13 +77,15 @@ class Header extends React.Component {
           </Box>
         ) : null}
         {this.state.show ? (
-          <Modal
-            onClose={this.hideLayer}
-            background="#f5f5f5"
-            title="How to Search"
-          >
-            <HowToSearchPage />
-          </Modal>
+          <Box>
+            <Modal
+              onClose={this.hideLayer}
+              background="#f5f5f5"
+              title="How to Search"
+            >
+              <HowToSearchPage />
+            </Modal>
+          </Box>
         ) : null}
         <Box
           flex={true}
