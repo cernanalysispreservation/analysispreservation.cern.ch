@@ -45,7 +45,7 @@ const CreateForm = props => {
       <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
         <Box size="xlarge">
           {props.location.pathname.startsWith("/drafts/") &&
-            !equal(cleanDeep(props.formData), props.metadata) && (
+            !equal(cleanDeep(props.formData), cleanDeep(props.metadata)) && (
               <Notification
                 type="warning"
                 text="Your analysis has unsaved changes. Make sure to save the analysis before starting a new one"

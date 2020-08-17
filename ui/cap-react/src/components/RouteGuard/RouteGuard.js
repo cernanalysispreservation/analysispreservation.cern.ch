@@ -14,6 +14,10 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
     setLastLocation(location);
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   const handleBlockedNavigation = nextLocation => {
     if (!confirmedNavigation && shouldBlockNavigation(nextLocation)) {
       ShowModal(nextLocation);
@@ -22,18 +26,22 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
     return true;
   };
 
+  const confirmNavigation = () => {
+    setShowModal(false);
+    setConfirmedNavigation(true);
+  };
+
   useEffect(() => {
     setWhen(true);
   }, []);
 
   useEffect(
     () => {
-      if (confirmedNavigation) {
-        setShowModal(false);
+      if (confirmedNavigation && lastLocation) {
         navigate(lastLocation.pathname);
       }
     },
-    [confirmedNavigation]
+    [confirmedNavigation, lastLocation]
   );
 
   return (
@@ -41,10 +49,8 @@ const RouteGuard = ({ navigate, shouldBlockNavigation }) => {
       <Prompt when={when} message={handleBlockedNavigation} />
       <Modal
         show={showModal}
-        onCancel={() => setShowModal(false)}
-        onConfirm={() => {
-          setConfirmedNavigation(true);
-        }}
+        onCancel={closeModal}
+        onConfirm={confirmNavigation}
       />
     </React.Fragment>
   );

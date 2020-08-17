@@ -30,7 +30,7 @@ class DraftActionsLayer extends React.Component {
       //   this.props.toggleActionsLayer();
       //   break;
       case "publish":
-        equal(cleanDeep(this.props.formData), this.props.metadata)
+        equal(cleanDeep(this.props.formData), cleanDeep(this.props.metadata))
           ? this.props.publishDraft(this.props.draft_id)
           : this.props
               .updateDraft({ ...this.props.formData }, this.props.draft_id)

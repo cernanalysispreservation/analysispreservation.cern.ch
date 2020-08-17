@@ -52,6 +52,7 @@ class Dashboard extends React.Component {
 
   render() {
     let lists = this._getList();
+
     return (
       <Box colorIndex="light-2" flex full pad={{ vertical: "small" }}>
         {this.props.loading ? (

@@ -47,7 +47,11 @@ const DraftsRouteGuard = ({
     return selectContent[equals];
   };
 
-  return <div>{renderBasedOnData(equal(cleanDeep(formData), metadata))}</div>;
+  return (
+    <div>
+      {renderBasedOnData(equal(cleanDeep(formData), cleanDeep(metadata)))}
+    </div>
+  );
 };
 
 DraftsRouteGuard.propTypes = {
