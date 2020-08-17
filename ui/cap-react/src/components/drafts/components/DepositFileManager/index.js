@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
-import Layer from "grommet/components/Layer";
 
 import { toggleFilemanagerLayer, selectPath } from "../../../../actions/files";
 

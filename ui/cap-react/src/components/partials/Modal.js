@@ -19,7 +19,7 @@ const Content = styled.div`
   min-width: 320px;
   max-width: 90%;
   max-height: ${props => (props.full ? "100%" : "90%")};
-  height: ${props => props.position.height};
+  height: ${props => (props.full ? "100%" : null)};
   overflow: scroll;
   background: ${props => props.background};
   display: flex;
@@ -117,13 +117,11 @@ const Modal = ({
     const choices = {
       left: {
         top: 0,
-        left: 0,
-        height: full ? "100%" : null
+        left: 0
       },
       right: {
         top: 0,
-        right: 0,
-        height: full ? "100%" : null
+        right: 0
       },
       center: {
         top: "50%",
