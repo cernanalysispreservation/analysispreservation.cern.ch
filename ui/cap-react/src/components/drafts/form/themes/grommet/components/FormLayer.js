@@ -10,6 +10,8 @@ import Trash from "grommet/components/icons/base/Trash";
 import { Provider } from "react-redux";
 import store from "../../../../../../store/configureStore";
 
+import Modal from "../../../../../partials/Modal";
+
 class FormLayer extends React.Component {
   constructor(props) {
     super(props);
@@ -22,16 +24,10 @@ class FormLayer extends React.Component {
 
   render() {
     return this.props.layerActive ? (
-      <Layer
-        closer={true}
-        align="right"
-        flush={false}
-        onClose={this.props.onClose}
-        overlayClose={true}
-      >
+      <Modal position="right" onClose={this.props.onClose} Tag="h4" full>
         <Provider store={store}>
-          <Box justify="center" align="center" pad="large">
-            <Box pad="large" size="large">
+          <Box justify="center" align="center" pad={{ horizontal: "small" }}>
+            <Box size="large" pad={{ horizontal: "large" }}>
               <Box>{this.props.properties}</Box>
 
               <Box
@@ -60,7 +56,7 @@ class FormLayer extends React.Component {
             </Box>
           </Box>
         </Provider>
-      </Layer>
+      </Modal>
     ) : null;
   }
 }

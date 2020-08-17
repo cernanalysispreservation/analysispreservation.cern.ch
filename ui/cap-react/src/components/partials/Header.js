@@ -78,16 +78,11 @@ class Header extends React.Component {
         ) : null}
         {this.state.show ? (
           <Modal
-            closer={true}
-            flush={true}
-            overlayClose={true}
             onClose={this.hideLayer}
             background="#f5f5f5"
             title="How to Search"
           >
-            <Box>
-              <HowToSearchPage />
-            </Box>
+            <HowToSearchPage />
           </Modal>
         ) : null}
         <Box
