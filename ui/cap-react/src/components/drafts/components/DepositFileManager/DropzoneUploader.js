@@ -201,7 +201,7 @@ class FileManager extends React.Component {
     else _render = this._renderDropzone();
 
     return (
-      <Box pad="large" colorIndex="light-1">
+      <Box colorIndex="light-1">
         <FileUploadProgress key="upload-progress" />
         {_render}
       </Box>

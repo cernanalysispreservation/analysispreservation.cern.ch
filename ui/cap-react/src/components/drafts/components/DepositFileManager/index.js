@@ -14,6 +14,8 @@ import FileTree from "../FileTree";
 import { Label } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
 
+import Modal from "../../../partials/Modal";
+
 class FileManager extends React.Component {
   constructor(props) {
     super(props);
@@ -104,7 +106,7 @@ class FileManager extends React.Component {
 
   render() {
     return this.props.activeLayer ? (
-      <Layer
+      <Modal
         closer={true}
         align="center"
         flush={true}
@@ -120,7 +122,7 @@ class FileManager extends React.Component {
             </Box>
           </Box>
         </Box>
-      </Layer>
+      </Modal>
     ) : null;
   }
 }
