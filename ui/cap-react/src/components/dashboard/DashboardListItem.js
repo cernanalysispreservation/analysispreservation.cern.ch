@@ -29,10 +29,8 @@ function DashboardListItem(props) {
     basic_info: { abstract = "" } = {}
   } = metadata;
 
-  let itemUrl =
-    props.listType == "draft" ? `/drafts/${id}` : `/published/${id}`;
   return (
-    <ListItem key={`${id}`} onClick={() => props.push(itemUrl)}>
+    <ListItem key={`${id}`} className="listItem">
       <Box
         justify="between"
         responsive={false}
@@ -76,7 +74,6 @@ function DashboardListItem(props) {
 }
 
 DashboardListItem.propTypes = {
-  listType: PropTypes.string,
   item: PropTypes.object,
   push: PropTypes.func
 };
