@@ -110,6 +110,7 @@ class ReviewError(RESTException):
 
         self.description = description or 'Review is not a possible action.'
 
+
 class ReviewValidationError(RESTValidationError):
     """Review validation error exception."""
 

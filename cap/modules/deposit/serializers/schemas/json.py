@@ -90,8 +90,8 @@ class DepositFormSchema(DepositSchema):
         return dict(schema=copy.deepcopy(schema), uiSchema=ui_schema)
 
     def get_review(self, obj):
-        if (obj['deposit'].schema_is_reviewable()
-                and ReviewDepositPermission(obj['deposit']).can()):
+        if (obj['deposit'].schema_is_reviewable() and
+                ReviewDepositPermission(obj['deposit']).can()):
             _reviews = obj.get("metadata", {}).get("_review", [])
             return ReviewSchema(many=True).dump(_reviews).data
         else:

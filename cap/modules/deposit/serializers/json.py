@@ -52,7 +52,7 @@ class DepositSerializer(JSONSerializer):
         """Fetch PID object for records retrievals from ES."""
         try:
             pid = PersistentIdentifier.get(pid_type=pid.pid_type,
-                                        pid_value=pid.pid_value)
+                                           pid_value=pid.pid_value)
 
             result = super().preprocess_search_hit(
                 pid, record_hit, links_factory=links_factory)

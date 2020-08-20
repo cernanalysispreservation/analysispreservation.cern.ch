@@ -111,4 +111,3 @@ def send_mail_on_publish(recipients, recid, url, revision, message):
 
     create_and_send.delay(template, dict(recid=recid, url=url,
                                          message=message), subject, recipients)
-
