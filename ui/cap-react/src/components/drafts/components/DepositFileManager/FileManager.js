@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
 
 import FileTree from "../FileTree";
 

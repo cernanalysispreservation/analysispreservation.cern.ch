@@ -14,7 +14,6 @@ import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
 import Menu from "grommet/components/Menu";
 import Label from "grommet/components/Label";
-import Layer from "grommet/components/Layer";
 
 import Anchor from "../partials/Anchor";
 

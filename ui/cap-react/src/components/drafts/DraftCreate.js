@@ -1,6 +1,5 @@
 import React from "react";
 
-import Layer from "grommet/components/Layer";
 import Modal from "../partials/Modal";
 
 import CreateForm from "./components/CreateForm";

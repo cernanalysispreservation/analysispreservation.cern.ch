@@ -5,12 +5,12 @@ import { connect } from "react-redux";
 import Box from "grommet/components/Box";
 import Button from "grommet/components/Button";
 import Anchor from "../partials/Anchor";
-import Layer from "grommet/components/Layer";
+
 import Paragraph from "grommet/components/Paragraph";
 import Table from "grommet/components/Table";
 import TableHeader from "grommet/components/TableHeader";
 import TableRow from "grommet/components/TableRow";
-import Heading from "grommet/components/Heading";
+
 import cogoToast from "cogo-toast";
 import { Label } from "grommet";
 

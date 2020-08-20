@@ -8,7 +8,7 @@ import { Route } from "react-router-dom";
 import Anchor from "../../partials/Anchor";
 import Label from "grommet/components/Label";
 import Box from "grommet/components/Box";
-import Layer from "grommet/components/Layer";
+
 import Heading from "grommet/components/Heading";
 
 import Modal from "../../partials/Modal";

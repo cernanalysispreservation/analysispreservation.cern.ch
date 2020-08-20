@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Layer from "grommet/components/Layer";
+
 import Box from "grommet/components/Box";
 
 import Modal from "../../partials/Modal";
