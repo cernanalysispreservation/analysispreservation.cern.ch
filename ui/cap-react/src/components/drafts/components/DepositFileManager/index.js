@@ -105,13 +105,7 @@ class FileManager extends React.Component {
 
   render() {
     return this.props.activeLayer ? (
-      <Modal
-        closer={true}
-        align="center"
-        flush={true}
-        overlayClose={true}
-        onClose={this.props.toggleFilemanagerLayer}
-      >
+      <Modal onClose={this.props.toggleFilemanagerLayer}>
         <Box size="large">
           <Box flex={true}>
             <Box flex={true} direction="row">

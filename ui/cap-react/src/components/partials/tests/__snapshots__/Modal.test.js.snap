@@ -18,7 +18,17 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "function",
     "props": Object {
-      "children": <Unknown>
+      "children": <Unknown
+        background="rgb(255,255,255)"
+        full={false}
+        position={
+                Object {
+                        "left": "50%",
+                        "top": "50%",
+                        "transform": "translate(-50%, -50%)",
+                      }
+        }
+>
         <Unknown
                 separator={false}
         >
@@ -47,6 +57,7 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
+        "background": "rgb(255,255,255)",
         "children": Array [
           <Unknown
             separator={false}
@@ -68,6 +79,12 @@ ShallowWrapper {
             padding="10px"
 />,
         ],
+        "full": false,
+        "position": Object {
+          "left": "50%",
+          "top": "50%",
+          "transform": "translate(-50%, -50%)",
+        },
       },
       "ref": Object {
         "current": null,
@@ -121,11 +138,12 @@ ShallowWrapper {
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-ifAKCX",
                   "isStatic": false,
-                  "lastClassName": "gAnSWY",
+                  "lastClassName": "eDacmc",
                   "rules": Array [
                     "
   grid-column: 2/3;
   justify-self: center;
+  align-self: center;
 ",
                   ],
                 },
@@ -170,13 +188,18 @@ ShallowWrapper {
                 "componentStyle": ComponentStyle {
                   "componentId": "sc-EHOje",
                   "isStatic": false,
-                  "lastClassName": "eLjcFy",
+                  "lastClassName": "hwGnud",
                   "rules": Array [
                     "
   grid-column: 3/4;
   justify-self: end;
   align-self: center;
+  display: flex;
+  align-items: center;
+  padding: 5px;
   &:hover {
+    background: rgba(228, 230, 235, 1);
+    border-radius: 50%;
     cursor: pointer;
   }
 ",
@@ -264,20 +287,42 @@ ShallowWrapper {
         "componentStyle": ComponentStyle {
           "componentId": "sc-bwzfXH",
           "isStatic": false,
-          "lastClassName": "cglBIm",
+          "lastClassName": "kaDPzj",
           "rules": Array [
             "
   border-radius: 3px;
-  min-width: 340px;
+  min-width: 320px;
   max-width: 90%;
+  max-height: ",
+            [Function],
+            ";
+  height: ",
+            [Function],
+            ";
   overflow: scroll;
-  background: rgb(255, 255, 255);
+  background: ",
+            [Function],
+            ";
   display: flex;
   flex-direction: column;
+  overflow: auto;
+
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: ",
+            [Function],
+            ";
+  left: ",
+            [Function],
+            ";
+  right: ",
+            [Function],
+            ";
+  bottom: ",
+            [Function],
+            ";
+  transform: ",
+            [Function],
+            ";
 ",
           ],
         },
@@ -326,7 +371,17 @@ ShallowWrapper {
       "key": undefined,
       "nodeType": "function",
       "props": Object {
-        "children": <Unknown>
+        "children": <Unknown
+          background="rgb(255,255,255)"
+          full={false}
+          position={
+                    Object {
+                              "left": "50%",
+                              "top": "50%",
+                              "transform": "translate(-50%, -50%)",
+                            }
+          }
+>
           <Unknown
                     separator={false}
           >
@@ -355,6 +410,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "function",
         "props": Object {
+          "background": "rgb(255,255,255)",
           "children": Array [
             <Unknown
               separator={false}
@@ -376,6 +432,12 @@ ShallowWrapper {
               padding="10px"
 />,
           ],
+          "full": false,
+          "position": Object {
+            "left": "50%",
+            "top": "50%",
+            "transform": "translate(-50%, -50%)",
+          },
         },
         "ref": Object {
           "current": null,
@@ -429,11 +491,12 @@ ShallowWrapper {
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-ifAKCX",
                     "isStatic": false,
-                    "lastClassName": "gAnSWY",
+                    "lastClassName": "eDacmc",
                     "rules": Array [
                       "
   grid-column: 2/3;
   justify-self: center;
+  align-self: center;
 ",
                     ],
                   },
@@ -478,13 +541,18 @@ ShallowWrapper {
                   "componentStyle": ComponentStyle {
                     "componentId": "sc-EHOje",
                     "isStatic": false,
-                    "lastClassName": "eLjcFy",
+                    "lastClassName": "hwGnud",
                     "rules": Array [
                       "
   grid-column: 3/4;
   justify-self: end;
   align-self: center;
+  display: flex;
+  align-items: center;
+  padding: 5px;
   &:hover {
+    background: rgba(228, 230, 235, 1);
+    border-radius: 50%;
     cursor: pointer;
   }
 ",
@@ -572,20 +640,42 @@ ShallowWrapper {
           "componentStyle": ComponentStyle {
             "componentId": "sc-bwzfXH",
             "isStatic": false,
-            "lastClassName": "cglBIm",
+            "lastClassName": "kaDPzj",
             "rules": Array [
               "
   border-radius: 3px;
-  min-width: 340px;
+  min-width: 320px;
   max-width: 90%;
+  max-height: ",
+              [Function],
+              ";
+  height: ",
+              [Function],
+              ";
   overflow: scroll;
-  background: rgb(255, 255, 255);
+  background: ",
+              [Function],
+              ";
   display: flex;
   flex-direction: column;
+  overflow: auto;
+
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: ",
+              [Function],
+              ";
+  left: ",
+              [Function],
+              ";
+  right: ",
+              [Function],
+              ";
+  bottom: ",
+              [Function],
+              ";
+  transform: ",
+              [Function],
+              ";
 ",
             ],
           },

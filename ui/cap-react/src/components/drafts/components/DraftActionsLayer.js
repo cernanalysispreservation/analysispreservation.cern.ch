@@ -51,6 +51,17 @@ class DraftActionsLayer extends React.Component {
     }
   }
 
+  getTitle = title => {
+    const choices = {
+      delete: "Delete",
+      publish: "Publish",
+      discard: "Discard",
+      save: "Save"
+    };
+
+    return choices[title];
+  };
+
   renderMessage(action) {
     switch (action) {
       // case "save":
@@ -96,7 +107,7 @@ class DraftActionsLayer extends React.Component {
   render() {
     return this.props.actionsLayer ? (
       <Modal
-        title="Publish"
+        title={this.getTitle(this.props.type)}
         Tag="h4"
         onClose={this.props.toggleActionsLayer}
         separator

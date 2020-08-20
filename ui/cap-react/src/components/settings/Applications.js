@@ -79,12 +79,9 @@ class SettingsIndex extends React.Component {
         full
         separator
         title="New OAuth Application"
-        overlayClose={true}
-        closer={true}
         onClose={() => {
           this.setState({ layer: { active: false } });
         }}
-        align="right"
       >
         <Box flex={true} size="medium" pad={{ vertical: "large" }}>
           <Paragraph align="start" margin="none" />

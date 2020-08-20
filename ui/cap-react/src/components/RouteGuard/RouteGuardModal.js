@@ -10,7 +10,7 @@ import Modal from "../partials/Modal";
 const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
   if (show) {
     return (
-      <Modal closer={true} flush={true} overlayClose={true} onClose={onCancel}>
+      <Modal onClose={onCancel}>
         <Box
           colorIndex="light-1"
           pad={{ horizontal: "large", vertical: "small" }}

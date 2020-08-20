@@ -9,7 +9,6 @@ import Heading from "grommet/components/Heading";
 import { reviewDraft } from "../../../actions/draftItem";
 
 import AddIcon from "grommet/components/icons/base/Add";
-import { Layer } from "grommet";
 import Status from "grommet/components/icons/Status";
 import DepositReviewItem from "./DepositReviewItem";
 
@@ -85,13 +84,7 @@ class DepositReviews extends React.Component {
 
   renderCreateLayer() {
     return (
-      <Modal
-        title="Add a review"
-        Tag="h4"
-        flush
-        onClose={this.toggleAddReview}
-        overlayClose
-      >
+      <Modal title="Add a review" Tag="h4" onClose={this.toggleAddReview}>
         <Box pad="small">
           <Box pad={{ between: "small" }}>
             <Box

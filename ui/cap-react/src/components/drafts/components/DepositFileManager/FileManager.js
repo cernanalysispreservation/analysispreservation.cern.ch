@@ -5,7 +5,7 @@ import Box from "grommet/components/Box";
 
 import FileTree from "../FileTree";
 
-import { Label, Paragraph } from "grommet";
+import { Paragraph } from "grommet";
 import DropzoneUploader from "./DropzoneUploader";
 
 import Modal from "../../../partials/Modal";

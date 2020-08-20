@@ -18,13 +18,7 @@ const LatexPreviewer = props => {
   };
 
   return (
-    <Modal
-      overlayClose={true}
-      closer={true}
-      onClose={props.onClose}
-      align="center"
-      title="LaTeX Code"
-    >
+    <Modal onClose={props.onClose} title="LaTeX Code">
       <Box flex={true} size="xlarge" pad={{ horizontal: "large" }}>
         <Box margin={{ vertical: "small" }}>
           <AceEditor

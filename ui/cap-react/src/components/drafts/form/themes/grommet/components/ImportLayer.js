@@ -9,7 +9,6 @@ import InputWithButton from "../widgets/components/InputWithButton";
 
 import Box from "grommet/components/Box";
 
-import { Layer } from "grommet";
 import Button from "../../../../../partials/Button";
 import Modal from "../../../../../partials/Modal";
 
@@ -57,9 +56,6 @@ class ImportLayer extends React.Component {
   render() {
     return (
       <Modal
-        flush={true}
-        closer={true}
-        overlayClose={true}
         onClose={this.props.enableImport}
         title="Provide a pattern to fetch available paths"
         Tag="h5"

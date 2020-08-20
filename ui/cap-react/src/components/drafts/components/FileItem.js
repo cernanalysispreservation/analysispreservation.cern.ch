@@ -210,9 +210,6 @@ class FileItem extends React.Component {
         {this.state.fileInfo && (
           <Modal
             title="File Versions"
-            closer
-            flush
-            overlayClose
             onClose={() => this.setState({ fileInfo: false })}
           >
             <Box pad="large" size={{ width: "xlarge" }} wrap={false} flex>
