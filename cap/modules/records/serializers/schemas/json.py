@@ -82,8 +82,8 @@ class RecordFormSchema(RecordSchema):
         _, rec_uuid = resolver.resolve(deposit_pid)
         deposit = CAPDeposit.get_record(rec_uuid)
 
-        return (deposit.schema_is_reviewable() 
-                and ReviewDepositPermission(deposit).can())
+        return (deposit.schema_is_reviewable() and
+                ReviewDepositPermission(deposit).can())
 
     def get_links_with_review(self, obj):
         deposit_pid = obj.get("metadata", {}).get("_deposit", {}).get("id")
@@ -96,8 +96,8 @@ class RecordFormSchema(RecordSchema):
         deposit = CAPDeposit.get_record(rec_uuid)
         links = obj['links']
 
-        if (deposit.schema_is_reviewable()
-                and ReviewDepositPermission(deposit).can()):
+        if (deposit.schema_is_reviewable() and
+                ReviewDepositPermission(deposit).can()):
             links['review'] = clean_api_url_for(
                 'invenio_deposit_rest.depid_actions',
                 deposit.pid,
