@@ -25,7 +25,7 @@ const RouteGuardModal = ({ show, onCancel, onConfirm }) => {
             margin={{ top: "large" }}
           >
             <Button text="Cancel" primary onClick={onCancel} />
-            <Button text="Exit" onClick={onConfirm} secondary />
+            <Button text="Exit" tertiary onClick={onConfirm} />
           </Box>
         </Box>
       </Layer>
