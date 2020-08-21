@@ -19,12 +19,13 @@ class DefaultArrayField extends React.Component {
             <List>
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
-                    <ListItem key={element.index} separator="none" pad="none">
-                      <Box
-                        key={element.index}
-                        flex={true}
-                        margin={{ bottom: "small" }}
-                      >
+                    <ListItem
+                      key={element.index}
+                      separator="none"
+                      pad="none"
+                      style={{ marginBottom: "12px" }}
+                    >
+                      <Box key={element.index} flex={true}>
                         {element.children}
                       </Box>
                       {!this.props.readonly && (
