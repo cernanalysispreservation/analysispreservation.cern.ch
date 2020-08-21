@@ -1,5 +1,5 @@
 import axios from "axios";
-import { replace, push } from "react-router-redux";
+import { replace, push } from "connected-react-router";
 
 import { slugify, _initSchemaStructure } from "../components/cms/utils";
 
