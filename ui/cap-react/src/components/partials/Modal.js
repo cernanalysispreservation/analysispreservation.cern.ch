@@ -1,8 +1,34 @@
 import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
+
+const rightAnimation = keyframes`
+  0% {right:-100% }
+  100%{ right:0}
+  `;
+
+const leftAnimation = keyframes`
+0% {left:-100% }
+100%{ left:0}
+`;
+
+const centerAnimation = keyframes`
+  0%{transform: translate(-50%, -50%);opacity:0}
+  100%{transform:translate(-50%, -50%);opacity:1}
+  
+`;
+
+const getAnimationFromPosition = position => {
+  const choices = {
+    left: leftAnimation,
+    right: rightAnimation,
+    center: centerAnimation
+  };
+
+  return choices[position];
+};
 
 const Wrapper = styled.div`
   position: fixed;
@@ -32,6 +58,10 @@ const Content = styled.div`
   right: ${props => props.position.right};
   bottom: ${props => props.position.bottom};
   transform: ${props => props.position.transform};
+  animation-name: ${props =>
+    props.animated && getAnimationFromPosition(props.align)};
+  animation-duration: 0.3s;
+  animation-iteration-count: 1;
 `;
 
 const Header = styled.div`
@@ -75,7 +105,8 @@ const Modal = ({
   separator = false,
   position = "center",
   background = "rgb(255,255,255)",
-  full = false
+  full = false,
+  animated = false
 }) => {
   const modal = useRef(null);
 
@@ -138,6 +169,8 @@ const Modal = ({
         position={getPositionByName(position)}
         background={background}
         full={full}
+        animated={animated}
+        align={position}
       >
         <Header separator={separator}>
           <Heading>
@@ -162,7 +195,8 @@ Modal.propTypes = {
   separator: PropTypes.bool,
   background: PropTypes.string,
   position: PropTypes.string,
-  full: PropTypes.bool
+  full: PropTypes.bool,
+  animated: PropTypes.bool
 };
 
 export default Modal;
