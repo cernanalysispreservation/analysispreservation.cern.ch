@@ -81,6 +81,7 @@ class EditableTitle extends React.Component {
       >
         <Label margin="none" direction="row">
           <input
+            className="general-title-input"
             key="draft-input"
             style={{
               padding: 0,
@@ -96,10 +97,15 @@ class EditableTitle extends React.Component {
             pad={{ horizontal: "small" }}
             margin="none"
             onClick={this._update.bind(this)}
+            className="general-title-checkmark"
           >
             <CheckmarkIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
-          <Box margin="none" onClick={this._unedit.bind(this)}>
+          <Box
+            margin="none"
+            onClick={this._unedit.bind(this)}
+            className="general-title-closeicon"
+          >
             <CloseIcon colorIndex="neutral-1" size="xsmall" />
           </Box>
         </Box>

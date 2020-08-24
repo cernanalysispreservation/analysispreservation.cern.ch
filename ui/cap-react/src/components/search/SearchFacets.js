@@ -231,6 +231,7 @@ class SearchFacets extends React.Component {
               <span className="grommetux-check-box__label">Drafts</span>
               <CheckBox
                 label="Published"
+                id="search_facet_published_checkbox"
                 toggle={true}
                 reverse={false}
                 onChange={this.updateCategory}
@@ -246,6 +247,7 @@ class SearchFacets extends React.Component {
               <span className="grommetux-check-box__label">Yours</span>
               <CheckBox
                 label="All"
+                id="search_facet_yours_checkbox"
                 toggle={true}
                 reverse={false}
                 onChange={this._filter_by_yours}
