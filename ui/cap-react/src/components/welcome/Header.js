@@ -30,8 +30,10 @@ class WelcomePage extends React.Component {
     this.state = {
       showLogin: false,
       next: next,
-      oauthLink: process.env.NODE_ENV === "development" ?
-        `/oauth/login/cern?next=${next}` : `/api/oauth/login/cern?next=${next}`
+      oauthLink:
+        process.env.NODE_ENV === "development"
+          ? `/oauth/login/cern?next=${next}`
+          : `/api/oauth/login/cern?next=${next}`
     };
   }
 
@@ -41,7 +43,7 @@ class WelcomePage extends React.Component {
       location: { state: { next: next = undefined } = {} }
     } = this.props.history;
     this.props.initCurrentUser(next);
-  }
+  };
   onFormSubmit = formData => {
     // fetch the next from history
     formData["next"] = this.state.next;
@@ -55,13 +57,13 @@ class WelcomePage extends React.Component {
         <div>
           <MenuItem
             title="Log in"
-            background="transparent"z
+            background="transparent"
             className="menuItem"
           />
         </div>
       </OauthPopup>
     );
-  }
+  };
   render() {
     return (
       <Header
@@ -131,6 +133,7 @@ class WelcomePage extends React.Component {
                   top={55}
                   right={0}
                   icon={<AiOutlineLogin size={23} />}
+                  iconWrapperClassName="localLogin"
                 >
                   <LoginForm
                     usernameType="email"

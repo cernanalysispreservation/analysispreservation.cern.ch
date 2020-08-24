@@ -24,7 +24,8 @@ const Menu = ({
   bottom = null,
   left = null,
   background = "",
-  hoverColor = "rgba(235, 235, 235, 1)"
+  hoverColor = "rgba(235, 235, 235, 1)",
+  iconWrapperClassName = ""
 }) => {
   const [expanded, setExpanded] = useState(false);
   const dropDownMenu = useRef(null);
@@ -64,11 +65,12 @@ const Menu = ({
   );
 
   return (
-    <Box ref={dropDownMenu}>
+    <Box ref={dropDownMenu} className="menu">
       <Wrapper
         hover={hoverColor}
         expanded={expanded}
         onClick={() => setExpanded(!expanded)}
+        className={iconWrapperClassName}
       >
         {icon}
       </Wrapper>

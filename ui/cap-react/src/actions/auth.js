@@ -90,7 +90,6 @@ export function loginLocalUser(data) {
     dispatch(loginRequest());
 
     let uri = `/api/login/local?next=${data.next}`;
-
     axios
       .post(uri, data)
       .then(function(response) {

@@ -154,7 +154,12 @@ class Header extends React.Component {
                     </Box>
                   </MediaQuery>
                 )}
-                <Menu top={48} right={3} hoverColor="rgba(67,135,170,1)">
+                <Menu
+                  top={48}
+                  right={3}
+                  hoverColor="rgba(67,135,170,1)"
+                  iconWrapperClassName="headerMenuAppp"
+                >
                   {this.props.permissions && (
                     <MediaQuery maxWidth={719}>
                       <MenuItem
