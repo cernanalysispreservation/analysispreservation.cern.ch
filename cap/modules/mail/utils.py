@@ -45,6 +45,10 @@ def get_cms_stat_recipients(record, config):
     recipients = data.get(key, {}).get("contacts")
     params = data.get(key, {}).get("params", {})
 
+    pdf_mail = current_app.config.get('PDF_FORUM_MAIL')
+    if pdf_mail and record.get('parton_distribution_functions', None):
+        recipients.append(pdf_mail)
+
     message = \
         "The primary (secondary) contact for reviewing your questionnaire" + \
         f" is {params.get('primary', '-')} ({params.get('secondary', '-')})"
