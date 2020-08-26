@@ -1,8 +1,8 @@
 {% extends "mail/base.html" %}
 
 {% block paragraph %}
-    <h4> An analysis has been published, with id <em>{{ recid }}</em>.</h4>
-    <p>You can check the analysis <a href="{{ url }}published/{{ recid }}">here</a>.</p>
+    <h4>A new document has been published, with id <em>{{ recid }}</em>.</h4>
+    <p>You can check it <a href="{{ url }}published/{{ recid }}">here</a>.</p>
 
     {% if message %}
         <hr/>

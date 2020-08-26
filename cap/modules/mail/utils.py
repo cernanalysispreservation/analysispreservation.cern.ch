@@ -23,6 +23,7 @@
 # as an Intergovernmental Organization or submit itself to any jurisdiction.
 
 from flask import current_app
+from flask_login import current_user
 
 from .tasks import create_and_send
 
@@ -49,10 +50,19 @@ def get_cms_stat_recipients(record, config):
     if pdf_mail and record.get('parton_distribution_functions', None):
         recipients.append(pdf_mail)
 
-    message = \
-        "The primary (secondary) contact for reviewing your questionnaire" + \
-        f" is {params.get('primary', '-')} ({params.get('secondary', '-')})"
+    cadi_id = record.get('analysis_context', {}).get('cadi_id')
 
+    message = ""
+    if cadi_id:
+        message += "A CMS Statistical Questionnaire has been published " + \
+                    f"for analysis with CADI ID {cadi_id}. "
+    message += \
+        "The primary (secondary) contact for reviewing your questionnaire" + \
+        f" is {params.get('primary', '-')} ({params.get('secondary', '-')}). "
+
+    submitter_email = current_user.email
+    message += f"Submitted by {submitter_email}"
+    
     return message, recipients
 
 
