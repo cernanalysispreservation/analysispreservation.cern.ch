@@ -351,6 +351,11 @@ label {
   background: rgb(238, 238, 238) !important;
 }
 
+.search-plot rect:hover {
+  cursor: pointer;
+  fill: rgb(40, 105, 146) !important;
+}
+
 // xsmall
 @media only screen and (min-width: 320px) {
   //TODO: Update for better handling with grid
