@@ -31,6 +31,7 @@ from invenio_records_rest.serializers.json import JSONSerializer
 
 from cap.modules.deposit.api import CAPDeposit
 from cap.modules.deposit.links import links_factory as deposit_links_factory
+from cap.modules.records.utils import url_to_api_url
 
 
 class DepositSerializer(JSONSerializer):
@@ -60,3 +61,21 @@ class DepositSerializer(JSONSerializer):
         except PIDDoesNotExistError:
             current_app.logger.info(
                 f'PIDDoesNotExistError on search. Record:.')
+
+    def serialize_search(self, pid_fetcher, search_result, links=None,
+                         item_links_factory=None, **kwargs):
+        """Serialize a search result.
+
+        :param pid_fetcher: Persistent identifier fetcher.
+        :param search_result: Elasticsearch search result.
+        :param links: Dictionary of links to add to response.
+        """
+        links = {
+            k: url_to_api_url(v)
+            for k, v in links.items()
+        } if links else {}
+
+        return super().serialize_search(pid_fetcher,
+                                        search_result,
+                                        links=links,
+                                        item_links_factory=item_links_factory)

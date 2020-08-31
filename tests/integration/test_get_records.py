@@ -193,6 +193,60 @@ def test_get_records_default_serializer(client, superuser,
     }
 
 
+def test_get_records_with_correct_search_links(client, superuser, auth_headers_for_superuser, users,
+                                               json_headers, create_deposit):
+    for i in range(11):
+        deposit = create_deposit(
+            superuser,
+            'cms-analysis',
+            {
+                '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+                'basic_info': {
+                    'analysis_number': 'dream_team',
+                }
+            },
+            experiment='CMS',
+            publish=True,
+        )
+
+    resp = client.get('/records/', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert resp.json['links'] == {
+        'self': 'http://analysispreservation.cern.ch/api/records/?page=1&sort=mostrecent&size=10',
+        'next': 'http://analysispreservation.cern.ch/api/records/?page=2&sort=mostrecent&size=10'
+    }
+
+
+@mark.skip
+def test_get_records_with_correct_search_links_in_debug_mode(
+        client, superuser, auth_headers_for_superuser, users, json_headers, create_deposit, app):
+    app.config['DEBUG'] = True
+
+    with app.test_client() as client:
+        for i in range(11):
+            create_deposit(
+                superuser,
+                'cms-analysis',
+                {
+                    '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+                    'basic_info': {
+                        'analysis_number': 'dream_team',
+                    }
+                },
+                experiment='CMS',
+                publish=True
+            )
+
+        resp = client.get('/records/', headers=auth_headers_for_superuser)
+
+        assert resp.status_code == 200
+        assert resp.json['links'] == {
+            'self': 'http://analysispreservation.cern.ch/records/?page=1&sort=mostrecent&size=10',
+            'next': 'http://analysispreservation.cern.ch/records/?page=2&sort=mostrecent&size=10'
+        }
+
+
 ###########################################
 # api/records/{pid} [GET]
 ###########################################
