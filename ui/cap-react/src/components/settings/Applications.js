@@ -79,6 +79,7 @@ class SettingsIndex extends React.Component {
         full
         separator
         title="New OAuth Application"
+        animated
         onClose={() => {
           this.setState({ layer: { active: false } });
         }}

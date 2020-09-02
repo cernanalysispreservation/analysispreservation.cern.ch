@@ -17,6 +17,7 @@ class SearchFilterLayer extends React.Component {
           full
           onClose={this.props.onClose}
           position="left"
+          animated
         >
           <Box justify="center" align="center" colorIndex="light-2">
             {this.props.properties}
