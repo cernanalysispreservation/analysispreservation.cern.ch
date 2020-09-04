@@ -1,8 +1,10 @@
 """Initialize extension."""
 
 from __future__ import absolute_import, print_function
-from cap.modules.schemas.models import Schema
-from invenio_search import current_search
+import json
+
+from invenio_files_rest.views import blueprint as files_blueprint
+from cap.modules.deposit.utils import fix_bucket_links
 
 
 class CAPDeposit(object):
@@ -15,4 +17,15 @@ class CAPDeposit(object):
 
     def init_app(self, app):
         """Flask application initialization."""
+
+        @files_blueprint.after_request
+        def update_file_links(response):
+            try:
+                if response.content_type == 'application/json':
+                    resp_json = json.loads(response.data)
+                    response.data = json.dumps(
+                        fix_bucket_links(resp_json))
+            finally:
+                return response
+
         app.extensions['cap_deposit'] = self

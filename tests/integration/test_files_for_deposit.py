@@ -300,6 +300,81 @@ def test_file_read_when_user_has_read_update_or_admin_access_can_access(
     assert resp.status_code == 200
 
 
+def test_bucket_links(client, users, auth_headers_for_superuser, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    bucket = deposit.files.bucket
+
+    resp = client.get(f'/files/{bucket}', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert resp.json['links'] == {
+        'self': f'http://analysispreservation.cern.ch/api/files/{bucket}',
+        'uploads': f'http://analysispreservation.cern.ch/api/files/{bucket}?uploads',
+        'versions': f'http://analysispreservation.cern.ch/api/files/{bucket}?versions'
+    }
+
+
+def test_bucket_links_with_files(client, users, auth_headers_for_superuser, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
+    bucket = deposit.files.bucket
+    version = deposit['_files'][0]['version_id']
+
+    resp = client.get(f'/files/{bucket}', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert 'contents' in resp.json
+    assert resp.json['contents'][0]['links'] == {
+        'self': f'http://analysispreservation.cern.ch/api/files/{bucket}/file_1.txt',
+        'uploads': f'http://analysispreservation.cern.ch/api/files/{bucket}/file_1.txt?uploads',
+        'version': f'http://analysispreservation.cern.ch/api/files/{bucket}/file_1.txt?versionId={version}'
+    }
+
+
+def test_bucket_links_with_versioned_files(client, users, auth_headers_for_superuser, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world! Second time!')
+    bucket = deposit.files.bucket
+
+    resp = client.get(f'/files/{bucket}?versions', headers=auth_headers_for_superuser)
+
+    assert resp.status_code == 200
+    assert 'contents' in resp.json
+    assert len(resp.json['contents']) == 2
+    assert resp.json['contents'][0]['key'] == resp.json['contents'][1]['key']
+
+
+def test_bucket_links_with_versioned_files_get_versions_separately(
+        client, users, auth_headers_for_superuser, create_deposit):
+    owner = users['cms_user']
+    deposit = create_deposit(owner, 'test-analysis-v0.0.1')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world!')
+    deposit.files['file_1.txt'] = BytesIO(b'Hello world! Second time!')
+    bucket = deposit.files.bucket
+
+    resp = client.get(f'/files/{bucket}?versions', headers=auth_headers_for_superuser)
+    assert resp.status_code == 200
+    assert 'contents' in resp.json
+    assert len(resp.json['contents']) == 2
+
+    version_id_first = resp.json['contents'][1]['version_id']
+    version_id_second = resp.json['contents'][0]['version_id']
+
+    # get contents of 1st version
+    resp = client.get(f'/files/{bucket}/file_1.txt?versionId={version_id_first}',
+                      headers=auth_headers_for_superuser)
+    assert resp.data == b'Hello world!'
+
+    # get contents of 1st version
+    resp = client.get(f'/files/{bucket}/file_1.txt?versionId={version_id_second}',
+                      headers=auth_headers_for_superuser)
+    assert resp.data == b'Hello world! Second time!'
+
+
 #########################################
 # api/files/{bucket_id}/{filekey} [PUT]
 #########################################

@@ -28,6 +28,8 @@ from __future__ import absolute_import, print_function
 from invenio_access.models import Role
 from invenio_db import db
 
+from cap.modules.records.utils import url_to_api_url
+
 
 def clean_empty_values(data):
     """Remove empty values from model."""
@@ -55,3 +57,21 @@ def add_read_permission_for_egroup(deposit, egroup):
     deposit._add_egroup_permissions(role, ['deposit-read'], db.session)
     deposit.commit()
     db.session.commit()
+
+
+def fix_bucket_links(response):
+    """Add /api/ to the bucket and object links."""
+    def add_api_to_links(links):
+        return {k: url_to_api_url(v)
+                for k, v in links.items()} \
+            if links else {}
+
+    # bucket links
+    response['links'] = add_api_to_links(response.get('links'))
+
+    # object version links
+    if response.get('contents'):
+        for item in response['contents']:
+            item['links'] = add_api_to_links(item.get('links'))
+
+    return response
