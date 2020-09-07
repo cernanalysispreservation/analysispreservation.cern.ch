@@ -4,9 +4,14 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import FieldHeader from "../components/FieldHeader";
 import Heading from "grommet/components/Heading";
+import TabField from "../../grommet/templates/TabField";
 
 let ObjectFieldTemplate = function(props) {
   const { properties, title, uiSchema, idSchema, formData } = props;
+
+  if ("ui:object" in uiSchema && uiSchema["ui:object"] === "tabView") {
+    return <TabField {...props} />;
+  }
 
   function allPropsEmpty(obj) {
     for (let key in obj) if (obj[key] !== undefined) return false;
@@ -21,9 +26,9 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in uiSchema)) {
     return (
-      <Box flex={true}>
-        <Box>
-          <FieldHeader title={title} />
+      <Box flex={true} colorIndex="light-2" margin={{ bottom: "small" }}>
+        <Box pad="small" margin={{ horizontal: "medium" }}>
+          <FieldHeader title={title} bold />
         </Box>
         <Box margin={{ left: "small" }}>
           {properties.map(prop => prop.content)}
