@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
+import FieldHeader from "../../grommet-preview/components/FieldHeader";
+import { Paragraph } from "grommet";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema } = props;
@@ -28,7 +30,10 @@ let FieldTemplate = function(props) {
     return (
       <Box
         style={{
-          gridColumn: gridColumns ? gridColumns : "1 / 5"
+          gridColumn: gridColumns ? gridColumns : "1 / 5",
+          borderRight: "1px dotted rgba(0, 0, 0, 0.15)",
+          borderLeft: "1px dotted rgba(0, 0, 0, 0.15)",
+          padding: props.id === "root" ? null : "10px 24px"
         }}
         flex={
           props.uiSchema["ui:object"] &&
@@ -36,7 +41,16 @@ let FieldTemplate = function(props) {
             ? true
             : null
         }
+        className="fieldTemplate"
       >
+        {!props.schema.type.includes("array") && (
+          <Box margin={props.id === "root" ? null : { bottom: "small" }}>
+            <FieldHeader title={label} italic bold />
+            <Paragraph size="small" margin="none">
+              {rawDescription}
+            </Paragraph>
+          </Box>
+        )}
         {children}
       </Box>
     );
@@ -46,7 +60,10 @@ let FieldTemplate = function(props) {
     <FormField
       label={
         <span>
-          <span style={{ color: "#000" }} dangerouslySetInnerHTML={{ __html: label }} />
+          <span
+            style={{ color: "#000" }}
+            dangerouslySetInnerHTML={{ __html: label }}
+          />
           {rawDescription ? (
             <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
           ) : null}
@@ -56,16 +73,16 @@ let FieldTemplate = function(props) {
       error={props.rawErrors && props.rawErrors.length ? true : false}
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5",
-        overflow:"visible"
+        overflow: "visible"
       }}
-      
+      className="fieldTemplate"
     >
       {children}
       {props.rawErrors && props.rawErrors.length ? (
         <Box
           style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
           flex={false}
-          pad={{ horizontal: "medium" }}
+          pad={{ horizontal: "small" }}
         >
           {props.rawErrors.map((error, index) => [
             <span key={index}>

@@ -15,9 +15,9 @@ class TextWidget extends React.Component {
       <Box
         style={{ overflow: "hidden", wordBreak: "break-all" }}
         size={{ width: "xxlarge" }}
-        pad={{ horizontal: "medium" }}
         justify="center"
         flex={false}
+        pad={{ horizontal: "medium" }}
         alignSelf="end"
         wrap={true}
       >

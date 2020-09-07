@@ -7,8 +7,6 @@ import AccordionFieldTemplate from "./AccordionObjectField";
 import TabField from "./TabField";
 import LayerObjectFieldTemplate from "./LayerObjectFieldTemplate";
 
-import FieldHeader from "../components/FieldHeader";
-
 let ObjectFieldTemplate = function(props) {
   //let { uiSchema: { uiOptions = {} } = {} } = props;
 
@@ -29,6 +27,7 @@ let ObjectFieldTemplate = function(props) {
               ? props.uiSchema["ui:options"].align
               : "center"
         }}
+        className="obj-fld-tml"
       >
         <Box {...sizeProps}>
           <Box
@@ -48,19 +47,16 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in props.uiSchema)) {
     return (
-      <Box pad="none" margin={{ bottom: "small" }}>
-        {props.title ? (
-          <FieldHeader
-            title={props.title}
-            required={props.schema.required}
-            description={
-              props.description ? (
-                <span dangerouslySetInnerHTML={{ __html: props.description }} />
-              ) : null
-            }
-          />
-        ) : null}
-
+      <Box
+        className={
+          props.formContext.publishedPreview
+            ? "published-array obj-fld-tml"
+            : "obj-fld-tml"
+        }
+        style={{
+          padding: "3px!important"
+        }}
+      >
         <Box
           style={{
             display: "grid",

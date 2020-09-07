@@ -27,7 +27,8 @@ const transformSchema = schema => {
     "_experiment",
     "_fetched_from",
     "_user_edited",
-    "control_number"
+    "control_number",
+    "_review"
   ];
 
   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
@@ -67,7 +68,7 @@ class DraftPreview extends React.Component {
           direction="row"
           className="width-100"
         >
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+          <Box flex={true} size={{ width: { min: "medium" } }} basis="3/4">
             <SectionBox
               header="Metadata"
               headerActions={
@@ -89,6 +90,7 @@ class DraftPreview extends React.Component {
                       schemaType={this.props.schemaType}
                       uiSchema={this.props.schemas.uiSchema || {}}
                       onChange={() => {}}
+                      draft
                     >
                       <span />
                     </JSONSchemaPreviewer>
@@ -97,7 +99,7 @@ class DraftPreview extends React.Component {
               }
             />
           </Box>
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+          <Box flex={true} size={{ width: { min: "medium" } }} basis="1/4">
             <SectionBox
               header="Repositories"
               headerActions={
@@ -234,7 +236,8 @@ function mapStateToProps(state) {
     canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
     repositories: state.draftItem.get("repositories"),
-    metadata: state.draftItem.get("metadata")
+    metadata: state.draftItem.get("metadata"),
+    status: state.draftItem.get("status")
   };
 }
 

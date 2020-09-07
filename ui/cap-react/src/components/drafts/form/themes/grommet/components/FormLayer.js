@@ -24,8 +24,8 @@ class FormLayer extends React.Component {
     return this.props.layerActive ? (
       <Layer
         closer={true}
-        align="right"
-        flush={false}
+        align="center"
+        flush={true}
         onClose={this.props.onClose}
         overlayClose={true}
       >

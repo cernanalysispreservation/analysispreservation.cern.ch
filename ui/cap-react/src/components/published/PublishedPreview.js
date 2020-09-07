@@ -26,6 +26,8 @@ import { ValidateIcon } from "grommet/components/icons/base";
 import DepositReviewCreateLayer from "../drafts/components/DepositReviewCreateLayer";
 import cogoToast from "cogo-toast";
 
+import FormHeader from "../partials/FormHeader";
+
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
     "_access",
@@ -39,7 +41,8 @@ const transformSchema = schema => {
     "_experiment",
     "_fetched_from",
     "_user_edited",
-    "control_number"
+    "control_number",
+    "_review"
   ];
 
   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
@@ -98,6 +101,65 @@ class PublishedPreview extends React.Component {
         type[type.length - 1].replace("-v0.0.1.json", ""));
   };
 
+  getEditAnchor = () => {
+    let comp = this.props.canUpdate ? (
+      <Anchor
+        pad={{ horizontal: "small" }}
+        justify="end"
+        primary
+        path={`/drafts/${this.props.draft_id}/edit`}
+        icon={<Edit size="xsmall" />}
+        label={
+          <Label size="small" uppercase>
+            Edit
+          </Label>
+        }
+      />
+    ) : null;
+
+    return comp;
+  };
+
+  getReviewAnchor = () => {
+    let comp = this.props.canReview ? (
+      <Anchor
+        pad={{ horizontal: "small" }}
+        justify="end"
+        primary
+        onClick={this.toggleAddReview}
+        icon={<ValidateIcon size="xsmall" />}
+        label={
+          <Label size="small" uppercase>
+            Review
+          </Label>
+        }
+      />
+    ) : null;
+
+    return comp;
+  };
+
+  getTagsList = () => {
+    return (
+      <Box
+        direction="row"
+        align="center"
+        pad={{ between: "small" }}
+        margin={{ left: "medium" }}
+      >
+        <Tag
+          text="Published"
+          color={{
+            bgcolor: "#f9f0ff",
+            border: "rgba(146,109,146,1)",
+            color: "rgba(146,109,146,1)"
+          }}
+        />
+        <Tag text={this.props.id} />
+      </Box>
+    );
+  };
+
   render() {
     let { schema, uiSchema } = this.props.schemas
       ? this.props.schemas.toJS()
@@ -131,68 +193,19 @@ class PublishedPreview extends React.Component {
                   error={this.state.reviewError}
                 />
               )}
-              <SectionHeader
-                label={
-                  <Box
-                    direction="row"
-                    align="center"
-                    pad={{ between: "small" }}
-                  >
-                    <Box>
-                      {this.props.metadata && this.props.metadata.general_title}
-                    </Box>
-                    <Tag text={this.props.id} />
-                    <Tag
-                      text="Published"
-                      color={{
-                        bgcolor: "#f9f0ff",
-                        border: "rgba(146,109,146,1)",
-                        color: "rgba(146,109,146,1)"
-                      }}
-                    />
-                  </Box>
-                }
-                uppercase={false}
-                action={
-                  <Box direction="row">
-                    {this.props.canReview ? (
-                      <Anchor
-                        pad={{ horizontal: "small" }}
-                        justify="end"
-                        primary
-                        onClick={this.toggleAddReview}
-                        icon={<ValidateIcon size="xsmall" />}
-                        label={
-                          <Label size="small" uppercase>
-                            Review
-                          </Label>
-                        }
-                      />
-                    ) : null}
-                    {this.props.canUpdate ? (
-                      <Anchor
-                        pad={{ horizontal: "small" }}
-                        justify="end"
-                        primary
-                        path={`/drafts/${this.props.draft_id}/edit`}
-                        icon={<Edit size="xsmall" />}
-                        label={
-                          <Label size="small" uppercase>
-                            Edit
-                          </Label>
-                        }
-                      />
-                    ) : null}
-                  </Box>
-                }
+              <FormHeader
+                title={this.props.metadata.toJS().general_title}
+                tags={this.getTagsList()}
+                reviewAnchor={this.getReviewAnchor()}
+                editAnchor={this.getEditAnchor()}
               />
               <Box flex={true} direction="row" justify="between">
-                <Box flex={true} pad="medium">
+                <Box flex={true}>
                   <JSONSchemaPreviewer
                     formData={this.props.metadata.toJS()}
                     schema={_schema}
                     schemaType={this.props.schemaType.toJS()}
-                    uiSchema={{}}
+                    uiSchema={uiSchema}
                     onChange={() => {}}
                   >
                     <span />

@@ -173,55 +173,62 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event);
   }
 
-  _renderAddButton = () => (
-    <Box
-      onClick={this._onAddClick.bind(this)}
-      style={{ padding: "5px", margin: "10px 0" }}
-      colorIndex="light-1"
-      direction="row"
-      justify="center"
-      align="center"
-      flex={false}
-      responsive={false}
-    >
-      <AddIcon size="xsmall" />{" "}
-      <span style={{ marginLeft: "5px" }}>Add Item</span>
-    </Box>
-  );
+  _renderAddButton = () =>
+    !this.props.readonly && (
+      <Box
+        onClick={this._onAddClick.bind(this)}
+        style={{ padding: "5px", margin: "10px 0" }}
+        colorIndex="light-1"
+        direction="row"
+        justify="center"
+        align="center"
+        flex={false}
+        responsive={false}
+      >
+        <AddIcon size="xsmall" />{" "}
+        <span style={{ marginLeft: "5px" }}>Add Item</span>
+      </Box>
+    );
 
   _getArrayField = _label => {
     let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];
     if (this.formRenderType == "default") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
+        <Box>
           {_pastable && _label}
-          <DefaultArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+          <Box flex={false}>
+            <DefaultArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "StringArrayField") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
+        <Box>
           {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <StringArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+          <Box flex={false}>
+            <StringArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "LayerArrayField") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
-          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <LayerArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+        <Box>
+          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}              
+          <Box flex={false}>
+            <LayerArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "AccordionArrayField") {
@@ -249,7 +256,7 @@ class ArrayFieldTemplate extends React.Component {
     }
   };
 
-  render() {
+  render = () => {
     let _label = (
       <FieldHeader
         title={this.props.title}
@@ -262,9 +269,10 @@ class ArrayFieldTemplate extends React.Component {
         enableLatex={this.uiOptionLatex && this._enableLatex}
         latexEnabled={this.uiOptionLatex && this.state.latexEnabled}
         importEnabled={this.uiOptionLatex && this.state.importEnabled}
-        margin="none"
+        margin={{bottom: "small"}}
       />
     );
+
     return (
       <Box
         size={
@@ -280,7 +288,8 @@ class ArrayFieldTemplate extends React.Component {
             this.props.uiSchema["ui:options"] &&
             this.props.uiSchema["ui:options"].display
               ? this.props.uiSchema["ui:options"].display
-              : "flex"
+              : "flex",
+          padding: "0!important"
         }}
       >
         {this.uiOptionLatex &&
@@ -304,7 +313,7 @@ class ArrayFieldTemplate extends React.Component {
         {this._getArrayField(_label)}
       </Box>
     );
-  }
+  };
 }
 
 ArrayFieldTemplate.propTypes = {

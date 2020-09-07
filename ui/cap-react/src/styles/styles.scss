@@ -237,6 +237,48 @@ label {
   animation: loading 2s infinite ease-in-out;
 }
 
+.published-array {
+  background: #ffffff;
+}
+
+.rjsf > .align-form-center > div {
+  width: 800px;
+  max-width: 100%;
+  display: flex;
+  margin: 0 auto;
+}
+.fieldTemplate:nth-child(even) {
+  background: #f5f5f5 !important;
+}
+
+.fieldTemplate:nth-child(even) > .obj-fld-tml {
+  background: #fff !important;
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.fieldTemplateSeparator:nth-child(odd) {
+  border-bottom: 1px solid #e4e4e4 !important;
+  border-top: 1px solid #e4e4e4 !important;
+}
+.fieldTemplateSeparator:first-child {
+  border-bottom: 1px solid #e4e4e4 !important;
+  border-top: 0px !important;
+}
+.fieldTemplateSeparator:nth-last-child(1):nth-child(odd) {
+  border-bottom: 0px !important;
+  border-top: 1px solid #e4e4e4 !important;
+}
+
+.fieldTemplateSeparator:last-child:first-child {
+  border-bottom: 0px !important;
+  border-top: 0px !important;
+}
+
+#fieldTemplate ~ span.fieldTemplate {
+  background: #fff !important;
+}
+
 @keyframes loading {
   0% {
     transform: translateX(0);

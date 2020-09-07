@@ -14,10 +14,15 @@ class StringArrayField extends React.Component {
   render() {
     return (
       <Box flex={true} size={{ height: { max: "small" } }}>
-        <Box flex={false} margin={{ top: "small", bottom: "medium" }}>
+        <Box flex={false} margin="none">
           {this.props.items.length > 0
             ? this.props.items.map((element, index) => (
-                <Box flex={false} key={index} direction="row">
+                <Box
+                  flex={false}
+                  key={index}
+                  direction="row"
+                  className={this.props.readonly && "fieldTemplateSeparator"}
+                >
                   {element.children}
 
                   {!this.props.readonly && (
@@ -30,7 +35,9 @@ class StringArrayField extends React.Component {
                   )}
                 </Box>
               ))
-            : null}
+            :
+            <Box flex justify="center" align="center" pad="small" style={{background: "rgb(216 216 216 / 25%)"}}>No items</Box>
+          }
         </Box>
       </Box>
     );

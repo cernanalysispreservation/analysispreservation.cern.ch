@@ -54,7 +54,6 @@ class ArrayFieldTemplate extends React.Component {
             ? this.props.items.map(element => (
                 <ListItem
                   key={element.index}
-                  separator="none"
                   flex={true}
                   margin="none"
                   pad="none"
@@ -87,7 +86,7 @@ class ArrayFieldTemplate extends React.Component {
                         pad="small"
                         justify="center"
                         onClick={this._showLayer.bind(this, element.index)}
-                      >
+                    >
                         <ItemBrief
                           index={element.index}
                           item={element.children.props.formData}
@@ -122,7 +121,8 @@ class ArrayFieldTemplate extends React.Component {
                   </Box>
                 </ListItem>
               ))
-            : null
+            : <Box flex justify="center" align="center" pad="small" style={{background: "rgb(216 216 216 / 25%)"}}>No items</Box>
+
           // <ListPlaceholder
           //   addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
           //   emptyMessage='You do not have any items at the moment.'
