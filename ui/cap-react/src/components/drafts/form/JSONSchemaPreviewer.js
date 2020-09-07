@@ -5,8 +5,10 @@ import Box from "grommet/components/Box";
 
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet-preview/templates/FieldTemplate";
-import ObjectFieldTemplate from "./themes/grommet-preview/templates/ObjectFieldTemplate";
+// import ObjectFieldTemplate from "./themes/grommet-preview/templates/ObjectFieldTemplate";
 import ArrayFieldTemplate from "./themes/grommet-preview/templates/ArrayFieldTemplate";
+
+import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
 
 import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
@@ -27,21 +29,36 @@ class JSONShemaPreviewer extends React.Component {
   render() {
     let { general_title, ..._formData = {}} = this.props.formData;
 
+
+    let ui = {
+        "ui:readonly":true,
+        "ui:object": "tabView",
+        "ui:options": {
+          "display": "grid",
+          "full": true,
+          "view": {
+            "vertical": true,
+            "sidebarColor": "grey-5-a"
+          }
+    }};
+
+
     return (
       <Box flex={true}>
         {
-          this.props.schemaType.name && 
-          this.props.schemaType.name == "cms-stats-questionnaire" ?
-            <AceEditor
-              readOnly
-              mode="yaml"
-              theme="github"
-              width="100%"
-              name={general_title || "draftPreviewerFormName"}
-              value={yaml.safeDump(_formData)}
-              editorProps={{ $blockScrolling: true }}
-            />
-            : this.props.schema ? (
+          // this.props.schemaType.name && 
+          // this.props.schemaType.name == "cms-stats-questionnaire" ?
+          //   <AceEditor
+          //     readOnly
+          //     mode="yaml"
+          //     theme="github"
+          //     width="100%"
+          //     name={general_title || "draftPreviewerFormName"}
+          //     value={yaml.safeDump(_formData)}
+          //     editorProps={{ $blockScrolling: true }}
+          //   />
+          //   :
+             this.props.schema ? (
               <Form
                 ref={form => {
                   this.form = form;
@@ -53,7 +70,7 @@ class JSONShemaPreviewer extends React.Component {
                 showErrorList={false}
                 widgets={widgets}
                 fields={fields}
-                uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
+                uiSchema={ui}
                 liveValidate={false}
                 noValidate={true}
                 onError={() => { }}
