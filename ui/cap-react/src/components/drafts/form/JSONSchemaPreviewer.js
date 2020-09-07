@@ -2,70 +2,136 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
+import Heading from "grommet/components/Heading";
+
+import { AiOutlineUnorderedList } from "react-icons/ai";
+import { FaRegListAlt } from "react-icons/fa";
 
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet-preview/templates/FieldTemplate";
-import ObjectFieldTemplate from "./themes/grommet-preview/templates/ObjectFieldTemplate";
-import ArrayFieldTemplate from "./themes/grommet-preview/templates/ArrayFieldTemplate";
+import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
+
+import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate";
 
 import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
 import Form from "react-jsonschema-form";
 
-import yaml from "js-yaml";
-import AceEditor from "react-ace";
+import Button from "../../partials/Button";
 
 class JSONShemaPreviewer extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      formData: {}
+      formData: {},
+      uiObject: "tabView"
     };
   }
 
   render() {
-    let { general_title, ..._formData = {}} = this.props.formData;
-
     return (
-      <Box flex={true}>
-        {
-          this.props.schemaType.name && 
-          this.props.schemaType.name == "cms-stats-questionnaire" ?
-            <AceEditor
-              readOnly
-              mode="yaml"
-              theme="github"
-              width="100%"
-              name={general_title || "draftPreviewerFormName"}
-              value={yaml.safeDump(_formData)}
-              editorProps={{ $blockScrolling: true }}
+      <React.Fragment>
+        <Box
+          direction="row"
+          justify="between"
+          align="center"
+          pad={{ vertical: "small", horizontal: "medium" }}
+          separator="bottom"
+          margin={{ bottom: "medium" }}
+        >
+          <Box direction="row" align="center" justify="center">
+            <Heading tag="h3" margin="none" style={{ fontStyle: "italic" }}>
+              {this.props.formData.general_title || "Untitled"}
+            </Heading>
+            {this.props.tags}
+          </Box>
+
+          <Box direction="row">
+            {this.props.editAnchor}
+            {this.props.reviewAnchor}
+          </Box>
+        </Box>
+        <Box
+          flex={true}
+          pad={{ horizontal: "small" }}
+          style={{ height: "1px" }}
+        >
+          <Box
+            direction="row"
+            justify="end"
+            style={{ position: "absolute", right: "26px" }}
+          >
+            <Button
+              margin={{ left: "medium" }}
+              pad={{ vertical: "small", horizontal: "small" }}
+              text="List"
+              icon={<AiOutlineUnorderedList size={15} />}
+              onClick={() => {
+                this.setState({ uiObject: "" });
+              }}
+              background={
+                this.props.draft
+                  ? "#fff"
+                  : this.state.uiObject === ""
+                    ? "rgba(146,109,146,1)"
+                    : "#f5f5f5"
+              }
+              color={this.state.uiObject === "" ? "#f9f0ff" : "#000"}
+              primary={this.props.draft && this.state.uiObject === ""}
             />
-            : this.props.schema ? (
-              <Form
-                ref={form => {
-                  this.form = form;
-                }}
-                schema={this.props.schema}
-                FieldTemplate={FieldTemplate}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                ArrayFieldTemplate={ArrayFieldTemplate}
-                showErrorList={false}
-                widgets={widgets}
-                fields={fields}
-                uiSchema={this.props.uiSchema ? this.props.uiSchema : {}}
-                liveValidate={false}
-                noValidate={true}
-                onError={() => { }}
-                formData={this.props.formData}
-                onBlur={() => { }}
-                onChange={this.props.onChange}
-                onSubmit={this.props.onSubmit}
-              >
-                {this.props.children}
-              </Form>
-            ) : null}
-      </Box>
+
+            <Button
+              margin={{ left: "medium" }}
+              text="Tab"
+              pad={{ vertical: "small", horizontal: "small" }}
+              onClick={() => this.setState({ uiObject: "tabView" })}
+              icon={<FaRegListAlt size={15} />}
+              background={
+                this.props.draft
+                  ? "#fff"
+                  : this.state.uiObject === "tabView"
+                    ? "rgba(146,109,146,1)"
+                    : "#f5f5f5"
+              }
+              color={this.state.uiObject === "tabView" ? "#f9f0ff" : "#000"}
+              primary={this.props.draft && this.state.uiObject === "tabView"}
+            />
+          </Box>
+          {this.props.schema ? (
+            <Form
+              ref={form => {
+                this.form = form;
+              }}
+              schema={this.props.schema}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              ArrayFieldTemplate={ArrayFieldTemplate}
+              showErrorList={false}
+              widgets={widgets}
+              fields={fields}
+              uiSchema={{
+                "ui:readonly": true,
+                ...this.props.uiSchema,
+                "ui:object": this.state.uiObject
+              }}
+              liveValidate={false}
+              noValidate={true}
+              onError={() => {}}
+              formData={this.props.formData}
+              onBlur={() => {}}
+              onChange={this.props.onChange}
+              onSubmit={this.props.onSubmit}
+              formContext={{
+                tabView: this.state.uiObject === "tabView",
+                isPublished: true
+              }}
+            >
+              {this.props.children}
+            </Form>
+          ) : null}
+        </Box>
+      </React.Fragment>
     );
   }
 }

@@ -39,7 +39,8 @@ const transformSchema = schema => {
     "_experiment",
     "_fetched_from",
     "_user_edited",
-    "control_number"
+    "control_number",
+    "_review"
   ];
 
   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
@@ -98,6 +99,65 @@ class PublishedPreview extends React.Component {
         type[type.length - 1].replace("-v0.0.1.json", ""));
   };
 
+  getEditAnchor = () => {
+    let comp = this.props.canUpdate ? (
+      <Anchor
+        pad={{ horizontal: "small" }}
+        justify="end"
+        primary
+        path={`/drafts/${this.props.draft_id}/edit`}
+        icon={<Edit size="xsmall" />}
+        label={
+          <Label size="small" uppercase>
+            Edit
+          </Label>
+        }
+      />
+    ) : null;
+
+    return comp;
+  };
+
+  getReviewAnchor = () => {
+    let comp = this.props.canReview ? (
+      <Anchor
+        pad={{ horizontal: "small" }}
+        justify="end"
+        primary
+        onClick={this.toggleAddReview}
+        icon={<ValidateIcon size="xsmall" />}
+        label={
+          <Label size="small" uppercase>
+            Review
+          </Label>
+        }
+      />
+    ) : null;
+
+    return comp;
+  };
+
+  getTagsList = () => {
+    return (
+      <Box
+        direction="row"
+        align="center"
+        pad={{ between: "small" }}
+        margin={{ left: "medium" }}
+      >
+        <Tag
+          text="Published"
+          color={{
+            bgcolor: "#f9f0ff",
+            border: "rgba(146,109,146,1)",
+            color: "rgba(146,109,146,1)"
+          }}
+        />
+        <Tag text={this.props.id} />
+      </Box>
+    );
+  };
+
   render() {
     let { schema, uiSchema } = this.props.schemas
       ? this.props.schemas.toJS()
@@ -131,7 +191,7 @@ class PublishedPreview extends React.Component {
                   error={this.state.reviewError}
                 />
               )}
-              <SectionHeader
+              {/* <SectionHeader
                 label={
                   <Box
                     direction="row"
@@ -185,15 +245,18 @@ class PublishedPreview extends React.Component {
                     ) : null}
                   </Box>
                 }
-              />
+              /> */}
               <Box flex={true} direction="row" justify="between">
-                <Box flex={true} pad="medium">
+                <Box flex={true}>
                   <JSONSchemaPreviewer
                     formData={this.props.metadata.toJS()}
                     schema={_schema}
                     schemaType={this.props.schemaType.toJS()}
-                    uiSchema={{}}
+                    uiSchema={uiSchema}
                     onChange={() => {}}
+                    editAnchor={this.getEditAnchor()}
+                    reviewAnchor={this.getReviewAnchor()}
+                    tags={this.getTagsList()}
                   >
                     <span />
                   </JSONSchemaPreviewer>

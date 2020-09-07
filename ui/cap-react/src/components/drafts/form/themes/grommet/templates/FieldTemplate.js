@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
+import FieldHeader from "../../grommet-preview/components/FieldHeader";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema } = props;
@@ -27,8 +28,11 @@ let FieldTemplate = function(props) {
     // }
     return (
       <Box
+        pad={{ horizontal: "small" }}
         style={{
-          gridColumn: gridColumns ? gridColumns : "1 / 5"
+          gridColumn: gridColumns ? gridColumns : "1 / 5",
+          paddingTop: "10px",
+          paddingBottom: "10px"
         }}
         flex={
           props.uiSchema["ui:object"] &&
@@ -36,7 +40,11 @@ let FieldTemplate = function(props) {
             ? true
             : null
         }
+        className="fieldTemplate"
       >
+        {!props.schema.type.includes("array") && (
+          <FieldHeader title={label} italic bold />
+        )}
         {children}
       </Box>
     );
@@ -46,7 +54,10 @@ let FieldTemplate = function(props) {
     <FormField
       label={
         <span>
-          <span style={{ color: "#000" }} dangerouslySetInnerHTML={{ __html: label }} />
+          <span
+            style={{ color: "#000" }}
+            dangerouslySetInnerHTML={{ __html: label }}
+          />
           {rawDescription ? (
             <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
           ) : null}
@@ -56,16 +67,16 @@ let FieldTemplate = function(props) {
       error={props.rawErrors && props.rawErrors.length ? true : false}
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5",
-        overflow:"visible"
+        overflow: "visible"
       }}
-      
+      className="fieldTemplate"
     >
       {children}
       {props.rawErrors && props.rawErrors.length ? (
         <Box
           style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
           flex={false}
-          pad={{ horizontal: "medium" }}
+          pad={{ horizontal: "small" }}
         >
           {props.rawErrors.map((error, index) => [
             <span key={index}>

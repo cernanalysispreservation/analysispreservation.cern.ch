@@ -2,19 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
-import RadioButton from "grommet/components/RadioButton";
+// import RadioButton from "grommet/components/RadioButton";
 
 const RadioWidget = function(props) {
-  let { onChange, options, value } = props;
+  let { value } = props;
   // TOFIX onBlur, onFocus
-  let _onChange = function _onChange(_ref) {
-    let _value = _ref.currentTarget.value;
-    return onChange(value === "" ? options.emptyValue : _value);
-  };
+  // let _onChange = function _onChange(_ref) {
+  //   let _value = _ref.currentTarget.value;
+  //   return onChange(value === "" ? options.emptyValue : _value);
+  // };
 
   return (
     <Box direction="row" pad={{ horizontal: "medium" }} flex={false}>
-      {options.enumOptions.length > 0
+      {value || "Not answered"}
+      {/* {options.enumOptions.length > 0
         ? options.enumOptions.map(item => (
             <RadioButton
               key={item.value}
@@ -26,7 +27,7 @@ const RadioWidget = function(props) {
               onChange={_onChange}
             />
           ))
-        : null}
+        : null} */}
     </Box>
   );
 };

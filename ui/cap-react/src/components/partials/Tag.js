@@ -8,6 +8,8 @@ const StyledTag = styled.span`
   padding: 3px 8px;
   border-radius: 3px;
   border: ${props => `1px solid ${props.border}`};
+  max-width: 300px;
+  word-break: break-all;
 `;
 
 const Tag = ({
