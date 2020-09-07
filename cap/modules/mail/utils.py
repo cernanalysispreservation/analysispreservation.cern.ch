@@ -62,7 +62,7 @@ def get_cms_stat_recipients(record, config):
 
     submitter_email = current_user.email
     message += f"Submitted by {submitter_email}"
-    
+
     return message, recipients
 
 

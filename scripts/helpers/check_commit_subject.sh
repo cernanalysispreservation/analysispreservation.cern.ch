@@ -12,9 +12,10 @@ component=(
 "devops"
 "docker"
 "docs"
-"files",
+"files"
 "fixtures"
 "global"
+"mail"
 "records"
 "repos"
 "schemas"
