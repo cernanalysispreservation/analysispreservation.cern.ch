@@ -120,7 +120,8 @@ class TabField extends React.Component {
       <Box
         flex={true}
         style={{
-          display: "grid"
+          display: "grid",
+          height: "100%"
         }}
       >
         <Box>

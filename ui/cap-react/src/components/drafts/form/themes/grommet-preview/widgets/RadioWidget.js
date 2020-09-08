@@ -14,7 +14,8 @@ const RadioWidget = function(props) {
 
   return (
     <Box direction="row" pad={{ horizontal: "medium" }} flex={false}>
-      {options.enumOptions.length > 0
+      {value || "Not answered"}
+      {/* {options.enumOptions.length > 0
         ? options.enumOptions.map(item => (
             <RadioButton
               key={item.value}
@@ -26,7 +27,7 @@ const RadioWidget = function(props) {
               onChange={_onChange}
             />
           ))
-        : null}
+        : null} */}
     </Box>
   );
 };

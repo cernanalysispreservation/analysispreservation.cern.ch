@@ -53,20 +53,24 @@ class AccordionArrayField extends React.Component {
                   <Box key={index} direction="row" flex={true}>
                     <Box flex={true}>{element.children}</Box>
                     <Box flex={false}>
-                      <Button
-                        onClick={event =>
-                          element.onDropIndexClick(element.index)(event)
-                        }
-                        icon={this.props.readonly ? null : <FormTrashIcon />}
-                      />
+                      {!this.props.readonly && (
+                        <Button
+                          onClick={event =>
+                            element.onDropIndexClick(element.index)(event)
+                          }
+                          icon={<FormTrashIcon />}
+                        />
+                      )}
                     </Box>
                   </Box>
                 ))}
                 <Box justify="center" align="center">
-                  <Button
-                    onClick={this._onAddClick.bind(this)}
-                    icon={<AddIcon />}
-                  />
+                  {!this.props.readonly && (
+                    <Button
+                      onClick={this._onAddClick.bind(this)}
+                      icon={<AddIcon />}
+                    />
+                  )}
                 </Box>
               </Box>
             ) : (
@@ -79,7 +83,9 @@ class AccordionArrayField extends React.Component {
                     />
                   )
                 }
-                emptyMessage="Add a new item"
+                emptyMessage={
+                  this.props.readonly ? "Empty List" : "Add a new item"
+                }
                 unfilteredTotal={0}
               />
             )}

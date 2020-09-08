@@ -173,21 +173,22 @@ class ArrayFieldTemplate extends React.Component {
     this.props.onAddClick(event);
   }
 
-  _renderAddButton = () => (
-    <Box
-      onClick={this._onAddClick.bind(this)}
-      style={{ padding: "5px", margin: "10px 0" }}
-      colorIndex="light-1"
-      direction="row"
-      justify="center"
-      align="center"
-      flex={false}
-      responsive={false}
-    >
-      <AddIcon size="xsmall" />{" "}
-      <span style={{ marginLeft: "5px" }}>Add Item</span>
-    </Box>
-  );
+  _renderAddButton = () =>
+    !this.props.readonly && (
+      <Box
+        onClick={this._onAddClick.bind(this)}
+        style={{ padding: "5px", margin: "10px 0" }}
+        colorIndex="light-1"
+        direction="row"
+        justify="center"
+        align="center"
+        flex={false}
+        responsive={false}
+      >
+        <AddIcon size="xsmall" />{" "}
+        <span style={{ marginLeft: "5px" }}>Add Item</span>
+      </Box>
+    );
 
   _getArrayField = _label => {
     let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];

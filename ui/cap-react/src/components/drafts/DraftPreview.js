@@ -13,6 +13,8 @@ import Anchor from "../partials/Anchor";
 
 import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 import SectionBox from "../partials/SectionBox";
+import Label from "grommet/components/Label";
+import Edit from "grommet/components/icons/base/Edit";
 
 const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -27,7 +29,8 @@ const transformSchema = schema => {
     "_experiment",
     "_fetched_from",
     "_user_edited",
-    "control_number"
+    "control_number",
+    "_review"
   ];
 
   schema.properties = _omit(schema.properties, schemaFieldsToRemove);
@@ -45,6 +48,25 @@ class DraftPreview extends React.Component {
       hideAfter: 3
     });
   }
+
+  getEditAnchor = () => {
+    let comp = this.props.canUpdate ? (
+      <Anchor
+        primary
+        pad={{ horizontal: "small" }}
+        justify="end"
+        path={`/drafts/${this.props.draft_id}/edit`}
+        label={
+          <Label size="small" uppercase>
+            Edit
+          </Label>
+        }
+        icon={<Edit size="xsmall" />}
+      />
+    ) : null;
+
+    return comp;
+  };
 
   render() {
     let _schema =
@@ -67,7 +89,7 @@ class DraftPreview extends React.Component {
           direction="row"
           className="width-100"
         >
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+          <Box flex={true} size={{ width: { min: "medium" } }} basis="3/4">
             <SectionBox
               header="Metadata"
               headerActions={
@@ -89,6 +111,8 @@ class DraftPreview extends React.Component {
                       schemaType={this.props.schemaType}
                       uiSchema={this.props.schemas.uiSchema || {}}
                       onChange={() => {}}
+                      editAnchor={this.getEditAnchor()}
+                      draft={this.props.status === "draft"}
                     >
                       <span />
                     </JSONSchemaPreviewer>
@@ -97,7 +121,7 @@ class DraftPreview extends React.Component {
               }
             />
           </Box>
-          <Box flex={true} size={{ width: { min: "medium" } }}>
+          <Box flex={true} size={{ width: { min: "medium" } }} basis="1/4">
             <SectionBox
               header="Repositories"
               headerActions={
@@ -233,7 +257,8 @@ function mapStateToProps(state) {
     canUpdate: state.draftItem.get("can_update"),
     draft_id: state.draftItem.get("id"),
     repositories: state.draftItem.get("repositories"),
-    metadata: state.draftItem.get("metadata")
+    metadata: state.draftItem.get("metadata"),
+    status: state.draftItem.get("status")
   };
 }
 
