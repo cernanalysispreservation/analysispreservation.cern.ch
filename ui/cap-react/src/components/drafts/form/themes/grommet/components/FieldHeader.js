@@ -51,21 +51,22 @@ let FieldHeader = function(props) {
           </Anchor>
         </Box>
       )}
-      {props.pasteable && (
-        <Box flex={false} align="center" justify="start">
-          <Anchor
-            alignSelf="center"
-            direction="row"
-            flex={false}
-            wrap={false}
-            align="start"
-            style={{ paddingTop: "4px", textDecoration: "underline" }}
-            onClick={props.enableImport}
-          >
-            Import from a list
-          </Anchor>
-        </Box>
-      )}
+      {props.pasteable &&
+        !props.readonly && (
+          <Box flex={false} align="center" justify="start">
+            <Anchor
+              alignSelf="center"
+              direction="row"
+              flex={false}
+              wrap={false}
+              align="start"
+              style={{ paddingTop: "4px", textDecoration: "underline" }}
+              onClick={props.enableImport}
+            >
+              Import from a list
+            </Anchor>
+          </Box>
+        )}
     </Box>
   );
 };

@@ -38,6 +38,7 @@ let ObjectFieldTemplate = function(props) {
               gridColumnGap: "10px",
               maxWidth: "100%"
             }}
+            className="overview-container-readonly"
           >
             {props.properties.map(prop => prop.content)}
           </Box>
