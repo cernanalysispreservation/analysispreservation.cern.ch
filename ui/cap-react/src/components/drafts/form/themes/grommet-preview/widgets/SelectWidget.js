@@ -14,11 +14,16 @@ const SelectWidget = function(props) {
         direction="row"
         margin={{ bottom: "small" }}
         pad={{ vertical: "small", horizontal: "s" }}
-        style={{ borderRadius: "3px", gridColumn: "1/5" }}
+        style={{
+          borderRadius: "3px",
+          gridColumn: "1/5",
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)"
+        }}
+        className="fieldTemplate"
       >
         <Box
-          flex
-          basis="1/2"
+          style={{ paddingRight: "10px", gridColumn: "1/3" }}
           pad={{ horizontal: "medium" }}
           margin={{ bottom: "small" }}
         >
@@ -28,38 +33,40 @@ const SelectWidget = function(props) {
         <Box
           justify="start"
           align="start"
-          flex
-          basis="3/4"
           pad={{ horizontal: "medium" }}
-          style={{ paddingBottom: "3px" }}
+          style={{ paddingBottom: "3px", gridColumn: "3/5" }}
           direction="row"
           responsive={false}
           wrap
         >
-          {props.value.map((val, index) => (
-            <Box key={val + index} flex={false} style={{ margin: "5px" }} wrap>
-              <Tag
-                text={val || ""}
-                color={{
-                  bgcolor: "#fff",
-                  border: "#006996",
-                  color: "#000"
+          {(props.value.length > 0 &&
+            props.value.map((val, index) => (
+              <Box
+                key={val + index}
+                flex={false}
+                style={{
+                  margin: "0 5px 5px 0px"
                 }}
-              />
-            </Box>
-          ))}
+                wrap
+                justify="center"
+                alignSelf="start"
+              >
+                <Tag
+                  text={val || ""}
+                  color={{
+                    bgcolor: "#fff",
+                    border: "#006996",
+                    color: "#000"
+                  }}
+                />
+              </Box>
+            ))) || <Box style={{ margin: "5px" }}>-</Box>}
         </Box>
       </Box>
     );
   }
   return (
-    <Box
-      justify="center"
-      flex={false}
-      alignSelf="start"
-      pad={{ horizontal: "medium" }}
-      style={{ paddingBottom: "3px" }}
-    >
+    <Box justify="center" alignSelf="start" pad={{ horizontal: "medium" }}>
       {(props.value && (
         <Tag
           text={props.value}

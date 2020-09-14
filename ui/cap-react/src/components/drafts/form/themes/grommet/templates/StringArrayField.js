@@ -17,7 +17,12 @@ class StringArrayField extends React.Component {
         <Box flex={false} margin={{ top: "small", bottom: "medium" }}>
           {this.props.items.length > 0
             ? this.props.items.map((element, index) => (
-                <Box flex={false} key={index} direction="row">
+                <Box
+                  flex={false}
+                  key={index}
+                  direction="row"
+                  className={this.props.readonly && "fieldTemplateSeparator"}
+                >
                   {element.children}
 
                   {!this.props.readonly && (

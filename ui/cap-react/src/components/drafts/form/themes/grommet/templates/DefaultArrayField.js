@@ -19,7 +19,14 @@ class DefaultArrayField extends React.Component {
             <List>
               {this.props.items.length > 0
                 ? this.props.items.map(element => (
-                    <ListItem key={element.index} separator="none" pad="none">
+                    <ListItem
+                      key={element.index}
+                      separator="none"
+                      pad="none"
+                      className={
+                        this.props.readonly && "fieldTemplateSeparator"
+                      }
+                    >
                       <Box
                         key={element.index}
                         flex={true}

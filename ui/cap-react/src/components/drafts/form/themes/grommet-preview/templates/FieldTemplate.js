@@ -10,11 +10,14 @@ let FieldTemplate = function(props) {
   if (["array", "object"].indexOf(props.schema.type) > -1) {
     return (
       <span
-        style={{ gridColumn: "1/5", height: "100%" }}
+        style={{
+          gridColumn: "1/5",
+          height: "100%"
+        }}
         className={
           formContext.tabView
-            ? "overview-content-readonly"
-            : "overview-content-readonly align-center"
+            ? "overview-content-readonly fieldTemplate"
+            : "overview-content-readonly align-center fieldTemplate"
         }
       >
         {children}
@@ -22,20 +25,33 @@ let FieldTemplate = function(props) {
     );
   }
 
-  return children.props && children.props.formData === undefined ? null : (
+  return children[0].props &&
+    children[0].props.formData === undefined ? null : (
     <Box
       flex={true}
-      direction="row"
-      margin={{ bottom: "medium", horizontal: "medium" }}
-      style={{ borderRadius: "3px", gridColumn: "1/5" }}
-      separator="bottom"
+      margin={{ horizontal: "medium" }}
+      style={{
+        borderRadius: "3px",
+        gridColumn: "1/5",
+        display: "grid",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        padding: "10px"
+      }}
+      id="fieldTemplate"
+      className="fieldTemplate"
     >
       {label ? (
-        <Box flex basis="1/2" style={{ paddingRight: "10px" }}>
-          <FieldHeader title={label} italic />
+        <Box
+          style={{
+            paddingRight: "10px",
+            gridColumn: "1/3"
+          }}
+        >
+          <FieldHeader title={label} italic bold />
         </Box>
       ) : null}
-      <Box flex basis="3/4" justify="center">
+
+      <Box justify="center" style={{ gridColumn: label ? "3/5" : "1/5" }}>
         {children}
       </Box>
     </Box>
