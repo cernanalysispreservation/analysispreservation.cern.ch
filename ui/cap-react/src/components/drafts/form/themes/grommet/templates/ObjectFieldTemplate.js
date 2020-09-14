@@ -29,6 +29,7 @@ let ObjectFieldTemplate = function(props) {
               ? props.uiSchema["ui:options"].align
               : "center"
         }}
+        className="obj-fld-tml"
       >
         <Box {...sizeProps}>
           <Box
@@ -38,7 +39,7 @@ let ObjectFieldTemplate = function(props) {
               gridColumnGap: "10px",
               maxWidth: "100%"
             }}
-            className="overview-container-readonly"
+            id="overview-container-readonly"
           >
             {props.properties.map(prop => prop.content)}
           </Box>
@@ -49,7 +50,7 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in props.uiSchema)) {
     return (
-      <Box pad="none" margin={{ bottom: "small" }}>
+      <Box pad="none" margin={{ bottom: "small" }} className="obj-fld-tml">
         {props.title ? (
           <FieldHeader
             title={props.title}
