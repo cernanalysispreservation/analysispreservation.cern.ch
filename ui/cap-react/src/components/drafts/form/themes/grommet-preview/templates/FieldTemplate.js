@@ -25,8 +25,7 @@ let FieldTemplate = function(props) {
     );
   }
 
-  return children[0].props &&
-    children[0].props.formData === undefined ? null : (
+  return children.props && children.props.formData === undefined ? null : (
     <Box
       flex={true}
       margin={{ horizontal: "medium" }}
@@ -42,6 +41,7 @@ let FieldTemplate = function(props) {
     >
       {label ? (
         <Box
+          flex
           style={{
             paddingRight: "10px",
             gridColumn: "1/3"
@@ -51,7 +51,7 @@ let FieldTemplate = function(props) {
         </Box>
       ) : null}
 
-      <Box justify="center" style={{ gridColumn: label ? "3/5" : "1/5" }}>
+      <Box flex justify="center" style={{ gridColumn: label ? "3/5" : "1/5" }}>
         {children}
       </Box>
     </Box>

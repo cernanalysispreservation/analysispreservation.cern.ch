@@ -50,7 +50,15 @@ let ObjectFieldTemplate = function(props) {
 
   if (!("ui:object" in props.uiSchema)) {
     return (
-      <Box pad="none" margin={{ bottom: "small" }} className="obj-fld-tml">
+      <Box
+        pad="none"
+        margin={{ bottom: "small" }}
+        className={
+          props.formContext.isPublished
+            ? "published-array obj-fld-tml"
+            : "obj-fld-tml"
+        }
+      >
         {props.title ? (
           <FieldHeader
             title={props.title}

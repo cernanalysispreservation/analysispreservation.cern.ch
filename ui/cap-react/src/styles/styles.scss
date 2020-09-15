@@ -251,6 +251,11 @@ label {
   animation: loading 2s infinite ease-in-out;
 }
 
+.rjsf .published-array {
+  padding: 0 0 0 24px !important;
+  background: #ffffff;
+}
+
 // .overview-container-readonly > .overview-content-readonly:nth-child(even) {
 //   background: #f5f5f5;
 // }
@@ -266,6 +271,10 @@ label {
 }
 .fieldTemplate:nth-child(even) {
   background: #f5f5f5 !important;
+}
+.overview-content-readonly .align-center + .fieldTemplate:nth-child(odd) {
+  margin-top: 25px !important;
+  margin-bottom: 25px !important;
 }
 
 .fieldTemplate:nth-child(even) > .obj-fld-tml {
@@ -294,6 +303,10 @@ label {
 
 #fieldTemplate ~ span.fieldTemplate {
   background: #fff !important;
+}
+
+#overview-ccontainer-readonly span.overview-content-readonly {
+  margin-bottom: 20px !important;
 }
 
 @keyframes loading {

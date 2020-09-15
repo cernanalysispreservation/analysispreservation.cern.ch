@@ -268,6 +268,7 @@ class ArrayFieldTemplate extends React.Component {
     );
     return (
       <Box
+        className={this.props.formContext.isPublished ? "published-array" : ""}
         size={
           this.props.uiSchema &&
           this.props.uiSchema["ui:options"] &&

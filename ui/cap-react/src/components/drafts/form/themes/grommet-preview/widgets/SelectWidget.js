@@ -13,21 +13,20 @@ const SelectWidget = function(props) {
         flex={true}
         direction="row"
         margin={{ bottom: "small" }}
-        pad={{ vertical: "small", horizontal: "s" }}
         style={{
           borderRadius: "3px",
           gridColumn: "1/5",
           display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)"
+          gridTemplateColumns: "repeat(4, 1fr)",
+          padding: "10px"
         }}
         className="fieldTemplate"
       >
         <Box
           style={{ paddingRight: "10px", gridColumn: "1/3" }}
-          pad={{ horizontal: "medium" }}
-          margin={{ bottom: "small" }}
+          margin={{ bottom: "small", horizontal: "medium" }}
         >
-          <FieldHeader title={props.schema.title} italic />
+          <FieldHeader title={props.schema.title} italic bold />
         </Box>
 
         <Box

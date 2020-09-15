@@ -38,15 +38,22 @@ class JSONShemaPreviewer extends React.Component {
           align="center"
           pad={{ vertical: "small", horizontal: "medium" }}
           separator="bottom"
-          margin={{ bottom: "large" }}
+          margin={{ bottom: "medium" }}
         >
           <Box direction="row" align="center" justify="center">
-            <Heading tag="h3" margin="none">
-              Metadata
+            <Heading tag="h3" margin="none" style={{ fontStyle: "italic" }}>
+              {this.props.formData.general_title || "Untitled"}
             </Heading>
             {this.props.tags}
           </Box>
+
           <Box direction="row">
+            {this.props.editAnchor}
+            {this.props.reviewAnchor}
+          </Box>
+        </Box>
+        <Box flex={true} pad={{ horizontal: "small" }}>
+          <Box direction="row" justify="end">
             <Button
               margin={{ left: "medium" }}
               pad={{ vertical: "small", horizontal: "small" }}
@@ -83,12 +90,6 @@ class JSONShemaPreviewer extends React.Component {
               primary={this.props.draft && this.state.uiObject === "tabView"}
             />
           </Box>
-          <Box direction="row">
-            {this.props.editAnchor}
-            {this.props.reviewAnchor}
-          </Box>
-        </Box>
-        <Box flex={true} pad={{ horizontal: "small" }}>
           {this.props.schema ? (
             <Form
               ref={form => {
@@ -114,7 +115,8 @@ class JSONShemaPreviewer extends React.Component {
               onChange={this.props.onChange}
               onSubmit={this.props.onSubmit}
               formContext={{
-                tabView: this.state.uiObject === "tabView"
+                tabView: this.state.uiObject === "tabView",
+                isPublished: true
               }}
             >
               {this.props.children}
