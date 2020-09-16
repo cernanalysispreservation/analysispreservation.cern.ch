@@ -27,10 +27,8 @@ let ObjectFieldTemplate = function(props) {
   if (!("ui:object" in uiSchema)) {
     return (
       <Box flex={true} colorIndex="light-2" margin={{ bottom: "small" }}>
-        <Box pad="small" margin={{ horizontal: "medium" }}>
-          <FieldHeader title={title} bold />
-        </Box>
-        <Box margin={{ left: "small" }}>
+  
+        <Box margnin={{ left: "small" }}>
           {properties.map(prop => prop.content)}
         </Box>
       </Box>
@@ -38,11 +36,7 @@ let ObjectFieldTemplate = function(props) {
   } else {
     return (
       <Box flex={true}>
-        <Box margin={{ top: "small" }}>
-          <Heading uppercase={true} tag="h4" strong={false}>
-            {title}
-          </Heading>
-        </Box>
+      
         {properties.map(prop => prop.content)}
       </Box>
     );

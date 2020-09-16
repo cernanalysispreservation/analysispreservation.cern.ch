@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
+import FieldHeader from "../../grommet-preview/components/FieldHeader";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema } = props;
@@ -27,8 +28,11 @@ let FieldTemplate = function(props) {
     // }
     return (
       <Box
-        style={{
-          gridColumn: gridColumns ? gridColumns : "1 / 5"
+      pad={{ horizontal: "small" }}
+      style={{
+          gridColumn: gridColumns ? gridColumns : "1 / 5",
+          paddingTop: "10px",
+          paddingBottom: "10px",
         }}
         flex={
           props.uiSchema["ui:object"] &&
@@ -36,7 +40,10 @@ let FieldTemplate = function(props) {
             ? true
             : null
         }
+      className="fieldTemplate"
       >
+      <FieldHeader title={label} italic bold />
+
         {children}
       </Box>
     );
@@ -58,6 +65,7 @@ let FieldTemplate = function(props) {
         gridColumn: gridColumns ? gridColumns : "1 / 5",
         overflow:"visible"
       }}
+      className="fieldTemplate"
       
     >
       {children}
@@ -65,7 +73,7 @@ let FieldTemplate = function(props) {
         <Box
           style={{ fontSize: "12px", lineHeight: "12px", color: "#f04b37" }}
           flex={false}
-          pad={{ horizontal: "medium" }}
+          pad={{ horizontal: "small" }}
         >
           {props.rawErrors.map((error, index) => [
             <span key={index}>

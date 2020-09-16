@@ -252,7 +252,6 @@ label {
 }
 
 .published-array {
-  padding: 0 0 0 24px !important;
   background: #ffffff;
 }
 
@@ -284,16 +283,16 @@ label {
 }
 
 .fieldTemplateSeparator:nth-child(odd) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-bottom: 1px solid #e4e4e4 !important;
+  border-top: 1px solid #e4e4e4 !important;
 }
 .fieldTemplateSeparator:first-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-bottom: 1px solid #e4e4e4 !important;
   border-top: 0px !important;
 }
 .fieldTemplateSeparator:nth-last-child(1):nth-child(odd) {
   border-bottom: 0px !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-top: 1px solid #e4e4e4 !important;
 }
 
 .fieldTemplateSeparator:last-child:first-child {

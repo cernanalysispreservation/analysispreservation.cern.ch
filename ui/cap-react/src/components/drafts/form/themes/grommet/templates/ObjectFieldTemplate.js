@@ -45,31 +45,22 @@ let ObjectFieldTemplate = function(props) {
           </Box>
         </Box>
       </Box>
-    );
+    );  
   }
 
   if (!("ui:object" in props.uiSchema)) {
     return (
       <Box
-        pad="none"
-        margin={{ bottom: "small" }}
         className={
           props.formContext.isPublished
             ? "published-array obj-fld-tml"
             : "obj-fld-tml"
         }
+        style={{
+          "padding": "3px!important"
+        }}
       >
-        {props.title ? (
-          <FieldHeader
-            title={props.title}
-            required={props.schema.required}
-            description={
-              props.description ? (
-                <span dangerouslySetInnerHTML={{ __html: props.description }} />
-              ) : null
-            }
-          />
-        ) : null}
+
 
         <Box
           style={{
