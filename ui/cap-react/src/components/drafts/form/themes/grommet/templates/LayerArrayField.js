@@ -122,7 +122,8 @@ class ArrayFieldTemplate extends React.Component {
                   </Box>
                 </ListItem>
               ))
-            : null
+            : <Box flex justify="center" align="center" pad="small">No items</Box>
+
           // <ListPlaceholder
           //   addControl={<Button onClick={this.props._onAddClick.bind(this)} icon={<AddIcon />} />}
           //   emptyMessage='You do not have any items at the moment.'
