@@ -194,35 +194,41 @@ class ArrayFieldTemplate extends React.Component {
     let _pastable = this.props.uiSchema && !this.props.uiSchema["ui:pastable"];
     if (this.formRenderType == "default") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
+        <Box>
           {_pastable && _label}
-          <DefaultArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+          <Box flex={false} separator="all">
+            <DefaultArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "StringArrayField") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
+        <Box>
           {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <StringArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+          <Box flex={false} separator="all">
+            <StringArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "LayerArrayField") {
       return (
-        <Box className={_pastable ? "grommetux-form-field" : null}>
+        <Box >
           {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <LayerArrayField
-            _onAddClick={this._onAddClick.bind(this)}
-            {...this.props}
-          />
-          {this._renderAddButton()}
+          <Box flex={false} separator="all">
+            <LayerArrayField
+              _onAddClick={this._onAddClick.bind(this)}
+              {...this.props}
+            />
+            {this._renderAddButton()}
+          </Box>
         </Box>
       );
     } else if (this.formRenderType == "AccordionArrayField") {
@@ -250,7 +256,8 @@ class ArrayFieldTemplate extends React.Component {
     }
   };
 
-  render() {
+  render = () => {
+    console.log("#ARRAAYYLLL:::", this, this.props)
     let _label = (
       <FieldHeader
         title={this.props.title}
@@ -266,23 +273,25 @@ class ArrayFieldTemplate extends React.Component {
         margin="none"
       />
     );
+
     return (
       <Box
         className={this.props.formContext.isPublished ? "published-array" : ""}
         size={
           this.props.uiSchema &&
-          this.props.uiSchema["ui:options"] &&
-          this.props.uiSchema["ui:options"].size
+            this.props.uiSchema["ui:options"] &&
+            this.props.uiSchema["ui:options"].size
             ? this.props.uiSchema["ui:options"].size
             : "full"
         }
         style={{
           display:
             this.props.uiSchema &&
-            this.props.uiSchema["ui:options"] &&
-            this.props.uiSchema["ui:options"].display
+              this.props.uiSchema["ui:options"] &&
+              this.props.uiSchema["ui:options"].display
               ? this.props.uiSchema["ui:options"].display
-              : "flex"
+              : "flex",
+          padding: "0!important"
         }}
       >
         {this.uiOptionLatex &&

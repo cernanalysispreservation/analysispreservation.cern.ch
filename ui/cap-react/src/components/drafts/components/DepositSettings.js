@@ -52,30 +52,28 @@ class DepositSettings extends React.Component {
           <Box flex align="center" justify="center">
             <React.Fragment>
               <Box margin="small">
-                <Paragraph margin="none">
-                  {isPublishedOnce ? (
-                    <Box data-tip="Latest published version">
-                      <Anchor
-                        label={
-                          <Label size="medium" uppercase>
-                            {this.props.recid}
-                          </Label>
-                        }
-                        primary
-                        path={`/published/${this.props.recid}`}
-                      />
-                    </Box>
-                  ) : (
+                {isPublishedOnce ? (
+                  <Box data-tip="Latest published version">
                     <Anchor
                       label={
                         <Label size="medium" uppercase>
-                          not published yet
+                          {this.props.recid}
                         </Label>
                       }
-                      disabled
+                      primary
+                      path={`/published/${this.props.recid}`}
                     />
-                  )}
-                </Paragraph>
+                  </Box>
+                ) : (
+                  <Anchor
+                    label={
+                      <Label size="medium" uppercase>
+                        not published yet
+                      </Label>
+                    }
+                    disabled
+                  />
+                )}
               </Box>
               <Box
                 align="center"

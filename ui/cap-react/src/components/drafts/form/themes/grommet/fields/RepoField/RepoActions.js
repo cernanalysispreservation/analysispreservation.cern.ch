@@ -66,6 +66,7 @@ class RepoActions extends React.Component {
   renderActionItem(title, description, actions, help) {
     return (
       <Box
+        key={title}
         flex={true}
         justify="between"
         align="center"
@@ -80,9 +81,17 @@ class RepoActions extends React.Component {
             {title}
           </Heading>
           <Box>
-            <Paragraph size="small" margin="none">
+            <Box
+              style={{
+                fontSize: "14px",
+                lineHeight: "1.43",
+                fontWeight: 300,
+                maxWidth: "576px",
+                color: "#666"
+              }}
+            >
               {description}
-            </Paragraph>
+            </Box>
           </Box>
         </Box>
         <Box align="end">
@@ -229,9 +238,11 @@ class RepoActions extends React.Component {
             </Box>
 
             <Box pad={{ horizontal: "small" }}>
-              <Heading strong tag="h5" margin={{ bottom: "small" }}>
-                Select action:
-              </Heading>
+              <Box margin={{ bottom: "small" }}>
+                <Heading strong tag="h5" margin="none">
+                  Select action:
+                </Heading>
+              </Box>
               {this.state.filetypeEnabled
                 ? this.renderActionItem(
                     "Upload single file",

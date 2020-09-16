@@ -16,23 +16,15 @@ import { push } from "connected-react-router";
 import PropTypes from "prop-types";
 
 function DashboardListItem(props) {
-  let {
-    id,
-    // is_owner,
-    // can_admin,
-    // can_update,
-    metadata = {},
-    updated
-  } = props.item;
+  let { id, metadata = {}, updated } = props.item;
+
   let {
     general_title = "Untitled",
     basic_info: { abstract = "" } = {}
   } = metadata;
 
-  let itemUrl =
-    props.listType == "draft" ? `/drafts/${id}` : `/published/${id}`;
   return (
-    <ListItem key={`${id}`} onClick={() => props.push(itemUrl)}>
+    <ListItem key={`${id}`} className="listItem">
       <Box
         justify="between"
         responsive={false}
@@ -68,7 +60,7 @@ function DashboardListItem(props) {
           style={{ color: "#ccc", fontWeight: "light" }}
         >
           <span>updated</span>
-          <TimeAgo date={updated} minPeriod="60" />
+          {updated && <TimeAgo date={updated} minPeriod="60" />}
         </Box>
       </Box>
     </ListItem>
@@ -76,7 +68,6 @@ function DashboardListItem(props) {
 }
 
 DashboardListItem.propTypes = {
-  listType: PropTypes.string,
   item: PropTypes.object,
   push: PropTypes.func
 };

@@ -25,9 +25,10 @@
 
 from __future__ import absolute_import, print_function
 
-from invenio_accounts.models import User
 from invenio_pidstore.models import PersistentIdentifier
 from invenio_records_rest.serializers.json import JSONSerializer
+
+from cap.modules.records.utils import url_to_api_url
 
 
 class RecordSerializer(JSONSerializer):
@@ -43,3 +44,21 @@ class RecordSerializer(JSONSerializer):
                                                    links_factory=links_factory)
 
         return result
+
+    def serialize_search(self, pid_fetcher, search_result, links=None,
+                         item_links_factory=None, **kwargs):
+        """Serialize a search result.
+
+        :param pid_fetcher: Persistent identifier fetcher.
+        :param search_result: Elasticsearch search result.
+        :param links: Dictionary of links to add to response.
+        """
+        links = {
+            k: url_to_api_url(v)
+            for k, v in links.items()
+        } if links else {}
+
+        return super().serialize_search(pid_fetcher,
+                                        search_result,
+                                        links=links,
+                                        item_links_factory=item_links_factory)

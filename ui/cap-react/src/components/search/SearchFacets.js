@@ -153,8 +153,24 @@ class SearchFacets extends React.Component {
 
   updateCategory = () => {
     let location = this.props.location;
-    location.pathname = location.pathname === "/search" ? "/drafts" : "/search";
+
+    let anatype = this.props.match.params.anatype;
+
+    location.pathname = location.pathname.startsWith("/search")
+      ? "/drafts"
+      : "/search";
     this.setState({ categoryScope: location.pathname });
+
+    // if the anatype exists means that the user needs a specific type of analysis
+    // in the event that the user wants to search through the drafts, the type should be maintained
+    if (anatype) {
+      let currentParams = queryString.parse(this.props.location.search);
+      currentParams["type"] = anatype;
+      location = {
+        search: queryString.stringify(currentParams)
+      };
+    }
+
     this.props.history.push(location);
   };
 
@@ -218,7 +234,7 @@ class SearchFacets extends React.Component {
                 toggle={true}
                 reverse={false}
                 onChange={this.updateCategory}
-                checked={this.state.categoryScope === "/search"}
+                checked={this.state.categoryScope.startsWith("/search")}
               />
             </Box>
             <Box
@@ -245,12 +261,13 @@ class SearchFacets extends React.Component {
 }
 
 SearchFacets.propTypes = {
-  aggs: PropTypes.object.isRequired,
+  aggs: PropTypes.object,
   history: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   selectedAggs: PropTypes.object.isRequired,
   loading: PropTypes.bool,
-  removeType: PropTypes.string
+  removeType: PropTypes.string,
+  match: PropTypes.object
 };
 
 function mapStateToProps(state) {

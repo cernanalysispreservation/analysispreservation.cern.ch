@@ -244,7 +244,11 @@ class TextWidget extends Component {
     let input = null;
     if (this.props.options && this.props.options.suggestions) {
       input = (
-        <Box className="cap-async-select-input" pad={{ horizontal: "medium" }}>
+        <Box
+          key="async-input"
+          className="cap-async-select-input"
+          pad={{ horizontal: "medium" }}
+        >
           <AsyncSelect
             menuPosition="fixed"
             isMulti={false}
@@ -263,6 +267,7 @@ class TextWidget extends Component {
     } else if (this.props.schema.pattern) {
       input = (
         <RegExInput
+          key="regex-input"
           style={{ flexDirection: "row", flexWrap: "nowrap" }}
           mask={this.props.schema.pattern.slice(1, -1)}
           id={this.props.id}
@@ -304,6 +309,7 @@ class TextWidget extends Component {
     } else {
       input = (
         <TextInput
+          key="text-input"
           id={this.props.id}
           name={this.props.id}
           placeHolder={this.props.placeholder}

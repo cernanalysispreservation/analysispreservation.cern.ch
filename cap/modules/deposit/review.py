@@ -114,4 +114,3 @@ class Reviewable(object):
                 pass
 
             self["_review"] = reviews
-

@@ -7,28 +7,10 @@ import FieldHeader from "../components/FieldHeader";
 let FieldTemplate = function(props) {
   const { label, children, formContext } = props;
 
-  if (["array", "object"].indexOf(props.schema.type) > -1) {
-    return (
-      <span
-        style={{
-          gridColumn: "1/5",
-          height: "100%"
-        }}
-        className={
-          formContext.tabView
-            ? "overview-content-readonly fieldTemplate"
-            : "overview-content-readonly align-center fieldTemplate"
-        }
-      >
-        {children}
-      </span>
-    );
-  }
-
-  return children.props && children.props.formData === undefined ? null : (
+  return children[0].props &&
+    children[0].props.formData === undefined ? null : (
     <Box
       flex={true}
-      margin={{ horizontal: "medium" }}
       style={{
         borderRadius: "3px",
         gridColumn: "1/5",
@@ -39,19 +21,40 @@ let FieldTemplate = function(props) {
       id="fieldTemplate"
       className="fieldTemplate"
     >
-      {label ? (
+      {(label && !(["array"].indexOf(props.schema.type) > -1)) ||
+      props.schema.uniqueItems ? (
         <Box
           flex
           style={{
             paddingRight: "10px",
-            gridColumn: "1/3"
+            gridColumn:
+              ["array", "object"].indexOf(props.schema.type) > -1
+                ? props.schema.uniqueItems
+                  ? "1/3"
+                  : "1/5"
+                : label
+                  ? "1/3"
+                  : "1/5"
           }}
         >
           <FieldHeader title={label} italic bold />
         </Box>
       ) : null}
 
-      <Box flex justify="center" style={{ gridColumn: label ? "3/5" : "1/5" }}>
+      <Box
+        flex
+        justify="center"
+        style={{
+          gridColumn:
+            ["array", "object"].indexOf(props.schema.type) > -1
+              ? props.schema.uniqueItems
+                ? "3/5"
+                : "1/5"
+              : label
+                ? "3/5"
+                : "1/5"
+        }}
+      >
         {children}
       </Box>
     </Box>
@@ -60,7 +63,7 @@ let FieldTemplate = function(props) {
 
 FieldTemplate.propTypes = {
   label: PropTypes.string,
-  children: PropTypes.oneOf([PropTypes.array, PropTypes.element]),
+  children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
   schema: PropTypes.object
 };
 

@@ -22,7 +22,7 @@ const SearchFacet = ({
   updateFacet
 }) => {
   let expanded = !collapsed.toJS().includes(category);
-  let facet = facets[category]
+  let facet = facets[category];
   return (
     <Box>
       <Box
@@ -45,7 +45,9 @@ const SearchFacet = ({
           id={category}
           value={category}
         >
-          {facet.meta && facet.meta.title ? facet.meta.title : category.replace("_", " ")}
+          {facet.meta && facet.meta.title
+            ? facet.meta.title
+            : category.replace("_", " ")}
         </Heading>
 
         <Box onClick={() => updateFacet(category)}>

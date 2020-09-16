@@ -9,6 +9,13 @@ import Explain from "./Explain";
 import Integrations from "./Integrations";
 import Documentation from "./Documentation";
 import Footer from "./Footer";
+import {
+  AiOutlineHome,
+  AiOutlineShareAlt,
+  AiOutlineRead,
+  AiOutlineProfile,
+  AiOutlineInbox
+} from "react-icons/ai";
 
 class WelcomePage extends React.Component {
   constructor(props) {
@@ -24,23 +31,28 @@ class WelcomePage extends React.Component {
     this.nav = {
       intro: {
         title: "Home",
-        ref: this.IntroRef
+        ref: this.IntroRef,
+        icon: <AiOutlineHome size={23} color="rgb(110,110,110)" />
       },
       discover: {
         title: "What is CAP?",
-        ref: this.DiscoverRef
+        ref: this.DiscoverRef,
+        icon: <AiOutlineInbox size={23} color="rgb(110,110,110)" />
       },
       explain: {
         title: "Get Started",
-        ref: this.ExplainRef
+        ref: this.ExplainRef,
+        icon: <AiOutlineProfile size={23} color="rgb(110,110,110)" />
       },
       integrations: {
         title: "Integrations",
-        ref: this.IntegrationsRef
+        ref: this.IntegrationsRef,
+        icon: <AiOutlineShareAlt size={23} color="rgb(110,110,110)" />
       },
       docs: {
         title: "Documentation",
-        ref: this.DocumentationRef
+        ref: this.DocumentationRef,
+        icon: <AiOutlineRead size={23} color="rgb(110,110,110)" />
       }
     };
   }

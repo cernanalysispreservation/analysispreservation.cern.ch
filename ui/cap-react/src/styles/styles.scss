@@ -251,8 +251,7 @@ label {
   animation: loading 2s infinite ease-in-out;
 }
 
-.rjsf .published-array {
-  padding: 0 0 0 24px !important;
+.published-array {
   background: #ffffff;
 }
 
@@ -284,16 +283,16 @@ label {
 }
 
 .fieldTemplateSeparator:nth-child(odd) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-bottom: 1px solid #e4e4e4 !important;
+  border-top: 1px solid #e4e4e4 !important;
 }
 .fieldTemplateSeparator:first-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-bottom: 1px solid #e4e4e4 !important;
   border-top: 0px !important;
 }
 .fieldTemplateSeparator:nth-last-child(1):nth-child(odd) {
   border-bottom: 0px !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.5) !important;
+  border-top: 1px solid #e4e4e4 !important;
 }
 
 .fieldTemplateSeparator:last-child:first-child {
@@ -354,6 +353,21 @@ label {
 .search_facets .grommetux-check-box__label {
   line-height: 1.3 !important;
   font-size: 1.4em;
+}
+
+.not-underline,
+.not-underline:hover {
+  text-decoration: none !important;
+}
+
+#anchor-no-style .grommetux-anchor:hover,
+#anchor-no-style .grommetux-anchor {
+  text-decoration: none;
+  color: inherit;
+}
+
+.listItem:hover {
+  background: rgb(238, 238, 238) !important;
 }
 
 // xsmall
@@ -446,20 +460,24 @@ label {
 
   .sm-order-1 {
     order: 2;
-    margin: 50px 10px 50px 10px;
+    margin: 50px 0px;
+    width: 100%;
   }
   .sm-order-2 {
     order: 1;
-    margin: 50px 10px 0px 10px;
+    margin: 50px 0px 0px 0px;
+    width: 100%;
   }
   .sm-order-3 {
     order: 3;
-    margin: 0px 10px 50px 10px;
+    margin: 0px 0px 50px 0px;
+    width: 100%;
   }
 
   .sm-order-4 {
     order: 4;
-    margin: 0px 10px 50px 10px;
+    margin: 0px 0px 50px 0px;
+    width: 100%;
   }
 
   .dashboard-meter ul li {
@@ -630,6 +648,21 @@ label {
 @media only screen and (min-width: 1050px) {
   #list {
     max-width: 93vw;
+  }
+}
+@media only screen and (min-width: 1070px) {
+  .menuItem::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 1px;
+    background: #000;
+    transition: width 0.3s;
+  }
+
+  .menuItem:hover::after {
+    width: 100%;
+    transition: width 0.3s;
   }
 }
 // large

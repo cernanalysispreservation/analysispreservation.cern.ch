@@ -16,19 +16,33 @@ import { FaGithub, FaGitlab } from "react-icons/fa";
 import { LinkIcon } from "grommet/components/icons/base";
 
 class DraftIntegrations extends React.Component {
-  renderResourceIcon = (resource) => {
+  renderResourceIcon = resource => {
     return resource == "github.com" ? (
-      <Box margin={{ right: "large" }} direction="row" pad={{ between: "small" }} justify="center" align="center" responsive={false}>
+      <Box
+        margin={{ right: "large" }}
+        direction="row"
+        pad={{ between: "small" }}
+        justify="center"
+        align="center"
+        responsive={false}
+      >
         <FaGithub size="18" />
         <Label size="small">Github</Label>
       </Box>
     ) : (
-        <Box margin={{ right: "large" }} direction="row" pad={{ between: "small" }} justify="center" align="center" responsive={false}>
-          <FaGitlab size="18" />
-          <Label size="small">CERN Gitlab</Label>
-        </Box>
-      );
-  }
+      <Box
+        margin={{ right: "large" }}
+        direction="row"
+        pad={{ between: "small" }}
+        justify="center"
+        align="center"
+        responsive={false}
+      >
+        <FaGitlab size="18" />
+        <Label size="small">CERN Gitlab</Label>
+      </Box>
+    );
+  };
 
   render() {
     return (
@@ -84,11 +98,26 @@ class DraftIntegrations extends React.Component {
           <Heading tag="h4">Connected Repositories</Heading>
           <Box flex={false} colorIndex="light-2" separator="vertical">
             <Accordion>
-              <Box separator="horizontal" pad="small" flex direction="row" wrap={false} align="center" justify="between" responsive={false} colorIndex="light-1">
-                <Box flex direction="row" align="center" wrap={false} >
+              <Box
+                separator="horizontal"
+                pad="small"
+                flex
+                direction="row"
+                wrap={false}
+                align="center"
+                justify="between"
+                responsive={false}
+                colorIndex="light-1"
+              >
+                <Box flex direction="row" align="center" wrap={false}>
                   <strong>Repository</strong>
                 </Box>
-                <Box direction="row" wrap={false} flex={true} size={{ width: { max: "medium" } }}>
+                <Box
+                  direction="row"
+                  wrap={false}
+                  flex={true}
+                  size={{ width: { max: "medium" } }}
+                >
                   <strong>Upload Event</strong>
                 </Box>
               </Box>
@@ -99,28 +128,54 @@ class DraftIntegrations extends React.Component {
                     noHeading={true}
                     headingColor="light-2"
                     heading={
-                      <Box flex direction="row" align="center" justify="between" wrap={false} responsive={false}>
-                        <Box flex direction="row" align="center" wrap={false} responsive={false}>
+                      <Box
+                        flex
+                        direction="row"
+                        align="center"
+                        justify="between"
+                        wrap={false}
+                        responsive={false}
+                      >
+                        <Box
+                          flex
+                          direction="row"
+                          align="center"
+                          wrap={false}
+                          responsive={false}
+                        >
                           {this.renderResourceIcon(repo.host)}
-                          <strong>{repo.owner}/{repo.name}</strong>
+                          <strong>
+                            {repo.owner}/{repo.name}
+                          </strong>
                         </Box>
-                        <Box direction="row" wrap={false} align="center" flex={true} pad={{ between: "small", horizontal: "small" }} size={{ width: { max: "medium" } }}>
-                          <Box direction="row" pad={{ horizontal: "small" }} align="center">
-                            {
-                              repo.event_type == "release" ?
-                                "on Release/Tag" :
-                                "on Push"
-                            }
+                        <Box
+                          direction="row"
+                          wrap={false}
+                          align="center"
+                          flex={true}
+                          pad={{ between: "small", horizontal: "small" }}
+                          size={{ width: { max: "medium" } }}
+                        >
+                          <Box
+                            direction="row"
+                            pad={{ horizontal: "small" }}
+                            align="center"
+                          >
+                            {repo.event_type == "release"
+                              ? "on Release/Tag"
+                              : "on Push"}
                           </Box>
                           <Box>
-                            {repo.branch ? `(Branch/Ref: ${repo.branch})` : null}
+                            {repo.branch
+                              ? `(Branch/Ref: ${repo.branch})`
+                              : null}
                           </Box>
                         </Box>
                       </Box>
                     }
                   >
                     <Box colorIndex="light-1">
-                      {repo.snapshots.length > 0 ?
+                      {repo.snapshots.length > 0 ? (
                         repo.snapshots.map((snapshot, index) => (
                           <Box
                             key={index}
@@ -143,35 +198,54 @@ class DraftIntegrations extends React.Component {
                               <strong>
                                 {snapshot.payload.event_type == "release"
                                   ? snapshot.payload.release.tag
-                                  : snapshot.payload.commit.slice(-1)[0].message}
+                                  : snapshot.payload.commit.slice(-1)[0]
+                                      .message}
                               </strong>
-                              <TimeAgo date={snapshot.created} minPeriod="60" />
+                              {snapshot.created && (
+                                <TimeAgo
+                                  date={snapshot.created}
+                                  minPeriod="60"
+                                />
+                              )}
                             </Box>
-                            <Box
-                              flex={false}
-                              direction="row"
-                              wrap={false}
-                            >
+                            <Box flex={false} direction="row" wrap={false}>
                               <a target="_blank" href={snapshot.payload.link}>
-                                <Box pad={{ between: "small" }} direction="row" responsive={false} wrap={false} align="center">
+                                <Box
+                                  pad={{ between: "small" }}
+                                  direction="row"
+                                  responsive={false}
+                                  wrap={false}
+                                  align="center"
+                                >
                                   <span>Link</span> <LinkIcon size="xsmall" />
                                 </Box>
                               </a>
                             </Box>
                           </Box>
-                        )) :
-                        <Box separator="bottom" pad="medium" justify="center" align="center">
+                        ))
+                      ) : (
+                        <Box
+                          separator="bottom"
+                          pad="medium"
+                          justify="center"
+                          align="center"
+                        >
                           No snapshots were uploaded for this event
-                      </Box>
-                      }
+                        </Box>
+                      )}
                     </Box>
                   </AccordionPanel>
                 ))
               ) : (
-                  <Box separator="bottom" pad="medium" justify="center" align="center">
-                    No Repositories connected yet
-                  </Box>
-                )}
+                <Box
+                  separator="bottom"
+                  pad="medium"
+                  justify="center"
+                  align="center"
+                >
+                  No Repositories connected yet
+                </Box>
+              )}
             </Accordion>
           </Box>
         </Box>
@@ -181,7 +255,7 @@ class DraftIntegrations extends React.Component {
 }
 
 DraftIntegrations.propTypes = {
-  repos: PropTypes.object,
+  repos: PropTypes.array,
   toggleFilemanagerLayer: PropTypes.func,
   canUpdate: PropTypes.bool
 };

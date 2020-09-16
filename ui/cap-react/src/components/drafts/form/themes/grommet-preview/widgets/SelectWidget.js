@@ -12,7 +12,6 @@ const SelectWidget = function(props) {
       <Box
         flex={true}
         direction="row"
-        margin={{ bottom: "small" }}
         style={{
           borderRadius: "3px",
           gridColumn: "1/5",
@@ -22,13 +21,6 @@ const SelectWidget = function(props) {
         }}
         className="fieldTemplate"
       >
-        <Box
-          style={{ paddingRight: "10px", gridColumn: "1/3" }}
-          margin={{ bottom: "small", horizontal: "medium" }}
-        >
-          <FieldHeader title={props.schema.title} italic bold />
-        </Box>
-
         <Box
           justify="start"
           align="start"

@@ -14,7 +14,7 @@ class DefaultArrayField extends React.Component {
   render() {
     return (
       <Box margin="none" size={{ height: { max: "small" } }}>
-        {this.props.items.length > 0 && (
+        {this.props.items.length > 0 ? (
           <Box flex={true} margin={{ top: "small", bottom: "medium" }}>
             <List>
               {this.props.items.length > 0
@@ -46,11 +46,12 @@ class DefaultArrayField extends React.Component {
                         />
                       )}
                     </ListItem>
-                  ))
-                : null}
+                  )) : null
+              }
             </List>
           </Box>
-        )}
+        )
+        : <Box flex justify="center" align="center" pad="small">No items</Box>}
       </Box>
     );
   }

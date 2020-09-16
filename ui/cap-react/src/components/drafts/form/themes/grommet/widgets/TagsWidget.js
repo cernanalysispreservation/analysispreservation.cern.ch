@@ -30,14 +30,31 @@ class TagsWidget extends Component {
   }
 
   renderInput(props) {
-    let { onChange, value, ...other } = props;
+    let {
+      onChange,
+      value,
+      onBlur,
+      onFocus,
+      onKeyDown,
+      onPaste,
+      placeholder,
+      ref
+    } = props;
+
+    // the addTag from props, was causing issues since it is not an attribute for input tag
+
     return (
       <input
         type="text"
         style={{ border: "none" }}
         onChange={onChange}
         value={value}
-        {...other}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onKeyDown={onKeyDown}
+        onPaste={onPaste}
+        placeholder={placeholder}
+        ref={ref}
       />
     );
   }

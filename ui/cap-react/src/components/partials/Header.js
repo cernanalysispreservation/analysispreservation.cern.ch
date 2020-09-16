@@ -9,20 +9,27 @@ import Add from "grommet/components/icons/base/Add";
 import HowToSearchPage from "../about/HowToSearch";
 
 import { Header as GrommetHeader, Heading } from "grommet";
+import {
+  AiOutlineSetting,
+  AiOutlineLogout,
+  AiOutlinePlus
+} from "react-icons/ai";
 
 import Box from "grommet/components/Box";
 import Title from "grommet/components/Title";
-import Menu from "grommet/components/Menu";
 import Label from "grommet/components/Label";
 import Layer from "grommet/components/Layer";
+
+import Menu from "./Menu";
+import MenuItem from "./MenuItem";
 
 import Anchor from "../partials/Anchor";
 
 import SearchBar from "../search/SearchBar";
 
-import UserIcon from "grommet/components/icons/base/User";
 import { logout } from "../../actions/auth";
 import DraftCreate from "../drafts/DraftCreate";
+import MediaQuery from "react-responsive";
 
 import CAPLogoLight from "../../img/cap-logo-light.svg";
 
@@ -68,7 +75,12 @@ class Header extends React.Component {
 
   render() {
     return (
-      <GrommetHeader fixed={false} colorIndex="neutral-1" size="small">
+      <GrommetHeader
+        fixed={false}
+        colorIndex="neutral-1"
+        size="small"
+        style={{ position: "relative" }}
+      >
         {this.state.showCreate ? (
           <DraftCreate toggle={this.toggleCreate} />
         ) : null}
@@ -123,43 +135,50 @@ class Header extends React.Component {
                   onClick={this.showLayer}
                 />
               </Box>
-              <Box>
-                <Menu
-                  align="center"
-                  margin={{ left: "small" }}
-                  direction="row"
-                  responsive={true}
-                  size="small"
-                >
-                  {this.props.permissions && (
+              <Box direction="row" align="center" justify="center">
+                {this.props.permissions && (
+                  <MediaQuery minWidth={720}>
                     <Box
                       onClick={() => this.toggleCreate()}
                       pad={{ horizontal: "small" }}
                       icon={<Add />}
+                      margin={{ right: "small" }}
                     >
                       <Heading margin="none" tag="h4">
                         Create
                       </Heading>
                     </Box>
+                  </MediaQuery>
+                )}
+                <Menu top={48} right={3} hoverColor="rgba(67,135,170,1)">
+                  {this.props.permissions && (
+                    <MediaQuery maxWidth={719}>
+                      <MenuItem
+                        hovered
+                        separator
+                        title="Create"
+                        onClick={() => this.toggleCreate()}
+                        href="#"
+                        icon={<AiOutlinePlus color="#000" />}
+                      />
+                    </MediaQuery>
                   )}
-                  <Menu
-                    dropAlign={{ top: "bottom", right: "right" }}
-                    icon={<UserIcon />}
-                    size="small"
-                  >
-                    <Anchor
-                      label="Settings"
-                      href="#"
-                      animateIcon={true}
-                      path="/settings"
-                    />
-                    <Anchor
-                      label="Logout"
-                      href="#"
-                      animateIcon={true}
-                      onClick={this.props.logout}
-                    />
-                  </Menu>
+                  <MenuItem
+                    hovered
+                    separator
+                    title="Settings"
+                    icon={<AiOutlineSetting color="#000" />}
+                    path="/settings"
+                    href="#"
+                  />
+                  <MenuItem
+                    hovered
+                    separator
+                    title="Logout"
+                    onClick={this.props.logout}
+                    href="#"
+                    icon={<AiOutlineLogout color="#000" />}
+                  />
                 </Menu>
               </Box>
             </Box>

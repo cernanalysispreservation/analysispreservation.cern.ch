@@ -77,9 +77,19 @@ function DashboardList(props) {
       >
         {list[activeList].list.length > 0 ? (
           <Box>
-            <List>
+            <List id="anchor-no-style">
               {list[activeList].list.map((item, index) => (
-                <ListItem key={index} item={item} listType={listType} />
+                <Anchor
+                  style={{ width: "100%" }}
+                  key={index}
+                  path={
+                    listType == "draft"
+                      ? `/drafts/${item.id}`
+                      : `/published/${item.id}`
+                  }
+                >
+                  <ListItem item={item} />
+                </Anchor>
               ))}
             </List>
             {list[activeList].list.length > 4 ? (

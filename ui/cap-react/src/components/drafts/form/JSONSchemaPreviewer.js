@@ -53,7 +53,11 @@ class JSONShemaPreviewer extends React.Component {
           </Box>
         </Box>
         <Box flex={true} pad={{ horizontal: "small" }}>
-          <Box direction="row" justify="end">
+          <Box
+            direction="row"
+            justify="end"
+            style={{ position: "absolute", right: "26px" }}
+          >
             <Button
               margin={{ left: "medium" }}
               pad={{ vertical: "small", horizontal: "small" }}
@@ -134,7 +138,8 @@ JSONShemaPreviewer.propTypes = {
   formData: PropTypes.object,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func,
-  children: PropTypes.node
+  children: PropTypes.node,
+  schemaType: PropTypes.object
 };
 
 export default JSONShemaPreviewer;

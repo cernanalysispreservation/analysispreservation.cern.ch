@@ -25,6 +25,7 @@
 """Integration tests for GET deposits."""
 from urllib import parse
 
+from flask import current_app
 from invenio_search import current_search
 from pytest import mark
 from six import BytesIO
@@ -317,6 +318,62 @@ def test_get_deposit_with_default_serializer(client, users,
             .format(depid)
         }
     }]
+
+
+def test_get_deposits_with_correct_search_links(client, users, auth_headers_for_user,
+                                                create_deposit):
+    owner = users['cms_user']
+
+    for i in range(11):
+        deposit = create_deposit(
+            owner,
+            'cms-analysis', {
+                '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+                'basic_info': {
+                    'analysis_number': 'dream_team',
+                }
+            },
+            experiment='CMS')
+
+    resp = client.get('/deposits/',
+                      headers=[('Accept', 'application/json')] +
+                      auth_headers_for_user(owner))
+
+    assert resp.status_code == 200
+    assert resp.json['links'] == {
+        'self': 'http://analysispreservation.cern.ch/api/deposits/?page=1&size=10',
+        'next': 'http://analysispreservation.cern.ch/api/deposits/?page=2&size=10'
+    }
+
+
+@mark.skip
+def test_get_deposits_with_correct_search_links_in_debug_mode(
+         users, auth_headers_for_user, create_deposit, app):
+    owner = users['cms_user']
+    app.config['DEBUG'] = True
+
+    with app.test_client() as client:
+        for i in range(11):
+            create_deposit(
+                owner,
+                {
+                    '$schema': 'https://analysispreservation.cern.ch/schemas/deposits/records/cms-analysis-v1.0.0.json',
+                    'basic_info': {
+                        'analysis_number': 'dream_team',
+                    }
+                },
+                experiment='CMS'
+            )
+
+        resp = client.get('/deposits/',
+                          headers=[('Accept', 'application/json')] +
+                          auth_headers_for_user(owner))
+
+        assert resp.status_code == 200
+        assert resp.json['links'] == {
+            'self': 'http://analysispreservation.cern.ch/deposits/?page=1&size=10',
+            'next': 'http://analysispreservation.cern.ch/deposits/?page=2&size=10'
+        }
 
 
 def test_get_deposits_with_facets(client, users, auth_headers_for_user, create_deposit):

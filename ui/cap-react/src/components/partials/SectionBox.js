@@ -59,7 +59,6 @@ SectionBox.propTypes = {
   body: PropTypes.node,
   headerActions: PropTypes.node,
   emptyMessage: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
   history: PropTypes.object
 };
 

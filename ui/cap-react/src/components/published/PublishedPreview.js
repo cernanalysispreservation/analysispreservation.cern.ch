@@ -169,7 +169,7 @@ class PublishedPreview extends React.Component {
     // let status = item ? item._deposit.status : null;
     return (
       <Box flex={true}>
-        <Box direction="row" flex={true} wrap={false}>
+        <Box direction="row" flex={true}>
           <Sidebar full={false} size="medium" colorIndex="light-2">
             <SectionHeader label="Files | Data | Source Code" />
             <Box flex={true}>
@@ -214,7 +214,7 @@ class PublishedPreview extends React.Component {
                 }
                 uppercase={false}
                 action={
-                  <Box direction="row" wrap="false">
+                  <Box direction="row">
                     {this.props.canReview ? (
                       <Anchor
                         pad={{ horizontal: "small" }}
@@ -290,7 +290,10 @@ PublishedPreview.propTypes = {
   metadata: PropTypes.object,
   id: PropTypes.string,
   status: PropTypes.string,
-  canUpdate: PropTypes.bool
+  canUpdate: PropTypes.bool,
+  canReview: PropTypes.bool,
+  review_link: PropTypes.string,
+  schemaType: PropTypes.object
 };
 
 const mapStateToProps = state => {

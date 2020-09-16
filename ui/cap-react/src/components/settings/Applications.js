@@ -136,7 +136,6 @@ class SettingsIndex extends React.Component {
                   <Table>
                     <TableHeader
                       key="token_header"
-                      uppercase
                       labels={["ID", "Name", "API key", "Revoke"]}
                     />
                     <tbody>

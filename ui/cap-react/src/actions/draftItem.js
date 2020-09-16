@@ -432,7 +432,6 @@ export function reviewDraft(draft_id, review) {
 
     let uri = `/api/deposits/${draft_id}/actions/review`;
 
-    console.log("reviewDraft::", review);
     return axios
       .post(uri, review, {
         headers: {
@@ -556,19 +555,25 @@ export function deleteDraft() {
     let state = getState();
 
     let links = state.draftItem.get("links");
+
     // let uri = `/api/deposits/${draft_id}`;
 
+    // when deleting, send the request and wait 1sec for the ElasticSearch to complete re-indexing
     axios
       .delete(links.self)
       .then(() => {
-        dispatch(deleteDraftSuccess());
-        dispatch(push("/"));
-        cogoToast.success("Your Draft has been deleted", {
-          position: "top-center",
-          heading: "Draft deleted",
-          bar: { size: "0" },
-          hideAfter: 3
-        });
+        cogoToast
+          .loading("Deleting Draft....", { hideAfter: 1, bar: { size: "0" } })
+          .then(() => {
+            dispatch(push("/"));
+            cogoToast.success("Your Draft has been deleted", {
+              position: "top-center",
+              heading: "Draft deleted",
+              bar: { size: "0" },
+              hideAfter: 2
+            });
+            dispatch(deleteDraftSuccess());
+          });
       })
       .catch(error => {
         dispatch(deleteDraftError(error.response));

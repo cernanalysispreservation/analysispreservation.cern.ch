@@ -51,11 +51,13 @@ LABELS = {
     },
     #    'cms_keywords': {
     #        'path': 'metadata.additional_resources.keywords',
-    #        'condition': lambda obj: obj.get('metadata',{})['_experiment'] == 'CMS'
+    #        'condition':
+    #            lambda obj: obj.get('metadata', {})['_experiment'] == 'CMS'
     #    },
     #    'version': {
     #        'path': 'revision',
-    #      'condition': lambda obj: obj.get('metadata',{})['_deposit']['status'] == \
+    #      'condition':
+    #          lambda obj: obj.get('metadata', {})['_deposit']['status'] == \
     #        'published',
     #        'formatter': 'v{}'
     #    }
