@@ -25,6 +25,10 @@ const SearchTag = ({
   delete params["q"];
   delete params["type"];
 
+  // remove tags by_me and page
+  delete params["by_me"];
+  delete params["page"];
+
   return (
     <Box
       direction="row"
@@ -56,26 +60,25 @@ const SearchTag = ({
             onClick={() => removeQuery("type", decodeURIComponent(type))}
           />
         ))}
-      {Object.entries(params) &&
-        Object.entries(params).map(
-          (item, index) =>
-            Array.isArray(item[1]) ? (
-              item[1].map(second => (
-                <Tag
-                  background="#f1f1f1"
-                  key={index + second}
-                  text={`${item[0]}:${decodeURIComponent(second)}`}
-                  onClick={() => onClick(item[0], second)}
-                />
-              ))
-            ) : (
+      {Object.entries(params).map(
+        (item, index) =>
+          Array.isArray(item[1]) ? (
+            item[1].map(second => (
               <Tag
                 background="#f1f1f1"
-                text={`${item[0]}:${decodeURIComponent(item[1])}`}
-                onClick={() => onClick(item[0], item[1])}
+                key={index + second}
+                text={`${item[0]}:${decodeURIComponent(second)}`}
+                onClick={() => onClick(item[0], second)}
               />
-            )
-        )}
+            ))
+          ) : (
+            <Tag
+              background="#f1f1f1"
+              text={`${item[0]}:${decodeURIComponent(item[1])}`}
+              onClick={() => onClick(item[0], item[1])}
+            />
+          )
+      )}
     </Box>
   );
 };
