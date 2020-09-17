@@ -156,6 +156,12 @@ class PublishedPreview extends React.Component {
           }}
         />
         <Tag text={this.props.id} />
+        {
+          this.props.schemaType &&
+            <Tag
+              text={`${this.props.schemaType.get('fullname')} v${this.props.schemaType.get('version')}`}
+            />
+        }
       </Box>
     );
   };
