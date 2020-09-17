@@ -17,6 +17,7 @@ class TextWidget extends React.Component {
         size={{ width: "xxlarge" }}
         justify="center"
         flex={false}
+        pad={{ horizontal: "medium" }}
         alignSelf="end"
         wrap={true}
       >

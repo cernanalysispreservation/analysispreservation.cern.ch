@@ -28,11 +28,11 @@ let FieldTemplate = function(props) {
     // }
     return (
       <Box
-      pad={{ horizontal: "small" }}
-      style={{
+        pad={{ horizontal: "small" }}
+        style={{
           gridColumn: gridColumns ? gridColumns : "1 / 5",
           paddingTop: "10px",
-          paddingBottom: "10px",
+          paddingBottom: "10px"
         }}
         flex={
           props.uiSchema["ui:object"] &&
@@ -40,10 +40,8 @@ let FieldTemplate = function(props) {
             ? true
             : null
         }
-      className="fieldTemplate"
+        className="fieldTemplate"
       >
-      <FieldHeader title={label} italic bold />
-
         {children}
       </Box>
     );
@@ -53,7 +51,10 @@ let FieldTemplate = function(props) {
     <FormField
       label={
         <span>
-          <span style={{ color: "#000" }} dangerouslySetInnerHTML={{ __html: label }} />
+          <span
+            style={{ color: "#000" }}
+            dangerouslySetInnerHTML={{ __html: label }}
+          />
           {rawDescription ? (
             <span dangerouslySetInnerHTML={{ __html: rawDescription }} />
           ) : null}
@@ -63,10 +64,9 @@ let FieldTemplate = function(props) {
       error={props.rawErrors && props.rawErrors.length ? true : false}
       style={{
         gridColumn: gridColumns ? gridColumns : "1 / 5",
-        overflow:"visible"
+        overflow: "visible"
       }}
       className="fieldTemplate"
-      
     >
       {children}
       {props.rawErrors && props.rawErrors.length ? (

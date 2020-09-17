@@ -19,7 +19,11 @@ let FieldTemplate = function(props) {
         padding: "10px"
       }}
       id="fieldTemplate"
-      className="fieldTemplate"
+      className={
+        formContext.tabView
+          ? "fieldTemplate "
+          : "fieldTemplate align-form-center"
+      }
     >
       {(label && !(["array"].indexOf(props.schema.type) > -1)) ||
       props.schema.uniqueItems ? (
@@ -64,7 +68,8 @@ let FieldTemplate = function(props) {
 FieldTemplate.propTypes = {
   label: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
-  schema: PropTypes.object
+  schema: PropTypes.object,
+  formContext: PropTypes.object
 };
 
 export default FieldTemplate;

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 
 import Tag from "../../../../../partials/Tag";
-import FieldHeader from "../components/FieldHeader";
 
 const SelectWidget = function(props) {
   if (props.schema.type === "array") {
@@ -17,7 +16,7 @@ const SelectWidget = function(props) {
           gridColumn: "1/5",
           display: "grid",
           gridTemplateColumns: "repeat(4, 1fr)",
-          padding: "10px"
+          padding: "2px 5px"
         }}
         className="fieldTemplate"
       >
@@ -25,7 +24,7 @@ const SelectWidget = function(props) {
           justify="start"
           align="start"
           pad={{ horizontal: "medium" }}
-          style={{ paddingBottom: "3px", gridColumn: "3/5" }}
+          style={{ paddingBottom: "3px", gridColumn: "1/5" }}
           direction="row"
           responsive={false}
           wrap

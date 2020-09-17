@@ -10,7 +10,12 @@ class ImportDataField extends React.Component {
 
   render() {
     return (
-      <Box style={{ overflow: "hidden" }} justify="center" flex={true}>
+      <Box
+        style={{ wordBreak: "break-all" }}
+        justify="center"
+        flex={true}
+        pad={{ horizontal: "medium" }}
+      >
         {this.props.formData || ""}
       </Box>
     );
