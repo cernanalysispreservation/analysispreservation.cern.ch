@@ -119,7 +119,11 @@ class CommonRecordSchema(Schema, StrictKeysMixin):
 
     def get_schema(self, obj):
         schema = resolve_schema_by_url(obj.get('metadata', {})['$schema'])
-        result = {'name': schema.name, 'version': schema.version}
+        result = {
+            'name': schema.name,
+            'version': schema.version,
+            'fullname': schema.fullname
+        }
         return result
 
     def get_metadata(self, obj):

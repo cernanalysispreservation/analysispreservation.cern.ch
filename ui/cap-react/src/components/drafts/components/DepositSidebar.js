@@ -108,6 +108,24 @@ class DepositSidebar extends React.Component {
               ID <span>{this.props.id}</span>
             </Box>
 
+            {
+              this.props.schema &&
+              <Box
+                direction="row"
+                wrap={false}
+                justify="between"
+                margin={{ bottom: "small" }}
+                responsive={false}
+                align="center"
+              >
+                <span>Collection</span>
+                <Tag
+                  text={`${this.props.schema.fullname} v${this.props.schema.version}`}
+                />
+              </Box>
+            }
+
+
             <Box
               direction="row"
               wrap={false}
@@ -204,6 +222,7 @@ function mapStateToProps(state) {
     files: state.draftItem.get("bucket"),
     id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
+    schema: state.draftItem.get("schema"),
     experiment: state.draftItem.get("experiment"),
     revision: state.draftItem.get("revision"),
     created_by: state.draftItem.get("created_by"),
