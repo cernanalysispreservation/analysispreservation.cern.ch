@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Box from "grommet/components/Box";
 import Paragraph from "grommet/components/Paragraph";
 import { FormField } from "grommet";
+import FieldHeader from "../components/FieldHeader";
 
 // Work for schema with 'type: "array"', with 'uniqueItems: true and
 // type: "string" items with enum
@@ -16,7 +17,7 @@ import { FormField } from "grommet";
 //     "enum": ["aa", "bb", "cc"]
 //   }
 // }
-const SelectWidget = function(props) {
+const SelectWidget = function (props) {
   let {
     id,
     type,
@@ -110,12 +111,12 @@ const SelectWidget = function(props) {
           ))}
       </Box>
     ) : (
-      <Box pad={{ horizontal: "medium" }} key="box-select-widget">
-        <Paragraph>
-          {`Selected Value:  ${props.value || " user inserted no value"}`}
-        </Paragraph>
-      </Box>
-    ),
+        <Box pad={{ horizontal: "medium" }} key="box-select-widget">
+          <Paragraph>
+            {`Selected Value:  ${props.value || " user inserted no value"}`}
+          </Paragraph>
+        </Box>
+      ),
     rawErrors && rawErrors.length ? (
       <Box
         key="box-select-widget-rawErrors"
@@ -135,29 +136,26 @@ const SelectWidget = function(props) {
   if (type !== "array") return _children;
 
   return (
-    <FormField
-      label={
-        <Box direction="row" wrap={false}>
-          <Box flex={true} direction="row" wrap={false}>
-            <span style={{ color: "#000" }}>{title || id}</span>
-            {description ? (
-              <span style={{ color: "#bbb" }}> &nbsp; {description}</span>
-            ) : null}
-          </Box>
-          <Box flex={false} alignSelf="end">
-            <input
-              onChange={_filterOptions}
-              style={{ height: "24px", borderRadius: "0", padding: "0 5px" }}
-              placeholder="Filter options"
-            />
+    <Box style={{border: rawErrors.length ? "1px solid #F04B37" : null}}>
+      <Box direction="row" wrap={false}>
+        <Box flex={true} direction="row" wrap={false}>
+          <FieldHeader margin="none" title={title || id} italic bold />
+          <Box justify="center">
+          {description ? (
+            <span style={{ color: "#bbb" }}> &nbsp; {description}</span>
+          ) : null}
           </Box>
         </Box>
-      }
-      key={id}
-      error={rawErrors.length ? true : false}
-    >
+        <Box flex={false} alignSelf="end">
+          <input
+            onChange={_filterOptions}
+            style={{ height: "24px", borderRadius: "0", padding: "0 5px" }}
+            placeholder="Filter options"
+          />
+        </Box>
+      </Box>
       {_children}
-    </FormField>
+    </Box>
   );
 };
 

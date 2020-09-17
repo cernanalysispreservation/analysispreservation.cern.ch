@@ -196,7 +196,7 @@ class ArrayFieldTemplate extends React.Component {
       return (
         <Box>
           {_pastable && _label}
-          <Box flex={false} separator="all">
+          <Box flex={false}>
             <DefaultArrayField
               _onAddClick={this._onAddClick.bind(this)}
               {...this.props}
@@ -209,7 +209,7 @@ class ArrayFieldTemplate extends React.Component {
       return (
         <Box>
           {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <Box flex={false} separator="all">
+          <Box flex={false}>
             <StringArrayField
               _onAddClick={this._onAddClick.bind(this)}
               {...this.props}
@@ -221,8 +221,8 @@ class ArrayFieldTemplate extends React.Component {
     } else if (this.formRenderType == "LayerArrayField") {
       return (
         <Box>
-          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}
-          <Box flex={false} separator="all">
+          {this.props.uiSchema && !this.props.uiSchema["ui:pastable"] && _label}              
+          <Box flex={false}>
             <LayerArrayField
               _onAddClick={this._onAddClick.bind(this)}
               {...this.props}
@@ -269,13 +269,12 @@ class ArrayFieldTemplate extends React.Component {
         enableLatex={this.uiOptionLatex && this._enableLatex}
         latexEnabled={this.uiOptionLatex && this.state.latexEnabled}
         importEnabled={this.uiOptionLatex && this.state.importEnabled}
-        margin="none"
+        margin={{bottom: "small"}}
       />
     );
 
     return (
       <Box
-        className={this.props.formContext.isPublished ? "published-array" : ""}
         size={
           this.props.uiSchema &&
           this.props.uiSchema["ui:options"] &&

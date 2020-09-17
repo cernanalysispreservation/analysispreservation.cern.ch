@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import FormField from "grommet/components/FormField";
 import Box from "grommet/components/Box";
 import FieldHeader from "../../grommet-preview/components/FieldHeader";
+import { Paragraph } from "grommet";
 
 let FieldTemplate = function(props) {
   const { id, label, rawDescription, children, uiSchema } = props;
@@ -28,11 +29,15 @@ let FieldTemplate = function(props) {
     // }
     return (
       <Box
-        pad={{ horizontal: "small" }}
+
         style={{
           gridColumn: gridColumns ? gridColumns : "1 / 5",
-          paddingTop: "10px",
-          paddingBottom: "10px"
+          borderRight: "1px dotted rgba(0, 0, 0, 0.15)",
+          borderLeft: "1px dotted rgba(0, 0, 0, 0.15)",
+          paddingTop: props.id === "root" ? null : "10px",
+          paddingBottom: props.id === "root" ? null : "10px",
+          paddingLeft: props.id === "root" ? null : "24px",
+          paddingRight: props.id === "root" ? null : "24px"
         }}
         flex={
           props.uiSchema["ui:object"] &&
@@ -43,7 +48,12 @@ let FieldTemplate = function(props) {
         className="fieldTemplate"
       >
         {!props.schema.type.includes("array") && (
+          <Box margin={props.id === "root" ? null : {bottom: "small"}}>
           <FieldHeader title={label} italic bold />
+          <Paragraph size="small" margin="none">
+            {rawDescription}
+          </Paragraph>
+          </Box>
         )}
         {children}
       </Box>

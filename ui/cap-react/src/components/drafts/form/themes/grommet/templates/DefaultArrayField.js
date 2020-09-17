@@ -51,7 +51,7 @@ class DefaultArrayField extends React.Component {
             </List>
           </Box>
         )
-        : <Box flex justify="center" align="center" pad="small">No items</Box>}
+        : <Box flex justify="center" align="center" pad="small" style={{background: "rgb(216 216 216 / 25%)"}}>No items</Box>}
       </Box>
     );
   }
