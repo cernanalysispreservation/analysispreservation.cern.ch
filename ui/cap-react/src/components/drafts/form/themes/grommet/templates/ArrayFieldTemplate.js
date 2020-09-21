@@ -10,9 +10,11 @@ import AccordionArrayField from "./AccordionArrayField";
 import DefaultArrayField from "./DefaultArrayField";
 import StringArrayField from "./StringArrayField";
 import AddIcon from "grommet/components/icons/base/Add";
+import { AiOutlinePlus } from "react-icons/ai";
 import axios from "axios";
 import LatexPreviewer from "../../../../../../components/latex/latex";
 import ImportLayer from "../components/ImportLayer";
+import Button from "../../../../../partials/Button";
 class ArrayFieldTemplate extends React.Component {
   constructor(props) {
     super(props);
@@ -174,18 +176,15 @@ class ArrayFieldTemplate extends React.Component {
   }
 
   _renderAddButton = () => (
-    <Box
-      onClick={this._onAddClick.bind(this)}
-      style={{ padding: "5px", margin: "10px 0" }}
-      colorIndex="light-1"
-      direction="row"
-      justify="center"
-      align="center"
-      flex={false}
-      responsive={false}
-    >
-      <AddIcon size="xsmall" />{" "}
-      <span style={{ marginLeft: "5px" }}>Add Item</span>
+    <Box align="center">
+      <Button
+        icon={<AiOutlinePlus size={20} />}
+        text="Add Item"
+        size="small"
+        onClick={this._onAddClick.bind(this)}
+        background="#fff"
+        hoverColor="#f5f5f5"
+      />
     </Box>
   );
 
