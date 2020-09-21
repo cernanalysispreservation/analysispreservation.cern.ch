@@ -18,9 +18,10 @@ const FormHeader = ({
         pad={{ vertical: "small", horizontal: "medium" }}
         separator="bottom"
         margin={{ bottom: "medium" }}
+        responsive={false}
       >
-        <Box direction="row" align="center" justify="center">
-          <Heading tag="h3" margin="none" style={{ fontStyle: "italic" }}>
+        <Box flex direction="row" align="center" justify="start" >
+          <Heading tag="h3" margin="none" style={{ marginRight: "12px", fontStyle: "italic" }}>
             {title}
           </Heading>
           {tags}

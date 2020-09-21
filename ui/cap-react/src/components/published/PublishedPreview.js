@@ -145,7 +145,7 @@ class PublishedPreview extends React.Component {
         direction="row"
         align="center"
         pad={{ between: "small" }}
-        margin={{ left: "medium" }}
+        responsive={false}
       >
         <Tag
           text="Published"
