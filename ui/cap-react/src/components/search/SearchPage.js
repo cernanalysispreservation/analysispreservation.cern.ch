@@ -23,6 +23,7 @@ import SearchFilterLayer from "./SearchFilterLayer";
 
 import DocumentTitle from "../partials/Title";
 
+import Button from "../partials/Button";
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class SearchPage extends React.Component {
     let utils;
     let total = null;
     let results = null;
-    let queryParams = [];
+    let queryParams = 0;
 
     let _results = {};
     let _aggs;
@@ -114,6 +115,15 @@ class SearchPage extends React.Component {
       _aggs = _results.aggregations;
     }
 
+    // calculate the number of applied filters
+    if (queryString.parse(this.props.location.search)) {
+      let arr = Object.entries(queryString.parse(this.props.location.search));
+      arr = arr.filter(item => item[0] !== "q" && item[0] !== "page");
+
+      arr.map(item => {
+        queryParams += Array.isArray(item[1]) ? item[1].length : 1;
+      });
+    }
     if (_results && _results.hits) {
       total = _results.hits.total;
       utils = (
@@ -158,11 +168,11 @@ class SearchPage extends React.Component {
           </Label>
         </Box>
       ) : (
-              <Box align="end">
-                <SearchResults results={_results.hits.hits || []} />
-                {utils}
-              </Box>
-            );
+        <Box align="end">
+          <SearchResults results={_results.hits.hits || []} />
+          {utils}
+        </Box>
+      );
     }
 
     return (
@@ -203,23 +213,15 @@ class SearchPage extends React.Component {
                 margin={{ bottom: "small" }}
               >
                 <SearchResultHeading results={_results.hits.total} />
-                <Box
-                  colorIndex="brand"
+                <Button
                   id="sidebar_button"
-                  pad="small"
-                  align="center"
-                  justify="center"
-                  direction="row"
-                  responsive={false}
+                  primary
+                  icon={<FiSliders size={15} />}
                   onClick={() => this.setState({ layerActive: true })}
-                >
-                  <Box style={{ margin: "0 5px" }}>
-                    <FiSliders />
-                  </Box>
-                  {queryParams.length > 0
-                    ? `Filters (${queryParams.length})`
-                    : "Filters"}
-                </Box>
+                  text={
+                    queryParams > 0 ? `Filters (${queryParams})` : "Filters"
+                  }
+                />
               </Box>
               <SearchTag
                 params={
@@ -227,7 +229,11 @@ class SearchPage extends React.Component {
                     ? queryString.parse(this.props.location.search)
                     : undefined
                 }
-                anatype={this.props.match.params ? this.props.match.params.anatype : null}
+                anatype={
+                  this.props.match.params
+                    ? this.props.match.params.anatype
+                    : null
+                }
                 removeAnatype={() => {
                   this.props.history.push(
                     `/search${this.props.location.search}`

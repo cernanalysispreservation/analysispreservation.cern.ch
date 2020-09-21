@@ -87,7 +87,9 @@ const Button = ({
   margin = "",
   loading = false,
   size = "medium",
-  reverse = false
+  reverse = false,
+  className = "",
+  id = ""
 }) => {
   const getPadFromSize = size => {
     const choices = {
@@ -204,6 +206,8 @@ const Button = ({
       background={background}
       hoverColor={hoverColor}
       color={color}
+      className={className}
+      id={id}
     >
       {loading && (
         <Box style={{ position: "absolute", left: getLoadingLeft(size) }}>
@@ -241,7 +245,9 @@ Button.propTypes = {
     "iconLarge"
   ]),
   hoverColor: PropTypes.string,
-  reverse: PropTypes.bool
+  reverse: PropTypes.bool,
+  className: PropTypes.string,
+  id: PropTypes.string
 };
 
 export default Button;
