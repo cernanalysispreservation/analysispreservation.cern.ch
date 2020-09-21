@@ -83,19 +83,17 @@ class SettingsIndex extends React.Component {
         <Box flex={true} size="medium" pad={{ vertical: "large" }}>
           <Heading align="start" margin="small" tag="h3">
             New OAuth Application
-            </Heading>
+          </Heading>
           <Paragraph align="start" margin="none" />
           <Form
             schema={
-              this.state.layer.type == "token"
-                ? tokenSchema
-                : applicationSchema
+              this.state.layer.type == "token" ? tokenSchema : applicationSchema
             }
             onSubmit={this._onSubmit.bind(this, this.state.layer.type)}
             validate={true}
             hideErrorList
           >
-            <Box flex={true} margin={{ vertical: "small" }}>
+            <Box flex={true} margin={{ vertical: "small" }} align="center">
               <Button label="Create token" type="submit" primary={true} />
             </Box>
           </Form>
@@ -164,14 +162,14 @@ class SettingsIndex extends React.Component {
                   </Table>
                 </Box>
               ) : (
-                  <ListPlaceholder
-                    label="Add token"
-                    primary={true}
-                    a11yTitle="Add item"
-                    emptyMessage="You do not have any items at the moment."
-                    unfilteredTotal={0}
-                  />
-                )}
+                <ListPlaceholder
+                  label="Add token"
+                  primary={true}
+                  a11yTitle="Add item"
+                  emptyMessage="You do not have any items at the moment."
+                  unfilteredTotal={0}
+                />
+              )}
             </Box>
           </Box>
         </Box>

@@ -7,8 +7,6 @@ import { withRouter } from "react-router";
 import Box from "grommet/components/Box";
 import Sidebar from "grommet/components/Sidebar";
 
-import AddIcon from "grommet/components/icons/base/Add";
-
 import { toggleFilemanagerLayer } from "../../../actions/draftItem";
 
 import SectionHeader from "./SectionHeader";
@@ -17,10 +15,12 @@ import DepositFilesList from "./DepositFilesList";
 import { Route } from "react-router-dom";
 
 import TimeAgo from "react-timeago";
-import { RefreshIcon } from "grommet/components/icons/base";
+
 import { getBucketById } from "../../../actions/files";
 
 import Tag from "../../partials/Tag";
+import Button from "../../partials/Button";
+import { AiOutlinePlus, AiOutlineReload } from "react-icons/ai";
 
 class DepositSidebar extends React.Component {
   constructor(props) {
@@ -34,13 +34,11 @@ class DepositSidebar extends React.Component {
           <Route
             path="/drafts/:draft_id/"
             render={() => (
-              <Box
-                colorIndex="light-2"
+              <Button
+                size="icon"
+                icon={<AiOutlinePlus size={20} />}
                 onClick={this.props.toggleFilemanagerLayer}
-                style={{ padding: "5px" }}
-              >
-                <AddIcon size="small" />
-              </Box>
+              />
             )}
           />
         );
@@ -55,13 +53,11 @@ class DepositSidebar extends React.Component {
           <Route
             path="/drafts/:draft_id/"
             render={() => (
-              <Box
-                colorIndex="light-2"
+              <Button
+                size="icon"
                 onClick={this._refreshFileList}
-                style={{ padding: "5px" }}
-              >
-                <RefreshIcon size="small" />
-              </Box>
+                icon={<AiOutlineReload size={20} />}
+              />
             )}
           />
         );
@@ -166,7 +162,12 @@ class DepositSidebar extends React.Component {
             label="Files | Data | Repos"
             uppercase={true}
             icon={
-              <Box direction="row" wrap={false} pad={{ between: "small" }}>
+              <Box
+                direction="row"
+                wrap={false}
+                pad={{ between: "small" }}
+                margin={{ right: "small" }}
+              >
                 {this._renderRefreshFilesButton()}
                 {this._renderAddFileIcon()}
               </Box>

@@ -27,7 +27,8 @@ export default function SectionHeader(props) {
         </Label>
       </Box>
 
-      <Button icon={props.icon} pad={{}} margin="0 10px" background="#fff" />
+      {props.icon}
+
       {props.action ? (
         <Box flex={false} margin={{ horizontal: "small" }}>
           {props.action}
