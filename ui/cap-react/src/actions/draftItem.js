@@ -1,5 +1,5 @@
 import axios from "axios";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 import { fetchAndAssignSchema } from "./common";
 import { getBucketByUri, getBucketById } from "./files";
 import cogoToast from "cogo-toast";

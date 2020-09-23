@@ -1,5 +1,5 @@
 import axios from "axios";
-import { push } from "react-router-redux";
+import { push } from "connected-react-router";
 
 const WORKFLOWS_API_URL = "/api/workflows";
 const REANA_WORKFLOWS_API_URL = `${WORKFLOWS_API_URL}/reana`;
