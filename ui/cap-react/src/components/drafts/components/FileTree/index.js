@@ -15,11 +15,15 @@ import HorizontalWithText from "../../../partials/HorizontalWithText";
 
 import { filter } from "lodash";
 import RepoTree from "./RepoTree";
+import { AiOutlineInbox } from "react-icons/ai";
 class FileTree extends React.Component {
   constructor(props) {
     super(props);
     let data = this.constructTree(props.files);
-    this.state = { data };
+    this.state = {
+      renderList: this.props.renderList || ["files", "repositories", "title"],
+      data
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,6 +70,58 @@ class FileTree extends React.Component {
     return { children };
   };
 
+  getContentFromProps = (value, displayTitle, repos, files) => {
+    const choices = {
+      repositories: (
+        <React.Fragment>
+          {displayTitle && (
+            <HorizontalWithText
+              text="All Repositories"
+              background={this.props.background}
+              color={this.props.color}
+            />
+          )}
+          <RepoTree
+            repos={repos}
+            onDirectoryClick={this.props.onDirectoryClick}
+            onFileClick={this.props.onFileClick}
+          />
+        </React.Fragment>
+      ),
+      files: (
+        <React.Fragment>
+          {displayTitle && (
+            <HorizontalWithText
+              text="All Files"
+              background={this.props.background}
+              color={this.props.color}
+            />
+          )}
+          {files.children && files.children.length > 0 ? (
+            <TreeNode
+              data={files}
+              onDirectoryClick={this.props.onDirectoryClick}
+              onFileClick={this.props.onFileClick}
+              root
+            />
+          ) : (
+            <Box flex={true} pad="small" justify="center" align="center">
+              <Box
+                colorIndex="light-2"
+                style={{ borderRadius: "50%", padding: "5px" }}
+              >
+                <AiOutlineInbox size={18} />
+              </Box>
+              No uploaded files yet
+            </Box>
+          )}
+        </React.Fragment>
+      )
+    };
+
+    return choices[value];
+  };
+
   render() {
     let repos = filter(this.state.data.children, { name: "repositories" });
     let allFiles = {
@@ -74,36 +130,13 @@ class FileTree extends React.Component {
         item => item.name != "repositories"
       )
     };
+    let displayTitle = this.state.renderList.includes("title");
 
     return (
       <Box style={{ marginLeft: "5px" }}>
-        <HorizontalWithText
-          text="All Files"
-          background={this.props.background}
-          color={this.props.color}
-        />
-        {allFiles.children && allFiles.children.length > 0 ? (
-          <TreeNode
-            data={allFiles}
-            onDirectoryClick={this.props.onDirectoryClick}
-            onFileClick={this.props.onFileClick}
-            root
-          />
-        ) : (
-          <Box flex={true} pad="small" justify="center" align="center">
-            No files added yet
-          </Box>
+        {this.state.renderList.map(item =>
+          this.getContentFromProps(item, displayTitle, repos, allFiles)
         )}
-        <HorizontalWithText
-          text="All Repositories"
-          background={this.props.background}
-          color={this.props.color}
-        />
-        <RepoTree
-          repos={repos}
-          onDirectoryClick={this.props.onDirectoryClick}
-          onFileClick={this.props.onFileClick}
-        />
       </Box>
     );
   }
@@ -118,7 +151,10 @@ FileTree.propTypes = {
   background: PropTypes.string,
   color: PropTypes.string,
   onFileClick: PropTypes.func,
-  onDirectoryClick: PropTypes.func
+  onDirectoryClick: PropTypes.func,
+  hideFiles: PropTypes.bool,
+  hideRepos: PropTypes.bool,
+  hideTitle: PropTypes.bool
 };
 
 export default FileTree;

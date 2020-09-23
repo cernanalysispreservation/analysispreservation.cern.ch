@@ -108,8 +108,7 @@ class DepositSidebar extends React.Component {
               ID <span>{this.props.id}</span>
             </Box>
 
-            {
-              this.props.schema &&
+            {this.props.schema && (
               <Box
                 direction="row"
                 wrap={false}
@@ -120,11 +119,12 @@ class DepositSidebar extends React.Component {
               >
                 <span>Collection</span>
                 <Tag
-                  text={`${this.props.schema.fullname} v${this.props.schema.version}`}
+                  text={`${this.props.schema.fullname} v${
+                    this.props.schema.version
+                  }`}
                 />
               </Box>
-            }
-
+            )}
 
             <Box
               direction="row"

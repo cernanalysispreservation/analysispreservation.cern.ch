@@ -5,12 +5,7 @@ import { connect } from "react-redux";
 import cogoToast from "cogo-toast";
 
 import Box from "grommet/components/Box";
-import Spinning from "grommet/components/icons/Spinning";
 
-import Message from "../../partials/Message";
-
-import Anchors from "../../partials/Anchor";
-import SaveIcon from "grommet/components/icons/base/Save";
 import Label from "grommet/components/Label";
 
 import {
@@ -22,6 +17,8 @@ import {
 } from "../../../actions/draftItem";
 import { withRouter } from "react-router";
 import { formErrorsChange } from "../../../actions/common";
+import Button from "../../partials/Button";
+import { AiOutlineSave } from "react-icons/ai";
 
 class DraftEditorHeader extends React.Component {
   // checks if the value is empty undefined or null
@@ -194,40 +191,61 @@ class DraftEditorHeader extends React.Component {
     }
     return (
       <Box flex={true} wrap={false} direction="row">
-        <Box flex={true} justify="center" align="end">
-          <Message
-            key="draft-message"
-            message={this.props.message}
-            loading={this.props.loading}
-          />
-        </Box>
-        <Box flex={false} direction="row" wrap={false} justify="end">
-          {this.props.loading ? (
-            <Box
-              flex={true}
-              direction="row"
-              align="center"
-              margin={{ horizontal: "small" }}
+        <Box
+          flex
+          direction="row"
+          wrap={false}
+          justify="between"
+          responsive={false}
+        >
+          <Box direction="row" align="center" responsive={false}>
+            <Label
+              size="small"
+              style={{
+                fontSize: "15px",
+                color: "#000",
+                fontWeight: "bold",
+                fontStyle: "italic"
+              }}
             >
-              <Spinning />
-            </Box>
-          ) : null}
-
-          {this.props.draft_id && (
-            <Box justify="center" align="center">
-              <Anchors
-                pad={{ horizontal: "small" }}
-                label={
-                  <Label size="small" uppercase={true}>
-                    Save
-                  </Label>
-                }
-                onClick={this._saveData.bind(this)}
-                primary
-                icon={<SaveIcon size="xsmall" />}
-              />
-            </Box>
-          )}
+              Mode:
+            </Label>
+            <Button
+              text="Edit"
+              margin="0 5px"
+              size="small"
+              primary={this.props.mode === "edit"}
+              onClick={() =>
+                this.props.mode !== "edit" && this.props.onChangeMode("edit")
+              }
+            />
+            <Button
+              text="Preview"
+              margin="0 5px"
+              size="small"
+              primary={this.props.mode === "preview"}
+              onClick={() =>
+                this.props.mode === "edit" && this.props.onChangeMode("preview")
+              }
+            />
+          </Box>
+          <Box>
+            {this.props.draft_id && (
+              <Box justify="center" align="center">
+                <Button
+                  margin="0 0 0 20px"
+                  text="Save"
+                  className="save-btn"
+                  onClick={this._saveData.bind(this)}
+                  icon={<AiOutlineSave />}
+                  disabled={this.props.mode !== "edit"}
+                  loading={this.props.loading}
+                  background="#e1e1e1"
+                  hoverColor="#e9e9e9"
+                />
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
     );
@@ -254,7 +272,9 @@ DraftEditorHeader.propTypes = {
   status: PropTypes.string,
   draft_id: PropTypes.string,
   recid: PropTypes.string,
-  formErrorsChange: PropTypes.func
+  formErrorsChange: PropTypes.func,
+  onChangeMode: PropTypes.func,
+  mode: PropTypes.string
 };
 
 function mapStateToProps(state) {

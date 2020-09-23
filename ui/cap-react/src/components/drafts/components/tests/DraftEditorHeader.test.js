@@ -80,11 +80,14 @@ const formRefError = {
 
 let wrapper;
 document.body.innerHTML = "<div id='ct-container'>" + "</div>";
+// Since we added the preview mode and the edit mode
+// in order to validate the props and check the functionality of buttons
+// we pass as mode the edit in order to be functional
 beforeEach(() => {
   wrapper = mount(
     <Provider store={store}>
       <Router>
-        <DraftEditorHeader formRef={formRef} />
+        <DraftEditorHeader formRef={formRef} mode="edit" />
       </Router>
     </Provider>
   );
@@ -101,15 +104,16 @@ describe("DraftEditorHeader Suite", () => {
   });
 
   it("Find the Save Button", () => {
-    expect(wrapper.find("a.grommetux-anchor")).toHaveLength(1);
+    expect(wrapper.find("div.save-btn")).toHaveLength(1);
   });
 
   it("CheckIfEmpty will be called when the user saves the form", () => {
-    const save = wrapper.find("a.grommetux-anchor");
+    const save = wrapper.find("div.save-btn");
     const spy = jest.spyOn(
       wrapper.find("DraftEditorHeader").instance(),
       "_checkIfEmpty"
     );
+
     expect(spy).toHaveBeenCalledTimes(0);
     save.simulate("click");
     expect(spy).toHaveBeenCalledTimes(1);
@@ -127,7 +131,7 @@ describe("DraftEditorHeader Suite", () => {
       wrap.find("DraftEditorHeader").instance(),
       "_checkIfEmpty"
     );
-    const save = wrapper.find("a.grommetux-anchor");
+    const save = wrapper.find("div.save-btn");
     save.simulate("click");
     expect(spy).toHaveBeenCalledTimes(0);
   });

@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 
 import Box from "grommet/components/Box";
 
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { FaRegListAlt } from "react-icons/fa";
-
 // Customized RJSF component ( Grommet )
 import FieldTemplate from "./themes/grommet-preview/templates/FieldTemplate";
 import ArrayFieldTemplate from "./themes/grommet/templates/ArrayFieldTemplate";
@@ -15,8 +12,6 @@ import ObjectFieldTemplate from "./themes/grommet/templates/ObjectFieldTemplate"
 import widgets from "./themes/grommet-preview/widgets";
 import fields from "./themes/grommet-preview/fields";
 import Form from "react-jsonschema-form";
-
-import Button from "../../partials/Button";
 
 class JSONShemaPreviewer extends React.Component {
   constructor(props) {
@@ -38,77 +33,81 @@ class JSONShemaPreviewer extends React.Component {
     // in order to display the tabView button there are 2 criterias, either one should be true in order to display:
     // 1) all of the fields should be either objects || arrays
     // 2) not all of them should be strings
-
     const shouldDisplayTabViewButton =
       allObjectsOrArrays.length === propertiesArray.length ||
       allStrings.length < propertiesArray.length;
 
     this.state = {
       formData: {},
-      uiObject: this.props.draft ? "" : (shouldDisplayTabViewButton ? "tabView" : ""),
-      uiAvailableList: shouldDisplayTabViewButton
-        ? [
-            {
-              text: "Tab",
-              id: "tabView",
-              value: "tabView",
-              icon: <FaRegListAlt size={15} />
-            },
-            {
-              text: "List",
-              id: "listView",
-              value: "",
-              icon: <AiOutlineUnorderedList size={15} />
-            }
-          ]
-        : [
-            {
-              text: "List",
-              id: "listView",
-              value: "",
-              icon: <AiOutlineUnorderedList size={15} />
-            }
-          ]
+      uiObject:
+        shouldDisplayTabViewButton && this.props.displayViewButtons
+          ? "tabView"
+          : "",
+      shouldDisplayTabViewButton
     };
   }
 
   render() {
     return (
-      <Box
-        flex={true}
-        pad={{ horizontal: "small" }}
-        style={{ position: "relative", height: "1vh" }}
-      >
-        {!this.props.draft && (
-          <Box
-            direction="row"
-            justify="end"
-            style={{ position: "absolute", right: "26px" }}
-          >
-            {this.state.uiAvailableList.map((item, index) => (
-              <Button
-                margin="0 10px"
-                key={index}
-                text={item.text}
-                icon={item.icon}
-                background={
-                  this.state.uiObject === item.value
-                    ? "rgba(146,109,146,1)"
-                    : "#f5f5f5"
-                }
-                hoverColor={
-                  this.state.uiObject === item.value
-                    ? "rgba(146,109,146,.8)"
-                    : "#e6e6e6"
-                }
-                color={this.state.uiObject === item.value ? "#f9f0ff" : "#000"}
-                onClick={() => {
-                  this.setState({ uiObject: item.value });
-                }}
-              />
-            ))}
-          </Box>
-        )}
+      <Box flex={true}>
+        {this.props.displayViewButtons &&
+          this.state.shouldDisplayTabViewButton && (
+            <Box
+              direction="row"
+              justify="end"
+              responsive={false}
+              style={{
+                position: "absolute",
+                right: 20,
+                bottom: 20,
+                border: "1px solid #e6e6e6",
+                background: "#fff"
+              }}
+            >
+              <Box
+                align="center"
+                justify="center"
+                direction="row"
+                responsive={false}
+                style={{ padding: "5px" }}
+              >
+                <Box
+                  onClick={() => this.setState({ uiObject: "tabView" })}
+                  style={
+                    this.state.uiObject === "tabView"
+                      ? {
+                          color: "rgba(0,0,0,1)",
+                          fontWeight: "bold"
+                        }
+                      : {
+                          color: "rgba(0,0,0,.5)",
+                          fontWeight: "normal"
+                        }
+                  }
+                >
+                  Tab
+                </Box>
+                <Box style={{ margin: "0 5px" }}>/</Box>
+                <Box
+                  onClick={() => this.setState({ uiObject: "" })}
+                  style={
+                    this.state.uiObject !== "tabView"
+                      ? {
+                          color: "rgba(0,0,0,1)",
+                          fontWeight: "bold"
+                        }
+                      : {
+                          color: "rgba(0,0,0,.5)",
+                          fontWeight: "normal"
+                        }
+                  }
+                >
+                  List
+                </Box>
+              </Box>
+            </Box>
+          )}
+
         {this.props.schema ? (
           <Form
             ref={form => {
@@ -155,7 +154,8 @@ JSONShemaPreviewer.propTypes = {
   onSubmit: PropTypes.func,
   children: PropTypes.node,
   schemaType: PropTypes.object,
-  isPublished: PropTypes.bool
+  isPublished: PropTypes.bool,
+  displayViewButtons: PropTypes.bool
 };
 
 export default JSONShemaPreviewer;

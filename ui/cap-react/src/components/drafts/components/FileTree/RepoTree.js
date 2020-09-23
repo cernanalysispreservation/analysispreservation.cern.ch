@@ -6,6 +6,7 @@ import Box from "grommet/components/Box";
 import TreeNode from "./TreeNode";
 
 import { FaGithub, FaGitlab } from "react-icons/fa";
+import { BsCodeSlash } from "react-icons/bs";
 
 class RepoTree extends React.Component {
   onToggle = (node, toggled) => {
@@ -60,7 +61,13 @@ class RepoTree extends React.Component {
       ))
     ) : (
       <Box flex={true} pad="small" justify="center" align="center">
-        No repositories added yet
+        <Box
+          colorIndex="light-2"
+          style={{ borderRadius: "50%", padding: "5px" }}
+        >
+          <BsCodeSlash size={18} />
+        </Box>
+        No uploaded repositories yet
       </Box>
     );
   }

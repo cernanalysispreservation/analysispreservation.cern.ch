@@ -36,7 +36,10 @@ class DepositFilesList extends React.Component {
   render() {
     return [
       <Box key="filesList" style={{ paddingLeft: "3px", paddingRight: "10px" }}>
-        <FileTree files={this.props.files.toJS()} />
+        <FileTree
+          files={this.props.files.toJS()}
+          renderList={this.props.renderList}
+        />
       </Box>
       // <PreviewUpload key="_file_previewer" />
     ];
@@ -44,7 +47,8 @@ class DepositFilesList extends React.Component {
 }
 
 DepositFilesList.propTypes = {
-  files: PropTypes.object
+  files: PropTypes.object,
+  renderList: PropTypes.array
 };
 
 export default DepositFilesList;

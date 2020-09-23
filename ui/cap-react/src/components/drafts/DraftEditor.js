@@ -20,6 +20,7 @@ import Form from "./form/Form";
 import DraftJSONPreviewer from "./components/DraftJSONPreviewer";
 import PermissionDenied from "../errors/403";
 import DraftEditorHeader from "./components/DraftEditorHeader";
+import JSONSchemaPreviewer from "./form/JSONSchemaPreviewer";
 
 export const transformSchema = schema => {
   const schemaFieldsToRemove = [
@@ -49,6 +50,13 @@ export const transformSchema = schema => {
 };
 
 class DraftEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      mode:
+        (this.props.location.state && this.props.location.state.mode) || "edit"
+    };
+  }
   componentDidMount() {
     // If "schema_id" from URL exists init form and fetch schema
     if (this.props.match.params.schema_id) {
@@ -92,13 +100,17 @@ class DraftEditor extends React.Component {
         : null;
 
     return (
-      <Box id="deposit-page" flex={true}>
+      <Box id="draft-editor-page" flex={true} style={{ position: "relative" }}>
         {this.props.schemas &&
           this.props.schemas.schema && (
             <Box flex={true}>
               {this.props.canUpdate && (
                 <Box flex={false} separator="bottom" style={{ padding: "5px" }}>
-                  <DraftEditorHeader formRef={this.props.formRef} />
+                  <DraftEditorHeader
+                    formRef={this.props.formRef}
+                    mode={this.state.mode}
+                    onChangeMode={mode => this.setState({ mode })}
+                  />
                 </Box>
               )}
               <Box
@@ -108,17 +120,31 @@ class DraftEditor extends React.Component {
                 flex={true}
                 wrap={false}
               >
-                <Form
-                  formRef={this.props.formRef}
-                  formData={this.props.formData || {}}
-                  schema={_schema}
-                  uiSchema={this.props.schemas.uiSchema || {}}
-                  onChange={change => {
-                    this.props.formDataChange(change.formData);
-                  }}
-                  errors={this.props.errors}
-                />
-                <DraftJSONPreviewer />
+                {this.state.mode === "edit" ? (
+                  <React.Fragment>
+                    <Form
+                      formRef={this.props.formRef}
+                      formData={this.props.formData || {}}
+                      schema={_schema}
+                      uiSchema={this.props.schemas.uiSchema || {}}
+                      onChange={change => {
+                        this.props.formDataChange(change.formData);
+                      }}
+                      errors={this.props.errors}
+                    />
+                    <DraftJSONPreviewer />
+                  </React.Fragment>
+                ) : (
+                  <JSONSchemaPreviewer
+                    formData={this.props.formData}
+                    schema={_schema}
+                    uiSchema={this.props.schemas.uiSchema || {}}
+                    onChange={() => {}}
+                    displayViewButtons
+                  >
+                    <span />
+                  </JSONSchemaPreviewer>
+                )}
               </Box>
             </Box>
           )}

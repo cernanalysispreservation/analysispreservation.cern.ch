@@ -165,8 +165,14 @@ class DepositReviews extends React.Component {
 
     return (
       <Box margin={{ bottom: "medium" }} flex={false}>
-        <Box flex={false} direction="row" wrap={false} justify="between">
-          <Heading tag="h3">Reviews</Heading>
+        <Box
+          flex={false}
+          direction="row"
+          wrap={false}
+          justify="between"
+          pad={this.props.heading && { vertical: "small" }}
+        >
+          {this.props.heading || <Heading tag="h3"> Reviews</Heading>}
           {this.props.canReview && (
             <Button
               text="Add Review"
@@ -177,7 +183,6 @@ class DepositReviews extends React.Component {
           )}
         </Box>
         {this.state.addReviewLayer ? this.renderCreateLayer() : null}
-
         <Box
           flex={false}
           pad="small"
@@ -217,7 +222,8 @@ DepositReviews.propTypes = {
   canAdmin: PropTypes.bool,
   reviewDraft: PropTypes.func,
   canReview: PropTypes.bool,
-  review: PropTypes.object
+  review: PropTypes.object,
+  hideTitle: PropTypes.bool
 };
 
 function mapStateToProps(state) {
