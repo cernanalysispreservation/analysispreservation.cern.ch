@@ -66,10 +66,9 @@ class EditableTitle extends React.Component {
   render() {
     let { general_title } = this.props.metadata;
 
-    if (!general_title) {
+    if (Object.entries(this.props.metadata).length === 0) {
       return null;
     }
-
     return this.state.editTitle ? (
       <Box
         flex={true}
@@ -83,7 +82,11 @@ class EditableTitle extends React.Component {
         <Label margin="none" direction="row">
           <input
             key="draft-input"
-            style={{ padding: 0, border: "1px solid #136994", borderRadius: 0 }}
+            style={{
+              padding: 0,
+              border: "1px solid #136994",
+              borderRadius: 0
+            }}
             onChange={this._onChange}
             value={this.state.titleValue}
           />
