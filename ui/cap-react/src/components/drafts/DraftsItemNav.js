@@ -140,7 +140,7 @@ class DraftsItemNav extends React.Component {
           </Box>
         </Box>
 
-        {isDraft && !isPublishedOnce ? (
+        {this.props.canAdmin && isDraft && !isPublishedOnce ? (
           <Anchor
             icon={<AiOutlineDelete size={28} />}
             onClick={this._actionHandler("delete")}
@@ -162,7 +162,8 @@ DraftsItemNav.propTypes = {
   id: PropTypes.string,
   toggleActionsLayer: PropTypes.func,
   recid: PropTypes.string,
-  location: PropTypes.object
+  location: PropTypes.object,
+  canAdmin: PropTypes.bool
 };
 
 function mapStateToProps(state) {
@@ -170,7 +171,8 @@ function mapStateToProps(state) {
     id: state.draftItem.get("id"),
     status: state.draftItem.get("status"),
     errors: state.draftItem.get("errors"),
-    recid: state.draftItem.get("recid")
+    recid: state.draftItem.get("recid"),
+    canAdmin: state.draftItem.get("can_admin")
   };
 }
 
