@@ -65,6 +65,11 @@ class EditableTitle extends React.Component {
 
   render() {
     let { general_title } = this.props.metadata;
+
+    if (!general_title) {
+      return null;
+    }
+
     return this.state.editTitle ? (
       <Box
         flex={true}
