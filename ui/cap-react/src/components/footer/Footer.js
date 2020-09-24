@@ -39,7 +39,7 @@ class GrommetFooter extends React.Component {
               <Anchor
                 target="_blank"
                 label="Documentation"
-                path="/docs/general/"
+                href="/docs/general/"
               />
             </Box>
           </Box>
